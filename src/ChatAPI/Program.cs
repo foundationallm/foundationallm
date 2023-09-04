@@ -23,7 +23,7 @@ namespace FoundationaLLM.ChatAPI
                 .Bind(builder.Configuration.GetSection("FoundationaLLM:LangChainOrchestration"));
 
             builder.Services.AddOptions<ChatServiceSettings>()
-                .Bind(builder.Configuration.GetSection("SollianceAICopilot:Chat"));
+                .Bind(builder.Configuration.GetSection("FoundationaLLM:Chat"));
 
             builder.Services.AddSingleton<ICosmosDbService, CosmosDbService>();
             builder.Services.AddSingleton<ISemanticKernelOrchestrationService, SemanticKernelOrchestrationService>();
