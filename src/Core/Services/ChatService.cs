@@ -10,6 +10,7 @@ namespace FoundationaLLM.Core.Services;
 public class ChatService : IChatService
 {
     private readonly ICosmosDbService _cosmosDbService;
+    private readonly ChatServiceSettings _settings;
     private readonly ISemanticKernelOrchestrationService _semanticKernelOrchestrator;
     private readonly ILangChainOrchestrationService _langChainOrchestrator;
     private readonly ILogger _logger;
@@ -20,14 +21,18 @@ public class ChatService : IChatService
 
     public ChatService(
         ICosmosDbService cosmosDbService,
+        IOptions<ChatServiceSettings> options,
         ISemanticKernelOrchestrationService semanticKernelOrchestratorService,
         ILangChainOrchestrationService langChainOrchestratorService,
         ILogger<ChatService> logger)
     {
         _cosmosDbService = cosmosDbService;
+        _settings = options.Value;
         _semanticKernelOrchestrator = semanticKernelOrchestratorService;
         _langChainOrchestrator = langChainOrchestratorService;
         _logger = logger;
+
+        SetLLMOrchestratorPreference(_settings.DefaultOrchestrator);
     }
 
     public bool SetLLMOrchestratorPreference(string orchestrator)

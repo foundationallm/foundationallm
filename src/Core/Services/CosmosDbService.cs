@@ -48,6 +48,11 @@ namespace FoundationaLLM.Core.Services
 
             _logger = logger;
 
+            Type defaultTrace = Type.GetType("Microsoft.Azure.Cosmos.Core.Trace.DefaultTrace,Microsoft.Azure.Cosmos.Direct");
+            TraceSource traceSource = (TraceSource)defaultTrace.GetProperty("TraceSource").GetValue(null);
+            traceSource.Switch.Level = SourceLevels.All;
+            traceSource.Listeners.Clear();
+
             CosmosSerializationOptions options = new()
             {
                 PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
