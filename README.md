@@ -39,7 +39,7 @@ You can see this at work when running locally by setting a break point on [Gener
 
 ## Searching vectors
 
-The web-based front-end provides users the means for searching the vectorized retail bike data for this solution. This work is centered around the [AzureCognitiveSearchVectorMemory](https://github.com/solliancenet/foundationallm/blob/main/src/SemanticKernel/Memory/AzureCognitiveSearch/AzureCognitiveSearchVectorMemory.cs) in the `SemanticKernel` project. In the chat UX a user starts a new chat session then types in a natural language question. The text is sent to Azure OpenAI's embeddings API to generate vectors on it. The vectors are then used to perform a vector search on the vectors collection in Azure Cognitive Search. The query response which includes the original source data is sent to Azure OpenAI to generate a completion which is then passed back to the user as a response.
+The web-based front-end provides users the means for searching the vectorized retail bike data for this solution. This work is centered around the [AzureCognitiveSearchVectorMemory](https://github.com/solliancenet/foundationallm/blob/main/src/SemanticKernel/Memory/AzureCognitiveSearch/AzureCognitiveSearchVectorMemory.cs) in the `FoundationaLLM.SemanticKernel` project. In the chat UX a user starts a new chat session then types in a natural language question. The text is sent to Azure OpenAI's embeddings API to generate vectors on it. The vectors are then used to perform a vector search on the vectors collection in Azure Cognitive Search. The query response which includes the original source data is sent to Azure OpenAI to generate a completion which is then passed back to the user as a response.
 
 ## Key concepts this solution highlights
 
@@ -119,16 +119,16 @@ Run the following script to provision the infrastructure and deploy the API and 
 
 #### Deployments using an existing OpenAI service
 
-For deployments that need to use an existing OpenAI service, run the following from the `scripts`.  This will provision all of the necessary infrastruction except the Azure OpenAI service and will deploy the API and frontend to an AKS cluster via Helm.
+For deployments that need to use an existing OpenAI service, run the following from the `./deploy/scripts`.  This will provision all of the necessary infrastruction except the Azure OpenAI service and will deploy the API and frontend to an AKS cluster via Helm.
 
 ```pwsh
-./deploy/scripts/Unified-Deploy.ps1 -resourceGroup <resource-group-name> `
-                                    -location <location> `
-                                    -subscription <subscription-id> `
-                                    -openAiName <openAi-service-name> `
-                                    -openAiRg <openAi-resource-group-name> `
-                                    -openAiCompletionsDeployment <openAi-completions-deployment-name> `
-                                    -openAiEmbeddingsDeployment <openAi-embeddings-deployment-name>
+./Unified-Deploy.ps1 -resourceGroup <resource-group-name> `
+                     -location <location> `
+                     -subscription <subscription-id> `
+                     -openAiName <openAi-service-name> `
+                     -openAiRg <openAi-resource-group-name> `
+                     -openAiCompletionsDeployment <openAi-completions-deployment-name> `
+                     -openAiEmbeddingsDeployment <openAi-embeddings-deployment-name>
 ```
 
 ### Quickstart
@@ -218,7 +218,7 @@ This solution can be run locally post deployment. Below are the steps.
 Use the steps that follow to run the solution on your local machine.
 #### Configure local settings
 
-- In the `Search` project, make sure the content of the `appsettings.json` file is similar to this:
+- In the `FoundationaLLM.Chat` project, make sure the content of the `appsettings.json` file is similar to this:
 
     ```json
     {
@@ -239,7 +239,7 @@ Use the steps that follow to run the solution on your local machine.
     }
     ```
 
-- In the `ChatServiceWebApi` project, make sure the content of the `appsettings.json` file is similar to this:
+- In the `FoundationaLLM.ChatAPI` project, make sure the content of the `appsettings.json` file is similar to this:
 
     ```json
     {
@@ -284,7 +284,7 @@ Use the steps that follow to run the solution on your local machine.
     }
     ```
 
-- In the `ChatServiceWebApi` project, create an `appsettings.Development.json` file with the following content (replace all `<...>` placeholders with the values from your deployment):
+- In the `FoundationaLLM.ChatAPI` project, create an `appsettings.Development.json` file with the following content (replace all `<...>` placeholders with the values from your deployment):
 
     ```json
     {
