@@ -15,21 +15,21 @@ Our move to trunk-based development is driven by the vision to build and deliver
 
 The core rules of development:
 
-1. When a developer starts working on a feature or a bug fix, a new branch gets created from `master/main`. When the work ends, a PR is created to bring the work back into `master/main`. We encourage a granular approach, where each individual feature or bug fix has it's own branch. Work should be moved back into the trunk via a PR as soon as possible.
+1. When a developer starts working on a feature or a bug fix, a new branch gets created from `main`. When the work ends, a PR is created to bring the work back into `main`. We encourage a granular approach, where each individual feature or bug fix has it's own branch. Work should be moved back into the trunk via a PR as soon as possible.
 
     >NOTE:
     >
-    >Committing directly into `master/main` is not allowed. All changes are merged via PRs which allows for consistent review, validation, and testing processes.
+    >Committing directly into `main` is not allowed. All changes are merged via PRs which allows for consistent review, validation, and testing processes.
 
-2. When a sprint ends, a release branch is created. The release branch will be used to deploy the changes to production. Work on `master/main` ca resume right after the release branch was created.
+2. When a sprint ends, a release branch is created. The release branch will be used to deploy the changes to production. Work on `main` ca resume right after the release branch was created.
 
 3. The release branch will live until the next release branch is created.
 
-4. In the case of critical bug fixes, the process will follow the same approach as described above at step 1. Once the PR is approved and the code merged to `master/main`, it will also be cherry-picked into the current release branch. From there, it will be deployed into production.
+4. In the case of critical bug fixes, the process will follow the same approach as described above at step 1. Once the PR is approved and the code merged to `main`, it will also be cherry-picked into the current release branch. From there, it will be deployed into production.
 
     >NOTE:
     >
-    >This approach ensures that no matter how critical a bug fix is and no matter how much pressure there is to fix an issue in production, the code for the fix always ends up in `master/main`.
+    >This approach ensures that no matter how critical a bug fix is and no matter how much pressure there is to fix an issue in production, the code for the fix always ends up in `main`.
 
 ## Why?
 
@@ -55,7 +55,7 @@ Some common obstacles to full adoption of trunk-based development include the fo
 ## Actions to take
 
 - Develop in small batches (even smaller than we are used to)
-- Speed up code review so that commits do not need to wait long times to get into `master/main`.
+- Speed up code review so that commits do not need to wait long times to get into `main`.
 - Have comprehensive, automated testing
 - Have a fast build
 
