@@ -52,3 +52,6 @@ applicationInsights:
 langchainapi:
   keyVaultUrl: '{{keyVaultUrl}}'
   miClientId: '{{langChainApiMiClientId}}'
+azureWorkloadIdentity:
+  langChainApiClientId: '{{langChainApiMiClientId}}'
+  tenantId: '{{tenantId}}'

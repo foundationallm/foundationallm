@@ -122,7 +122,8 @@
       "Key Vault Crypto User": "12338af0-0e69-4776-bea7-57ae8d297424",
       "Key Vault Reader": "21090545-7ca7-4776-b22c-e363652d74d2",
       "Key Vault Secrets Officer": "b86a8fe4-44ce-4948-aee5-eccb2c155cd7",
-      "Key Vault Secrets User": "4633458b-17de-408a-b874-0445c86b69e6"
+      "Key Vault Secrets User": "4633458b-17de-408a-b874-0445c86b69e6",
+      "Storage Blob Data Reader": "2a2b9908-6ea1-4ae2-8e65-a410df84e7d1"
     }
   },
   "resources": [
@@ -149,6 +150,17 @@
       "name": "[format('{0}/{1}', variables('keyVaultSettings').name, 'langchain-api-key')]",
       "properties": {
         "value": "[variables('langChainApiKey')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]"
+      ]
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2022-07-01",
+      "name": "[format('{0}/{1}', variables('keyVaultSettings').name, 'source-csv-file-url')]",
+      "properties": {
+        "value": "[concat(reference(resourceId('Microsoft.Storage/storageAccounts', format('{0}promptsa', parameters('name'))), providers('Microsoft.Storage','storageAccounts').apiVersions[0]).primaryEndpoints.blob, 'analytics-source/surveydata.txt')]"
       },
       "dependsOn": [
         "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]"
@@ -928,6 +940,17 @@
       "name": "[guid(resourceId('Microsoft.App/containerapps', format('{0}langchainaca', parameters('name'))), variables('keyVaultSettings').name)]",
       "properties": {
         "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('roleIdMapping')['Key Vault Secrets User'])]",
+        "principalId": "[reference(resourceId('Microsoft.App/containerapps', format('{0}langchainaca', parameters('name'))), providers('Microsoft.App', 'containerapps').apiVersions[0], 'full').identity.principalId]",
+        "principalType": "ServicePrincipal"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "scope": "[format('Microsoft.Storage/storageAccounts/{0}', format('{0}promptsa', parameters('name')))]",
+      "name": "[guid(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('{0}langchainmi', parameters('name'))), format('{0}promptsa', parameters('name')))]",
+      "properties": {
+        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('roleIdMapping')['Storage Blob Data Reader'])]",
         "principalId": "[reference(resourceId('Microsoft.App/containerapps', format('{0}langchainaca', parameters('name'))), providers('Microsoft.App', 'containerapps').apiVersions[0], 'full').identity.principalId]",
         "principalType": "ServicePrincipal"
       }
