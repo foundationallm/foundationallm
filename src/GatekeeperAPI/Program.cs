@@ -2,7 +2,7 @@ using FoundationaLLM.Gatekeeper.Core.Interfaces;
 using FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions;
 using FoundationaLLM.Gatekeeper.Core.Services;
 
-namespace FoundationaLLM.GatekeeperAPI
+namespace FoundationaLLM.Gatekeeper.API
 {
     public class Program
     {
@@ -21,7 +21,7 @@ namespace FoundationaLLM.GatekeeperAPI
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddOptions<RefinementServiceSettings>()
-                .Bind(builder.Configuration.GetSection("GatekeeperAPI:Refinement"));
+                .Bind(builder.Configuration.GetSection("FoundationaLLM:Refinement"));
             builder.Services.AddScoped<IRefinementService, RefinementService>();
 
             var app = builder.Build();
