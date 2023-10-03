@@ -96,7 +96,7 @@ if ($appInsightsName -and $appInsightsName.Length -eq 1) {
 }
 Write-Host "App Insights Instrumentation Key: $appinsightsId" -ForegroundColor Yellow
 
-$resourcePrefix=$(az deployment show -n foundationallm-azuredeploy -g $resourceGroup --query "properties.outputs.resourcePrefix.value" -o json | ConvertFrom-Json)
+$resourcePrefix=$(az deployment group show -n foundationallm-azuredeploy -g $resourceGroup --query "properties.outputs.resourcePrefix.value" -o json | ConvertFrom-Json)
 $langChainApiMiClientId=$(az identity show -g $resourceGroup -n $resourcePrefix-langchain-mi -o json | ConvertFrom-Json).clientId
 $tenantId=$(az account show --query homeTenantId --output tsv)
 

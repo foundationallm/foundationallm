@@ -11,4 +11,5 @@ metadata:
     heritage: {{ .Release.Service }}
 data:
   SOLLIANCEAICOPILOT__LANGCHAINAPI__KEYVAULTURL: {{ .Values.langchainapi.keyVaultUrl }}
-  SOLLIANCEAICOPILOT__LANGCHAINAPI__MICLIENTID: {{ .Values.langchainapi.miClientId }}
+  AZURE_CLIENT_ID: {{ .Values.langchainapi.miClientId }}
+  AZURE_TENANT_ID: {{ .Values.azureWorkloadIdentity.tenantId }}

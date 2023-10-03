@@ -30,7 +30,7 @@ spec:
     - host: {{ . }}
       http:
         paths:
-          - path: /api(/|$)(.*)
+          - path: /langchain/api(/|$)(.*)
             pathType: Prefix
             backend:
               service:

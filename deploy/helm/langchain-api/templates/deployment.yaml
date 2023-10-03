@@ -23,9 +23,10 @@ spec:
       labels:
         app: {{ template "langchain-api.name" . }}
         release: {{ .Release.Name }}
+        azure.workload.identity/use: "true"
     spec:
-      {{ if .Values.serviceaccount -}}
-      serviceAccountName: {{ .Values.serviceaccount }}
+      {{ if .Values.serviceAccountName -}}
+      serviceAccountName: {{ .Values.serviceAccountName }}
       {{ if .Values.imagePullSecrets -}}
       imagePullSecrets:
       {{ range .Values.imagePullSecrets -}}
