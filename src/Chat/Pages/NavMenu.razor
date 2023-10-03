@@ -240,7 +240,7 @@
     {
         await chatManager.CreateNewChatSessionAsync();
 
-        if (CurrentSession is not null & ChatSessions is not null & ChatSessions?.Count > 0)
+        if (CurrentSession is not null && ChatSessions is not null && ChatSessions?.Count > 0)
         {
             var match = ChatSessions?.LastOrDefault();
             if (match is not null)
