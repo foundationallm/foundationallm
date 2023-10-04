@@ -27,8 +27,8 @@
     <Compile Include="foundationallm\config\configuration.py" />
     <Compile Include="foundationallm\config\__init__.py" />
     <Compile Include="main.py" />
-    <Compile Include="__init__.py" />
-    <Compile Include="_version.py" />
+    <Compile Include="foundationallm\__init__.py" />
+    <Compile Include="foundationallm\_version.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
