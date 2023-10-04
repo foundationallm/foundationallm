@@ -4,7 +4,7 @@ using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Common.Models.Chat;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FoundationaLLM.ChatAPI.Controllers
+namespace FoundationaLLM.Core.API.Controllers
 {
     [ApiVersion(1.0)]
     [ApiController]

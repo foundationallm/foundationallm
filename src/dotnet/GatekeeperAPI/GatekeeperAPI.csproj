@@ -8,6 +8,7 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <AssemblyName>FoundationaLLM.Gatekeeper.API</AssemblyName>
     <RootNamespace>FoundationaLLM.Gatekeeper.API</RootNamespace>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

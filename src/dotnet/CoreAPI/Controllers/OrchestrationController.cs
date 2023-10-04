@@ -2,38 +2,36 @@
 using FoundationaLLM.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FoundationaLLM.ChatAPI.Controllers
+namespace FoundationaLLM.Core.API.Controllers
 {
-    namespace FoundationaLLM.ChatAPI.Controllers
+
+    [ApiVersion(1.0)]
+    [ApiController]
+    [Route("[controller]")]
+    public class OrchestrationController : ControllerBase
     {
-        [ApiVersion(1.0)]
-        [ApiController]
-        [Route("[controller]")]
-        public class OrchestrationController : ControllerBase
+        private readonly IChatService _chatService;
+        private readonly ILogger<OrchestrationController> _logger;
+
+        public OrchestrationController(IChatService chatService,
+            ILogger<OrchestrationController> logger)
         {
-            private readonly IChatService _chatService;
-            private readonly ILogger<OrchestrationController> _logger;
+            _chatService = chatService;
+            _logger = logger;
+        }
 
-            public OrchestrationController(IChatService chatService,
-                ILogger<OrchestrationController> logger)
+        [HttpPost(Name = "SetOrchestratorChoice")]
+        public IActionResult SetPreference([FromBody] string orchestrationService)
+        {
+            var orchestrationPreferenceSet = _chatService.SetLLMOrchestrationPreference(orchestrationService);
+
+            if (orchestrationPreferenceSet)
             {
-                _chatService = chatService;
-                _logger = logger;
+                return Ok();
             }
 
-            [HttpPost(Name = "SetOrchestratorChoice")]
-            public IActionResult SetPreference([FromBody] string orchestrationService)
-            {
-                var orchestrationPreferenceSet = _chatService.SetLLMOrchestrationPreference(orchestrationService);
-
-                if (orchestrationPreferenceSet)
-                {
-                    return Ok();
-                }
-
-                _logger.LogError($"The LLM orchestrator {orchestrationService} is not supported.");
-                return BadRequest($"The LLM orchestrator {orchestrationService} is not supported.");
-            }
+            _logger.LogError($"The LLM orchestrator {orchestrationService} is not supported.");
+            return BadRequest($"The LLM orchestrator {orchestrationService} is not supported.");
         }
     }
 }

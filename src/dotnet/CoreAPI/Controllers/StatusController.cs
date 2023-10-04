@@ -1,8 +1,9 @@
 ﻿using Asp.Versioning;
 using FoundationaLLM.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
-namespace FoundationaLLM.ChatAPI.Controllers
+namespace FoundationaLLM.Core.API.Controllers
 {
     [ApiVersion(1.0)]
     [ApiController]
@@ -23,6 +24,14 @@ namespace FoundationaLLM.ChatAPI.Controllers
         public string Get()
         {
             return _chatService.Status;
+        }
+
+        [HttpOptions]
+        public IActionResult Options()
+        {
+            HttpContext.Response.Headers.Add("Allow", new[] { "GET", "POST", "OPTIONS" });
+            
+            return Ok();
         }
     }
 }

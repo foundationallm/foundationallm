@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <AssemblyName>FoundationaLLM.Gatekeeper.Core</AssemblyName>
     <RootNamespace>FoundationaLLM.Gatekeeper.Core</RootNamespace>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

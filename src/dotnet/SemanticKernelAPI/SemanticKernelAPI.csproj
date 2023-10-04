@@ -8,6 +8,7 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <AssemblyName>FoundationaLLM.SemanticKernel.API</AssemblyName>
     <RootNamespace>FoundationaLLM.SemanticKernel.API</RootNamespace>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

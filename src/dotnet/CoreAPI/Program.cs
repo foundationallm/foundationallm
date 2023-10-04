@@ -1,9 +1,10 @@
+using Asp.Versioning;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.ConfigurationOptions;
 using FoundationaLLM.Core.Services;
 using Polly;
 
-namespace FoundationaLLM.ChatAPI
+namespace FoundationaLLM.Core.API
 {
     public class Program
     {
@@ -33,7 +34,21 @@ namespace FoundationaLLM.ChatAPI
             builder.Services.AddApplicationInsightsTelemetry();
             builder.Services.AddControllers();
             builder.Services.AddProblemDetails();
-            builder.Services.AddApiVersioning();
+            builder.Services.AddApiVersioning(options =>
+            {
+                // Reporting api versions will return the headers
+                // "api-supported-versions" and "api-deprecated-versions"
+                options.ReportApiVersions = true;
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+            })
+                .AddMvc()
+                .AddApiExplorer(options =>
+                {
+                    // add the versioned api explorer, which also adds IApiVersionDescriptionProvider service
+                    // note: the specified format code will format the version as "'v'major[.minor][-status]"
+                    options.GroupNameFormat = "'v'VVV";
+                });
 
             builder.Services.AddOptions<CosmosDbSettings>()
                 .Bind(builder.Configuration.GetSection("FoundationaLLM:CosmosDB"));
@@ -57,7 +72,18 @@ namespace FoundationaLLM.ChatAPI
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(
+                options =>
+                {
+                    // Add a custom operation filter which sets default values
+                    options.OperationFilter<SwaggerDefaultValues>();
+
+                    var fileName = typeof(Program).Assembly.GetName().Name + ".xml";
+                    var filePath = Path.Combine(AppContext.BaseDirectory, fileName);
+
+                    // Integrate xml comments
+                    options.IncludeXmlComments(filePath);
+                });
 
             var app = builder.Build();
 
@@ -67,7 +93,19 @@ namespace FoundationaLLM.ChatAPI
 
             // Configure the HTTP request pipeline.
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(
+                options =>
+                {
+                    var descriptions = app.DescribeApiVersions();
+
+                    // build a swagger endpoint for each discovered API version
+                    foreach (var description in descriptions)
+                    {
+                        var url = $"/swagger/{description.GroupName}/swagger.json";
+                        var name = description.GroupName.ToUpperInvariant();
+                        options.SwaggerEndpoint(url, name);
+                    }
+                });
 
             app.UseAuthorization();
 

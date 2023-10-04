@@ -14,14 +14,14 @@ COPY . .
 RUN dotnet restore "Core/Core.csproj"
 RUN dotnet build "Core/Core.csproj" -c Release -o /app/build
 
-RUN dotnet restore "ChatAPI/ChatAPI.csproj"
-RUN dotnet build "ChatAPI/ChatAPI.csproj" -c Release -o /app/build
+RUN dotnet restore "CoreAPI/CoreAPI.csproj"
+RUN dotnet build "CoreAPI/CoreAPI.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "Core/Core.csproj" -c Release -o /app/publish /p:UseAppHost=false
-RUN dotnet publish "ChatAPI/ChatAPI.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "CoreAPI/CoreAPI.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "FoundationaLLM.ChatAPI.dll"]
+ENTRYPOINT ["dotnet", "FoundationaLLM.Core.API.dll"]

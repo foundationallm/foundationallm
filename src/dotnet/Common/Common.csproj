@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <AssemblyName>FoundationaLLM.Common</AssemblyName>
     <RootNamespace>FoundationaLLM.Common</RootNamespace>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
   
   <ItemGroup>
