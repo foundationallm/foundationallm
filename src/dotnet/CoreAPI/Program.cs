@@ -68,7 +68,7 @@ namespace FoundationaLLM.Core.API
             builder.Services.AddSingleton<ICosmosDbService, CosmosDbService>();
             builder.Services.AddSingleton<ISemanticKernelOrchestrationService, SemanticKernelOrchestrationService>();
             builder.Services.AddSingleton<ILangChainOrchestrationService, LangChainOrchestrationService>();
-            builder.Services.AddSingleton<IChatService, ChatService>();
+            builder.Services.AddSingleton<ICoreService, CoreService>();
 
             // Add services to the container.
             builder.Services.AddAuthorization();
