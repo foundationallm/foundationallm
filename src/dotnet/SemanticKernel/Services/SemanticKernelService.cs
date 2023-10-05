@@ -121,7 +121,7 @@ public class SemanticKernelService : ISemanticKernelService
         }
     }
 
-    public async Task<CompletionResponseBase> Complete(string userPrompt, List<MessageHistoryItem> messageHistory)
+    public async Task<string> GetCompletion(string userPrompt, List<MessageHistoryItem> messageHistory)
     {
         var memorySkill = new TextEmbeddingObjectMemorySkill(
             _longTermMemory,
@@ -169,7 +169,7 @@ public class SemanticKernelService : ISemanticKernelService
             rawResult.Usage.CompletionTokens, userPromptEmbedding);
     }
 
-    public async Task<string> Summarize(string userPrompt)
+    public async Task<string> GetSummary(string userPrompt)
     {
         var summarizerSkill = new GenericSummarizerSkill(
             await _systemPromptService.GetPrompt(_settings.OpenAI.ShortSummaryPromptName),

@@ -38,7 +38,7 @@ namespace FoundationaLLM.AgentFactory.Services
         {
             var client = _httpClientFactory.CreateClient(Common.Constants.HttpClients.SemanticKernelAPIClient);
 
-            var responseMessage = await client.PostAsync("api/orchestration/complete",
+            var responseMessage = await client.PostAsync("/orchestration/completion",
                 new StringContent(
                     JsonConvert.SerializeObject(new SemanticKernelCompletionRequest { Prompt = userPrompt, MessageHistory = messageHistory }, _jsonSerializerSettings),
                     Encoding.UTF8, "application/json"));
@@ -61,21 +61,21 @@ namespace FoundationaLLM.AgentFactory.Services
             };
         }
 
-        public async Task<string> Summarize(string content)
+        public async Task<string> GetSummary(string content)
         {
             var client = _httpClientFactory.CreateClient(Common.Constants.HttpClients.SemanticKernelAPIClient);
 
-            var responseMessage = await client.PostAsync("api/orchestration/summarize",
+            var responseMessage = await client.PostAsync("/orchestration/summary",
                 new StringContent(
-                    JsonConvert.SerializeObject(new SemanticKernelSummarizeRequest { Prompt = content }, _jsonSerializerSettings),
+                    JsonConvert.SerializeObject(new SemanticKernelSummaryRequest { Prompt = content }, _jsonSerializerSettings),
                     Encoding.UTF8, "application/json"));
 
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var summarizeResponse = JsonConvert.DeserializeObject<SemanticKernelSummarizeResponse>(responseContent);
+                var summaryResponse = JsonConvert.DeserializeObject<SemanticKernelSummaryResponse>(responseContent);
 
-                return summarizeResponse?.Info;
+                return summaryResponse?.Info;
             }
             else
                 return "A problem on my side prevented me from responding.";
