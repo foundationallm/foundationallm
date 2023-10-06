@@ -13,23 +13,15 @@ class Configuration():
 
     def get_value(self, name: str, default: str = None) -> str:
         """
-        Retrieves the value from a variable, and if not found atemtps to get the default 
+        Retrieves the value from a variable, and if not found attempts to get the default 
         config value.
-
-        If useKeyVault is set to True, atempts to retrieve the value from Azure Key Vault
-        with the kv_name
-
+       
         Parameters
         ----------
         - name : str 
             The name of the env variable to retrieve.
         - default : str
-            Default value if variable not found.
-        - useKeyVault : bool
-            Determines wether to use Azure Key Vault
-        - kv_name : str
-            The name to retrieve if useKeyVault parameter is set to True
-
+            Default value if variable not found.        
         Returns
         -------
         The value of the environment variable if it exists, or the Key Vault
@@ -38,7 +30,7 @@ class Configuration():
 
        
         try:    
-            value = self.get_keyvault_value(name, self.keyvault_name)
+            value = self.__get_value(name, self.keyvault_name)
             return value
             
         except Exception as e:
@@ -80,7 +72,7 @@ class Configuration():
             pass
 
    
-    def get_keyvault_value(self, name):
+    def __get_value(self, name):
         if self.keyvault_name is None:
             self.keyvault_name = self.get_env_var('key_vault_name')
 

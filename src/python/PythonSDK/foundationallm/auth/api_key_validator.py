@@ -4,8 +4,8 @@ from foundationallm.config import Configuration
 
 class APIKeyValidator:
     
-    def __init__(self, api_key_secret_name: str):
-        self.api_key_value = Configuration.get_value(api_key_secret_name)
+    def __init__(self, api_key_name:str, config: Configuration):
+        self.api_key_value = config.get_value(api_key_name)
         self.api_key_header = APIKeyHeader(name='X-API-Key')
 
     def validate_api_key(self, x_api_key: str = Depends(self.api_key_header)):
