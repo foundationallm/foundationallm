@@ -10,12 +10,17 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.10.1" />
     <PackageReference Include="Azure.Search.Documents" Version="11.5.0-alpha.20230531.1" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.18.0" />
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.35.4" />
+    <PackageReference Include="Microsoft.Graph" Version="5.29.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Asp.Versioning.Http" Version="7.1.0" />
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="7.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.2" />
   </ItemGroup>
   
 </Project>

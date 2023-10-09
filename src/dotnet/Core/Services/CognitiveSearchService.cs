@@ -6,7 +6,11 @@ using Azure.Search.Documents.Indexes.Models;
 using Azure.Search.Documents.Models;
 using FoundationaLLM.Common.Models.Search;
 using FoundationaLLM.Core.Interfaces;
+using FoundationaLLM.Core.Models.Search.AzureAd;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.Extensions.Logging;
+using Microsoft.Graph.Models.CallRecords;
+using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
 using System.Collections;
 using System.Reflection;
 using System.Text.Json;
@@ -23,6 +27,7 @@ namespace FoundationaLLM.Core.Services
         private readonly int _maxVectorSearchResults = default;
         private readonly ILogger _logger;
         private readonly SearchClient _searchClient;
+        private readonly SearchIndexClient _indexClient;
 
         public CognitiveSearchService(string azureSearchAdminKey, string azureSearchServiceEndpoint,
             string azureSearchIndexName, string maxVectorSearchResults, ILogger logger, bool createIndexIfNotExists = false)
@@ -41,14 +46,14 @@ namespace FoundationaLLM.Core.Services
             };
 
             var searchCredential = new AzureKeyCredential(azureSearchAdminKey);
-            var indexClient = new SearchIndexClient(new Uri(azureSearchServiceEndpoint), searchCredential, options);
-            _searchClient = indexClient.GetSearchClient(azureSearchIndexName);
+            var _indexClient = new SearchIndexClient(new Uri(azureSearchServiceEndpoint), searchCredential, options);
+            _searchClient = _indexClient.GetSearchClient(azureSearchIndexName);
 
             if (!createIndexIfNotExists) return;
             // If the Azure Cognitive Search index does not exists, create the index.
             try
             {
-                CreateIndexAsync(indexClient, azureSearchIndexName, true).Wait();
+                CreateIndexAsync(_indexClient, azureSearchIndexName, true).Wait();
             }
             catch (Exception ex)
             {
@@ -235,6 +240,56 @@ namespace FoundationaLLM.Core.Services
                 _logger.LogError($"An error occurred while trying to build the {indexName} index: {e}");
                 throw;
             }
+        }
+
+        public void IndexAzureEntra(string tenantId)
+        {
+            //ensure index is created...
+            IList<SearchField> fields = new List<SearchField>();
+
+            FieldBuilder fieldBuilder = new FieldBuilder();
+            fields = fieldBuilder.Build(typeof(Core.Models.Search.AzureAd.User));
+            fields = fieldBuilder.Build(typeof(Core.Models.Search.AzureAd.Group));
+
+            SearchIndex si = new SearchIndex("AzureAd");
+            si.Fields = fields;
+
+            //create the index...
+            var suggester = new SearchSuggester("sg", new[] { "HotelName", "Category", "Address/City", "Address/StateProvince" });
+            si.Suggesters.Add(suggester);
+
+            _indexClient.CreateOrUpdateIndex(si);
+
+            //get all users
+            User u = new User();
+            u.FirstName = "Chris";
+            u.LastName = "Givens";
+
+            //get all groups
+            Group g = new Group();
+            g.Name = "All Internal Users";
+
+            //add item to index
+            IndexDocumentsBatch<User> batch = IndexDocumentsBatch.Create(
+                IndexDocumentsAction.Upload(u)
+                );
+
+            try
+            {
+                IndexDocumentsResult result = _searchClient.IndexDocuments(batch);
+            }
+            catch (Exception)
+            {
+                // If for some reason any documents are dropped during indexing, you can compensate by delaying and
+                // retrying. This simple demo just logs the failed document keys and continues.
+                Console.WriteLine("Failed to index some of the documents: {0}");
+            }
+
+        }
+
+        public void CreateAzureAdIndex()
+        {
+            throw new NotImplementedException();
         }
     }
 }

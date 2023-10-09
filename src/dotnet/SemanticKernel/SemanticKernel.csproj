@@ -12,7 +12,7 @@
 	<ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
 		<PackageReference Include="Azure.Search.Documents" Version="11.5.0-alpha.20230531.1" />
-		<PackageReference Include="Azure.Storage.Blobs" Version="12.16.0" />
+		<PackageReference Include="Azure.Storage.Blobs" Version="12.18.0" />
 		<PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
 		<PackageReference Include="Microsoft.SemanticKernel" Version="0.18.230725.3-preview" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
