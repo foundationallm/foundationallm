@@ -46,7 +46,7 @@ namespace FoundationaLLM.Core.Services
             };
 
             var searchCredential = new AzureKeyCredential(azureSearchAdminKey);
-            var _indexClient = new SearchIndexClient(new Uri(azureSearchServiceEndpoint), searchCredential, options);
+            _indexClient = new SearchIndexClient(new Uri(azureSearchServiceEndpoint), searchCredential, options);
             _searchClient = _indexClient.GetSearchClient(azureSearchIndexName);
 
             if (!createIndexIfNotExists) return;
@@ -244,22 +244,6 @@ namespace FoundationaLLM.Core.Services
 
         public void IndexAzureEntra(string tenantId)
         {
-            //ensure index is created...
-            IList<SearchField> fields = new List<SearchField>();
-
-            FieldBuilder fieldBuilder = new FieldBuilder();
-            fields = fieldBuilder.Build(typeof(Core.Models.Search.AzureAd.User));
-            fields = fieldBuilder.Build(typeof(Core.Models.Search.AzureAd.Group));
-
-            SearchIndex si = new SearchIndex("AzureAd");
-            si.Fields = fields;
-
-            //create the index...
-            var suggester = new SearchSuggester("sg", new[] { "HotelName", "Category", "Address/City", "Address/StateProvince" });
-            si.Suggesters.Add(suggester);
-
-            _indexClient.CreateOrUpdateIndex(si);
-
             //get all users
             User u = new User();
             u.FirstName = "Chris";
@@ -289,7 +273,23 @@ namespace FoundationaLLM.Core.Services
 
         public void CreateAzureAdIndex()
         {
-            throw new NotImplementedException();
+            //ensure index is created...
+            IList<SearchField> fields = new List<SearchField>();
+
+            FieldBuilder fieldBuilder = new FieldBuilder();
+            fields = fieldBuilder.Build(typeof(Core.Models.Search.AzureAd.User));
+            //fields = fieldBuilder.Build(typeof(Core.Models.Search.AzureAd.Group));
+
+            SearchIndex si = new SearchIndex("azuread");
+            si.Fields = fields;
+
+            //create the index...
+            var suggester = new SearchSuggester("sg", new[] { "FirstName" });
+            si.Suggesters.Add(suggester);
+
+            _indexClient.CreateOrUpdateIndex(si);
+
+            IndexAzureEntra("");
         }
     }
 }
