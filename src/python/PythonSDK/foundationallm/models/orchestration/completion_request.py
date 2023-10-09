@@ -3,4 +3,4 @@ from .message_history_item import MessageHistoryItem
 from typing import List
 
 class CompletionRequest(OrchestrationRequestBase):
-    message_history: List[MessageHistoryItem] = List()
+    message_history: List[MessageHistoryItem] = list()
