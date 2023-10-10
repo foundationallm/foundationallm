@@ -19,16 +19,16 @@ export default {
 	},
 	methods: {
 		async getSessions() {
-			return await useFetch('https://solliance-data-copilot-api.azurewebsites.net/sessions');
+			return await useFetch(`${this.$config.public.BASE_URL}/sessions`);
 		},
 		async sessionChosen(session) {
-			const {data} = await useFetch(`https://solliance-data-copilot-api.azurewebsites.net/sessions/${session.id}/messages`);
+			const {data} = await useFetch(`${this.$config.public.BASE_URL}/sessions/${session.id}/messages`);
 			this.messages = data;
 			this.selectedSession = session;
 			console.log(this.messages);
 		},
 		async onAddChat() {
-			const data = await $fetch('https://solliance-data-copilot-api.azurewebsites.net/sessions', {
+			const data = await $fetch(`${this.$config.public.BASE_URL}/sessions`, {
 				method: 'POST',
 			});
 			this.sessions.push(data);
