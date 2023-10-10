@@ -7,6 +7,8 @@
     <StartupFile>app\main.py</StartupFile>
     <SearchPath>..\PythonSDK</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <WebBrowserUrl>http://localhost:8742/swagger</WebBrowserUrl>
     <OutputPath>.</OutputPath>
     <Name>AgentHubAPI</Name>
     <RootNamespace>AgentHubAPI</RootNamespace>
