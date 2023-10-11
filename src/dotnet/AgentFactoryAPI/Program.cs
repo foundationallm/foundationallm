@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Azure.Identity;
 using FoundationaLLM.AgentFactory.Core.Interfaces;
 using FoundationaLLM.AgentFactory.Core.Services;
 using FoundationaLLM.AgentFactory.Interfaces;
@@ -7,7 +8,9 @@ using FoundationaLLM.AgentFactory.Services;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Configuration;
 using FoundationaLLM.Common.OpenAPI;
+using FoundationaLLM.Common.Services;
 using Microsoft.Extensions.Options;
 using Polly;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -26,6 +29,7 @@ namespace FoundationaLLM.AgentFactory.API
 
             // Add API Key Authorization
             builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
             builder.Services.AddScoped<APIKeyAuthenticationFilter>();
             builder.Services.AddOptions<APIKeyValidationSettings>()
                 .Bind(builder.Configuration.GetSection("FoundationaLLM:AgentFactoryAPI"));
@@ -37,15 +41,36 @@ namespace FoundationaLLM.AgentFactory.API
             builder.Services.AddOptions<LangChainOrchestrationServiceSettings>()
                 .Bind(builder.Configuration.GetSection("FoundationaLLM:LangChainOrchestration"));
 
+            builder.Services.AddOptions<AgentHubSettings>()
+                .Bind(builder.Configuration.GetSection("FoundationaLLM:AgentHub"));
             builder.Services.AddOptions<ChatServiceSettings>()
                 .Bind(builder.Configuration.GetSection("FoundationaLLM:Chat"));
+            builder.Services.AddOptions<KeyVaultConfigurationServiceSettings>()
+                .Bind(builder.Configuration.GetSection("FoundationaLLM:Configuration"));
 
+            builder.Services.AddSingleton<IConfigurationService, KeyVaultConfigurationService>();
+
+            builder.Configuration.AddAzureKeyVault(
+                new Uri($"https://{builder.Configuration["FoundationaLLM:AzureKeyVaultName"]}.vault.azure.net/"),
+                new DefaultAzureCredential());
+            
             builder.Services.AddSingleton<ISemanticKernelOrchestrationService, SemanticKernelOrchestrationService>();
             builder.Services.AddSingleton<ILangChainOrchestrationService, LangChainOrchestrationService>();
             builder.Services.AddSingleton<IAgentFactoryService, AgentFactoryService>();
+            builder.Services.AddSingleton<IAgentHubService, AgentHubAPIService>();
 
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 
+            builder.Services
+                .AddHttpClient(HttpClients.AgentHubAPIClient,
+                    httpClient =>
+                    {
+                        httpClient.BaseAddress = new Uri(builder.Configuration["FoundationaLLM:AgentHub:APIUrl"]);
+                        httpClient.DefaultRequestHeaders.Add("X-API-KEY", builder.Configuration["FoundationaLLM:AgentHub:APIKey"]);
+                    })
+                .AddTransientHttpErrorPolicy(policyBuilder =>
+                    policyBuilder.WaitAndRetryAsync(
+                        3, retryNumber => TimeSpan.FromMilliseconds(600)));
             builder.Services
                 .AddHttpClient(HttpClients.LangChainAPIClient,
                     httpClient =>
