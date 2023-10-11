@@ -238,8 +238,8 @@
 | foundationallm-keyvault-name | REDACTED | Key Vault name |
 | foundationallm-configuration-allow-environment-variables | True | Allow environment variables |
 | foundationallm-agent-metadata-storage-container | agent | Agent metadata storage container name |
-| foundationallm-datasource-metadata-storage-account-name | data-sources | Agent metadata storage account name |
-| foundationallm-prompt-metadata-storage-account-key | system-prompt | Agent metadata storage account key |
+| foundationallm-datasource-metadata-storage-container | data-sources | Datasource metadata storage container name |
+| foundationallm-prompt-metadata-storage-container | system-prompt | Prompt metadata storage container name |
 | foundationallm-azure-openai-api-url | REDACTED | Azure Open AI instance URL |
 | foundationallm-azure-openai-api-completions-deployment | completions | Azure Open AI completions deployment name |
 | foundationallm-azure-openai-api-completions-model-version | 0301 | Azure Open AI completions model version |
