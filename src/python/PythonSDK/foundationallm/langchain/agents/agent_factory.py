@@ -3,8 +3,13 @@ from langchain.llms.openai import OpenAIChat
 
 from foundationallm.config import Configuration
 from foundationallm.langchain.language_models.chat_models import AzureChatOpenAILanguageModel
+
 from foundationallm.models.orchestration import OrchestrationRequestBase
-from foundationallm.langchain.agents import AgentBase, SqlDbAgent, SummaryAgent
+from foundationallm.langchain.agents import AgentBase
+from foundationallm.langchain.agents import AnomalyDetectionAgent
+from foundationallm.langchain.agents import CSVAgent
+from foundationallm.langchain.agents import SqlDbAgent
+from foundationallm.langchain.agents import SummaryAgent
 
 class AgentFactory:
     """
@@ -28,10 +33,11 @@ class AgentFactory:
                         
     def get_agent(self) -> AgentBase:
         match self.agent_type:
-            case 'anomaly-detection':
-                pass
-            case 'summary':
-                return SummaryAgent(self.request, llm=self.get_llm(), app_config=self.config)
+            case 'anomaly':
+                return AnomalyDetectionAgent(self.request, llm=self.get_llm(), app_config=self.config)
+            case 'csv':
+                return CSVAgent(self.request, llm=self.get_llm(), app_config=self.config)
             case 'sql':
                 return SqlDbAgent(self.request, llm=self.get_llm(), app_config=self.config)
-    
+            case 'summary':
+                return SummaryAgent(self.request, llm=self.get_llm(), app_config=self.config)

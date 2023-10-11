@@ -58,11 +58,14 @@
     <Compile Include="foundationallm\hubs\resolver.py" />
     <Compile Include="foundationallm\hubs\__init__.py" />
     <Compile Include="foundationallm\langchain\agents\agent_base.py" />
+    <Compile Include="foundationallm\langchain\agents\anomaly_detection_agent.py" />
     <Compile Include="foundationallm\langchain\agents\csv_agent.py" />
     <Compile Include="foundationallm\langchain\agents\sql_db_agent.py" />
     <Compile Include="foundationallm\langchain\agents\summary_agent.py" />
     <Compile Include="foundationallm\langchain\agents\__init__.py" />
     <Compile Include="foundationallm\langchain\agents\agent_factory.py" />
+    <Compile Include="foundationallm\langchain\data_sources\csv\csv_config.py" />
+    <Compile Include="foundationallm\langchain\data_sources\csv\__init__.py" />
     <Compile Include="foundationallm\langchain\data_sources\sql\mssql.py" />
     <Compile Include="foundationallm\langchain\data_sources\sql\mysql.py" />
     <Compile Include="foundationallm\langchain\data_sources\sql\postgresql.py" />
@@ -126,6 +129,7 @@
     <Folder Include="foundationallm\hubs\prompt\" />
     <Folder Include="foundationallm\langchain\" />
     <Folder Include="foundationallm\langchain\agents\" />
+    <Folder Include="foundationallm\langchain\data_sources\csv\" />
     <Folder Include="foundationallm\langchain\language_models\" />
     <Folder Include="foundationallm\langchain\language_models\chat_models\" />
     <Folder Include="foundationallm\langchain\language_models\openai\" />

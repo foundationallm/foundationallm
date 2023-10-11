@@ -1,15 +1,15 @@
-from langchain.agents import create_sql_agent # AgentExecutor, 
+from langchain.agents import create_sql_agent
 from langchain.agents.agent_toolkits import SQLDatabaseToolkit
 from langchain.agents.agent_types import AgentType
 from langchain.callbacks import get_openai_callback
 from langchain.prompts import PromptTemplate
 
-from foundationallm.langchain.agents.agent_base import AgentBase
-from foundationallm.langchain.data_sources.sql import SqlDbConfig #, MsSqlServer
+from foundationallm.config import Configuration
+from foundationallm.langchain.agents import AgentBase
+from foundationallm.langchain.data_sources.sql import SqlDbConfig
 from foundationallm.langchain.data_sources.sql import SqlDbFactory
 from foundationallm.langchain.language_models.chat_models import AzureChatOpenAILanguageModel
 from foundationallm.models.orchestration import CompletionRequest, CompletionResponse
-from foundationallm.config import Configuration
 
 class SqlDbAgent(AgentBase):
     """
@@ -21,7 +21,6 @@ class SqlDbAgent(AgentBase):
         self.user_prompt = completion_request.user_prompt
         self.llm = llm.get_language_model()
         self.sql_db_config: SqlDbConfig = completion_request.data_source.configuration
-        print(self.llm)
 
         self.agent = create_sql_agent(
             llm = self.llm,
