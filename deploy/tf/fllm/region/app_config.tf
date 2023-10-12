@@ -19,10 +19,10 @@ resource "azurerm_app_configuration" "app_config" {
 }
 
 resource "azurerm_key_vault_key" "app_config_key" {
-  name = join("-", [local.resource_prefix, "appconfig", "key"])
+  name         = join("-", [local.resource_prefix, "appconfig", "key"])
   key_vault_id = azurerm_key_vault.ops_keyvault.id
-  key_type = "RSA"
-  key_size = 2048
+  key_type     = "RSA"
+  key_size     = 2048
   key_opts = [
     "decrypt",
     "encrypt",
