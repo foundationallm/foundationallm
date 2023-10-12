@@ -64,7 +64,7 @@ resource "azurerm_private_endpoint" "ops_kv_ple" {
   private_service_connection {
     is_manual_connection           = false
     name                           = join("-", [local.resource_prefix, "OPS", "kv", "psc"])
-    private_connection_resource_id = azurerm_key_vault.openai_keyvault.id
+    private_connection_resource_id = azurerm_key_vault.ops_keyvault.id
     subresource_names              = ["vault"]
   }
 

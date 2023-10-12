@@ -27,7 +27,7 @@ resource "azurerm_private_endpoint" "app_config_ple" {
   private_service_connection {
     is_manual_connection           = false
     name                           = join("-", [local.resource_prefix, "appconfig", "psc"])
-    private_connection_resource_id = azurerm_search_service.cog_search.id
+    private_connection_resource_id = azurerm_app_configuration.app_config.id
     subresource_names              = ["configurationStores"]
   }
 
