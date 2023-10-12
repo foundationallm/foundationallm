@@ -83,6 +83,7 @@ namespace FoundationaLLM.AgentFactory.API
                         httpClient.BaseAddress = new Uri(builder.Configuration["FoundationaLLM:LangChainAPI:APIUrl"]);
                         httpClient.DefaultRequestHeaders.Add("X-API-KEY", builder.Configuration[
                             builder.Configuration["FoundationaLLM:LangChainAPI:APIKeySecretName"]]);
+                        httpClient.Timeout = TimeSpan.FromSeconds(600);
                     })
                 .AddTransientHttpErrorPolicy(policyBuilder =>
                     policyBuilder.WaitAndRetryAsync(
