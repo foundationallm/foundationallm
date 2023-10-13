@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Text;
+using FoundationaLLM.Common.Interfaces;
 
 namespace FoundationaLLM.AgentFactory.Services
 {
@@ -15,17 +16,17 @@ namespace FoundationaLLM.AgentFactory.Services
     {
         readonly LangChainOrchestrationServiceSettings _settings;
         readonly ILogger<LangChainOrchestrationService> _logger;
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IHttpClientFactoryService _httpClientFactoryService;
         readonly JsonSerializerSettings _jsonSerializerSettings;
 
         public LangChainOrchestrationService(
             IOptions<LangChainOrchestrationServiceSettings> options,
             ILogger<LangChainOrchestrationService> logger,
-            IHttpClientFactory httpClientFactory) 
+            IHttpClientFactoryService httpClientFactoryService) 
         {
             _settings = options.Value;
             _logger = logger;
-            _httpClientFactory = httpClientFactory;
+            _httpClientFactoryService = httpClientFactoryService;
             _jsonSerializerSettings = CommonJsonSerializerSettings.GetJsonSerializerSettings();
         }
 
@@ -33,7 +34,7 @@ namespace FoundationaLLM.AgentFactory.Services
 
         public async Task<CompletionResponse> GetResponse(string userPrompt, List<MessageHistoryItem> messageHistory)
         {
-            var client = _httpClientFactory.CreateClient(Common.Constants.HttpClients.LangChainAPI);
+            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.LangChainAPI);
 
             var request = new LangChainCompletionRequest()
             {
@@ -106,7 +107,7 @@ namespace FoundationaLLM.AgentFactory.Services
 
         public async Task<string> GetSummary(string content)
         {
-            var client = _httpClientFactory.CreateClient(Common.Constants.HttpClients.LangChainAPI);
+            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.LangChainAPI);
 
             var request = new LangChainSummaryRequest()
             {
@@ -145,7 +146,7 @@ namespace FoundationaLLM.AgentFactory.Services
 
         private bool GetServiceStatus()
         {
-            var client = _httpClientFactory.CreateClient(Common.Constants.HttpClients.LangChainAPI);
+            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.LangChainAPI);
             var responseMessage = client.Send(
                 new HttpRequestMessage(HttpMethod.Get, "/status"));
 
