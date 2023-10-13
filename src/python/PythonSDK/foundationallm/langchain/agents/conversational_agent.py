@@ -30,6 +30,7 @@ class ConversationalAgent(AgentBase):
         """
         self.agent_prompt_prefix = completion_request.agent.prompt_template
         self.user_prompt = completion_request.user_prompt
+        self.message_history = completion_request.message_history
         self.llm = llm.get_language_model()
 
         self.search = DuckDuckGoSearchRun()
@@ -41,7 +42,8 @@ class ConversationalAgent(AgentBase):
             ),
         ]
         
-        #self.memory = ConversationBufferMemory(memory_key="default_agent_chat_history")
+        self.memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+        
         self.agent = initialize_agent(
             tools = self.tools,
             llm = self.llm,
@@ -49,8 +51,8 @@ class ConversationalAgent(AgentBase):
             verbose = True,
             agent_kwargs={
                 'prefix': self.agent_prompt_prefix
-            }
-            #memory = self.memory
+            },
+            memory = self.memory
         )
 
     @property
