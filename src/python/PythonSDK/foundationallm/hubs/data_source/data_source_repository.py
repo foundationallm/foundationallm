@@ -1,7 +1,10 @@
 from foundationallm.hubs import Repository
-from foundationallm.hubs.data_source import DataSourceMetadata, DataSourceHubStorageManager, UnderlyingImplementation
-from foundationallm.data_sources.sql_server import SQLServerDataSourceMetadata
+from foundationallm.hubs.data_source import DataSourceMetadata
+from foundationallm.hubs.data_source import UnderlyingImplementation
 from foundationallm.data_sources.blob_storage import BlobStorageDataSourceMetadata
+from foundationallm.hubs.data_source import DataSourceHubStorageManager
+import foundationallm.data_sources.sql.sql_data_source_metadata as SQLDataSource
+
 from typing import List
 
 class DataSourceRepository(Repository):
@@ -12,9 +15,9 @@ class DataSourceRepository(Repository):
         config_files = mgr.list_blobs()
         configs = []
         for config_file in config_files:
-            commonDatasourceMetadata = DataSourceMetadata.model_validate_json(mgr.read_file_content(config_file))
-            if commonDatasourceMetadata.underlying_implementation == UnderlyingImplementation.SQL_SERVER:
-                configs.append(SQLServerDataSourceMetadata.model_validate_json(mgr.read_file_content(config_file)))
+            commonDatasourceMetadata = DataSourceMetadata.model_validate_json(mgr.read_file_content(config_file))            
+            if commonDatasourceMetadata.underlying_implementation == UnderlyingImplementation.SQL:
+                configs.append(SQLDataSource.model_validate_json(mgr.read_file_content(config_file)))
             elif commonDatasourceMetadata.underlying_implementation == UnderlyingImplementation.BLOB_STORAGE:
-                configs.append(BlobStorageDataSourceMetadata.model_validate_json(mgr.read_file_content(config_file)))
+                configs.append(BlobStorageDataSourceMetadata.model_validate_json(mgr.read_file_content(config_file)))        
         return configs
