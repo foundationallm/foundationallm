@@ -40,7 +40,7 @@ namespace FoundationaLLM.Core.Tests.Models.Configuration
             Assert.Equal(expectedenableTracing, cosmosDbSettings.EnableTracing);
         }
 
-        public static CosmosDbSettings CreateCosmosDbSettings(string endpoint ,string key, string database, string containers, 
+        private static CosmosDbSettings CreateCosmosDbSettings(string endpoint, string key, string database, string containers, 
             string monitoredContainers, string changeFeedLeaseContainer, string changeFeedSourceContainer, bool enableTracing)
         {
             return new CosmosDbSettings() 
