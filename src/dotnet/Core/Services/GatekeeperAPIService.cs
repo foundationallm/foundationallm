@@ -28,7 +28,7 @@ namespace FoundationaLLM.Core.Services
             // TODO: Call RefinementService to refine userPrompt
             // await _refinementService.RefineUserPrompt(completionRequest);
 
-            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperAPIClient);
+            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperAPI);
 
             var responseMessage = await client.PostAsync("orchestration/completion",
             new StringContent(
@@ -46,9 +46,9 @@ namespace FoundationaLLM.Core.Services
             return new CompletionResponse
             {
                 Completion = "A problem on my side prevented me from responding.",
-                UserPrompt = completionRequest.Prompt,
-                UserPromptTokens = 0,
-                ResponseTokens = 0,
+                UserPrompt = completionRequest.UserPrompt,
+                PromptTokens = 0,
+                CompletionTokens = 0,
                 UserPromptEmbedding = new float[] { 0 }
             };
         }
@@ -58,7 +58,7 @@ namespace FoundationaLLM.Core.Services
             // TODO: Call RefinementService to refine userPrompt
             // await _refinementService.RefineUserPrompt(content);
 
-            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperAPIClient);
+            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperAPI);
 
             var responseMessage = await client.PostAsync("orchestration/summarize",
                 new StringContent(
@@ -78,7 +78,7 @@ namespace FoundationaLLM.Core.Services
 
         public async Task<bool> SetLLMOrchestrationPreference(string orchestrationService)
         {
-            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperAPIClient);
+            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperAPI);
 
             var responseMessage = await client.PostAsync("orchestration/preference",
                 new StringContent(orchestrationService));
