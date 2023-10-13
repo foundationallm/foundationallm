@@ -28,12 +28,12 @@ class DataSourceRepository(Repository):
        
         configs = []
         for config_file in config_files:
-            commonDatasourceMetadata = {}
+            common_datasource_metadata = {}
             try:
-                commonDatasourceMetadata = DataSourceMetadata.model_validate_json(mgr.read_file_content(config_file))                
-                if commonDatasourceMetadata.underlying_implementation == UnderlyingImplementation.SQL:                
+                common_datasource_metadata = DataSourceMetadata.model_validate_json(mgr.read_file_content(config_file))                
+                if common_datasource_metadata.underlying_implementation == UnderlyingImplementation.SQL:                
                     configs.append(SQLDataSourceMetadata.model_validate_json(mgr.read_file_content(config_file)))
-                elif commonDatasourceMetadata.underlying_implementation == UnderlyingImplementation.BLOB_STORAGE:
+                elif common_datasource_metadata.underlying_implementation == UnderlyingImplementation.BLOB_STORAGE:
                     configs.append(BlobStorageDataSourceMetadata.model_validate_json(mgr.read_file_content(config_file)))
             except:
                 continue
@@ -47,11 +47,11 @@ class DataSourceRepository(Repository):
         """
         mgr = DataSourceHubStorageManager(config=self.config)
         config_file = name + ".json"
-        commonDatasourceMetadata = DataSourceMetadata.model_validate_json(mgr.read_file_content(config_file))
+        common_datasource_metadata = DataSourceMetadata.model_validate_json(mgr.read_file_content(config_file))
         config = None
-        if commonDatasourceMetadata.underlying_implementation == UnderlyingImplementation.SQL:
+        if common_datasource_metadata.underlying_implementation == UnderlyingImplementation.SQL:
             config = SQLDataSourceMetadata.model_validate_json(mgr.read_file_content(config_file))
-        elif commonDatasourceMetadata.underlying_implementation == UnderlyingImplementation.BLOB_STORAGE:
+        elif common_datasource_metadata.underlying_implementation == UnderlyingImplementation.BLOB_STORAGE:
             config = BlobStorageDataSourceMetadata.model_validate_json(mgr.read_file_content(config_file))       
         return config
       
