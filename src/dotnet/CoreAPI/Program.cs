@@ -55,7 +55,10 @@ namespace FoundationaLLM.Core.API
             RegisterAuthConfiguration(builder);
 
             builder.Services.AddApplicationInsightsTelemetry();
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ContractResolver = Common.Settings.CommonJsonSerializerSettings.GetJsonSerializerSettings().ContractResolver;
+            });
             builder.Services.AddProblemDetails();
             builder.Services
                 .AddApiVersioning(options =>
