@@ -4,7 +4,6 @@ from foundationallm.models.metadata import Agent
 from foundationallm.models.metadata import DataSource
 from foundationallm.models.metadata import LanguageModel
 
-
 class CompletionRequest(OrchestrationRequest):
     """
     Orchestration completion request.

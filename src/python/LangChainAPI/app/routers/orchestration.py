@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends
 from app.dependencies import validate_api_key_header
 
 from foundationallm.credentials import AzureCredential
-from foundationallm.models.orchestration import *
-from foundationallm import SDKClient
+from foundationallm.models.orchestration import CompletionRequest, CompletionResponse
+from foundationallm.langchain.orchestration import OrchestrationManager
 
 # Initialize API routing
 router = APIRouter(
@@ -16,21 +16,18 @@ router = APIRouter(
 @router.post('/completion')
 async def get_completion(completion_request: CompletionRequest) -> CompletionResponse:
     """
-    Retrieves a completion from a language model
+    Retrieves a completion response from a language model.
     
     Parameters
     ----------
     completion_request : CompletionRequest
-        The request object containing data required to generate a completion.
+        The request object containing the metadata required to build a LangChain agent
+        and generate a completion.
 
     Returns
     -------
     CompletionResponse
-        Object containing the completion and token usage details
+        Object containing the completion response and token usage details.
     """
-    # Initialize an SDK client.
-    client = SDKClient(credential=AzureCredential())
-    
-    # Create an agent
-    agent = client.create_agent(completion_request = completion_request)
-    return agent.run(completion_request.user_prompt)
+    orchestration_manager = OrchestrationManager(completion_request = completion_request, credential=AzureCredential())
+    return orchestration_manager.run(completion_request.user_prompt)
