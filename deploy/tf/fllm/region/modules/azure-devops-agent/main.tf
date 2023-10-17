@@ -1,3 +1,28 @@
+locals {
+  alert = {
+    cpu = {
+      aggregation = "Average"
+      description = "Alert on VMSS Threshold - Average CPU greater than 75% for 5 minutes"
+      frequency   = "PT1M"
+      metric_name = "Percentage CPU"
+      operator    = "GreaterThan"
+      severity    = 2
+      threshold   = 75
+      window_size = "PT5M"
+    }
+    disk = {
+      aggregation = "Average"
+      description = "Alert on VMSS Threshold - Average Disk Queue greater than 8 for 5 minutes"
+      frequency   = "PT1M"
+      metric_name = "OS Disk Queue Depth"
+      operator    = "GreaterThan"
+      severity    = 2
+      threshold   = 8
+      window_size = "PT5M"
+    }
+  }
+}
+
 resource "azurerm_linux_virtual_machine_scale_set" "main" {
   admin_password                  = random_password.password.result
   admin_username                  = random_id.user.hex
@@ -45,6 +70,31 @@ resource "azurerm_linux_virtual_machine_scale_set" "main" {
 
   lifecycle {
     ignore_changes = [tags, instances]
+  }
+}
+
+resource "azurerm_monitor_metric_alert" "alert" {
+  for_each = local.alert
+
+  description         = each.value.description
+  frequency           = each.value.frequency
+  name                = "${var.resource_prefix}-vmss-${each.key}-alert"
+  resource_group_name = var.resource_group.name
+  scopes              = [azurerm_linux_virtual_machine_scale_set.main.id]
+  severity            = each.value.severity
+  tags                = var.tags
+  window_size         = each.value.window_size
+
+  action {
+    action_group_id = var.action_group_id
+  }
+
+  criteria {
+    aggregation      = each.value.aggregation
+    metric_name      = each.value.metric_name
+    metric_namespace = "Microsoft.Compute/virtualmachinescalesets"
+    operator         = each.value.operator
+    threshold        = each.value.threshold
   }
 }
 
