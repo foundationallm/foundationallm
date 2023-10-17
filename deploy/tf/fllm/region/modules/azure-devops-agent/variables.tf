@@ -3,6 +3,11 @@ variable "action_group_id" {
   type        = string
 }
 
+variable "data_collection_rule_id" {
+  description = "The ID of the data collection rule to use for the VMSS."
+  type        = string
+}
+
 variable "log_analytics_workspace_id" {
   description = "The ID of the Log Analytics workspace to send diagnostics data to."
   type        = string

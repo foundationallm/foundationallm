@@ -1,5 +1,35 @@
 # Foundational LLM Standard Deployment
 
+- [Foundational LLM Standard Deployment](#foundational-llm-standard-deployment)
+  - [Pre-requisites](#pre-requisites)
+  - [Requirements](#requirements)
+  - [Providers](#providers)
+  - [Modules](#modules)
+    - [ global](#-global)
+    - [ regions](#-regions)
+  - [Resources](#resources)
+  - [Required Inputs](#required-inputs)
+    - [ azp\_agent\_name](#-azp_agent_name)
+    - [ azp\_token](#-azp_token)
+    - [ azp\_url](#-azp_url)
+    - [ tfc\_agent\_token](#-tfc_agent_token)
+  - [Optional Inputs](#optional-inputs)
+    - [ environment](#-environment)
+    - [ global\_location](#-global_location)
+    - [ project\_id](#-project_id)
+    - [ public\_domain](#-public_domain)
+    - [ sql\_admin\_ad\_group](#-sql_admin_ad_group)
+    - [ tags](#-tags)
+  - [Outputs](#outputs)
+
+## Pre-requisites
+
+You must enable host-based encryption on the subscription before deploying this module.  This is done by running the following command:
+
+```bash
+az feature register --namespace Microsoft.Compute --name EncryptionAtHost
+```
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
