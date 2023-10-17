@@ -16,7 +16,7 @@ namespace Gatekeeper.Tests.Models.ConfigurationOptions
             var azureContentSafetySettings = new AzureContentSafetySettings
             {
                 APIUrl = "Endpoint_1",
-                APIKeySecretName = "API-KEY-SECRET",
+                APIKey = "API-KEY-SECRET",
                 HateSeverity = 1,
                 ViolenceSeverity = 2,
                 SelfHarmSeverity = 3,
@@ -25,7 +25,7 @@ namespace Gatekeeper.Tests.Models.ConfigurationOptions
 
             // Assert
             Assert.Equal("Endpoint_1", azureContentSafetySettings.APIUrl);
-            Assert.Equal("API-KEY-SECRET", azureContentSafetySettings.APIKeySecretName);
+            Assert.Equal("API-KEY-SECRET", azureContentSafetySettings.APIKey);
             Assert.Equal(1, azureContentSafetySettings.HateSeverity);
             Assert.Equal(2, azureContentSafetySettings.ViolenceSeverity);
             Assert.Equal(3, azureContentSafetySettings.SelfHarmSeverity);
