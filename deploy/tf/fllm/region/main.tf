@@ -31,6 +31,12 @@ resource "azurerm_role_assignment" "keyvault_secrets_user_agw" {
   scope                = azurerm_resource_group.rgs["OPS"].id
 }
 
+resource "azurerm_role_assignment" "storgage_blob_data_contributor_diagnostic_services" {
+  principal_id         = "562db366-1b96-45d2-aa4a-f2148cef2240"
+  role_definition_name = "Storage Blob Data Contributor"
+  scope                = azurerm_resource_group.rgs["OPS"].id
+}
+
 resource "azurerm_user_assigned_identity" "agw" {
   location            = azurerm_resource_group.rgs["AppGateway"].location
   name                = "${var.resource_prefix}-agw-uai"
@@ -134,23 +140,24 @@ module "backend_aks" {
   }
 }
 
-module "frontend_aks" {
-  source = "./modules/aks"
+module "data_storage" {
+  source = "./modules/storage-account"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  agw_id                     = module.application_gateway.id
-  aks_admin_object_id        = var.sql_admin_ad_group.object_id
   log_analytics_workspace_id = module.logs.id
-  resource_group             = azurerm_resource_group.rgs["APP"]
-  resource_prefix            = "${local.resource_prefix}-FRONTEND"
+  resource_group             = azurerm_resource_group.rgs["Data"]
+  resource_prefix            = "${local.resource_prefix}-DATA"
   tags                       = local.tags
 
   private_endpoint = {
-    subnet = azurerm_subnet.subnets["FLLMFrontEnd"]
+    subnet_id = azurerm_subnet.subnets["Datasources"].id
     private_dns_zone_ids = {
-      aks = [
-        var.private_dns_zones["privatelink.eastus.azmk8s.io"].id,
-      ]
+      blob  = [var.private_dns_zones["privatelink.blob.core.windows.net"].id]
+      dfs   = [var.private_dns_zones["privatelink.dfs.core.windows.net"].id]
+      file  = [var.private_dns_zones["privatelink.file.core.windows.net"].id]
+      queue = [var.private_dns_zones["privatelink.queue.core.windows.net"].id]
+      table = [var.private_dns_zones["privatelink.table.core.windows.net"].id]
+      web   = [var.private_dns_zones["privatelink.azurewebsites.net"].id]
     }
   }
 }
@@ -252,6 +259,27 @@ module "data_cosmosdb" {
   }
 }
 
+module "frontend_aks" {
+  source = "./modules/aks"
+
+  action_group_id            = azurerm_monitor_action_group.do_nothing.id
+  agw_id                     = module.application_gateway.id
+  aks_admin_object_id        = var.sql_admin_ad_group.object_id
+  log_analytics_workspace_id = module.logs.id
+  resource_group             = azurerm_resource_group.rgs["APP"]
+  resource_prefix            = "${local.resource_prefix}-FRONTEND"
+  tags                       = local.tags
+
+  private_endpoint = {
+    subnet = azurerm_subnet.subnets["FLLMFrontEnd"]
+    private_dns_zone_ids = {
+      aks = [
+        var.private_dns_zones["privatelink.eastus.azmk8s.io"].id,
+      ]
+    }
+  }
+}
+
 module "ha_openai" {
   source = "./modules/ha-openai"
 
@@ -277,6 +305,20 @@ module "ha_openai" {
     openai_private_dns_zone_ids = [
       local.private_dns_zones["privatelink.openai.azure.com"].id
     ]
+  }
+}
+
+module "logs" {
+  source = "./modules/log-analytics-workspace"
+
+  action_group_id = azurerm_monitor_action_group.do_nothing.id
+  resource_group  = azurerm_resource_group.rgs["OPS"]
+  resource_prefix = local.resource_prefix
+  tags            = local.tags
+
+  azure_monitor_private_link_scope = {
+    name                = module.ampls.name
+    resource_group_name = azurerm_resource_group.rgs["OPS"].name
   }
 }
 
@@ -362,17 +404,17 @@ module "storage" {
   }
 }
 
-module "data_storage" {
+module "storage_ops" {
   source = "./modules/storage-account"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
   log_analytics_workspace_id = module.logs.id
-  resource_group             = azurerm_resource_group.rgs["Data"]
-  resource_prefix            = "${local.resource_prefix}-DATA"
+  resource_group             = azurerm_resource_group.rgs["OPS"]
+  resource_prefix            = "${local.resource_prefix}-ops"
   tags                       = local.tags
 
   private_endpoint = {
-    subnet_id = azurerm_subnet.subnets["Datasources"].id
+    subnet_id = azurerm_subnet.subnets["Services"].id
     private_dns_zone_ids = {
       blob  = [var.private_dns_zones["privatelink.blob.core.windows.net"].id]
       dfs   = [var.private_dns_zones["privatelink.dfs.core.windows.net"].id]
@@ -381,20 +423,6 @@ module "data_storage" {
       table = [var.private_dns_zones["privatelink.table.core.windows.net"].id]
       web   = [var.private_dns_zones["privatelink.azurewebsites.net"].id]
     }
-  }
-}
-
-module "logs" {
-  source = "./modules/log-analytics-workspace"
-
-  action_group_id = azurerm_monitor_action_group.do_nothing.id
-  resource_group  = azurerm_resource_group.rgs["OPS"]
-  resource_prefix = local.resource_prefix
-  tags            = local.tags
-
-  azure_monitor_private_link_scope = {
-    name                = module.ampls.name
-    resource_group_name = azurerm_resource_group.rgs["OPS"].name
   }
 }
 

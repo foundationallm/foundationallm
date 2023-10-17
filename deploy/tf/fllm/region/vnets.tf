@@ -366,7 +366,9 @@ locals {
       address_prefix    = local.agent_address_prefix
       service_endpoints = ["Microsoft.Storage"]
       delegation = {
-        "Microsoft.ContainerInstance/containerGroups" = null
+        "Microsoft.ContainerInstance/containerGroups" = [
+          "Microsoft.Network/virtualNetworks/subnets/action"
+        ]
       }
 
       nsg_rules = {

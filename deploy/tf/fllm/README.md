@@ -41,6 +41,24 @@ No resources.
 
 The following input variables are required:
 
+### <a name="input_azp_agent_name"></a> [azp\_agent\_name](#input\_azp\_agent\_name)
+
+Description: n/a
+
+Type: `string`
+
+### <a name="input_azp_token"></a> [azp\_token](#input\_azp\_token)
+
+Description: n/a
+
+Type: `string`
+
+### <a name="input_azp_url"></a> [azp\_url](#input\_azp\_url)
+
+Description: n/a
+
+Type: `string`
+
 ### <a name="input_tfc_agent_token"></a> [tfc\_agent\_token](#input\_tfc\_agent\_token)
 
 Description: The token used by the agent to authenticate with Terraform Cloud.
