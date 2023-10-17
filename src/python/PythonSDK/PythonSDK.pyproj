@@ -28,6 +28,9 @@
     <Compile Include="foundationallm\hubs\data_source\data_sources\blob_storage\blob_storage_authentication_metadata.py" />
     <Compile Include="foundationallm\hubs\data_source\data_sources\blob_storage\blob_storage_data_source_metadata.py" />
     <Compile Include="foundationallm\hubs\data_source\data_sources\blob_storage\__init__.py" />
+    <Compile Include="foundationallm\hubs\data_source\data_sources\search_service\search_service_authentication_metadata.py" />
+    <Compile Include="foundationallm\hubs\data_source\data_sources\search_service\search_service_data_source_metadata.py" />
+    <Compile Include="foundationallm\hubs\data_source\data_sources\search_service\__init__.py" />
     <Compile Include="foundationallm\hubs\data_source\data_sources\sql\sql_authentication_metadata.py" />
     <Compile Include="foundationallm\hubs\data_source\data_sources\sql\sql_authentication_type.py" />
     <Compile Include="foundationallm\hubs\data_source\data_sources\sql\sql_data_source_metadata.py" />
@@ -122,8 +125,6 @@
     <Compile Include="foundationallm\models\orchestration\__init__.py" />
     <Compile Include="foundationallm\models\session.py" />
     <Compile Include="foundationallm\models\__init__.py" />
-    <Compile Include="foundationallm\auth\api_key_validator.py" />
-    <Compile Include="foundationallm\auth\__init__.py" />
     <Compile Include="foundationallm\config\configuration.py" />
     <Compile Include="foundationallm\config\__init__.py" />
     <Compile Include="foundationallm\storage\blob_storage_manager.py" />
@@ -141,6 +142,7 @@
     <Folder Include="foundationallm\" />
     <Folder Include="foundationallm\hubs\data_source\data_sources\" />
     <Folder Include="foundationallm\hubs\data_source\data_sources\blob_storage\" />
+    <Folder Include="foundationallm\hubs\data_source\data_sources\search_service\" />
     <Folder Include="foundationallm\hubs\data_source\data_sources\sql\" />
     <Folder Include="foundationallm\hubs\agent\" />
     <Folder Include="foundationallm\hubs\data_source\" />
@@ -165,7 +167,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="foundationallm\" />
-    <Folder Include="foundationallm\auth\" />
     <Folder Include="foundationallm\config\" />
   </ItemGroup>
   <ItemGroup>
