@@ -22,7 +22,8 @@
     <TestFramework>none</TestFramework>
     <UnitTestPattern>test*.py</UnitTestPattern>
     <UnitTestRootDirectory>.</UnitTestRootDirectory>
-    <Environment>foundationallm-keyvault-uri=https://solliance-aicopilot.vault.azure.net/
+    <Environment>Foundationallm-app-configuration-uri=https://foundationallm.azconfig.io
+foundationallm-keyvault-uri=https://solliance-aicopilot.vault.azure.net/
 foundationallm-app-configuration-secret-name=foundationallm-app-configuration-connection-string
 foundationallm-azure-openai-api-url=https://foundationallm-01.openai.azure.com/
 Foundationallm-azure-openai-api-version=2023-05-15
