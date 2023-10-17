@@ -364,7 +364,7 @@ locals {
     }
     "Agents" = {
       address_prefix    = local.agent_address_prefix
-      service_endpoints = ["Microsoft.Storage"]
+      service_endpoints = []
       delegation        = {}
 
       nsg_rules = {
