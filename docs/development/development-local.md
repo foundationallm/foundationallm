@@ -56,11 +56,14 @@ Environment variable needs to be set for Application Configuration Service URL. 
 ```json
 {
   "FoundationaLLM": {
-      "ChatManager": {
+    "APIs": {
+      "CoreAPI": {
         "APIUrl": "<...>"
-    }
+      },
+    } 
   }
-}
+ }
+
 ```
 
 ## Core API
