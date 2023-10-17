@@ -39,6 +39,17 @@ namespace FoundationaLLM.Core.API
                 {
                     options.SetCredential(new DefaultAzureCredential());
                 });
+              
+            var allowAllCorsOrigins = "AllowAllOrigins";
+            builder.Services.AddCors(policyBuilder =>
+            {
+                policyBuilder.AddPolicy(allowAllCorsOrigins,
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin();
+                        policy.AllowAnyHeader();
+                        policy.AllowAnyMethod();
+                    });
             });
 
             builder.Services.AddOptions<CosmosDbSettings>()
@@ -133,6 +144,8 @@ namespace FoundationaLLM.Core.API
                 });
 
             app.MapControllers();
+
+            app.UseCors(allowAllCorsOrigins);
 
             app.Run();
         }
