@@ -9,9 +9,6 @@
     - [ regions](#-regions)
   - [Resources](#resources)
   - [Required Inputs](#required-inputs)
-    - [ azp\_agent\_name](#-azp_agent_name)
-    - [ azp\_token](#-azp_token)
-    - [ azp\_url](#-azp_url)
     - [ tfc\_agent\_token](#-tfc_agent_token)
   - [Optional Inputs](#optional-inputs)
     - [ environment](#-environment)
@@ -70,24 +67,6 @@ No resources.
 ## Required Inputs
 
 The following input variables are required:
-
-### <a name="input_azp_agent_name"></a> [azp\_agent\_name](#input\_azp\_agent\_name)
-
-Description: n/a
-
-Type: `string`
-
-### <a name="input_azp_token"></a> [azp\_token](#input\_azp\_token)
-
-Description: n/a
-
-Type: `string`
-
-### <a name="input_azp_url"></a> [azp\_url](#input\_azp\_url)
-
-Description: n/a
-
-Type: `string`
 
 ### <a name="input_tfc_agent_token"></a> [tfc\_agent\_token](#input\_tfc\_agent\_token)
 
