@@ -31,11 +31,12 @@ resource "azurerm_role_assignment" "keyvault_secrets_user_agw" {
   scope                = azurerm_resource_group.rgs["OPS"].id
 }
 
-resource "azurerm_role_assignment" "storgage_blob_data_contributor_diagnostic_services" {
-  principal_id         = "562db366-1b96-45d2-aa4a-f2148cef2240"
-  role_definition_name = "Storage Blob Data Contributor"
-  scope                = azurerm_resource_group.rgs["OPS"].id
-}
+# TODO: need principal ID for the following
+# resource "azurerm_role_assignment" "storgage_blob_data_contributor_diagnostic_services" {
+#   principal_id         = "562db366-1b96-45d2-aa4a-f2148cef2240"
+#   role_definition_name = "Storage Blob Data Contributor"
+#   scope                = azurerm_resource_group.rgs["OPS"].id
+# }
 
 resource "azurerm_user_assigned_identity" "agw" {
   location            = azurerm_resource_group.rgs["AppGateway"].location
