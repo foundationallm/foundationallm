@@ -22,7 +22,7 @@ resource "azurerm_container_group" "linux-container-group" {
   subnet_ids          = [azurerm_subnet.subnets["Agents"].id]
 
   container {
-    name   = "${local.resource_prefix}-ado-agent"
+    name   = "${lower(join("", split("-", local.resource_prefix)))}adoagent"
     image  = "kgopi1/azselfhostedagent:latest"
     cpu    = 1
     memory = 1.5
