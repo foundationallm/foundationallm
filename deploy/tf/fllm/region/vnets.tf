@@ -4,6 +4,15 @@ locals {
 
   default_nsg_rules = {
     inbound = {
+      "allow-ado-agents-inbound" = {
+        access                     = "Allow"
+        destination_address_prefix = "VirtualNetwork"
+        destination_port_range     = "*"
+        priority                   = 4094
+        protocol                   = "Tcp"
+        source_address_prefix      = local.agent_address_prefix
+        source_port_range          = "*"
+      }
       "allow-tfc-agents-inbound" = {
         access                     = "Allow"
         destination_address_prefix = "VirtualNetwork"
@@ -303,8 +312,8 @@ locals {
       }
 
       nsg_rules = {
-        inbound = merge({}, {})
-        outbound = merge({}, {
+        inbound = merge(local.default_nsg_rules.inbound, {})
+        outbound = merge(local.default_nsg_rules.outbound, {
           "allow-tfc-api" = {
             access                       = "Allow"
             destination_address_prefixes = data.tfe_ip_ranges.tfc.api
@@ -368,14 +377,33 @@ locals {
       delegation        = {}
 
       nsg_rules = {
-        inbound = merge({}, {})
-        outbound = merge({}, {
+        inbound = merge(local.default_nsg_rules.inbound, {
+          "allow-rdp-services" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_range     = "3389"
+            priority                   = 256
+            protocol                   = "Tcp"
+            source_address_prefix      = "*"
+            source_port_range          = "*"
+          }
+        })
+        outbound = merge(local.default_nsg_rules.outbound, {
           "allow-ado-services" = {
             access                     = "Allow"
             destination_address_prefix = "Internet"
             destination_port_range     = "*"
             priority                   = 256
             protocol                   = "Tcp"
+            source_address_prefix      = "*"
+            source_port_range          = "*"
+          }
+          "allow-ntp" = {
+            access                     = "Allow"
+            destination_address_prefix = "Internet"
+            destination_port_range     = "123"
+            priority                   = 257
+            protocol                   = "Udp"
             source_address_prefix      = "*"
             source_port_range          = "*"
           }
