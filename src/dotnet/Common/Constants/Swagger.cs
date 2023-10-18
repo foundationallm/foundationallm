@@ -8,7 +8,7 @@
         /// <summary>
         /// The OpenAPI security definition name.
         /// </summary>
-        public const string SecurityDefinitionName = "API Key";
+        public const string SecurityDefinitionName = "ApiKey";
 
         /// <summary>
         /// The OpenAPI security scheme name.
