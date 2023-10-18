@@ -46,7 +46,7 @@ export default {
 		}
 	},
 
-	emits: ['change-session', 'collapse-sidebar'],
+	emits: ['collapse-sidebar'],
 
 	data() {
 		return {
