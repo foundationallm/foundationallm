@@ -1,51 +1,52 @@
 # TODO: Switch to Azure RM when 4.0 releases.
 resource "azapi_resource" "main" {
-  location  = var.resource_group.location
-  name      = replace("${var.resource_prefix}-cr", "-", "")
-  parent_id = var.resource_group.id
-  type      = "Microsoft.ContainerRegistry/registries@2023-01-01-preview"
-  tags      = var.tags
+  location               = var.resource_group.location
+  name                   = replace("${var.resource_prefix}-cr", "-", "")
+  parent_id              = var.resource_group.id
+  response_export_values = ["id"]
+  tags                   = var.tags
+  type                   = "Microsoft.ContainerRegistry/registries@2023-01-01-preview"
 
   body = jsonencode({
-    sku = {
-      name = "Premium"
-    }
     properties = {
-      adminUserEnabled = true
+      adminUserEnabled         = true
+      anonymousPullEnabled     = true
+      dataEndpointEnabled      = false
+      networkRuleBypassOptions = "AzureServices"
+      publicNetworkAccess      = "Enabled"
+      zoneRedundancy           = "Disabled"
+
+      encryption = {
+        status = "disabled"
+      }
+
       policies = {
-        quarantinePolicy = {
-          status = "disabled"
+        azureADAuthenticationAsArmPolicy = {
+          status = "enabled"
         }
-        trustPolicy = {
-          type   = "Notary"
+        exportPolicy = {
+          status = "enabled"
+        }
+        quarantinePolicy = {
           status = "disabled"
         }
         retentionPolicy = {
           days   = 7
           status = "disabled"
         }
-        exportPolicy = {
-          status = "enabled"
-        }
-        azureADAuthenticationAsArmPolicy = {
-          status = "enabled"
-        }
         softDeletePolicy = {
           retentionDays = 7
           status        = "disabled"
         }
+        trustPolicy = {
+          type   = "Notary"
+          status = "disabled"
+        }
       }
-      encryption = {
-        status = "disabled"
-      }
-      dataEndpointEnabled      = false
-      publicNetworkAccess      = "Enabled"
-      networkRuleBypassOptions = "AzureServices"
-      zoneRedundancy           = "Disabled"
-      anonymousPullEnabled     = true
+    }
+
+    sku = {
+      name = "Premium"
     }
   })
-
-
-  response_export_values = ["id"]
 }
