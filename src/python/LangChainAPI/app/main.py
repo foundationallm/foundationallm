@@ -34,7 +34,6 @@ async def root():
     str
         Returns a JSON object containing a message and value.
     """
-    
     return { 'message': 'This is the Solliance AI Copilot powered by FoundationaLLM!' }
 
 if __name__ == '__main__':
