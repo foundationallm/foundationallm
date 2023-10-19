@@ -6,7 +6,7 @@ We are happy to accept contributions to the FoundationaLLM project in the form o
 
 Are you interested in contributing to the code? We would love your help! However, we do have some guidelines that we need contributors to follow so that we can keep things running smoothly.
 
-Please review the [development approach](./docs/development-approach.md) document.
+Please review the [development approach](./docs/development/development-approach.md) document.
 
 ## Submitting issues
 
