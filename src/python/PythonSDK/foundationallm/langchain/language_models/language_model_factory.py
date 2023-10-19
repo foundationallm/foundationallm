@@ -1,13 +1,10 @@
 from langchain.base_language import BaseLanguageModel
+
 from foundationallm.config import Configuration
-from foundationallm.langchain.language_models import LanguageModelProviders, LanguageModelTypes
-
-from foundationallm.langchain.language_models.openai import AzureChatModel
-from foundationallm.langchain.language_models.openai import AzureTextCompletionModel
-from foundationallm.langchain.language_models.openai import OpenAIChatModel
-from foundationallm.langchain.language_models.openai import OpenAITextCompletionModel
-
-import foundationallm.models.metadata.language_model as LanguageModel
+from foundationallm.models.metadata import LanguageModel, LanguageModelProviders, LanguageModelTypes
+from foundationallm.langchain.language_models.chat import AzureOpenAIChat, OpenAIChat
+from foundationallm.langchain.language_models.embeddings import AzureOpenAIEmbeddings
+from foundationallm.langchain.language_models.text_completion import AzureOpenAITextCompletion, OpenAITextCompletion
 
 class LanguageModelFactory:
     """
@@ -31,11 +28,11 @@ class LanguageModelFactory:
             match self.language_model.provider:
                 case LanguageModelProviders.MICROSOFT:
                     if self.language_model.use_chat:
-                        return AzureChatModel(language_model = self.language_model, config = self.config)
+                        return AzureOpenAIChat(language_model = self.language_model, config = self.config)
                     else:
                         return AzureTextCompletionModel(language_model = self.language_model, config = self.config)
                 case LanguageModelProviders.OPENAI:
                     if self.language_model.use_chat:
-                        return OpenAIChatModel(language_model = self.language_model, config = self.config)
+                        return OpenAIChat(language_model = self.language_model, config = self.config)
                     else:
                         return OpenAITextCompletionModel(language_model = self.language_model, config = self.config)

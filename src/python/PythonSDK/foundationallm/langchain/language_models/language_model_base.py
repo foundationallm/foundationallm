@@ -1,12 +1,13 @@
 from abc import ABC, abstractmethod
-
 from langchain.base_language import BaseLanguageModel
+
 from foundationallm.config import Configuration
+from foundationallm.models.metadata import LanguageModel
 
 class LanguageModelBase(ABC):
     """Abstract base class for language models."""
     
-    def __init__(self, config: Configuration):
+    def __init__(self, language_model: LanguageModel, config: Configuration):
         """
         Initializer
         

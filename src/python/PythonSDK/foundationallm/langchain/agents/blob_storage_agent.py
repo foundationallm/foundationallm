@@ -94,7 +94,7 @@ class BlobStorageAgent(AgentBase):
         try:
             index = self.__get_vector_index()
             query = self.prompt_prefix +"Request: "+ prompt + "\n"            
-            completion = index.query(query, self.llm)
+            completion = index.query(query) #, self.llm)
        
             with get_openai_callback() as cb:
                 return CompletionResponse(

@@ -8,7 +8,8 @@ class CompletionRequest(OrchestrationRequest):
     """
     Orchestration completion request.
     """
-    agent: Agent = None
+    agent: Optional[Agent] = None
     data_source: Optional[DataSource] = None
-    language_model: LanguageModel = None
+    language_model: Optional[LanguageModel] = None
+    embeddings_model: Optional[EmbeddingsModel] = None
     message_history: Optional[List[MessageHistoryItem]] = list()
