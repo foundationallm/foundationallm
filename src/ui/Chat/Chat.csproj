@@ -15,7 +15,6 @@
     <_WebToolingArtifacts Remove="Properties\launchSettings.json" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="appsettings.development.json.bak" />
     <Content Include="Properties\launchSettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
