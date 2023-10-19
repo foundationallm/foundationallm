@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,5 +15,6 @@ namespace FoundationaLLM.AgentFactory.Core.Models.ConfigurationOptions
         /// The default orchenstration service (SemanticKernal, LangChain)
         /// </summary>
         public string? DefaultOrchestrationService { init; get; }
+        // TODO: integrate the agent factory settings
     }
 }
