@@ -233,7 +233,7 @@ Environment variables required if `foundationallm-configuration-allow-environmen
 | FoundationaLLM:DataSourceHub:StorageManager:BlobStorage:ConnectionString | REDACTED | Storage account that contains the DataSource metadata container |
 | FoundationaLLM:DataSourceHub:DataSourceMetadata:StorageContainer | data-sources | Datasource metadata storage container name |
 | FoundationaLLM:PromptHub:StorageManager:BlobStorage:ConnectionString | REDACTED | Storage account that contains the Prompt metadata container |
-| FoundationaLLM:PromptHub:PromptMetadata:StorageContainer | system-prompt | Prompt metadata storage container name |
+| FoundationaLLM:PromptHub:PromptMetadata:StorageContainer | prompts | Prompt metadata storage container name |
 | FoundationaLLM:AzureOpenAI:API:Endpoint | REDACTED | Azure Open AI instance URL |
 | FoundationaLLM:AzureOpenAI:API:Key | REDACTED | Azure Open AI instance key |
 | FoundationaLLM:AzureOpenAI:API:Version | 2023-07-01-preview | Azure Open AI API version |
@@ -321,7 +321,7 @@ Environment variables required if `foundationallm-configuration-allow-environmen
       }
     },
     "DurableSystemPrompt": {
-      "BlobStorageContainer": "system-prompt"
+      "BlobStorageContainer": "prompts"
     },
     "CognitiveSearchMemorySource": {
       "IndexName": "vector-index",
