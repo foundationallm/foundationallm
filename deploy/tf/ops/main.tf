@@ -267,7 +267,7 @@ resource "azurerm_resource_group" "rg" {
   for_each = local.resource_group
 
   location = var.location
-  name     = join("-", [local.resource_prefix[each.key], "rg"])
+  name     = "${local.resource_prefix[each.key]}-rg"
   tags     = merge(each.value.tags, local.tags)
 }
 
