@@ -21,7 +21,7 @@ def mock_base_language_model():
     return MockBaseLanguageModel()
 
 @pytest.fixture  
-def completion_request(mock_base_language_model, mock_configuration) -> Tuple[CompletionRequest, BlobStorageAgent]:  
+def completion_request():  
     req = CompletionRequest(user_prompt="test user prompt")  
     req.agent = Agent(name="test agent", type="test agent type", description="test agent description",   
                       prompt_template="test prompt template")          
@@ -32,20 +32,22 @@ def completion_request(mock_base_language_model, mock_configuration) -> Tuple[Co
     req.message_history = [MessageHistoryItem(sender="User", text="user chat 1"),  
                            MessageHistoryItem(sender="Agent", text="agent chat 1"),  
                            MessageHistoryItem(sender="User", text="user chat 2"),  
-                           MessageHistoryItem(sender="Agent", text="agent chat 2")]  
-    agent = BlobStorageAgent(completion_request=req,llm = mock_base_language_model, config=mock_configuration)  
-    return req, agent  
+                           MessageHistoryItem(sender="Agent", text="agent chat 2")]
+    return req
+
+@pytest.fixture
+def blob_storage_agent(completion_request, mock_base_language_model, mock_configuration):
+    agent = BlobStorageAgent(completion_request=completion_request,llm = mock_base_language_model, config=mock_configuration)
+    return agent
 
 class BlobStorageAgentTests:
 
-    def test_build_chat_history_should_use_default_labels(self, completion_request):       
-        req, agent = completion_request
-        history = agent.build_chat_history(req.message_history)
+    def test_build_chat_history_should_use_default_labels(self, completion_request, blob_storage_agent):
+        history = blob_storage_agent.build_chat_history(completion_request.message_history)
         expected = "\n\nChat History:\nHuman: user chat 1\nAgent: agent chat 1\nHuman: user chat 2\nAgent: agent chat 2\n\n\n"
         assert history == expected
     
-    def test_build_chat_history_should_use_custom_labels(self, completion_request):       
-        req, agent = completion_request
-        history = agent.build_chat_history(req.message_history, human_label="Bob", ai_label="Sandy")
+    def test_build_chat_history_should_use_custom_labels(self, completion_request, blob_storage_agent):
+        history = blob_storage_agent.build_chat_history(completion_request.message_history, human_label="Bob", ai_label="Sandy")
         expected = "\n\nChat History:\nBob: user chat 1\nSandy: agent chat 1\nBob: user chat 2\nSandy: agent chat 2\n\n\n"
         assert history == expected
