@@ -65,3 +65,9 @@ Follow the steps below to deploy the solution to your Azure subscription. You wi
         ```
 
 >**NOTE**: Make sure to set the `<location>` value to a region that supports Azure OpenAI services.  See [Azure OpenAI service regions](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=cognitive-services&regions=all) for more information.
+
+## Post-deployment configuration
+
+### Microsoft Entra authentication setup
+
+Follow the instructions in the [Entra setup document](./authentication-setup-entra.md) to configure Microsoft Entra authentication for the solution.
