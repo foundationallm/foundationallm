@@ -41,7 +41,7 @@ export default {
 
 	props: {
 		currentSession: {
-			type: Object as PropType<Session> | null,
+			type: [Object, null] as PropType<Session | null>,
 			required: true,
 		}
 	},

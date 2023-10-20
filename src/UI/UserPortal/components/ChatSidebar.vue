@@ -101,7 +101,7 @@ export default {
 
 	props: {
 		currentSession: {
-			type: Object as PropType<Session> | null,
+			type: [Object, null] as PropType<Session | null>,
 			required: true,
 		}
 	},
@@ -147,7 +147,7 @@ export default {
 
 		async handleRenameSession() {
 			const updatedSession = await api.renameSession(this.sessionToRename!.id, this.newSessionName);
-			const sessionIndex = this.sessions.findIndex(session => session.id === updatedSession.id);
+			const sessionIndex = this.sessions.findIndex((session) => session.id === updatedSession.id);
 			this.sessions[sessionIndex] = updatedSession;
 			this.sessionToRename = null;
 		},

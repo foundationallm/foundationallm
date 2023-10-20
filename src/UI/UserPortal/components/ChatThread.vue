@@ -59,7 +59,7 @@ export default {
 
 	props: {
 		session: {
-			type: Object as PropType<Session>,
+			type: [Object, null] as PropType<Session | null>,
 			required: true,
 		},
 		sidebarClosed: {
@@ -87,7 +87,7 @@ export default {
 	methods: {
 		async getMessages() {
 			this.isLoading = true;
-			const data = await api.getMessages(this.session.id);
+			const data = await api.getMessages(this.session!.id);
 			this.messages = data;
 			this.isLoading = false;
 		},
@@ -103,7 +103,7 @@ export default {
 				id: '',
 				rating: null,
 				sender: 'User',
-				sessionId: this.session.id,
+				sessionId: this.session!.id,
 				text,
 				timeStamp: new Date().toISOString(),
 				tokens: 0,
@@ -112,14 +112,14 @@ export default {
 			};
 			this.messages.push(tempUserMessage);
 
-			await api.sendMessage(this.session.id, text);
+			await api.sendMessage(this.session!.id, text);
 			await this.getMessages();
 
 			// Update the session name based on the message sent
 			if (this.messages.length === 2) {
 				const sessionFullText = this.messages.map((message) => message.text).join('\n');
-				const { text: newSessionName } = await api.summarizeSessionName(this.session.id, sessionFullText);
-				const updatedSession = await api.renameSession(this.session.id, newSessionName);
+				const { text: newSessionName } = await api.summarizeSessionName(this.session!.id, sessionFullText);
+				const updatedSession = await api.renameSession(this.session!.id, newSessionName);
 				this.$emit('update-session', updatedSession);
 			}
 		},
