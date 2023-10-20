@@ -1,15 +1,5 @@
 <template>
 	<div class="chat-thread">
-		<!-- Header -->
-		<div class="chat-thread__header" v-if="sidebarClosed">
-			<template v-if="session">
-				<span>{{ session.name }}</span>
-			</template>
-			<template v-else>
-				<span>Please select a session</span>
-			</template>
-		</div>
-
 		<!-- Message list -->
 		<div class="chat-thread__messages" :class="messages.length === 0 && 'empty'">
 			<template v-if="isLoading">

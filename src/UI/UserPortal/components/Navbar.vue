@@ -8,10 +8,18 @@
 			<Button icon="pi pi-arrow-left" size="small" severity="secondary" @click="collapseSidebar(true)" v-else />
 		</div>
 		<div :class="!collapsedSidebar ? 'navbar__content' : 'navbar__content collapsed'">
-			<div v-if="!collapsedSidebar" class="navbar__content__left">
+			<div class="navbar__content__left">
 				<div class="navbar__content__left__item">
 					<template v-if="currentSession">
 						<span>{{ currentSession.name }}</span>
+						<Button
+							class="button--share"
+							icon="pi pi-copy"
+							text
+							severity="secondary"
+							@click="handleCopySession"
+						/>
+						<Toast position="top-center" />
 					</template>
 					<template v-else>
 						<span>Please select a session</span>
@@ -20,11 +28,11 @@
 			</div>
 			<div class="navbar__content__right">
 				<div v-if="!signedIn" class="navbar__content__right__item">
-					<Button icon="pi pi-sign-in" label="Sign In" @click="signIn()"></Button>
+					<Button class="button--auth" icon="pi pi-sign-in" label="Sign In" @click="signIn()"></Button>
 				</div>
 				<div v-else class="navbar__content__right__item">
 					<span>Welcome {{ accountName }}</span>
-					<Button class="sign-out-button" icon="pi pi-sign-out" label="Sign Out" @click="signOut()"></Button>
+					<Button class="button--auth" icon="pi pi-sign-out" label="Sign Out" @click="signOut()"></Button>
 				</div>
 			</div>
 		</div>
@@ -75,6 +83,17 @@ export default {
 			this.$emit('collapse-sidebar', collapsed);
 		},
 
+		handleCopySession() {
+			const chatLink = `${window.location.origin}?chat=${this.currentSession!.id}`;
+			navigator.clipboard.writeText(chatLink);
+
+			this.$toast.add({
+				severity: 'success',
+				detail: 'Chat link copied!',
+				life: 2000,
+			});
+		},
+
 		async signIn() {
 			const response = await msalInstance.loginPopup(loginRequest);
 			if (response.account) {
@@ -105,6 +124,7 @@ export default {
 	width: 100%;
 	display: flex;
 	flex-direction: row;
+	box-shadow: 0 5px 10px 0 rgba(27, 29, 33, 0.1);
 }
 
 .navbar__header {
@@ -137,10 +157,15 @@ export default {
 	background-color: var(--accent-color);
 }
 
-.collapsed {
+.navbar__content--collapsed {
 	background-color: var(--primary-color);
 	justify-content: flex-end;
 	border-bottom: none;
+}
+
+.navbar__content__left__item {
+	display: flex;
+	align-items: center;
 }
 
 .navbar__content__right__item {
@@ -148,7 +173,11 @@ export default {
 	align-items: center;
 }
 
-.sign-out-button {
-	margin-left: 12px;
+.button--share {
+	margin-left: 8px;
+}
+
+.button--auth {
+	margin-left: 24px;
 }
 </style>
