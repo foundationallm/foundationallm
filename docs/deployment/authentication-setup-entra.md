@@ -45,7 +45,7 @@ The URL for the chat application is the root URL of the Core API. For example, i
 3. For **Redirect URIs**, enter `<YOUR_CHAT_APP_URL>/signin-oidc`, replacing `<YOUR_CHAT_APP_URL>` with the chat application URL obtained in the [Pre-requisites](#pre-requisites) section above. For example, it should look something like `https://d85a09ce067141d5807a.eastus.aksapp.io/signin-oidc`.
 4. Add another **Redirect URI** for local development. For **Redirect URIs**, enter `https://localhost:7258/signin-oidc`.
 5. Under **Platform configurations**, select **Add a platform**. In the pane that opens, select **Single-page application**. This is for the Vue.js version of the chat application.
-6. Add a **Redirect URI** under Single-page application for local development of the Vue.js application: `http://localhost:3000/`.
+6. Add a **Redirect URI** under Single-page application for local development of the Vue.js application: `http://localhost:3000/signin-oidc`.
 7. Under **Front-channel logout URL**, enter `<YOUR_CHAT_APP_URL>/signout-oidc`.
 
 #### Implicit grant and hybrid flows for the client application
