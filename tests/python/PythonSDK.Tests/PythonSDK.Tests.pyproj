@@ -24,7 +24,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="langchain\agents\blob_storage_agent_tests.py" />
+    <Compile Include="langchain\message_history\message_history_tests.py" />
     <Compile Include="pytest.ini" />
   </ItemGroup>
   <ItemGroup>
@@ -39,7 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="langchain\" />
-    <Folder Include="langchain\agents\" />
+    <Folder Include="langchain\message_history\" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

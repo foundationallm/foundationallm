@@ -9,6 +9,7 @@ from langchain.indexes import VectorstoreIndexCreator
 from langchain.indexes.vectorstore import VectorStoreIndexWrapper
 from langchain.embeddings import OpenAIEmbeddings
 from foundationallm.models.orchestration import MessageHistoryItem
+from foundationallm.langchain.message_history import build_message_history
 
 class BlobStorageAgent(AgentBase):
     """
@@ -62,18 +63,6 @@ class BlobStorageAgent(AgentBase):
     
         index = VectorstoreIndexCreator(embedding=embeddings).from_loaders(loaders)
         return index             
-
-    def build_chat_history(self, messages:List[MessageHistoryItem]=None, human_label:str="Human", ai_label:str="Agent") -> str:
-        if messages is None or len(messages)==0:
-            return ""        
-        chat_history = "\n\nChat History:\n"
-        for msg in messages:
-            if msg.sender == "Agent":
-                chat_history += ai_label + ": " + msg.text + "\n"
-            else:
-                chat_history += human_label + ": " + msg.text + "\n"
-        chat_history += "\n\n"
-        return chat_history
        
     def run(self, prompt: str) -> CompletionResponse:
         """
@@ -92,7 +81,7 @@ class BlobStorageAgent(AgentBase):
         """
         try:
             index = self.__get_vector_index()
-            query = self.prompt_prefix + self.build_chat_history(self.message_history) + "Request: "+ prompt + "\n"            
+            query = self.prompt_prefix + build_message_history(self.message_history) + "Request: "+ prompt + "\n"            
             completion = index.query(query, self.llm)
        
             with get_openai_callback() as cb:

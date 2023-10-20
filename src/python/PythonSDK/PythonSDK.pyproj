@@ -101,6 +101,8 @@
     <Compile Include="foundationallm\langchain\language_models\openai\__init__.py" />
     <Compile Include="foundationallm\langchain\language_models\language_model_providers.py" />
     <Compile Include="foundationallm\langchain\language_models\__init__.py" />
+    <Compile Include="foundationallm\langchain\message_history\build_message_history.py" />
+    <Compile Include="foundationallm\langchain\message_history\__init__.py" />
     <Compile Include="foundationallm\langchain\orchestration\orchestration_manager.py" />
     <Compile Include="foundationallm\langchain\orchestration\__init__.py" />
     <Compile Include="foundationallm\langchain\toolkits\anomaly_detection_toolkit.py" />
@@ -155,6 +157,7 @@
     <Folder Include="foundationallm\langchain\language_models\openai\" />
     <Folder Include="foundationallm\langchain\data_sources\" />
     <Folder Include="foundationallm\langchain\data_sources\sql\" />
+    <Folder Include="foundationallm\langchain\message_history\" />
     <Folder Include="foundationallm\langchain\orchestration\" />
     <Folder Include="foundationallm\langchain\tools\" />
     <Folder Include="foundationallm\langchain\toolkits\" />
