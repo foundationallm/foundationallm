@@ -1299,10 +1299,10 @@
       },
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
-      "scope": "[format('Microsoft.App/containerapps/{0}{1}ca', variables('dotnetAcaSettings').name, variables('dotnetAcaSettings').instances[copyIndex()].key)]",
+      "scope": "[format('Microsoft.AppConfiguration/configurationStores/{0}', variables('appConfigSettings').name)]",
       "name": "[guid(resourceId('Microsoft.App/containerapps', format('{0}{1}ca', variables('dotnetAcaSettings').name, variables('dotnetAcaSettings').instances[copyIndex()].key)), 'appConfig')]",
       "properties": {
-        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('roleIdMapping')['Key Vault Secrets User'])]",
+        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('roleIdMapping')['App Configuration Data Reader'])]",
         "principalId": "[reference(resourceId('Microsoft.App/containerapps', format('{0}{1}ca', variables('dotnetAcaSettings').name, variables('dotnetAcaSettings').instances[copyIndex()].key)), '2023-05-02-preview', 'full').identity.principalId]",
         "principalType": "ServicePrincipal"
       },
@@ -1403,10 +1403,10 @@
       },
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
-      "scope": "[format('Microsoft.App/containerapps/{0}{1}ca', variables('pythonAcaSettings').name, variables('pythonAcaSettings').instances[copyIndex()].key)]",
+      "scope": "[format('Microsoft.AppConfiguration/configurationStores/{0}', variables('appConfigSettings').name)]",
       "name": "[guid(resourceId('Microsoft.App/containerapps', format('{0}{1}ca', variables('pythonAcaSettings').name, variables('pythonAcaSettings').instances[copyIndex()].key)), 'appConfig')]",
       "properties": {
-        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('roleIdMapping')['Key Vault Secrets User'])]",
+        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('roleIdMapping')['App Configuration Data Reader'])]",
         "principalId": "[reference(resourceId('Microsoft.App/containerapps', format('{0}{1}ca', variables('pythonAcaSettings').name, variables('pythonAcaSettings').instances[copyIndex()].key)), '2023-05-02-preview', 'full').identity.principalId]",
         "principalType": "ServicePrincipal"
       },
