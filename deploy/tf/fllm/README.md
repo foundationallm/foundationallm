@@ -52,6 +52,12 @@ Description: The project identifier.
 
 Type: `string`
 
+### <a name="input_public_domain"></a> [public\_domain](#input\_public\_domain)
+
+Description: Public DNS domain
+
+Type: `string`
+
 ## Optional Inputs
 
 No optional inputs.
@@ -64,6 +70,7 @@ No outputs.
 
 The following resources are used by this module:
 
+- [azurerm_dns_zone.public_dns](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/dns_zone) (data source)
 - [azurerm_private_dns_zone.private_dns](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) (data source)
 - [azurerm_resource_group.rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) (data source)
 

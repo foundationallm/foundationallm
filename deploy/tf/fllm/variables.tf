@@ -14,11 +14,10 @@ variable "project_id" {
 }
 
 
-# variable "public_domain" {
-#   description = "Public DNS domain"
-#   type        = string
-#   default     = "internal.foundationallm.ai"
-# }
+variable "public_domain" {
+  description = "Public DNS domain"
+  type        = string
+}
 
 # variable "sql_admin_ad_group" {
 #   description = "SQL Admin AD group"

@@ -12,6 +12,11 @@ locals {
 }
 
 # Data Sources
+data "azurerm_dns_zone" "public_dns" {
+  name                = var.public_domain
+  resource_group_name = "GLB-FLLM-DEMO-DNS-rg"
+}
+
 data "azurerm_private_dns_zone" "private_dns" {
   for_each = {
     aks                  = "privatelink.${var.location}.azmk8s.io"
