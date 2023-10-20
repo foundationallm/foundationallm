@@ -834,14 +834,300 @@
     },
     {
       "type": "Microsoft.KeyVault/vaults/secrets",
-      "apiVersion": "2022-07-01",
-      "name": "[format('{0}/{1}', variables('keyVaultSettings').name, 'langchain-api-key')]",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-app-insights-connection-string')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]", "[resourceId('Microsoft.OperationalInsights/workspaces', variables('laSettings').name)]" ],
       "properties": {
-        "value": "[variables('langChainApiKey')]"
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]"
-      ]
+        "attributes": { "enabled": true },
+        "value": "[reference(resourceId('Microsoft.Insights/components', variables('aiSettings').name), '2014-04-01').InstrumentationKey]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-apis-agentfactoryapi-apikey')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[uniqueString(resourceGroup().id)]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-apis-agenthubapi-apikey')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[uniqueString(resourceGroup().id)]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-apis-datasourcehubapi-apikey')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[uniqueString(resourceGroup().id)]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-apis-gatekeeperapi-apikey')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[uniqueString(resourceGroup().id)]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-apis-langchainapi-apikey')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[uniqueString(resourceGroup().id)]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-apis-prompthubapi-apikey')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[uniqueString(resourceGroup().id)]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-apis-semantickernelapi-apikey')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[uniqueString(resourceGroup().id)]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-agenthub-storagemanager-blobstorage-connectionstring')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', format('{0}sa', parameters('name')), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', format('{0}sa', parameters('name'))), '2018-07-01').keys[0].value)]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-azurecontentsafety-apikey')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]" , "[resourceId('Microsoft.CognitiveServices/accounts', variables('safetySettings').name)]"],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', variables('safetySettings').name), '2023-05-01').key1]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-azureopenai-api-key')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[parameters('openAiKey')]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-blobstoragememorysource-blobstorageconnection')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]", "[resourceId('Microsoft.Storage/storageAccounts', format('{0}sa', parameters('name')))]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', format('{0}sa', parameters('name')), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', format('{0}sa', parameters('name'))), '2018-07-01').keys[0].value)]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-chat-entra-clientsecret')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": ""
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-cognitivesearch-configblobstorageconnection')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]", "[resourceId('Microsoft.Storage/storageAccounts', format('{0}sa', parameters('name')))]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', format('{0}sa', parameters('name')), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', format('{0}sa', parameters('name'))), '2018-07-01').keys[0].value)]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-cognitivesearch-key')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]", "[resourceId('Microsoft.Search/searchServices', variables('cognitiveSearchSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[listAdminKeys(resourceId('Microsoft.Search/searchServices', variables('cognitiveSearchSettings').name), '2015-08-19').PrimaryKey]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-cognitivesearchmemorysource-blobstorageconnection')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]", "[resourceId('Microsoft.Storage/storageAccounts', format('{0}sa', parameters('name')))]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', format('{0}sa', parameters('name')), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', format('{0}sa', parameters('name'))), '2018-07-01').keys[0].value)]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-cognitivesearchmemorysource-key')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]", "[resourceId('Microsoft.Search/searchServices', variables('cognitiveSearchSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[listAdminKeys(resourceId('Microsoft.Search/searchServices', variables('cognitiveSearchSettings').name), '2015-08-19').PrimaryKey]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-coreapi-entra-clientsecret')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": ""
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-cosmosdb-key')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]", "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[listKeys(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbSettings').name), '2019-12-12').primaryMasterKey]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-datasourcehub-storagemanager-blobstorage-connectionstring')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]", "[resourceId('Microsoft.Storage/storageAccounts', format('{0}sa', parameters('name')))]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', format('{0}sa', parameters('name')), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', format('{0}sa', parameters('name'))), '2018-07-01').keys[0].value)]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-durablesystemprompt-blobstorageconnection')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]", "[resourceId('Microsoft.Storage/storageAccounts', format('{0}sa', parameters('name')))]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', format('{0}sa', parameters('name')), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', format('{0}sa', parameters('name'))), '2018-07-01').keys[0].value)]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-langchain-csvfile-url')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": ""
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-langchain-sqldatabase-testdb-password')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": ""
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-langchainapi-key')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[uniqueString(resourceGroup().id)]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-openai-api-key')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[parameters('openAiKey')]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-prompthub-storagemanager-blobstorage-connectionstring')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]", "[resourceId('Microsoft.Storage/storageAccounts', format('{0}sa', parameters('name')))]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', format('{0}sa', parameters('name')), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', format('{0}sa', parameters('name'))), '2018-07-01').keys[0].value)]"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-semantickernelapi-openai-key')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": "[parameters('openAiKey')]"
+      }
     },
     {
       "type": "Microsoft.DocumentDB/databaseAccounts",
@@ -1064,7 +1350,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "2021-09-01",
-      "name": "[format('{0}promptsa', parameters('name'))]",
+      "name": "[format('{0}sa', parameters('name'))]",
       "location": "[parameters('location')]",
       "kind": "Storage",
       "sku": {
