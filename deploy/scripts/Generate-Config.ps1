@@ -48,24 +48,25 @@ $tokens = @{}
 # $storage=EnsureAndReturnFirstItem $storage "Storage Account"
 # Write-Host "Storage Account: $($storage.name)" -ForegroundColor Yellow
 
+$resourcePrefix = $(az deployment group show -n foundationallm-azuredeploy -g $resourceGroup --query "properties.outputs.resourcePrefix.value" -o json | ConvertFrom-Json)
+Write-Host "Resource Prefix: $resourcePrefix" -ForegroundColor Yellow
+
 ## Getting API URL domain
 if ($deployAks) {
     Write-Host "Getting AKS info" -ForegroundColor Yellow
     if ([String]::IsNullOrEmpty($domain)) {
-        $domain = $(az aks show -n $aksName -g $resourceGroup -o json --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName | ConvertFrom-Json)
+        $domain = $(az aks show --name $aksName -g $resourceGroup -o json --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName | ConvertFrom-Json)
         if (-not $domain) {
             $domain = $(az aks show -n $aksName -g $resourceGroup -o json --query addonProfiles.httpapplicationrouting.config.HTTPApplicationRoutingZoneName | ConvertFrom-Json)
         }
     }
-}
-else {
-    $domain = $(az deployment group show -g $resourceGroup -n foundationallm-azuredeploy -o json --query properties.outputs.apiFqdn.value | ConvertFrom-Json)
+    
+    $apiUrl = "https://$domain"
+    Write-Host "API URL: $apiUrl" -ForegroundColor Yellow
+    $tokens.apiUrl = $apiUrl
 }
 
-$apiUrl = "https://$domain"
-Write-Host "API URL: $apiUrl" -ForegroundColor Yellow
-
-$appConfigInstances = @(az appconfig list -g $resourceGroup -o json | ConvertFrom-Json)
+$appConfigInstances = @(az appconfig show -n "$($resourcePrefix)-appconfig" -g $resourceGroup -o json | ConvertFrom-Json)
 if ($appConfigInstances.Length -lt 1) {
     Write-Host "Error getting app config" -ForegroundColor Red
     exit 1
@@ -81,9 +82,6 @@ $docdb = $(az cosmosdb list -g $resourceGroup --query "[?kind=='GlobalDocumentDB
 $docdb = EnsureAndReturnFirstItem $docdb "CosmosDB (Document Db)"
 $docdbKey = $(az cosmosdb keys list -g $resourceGroup -n $docdb.name -o json --query primaryMasterKey | ConvertFrom-Json)
 Write-Host "Document Db Account: $($docdb.name)" -ForegroundColor Yellow
-
-$resourcePrefix = $(az deployment group show -n foundationallm-azuredeploy -g $resourceGroup --query "properties.outputs.resourcePrefix.value" -o json | ConvertFrom-Json)
-Write-Host "Resource Prefix: $resourcePrefix" -ForegroundColor Yellow
 
 if ($deployAks) {
     $agentFactoryApiMi = $(az identity show -g $resourceGroup -n $resourcePrefix-agent-factory-mi -o json | ConvertFrom-Json)
@@ -135,7 +133,6 @@ if ($deployAks) {
 $tenantId = $(az account show --query homeTenantId --output tsv)
 
 # Setting tokens
-$tokens.apiUrl = $apiUrl
 $tokens.cosmosConnectionString = "AccountEndpoint=$($docdb.documentEndpoint);AccountKey=$docdbKey"
 $tokens.cosmosEndpoint = $docdb.documentEndpoint
 $tokens.cosmosKey = $docdbKey
@@ -172,12 +169,15 @@ Write-Host "gvalues file will be generated with values:"
 Write-Host ($tokens | ConvertTo-Json) -ForegroundColor Yellow
 Write-Host "===========================================================" -ForegroundColor Yellow
 
-Write-Host "Generating gvalues file..." -ForegroundColor Yellow
-Push-Location $($MyInvocation.InvocationName | Split-Path)
-$gvaluesTemplatePath = $(./Join-Path-Recursively -pathParts $gvaluesTemplate.Split(","))
-$outputFilePath = $(./Join-Path-Recursively -pathParts $outputFile.Split(","))
-& ./Token-Replace.ps1 -inputFile $gvaluesTemplatePath -outputFile $outputFilePath -tokens $tokens
-Pop-Location
+if ($deployAks)
+{
+    Write-Host "Generating gvalues file..." -ForegroundColor Yellow
+    Push-Location $($MyInvocation.InvocationName | Split-Path)
+    $gvaluesTemplatePath = $(./Join-Path-Recursively -pathParts $gvaluesTemplate.Split(","))
+    $outputFilePath = $(./Join-Path-Recursively -pathParts $outputFile.Split(","))
+    & ./Token-Replace.ps1 -inputFile $gvaluesTemplatePath -outputFile $outputFilePath -tokens $tokens
+    Pop-Location
+}
 
 Write-Host "Generating migration settings file..." -ForegroundColor Yellow
 Push-Location $($MyInvocation.InvocationName | Split-Path)

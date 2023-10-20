@@ -743,6 +743,28 @@
     }
   },
   "resources": [
+        {
+        "type": "Microsoft.CognitiveServices/accounts",
+        "apiVersion": "2023-05-01",
+        "name": "[variables('safetySettings').name]",
+        "location": "[parameters('location')]",
+        "sku": {
+            "name": "S0"
+        },
+        "kind": "ContentSafety",
+        "identity": {
+            "type": "SystemAssigned"
+        },
+        "properties": {
+            "customSubDomainName": "[variables('safetySettings').name]",
+            "networkAcls": {
+                "defaultAction": "Allow",
+                "virtualNetworkRules": [],
+                "ipRules": []
+            },
+            "publicNetworkAccess": "Enabled"
+        }
+    },
     {
       "type": "Microsoft.AppConfiguration/configurationStores",
       "apiVersion": "2023-03-01",
