@@ -74,6 +74,7 @@ export default {
 		async session(newSession, oldSession) {
 			if (newSession.id === oldSession.id) return;
 			this.isLoading = true;
+			this.userSentMessage = false;
 			await this.getMessages();
 			this.isLoading = false;
 		}
