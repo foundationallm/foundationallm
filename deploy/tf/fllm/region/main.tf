@@ -17,12 +17,6 @@ data "azurerm_log_analytics_workspace" "logs" {
 }
 
 # Resources
-resource "azurerm_monitor_action_group" "do_nothing" {
-  name                = "${local.resource_prefix}-ag"
-  resource_group_name = azurerm_resource_group.rgs["OPS"].name
-  short_name          = "do-nothing"
-  tags                = local.tags
-}
 
 resource "azurerm_resource_group" "rgs" {
   for_each = var.resource_groups

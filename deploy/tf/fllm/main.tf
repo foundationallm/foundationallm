@@ -3,6 +3,7 @@ locals {
 
   resource_group = {
     dns = null
+    ops = null
   }
 
   short_location = local.short_locations[var.location]
@@ -15,6 +16,11 @@ locals {
 data "azurerm_dns_zone" "public_dns" {
   name                = var.public_domain
   resource_group_name = "GLB-FLLM-DEMO-DNS-rg"
+}
+
+data "azurerm_monitor_action_group" "do_nothing" {
+  name                = "${local.resource_prefix["ops"]}-ag"
+  resource_group_name = data.azurerm_resource_group.rg["ops"].name
 }
 
 data "azurerm_private_dns_zone" "private_dns" {
@@ -49,7 +55,7 @@ data "azurerm_private_dns_zone" "private_dns" {
 }
 
 data "azurerm_resource_group" "rg" {
-  for_each = toset(["dns"])
+  for_each = local.resource_group
 
   name = "${local.resource_prefix[each.key]}-rg"
 }
