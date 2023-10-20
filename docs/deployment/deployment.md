@@ -11,7 +11,13 @@ The following table summarizes the deployment choices available for the solution
 
 Select the links in the table above to learn more about each deployment choice.
 
-## Deployment validation
+## Post-deployment configuration
+
+### Microsoft Entra authentication setup
+
+Follow the instructions in the [Entra setup document](./authentication-setup-entra.md) to configure Microsoft Entra authentication for the solution.
+
+### Deployment validation
 
 Use the steps below to validate that the solution was deployed successfully.
 
@@ -31,7 +37,7 @@ Finally, you should be able to see the Cognitive Search index being populated wi
 >
 >It takes several minutes until all imported data is vectorized and indexed.
 
-## Monitoring with Application Insights
+### Monitoring with Application Insights
 
 Use the steps below to monitor the solution with Application Insights:
 
