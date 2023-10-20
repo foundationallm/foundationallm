@@ -93,6 +93,12 @@ Source: ./modules/application-insights
 
 Version:
 
+### <a name="module_keyvault"></a> [keyvault](#module\_keyvault)
+
+Source: ./modules/keyvault
+
+Version:
+
 ### <a name="module_logs"></a> [logs](#module\_logs)
 
 Source: ./modules/log-analytics-workspace

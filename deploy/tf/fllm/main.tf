@@ -33,6 +33,11 @@ data "azurerm_dns_zone" "public_dns" {
   resource_group_name = "GLB-FLLM-DEMO-DNS-rg"
 }
 
+data "azurerm_log_analytics_workspace" "logs" {
+  name                = "${local.resource_prefix_backend["ops"]}-la"
+  resource_group_name = data.azurerm_resource_group.backend["ops"].name
+}
+
 data "azurerm_monitor_action_group" "do_nothing" {
   name                = "${local.resource_prefix_backend["ops"]}-ag"
   resource_group_name = data.azurerm_resource_group.backend["ops"].name
@@ -98,6 +103,7 @@ resource "azurerm_user_assigned_identity" "agw" {
 }
 
 # Modules
+
 
 # locals {
 #   resource_prefix = join("-", [local.project_id, local.environment])

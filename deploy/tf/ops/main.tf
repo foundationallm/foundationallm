@@ -341,6 +341,23 @@ module "application_insights" {
   tags                             = azurerm_resource_group.rg["ops"].tags
 }
 
+module "keyvault" {
+  source = "./modules/keyvault"
+
+  action_group_id            = azurerm_monitor_action_group.do_nothing.id
+  log_analytics_workspace_id = module.logs.id
+  resource_group             = azurerm_resource_group.rg["ops"]
+  resource_prefix            = local.resource_prefix["ops"]
+  tags                       = azurerm_resource_group.rg["ops"].tags
+
+  private_endpoint = {
+    subnet_id = azurerm_subnet.subnet["ops"].id
+    private_dns_zone_ids = [
+      azurerm_private_dns_zone.private_dns["vault"].id,
+    ]
+  }
+}
+
 module "logs" {
   source = "./modules/log-analytics-workspace"
 
