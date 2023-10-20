@@ -53,18 +53,6 @@ resource "azurerm_user_assigned_identity" "agw" {
 }
 
 # Modules
-module "ado_agent" {
-  source = "./modules/azure-devops-agent"
-
-  action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  data_collection_rule_id    = module.logs.data_collection_rule_id
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
-  resource_group             = azurerm_resource_group.rgs["OPS"]
-  resource_prefix            = "${local.resource_prefix}-ado"
-  subnet_id                  = azurerm_subnet.subnets["Agents"].id
-  tags                       = local.tags
-
-}
 
 
 module "appconfig" {

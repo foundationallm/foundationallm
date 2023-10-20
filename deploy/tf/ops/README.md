@@ -75,6 +75,12 @@ The following providers are used by this module:
 
 The following Modules are called:
 
+### <a name="module_ado_agent"></a> [ado\_agent](#module\_ado\_agent)
+
+Source: ./modules/azure-devops-agent
+
+Version:
+
 ### <a name="module_ampls"></a> [ampls](#module\_ampls)
 
 Source: ./modules/monitor-private-link-scope
