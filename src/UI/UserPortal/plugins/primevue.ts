@@ -4,6 +4,7 @@ import InputText from 'primevue/inputtext';
 import Dialog from 'primevue/dialog';
 import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
+import Tooltip from 'primevue/tooltip';
 import { defineNuxtPlugin } from '#app';
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -14,4 +15,5 @@ export default defineNuxtPlugin((nuxtApp) => {
 	nuxtApp.vueApp.component('Toast', Toast);
 
 	nuxtApp.vueApp.use(ToastService);
+	nuxtApp.vueApp.directive('tooltip', Tooltip);
 });

@@ -15,6 +15,7 @@
 					<template v-if="currentSession">
 						<span>{{ currentSession.name }}</span>
 						<Button
+							v-tooltip.bottom="'Copy link to chat session'"
 							class="button--share"
 							icon="pi pi-copy"
 							text
