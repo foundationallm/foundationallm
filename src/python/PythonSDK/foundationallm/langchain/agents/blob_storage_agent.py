@@ -26,10 +26,11 @@ class BlobStorageAgent(AgentBase):
             and agent and data source metadata.       
         """        
         self.llm = llm.get_language_model()
-        self.prompt_prefix = completion_request.agent.prompt_template + self.__build_chat_history(completion_request.message_history)
+        self.prompt_prefix = completion_request.agent.prompt_template
         self.connection_string = config.get_value(completion_request.data_source.configuration.connection_string_secret)        
         self.container_name = completion_request.data_source.configuration.container        
         self.file_names = completion_request.data_source.configuration.files
+        self.message_history = completion_request.message_history
         self.__config = config        
         
     def __get_vector_index(self) -> VectorStoreIndexWrapper:
@@ -62,7 +63,7 @@ class BlobStorageAgent(AgentBase):
         index = VectorstoreIndexCreator(embedding=embeddings).from_loaders(loaders)
         return index             
 
-    def __build_chat_history(self, messages:List[MessageHistoryItem]=None, human_label:str="Human", ai_label:str="Agent") -> str:
+    def build_chat_history(self, messages:List[MessageHistoryItem]=None, human_label:str="Human", ai_label:str="Agent") -> str:
         if messages is None or len(messages)==0:
             return ""        
         chat_history = "\n\nChat History:\n"
@@ -73,8 +74,6 @@ class BlobStorageAgent(AgentBase):
                 chat_history += human_label + ": " + msg.text + "\n"
         chat_history += "\n\n"
         return chat_history
-                    
- 
        
     def run(self, prompt: str) -> CompletionResponse:
         """
@@ -93,7 +92,7 @@ class BlobStorageAgent(AgentBase):
         """
         try:
             index = self.__get_vector_index()
-            query = self.prompt_prefix +"Request: "+ prompt + "\n"            
+            query = self.prompt_prefix + self.build_chat_history(self.message_history) + "Request: "+ prompt + "\n"            
             completion = index.query(query, self.llm)
        
             with get_openai_callback() as cb:
