@@ -1460,6 +1460,10 @@
       "type": "string",
       "value": "[concat('https://', reference(resourceId('Microsoft.App/containerApps', format('{0}chatuica', parameters('name'))), providers('Microsoft.App', 'containerApps').apiVersions[0]).configuration.ingress.fqdn)]"
     },
+    "webFqdn": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.App/containerApps', format('{0}chatuica', parameters('name'))), providers('Microsoft.App', 'containerApps').apiVersions[0]).configuration.ingress.fqdn]"
+    },
     "agentfactoryAcaName": {
       "type": "string",
       "value": "[format('{0}agentfactoryca', parameters('name'))]"

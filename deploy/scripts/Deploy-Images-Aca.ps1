@@ -62,7 +62,7 @@ $command = "az containerapp update --name $($deploymentOutputs.agentfactoryAcaNa
 Invoke-Expression "$command"
 
 Write-Host "AgentHubAPI deployment - agent-hub-api" -ForegroundColor Yellow
-$command = "az containerapp update --name $($deploymentOutputs.agenthubName.value) --resource-group $resourceGroup --image $acrLogin/agent-hub-api:$tag"
+$command = "az containerapp update --name $($deploymentOutputs.agenthubAcaName.value) --resource-group $resourceGroup --image $acrLogin/agent-hub-api:$tag"
 Invoke-Expression "$command"
 
 Write-Host "CoreAPI deployment - core-api" -ForegroundColor Yellow
