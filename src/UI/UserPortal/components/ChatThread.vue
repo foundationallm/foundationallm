@@ -69,7 +69,8 @@ export default {
 	},
 
 	watch: {
-		session() {
+		session(newSession, oldSession) {
+			if (newSession.id === oldSession.id) return;
 			this.getMessages();
 		}
 	},
