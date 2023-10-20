@@ -15,6 +15,7 @@
 						v-for="(message, index) in messages.slice().reverse()"
 						:key="message.id"
 						:message="message"
+						:showWordAnimation="index === 0 && userSentMessage && message.sender === 'Assistant'"
 						@rate="handleRateMessage(messages.length - 1 - index, $event)"
 					/>
 				</template>
@@ -65,6 +66,7 @@ export default {
 		return {
 			messages: [] as Array<Message>,
 			isLoading: true,
+			userSentMessage: false,
 		};
 	},
 
@@ -89,6 +91,8 @@ export default {
 		},
 
 		async handleSend(text: string) {
+			this.userSentMessage = true;
+
 			const tempUserMessage: Message = {
 				completionPromptId: null,
 				id: '',

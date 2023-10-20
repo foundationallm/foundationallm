@@ -20,7 +20,7 @@
 				<template v-if="message.sender === 'Assistant' && message.type === 'LoadingMessage'">
 					<i class="pi pi-spin pi-spinner"></i>
 				</template>
-				<span v-else>{{ message.text }}</span>
+				<span v-else>{{ displayText }}</span>
 			</div>
 
 			<div class="message__footer" v-if="message.sender !== 'User'">
@@ -28,6 +28,7 @@
 					<!-- Like -->
 					<span>
 						<Button
+							:disabled="message.type === 'LoadingMessage'"
 							size="small"
 							text
 							:icon="message.rating ? 'pi pi-thumbs-up-fill' : 'pi pi-thumbs-up'"
@@ -39,6 +40,7 @@
 					<!-- Dislike -->
 					<span>
 						<Button
+							:disabled="message.type === 'LoadingMessage'"
 							size="small"
 							text
 							:icon="message.rating === false ? 'pi pi-thumbs-down-fill' : 'pi pi-thumbs-down'"
@@ -51,6 +53,7 @@
 				<!-- View prompt -->
 				<span class="view-prompt">
 					<Button
+						:disabled="message.type === 'LoadingMessage'"
 						size="small"
 						text
 						icon="pi pi-book"
@@ -90,6 +93,11 @@ export default {
 			type: Object as PropType<Message>,
 			required: true,
 		},
+		showWordAnimation: {
+			type: Boolean,
+			required: false,
+			default: false,
+		}
 	},
 
 	emits: ['rate'],
@@ -98,10 +106,34 @@ export default {
 		return {
 			prompt: {} as CompletionPrompt,
 			viewPrompt: false,
+			displayText: '',
 		};
 	},
 
+	created() {
+		if (this.showWordAnimation) {
+			this.displayWordByWord();
+		} else {
+			this.displayText = this.message.text;
+		}
+	},
+
 	methods: {
+		displayWordByWord() {
+			const words = this.message.text.split(' ');
+			let index = 0;
+
+			const displayNextWord = () => {
+				if (index < words.length) {
+					this.displayText += words[index] + ' ';
+					index++;
+					setTimeout(displayNextWord, 10);
+				}
+			};
+
+			displayNextWord();
+		},
+
 		handleRate(message: Message, like: boolean) {
 			this.$emit('rate', { message, like: message.rating === like ? null : like })
 		},
