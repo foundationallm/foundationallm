@@ -9,6 +9,7 @@ locals {
 
   address_prefix = {
     ado = cidrsubnet(local.ops_parent_cidr, 5, 29)
+    ops = cidrsubnet(local.ops_parent_cidr, 5, 27)
     tfc = cidrsubnet(local.ops_parent_cidr, 5, 31)
   }
 
@@ -53,6 +54,32 @@ locals {
         source_port_range          = "*"
       }
     }
+  }
+
+  private_dns_zone = {
+    aks                  = "privatelink.${var.location}.azmk8s.io"
+    blob                 = "privatelink.blob.core.windows.net"
+    cognitiveservices    = "privatelink.cognitiveservices.azure.com"
+    configuration_stores = "privatelink.azconfig.io"
+    cosmosdb             = "privatelink.documents.azure.com"
+    cr                   = "privatelink.azurecr.io"
+    cr_region            = "${var.location}.privatelink.azurecr.io"
+    dfs                  = "privatelink.dfs.core.windows.net"
+    file                 = "privatelink.file.core.windows.net"
+    gateway              = "privatelink.azure-api.net"
+    gateway_developer    = "developer.azure-api.net"
+    gateway_management   = "management.azure-api.net"
+    gateway_portal       = "portal.azure-api.net"
+    gateway_public       = "azure-api.net"
+    gateway_scm          = "scm.azure-api.net"
+    monitor              = "privatelink.monitor.azure.com"
+    openai               = "privatelink.openai.azure.com"
+    queue                = "privatelink.queue.core.windows.net"
+    search               = "privatelink.search.windows.net"
+    sites                = "privatelink.azurewebsites.net"
+    sql_server           = "privatelink.database.windows.net"
+    table                = "privatelink.table.core.windows.net"
+    vault                = "privatelink.vaultcore.azure.net"
   }
 
   resource_group = {
@@ -112,6 +139,13 @@ locals {
             source_port_range          = "*"
           }
         })
+      }
+    }
+    ops = {
+      address_prefix = local.address_prefix["ops"]
+      nsg_rules = {
+        inbound  = merge(local.default_nsg_rules.inbound, {})
+        outbound = merge(local.default_nsg_rules.outbound, {})
       }
     }
     tfc = {
@@ -193,19 +227,23 @@ locals {
 data "tfe_ip_ranges" "tfc" {}
 
 ## Resources
+resource "azurerm_monitor_action_group" "do_nothing" {
+  name                = "${local.resource_prefix["ops"]}-ag"
+  resource_group_name = azurerm_resource_group.rg["ops"].name
+  short_name          = "do-nothing"
+  tags                = azurerm_resource_group.rg["ops"].tags
+}
+
+resource "azurerm_private_dns_zone" "private_dns" {
+  for_each = local.private_dns_zone
+
+  name                = each.value
+  resource_group_name = azurerm_resource_group.rg["net"].name
+  tags                = azurerm_resource_group.rg["net"].tags
+}
+
 resource "azurerm_resource_group" "rg" {
-  for_each = {
-    net = {
-      tags = {
-        "Purpose" = "Networking"
-      }
-    }
-    ops = {
-      tags = {
-        "Purpose" = "DevOps"
-      }
-    }
-  }
+  for_each = local.resource_group
 
   location = var.location
   name     = join("-", [local.resource_prefix[each.key], "rg"])
@@ -242,9 +280,33 @@ resource "azurerm_virtual_network" "network" {
   tags                = azurerm_resource_group.rg["net"].tags
 }
 
-# Agent
-
 ## Modules
+module "ampls" {
+  source = "./modules/monitor-private-link-scope"
+
+  resource_group  = azurerm_resource_group.rg["ops"]
+  resource_prefix = local.resource_prefix["ops"]
+  tags            = azurerm_resource_group.rg["ops"].tags
+
+  private_endpoint = {
+    subnet_id = azurerm_subnet.subnet["ops"].id
+    private_dns_zone_ids = [
+      azurerm_private_dns_zone.private_dns["blob"].id,
+      azurerm_private_dns_zone.private_dns["monitor"].id,
+    ]
+  }
+}
+
+module "logs" {
+  source = "./modules/log-analytics-workspace"
+
+  action_group_id                  = azurerm_monitor_action_group.do_nothing.id
+  azure_monitor_private_link_scope = module.ampls
+  resource_group                   = azurerm_resource_group.rg["ops"]
+  resource_prefix                  = local.resource_prefix["ops"]
+  tags                             = azurerm_resource_group.rg["ops"].tags
+}
+
 module "nsg" {
   for_each = azurerm_subnet.subnet
   source   = "./modules/nsg"
@@ -255,4 +317,16 @@ module "nsg" {
   rules_outbound  = local.subnet[each.key].nsg_rules.outbound
   subnet_id       = each.value.id
   tags            = azurerm_resource_group.rg["net"].tags
+}
+
+module "tfc_agent" {
+  source = "./modules/tfc-agent"
+
+  action_group_id         = azurerm_monitor_action_group.do_nothing.id
+  log_analytics_workspace = module.logs
+  resource_group          = azurerm_resource_group.rg["ops"]
+  resource_prefix         = "${local.resource_prefix["ops"]}-tfca"
+  subnet_id               = azurerm_subnet.subnet["tfc"].id
+  tags                    = azurerm_resource_group.rg["ops"].tags
+  tfc_agent_token         = var.tfc_agent_token
 }
