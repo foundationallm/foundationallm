@@ -34,77 +34,27 @@ az feature register --namespace Microsoft.Compute --name EncryptionAtHost
 
 The following input variables are required:
 
-### <a name="input_tfc_agent_token"></a> [tfc\_agent\_token](#input\_tfc\_agent\_token)
+### <a name="input_environment"></a> [environment](#input\_environment)
 
-Description: The token used by the agent to authenticate with Terraform Cloud.
+Description: The environment name.
+
+Type: `string`
+
+### <a name="input_location"></a> [location](#input\_location)
+
+Description: The location to deploy Azure resources.
+
+Type: `string`
+
+### <a name="input_project_id"></a> [project\_id](#input\_project\_id)
+
+Description: The project identifier.
 
 Type: `string`
 
 ## Optional Inputs
 
-The following input variables are optional (have default values):
-
-### <a name="input_environment"></a> [environment](#input\_environment)
-
-Description: The environment name
-
-Type: `string`
-
-Default: `"DEMO"`
-
-### <a name="input_global_location"></a> [global\_location](#input\_global\_location)
-
-Description: The global location
-
-Type: `string`
-
-Default: `"East US"`
-
-### <a name="input_project_id"></a> [project\_id](#input\_project\_id)
-
-Description: The project id
-
-Type: `string`
-
-Default: `"FLLM"`
-
-### <a name="input_public_domain"></a> [public\_domain](#input\_public\_domain)
-
-Description: Public DNS domain
-
-Type: `string`
-
-Default: `"internal.foundationallm.ai"`
-
-### <a name="input_sql_admin_ad_group"></a> [sql\_admin\_ad\_group](#input\_sql\_admin\_ad\_group)
-
-Description: SQL Admin AD group
-
-Type:
-
-```hcl
-object({
-    name      = string
-    object_id = string
-  })
-```
-
-Default:
-
-```json
-{
-  "name": "FoundationaLLM SQL Admins",
-  "object_id": "73d59f98-857b-45e7-950b-5ee30d289bc8"
-}
-```
-
-### <a name="input_tags"></a> [tags](#input\_tags)
-
-Description: The tags to use on each resource
-
-Type: `map(string)`
-
-Default: `{}`
+No optional inputs.
 
 ## Outputs
 
@@ -112,7 +62,10 @@ No outputs.
 
 ## Resources
 
-No resources.
+The following resources are used by this module:
+
+- [azurerm_private_dns_zone.private_dns](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) (data source)
+- [azurerm_resource_group.rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) (data source)
 
 ## Requirements
 
@@ -120,29 +73,15 @@ The following requirements are needed by this module:
 
 - <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.6)
 
-- <a name="requirement_acme"></a> [acme](#requirement\_acme) (~> 2.0)
-
 - <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 3.65)
-
-- <a name="requirement_tfe"></a> [tfe](#requirement\_tfe) (~> 0.49)
 
 ## Providers
 
-No providers.
+The following providers are used by this module:
+
+- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (3.77.0)
 
 ## Modules
 
-The following Modules are called:
-
-### <a name="module_global"></a> [global](#module\_global)
-
-Source: ./global
-
-Version:
-
-### <a name="module_regions"></a> [regions](#module\_regions)
-
-Source: ./region
-
-Version:
+No modules.
 <!-- END_TF_DOCS -->
