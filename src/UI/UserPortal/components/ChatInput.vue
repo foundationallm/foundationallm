@@ -2,18 +2,27 @@
 	<div class="chat-input p-inputgroup">
 		<InputText
 			v-model="text"
+			:disabled="disabled"
 			class="input"
 			type="text"
 			placeholder="What would you like to ask?"
 			@keydown.enter="handleSend"
 		/>
-		<Button class="submit" icon="pi pi-send" label="Send" @click="handleSend" />
+		<Button :disabled="disabled" class="submit" icon="pi pi-send" label="Send" @click="handleSend" />
 	</div>
 </template>
 
 <script lang="ts">
 export default {
 	name: 'ChatInput',
+
+	props: {
+		disabled: {
+			type: Boolean,
+			required: false,
+			default: false,
+		}
+	},
 
 	emits: ['send'],
 
