@@ -69,18 +69,18 @@ export default {
 	},
 
 	watch: {
-		session(newSession, oldSession) {
+		async session(newSession, oldSession) {
 			if (newSession.id === oldSession.id) return;
-			this.getMessages();
+			this.isLoading = true;
+			await this.getMessages();
+			this.isLoading = false;
 		}
 	},
 
 	methods: {
 		async getMessages() {
-			this.isLoading = true;
 			const data = await api.getMessages(this.session!.id);
 			this.messages = data;
-			this.isLoading = false;
 		},
 
 		async handleRateMessage(messageIndex: number, { message, like }: { message: Message; like: Message['rating'] }) {
@@ -102,6 +102,21 @@ export default {
 				vector: [],
 			};
 			this.messages.push(tempUserMessage);
+
+			const tempAssistantMessage: Message = {
+				completionPromptId: null,
+				id: '',
+				rating: null,
+				sender: 'Assistant',
+				sessionId: this.session!.id,
+				text: 'Loading...',
+				timeStamp: new Date().toISOString(),
+				tokens: 0,
+				type: 'Message',
+				vector: [],
+			};
+			this.messages.push(tempAssistantMessage);
+
 
 			await api.sendMessage(this.session!.id, text);
 			await this.getMessages();
