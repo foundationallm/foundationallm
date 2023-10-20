@@ -2,7 +2,7 @@
 	<div :style="style" class="chat-app">
 		<Navbar :currentSession="currentSession" @collapse-sidebar="collapseSidebar" />
 		<div class="chat-content">
-			<ChatSidebar ref="sidebar" :currentSession="currentSession" @change-session="handleChangeSession" v-show="!closeSidebar" />
+			<ChatSidebar v-show="!closeSidebar" ref="sidebar" :currentSession="currentSession" @change-session="handleChangeSession" @session-updated="handleSessionUpdated" />
 			<ChatThread :session="currentSession" :sidebar-closed="closeSidebar" @update-session="handleUpdateSession" />
 		</div>
 	</div>
@@ -35,6 +35,10 @@ export default {
 	},
 
 	methods: {
+		handleSessionUpdated(session: Session) {
+			this.currentSession = session;
+		},
+
 		handleChangeSession(session: Session) {
 			const query = { chat: session.id };
 			this.$router.push({ query });

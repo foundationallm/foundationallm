@@ -106,7 +106,7 @@ export default {
 		}
 	},
 
-	emits: ['change-session'],
+	emits: ['change-session', 'session-updated'],
 
 	expose: ['getSessions'],
 
@@ -150,6 +150,7 @@ export default {
 			const sessionIndex = this.sessions.findIndex((session) => session.id === updatedSession.id);
 			this.sessions[sessionIndex] = updatedSession;
 			this.sessionToRename = null;
+			this.$emit('session-updated', updatedSession);
 		},
 
 		async handleAddSession() {
