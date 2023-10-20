@@ -28,41 +28,7 @@ az feature register --namespace Microsoft.Compute --name EncryptionAtHost
 ```
 
 <!-- BEGIN_TF_DOCS -->
-## Requirements
 
-The following requirements are needed by this module:
-
-- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.6)
-
-- <a name="requirement_acme"></a> [acme](#requirement\_acme) (~> 2.0)
-
-- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 3.65)
-
-- <a name="requirement_tfe"></a> [tfe](#requirement\_tfe) (~> 0.49)
-
-## Providers
-
-No providers.
-
-## Modules
-
-The following Modules are called:
-
-### <a name="module_global"></a> [global](#module\_global)
-
-Source: ./global
-
-Version:
-
-### <a name="module_regions"></a> [regions](#module\_regions)
-
-Source: ./region
-
-Version:
-
-## Resources
-
-No resources.
 
 ## Required Inputs
 
@@ -143,4 +109,40 @@ Default: `{}`
 ## Outputs
 
 No outputs.
+
+## Resources
+
+No resources.
+
+## Requirements
+
+The following requirements are needed by this module:
+
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.6)
+
+- <a name="requirement_acme"></a> [acme](#requirement\_acme) (~> 2.0)
+
+- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 3.65)
+
+- <a name="requirement_tfe"></a> [tfe](#requirement\_tfe) (~> 0.49)
+
+## Providers
+
+No providers.
+
+## Modules
+
+The following Modules are called:
+
+### <a name="module_global"></a> [global](#module\_global)
+
+Source: ./global
+
+Version:
+
+### <a name="module_regions"></a> [regions](#module\_regions)
+
+Source: ./region
+
+Version:
 <!-- END_TF_DOCS -->

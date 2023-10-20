@@ -81,6 +81,12 @@ Source: ./modules/monitor-private-link-scope
 
 Version:
 
+### <a name="module_application_insights"></a> [application\_insights](#module\_application\_insights)
+
+Source: ./modules/application-insights
+
+Version:
+
 ### <a name="module_logs"></a> [logs](#module\_logs)
 
 Source: ./modules/log-analytics-workspace

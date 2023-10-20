@@ -8,8 +8,15 @@ locals {
   vnet_address_space = var.vnet_address_space
 }
 
+# Data Sources
 data "azurerm_client_config" "current" {}
 
+data "azurerm_log_analytics_workspace" "logs" {
+  name                = "${local.resource_prefix}-OPS-la"
+  resource_group_name = azurerm_resource_group.rgs["OPS"].name
+}
+
+# Resources
 resource "azurerm_monitor_action_group" "do_nothing" {
   name                = "${local.resource_prefix}-ag"
   resource_group_name = azurerm_resource_group.rgs["OPS"].name
@@ -45,12 +52,13 @@ resource "azurerm_user_assigned_identity" "agw" {
   tags                = local.tags
 }
 
+# Modules
 module "ado_agent" {
   source = "./modules/azure-devops-agent"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
   data_collection_rule_id    = module.logs.data_collection_rule_id
-  log_analytics_workspace_id = module.logs.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rgs["OPS"]
   resource_prefix            = "${local.resource_prefix}-ado"
   subnet_id                  = azurerm_subnet.subnets["Agents"].id
@@ -58,27 +66,12 @@ module "ado_agent" {
 
 }
 
-module "ampls" {
-  source = "./modules/monitor-private-link-scope"
-
-  resource_group  = azurerm_resource_group.rgs["OPS"]
-  resource_prefix = local.resource_prefix
-  tags            = local.tags
-
-  private_endpoint = {
-    subnet_id = azurerm_subnet.subnets["Services"].id
-    private_dns_zone_ids = [
-      var.private_dns_zones["privatelink.blob.core.windows.net"].id,
-      var.private_dns_zones["privatelink.monitor.azure.com"].id,
-    ]
-  }
-}
 
 module "appconfig" {
   source = "./modules/app-config"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = module.logs.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   encryption_keyvault_id     = module.ops_keyvault.id
   resource_group             = azurerm_resource_group.rgs["OPS"]
   resource_prefix            = local.resource_prefix
@@ -101,7 +94,7 @@ module "application_gateway" {
   hostname                   = local.hostname
   identity_id                = azurerm_user_assigned_identity.agw.id
   key_vault_secret_id        = module.application_gateway_certificate.certificate_secret_id
-  log_analytics_workspace_id = module.logs.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   public_dns_zone            = var.public_dns_zone
   resource_group             = azurerm_resource_group.rgs["AppGateway"]
   resource_prefix            = local.resource_prefix
@@ -118,20 +111,7 @@ module "application_gateway_certificate" {
   public_dns_zone     = var.public_dns_zone
 }
 
-module "application_insights" {
-  source = "./modules/application-insights"
 
-  action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = module.logs.id
-  resource_group             = azurerm_resource_group.rgs["OPS"]
-  resource_prefix            = local.resource_prefix
-  tags                       = local.tags
-
-  azure_monitor_private_link_scope = {
-    name                = module.ampls.name
-    resource_group_name = azurerm_resource_group.rgs["OPS"].name
-  }
-}
 
 module "backend_aks" {
   source = "./modules/aks"
@@ -139,7 +119,7 @@ module "backend_aks" {
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
   agw_id                     = module.application_gateway.id
   aks_admin_object_id        = var.sql_admin_ad_group.object_id
-  log_analytics_workspace_id = module.logs.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rgs["APP"]
   resource_prefix            = "${local.resource_prefix}-BACKEND"
   tags                       = local.tags
@@ -158,7 +138,7 @@ module "data_storage" {
   source = "./modules/storage-account"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = module.logs.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rgs["Data"]
   resource_prefix            = "${local.resource_prefix}-DATA"
   tags                       = local.tags
@@ -180,7 +160,7 @@ module "content_safety" {
   source = "./modules/content-safety"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = module.logs.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rgs["OPS"]
   resource_prefix            = "${local.resource_prefix}-FLLM"
   tags                       = local.tags
@@ -197,7 +177,7 @@ module "cosmosdb" {
   source = "./modules/cosmosdb"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = module.logs.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rgs["FLLMStorage"]
   resource_prefix            = "${local.resource_prefix}-FLLM"
   tags                       = local.tags
@@ -237,7 +217,7 @@ module "container_registry" {
   source = "./modules/container-registry"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = module.logs.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rgs["OPS"]
   resource_prefix            = local.resource_prefix
   tags                       = local.tags
@@ -255,7 +235,7 @@ module "data_cosmosdb" {
   source = "./modules/cosmosdb"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = module.logs.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rgs["Data"]
   resource_prefix            = "${local.resource_prefix}-DATA"
   tags                       = local.tags
@@ -297,7 +277,7 @@ module "frontend_aks" {
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
   agw_id                     = module.application_gateway.id
   aks_admin_object_id        = var.sql_admin_ad_group.object_id
-  log_analytics_workspace_id = module.logs.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rgs["APP"]
   resource_prefix            = "${local.resource_prefix}-FRONTEND"
   tags                       = local.tags
@@ -317,7 +297,7 @@ module "ha_openai" {
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
   instance_count             = 4
-  log_analytics_workspace_id = module.logs.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rgs["OAI"]
   resource_prefix            = "${local.resource_prefix}-OAI"
   tags                       = local.tags
@@ -340,25 +320,13 @@ module "ha_openai" {
   }
 }
 
-module "logs" {
-  source = "./modules/log-analytics-workspace"
 
-  action_group_id = azurerm_monitor_action_group.do_nothing.id
-  resource_group  = azurerm_resource_group.rgs["OPS"]
-  resource_prefix = local.resource_prefix
-  tags            = local.tags
-
-  azure_monitor_private_link_scope = {
-    name                = module.ampls.name
-    resource_group_name = azurerm_resource_group.rgs["OPS"].name
-  }
-}
 
 module "ops_keyvault" {
   source = "./modules/keyvault"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = module.logs.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rgs["OPS"]
   resource_prefix            = "${local.resource_prefix}-OPS"
   tags                       = local.tags
@@ -375,7 +343,7 @@ module "search" {
   source = "./modules/search"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = module.logs.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rgs["VEC"]
   resource_prefix            = local.resource_prefix
   tags                       = local.tags
@@ -392,7 +360,7 @@ module "sql" {
   source = "./modules/mssql-server"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = module.logs.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rgs["Data"]
   resource_prefix            = local.resource_prefix
   sql_admin_object_id        = var.sql_admin_ad_group.object_id
@@ -410,7 +378,7 @@ module "storage" {
   source = "./modules/storage-account"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = module.logs.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rgs["FLLMStorage"]
   resource_prefix            = "${local.resource_prefix}-FLLM-prompt"
   tags                       = local.tags
@@ -432,7 +400,7 @@ module "storage_ops" {
   source = "./modules/storage-account"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = module.logs.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rgs["OPS"]
   resource_prefix            = "${local.resource_prefix}-ops"
   tags                       = local.tags
@@ -448,16 +416,4 @@ module "storage_ops" {
       web   = [var.private_dns_zones["privatelink.azurewebsites.net"].id]
     }
   }
-}
-
-module "tfc_agent" {
-  source = "./modules/tfc-agent"
-
-  action_group_id         = azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace = module.logs
-  resource_group          = azurerm_resource_group.rgs["OPS"]
-  resource_prefix         = "${local.resource_prefix}-tfca"
-  subnet_id               = azurerm_subnet.subnets["tfc"].id
-  tags                    = local.tags
-  tfc_agent_token         = var.tfc_agent_token
 }

@@ -318,6 +318,17 @@ module "ampls" {
   }
 }
 
+module "application_insights" {
+  source = "./modules/application-insights"
+
+  action_group_id                  = azurerm_monitor_action_group.do_nothing.id
+  azure_monitor_private_link_scope = module.ampls
+  log_analytics_workspace_id       = module.logs.id
+  resource_group                   = azurerm_resource_group.rg["ops"]
+  resource_prefix                  = local.resource_prefix["ops"]
+  tags                             = azurerm_resource_group.rg["ops"].tags
+}
+
 module "logs" {
   source = "./modules/log-analytics-workspace"
 
