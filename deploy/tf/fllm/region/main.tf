@@ -18,13 +18,7 @@ data "azurerm_log_analytics_workspace" "logs" {
 
 # Resources
 
-resource "azurerm_resource_group" "rgs" {
-  for_each = var.resource_groups
 
-  location = local.location
-  name     = join("-", [local.resource_prefix, each.key, "rg"])
-  tags     = merge(each.value.tags, local.tags)
-}
 
 resource "azurerm_role_assignment" "keyvault_secrets_user_agw" {
   principal_id         = azurerm_user_assigned_identity.agw.principal_id

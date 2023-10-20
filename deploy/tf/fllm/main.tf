@@ -1,7 +1,16 @@
 locals {
-  resource_prefix = { for k, _ in local.resource_group : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
+  resource_prefix         = { for k, _ in local.resource_group : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
+  resource_prefix_backend = { for k, _ in local.resource_group_backend : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
 
   resource_group = {
+    agw = {
+      tags = {
+        "Purpose" = "Networking"
+      }
+    }
+  }
+
+  resource_group_backend = {
     dns = null
     ops = null
   }
@@ -9,6 +18,12 @@ locals {
   short_location = local.short_locations[var.location]
   short_locations = {
     eastus = "EUS"
+  }
+
+  tags = {
+    "Environment" = var.environment
+    "Project"     = var.project_id
+    "Workspace"   = terraform.workspace
   }
 }
 
@@ -19,8 +34,8 @@ data "azurerm_dns_zone" "public_dns" {
 }
 
 data "azurerm_monitor_action_group" "do_nothing" {
-  name                = "${local.resource_prefix["ops"]}-ag"
-  resource_group_name = data.azurerm_resource_group.rg["ops"].name
+  name                = "${local.resource_prefix_backend["ops"]}-ag"
+  resource_group_name = data.azurerm_resource_group.backend["ops"].name
 }
 
 data "azurerm_private_dns_zone" "private_dns" {
@@ -51,32 +66,30 @@ data "azurerm_private_dns_zone" "private_dns" {
   }
 
   name                = each.value
-  resource_group_name = data.azurerm_resource_group.rg["dns"].name
+  resource_group_name = data.azurerm_resource_group.backend["dns"].name
 }
 
-data "azurerm_resource_group" "rg" {
-  for_each = local.resource_group
+data "azurerm_resource_group" "backend" {
+  for_each = local.resource_group_backend
 
-  name = "${local.resource_prefix[each.key]}-rg"
+  name = "${local.resource_prefix_backend[each.key]}-rg"
 }
 
 # Resources
+resource "azurerm_resource_group" "rg" {
+  for_each = local.resource_group
+
+  location = var.location
+  name     = "${local.resource_prefix[each.key]}-rg"
+  tags     = merge(each.value.tags, local.tags)
+}
+
 # Modules
 
 # locals {
-#   environment     = var.environment
-#   global_location = var.global_location
-#   project_id      = var.project_id
-#   public_domain   = var.public_domain
 #   resource_prefix = join("-", [local.project_id, local.environment])
 
-#   global_resource_groups = {
-#     "DNS" = {
-#       tags = {
-#         "Purpose" = "Networking"
-#       }
-#     }
-#   }
+
 
 #   regional_resource_groups = {
 #     "APP" = {
@@ -84,11 +97,7 @@ data "azurerm_resource_group" "rg" {
 #         "Purpose" = "Application"
 #       }
 #     }
-#     "AppGateway" = {
-#       tags = {
-#         "Purpose" = "Networking"
-#       }
-#     }
+
 #     "Data" = {
 #       tags = {
 #         "Purpose" = "Storage"
