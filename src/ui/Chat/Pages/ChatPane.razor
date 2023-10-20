@@ -41,7 +41,7 @@
 
     <div class="top-row row px-4 auth">
         <div class="col text-start">
-            <h6 class="px-4 display-6 text-secondary p-2">@GetChatSessionName()</h6>
+            <h6 class="px-4 display-6 text-secondary p-2">@GetChatSessionName() </h6>
         </div>
         <div class="col text-end mt-2">
             <LoginDisplay/>
@@ -127,11 +127,17 @@
                                     </small>
                                 </div>
                                 <div class="toast-body">
-                                    <i class="bi bi-grip-vertical mr-2 text-black-50"></i>
-                                    @{
+                                    @if(msg.Text == "Loading")
+                                    {
+                                        <div class="spinner-grow spinner-grow-sm" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    }else
+                                    {
+                                        <i class="bi bi-grip-vertical mr-2 text-black-50"></i>
                                         MarkupString html = new MarkupString(msg.Text.Replace("\n", "<br />"));
+                                        @html
                                     }
-                                    @html
                                 </div>
                                 @if (msg.Sender == nameof(Participants.Assistant))
                                 {
@@ -253,6 +259,7 @@
     private static event EventHandler<Session>? _onMessagePosted;
     private bool _loadingComplete;
 
+    private bool _loadingCompletion = false;
     private bool _completionPromptPopUpOpen = false;
     private string _completionPromptContent = string.Empty;
 
@@ -297,7 +304,7 @@
             return;
         }
 
-        if (CurrentSession.SessionId != Interface.EMPTY_SESSION & CurrentSession.SessionId is not null)
+        if (CurrentSession.SessionId != Interface.EMPTY_SESSION & CurrentSession.SessionId is not null & !_loadingCompletion)
         {
             _messagesInChat = await chatManager.GetChatSessionMessagesAsync(CurrentSession?.SessionId);
         }
@@ -361,7 +368,16 @@
             UserPromptSet = string.Empty;
         }
 
-        await chatManager.GetChatCompletionAsync(CurrentSession?.SessionId, UserPrompt);
+        await SimulatePrompts();
+
+        var response = await chatManager.GetChatCompletionAsync(CurrentSession?.SessionId, UserPrompt);
+        _loadingCompletion = false;
+
+        if(_messagesInChat.Count() > 0)
+        {
+            _messagesInChat.Last().Text = response;
+        }
+
         UserPrompt = string.Empty;
 
         if (_messagesInChat?.Count == 2)
@@ -381,6 +397,15 @@
             _onMessagePosted.Invoke(null, CurrentSession);
         }
 
+        await ScrollLastChatToView();
+    }
+
+    private async Task SimulatePrompts()
+    {
+        _loadingCompletion = true;
+        _messagesInChat.Add(new Message(CurrentSession?.SessionId, "User", 0, UserPrompt, null, null));
+        _messagesInChat.Add(new Message(CurrentSession?.SessionId, "Assistant", 0, "Loading", null, null));
+        await OnChatUpdated.InvokeAsync();
         await ScrollLastChatToView();
     }
 
