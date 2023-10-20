@@ -35,7 +35,7 @@
 
 		<!-- Chat input -->
 		<div class="chat-thread__input">
-			<ChatInput @send="handleSend" />
+			<ChatInput :disabled="isLoading" @send="handleSend" />
 		</div>
 	</div>
 </template>
