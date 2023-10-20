@@ -17,7 +17,10 @@
 
 			<!-- Message text -->
 			<div class="message__body">
-				{{ message.text }}
+				<template v-if="message.sender === 'Assistant' && message.type === 'LoadingMessage'">
+					<i class="pi pi-spin pi-spinner"></i>
+				</template>
+				<span v-else>{{ message.text }}</span>
 			</div>
 
 			<div class="message__footer" v-if="message.sender !== 'User'">

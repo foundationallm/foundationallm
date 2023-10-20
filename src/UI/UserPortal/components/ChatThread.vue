@@ -109,14 +109,13 @@ export default {
 				rating: null,
 				sender: 'Assistant',
 				sessionId: this.session!.id,
-				text: 'Loading...',
+				text: '',
 				timeStamp: new Date().toISOString(),
 				tokens: 0,
-				type: 'Message',
+				type: 'LoadingMessage',
 				vector: [],
 			};
 			this.messages.push(tempAssistantMessage);
-
 
 			await api.sendMessage(this.session!.id, text);
 			await this.getMessages();
