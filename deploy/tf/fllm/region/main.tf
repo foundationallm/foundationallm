@@ -18,14 +18,6 @@ data "azurerm_log_analytics_workspace" "logs" {
 
 # Resources
 
-
-
-resource "azurerm_role_assignment" "keyvault_secrets_user_agw" {
-  principal_id         = azurerm_user_assigned_identity.agw.principal_id
-  role_definition_name = "Key Vault Secrets User"
-  scope                = azurerm_resource_group.rgs["OPS"].id
-}
-
 # TODO: need principal ID for the following
 # resource "azurerm_role_assignment" "storgage_blob_data_contributor_diagnostic_services" {
 #   principal_id         = "562db366-1b96-45d2-aa4a-f2148cef2240"
@@ -33,15 +25,7 @@ resource "azurerm_role_assignment" "keyvault_secrets_user_agw" {
 #   scope                = azurerm_resource_group.rgs["OPS"].id
 # }
 
-resource "azurerm_user_assigned_identity" "agw" {
-  location            = azurerm_resource_group.rgs["AppGateway"].location
-  name                = "${var.resource_prefix}-agw-uai"
-  resource_group_name = azurerm_resource_group.rgs["AppGateway"].name
-  tags                = local.tags
-}
-
 # Modules
-
 
 module "appconfig" {
   source = "./modules/app-config"

@@ -84,6 +84,19 @@ resource "azurerm_resource_group" "rg" {
   tags     = merge(each.value.tags, local.tags)
 }
 
+resource "azurerm_role_assignment" "keyvault_secrets_user_agw" {
+  principal_id         = azurerm_user_assigned_identity.agw.principal_id
+  role_definition_name = "Key Vault Secrets User"
+  scope                = data.azurerm_resource_group.backend["ops"].id
+}
+
+resource "azurerm_user_assigned_identity" "agw" {
+  location            = azurerm_resource_group.rg["agw"].location
+  name                = "${local.resource_prefix["agw"]}-agw-uai"
+  resource_group_name = azurerm_resource_group.rg["agw"].name
+  tags                = azurerm_resource_group.rg["agw"].tags
+}
+
 # Modules
 
 # locals {
