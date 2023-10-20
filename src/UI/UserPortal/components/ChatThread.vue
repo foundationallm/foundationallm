@@ -91,6 +91,8 @@ export default {
 		},
 
 		async handleSend(text: string) {
+			if (!text) return;
+
 			this.userSentMessage = true;
 
 			const tempUserMessage: Message = {
