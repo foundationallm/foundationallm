@@ -1,13 +1,15 @@
 <template>
-	<div class="navbar">
+	<div class="navbar" :class="{ 'navbar-collapsed': collapseSidebar }">
 		<!-- Sidebar header -->
 		<div class="navbar__header">
 			<img :src="logoURL" />
 			<!-- <span>{{ logoText }}</span> -->
-			<Button icon="pi pi-arrow-right" size="small" severity="secondary" @click="collapseSidebar(false)" v-if="collapsedSidebar" />
-			<Button icon="pi pi-arrow-left" size="small" severity="secondary" @click="collapseSidebar(true)" v-else />
+			<Button v-if="collapsedSidebar" icon="pi pi-arrow-right" size="small" severity="secondary" @click="collapseSidebar(false)" />
+			<Button v-else icon="pi pi-arrow-left" size="small" severity="secondary" @click="collapseSidebar(true)" />
 		</div>
-		<div :class="!collapsedSidebar ? 'navbar__content' : 'navbar__content collapsed'">
+
+		<!-- Sidebar -->
+		<div class="navbar__content">
 			<div class="navbar__content__left">
 				<div class="navbar__content__left__item">
 					<template v-if="currentSession">
@@ -26,10 +28,16 @@
 					</template>
 				</div>
 			</div>
+
+			<!-- Right side content -->
 			<div class="navbar__content__right">
+
+				<!-- Auth button -->
 				<div v-if="!signedIn" class="navbar__content__right__item">
 					<Button class="button--auth" icon="pi pi-sign-in" label="Sign In" @click="signIn()"></Button>
 				</div>
+
+				<!-- Logged in user name -->
 				<div v-else class="navbar__content__right__item">
 					<span>Welcome {{ accountName }}</span>
 					<Button class="button--auth" icon="pi pi-sign-out" label="Sign Out" @click="signOut()"></Button>
@@ -127,6 +135,14 @@ export default {
 	box-shadow: 0 5px 10px 0 rgba(27, 29, 33, 0.1);
 }
 
+.navbar--collapsed {
+	.navbar__content {
+		background-color: var(--primary-color);
+		justify-content: flex-end;
+		border-bottom: none;
+	}
+}
+
 .navbar__header {
 	width: 300px;
 	padding-right: 24px;
@@ -155,12 +171,6 @@ export default {
 	padding: 24px;
 	border-bottom: 1px solid #EAEAEA;
 	background-color: var(--accent-color);
-}
-
-.navbar__content--collapsed {
-	background-color: var(--primary-color);
-	justify-content: flex-end;
-	border-bottom: none;
 }
 
 .navbar__content__left__item {
