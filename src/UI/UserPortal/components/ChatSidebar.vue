@@ -124,7 +124,9 @@ export default {
 
 	async created() {
 		await this.getSessions();
-		this.handleSessionSelected(this.sessions[0]);
+		const sessionId = this.$nuxt._route.query.chat;
+		const existingSession = this.sessions.find((session: Session) => session.id === sessionId);
+		this.handleSessionSelected(existingSession || this.sessions[0]);
 	},
 
 	methods: {
