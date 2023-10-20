@@ -5,7 +5,7 @@ locals {
   # 10.0.252.0/22,10.0.252.0-10.0.255.255,1024 addresses
   ops_parent_cidr = cidrsubnet(local.network_cidr, 6, 63)
 
-  resource_prefix = { for k, _ in local.resource_group : k => join("-", [var.project_id, var.environment, upper(k)]) }
+  resource_prefix = { for k, _ in local.resource_group : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
 
   address_prefix = {
     ado = cidrsubnet(local.ops_parent_cidr, 5, 29)
@@ -83,6 +83,11 @@ locals {
   }
 
   resource_group = {
+    dns = {
+      tags = {
+        "Purpose" = "Networking"
+      }
+    }
     net = {
       tags = {
         "Purpose" = "Networking"
@@ -93,6 +98,11 @@ locals {
         "Purpose" = "DevOps"
       }
     }
+  }
+
+  short_location = local.short_locations[var.location]
+  short_locations = {
+    eastus = "EUS"
   }
 
   subnet = {
@@ -220,6 +230,7 @@ locals {
   tags = {
     "Environment" = var.environment
     "Project"     = var.project_id
+    "Workspace"   = terraform.workspace
   }
 }
 
@@ -238,8 +249,18 @@ resource "azurerm_private_dns_zone" "private_dns" {
   for_each = local.private_dns_zone
 
   name                = each.value
-  resource_group_name = azurerm_resource_group.rg["net"].name
-  tags                = azurerm_resource_group.rg["net"].tags
+  resource_group_name = azurerm_resource_group.rg["dns"].name
+  tags                = azurerm_resource_group.rg["dns"].tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "link" {
+  for_each = azurerm_private_dns_zone.private_dns
+
+  name                  = each.value.name
+  private_dns_zone_name = each.value.name
+  resource_group_name   = each.value.resource_group_name
+  tags                  = each.value.tags
+  virtual_network_id    = azurerm_virtual_network.network.id
 }
 
 resource "azurerm_resource_group" "rg" {
