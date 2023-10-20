@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FoundationaLLM.AgentFactory.API.Controllers
 {
+    /// <summary>
+    /// OrchestrationController class
+    /// </summary>
     [ApiVersion(1.0)]
     [ApiController]
     [APIKeyAuthentication]
@@ -15,6 +18,12 @@ namespace FoundationaLLM.AgentFactory.API.Controllers
         private readonly IAgentFactoryService _agentFactoryService;
         private readonly ILogger<OrchestrationController> _logger;
 
+
+        /// <summary>
+        /// Constructor for the Agent Factory orchestration controller
+        /// </summary>
+        /// <param name="agentFactoryService"></param>
+        /// <param name="logger"></param>
         public OrchestrationController(
             IAgentFactoryService agentFactoryService,
             ILogger<OrchestrationController> logger)
@@ -23,30 +32,26 @@ namespace FoundationaLLM.AgentFactory.API.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Retrieves a completion from an orchestration service
+        /// </summary>
+        /// <param name="completionRequest"></param>
+        /// <returns></returns>
         [HttpPost("completion")]
         public async Task<CompletionResponse> GetCompletion([FromBody] CompletionRequest completionRequest)
         {
             return await _agentFactoryService.GetCompletion(completionRequest);
         }
 
-        [HttpPost("summarize")]
+        /// <summary>
+        /// Gets a summary from the Agent Factory
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        [HttpPost("summary")]
         public async Task<SummaryResponse> GetSummary([FromBody] SummaryRequest content)
         {
             return await _agentFactoryService.GetSummary(content);
-        }
-
-        [HttpPost("preference", Name = "SetOrchestratorChoice")]
-        public async Task<bool> SetPreference([FromBody] string orchestrationService)
-        {
-            var orchestrationPreferenceSet = _agentFactoryService.SetLLMOrchestrationPreference(orchestrationService);
-
-            if (orchestrationPreferenceSet)
-            {
-                return true;
-            }
-
-            _logger.LogError($"The LLM orchestrator {orchestrationService} is not supported.");
-            return false;
         }
     }
 }

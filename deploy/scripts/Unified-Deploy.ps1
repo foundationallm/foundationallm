@@ -12,7 +12,7 @@ Param(
     [parameter(Mandatory=$false)][string]$openAiEmbeddingsDeployment=$null,
     [parameter(Mandatory=$false)][bool]$stepDeployArm=$true,
     [parameter(Mandatory=$false)][bool]$stepDeployOpenAi=$true,
-    [parameter(Mandatory=$false)][bool]$deployAks=$false,
+    [parameter(Mandatory=$false)][bool]$deployAks=$true,
     [parameter(Mandatory=$false)][bool]$stepBuildPush=$true,
     [parameter(Mandatory=$false)][bool]$stepDeployCertManager=$true,
     [parameter(Mandatory=$false)][bool]$stepDeployTls=$true,
@@ -105,7 +105,7 @@ if ($stepDeployArm) {
         }
     }
     # Deploy ARM
-    & ./Deploy-Arm-Azure.ps1 -resourceGroup $resourceGroup -location $location -template $armTemplate -deployAks $deployAks -openAiEndpoint $openAi.properties.endpoint -openAiKey $openAiKey -openAiCompletionsDeployment $openAiCompletionsDeployment -openAiEmbeddingsDeployment $openAiEmbeddingsDeployment
+    & ./Deploy-Arm-Azure.ps1 -resourcePrefix $resourcePrefix -resourceGroup $resourceGroup -location $location -template $armTemplate -deployAks $deployAks -openAiEndpoint $openAi.properties.endpoint -openAiKey $openAiKey -openAiCompletionsDeployment $openAiCompletionsDeployment -openAiEmbeddingsDeployment $openAiEmbeddingsDeployment
 }
 
 if ($deployAks)

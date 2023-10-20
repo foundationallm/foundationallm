@@ -94,7 +94,7 @@ namespace FoundationaLLM.Core.Services
             _leases = database?.GetContainer(_settings.ChangeFeedLeaseContainer)
                 ?? throw new ArgumentException($"Unable to connect to the {_settings.ChangeFeedLeaseContainer} container required to listen to the CosmosDB change feed.");
 
-            Task.Run(() => StartChangeFeedProcessors());
+            //Task.Run(() => StartChangeFeedProcessors());
             _logger.LogInformation("Cosmos DB service initialized.");
         }
 
@@ -196,11 +196,12 @@ namespace FoundationaLLM.Core.Services
         /// <summary>
         /// Gets a list of all current chat sessions.
         /// </summary>
+        /// <param name="type">Identifier for kiosk and normal session.</param>
         /// <returns>List of distinct chat session items.</returns>
-        public async Task<List<Session>> GetSessionsAsync()
+        public async Task<List<Session>> GetSessionsAsync(string type)
         {
             QueryDefinition query = new QueryDefinition("SELECT DISTINCT * FROM c WHERE c.type = @type")
-                .WithParameter("@type", nameof(Session));
+                .WithParameter("@type", type);
 
             FeedIterator<Session> response = _completions.GetItemQueryIterator<Session>(query);
 

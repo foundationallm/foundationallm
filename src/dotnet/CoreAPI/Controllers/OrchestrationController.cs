@@ -1,12 +1,14 @@
 ﻿using Asp.Versioning;
-using FoundationaLLM.Common.Controllers;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Chat;
 using FoundationaLLM.Common.Models.Configuration.Authentication;
+using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
+using Newtonsoft.Json;
 
 namespace FoundationaLLM.Core.API.Controllers
 {
@@ -15,31 +17,34 @@ namespace FoundationaLLM.Core.API.Controllers
     [ApiVersion(1.0)]
     [ApiController]
     [Route("[controller]")]
-    public class OrchestrationController : APIControllerBase
+    public class OrchestrationController : ControllerBase
     {
         private readonly IGatekeeperAPIService _gatekeeperAPIService;
         private readonly ILogger<OrchestrationController> _logger;
 
         public OrchestrationController(IGatekeeperAPIService gatekeeperAPIService,
-            ILogger<OrchestrationController> logger,
-            IUserClaimsProviderService claimsProviderService) : base(claimsProviderService)
+            ILogger<OrchestrationController> logger)
         {
             _gatekeeperAPIService = gatekeeperAPIService;
             _logger = logger;
         }
 
-        [HttpPost(Name = "SetOrchestratorChoice")]
-        public async Task<IActionResult> SetPreference([FromBody] string orchestrationService)
+        [AllowAnonymous]
+        [HttpPost("completion", Name = "GetCompletion")]
+        public async Task<IActionResult> GetCompletion(CompletionRequest completionRequest)
         {
-            var orchestrationPreferenceSet = await _gatekeeperAPIService.SetLLMOrchestrationPreference(orchestrationService);
+            var completionResponse = await _gatekeeperAPIService.GetCompletion(completionRequest);
 
-            if (orchestrationPreferenceSet)
-            {
-                return Ok();
-            }
+            return Ok(completionResponse);
+        }
 
-            _logger.LogError($"The LLM orchestrator {orchestrationService} is not supported.");
-            return BadRequest($"The LLM orchestrator {orchestrationService} is not supported.");
+        [AllowAnonymous]
+        [HttpPost("summary", Name = "GetSummary")]
+        public async Task<IActionResult> GetSummary(SummaryRequest summaryRequest)
+        {
+            var summaryResponse = await _gatekeeperAPIService.GetSummary(summaryRequest.UserPrompt);
+
+            return Ok(summaryResponse);
         }
     }
 }

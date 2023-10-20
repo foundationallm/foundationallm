@@ -1,6 +1,5 @@
 ﻿using Asp.Versioning;
 using Azure.AI.OpenAI;
-using FoundationaLLM.Common.Controllers;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Common.Models.Chat;
 using Microsoft.AspNetCore.Mvc;
@@ -15,14 +14,13 @@ namespace FoundationaLLM.Core.API.Controllers
     [ApiVersion(1.0)]
     [ApiController]
     [Route("[controller]")]
-    public class SessionsController : APIControllerBase
+    public class SessionsController : ControllerBase
     {
         private readonly ICoreService _coreService;
         private readonly ILogger<SessionsController> _logger;
 
         public SessionsController(ICoreService coreService,
-            ILogger<SessionsController> logger,
-            IUserClaimsProviderService claimsProviderService) : base(claimsProviderService)
+            ILogger<SessionsController> logger)
         {
             _coreService = coreService;
             _logger = logger;

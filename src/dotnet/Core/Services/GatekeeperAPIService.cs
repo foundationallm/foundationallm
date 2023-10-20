@@ -1,4 +1,6 @@
-﻿using FoundationaLLM.Common.Models.Orchestration;
+﻿using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Core.Interfaces;
 using Newtonsoft.Json;
@@ -12,12 +14,12 @@ namespace FoundationaLLM.Core.Services
 {
     public class GatekeeperAPIService : IGatekeeperAPIService
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IHttpClientFactoryService _httpClientFactoryService;
         readonly JsonSerializerSettings _jsonSerializerSettings;
 
-        public GatekeeperAPIService(IHttpClientFactory httpClientFactory)
+        public GatekeeperAPIService(IHttpClientFactoryService httpClientFactoryService, IUserIdentityContext userIdentityContext)
         {
-            _httpClientFactory = httpClientFactory;
+            _httpClientFactoryService = httpClientFactoryService;
             _jsonSerializerSettings = CommonJsonSerializerSettings.GetJsonSerializerSettings();
         }
 
@@ -26,8 +28,8 @@ namespace FoundationaLLM.Core.Services
             // TODO: Call RefinementService to refine userPrompt
             // await _refinementService.RefineUserPrompt(completionRequest);
 
-            var client = _httpClientFactory.CreateClient(Common.Constants.HttpClients.GatekeeperAPIClient);
-
+            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperAPI);
+                       
             var responseMessage = await client.PostAsync("orchestration/completion",
             new StringContent(
                     JsonConvert.SerializeObject(completionRequest, _jsonSerializerSettings),
@@ -44,9 +46,9 @@ namespace FoundationaLLM.Core.Services
             return new CompletionResponse
             {
                 Completion = "A problem on my side prevented me from responding.",
-                UserPrompt = completionRequest.Prompt,
-                UserPromptTokens = 0,
-                ResponseTokens = 0,
+                UserPrompt = completionRequest.UserPrompt,
+                PromptTokens = 0,
+                CompletionTokens = 0,
                 UserPromptEmbedding = new float[] { 0 }
             };
         }
@@ -56,11 +58,11 @@ namespace FoundationaLLM.Core.Services
             // TODO: Call RefinementService to refine userPrompt
             // await _refinementService.RefineUserPrompt(content);
 
-            var client = _httpClientFactory.CreateClient(Common.Constants.HttpClients.GatekeeperAPIClient);
+            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperAPI);
 
-            var responseMessage = await client.PostAsync("orchestration/summarize",
+            var responseMessage = await client.PostAsync("orchestration/summary",
                 new StringContent(
-                    JsonConvert.SerializeObject(new SummaryRequest { Prompt = content }, _jsonSerializerSettings),
+                    JsonConvert.SerializeObject(new SummaryRequest { UserPrompt = content }, _jsonSerializerSettings),
                     Encoding.UTF8, "application/json"));
 
             if (responseMessage.IsSuccessStatusCode)
@@ -68,7 +70,7 @@ namespace FoundationaLLM.Core.Services
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
                 var summarizeResponse = JsonConvert.DeserializeObject<SummaryResponse>(responseContent);
 
-                return summarizeResponse?.Info;
+                return summarizeResponse?.Summary;
             }
             else
                 return "A problem on my side prevented me from responding.";
@@ -76,7 +78,7 @@ namespace FoundationaLLM.Core.Services
 
         public async Task<bool> SetLLMOrchestrationPreference(string orchestrationService)
         {
-            var client = _httpClientFactory.CreateClient(Common.Constants.HttpClients.GatekeeperAPIClient);
+            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperAPI);
 
             var responseMessage = await client.PostAsync("orchestration/preference",
                 new StringContent(orchestrationService));

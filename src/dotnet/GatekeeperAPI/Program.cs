@@ -1,52 +1,89 @@
 using Asp.Versioning;
+using Azure.Identity;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Middleware;
+using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Configuration;
 using FoundationaLLM.Common.OpenAPI;
+using FoundationaLLM.Common.Services;
 using FoundationaLLM.Gatekeeper.Core.Interfaces;
 using FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions;
 using FoundationaLLM.Gatekeeper.Core.Services;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using Polly;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace FoundationaLLM.Gatekeeper.API
 {
+    /// <summary>
+    /// Program class for the Gatekeeper API.
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// Entry point for Gatekeeper API.
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Configuration.Sources.Clear();
+            builder.Configuration.AddJsonFile("appsettings.json", false, true);
+            builder.Configuration.AddEnvironmentVariables();
+            builder.Configuration.AddAzureAppConfiguration(options =>
+            {
+                options.Connect(builder.Configuration["FoundationaLLM:AppConfig:ConnectionString"]);
+                options.ConfigureKeyVault(options =>
+                {
+                    options.SetCredential(new DefaultAzureCredential());
+                });
+            });
+            if (builder.Environment.IsDevelopment())
+                builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
+
             // Add services to the container.
-            builder.Services.AddApplicationInsightsTelemetry();
-            builder.Services.AddControllers();
+            builder.Services.AddApplicationInsightsTelemetry(new ApplicationInsightsServiceOptions
+            {
+                ConnectionString = builder.Configuration["FoundationaLLM:APIs:GatekeeperAPI:AppInsightsConnectionString"],
+                DeveloperMode = builder.Environment.IsDevelopment()
+            });
+            builder.Services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ContractResolver = Common.Settings.CommonJsonSerializerSettings.GetJsonSerializerSettings().ContractResolver;
+            });
 
             // Add API Key Authorization
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<APIKeyAuthenticationFilter>();
             builder.Services.AddOptions<APIKeyValidationSettings>()
-                .Bind(builder.Configuration.GetSection("FoundationaLLM:GatekeeperAPI"));
+                .Bind(builder.Configuration.GetSection("FoundationaLLM:APIs:GatekeeperAPI"));
+
+            // Register the downstream services and HTTP clients.
+            RegisterDownstreamServices(builder);
+
             builder.Services.AddTransient<IAPIKeyValidationService, APIKeyValidationService>();
-
-            builder.Services.AddSingleton<IAgentFactoryAPIService, AgentFactoryAPIService>();
-
-            builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
-
-            builder.Services
-                .AddHttpClient(HttpClients.AgentFactoryAPIClient,
-                    httpClient =>
-                    {
-                        httpClient.BaseAddress = new Uri(builder.Configuration["FoundationaLLM:AgentFactoryAPI:APIUrl"]);
-                        httpClient.DefaultRequestHeaders.Add("X-API-KEY", builder.Configuration["FoundationaLLM:AgentFactoryAPI:APIKey"]);
-                    })
-                .AddTransientHttpErrorPolicy(policyBuilder =>
-                    policyBuilder.WaitAndRetryAsync(
-                        3, retryNumber => TimeSpan.FromMilliseconds(600)));
 
             builder.Services.AddOptions<RefinementServiceSettings>()
                 .Bind(builder.Configuration.GetSection("FoundationaLLM:Refinement"));
-            builder.Services.AddSingleton<IRefinementService, RefinementService>();
+            builder.Services.AddScoped<IRefinementService, RefinementService>();
+
+            builder.Services.AddOptions<AzureContentSafetySettings>()
+                .Bind(builder.Configuration.GetSection("FoundationaLLM:AzureContentSafety"));
+            builder.Services.AddScoped<IContentSafetyService, AzureContentSafetyService>();
+
+            builder.Services.AddScoped<IAgentFactoryAPIService, AgentFactoryAPIService>();
+
+            builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+            builder.Services.AddScoped<IUserIdentityContext, UserIdentityContext>();
+            builder.Services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
+            builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
+            builder.Services.AddScoped<IGatekeeperService, GatekeeperService>();
 
             builder.Services
                 .AddApiVersioning(options =>
@@ -82,9 +119,15 @@ namespace FoundationaLLM.Gatekeeper.API
 
                     // Integrate xml comments
                     options.IncludeXmlComments(filePath);
+
+                    // Adds auth via X-API-KEY header
+                    options.AddAPIKeyAuth();
                 });
 
             var app = builder.Build();
+
+            // Register the middleware to set the user identity context.
+            app.UseMiddleware<UserIdentityMiddleware>();
 
             app.UseExceptionHandler(exceptionHandlerApp
                 => exceptionHandlerApp.Run(async context
@@ -108,9 +151,39 @@ namespace FoundationaLLM.Gatekeeper.API
 
             app.UseHttpsRedirection();
             app.UseAuthorization();
+
             app.MapControllers();
 
             app.Run();
+        }
+
+        /// <summary>
+        /// Bind the downstream API settings to the configuration and register the HTTP clients.
+        /// </summary>
+        /// <param name="builder"></param>
+        private static void RegisterDownstreamServices(WebApplicationBuilder builder)
+        {
+            var downstreamAPISettings = new DownstreamAPISettings
+            {
+                DownstreamAPIs = new Dictionary<string, DownstreamAPIKeySettings>()
+            };
+
+            var agentFactoryAPISettings = new DownstreamAPIKeySettings
+            {
+                APIUrl = builder.Configuration[$"FoundationaLLM:APIs:{HttpClients.AgentFactoryAPI}:APIUrl"] ?? "",
+                APIKey = builder.Configuration[$"FoundationaLLM:APIs:{HttpClients.AgentFactoryAPI}:APIKey"] ?? ""
+            };
+
+            downstreamAPISettings.DownstreamAPIs[HttpClients.AgentFactoryAPI] = agentFactoryAPISettings;
+
+            builder.Services
+                    .AddHttpClient(HttpClients.AgentFactoryAPI,
+                        client => { client.BaseAddress = new Uri(agentFactoryAPISettings.APIUrl); })
+                    .AddTransientHttpErrorPolicy(policyBuilder =>
+                        policyBuilder.WaitAndRetryAsync(
+                            3, retryNumber => TimeSpan.FromMilliseconds(600)));
+
+            builder.Services.AddSingleton<IDownstreamAPISettings>(downstreamAPISettings);
         }
     }
 }

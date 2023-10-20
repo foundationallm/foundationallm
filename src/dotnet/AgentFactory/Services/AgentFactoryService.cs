@@ -1,62 +1,92 @@
-﻿using FoundationaLLM.AgentFactory.Core.Interfaces;
+﻿using FoundationaLLM.AgentFactory.Core.Agents;
+using FoundationaLLM.AgentFactory.Core.Interfaces;
+using FoundationaLLM.AgentFactory.Core.Models.ConfigurationOptions;
+using FoundationaLLM.AgentFactory.Core.Models.Messages;
+using FoundationaLLM.AgentFactory.Core.Models.Orchestration;
 using FoundationaLLM.AgentFactory.Interfaces;
 using FoundationaLLM.AgentFactory.Models.ConfigurationOptions;
 using FoundationaLLM.AgentFactory.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.SemanticKernel.SemanticFunctions;
+using FoundationaLLM.AgentFactory.Core.Models.Orchestration.DataSourceConfigurations;
+using FoundationaLLM.Common.Interfaces;
 
 namespace FoundationaLLM.AgentFactory.Core.Services;
 
+/// <summary>
+/// AgentFactoryService class.
+/// </summary>
 public class AgentFactoryService : IAgentFactoryService
 {
-    private readonly ISemanticKernelOrchestrationService _semanticKernelOrchestration;
-    private readonly ILangChainOrchestrationService _langChainOrchestration;
-    private readonly ChatServiceSettings _settings;
+    private readonly IEnumerable<ILLMOrchestrationService> _orchestrationServices;
+    private readonly IAgentHubAPIService _agentHubAPIService;
+    private readonly AgentFactorySettings _agentFactorySettings;
+    private readonly IPromptHubAPIService _promptHubAPIService;
+    private readonly IDataSourceHubAPIService _dataSourceHubAPIService;
+
     private readonly ILogger<AgentFactoryService> _logger;
+    private readonly IUserIdentityContext _userIdentity;
 
-    private LLMOrchestrationService _llmOrchestrationService = LLMOrchestrationService.LangChain;
 
+    //private LLMOrchestrationService _llmOrchestrationService = LLMOrchestrationService.LangChain;
+
+    /// <summary>
+    /// Constructor for the Agent Factory Service
+    /// </summary>
+    /// <param name="orchestrationServices"></param>
+    /// <param name="agentFactorySettings"></param>
+    /// <param name="agentHubService"></param>
+    /// <param name="agentHubSettings"></param>
+    /// <param name="promptHubService"></param>
+    /// <param name="promptHubSettings"></param>
+    /// <param name="dataSourceHubService"></param>
+    /// <param name="dataSourceHubSettings"></param>
+    /// <param name="logger"></param>
+    /// <param name="userIdentity"></param>
     public AgentFactoryService(
-        ISemanticKernelOrchestrationService semanticKernelOrchestration,
-        ILangChainOrchestrationService langChainOrchestration,
-        IOptions<ChatServiceSettings> options,
-        ILogger<AgentFactoryService> logger)
+        IEnumerable<ILLMOrchestrationService> orchestrationServices,
+
+        IOptions<AgentFactorySettings> agentFactorySettings,
+
+        IAgentHubAPIService agentHubService,
+        IPromptHubAPIService promptHubService,
+        IDataSourceHubAPIService dataSourceHubService,
+
+        ILogger<AgentFactoryService> logger,
+        IUserIdentityContext userIdentity)
     {
-        _semanticKernelOrchestration = semanticKernelOrchestration;
-        _langChainOrchestration = langChainOrchestration;
-        _settings = options.Value;
+        _orchestrationServices = orchestrationServices;
+
+        _agentFactorySettings = agentFactorySettings.Value;
+
+        _agentHubAPIService = agentHubService;
+        _promptHubAPIService = promptHubService;
+        _dataSourceHubAPIService = dataSourceHubService;
+
         _logger = logger;
+        _userIdentity = userIdentity;
 
-        SetLLMOrchestrationPreference(_settings.DefaultOrchestrationService);
     }
 
-    public bool SetLLMOrchestrationPreference(string orchestrationService)
-    {
-        if (Enum.TryParse(orchestrationService, true, out LLMOrchestrationService llmOrchestrationService))
-        {
-            _llmOrchestrationService = llmOrchestrationService;
-            return true;
-        }
-        else
-            return false;
-    }
-
+    /// <summary>
+    /// Returns the status of the Semantic kernal.
+    /// </summary>
     public string Status
     {
         get
         {
-            if (_semanticKernelOrchestration.IsInitialized)
+            if (_orchestrationServices.All(os => os.IsInitialized))
                 return "ready";
 
-            var status = new List<string>();
-
-            if (!_semanticKernelOrchestration.IsInitialized)
-                status.Add("SemanticKernelOrchestrationService: initializing");
-
-            return string.Join(",", status);
+            return string.Join(",", _orchestrationServices
+                .Where(os => !os.IsInitialized)
+                .Select(os => $"{os.GetType().Name}: initializing"));
         }
     }
+
 
     /// <summary>
     /// Retrieve a completion from the configured orchestration service.
@@ -65,21 +95,25 @@ public class AgentFactoryService : IAgentFactoryService
     {
         try
         {
-            // Generate the completion to return to the user
-            var result = await GetLLMOrchestrationService().GetResponse(completionRequest.Prompt,
-                completionRequest.MessageHistory);
+            var agent = await AgentBuilder.Build(
+                completionRequest.UserPrompt,
+                _userIdentity.CurrentUserIdentity.UPN,
+                _agentHubAPIService,
+                _orchestrationServices,
+                _promptHubAPIService,
+                _dataSourceHubAPIService);
 
-            return result;
+            return await agent.GetCompletion(completionRequest);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error retrieving completion from the orchestration service for {completionRequest.Prompt}.");
+            _logger.LogError(ex, $"Error retrieving completion from the orchestration service for {completionRequest.UserPrompt}.");
             return new CompletionResponse
             {
                 Completion = "A problem on my side prevented me from responding.",
-                UserPrompt = completionRequest.Prompt,
-                UserPromptTokens = 0,
-                ResponseTokens = 0,
+                UserPrompt = completionRequest.UserPrompt,
+                PromptTokens = 0,
+                CompletionTokens = 0,
                 UserPromptEmbedding = new float[] { 0 }
             };
         }
@@ -88,36 +122,27 @@ public class AgentFactoryService : IAgentFactoryService
     /// <summary>
     /// Retrieve a summarization for the passed in prompt from the orchestration service.
     /// </summary>
-    public async Task<SummaryResponse> GetSummary(SummaryRequest content)
+    public async Task<SummaryResponse> GetSummary(SummaryRequest summaryRequest)
     {
         try
         {
-            var summary = await GetLLMOrchestrationService().GetSummary(content.Prompt);
+            var agent = await AgentBuilder.Build(
+                summaryRequest.UserPrompt,
+                _userIdentity.CurrentUserIdentity.UPN,
+                _agentHubAPIService,
+                _orchestrationServices,
+                _promptHubAPIService,
+                _dataSourceHubAPIService);
 
-            return new SummaryResponse
-            {
-                Info = summary
-            };
+            return await agent.GetSummary(summaryRequest);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error retrieving summarization for {content}.");
+            _logger.LogError(ex, $"Error retrieving summarization for {summaryRequest.UserPrompt}.");
             return new SummaryResponse
             {
-                Info = "[No Summary]"
+                Summary = "[No Summary]"
             };
-        }
-    }
-
-    private ILLMOrchestrationService GetLLMOrchestrationService()
-    {
-        switch (_llmOrchestrationService)
-        {
-            case LLMOrchestrationService.SemanticKernel:
-                return _semanticKernelOrchestration as ILLMOrchestrationService;
-            case LLMOrchestrationService.LangChain:
-            default:
-                return _langChainOrchestration as ILLMOrchestrationService;
         }
     }
 }

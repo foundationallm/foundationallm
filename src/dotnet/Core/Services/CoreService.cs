@@ -3,6 +3,9 @@ using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Common.Models.Chat;
 using Microsoft.Extensions.Logging;
 using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Models.Configuration.Branding;
+using Microsoft.Extensions.Options;
+using FoundationaLLM.Core.Models;
 
 namespace FoundationaLLM.Core.Services;
 
@@ -11,6 +14,7 @@ public class CoreService : ICoreService
     private readonly ICosmosDbService _cosmosDbService;
     private readonly IGatekeeperAPIService _gatekeeperAPIService;
     private readonly ILogger<CoreService> _logger;
+    private readonly string _sessionType;
 
     public string Status
     {
@@ -31,11 +35,13 @@ public class CoreService : ICoreService
     public CoreService(
         ICosmosDbService cosmosDbService,
         IGatekeeperAPIService gatekeeperAPIService,
-        ILogger<CoreService> logger)
+        ILogger<CoreService> logger,
+        IOptions<ClientBrandingConfiguration> settings)
     {
         _cosmosDbService = cosmosDbService;
         _gatekeeperAPIService = gatekeeperAPIService;
         _logger = logger;
+        _sessionType = settings.Value.KioskMode ? SessionTypes.KioskSession : SessionTypes.Session;
     }
 
     /// <summary>
@@ -43,7 +49,7 @@ public class CoreService : ICoreService
     /// </summary>
     public async Task<List<Session>> GetAllChatSessionsAsync()
     {
-        return await _cosmosDbService.GetSessionsAsync();
+        return await _cosmosDbService.GetSessionsAsync(_sessionType);
     }
 
     /// <summary>
@@ -61,6 +67,7 @@ public class CoreService : ICoreService
     public async Task<Session> CreateNewChatSessionAsync()
     {
         Session session = new();
+        session.Type = _sessionType;
         return await _cosmosDbService.InsertSessionAsync(session);
     }
 
@@ -105,7 +112,7 @@ public class CoreService : ICoreService
 
             var completionRequest = new CompletionRequest
             {
-                Prompt = userPrompt,
+                UserPrompt = userPrompt,
                 MessageHistory = messageHistoryList
             };
 
@@ -113,8 +120,8 @@ public class CoreService : ICoreService
             var result = await _gatekeeperAPIService.GetCompletion(completionRequest);
 
             // Add to prompt and completion to cache, then persist in Cosmos as transaction 
-            var promptMessage = new Message(sessionId, nameof(Participants.User), result.UserPromptTokens, userPrompt, result.UserPromptEmbedding, null);
-            var completionMessage = new Message(sessionId, nameof(Participants.Assistant), result.ResponseTokens, result.Completion, null, null);
+            var promptMessage = new Message(sessionId, nameof(Participants.User), result.PromptTokens, userPrompt, result.UserPromptEmbedding, null);
+            var completionMessage = new Message(sessionId, nameof(Participants.Assistant), result.CompletionTokens, result.Completion, null, null);
             var completionPrompt = new CompletionPrompt(sessionId, completionMessage.Id, result.UserPrompt);
             completionMessage.CompletionPromptId = completionPrompt.Id;
 

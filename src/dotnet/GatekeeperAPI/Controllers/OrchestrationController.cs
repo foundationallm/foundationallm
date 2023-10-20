@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FoundationaLLM.Gatekeeper.API.Controllers
 {
+    /// <summary>
+    /// Wrapper for Gatekeeper service.
+    /// </summary>
     [ApiVersion(1.0)]
     [ApiController]
     [APIKeyAuthentication]
@@ -14,28 +17,36 @@ namespace FoundationaLLM.Gatekeeper.API.Controllers
     {
         private readonly IGatekeeperService _gatekeeperService;
 
+        /// <summary>
+        /// Constructor for the Gatekeeper API orchestration controller.
+        /// </summary>
+        /// <param name="gatekeeperService"></param>
         public OrchestrationController(
             IGatekeeperService gatekeeperService)
         {
             _gatekeeperService = gatekeeperService;
         }
 
+        /// <summary>
+        /// Gets a completion from the Gatekeeper service.
+        /// </summary>
+        /// <param name="completionRequest">The completion request containing the user prompt and message history.</param>
+        /// <returns>The completion response.</returns>
         [HttpPost("completion")]
-        public async Task<CompletionResponse> GetCompletion([FromBody] CompletionRequest completionRequest)
+        public async Task<CompletionResponse> GetCompletion(CompletionRequest completionRequest)
         {
             return await _gatekeeperService.GetCompletion(completionRequest);
         }
 
-        [HttpPost("summarize")]
-        public async Task<SummaryResponse> GetSummary([FromBody] SummaryRequest summaryRequest)
+        /// <summary>
+        /// Gets a summary from the Gatekeeper service.
+        /// </summary>
+        /// <param name="summaryRequest">The summarize request containing the user prompt.</param>
+        /// <returns>The summary response.</returns>
+        [HttpPost("summary")]
+        public async Task<SummaryResponse> GetSummary(SummaryRequest summaryRequest)
         {
             return await _gatekeeperService.GetSummary(summaryRequest);
-        }
-
-        [HttpPost("preference")]
-        public async Task<bool> SetLLMOrchestrationPreference([FromBody] string orchestrationService)
-        {
-            return await _gatekeeperService.SetLLMOrchestrationPreference(orchestrationService);
         }
     }
 }
