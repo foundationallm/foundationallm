@@ -8,7 +8,7 @@
 			<Button icon="pi pi-arrow-left" size="small" severity="secondary" @click="collapseSidebar(true)" v-else />
 		</div>
 		<div :class="!collapsedSidebar ? 'navbar__content' : 'navbar__content collapsed'">
-			<div class="navbar__content__left" v-if="!collapsedSidebar">
+			<div v-if="!collapsedSidebar" class="navbar__content__left">
 				<div class="navbar__content__left__item">
 					<template v-if="currentSession">
 						<span>{{ currentSession.name }}</span>
@@ -19,10 +19,10 @@
 				</div>
 			</div>
 			<div class="navbar__content__right">
-				<div class="navbar__content__right__item" v-if="!signedIn">
+				<div v-if="!signedIn" class="navbar__content__right__item">
 					<Button icon="pi pi-sign-in" label="Sign In" @click="signIn()"></Button>
 				</div>
-				<div class="navbar__content__right__item" v-else>
+				<div v-else class="navbar__content__right__item">
 					<span>Welcome {{ accountName }}</span>
 					<Button class="sign-out-button" icon="pi pi-sign-out" label="Sign Out" @click="signOut()"></Button>
 				</div>
@@ -33,11 +33,11 @@
 
 <script lang="ts">
 import type { PropType } from 'vue';
-import { Session } from '@/js/types';
+import { type Session } from '@/js/types';
 import { msalInstance, loginRequest } from '@/js/auth'
 
 export default {
-	name: 'Navbar',
+	name: 'NavBar',
 
 	props: {
 		currentSession: {
@@ -60,14 +60,13 @@ export default {
 	},
 
 	async created() {
-		await msalInstance.initialize().then(async () => {
-			const accounts = await msalInstance.getAllAccounts();
-			if (accounts.length > 0) {
-				this.signedIn = true;
-				this.accountName = accounts[0].name;
-				this.userName = accounts[0].username;
-			}
-		});
+		await msalInstance.initialize();
+		const accounts = await msalInstance.getAllAccounts();
+		if (accounts.length > 0) {
+			this.signedIn = true;
+			this.accountName = accounts[0].name;
+			this.userName = accounts[0].username;
+		}
 	},
 
 	methods: {
@@ -75,26 +74,25 @@ export default {
 			this.collapsedSidebar = collapsed;
 			this.$emit('collapse-sidebar', collapsed);
 		},
-		
+
 		async signIn() {
-			await msalInstance.loginPopup(loginRequest).then((response) => {
-				if(response.account) {
-					this.signedIn = true;
-					this.accountName = response.account.name;
-					this.userName = response.account.username;
-				}
-			});
+			const response = await msalInstance.loginPopup(loginRequest);
+			if (response.account) {
+				this.signedIn = true;
+				this.accountName = response.account.name;
+				this.userName = response.account.username;
+			}
 		},
 
 		async signOut() {
 			const logoutRequest = {
-				account: msalInstance.getAccountByUsername(this.userName)
+				account: msalInstance.getAccountByUsername(this.userName),
 			};
-			await msalInstance.logoutPopup(logoutRequest).then((response) => {
-				this.signedIn = false;
-				this.accountName = '';
-				this.userName = '';
-			});
+
+			await msalInstance.logoutPopup(logoutRequest);
+			this.signedIn = false;
+			this.accountName = '';
+			this.userName = '';
 			// await msalInstance.logout();
 		}
 	},
