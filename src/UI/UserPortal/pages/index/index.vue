@@ -36,6 +36,8 @@ export default {
 
 	methods: {
 		handleChangeSession(session: Session) {
+			const query = { chat: session.id };
+			this.$router.push({ query });
 			this.currentSession = session;
 		},
 
