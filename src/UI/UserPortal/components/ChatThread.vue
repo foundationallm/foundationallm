@@ -153,6 +153,8 @@ export default {
 
 .chat-thread__input {
 	display: flex;
+	margin: 24px;
+	// box-shadow: 0 -5px 10px 0 rgba(27, 29, 33, 0.1);
 }
 
 .empty {
@@ -164,15 +166,18 @@ export default {
 	padding: 10px;
 	border-radius: 6px;
 }
+
 .alert-header, .alert-header > i {
 	display: flex;
 	align-items: center;
 	font-size: 1.5rem;
 }
+
 .alert-header-text {
 	font-weight: 500;
 	margin-left: 8px;
 }
+
 .alert-body-text {
 	font-size: 1.2rem;
 	font-weight: 300;

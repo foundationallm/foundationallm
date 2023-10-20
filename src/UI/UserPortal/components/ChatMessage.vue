@@ -116,11 +116,12 @@ export default {
 .message-row {
 	display: flex;
 	align-items: flex-end;
-	margin: 8px;
+	margin-top: 8px;
+	margin-bottom: 8px;
 }
 
 .message {
-	padding: 16px;
+	padding: 12px;
 	width: 80%;
 	box-shadow: 0 5px 10px 0 rgba(27, 29, 33, 0.1);
 }
@@ -143,15 +144,22 @@ export default {
 	margin-bottom: 12px;
 	display: flex;
 	justify-content: space-between;
+	padding-left: 12px;
+	padding-right: 12px;
+	padding-top: 8px;
 }
 
 .message__body {
 	white-space: pre-wrap;
 	overflow-wrap: break-word;
+	padding-left: 12px;
+	padding-right: 12px;
+	padding-top: 8px;
+	padding-bottom: 8px;
 }
 
 .message__footer {
-	margin-top: 12px;
+	margin-top: 8px;
 	display: flex;
 	justify-content: space-between;
 }

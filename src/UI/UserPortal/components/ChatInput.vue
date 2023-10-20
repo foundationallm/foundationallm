@@ -37,7 +37,6 @@ export default {
 	display: flex;
 	background-color: white;
 	border-radius: 8px;
-	margin: 16px;
 	width: 100%;
 }
 
