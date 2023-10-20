@@ -57,6 +57,7 @@ resource "azurerm_user_assigned_identity" "app_config_mi" {
   location            = var.resource_group.location
   name                = "${var.resource_prefix}-mi"
   resource_group_name = var.resource_group.name
+  tags                = var.tags
 }
 
 resource "azurerm_key_vault_key" "app_config_key" {

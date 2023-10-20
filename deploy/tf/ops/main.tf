@@ -330,6 +330,24 @@ module "ampls" {
   }
 }
 
+module "appconfig" {
+  source = "./modules/app-config"
+
+  action_group_id            = azurerm_monitor_action_group.do_nothing.id
+  log_analytics_workspace_id = module.logs.id
+  encryption_keyvault_id     = module.keyvault.id
+  resource_group             = azurerm_resource_group.rg["ops"]
+  resource_prefix            = local.resource_prefix["ops"]
+  tags                       = azurerm_resource_group.rg["ops"].tags
+
+  private_endpoint = {
+    subnet_id = azurerm_subnet.subnet["ops"].id
+    private_dns_zone_ids = [
+      azurerm_private_dns_zone.private_dns["configuration_stores"].id,
+    ]
+  }
+}
+
 module "application_insights" {
   source = "./modules/application-insights"
 

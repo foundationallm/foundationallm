@@ -87,6 +87,12 @@ Source: ./modules/monitor-private-link-scope
 
 Version:
 
+### <a name="module_appconfig"></a> [appconfig](#module\_appconfig)
+
+Source: ./modules/app-config
+
+Version:
+
 ### <a name="module_application_insights"></a> [application\_insights](#module\_application\_insights)
 
 Source: ./modules/application-insights
