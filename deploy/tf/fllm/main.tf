@@ -296,6 +296,40 @@ module "application_gateway" {
   tags                       = azurerm_resource_group.rg["agw"].tags
 }
 
+module "nsg" {
+  for_each = azurerm_subnet.subnet
+  source   = "./modules/nsg"
+
+  resource_group  = data.azurerm_resource_group.backend["net"]
+  resource_prefix = "${local.resource_prefix_backend["net"]}-${each.key}"
+  rules_inbound   = local.subnet[each.key].nsg_rules.inbound
+  rules_outbound  = local.subnet[each.key].nsg_rules.outbound
+  subnet_id       = each.value.id
+  tags            = azurerm_resource_group.backend["net"].tags
+}
+
+module "storage_data" {
+  source = "./modules/storage-account"
+
+  action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
+  resource_group             = azurerm_resource_group.rg["data"]
+  resource_prefix            = local.resource_prefix["data"]
+  tags                       = azurerm_resource_group.rg["data"].tags
+
+  private_endpoint = {
+    subnet_id = azurerm_subnet.subnet["Datasources"].id
+    private_dns_zone_ids = {
+      blob  = [data.azurerm_private_dns_zone.private_dns["blob"].id]
+      dfs   = [data.azurerm_private_dns_zone.private_dns["dfs"].id]
+      file  = [data.azurerm_private_dns_zone.private_dns["file"].id]
+      queue = [data.azurerm_private_dns_zone.private_dns["queue"].id]
+      table = [data.azurerm_private_dns_zone.private_dns["table"].id]
+      web   = [data.azurerm_private_dns_zone.private_dns["sites"].id]
+    }
+  }
+}
+
 
 # locals {
 #   resource_prefix = join("-", [local.project_id, local.environment])

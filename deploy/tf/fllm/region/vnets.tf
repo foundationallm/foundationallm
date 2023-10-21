@@ -380,14 +380,3 @@ resource "azurerm_private_dns_zone_virtual_network_link" "dns_vnet_link" {
 
 
 
-module "nsg" {
-  for_each = local.subnets
-  source   = "./modules/nsg"
-
-  resource_group  = azurerm_resource_group.rgs["NET"]
-  resource_prefix = "${local.resource_prefix}-${each.key}"
-  rules_inbound   = each.value.nsg_rules.inbound
-  rules_outbound  = each.value.nsg_rules.outbound
-  subnet_id       = azurerm_subnet.subnets[each.key].id
-  tags            = local.tags
-}
