@@ -52,6 +52,11 @@ locals {
         "Purpose" = "Networking"
       }
     }
+    app = {
+      tags = {
+        "Purpose" = "Application"
+      }
+    }
   }
 
   resource_group_backend = {
@@ -108,6 +113,19 @@ locals {
           }
         })
         outbound = merge({})
+      }
+    }
+    "FLLMServices" = {
+      address_prefix = cidrsubnet(local.vnet_address_space, 8, 3)
+      delegations = {
+        "Microsoft.ContainerService/managedClusters" = [
+          "Microsoft.Network/virtualNetworks/subnets/action"
+        ]
+      }
+
+      nsg_rules = {
+        inbound  = merge({}, {})
+        outbound = merge({}, {})
       }
     }
   }
@@ -240,6 +258,27 @@ resource "azurerm_user_assigned_identity" "agw" {
 }
 
 # Modules
+module "aks_backend" {
+  source = "./modules/aks"
+
+  action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
+  agw_id                     = module.application_gateway.id
+  aks_admin_object_id        = var.sql_admin_ad_group.object_id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
+  resource_group             = azurerm_resource_group.rg["app"]
+  resource_prefix            = "${local.resource_prefix["app"]}-BACKEND"
+  tags                       = azurerm_resource_group.rg["app"].tags
+
+  private_endpoint = {
+    subnet = azurerm_subnet.subnet["FLLMServices"]
+    private_dns_zone_ids = {
+      aks = [
+        data.azurerm_private_dns_zone.private_dns["aks"].id,
+      ]
+    }
+  }
+}
+
 module "application_gateway" {
   source     = "./modules/application-gateway"
   depends_on = [azurerm_role_assignment.keyvault_secrets_user_agw]
@@ -264,11 +303,7 @@ module "application_gateway" {
 
 
 #   regional_resource_groups = {
-#     "APP" = {
-#       tags = {
-#         "Purpose" = "Application"
-#       }
-#     }
+
 
 #     "Data" = {
 #       tags = {

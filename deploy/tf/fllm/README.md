@@ -58,6 +58,19 @@ Description: Public DNS domain
 
 Type: `string`
 
+### <a name="input_sql_admin_ad_group"></a> [sql\_admin\_ad\_group](#input\_sql\_admin\_ad\_group)
+
+Description: SQL Admin AD group
+
+Type:
+
+```hcl
+object({
+    name      = string
+    object_id = string
+  })
+```
+
 ## Optional Inputs
 
 No optional inputs.
@@ -101,6 +114,12 @@ The following providers are used by this module:
 ## Modules
 
 The following Modules are called:
+
+### <a name="module_aks_backend"></a> [aks\_backend](#module\_aks\_backend)
+
+Source: ./modules/aks
+
+Version:
 
 ### <a name="module_application_gateway"></a> [application\_gateway](#module\_application\_gateway)
 

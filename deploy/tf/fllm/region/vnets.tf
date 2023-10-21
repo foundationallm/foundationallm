@@ -46,52 +46,7 @@ locals {
   }
 
   subnets = {
-    # "AppGateway" = {
-    #   address_prefix    = cidrsubnet(local.vnet_address_space, 8, 0)
-    #   service_endpoints = []
 
-    #   nsg_rules = {
-    #     inbound = merge(local.default_nsg_rules.inbound, {
-    #       "allow-internet-http-inbound" = {
-    #         access                     = "Allow"
-    #         destination_address_prefix = "VirtualNetwork"
-    #         destination_port_range     = "80"
-    #         priority                   = 128
-    #         protocol                   = "Tcp"
-    #         source_address_prefix      = "Internet"
-    #         source_port_range          = "*"
-    #       }
-    #       "allow-internet-https-inbound" = {
-    #         access                     = "Allow"
-    #         destination_address_prefix = "VirtualNetwork"
-    #         destination_port_range     = "443"
-    #         priority                   = 132
-    #         protocol                   = "Tcp"
-    #         source_address_prefix      = "Internet"
-    #         source_port_range          = "*"
-    #       }
-    #       "allow-gatewaymanager-inbound" = {
-    #         access                     = "Allow"
-    #         destination_address_prefix = "*"
-    #         destination_port_range     = "65200-65535"
-    #         priority                   = 148
-    #         protocol                   = "Tcp"
-    #         source_address_prefix      = "GatewayManager"
-    #         source_port_range          = "*"
-    #       }
-    #       "allow-loadbalancer-inbound" = {
-    #         access                     = "Allow"
-    #         destination_address_prefix = "*"
-    #         destination_port_range     = "*"
-    #         priority                   = 164
-    #         protocol                   = "*"
-    #         source_address_prefix      = "AzureLoadBalancer"
-    #         source_port_range          = "*"
-    #       }
-    #     })
-    #     outbound = merge({})
-    #   }
-    # }
     "Services" = {
       address_prefix    = cidrsubnet(local.vnet_address_space, 8, 1)
       service_endpoints = []
@@ -139,20 +94,7 @@ locals {
         outbound = merge(local.default_nsg_rules.outbound, {})
       }
     }
-    "FLLMServices" = {
-      address_prefix    = cidrsubnet(local.vnet_address_space, 8, 3)
-      service_endpoints = []
-      delegations = {
-        "Microsoft.ContainerService/managedClusters" = [
-          "Microsoft.Network/virtualNetworks/subnets/action"
-        ]
-      }
 
-      nsg_rules = {
-        inbound  = merge({}, {})
-        outbound = merge({}, {})
-      }
-    }
     "FLLMFrontEnd" = {
       address_prefix    = cidrsubnet(local.vnet_address_space, 8, 9)
       service_endpoints = []
