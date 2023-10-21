@@ -130,6 +130,11 @@ data "azurerm_key_vault" "keyvault_ops" {
   resource_group_name = data.azurerm_resource_group.backend["ops"].name
 }
 
+data "azurerm_key_vault_certificate" "agw" {
+  key_vault_id = data.azurerm_key_vault.keyvault_ops.id
+  name         = replace("www.${var.public_domain}", ".", "-")
+}
+
 data "azurerm_log_analytics_workspace" "logs" {
   name                = "${local.resource_prefix_backend["ops"]}-la"
   resource_group_name = data.azurerm_resource_group.backend["ops"].name
@@ -235,7 +240,22 @@ resource "azurerm_user_assigned_identity" "agw" {
 }
 
 # Modules
+module "application_gateway" {
+  source     = "./modules/application-gateway"
+  depends_on = [azurerm_role_assignment.keyvault_secrets_user_agw]
 
+  action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
+  backend_pool_ip_addresses  = ["10.255.255.255"] # TODO: Replace with AKS frontend IP address
+  hostname                   = "www.${var.public_domain}"
+  identity_id                = azurerm_user_assigned_identity.agw.id
+  key_vault_secret_id        = data.azurerm_key_vault_certificate.agw.versionless_secret_id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
+  public_dns_zone            = data.azurerm_dns_zone.public_dns
+  resource_group             = azurerm_resource_group.rg["agw"]
+  resource_prefix            = local.resource_prefix["agw"]
+  subnet_id                  = azurerm_subnet.subnet["AppGateway"].id
+  tags                       = azurerm_resource_group.rg["agw"].tags
+}
 
 
 # locals {
