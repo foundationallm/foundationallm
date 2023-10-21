@@ -46,52 +46,52 @@ locals {
   }
 
   subnets = {
-    "AppGateway" = {
-      address_prefix    = cidrsubnet(local.vnet_address_space, 8, 0)
-      service_endpoints = []
+    # "AppGateway" = {
+    #   address_prefix    = cidrsubnet(local.vnet_address_space, 8, 0)
+    #   service_endpoints = []
 
-      nsg_rules = {
-        inbound = merge(local.default_nsg_rules.inbound, {
-          "allow-internet-http-inbound" = {
-            access                     = "Allow"
-            destination_address_prefix = "VirtualNetwork"
-            destination_port_range     = "80"
-            priority                   = 128
-            protocol                   = "Tcp"
-            source_address_prefix      = "Internet"
-            source_port_range          = "*"
-          }
-          "allow-internet-https-inbound" = {
-            access                     = "Allow"
-            destination_address_prefix = "VirtualNetwork"
-            destination_port_range     = "443"
-            priority                   = 132
-            protocol                   = "Tcp"
-            source_address_prefix      = "Internet"
-            source_port_range          = "*"
-          }
-          "allow-gatewaymanager-inbound" = {
-            access                     = "Allow"
-            destination_address_prefix = "*"
-            destination_port_range     = "65200-65535"
-            priority                   = 148
-            protocol                   = "Tcp"
-            source_address_prefix      = "GatewayManager"
-            source_port_range          = "*"
-          }
-          "allow-loadbalancer-inbound" = {
-            access                     = "Allow"
-            destination_address_prefix = "*"
-            destination_port_range     = "*"
-            priority                   = 164
-            protocol                   = "*"
-            source_address_prefix      = "AzureLoadBalancer"
-            source_port_range          = "*"
-          }
-        })
-        outbound = merge({})
-      }
-    }
+    #   nsg_rules = {
+    #     inbound = merge(local.default_nsg_rules.inbound, {
+    #       "allow-internet-http-inbound" = {
+    #         access                     = "Allow"
+    #         destination_address_prefix = "VirtualNetwork"
+    #         destination_port_range     = "80"
+    #         priority                   = 128
+    #         protocol                   = "Tcp"
+    #         source_address_prefix      = "Internet"
+    #         source_port_range          = "*"
+    #       }
+    #       "allow-internet-https-inbound" = {
+    #         access                     = "Allow"
+    #         destination_address_prefix = "VirtualNetwork"
+    #         destination_port_range     = "443"
+    #         priority                   = 132
+    #         protocol                   = "Tcp"
+    #         source_address_prefix      = "Internet"
+    #         source_port_range          = "*"
+    #       }
+    #       "allow-gatewaymanager-inbound" = {
+    #         access                     = "Allow"
+    #         destination_address_prefix = "*"
+    #         destination_port_range     = "65200-65535"
+    #         priority                   = 148
+    #         protocol                   = "Tcp"
+    #         source_address_prefix      = "GatewayManager"
+    #         source_port_range          = "*"
+    #       }
+    #       "allow-loadbalancer-inbound" = {
+    #         access                     = "Allow"
+    #         destination_address_prefix = "*"
+    #         destination_port_range     = "*"
+    #         priority                   = 164
+    #         protocol                   = "*"
+    #         source_address_prefix      = "AzureLoadBalancer"
+    #         source_port_range          = "*"
+    #       }
+    #     })
+    #     outbound = merge({})
+    #   }
+    # }
     "Services" = {
       address_prefix    = cidrsubnet(local.vnet_address_space, 8, 1)
       service_endpoints = []
@@ -434,35 +434,9 @@ resource "azurerm_private_dns_zone_virtual_network_link" "dns_vnet_link" {
   virtual_network_id    = azurerm_virtual_network.vnet.id
 }
 
-resource "azurerm_subnet" "subnets" {
-  for_each = local.subnets
 
-  address_prefixes     = [each.value.address_prefix]
-  name                 = each.key
-  resource_group_name  = azurerm_resource_group.rgs["NET"].name
-  service_endpoints    = each.value.service_endpoints
-  virtual_network_name = azurerm_virtual_network.vnet.name
 
-  dynamic "delegation" {
-    for_each = lookup(each.value, "delegation", {})
-    content {
-      name = "${delegation.key}-delegation"
 
-      service_delegation {
-        actions = delegation.value
-        name    = delegation.key
-      }
-    }
-  }
-}
-
-resource "azurerm_virtual_network" "vnet" {
-  address_space       = [local.vnet_address_space]
-  location            = local.location
-  name                = join("-", [local.resource_prefix, "vnet"])
-  resource_group_name = azurerm_resource_group.rgs["NET"].name
-  tags                = local.tags
-}
 
 module "nsg" {
   for_each = local.subnets

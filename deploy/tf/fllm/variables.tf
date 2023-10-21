@@ -13,7 +13,6 @@ variable "project_id" {
   type        = string
 }
 
-
 variable "public_domain" {
   description = "Public DNS domain"
   type        = string

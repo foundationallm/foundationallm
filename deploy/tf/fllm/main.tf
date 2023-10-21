@@ -1,6 +1,50 @@
 locals {
   resource_prefix         = { for k, _ in local.resource_group : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
   resource_prefix_backend = { for k, _ in local.resource_group_backend : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
+  vnet_address_space      = data.azurerm_virtual_network.network.address_space[0]
+
+  default_nsg_rules = {
+    inbound = {
+      "allow-ado-agents-inbound" = {
+        access                     = "Allow"
+        destination_address_prefix = "VirtualNetwork"
+        destination_port_range     = "*"
+        priority                   = 4094
+        protocol                   = "Tcp"
+        source_address_prefix      = data.azurerm_subnet.backend["ado"].address_prefix
+        source_port_range          = "*"
+      }
+      "allow-tfc-agents-inbound" = {
+        access                     = "Allow"
+        destination_address_prefix = "VirtualNetwork"
+        destination_port_range     = "*"
+        priority                   = 4095
+        protocol                   = "*"
+        source_address_prefix      = data.azurerm_subnet.backend["tfc"].address_prefix
+        source_port_range          = "*"
+      }
+      "deny-all-inbound" = {
+        access                     = "Deny"
+        destination_address_prefix = "*"
+        destination_port_range     = "*"
+        priority                   = 4096
+        protocol                   = "*"
+        source_address_prefix      = "*"
+        source_port_range          = "*"
+      }
+    }
+    outbound = {
+      "deny-all-outbound" = {
+        access                     = "Deny"
+        destination_address_prefix = "*"
+        destination_port_range     = "*"
+        priority                   = 4096
+        protocol                   = "*"
+        source_address_prefix      = "*"
+        source_port_range          = "*"
+      }
+    }
+  }
 
   resource_group = {
     agw = {
@@ -12,12 +56,60 @@ locals {
 
   resource_group_backend = {
     dns = null
+    net = null
     ops = null
   }
 
   short_location = local.short_locations[var.location]
   short_locations = {
     eastus = "EUS"
+  }
+
+  subnet = {
+    "AppGateway" = {
+      address_prefix = cidrsubnet(local.vnet_address_space, 8, 0)
+      nsg_rules = {
+        inbound = merge(local.default_nsg_rules.inbound, {
+          "allow-internet-http-inbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_range     = "80"
+            priority                   = 128
+            protocol                   = "Tcp"
+            source_address_prefix      = "Internet"
+            source_port_range          = "*"
+          }
+          "allow-internet-https-inbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_range     = "443"
+            priority                   = 132
+            protocol                   = "Tcp"
+            source_address_prefix      = "Internet"
+            source_port_range          = "*"
+          }
+          "allow-gatewaymanager-inbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "*"
+            destination_port_range     = "65200-65535"
+            priority                   = 148
+            protocol                   = "Tcp"
+            source_address_prefix      = "GatewayManager"
+            source_port_range          = "*"
+          }
+          "allow-loadbalancer-inbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "*"
+            destination_port_range     = "*"
+            priority                   = 164
+            protocol                   = "*"
+            source_address_prefix      = "AzureLoadBalancer"
+            source_port_range          = "*"
+          }
+        })
+        outbound = merge({})
+      }
+    }
   }
 
   tags = {
@@ -31,6 +123,11 @@ locals {
 data "azurerm_dns_zone" "public_dns" {
   name                = var.public_domain
   resource_group_name = "GLB-FLLM-DEMO-DNS-rg"
+}
+
+data "azurerm_key_vault" "keyvault_ops" {
+  name                = "${local.resource_prefix_backend["ops"]}-kv"
+  resource_group_name = data.azurerm_resource_group.backend["ops"].name
 }
 
 data "azurerm_log_analytics_workspace" "logs" {
@@ -80,6 +177,19 @@ data "azurerm_resource_group" "backend" {
   name = "${local.resource_prefix_backend[each.key]}-rg"
 }
 
+data "azurerm_subnet" "backend" {
+  for_each = toset(["ado", "ops", "tfc"])
+
+  name                 = each.key
+  resource_group_name  = data.azurerm_virtual_network.network.resource_group_name
+  virtual_network_name = data.azurerm_virtual_network.network.name
+}
+
+data "azurerm_virtual_network" "network" {
+  name                = "${local.resource_prefix_backend["net"]}-vnet"
+  resource_group_name = data.azurerm_resource_group.backend["net"].name
+}
+
 # Resources
 resource "azurerm_resource_group" "rg" {
   for_each = local.resource_group
@@ -95,6 +205,28 @@ resource "azurerm_role_assignment" "keyvault_secrets_user_agw" {
   scope                = data.azurerm_resource_group.backend["ops"].id
 }
 
+resource "azurerm_subnet" "subnet" {
+  for_each = local.subnet
+
+  address_prefixes     = [each.value.address_prefix]
+  name                 = each.key
+  resource_group_name  = data.azurerm_virtual_network.network.resource_group_name
+  service_endpoints    = lookup(each.value, "service_endpoints", [])
+  virtual_network_name = data.azurerm_virtual_network.network.name
+
+  dynamic "delegation" {
+    for_each = lookup(each.value, "delegation", {})
+    content {
+      name = "${delegation.key}-delegation"
+
+      service_delegation {
+        actions = delegation.value
+        name    = delegation.key
+      }
+    }
+  }
+}
+
 resource "azurerm_user_assigned_identity" "agw" {
   location            = azurerm_resource_group.rg["agw"].location
   name                = "${local.resource_prefix["agw"]}-agw-uai"
@@ -103,6 +235,7 @@ resource "azurerm_user_assigned_identity" "agw" {
 }
 
 # Modules
+
 
 
 # locals {
