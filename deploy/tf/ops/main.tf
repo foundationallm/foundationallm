@@ -213,6 +213,15 @@ locals {
             source_address_prefix      = "*"
             source_port_range          = "*"
           }
+          "allow-dns" = {
+            access                     = "Allow"
+            destination_address_prefix = "Internet"
+            destination_port_range     = "53"
+            priority                   = 288
+            protocol                   = "Udp"
+            source_address_prefix      = "*"
+            source_port_range          = "*"
+          }
           "allow-vnet" = {
             access                     = "Allow"
             destination_address_prefix = "VirtualNetwork"
