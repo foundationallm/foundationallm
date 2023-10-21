@@ -13,6 +13,11 @@ variable "project_id" {
   type        = string
 }
 
+variable "public_domain" {
+  description = "Public DNS domain"
+  type        = string
+}
+
 variable "tfc_agent_token" {
   description = "The token used by the agent to authenticate with Terraform Cloud."
   sensitive   = true

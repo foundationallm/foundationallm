@@ -27,6 +27,12 @@ Description: The project identifier.
 
 Type: `string`
 
+### <a name="input_public_domain"></a> [public\_domain](#input\_public\_domain)
+
+Description: Public DNS domain
+
+Type: `string`
+
 ### <a name="input_tfc_agent_token"></a> [tfc\_agent\_token](#input\_tfc\_agent\_token)
 
 Description: The token used by the agent to authenticate with Terraform Cloud.
@@ -51,6 +57,7 @@ The following resources are used by this module:
 - [azurerm_resource_group.rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) (resource)
 - [azurerm_subnet.subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) (resource)
 - [azurerm_virtual_network.network](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network) (resource)
+- [azurerm_dns_zone.public_dns](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/dns_zone) (data source)
 - [tfe_ip_ranges.tfc](https://registry.terraform.io/providers/hashicorp/tfe/latest/docs/data-sources/ip_ranges) (data source)
 
 ## Requirements
@@ -58,6 +65,8 @@ The following resources are used by this module:
 The following requirements are needed by this module:
 
 - <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.6)
+
+- <a name="requirement_acme"></a> [acme](#requirement\_acme) (~> 2.0)
 
 - <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 3.65)
 
@@ -90,6 +99,12 @@ Version:
 ### <a name="module_appconfig"></a> [appconfig](#module\_appconfig)
 
 Source: ./modules/app-config
+
+Version:
+
+### <a name="module_application_gateway_certificate"></a> [application\_gateway\_certificate](#module\_application\_gateway\_certificate)
+
+Source: ./modules/keyvault-acme-certificate
 
 Version:
 

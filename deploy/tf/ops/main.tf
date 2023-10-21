@@ -235,6 +235,11 @@ locals {
 }
 
 ## Data Sources
+data "azurerm_dns_zone" "public_dns" {
+  name                = var.public_domain
+  resource_group_name = "GLB-FLLM-DEMO-DNS-rg"
+}
+
 data "tfe_ip_ranges" "tfc" {}
 
 ## Resources
@@ -346,6 +351,15 @@ module "appconfig" {
       azurerm_private_dns_zone.private_dns["configuration_stores"].id,
     ]
   }
+}
+
+module "application_gateway_certificate" {
+  source = "./modules/keyvault-acme-certificate"
+
+  administrator_email = "tbd@solliance.net"
+  domain              = "www.${var.public_domain}"
+  key_vault_id        = module.keyvault.id
+  public_dns_zone     = data.azurerm_dns_zone.public_dns
 }
 
 module "application_insights" {
