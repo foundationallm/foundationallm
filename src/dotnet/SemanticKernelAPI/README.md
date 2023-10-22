@@ -8,9 +8,15 @@ The Semantic Kernel API is secured via Azure AD and an `X-API-KEY` and requires 
 
 The Semantic Kernel API provides the following services:
 
-- Handle user prompts for completion and summaries from the Agent Factory API
+- Handle user prompts for completion and summaries from the Agent Factory API.
+- Executes the defined skills in the Semantic Kernel configurations to generate completions
+- Handles the various memories required to execute the AI layer summaries
 
 ## Instructions
+
+Coming soon.
+
+## Services Required
 
 Coming soon.
 
