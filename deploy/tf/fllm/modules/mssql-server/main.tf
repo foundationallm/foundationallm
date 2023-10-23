@@ -83,13 +83,13 @@ resource "azurerm_monitor_metric_alert" "alert" {
 
 resource "azurerm_private_endpoint" "ple" {
   location            = var.resource_group.location
-  name                = "${var.resource_prefix}-sql-pe"
+  name                = "${var.resource_prefix}-sqlServer-pe"
   resource_group_name = var.resource_group.name
   subnet_id           = var.private_endpoint.subnet_id
   tags                = var.tags
 
   private_dns_zone_group {
-    name                 = "sql"
+    name                 = "sqlServer"
     private_dns_zone_ids = var.private_endpoint.private_dns_zone_ids
   }
 
