@@ -126,4 +126,16 @@ Version:
 Source: ./modules/application-gateway
 
 Version:
+
+### <a name="module_nsg"></a> [nsg](#module\_nsg)
+
+Source: ./modules/nsg
+
+Version:
+
+### <a name="module_storage_data"></a> [storage\_data](#module\_storage\_data)
+
+Source: ./modules/storage-account
+
+Version:
 <!-- END_TF_DOCS -->

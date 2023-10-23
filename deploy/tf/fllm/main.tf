@@ -57,6 +57,11 @@ locals {
         "Purpose" = "Application"
       }
     }
+    "data" = {
+      tags = {
+        "Purpose" = "Storage"
+      }
+    }
   }
 
   resource_group_backend = {
@@ -113,6 +118,13 @@ locals {
           }
         })
         outbound = merge({})
+      }
+    }
+    "Datasources" = {
+      address_prefix = cidrsubnet(local.vnet_address_space, 8, 2)
+      nsg_rules = {
+        inbound  = merge(local.default_nsg_rules.inbound, {})
+        outbound = merge(local.default_nsg_rules.outbound, {})
       }
     }
     "FLLMServices" = {
@@ -305,7 +317,7 @@ module "nsg" {
   rules_inbound   = local.subnet[each.key].nsg_rules.inbound
   rules_outbound  = local.subnet[each.key].nsg_rules.outbound
   subnet_id       = each.value.id
-  tags            = azurerm_resource_group.backend["net"].tags
+  tags            = data.azurerm_resource_group.backend["net"].tags
 }
 
 module "storage_data" {
@@ -339,11 +351,7 @@ module "storage_data" {
 #   regional_resource_groups = {
 
 
-#     "Data" = {
-#       tags = {
-#         "Purpose" = "Storage"
-#       }
-#     }
+
 #     "FLLMStorage" = {
 #       tags = {
 #         Purpose = "Storage"

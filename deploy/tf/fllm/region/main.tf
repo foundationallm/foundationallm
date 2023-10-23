@@ -94,15 +94,7 @@ locals {
         })
       }
     }
-    "Datasources" = {
-      address_prefix    = cidrsubnet(local.vnet_address_space, 8, 2)
-      service_endpoints = []
 
-      nsg_rules = {
-        inbound  = merge(local.default_nsg_rules.inbound, {})
-        outbound = merge(local.default_nsg_rules.outbound, {})
-      }
-    }
 
     "FLLMFrontEnd" = {
       address_prefix    = cidrsubnet(local.vnet_address_space, 8, 9)
