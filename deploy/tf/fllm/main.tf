@@ -271,6 +271,11 @@ locals {
   }
 }
 
+import {
+  id = "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DATA-rg/providers/Microsoft.Network/privateEndpoints/EUS-FLLM-DEMO-DATA-sql-pe"
+  to = module.sql.azurerm_private_endpoint.ple
+}
+
 # Data Sources
 data "azurerm_dns_zone" "public_dns" {
   name                = var.public_domain

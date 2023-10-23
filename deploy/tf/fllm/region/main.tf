@@ -6,8 +6,7 @@ locals {
   resource_prefix    = upper(join("-", [local.location_short, var.resource_prefix]))
   tags               = merge(var.tags, { workspace = terraform.workspace })
   vnet_address_space = var.vnet_address_space
-}
-locals {
+
   tfc_address_prefix   = cidrsubnet(local.vnet_address_space, 11, 2046)
   agent_address_prefix = cidrsubnet(local.vnet_address_space, 11, 2047)
 
