@@ -8,9 +8,10 @@ locals {
   resource_prefix = { for k, _ in local.resource_group : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
 
   address_prefix = {
-    ado = cidrsubnet(local.ops_parent_cidr, 5, 29)
-    ops = cidrsubnet(local.ops_parent_cidr, 5, 27)
-    tfc = cidrsubnet(local.ops_parent_cidr, 5, 31)
+    ado     = cidrsubnet(local.ops_parent_cidr, 5, 29)
+    jumpbox = cidrsubnet(local.ops_parent_cidr, 5, 25)
+    ops     = cidrsubnet(local.ops_parent_cidr, 5, 27)
+    tfc     = cidrsubnet(local.ops_parent_cidr, 5, 31)
   }
 
   default_nsg_rules = {
@@ -88,6 +89,11 @@ locals {
         "Purpose" = "Networking"
       }
     }
+    jbx = {
+      tags = {
+        "Purpose" = "DevOps"
+      }
+    }
     net = {
       tags = {
         "Purpose" = "Networking"
@@ -156,6 +162,44 @@ locals {
       nsg_rules = {
         inbound  = merge(local.default_nsg_rules.inbound, {})
         outbound = merge(local.default_nsg_rules.outbound, {})
+      }
+    }
+    jumpbox = {
+      address_prefix = local.address_prefix["jumpbox"]
+
+      nsg_rules = {
+        inbound = merge({}, {
+          "allow-rdp" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_range     = "3389"
+            priority                   = 128
+            protocol                   = "Tcp"
+            source_address_prefix      = "Internet"
+            source_port_range          = "*"
+          }
+          "allow-vnet-inbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_range     = "*"
+            priority                   = 192
+            protocol                   = "*"
+            source_address_prefix      = "VirtualNetwork"
+            source_port_range          = "*"
+          }
+        })
+
+        outbound = merge(local.default_nsg_rules.outbound, {
+          "allow-vnet-outbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_range     = "*"
+            priority                   = 128
+            protocol                   = "*"
+            source_address_prefix      = "VirtualNetwork"
+            source_port_range          = "*"
+          }
+        })
       }
     }
     tfc = {
@@ -422,6 +466,18 @@ module "content_safety" {
       azurerm_private_dns_zone.private_dns["cognitiveservices"].id,
     ]
   }
+}
+
+module "jumpbox" {
+  source = "./modules/jumpbox"
+
+  action_group_id            = azurerm_monitor_action_group.do_nothing.id
+  data_collection_rule_id    = module.logs.data_collection_rule_id
+  log_analytics_workspace_id = module.logs.id
+  resource_group             = azurerm_resource_group.rg["jbx"]
+  resource_prefix            = local.resource_prefix["jbx"]
+  subnet_id                  = azurerm_subnet.subnet["jumpbox"].id
+  tags                       = azurerm_resource_group.rg["jbx"].tags
 }
 
 module "keyvault" {

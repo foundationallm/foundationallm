@@ -126,6 +126,12 @@ Source: ./modules/content-safety
 
 Version:
 
+### <a name="module_jumpbox"></a> [jumpbox](#module\_jumpbox)
+
+Source: ./modules/jumpbox
+
+Version:
+
 ### <a name="module_keyvault"></a> [keyvault](#module\_keyvault)
 
 Source: ./modules/keyvault

@@ -99,45 +99,7 @@ locals {
 
 
 
-    "Jumpbox" = {
-      address_prefix    = cidrsubnet(local.vnet_address_space, 8, 7)
-      service_endpoints = []
 
-      nsg_rules = {
-        inbound = merge({}, {
-          "allow-rdp" = {
-            access                     = "Allow"
-            destination_address_prefix = "VirtualNetwork"
-            destination_port_range     = "3389"
-            priority                   = 128
-            protocol                   = "Tcp"
-            source_address_prefix      = "Internet"
-            source_port_range          = "*"
-          }
-          "allow-vnet-inbound" = {
-            access                     = "Allow"
-            destination_address_prefix = "VirtualNetwork"
-            destination_port_range     = "*"
-            priority                   = 192
-            protocol                   = "*"
-            source_address_prefix      = "VirtualNetwork"
-            source_port_range          = "*"
-          }
-        })
-
-        outbound = merge(local.default_nsg_rules.outbound, {
-          "allow-vnet-outbound" = {
-            access                     = "Allow"
-            destination_address_prefix = "VirtualNetwork"
-            destination_port_range     = "*"
-            priority                   = 128
-            protocol                   = "*"
-            source_address_prefix      = "VirtualNetwork"
-            source_port_range          = "*"
-          }
-        })
-      }
-    }
     "Gateway" = {
       address_prefix    = cidrsubnet(local.vnet_address_space, 8, 8)
       service_endpoints = []

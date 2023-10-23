@@ -1,0 +1,154 @@
+locals {
+  alert = {
+    cpu = {
+      aggregation = "Average"
+      description = "Alert on VM Threshold - Average CPU greater than 75% for 5 minutes"
+      frequency   = "PT1M"
+      metric_name = "Percentage CPU"
+      operator    = "GreaterThan"
+      severity    = 2
+      threshold   = 75
+      window_size = "PT5M"
+    }
+    disk = {
+      aggregation = "Average"
+      description = "Alert on VM Threshold - Average Disk Queue greater than 8 for 5 minutes"
+      frequency   = "PT1M"
+      metric_name = "OS Disk Queue Depth"
+      operator    = "GreaterThan"
+      severity    = 2
+      threshold   = 8
+      window_size = "PT5M"
+    }
+  }
+}
+
+resource "azurerm_network_interface" "nic" {
+  location            = var.resource_group.location
+  name                = "${var.resource_prefix}-nic"
+  resource_group_name = var.resource_group.name
+  tags                = var.tags
+
+  ip_configuration {
+    name                          = "internal"
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.pip.id
+    subnet_id                     = var.subnet_id
+  }
+}
+
+# TODO - replace with bastion
+resource "azurerm_public_ip" "pip" {
+  allocation_method   = "Static"
+  domain_name_label   = "fllm-jbx"
+  location            = var.resource_group.location
+  name                = "${var.resource_prefix}-pip"
+  resource_group_name = var.resource_group.name
+  sku                 = "Standard"
+  tags                = var.tags
+}
+
+resource "azurerm_windows_virtual_machine" "main" {
+  admin_password             = random_password.password.result
+  admin_username             = random_id.user.hex
+  encryption_at_host_enabled = true
+  location                   = var.resource_group.location
+  name                       = "${var.resource_prefix}-vm"
+  computer_name              = replace(var.resource_prefix, "-", "")
+  network_interface_ids      = [azurerm_network_interface.nic.id]
+  resource_group_name        = var.resource_group.name
+  size                       = "Standard_B2s"
+  tags                       = var.tags
+
+  boot_diagnostics {}
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    offer     = "WindowsServer"
+    publisher = "MicrosoftWindowsServer"
+    sku       = "2016-Datacenter"
+    version   = "latest"
+  }
+}
+
+resource "azurerm_monitor_metric_alert" "alert" {
+  for_each = local.alert
+
+  description         = each.value.description
+  frequency           = each.value.frequency
+  name                = "${var.resource_prefix}-vm-${each.key}-alert"
+  resource_group_name = var.resource_group.name
+  scopes              = [azurerm_windows_virtual_machine.main.id]
+  severity            = each.value.severity
+  tags                = var.tags
+  window_size         = each.value.window_size
+
+  action {
+    action_group_id = var.action_group_id
+  }
+
+  criteria {
+    aggregation      = each.value.aggregation
+    metric_name      = each.value.metric_name
+    metric_namespace = "Microsoft.Compute/virtualmachines"
+    operator         = each.value.operator
+    threshold        = each.value.threshold
+  }
+}
+
+resource "azurerm_virtual_machine_extension" "azure_monitor_agent" {
+  name                 = "AzureMonitorWindowsAgent"
+  publisher            = "Microsoft.Azure.Monitor"
+  type                 = "AzureMonitorWindowsAgent"
+  type_handler_version = "1.0"
+  virtual_machine_id   = azurerm_windows_virtual_machine.main.id
+  tags                 = var.tags
+}
+
+resource "azurerm_virtual_machine_extension" "dependency_agent" {
+  name                 = "DependencyAgentWindows"
+  publisher            = "Microsoft.Azure.Monitoring.DependencyAgent"
+  settings             = jsonencode({ enableAMA = true })
+  type                 = "DependencyAgentWindows"
+  type_handler_version = "9.10"
+  virtual_machine_id   = azurerm_windows_virtual_machine.main.id
+  tags                 = var.tags
+}
+
+resource "azurerm_monitor_data_collection_rule_association" "dcr_to_vmss" {
+  data_collection_rule_id = var.data_collection_rule_id
+  description             = "Associate DCR to VMSS."
+  name                    = "${var.resource_prefix}-dcra"
+  target_resource_id      = azurerm_windows_virtual_machine.main.id
+}
+
+# TODO - output these to key vault
+resource "random_id" "user" {
+  byte_length = 8
+}
+
+resource "random_password" "password" {
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+
+module "diagnostics" {
+  source = "../diagnostics"
+
+  log_analytics_workspace_id = var.log_analytics_workspace_id
+
+  monitored_services = {
+    vm = {
+      id = azurerm_windows_virtual_machine.main.id
+    }
+  }
+}

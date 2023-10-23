@@ -144,5 +144,3 @@ module "diagnostics" {
     }
   }
 }
-
-
