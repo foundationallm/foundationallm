@@ -18,10 +18,8 @@ variable "public_domain" {
   type        = string
 }
 
-variable "sql_admin_ad_group" {
-  description = "SQL Admin AD group"
-  type = object({
-    name      = string
-    object_id = string
-  })
+variable "tfc_agent_token" {
+  description = "The token used by the agent to authenticate with Terraform Cloud."
+  sensitive   = true
+  type        = string
 }

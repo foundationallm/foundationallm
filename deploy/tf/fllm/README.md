@@ -28,87 +28,35 @@ az feature register --namespace Microsoft.Compute --name EncryptionAtHost
 ```
 
 <!-- BEGIN_TF_DOCS -->
-## Requirements
 
-The following requirements are needed by this module:
-
-- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.6)
-
-- <a name="requirement_acme"></a> [acme](#requirement\_acme) (~> 2.0)
-
-- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 3.65)
-
-- <a name="requirement_tfe"></a> [tfe](#requirement\_tfe) (~> 0.49)
-
-## Providers
-
-No providers.
-
-## Modules
-
-The following Modules are called:
-
-### <a name="module_global"></a> [global](#module\_global)
-
-Source: ./global
-
-Version:
-
-### <a name="module_regions"></a> [regions](#module\_regions)
-
-Source: ./region
-
-Version:
-
-## Resources
-
-No resources.
 
 ## Required Inputs
 
 The following input variables are required:
 
-### <a name="input_tfc_agent_token"></a> [tfc\_agent\_token](#input\_tfc\_agent\_token)
-
-Description: The token used by the agent to authenticate with Terraform Cloud.
-
-Type: `string`
-
-## Optional Inputs
-
-The following input variables are optional (have default values):
-
 ### <a name="input_environment"></a> [environment](#input\_environment)
 
-Description: The environment name
+Description: The environment name.
 
 Type: `string`
 
-Default: `"DEMO"`
+### <a name="input_location"></a> [location](#input\_location)
 
-### <a name="input_global_location"></a> [global\_location](#input\_global\_location)
-
-Description: The global location
+Description: The location to deploy Azure resources.
 
 Type: `string`
-
-Default: `"East US"`
 
 ### <a name="input_project_id"></a> [project\_id](#input\_project\_id)
 
-Description: The project id
+Description: The project identifier.
 
 Type: `string`
-
-Default: `"FLLM"`
 
 ### <a name="input_public_domain"></a> [public\_domain](#input\_public\_domain)
 
 Description: Public DNS domain
 
 Type: `string`
-
-Default: `"internal.foundationallm.ai"`
 
 ### <a name="input_sql_admin_ad_group"></a> [sql\_admin\_ad\_group](#input\_sql\_admin\_ad\_group)
 
@@ -123,24 +71,113 @@ object({
   })
 ```
 
-Default:
+## Optional Inputs
 
-```json
-{
-  "name": "FoundationaLLM SQL Admins",
-  "object_id": "73d59f98-857b-45e7-950b-5ee30d289bc8"
-}
-```
-
-### <a name="input_tags"></a> [tags](#input\_tags)
-
-Description: The tags to use on each resource
-
-Type: `map(string)`
-
-Default: `{}`
+No optional inputs.
 
 ## Outputs
 
 No outputs.
+
+## Resources
+
+The following resources are used by this module:
+
+- [azurerm_resource_group.rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) (resource)
+- [azurerm_role_assignment.keyvault_secrets_user_agw](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) (resource)
+- [azurerm_subnet.subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) (resource)
+- [azurerm_user_assigned_identity.agw](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) (resource)
+- [azurerm_dns_zone.public_dns](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/dns_zone) (data source)
+- [azurerm_key_vault.keyvault_ops](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) (data source)
+- [azurerm_key_vault_certificate.agw](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_certificate) (data source)
+- [azurerm_log_analytics_workspace.logs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/log_analytics_workspace) (data source)
+- [azurerm_monitor_action_group.do_nothing](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) (data source)
+- [azurerm_private_dns_zone.private_dns](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) (data source)
+- [azurerm_resource_group.backend](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) (data source)
+- [azurerm_subnet.backend](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) (data source)
+- [azurerm_virtual_network.network](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) (data source)
+
+## Requirements
+
+The following requirements are needed by this module:
+
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.6)
+
+- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 3.65)
+
+## Providers
+
+The following providers are used by this module:
+
+- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (3.77.0)
+
+## Modules
+
+The following Modules are called:
+
+### <a name="module_aks_backend"></a> [aks\_backend](#module\_aks\_backend)
+
+Source: ./modules/aks
+
+Version:
+
+### <a name="module_aks_frontend"></a> [aks\_frontend](#module\_aks\_frontend)
+
+Source: ./modules/aks
+
+Version:
+
+### <a name="module_application_gateway"></a> [application\_gateway](#module\_application\_gateway)
+
+Source: ./modules/application-gateway
+
+Version:
+
+### <a name="module_cosmosdb"></a> [cosmosdb](#module\_cosmosdb)
+
+Source: ./modules/cosmosdb
+
+Version:
+
+### <a name="module_cosmosdb_data"></a> [cosmosdb\_data](#module\_cosmosdb\_data)
+
+Source: ./modules/cosmosdb
+
+Version:
+
+### <a name="module_nsg"></a> [nsg](#module\_nsg)
+
+Source: ./modules/nsg
+
+Version:
+
+### <a name="module_openai_ha"></a> [openai\_ha](#module\_openai\_ha)
+
+Source: ./modules/ha-openai
+
+Version:
+
+### <a name="module_search"></a> [search](#module\_search)
+
+Source: ./modules/search
+
+Version:
+
+### <a name="module_sql"></a> [sql](#module\_sql)
+
+Source: ./modules/mssql-server
+
+Version:
+
+### <a name="module_storage"></a> [storage](#module\_storage)
+
+Source: ./modules/storage-account
+
+Version:
+
+### <a name="module_storage_data"></a> [storage\_data](#module\_storage\_data)
+
+Source: ./modules/storage-account
+
+Version:
 <!-- END_TF_DOCS -->
