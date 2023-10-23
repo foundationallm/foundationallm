@@ -130,7 +130,6 @@ resource "azurerm_monitor_data_collection_rule_association" "dcr_to_vmss" {
   target_resource_id      = azurerm_windows_virtual_machine.main.id
 }
 
-# TODO - output these to key vault
 resource "random_id" "user" {
   byte_length = 8
 }

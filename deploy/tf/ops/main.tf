@@ -296,6 +296,17 @@ data "azurerm_dns_zone" "public_dns" {
 data "tfe_ip_ranges" "tfc" {}
 
 ## Resources
+resource "azurerm_key_vault_secret" "secret" {
+  for_each = {
+    "jumpbox-administrator-username" = module.jumpbox.administrator_username
+    "jumpbox-administrator-password" = module.jumpbox.administrator_password
+  }
+
+  key_vault_id = module.keyvault.id
+  name         = each.key
+  value        = each.value
+}
+
 resource "azurerm_monitor_action_group" "do_nothing" {
   name                = "${local.resource_prefix["ops"]}-ag"
   resource_group_name = azurerm_resource_group.rg["ops"].name
