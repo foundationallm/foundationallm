@@ -57,9 +57,14 @@ locals {
         "Purpose" = "Application"
       }
     }
-    "data" = {
+    data = {
       tags = {
         "Purpose" = "Storage"
+      }
+    }
+    fllmstorage = {
+      tags = {
+        Purpose = "Storage"
       }
     }
   }
@@ -138,6 +143,14 @@ locals {
       nsg_rules = {
         inbound  = merge({}, {})
         outbound = merge({}, {})
+      }
+    }
+    "FLLMStorage" = {
+      address_prefix = cidrsubnet(local.vnet_address_space, 8, 4)
+
+      nsg_rules = {
+        inbound  = merge(local.default_nsg_rules.inbound, {})
+        outbound = merge(local.default_nsg_rules.outbound, {})
       }
     }
   }
@@ -308,6 +321,46 @@ module "application_gateway" {
   tags                       = azurerm_resource_group.rg["agw"].tags
 }
 
+module "cosmosdb" {
+  source = "./modules/cosmosdb"
+
+  action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
+  resource_group             = azurerm_resource_group.rg["fllmstorage"]
+  resource_prefix            = local.resource_prefix["fllmstorage"]
+  tags                       = azurerm_resource_group.rg["fllmstorage"].tags
+
+  containers = {
+    embedding = {
+      partition_key_path = "/id"
+      max_throughput     = 1000
+    }
+    completions = {
+      partition_key_path = "/sessionId"
+      max_throughput     = 1000
+    }
+    product = {
+      partition_key_path = "/categoryId"
+      max_throughput     = 1000
+    }
+    customer = {
+      partition_key_path = "/customerId"
+      max_throughput     = 1000
+    }
+    leases = {
+      partition_key_path = "/id"
+      max_throughput     = 1000
+    }
+  }
+
+  private_endpoint = {
+    subnet_id = azurerm_subnet.subnet["FLLMStorage"].id
+    private_dns_zone_ids = [
+      data.azurerm_private_dns_zone.private_dns["cosmosdb"].id,
+    ]
+  }
+}
+
 module "nsg" {
   for_each = azurerm_subnet.subnet
   source   = "./modules/nsg"
@@ -352,11 +405,7 @@ module "storage_data" {
 
 
 
-#     "FLLMStorage" = {
-#       tags = {
-#         Purpose = "Storage"
-#       }
-#     }
+
 #     "JBX" = {
 #       tags = {
 #         "Purpose" = "DevOps"

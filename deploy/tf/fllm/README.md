@@ -127,6 +127,12 @@ Source: ./modules/application-gateway
 
 Version:
 
+### <a name="module_cosmosdb"></a> [cosmosdb](#module\_cosmosdb)
+
+Source: ./modules/cosmosdb
+
+Version:
+
 ### <a name="module_nsg"></a> [nsg](#module\_nsg)
 
 Source: ./modules/nsg
