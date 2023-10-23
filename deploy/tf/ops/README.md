@@ -114,6 +114,18 @@ Source: ./modules/application-insights
 
 Version:
 
+### <a name="module_container_registry"></a> [container\_registry](#module\_container\_registry)
+
+Source: ./modules/container-registry
+
+Version:
+
+### <a name="module_content_safety"></a> [content\_safety](#module\_content\_safety)
+
+Source: ./modules/content-safety
+
+Version:
+
 ### <a name="module_keyvault"></a> [keyvault](#module\_keyvault)
 
 Source: ./modules/keyvault

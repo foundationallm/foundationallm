@@ -285,6 +285,13 @@ resource "azurerm_resource_group" "rg" {
   tags     = merge(each.value.tags, local.tags)
 }
 
+# TODO: need principal ID for the following
+# resource "azurerm_role_assignment" "storgage_blob_data_contributor_diagnostic_services" {
+#   principal_id         = "562db366-1b96-45d2-aa4a-f2148cef2240"
+#   role_definition_name = "Storage Blob Data Contributor"
+#   scope                = azurerm_resource_group.rgs["OPS"].id
+# }
+
 resource "azurerm_subnet" "subnet" {
   for_each = local.subnet
 
@@ -382,14 +389,32 @@ module "application_insights" {
   tags                             = azurerm_resource_group.rg["ops"].tags
 }
 
+module "container_registry" {
+  source = "./modules/container-registry"
+
+  action_group_id            = azurerm_monitor_action_group.do_nothing.id
+  log_analytics_workspace_id = module.logs.id
+  resource_group             = azurerm_resource_group.rg["ops"]
+  resource_prefix            = local.resource_prefix["ops"]
+  tags                       = azurerm_resource_group.rg["ops"].tags
+
+  #     private_endpoint = {
+  #     subnet_id = azurerm_subnet.subnets["Services"].id
+  #     private_dns_zone_ids = [
+  #       var.private_dns_zones["privatelink.azurecr.io.
+  # {regionName}.privatelink.azurecr.io"].id,
+  #     ]
+  #   }
+}
+
 module "content_safety" {
   source = "./modules/content-safety"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id       = module.logs.id
-  resource_group                   = azurerm_resource_group.rg["ops"]
-  resource_prefix                  = local.resource_prefix["ops"]
-  tags                             = azurerm_resource_group.rg["ops"].tags
+  log_analytics_workspace_id = module.logs.id
+  resource_group             = azurerm_resource_group.rg["ops"]
+  resource_prefix            = local.resource_prefix["ops"]
+  tags                       = azurerm_resource_group.rg["ops"].tags
 
   private_endpoint = {
     subnet_id = azurerm_subnet.subnet["ops"].id
