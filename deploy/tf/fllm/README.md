@@ -133,6 +133,12 @@ Source: ./modules/cosmosdb
 
 Version:
 
+### <a name="module_cosmosdb_data"></a> [cosmosdb\_data](#module\_cosmosdb\_data)
+
+Source: ./modules/cosmosdb
+
+Version:
+
 ### <a name="module_nsg"></a> [nsg](#module\_nsg)
 
 Source: ./modules/nsg

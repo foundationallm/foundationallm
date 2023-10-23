@@ -361,6 +361,46 @@ module "cosmosdb" {
   }
 }
 
+module "cosmosdb_data" {
+  source = "./modules/cosmosdb"
+
+  action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
+  resource_group             = azurerm_resource_group.rg["data"]
+  resource_prefix            = local.resource_prefix["data"]
+  tags                       = azurerm_resource_group.rg["data"].tags
+
+  containers = {
+    embedding = {
+      partition_key_path = "/id"
+      max_throughput     = 1000
+    }
+    completions = {
+      partition_key_path = "/sessionId"
+      max_throughput     = 1000
+    }
+    product = {
+      partition_key_path = "/categoryId"
+      max_throughput     = 1000
+    }
+    customer = {
+      partition_key_path = "/customerId"
+      max_throughput     = 1000
+    }
+    leases = {
+      partition_key_path = "/id"
+      max_throughput     = 1000
+    }
+  }
+
+  private_endpoint = {
+    subnet_id = azurerm_subnet.subnet["Datasources"].id
+    private_dns_zone_ids = [
+      data.azurerm_private_dns_zone.private_dns["cosmosdb"].id,
+    ]
+  }
+}
+
 module "nsg" {
   for_each = azurerm_subnet.subnet
   source   = "./modules/nsg"

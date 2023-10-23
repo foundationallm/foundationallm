@@ -384,82 +384,8 @@ data "azurerm_client_config" "current" {}
 
 
 
-module "content_safety" {
-  source = "./modules/content-safety"
-
-  action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
-  resource_group             = azurerm_resource_group.rgs["OPS"]
-  resource_prefix            = "${local.resource_prefix}-FLLM"
-  tags                       = local.tags
-
-  private_endpoint = {
-    subnet_id = azurerm_subnet.subnets["Services"].id
-    private_dns_zone_ids = [
-      var.private_dns_zones["privatelink.cognitiveservices.azure.com"].id,
-    ]
-  }
-}
 
 
-
-module "container_registry" {
-  source = "./modules/container-registry"
-
-  action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
-  resource_group             = azurerm_resource_group.rgs["OPS"]
-  resource_prefix            = local.resource_prefix
-  tags                       = local.tags
-
-  #     private_endpoint = {
-  #     subnet_id = azurerm_subnet.subnets["Services"].id
-  #     private_dns_zone_ids = [
-  #       var.private_dns_zones["privatelink.azurecr.io.
-  # {regionName}.privatelink.azurecr.io"].id,
-  #     ]
-  #   }
-}
-
-module "data_cosmosdb" {
-  source = "./modules/cosmosdb"
-
-  action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
-  resource_group             = azurerm_resource_group.rgs["Data"]
-  resource_prefix            = "${local.resource_prefix}-DATA"
-  tags                       = local.tags
-
-  containers = {
-    embedding = {
-      partition_key_path = "/id"
-      max_throughput     = 1000
-    }
-    completions = {
-      partition_key_path = "/sessionId"
-      max_throughput     = 1000
-    }
-    product = {
-      partition_key_path = "/categoryId"
-      max_throughput     = 1000
-    }
-    customer = {
-      partition_key_path = "/customerId"
-      max_throughput     = 1000
-    }
-    leases = {
-      partition_key_path = "/id"
-      max_throughput     = 1000
-    }
-  }
-
-  private_endpoint = {
-    subnet_id = azurerm_subnet.subnets["Datasources"].id
-    private_dns_zone_ids = [
-      var.private_dns_zones["privatelink.documents.azure.com"].id,
-    ]
-  }
-}
 
 module "frontend_aks" {
   source = "./modules/aks"
@@ -591,4 +517,41 @@ module "storage_ops" {
       web   = [var.private_dns_zones["privatelink.azurewebsites.net"].id]
     }
   }
+}
+
+module "content_safety" {
+  source = "./modules/content-safety"
+
+  action_group_id            = azurerm_monitor_action_group.do_nothing.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
+  resource_group             = azurerm_resource_group.rgs["OPS"]
+  resource_prefix            = "${local.resource_prefix}-FLLM"
+  tags                       = local.tags
+
+  private_endpoint = {
+    subnet_id = azurerm_subnet.subnets["Services"].id
+    private_dns_zone_ids = [
+      var.private_dns_zones["privatelink.cognitiveservices.azure.com"].id,
+    ]
+  }
+}
+
+
+
+module "container_registry" {
+  source = "./modules/container-registry"
+
+  action_group_id            = azurerm_monitor_action_group.do_nothing.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
+  resource_group             = azurerm_resource_group.rgs["OPS"]
+  resource_prefix            = local.resource_prefix
+  tags                       = local.tags
+
+  #     private_endpoint = {
+  #     subnet_id = azurerm_subnet.subnets["Services"].id
+  #     private_dns_zone_ids = [
+  #       var.private_dns_zones["privatelink.azurecr.io.
+  # {regionName}.privatelink.azurecr.io"].id,
+  #     ]
+  #   }
 }
