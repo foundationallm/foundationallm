@@ -121,6 +121,12 @@ Source: ./modules/aks
 
 Version:
 
+### <a name="module_aks_frontend"></a> [aks\_frontend](#module\_aks\_frontend)
+
+Source: ./modules/aks
+
+Version:
+
 ### <a name="module_application_gateway"></a> [application\_gateway](#module\_application\_gateway)
 
 Source: ./modules/application-gateway

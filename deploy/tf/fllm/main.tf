@@ -145,6 +145,19 @@ locals {
         outbound = merge({}, {})
       }
     }
+    "FLLMFrontEnd" = {
+      address_prefix = cidrsubnet(local.vnet_address_space, 8, 9)
+      delegations = {
+        "Microsoft.ContainerService/managedClusters" = [
+          "Microsoft.Network/virtualNetworks/subnets/action"
+        ]
+      }
+
+      nsg_rules = {
+        inbound  = merge({}, {})
+        outbound = merge({}, {})
+      }
+    }
     "FLLMStorage" = {
       address_prefix = cidrsubnet(local.vnet_address_space, 8, 4)
 
@@ -160,6 +173,11 @@ locals {
     "Project"     = var.project_id
     "Workspace"   = terraform.workspace
   }
+}
+
+import {
+  id = "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-AGW-rg/providers/Microsoft.Network/applicationGateways/EUS-FLLM-DEMO-AGW-agw"
+  to = module.application_gateway.azurerm_application_gateway.main
 }
 
 # Data Sources
@@ -296,6 +314,27 @@ module "aks_backend" {
 
   private_endpoint = {
     subnet = azurerm_subnet.subnet["FLLMServices"]
+    private_dns_zone_ids = {
+      aks = [
+        data.azurerm_private_dns_zone.private_dns["aks"].id,
+      ]
+    }
+  }
+}
+
+module "aks_frontend" {
+  source = "./modules/aks"
+
+  action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
+  agw_id                     = module.application_gateway.id
+  aks_admin_object_id        = var.sql_admin_ad_group.object_id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
+  resource_group             = azurerm_resource_group.rg["app"]
+  resource_prefix            = "${local.resource_prefix["app"]}-FRONTEND"
+  tags                       = azurerm_resource_group.rg["app"].tags
+
+  private_endpoint = {
+    subnet = azurerm_subnet.subnet["FLLMFrontEnd"]
     private_dns_zone_ids = {
       aks = [
         data.azurerm_private_dns_zone.private_dns["aks"].id,
