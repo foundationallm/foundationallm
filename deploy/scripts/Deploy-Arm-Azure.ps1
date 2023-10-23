@@ -1,23 +1,26 @@
 #! /usr/bin/pwsh
 
 Param(
-    [parameter(Mandatory=$true)][string]$resourceGroup,
-    [parameter(Mandatory=$true)][string]$location,
-    [parameter(Mandatory=$false)][string]$template="azuredeploy.json",
-    [parameter(Mandatory=$false)][string]$resourcePrefix,
-    [parameter(Mandatory=$false)][string]$cosmosDbAccountName, 
-    [parameter(Mandatory=$false)][bool]$deployAks,
-    [parameter(Mandatory=$true)][string]$openAiEndpoint,
-    [parameter(Mandatory=$true)][string]$openAiKey,
-    [parameter(Mandatory=$true)][string]$openAiCompletionsDeployment,
-    [parameter(Mandatory=$true)][string]$openAiEmbeddingsDeployment
+    [parameter(Mandatory = $true)][string]$resourceGroup,
+    [parameter(Mandatory = $true)][string]$location,
+    [parameter(Mandatory = $false)][string]$template = "azuredeploy.json",
+    [parameter(Mandatory = $false)][string]$resourcePrefix,
+    [parameter(Mandatory = $false)][string]$cosmosDbAccountName, 
+    [parameter(Mandatory = $false)][bool]$deployAks,
+    [parameter(Mandatory = $true)][string]$openAiEndpoint,
+    [parameter(Mandatory = $true)][string]$openAiKey,
+    [parameter(Mandatory = $true)][string]$openAiCompletionsDeployment,
+    [parameter(Mandatory = $true)][string]$openAiEmbeddingsDeployment
 )
 
-$sourceFolder=$(Join-Path -Path .. -ChildPath arm)
+Set-StrictMode -Version 3.0
+$ErrorActionPreference = "Stop"
+
+$sourceFolder = $(Join-Path -Path .. -ChildPath arm)
 
 Push-Location $($MyInvocation.InvocationName | Split-Path)
 
-$script=$template
+$script = $template
 
 Write-Host "--------------------------------------------------------" -ForegroundColor Yellow
 Write-Host "Deploying ARM script $script" -ForegroundColor Yellow
@@ -35,19 +38,21 @@ if ($rg.length -eq 0) {
 # $aksVersions=$(az aks get-versions -l $location --query  values[].version -o json | ConvertFrom-Json)
 # $aksLastVersion=$aksVersions[$aksVersions.Length-1]
 # Write-Host "AKS last version is $aksLastVersion" -ForegroundColor Yellow
-$aksLastVersion="1.26.3"
+$aksLastVersion="1.27.3"
 
 $deploymentName = "foundationallm-azuredeploy"
 
 Write-Host "Begining the ARM deployment..." -ForegroundColor Yellow
 Push-Location $sourceFolder
-if ($deployAks)
-{
-    az deployment group create -g $resourceGroup -n $deploymentName --template-file $script --parameters k8sVersion=$aksLastVersion
+if ($deployAks) {
+    az deployment group create -g $resourceGroup -n $deploymentName --template-file $script --parameters k8sVersion=$aksLastVersion --parameters name=$resourcePrefix
 }
-else
-{
-    az deployment group create -g $resourceGroup -n $deploymentName --template-file $script --parameters openAiEndpoint=$openAiEndpoint --parameters openAiKey=$openAiKey --parameters openAiCompletionsDeployment=$openAiCompletionsDeployment --parameters openAiEmbeddingsDeployment=$openAiEmbeddingsDeployment
+else {
+    az deployment group create -g $resourceGroup -n $deploymentName --template-file $script --parameters openAiEndpoint=$openAiEndpoint --parameters name=$resourcePrefix --parameters openAiKey=$openAiKey --parameters openAiCompletionsDeployment=$openAiCompletionsDeployment --parameters openAiEmbeddingsDeployment=$openAiEmbeddingsDeployment
+}
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "ARM deployment failed" -ForegroundColor Red
+    exit 1
 }
 
 $outputVal = (az deployment group show -g $resourceGroup -n $deploymentName --query properties.outputs.resourcePrefix.value) | ConvertFrom-Json

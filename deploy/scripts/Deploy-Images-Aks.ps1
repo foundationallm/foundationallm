@@ -116,9 +116,58 @@ if ([String]::IsNullOrEmpty($valuesFile)) {
 
 Write-Host "Configuration file used is $valuesFile" -ForegroundColor Yellow
 
-if ($charts.Contains("chat-api") -or  $charts.Contains("*")) {
-    Write-Host "API chart - api" -ForegroundColor Yellow
-    $command = "helm upgrade --install $name-api ./chat-api -f $valuesFile --set ingress.hosts='{$aksHost}' --set image.repository=$acrLogin/chat-api --set image.tag=$tag --set hpa.activated=$autoscale"
+if ($charts.Contains("agent-factory-api") -or  $charts.Contains("*")) {
+    Write-Host "API chart - agent-factory-api" -ForegroundColor Yellow
+    $command = "helm upgrade --install $name-agent-factory-api ./agent-factory-api -f $valuesFile --set ingress.hosts='{$aksHost}' --set image.repository=$acrLogin/agent-factory-api --set image.tag=$tag --set hpa.activated=$autoscale"
+    $command = createHelmCommand $command 
+    Invoke-Expression "$command"
+}
+
+if ($charts.Contains("agent-hub-api") -or  $charts.Contains("*")) {
+    Write-Host "API chart - agent-hub-api" -ForegroundColor Yellow
+    $command = "helm upgrade --install $name-agent-hub-api ./agent-hub-api -f $valuesFile --set ingress.hosts='{$aksHost}' --set image.repository=$acrLogin/agent-hub-api --set image.tag=$tag --set hpa.activated=$autoscale"
+    $command = createHelmCommand $command 
+    Invoke-Expression "$command"
+}
+
+if ($charts.Contains("core-api") -or  $charts.Contains("*")) {
+    Write-Host "API chart - core-api" -ForegroundColor Yellow
+    $command = "helm upgrade --install $name-core-api ./core-api -f $valuesFile --set ingress.hosts='{$aksHost}' --set image.repository=$acrLogin/core-api --set image.tag=$tag --set hpa.activated=$autoscale"
+    $command = createHelmCommand $command 
+    Invoke-Expression "$command"
+}
+
+if ($charts.Contains("data-source-hub-api") -or  $charts.Contains("*")) {
+    Write-Host "API chart - data-source-hub-api" -ForegroundColor Yellow
+    $command = "helm upgrade --install $name-data-source-hub-api ./data-source-hub-api -f $valuesFile --set ingress.hosts='{$aksHost}' --set image.repository=$acrLogin/data-source-hub-api --set image.tag=$tag --set hpa.activated=$autoscale"
+    $command = createHelmCommand $command 
+    Invoke-Expression "$command"
+}
+
+if ($charts.Contains("gatekeeper-api") -or  $charts.Contains("*")) {
+    Write-Host "API chart - gatekeeper-api" -ForegroundColor Yellow
+    $command = "helm upgrade --install $name-gatekeeper-api ./gatekeeper-api -f $valuesFile --set ingress.hosts='{$aksHost}' --set image.repository=$acrLogin/gatekeeper-api --set image.tag=$tag --set hpa.activated=$autoscale"
+    $command = createHelmCommand $command 
+    Invoke-Expression "$command"
+}
+
+if ($charts.Contains("langchain-api") -or  $charts.Contains("*")) {
+    Write-Host "API chart - gatekeeper-api" -ForegroundColor Yellow
+    $command = "helm upgrade --install $name-langchain-api ./langchain-api -f $valuesFile --set ingress.hosts='{$aksHost}' --set image.repository=$acrLogin/langchain-api --set image.tag=$tag --set hpa.activated=$autoscale"
+    $command = createHelmCommand $command 
+    Invoke-Expression "$command"
+}
+
+if ($charts.Contains("prompt-hub-api") -or  $charts.Contains("*")) {
+    Write-Host "API chart - prompt-hub-api" -ForegroundColor Yellow
+    $command = "helm upgrade --install $name-prompt-hub-api ./prompt-hub-api -f $valuesFile --set ingress.hosts='{$aksHost}' --set image.repository=$acrLogin/prompt-hub-api --set image.tag=$tag --set hpa.activated=$autoscale"
+    $command = createHelmCommand $command 
+    Invoke-Expression "$command"
+}
+
+if ($charts.Contains("semantic-kernel-api") -or  $charts.Contains("*")) {
+    Write-Host "API chart - semantic-kernel-api" -ForegroundColor Yellow
+    $command = "helm upgrade --install $name-semantic-kernel-api ./semantic-kernel-api -f $valuesFile --set ingress.hosts='{$aksHost}' --set image.repository=$acrLogin/semantic-kernel-api --set image.tag=$tag --set hpa.activated=$autoscale"
     $command = createHelmCommand $command 
     Invoke-Expression "$command"
 }
@@ -130,33 +179,33 @@ if ($charts.Contains("chat-ui") -or  $charts.Contains("*")) {
     Invoke-Expression "$command"
 }
 
-Write-Host " --------------------------------------------------------" 
-Write-Host "Entering holding pattern to wait for proper backend API initialization"
-Write-Host "Attempting to retrieve status from https://$($aksHost)/api/status every 20 seconds with 50 retries"
-Write-Host " --------------------------------------------------------" 
-$apiStatus = "initializing"
-$retriesLeft = 50
-while (($apiStatus.ToString() -ne "ready") -and ($retriesLeft -gt 0)) {
-    Start-Sleep -Seconds 20
+# Write-Host " --------------------------------------------------------" 
+# Write-Host "Entering holding pattern to wait for proper backend API initialization"
+# Write-Host "Attempting to retrieve status from https://$($aksHost)/core/status every 20 seconds with 50 retries"
+# Write-Host " --------------------------------------------------------" 
+# $apiStatus = "initializing"
+# $retriesLeft = 50
+# while (($apiStatus.ToString() -ne "ready") -and ($retriesLeft -gt 0)) {
+#     Start-Sleep -Seconds 20
     
-    try {
-        $apiStatus = Invoke-RestMethod -Uri "https://$($aksHost)/api/status" -Method GET
-    }
-    catch {
-        Write-Host "The attempt to invoke the API endpoint failed. Will retry."
-    }
-    finally {
-        Write-Host "API endpoint status: $($apiStatus)"
-    }
+#     try {
+#         $apiStatus = Invoke-RestMethod -Uri "https://$($aksHost)/core/status" -Method GET
+#     }
+#     catch {
+#         Write-Host "The attempt to invoke the API endpoint failed. Will retry."
+#     }
+#     finally {
+#         Write-Host "API endpoint status: $($apiStatus)"
+#     }
 
-    $retriesLeft -= 1
-} 
+#     $retriesLeft -= 1
+# } 
 
-if ($apiStatus.ToString() -ne "ready") {
-    throw "The backend API did not enter the ready state."
-}
+# if ($apiStatus.ToString() -ne "ready") {
+#     throw "The backend API did not enter the ready state."
+# }
 
 Pop-Location
 Pop-Location
 
-Write-Host "MS OpenAI Chat deployed on AKS" -ForegroundColor Yellow
+Write-Host "FoundationaLLM Chat deployed on AKS" -ForegroundColor Yellow

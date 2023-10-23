@@ -1,29 +1,26 @@
 from typing import Annotated
 from fastapi import Depends, HTTPException
 from fastapi.security import APIKeyHeader
-from foundationallm.credentials import AzureCredential
-from foundationallm.auth import APIKeyValidator
 from foundationallm.config import Configuration
-   
-async def validate_api_key_header(x_api_key: str = Depends(APIKeyHeader(name='X-API-Key'))):
+
+def validate_api_key_header(config: Annotated[Configuration, Depends()], x_api_key: str = Depends(APIKeyHeader(name='X-API-Key'))):
     """
-    Validates that the X-API-Key value in the request header matches
-    the key expected for this API.
+    Validates that the X-API-Key value in the request header matches the key expected for this API.
     
     Parameters
-    ----------    
-    - x_api_key : str
+    ----------
+    app_config : Configuration
+        Used for retrieving application configuration settings.
+    x_api_key : str
         The X-API-Key value in the request header.
+        
+    Returns
+    bool
+        Returns True of the X-API-Key value from the request header matches the expected value.
+        Otherwise, returns False.
     """
-    
-    credential = AzureCredential().get_credential()     
-    key_vault_name = Configuration().get_value(key="foundationallm-keyvault-name")  
-    app_config = Configuration(keyvault_name=key_vault_name, credential=credential)
-    
-    result = APIKeyValidator(
-        api_key_name='foundationallm-datasourcehub-api-key',
-        config=app_config
-    ).validate_api_key(x_api_key)
+
+    result = x_api_key == config.get_value('FoundationaLLM:APIs:DataSourceHubAPI:APIKey')
     
     if not result:
         raise HTTPException(

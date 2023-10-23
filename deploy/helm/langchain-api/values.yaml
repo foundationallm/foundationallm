@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
-serviceAccountName: langChainSa
+serviceAccountName: langchain-api
 image:
   repository: bhm7vnpxv6irqcr.azurecr.io/langchain-api
   pullPolicy: Always
@@ -31,12 +31,18 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/enable-cors:            "true"
+    nginx.ingress.kubernetes.io/secure-backends:        "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin:     "*"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/cors-allow-headers:     "*"
+    nginx.ingress.kubernetes.io/cors-allow-methods:     "*"
   tls:
   - secretName: tls-prod
 
 env:
-  configmap:
-    - name: SOLLIANCEAICOPILOT__LANGCHAINAPI__KEYVAULTURL
-    - name: SOLLIANCEAICOPILOT__LANGCHAINAPI__MICLIENTID
+  configmap: 
+    - name: AZURE_CLIENT_ID
+    - name: foundationallm-app-configuration-uri
   secret: {}
   values: {}

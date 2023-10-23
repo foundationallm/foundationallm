@@ -367,4 +367,12 @@ deploy/__values/
 
 **/env
 ***/.venv
+
+obj
+bin
+log
+
+*.csproj.user
+*.pyproj.user
+
 .DS_Store

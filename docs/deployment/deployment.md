@@ -7,10 +7,17 @@ The following table summarizes the deployment choices available for the solution
  Deployment type | Description | When to use
 --- | --- | ---
 [Standard](./deployment-standard.md) | Use your local development environment to deploy the solution to your Azure subscription. | Best suited for situations where you need the flexibility of a full development environment (e.g. to customize the solution) and you have a local development environment available.
+[CloudShell]() | *Coming Soon* - Use Azure CloudShell to deploy the solution using only a browser. | Best suited for situations where you want to deploy without needing to install anything in your local development environment. 
 
 Select the links in the table above to learn more about each deployment choice.
 
-## Deployment validation
+## Post-deployment configuration
+
+### Microsoft Entra authentication setup
+
+Follow the instructions in the [Entra setup document](./authentication-setup-entra.md) to configure Microsoft Entra authentication for the solution.
+
+### Deployment validation
 
 Use the steps below to validate that the solution was deployed successfully.
 
@@ -30,7 +37,7 @@ Finally, you should be able to see the Cognitive Search index being populated wi
 >
 >It takes several minutes until all imported data is vectorized and indexed.
 
-## Monitoring with Application Insights
+### Monitoring with Application Insights
 
 Use the steps below to monitor the solution with Application Insights:
 
