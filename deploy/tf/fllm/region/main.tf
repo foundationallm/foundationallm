@@ -99,15 +99,7 @@ locals {
 
 
 
-    "Vectorization" = {
-      address_prefix    = cidrsubnet(local.vnet_address_space, 8, 6)
-      service_endpoints = []
 
-      nsg_rules = {
-        inbound  = merge(local.default_nsg_rules.inbound, {})
-        outbound = merge(local.default_nsg_rules.outbound, {})
-      }
-    }
     "Jumpbox" = {
       address_prefix    = cidrsubnet(local.vnet_address_space, 8, 7)
       service_endpoints = []
@@ -316,40 +308,9 @@ data "azurerm_client_config" "current" {}
 
 
 
-module "search" {
-  source = "./modules/search"
 
-  action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
-  resource_group             = azurerm_resource_group.rgs["VEC"]
-  resource_prefix            = local.resource_prefix
-  tags                       = local.tags
 
-  private_endpoint = {
-    subnet_id = azurerm_subnet.subnets["Vectorization"].id
-    private_dns_zone_ids = [
-      var.private_dns_zones["privatelink.search.windows.net"].id,
-    ]
-  }
-}
 
-module "sql" {
-  source = "./modules/mssql-server"
-
-  action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
-  resource_group             = azurerm_resource_group.rgs["Data"]
-  resource_prefix            = local.resource_prefix
-  sql_admin_object_id        = var.sql_admin_ad_group.object_id
-  tags                       = local.tags
-
-  private_endpoint = {
-    subnet_id = azurerm_subnet.subnets["Datasources"].id
-    private_dns_zone_ids = [
-      var.private_dns_zones["privatelink.database.windows.net"].id,
-    ]
-  }
-}
 
 module "storage" {
   source = "./modules/storage-account"

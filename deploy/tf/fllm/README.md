@@ -157,6 +157,12 @@ Source: ./modules/ha-openai
 
 Version:
 
+### <a name="module_search"></a> [search](#module\_search)
+
+Source: ./modules/search
+
+Version:
+
 ### <a name="module_storage_data"></a> [storage\_data](#module\_storage\_data)
 
 Source: ./modules/storage-account

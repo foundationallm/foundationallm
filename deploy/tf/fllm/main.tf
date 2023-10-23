@@ -72,6 +72,11 @@ locals {
         "Purpose" = "OpenAI"
       }
     }
+    vec = {
+      tags = {
+        "Purpose" = "Vectorization"
+      }
+    }
   }
 
   resource_group_backend = {
@@ -238,6 +243,14 @@ locals {
         outbound = merge(local.default_nsg_rules.outbound, {})
       }
     }
+    "Vectorization" = {
+      address_prefix = cidrsubnet(local.vnet_address_space, 8, 6)
+
+      nsg_rules = {
+        inbound  = merge(local.default_nsg_rules.inbound, {})
+        outbound = merge(local.default_nsg_rules.outbound, {})
+      }
+    }
   }
 
   tags = {
@@ -245,11 +258,6 @@ locals {
     "Project"     = var.project_id
     "Workspace"   = terraform.workspace
   }
-}
-
-import {
-  id = "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-AGW-rg/providers/Microsoft.Network/applicationGateways/EUS-FLLM-DEMO-AGW-agw"
-  to = module.application_gateway.azurerm_application_gateway.main
 }
 
 # Data Sources
@@ -526,6 +534,7 @@ module "nsg" {
 
 module "openai_ha" {
   source = "./modules/ha-openai"
+  depends_on = [module.nsg]
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
   instance_count             = 2
@@ -548,6 +557,41 @@ module "openai_ha" {
     ]
     openai_private_dns_zone_ids = [
       data.azurerm_private_dns_zone.private_dns["openai"].id
+    ]
+  }
+}
+
+module "search" {
+  source = "./modules/search"
+
+  action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
+  resource_group             = azurerm_resource_group.rg["vec"]
+  resource_prefix            = local.resource_prefix["vec"]
+  tags                       = azurerm_resource_group.rg["vec"].tags
+
+  private_endpoint = {
+    subnet_id = azurerm_subnet.subnet["Vectorization"].id
+    private_dns_zone_ids = [
+      data.azurerm_private_dns_zone.private_dns["search"].id,
+    ]
+  }
+}
+
+module "sql" {
+  source = "./modules/mssql-server"
+
+  action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
+  resource_group             = azurerm_resource_group.rg["data"]
+  resource_prefix            = local.resource_prefix["data"]
+  sql_admin_object_id        = var.sql_admin_ad_group.object_id
+  tags                       = azurerm_resource_group.rg["data"].tags
+
+  private_endpoint = {
+    subnet_id = azurerm_subnet.subnet["Datasources"].id
+    private_dns_zone_ids = [
+      data.azurerm_private_dns_zone.private_dns["sql_server"].id,
     ]
   }
 }
@@ -601,11 +645,7 @@ module "storage_data" {
 #         "Purpose" = "DevOps"
 #       }
 #     }
-#     "VEC" = {
-#       tags = {
-#         "Purpose" = "Vectorization"
-#       }
-#     }
+
 #   }
 
 #   regions = {
