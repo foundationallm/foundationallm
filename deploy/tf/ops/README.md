@@ -132,6 +132,12 @@ Source: ./modules/nsg
 
 Version:
 
+### <a name="module_storage_ops"></a> [storage\_ops](#module\_storage\_ops)
+
+Source: ./modules/storage-account
+
+Version:
+
 ### <a name="module_tfc_agent"></a> [tfc\_agent](#module\_tfc\_agent)
 
 Source: ./modules/tfc-agent

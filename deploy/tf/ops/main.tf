@@ -382,6 +382,23 @@ module "application_insights" {
   tags                             = azurerm_resource_group.rg["ops"].tags
 }
 
+module "content_safety" {
+  source = "./modules/content-safety"
+
+  action_group_id            = azurerm_monitor_action_group.do_nothing.id
+  log_analytics_workspace_id       = module.logs.id
+  resource_group                   = azurerm_resource_group.rg["ops"]
+  resource_prefix                  = local.resource_prefix["ops"]
+  tags                             = azurerm_resource_group.rg["ops"].tags
+
+  private_endpoint = {
+    subnet_id = azurerm_subnet.subnet["ops"].id
+    private_dns_zone_ids = [
+      azurerm_private_dns_zone.private_dns["cognitiveservices"].id,
+    ]
+  }
+}
+
 module "keyvault" {
   source = "./modules/keyvault"
 
@@ -419,6 +436,28 @@ module "nsg" {
   rules_outbound  = local.subnet[each.key].nsg_rules.outbound
   subnet_id       = each.value.id
   tags            = azurerm_resource_group.rg["net"].tags
+}
+
+module "storage_ops" {
+  source = "./modules/storage-account"
+
+  action_group_id            = azurerm_monitor_action_group.do_nothing.id
+  log_analytics_workspace_id = module.logs.id
+  resource_group             = azurerm_resource_group.rg["ops"]
+  resource_prefix            = local.resource_prefix["ops"]
+  tags                       = azurerm_resource_group.rg["ops"].tags
+
+  private_endpoint = {
+    subnet_id = azurerm_subnet.subnet["ops"].id
+    private_dns_zone_ids = {
+      blob  = [azurerm_private_dns_zone.private_dns["blob"].id]
+      dfs   = [azurerm_private_dns_zone.private_dns["dfs"].id]
+      file  = [azurerm_private_dns_zone.private_dns["file"].id]
+      queue = [azurerm_private_dns_zone.private_dns["queue"].id]
+      table = [azurerm_private_dns_zone.private_dns["table"].id]
+      web   = [azurerm_private_dns_zone.private_dns["sites"].id]
+    }
+  }
 }
 
 module "tfc_agent" {
