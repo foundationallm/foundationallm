@@ -533,7 +533,7 @@ module "nsg" {
 }
 
 module "openai_ha" {
-  source = "./modules/ha-openai"
+  source     = "./modules/ha-openai"
   depends_on = [module.nsg]
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id

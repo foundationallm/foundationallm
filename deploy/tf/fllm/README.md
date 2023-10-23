@@ -163,6 +163,12 @@ Source: ./modules/search
 
 Version:
 
+### <a name="module_sql"></a> [sql](#module\_sql)
+
+Source: ./modules/mssql-server
+
+Version:
+
 ### <a name="module_storage_data"></a> [storage\_data](#module\_storage\_data)
 
 Source: ./modules/storage-account
