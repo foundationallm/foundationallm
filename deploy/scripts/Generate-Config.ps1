@@ -1,17 +1,20 @@
 #! /usr/bin/pwsh
 
 Param (
-    [parameter(Mandatory=$true)][string]$resourceGroup,
-    [parameter(Mandatory=$false)][string]$openAiName,
-    [parameter(Mandatory=$false)][string]$openAiRg,
-    [parameter(Mandatory=$false)][string]$openAiDeployment,
-    [parameter(Mandatory=$false)][string[]]$outputFile=$null,
-    [parameter(Mandatory=$false)][string[]]$gvaluesTemplate="..,gvalues.template.yml",
-    [parameter(Mandatory=$false)][string[]]$migrationSettingsTemplate="..,migrationsettings.template.json",
-    [parameter(Mandatory=$false)][string]$ingressClass="addon-http-application-routing",
-    [parameter(Mandatory=$false)][string]$domain,
-    [parameter(Mandatory=$true)][string]$deployAks
+    [parameter(Mandatory = $true)][string]$resourceGroup,
+    [parameter(Mandatory = $false)][string]$openAiName,
+    [parameter(Mandatory = $false)][string]$openAiRg,
+    # [parameter(Mandatory = $false)][string]$openAiDeployment,
+    [parameter(Mandatory = $false)][string[]]$outputFile = $null,
+    [parameter(Mandatory = $false)][string[]]$gvaluesTemplate = "..,gvalues.template.yml",
+    [parameter(Mandatory = $false)][string[]]$migrationSettingsTemplate = "..,migrationsettings.template.json",
+    [parameter(Mandatory = $false)][string]$ingressClass = "addon-http-application-routing",
+    [parameter(Mandatory = $false)][string]$domain,
+    [parameter(Mandatory = $true)][bool]$deployAks
 )
+
+Set-StrictMode -Version 3.0
+$ErrorActionPreference = "Stop"
 
 function EnsureAndReturnFirstItem($arr, $restype) {
     if (-not $arr -or $arr.Length -ne 1) {
@@ -22,8 +25,15 @@ function EnsureAndReturnFirstItem($arr, $restype) {
     return $arr[0]
 }
 
+function EnsureSuccess($message) {
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host $message -ForegroundColor Red
+        exit $LASTEXITCODE
+    }
+}
+
 # Check the rg
-$rg=$(az group show -n $resourceGroup -o json | ConvertFrom-Json)
+$rg = $(az group show -n $resourceGroup -o json | ConvertFrom-Json)
 
 if (-not $rg) {
     Write-Host "Fatal: Resource group not found" -ForegroundColor Red
@@ -31,96 +41,147 @@ if (-not $rg) {
 }
 
 ### Getting Resources
-$tokens=@{}
+$tokens = @{}
 
 ## Getting storage info
 # $storage=$(az storage account list -g $resourceGroup --query "[].{name: name, blob: primaryEndpoints.blob}" -o json | ConvertFrom-Json)
 # $storage=EnsureAndReturnFirstItem $storage "Storage Account"
 # Write-Host "Storage Account: $($storage.name)" -ForegroundColor Yellow
 
+$resourcePrefix = $(az deployment group show -n foundationallm-azuredeploy -g $resourceGroup --query "properties.outputs.resourcePrefix.value" -o json | ConvertFrom-Json)
+Write-Host "Resource Prefix: $resourcePrefix" -ForegroundColor Yellow
+
 ## Getting API URL domain
-if ($deployAks)
-{
+if ($deployAks) {
+    Write-Host "Getting AKS info" -ForegroundColor Yellow
     if ([String]::IsNullOrEmpty($domain)) {
-        $domain = $(az aks show -n $aksName -g $resourceGroup -o json --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName | ConvertFrom-Json)
+        $domain = $(az aks show --name $aksName -g $resourceGroup -o json --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName | ConvertFrom-Json)
         if (-not $domain) {
             $domain = $(az aks show -n $aksName -g $resourceGroup -o json --query addonProfiles.httpapplicationrouting.config.HTTPApplicationRoutingZoneName | ConvertFrom-Json)
         }
     }
-}
-else
-{
-    $domain=$(az deployment group show -g $resourceGroup -n foundationallm-azuredeploy -o json --query properties.outputs.apiFqdn.value | ConvertFrom-Json)
+    
+    $apiUrl = "https://$domain"
+    Write-Host "API URL: $apiUrl" -ForegroundColor Yellow
+    $tokens.apiUrl = $apiUrl
 }
 
-$apiUrl = "https://$domain"
-Write-Host "API URL: $apiUrl" -ForegroundColor Yellow
+$appConfigInstances = @(az appconfig show -n "$($resourcePrefix)-appconfig" -g $resourceGroup -o json | ConvertFrom-Json)
+if ($appConfigInstances.Length -lt 1) {
+    Write-Host "Error getting app config" -ForegroundColor Red
+    exit 1
+}
+$appConfig = $appConfigInstances.name
+Write-Host "App Config: $appConfig" -ForegroundColor Yellow
 
-$appConfig=$(az appconfig list -g $resourceGroup -o json | ConvertFrom-Json).name
-$appConfigEndpoint=$(az appconfig show -g $resourceGroup -n $appConfig --query 'endpoint' -o json | ConvertFrom-Json)
-$appConfigConnectionString=$(az appconfig credential list -n $appConfig -g $resourceGroup --query "[?name=='Primary Read Only'].{connectionString: connectionString}" -o json | ConvertFrom-Json).connectionString
+$appConfigEndpoint = $(az appconfig show -g $resourceGroup -n $appConfig --query 'endpoint' -o json | ConvertFrom-Json)
+$appConfigConnectionString = $(az appconfig credential list -n $appConfig -g $resourceGroup --query "[?name=='Primary Read Only'].{connectionString: connectionString}" -o json | ConvertFrom-Json).connectionString
 
 ## Getting CosmosDb info
-$docdb=$(az cosmosdb list -g $resourceGroup --query "[?kind=='GlobalDocumentDB'].{name: name, kind:kind, documentEndpoint:documentEndpoint}" -o json | ConvertFrom-Json)
-$docdb=EnsureAndReturnFirstItem $docdb "CosmosDB (Document Db)"
-$docdbKey=$(az cosmosdb keys list -g $resourceGroup -n $docdb.name -o json --query primaryMasterKey | ConvertFrom-Json)
+$docdb = $(az cosmosdb list -g $resourceGroup --query "[?kind=='GlobalDocumentDB'].{name: name, kind:kind, documentEndpoint:documentEndpoint}" -o json | ConvertFrom-Json)
+$docdb = EnsureAndReturnFirstItem $docdb "CosmosDB (Document Db)"
+$docdbKey = $(az cosmosdb keys list -g $resourceGroup -n $docdb.name -o json --query primaryMasterKey | ConvertFrom-Json)
 Write-Host "Document Db Account: $($docdb.name)" -ForegroundColor Yellow
 
-$resourcePrefix=$(az deployment group show -n foundationallm-azuredeploy -g $resourceGroup --query "properties.outputs.resourcePrefix.value" -o json | ConvertFrom-Json)
-$agentFactoryApiMiClientId=$(az identity show -g $resourceGroup -n $resourcePrefix-agent-factory-mi -o json | ConvertFrom-Json).clientId
-$agentHubApiMiClientId=$(az identity show -g $resourceGroup -n $resourcePrefix-agent-hub-mi -o json | ConvertFrom-Json).clientId
-$chatUiMiClientId=$(az identity show -g $resourceGroup -n $resourcePrefix-chat-ui-mi -o json | ConvertFrom-Json).clientId
-$coreApiMiClientId=$(az identity show -g $resourceGroup -n $resourcePrefix-core-mi -o json | ConvertFrom-Json).clientId
-$dataSourceHubApiMiClientId=$(az identity show -g $resourceGroup -n $resourcePrefix-data-source-hub-mi -o json | ConvertFrom-Json).clientId
-$gatekeeperApiMiClientId=$(az identity show -g $resourceGroup -n $resourcePrefix-gatekeeper-mi -o json | ConvertFrom-Json).clientId
-$langChainApiMiClientId=$(az identity show -g $resourceGroup -n $resourcePrefix-langchain-mi -o json | ConvertFrom-Json).clientId
-$promptHubApiMiClientId=$(az identity show -g $resourceGroup -n $resourcePrefix-prompt-hub-mi -o json | ConvertFrom-Json).clientId
-$semanticKernelApiMiClientId=$(az identity show -g $resourceGroup -n $resourcePrefix-semantic-kernel-mi -o json | ConvertFrom-Json).clientId
-$tenantId=$(az account show --query homeTenantId --output tsv)
+if ($deployAks) {
+    $agentFactoryApiMi = $(az identity show -g $resourceGroup -n $resourcePrefix-agent-factory-mi -o json | ConvertFrom-Json)
+    EnsureSuccess "Error getting agent factory mi"
+    $agentFactoryApiMiClientId = $agentFactoryApiMi.clientId
+    Write-Host "Agent Factory MI Client Id: $agentFactoryApiMiClientId" -ForegroundColor Yellow
 
-## Showing Values that will be used
+    $agentHubApiMi = $(az identity show -g $resourceGroup -n $resourcePrefix-agent-hub-mi -o json | ConvertFrom-Json)
+    EnsureSuccess "Error getting agent hub mi"
+    $agentHubApiMiClientId = $agentHubApiMi.clientId
+    Write-Host "Agent Hub MI Client Id: $agentHubApiMiClientId" -ForegroundColor Yellow 
 
-Write-Host "===========================================================" -ForegroundColor Yellow
-Write-Host "gvalues file will be generated with values:"
+    $chatUiMi = $(az identity show -g $resourceGroup -n $resourcePrefix-chat-ui-mi -o json | ConvertFrom-Json)
+    EnsureSuccess "Error getting chat ui mi"
+    $chatUiMiClientId = $chatUiMi.clientId
+    Write-Host "Chat UI MI Client Id: $chatUiMiClientId" -ForegroundColor Yellow
 
-$tokens.apiUrl=$apiUrl
-$tokens.cosmosConnectionString="AccountEndpoint=$($docdb.documentEndpoint);AccountKey=$docdbKey"
-$tokens.cosmosEndpoint=$docdb.documentEndpoint
-$tokens.cosmosKey=$docdbKey
-$tokens.agentFactoryApiMiClientId=$agentFactoryApiMiClientId
-$tokens.agentHubApiMiClientId=$agentHubApiMiClientId
-$tokens.chatUiMiClientId=$chatUiMiClientId
-$tokens.coreApiMiClientId=$coreApiMiClientId
-$tokens.dataSourceHubApiMiClientId=$dataSourceHubApiMiClientId
-$tokens.gatekeeperApiMiClientId=$gatekeeperApiMiClientId
-$tokens.langChainApiMiClientId=$langChainApiMiClientId
-$tokens.promptHubApiMiClientId=$promptHubApiMiClientId
-$tokens.semanticKernelApiMiClientId=$semanticKernelApiMiClientId
-$tokens.tenantId=$tenantId
-$tokens.appConfigEndpoint=$appConfigEndpoint
-$tokens.appConfigConnectionString=$appConfigConnectionString
+    $coreApiMi = $(az identity show -g $resourceGroup -n $resourcePrefix-core-mi -o json | ConvertFrom-Json)
+    EnsureSuccess "Error getting core mi"
+    $coreApiMiClientId = $coreApiMi.clientId
+    Write-Host "Core MI Client Id: $coreApiMiClientId" -ForegroundColor Yellow
 
-# Standard fixed tokens
-$tokens.ingressclass=$ingressClass
-$tokens.ingressrewritepath="(/|$)(.*)"
-$tokens.ingressrewritetarget="`$2"
+    $dataSourceHubApiMi = $(az identity show -g $resourceGroup -n $resourcePrefix-data-source-hub-mi -o json | ConvertFrom-Json)
+    EnsureSuccess "Error getting data source hub mi"
+    $dataSourceHubApiMiClientId = $dataSourceHubApiMi.clientId
+    Write-Host "Data Source Hub MI Client Id: $dataSourceHubApiMiClientId" -ForegroundColor Yellow
 
-if($ingressClass -eq "nginx") {
-    $tokens.ingressrewritepath="(/|$)(.*)" 
-    $tokens.ingressrewritetarget="`$2"
+    $gatekeeperApiMi = $(az identity show -g $resourceGroup -n $resourcePrefix-gatekeeper-mi -o json | ConvertFrom-Json)
+    EnsureSuccess "Error getting gatekeeper mi"
+    $gatekeeperApiMiClientId = $gatekeeperApiMi.clientId
+    Write-Host "Gatekeeper MI Client Id: $gatekeeperApiMiClientId" -ForegroundColor Yellow
+
+    $langChainApiMi = $(az identity show -g $resourceGroup -n $resourcePrefix-langchain-mi -o json | ConvertFrom-Json)
+    EnsureSuccess "Error getting langchain mi"
+    $langChainApiMiClientId = $langChainApiMi.clientId
+    Write-Host "LangChain MI Client Id: $langChainApiMiClientId" -ForegroundColor Yellow
+
+    $promptHubApiMi = $(az identity show -g $resourceGroup -n $resourcePrefix-prompt-hub-mi -o json | ConvertFrom-Json)
+    EnsureSuccess "Error getting prompt hub mi"
+    $promptHubApiMiClientId = $promptHubApiMi.clientId
+    Write-Host "Prompt Hub MI Client Id: $promptHubApiMiClientId" -ForegroundColor Yellow
+
+    $semanticKernelApiMi = $(az identity show -g $resourceGroup -n $resourcePrefix-semantic-kernel-mi -o json | ConvertFrom-Json)
+    EnsureSuccess "Error getting semantic kernel mi"
+    $semanticKernelApiMiClientId = $semanticKernelApiMi.clientId
+    Write-Host "Semantic Kernel MI Client Id: $semanticKernelApiMiClientId" -ForegroundColor Yellow
 }
 
+$tenantId = $(az account show --query homeTenantId --output tsv)
+
+# Setting tokens
+$tokens.cosmosConnectionString = "AccountEndpoint=$($docdb.documentEndpoint);AccountKey=$docdbKey"
+$tokens.cosmosEndpoint = $docdb.documentEndpoint
+$tokens.cosmosKey = $docdbKey
+
+if ($deployAks) {
+    $tokens.agentFactoryApiMiClientId = $agentFactoryApiMiClientId
+    $tokens.agentHubApiMiClientId = $agentHubApiMiClientId
+    $tokens.chatUiMiClientId = $chatUiMiClientId
+    $tokens.coreApiMiClientId = $coreApiMiClientId
+    $tokens.dataSourceHubApiMiClientId = $dataSourceHubApiMiClientId
+    $tokens.gatekeeperApiMiClientId = $gatekeeperApiMiClientId
+    $tokens.langChainApiMiClientId = $langChainApiMiClientId
+    $tokens.promptHubApiMiClientId = $promptHubApiMiClientId
+    $tokens.semanticKernelApiMiClientId = $semanticKernelApiMiClientId
+}
+
+$tokens.tenantId = $tenantId
+$tokens.appConfigEndpoint = $appConfigEndpoint
+$tokens.appConfigConnectionString = $appConfigConnectionString
+
+# Standard fixed tokens
+$tokens.ingressclass = $ingressClass
+$tokens.ingressrewritepath = "(/|$)(.*)"
+$tokens.ingressrewritetarget = "`$2"
+
+if ($ingressClass -eq "nginx") {
+    $tokens.ingressrewritepath = "(/|$)(.*)" 
+    $tokens.ingressrewritetarget = "`$2"
+}
+
+## Showing Values that will be used
+Write-Host "===========================================================" -ForegroundColor Yellow
+Write-Host "gvalues file will be generated with values:"
 Write-Host ($tokens | ConvertTo-Json) -ForegroundColor Yellow
 Write-Host "===========================================================" -ForegroundColor Yellow
 
-Push-Location $($MyInvocation.InvocationName | Split-Path)
-$gvaluesTemplatePath=$(./Join-Path-Recursively -pathParts $gvaluesTemplate.Split(","))
-$outputFilePath=$(./Join-Path-Recursively -pathParts $outputFile.Split(","))
-& ./Token-Replace.ps1 -inputFile $gvaluesTemplatePath -outputFile $outputFilePath -tokens $tokens
-Pop-Location
+if ($deployAks)
+{
+    Write-Host "Generating gvalues file..." -ForegroundColor Yellow
+    Push-Location $($MyInvocation.InvocationName | Split-Path)
+    $gvaluesTemplatePath = $(./Join-Path-Recursively -pathParts $gvaluesTemplate.Split(","))
+    $outputFilePath = $(./Join-Path-Recursively -pathParts $outputFile.Split(","))
+    & ./Token-Replace.ps1 -inputFile $gvaluesTemplatePath -outputFile $outputFilePath -tokens $tokens
+    Pop-Location
+}
 
+Write-Host "Generating migration settings file..." -ForegroundColor Yellow
 Push-Location $($MyInvocation.InvocationName | Split-Path)
-$migrationSettingsTemplatePath=$(./Join-Path-Recursively -pathParts $migrationSettingsTemplate.Split(","))
-$outputFilePath=$(./Join-Path-Recursively -pathParts ..,migrationsettings.json)
+$migrationSettingsTemplatePath = $(./Join-Path-Recursively -pathParts $migrationSettingsTemplate.Split(","))
+$outputFilePath = $(./Join-Path-Recursively -pathParts .., migrationsettings.json)
 & ./Token-Replace.ps1 -inputFile $migrationSettingsTemplatePath -outputFile $outputFilePath -tokens $tokens
 Pop-Location

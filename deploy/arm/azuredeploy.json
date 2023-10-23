@@ -45,12 +45,6 @@
     }
   },
   "variables": {
-    "keyVaultSettings": {
-      "name": "[format('{0}-kv', parameters('name'))]"
-    },
-    "safetySettings": {
-      "name": "[format('{0}', parameters('name'))]"
-    },
     "appConfigSettings": {
       "name": "[format('{0}-appconfig', parameters('name'))]",
       "apiUrlConfigKeys": [
@@ -623,10 +617,6 @@
         }
       ]
     },
-    "cosmosDbSettings": {
-      "name": "[format('{0}-cosmos-nosql', parameters('name'))]",
-      "databaseName": "database"
-    },
     "cognitiveSearchSettings": {
       "name": "[format('{0}-cog-search', parameters('name'))]",
       "sku": "basic",
@@ -660,6 +650,16 @@
         "partitionKeyPath": "/id",
         "maxThroughput": 1000
       }
+    },
+    "cosmosDbSettings": {
+      "name": "[format('{0}-cosmos-nosql', parameters('name'))]",
+      "databaseName": "database"
+    },
+    "keyVaultSettings": {
+      "name": "[format('{0}-kv', parameters('name'))]"
+    },
+    "safetySettings": {
+      "name": "[format('{0}', parameters('name'))]"
     },
     "vnetSettings": {
       "name": "[format('{0}-vnet', parameters('name'))]",
