@@ -596,6 +596,28 @@ module "sql" {
   }
 }
 
+module "storage" {
+  source = "./modules/storage-account"
+
+  action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
+  resource_group             = azurerm_resource_group.rgs["fllmstorage"]
+  resource_prefix            = "${local.resource_prefix["fllmstorage"]}-prompt"
+  tags                       = azurerm_resource_group.rgs["fllmstorage"].tags
+
+  private_endpoint = {
+    subnet_id = azurerm_subnet.subnets["FLLMStorage"].id
+    private_dns_zone_ids = {
+      blob  = [data.azurerm_private_dns_zone.private_dns["blob"].id]
+      dfs   = [data.azurerm_private_dns_zone.private_dns["dfs"].id]
+      file  = [data.azurerm_private_dns_zone.private_dns["file"].id]
+      queue = [data.azurerm_private_dns_zone.private_dns["queue"].id]
+      table = [data.azurerm_private_dns_zone.private_dns["table"].id]
+      web   = [data.azurerm_private_dns_zone.private_dns["sites"].id]
+    }
+  }
+}
+
 module "storage_data" {
   source = "./modules/storage-account"
 
