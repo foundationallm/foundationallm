@@ -1,5 +1,6 @@
 locals {
   resource_prefix         = { for k, _ in local.resource_group : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
+  resource_prefix_compact = { for k, _ in local.resource_group : k => join("-", [local.location_compact, var.project_id, local.environment_compact, upper(k)]) }
   resource_prefix_backend = { for k, _ in local.resource_group_backend : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
   vnet_address_space      = data.azurerm_virtual_network.network.address_space[0]
 
@@ -46,6 +47,16 @@ locals {
     }
   }
 
+  environment_compact = local.environment_compacts[var.environment]
+  environment_compacts = {
+    DEMO = "d"
+  }
+
+  location_compact = local.location_compacts[var.location]
+  location_compacts = {
+    eastus = "e"
+  }
+
   resource_group = {
     agw = {
       tags = {
@@ -62,7 +73,7 @@ locals {
         "Purpose" = "Storage"
       }
     }
-    fllmstorage = {
+    storage = {
       tags = {
         Purpose = "Storage"
       }
@@ -445,9 +456,9 @@ module "cosmosdb" {
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
-  resource_group             = azurerm_resource_group.rg["fllmstorage"]
-  resource_prefix            = local.resource_prefix["fllmstorage"]
-  tags                       = azurerm_resource_group.rg["fllmstorage"].tags
+  resource_group             = azurerm_resource_group.rg["storage"]
+  resource_prefix            = local.resource_prefix["storage"]
+  tags                       = azurerm_resource_group.rg["storage"].tags
 
   containers = {
     embedding = {
@@ -601,12 +612,12 @@ module "storage" {
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
-  resource_group             = azurerm_resource_group.rgs["fllmstorage"]
-  resource_prefix            = "${local.resource_prefix["fllmstorage"]}-prompt"
-  tags                       = azurerm_resource_group.rgs["fllmstorage"].tags
+  resource_group             = azurerm_resource_group.rg["storage"]
+  resource_prefix            = "${local.resource_prefix_compact["storage"]}-prompt"
+  tags                       = azurerm_resource_group.rg["storage"].tags
 
   private_endpoint = {
-    subnet_id = azurerm_subnet.subnets["FLLMStorage"].id
+    subnet_id = azurerm_subnet.subnet["FLLMStorage"].id
     private_dns_zone_ids = {
       blob  = [data.azurerm_private_dns_zone.private_dns["blob"].id]
       dfs   = [data.azurerm_private_dns_zone.private_dns["dfs"].id]

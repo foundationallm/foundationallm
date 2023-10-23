@@ -169,6 +169,12 @@ Source: ./modules/mssql-server
 
 Version:
 
+### <a name="module_storage"></a> [storage](#module\_storage)
+
+Source: ./modules/storage-account
+
+Version:
+
 ### <a name="module_storage_data"></a> [storage\_data](#module\_storage\_data)
 
 Source: ./modules/storage-account
