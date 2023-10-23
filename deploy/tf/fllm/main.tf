@@ -67,6 +67,11 @@ locals {
         Purpose = "Storage"
       }
     }
+    oai = {
+      tags = {
+        "Purpose" = "OpenAI"
+      }
+    }
   }
 
   resource_group_backend = {
@@ -156,6 +161,73 @@ locals {
       nsg_rules = {
         inbound  = merge({}, {})
         outbound = merge({}, {})
+      }
+    }
+    "FLLMOpenAI" = {
+      address_prefix = cidrsubnet(local.vnet_address_space, 8, 5)
+      service_endpoints = [
+        "Microsoft.CognitiveServices"
+      ]
+
+      nsg_rules = {
+        inbound = merge({}, {
+          "allow-apim" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_range     = "3443"
+            priority                   = 128
+            protocol                   = "Tcp"
+            source_address_prefix      = "ApiManagement"
+            source_port_range          = "*"
+          }
+          "allow-lb" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_range     = "6390"
+            priority                   = 192
+            protocol                   = "Tcp"
+            source_address_prefix      = "AzureLoadBalancer"
+            source_port_range          = "*"
+          }
+        })
+        outbound = merge({}, {
+          "allow-storage" = {
+            access                     = "Allow"
+            destination_address_prefix = "Storage"
+            destination_port_range     = "443"
+            priority                   = 128
+            protocol                   = "Tcp"
+            source_address_prefix      = "VirtualNetwork"
+            source_port_range          = "*"
+          }
+          "allow-sql" = {
+            access                     = "Allow"
+            destination_address_prefix = "SQL"
+            destination_port_range     = "1443"
+            priority                   = 192
+            protocol                   = "Tcp"
+            source_address_prefix      = "VirtualNetwork"
+            source_port_range          = "*"
+          }
+          "allow-kv" = {
+            access                     = "Allow"
+            destination_address_prefix = "AzureKeyVault"
+            destination_port_range     = "443"
+            priority                   = 224
+            protocol                   = "Tcp"
+            source_address_prefix      = "VirtualNetwork"
+            source_port_range          = "*"
+          }
+          "allow-vnet" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_range     = "*"
+            priority                   = 4068
+            protocol                   = "*"
+            source_address_prefix      = "VirtualNetwork"
+            source_port_range          = "*"
+          }
+        })
       }
     }
     "FLLMStorage" = {
@@ -452,6 +524,34 @@ module "nsg" {
   tags            = data.azurerm_resource_group.backend["net"].tags
 }
 
+module "openai_ha" {
+  source = "./modules/ha-openai"
+
+  action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
+  instance_count             = 2
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
+  resource_group             = azurerm_resource_group.rg["oai"]
+  resource_prefix            = local.resource_prefix["oai"]
+  tags                       = azurerm_resource_group.rg["oai"].tags
+
+  private_endpoint = {
+    subnet_id = azurerm_subnet.subnet["FLLMOpenAI"].id
+    apim_private_dns_zones = [
+      data.azurerm_private_dns_zone.private_dns["gateway_public"],
+      data.azurerm_private_dns_zone.private_dns["gateway_developer"],
+      data.azurerm_private_dns_zone.private_dns["gateway_management"],
+      data.azurerm_private_dns_zone.private_dns["gateway_portal"],
+      data.azurerm_private_dns_zone.private_dns["gateway_scm"]
+    ]
+    kv_private_dns_zone_ids = [
+      data.azurerm_private_dns_zone.private_dns["vault"].id
+    ]
+    openai_private_dns_zone_ids = [
+      data.azurerm_private_dns_zone.private_dns["openai"].id
+    ]
+  }
+}
+
 module "storage_data" {
   source = "./modules/storage-account"
 
@@ -495,11 +595,7 @@ module "storage_data" {
 #         "Purpose" = "Networking"
 #       }
 #     }
-#     "OAI" = {
-#       tags = {
-#         "Purpose" = "OpenAI"
-#       }
-#     }
+
 #     "OPS" = {
 #       tags = {
 #         "Purpose" = "DevOps"

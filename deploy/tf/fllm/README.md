@@ -151,6 +151,12 @@ Source: ./modules/nsg
 
 Version:
 
+### <a name="module_openai_ha"></a> [openai\_ha](#module\_openai\_ha)
+
+Source: ./modules/ha-openai
+
+Version:
+
 ### <a name="module_storage_data"></a> [storage\_data](#module\_storage\_data)
 
 Source: ./modules/storage-account

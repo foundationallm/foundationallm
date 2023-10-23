@@ -98,73 +98,7 @@ locals {
 
 
 
-    "FLLMOpenAI" = {
-      address_prefix = cidrsubnet(local.vnet_address_space, 8, 5)
-      service_endpoints = [
-        "Microsoft.CognitiveServices"
-      ]
 
-      nsg_rules = {
-        inbound = merge({}, {
-          "allow-apim" = {
-            access                     = "Allow"
-            destination_address_prefix = "VirtualNetwork"
-            destination_port_range     = "3443"
-            priority                   = 128
-            protocol                   = "Tcp"
-            source_address_prefix      = "ApiManagement"
-            source_port_range          = "*"
-          }
-          "allow-lb" = {
-            access                     = "Allow"
-            destination_address_prefix = "VirtualNetwork"
-            destination_port_range     = "6390"
-            priority                   = 192
-            protocol                   = "Tcp"
-            source_address_prefix      = "AzureLoadBalancer"
-            source_port_range          = "*"
-          }
-        })
-        outbound = merge({}, {
-          "allow-storage" = {
-            access                     = "Allow"
-            destination_address_prefix = "Storage"
-            destination_port_range     = "443"
-            priority                   = 128
-            protocol                   = "Tcp"
-            source_address_prefix      = "VirtualNetwork"
-            source_port_range          = "*"
-          }
-          "allow-sql" = {
-            access                     = "Allow"
-            destination_address_prefix = "SQL"
-            destination_port_range     = "1443"
-            priority                   = 192
-            protocol                   = "Tcp"
-            source_address_prefix      = "VirtualNetwork"
-            source_port_range          = "*"
-          }
-          "allow-kv" = {
-            access                     = "Allow"
-            destination_address_prefix = "AzureKeyVault"
-            destination_port_range     = "443"
-            priority                   = 224
-            protocol                   = "Tcp"
-            source_address_prefix      = "VirtualNetwork"
-            source_port_range          = "*"
-          }
-          "allow-vnet" = {
-            access                     = "Allow"
-            destination_address_prefix = "VirtualNetwork"
-            destination_port_range     = "*"
-            priority                   = 4068
-            protocol                   = "*"
-            source_address_prefix      = "VirtualNetwork"
-            source_port_range          = "*"
-          }
-        })
-      }
-    }
     "Vectorization" = {
       address_prefix    = cidrsubnet(local.vnet_address_space, 8, 6)
       service_endpoints = []
@@ -376,33 +310,7 @@ data "azurerm_client_config" "current" {}
 
 
 
-module "ha_openai" {
-  source = "./modules/ha-openai"
 
-  action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  instance_count             = 4
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
-  resource_group             = azurerm_resource_group.rgs["OAI"]
-  resource_prefix            = "${local.resource_prefix}-OAI"
-  tags                       = local.tags
-
-  private_endpoint = {
-    subnet_id = azurerm_subnet.subnets["FLLMOpenAI"].id
-    apim_private_dns_zones = [
-      local.private_dns_zones["azure-api.net"],
-      local.private_dns_zones["developer.azure-api.net"],
-      local.private_dns_zones["management.azure-api.net"],
-      local.private_dns_zones["portal.azure-api.net"],
-      local.private_dns_zones["scm.azure-api.net"]
-    ]
-    kv_private_dns_zone_ids = [
-      local.private_dns_zones["privatelink.vaultcore.azure.net"].id
-    ]
-    openai_private_dns_zone_ids = [
-      local.private_dns_zones["privatelink.openai.azure.com"].id
-    ]
-  }
-}
 
 
 
