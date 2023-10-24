@@ -9,6 +9,7 @@ locals {
 
   address_prefix = {
     ado     = cidrsubnet(local.ops_parent_cidr, 5, 29)
+    agw     = cidrsubnet(local.network_cidr, 8, 0)
     jumpbox = cidrsubnet(local.ops_parent_cidr, 5, 25)
     ops     = cidrsubnet(local.ops_parent_cidr, 5, 27)
     tfc     = cidrsubnet(local.ops_parent_cidr, 5, 31)
@@ -112,6 +113,167 @@ locals {
   }
 
   subnet = {
+    "AppGateway" = {
+      address_prefix = local.address_prefix["agw"]
+      nsg_rules = {
+        inbound = merge(local.default_nsg_rules.inbound, {
+          "allow-internet-http-inbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_range     = "80"
+            priority                   = 128
+            protocol                   = "Tcp"
+            source_address_prefix      = "Internet"
+            source_port_range          = "*"
+          }
+          "allow-internet-https-inbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_range     = "443"
+            priority                   = 132
+            protocol                   = "Tcp"
+            source_address_prefix      = "Internet"
+            source_port_range          = "*"
+          }
+          "allow-gatewaymanager-inbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "*"
+            destination_port_range     = "65200-65535"
+            priority                   = 148
+            protocol                   = "Tcp"
+            source_address_prefix      = "GatewayManager"
+            source_port_range          = "*"
+          }
+          "allow-loadbalancer-inbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "*"
+            destination_port_range     = "*"
+            priority                   = 164
+            protocol                   = "*"
+            source_address_prefix      = "AzureLoadBalancer"
+            source_port_range          = "*"
+          }
+        })
+        outbound = merge({})
+      }
+    }
+    "Datasources" = {
+      address_prefix = cidrsubnet(local.network_cidr, 8, 2)
+      nsg_rules = {
+        inbound  = merge(local.default_nsg_rules.inbound, {})
+        outbound = merge(local.default_nsg_rules.outbound, {})
+      }
+    }
+    "FLLMServices" = {
+      address_prefix = cidrsubnet(local.network_cidr, 8, 3)
+      delegations = {
+        "Microsoft.ContainerService/managedClusters" = [
+          "Microsoft.Network/virtualNetworks/subnets/action"
+        ]
+      }
+
+      nsg_rules = {
+        inbound  = merge({}, {})
+        outbound = merge({}, {})
+      }
+    }
+    "FLLMFrontEnd" = {
+      address_prefix = cidrsubnet(local.network_cidr, 8, 9)
+      delegations = {
+        "Microsoft.ContainerService/managedClusters" = [
+          "Microsoft.Network/virtualNetworks/subnets/action"
+        ]
+      }
+
+      nsg_rules = {
+        inbound  = merge({}, {})
+        outbound = merge({}, {})
+      }
+    }
+    "FLLMOpenAI" = {
+      address_prefix = cidrsubnet(local.network_cidr, 8, 5)
+      service_endpoints = [
+        "Microsoft.CognitiveServices"
+      ]
+
+      nsg_rules = {
+        inbound = merge({}, {
+          "allow-apim" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_range     = "3443"
+            priority                   = 128
+            protocol                   = "Tcp"
+            source_address_prefix      = "ApiManagement"
+            source_port_range          = "*"
+          }
+          "allow-lb" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_range     = "6390"
+            priority                   = 192
+            protocol                   = "Tcp"
+            source_address_prefix      = "AzureLoadBalancer"
+            source_port_range          = "*"
+          }
+        })
+        outbound = merge({}, {
+          "allow-storage" = {
+            access                     = "Allow"
+            destination_address_prefix = "Storage"
+            destination_port_range     = "443"
+            priority                   = 128
+            protocol                   = "Tcp"
+            source_address_prefix      = "VirtualNetwork"
+            source_port_range          = "*"
+          }
+          "allow-sql" = {
+            access                     = "Allow"
+            destination_address_prefix = "SQL"
+            destination_port_range     = "1443"
+            priority                   = 192
+            protocol                   = "Tcp"
+            source_address_prefix      = "VirtualNetwork"
+            source_port_range          = "*"
+          }
+          "allow-kv" = {
+            access                     = "Allow"
+            destination_address_prefix = "AzureKeyVault"
+            destination_port_range     = "443"
+            priority                   = 224
+            protocol                   = "Tcp"
+            source_address_prefix      = "VirtualNetwork"
+            source_port_range          = "*"
+          }
+          "allow-vnet" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_range     = "*"
+            priority                   = 4068
+            protocol                   = "*"
+            source_address_prefix      = "VirtualNetwork"
+            source_port_range          = "*"
+          }
+        })
+      }
+    }
+    "FLLMStorage" = {
+      address_prefix = cidrsubnet(local.network_cidr, 8, 4)
+
+      nsg_rules = {
+        inbound  = merge(local.default_nsg_rules.inbound, {})
+        outbound = merge(local.default_nsg_rules.outbound, {})
+      }
+    }
+    "Vectorization" = {
+      address_prefix = cidrsubnet(local.network_cidr, 8, 6)
+
+      nsg_rules = {
+        inbound  = merge(local.default_nsg_rules.inbound, {})
+        outbound = merge(local.default_nsg_rules.outbound, {})
+      }
+    }
+    # OPS subnets
     ado = {
       address_prefix = local.address_prefix["ado"]
       nsg_rules = {
@@ -160,7 +322,17 @@ locals {
     ops = {
       address_prefix = local.address_prefix["ops"]
       nsg_rules = {
-        inbound  = merge(local.default_nsg_rules.inbound, {})
+        inbound = merge(local.default_nsg_rules.inbound, {
+          "allow-rdp-services" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_range     = "*"
+            priority                   = 256
+            protocol                   = "Tcp"
+            source_address_prefixes    = [local.address_prefix["agw"]]
+            source_port_range          = "*"
+          }
+        })
         outbound = merge(local.default_nsg_rules.outbound, {})
       }
     }
