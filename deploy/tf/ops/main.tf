@@ -453,13 +453,13 @@ module "container_registry" {
   resource_prefix            = local.resource_prefix["ops"]
   tags                       = azurerm_resource_group.rg["ops"].tags
 
-  #     private_endpoint = {
-  #     subnet_id = azurerm_subnet.subnets["Services"].id
-  #     private_dns_zone_ids = [
-  #       var.private_dns_zones["privatelink.azurecr.io.
-  # {regionName}.privatelink.azurecr.io"].id,
-  #     ]
-  #   }
+  private_endpoint = {
+    subnet_id = azurerm_subnet.subnet["ops"].id
+    private_dns_zone_ids = [
+      azurerm_private_dns_zone.private_dns["cr"].id,
+      azurerm_private_dns_zone.private_dns["cr_region"].id,
+    ]
+  }
 }
 
 module "content_safety" {
