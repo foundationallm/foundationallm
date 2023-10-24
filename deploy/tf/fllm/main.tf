@@ -2,50 +2,6 @@ locals {
   resource_prefix         = { for k, _ in local.resource_group : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
   resource_prefix_compact = { for k, _ in local.resource_group : k => join("-", [local.location_compact, var.project_id, local.environment_compact, upper(k)]) }
   resource_prefix_backend = { for k, _ in local.resource_group_backend : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
-  vnet_address_space      = data.azurerm_virtual_network.network.address_space[0]
-
-  default_nsg_rules = {
-    inbound = {
-      "allow-ado-agents-inbound" = {
-        access                     = "Allow"
-        destination_address_prefix = "VirtualNetwork"
-        destination_port_range     = "*"
-        priority                   = 4094
-        protocol                   = "Tcp"
-        source_address_prefix      = data.azurerm_subnet.backend["ado"].address_prefix
-        source_port_range          = "*"
-      }
-      "allow-tfc-agents-inbound" = {
-        access                     = "Allow"
-        destination_address_prefix = "VirtualNetwork"
-        destination_port_range     = "*"
-        priority                   = 4095
-        protocol                   = "*"
-        source_address_prefix      = data.azurerm_subnet.backend["tfc"].address_prefix
-        source_port_range          = "*"
-      }
-      "deny-all-inbound" = {
-        access                     = "Deny"
-        destination_address_prefix = "*"
-        destination_port_range     = "*"
-        priority                   = 4096
-        protocol                   = "*"
-        source_address_prefix      = "*"
-        source_port_range          = "*"
-      }
-    }
-    outbound = {
-      "deny-all-outbound" = {
-        access                     = "Deny"
-        destination_address_prefix = "*"
-        destination_port_range     = "*"
-        priority                   = 4096
-        protocol                   = "*"
-        source_address_prefix      = "*"
-        source_port_range          = "*"
-      }
-    }
-  }
 
   environment_compact = local.environment_compacts[var.environment]
   environment_compacts = {
@@ -101,179 +57,11 @@ locals {
     eastus = "EUS"
   }
 
-  subnet = {
-    "AppGateway" = {
-      address_prefix = cidrsubnet(local.vnet_address_space, 8, 0)
-      nsg_rules = {
-        inbound = merge(local.default_nsg_rules.inbound, {
-          "allow-internet-http-inbound" = {
-            access                     = "Allow"
-            destination_address_prefix = "VirtualNetwork"
-            destination_port_range     = "80"
-            priority                   = 128
-            protocol                   = "Tcp"
-            source_address_prefix      = "Internet"
-            source_port_range          = "*"
-          }
-          "allow-internet-https-inbound" = {
-            access                     = "Allow"
-            destination_address_prefix = "VirtualNetwork"
-            destination_port_range     = "443"
-            priority                   = 132
-            protocol                   = "Tcp"
-            source_address_prefix      = "Internet"
-            source_port_range          = "*"
-          }
-          "allow-gatewaymanager-inbound" = {
-            access                     = "Allow"
-            destination_address_prefix = "*"
-            destination_port_range     = "65200-65535"
-            priority                   = 148
-            protocol                   = "Tcp"
-            source_address_prefix      = "GatewayManager"
-            source_port_range          = "*"
-          }
-          "allow-loadbalancer-inbound" = {
-            access                     = "Allow"
-            destination_address_prefix = "*"
-            destination_port_range     = "*"
-            priority                   = 164
-            protocol                   = "*"
-            source_address_prefix      = "AzureLoadBalancer"
-            source_port_range          = "*"
-          }
-        })
-        outbound = merge({})
-      }
-    }
-    "Datasources" = {
-      address_prefix = cidrsubnet(local.vnet_address_space, 8, 2)
-      nsg_rules = {
-        inbound  = merge(local.default_nsg_rules.inbound, {})
-        outbound = merge(local.default_nsg_rules.outbound, {})
-      }
-    }
-    "FLLMServices" = {
-      address_prefix = cidrsubnet(local.vnet_address_space, 8, 3)
-      delegations = {
-        "Microsoft.ContainerService/managedClusters" = [
-          "Microsoft.Network/virtualNetworks/subnets/action"
-        ]
-      }
-
-      nsg_rules = {
-        inbound  = merge({}, {})
-        outbound = merge({}, {})
-      }
-    }
-    "FLLMFrontEnd" = {
-      address_prefix = cidrsubnet(local.vnet_address_space, 8, 9)
-      delegations = {
-        "Microsoft.ContainerService/managedClusters" = [
-          "Microsoft.Network/virtualNetworks/subnets/action"
-        ]
-      }
-
-      nsg_rules = {
-        inbound  = merge({}, {})
-        outbound = merge({}, {})
-      }
-    }
-    "FLLMOpenAI" = {
-      address_prefix = cidrsubnet(local.vnet_address_space, 8, 5)
-      service_endpoints = [
-        "Microsoft.CognitiveServices"
-      ]
-
-      nsg_rules = {
-        inbound = merge({}, {
-          "allow-apim" = {
-            access                     = "Allow"
-            destination_address_prefix = "VirtualNetwork"
-            destination_port_range     = "3443"
-            priority                   = 128
-            protocol                   = "Tcp"
-            source_address_prefix      = "ApiManagement"
-            source_port_range          = "*"
-          }
-          "allow-lb" = {
-            access                     = "Allow"
-            destination_address_prefix = "VirtualNetwork"
-            destination_port_range     = "6390"
-            priority                   = 192
-            protocol                   = "Tcp"
-            source_address_prefix      = "AzureLoadBalancer"
-            source_port_range          = "*"
-          }
-        })
-        outbound = merge({}, {
-          "allow-storage" = {
-            access                     = "Allow"
-            destination_address_prefix = "Storage"
-            destination_port_range     = "443"
-            priority                   = 128
-            protocol                   = "Tcp"
-            source_address_prefix      = "VirtualNetwork"
-            source_port_range          = "*"
-          }
-          "allow-sql" = {
-            access                     = "Allow"
-            destination_address_prefix = "SQL"
-            destination_port_range     = "1443"
-            priority                   = 192
-            protocol                   = "Tcp"
-            source_address_prefix      = "VirtualNetwork"
-            source_port_range          = "*"
-          }
-          "allow-kv" = {
-            access                     = "Allow"
-            destination_address_prefix = "AzureKeyVault"
-            destination_port_range     = "443"
-            priority                   = 224
-            protocol                   = "Tcp"
-            source_address_prefix      = "VirtualNetwork"
-            source_port_range          = "*"
-          }
-          "allow-vnet" = {
-            access                     = "Allow"
-            destination_address_prefix = "VirtualNetwork"
-            destination_port_range     = "*"
-            priority                   = 4068
-            protocol                   = "*"
-            source_address_prefix      = "VirtualNetwork"
-            source_port_range          = "*"
-          }
-        })
-      }
-    }
-    "FLLMStorage" = {
-      address_prefix = cidrsubnet(local.vnet_address_space, 8, 4)
-
-      nsg_rules = {
-        inbound  = merge(local.default_nsg_rules.inbound, {})
-        outbound = merge(local.default_nsg_rules.outbound, {})
-      }
-    }
-    "Vectorization" = {
-      address_prefix = cidrsubnet(local.vnet_address_space, 8, 6)
-
-      nsg_rules = {
-        inbound  = merge(local.default_nsg_rules.inbound, {})
-        outbound = merge(local.default_nsg_rules.outbound, {})
-      }
-    }
-  }
-
   tags = {
     "Environment" = var.environment
     "Project"     = var.project_id
     "Workspace"   = terraform.workspace
   }
-}
-
-import {
-  id = "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-AGW-rg/providers/Microsoft.Network/applicationGateways/EUS-FLLM-DEMO-AGW-agw"
-  to = module.application_gateway.azurerm_application_gateway.main
 }
 
 # Data Sources
@@ -339,8 +127,20 @@ data "azurerm_resource_group" "backend" {
   name = "${local.resource_prefix_backend[each.key]}-rg"
 }
 
-data "azurerm_subnet" "backend" {
-  for_each = toset(["ado", "ops", "tfc"])
+data "azurerm_subnet" "subnet" {
+  for_each = toset([
+    "AppGateway",
+    "Datasources",
+    "FLLMFrontEnd",
+    "FLLMOpenAI",
+    "FLLMServices",
+    "FLLMStorage",
+    "Vectorization",
+    "ado",
+    "jumpbox",
+    "ops",
+    "tfc",
+  ])
 
   name                 = each.key
   resource_group_name  = data.azurerm_virtual_network.network.resource_group_name
@@ -367,28 +167,6 @@ resource "azurerm_role_assignment" "keyvault_secrets_user_agw" {
   scope                = data.azurerm_resource_group.backend["ops"].id
 }
 
-resource "azurerm_subnet" "subnet" {
-  for_each = local.subnet
-
-  address_prefixes     = [each.value.address_prefix]
-  name                 = each.key
-  resource_group_name  = data.azurerm_virtual_network.network.resource_group_name
-  service_endpoints    = lookup(each.value, "service_endpoints", [])
-  virtual_network_name = data.azurerm_virtual_network.network.name
-
-  dynamic "delegation" {
-    for_each = lookup(each.value, "delegation", {})
-    content {
-      name = "${delegation.key}-delegation"
-
-      service_delegation {
-        actions = delegation.value
-        name    = delegation.key
-      }
-    }
-  }
-}
-
 resource "azurerm_user_assigned_identity" "agw" {
   location            = azurerm_resource_group.rg["agw"].location
   name                = "${local.resource_prefix["agw"]}-agw-uai"
@@ -409,7 +187,7 @@ module "aks_backend" {
   tags                       = azurerm_resource_group.rg["app"].tags
 
   private_endpoint = {
-    subnet = azurerm_subnet.subnet["FLLMServices"]
+    subnet = data.azurerm_subnet.subnet["FLLMServices"]
     private_dns_zone_ids = {
       aks = [
         data.azurerm_private_dns_zone.private_dns["aks"].id,
@@ -430,7 +208,7 @@ module "aks_frontend" {
   tags                       = azurerm_resource_group.rg["app"].tags
 
   private_endpoint = {
-    subnet = azurerm_subnet.subnet["FLLMFrontEnd"]
+    subnet = data.azurerm_subnet.subnet["FLLMFrontEnd"]
     private_dns_zone_ids = {
       aks = [
         data.azurerm_private_dns_zone.private_dns["aks"].id,
@@ -452,7 +230,7 @@ module "application_gateway" {
   public_dns_zone            = data.azurerm_dns_zone.public_dns
   resource_group             = azurerm_resource_group.rg["agw"]
   resource_prefix            = local.resource_prefix["agw"]
-  subnet_id                  = azurerm_subnet.subnet["AppGateway"].id
+  subnet_id                  = data.azurerm_subnet.subnet["AppGateway"].id
   tags                       = azurerm_resource_group.rg["agw"].tags
 }
 
@@ -489,7 +267,7 @@ module "cosmosdb" {
   }
 
   private_endpoint = {
-    subnet_id = azurerm_subnet.subnet["FLLMStorage"].id
+    subnet_id = data.azurerm_subnet.subnet["FLLMStorage"].id
     private_dns_zone_ids = [
       data.azurerm_private_dns_zone.private_dns["cosmosdb"].id,
     ]
@@ -529,28 +307,15 @@ module "cosmosdb_data" {
   }
 
   private_endpoint = {
-    subnet_id = azurerm_subnet.subnet["Datasources"].id
+    subnet_id = data.azurerm_subnet.subnet["Datasources"].id
     private_dns_zone_ids = [
       data.azurerm_private_dns_zone.private_dns["cosmosdb"].id,
     ]
   }
 }
 
-module "nsg" {
-  for_each = azurerm_subnet.subnet
-  source   = "./modules/nsg"
-
-  resource_group  = data.azurerm_resource_group.backend["net"]
-  resource_prefix = "${local.resource_prefix_backend["net"]}-${each.key}"
-  rules_inbound   = local.subnet[each.key].nsg_rules.inbound
-  rules_outbound  = local.subnet[each.key].nsg_rules.outbound
-  subnet_id       = each.value.id
-  tags            = data.azurerm_resource_group.backend["net"].tags
-}
-
 module "openai_ha" {
-  source     = "./modules/ha-openai"
-  depends_on = [module.nsg]
+  source = "./modules/ha-openai"
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
   instance_count             = 2
@@ -560,7 +325,7 @@ module "openai_ha" {
   tags                       = azurerm_resource_group.rg["oai"].tags
 
   private_endpoint = {
-    subnet_id = azurerm_subnet.subnet["FLLMOpenAI"].id
+    subnet_id = data.azurerm_subnet.subnet["FLLMOpenAI"].id
     apim_private_dns_zones = [
       data.azurerm_private_dns_zone.private_dns["gateway_public"],
       data.azurerm_private_dns_zone.private_dns["gateway_developer"],
@@ -587,7 +352,7 @@ module "search" {
   tags                       = azurerm_resource_group.rg["vec"].tags
 
   private_endpoint = {
-    subnet_id = azurerm_subnet.subnet["Vectorization"].id
+    subnet_id = data.azurerm_subnet.subnet["Vectorization"].id
     private_dns_zone_ids = [
       data.azurerm_private_dns_zone.private_dns["search"].id,
     ]
@@ -605,7 +370,7 @@ module "sql" {
   tags                       = azurerm_resource_group.rg["data"].tags
 
   private_endpoint = {
-    subnet_id = azurerm_subnet.subnet["Datasources"].id
+    subnet_id = data.azurerm_subnet.subnet["Datasources"].id
     private_dns_zone_ids = [
       data.azurerm_private_dns_zone.private_dns["sql_server"].id,
     ]
@@ -622,7 +387,7 @@ module "storage" {
   tags                       = azurerm_resource_group.rg["storage"].tags
 
   private_endpoint = {
-    subnet_id = azurerm_subnet.subnet["FLLMStorage"].id
+    subnet_id = data.azurerm_subnet.subnet["FLLMStorage"].id
     private_dns_zone_ids = {
       blob  = [data.azurerm_private_dns_zone.private_dns["blob"].id]
       dfs   = [data.azurerm_private_dns_zone.private_dns["dfs"].id]
@@ -644,7 +409,7 @@ module "storage_data" {
   tags                       = azurerm_resource_group.rg["data"].tags
 
   private_endpoint = {
-    subnet_id = azurerm_subnet.subnet["Datasources"].id
+    subnet_id = data.azurerm_subnet.subnet["Datasources"].id
     private_dns_zone_ids = {
       blob  = [data.azurerm_private_dns_zone.private_dns["blob"].id]
       dfs   = [data.azurerm_private_dns_zone.private_dns["dfs"].id]
