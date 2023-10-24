@@ -1,3 +1,15 @@
+variable "chat_entra_application" {
+  description = "The Chat Entra application."
+  type = string
+  default = "FoundationaLLM"
+}
+
+variable "client_entra_application" {
+  description = "The Client Entra application."
+  type = string
+  default = "FoundationaLLM-Client"
+}
+
 variable "environment" {
   description = "The environment name."
   type        = string
