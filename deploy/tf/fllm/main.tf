@@ -271,6 +271,11 @@ locals {
   }
 }
 
+import {
+  id = "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-AGW-rg/providers/Microsoft.Network/applicationGateways/EUS-FLLM-DEMO-AGW-agw"
+  to = module.application_gateway.azurerm_application_gateway.main
+}
+
 # Data Sources
 data "azurerm_dns_zone" "public_dns" {
   name                = var.public_domain
