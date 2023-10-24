@@ -168,7 +168,8 @@ resource "azurerm_api_management_named_value" "openai_secondary_key" {
 }
 
 resource "azurerm_key_vault_secret" "openai_primary_key" {
-  count = length(azurerm_cognitive_account.openai)
+  count      = length(azurerm_cognitive_account.openai)
+  depends_on = [module.openai_keyvault] # Make terraform wait for these secrets to destroy before deleting the PLE
 
   key_vault_id = module.openai_keyvault.id
   name         = "${var.resource_prefix}-${count.index}-primarykey"
@@ -176,7 +177,8 @@ resource "azurerm_key_vault_secret" "openai_primary_key" {
 }
 
 resource "azurerm_key_vault_secret" "openai_secondary_key" {
-  count = length(azurerm_cognitive_account.openai)
+  count      = length(azurerm_cognitive_account.openai)
+  depends_on = [module.openai_keyvault] # Make terraform wait for these secrets to destroy before deleting the PLE
 
   key_vault_id = module.openai_keyvault.id
   name         = "${var.resource_prefix}-${count.index}-secondarykey"

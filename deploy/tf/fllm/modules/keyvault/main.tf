@@ -48,11 +48,6 @@ resource "azurerm_key_vault" "main" {
   tags                          = var.tags
 }
 
-resource "azurerm_role_assignment" "ops_kv_sp_role" {
-  principal_id         = data.azurerm_client_config.current.object_id
-  role_definition_name = "Key Vault Administrator"
-  scope                = azurerm_key_vault.main.id
-}
 
 resource "azurerm_monitor_metric_alert" "alert" {
   for_each = local.alert
@@ -99,6 +94,13 @@ resource "azurerm_private_endpoint" "ple" {
   }
 }
 
+resource "azurerm_role_assignment" "role" {
+  principal_id         = data.azurerm_client_config.current.object_id
+  role_definition_name = "Key Vault Administrator"
+  scope                = azurerm_key_vault.main.id
+}
+
+# Modules
 module "diagnostics" {
   source = "../diagnostics"
 
