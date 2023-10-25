@@ -100,9 +100,9 @@ locals {
     }
     "FoundationaLLM:AgentHub:AgentMetadata:StorageContainer" = "agents"
     "FoundationaLLM:AgentHub:StorageManager:BlobStorage:ConnectionString" = {
-      value = jsonencode( {
-      "uri" = azurerm_key_vault_secret.storage_connection_string.versionless_id
-    } )
+      value = jsonencode({
+        "uri" = azurerm_key_vault_secret.storage_connection_string.versionless_id
+      })
       "contentType" = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
     "FoundationaLLM:AzureContentSafety:APIKey" = {
@@ -235,8 +235,10 @@ locals {
 }
 
 resource "azurerm_app_configuration_key" "config_key" {
+  for_each               = local.config_keys
   configuration_store_id = data.azurerm_app_configuration.appconfig.id
-  key                    = "FoundationaLLM:APIs:AgentFactoryAPI:APIUrl"
-  value                  = "http://foundationallm-agent-factory-api/agentfactory"
+  key                    = each.key
+  value                  = each.value.value
+  content_type           = each.value.contentType
 }
 
