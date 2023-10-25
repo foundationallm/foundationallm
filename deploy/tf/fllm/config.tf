@@ -112,7 +112,7 @@ locals {
       "contentType" = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
     "FoundationaLLM:AzureContentSafety:APIUrl" = {
-      value = data.azurerm_cognitive_account.content_safety.endpoint
+      value = module.content_safety.endpoint
     }
     "FoundationaLLM:AzureContentSafety:HateSeverity" = {
       value = "2"
