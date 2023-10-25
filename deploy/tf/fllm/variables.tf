@@ -1,4 +1,4 @@
-variable "chat_entra_application" {
+variable "core_entra_application" {
   description = "The Chat Entra application."
   type        = string
   default     = "FoundationaLLM"

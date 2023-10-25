@@ -41,7 +41,7 @@ resource "azurerm_key_vault_secret" "storage_connection_string" {
 resource "azurerm_key_vault_secret" "content_safety_apikey" {
   name         = "foundationallm-azurecontentsafety-apikey"
   key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-  value        = data.azurerm_cognitive_account.content_safety.primary_access_key
+  value        = module.content_safety.key
 }
 
 resource "azurerm_key_vault_secret" "openai_key" {
@@ -50,35 +50,29 @@ resource "azurerm_key_vault_secret" "openai_key" {
   value        = "" # For HA OpenAI, there is currently no key.
 }
 
-data "azuread_application" "chat_entra" {
-  display_name = var.chat_entra_application
+data "azuread_application" "core_entra" {
+  display_name = var.core_entra_application
 }
 
-resource "time_rotating" "chat_entra" {
+resource "time_rotating" "core_entra" {
   rotation_days = 30
 }
 
-resource "azuread_application_password" "chat_entra" {
-  application_object_id = data.azuread_application.chat_entra.object_id
+resource "azuread_application_password" "core_entra" {
+  application_object_id = data.azuread_application.core_entra.object_id
   rotate_when_changed = {
-    rotation = time_rotating.chat_entra.id
+    rotation = time_rotating.core_entra.id
   }
 }
 
-resource "azurerm_key_vault_secret" "chat_entra_clientsecret" {
+resource "azurerm_key_vault_secret" "core_entra_clientsecret" {
   name         = "foundationallm-chat-entra-clientsecret"
   key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-  value        = azuread_application_password.chat_entra.value
+  value        = azuread_application_password.core_entra.value
 }
 
-resource "azurerm_key_vault_secret" "cogsearch_service_key" {
+resource "azurerm_key_vault_secret" "search_key" {
   name         = "foundationallm-cognitivesearch-key"
-  key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-  value        = module.search.key
-}
-
-resource "azurerm_key_vault_secret" "cogsearch_memory_key" {
-  name         = "foundationallm-cognitivesearchmemorysource-key"
   key_vault_id = data.azurerm_key_vault.keyvault_ops.id
   value        = module.search.key
 }

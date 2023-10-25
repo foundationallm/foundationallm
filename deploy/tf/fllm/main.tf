@@ -75,10 +75,7 @@ data "azurerm_app_configuration" "appconfig" {
   resource_group_name = data.azurerm_resource_group.backend["ops"].name
 }
 
-data "azurerm_cognitive_account" "content_safety" {
-  name                = "${local.resource_prefix_backend["ops"]}-content-safety"
-  resource_group_name = data.azurerm_resource_group.backend["ops"].name
-}
+data "azurerm_client_config" "current" {}
 
 data "azurerm_dns_zone" "public_dns" {
   name                = var.public_domain

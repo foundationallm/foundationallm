@@ -220,16 +220,222 @@ locals {
       value = "/signin-oidc"
     }
     "FoundationaLLM:Chat:Entra:ClientId" = {
-      value = data.azuread_application.chat_entra.client_id
+      value = data.azuread_application.client_entra.client_id
     }
     "FoundationaLLM:Chat:Entra:ClientSecret" = {
       value = jsonencode({
-        "uri" = azurerm_key_vault_secret.chat_entra_clientsecret.versionless_id
+        "uri" = azurerm_key_vault_secret.client_entra_clientsecret.versionless_id
       })
       "contentType" = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
     "FoundationaLLM:Chat:Entra:Instance" = {
       value = "https://login.microsoftonline.com/"
+    }
+    "FoundationaLLM:Chat:Entra:Scopes" = {
+      value = "api://FoundationaLLM-Auth/Data.Read"
+    }
+    "FoundationaLLM:Chat:Entra:TenantId" = {
+      value = data.azurerm_client_config.current.tenant_id
+    }
+    "FoundationaLLM:CognitiveSearch:ConfigBlobStorageConnection" = {
+      value = jsonencode({
+        "uri" = azurerm_key_vault_secret.storage_connection_string.versionless_id
+      })
+      "contentType" = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+    }
+    "FoundationaLLM:CognitiveSearch:EndPoint" = {
+      value = module.search.endpoint
+    }
+    "FoundationaLLM:CognitiveSearch:IndexName" = {
+      value = "vector-index"
+    }
+    "FoundationaLLM:CognitiveSearch:Key" = {
+      value = jsonencode({
+        "uri" = azurerm_key_vault_secret.search_key.versionless_id
+      })
+      "contentType" = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+    }
+    "FoundationaLLM:CognitiveSearch:MaxVectorSearchResults" = {
+      value = "10"
+    }
+    "FoundationaLLM:CognitiveSearchMemorySource:BlobStorageConnection" = {
+      value = jsonencode({
+        "uri" = azurerm_key_vault_secret.storage_connection_string.versionless_id
+      })
+      "contentType" = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+    }
+    "FoundationaLLM:CognitiveSearchMemorySource:ConfigBlobStorageContainer" = {
+      value = "memory-source"
+    }
+    "FoundationaLLM:CognitiveSearchMemorySource:ConfigFilePath" = {
+      value = "BlobMemorySourceConfig.json"
+    }
+    "FoundationaLLM:CognitiveSearchMemorySource:EndPoint" = {
+      value = module.search.endpoint
+    }
+    "FoundationaLLM:CognitiveSearchMemorySource:IndexName" = {
+      value = "vector-index"
+    }
+    "FoundationaLLM:CognitiveSearchMemorySource:Key" = {
+      value = jsonencode({
+        "uri" = azurerm_key_vault_secret.search_key.versionless_id
+      })
+      "contentType" = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+    }
+    "FoundationaLLM:CoreAPI:Entra:CallbackPath" = {
+      value = "/signin-oidc"
+    }
+    "FoundationaLLM:CoreAPI:Entra:ClientId" = {
+      value = data.azuread_application.core_entra.client_id
+    }
+    "FoundationaLLM:CoreAPI:Entra:ClientSecret" = {
+      value = jsonencode({
+        "uri" = azurerm_key_vault_secret.core_entra_clientsecret.versionless_id
+      })
+      "contentType" = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+    }
+    "FoundationaLLM:CoreAPI:Entra:Instance" = {
+      value = "https://login.microsoftonline.com/"
+    }
+    "FoundationaLLM:CoreAPI:Entra:Scopes" = {
+      value = "Data.Read"
+    }
+    "FoundationaLLM:CoreAPI:Entra:TenantId" = {
+      value = data.azurerm_client_config.current.tenant_id
+    }
+    "FoundationaLLM:CosmosDB:ChangeFeedLeaseContainer" = {
+      value = "leases"
+    }
+    "FoundationaLLM:CosmosDB:Containers" = {
+      value = "completions, customer, product"
+    }
+    "FoundationaLLM:CosmosDB:Database" = {
+      value = "database"
+    }
+    "FoundationaLLM:CosmosDB:Endpoint" = {
+      value = module.cosmosdb.endpoint
+    }
+    "FoundationaLLM:CosmosDB:Key" = {
+      value = jsonencode({
+        "uri" = azurerm_key_vault_secret.cosmosdb_key.versionless_id
+      })
+      "contentType" = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+    }
+    "FoundationaLLM:CosmosDB:MonitoredContainers" = {
+      value = "customer, product"
+    }
+    "FoundationaLLM:DataSourceHub:DataSourceMetadata:StorageContainer" = {
+      value = "data-sources"
+    }
+    "FoundationaLLM:DataSourceHub:StorageManager:BlobStorage:ConnectionString" = {
+      value = jsonencode({
+        "uri" = azurerm_key_vault_secret.storage_connection_string.versionless_id
+      })
+      "contentType" = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+    }
+    "FoundationaLLM:DurableSystemPrompt:BlobStorageConnection" = {
+      value = jsonencode({
+        "uri" = azurerm_key_vault_secret.storage_connection_string.versionless_id
+      })
+      "contentType" = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+    }
+    "FoundationaLLM:DurableSystemPrompt:BlobStorageContainer" = {
+      value = "system-prompt"
+    }
+    "FoundationaLLM:LangChain:CSVFile:URL" = {
+      value = jsonencode({
+        "uri" = azurerm_key_vault_secret.langchain_csvfile_url.versionless_id
+      })
+      "contentType" = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+    }
+    "FoundationaLLM:LangChain:SQLDatabase:TestDB:Password" = {
+      value = jsonencode({
+        "uri" = azurerm_key_vault_secret.langchain_sqldatabase_testdb_pw.versionless_id
+      })
+      "contentType" = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+    }
+    "FoundationaLLM:LangChain:Summary:MaxTokens" = {
+      value = "4097"
+    }
+    "FoundationaLLM:LangChain:Summary:ModelName" = {
+      value = "gpt-35-turbo"
+    }
+    "FoundationaLLM:LangChainAPI:Key" = {
+      value = jsonencode({
+        "uri" = azurerm_key_vault_secret.api_key[
+          "langchainapi"
+        ].versionless_id
+      })
+      "contentType" = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+    }
+    "FoundationaLLM:OpenAI:API:Endpoint" = {
+      value = module.openai_ha.endpoint
+    }
+    "FoundationaLLM:OpenAI:API:Key" = {
+      value = jsonencode({
+        "uri" = azurerm_key_vault_secret.openai_key.versionless_id
+      })
+      "contentType" = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+    }
+    "FoundationaLLM:OpenAI:API:Temperature" = {
+      value = "0"
+    }
+    "FoundationaLLM:PromptHub:PromptMetadata:StorageContainer" = {
+      value = "system-prompt"
+    }
+    "FoundationaLLM:PromptHub:StorageManager:BlobStorage:ConnectionString" = {
+      value = jsonencode({
+        "uri" = azurerm_key_vault_secret.storage_connection_string.versionless_id
+      })
+      "contentType" = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+    }
+    "FoundationaLLM:Refinement" = {
+      value = ""
+    }
+    "FoundationaLLM:SemanticKernelAPI:OpenAI.ChatCompletionPromptName" = {
+      value = "RetailAssistant.Default"
+    }
+    "FoundationaLLM:SemanticKernelAPI:OpenAI.CompletionsDeploymentName" = {
+      value = "completions"
+    }
+    "FoundationaLLM:SemanticKernelAPI:OpenAI.EmbeddingsDeploymentName" = {
+      value = "embeddings"
+    }
+    "FoundationaLLM:SemanticKernelAPI:OpenAI.EmbeddingsDeploymentMaxTokens" = {
+      value = "8191"
+    }
+    "FoundationaLLM:SemanticKernelAPI:OpenAI.Endpoint" = {
+      value = module.openai_ha.endpoint
+    }
+    "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.CompletionsMaxTokens" = {
+      value = "300"
+    }
+    "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.CompletionsMinTokens" = {
+      value = "50"
+    }
+    "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.MemoryMaxTokens" = {
+      value = "3000"
+    }
+    "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.MemoryMinTokens" = {
+      value = "1500"
+    }
+    "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.MessagesMaxTokens" = {
+      value = "3000"
+    }
+    "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.MessagesMinTokens" = {
+      value = "100"
+    }
+    "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.SystemMaxTokens" = {
+      value = "1500"
+    }
+    "FoundationaLLM:SemanticKernelAPI:OpenAI.ShortSummaryPromptName" = {
+      value = "Summarizer.TwoWords"
+    }
+    "FoundationaLLM:SemanticKernelAPI:OpenAI:Key" = {
+      value = jsonencode({
+        "uri" = azurerm_key_vault_secret.openai_key.versionless_id
+      })
+      "contentType" = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
   }
 }
