@@ -219,7 +219,18 @@ locals {
     "FoundationaLLM:Chat:Entra:CallbackPath" = {
       value = "/signin-oidc"
     }
-    ""
+    "FoundationaLLM:Chat:Entra:ClientId" = {
+      value = data.azuread_application.chat_entra.application_id
+    }
+    "FoundationaLLM:Chat:Entra:ClientSecret" = {
+      value = jsonencode({
+        "uri" = azurerm_key_vault_secret.chat_entra_clientsecret.versionless_id
+      })
+      "contentType" = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+    }
+    "FoundationaLLM:Chat:Entra:Instance" = {
+      value = "https://login.microsoftonline.com/"
+    }
   }
 }
 
