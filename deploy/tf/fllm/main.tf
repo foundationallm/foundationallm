@@ -233,6 +233,23 @@ module "application_gateway" {
   tags                       = azurerm_resource_group.rg["agw"].tags
 }
 
+module "content_safety" {
+  source = "./modules/content-safety"
+
+  action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
+  resource_group             = azurerm_resource_group.rg["oai"]
+  resource_prefix            = local.resource_prefix["oai"]
+  tags                       = azurerm_resource_group.rg["oai"].tags
+
+  private_endpoint = {
+    subnet_id = data.azurerm_subnet.subnet["FLLMOpenAI"].id
+    private_dns_zone_ids = [
+      data.azurerm_private_dns_zone.private_dns["cognitiveservices"].id,
+    ]
+  }
+}
+
 module "cosmosdb" {
   source = "./modules/cosmosdb"
 
