@@ -219,6 +219,10 @@ module "aks_frontend" {
   }
 }
 
+moved {
+  from = module.application_gateway
+  to   = module.application_gateway["www"]
+}
 module "application_gateway" {
   source     = "./modules/application-gateway"
   depends_on = [azurerm_role_assignment.keyvault_secrets_user_agw]
