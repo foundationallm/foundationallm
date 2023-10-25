@@ -65,6 +65,18 @@ locals {
 }
 
 # Data Sources
+data "azurerm_application_insights" "ai" {
+  name                = "${local.resource_prefix_backend["ops"]}-ai"
+  resource_group_name = data.azurerm_resource_group.backend["ops"].name
+}
+
+data "azurerm_app_configuration" "appconfig" {
+  name                = "${local.resource_prefix_backend["ops"]}-appconfig"
+  resource_group_name = data.azurerm_resource_group.backend["ops"].name
+}
+
+data "azurerm_client_config" "current" {}
+
 data "azurerm_dns_zone" "public_dns" {
   name                = var.public_domain
   resource_group_name = "GLB-FLLM-DEMO-DNS-rg"
