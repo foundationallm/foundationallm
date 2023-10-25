@@ -596,11 +596,16 @@ module "appconfig" {
   }
 }
 
+moved {
+  from = module.application_gateway_certificate
+  to   = module.application_gateway_certificate["www"]
+}
 module "application_gateway_certificate" {
-  source = "./modules/keyvault-acme-certificate"
+  source   = "./modules/keyvault-acme-certificate"
+  for_each = toset(["www", "gateway"])
 
   administrator_email = "tbd@solliance.net"
-  domain              = "www.${var.public_domain}"
+  domain              = "${each.key}.${var.public_domain}"
   key_vault_id        = module.keyvault.id
   public_dns_zone     = data.azurerm_dns_zone.public_dns
 }
