@@ -220,7 +220,7 @@ locals {
       value = "/signin-oidc"
     }
     "FoundationaLLM:Chat:Entra:ClientId" = {
-      value = data.azuread_application.chat_entra.application_id
+      value = data.azuread_application.chat_entra.client_id
     }
     "FoundationaLLM:Chat:Entra:ClientSecret" = {
       value = jsonencode({
