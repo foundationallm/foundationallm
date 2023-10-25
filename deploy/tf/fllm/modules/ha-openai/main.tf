@@ -302,9 +302,8 @@ locals {
 }
 
 resource "azurerm_monitor_metric_alert" "openai_alert" {
-  for_each = {
-    for alert in local.openai_alert_map : alert.name => alert
-  }
+  depends_on = [module.diagnostics] // Delay to avoid race condition.
+  for_each   = { for alert in local.openai_alert_map : alert.name => alert }
 
   description         = each.value.description
   frequency           = each.value.frequency

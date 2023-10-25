@@ -596,11 +596,16 @@ module "appconfig" {
   }
 }
 
+moved {
+  from = module.application_gateway_certificate
+  to   = module.application_gateway_certificate["www"]
+}
 module "application_gateway_certificate" {
-  source = "./modules/keyvault-acme-certificate"
+  source   = "./modules/keyvault-acme-certificate"
+  for_each = toset(["www", "gateway"])
 
   administrator_email = "tbd@solliance.net"
-  domain              = "www.${var.public_domain}"
+  domain              = "${each.key}.${var.public_domain}"
   key_vault_id        = module.keyvault.id
   public_dns_zone     = data.azurerm_dns_zone.public_dns
 }
@@ -634,22 +639,6 @@ module "container_registry" {
   }
 }
 
-module "content_safety" {
-  source = "./modules/content-safety"
-
-  action_group_id            = azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = module.logs.id
-  resource_group             = azurerm_resource_group.rg["ops"]
-  resource_prefix            = local.resource_prefix["ops"]
-  tags                       = azurerm_resource_group.rg["ops"].tags
-
-  private_endpoint = {
-    subnet_id = azurerm_subnet.subnet["ops"].id
-    private_dns_zone_ids = [
-      azurerm_private_dns_zone.private_dns["cognitiveservices"].id,
-    ]
-  }
-}
 
 module "jumpbox" {
   source = "./modules/jumpbox"

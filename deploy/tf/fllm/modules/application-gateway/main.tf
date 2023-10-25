@@ -1,4 +1,6 @@
 locals {
+  fqdn = "${var.hostname}.${var.public_dns_zone.name}"
+
   alert = {
     backendhealth = {
       aggregation = "Average"
@@ -8,16 +10,6 @@ locals {
       operator    = "LessThan"
       severity    = 0
       threshold   = 1
-      window_size = "PT5M"
-    }
-    dataprocessed = {
-      aggregation = "Total"
-      description = "Data processed is greater than 100000 for 5 minutes"
-      frequency   = "PT1M"
-      metric_name = "BytesSent"
-      operator    = "GreaterThan"
-      severity    = 2
-      threshold   = 100000
       window_size = "PT5M"
     }
     failedrequests = {
@@ -106,7 +98,7 @@ resource "azurerm_application_gateway" "main" {
   http_listener {
     frontend_ip_configuration_name = "default"
     frontend_port_name             = "http"
-    host_name                      = var.hostname
+    host_name                      = local.fqdn
     name                           = "http"
     protocol                       = "Http"
   }
@@ -114,7 +106,7 @@ resource "azurerm_application_gateway" "main" {
   http_listener {
     frontend_ip_configuration_name = "default"
     frontend_port_name             = "https"
-    host_name                      = var.hostname
+    host_name                      = local.fqdn
     name                           = "https"
     protocol                       = "Https"
     require_sni                    = true
@@ -127,7 +119,7 @@ resource "azurerm_application_gateway" "main" {
   }
 
   probe {
-    host                = var.hostname
+    host                = local.fqdn
     interval            = 30
     name                = "https"
     path                = "/"
@@ -180,10 +172,23 @@ resource "azurerm_application_gateway" "main" {
     rule_set_type    = "OWASP"
     rule_set_version = "3.1"
   }
+
+  # AGIC will change these properties outside Terraform
+  lifecycle {
+    ignore_changes = [
+      backend_address_pool,
+      backend_http_settings,
+      frontend_port,
+      http_listener,
+      probe,
+      request_routing_rule,
+      tags,
+    ]
+  }
 }
 
 resource "azurerm_dns_a_record" "a" {
-  name                = "www"
+  name                = var.hostname
   zone_name           = var.public_dns_zone.name
   resource_group_name = var.public_dns_zone.resource_group_name
   ttl                 = 300
@@ -191,7 +196,8 @@ resource "azurerm_dns_a_record" "a" {
 }
 
 resource "azurerm_monitor_metric_alert" "alert" {
-  for_each = local.alert
+  depends_on = [module.diagnostics] // Delay to avoid race condition.
+  for_each   = local.alert
 
   description         = each.value.description
   frequency           = each.value.frequency

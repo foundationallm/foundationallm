@@ -4,12 +4,13 @@ variable "action_group_id" {
 }
 
 variable "backend_pool_ip_addresses" {
+  default     = []
   description = "The IP addresses that make up the backend pool for this application gateway."
   type        = list(string)
 }
 
 variable "hostname" {
-  description = "The hostname to use for the application gateway."
+  description = "The hostname to use for the application gateway (without the domain)."
   type        = string
 }
 

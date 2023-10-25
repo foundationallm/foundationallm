@@ -13,33 +13,48 @@ locals {
   }
 }
 
+# Data Sources
+# TODO: Consider passing this in as a variable.
 data "azurerm_client_config" "current" {}
 
-resource "azurerm_user_assigned_identity" "aks_mi" {
-  location            = var.resource_group.location
-  name                = "${var.resource_prefix}-aks-mi"
-  resource_group_name = var.resource_group.name
-}
-
-resource "azurerm_role_assignment" "dns_contributor" {
-  scope                = var.private_endpoint.private_dns_zone_ids["aks"][0]
-  principal_id         = azurerm_user_assigned_identity.aks_mi.principal_id
-  role_definition_name = "Private DNS Zone Contributor"
-}
-
-resource "azurerm_role_assignment" "network_contributor" {
-  scope                = var.private_endpoint.subnet.id
-  principal_id         = azurerm_user_assigned_identity.aks_mi.principal_id
-  role_definition_name = "Network Contributor"
-}
-
+# Resources
 resource "azurerm_kubernetes_cluster" "main" {
-  name                       = "${var.resource_prefix}-aks"
-  location                   = var.resource_group.location
-  resource_group_name        = var.resource_group.name
-  dns_prefix_private_cluster = "${var.resource_prefix}-aks"
-  private_cluster_enabled    = true
-  private_dns_zone_id        = var.private_endpoint.private_dns_zone_ids["aks"][0]
+  depends_on = [
+    azurerm_role_assignment.dns_contributor,
+    azurerm_role_assignment.network_contributor
+  ]
+
+  automatic_channel_upgrade         = "stable"
+  dns_prefix_private_cluster        = "${var.resource_prefix}-aks"
+  location                          = var.resource_group.location
+  name                              = "${var.resource_prefix}-aks"
+  oidc_issuer_enabled               = true
+  private_cluster_enabled           = true
+  private_dns_zone_id               = var.private_endpoint.private_dns_zone_ids["aks"][0]
+  resource_group_name               = var.resource_group.name
+  role_based_access_control_enabled = true
+  sku_tier                          = "Standard"
+  tags                              = var.tags
+  workload_identity_enabled         = true
+
+  azure_active_directory_role_based_access_control {
+    azure_rbac_enabled = true
+    managed            = true
+    tenant_id          = data.azurerm_client_config.current.tenant_id
+
+    admin_group_object_ids = [
+      data.azurerm_client_config.current.object_id,
+      var.aks_admin_object_id
+    ]
+  }
+
+  # TODO: autoscale
+  default_node_pool {
+    name           = "default"
+    node_count     = 3
+    vm_size        = "Standard_D2_v2"
+    vnet_subnet_id = var.private_endpoint.subnet.id
+  }
 
   identity {
     type = "UserAssigned"
@@ -48,57 +63,23 @@ resource "azurerm_kubernetes_cluster" "main" {
     ]
   }
 
-  default_node_pool {
-    name           = "default"
-    node_count     = 3
-    vm_size        = "Standard_D2_v2"
-    vnet_subnet_id = var.private_endpoint.subnet.id
-  }
-
-  network_profile {
-    network_plugin = "azure"
-    service_cidr   = "10.100.0.0/16"
-    dns_service_ip = "10.100.254.1"
-  }
-
-  automatic_channel_upgrade = "stable"
-
-  azure_active_directory_role_based_access_control {
-    managed   = true
-    tenant_id = data.azurerm_client_config.current.tenant_id
-    admin_group_object_ids = [
-      data.azurerm_client_config.current.object_id,
-      var.aks_admin_object_id
-    ]
-    azure_rbac_enabled = true
-  }
-
   ingress_application_gateway {
     gateway_id = var.agw_id
   }
-
-  oidc_issuer_enabled = true
-
-  oms_agent {
-    log_analytics_workspace_id = var.log_analytics_workspace_id
-  }
-
-  workload_identity_enabled = true
-
-  role_based_access_control_enabled = true
-
-  sku_tier = "Standard"
 
   microsoft_defender {
     log_analytics_workspace_id = var.log_analytics_workspace_id
   }
 
-  tags = var.tags
+  network_profile {
+    dns_service_ip = "10.100.254.1"
+    network_plugin = "azure"
+    service_cidr   = "10.100.0.0/16"
+  }
 
-  depends_on = [
-    azurerm_role_assignment.dns_contributor,
-    azurerm_role_assignment.network_contributor
-  ]
+  oms_agent {
+    log_analytics_workspace_id = var.log_analytics_workspace_id
+  }
 }
 
 resource "azurerm_monitor_metric_alert" "alert" {
@@ -146,6 +127,26 @@ resource "azurerm_private_endpoint" "ple" {
   }
 }
 
+# TODO: Combine into loop.
+resource "azurerm_role_assignment" "dns_contributor" {
+  principal_id         = azurerm_user_assigned_identity.aks_mi.principal_id
+  role_definition_name = "Private DNS Zone Contributor"
+  scope                = var.private_endpoint.private_dns_zone_ids["aks"][0]
+}
+
+resource "azurerm_role_assignment" "network_contributor" {
+  principal_id         = azurerm_user_assigned_identity.aks_mi.principal_id
+  role_definition_name = "Network Contributor"
+  scope                = var.private_endpoint.subnet.id
+}
+
+resource "azurerm_user_assigned_identity" "aks_mi" {
+  location            = var.resource_group.location
+  name                = "${var.resource_prefix}-aks-mi"
+  resource_group_name = var.resource_group.name
+}
+
+# Modules
 module "diagnostics" {
   source = "../diagnostics"
 
