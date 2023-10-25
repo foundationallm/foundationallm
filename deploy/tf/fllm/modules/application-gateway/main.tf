@@ -182,6 +182,19 @@ resource "azurerm_application_gateway" "main" {
     rule_set_type    = "OWASP"
     rule_set_version = "3.1"
   }
+
+  # AGIC will change these properties outside Terraform
+    lifecycle {
+    ignore_changes = [
+      backend_address_pool,
+      backend_http_settings,
+      frontend_port
+      http_listener,
+      probe,
+      request_routing_rule,
+      tags,
+    ]
+  }
 }
 
 resource "azurerm_dns_a_record" "a" {
