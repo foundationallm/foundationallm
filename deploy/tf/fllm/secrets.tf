@@ -66,7 +66,6 @@ resource "time_rotating" "chat_entra" {
 
 resource "azuread_application_password" "chat_entra" {
   application_object_id = data.azuread_application.chat_entra.object_id
-  description           = "Chat Entra Client Secret"
   rotate_when_changed = {
     rotation = time_rotating.chat_entra.id
   }
@@ -112,7 +111,6 @@ resource "time_rotating" "client_entra" {
 
 resource "azuread_application_password" "client_entra" {
   application_object_id = data.azuread_application.client_entra.object_id
-  description           = "Client Entra Client Secret"
   rotate_when_changed = {
     rotation = time_rotating.client_entra.id
   }
