@@ -70,6 +70,11 @@ data "azurerm_application_insights" "ai" {
   resource_group_name = data.azurerm_resource_group.backend["ops"].name
 }
 
+data "azurerm_cognitive_account" "content_safety" {
+  name                = "${local.resource_prefix_backend["ops"]}-content-safety"
+  resource_group_name = data.azurerm_resource_group.backend["ops"].name
+}
+
 data "azurerm_dns_zone" "public_dns" {
   name                = var.public_domain
   resource_group_name = "GLB-FLLM-DEMO-DNS-rg"
