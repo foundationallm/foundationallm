@@ -12,16 +12,6 @@ locals {
       threshold   = 1
       window_size = "PT5M"
     }
-    dataprocessed = {
-      aggregation = "Total"
-      description = "Data processed is greater than 100000 for 5 minutes"
-      frequency   = "PT1M"
-      metric_name = "BytesSent"
-      operator    = "GreaterThan"
-      severity    = 2
-      threshold   = 100000
-      window_size = "PT5M"
-    }
     failedrequests = {
       aggregation = "Total"
       description = "Failed requests are greater than 10 for 5 minutes"
