@@ -76,6 +76,8 @@ data "azurerm_key_vault" "keyvault_ops" {
 }
 
 data "azurerm_key_vault_certificate" "agw" {
+  for_each = toset(["www", "gateway"])
+
   key_vault_id = data.azurerm_key_vault.keyvault_ops.id
   name         = replace("www.${var.public_domain}", ".", "-")
 }
@@ -179,7 +181,7 @@ module "aks_backend" {
   source = "./modules/aks"
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
-  agw_id                     = module.application_gateway.id
+  agw_id                     = module.application_gateway["gateway"].id
   aks_admin_object_id        = var.sql_admin_ad_group.object_id
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rg["app"]
@@ -200,7 +202,7 @@ module "aks_frontend" {
   source = "./modules/aks"
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
-  agw_id                     = module.application_gateway.id
+  agw_id                     = module.application_gateway["www"].id
   aks_admin_object_id        = var.sql_admin_ad_group.object_id
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rg["app"]
@@ -220,15 +222,19 @@ module "aks_frontend" {
 module "application_gateway" {
   source     = "./modules/application-gateway"
   depends_on = [azurerm_role_assignment.keyvault_secrets_user_agw]
+  for_each = toset([
+    "www",
+    "gateway",
+  ])
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
-  hostname                   = "www.${var.public_domain}"
+  hostname                   = "${each.key}.${var.public_domain}"
   identity_id                = azurerm_user_assigned_identity.agw.id
-  key_vault_secret_id        = data.azurerm_key_vault_certificate.agw.versionless_secret_id
+  key_vault_secret_id        = data.azurerm_key_vault_certificate.agw[each.key].versionless_secret_id
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   public_dns_zone            = data.azurerm_dns_zone.public_dns
   resource_group             = azurerm_resource_group.rg["agw"]
-  resource_prefix            = local.resource_prefix["agw"]
+  resource_prefix            = "${local.resource_prefix["agw"]}-${each.key}"
   subnet_id                  = data.azurerm_subnet.subnet["AppGateway"].id
   tags                       = azurerm_resource_group.rg["agw"].tags
 }
