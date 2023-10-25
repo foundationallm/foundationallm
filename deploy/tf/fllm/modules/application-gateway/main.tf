@@ -191,7 +191,8 @@ resource "azurerm_dns_a_record" "a" {
 }
 
 resource "azurerm_monitor_metric_alert" "alert" {
-  for_each = local.alert
+  depends_on = [module.diagnostics] // Delay to avoid race condition.
+  for_each   = local.alert
 
   description         = each.value.description
   frequency           = each.value.frequency
