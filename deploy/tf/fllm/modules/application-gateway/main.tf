@@ -1,4 +1,6 @@
 locals {
+  fqdn = "${var.hostname}.${var.public_dns_zone.name}"
+
   alert = {
     backendhealth = {
       aggregation = "Average"
@@ -106,7 +108,7 @@ resource "azurerm_application_gateway" "main" {
   http_listener {
     frontend_ip_configuration_name = "default"
     frontend_port_name             = "http"
-    host_name                      = var.hostname
+    host_name                      = local.fqdn
     name                           = "http"
     protocol                       = "Http"
   }
@@ -114,7 +116,7 @@ resource "azurerm_application_gateway" "main" {
   http_listener {
     frontend_ip_configuration_name = "default"
     frontend_port_name             = "https"
-    host_name                      = var.hostname
+    host_name                      = local.fqdn
     name                           = "https"
     protocol                       = "Https"
     require_sni                    = true
@@ -127,7 +129,7 @@ resource "azurerm_application_gateway" "main" {
   }
 
   probe {
-    host                = var.hostname
+    host                = local.fqdn
     interval            = 30
     name                = "https"
     path                = "/"
@@ -183,7 +185,7 @@ resource "azurerm_application_gateway" "main" {
 }
 
 resource "azurerm_dns_a_record" "a" {
-  name                = "www"
+  name                = var.hostname
   zone_name           = var.public_dns_zone.name
   resource_group_name = var.public_dns_zone.resource_group_name
   ttl                 = 300

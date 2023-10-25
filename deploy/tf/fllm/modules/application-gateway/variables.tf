@@ -10,7 +10,7 @@ variable "backend_pool_ip_addresses" {
 }
 
 variable "hostname" {
-  description = "The hostname to use for the application gateway."
+  description = "The hostname to use for the application gateway (without the domain)."
   type        = string
 }
 
