@@ -70,6 +70,11 @@ data "azurerm_application_insights" "ai" {
   resource_group_name = data.azurerm_resource_group.backend["ops"].name
 }
 
+data "azurerm_app_configuration" "appconfig" {
+  name                = "${local.resource_prefix_backend["ops"]}-appconfig"
+  resource_group_name = data.azurerm_resource_group.backend["ops"].name
+}
+
 data "azurerm_cognitive_account" "content_safety" {
   name                = "${local.resource_prefix_backend["ops"]}-content-safety"
   resource_group_name = data.azurerm_resource_group.backend["ops"].name

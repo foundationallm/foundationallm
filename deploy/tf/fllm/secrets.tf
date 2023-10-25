@@ -1,11 +1,11 @@
 locals {
   api_keys = {
-    "agentfactoryapi" = {}
-    "agenthubapi" = {}
-    "datasourcehubapi" = {}
-    "gatekeeperapi" = {}
-    "langchainapi" = {}
-    "prompthubapi" = {}
+    "agentfactoryapi"   = {}
+    "agenthubapi"       = {}
+    "datasourcehubapi"  = {}
+    "gatekeeperapi"     = {}
+    "langchainapi"      = {}
+    "prompthubapi"      = {}
     "semantickernelapi" = {}
   }
 }
@@ -19,41 +19,35 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
 resource "random_string" "api_key" {
   for_each = local.api_keys
 
-    length  = 32
-    special = false
-    upper   = true
+  length  = 32
+  special = false
+  upper   = true
 }
 
 resource "azurerm_key_vault_secret" "api_key" {
   for_each = local.api_keys
 
-  name = "foundationallm-apis-${each.key}-apikey"
+  name         = "foundationallm-apis-${each.key}-apikey"
   key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-  value = random_string.api_key[each.key].result
+  value        = random_string.api_key[each.key].result
 }
 
-resource "azurerm_key_vault_secret" "agenthub_storage_connection_string" {
-  name         = "foundationallm-agenthub-storagemanager-blobstorage-connectionstring"
+resource "azurerm_key_vault_secret" "storage_connection_string" {
+  name         = "foundationallm-storage-connectionstring"
   key_vault_id = data.azurerm_key_vault.keyvault_ops.id
   value        = module.storage.primary_connection_string
 }
 
 resource "azurerm_key_vault_secret" "content_safety_apikey" {
-    name         = "foundationallm-azurecontentsafety-apikey"
-    key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-    value        = data.azurerm_cognitive_account.content_safety.primary_access_key
+  name         = "foundationallm-azurecontentsafety-apikey"
+  key_vault_id = data.azurerm_key_vault.keyvault_ops.id
+  value        = data.azurerm_cognitive_account.content_safety.primary_access_key
 }
 
 resource "azurerm_key_vault_secret" "openai_key" {
   name         = "foundationallm-azureopenai-api-key"
   key_vault_id = data.azurerm_key_vault.keyvault_ops.id
   value        = "" # For HA OpenAI, there is currently no key.
-}
-
-resource "azurerm_key_vault_secret" "memory_source_blob_connection_string" {
-  name         = "foundationallm-blobstoragememorysource-blobstorageconnection"
-  key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-  value        = module.storage.primary_connection_string
 }
 
 data "azuread_application" "chat_entra" {
@@ -77,22 +71,10 @@ resource "azurerm_key_vault_secret" "chat_entra_clientsecret" {
   value        = azuread_application_password.chat_entra.value
 }
 
-resource "azurerm_key_vault_secret" "cogsearch_blob_connection_string" {
-  name = "foundationallm-cognitivesearch-configblobstorageconnection"
-    key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-    value        = module.storage.primary_connection_string
-}
-
 resource "azurerm_key_vault_secret" "cogsearch_service_key" {
   name         = "foundationallm-cognitivesearch-key"
   key_vault_id = data.azurerm_key_vault.keyvault_ops.id
   value        = module.search.key
-}
-
-resource "azurerm_key_vault_secret" "cogsearch_memory_blob_connection_string" {
-    name         = "foundationallm-cognitivesearchmemorysource-blobstorageconnection"
-    key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-    value        = module.storage.primary_connection_string
 }
 
 resource "azurerm_key_vault_secret" "cogsearch_memory_key" {
@@ -128,22 +110,10 @@ resource "azurerm_key_vault_secret" "cosmosdb_key" {
   value        = module.cosmosdb.key
 }
 
-resource "azurerm_key_vault_secret" "datasourcehub_blob_connection_string" {
-    name         = "foundationallm-datasourcehub-storagemanager-blobstorage-connectionstring"
-    key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-    value        = module.storage.primary_connection_string
-}
-
-resource "azurerm_key_vault_secret" "durablesystemprompt_storage_connection_string" {
-    name         = "foundationallm-durablesystemprompt-blobstorageconnection"
-    key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-    value        = module.storage.primary_connection_string
-}
-
 resource "azurerm_key_vault_secret" "langchain_csvfile_url" {
-    name         = "foundationallm-langchain-csvfile-url"
-    key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-    value        = ""
+  name         = "foundationallm-langchain-csvfile-url"
+  key_vault_id = data.azurerm_key_vault.keyvault_ops.id
+  value        = ""
 }
 
 resource "azurerm_key_vault_secret" "langchain_sqldatabase_testdb_pw" {
@@ -151,10 +121,3 @@ resource "azurerm_key_vault_secret" "langchain_sqldatabase_testdb_pw" {
   key_vault_id = data.azurerm_key_vault.keyvault_ops.id
   value        = ""
 }
-
-resource "azurerm_key_vault_secret" "prompthub_blob_connection_string" {
-  name         = "foundationallm-prompthub-storagemanager-blobstorage-connectionstring"
-  key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-  value        = module.storage.primary_connection_string
-}
-
