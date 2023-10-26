@@ -1,13 +1,19 @@
 import { LogLevel, PublicClientApplication } from '@azure/msal-browser';
 declare const AUTH_CLIENT_ID: string;
-declare const AUTH_AUTHORITY: string;
+declare const AUTH_INSTANCE: string;
+declare const AUTH_TENANT_ID: string;
+declare const AUTH_SCOPES: string;
+declare const AUTH_CLIENT_SECRET: string;
+declare const AUTH_CALLBACK_PATH: string;
 
 // Config object to be passed to Msal on creation
 export const msalConfig = {
 	auth: {
 		clientId: `${AUTH_CLIENT_ID}`,
-		authority: `${AUTH_AUTHORITY}`,
-		redirectUri: '/', // Must be registered as a SPA redirectURI on your app registration
+		authority: `${AUTH_INSTANCE}${AUTH_TENANT_ID}`,
+		clientSecret: `${AUTH_CLIENT_SECRET}`,
+		redirectUri: `${AUTH_CALLBACK_PATH}`, // Must be registered as a SPA redirectURI on your app registration
+		scopes: [`${AUTH_SCOPES}`],
 		postLogoutRedirectUri: '/', // Must be registered as a SPA redirectURI on your app registration
 	},
 	cache: {
@@ -45,7 +51,7 @@ export const msalInstance = new PublicClientApplication(msalConfig);
 
 // Add here scopes for id token to be used at MS Identity Platform endpoints.
 export const loginRequest = {
-	scopes: ['User.Read'],
+	scopes: msalConfig.auth.scopes,
 };
 
 // Add here the endpoints for MS Graph API services you would like to use.

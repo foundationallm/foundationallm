@@ -1,5 +1,8 @@
 ﻿namespace FoundationaLLM.Core.Interfaces;
 
+/// <summary>
+/// This service is provided as an example, it is not used by the main RAG flow.
+/// </summary>
 public interface IOpenAiService
 {
     /// <summary>
@@ -26,7 +29,8 @@ public interface IOpenAiService
     /// Sends a prompt to the deployed OpenAI LLM model and returns the response.
     /// </summary>
     /// <param name="sessionId">Chat session identifier for the current conversation.</param>
-    /// <param name="prompt">Prompt message to send to the deployment.</param>
+    /// <param name="userPrompt">Prompt message to send to the deployment.</param>
+    /// <param name="documents">Documents used for the data context.</param>
     /// <returns>Response from the OpenAI model along with tokens for the prompt and response.</returns>
     Task<(string response, int promptTokens, int responseTokens)> GetChatCompletionAsync(string sessionId, string userPrompt, string documents);
 

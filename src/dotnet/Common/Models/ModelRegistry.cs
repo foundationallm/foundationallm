@@ -3,8 +3,14 @@ using Newtonsoft.Json.Linq;
 
 namespace FoundationaLLM.Common.Models
 {
+    /// <summary>
+    /// The model registry object
+    /// </summary>
     public class ModelRegistry
     {
+        /// <summary>
+        /// Dictionary of model names and their corresponding entries in the registry
+        /// </summary>
         public static Dictionary<string, ModelRegistryEntry> Models = new Dictionary<string, ModelRegistryEntry>
             {
                 { 
@@ -45,6 +51,9 @@ namespace FoundationaLLM.Common.Models
                 }
             };
 
+        /// <summary>
+        /// Identifies the type of the object based on its properties
+        /// </summary>
         public static ModelRegistryEntry? IdentifyType(JObject obj)
         {
             var objProps = obj.Properties().Select(p => p.Name);
@@ -52,16 +61,27 @@ namespace FoundationaLLM.Common.Models
             var result = ModelRegistry
                 .Models
                 .Select(m => m.Value)
-                .SingleOrDefault(x => objProps.Intersect(x.TypeMatchingProperties).Count() == x.TypeMatchingProperties.Count());
+                .SingleOrDefault(x => objProps.Intersect(x.TypeMatchingProperties!).Count() == x.TypeMatchingProperties!.Count());
 
             return result;
         }
     }
-
+    /// <summary>
+    /// The model registry entry object
+    /// </summary>
     public class ModelRegistryEntry
     {
+        /// <summary>
+        /// The Type associated with the model registry entry
+        /// </summary>
         public Type? Type { get; init; }
+        /// <summary>
+        /// The list of type-matching properties associated with the model registry entry
+        /// </summary>
         public List<string>? TypeMatchingProperties { get; init; }
+        /// <summary>
+        /// The list of naming properties associated with the model registry entry
+        /// </summary>
         public List<string>? NamingProperties { get; init; }
     }
 }

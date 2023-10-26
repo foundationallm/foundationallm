@@ -9,21 +9,21 @@ namespace FoundationaLLM.Common.Tests.Models.Orchestration
 {
     public class CompletionResponseTests
     {
-        public static IEnumerable<object[]> GetInvalidFields()
+        public static IEnumerable<object?[]> GetInvalidFields()
         {
-            yield return new object[] { null, "Prompt_1", 100, 100, null };
-            yield return new object[] { "Completion_1",null, 100, 100, null };
-            yield return new object[] { "Completion_1", "Prompt_1", null, 100, null };
-            yield return new object[] { "Completion_1", "Prompt_1", 100, null, null };
-            yield return new object[] { "Completion_1", "Prompt_1", 100, 100, null };
-            yield return new object[] { "Completion_1", "Prompt_1", 100, 100, new float[0] };
-            yield return new object[] { "Completion_1", "Prompt_1", 100, 100, new float[] { 1, 2, 3 } };
+            yield return new object?[] { null, "Prompt_1", 100, 100, null };
+            yield return new object?[] { "Completion_1",null, 100, 100, null };
+            yield return new object?[] { "Completion_1", "Prompt_1", null, 100, null };
+            yield return new object?[] { "Completion_1", "Prompt_1", 100, null, null };
+            yield return new object?[] { "Completion_1", "Prompt_1", 100, 100, null };
+            yield return new object?[] { "Completion_1", "Prompt_1", 100, 100, new float[0] };
+            yield return new object?[] { "Completion_1", "Prompt_1", 100, 100, new float[] { 1, 2, 3 } };
         }
 
-        public static IEnumerable<object[]> GetValidFields()
+        public static IEnumerable<object?[]> GetValidFields()
         {
-            yield return new object[] { "Completion_1", "Prompt_1", 100, 100, null };
-            yield return new object[] { "Completion_2", "Prompt_2", 100, 100, Enumerable.Range(0, 1536).Select(x => (float)x).ToArray() };
+            yield return new object?[] { "Completion_1", "Prompt_1", 100, 100, null };
+            yield return new object?[] { "Completion_2", "Prompt_2", 100, 100, Enumerable.Range(0, 1536).Select(x => (float)x).ToArray() };
         }
 
         [Theory]

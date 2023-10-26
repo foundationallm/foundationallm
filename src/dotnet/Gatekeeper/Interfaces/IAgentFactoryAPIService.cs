@@ -20,11 +20,4 @@ public interface IAgentFactoryAPIService
     /// <param name="summaryRequest">The summarize request containing the user prompt.</param>
     /// <returns>The summary response.</returns>
     Task<SummaryResponse> GetSummary(SummaryRequest summaryRequest);
-
-    /// <summary>
-    /// Sets the preffered orchestration service.
-    /// </summary>
-    /// <param name="orchestrationService">The name of the preferred orchestration service.</param>
-    /// <returns>True if the preffered orchestration service was set. Otherwise, returns False.</returns>
-    Task<bool> SetLLMOrchestrationPreference(string orchestrationService);
 }

@@ -32,12 +32,10 @@
 
 			<!-- Right side content -->
 			<div class="navbar__content__right">
-
 				<!-- Auth button -->
 				<div v-if="!signedIn" class="navbar__content__right__item">
 					<Button class="button--auth" icon="pi pi-sign-in" label="Sign In" @click="signIn()"></Button>
 				</div>
-
 				<!-- Logged in user name -->
 				<div v-else class="navbar__content__right__item">
 					<span>Welcome {{ accountName }}</span>
@@ -60,7 +58,7 @@ export default {
 		currentSession: {
 			type: [Object, null] as PropType<Session | null>,
 			required: true,
-		}
+		},
 	},
 
 	emits: ['collapse-sidebar'],
@@ -77,12 +75,14 @@ export default {
 	},
 
 	async created() {
-		await msalInstance.initialize();
-		const accounts = await msalInstance.getAllAccounts();
-		if (accounts.length > 0) {
-			this.signedIn = true;
-			this.accountName = accounts[0].name;
-			this.userName = accounts[0].username;
+		if (process.client) {
+			await msalInstance.initialize();
+			const accounts = await msalInstance.getAllAccounts();
+			if (accounts.length > 0) {
+				this.signedIn = true;
+				this.accountName = accounts[0].name;
+				this.userName = accounts[0].username;
+			}
 		}
 	},
 
@@ -121,6 +121,7 @@ export default {
 			this.signedIn = false;
 			this.accountName = '';
 			this.userName = '';
+			this.$router.push({ path: '/login' });
 			// await msalInstance.logout();
 		}
 	},

@@ -121,54 +121,6 @@ namespace FoundationaLLM.Core.Tests.Services
 
         #endregion
 
-        #region SetLLMOrchestrationPreference
-
-        [Fact]
-        public async Task SetLLMOrchestrationPreference_SuccessfulCompletionResponse()
-        {
-            // Arrange
-            var expected = true;
-            string orchestrationServiceString = "Test Service";
-
-            // Create a mock message handler
-            var mockHandler = new MockHttpMessageHandler(HttpStatusCode.OK, expected);
-            var httpClient = new HttpClient(mockHandler)
-            {
-                BaseAddress = new Uri("http://nsubstitute.io")
-            };
-            _httpClientFactoryService.CreateClient(Arg.Any<string>()).Returns(httpClient);
-
-            // Act
-            bool actual = await _testedService.SetLLMOrchestrationPreference(orchestrationServiceString);
-
-            // Assert
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public async Task SetLLMOrchestrationPreference_UnsuccessfulDefaultResponse()
-        {
-            // Arrange
-            var expected = false;
-            string orchestrationServiceString = "Test Service";
-
-            // Create a mock message handler
-            var mockHandler = new MockHttpMessageHandler(HttpStatusCode.InternalServerError, expected);
-            var httpClient = new HttpClient(mockHandler)
-            {
-                BaseAddress = new Uri("http://nsubstitute.io")
-            };
-            _httpClientFactoryService.CreateClient(Arg.Any<string>()).Returns(httpClient);
-
-            // Act
-            bool actual = await _testedService.SetLLMOrchestrationPreference(orchestrationServiceString);
-
-            // Assert
-            Assert.Equal(expected, actual);
-        }
-
-        #endregion
-
         #region AddMemory
 
         [Fact]

@@ -6,7 +6,7 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata
     /// <summary>
     /// CSV file data source metadata model.
     /// </summary>
-    public class CSVFileDataSource
+    public class CSVFileDataSource : MetadataBase
     {
         /// <summary>
         /// CSV file configuration settings metadata.

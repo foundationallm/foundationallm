@@ -1,8 +1,6 @@
 ﻿using FoundationaLLM.AgentFactory.Core.Interfaces;
-using FoundationaLLM.AgentFactory.Core.Models.Messages;
 using FoundationaLLM.AgentFactory.Interfaces;
 using FoundationaLLM.AgentFactory.Models.Orchestration;
-using FoundationaLLM.Common.Models.Orchestration;
 
 namespace FoundationaLLM.AgentFactory.Core.Agents
 {
@@ -43,16 +41,9 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
                 throw new ArgumentException($"The agent factory does not support the {orchestrationType} orchestration type.");
             var orchestrationService = SelectOrchestrationService(llmOrchestrationType, orchestrationServices);
 
-            // TODO: Design a smarter way to instantiate an agent instance based on its name
+            
             AgentBase? agent = null;
-            switch (agentInfo!.Name!.ToLower())
-            {
-                case "default":
-                    agent = new DefaultAgent(agentInfo, orchestrationService, promptHubAPIService, dataSourceHubAPIService);
-                    break;
-                default:
-                    throw new ArgumentException($"The agent factory does not recognize the agent {agentInfo.Name}.");
-            }
+            agent = new DefaultAgent(agentInfo!, orchestrationService, promptHubAPIService, dataSourceHubAPIService);           
 
             await agent.Configure(userPrompt, userContext);
 

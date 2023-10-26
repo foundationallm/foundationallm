@@ -3,8 +3,14 @@ using FoundationaLLM.Common.Models.Search;
 
 namespace FoundationaLLM.Core.Interfaces;
 
+/// <summary>
+/// Contains methods for accessing Azure Cosmos DB for NoSQL.
+/// </summary>
 public interface ICosmosDbService
 {
+    /// <summary>
+    /// Indicates whether the Azure Cosmos DB change feed is initialized.
+    /// </summary>
     bool IsInitialized { get; }
 
     /// <summary>
@@ -104,5 +110,11 @@ public interface ICosmosDbService
     /// <param name="vectorDocuments">List string of JSON documents from vector search results</param>
     Task<string> GetVectorSearchDocumentsAsync(List<DocumentVector> vectorDocuments);
 
+    /// <summary>
+    /// Returns the completion prompt for a given session and completion prompt id.
+    /// </summary>
+    /// <param name="sessionId">The session id from which to retrieve the completion prompt.</param>
+    /// <param name="completionPromptId">The id of the completion prompt to retrieve.</param>
+    /// <returns></returns>
     Task<CompletionPrompt> GetCompletionPrompt(string sessionId, string completionPromptId);
 }

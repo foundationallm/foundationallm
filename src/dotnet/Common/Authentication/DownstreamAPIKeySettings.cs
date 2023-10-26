@@ -11,7 +11,7 @@ namespace FoundationaLLM.Common.Authentication
     public record DownstreamAPISettings : IDownstreamAPISettings
     {
         /// <inheritdoc/>
-        public Dictionary<string, DownstreamAPIKeySettings> DownstreamAPIs { get; init; }
+        public required Dictionary<string, DownstreamAPIKeySettings> DownstreamAPIs { get; init; }
     }
 
     /// <summary>

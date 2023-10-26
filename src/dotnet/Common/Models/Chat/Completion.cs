@@ -1,7 +1,13 @@
 ﻿namespace FoundationaLLM.Common.Models.Chat
 {
+    /// <summary>
+    /// The completion object
+    /// </summary>
     public class Completion
     {
-        public string Text { get; set; }
+        /// <summary>
+        /// The completion text
+        /// </summary>
+        public string? Text { get; set; }
     }
 }

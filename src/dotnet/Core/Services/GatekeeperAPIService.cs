@@ -12,17 +12,29 @@ using System.Threading.Tasks;
 
 namespace FoundationaLLM.Core.Services
 {
+    /// <summary>
+    /// Contains methods for interacting with the Gatekeeper API.
+    /// </summary>
     public class GatekeeperAPIService : IGatekeeperAPIService
     {
         private readonly IHttpClientFactoryService _httpClientFactoryService;
         readonly JsonSerializerSettings _jsonSerializerSettings;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GatekeeperAPIService"/> class.
+        /// </summary>
+        /// <param name="httpClientFactoryService">The <see cref="IHttpClientFactoryService"/>
+        /// used to retrieve an <see cref="HttpClient"/> instance that contains required
+        /// headers for Gateway API requests.</param>
+        /// <param name="userIdentityContext">The <see cref="IUserIdentityContext"/> that contains
+        /// user context details for the current request.</param>
         public GatekeeperAPIService(IHttpClientFactoryService httpClientFactoryService, IUserIdentityContext userIdentityContext)
         {
             _httpClientFactoryService = httpClientFactoryService;
             _jsonSerializerSettings = CommonJsonSerializerSettings.GetJsonSerializerSettings();
         }
 
+        /// <inheritdoc/>
         public async Task<CompletionResponse> GetCompletion(CompletionRequest completionRequest)
         {
             // TODO: Call RefinementService to refine userPrompt
@@ -35,24 +47,27 @@ namespace FoundationaLLM.Core.Services
                     JsonConvert.SerializeObject(completionRequest, _jsonSerializerSettings),
                     Encoding.UTF8, "application/json"));
 
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var completionResponse = JsonConvert.DeserializeObject<CompletionResponse>(responseContent);
-
-                return completionResponse;
-            }
-
-            return new CompletionResponse
+            var defaultCompletionResponse = new CompletionResponse
             {
                 Completion = "A problem on my side prevented me from responding.",
                 UserPrompt = completionRequest.UserPrompt,
                 PromptTokens = 0,
                 CompletionTokens = 0,
-                UserPromptEmbedding = new float[] { 0 }
+                UserPromptEmbedding = new float[] {0}
             };
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var responseContent = await responseMessage.Content.ReadAsStringAsync();
+                var completionResponse = JsonConvert.DeserializeObject<CompletionResponse>(responseContent);
+
+                return completionResponse ?? defaultCompletionResponse;
+            }
+
+            return defaultCompletionResponse;
         }
 
+        /// <inheritdoc/>
         public async Task<string> GetSummary(string content)
         {
             // TODO: Call RefinementService to refine userPrompt
@@ -70,35 +85,19 @@ namespace FoundationaLLM.Core.Services
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
                 var summarizeResponse = JsonConvert.DeserializeObject<SummaryResponse>(responseContent);
 
-                return summarizeResponse?.Summary;
+                return summarizeResponse?.Summary ?? string.Empty;
             }
             else
                 return "A problem on my side prevented me from responding.";
         }
 
-        public async Task<bool> SetLLMOrchestrationPreference(string orchestrationService)
-        {
-            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperAPI);
-
-            var responseMessage = await client.PostAsync("orchestration/preference",
-                new StringContent(orchestrationService));
-
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                // The response value should be a boolean indicating whether the orchestration service was set successfully.
-                var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var orchestrationServiceSet = JsonConvert.DeserializeObject<bool>(responseContent);
-                return orchestrationServiceSet;
-            }
-            
-            return false;
-        }
-
+        /// <inheritdoc/>
         public Task AddMemory(object item, string itemName, Action<object, float[]> vectorizer)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public Task RemoveMemory(object item)
         {
             throw new NotImplementedException();

@@ -1,4 +1,5 @@
 from .language_model_type import LanguageModelType
+from .agent_type import AgentType
 from .language_model_provider import LanguageModelProvider
 from .language_model_metadata import LanguageModelMetadata
 from .agent_metadata import AgentMetadata

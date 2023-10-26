@@ -4,20 +4,20 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
 {
     public class DocumentVectorTests
     {
-        public static IEnumerable<object[]> GetInvalidFields()
+        public static IEnumerable<object?[]> GetInvalidFields()
         {
-            yield return new object[] { null, "Partition_1", "Container_1", null };
-            yield return new object[] { "Item_1", null, "Container_1", null };
-            yield return new object[] { "Item_1", "Partition_1", null, null };
-            yield return new object[] { "Item_1", "Partition_1", "Container_1", null };
-            yield return new object[] { "Item_1", "Partition_1", "Container_1", new float[0] };
-            yield return new object[] { "Item_1", "Partition_1", "Container_1", new float[] { 1, 2, 3 } };
+            yield return new object?[] { null, "Partition_1", "Container_1", null };
+            yield return new object?[] { "Item_1", null, "Container_1", null };
+            yield return new object?[] { "Item_1", "Partition_1", null, null };
+            yield return new object?[] { "Item_1", "Partition_1", "Container_1", null };
+            yield return new object?[] { "Item_1", "Partition_1", "Container_1", new float[0] };
+            yield return new object?[] { "Item_1", "Partition_1", "Container_1", new float[] { 1, 2, 3 } };
         }
 
-        public static IEnumerable<object[]> GetValidFields()
+        public static IEnumerable<object?[]> GetValidFields()
         {
-            yield return new object[] { "Item_1", "Partition_1", "Container_1", null };
-            yield return new object[] { "Item_1", "Partition_1", "Container_1", Enumerable.Range(0, 1536).Select(x => (float)x).ToArray() };
+            yield return new object?[] { "Item_1", "Partition_1", "Container_1", null };
+            yield return new object?[] { "Item_1", "Partition_1", "Container_1", Enumerable.Range(0, 1536).Select(x => (float)x).ToArray() };
         }
 
         [Theory]

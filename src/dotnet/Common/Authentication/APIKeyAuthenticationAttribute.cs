@@ -7,6 +7,9 @@ namespace FoundationaLLM.Common.Authentication
     /// </summary>
     public class APIKeyAuthenticationAttribute : ServiceFilterAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the APIKeyAuthenticationAttribute class.
+        /// </summary>
         public APIKeyAuthenticationAttribute()
             : base(typeof(APIKeyAuthenticationFilter))
         {

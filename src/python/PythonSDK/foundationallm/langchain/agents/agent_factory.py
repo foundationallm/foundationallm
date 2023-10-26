@@ -1,6 +1,7 @@
 from unittest.mock import Base
 from langchain.base_language import BaseLanguageModel
 from foundationallm.config import Configuration
+from foundationallm.context import Context
 from foundationallm.models.orchestration import CompletionRequest
 from foundationallm.langchain.agents import AgentBase
 from foundationallm.langchain.agents import AnomalyDetectionAgent
@@ -16,7 +17,7 @@ class AgentFactory:
     Factory to determine which agent to use.
     """
     
-    def __init__(self, completion_request: CompletionRequest, llm: BaseLanguageModel, config: Configuration):
+    def __init__(self, completion_request: CompletionRequest, llm: BaseLanguageModel, config: Configuration, context: Context):
         """
         Initializes an AgentFactory for selecting which agent to use for completion.
 
@@ -32,6 +33,7 @@ class AgentFactory:
         self.agent = completion_request.agent
         self.llm = llm
         self.config = config
+        self.context = context
                         
     def get_agent(self) -> AgentBase:
         """
@@ -50,7 +52,7 @@ class AgentFactory:
             case 'csv':
                 return CSVAgent(self.completion_request, llm=self.llm, config=self.config)
             case 'sql':
-                return SqlDbAgent(self.completion_request, llm=self.llm, config=self.config)
+                return SqlDbAgent(self.completion_request, llm=self.llm, config=self.config, context=self.context)
             case 'summary':
                 return SummaryAgent(self.completion_request, llm=self.llm, config=self.config)
             case 'blob-storage':

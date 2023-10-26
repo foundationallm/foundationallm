@@ -5,12 +5,6 @@ using FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata;
 using FoundationaLLM.AgentFactory.Core.Models.Orchestration;
 using FoundationaLLM.AgentFactory.Interfaces;
 using FoundationaLLM.Common.Models.Orchestration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
 
 namespace FoundationaLLM.AgentFactory.Core.Agents
 {
@@ -56,13 +50,13 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
 
             var dataSource = dataSourceResponse.DataSources![0];
 
-            switch (dataSource.UnderlyingImplementation)
+            switch (_agentMetadata.Type)
             {
                 case "blob-storage":
                     dataSourceMetadata = new BlobStorageDataSource
                     {
                         Name = dataSource.Name,
-                        Type = dataSource.UnderlyingImplementation,
+                        Type = _agentMetadata.Type,
                         Description = dataSource.Description,
                         Configuration = new BlobStorageConfiguration
                         {
@@ -72,13 +66,26 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
                         }
                     };
                     break;
+                case "csv":
+                    dataSourceMetadata = new CSVFileDataSource
+                    {
+                        Name = dataSource.Name,
+                        Type = _agentMetadata.Type,
+                        Description = dataSource.Description,
+                        Configuration = new CSVFileConfiguration
+                        {
+                           PathValueIsSecret = Convert.ToBoolean(dataSource.Authentication!["path_value_is_secret"]),
+                           SourceFilePath = dataSource.Authentication!["source_file_path"],
+                        }
+                    };
+                    break;
                 case "search-service":
                     break;
                 case "sql":
                     dataSourceMetadata = new SQLDatabaseDataSource
                     {
                         Name = dataSource.Name,
-                        Type = dataSource.UnderlyingImplementation,
+                        Type = _agentMetadata.Type,
                         Description = dataSource.Description,
                         Configuration = new SQLDatabaseConfiguration
                         {
@@ -104,7 +111,7 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
                 Agent = new Agent()
                 {
                     Name = _agentMetadata.Name,
-                    Type = dataSourceResponse.DataSources[0].UnderlyingImplementation,
+                    Type = _agentMetadata.Type,
                     Description = _agentMetadata.Description,
                     PromptTemplate = promptResponse.Prompts![0].Prompt
                 },

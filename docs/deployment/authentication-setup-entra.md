@@ -73,13 +73,6 @@ The URL for the chat application is the root URL of the Core API. For example, i
 5. Select **Register**.
 6. The application's **Overview** pane displays upon successful registration. Record the **Application (client) ID** and **Directory (tenant) ID** to add to your App Configuration settings later.
 
-#### Add a redirect URI to the API application
-
-1. Under **Manage**, select **Authentication**.
-2. Under **Platform configurations**, select **Add a platform**. In the pane that opens, select **Web**.
-3. For For **Redirect URIs**, enter `<YOUR_CORE_API_URL>/signin-oidc`, replacing `<YOUR_CORE_API_URL>` with the Core API URL obtained in the [Pre-requisites](#pre-requisites) section above. For example, it should look something like `https://d85a09ce067141d5807a.eastus.aksapp.io/core/signin-oidc`.
-4. Add another **Redirect URI** for local development. For **Redirect URIs**, enter `https://localhost:63279/signin-oidc`.
-
 #### Implicit grant and hybrid flows for the API application
 
 1. Check **Access tokens** and **ID tokens** under **Implicit grant**.
@@ -153,3 +146,25 @@ Key Vault stores the secrets for the client and API applications. You need to up
 ## Next steps
 
 Now that Entra authentication is fully configured, restart the Core API and chat applications to apply the changes. Navigate to your chat application or refresh the page if it is already open. It should automatically prompt you to sign in with your Microsoft Entra account.
+
+### Restarting Core API and Chat UI applications in an ACA Deployment
+
+To restart the Core API and Chat applications in an Azure Container Apps (ACA) deployment, you will need to navigate to the Core API and Chat applications and restart their container revisions, as indicated in the following Azure Portal screenshot:
+
+   ![Restarting the Core API Azure Container App.](media/restart-coreapi-aca.png "Restarting the Container App in Azure Portal.")
+
+   1. From the `Revisions` blade in the left navigation panel of the Core API or Chat UI container app detail page in Azure Portal, select the name of the running revision.
+   2. A dialog panel titled `Revision details` should appear on the right side of the browser with a `Restart` button at the top.  Select the `Restart` button to restart the running container.
+
+Restarting in this manner will need to be performed for both the Core API container app and the Chat UI container app.
+
+### Restarting Core API and Chat UI applications in an AKS Deployment
+
+To restart the Core API and Chat applications in an Azure Kubernetes Service (AKS) deployment, you will need to navigate to the AKS detail page in Azure Portal and perform the following:
+
+   1. Select the `Workloads` blade from the left navigation panel.
+   2. Select the `Pods` tab from the `Workloads` detail page.
+   3. Select the Core API and Chat UI pods from the list (it helps if you select `default` in the `Filter by namespace` dropdown first).
+   4. Select the `Delete` button to terminate the currently running pods.  New pods will be instantiated to take their place.
+
+   ![Restarting containers in AKS.](media/restart-containers-aks.png "Restarting the Core API and Chat UI services in an AKS deployment.")

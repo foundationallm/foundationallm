@@ -9,14 +9,14 @@ namespace FoundationaLLM.Chat.Helpers
     public class EntraAuthenticatedHttpClientFactory : IAuthenticatedHttpClientFactory
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IAuthorizationHeaderProvider _authorizationHeaderProvider;
+        private readonly IServiceProvider _serviceProvider;
 
         public EntraAuthenticatedHttpClientFactory(
             IHttpClientFactory httpClientFactory,
-            IAuthorizationHeaderProvider authorizationHeaderProvider)
+            IServiceProvider serviceProvider)
         {
             _httpClientFactory = httpClientFactory;
-            _authorizationHeaderProvider = authorizationHeaderProvider;
+            _serviceProvider = serviceProvider;
         }
 
         /// <summary>
@@ -29,7 +29,9 @@ namespace FoundationaLLM.Chat.Helpers
         public async Task<HttpClient> CreateClientAsync(string clientName, string scopes)
         {
             var client = _httpClientFactory.CreateClient(clientName);
-            string accessToken = await _authorizationHeaderProvider.CreateAuthorizationHeaderForUserAsync(new [] { scopes });
+            using var scope = _serviceProvider.CreateScope();
+            var authorizationHeaderProvider = scope.ServiceProvider.GetRequiredService<IAuthorizationHeaderProvider>();
+            string accessToken = await authorizationHeaderProvider.CreateAuthorizationHeaderForUserAsync(new[] { scopes });
             client.DefaultRequestHeaders.Add("Authorization", accessToken);
             return client;
         }

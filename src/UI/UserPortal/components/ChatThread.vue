@@ -43,7 +43,7 @@
 <script lang="ts">
 import type { PropType } from 'vue';
 import { Message, Session } from '@/js/types';
-import api from '~/server/api';
+import api from '@/js/api';
 
 export default {
 	name: 'ChatThread',
@@ -60,7 +60,7 @@ export default {
 		},
 	},
 
-	emits: ['update-session'],
+	emits: ['session-updated'],
 
 	data() {
 		return {
@@ -71,7 +71,7 @@ export default {
 	},
 
 	watch: {
-		async session(newSession, oldSession) {
+		async session(newSession: Session, oldSession: Session) {
 			if (newSession.id === oldSession.id) return;
 			this.isLoading = true;
 			this.userSentMessage = false;
@@ -86,9 +86,9 @@ export default {
 			this.messages = data;
 		},
 
-		async handleRateMessage(messageIndex: number, { message, like }: { message: Message; like: Message['rating'] }) {
-			const updatedMessage = await api.rateMessage(message, like);
-			this.messages[messageIndex] = updatedMessage;
+		async handleRateMessage(messageIndex: number, { message, isLiked }: { message: Message; isLiked: Message['rating'] }) {
+			await api.rateMessage(message, isLiked);
+			this.messages[messageIndex].rating = isLiked;
 		},
 
 		async handleSend(text: string) {
@@ -131,11 +131,11 @@ export default {
 			if (this.messages.length === 2) {
 				const sessionFullText = this.messages.map((message) => message.text).join('\n');
 				const { text: newSessionName } = await api.summarizeSessionName(this.session!.id, sessionFullText);
-				const updatedSession = await api.renameSession(this.session!.id, newSessionName);
-				this.$emit('update-session', updatedSession);
+				await api.renameSession(this.session!.id, newSessionName);
+				this.$emit('session-updated', { ...this.session, name: newSessionName });
 			}
 		},
-	}
+	},
 };
 </script>
 

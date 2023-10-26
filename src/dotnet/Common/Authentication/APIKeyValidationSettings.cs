@@ -8,6 +8,6 @@
         /// <summary>
         /// The API key.
         /// </summary>
-        public string APIKey { get; init; }
+        public required string APIKey { get; init; }
     }
 }

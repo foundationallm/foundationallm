@@ -6,6 +6,9 @@ using Microsoft.Extensions.Options;
 
 namespace FoundationaLLM.Core.API.Controllers
 {
+    /// <summary>
+    /// Provides branding information for the client.
+    /// </summary>
     [Authorize]
     [Authorize(Policy = "RequiredScope")]
     [ApiVersion(1.0)]
@@ -15,11 +18,18 @@ namespace FoundationaLLM.Core.API.Controllers
     {
         private readonly ClientBrandingConfiguration _settings;
 
+        /// <summary>
+        /// Constructor for the Branding Controller.
+        /// </summary>
+        /// <param name="settings"></param>
         public BrandingController(IOptions<ClientBrandingConfiguration> settings)
         {
             _settings = settings.Value;
         }
 
+        /// <summary>
+        /// Retrieves the branding information for the client.
+        /// </summary>
         [AllowAnonymous]
         [HttpGet(Name = "GetBranding")]
         public IActionResult Index()

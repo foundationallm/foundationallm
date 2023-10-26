@@ -28,8 +28,14 @@ using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 
 namespace FoundationaLLM.Core.API
 {
+    /// <summary>
+    /// Main entry point for the Core API.
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// Core API service configuration.
+        /// </summary>
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -173,8 +179,8 @@ namespace FoundationaLLM.Core.API
 
             var gatekeeperAPISettings = new DownstreamAPIKeySettings
             {
-                APIUrl = builder.Configuration[$"FoundationaLLM:APIs:{HttpClients.GatekeeperAPI}:APIUrl"],
-                APIKey = builder.Configuration[$"FoundationaLLM:APIs:{HttpClients.GatekeeperAPI}:APIKey"]
+                APIUrl = builder.Configuration[$"FoundationaLLM:APIs:{HttpClients.GatekeeperAPI}:APIUrl"] ?? "",
+                APIKey = builder.Configuration[$"FoundationaLLM:APIs:{HttpClients.GatekeeperAPI}:APIKey"] ?? ""
             };
             downstreamAPISettings.DownstreamAPIs[HttpClients.GatekeeperAPI] = gatekeeperAPISettings;
 
@@ -188,6 +194,10 @@ namespace FoundationaLLM.Core.API
             builder.Services.AddSingleton<IDownstreamAPISettings>(downstreamAPISettings);
         }
 
+        /// <summary>
+        /// Register the authentication services.
+        /// </summary>
+        /// <param name="builder"></param>
         public static void RegisterAuthConfiguration(WebApplicationBuilder builder)
         {
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -198,7 +208,7 @@ namespace FoundationaLLM.Core.API
                     identityOptions =>
                     {
                         identityOptions.ClientSecret = builder.Configuration["FoundationaLLM:CoreAPI:Entra:ClientSecret"];
-                        identityOptions.Instance = builder.Configuration["FoundationaLLM:CoreAPI:Entra:Instance"];
+                        identityOptions.Instance = builder.Configuration["FoundationaLLM:CoreAPI:Entra:Instance"] ?? "";
                         identityOptions.TenantId = builder.Configuration["FoundationaLLM:CoreAPI:Entra:TenantId"];
                         identityOptions.ClientId = builder.Configuration["FoundationaLLM:CoreAPI:Entra:ClientId"];
                         identityOptions.CallbackPath = builder.Configuration["FoundationaLLM:CoreAPI:Entra:CallbackPath"];
@@ -210,7 +220,7 @@ namespace FoundationaLLM.Core.API
             builder.Services.AddScoped<IUserClaimsProviderService, EntraUserClaimsProviderService>();
 
             // Configure the scope used by the API controllers:
-            var requiredScope = builder.Configuration["FoundationaLLM:CoreAPI:Entra:Scopes"];
+            var requiredScope = builder.Configuration["FoundationaLLM:CoreAPI:Entra:Scopes"] ?? "";
             builder.Services.AddAuthorization(options =>
             {
                 options.AddPolicy("RequiredScope", policyBuilder =>

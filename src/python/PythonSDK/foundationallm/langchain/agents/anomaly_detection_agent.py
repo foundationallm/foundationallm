@@ -4,17 +4,16 @@ from sqlalchemy import create_engine
 
 from langchain.agents import create_sql_agent, create_pandas_dataframe_agent, initialize_agent, Tool
 from langchain.agents.agent_toolkits import create_python_agent
-from langchain.agents.agent_toolkits import SQLDatabaseToolkit
 from langchain.agents.agent_types import AgentType
 from langchain.callbacks import get_openai_callback
 from langchain.prompts import PromptTemplate
-
 from langchain.tools.python.tool import PythonREPLTool
 
 from foundationallm.config import Configuration
 from foundationallm.langchain.agents import AgentBase
 from foundationallm.langchain.language_models import LanguageModelBase
 from foundationallm.langchain.data_sources.sql import SQLDatabaseFactory
+from foundationallm.langchain.toolkits import SecureSQLDatabaseToolkit
 from foundationallm.models.orchestration import CompletionRequest, CompletionResponse
 from foundationallm.langchain.data_sources.sql import SQLDatabaseConfiguration
 from foundationallm.langchain.data_sources.sql.mssql import MicrosoftSQLServer
@@ -49,22 +48,31 @@ class AnomalyDetectionAgent(AgentBase):
         Unless the user specifies a specific number of examples they wish to obtain, always limit your query to at most {top_k} results using the TOP clause as per MS SQL. You can order the results by a relevant column to return the most interesting examples in the database.
         Never query for all the columns from a specific table, only ask for the relevant columns given the question.
         
-        Use only the tools below for interacting with the database. Only use the information returned by the below tools to construct your final answer. You MUST double check your query before executing it. If you get an error while executing a query, rewrite the query and try again.
+        DO NOT make any DML statements (INSERT, UPDATE, DELETE, DROP etc.) to the database.
         
-        DO NOT make any DML statements (INSERT, UPDATE, DELETE, CREATE, DROP, GRANT, etc.) to the database.
+        Use only the tools below for interacting with the database. Only use the information returned by the below tools to construct your final answer. You MUST double check your query before executing it. If you get an error while executing a query, rewrite the query and try again.
         """
+        self.sql_agent_prompt_suffix = completion_request.agent.prompt_suffix or """Begin!
+
+        Question: {input}
+        Thought: I should evaluate the question to see if it is related to the database. If so, I should look at the tables in the database to see what I can query. Then I should query the schema of the most relevant tables. If not, I should provide my name and details about the types of questions I can answer. Finally, create a nice sentence that answers the question.
+        {agent_scratchpad}"""
+        
         #If the question does not seem related to the database, politely answer with your name and details about the types of questions you can answer.
         
         self.sql_agent = create_sql_agent(
             llm = self.llm,
-            toolkit = SQLDatabaseToolkit(
+            toolkit = SecureSQLDatabaseToolkit(
                 db = SQLDatabaseFactory(sql_db_config = self.sql_db_config, config = config).get_sql_database(),
                 llm=self.llm,
-                reduce_k_below_max_tokens=True
+                reduce_k_below_max_tokens=True,
+                username = self.sql_db_config.username, # TODO: This should be the logged in user.
+                use_row_level_security = self.sql_db_config.row_level_security_enabled
             ),
             agent_type = AgentType.ZERO_SHOT_REACT_DESCRIPTION,
             verbose = True,
             prefix = PromptTemplate.from_template(self.sql_agent_prompt),
+            suffix = self.sql_agent_prompt_suffix,
             agent_executor_kwargs={
                 'handle_parsing_errors': True
             }

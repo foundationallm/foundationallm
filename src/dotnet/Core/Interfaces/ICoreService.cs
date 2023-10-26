@@ -4,8 +4,15 @@ using FoundationaLLM.Common.Models.Search;
 
 namespace FoundationaLLM.Core.Interfaces;
 
+/// <summary>
+/// Contains methods for managing chat sessions and messages, and for getting completions from the
+/// orchestrator.
+/// </summary>
 public interface ICoreService
 {
+    /// <summary>
+    /// Indicates whether the service is ready to accept requests.
+    /// </summary>
     string Status { get; }
 
     /// <summary>
@@ -48,5 +55,11 @@ public interface ICoreService
     /// </summary>
     Task<Message> RateMessageAsync(string id, string sessionId, bool? rating);
 
+    /// <summary>
+    /// Returns the completion prompt for a given session and completion prompt id.
+    /// </summary>
+    /// <param name="sessionId">The session id from which to retrieve the completion prompt.</param>
+    /// <param name="completionPromptId">The id of the completion prompt to retrieve.</param>
+    /// <returns></returns>
     Task<CompletionPrompt> GetCompletionPrompt(string sessionId, string completionPromptId);
 }

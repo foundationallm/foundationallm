@@ -22,12 +22,19 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="foundationallm\context\context.py" />
+    <Compile Include="foundationallm\context\user_identity.py" />
+    <Compile Include="foundationallm\context\__init__.py" />
     <Compile Include="foundationallm\credentials\azure_credential.py" />
     <Compile Include="foundationallm\credentials\credential.py" />
     <Compile Include="foundationallm\credentials\__init__.py" />
+    <Compile Include="foundationallm\hubs\agent\agent_type.py" />
     <Compile Include="foundationallm\hubs\data_source\data_sources\blob_storage\blob_storage_authentication_metadata.py" />
     <Compile Include="foundationallm\hubs\data_source\data_sources\blob_storage\blob_storage_data_source_metadata.py" />
     <Compile Include="foundationallm\hubs\data_source\data_sources\blob_storage\__init__.py" />
+    <Compile Include="foundationallm\hubs\data_source\data_sources\csv\csv_authentication.py" />
+    <Compile Include="foundationallm\hubs\data_source\data_sources\csv\csv_data_source_metadata.py" />
+    <Compile Include="foundationallm\hubs\data_source\data_sources\csv\__init__.py" />
     <Compile Include="foundationallm\hubs\data_source\data_sources\search_service\search_service_authentication_metadata.py" />
     <Compile Include="foundationallm\hubs\data_source\data_sources\search_service\search_service_data_source_metadata.py" />
     <Compile Include="foundationallm\hubs\data_source\data_sources\search_service\__init__.py" />
@@ -106,8 +113,10 @@
     <Compile Include="foundationallm\langchain\orchestration\orchestration_manager.py" />
     <Compile Include="foundationallm\langchain\orchestration\__init__.py" />
     <Compile Include="foundationallm\langchain\toolkits\anomaly_detection_toolkit.py" />
+    <Compile Include="foundationallm\langchain\toolkits\secure_sql_database_toolkit.py" />
     <Compile Include="foundationallm\langchain\toolkits\__init__.py" />
     <Compile Include="foundationallm\langchain\tools\query_pandas_dataframe_tool.py" />
+    <Compile Include="foundationallm\langchain\tools\secure_sql_database_query_tool.py" />
     <Compile Include="foundationallm\langchain\tools\__init__.py" />
     <Compile Include="foundationallm\langchain\__init__.py" />
     <Compile Include="foundationallm\hubs\prompt\prompt_hub_request.py" />
@@ -144,6 +153,7 @@
     <Folder Include="foundationallm\" />
     <Folder Include="foundationallm\hubs\data_source\data_sources\" />
     <Folder Include="foundationallm\hubs\data_source\data_sources\blob_storage\" />
+    <Folder Include="foundationallm\hubs\data_source\data_sources\csv\" />
     <Folder Include="foundationallm\hubs\data_source\data_sources\search_service\" />
     <Folder Include="foundationallm\hubs\data_source\data_sources\sql\" />
     <Folder Include="foundationallm\hubs\agent\" />
@@ -166,6 +176,7 @@
     <Folder Include="foundationallm\models\orchestration\" />
     <Folder Include="foundationallm\hubs\" />
     <Folder Include="foundationallm\credentials\" />
+    <Folder Include="foundationallm\context\" />
     <Folder Include="foundationallm\storage\" />
   </ItemGroup>
   <ItemGroup>

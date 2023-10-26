@@ -63,28 +63,28 @@ namespace FoundationaLLM.Common.Tests.Models.Search
             Assert.Equal(expectedVector, customer.vector);
         }
 
-        public static IEnumerable<object[]> GetInvalidFieldsCustomer()
+        public static IEnumerable<object?[]> GetInvalidFieldsCustomer()
         {
-            yield return new object[] { null, "Type_1", "Customer_1", "Title_1", "FirstName_1", "LastName_1", "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
-            yield return new object[] { "Id_1", null, "Customer_1", "Title_1", "FirstName_1", "LastName_1", "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
-            yield return new object[] { "Id_1", "Type_1", null, "Title_1", "FirstName_1", "LastName_1", "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
-            yield return new object[] { "Id_1", "Type_1", "Customer_1", null, "FirstName_1", "LastName_1", "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
-            yield return new object[] { "Id_1", "Type_1", "Customer_1", "Title_1", null, "LastName_1", "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
-            yield return new object[] { "Id_1", "Type_1", "Customer_1", "Title_1", "FirstName_1", null, "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
-            yield return new object[] { "Id_1", "Type_1", "Customer_1", "Title_1", "FirstName_1", "LastName_1", null, "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
-            yield return new object[] { "Id_1", "Type_1", "Customer_1", "Title_1", "FirstName_1", "LastName_1", "Email_1", null, "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
-            yield return new object[] { "Id_1", "Type_1", "Customer_1", "Title_1", "FirstName_1", "LastName_1", "Email_1", "Numb_1", null, new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
-            yield return new object[] { "Id_1", "Type_1", "Customer_1", "Title_1", "FirstName_1", "LastName_1", "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
-            yield return new object[] { "Id_1", "Type_1", "Customer_1", "Title_1", "FirstName_1", "LastName_1", "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), null, null };
-            yield return new object[] { "Id_1", "Type_1", "Customer_1", "Title_1", "FirstName_1", "LastName_1", "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, new float[0] };
-            yield return new object[] { "Id_1", "Type_1", "Customer_1", "Title_1", "FirstName_1", "LastName_1", "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, new float[] { 1, 2, 3 } };
+            yield return new object?[] { null, "Type_1", "Customer_1", "Title_1", "FirstName_1", "LastName_1", "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
+            yield return new object?[] { "Id_1", null, "Customer_1", "Title_1", "FirstName_1", "LastName_1", "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
+            yield return new object?[] { "Id_1", "Type_1", null, "Title_1", "FirstName_1", "LastName_1", "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
+            yield return new object?[] { "Id_1", "Type_1", "Customer_1", null, "FirstName_1", "LastName_1", "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
+            yield return new object?[] { "Id_1", "Type_1", "Customer_1", "Title_1", null, "LastName_1", "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
+            yield return new object?[] { "Id_1", "Type_1", "Customer_1", "Title_1", "FirstName_1", null, "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
+            yield return new object?[] { "Id_1", "Type_1", "Customer_1", "Title_1", "FirstName_1", "LastName_1", null, "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
+            yield return new object?[] { "Id_1", "Type_1", "Customer_1", "Title_1", "FirstName_1", "LastName_1", "Email_1", null, "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
+            yield return new object?[] { "Id_1", "Type_1", "Customer_1", "Title_1", "FirstName_1", "LastName_1", "Email_1", "Numb_1", null, new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
+            yield return new object?[] { "Id_1", "Type_1", "Customer_1", "Title_1", "FirstName_1", "LastName_1", "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
+            yield return new object?[] { "Id_1", "Type_1", "Customer_1", "Title_1", "FirstName_1", "LastName_1", "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), null, null };
+            yield return new object?[] { "Id_1", "Type_1", "Customer_1", "Title_1", "FirstName_1", "LastName_1", "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, new float[0] };
+            yield return new object?[] { "Id_1", "Type_1", "Customer_1", "Title_1", "FirstName_1", "LastName_1", "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, new float[] { 1, 2, 3 } };
 
         }
 
-        public static IEnumerable<object[]> GetValidFieldsCustomer()
+        public static IEnumerable<object?[]> GetValidFieldsCustomer()
         {
-            yield return new object[] { "Id_1", "Type_1", "Customer_1", "Title_1", "FirstName_1", "LastName_1", "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
-            yield return new object[] { "Id_2", "Type_2", "Customer_2", "Title_2", "FirstName_2", "LastName_2", "Email_2", "Numb_2", "CrDate_2", new List<CustomerAddress>(), new Password("Hash_2", "Salt_2"), 10, Enumerable.Range(0, 1536).Select(x => (float)x).ToArray() };
+            yield return new object?[] { "Id_1", "Type_1", "Customer_1", "Title_1", "FirstName_1", "LastName_1", "Email_1", "Numb_1", "CrDate_1", new List<CustomerAddress>(), new Password("Hash_1", "Salt_1"), 10, null };
+            yield return new object?[] { "Id_2", "Type_2", "Customer_2", "Title_2", "FirstName_2", "LastName_2", "Email_2", "Numb_2", "CrDate_2", new List<CustomerAddress>(), new Password("Hash_2", "Salt_2"), 10, Enumerable.Range(0, 1536).Select(x => (float)x).ToArray() };
         }
 
         [Theory]
@@ -134,10 +134,10 @@ namespace FoundationaLLM.Common.Tests.Models.Search
             Assert.Equal(expectedSalt, password.salt);
         }
 
-        public static IEnumerable<object[]> GetInvalidFieldsPassword()
+        public static IEnumerable<object?[]> GetInvalidFieldsPassword()
         {
-            yield return new object[] { null, "Salt_1" };
-            yield return new object[] { "Hash_1", null };
+            yield return new object?[] { null, "Salt_1" };
+            yield return new object?[] { "Hash_1", null };
         }
 
         public static IEnumerable<object[]> GetValidFieldsPassword()
@@ -201,15 +201,15 @@ namespace FoundationaLLM.Common.Tests.Models.Search
             Assert.Equal(expectedLocation, customerAddress.location);
         }
 
-        public static IEnumerable<object[]> GetInvalidFieldsCustomerAddress()
+        public static IEnumerable<object?[]> GetInvalidFieldsCustomerAddress()
         {
-            yield return new object[] { null, "AddrLine_2", "City_1", "State_1", "Country_1", "ZipCode_1", new Location("Type_1", new List<float> { 1,2,3 }) };
-            yield return new object[] { "AddrLine_1", null, "City_1", "State_1", "Country_1", "ZipCode_1", new Location("Type_1", new List<float> { 1,2,3 }) };
-            yield return new object[] { "AddrLine_1", "AddrLine_2", null, "State_1", "Country_1", "ZipCode_1", new Location("Type_1", new List<float> { 1,2,3 }) };
-            yield return new object[] { "AddrLine_1", "AddrLine_2", "City_1", null, "Country_1", "ZipCode_1", new Location("Type_1", new List<float> { 1,2,3 }) };
-            yield return new object[] { "AddrLine_1", "AddrLine_2", "City_1", "State_1", null, "ZipCode_1", new Location("Type_1", new List<float> { 1,2,3 }) };
-            yield return new object[] { "AddrLine_1", "AddrLine_2", "City_1", "State_1", "Country_1", null, new Location("Type_1", new List<float> { 1,2,3 }) };
-            yield return new object[] { "AddrLine_1", "AddrLine_2", "City_1", "State_1", "Country_1", "ZipCode_1", null };
+            yield return new object?[] { null, "AddrLine_2", "City_1", "State_1", "Country_1", "ZipCode_1", new Location("Type_1", new List<float> { 1,2,3 }) };
+            yield return new object?[] { "AddrLine_1", null, "City_1", "State_1", "Country_1", "ZipCode_1", new Location("Type_1", new List<float> { 1,2,3 }) };
+            yield return new object?[] { "AddrLine_1", "AddrLine_2", null, "State_1", "Country_1", "ZipCode_1", new Location("Type_1", new List<float> { 1,2,3 }) };
+            yield return new object?[] { "AddrLine_1", "AddrLine_2", "City_1", null, "Country_1", "ZipCode_1", new Location("Type_1", new List<float> { 1,2,3 }) };
+            yield return new object?[] { "AddrLine_1", "AddrLine_2", "City_1", "State_1", null, "ZipCode_1", new Location("Type_1", new List<float> { 1,2,3 }) };
+            yield return new object?[] { "AddrLine_1", "AddrLine_2", "City_1", "State_1", "Country_1", null, new Location("Type_1", new List<float> { 1,2,3 }) };
+            yield return new object?[] { "AddrLine_1", "AddrLine_2", "City_1", "State_1", "Country_1", "ZipCode_1", null };
 
         }
 
@@ -256,10 +256,10 @@ namespace FoundationaLLM.Common.Tests.Models.Search
             Assert.Equal(expectedCoordinates, location.coordinates);
         }
 
-        public static IEnumerable<object[]> GetInvalidFieldsLocation()
+        public static IEnumerable<object?[]> GetInvalidFieldsLocation()
         {
-            yield return new object[] { null, new List<float> { 1,2,3 } };
-            yield return new object[] { "Type_1",null };
+            yield return new object?[] { null, new List<float> { 1,2,3 } };
+            yield return new object?[] { "Type_1",null };
         }
 
         public static IEnumerable<object[]> GetValidFieldsLocation()

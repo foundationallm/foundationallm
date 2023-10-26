@@ -14,6 +14,9 @@ export default defineNuxtConfig({
 			],
 		},
 	},
+	routeRules: {
+		'/': { ssr: false },
+	},
 	css: [
 		'primevue/resources/themes/viva-light/theme.css',
 		'~/styles/fonts.scss',
@@ -26,7 +29,11 @@ export default defineNuxtConfig({
 		define: {
 			API_URL: JSON.stringify(process.env.API_URL),
 			AUTH_CLIENT_ID: JSON.stringify(process.env.AUTH_CLIENT_ID),
-			AUTH_AUTHORITY: JSON.stringify(process.env.AUTH_AUTHORITY),
+			AUTH_INSTANCE: JSON.stringify(process.env.AUTH_INSTANCE),
+			AUTH_TENANT_ID: JSON.stringify(process.env.AUTH_TENANT_ID),
+			AUTH_SCOPES: JSON.stringify(process.env.AUTH_SCOPES),
+			AUTH_CLIENT_SECRET: JSON.stringify(process.env.AUTH_CLIENT_SECRET),
+			AUTH_CALLBACK_PATH: JSON.stringify(process.env.AUTH_CALLBACK_PATH),
 		},
 	},
 	runtimeConfig: {
@@ -41,7 +48,7 @@ export default defineNuxtConfig({
 			BRANDING_SECONDARY_TEXT_COLOR: process.env.BRANDING_SECONDARY_TEXT_COLOR,
 			BRANDING_COMPANY_NAME: process.env.BRANDING_COMPANY_NAME,
 			BRANDING_FAV_ICON_URL: process.env.BRANDING_FAV_ICON_URL,
-			BRANDING_PAGE_TITLE: process.env.BRANDING_PAGE_TITLE
+			BRANDING_PAGE_TITLE: process.env.BRANDING_PAGE_TITLE,
 		},
 	},
 });

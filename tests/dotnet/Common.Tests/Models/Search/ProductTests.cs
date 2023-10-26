@@ -80,24 +80,24 @@ namespace FoundationaLLM.Common.Tests.Models.Search
             Assert.Equal(expectedName, tag.name);
         }
 
-        public static IEnumerable<object[]> GetInvalidFieldsProduct()
+        public static IEnumerable<object?[]> GetInvalidFieldsProduct()
         {
-            yield return new object[] { null, "Category_1", "CategoryName_1", "SKU_1", "Name_1", "Desc_1", 10.99, new List<Tag>(), null };
-            yield return new object[] { "Id_1",null, "CategoryName_1", "SKU_1", "Name_1", "Desc_1", 10.99, new List<Tag>(), null };
-            yield return new object[] { "Id_1", "Category_1",null, "SKU_1", "Name_1", "Desc_1", 10.99, new List<Tag>(), null };
-            yield return new object[] { "Id_1", "Category_1", "CategoryName_1", null, "Name_1", "Desc_1", 10.99, new List<Tag>(), null };
-            yield return new object[] { "Id_1", "Category_1", "CategoryName_1", "SKU_1", null, "Desc_1", 10.99, new List<Tag>(), null };
-            yield return new object[] { "Id_1", "Category_1", "CategoryName_1", "SKU_1", "Name_1", null, 10.99, new List<Tag>(), null };
-            yield return new object[] { "Id_1", "Category_1", "CategoryName_1", "SKU_1", "Name_1", "Desc_1", null, new List<Tag>(), null };
-            yield return new object[] { "Id_1", "Category_1", "CategoryName_1", "SKU_1", "Name_1", "Desc_1", 10.99, null, null };
-            yield return new object[] { "Id_1", "Category_1", "CategoryName_1", "SKU_1", "Name_1", "Desc_1", 10.99, new List<Tag>(), new float[0] };
-            yield return new object[] { "Id_1", "Category_1", "CategoryName_1", "SKU_1", "Name_1", "Desc_1", 10.99, new List<Tag>(), new float[] { 1, 2, 3 } };
+            yield return new object?[] { null, "Category_1", "CategoryName_1", "SKU_1", "Name_1", "Desc_1", 10.99, new List<Tag>(), null };
+            yield return new object?[] { "Id_1",null, "CategoryName_1", "SKU_1", "Name_1", "Desc_1", 10.99, new List<Tag>(), null };
+            yield return new object?[] { "Id_1", "Category_1",null, "SKU_1", "Name_1", "Desc_1", 10.99, new List<Tag>(), null };
+            yield return new object?[] { "Id_1", "Category_1", "CategoryName_1", null, "Name_1", "Desc_1", 10.99, new List<Tag>(), null };
+            yield return new object?[] { "Id_1", "Category_1", "CategoryName_1", "SKU_1", null, "Desc_1", 10.99, new List<Tag>(), null };
+            yield return new object?[] { "Id_1", "Category_1", "CategoryName_1", "SKU_1", "Name_1", null, 10.99, new List<Tag>(), null };
+            yield return new object?[] { "Id_1", "Category_1", "CategoryName_1", "SKU_1", "Name_1", "Desc_1", null, new List<Tag>(), null };
+            yield return new object?[] { "Id_1", "Category_1", "CategoryName_1", "SKU_1", "Name_1", "Desc_1", 10.99, null, null };
+            yield return new object?[] { "Id_1", "Category_1", "CategoryName_1", "SKU_1", "Name_1", "Desc_1", 10.99, new List<Tag>(), new float[0] };
+            yield return new object?[] { "Id_1", "Category_1", "CategoryName_1", "SKU_1", "Name_1", "Desc_1", 10.99, new List<Tag>(), new float[] { 1, 2, 3 } };
         }
 
-        public static IEnumerable<object[]> GetValidFieldsProduct()
+        public static IEnumerable<object?[]> GetValidFieldsProduct()
         {
-            yield return new object[] { "Id_1", "Category_1", "CategoryName_1", "SKU_1", "Name_1", "Desc_1", 10.99, new List<Tag>(), null };
-            yield return new object[] { "Id_1", "Category_1", "CategoryName_1", "SKU_1", "Name_1", "Desc_1", 10.99, new List<Tag>(), Enumerable.Range(0, 1536).Select(x => (float)x).ToArray() };
+            yield return new object?[] { "Id_1", "Category_1", "CategoryName_1", "SKU_1", "Name_1", "Desc_1", 10.99, new List<Tag>(), null };
+            yield return new object?[] { "Id_1", "Category_1", "CategoryName_1", "SKU_1", "Name_1", "Desc_1", 10.99, new List<Tag>(), Enumerable.Range(0, 1536).Select(x => (float)x).ToArray() };
         }
 
         [Theory]
@@ -123,11 +123,11 @@ namespace FoundationaLLM.Common.Tests.Models.Search
             return new Product(id, categoryId, categoryName, sku,name,description,price,tags,vector);
         }
 
-        public static IEnumerable<object[]> GetInvalidFieldsProductCategory()
+        public static IEnumerable<object?[]> GetInvalidFieldsProductCategory()
         {
-            yield return new object[] { null, "Type_1", "Name_1" };
-            yield return new object[] { "Id_1",null, "Name_1" };
-            yield return new object[] { "Id_1", "Type_1", null };
+            yield return new object?[] { null, "Type_1", "Name_1" };
+            yield return new object?[] { "Id_1",null, "Name_1" };
+            yield return new object?[] { "Id_1", "Type_1", null };
         }
 
         public static IEnumerable<object[]> GetValidFieldsProductCategory()
@@ -158,10 +158,10 @@ namespace FoundationaLLM.Common.Tests.Models.Search
            return new ProductCategory(id, type, name);
         }
 
-        public static IEnumerable<object[]> GetInvalidFieldsTag()
+        public static IEnumerable<object?[]> GetInvalidFieldsTag()
         {
-            yield return new object[] { null, "Name_1" };
-            yield return new object[] { "Id_1", null };
+            yield return new object?[] { null, "Name_1" };
+            yield return new object?[] { "Id_1", null };
         }
 
         public static IEnumerable<object[]> GetValidFieldsTag()

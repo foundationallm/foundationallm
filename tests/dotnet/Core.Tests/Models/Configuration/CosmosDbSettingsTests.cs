@@ -14,7 +14,6 @@ namespace FoundationaLLM.Core.Tests.Models.Configuration
             string expectedContainers = "containers";
             string expectedMonitoredContainers = "monitoredContainers";
             string expectedChangeFeedLeaseContainer = "changeFeedLeaseContainer";
-            string expectedChangeFeedSourceContainer = "changeFeedSourceContainer";
             bool expectedEnableTracing = false;
 
             // Act
@@ -25,7 +24,6 @@ namespace FoundationaLLM.Core.Tests.Models.Configuration
                 expectedContainers,
                 expectedMonitoredContainers,
                 expectedChangeFeedLeaseContainer, 
-                expectedChangeFeedSourceContainer,
                 expectedEnableTracing
             );
 
@@ -36,12 +34,11 @@ namespace FoundationaLLM.Core.Tests.Models.Configuration
             Assert.Equal(expectedContainers, cosmosDbSettings.Containers);
             Assert.Equal(expectedMonitoredContainers, cosmosDbSettings.MonitoredContainers);
             Assert.Equal(expectedChangeFeedLeaseContainer, cosmosDbSettings.ChangeFeedLeaseContainer);
-            Assert.Equal(expectedChangeFeedSourceContainer, cosmosDbSettings.ChangeFeedSourceContainer);
             Assert.Equal(expectedEnableTracing, cosmosDbSettings.EnableTracing);
         }
 
         private static CosmosDbSettings CreateCosmosDbSettings(string endpoint, string key, string database, string containers, 
-            string monitoredContainers, string changeFeedLeaseContainer, string changeFeedSourceContainer, bool enableTracing)
+            string monitoredContainers, string changeFeedLeaseContainer, bool enableTracing)
         {
             return new CosmosDbSettings() 
             {
@@ -51,7 +48,6 @@ namespace FoundationaLLM.Core.Tests.Models.Configuration
                 Containers = containers,
                 MonitoredContainers = monitoredContainers,
                 ChangeFeedLeaseContainer = changeFeedLeaseContainer,
-                ChangeFeedSourceContainer = changeFeedSourceContainer,
                 EnableTracing = enableTracing
             };
         }

@@ -9,6 +9,9 @@ using Microsoft.Identity.Web;
 
 namespace FoundationaLLM.Core.API.Controllers
 {
+    /// <summary>
+    /// Provides methods for interacting with the Core service.
+    /// </summary>
     [Authorize]
     [Authorize(Policy = "RequiredScope")]
     [ApiVersion(1.0)]
@@ -19,6 +22,13 @@ namespace FoundationaLLM.Core.API.Controllers
         private readonly ICoreService _coreService;
         private readonly ILogger<SessionsController> _logger;
 
+        /// <summary>
+        /// Constructor for the Core Controller.
+        /// </summary>
+        /// <param name="coreService">The Core service provides methods for managing chat
+        /// sessions and messages, and for getting completions from the orchestrator.</param>
+        /// <param name="logger">The logging interface used to log under the
+        /// <see cref="SessionsController"/> type name.</param>
         public SessionsController(ICoreService coreService,
             ILogger<SessionsController> logger)
         {
@@ -26,54 +36,95 @@ namespace FoundationaLLM.Core.API.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Returns list of chat session ids and names.
+        /// </summary>
         [HttpGet(Name = "GetAllChatSessions")]
         public async Task<IEnumerable<Session>> GetAllChatSessions()
         {
             return await _coreService.GetAllChatSessionsAsync();
         }
 
+        /// <summary>
+        /// Returns the chat messages related to an existing session.
+        /// </summary>
+        /// <param name="sessionId">The id of the session for which to retrieve chat messages.</param>
         [HttpGet("{sessionId}/messages", Name = "GetChatSessionMessages")]
         public async Task<IEnumerable<Message>> GetChatSessionMessages(string sessionId)
         {
             return await _coreService.GetChatSessionMessagesAsync(sessionId);
         }
 
+        /// <summary>
+        /// Rate an assistant message. This can be used to discover useful AI responses for training,
+        /// discoverability, and other benefits down the road.
+        /// </summary>
+        /// <param name="messageId">The id of the message to rate.</param>
+        /// <param name="sessionId">The id of the session to which the message belongs.</param>
+        /// <param name="rating">The rating to assign to the message.</param>
         [HttpPost("{sessionId}/message/{messageId}/rate", Name = "RateMessage")]
-        public async Task RateMessage(string messageId, string sessionId, bool? rating)
+        public async Task<Message> RateMessage(string messageId, string sessionId, bool? rating)
         {
-            await _coreService.RateMessageAsync(messageId, sessionId, rating);
+            return await _coreService.RateMessageAsync(messageId, sessionId, rating);
         }
 
+        /// <summary>
+        /// Returns the completion prompt for a given session and completion prompt id.
+        /// </summary>
+        /// <param name="sessionId">The session id from which to retrieve the completion prompt.</param>
+        /// <param name="completionPromptId">The id of the completion prompt to retrieve.</param>
+        /// <returns></returns>
         [HttpGet("{sessionId}/completionprompts/{completionPromptId}", Name = "GetCompletionPrompt")]
         public async Task<CompletionPrompt> GetCompletionPrompt(string sessionId, string completionPromptId)
         {
             return await _coreService.GetCompletionPrompt(sessionId, completionPromptId);
         }
 
+        /// <summary>
+        /// Creates a new chat session.
+        /// </summary>
         [HttpPost(Name = "CreateNewChatSession")]
         public async Task<Session> CreateNewChatSession()
         {
             return await _coreService.CreateNewChatSessionAsync();
         }
 
+        /// <summary>
+        /// Rename the chat session.
+        /// </summary>
+        /// <param name="sessionId">The id of the session to rename.</param>
+        /// <param name="newChatSessionName">The new name for the session.</param>
         [HttpPost("{sessionId}/rename", Name = "RenameChatSession")]
-        public async Task RenameChatSession(string sessionId, string newChatSessionName)
+        public async Task<Session> RenameChatSession(string sessionId, string newChatSessionName)
         {
-            await _coreService.RenameChatSessionAsync(sessionId, newChatSessionName);
+            return await _coreService.RenameChatSessionAsync(sessionId, newChatSessionName);
         }
 
+        /// <summary>
+        /// Delete a chat session and related messages.
+        /// </summary>
         [HttpDelete("{sessionId}", Name = "DeleteChatSession")]
         public async Task DeleteChatSession(string sessionId)
         {
             await _coreService.DeleteChatSessionAsync(sessionId);
         }
 
+        /// <summary>
+        /// Receive a prompt from a user, vectorize it, and get a completion from the orchestration service.
+        /// </summary>
+        /// <param name="sessionId">The id of the session for which to get a completion.</param>
+        /// <param name="userPrompt">The prompt to send to the orchestration service.</param>
         [HttpPost("{sessionId}/completion", Name = "GetChatCompletion")]
         public async Task<Completion> GetChatCompletion(string sessionId, [FromBody] string userPrompt)
         {
             return await _coreService.GetChatCompletionAsync(sessionId, userPrompt);
         }
 
+        /// <summary>
+        /// Generate a name for a chat message, based on the passed in prompt.
+        /// </summary>
+        /// <param name="sessionId">The id of the session for which to generate a name.</param>
+        /// <param name="prompt">The prompt to use to generate the name.</param>
         [HttpPost("{sessionId}/summarize-name", Name = "SummarizeChatSessionName")]
         public async Task<Completion> SummarizeChatSessionName(string sessionId, [FromBody] string prompt)
         {

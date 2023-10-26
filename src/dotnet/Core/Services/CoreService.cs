@@ -9,6 +9,7 @@ using FoundationaLLM.Core.Models;
 
 namespace FoundationaLLM.Core.Services;
 
+/// <ineritdoc/>
 public class CoreService : ICoreService
 {
     private readonly ICosmosDbService _cosmosDbService;
@@ -16,6 +17,9 @@ public class CoreService : ICoreService
     private readonly ILogger<CoreService> _logger;
     private readonly string _sessionType;
 
+    /// <summary>
+    /// Indicates whether the service is ready to accept requests.
+    /// </summary>
     public string Status
     {
         get
@@ -32,6 +36,17 @@ public class CoreService : ICoreService
         }
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CoreService"/> class.
+    /// </summary>
+    /// <param name="cosmosDbService">The Azure Cosmos DB service that contains
+    /// chat sessions and messages.</param>
+    /// <param name="gatekeeperAPIService">The service used to make calls to
+    /// the Gatekeeper API.</param>
+    /// <param name="logger">The logging interface used to log under the
+    /// <see cref="CoreService"/> type name.</param>
+    /// <param name="settings">The <see cref="ClientBrandingConfiguration"/>
+    /// settings retrieved by the injected <see cref="IOptions{TOptions}"/>.</param>
     public CoreService(
         ICosmosDbService cosmosDbService,
         IGatekeeperAPIService gatekeeperAPIService,
@@ -196,6 +211,12 @@ public class CoreService : ICoreService
         return await _cosmosDbService.UpdateMessageRatingAsync(id, sessionId, rating);
     }
 
+    /// <summary>
+    /// Returns the completion prompt for a given session and completion prompt id.
+    /// </summary>
+    /// <param name="sessionId">The session id from which to retrieve the completion prompt.</param>
+    /// <param name="completionPromptId">The id of the completion prompt to retrieve.</param>
+    /// <returns></returns>
     public async Task<CompletionPrompt> GetCompletionPrompt(string sessionId, string completionPromptId)
     {
         ArgumentNullException.ThrowIfNullOrEmpty(sessionId);

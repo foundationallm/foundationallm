@@ -114,54 +114,5 @@ namespace Gatekeeper.Tests.Services
             Assert.Equal("[No Summary]", summaryResponse.Summary);
         }
 
-        [Fact]
-        public async Task SetLLMOrchestrationPreference_SuccessfulCompletionResponse()
-        {
-            // Arrange
-            var httpClientFactoryService = Substitute.For<IHttpClientFactoryService>();
-            string orchestrationServiceString = "Service_1";
-
-            // Create a mock message handler
-            var mockHandler = new MockHttpMessageHandler(HttpStatusCode.OK, true);
-
-            var httpClient = new HttpClient(mockHandler)
-            {
-                BaseAddress = new Uri("http://nsubstitute.io")
-            };
-            httpClientFactoryService.CreateClient(Arg.Any<string>()).Returns(httpClient);
-
-            var service = new AgentFactoryAPIService(httpClientFactoryService);
-
-            // Act
-            bool result = await service.SetLLMOrchestrationPreference(orchestrationServiceString);
-
-            // Assert
-            Assert.True(result);
-        }
-
-        [Fact]
-        public async Task SetLLMOrchestrationPreference_UnsuccessfulDefaultResponse()
-        {
-            // Arrange
-            var httpClientFactoryService = Substitute.For<IHttpClientFactoryService>();
-            string orchestrationServiceString = "Service_1";
-
-            // Create a mock message handler
-            var mockHandler = new MockHttpMessageHandler(HttpStatusCode.InternalServerError, false);
-
-            var httpClient = new HttpClient(mockHandler)
-            {
-                BaseAddress = new Uri("http://nsubstitute.io")
-            };
-            httpClientFactoryService.CreateClient(Arg.Any<string>()).Returns(httpClient);
-
-            var service = new AgentFactoryAPIService(httpClientFactoryService);
-
-            // Act
-            bool result = await service.SetLLMOrchestrationPreference(orchestrationServiceString);
-
-            // Assert
-            Assert.False(result);
-        }
     }
 }

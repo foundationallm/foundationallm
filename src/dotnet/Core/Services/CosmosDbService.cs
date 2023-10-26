@@ -29,11 +29,25 @@ namespace FoundationaLLM.Core.Services
         private readonly CosmosDbSettings _settings;
         private readonly ILogger _logger;
 
-        private List<ChangeFeedProcessor> _changeFeedProcessors;
+        private List<ChangeFeedProcessor>? _changeFeedProcessors;
         private bool _changeFeedsInitialized = false;
 
+        /// <summary>
+        /// Indicates whether the Azure Cosmos DB change feed is initialized.
+        /// </summary>
         public bool IsInitialized => _changeFeedsInitialized;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CosmosDbService"/> class.
+        /// </summary>
+        /// <param name="ragService">The service used to make calls to the Gatekeeper
+        /// API to add the entity to the orchestrator's memory used by the RAG service.</param>
+        /// <param name="settings">The <see cref="CosmosDbSettings"/> settings retrieved
+        /// by the injected <see cref="IOptions{TOptions}"/>.</param>
+        /// <param name="logger">The logging interface used to log under the
+        /// <see cref="CosmosDbService"></see> type name.</param>
+        /// <exception cref="ArgumentException">Thrown if any of the required settings
+        /// are null or empty.</exception>
         public CosmosDbService(
             IGatekeeperAPIService ragService,
             IOptions<CosmosDbSettings> settings, 
@@ -52,8 +66,8 @@ namespace FoundationaLLM.Core.Services
 
             if (!_settings.EnableTracing)
             {
-                Type defaultTrace = Type.GetType("Microsoft.Azure.Cosmos.Core.Trace.DefaultTrace,Microsoft.Azure.Cosmos.Direct");
-                TraceSource traceSource = (TraceSource)defaultTrace.GetProperty("TraceSource").GetValue(null);
+                var defaultTrace = Type.GetType("Microsoft.Azure.Cosmos.Core.Trace.DefaultTrace,Microsoft.Azure.Cosmos.Direct");
+                var traceSource = (TraceSource)defaultTrace?.GetProperty("TraceSource")?.GetValue(null)!;
                 traceSource.Switch.Level = SourceLevels.All;
                 traceSource.Listeners.Clear();
             }
@@ -63,12 +77,12 @@ namespace FoundationaLLM.Core.Services
                 PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
             };
 
-            CosmosClient client = new CosmosClientBuilder(_settings.Endpoint, _settings.Key)
+            var client = new CosmosClientBuilder(_settings.Endpoint, _settings.Key)
                 .WithSerializerOptions(options)
                 .WithConnectionModeGateway()
                 .Build();
 
-            Database? database = client?.GetDatabase(_settings.Database);
+            var database = client?.GetDatabase(_settings.Database);
 
             _database = database ??
                         throw new ArgumentException("Unable to connect to existing Azure Cosmos DB database.");
@@ -77,12 +91,12 @@ namespace FoundationaLLM.Core.Services
             //Dictionary of container references for all containers listed in config
             _containers = new Dictionary<string, Container>();
 
-            List<string> containers = _settings.Containers.Split(',').ToList();
+            var containers = _settings.Containers.Split(',').ToList();
 
-            foreach (string containerName in containers)
+            foreach (var containerName in containers)
             {
-                Container? container = database?.GetContainer(containerName.Trim()) ??
-                                       throw new ArgumentException("Unable to connect to existing Azure Cosmos DB container or database.");
+                var container = database?.GetContainer(containerName.Trim()) ??
+                                throw new ArgumentException("Unable to connect to existing Azure Cosmos DB container or database.");
 
                 _containers.Add(containerName.Trim(), container);
             }
@@ -105,7 +119,7 @@ namespace FoundationaLLM.Core.Services
 
             try
             {
-                foreach (string monitoredContainerName in _settings.MonitoredContainers.Split(',').Select(s => s.Trim()))
+                foreach (var monitoredContainerName in _settings.MonitoredContainers.Split(',').Select(s => s.Trim()))
                 {
                     var changeFeedProcessor = _containers[monitoredContainerName]
                         .GetChangeFeedProcessorBuilder<dynamic>($"{monitoredContainerName}ChangeFeed", GenericChangeFeedHandler)
@@ -148,24 +162,32 @@ namespace FoundationaLLM.Core.Services
                         break;
 
                     var jObject = item as JObject;
-                    var typeMetadata = ModelRegistry.IdentifyType(jObject);
-
-                    if (typeMetadata == null)
+                    if (jObject != null)
                     {
-                        _logger.LogError($"Unsupported entity type in Cosmos DB change feed handler: {jObject}");
-                    }
-                    else
-                    {
-                        var entity = jObject.ToObject(typeMetadata.Type);
+                        var typeMetadata = ModelRegistry.IdentifyType(jObject);
 
-                        // Add the entity to the Semantic Kernel memory used by the RAG service
-                        // We want to keep the foundationallm.SemanticKernel project isolated from any domain-specific
-                        // references/dependencies, so we use a generic mechanism to get the name of the entity as well as to 
-                        // set the vector property on the entity.
-                        await _ragService.AddMemory(
-                            entity,
-                            string.Join(" ", entity.GetPropertyValues(typeMetadata.NamingProperties)),
-                            (e, v) => { (e as EmbeddedEntity).vector = v; });
+                        if (typeMetadata == null)
+                        {
+                            _logger.LogError($"Unsupported entity type in Cosmos DB change feed handler: {jObject}");
+                        }
+                        else
+                        {
+                            if (typeMetadata.Type != null)
+                            {
+                                var entity = jObject.ToObject(typeMetadata.Type);
+
+                                // Add the entity to the Semantic Kernel memory used by the RAG service
+                                // We want to keep the foundationallm.SemanticKernel project isolated from any domain-specific
+                                // references/dependencies, so we use a generic mechanism to get the name of the entity as well as to 
+                                // set the vector property on the entity.
+                                if (entity != null)
+                                    if (typeMetadata.NamingProperties != null)
+                                        await _ragService.AddMemory(
+                                            entity,
+                                            string.Join(" ", entity.GetPropertyValues(typeMetadata.NamingProperties)),
+                                            (e, v) => { ((e as EmbeddedEntity)!).vector = v; });
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -200,10 +222,10 @@ namespace FoundationaLLM.Core.Services
         /// <returns>List of distinct chat session items.</returns>
         public async Task<List<Session>> GetSessionsAsync(string type)
         {
-            QueryDefinition query = new QueryDefinition("SELECT DISTINCT * FROM c WHERE c.type = @type")
+            var query = new QueryDefinition("SELECT DISTINCT * FROM c WHERE c.type = @type")
                 .WithParameter("@type", type);
 
-            FeedIterator<Session> response = _completions.GetItemQueryIterator<Session>(query);
+            var response = _completions.GetItemQueryIterator<Session>(query);
 
             List<Session> output = new();
             while (response.HasMoreResults)
@@ -233,17 +255,17 @@ namespace FoundationaLLM.Core.Services
         /// <returns>List of chat message items for the specified session.</returns>
         public async Task<List<Message>> GetSessionMessagesAsync(string sessionId)
         {
-            QueryDefinition query =
+            var query =
                 new QueryDefinition("SELECT * FROM c WHERE c.sessionId = @sessionId AND c.type = @type")
                     .WithParameter("@sessionId", sessionId)
                     .WithParameter("@type", nameof(Message));
 
-            FeedIterator<Message> results = _completions.GetItemQueryIterator<Message>(query);
+            var results = _completions.GetItemQueryIterator<Message>(query);
 
             List<Message> output = new();
             while (results.HasMoreResults)
             {
-                FeedResponse<Message> response = await results.ReadNextAsync();
+                var response = await results.ReadNextAsync();
                 output.AddRange(response);
             }
 
@@ -476,7 +498,7 @@ namespace FoundationaLLM.Core.Services
         public async Task<string> GetVectorSearchDocumentsAsync(List<DocumentVector> vectorDocuments)
         {
 
-            List<string> searchDocuments = new List<string>();
+            var searchDocuments = new List<string>();
 
             foreach (var document in vectorDocuments)
             {
@@ -499,7 +521,7 @@ namespace FoundationaLLM.Core.Services
                     }
 
                     string item;
-                    using (StreamReader sr = new StreamReader(response.Content))
+                    using (var sr = new StreamReader(response.Content))
                         item = await sr.ReadToEndAsync();
 
                     searchDocuments.Add(item);
@@ -517,6 +539,12 @@ namespace FoundationaLLM.Core.Services
 
         }
 
+        /// <summary>
+        /// Returns the completion prompt for a given session and completion prompt id.
+        /// </summary>
+        /// <param name="sessionId">The session id from which to retrieve the completion prompt.</param>
+        /// <param name="completionPromptId">The id of the completion prompt to retrieve.</param>
+        /// <returns></returns>
         public async Task<CompletionPrompt> GetCompletionPrompt(string sessionId, string completionPromptId)
         {
             return await _completions.ReadItemAsync<CompletionPrompt>(

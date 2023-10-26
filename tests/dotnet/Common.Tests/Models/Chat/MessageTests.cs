@@ -4,22 +4,22 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
 {
     public class MessageTests
     {
-        public static IEnumerable<object[]> GetInvalidFields()
+        public static IEnumerable<object?[]> GetInvalidFields()
         {
-            yield return new object[] { null, "sender1", null, "The message", null, null };
-            yield return new object[] { "", "sender1", null, "The message", null, null };
-            yield return new object[] { "1", null, null, "The message", null, null };
-            yield return new object[] { "1", "", null, "The message", null, null };
-            yield return new object[] { "1", "sender1", null, null, null, null };
-            yield return new object[] { "1", "sender1", null, "", null, null };
-            yield return new object[] { "1", "sender1", null, "The message", new float[0], null };
-            yield return new object[] { "1", "sender1", null, "The message", new float[] { 1, 2, 3 }, null };
+            yield return new object?[] { null, "sender1", null, "The message", null, null };
+            yield return new object?[] { "", "sender1", null, "The message", null, null };
+            yield return new object?[] { "1", null, null, "The message", null, null };
+            yield return new object?[] { "1", "", null, "The message", null, null };
+            yield return new object?[] { "1", "sender1", null, null, null, null };
+            yield return new object?[] { "1", "sender1", null, "", null, null };
+            yield return new object?[] { "1", "sender1", null, "The message", new float[0], null };
+            yield return new object?[] { "1", "sender1", null, "The message", new float[] { 1, 2, 3 }, null };
         }
 
-        public static IEnumerable<object[]> GetValidFields()
+        public static IEnumerable<object?[]> GetValidFields()
         {
-            yield return new object[] { "1", "sender1", null, "The message", null, null };
-            yield return new object[] { "1", "sender1", null, "The message", Enumerable.Range(0, 1536).Select(x => (float)x).ToArray(), null };
+            yield return new object?[] { "1", "sender1", null, "The message", null, null };
+            yield return new object?[] { "1", "sender1", null, "The message", Enumerable.Range(0, 1536).Select(x => (float)x).ToArray(), null };
         }
 
         [Theory]

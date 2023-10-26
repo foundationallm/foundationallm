@@ -4,10 +4,10 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
 {
     public class MessageHistoryItemTests
     {
-        public static IEnumerable<object[]> GetInvalidFields()
+        public static IEnumerable<object?[]> GetInvalidFields()
         {
-            yield return new object[] { null, "Test"};
-            yield return new object[] { "Sender_1", null};
+            yield return new object?[] { null, "Test"};
+            yield return new object?[] { "Sender_1", null};
         }
 
         public static IEnumerable<object[]> GetValidFields()

@@ -47,23 +47,23 @@ namespace FoundationaLLM.Common.Tests.Models.Search
             Assert.Equal(expectedVector, salesOrder.vector);
         }
 
-        public static IEnumerable<object[]> GetInvalidFieldsSalesOrder()
+        public static IEnumerable<object?[]> GetInvalidFieldsSalesOrder()
         {
-            yield return new object[] { null, "Type_1", "Customer_1", "OrderDate_1", "ShipDate_1", new List<SalesOrderDetails>(), null };
-            yield return new object[] { "Id_1",null, "Customer_1", "OrderDate_1", "ShipDate_1", new List<SalesOrderDetails>(), null };
-            yield return new object[] { "Id_1", "Type_1",null, "OrderDate_1", "ShipDate_1", new List<SalesOrderDetails>(), null };
-            yield return new object[] { "Id_1", "Type_1", "Customer_1", null, "ShipDate_1", new List<SalesOrderDetails>(), null };
-            yield return new object[] { "Id_1", "Type_1", "Customer_1", "OrderDate_1", null, new List<SalesOrderDetails>(), null };
-            yield return new object[] { "Id_1", "Type_1", "Customer_1", "OrderDate_1", "ShipDate_1", null, null };
-            yield return new object[] { "Id_1", "Type_1", "Customer_1", "OrderDate_1", "ShipDate_1", new List<SalesOrderDetails>(), null };
-            yield return new object[] { "Id_1", "Type_1", "Customer_1", "OrderDate_1", "ShipDate_1", new List<SalesOrderDetails>(), new float[0] };
-            yield return new object[] { "Id_1", "Type_1", "Customer_1", "OrderDate_1", "ShipDate_1", new List<SalesOrderDetails>(), new float[] { 1, 2, 3 } };
+            yield return new object?[] { null, "Type_1", "Customer_1", "OrderDate_1", "ShipDate_1", new List<SalesOrderDetails>(), null };
+            yield return new object?[] { "Id_1",null, "Customer_1", "OrderDate_1", "ShipDate_1", new List<SalesOrderDetails>(), null };
+            yield return new object?[] { "Id_1", "Type_1",null, "OrderDate_1", "ShipDate_1", new List<SalesOrderDetails>(), null };
+            yield return new object?[] { "Id_1", "Type_1", "Customer_1", null, "ShipDate_1", new List<SalesOrderDetails>(), null };
+            yield return new object?[] { "Id_1", "Type_1", "Customer_1", "OrderDate_1", null, new List<SalesOrderDetails>(), null };
+            yield return new object?[] { "Id_1", "Type_1", "Customer_1", "OrderDate_1", "ShipDate_1", null, null };
+            yield return new object?[] { "Id_1", "Type_1", "Customer_1", "OrderDate_1", "ShipDate_1", new List<SalesOrderDetails>(), null };
+            yield return new object?[] { "Id_1", "Type_1", "Customer_1", "OrderDate_1", "ShipDate_1", new List<SalesOrderDetails>(), new float[0] };
+            yield return new object?[] { "Id_1", "Type_1", "Customer_1", "OrderDate_1", "ShipDate_1", new List<SalesOrderDetails>(), new float[] { 1, 2, 3 } };
         }
 
-        public static IEnumerable<object[]> GetValidFieldsSalesOrder()
+        public static IEnumerable<object?[]> GetValidFieldsSalesOrder()
         {
-            yield return new object[] { "Id_1", "Type_1", "Customer_1", "OrderDate_1", "ShipDate_1", new List<SalesOrderDetails>(), null };
-            yield return new object[] { "Id_1", "Type_1", "Customer_1", "OrderDate_1", "ShipDate_1", new List<SalesOrderDetails>() , Enumerable.Range(0, 1536).Select(x => (float)x).ToArray() };
+            yield return new object?[] { "Id_1", "Type_1", "Customer_1", "OrderDate_1", "ShipDate_1", new List<SalesOrderDetails>(), null };
+            yield return new object?[] { "Id_1", "Type_1", "Customer_1", "OrderDate_1", "ShipDate_1", new List<SalesOrderDetails>() , Enumerable.Range(0, 1536).Select(x => (float)x).ToArray() };
         }
 
         [Theory]
@@ -113,12 +113,12 @@ namespace FoundationaLLM.Common.Tests.Models.Search
             Assert.Equal(expectedQuantity, salesOrderDetails.quantity);
         }
 
-        public static IEnumerable<object[]> GetInvalidFieldsSalesOrderDetails()
+        public static IEnumerable<object?[]> GetInvalidFieldsSalesOrderDetails()
         {
-            yield return new object[] { null, "Name_1", 9.99, 10 };
-            yield return new object[] { "SKU_1", null, 9.99, 10 };
-            yield return new object[] { "SKU_1", "Name_1",null, 10 };
-            yield return new object[] { "SKU_1", "Name_1", 9.99,null };
+            yield return new object?[] { null, "Name_1", 9.99, 10 };
+            yield return new object?[] { "SKU_1", null, 9.99, 10 };
+            yield return new object?[] { "SKU_1", "Name_1",null, 10 };
+            yield return new object?[] { "SKU_1", "Name_1", 9.99,null };
         }
 
         public static IEnumerable<object[]> GetValidFieldsSalesOrderDetails()

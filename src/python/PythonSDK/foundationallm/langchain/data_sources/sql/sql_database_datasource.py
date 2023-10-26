@@ -35,6 +35,7 @@ class SQLDatabaseDataSource:
         self.password = config.get_value(self.sql_db_config.password_secret_setting_key_name)
         self.include_tables = sql_db_config.include_tables
         self.sample_rows_in_table_info = sql_db_config.few_shot_example_count
+        self.row_level_security_enabled = sql_db_config.row_level_security_enabled
     
     def get_database(self) -> SQLDatabase:
         """

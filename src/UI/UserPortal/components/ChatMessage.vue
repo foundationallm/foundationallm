@@ -83,7 +83,7 @@
 <script lang="ts">
 import type { PropType } from 'vue';
 import { Message, CompletionPrompt } from '@/js/types';
-import api from '~/server/api';
+import api from '@/js/api';
 
 export default {
 	name: 'ChatMessage',
@@ -134,15 +134,15 @@ export default {
 			displayNextWord();
 		},
 
-		handleRate(message: Message, like: boolean) {
-			this.$emit('rate', { message, like: message.rating === like ? null : like })
+		handleRate(message: Message, isLiked: boolean) {
+			this.$emit('rate', { message, isLiked: message.rating === isLiked ? null : isLiked });
 		},
 
 		async handleViewPrompt() {
 			const prompt = await api.getPrompt(this.message.sessionId, this.message.completionPromptId);
 			this.prompt = prompt;
 			this.viewPrompt = true;
-		}
+		},
 	},
 };
 </script>

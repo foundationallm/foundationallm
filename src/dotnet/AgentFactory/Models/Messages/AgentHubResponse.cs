@@ -27,6 +27,11 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Messages
         [JsonProperty("name")]
         public string? Name { get; set; }
 
+        /// <summary>
+        /// The type of agent, ex. blob-storage, csv, sql, etc.
+        /// </summary>
+        [JsonProperty("type")]
+        public string? Type { get; set; }
 
         /// <summary>
         /// The description of the agent.

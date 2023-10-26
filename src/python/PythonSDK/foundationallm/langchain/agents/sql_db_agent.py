@@ -1,14 +1,15 @@
 from langchain.agents import create_sql_agent
-from langchain.agents.agent_toolkits import SQLDatabaseToolkit
 from langchain.agents.agent_types import AgentType
 from langchain.callbacks import get_openai_callback
 from langchain.prompts import PromptTemplate
 
 from foundationallm.config import Configuration
+from foundationallm.context import Context
 from foundationallm.langchain.agents import AgentBase
 from foundationallm.langchain.data_sources.sql import SQLDatabaseConfiguration
 from foundationallm.langchain.data_sources.sql import SQLDatabaseFactory
 from foundationallm.langchain.language_models import LanguageModelBase
+from foundationallm.langchain.toolkits import SecureSQLDatabaseToolkit
 from foundationallm.models.orchestration import CompletionRequest, CompletionResponse
 
 class SqlDbAgent(AgentBase):
@@ -16,7 +17,7 @@ class SqlDbAgent(AgentBase):
     Agent for interacting with SQL databases.
     """
 
-    def __init__(self, completion_request: CompletionRequest, llm: LanguageModelBase, config: Configuration):
+    def __init__(self, completion_request: CompletionRequest, llm: LanguageModelBase, config: Configuration, context: Context):
         """
         Initializes a SQL database agent.
 
@@ -30,22 +31,28 @@ class SqlDbAgent(AgentBase):
         config : Configuration
             Application configuration class for retrieving configuration settings.
         """
-        self.agent_prompt_prefix = PromptTemplate.from_template(completion_request.agent.prompt_template)
+        self.agent_prompt_prefix = completion_request.agent.prompt_template
+        self.agent_prompt_suffix = completion_request.agent.prompt_suffix
+            
         self.llm = llm.get_language_model()
         self.sql_db_config: SQLDatabaseConfiguration = completion_request.data_source.configuration
-
+        self.context = context
+        
         self.agent = create_sql_agent(
             llm = self.llm,
-            toolkit = SQLDatabaseToolkit( #TODO: Swap out with overridden, secure toolkit.
+            toolkit = SecureSQLDatabaseToolkit(
                 db = SQLDatabaseFactory(sql_db_config = self.sql_db_config, config = config).get_sql_database(),
                 llm=self.llm,
-                reduce_k_below_max_tokens=True
+                reduce_k_below_max_tokens=True,
+                username = self.context.get_upn(),
+                use_row_level_security = self.sql_db_config.row_level_security_enabled
             ),
             agent_type = AgentType.ZERO_SHOT_REACT_DESCRIPTION,
             verbose = True,
             prefix = self.agent_prompt_prefix,
+            suffix = self.agent_prompt_suffix,
             agent_executor_kwargs={
-                'handle_parsing_errors': True
+                'handle_parsing_errors': 'Check your output and make sure it conforms!'
             }
         )
         

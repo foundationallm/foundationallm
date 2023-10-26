@@ -38,12 +38,9 @@ public class AgentFactoryService : IAgentFactoryService
     /// </summary>
     /// <param name="orchestrationServices"></param>
     /// <param name="agentFactorySettings"></param>
-    /// <param name="agentHubService"></param>
-    /// <param name="agentHubSettings"></param>
-    /// <param name="promptHubService"></param>
-    /// <param name="promptHubSettings"></param>
-    /// <param name="dataSourceHubService"></param>
-    /// <param name="dataSourceHubSettings"></param>
+    /// <param name="agentHubService"></param>    
+    /// <param name="promptHubService"></param>    
+    /// <param name="dataSourceHubService"></param>    
     /// <param name="logger"></param>
     /// <param name="userIdentity"></param>
     public AgentFactoryService(

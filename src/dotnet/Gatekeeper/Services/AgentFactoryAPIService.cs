@@ -89,28 +89,5 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
             return fallback;
         }
 
-        /// <summary>
-        /// Sets the preffered orchestration service.
-        /// </summary>
-        /// <param name="orchestrationService">The name of the preferred orchestration service.</param>
-        /// <returns>True if the preffered orchestration service was set. Otherwise, returns False.</returns>
-        public async Task<bool> SetLLMOrchestrationPreference(string orchestrationService)
-        {
-            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.AgentFactoryAPI);
-
-            var responseMessage = await client.PostAsync("orchestration/preference",
-                new StringContent(orchestrationService));
-
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                // The response value should be a boolean indicating whether the orchestration service was set successfully.
-                var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var orchestrationServiceSet = JsonConvert.DeserializeObject<bool>(responseContent);
-
-                return orchestrationServiceSet;
-            }
-
-            return false;
-        }
     }
 }

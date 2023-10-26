@@ -24,6 +24,17 @@ namespace FoundationaLLM.Core.Services
         private readonly ILogger _logger;
         private readonly SearchClient _searchClient;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CognitiveSearchService"/> class.
+        /// </summary>
+        /// <param name="azureSearchAdminKey">The Azure Cognitive Search admin key.</param>
+        /// <param name="azureSearchServiceEndpoint">The Azure Cognitive Search endpoint.</param>
+        /// <param name="azureSearchIndexName">The name of the Azure Cognitive Search vector index.</param>
+        /// <param name="maxVectorSearchResults">The maximum number of Azure Cognitive Search vector
+        /// search results to return.</param>
+        /// <param name="logger">The configured logging interface.</param>
+        /// <param name="createIndexIfNotExists">If this setting is true, the service will create the
+        /// Azure Cognitive Search vector index upon initialization if it does not exist.</param>
         public CognitiveSearchService(string azureSearchAdminKey, string azureSearchServiceEndpoint,
             string azureSearchIndexName, string maxVectorSearchResults, ILogger logger, bool createIndexIfNotExists = false)
         {
@@ -57,11 +68,22 @@ namespace FoundationaLLM.Core.Services
             }
         }
 
+        /// <summary>
+        /// Inserts an entity into the Azure Cognitive Search vector index.
+        /// </summary>
+        /// <param name="document">The entity to add to the vector index.</param>
+        /// <returns></returns>
         public async Task InsertVector(object document)
         {
             await InsertVectors(new[] { document });
         }
 
+
+        /// <summary>
+        /// Inserts a collection of entities into the Azure Cognitive Search vector index.
+        /// </summary>
+        /// <param name="documents">The entities to add to the vector index.</param>
+        /// <returns></returns>
         public async Task InsertVectors(IEnumerable<object> documents)
         {
             try
@@ -77,6 +99,11 @@ namespace FoundationaLLM.Core.Services
             }
         }
 
+        /// <summary>
+        /// Deletes an entity from the Azure Cognitive Search vector index.
+        /// </summary>
+        /// <param name="document">The entity to remove from the vector index.</param>
+        /// <returns></returns>
         public async Task DeleteVector(object document)
         {
             try
@@ -108,6 +135,11 @@ namespace FoundationaLLM.Core.Services
             }
         }
 
+        /// <summary>
+        /// Performs a vector similarity search against the Azure Cognitive Search vector index.
+        /// </summary>
+        /// <param name="embeddings">The vector used in the index search.</param>
+        /// <returns></returns>
         public async Task<string> VectorSearchAsync(float[] embeddings)
         {
             var retDocs = new List<string>();

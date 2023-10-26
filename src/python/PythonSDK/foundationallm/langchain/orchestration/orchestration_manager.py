@@ -1,6 +1,7 @@
 from langchain.base_language import BaseLanguageModel
 from foundationallm.credentials import Credential
 from foundationallm.config import Configuration
+from foundationallm.context import Context
 from foundationallm.models.metadata.language_model import LanguageModel
 from foundationallm.langchain.language_models import LanguageModelFactory
 from foundationallm.langchain.agents import AgentFactory, AgentBase
@@ -9,7 +10,7 @@ from foundationallm.models.orchestration import CompletionRequest, CompletionRes
 class OrchestrationManager:
     """Client that acts as the entry point for interacting with the FoundationaLLM Python SDK."""
     
-    def __init__(self, completion_request: CompletionRequest, configuration: Configuration):
+    def __init__(self, completion_request: CompletionRequest, configuration: Configuration, context: Context):
         """
         Initializes an instance of the OrchestrationManager.
         
@@ -24,11 +25,11 @@ class OrchestrationManager:
         self.completion_request = completion_request
         self.config = configuration
         self.llm = self.__get_llm(language_model=completion_request.language_model)
-        self.agent = self.__create_agent(completion_request=completion_request)
+        self.agent = self.__create_agent(completion_request=completion_request, context=context)
     
-    def __create_agent(self, completion_request: CompletionRequest) -> AgentBase:
+    def __create_agent(self, completion_request: CompletionRequest, context: Context) -> AgentBase:
         """Creates an agent for executing completion requests."""
-        agent = AgentFactory(completion_request=completion_request, llm=self.llm, config=self.config)
+        agent = AgentFactory(completion_request=completion_request, llm=self.llm, config=self.config, context=context)
         return agent.get_agent()
  
     def __get_llm(self, language_model: LanguageModel) -> BaseLanguageModel:

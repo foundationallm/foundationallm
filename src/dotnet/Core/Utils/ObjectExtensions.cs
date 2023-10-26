@@ -2,6 +2,9 @@
 
 namespace FoundationaLLM.Core.Utils
 {
+    /// <summary>
+    /// Contains extension methods for objects.
+    /// </summary>
     public static class ObjectExtensions
     {
         /// <summary>
@@ -10,7 +13,7 @@ namespace FoundationaLLM.Core.Utils
         /// <param name="obj">The object instance.</param>
         /// <param name="propertyNames">The list of property names.</param>
         /// <returns></returns>
-        public static List<string> GetPropertyValues(this object obj, List<string> propertyNames) 
+        public static List<string?> GetPropertyValues(this object obj, List<string> propertyNames) 
         {
             var type = obj.GetType();
 
@@ -20,7 +23,7 @@ namespace FoundationaLLM.Core.Utils
                 .Where(p => p.PropertyType == typeof(string) && p.CanRead && propertyNames.Contains(p.Name))
                 .Select(p => p.GetGetMethod(false))
                 .Where(mget => mget != null)
-                .Select(mget => (string)mget.Invoke(obj, null))
+                .Select(mget => (string?)mget?.Invoke(obj, null))
                 .Where(s => !string.IsNullOrEmpty(s))
                 .ToList();
         }

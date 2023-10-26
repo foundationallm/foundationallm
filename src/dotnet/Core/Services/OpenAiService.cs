@@ -15,7 +15,6 @@ public class OpenAiService : IOpenAiService
     private readonly string _embeddingsModelOrDeployment = string.Empty;
     private readonly string _completionsModelOrDeployment = string.Empty;
     private readonly int _maxConversationBytes = default;
-    private readonly int _openAIMaxTokens = default;
     private readonly ILogger _logger;
 
     private readonly OpenAIClient? _client;
@@ -44,10 +43,7 @@ public class OpenAiService : IOpenAiService
     /// <summary>
     /// Gets the maximum number of tokens to limit chat conversation length.
     /// </summary>
-    public int MaxConversationBytes
-    {
-        get => _maxConversationBytes;
-    }
+    public int MaxConversationBytes => _maxConversationBytes;
 
 
     /// <summary>
@@ -119,6 +115,10 @@ public class OpenAiService : IOpenAiService
                 options.User = sessionId;
             }
 
+            if (_client == null)
+                return (
+                    response: Array.Empty<float>(),
+                    responseTokens);
             var response = await _client.GetEmbeddingsAsync(_embeddingsModelOrDeployment, options);
 
             var embeddings = response.Value;
@@ -154,7 +154,8 @@ public class OpenAiService : IOpenAiService
     /// Sends a prompt to the deployed OpenAI LLM model and returns the response.
     /// </summary>
     /// <param name="sessionId">Chat session identifier for the current conversation.</param>
-    /// <param name="prompt">Prompt message to send to the deployment.</param>
+    /// <param name="userPrompt">Prompt message to send to the deployment.</param>
+    /// <param name="documents">Documents used for the data context.</param>
     /// <returns>Response from the OpenAI model along with tokens for the prompt and response.</returns>
     public async Task<(string response, int promptTokens, int responseTokens)> GetChatCompletionAsync(string sessionId, string userPrompt, string documents)
     {
@@ -181,17 +182,19 @@ public class OpenAiService : IOpenAiService
                 PresencePenalty = 0
             };
 
-            var completionsResponse = await _client.GetChatCompletionsAsync(_completionsModelOrDeployment, options);
+            if (_client != null)
+            {
+                var completionsResponse = await _client.GetChatCompletionsAsync(_completionsModelOrDeployment, options);
 
 
-            var completions = completionsResponse.Value;
+                var completions = completionsResponse.Value;
 
-            return (
-                response: completions.Choices[0].Message.Content,
-                promptTokens: completions.Usage.PromptTokens,
-                responseTokens: completions.Usage.CompletionTokens
-            );
-
+                return (
+                    response: completions.Choices[0].Message.Content,
+                    promptTokens: completions.Usage.PromptTokens,
+                    responseTokens: completions.Usage.CompletionTokens
+                );
+            }
         }
         catch (Exception ex)
         {
@@ -229,6 +232,7 @@ public class OpenAiService : IOpenAiService
             PresencePenalty = 0
         };
 
+        if (_client == null) return "";
         var completionsResponse = await _client.GetChatCompletionsAsync(_completionsModelOrDeployment, options);
 
         var completions = completionsResponse.Value;

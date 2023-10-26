@@ -3,7 +3,7 @@ from fastapi import Depends, HTTPException
 from fastapi.security import APIKeyHeader
 from foundationallm.config import Configuration
 
-def validate_api_key_header(config: Annotated[Configuration, Depends()], x_api_key: str = Depends(APIKeyHeader(name='X-API-Key'))):
+async def validate_api_key_header(config: Annotated[Configuration, Depends()], x_api_key: str = Depends(APIKeyHeader(name='X-API-Key'))):
     """
     Validates that the X-API-Key value in the request header matches the key expected for this API.
     

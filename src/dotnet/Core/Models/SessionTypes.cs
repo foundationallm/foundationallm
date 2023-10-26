@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace FoundationaLLM.Core.Models
 {
+    /// <summary>
+    /// Constants for chat session types.
+    /// </summary>
     public static class SessionTypes
     {
         /// <summary>

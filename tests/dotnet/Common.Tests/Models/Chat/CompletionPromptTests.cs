@@ -4,11 +4,11 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
 {
     public class CompletionPromptTests
     {
-        public static IEnumerable<object[]> GetInvalidFields()
+        public static IEnumerable<object?[]> GetInvalidFields()
         {
-            yield return new object[] { null, "Message_1", "Test prompt" };
-            yield return new object[] { "Session_1",null, "Test prompt" };
-            yield return new object[] { "Session_1", "Message_1", null};
+            yield return new object?[] { null, "Message_1", "Test prompt" };
+            yield return new object?[] { "Session_1",null, "Test prompt" };
+            yield return new object?[] { "Session_1", "Message_1", null};
         }
 
         public static IEnumerable<object[]> GetValidFields()
