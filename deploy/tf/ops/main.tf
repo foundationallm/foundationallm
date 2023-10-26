@@ -157,6 +157,78 @@ locals {
         outbound = merge({})
       }
     }
+    "AzureBastionSubnet" = {
+      address_prefix = cidrsubnet(local.ops_parent_cidr, 4, 14)
+      nsg_rules = {
+        inbound = merge(local.default_nsg_rules.inbound, {
+          "allow-https-inbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "*"
+            destination_port_range     = "443"
+            priority                   = 128
+            protocol                   = "Tcp"
+            source_address_prefix      = "Internet"
+            source_port_range          = "*"
+          }
+          "allow-gateway-manager-inbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "*"
+            destination_port_range     = "443"
+            priority                   = 136
+            protocol                   = "Tcp"
+            source_address_prefix      = "GatewayManager"
+            source_port_range          = "*"
+          }
+          "allow-load-balancer-inbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "*"
+            destination_port_range     = "443"
+            priority                   = 144
+            protocol                   = "Tcp"
+            source_address_prefix      = "AzureLoadBalancer"
+            source_port_range          = "*"
+          }
+          "allow-bastion-host-communicaiton-inbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_ranges    = ["5701", "8080"]
+            priority                   = 152
+            protocol                   = "*"
+            source_address_prefix      = "VirtualNetwork"
+            source_port_range          = "*"
+          }
+        })
+        outbound = merge(local.default_nsg_rules.outbound, {
+          "allow-ssh-rdp-outbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_ranges    = ["22", "3389"]
+            priority                   = 128
+            protocol                   = "Tcp"
+            source_address_prefix      = "*"
+            source_port_range          = "*"
+          }
+          "allow-azure-cloud-communication-outbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "AzureCloud"
+            destination_port_range     = "443"
+            priority                   = 128
+            protocol                   = "Tcp"
+            source_address_prefix      = "*"
+            source_port_range          = "*"
+          }
+          "allow-get-session-information-outbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "Internet"
+            destination_port_ranges    = ["80", "443"]
+            priority                   = 136
+            protocol                   = "*"
+            source_address_prefix      = "*"
+            source_port_range          = "*"
+          }
+        })
+      }
+    }
     "Datasources" = {
       address_prefix = cidrsubnet(local.network_cidr, 8, 2)
       nsg_rules = {
@@ -638,7 +710,6 @@ module "container_registry" {
     ]
   }
 }
-
 
 module "jumpbox" {
   source = "./modules/jumpbox"

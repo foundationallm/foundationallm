@@ -121,12 +121,6 @@ Source: ./modules/container-registry
 
 Version:
 
-### <a name="module_content_safety"></a> [content\_safety](#module\_content\_safety)
-
-Source: ./modules/content-safety
-
-Version:
-
 ### <a name="module_jumpbox"></a> [jumpbox](#module\_jumpbox)
 
 Source: ./modules/jumpbox

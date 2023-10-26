@@ -18,7 +18,8 @@ variable "rules_inbound" {
     access                       = string
     destination_address_prefix   = optional(string)
     destination_address_prefixes = optional(list(string))
-    destination_port_range       = string
+    destination_port_range       = optional(string)
+    destination_port_ranges      = optional(list(string))
     priority                     = number
     protocol                     = string
     source_address_prefix        = optional(string)
@@ -33,7 +34,8 @@ variable "rules_outbound" {
     access                       = string
     destination_address_prefix   = optional(string)
     destination_address_prefixes = optional(list(string))
-    destination_port_range       = string
+    destination_port_range       = optional(string)
+    destination_port_ranges      = optional(list(string))
     priority                     = number
     protocol                     = string
     source_address_prefix        = optional(string)
