@@ -115,6 +115,12 @@ Source: ./modules/application-insights
 
 Version:
 
+### <a name="module_bastion"></a> [bastion](#module\_bastion)
+
+Source: ./modules/bastion
+
+Version:
+
 ### <a name="module_container_registry"></a> [container\_registry](#module\_container\_registry)
 
 Source: ./modules/container-registry

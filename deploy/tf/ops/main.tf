@@ -668,10 +668,6 @@ module "appconfig" {
   }
 }
 
-moved {
-  from = module.application_gateway_certificate
-  to   = module.application_gateway_certificate["www"]
-}
 module "application_gateway_certificate" {
   source   = "./modules/keyvault-acme-certificate"
   for_each = toset(["www", "gateway"])
@@ -691,6 +687,17 @@ module "application_insights" {
   resource_group                   = azurerm_resource_group.rg["ops"]
   resource_prefix                  = local.resource_prefix["ops"]
   tags                             = azurerm_resource_group.rg["ops"].tags
+}
+
+module "bastion" {
+  source = "./modules/bastion"
+
+  action_group_id            = azurerm_monitor_action_group.do_nothing.id
+  log_analytics_workspace_id = module.logs.id
+  resource_group             = azurerm_resource_group.rg["net"]
+  resource_prefix            = local.resource_prefix["net"]
+  subnet_id                  = azurerm_subnet.subnet["AzureBastionSubnet"].id
+  tags                       = azurerm_resource_group.rg["net"].tags
 }
 
 module "container_registry" {
