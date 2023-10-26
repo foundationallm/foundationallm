@@ -158,7 +158,7 @@ locals {
       }
     }
     "AzureBastionSubnet" = {
-      address_prefix = cidrsubnet(local.ops_parent_cidr, 4, 14)
+      address_prefix = cidrsubnet(local.ops_parent_cidr, 4, 10)
       nsg_rules = {
         inbound = merge(local.default_nsg_rules.inbound, {
           "allow-https-inbound" = {
