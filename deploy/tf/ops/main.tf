@@ -217,11 +217,20 @@ locals {
             source_address_prefix      = "*"
             source_port_range          = "*"
           }
+          "allow-bastion-host-communication-outbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_ranges    = ["5701", "8080"]
+            priority                   = 144
+            protocol                   = "*"
+            source_address_prefix      = "VirtualNetwork"
+            source_port_range          = "*"
+          }
           "allow-get-session-information-outbound" = {
             access                     = "Allow"
             destination_address_prefix = "Internet"
             destination_port_ranges    = ["80", "443"]
-            priority                   = 144
+            priority                   = 152
             protocol                   = "*"
             source_address_prefix      = "*"
             source_port_range          = "*"
