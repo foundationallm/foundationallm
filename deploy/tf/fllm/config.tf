@@ -106,7 +106,10 @@ locals {
       })
       "contentType" = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
-    "FoundationaLLM:AgentHub:AgentMetadata:StorageContainer" = "agents"
+    "FoundationaLLM:AgentHub:AgentMetadata:StorageContainer" = {
+      value = "agents"
+      "contentType" = null
+    }
     "FoundationaLLM:AgentHub:StorageManager:BlobStorage:ConnectionString" = {
       value = jsonencode({
         "uri" = azurerm_key_vault_secret.storage_connection_string.versionless_id
