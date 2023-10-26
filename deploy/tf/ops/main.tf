@@ -212,7 +212,7 @@ locals {
             access                     = "Allow"
             destination_address_prefix = "AzureCloud"
             destination_port_range     = "443"
-            priority                   = 128
+            priority                   = 136
             protocol                   = "Tcp"
             source_address_prefix      = "*"
             source_port_range          = "*"
@@ -221,7 +221,7 @@ locals {
             access                     = "Allow"
             destination_address_prefix = "Internet"
             destination_port_ranges    = ["80", "443"]
-            priority                   = 136
+            priority                   = 144
             protocol                   = "*"
             source_address_prefix      = "*"
             source_port_range          = "*"
