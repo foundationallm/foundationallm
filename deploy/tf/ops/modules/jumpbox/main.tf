@@ -47,7 +47,7 @@ resource "azurerm_windows_virtual_machine" "main" {
   network_interface_ids      = [azurerm_network_interface.nic.id]
   patch_mode                 = "AutomaticByPlatform"
   resource_group_name        = var.resource_group.name
-  size                       = "Standard_B2s"
+  size                       = "Standard_DS3_v2"
   tags                       = var.tags
 
   boot_diagnostics {}
