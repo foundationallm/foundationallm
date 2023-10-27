@@ -33,6 +33,7 @@ resource "azurerm_kubernetes_cluster" "main" {
   automatic_channel_upgrade         = "stable"
   azure_policy_enabled              = true
   dns_prefix_private_cluster        = "${var.resource_prefix}-aks"
+  local_account_disabled            = true
   location                          = var.resource_group.location
   name                              = "${var.resource_prefix}-aks"
   node_resource_group               = "${var.resource_prefix}-aks-mrg"
