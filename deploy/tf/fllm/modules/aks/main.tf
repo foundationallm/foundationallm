@@ -1,15 +1,25 @@
 locals {
   alert = {
-    #    node_cpu = {
-    #      aggregation = "Average"
-    #      description = "Node CPU utilization greater than 75% for 1 hour"
-    #      frequency   = "PT1M"
-    #      metric_name = "node_cpu_usage_percentage"
-    #      operator    = "GreaterThan"
-    #      threshold   = 75
-    #      window_size = "PT1H"
-    #      severity    = 0
-    #    }
+    cpu = {
+      aggregation = "Average"
+      description = "Node CPU utilization greater than 95% for 1 hour"
+      frequency   = "PT5M"
+      metric_name = "node_cpu_usage_percentage"
+      operator    = "GreaterThan"
+      threshold   = 95
+      window_size = "PT5M"
+      severity    = 3
+    }
+    mem = {
+      aggregation = "Average"
+      description = "Node memory utilization greater than 95% for 1 hour"
+      frequency   = "PT5M"
+      metric_name = "node_memory_working_set_percentage"
+      operator    = "GreaterThan"
+      severity    = 3
+      threshold   = 100
+      window_size = "PT5M"
+    }
   }
 
   role_mi = {
