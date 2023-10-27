@@ -245,9 +245,22 @@ locals {
         outbound = merge(local.default_nsg_rules.outbound, {})
       }
     }
+    "FLLMBackend" = {
+      address_prefix = cidrsubnet(local.network_cidr, 8, 10)
+      delegations = {
+        "Microsoft.ContainerService/managedClusters" = [
+          "Microsoft.Network/virtualNetworks/subnets/action"
+        ]
+      }
+
+      nsg_rules = {
+        inbound  = merge({}, {})
+        outbound = merge({}, {})
+      }
+    }
     "FLLMServices" = {
       address_prefix = cidrsubnet(local.network_cidr, 8, 3)
-      delegations = {
+      delegations = { // TODO: Moved AKS out of here, do we still need this?
         "Microsoft.ContainerService/managedClusters" = [
           "Microsoft.Network/virtualNetworks/subnets/action"
         ]
