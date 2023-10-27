@@ -77,6 +77,11 @@ resource "azurerm_kubernetes_cluster" "main" {
     gateway_id = var.agw_id
   }
 
+  key_vault_secrets_provider {
+    secret_rotation_enabled  = true
+    secret_rotation_interval = "2m"
+  }
+
   microsoft_defender {
     log_analytics_workspace_id = var.log_analytics_workspace_id
   }
