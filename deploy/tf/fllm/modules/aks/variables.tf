@@ -3,13 +3,8 @@ variable "action_group_id" {
   type        = string
 }
 
-# variable "agw_id" {
-#   description = "The ID of the application gateway to use for ingress."
-#   type        = string
-# }
-
-variable "agw_subnet_id" {
-  description = "Provide subnet ID for application gateway deployment."
+variable "agw_id" {
+  description = "Specify the application gateway ID for incoming traffic."
   type        = string
 }
 

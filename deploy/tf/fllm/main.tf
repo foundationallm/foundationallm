@@ -192,9 +192,8 @@ resource "azurerm_user_assigned_identity" "agw" {
 module "aks_backend" {
   source = "./modules/aks"
 
-  action_group_id = data.azurerm_monitor_action_group.do_nothing.id
-  # agw_id                     = module.application_gateway["gateway"].id
-  agw_subnet_id              = data.azurerm_subnet.subnet["AppGateway"].id
+  action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
+  agw_id                     = module.application_gateway["gateway"].id
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rg["app"]
   resource_prefix            = "${local.resource_prefix["app"]}-BACKEND"
@@ -219,9 +218,8 @@ module "aks_backend" {
 module "aks_frontend" {
   source = "./modules/aks"
 
-  action_group_id = data.azurerm_monitor_action_group.do_nothing.id
-  # agw_id                     = module.application_gateway["gateway"].id
-  agw_subnet_id              = data.azurerm_subnet.subnet["AppGateway"].id
+  action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
+  agw_id                     = module.application_gateway["gateway"].id
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rg["app"]
   resource_prefix            = "${local.resource_prefix["app"]}-FRONTEND"
