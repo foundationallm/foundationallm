@@ -108,28 +108,9 @@ No outputs.
 
 The following resources are used by this module:
 
-- [azuread_application_password.client_entra](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_password) (resource)
-- [azuread_application_password.core_entra](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_password) (resource)
-- [azurerm_app_configuration_key.config_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_key) (resource)
-- [azurerm_key_vault_secret.ai_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
-- [azurerm_key_vault_secret.api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
-- [azurerm_key_vault_secret.client_entra_clientsecret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
-- [azurerm_key_vault_secret.content_safety_apikey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
-- [azurerm_key_vault_secret.core_entra_clientsecret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
-- [azurerm_key_vault_secret.cosmosdb_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
-- [azurerm_key_vault_secret.langchain_csvfile_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
-- [azurerm_key_vault_secret.langchain_sqldatabase_testdb_pw](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
-- [azurerm_key_vault_secret.openai_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
-- [azurerm_key_vault_secret.search_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
-- [azurerm_key_vault_secret.storage_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
 - [azurerm_resource_group.rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) (resource)
 - [azurerm_role_assignment.keyvault_secrets_user_agw](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) (resource)
 - [azurerm_user_assigned_identity.agw](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) (resource)
-- [random_string.api_key](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) (resource)
-- [time_rotating.client_entra](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/rotating) (resource)
-- [time_rotating.core_entra](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/rotating) (resource)
-- [azuread_application.client_entra](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application) (data source)
-- [azuread_application.core_entra](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application) (data source)
 - [azurerm_app_configuration.appconfig](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/app_configuration) (data source)
 - [azurerm_application_insights.ai](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) (data source)
 - [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
@@ -157,13 +138,7 @@ The following requirements are needed by this module:
 
 The following providers are used by this module:
 
-- <a name="provider_azuread"></a> [azuread](#provider\_azuread) (2.45.0)
-
 - <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (3.78.0)
-
-- <a name="provider_random"></a> [random](#provider\_random) (3.5.1)
-
-- <a name="provider_time"></a> [time](#provider\_time) (0.9.1)
 
 ## Modules
 

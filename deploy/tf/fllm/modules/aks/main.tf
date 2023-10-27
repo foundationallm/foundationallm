@@ -53,14 +53,15 @@ resource "azurerm_kubernetes_cluster" "main" {
   }
 
   default_node_pool {
-    enable_auto_scaling = true
-    max_count           = 3
-    min_count           = 1
-    name                = "system"
-    os_disk_size_gb     = 1024
-    tags                = var.tags
-    vm_size             = "Standard_DS2_v2"
-    vnet_subnet_id      = var.private_endpoint.subnet.id
+    enable_auto_scaling          = true
+    max_count                    = 3
+    min_count                    = 1
+    name                         = "system"
+    only_critical_addons_enabled = true
+    os_disk_size_gb              = 1024
+    tags                         = var.tags
+    vm_size                      = "Standard_DS2_v2"
+    vnet_subnet_id               = var.private_endpoint.subnet.id
 
     upgrade_settings {
       max_surge = "200"
@@ -83,11 +84,29 @@ resource "azurerm_kubernetes_cluster" "main" {
   network_profile {
     dns_service_ip = "10.100.254.1"
     network_plugin = "azure"
+    network_policy = "azure"
     service_cidr   = "10.100.0.0/16"
   }
 
   oms_agent {
     log_analytics_workspace_id = var.log_analytics_workspace_id
+  }
+}
+
+resource "azurerm_kubernetes_cluster_node_pool" "user" {
+  enable_auto_scaling   = true
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.main.id
+  max_count             = 3
+  min_count             = 1
+  mode                  = "User"
+  name                  = "user"
+  os_disk_size_gb       = 1024
+  tags                  = var.tags
+  vm_size               = "Standard_DS2_v2"
+  vnet_subnet_id        = var.private_endpoint.subnet.id
+
+  upgrade_settings {
+    max_surge = "200"
   }
 }
 
