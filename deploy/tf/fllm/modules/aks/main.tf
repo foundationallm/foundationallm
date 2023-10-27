@@ -22,14 +22,29 @@ locals {
     }
   }
 
-  role_mi = {
+  role_aks_mi = {
     dns = {
       role  = "Private DNS Zone Contributor"
       scope = var.private_endpoint.private_dns_zone_ids["aks"][0]
     }
     network = {
+      role  = "Contributor"
+      scope = var.application_gateway.id
+    }
+    subnet = {
       role  = "Network Contributor"
-      scope = var.private_endpoint.subnet.id
+      scope = var.subnet_id
+    }
+  }
+
+  role_agw_mi = {
+    network = {
+      role  = "Contributor"
+      scope = var.application_gateway.id
+    }
+    identity = {
+      role  = "Contributor"
+      scope = var.application_gateway.identity.identity_ids[0]
     }
   }
 }
@@ -38,7 +53,7 @@ locals {
 
 # Resources
 resource "azurerm_kubernetes_cluster" "main" {
-  depends_on = [azurerm_role_assignment.role_mi]
+  depends_on = [azurerm_role_assignment.role_aks_mi]
 
   automatic_channel_upgrade         = "stable"
   azure_policy_enabled              = true
@@ -72,7 +87,7 @@ resource "azurerm_kubernetes_cluster" "main" {
     os_disk_size_gb              = 1024
     tags                         = var.tags
     vm_size                      = "Standard_DS2_v2"
-    vnet_subnet_id               = var.private_endpoint.subnet.id
+    vnet_subnet_id               = var.subnet_id
 
     upgrade_settings {
       max_surge = "200"
@@ -85,7 +100,7 @@ resource "azurerm_kubernetes_cluster" "main" {
   }
 
   ingress_application_gateway {
-    gateway_id = var.agw_id
+    gateway_id = var.application_gateway.id
   }
 
   key_vault_secrets_provider {
@@ -119,7 +134,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "user" {
   os_disk_size_gb       = 1024
   tags                  = var.tags
   vm_size               = "Standard_DS2_v2"
-  vnet_subnet_id        = var.private_endpoint.subnet.id
+  vnet_subnet_id        = var.subnet_id
 
   upgrade_settings {
     max_surge = "200"
@@ -155,7 +170,7 @@ resource "azurerm_private_endpoint" "ple" {
   location            = var.resource_group.location
   name                = "${var.resource_prefix}-aks-pe"
   resource_group_name = var.resource_group.name
-  subnet_id           = var.private_endpoint.subnet.id
+  subnet_id           = var.private_endpoint.subnet_id
   tags                = var.tags
 
   private_dns_zone_group {
@@ -171,13 +186,22 @@ resource "azurerm_private_endpoint" "ple" {
   }
 }
 
-resource "azurerm_role_assignment" "role_mi" {
-  for_each = local.role_mi
+resource "azurerm_role_assignment" "role_aks_mi" {
+  for_each = local.role_aks_mi
 
   principal_id         = azurerm_user_assigned_identity.aks_mi.principal_id
   role_definition_name = each.value.role
   scope                = each.value.scope
 }
+
+resource "azurerm_role_assignment" "role_agw_mi" {
+  for_each = local.role_agw_mi
+
+  principal_id         = azurerm_kubernetes_cluster.main.ingress_application_gateway[0].ingress_application_gateway_identity[0].object_id
+  role_definition_name = each.value.role
+  scope                = each.value.scope
+}
+
 
 resource "azurerm_user_assigned_identity" "aks_mi" {
   location            = var.resource_group.location

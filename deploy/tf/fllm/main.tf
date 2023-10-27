@@ -52,6 +52,17 @@ locals {
     ops = null
   }
 
+  role_agw_mi = {
+    vault = {
+      role  = "Key Vault Secrets User"
+      scope = data.azurerm_resource_group.backend["ops"].id
+    }
+    network = {
+      role  = "Contributor"
+      scope = data.azurerm_virtual_network.network.id
+    }
+  }
+
   short_location = local.short_locations[var.location]
   short_locations = {
     eastus = "EUS"
@@ -145,6 +156,7 @@ data "azurerm_subnet" "subnet" {
   for_each = toset([
     "AppGateway",
     "Datasources",
+    "FLLMBackend",
     "FLLMFrontEnd",
     "FLLMOpenAI",
     "FLLMServices",
@@ -175,7 +187,9 @@ resource "azurerm_resource_group" "rg" {
   tags     = merge(each.value.tags, local.tags)
 }
 
-resource "azurerm_role_assignment" "keyvault_secrets_user_agw" {
+resource "azurerm_role_assignment" "role_agw_mi" {
+  for_each = local.role_agw_mi
+
   principal_id         = azurerm_user_assigned_identity.agw.principal_id
   role_definition_name = "Key Vault Secrets User"
   scope                = data.azurerm_resource_group.backend["ops"].id
@@ -193,10 +207,11 @@ module "aks_backend" {
   source = "./modules/aks"
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
-  agw_id                     = module.application_gateway["gateway"].id
+  application_gateway        = module.application_gateway["gateway"]
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rg["app"]
   resource_prefix            = "${local.resource_prefix["app"]}-BACKEND"
+  subnet_id                  = data.azurerm_subnet.subnet["FLLMBackend"].id
   tags                       = azurerm_resource_group.rg["app"].tags
   tenant_id                  = data.azurerm_client_config.current.tenant_id
 
@@ -206,7 +221,7 @@ module "aks_backend" {
   ]
 
   private_endpoint = {
-    subnet = data.azurerm_subnet.subnet["FLLMServices"]
+    subnet_id = data.azurerm_subnet.subnet["FLLMServices"].id
     private_dns_zone_ids = {
       aks = [
         data.azurerm_private_dns_zone.private_dns["aks"].id,
@@ -219,10 +234,11 @@ module "aks_frontend" {
   source = "./modules/aks"
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
-  agw_id                     = module.application_gateway["gateway"].id
+  application_gateway        = module.application_gateway["gateway"]
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rg["app"]
   resource_prefix            = "${local.resource_prefix["app"]}-FRONTEND"
+  subnet_id                  = data.azurerm_subnet.subnet["FLLMFrontEnd"].id
   tags                       = azurerm_resource_group.rg["app"].tags
   tenant_id                  = data.azurerm_client_config.current.tenant_id
 
@@ -232,7 +248,7 @@ module "aks_frontend" {
   ]
 
   private_endpoint = {
-    subnet = data.azurerm_subnet.subnet["FLLMFrontEnd"]
+    subnet_id = data.azurerm_subnet.subnet["FLLMServices"].id
     private_dns_zone_ids = {
       aks = [
         data.azurerm_private_dns_zone.private_dns["aks"].id,
@@ -241,13 +257,9 @@ module "aks_frontend" {
   }
 }
 
-moved {
-  from = module.application_gateway
-  to   = module.application_gateway["www"]
-}
 module "application_gateway" {
   source     = "./modules/application-gateway"
-  depends_on = [azurerm_role_assignment.keyvault_secrets_user_agw]
+  depends_on = [azurerm_role_assignment.role_agw_mi]
   for_each = toset([
     "www",
     "gateway",

@@ -3,14 +3,19 @@ variable "action_group_id" {
   type        = string
 }
 
-variable "agw_id" {
-  description = "Specify the application gateway ID for incoming traffic."
-  type        = string
-}
-
 variable "administrator_object_ids" {
   description = "Groups or users that should be granted admin access to the cluster."
   type        = list(string)
+}
+
+variable "application_gateway" {
+  description = "Specify the application gateway for incoming traffic."
+  type = object({
+    id = string
+    identity = object({
+      identity_ids = list(string)
+    })
+  })
 }
 
 variable "log_analytics_workspace_id" {
@@ -21,10 +26,7 @@ variable "log_analytics_workspace_id" {
 variable "private_endpoint" {
   description = "The private endpoint configuration."
   type = object({
-    subnet = object({
-      id   = string
-      name = string
-    })
+    subnet_id            = string
     private_dns_zone_ids = map(list(string))
   })
 }
@@ -40,6 +42,11 @@ variable "resource_group" {
 
 variable "resource_prefix" {
   description = "The name prefix for the module resources."
+  type        = string
+}
+
+variable "subnet_id" {
+  description = "The ID of the subnet to deploy the cluster nodes into."
   type        = string
 }
 
