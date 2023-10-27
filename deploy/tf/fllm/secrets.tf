@@ -59,7 +59,7 @@ resource "time_rotating" "core_entra" {
 }
 
 resource "azuread_application_password" "core_entra" {
-  application_object_id = data.azuread_application.core_entra.object_id
+  application_id = "/applications/${data.azuread_application.core_entra.object_id}"
   rotate_when_changed = {
     rotation = time_rotating.core_entra.id
   }
@@ -86,7 +86,7 @@ resource "time_rotating" "client_entra" {
 }
 
 resource "azuread_application_password" "client_entra" {
-  application_object_id = data.azuread_application.client_entra.object_id
+  application_id = "/applications/${data.azuread_application.client_entra.object_id}"
   rotate_when_changed = {
     rotation = time_rotating.client_entra.id
   }
