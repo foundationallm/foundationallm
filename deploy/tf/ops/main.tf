@@ -428,7 +428,7 @@ locals {
             destination_port_range     = "3389"
             priority                   = 128
             protocol                   = "Tcp"
-            source_address_prefix      = "Internet"
+            source_address_prefix      = "VirtualNetwork"
             source_port_range          = "*"
           }
           "allow-vnet-inbound" = {
