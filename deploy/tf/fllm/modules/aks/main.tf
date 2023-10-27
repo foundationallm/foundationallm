@@ -11,23 +11,31 @@ locals {
     #      severity    = 0
     #    }
   }
+
+  role_mi = {
+    dns = {
+      role  = "Private DNS Zone Contributor"
+      scope = var.private_endpoint.private_dns_zone_ids["aks"][0]
+    }
+    network = {
+      role  = "Network Contributor"
+      scope = var.private_endpoint.subnet.id
+    }
+  }
 }
 
 # Data Sources
-# TODO: Consider passing this in as a variable.
-data "azurerm_client_config" "current" {}
 
 # Resources
 resource "azurerm_kubernetes_cluster" "main" {
-  depends_on = [
-    azurerm_role_assignment.dns_contributor,
-    azurerm_role_assignment.network_contributor
-  ]
+  depends_on = [azurerm_role_assignment.role_mi]
 
   automatic_channel_upgrade         = "stable"
+  azure_policy_enabled              = true
   dns_prefix_private_cluster        = "${var.resource_prefix}-aks"
   location                          = var.resource_group.location
   name                              = "${var.resource_prefix}-aks"
+  node_resource_group               = "${var.resource_prefix}-aks-mrg"
   oidc_issuer_enabled               = true
   private_cluster_enabled           = true
   private_dns_zone_id               = var.private_endpoint.private_dns_zone_ids["aks"][0]
@@ -38,29 +46,30 @@ resource "azurerm_kubernetes_cluster" "main" {
   workload_identity_enabled         = true
 
   azure_active_directory_role_based_access_control {
-    azure_rbac_enabled = true
-    managed            = true
-    tenant_id          = data.azurerm_client_config.current.tenant_id
-
-    admin_group_object_ids = [
-      data.azurerm_client_config.current.object_id,
-      var.aks_admin_object_id
-    ]
+    admin_group_object_ids = var.administrator_object_ids
+    azure_rbac_enabled     = true
+    managed                = true
+    tenant_id              = var.tenant_id
   }
 
-  # TODO: autoscale
   default_node_pool {
-    name           = "default"
-    node_count     = 3
-    vm_size        = "Standard_D2_v2"
-    vnet_subnet_id = var.private_endpoint.subnet.id
+    enable_auto_scaling = true
+    max_count           = 3
+    min_count           = 1
+    name                = "system"
+    os_disk_size_gb     = 1024
+    tags                = var.tags
+    vm_size             = "Standard_DS2_v2"
+    vnet_subnet_id      = var.private_endpoint.subnet.id
+
+    upgrade_settings {
+      max_surge = "200"
+    }
   }
 
   identity {
-    type = "UserAssigned"
-    identity_ids = [
-      azurerm_user_assigned_identity.aks_mi.id
-    ]
+    identity_ids = [azurerm_user_assigned_identity.aks_mi.id]
+    type         = "UserAssigned"
   }
 
   ingress_application_gateway {
@@ -127,23 +136,19 @@ resource "azurerm_private_endpoint" "ple" {
   }
 }
 
-# TODO: Combine into loop.
-resource "azurerm_role_assignment" "dns_contributor" {
-  principal_id         = azurerm_user_assigned_identity.aks_mi.principal_id
-  role_definition_name = "Private DNS Zone Contributor"
-  scope                = var.private_endpoint.private_dns_zone_ids["aks"][0]
-}
+resource "azurerm_role_assignment" "role_mi" {
+  for_each = local.role_mi
 
-resource "azurerm_role_assignment" "network_contributor" {
   principal_id         = azurerm_user_assigned_identity.aks_mi.principal_id
-  role_definition_name = "Network Contributor"
-  scope                = var.private_endpoint.subnet.id
+  role_definition_name = each.value.role
+  scope                = each.value.scope
 }
 
 resource "azurerm_user_assigned_identity" "aks_mi" {
   location            = var.resource_group.location
   name                = "${var.resource_prefix}-aks-mi"
   resource_group_name = var.resource_group.name
+  tags                = var.tags
 }
 
 # Modules

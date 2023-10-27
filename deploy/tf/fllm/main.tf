@@ -194,11 +194,16 @@ module "aks_backend" {
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
   agw_id                     = module.application_gateway["gateway"].id
-  aks_admin_object_id        = var.sql_admin_ad_group.object_id
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rg["app"]
   resource_prefix            = "${local.resource_prefix["app"]}-BACKEND"
   tags                       = azurerm_resource_group.rg["app"].tags
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
+
+  administrator_object_ids = [
+    data.azurerm_client_config.current.object_id,
+    var.sql_admin_ad_group.object_id
+  ]
 
   private_endpoint = {
     subnet = data.azurerm_subnet.subnet["FLLMServices"]
@@ -215,11 +220,16 @@ module "aks_frontend" {
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
   agw_id                     = module.application_gateway["www"].id
-  aks_admin_object_id        = var.sql_admin_ad_group.object_id
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rg["app"]
   resource_prefix            = "${local.resource_prefix["app"]}-FRONTEND"
   tags                       = azurerm_resource_group.rg["app"].tags
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
+
+  administrator_object_ids = [
+    data.azurerm_client_config.current.object_id,
+    var.sql_admin_ad_group.object_id
+  ]
 
   private_endpoint = {
     subnet = data.azurerm_subnet.subnet["FLLMFrontEnd"]

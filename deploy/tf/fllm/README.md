@@ -2,22 +2,31 @@
 
 - [Foundational LLM Standard Deployment](#foundational-llm-standard-deployment)
   - [Pre-requisites](#pre-requisites)
-  - [Requirements](#requirements)
-  - [Providers](#providers)
-  - [Modules](#modules)
-    - [ global](#-global)
-    - [ regions](#-regions)
-  - [Resources](#resources)
   - [Required Inputs](#required-inputs)
-    - [ tfc\_agent\_token](#-tfc_agent_token)
-  - [Optional Inputs](#optional-inputs)
     - [ environment](#-environment)
-    - [ global\_location](#-global_location)
+    - [ location](#-location)
     - [ project\_id](#-project_id)
     - [ public\_domain](#-public_domain)
     - [ sql\_admin\_ad\_group](#-sql_admin_ad_group)
-    - [ tags](#-tags)
+  - [Optional Inputs](#optional-inputs)
+    - [ client\_entra\_application](#-client_entra_application)
+    - [ core\_entra\_application](#-core_entra_application)
   - [Outputs](#outputs)
+  - [Resources](#resources)
+  - [Requirements](#requirements)
+  - [Providers](#providers)
+  - [Modules](#modules)
+    - [ aks\_backend](#-aks_backend)
+    - [ aks\_frontend](#-aks_frontend)
+    - [ application\_gateway](#-application_gateway)
+    - [ content\_safety](#-content_safety)
+    - [ cosmosdb](#-cosmosdb)
+    - [ cosmosdb\_data](#-cosmosdb_data)
+    - [ openai\_ha](#-openai_ha)
+    - [ search](#-search)
+    - [ sql](#-sql)
+    - [ storage](#-storage)
+    - [ storage\_data](#-storage_data)
 
 ## Pre-requisites
 
@@ -73,7 +82,23 @@ object({
 
 ## Optional Inputs
 
-No optional inputs.
+The following input variables are optional (have default values):
+
+### <a name="input_client_entra_application"></a> [client\_entra\_application](#input\_client\_entra\_application)
+
+Description: The Chat Client Entra application.
+
+Type: `string`
+
+Default: `"FoundationaLLM-Client"`
+
+### <a name="input_core_entra_application"></a> [core\_entra\_application](#input\_core\_entra\_application)
+
+Description: The Core API Entra application.
+
+Type: `string`
+
+Default: `"FoundationaLLM-API"`
 
 ## Outputs
 
@@ -83,9 +108,31 @@ No outputs.
 
 The following resources are used by this module:
 
+- [azuread_application_password.client_entra](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_password) (resource)
+- [azuread_application_password.core_entra](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_password) (resource)
+- [azurerm_app_configuration_key.config_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_key) (resource)
+- [azurerm_key_vault_secret.ai_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
+- [azurerm_key_vault_secret.api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
+- [azurerm_key_vault_secret.client_entra_clientsecret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
+- [azurerm_key_vault_secret.content_safety_apikey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
+- [azurerm_key_vault_secret.core_entra_clientsecret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
+- [azurerm_key_vault_secret.cosmosdb_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
+- [azurerm_key_vault_secret.langchain_csvfile_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
+- [azurerm_key_vault_secret.langchain_sqldatabase_testdb_pw](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
+- [azurerm_key_vault_secret.openai_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
+- [azurerm_key_vault_secret.search_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
+- [azurerm_key_vault_secret.storage_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
 - [azurerm_resource_group.rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) (resource)
 - [azurerm_role_assignment.keyvault_secrets_user_agw](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) (resource)
 - [azurerm_user_assigned_identity.agw](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) (resource)
+- [random_string.api_key](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) (resource)
+- [time_rotating.client_entra](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/rotating) (resource)
+- [time_rotating.core_entra](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/rotating) (resource)
+- [azuread_application.client_entra](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application) (data source)
+- [azuread_application.core_entra](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application) (data source)
+- [azurerm_app_configuration.appconfig](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/app_configuration) (data source)
+- [azurerm_application_insights.ai](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) (data source)
+- [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
 - [azurerm_dns_zone.public_dns](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/dns_zone) (data source)
 - [azurerm_key_vault.keyvault_ops](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) (data source)
 - [azurerm_key_vault_certificate.agw](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_certificate) (data source)
@@ -102,13 +149,21 @@ The following requirements are needed by this module:
 
 - <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.6)
 
+- <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) (~> 2.44)
+
 - <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 3.65)
 
 ## Providers
 
 The following providers are used by this module:
 
-- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (3.77.0)
+- <a name="provider_azuread"></a> [azuread](#provider\_azuread) (2.45.0)
+
+- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (3.78.0)
+
+- <a name="provider_random"></a> [random](#provider\_random) (3.5.1)
+
+- <a name="provider_time"></a> [time](#provider\_time) (0.9.1)
 
 ## Modules
 
@@ -129,6 +184,12 @@ Version:
 ### <a name="module_application_gateway"></a> [application\_gateway](#module\_application\_gateway)
 
 Source: ./modules/application-gateway
+
+Version:
+
+### <a name="module_content_safety"></a> [content\_safety](#module\_content\_safety)
+
+Source: ./modules/content-safety
 
 Version:
 

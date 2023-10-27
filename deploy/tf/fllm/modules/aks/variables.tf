@@ -8,9 +8,9 @@ variable "agw_id" {
   type        = string
 }
 
-variable "aks_admin_object_id" {
-  description = "The object ID of the AKS administrator."
-  type        = string
+variable "administrator_object_ids" {
+  description = "Groups or users that should be granted admin access to the cluster."
+  type        = list(string)
 }
 
 variable "log_analytics_workspace_id" {
@@ -46,4 +46,9 @@ variable "resource_prefix" {
 variable "tags" {
   description = "A map of tags for the resource."
   type        = map(string)
+}
+
+variable "tenant_id" {
+  description = "The ID of the tenant to use for RBAC."
+  type        = string
 }
