@@ -77,7 +77,7 @@ The following requirements are needed by this module:
 
 The following providers are used by this module:
 
-- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (3.77.0)
+- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (3.78.0)
 
 - <a name="provider_tfe"></a> [tfe](#provider\_tfe) (0.49.2)
 

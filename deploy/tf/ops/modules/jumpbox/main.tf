@@ -24,38 +24,28 @@ locals {
 }
 
 resource "azurerm_network_interface" "nic" {
-  location            = var.resource_group.location
-  name                = "${var.resource_prefix}-nic"
-  resource_group_name = var.resource_group.name
-  tags                = var.tags
+  enable_accelerated_networking = true
+  location                      = var.resource_group.location
+  name                          = "${var.resource_prefix}-nic"
+  resource_group_name           = var.resource_group.name
+  tags                          = var.tags
 
   ip_configuration {
     name                          = "internal"
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.pip.id
     subnet_id                     = var.subnet_id
   }
-}
-
-# TODO - replace with bastion
-resource "azurerm_public_ip" "pip" {
-  allocation_method   = "Static"
-  domain_name_label   = "fllm-jbx"
-  location            = var.resource_group.location
-  name                = "${var.resource_prefix}-pip"
-  resource_group_name = var.resource_group.name
-  sku                 = "Standard"
-  tags                = var.tags
 }
 
 resource "azurerm_windows_virtual_machine" "main" {
   admin_password             = random_password.password.result
   admin_username             = random_id.user.hex
+  computer_name              = replace(var.resource_prefix, "-", "")
   encryption_at_host_enabled = true
   location                   = var.resource_group.location
   name                       = "${var.resource_prefix}-vm"
-  computer_name              = replace(var.resource_prefix, "-", "")
   network_interface_ids      = [azurerm_network_interface.nic.id]
+  patch_mode                 = "AutomaticByPlatform"
   resource_group_name        = var.resource_group.name
   size                       = "Standard_B2s"
   tags                       = var.tags
@@ -72,9 +62,9 @@ resource "azurerm_windows_virtual_machine" "main" {
   }
 
   source_image_reference {
-    offer     = "WindowsServer"
-    publisher = "MicrosoftWindowsServer"
-    sku       = "2016-Datacenter"
+    offer     = "Windows-10"
+    publisher = "MicrosoftWindowsDesktop"
+    sku       = "win10-22h2-pro"
     version   = "latest"
   }
 }
