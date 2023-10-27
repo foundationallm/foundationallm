@@ -1,35 +1,35 @@
 locals {
   config_keys = {
     "FoundationaLLM:APIs:AgentFactoryAPI:APIUrl" = {
-      value = "http://foundationallm-agent-factory-api/agentfactory"
+      value       = "http://foundationallm-agent-factory-api/agentfactory"
       contentType = null
     }
     "FoundationaLLM:APIs:AgentHubAPI:APIUrl" = {
-      value = "http://foundationallm-agent-hub-api/agenthub"
+      value       = "http://foundationallm-agent-hub-api/agenthub"
       contentType = null
     }
     "FoundationaLLM:APIs:CoreAPI:APIUrl" = {
-      value = "https://${data.azurerm_dns_zone.public_dns.name}/core"
+      value       = "https://${data.azurerm_dns_zone.public_dns.name}/core"
       contentType = null
     }
     "FoundationaLLM:APIs:DataSourceHubAPI:APIUrl" = {
-      value = "http://foundationallm-data-source-hub-api/datasourcehub"
+      value       = "http://foundationallm-data-source-hub-api/datasourcehub"
       contentType = null
     }
     "FoundationaLLM:APIs:GatekeeperAPI:APIUrl" = {
-      value = "http://foundationallm-gatekeeper-api/gatekeeper"
+      value       = "http://foundationallm-gatekeeper-api/gatekeeper"
       contentType = null
     }
     "FoundationaLLM:APIs:LangChainAPI:APIUrl" = {
-      value = "http://foundationallm-langchain-api/langchain"
+      value       = "http://foundationallm-langchain-api/langchain"
       contentType = null
     }
     "FoundationaLLM:APIs:PromptHubAPI:APIUrl" = {
-      value = "http://foundationallm-prompt-hub-api/prompthub"
+      value       = "http://foundationallm-prompt-hub-api/prompthub"
       contentType = null
     }
     "FoundationaLLM:APIs:SemanticKernelAPI:APIUrl" = {
-      value = "http://foundationallm-semantic-kernel-api/semantickernel"
+      value       = "http://foundationallm-semantic-kernel-api/semantickernel"
       contentType = null
     }
     "FoundationaLLM:APIs:CoreAPI:AppInsightsConnectionString" = {
@@ -107,7 +107,7 @@ locals {
       contentType = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
     "FoundationaLLM:AgentHub:AgentMetadata:StorageContainer" = {
-      value = "agents"
+      value       = "agents"
       contentType = null
     }
     "FoundationaLLM:AgentHub:StorageManager:BlobStorage:ConnectionString" = {
@@ -123,63 +123,63 @@ locals {
       contentType = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
     "FoundationaLLM:AzureContentSafety:APIUrl" = {
-      value = module.content_safety.endpoint
+      value       = module.content_safety.endpoint
       contentType = null
     }
     "FoundationaLLM:AzureContentSafety:HateSeverity" = {
-      value = "2"
+      value       = "2"
       contentType = null
     }
     "FoundationaLLM:AzureContentSafety:SelfHarmSeverity" = {
-      value = "2"
+      value       = "2"
       contentType = null
     }
     "FoundationaLLM:AzureContentSafety:SexualSeverity" = {
-      value = "2"
+      value       = "2"
       contentType = null
     }
     "FoundationaLLM:AzureContentSafety:ViolenceSeverity" = {
-      value = "2"
+      value       = "2"
       contentType = null
     }
     "FoundationaLLM:AzureOpenAI:API:Completions:DeploymentName" = {
-      value = "completions"
+      value       = "completions"
       contentType = null
     }
     "FoundationaLLM:AzureOpenAI:API:Completions:MaxTokens" = {
-      value = "8096"
+      value       = "8096"
       contentType = null
     }
     "FoundationaLLM:AzureOpenAI:API:Completions:ModelName" = {
-      value = "gpt-35-turbo"
+      value       = "gpt-35-turbo"
       contentType = null
     }
     "FoundationaLLM:AzureOpenAI:API:Completions:ModelVersion" = {
-      value = "0301"
+      value       = "0301"
       contentType = null
     }
     "FoundationaLLM:AzureOpenAI:API:Completions:Temperature" = {
-      value = "0"
+      value       = "0"
       contentType = null
     }
     "FoundationaLLM:AzureOpenAI:API:Embeddings:DeploymentName" = {
-      value = "embeddings"
+      value       = "embeddings"
       contentType = null
     }
     "FoundationaLLM:AzureOpenAI:API:Embeddings:MaxTokens" = {
-      value = "8191"
+      value       = "8191"
       contentType = null
     }
     "FoundationaLLM:AzureOpenAI:API:Embeddings:ModelName" = {
-      value = "text-embedding-ada-002"
+      value       = "text-embedding-ada-002"
       contentType = null
     }
     "FoundationaLLM:AzureOpenAI:API:Embeddings:Temperature" = {
-      value = "0"
+      value       = "0"
       contentType = null
     }
     "FoundationaLLM:AzureOpenAI:API:Endpoint" = {
-      value = module.openai_ha.endpoint
+      value       = module.openai_ha.endpoint
       contentType = null
     }
     "FoundationaLLM:AzureOpenAI:API:Key" = {
@@ -189,7 +189,7 @@ locals {
       contentType = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
     "FoundationaLLM:AzureOpenAI:API:Version" = {
-      value = "2023-05-15"
+      value       = "2023-05-15"
       contentType = null
     }
     "FoundationaLLM:BlobStorage:ConnectionString" = {
@@ -205,63 +205,63 @@ locals {
       contentType = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
     "FoundationaLLM:BlobStorageMemorySource:ConfigBlobStorageContainer" = {
-      value = "memory-source"
+      value       = "memory-source"
       contentType = null
     }
     "FoundationaLLM:BlobStorageMemorySource:ConfigFilePath" = {
-      value = "BlobMemorySourceConfig.json"
+      value       = "BlobMemorySourceConfig.json"
       contentType = null
     }
     "FoundationaLLM:Branding:AccentColor" = {
-      value = "#FFF"
+      value       = "#FFF"
       contentType = null
     }
     "FoundationaLLM:Branding:CompanyName" = {
-      value = "FoundationaLLM"
+      value       = "FoundationaLLM"
       contentType = null
     }
     "FoundationaLLM:Branding:FavIconUrl" = {
-      value = "favicon.ico"
+      value       = "favicon.ico"
       contentType = null
     }
     "FoundationaLLM:Branding:KioskMode" = {
-      value = "false"
+      value       = "false"
       contentType = null
     }
     "FoundationaLLM:Branding:LogoText" = {
-      value = ""
+      value       = ""
       contentType = null
     }
     "FoundationaLLM:Branding:LogoUrl" = {
-      value = "foundationallm-logo-white.svg"
+      value       = "foundationallm-logo-white.svg"
       contentType = null
     }
     "FoundationaLLM:Branding:PageTitle" = {
-      value = "FoundationaLLM Chat Copilot"
+      value       = "FoundationaLLM Chat Copilot"
       contentType = null
     }
     "FoundationaLLM:Branding:PrimaryColor" = {
-      value = "#131833"
+      value       = "#131833"
       contentType = null
     }
     "FoundationaLLM:Branding:PrimaryTextColor" = {
-      value = "#FFF"
+      value       = "#FFF"
       contentType = null
     }
     "FoundationaLLM:Branding:SecondaryColor" = {
-      value = "#334581"
+      value       = "#334581"
       contentType = null
     }
     "FoundationaLLM:Branding:SecondaryTextColor" = {
-      value = "#FFF"
+      value       = "#FFF"
       contentType = null
     }
     "FoundationaLLM:Chat:Entra:CallbackPath" = {
-      value = "/signin-oidc"
+      value       = "/signin-oidc"
       contentType = null
     }
     "FoundationaLLM:Chat:Entra:ClientId" = {
-      value = data.azuread_application.client_entra.client_id
+      value       = data.azuread_application.client_entra.client_id
       contentType = null
     }
     "FoundationaLLM:Chat:Entra:ClientSecret" = {
@@ -271,15 +271,15 @@ locals {
       contentType = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
     "FoundationaLLM:Chat:Entra:Instance" = {
-      value = "https://login.microsoftonline.com/"
+      value       = "https://login.microsoftonline.com/"
       contentType = null
     }
     "FoundationaLLM:Chat:Entra:Scopes" = {
-      value = "api://FoundationaLLM-Auth/Data.Read"
+      value       = "api://FoundationaLLM-Auth/Data.Read"
       contentType = null
     }
     "FoundationaLLM:Chat:Entra:TenantId" = {
-      value = data.azurerm_client_config.current.tenant_id
+      value       = data.azurerm_client_config.current.tenant_id
       contentType = null
     }
     "FoundationaLLM:CognitiveSearch:ConfigBlobStorageConnection" = {
@@ -289,11 +289,11 @@ locals {
       contentType = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
     "FoundationaLLM:CognitiveSearch:EndPoint" = {
-      value = module.search.endpoint
+      value       = module.search.endpoint
       contentType = null
     }
     "FoundationaLLM:CognitiveSearch:IndexName" = {
-      value = "vector-index"
+      value       = "vector-index"
       contentType = null
     }
     "FoundationaLLM:CognitiveSearch:Key" = {
@@ -303,7 +303,7 @@ locals {
       contentType = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
     "FoundationaLLM:CognitiveSearch:MaxVectorSearchResults" = {
-      value = "10"
+      value       = "10"
       contentType = null
     }
     "FoundationaLLM:CognitiveSearchMemorySource:BlobStorageConnection" = {
@@ -313,19 +313,19 @@ locals {
       contentType = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
     "FoundationaLLM:CognitiveSearchMemorySource:ConfigBlobStorageContainer" = {
-      value = "memory-source"
+      value       = "memory-source"
       contentType = null
     }
     "FoundationaLLM:CognitiveSearchMemorySource:ConfigFilePath" = {
-      value = "BlobMemorySourceConfig.json"
+      value       = "BlobMemorySourceConfig.json"
       contentType = null
     }
     "FoundationaLLM:CognitiveSearchMemorySource:EndPoint" = {
-      value = module.search.endpoint
+      value       = module.search.endpoint
       contentType = null
     }
     "FoundationaLLM:CognitiveSearchMemorySource:IndexName" = {
-      value = "vector-index"
+      value       = "vector-index"
       contentType = null
     }
     "FoundationaLLM:CognitiveSearchMemorySource:Key" = {
@@ -335,11 +335,11 @@ locals {
       contentType = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
     "FoundationaLLM:CoreAPI:Entra:CallbackPath" = {
-      value = "/signin-oidc"
+      value       = "/signin-oidc"
       contentType = null
     }
     "FoundationaLLM:CoreAPI:Entra:ClientId" = {
-      value = data.azuread_application.core_entra.client_id
+      value       = data.azuread_application.core_entra.client_id
       contentType = null
     }
     "FoundationaLLM:CoreAPI:Entra:ClientSecret" = {
@@ -349,31 +349,31 @@ locals {
       contentType = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
     "FoundationaLLM:CoreAPI:Entra:Instance" = {
-      value = "https://login.microsoftonline.com/"
+      value       = "https://login.microsoftonline.com/"
       contentType = null
     }
     "FoundationaLLM:CoreAPI:Entra:Scopes" = {
-      value = "Data.Read"
+      value       = "Data.Read"
       contentType = null
     }
     "FoundationaLLM:CoreAPI:Entra:TenantId" = {
-      value = data.azurerm_client_config.current.tenant_id
+      value       = data.azurerm_client_config.current.tenant_id
       contentType = null
     }
     "FoundationaLLM:CosmosDB:ChangeFeedLeaseContainer" = {
-      value = "leases"
+      value       = "leases"
       contentType = null
     }
     "FoundationaLLM:CosmosDB:Containers" = {
-      value = "completions, customer, product"
+      value       = "completions, customer, product"
       contentType = null
     }
     "FoundationaLLM:CosmosDB:Database" = {
-      value = "database"
+      value       = "database"
       contentType = null
     }
     "FoundationaLLM:CosmosDB:Endpoint" = {
-      value = module.cosmosdb.endpoint
+      value       = module.cosmosdb.endpoint
       contentType = null
     }
     "FoundationaLLM:CosmosDB:Key" = {
@@ -383,11 +383,11 @@ locals {
       contentType = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
     "FoundationaLLM:CosmosDB:MonitoredContainers" = {
-      value = "customer, product"
+      value       = "customer, product"
       contentType = null
     }
     "FoundationaLLM:DataSourceHub:DataSourceMetadata:StorageContainer" = {
-      value = "data-sources"
+      value       = "data-sources"
       contentType = null
     }
     "FoundationaLLM:DataSourceHub:StorageManager:BlobStorage:ConnectionString" = {
@@ -403,7 +403,7 @@ locals {
       contentType = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
     "FoundationaLLM:DurableSystemPrompt:BlobStorageContainer" = {
-      value = "system-prompt"
+      value       = "system-prompt"
       contentType = null
     }
     "FoundationaLLM:LangChain:CSVFile:URL" = {
@@ -419,11 +419,11 @@ locals {
       contentType = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
     "FoundationaLLM:LangChain:Summary:MaxTokens" = {
-      value = "4097"
+      value       = "4097"
       contentType = null
     }
     "FoundationaLLM:LangChain:Summary:ModelName" = {
-      value = "gpt-35-turbo"
+      value       = "gpt-35-turbo"
       contentType = null
     }
     "FoundationaLLM:LangChainAPI:Key" = {
@@ -435,7 +435,7 @@ locals {
       contentType = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
     "FoundationaLLM:OpenAI:API:Endpoint" = {
-      value = module.openai_ha.endpoint
+      value       = module.openai_ha.endpoint
       contentType = null
     }
     "FoundationaLLM:OpenAI:API:Key" = {
@@ -445,11 +445,11 @@ locals {
       contentType = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
     "FoundationaLLM:OpenAI:API:Temperature" = {
-      value = "0"
+      value       = "0"
       contentType = null
     }
     "FoundationaLLM:PromptHub:PromptMetadata:StorageContainer" = {
-      value = "system-prompt"
+      value       = "system-prompt"
       contentType = null
     }
     "FoundationaLLM:PromptHub:StorageManager:BlobStorage:ConnectionString" = {
@@ -459,59 +459,59 @@ locals {
       contentType = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
     "FoundationaLLM:Refinement" = {
-      value = ""
+      value       = ""
       contentType = null
     }
     "FoundationaLLM:SemanticKernelAPI:OpenAI.ChatCompletionPromptName" = {
-      value = "RetailAssistant.Default"
+      value       = "RetailAssistant.Default"
       contentType = null
     }
     "FoundationaLLM:SemanticKernelAPI:OpenAI.CompletionsDeploymentName" = {
-      value = "completions"
+      value       = "completions"
       contentType = null
     }
     "FoundationaLLM:SemanticKernelAPI:OpenAI.EmbeddingsDeploymentName" = {
-      value = "embeddings"
+      value       = "embeddings"
       contentType = null
     }
     "FoundationaLLM:SemanticKernelAPI:OpenAI.EmbeddingsDeploymentMaxTokens" = {
-      value = "8191"
+      value       = "8191"
       contentType = null
     }
     "FoundationaLLM:SemanticKernelAPI:OpenAI.Endpoint" = {
-      value = module.openai_ha.endpoint
+      value       = module.openai_ha.endpoint
       contentType = null
     }
     "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.CompletionsMaxTokens" = {
-      value = "300"
+      value       = "300"
       contentType = null
     }
     "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.CompletionsMinTokens" = {
-      value = "50"
+      value       = "50"
       contentType = null
     }
     "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.MemoryMaxTokens" = {
-      value = "3000"
+      value       = "3000"
       contentType = null
     }
     "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.MemoryMinTokens" = {
-      value = "1500"
+      value       = "1500"
       contentType = null
     }
     "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.MessagesMaxTokens" = {
-      value = "3000"
+      value       = "3000"
       contentType = null
     }
     "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.MessagesMinTokens" = {
-      value = "100"
+      value       = "100"
       contentType = null
     }
     "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.SystemMaxTokens" = {
-      value = "1500"
+      value       = "1500"
       contentType = null
     }
     "FoundationaLLM:SemanticKernelAPI:OpenAI.ShortSummaryPromptName" = {
-      value = "Summarizer.TwoWords"
+      value       = "Summarizer.TwoWords"
       contentType = null
     }
     "FoundationaLLM:SemanticKernelAPI:OpenAI:Key" = {
