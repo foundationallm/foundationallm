@@ -73,7 +73,9 @@ resource "azurerm_kubernetes_cluster" "main" {
   }
 
   ingress_application_gateway {
-    gateway_id = var.agw_id
+    # gateway_id = var.agw_id
+    gateway_name = "${var.resource_prefix}-agw"
+    subnet_id    = var.agw_subnet_id
   }
 
   microsoft_defender {
