@@ -1,49 +1,67 @@
 ﻿using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Gatekeeper.Core.Interfaces;
+using FoundationaLLM.Gatekeeper.Core.Models.ContentSafety;
 using FoundationaLLM.Gatekeeper.Core.Services;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Gatekeeper.Tests.Services
 {
     public class GatekeeperServiceTests
     {
+        private readonly GatekeeperService _gatekeeperService;
+
+        private readonly IContentSafetyService _contentSafetyService = Substitute.For<IContentSafetyService>();
+        private readonly IAgentFactoryAPIService _agentFactoryAPIService = Substitute.For<IAgentFactoryAPIService>();
+        private readonly IRefinementService _refinementService = Substitute.For<IRefinementService>();
+
+        public GatekeeperServiceTests()
+        {
+            _gatekeeperService = new GatekeeperService(_agentFactoryAPIService, _refinementService, _contentSafetyService);
+        }
+
         [Fact]
         public async Task GetCompletion_CallsAgentFactoryAPIServiceWithCompletionRequest()
         {
             // Arrange
-            var agentFactoryAPIService = Substitute.For<IAgentFactoryAPIService>();
-            var refinementService = Substitute.For<IRefinementService>();
-            var contentSafetyService = Substitute.For<IContentSafetyService>();
-            var service = new GatekeeperService(agentFactoryAPIService, refinementService, contentSafetyService);
-            var completionRequest = new CompletionRequest { UserPrompt = "Prompt_1", MessageHistory = new List<FoundationaLLM.Common.Models.Chat.MessageHistoryItem>() };
+            var completionRequest = new CompletionRequest
+            {
+                UserPrompt = "Safe content."
+            };
+
+            var expectedResult = new CompletionResponse { Completion = "Completion from Agent Factory API Service." };
+
+            var safeContentResult = new AnalyzeTextFilterResult { Reason = "Safe", Safe = true };
+            _contentSafetyService.AnalyzeText(completionRequest.UserPrompt).Returns(safeContentResult);
+            _agentFactoryAPIService.GetCompletion(completionRequest).Returns(expectedResult);
 
             // Act
-            await service.GetCompletion(completionRequest);
+            var result = await _gatekeeperService.GetCompletion(completionRequest);
 
             // Assert
-            await agentFactoryAPIService.Received(1).GetCompletion(Arg.Is(completionRequest));
+            Assert.Equal(expectedResult, result);
         }
 
         [Fact]
         public async Task GetSummary_CallsAgentFactoryAPIServiceWithSummaryRequest()
         {
             // Arrange
-            var agentFactoryAPIService = Substitute.For<IAgentFactoryAPIService>();
-            var refinementService = Substitute.For<IRefinementService>();
-            var contentSafetyService = Substitute.For<IContentSafetyService>();
-            var service = new GatekeeperService(agentFactoryAPIService, refinementService, contentSafetyService);
-            var summaryRequest = new SummaryRequest { UserPrompt = "Prompt_1" };
+            var summaryRequest = new SummaryRequest
+            {
+                UserPrompt = "Safe content for summary."
+            };
+
+            var expectedResult = new SummaryResponse { Summary = "Summary from Agent Factory API Service." };
+
+            var safeContentResult = new AnalyzeTextFilterResult { Reason="Safe", Safe = true };
+
+            _contentSafetyService.AnalyzeText(summaryRequest.UserPrompt).Returns(safeContentResult);
+            _agentFactoryAPIService.GetSummary(summaryRequest).Returns(expectedResult);
 
             // Act
-            await service.GetSummary(summaryRequest);
+            var result = await _gatekeeperService.GetSummary(summaryRequest);
 
             // Assert
-            await agentFactoryAPIService.Received(1).GetSummary(Arg.Is(summaryRequest));
+            Assert.Equal(expectedResult, result);
         }
     }
 }
