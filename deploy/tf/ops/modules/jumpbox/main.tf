@@ -45,7 +45,7 @@ resource "azurerm_windows_virtual_machine" "main" {
   location                   = var.resource_group.location
   name                       = "${var.resource_prefix}-vm"
   network_interface_ids      = [azurerm_network_interface.nic.id]
-  patch_mode                 = "AutomaticByPlatform"
+  patch_mode                 = "AutomaticByOS"
   resource_group_name        = var.resource_group.name
   size                       = "Standard_DS3_v2"
   tags                       = var.tags
