@@ -1,0 +1,6 @@
+# controls what directories get uploaded to TFC for remote runs
+#
+# deny by default
+*
+# explicitly list included directories
+!deploy/tf/

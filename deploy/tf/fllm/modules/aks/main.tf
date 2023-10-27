@@ -44,7 +44,7 @@ locals {
     }
     identity = {
       role  = "Contributor"
-      scope = var.application_gateway.identity.identity_ids[0]
+      scope = var.application_gateway.identity_id
     }
   }
 }
