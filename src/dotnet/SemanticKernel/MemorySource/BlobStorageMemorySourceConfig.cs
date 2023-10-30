@@ -13,7 +13,7 @@
         /// <summary>
         /// The list of file memory sources.
         /// </summary>
-        public required List<FileMemorySource> FileMemorySources { get; init; }
+        public required List<FileMemorySource> TextFileMemorySources { get; init; }
     }
 
     /// <summary>
@@ -29,7 +29,7 @@
         /// <summary>
         /// The list of file memory source files.
         /// </summary>
-        public required List<FileMemorySourceFile> Files { get; init; }
+        public required List<FileMemorySourceFile> TextFiles { get; init; }
     }
 
     /// <summary>

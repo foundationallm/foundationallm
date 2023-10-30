@@ -46,8 +46,8 @@ namespace FoundationaLLM.SemanticKernel.MemorySource
         {
             await EnsureConfig();
 
-            var filesContent = await Task.WhenAll(_config.FileMemorySources
-                .Select(tfms => tfms.Files.Select(tf => ReadTextFileContent(tfms.ContainerName, tf)))
+            var filesContent = await Task.WhenAll(_config.TextFileMemorySources
+                .Select(tfms => tfms.TextFiles.Select(tf => ReadTextFileContent(tfms.ContainerName, tf)))
                 .SelectMany(x => x));
 
             var chunkedFilesContent = filesContent
