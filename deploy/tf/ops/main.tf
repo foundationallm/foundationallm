@@ -17,6 +17,15 @@ locals {
 
   default_nsg_rules = {
     inbound = {
+      "allow-jumpbox-inbound" = {
+        access                     = "Allow"
+        destination_address_prefix = "VirtualNetwork"
+        destination_port_range     = "*"
+        priority                   = 4093
+        protocol                   = "Tcp"
+        source_address_prefix      = local.address_prefix["jumpbox"]
+        source_port_range          = "*"
+      }
       "allow-ado-agents-inbound" = {
         access                     = "Allow"
         destination_address_prefix = "VirtualNetwork"
@@ -455,7 +464,7 @@ locals {
           }
         })
 
-        outbound = merge(local.default_nsg_rules.outbound, {
+        outbound = merge({ }, {
           "allow-vnet-outbound" = {
             access                     = "Allow"
             destination_address_prefix = "VirtualNetwork"
