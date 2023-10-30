@@ -1,6 +1,6 @@
 ﻿using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.Connectors.AI.OpenAI;
 using Microsoft.SemanticKernel.Orchestration;
-using Microsoft.SemanticKernel.SkillDefinition;
 using System.ComponentModel;
 
 namespace FoundationaLLM.SemanticKernel.Skills.Core
@@ -10,6 +10,7 @@ namespace FoundationaLLM.SemanticKernel.Skills.Core
     /// </summary>
     public class GenericSummarizerSkill
     {
+        private readonly IKernel _kernel;
         private readonly ISKFunction _summarizeConversation;
 
         /// <summary>
@@ -23,13 +24,14 @@ namespace FoundationaLLM.SemanticKernel.Skills.Core
             int maxTokens,
             IKernel kernel)
         {
+            _kernel = kernel;
+
             _summarizeConversation = kernel.CreateSemanticFunction(
                 promptTemplate,
-                skillName: nameof(GenericSummarizerSkill),
-                description: "Given a section of a conversation transcript, summarize the part of the conversation",
-                maxTokens: maxTokens,
-                temperature: 0.1,
-                topP: 0.5);
+                requestSettings: new OpenAIRequestSettings() { MaxTokens = maxTokens, Temperature = 0.1, TopP = 0.5 },
+                functionName: nameof(GenericSummarizerSkill),
+                pluginName: nameof(GenericSummarizerSkill),
+                description: "Given a section of a conversation transcript, summarize the part of the conversation");
         }
 
         /// <summary>
@@ -39,11 +41,15 @@ namespace FoundationaLLM.SemanticKernel.Skills.Core
         /// <param name="context">The Semantic Kernel context.</param>
         /// <returns>The updated Semantic Kernel context.</returns>
         [SKFunction()]
-        public Task<SKContext> SummarizeConversationAsync(
+        public async Task<string> SummarizeConversationAsync(
             [Description("A short or long conversation transcript.")] string input,
             SKContext context)
         {
-            return _summarizeConversation.InvokeAsync(input);
+            var result1 = await _kernel.RunAsync(input, _summarizeConversation);
+
+            var result2 = await _summarizeConversation.InvokeAsync(input, _kernel);
+
+            return result1.ToString() ?? result2.ToString();
         }
     }
 }

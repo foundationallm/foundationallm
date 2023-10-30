@@ -18,11 +18,11 @@ namespace FoundationaLLM.SemanticKernel.Tests.Services
         private readonly IOptions<SemanticKernelServiceSettings> _options = Substitute.For<IOptions<SemanticKernelServiceSettings>>();
         private readonly IOptions<AzureCognitiveSearchMemorySourceSettings> _cognitiveSearchMemorySourceSettings = Substitute.For<IOptions<AzureCognitiveSearchMemorySourceSettings>>();
         private readonly ILogger<SemanticKernelService> _logger = Substitute.For<ILogger<SemanticKernelService>>();
-        private readonly ILogger<Kernel> _skLogger = Substitute.For<ILogger<Kernel>>();
+        private readonly ILoggerFactory _loggerFactory = Substitute.For<ILoggerFactory>();
 
         public SemanticKernelServiceTests()
         {
-            _testedService = new SemanticKernelService(_systemPromptService, _memorySources, _options, _cognitiveSearchMemorySourceSettings, _logger, _skLogger);
+            _testedService = new SemanticKernelService(_systemPromptService, _memorySources, _options, _cognitiveSearchMemorySourceSettings, _logger, _loggerFactory);
         }
 
         #region GetCompletion

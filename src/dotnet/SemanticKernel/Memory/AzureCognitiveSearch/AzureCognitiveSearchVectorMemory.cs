@@ -160,7 +160,7 @@ namespace FoundationaLLM.SemanticKernel.Memory.AzureCognitiveSearch
                 var embbedding = await _textEmbedding.GenerateEmbeddingAsync(itemToEmbed.TextToEmbed);
 
                 // Add the newly calculated embedding to the entity.
-                vectorizer(item, embbedding.Vector.ToArray());
+                vectorizer(item, embbedding.ToArray());
 
                 // This will send the vectorized object to the Azure Cognitive Search index.
                 await _searchClient.IndexDocumentsAsync(IndexDocumentsBatch.Upload(new object[] { item }));
@@ -318,7 +318,7 @@ namespace FoundationaLLM.SemanticKernel.Memory.AzureCognitiveSearch
                 var embedding = await _textEmbedding.GenerateEmbeddingAsync(query);
 
                 // Perform the vector similarity search  
-                var vector = new SearchQueryVector { K = limit, Fields = VectorFieldName, Value = embedding.Vector.ToList() };
+                var vector = new SearchQueryVector { K = limit, Fields = VectorFieldName, Value = embedding.ToArray().ToList() };
                 var searchOptions = new SearchOptions
                 {
                     Vector = vector,

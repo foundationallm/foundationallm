@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel.AI.Embeddings;
 using Microsoft.SemanticKernel.Memory;
+using Microsoft.SemanticKernel.Plugins.Memory;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
 using System.Text;

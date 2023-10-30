@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Memory;
-using Microsoft.SemanticKernel.SkillDefinition;
 using System.ComponentModel;
 using System.Text.Json;
 
@@ -84,7 +84,7 @@ namespace FoundationaLLM.SemanticKernel.Skills.Core
 
             //By convention, the first item in the result is the embedding of the input text.
             //Once SK develops a more standardized way to expose embeddings, this should be removed.
-            _lastInputTextEmbedding = memories.First().Embedding?.Vector;
+            _lastInputTextEmbedding = memories.First().Embedding?.ToArray(); //memories.First().Embedding?.Vector;
 
             var combinedMemories = memories.Skip(1).ToList();
             if (_shortTermMemory != null)

@@ -51,14 +51,14 @@ public class SemanticKernelService : ISemanticKernelService
     /// <param name="options">The configuration options for the Semantic Kernel service.</param>
     /// <param name="cognitiveSearchMemorySourceSettings">The configuration options for the Azure Cognitive Search memory source.</param>
     /// <param name="logger">The logger for the Semantic Kernel service.</param>
-    /// <param name="skLogger">The logger for the Semantic kernel.</param>
+    /// <param name="loggerFactory">The logger factory for the Semantic kernel.</param>
     public SemanticKernelService(
         ISystemPromptService systemPromptService,
         IEnumerable<IMemorySource> memorySources,
         IOptions<SemanticKernelServiceSettings> options,
         IOptions<AzureCognitiveSearchMemorySourceSettings> cognitiveSearchMemorySourceSettings,
         ILogger<SemanticKernelService> logger,
-        ILogger<Kernel> skLogger)
+        ILoggerFactory loggerFactory)
     {
         _systemPromptService = systemPromptService;
         _memorySources = memorySources;
@@ -70,7 +70,7 @@ public class SemanticKernelService : ISemanticKernelService
 
         var builder = new KernelBuilder();
 
-        builder.WithLogger(skLogger);
+        builder.WithLoggerFactory(loggerFactory);
 
         builder.WithAzureTextEmbeddingGenerationService(
             _settings.OpenAI.EmbeddingsDeployment,
@@ -206,12 +206,12 @@ public class SemanticKernelService : ISemanticKernelService
             500,
             _semanticKernel);
 
-        var updatedContext = await summarizerSkill.SummarizeConversationAsync(
+        var result = await summarizerSkill.SummarizeConversationAsync(
             userPrompt,
             _semanticKernel.CreateNewContext());
 
         //Remove all non-alpha numeric characters (Turbo has a habit of putting things in quotes even when you tell it not to
-        var summary = Regex.Replace(updatedContext.Result, @"[^a-zA-Z0-9\s]", "");
+        var summary = Regex.Replace(result, @"[^a-zA-Z0-9\s]", "");
 
         return summary;
     }
