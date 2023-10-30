@@ -1,11 +1,14 @@
 <template>
-	<div class="navbar" :class="{ 'navbar-collapsed': collapseSidebar }">
+	<div class="navbar" :class="{ 'navbar-collapsed': closeSidebar }">
 		<!-- Sidebar header -->
 		<div class="navbar__header">
-			<img :src="logoURL" v-if="logoURL !== ''"/>
+			<img v-if="logoURL !== ''" :src="logoURL" />
 			<span v-else>{{ logoText }}</span>
-			<Button v-if="collapsedSidebar" icon="pi pi-arrow-right" size="small" severity="secondary" @click="collapseSidebar(false)" />
-			<Button v-else icon="pi pi-arrow-left" size="small" severity="secondary" @click="collapseSidebar(true)" />
+
+			<template v-if="!isKioskMode">
+				<Button v-if="isSidebarClosed" icon="pi pi-arrow-right" size="small" severity="secondary" @click="closeSidebar(false)" />
+				<Button v-else icon="pi pi-arrow-left" size="small" severity="secondary" @click="closeSidebar(true)" />
+			</template>
 		</div>
 
 		<!-- Sidebar -->
@@ -62,13 +65,14 @@ export default {
 		},
 	},
 
-	emits: ['collapse-sidebar'],
+	emits: ['close-sidebar'],
 
 	data() {
 		return {
 			logoText: '',
 			logoURL: '',
-			collapsedSidebar: false,
+			isSidebarClosed: true,
+			isKioskMode: true,
 			signedIn: false,
 			accountName: '',
 			userName: '',
@@ -84,15 +88,17 @@ export default {
 				this.accountName = accounts[0].name;
 				this.userName = accounts[0].username;
 			}
+			this.logoText = await getAppConfigSetting('FoundationaLLM:Branding:LogoText');
+			this.logoURL = await getAppConfigSetting('FoundationaLLM:Branding:LogoUrl');
+			this.isKioskMode = Boolean(await getAppConfigSetting('FoundationaLLM:Branding:KioskMode'));
+			this.closeSidebar(this.isKioskMode);
 		}
-		this.logoText = await getAppConfigSetting("FoundationaLLM:Branding:LogoText");
-		this.logoURL = await getAppConfigSetting("FoundationaLLM:Branding:LogoUrl");
 	},
 
 	methods: {
-		collapseSidebar(collapsed: boolean) {
-			this.collapsedSidebar = collapsed;
-			this.$emit('collapse-sidebar', collapsed);
+		closeSidebar(closed: boolean) {
+			this.isSidebarClosed = closed;
+			this.$emit('close-sidebar', closed);
 		},
 
 		handleCopySession() {

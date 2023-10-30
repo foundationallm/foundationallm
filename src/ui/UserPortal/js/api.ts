@@ -6,8 +6,8 @@ import getAppConfigSetting from './config';
 //const API_URL = await getAppConfigSetting("FoundationaLLM:APIs:CoreAPI:APIUrl");
 let API_URL: string;
 async function loadConfig() {
-  API_URL = await getAppConfigSetting("FoundationaLLM:APIs:CoreAPI:APIUrl") as string;
-  // Additional logic if needed
+  const apiUrl = await getAppConfigSetting("FoundationaLLM:APIs:CoreAPI:APIUrl") as string;
+	API_URL = apiUrl ? apiUrl.replace(/\/$/, "") : '';
 }
 loadConfig();
 
