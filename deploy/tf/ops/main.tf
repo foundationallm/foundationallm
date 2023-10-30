@@ -263,7 +263,7 @@ locals {
       }
 
       nsg_rules = {
-        inbound  = merge({}, {})
+        inbound  = merge(local.default_nsg_rules.inbound, {})
         outbound = merge({}, {})
       }
     }
@@ -276,7 +276,7 @@ locals {
       }
 
       nsg_rules = {
-        inbound  = merge({}, {})
+        inbound  = merge(local.default_nsg_rules.inbound, {})
         outbound = merge({}, {})
       }
     }
@@ -289,7 +289,7 @@ locals {
       }
 
       nsg_rules = {
-        inbound  = merge({}, {})
+        inbound  = merge(local.default_nsg_rules.inbound, {})
         outbound = merge({}, {})
       }
     }
@@ -300,7 +300,7 @@ locals {
       ]
 
       nsg_rules = {
-        inbound = merge({}, {
+        inbound = merge(local.default_nsg_rules.inbound, {
           "allow-apim" = {
             access                     = "Allow"
             destination_address_prefix = "VirtualNetwork"
