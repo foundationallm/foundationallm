@@ -316,7 +316,7 @@
                 Name = string.Empty
             };
 
-            if (ChatSessions.Count > 0)
+            if (ChatSessions is {Count: > 0 })
             {
                 var match = ChatSessions.FirstOrDefault();
                 if (match is not null)

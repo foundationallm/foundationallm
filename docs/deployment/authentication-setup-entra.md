@@ -14,17 +14,27 @@ To enable Microsoft Entra authentication, you need to create two applications in
 > [!NOTE]
 > Make sure that you have [deployed the solution](../deployment/deployment-standard.md) before proceeding with the steps below.
 
-1. The URL for your deployed chat application. You need this to assign the redirect URI for the client application.
-2. The URL for the Core API. You need this to assign the redirect URI of the API application.
-
-To obtain these URLs, follow the steps below:
+#### Setup App Configuration access
 
 1. Sign in to the [Azure portal](https://portal.azure.com/) as at least a Contributor.
-2. Navigate to the resource group that was created as part of the deployment.
-3. Select the **App Configuration** resource and select **Configuration explorer** to view the values. If you cannot access the configurations, add your user account as an **App Configuration Data Owner** through Access Control (IAM). You need this role in order to access the URLs and update the configurations as a required part of the authentication setup.
-4. Search for view the `FoundationaLLM:APIs:CoreAPI:APIUrl` value. This is the URL for the Core API.
+2. Navigate to the Resource Group that was created as part of the deployment.
+    > [!NOTE]
+    > If you performed an Azure Container Apps (ACA) deployment, you will see an extra Resource Group that starts with `ME_` in addition to the Resource Group defined during the deployment. You will need to navigate to the Resource Group that **does not start with** `ME_` to access the App Configuration resource.
+3. Select the **App Configuration** resource and select **Configuration explorer** to view the values. If you cannot access the configurations, add your user account as an **App Configuration Data Owner** through Access Control (IAM). You need this role in order to update the configurations as a required part of the authentication setup.
 
-The URL for the chat application is the root URL of the Core API. For example, if the Core API URL is `https://d85a09ce067141d5807a.eastus.aksapp.io/core/`, then the chat application URL is `https://d85a09ce067141d5807a.eastus.aksapp.io/`.
+#### Obtain the URL for the chat UI application
+
+You need this URL to assign the redirect URI for the client application.
+
+If you performed an **Azure Container Apps (ACA)** deployment, follow these steps to obtain the URL for the chat UI application:
+
+1. Within the Resource Group that was created as part of the deployment, select the **Container App** resource whose name ends with `chatuica`.
+2. Within the Overview pane, copy the **Application Url** value. This is the URL for the chat application.
+
+If you performed an **Azure Kubernetes Service (AKS)** deployment, follow these steps to obtain the URL for the chat UI application:
+
+1. Within the Resource Group that was created as part of the deployment, select the **Kubernetes Service** resource.
+2. Select **Properties** in the left-hand menu and copy the **HTTP application routing domain** value. This is the URL for the chat application.
 
 ### Creating the client application
 
@@ -42,7 +52,7 @@ The URL for the chat application is the root URL of the Core API. For example, i
 
 1. Under **Manage**, select **Authentication**.
 2. Under **Platform configurations**, select **Add a platform**. In the pane that opens, select **Web**. This is for the Blazor version of the chat application.
-3. For **Redirect URIs**, enter `<YOUR_CHAT_APP_URL>/signin-oidc`, replacing `<YOUR_CHAT_APP_URL>` with the chat application URL obtained in the [Pre-requisites](#pre-requisites) section above. For example, it should look something like `https://d85a09ce067141d5807a.eastus.aksapp.io/signin-oidc`.
+3. For **Redirect URIs**, enter `<YOUR_CHAT_APP_URL>/signin-oidc`, replacing `<YOUR_CHAT_APP_URL>` with the chat UI application URL obtained in the [Pre-requisites](#pre-requisites) section above. For example, it should look something like `https://d85a09ce067141d5807a.eastus.aksapp.io/signin-oidc` for an AKS deployment, or `https://fllmaca002chatuica.graybush-c554b849.eastus.azurecontainerapps.io/signin-oidc` for an ACA deployment.
 4. Add another **Redirect URI** for local development. For **Redirect URIs**, enter `https://localhost:7258/signin-oidc`.
 5. Under **Platform configurations**, select **Add a platform**. In the pane that opens, select **Single-page application**. This is for the Vue.js version of the chat application.
 6. Add a **Redirect URI** under Single-page application for local development of the Vue.js application: `http://localhost:3000/signin-oidc`.
@@ -52,6 +62,7 @@ The URL for the chat application is the root URL of the Core API. For example, i
 
 1. Check **Access tokens** and **ID tokens** under **Implicit grant**.
 2. Select **Configure** to apply the changes.
+3. Select **Save** at the bottom of the page to save the changes.
 
 #### Client secret for the client application
 
@@ -60,13 +71,13 @@ The URL for the chat application is the root URL of the Core API. For example, i
 3. For **Description**, enter a description for the secret. For example, enter *FoundationaLLM-Client*.
 4. Select a desired expiration date.
 5. Select **Add**.
-6. **Record the secret value** to add to your App Configuration settings later.
+6. **Record the secret value** to add to your App Configuration settings later. Do this by selecting the **Copy to clipboard** icon next to the secret value.
 
 ### Creating the API application
 
 #### Register the API application in the Microsoft Entra admin center
 
-1. Sign in to the [Microsoft Entra admin center](https://entra.microsoft.com) as at least a Cloud Application Administrator.
+1. Return to the [Microsoft Entra admin center](https://entra.microsoft.com).
 2. Browse to **Identity** > **Applications** > **App registrations** and select **+ New registration**.
 3. For **Name**, enter a name for the application. For example, enter *FoundationaLLM*. Users of the app will see this name, and can be changed later.
 4. Under **Supported account types**, select *Accounts in this organizational directory only*.
@@ -77,6 +88,7 @@ The URL for the chat application is the root URL of the Core API. For example, i
 
 1. Check **Access tokens** and **ID tokens** under **Implicit grant**.
 2. Select **Configure** to apply the changes.
+3. Select **Save** at the bottom of the page to save the changes.
 
 #### Client secret for the API application
 
@@ -85,7 +97,7 @@ The URL for the chat application is the root URL of the Core API. For example, i
 3. For **Description**, enter a description for the secret. For example, enter *FoundationaLLM*.
 4. Select a desired expiration date.
 5. Select **Add**.
-6. **Record the secret value** to add to your App Configuration settings later.
+6. **Record the secret value** to add to your App Configuration settings later. Do this by selecting the **Copy to clipboard** icon next to the secret value.
 
 #### Expose an API for the API application
 
@@ -104,7 +116,8 @@ The URL for the chat application is the root URL of the Core API. For example, i
 
 1. While still in the **Expose an API** section, select **+ Add a client application**.
 2. Paste the **Application (client) ID** of the client application that you [created earlier](#register-the-client-application-in-the-microsoft-entra-admin-center).
-3. Select **Add application** to complete the client application addition.
+3. Check the `Data.Read` authorized scope that you created.
+4. Select **Add application** to complete the client application addition.
 
 ### Update App Configuration settings
 
@@ -118,24 +131,26 @@ The URL for the chat application is the root URL of the Core API. For example, i
     ![The configuration settings are filtered by entra and all items are selected.](media/app-configuration-entra-settings.png "App Configuration settings for Microsoft Entra authentication")
 
 7. Replace the values for the following settings with the values that you recorded earlier:
-   - `FoundationaLLM:Chat:Entra:CallbackPath`: Should be `/signin-oidc`.
    - `FoundationaLLM:Chat:Entra:ClientId`: The **Application (client) ID** of the client application that you [created earlier](#register-the-client-application-in-the-microsoft-entra-admin-center).
-   - `FoundationaLLM:Chat:Entra:Instance`: Should be `https://login.microsoftonline.com/`.
    - `FoundationaLLM:Chat:Entra:Scopes`: The fully-qualified scopes path for the API application that you [created earlier](#expose-an-api-for-the-api-application). For example, it should look something like `api://d85a09ce067141d5807a/Data.Read`.
    - `FoundationaLLM:Chat:Entra:TenantId`: The **Directory (tenant) ID** of the client application that you [created earlier](#register-the-client-application-in-the-microsoft-entra-admin-center).
-   - `FoundationaLLM:CoreAPI:Entra:CallbackPath`: Should be `/signin-oidc`.
    - `FoundationaLLM:CoreAPI:Entra:ClientId`: The **Application (client) ID** of the API application that you [created earlier](#register-the-api-application-in-the-microsoft-entra-admin-center).
-   - `FoundationaLLM:CoreAPI:Entra:Instance`: Should be `https://login.microsoftonline.com/`.
-   - `FoundationaLLM:CoreAPI:Entra:Scopes`: Should be `Data.Read`.
    - `FoundationaLLM:CoreAPI:Entra:TenantId`: The **Directory (tenant) ID** of the API application that you [created earlier](#register-the-api-application-in-the-microsoft-entra-admin-center).
 
-8. Select **Apply** to save the changes.
+8. Validate the following values while reviewing the settings:
+   - `FoundationaLLM:Chat:Entra:CallbackPath`: Should be `/signin-oidc`.
+   - `FoundationaLLM:Chat:Entra:Instance`: Should be `https://login.microsoftonline.com/`.
+   - `FoundationaLLM:CoreAPI:Entra:CallbackPath`: Should be `/signin-oidc`.
+   - `FoundationaLLM:CoreAPI:Entra:Instance`: Should be `https://login.microsoftonline.com/`.
+   - `FoundationaLLM:CoreAPI:Entra:Scopes`: Should be `Data.Read`.
+
+9. Select **Apply** to save the changes.
 
 ### Update Key Vault secrets
 
 Key Vault stores the secrets for the client and API applications. You need to update the secrets with the values that you recorded earlier.
 
-1. Sign in to the [Azure portal](https://portal.azure.com/) as at least a Contributor.
+1. Return to the [Azure portal](https://portal.azure.com/).
 2. Navigate to the resource group that was created as part of the deployment.
 3. Select the **Key Vault** resource and select **Secrets**. If you cannot see the secrets, add your user account as a **Key Vault Secrets Officer** through Access Control (IAM). You need this role in order to access the secrets and update them as a required part of the authentication setup.
 4. Open the `foundationallm-chat-entra-clientsecret` secret, then select **+ New Version**.
