@@ -255,7 +255,7 @@ locals {
       }
     }
     "FLLMBackend" = {
-      address_prefix = cidrsubnet(local.network_cidr, 8, 10)
+      address_prefix = cidrsubnet(local.network_cidr, 7, 6) //10.0.12.0/23
       delegations = {
         "Microsoft.ContainerService/managedClusters" = [
           "Microsoft.Network/virtualNetworks/subnets/action"
@@ -281,7 +281,7 @@ locals {
       }
     }
     "FLLMFrontEnd" = {
-      address_prefix = cidrsubnet(local.network_cidr, 8, 9)
+      address_prefix = cidrsubnet(local.network_cidr, 7, 5) //10.0.10.0/23
       delegations = {
         "Microsoft.ContainerService/managedClusters" = [
           "Microsoft.Network/virtualNetworks/subnets/action"
