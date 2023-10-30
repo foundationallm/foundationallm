@@ -90,8 +90,8 @@ services:
   chat-ui:
     image: ${REGISTRY:-foundationallm}/chat-ui:${TAG:-latest}
     build:
-      context: ../../src/
-      dockerfile: ./UI/Chat/Dockerfile
+      context: ../../src/ui/UserPortal
+      dockerfile: ./Dockerfile
     ports:
     - "8080:80"
     environment:

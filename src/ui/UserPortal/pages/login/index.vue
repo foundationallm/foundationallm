@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { msalInstance, loginRequest } from '@/js/auth';
+import { getMsalInstance, getLoginRequest } from '@/js/auth';
 import getAppConfigSetting from '@/js/config';
 
 export default {
@@ -24,6 +24,8 @@ export default {
 
 	methods: {
 		async signIn() {
+			const loginRequest = await getLoginRequest();
+			const msalInstance = await getMsalInstance();
 			const response = await msalInstance.loginPopup(loginRequest);
 			if (response.account) {
 				this.$router.push({ path: '/', query: this.$nuxt._route.query });

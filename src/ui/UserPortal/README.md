@@ -72,4 +72,10 @@ yarn preview
 bun run preview
 ```
 
+Run Docker container:
+
+```bash
+docker compose -f docker-compose.yml up --build
+```
+
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

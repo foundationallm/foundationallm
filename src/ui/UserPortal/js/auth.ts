@@ -1,59 +1,86 @@
 import { LogLevel, PublicClientApplication } from '@azure/msal-browser';
 import getAppConfigSetting from './config';
 
-const AUTH_CLIENT_ID = await getAppConfigSetting("FoundationaLLM:Chat:Entra:ClientId");
-const AUTH_INSTANCE = await getAppConfigSetting("FoundationaLLM:Chat:Entra:Instance");
-const AUTH_TENANT_ID = await getAppConfigSetting("FoundationaLLM:Chat:Entra:TenantId");
-const AUTH_SCOPES = await getAppConfigSetting("FoundationaLLM:Chat:Entra:Scopes");
-const AUTH_CLIENT_SECRET = await getAppConfigSetting("FoundationaLLM:Chat:Entra:ClientSecret");
-const AUTH_CALLBACK_PATH = await getAppConfigSetting("FoundationaLLM:Chat:Entra:CallbackPath");
+let isConfigLoaded = false;
+let AUTH_CLIENT_ID: string;
+let AUTH_INSTANCE: string;
+let AUTH_TENANT_ID: string;
+let AUTH_SCOPES: string;
+let AUTH_CLIENT_SECRET: string;
+let AUTH_CALLBACK_PATH: string;
 
-export const msalConfig = {
-	auth: {
-		clientId: `${AUTH_CLIENT_ID}`,
+async function loadConfig() {
+	if (!isConfigLoaded) {
+		AUTH_CLIENT_ID = await getAppConfigSetting("FoundationaLLM:Chat:Entra:ClientId") as string;
+		AUTH_INSTANCE = await getAppConfigSetting("FoundationaLLM:Chat:Entra:Instance") as string;
+		AUTH_TENANT_ID = await getAppConfigSetting("FoundationaLLM:Chat:Entra:TenantId") as string;
+		AUTH_SCOPES = await getAppConfigSetting("FoundationaLLM:Chat:Entra:Scopes") as string;
+		AUTH_CLIENT_SECRET = await getAppConfigSetting("FoundationaLLM:Chat:Entra:ClientSecret") as string;
+		AUTH_CALLBACK_PATH = await getAppConfigSetting("FoundationaLLM:Chat:Entra:CallbackPath") as string;
+		isConfigLoaded = true;
+  	}
+}
+
+function getMsalConfig() {
+	if (!isConfigLoaded) {
+	  throw new Error('Config not loaded. Ensure loadConfig() is called and awaited on before accessing msalConfig.');
+	}
+  
+	// Now that we have ensured the config is loaded, we return the msalConfig object.
+	return {
+	  auth: {
+		clientId: AUTH_CLIENT_ID,
 		authority: `${AUTH_INSTANCE}${AUTH_TENANT_ID}`,
-		clientSecret: `${AUTH_CLIENT_SECRET}`,
-		redirectUri: `${AUTH_CALLBACK_PATH}`, // Must be registered as a SPA redirectURI on your app registration
-		scopes: [`${AUTH_SCOPES}`],
+		clientSecret: AUTH_CLIENT_SECRET,
+		redirectUri: AUTH_CALLBACK_PATH,
+		scopes: [AUTH_SCOPES],
 		postLogoutRedirectUri: '/', // Must be registered as a SPA redirectURI on your app registration
-	},
-	cache: {
+	  },
+	  cache: {
 		cacheLocation: 'sessionStorage',
-	},
-	system: {
+	  },
+	  system: {
 		loggerOptions: {
-			loggerCallback: (level: LogLevel, message: string, containsPii: boolean) => {
-				if (containsPii) {
-					return;
-				}
-				switch (level) {
-					case LogLevel.Error:
-						console.error(message);
-						return;
-					case LogLevel.Info:
-						console.info(message);
-						return;
-					case LogLevel.Verbose:
-						console.debug(message);
-						return;
-					case LogLevel.Warning:
-						console.warn(message);
-						return;
-					default:
-						return;
-				}
-			},
-			logLevel: LogLevel.Verbose,
+		  loggerCallback: (level: LogLevel, message: string, containsPii: boolean) => {
+			if (containsPii) {
+			  return;
+			}
+			switch (level) {
+			  case LogLevel.Error:
+				console.error(message);
+				return;
+			  case LogLevel.Info:
+				console.info(message);
+				return;
+			  case LogLevel.Verbose:
+				console.debug(message);
+				return;
+			  case LogLevel.Warning:
+				console.warn(message);
+				return;
+			}
+		  },
+		  logLevel: LogLevel.Verbose,
 		},
-	},
-};
-
-export const msalInstance = new PublicClientApplication(msalConfig);
+	  },
+	};
+  }
+  
+export async function getMsalInstance() {
+	await loadConfig();
+	let msalInstance = new PublicClientApplication(getMsalConfig());
+	await msalInstance.initialize();
+	return msalInstance;
+}
 
 // Add here scopes for id token to be used at MS Identity Platform endpoints.
-export const loginRequest = {
-	scopes: msalConfig.auth.scopes,
-};
+export async function getLoginRequest() {
+	await loadConfig();
+	const msalConfig = getMsalConfig(); // This will throw an error if the config isn't loaded yet
+	return {
+	  scopes: msalConfig.auth.scopes,
+	};
+  }
 
 // Add here the endpoints for MS Graph API services you would like to use.
 export const graphConfig = {

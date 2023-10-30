@@ -11,8 +11,18 @@
 					<span>{{ message.sender }}</span>
 				</span>
 
-				<!-- Timestamp -->
-				<span>{{ $filters.timeAgo(new Date(message.timeStamp)) }}</span>
+				<!-- Tokens & Timestamp -->
+				<span>
+					<Chip 
+						:label="`Tokens: ${message.tokens}`" 
+						:class="message.sender === 'User' ? 'token-chip--out' : 'token-chip--in'" 
+						:pt="{
+							root: { style: { borderRadius: '24px', marginRight: '12px' } },
+							label: { style: { color: message.sender === 'User' ? 'var(--primary-text)' : 'var(--secondary-text)' } }
+						}"
+					/>
+					{{ $filters.timeAgo(new Date(message.timeStamp)) }}
+				</span>
 			</div>
 
 			<!-- Message text -->
@@ -209,6 +219,14 @@ export default {
 	height: 32px;
 	border-radius: 50%;
 	margin-right: 12px;
+}
+
+.token-chip--out {
+	background-color: var(--accent-color);
+}
+
+.token-chip--in {
+	background-color: var(--primary-color);
 }
 
 .ratings {

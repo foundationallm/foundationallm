@@ -1,9 +1,15 @@
 /* eslint-disable prettier/prettier */
 import { Message, Session, CompletionPrompt } from '@/js/types';
-import { msalInstance } from '@/js/auth';
+import { getMsalInstance } from '@/js/auth';
 import getAppConfigSetting from './config';
 
-const API_URL = await getAppConfigSetting("FoundationaLLM:APIs:CoreAPI:APIUrl");
+//const API_URL = await getAppConfigSetting("FoundationaLLM:APIs:CoreAPI:APIUrl");
+let API_URL: string;
+async function loadConfig() {
+  const apiUrl = await getAppConfigSetting("FoundationaLLM:APIs:CoreAPI:APIUrl") as string;
+	API_URL = apiUrl ? apiUrl.replace(/\/$/, "") : '';
+}
+loadConfig();
 
 export default {
 	bearerToken: null as string | null,
@@ -11,6 +17,7 @@ export default {
 	async getBearerToken() {
 		if (this.bearerToken) return this.bearerToken;
 
+		const msalInstance = await getMsalInstance();
 		const accounts = msalInstance.getAllAccounts();
 		const account = accounts[0];
 		const bearerToken = await msalInstance.acquireTokenSilent({ account });

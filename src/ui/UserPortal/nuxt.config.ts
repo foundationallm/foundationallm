@@ -9,7 +9,7 @@ export default defineNuxtConfig({
 				{
 					rel: 'icon',
 					type: 'image/x-icon',
-					href: process.env.BRANDING_FAV_ICON_URL ?? '/favicon.png',
+					href: process.env.BRANDING_FAV_ICON_URL ?? '/favicon.ico',
 				},
 			],
 		},
