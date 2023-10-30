@@ -99,11 +99,13 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+#pragma warning disable ASP0014 // Suggest using top level route registrations.
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapRazorPages(); // If Razor pages.
+    endpoints.MapRazorPages();
     endpoints.MapControllers();
 });
+#pragma warning restore ASP0014
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");

@@ -80,8 +80,8 @@ resource "azurerm_kubernetes_cluster" "main" {
 
   default_node_pool {
     enable_auto_scaling          = true
-    max_count                    = 3
-    min_count                    = 1
+    max_count                    = 6
+    min_count                    = 2
     name                         = "system"
     only_critical_addons_enabled = true
     os_disk_size_gb              = 1024
