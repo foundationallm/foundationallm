@@ -436,7 +436,7 @@ locals {
             source_port_range          = "*"
           }
         })
-        outbound = merge(local.default_nsg_rules.outbound, {})
+        outbound = merge({}, {})
       }
     }
     jumpbox = {
@@ -464,7 +464,7 @@ locals {
           }
         })
 
-        outbound = merge({ }, {
+        outbound = merge({}, {
           "allow-vnet-outbound" = {
             access                     = "Allow"
             destination_address_prefix = "VirtualNetwork"
