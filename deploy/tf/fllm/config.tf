@@ -261,7 +261,8 @@ locals {
       contentType = null
     }
     "FoundationaLLM:Chat:Entra:ClientId" = {
-      value       = data.azuread_application.client_entra.client_id
+#      value       = data.azuread_application.client_entra.client_id
+      value       = ""
       contentType = null
     }
     "FoundationaLLM:Chat:Entra:ClientSecret" = {
@@ -339,7 +340,8 @@ locals {
       contentType = null
     }
     "FoundationaLLM:CoreAPI:Entra:ClientId" = {
-      value       = data.azuread_application.core_entra.client_id
+#      value       = data.azuread_application.core_entra.client_id
+      value       = ""
       contentType = null
     }
     "FoundationaLLM:CoreAPI:Entra:ClientSecret" = {
