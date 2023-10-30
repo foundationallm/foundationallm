@@ -50,25 +50,26 @@ resource "azurerm_key_vault_secret" "openai_key" {
   value        = "" # For HA OpenAI, there is currently no key.
 }
 
-data "azuread_application" "core_entra" {
-  display_name = var.core_entra_application
-}
+#data "azuread_application" "core_entra" {
+#  display_name = var.core_entra_application
+#}
+#
+#resource "time_rotating" "core_entra" {
+#  rotation_days = 30
+#}
 
-resource "time_rotating" "core_entra" {
-  rotation_days = 30
-}
-
-resource "azuread_application_password" "core_entra" {
-  application_id = "/applications/${data.azuread_application.core_entra.object_id}"
-  rotate_when_changed = {
-    rotation = time_rotating.core_entra.id
-  }
-}
+#resource "azuread_application_password" "core_entra" {
+#  application_id = "/applications/${data.azuread_application.core_entra.object_id}"
+#  rotate_when_changed = {
+#    rotation = time_rotating.core_entra.id
+#  }
+#}
 
 resource "azurerm_key_vault_secret" "core_entra_clientsecret" {
   name         = "foundationallm-chat-entra-clientsecret"
   key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-  value        = azuread_application_password.core_entra.value
+#  value        = azuread_application_password.core_entra.value
+  value        = ""
 }
 
 resource "azurerm_key_vault_secret" "search_key" {
@@ -77,25 +78,26 @@ resource "azurerm_key_vault_secret" "search_key" {
   value        = module.search.key
 }
 
-data "azuread_application" "client_entra" {
-  display_name = var.client_entra_application
-}
+#data "azuread_application" "client_entra" {
+#  display_name = var.client_entra_application
+#}
+#
+#resource "time_rotating" "client_entra" {
+#  rotation_days = 30
+#}
 
-resource "time_rotating" "client_entra" {
-  rotation_days = 30
-}
-
-resource "azuread_application_password" "client_entra" {
-  application_id = "/applications/${data.azuread_application.client_entra.object_id}"
-  rotate_when_changed = {
-    rotation = time_rotating.client_entra.id
-  }
-}
+#resource "azuread_application_password" "client_entra" {
+#  application_id = "/applications/${data.azuread_application.client_entra.object_id}"
+#  rotate_when_changed = {
+#    rotation = time_rotating.client_entra.id
+#  }
+#}
 
 resource "azurerm_key_vault_secret" "client_entra_clientsecret" {
   name         = "foundationallm-coreapi-entra-clientsecret"
   key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-  value        = azuread_application_password.client_entra.value
+#  value        = azuread_application_password.client_entra.value
+  value        = ""
 }
 
 resource "azurerm_key_vault_secret" "cosmosdb_key" {
