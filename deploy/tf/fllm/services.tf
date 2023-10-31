@@ -35,7 +35,7 @@ resource "azurerm_user_assigned_identity" "service_mi" {
 
   location            = var.location
   name                = "${local.resource_prefix["app"]}${each.key}-mi"
-  resource_group_name = data.azurerm_resource_group.backend["app"].name
+  resource_group_name = azurerm_resource_group.rg["app"].name
 }
 
 resource "azurerm_federated_identity_credential" "service_mi" {
