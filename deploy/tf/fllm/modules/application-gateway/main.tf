@@ -230,6 +230,12 @@ resource "azurerm_public_ip" "pip" {
   tags                = var.tags
 }
 
+resource "azurerm_role_assignment" "role_agw_mi" {
+  principal_id         = var.identity_id
+  role_definition_name = "Contributor"
+  scope                = azurerm_application_gateway.main.id
+}
+
 module "diagnostics" {
   source = "../diagnostics"
 

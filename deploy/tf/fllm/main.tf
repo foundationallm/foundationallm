@@ -191,8 +191,8 @@ resource "azurerm_role_assignment" "role_agw_mi" {
   for_each = local.role_agw_mi
 
   principal_id         = azurerm_user_assigned_identity.agw.principal_id
-  role_definition_name = "Key Vault Secrets User"
-  scope                = data.azurerm_resource_group.backend["ops"].id
+  role_definition_name = each.value.role
+  scope                = each.value.scope
 }
 
 resource "azurerm_user_assigned_identity" "agw" {
