@@ -8,4 +8,4 @@ class PromptHub(HubBase):
     def __init__(self):
          # initialize config
         self.config = Configuration()
-        super().__init__( resolver=PromptResolver(PromptRepository(self.config)))
+        super().__init__( resolver=PromptResolver(PromptRepository(self.config),config=self.config))

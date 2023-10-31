@@ -77,9 +77,8 @@ public class AgentHubAPIService : IAgentHubAPIService
     /// Gets a set of agents from the Agent Hub based on the prompt and user context.
     /// </summary>
     /// <param name="userPrompt"></param>
-    /// <param name="userContext"></param>
     /// <returns></returns>
-    public async Task<AgentHubResponse> ResolveRequest(string userPrompt, string userContext)
+    public async Task<AgentHubResponse> ResolveRequest(string userPrompt)
     {
         try
         {

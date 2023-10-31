@@ -6,6 +6,7 @@ from azure.appconfiguration.provider import (
     load
 )
 from azure.identity import DefaultAzureCredential
+import json
 
 class Configuration():    
     def __init__(self):
@@ -62,6 +63,38 @@ class Configuration():
             return value        
         else:           
             raise Exception(f'The configuration variable {key} was not found.')
+        
+    def get_feature_flag(self, key: str) -> bool:
+        """
+        Retrieves the feature flag from Azure App Configuration.
+        If the value is not found, returns false.
+        Otherwise, retrieves the enabled value of the feature flag.
+
+        Parameters
+        ----------
+        - key : str
+            The key name of the feature flag to retrieve.
+        
+        Returns
+        -------
+        The enabled value of the feature flag
+        
+        """
+        if key is None:
+            raise Exception('The key parameter is required for Configuration.get_feature_flag().')
+        
+        value = False
+        
+        if "FeatureManagementFeatureFlags" in self.__config.keys():
+            if key in self.__config["FeatureManagementFeatureFlags"].keys():
+                try:
+                    feature_flag_setting = self.__config["FeatureManagementFeatureFlags"][key]
+                    obj = json.loads(feature_flag_setting)
+                    value = obj["enabled"]
+                except Exception as e:
+                    pass
+
+        return value
 
     def __retry_before_sleep(retry_state):
         # Log the outcome of each retry attempt.

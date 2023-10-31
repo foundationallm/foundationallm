@@ -13,10 +13,10 @@ WORKDIR /src
 # Build
 FROM base as build
 
-COPY --link package.json package-lock.json .
+COPY package.json package-lock.json ./
 RUN npm install --production=false
 
-COPY --link . .
+COPY . .
 
 RUN npm run build
 RUN npm prune

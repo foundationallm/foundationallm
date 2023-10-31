@@ -16,7 +16,6 @@ public interface IDataSourceHubAPIService
     /// Calls the target DataSource Hub to retrieve a list of data sources.  Input will typically come from the AgentHub response.
     /// </summary>
     /// <param name="sources"></param>
-    /// <param name="userContext"></param>
     /// <returns></returns>
-    Task<DataSourceHubResponse> ResolveRequest(List<string> sources, string userContext);
+    Task<DataSourceHubResponse> ResolveRequest(List<string> sources);
 }

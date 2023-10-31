@@ -69,9 +69,8 @@ public class PromptHubAPIService : IPromptHubAPIService
     /// Used to get prompts for a target agent and user context.
     /// </summary>
     /// <param name="agentName"></param>
-    /// <param name="userContext"></param>
     /// <returns></returns>
-    public async Task<PromptHubResponse> ResolveRequest(string agentName, string userContext)
+    public async Task<PromptHubResponse> ResolveRequest(string agentName)
     {
         try
         {

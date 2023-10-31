@@ -38,13 +38,13 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
         /// <param name="userContext"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public async override Task Configure(string userPrompt, string userContext)
+        public async override Task Configure(string userPrompt)
         {
             //get prompts for the agent from the prompt hub
-            var promptResponse = await _promptHubService.ResolveRequest(_agentMetadata.Name!, userContext);
+            var promptResponse = await _promptHubService.ResolveRequest(_agentMetadata.Name!);
 
             //get data sources listed for the agent           
-            var dataSourceResponse = await _dataSourceHubService.ResolveRequest(_agentMetadata.AllowedDataSourceNames!, userContext);
+            var dataSourceResponse = await _dataSourceHubService.ResolveRequest(_agentMetadata.AllowedDataSourceNames!);
 
             MetadataBase dataSourceMetadata = null!;
 

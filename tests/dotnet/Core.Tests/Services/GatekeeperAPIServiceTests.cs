@@ -13,11 +13,10 @@ namespace FoundationaLLM.Core.Tests.Services
         private readonly GatekeeperAPIService _testedService;
 
         private readonly IHttpClientFactoryService _httpClientFactoryService = Substitute.For<IHttpClientFactoryService>();
-        private readonly IUserIdentityContext _userIdentityContext = Substitute.For<IUserIdentityContext>();
 
         public GatekeeperAPIServiceTests()
         {
-            _testedService = new GatekeeperAPIService(_httpClientFactoryService, _userIdentityContext);
+            _testedService = new GatekeeperAPIService(_httpClientFactoryService);
         }
 
         #region GetCompletion

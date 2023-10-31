@@ -69,9 +69,8 @@ public class DataSourceHubAPIService : IDataSourceHubAPIService
     /// Gets a list of DataSources from the DataSource Hub
     /// </summary>
     /// <param name="sources"></param>
-    /// <param name="userContext"></param>
     /// <returns></returns>
-    public async Task<DataSourceHubResponse> ResolveRequest(List<string> sources, string userContext)
+    public async Task<DataSourceHubResponse> ResolveRequest(List<string> sources)
     {
         try
         {

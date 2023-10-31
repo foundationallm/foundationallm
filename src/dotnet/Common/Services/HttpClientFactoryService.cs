@@ -15,7 +15,7 @@ namespace FoundationaLLM.Common.Services
     public class HttpClientFactoryService : IHttpClientFactoryService
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IUserIdentityContext _userIdentityContext;
+        private readonly ICallContext _callContext;
         private readonly IDownstreamAPISettings _apiSettings;
 
         /// <summary>
@@ -25,15 +25,18 @@ namespace FoundationaLLM.Common.Services
         /// that allows access to <see cref="HttpClient"/> instances by name.</param>
         /// <param name="userIdentityContext">Stores a <see cref="UnifiedUserIdentity"/> object resolved from
         /// one or more services.</param>
+        /// <param name="agentHintContext">Stores the agent hint value extracted from the request header,
+        /// if any. If this value is not empty or null, the service adds its contents to the agent hint
+        /// header for the returned <see cref="HttpClient"/> instance.</param>
         /// <param name="apiSettings">A <see cref="DownstreamAPISettings"/> class that
         /// contains the configured path to the desired API key.</param>
         /// <exception cref="ArgumentNullException"></exception>
         public HttpClientFactoryService(IHttpClientFactory httpClientFactory,
-            IUserIdentityContext userIdentityContext,
+            ICallContext callContext,
             IDownstreamAPISettings apiSettings)
         {
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-            _userIdentityContext = userIdentityContext ?? throw new ArgumentNullException(nameof(userIdentityContext));
+            _callContext = callContext ?? throw new ArgumentNullException(nameof(callContext));
             _apiSettings = apiSettings ?? throw new ArgumentNullException(nameof(apiSettings));
         }
 
@@ -50,10 +53,16 @@ namespace FoundationaLLM.Common.Services
             }
 
             // Optionally add the user identity header.
-            if (_userIdentityContext.CurrentUserIdentity != null)
+            if (_callContext.CurrentUserIdentity != null)
             {
-                var serializedIdentity = JsonConvert.SerializeObject(_userIdentityContext.CurrentUserIdentity);
+                var serializedIdentity = JsonConvert.SerializeObject(_callContext.CurrentUserIdentity);
                 httpClient.DefaultRequestHeaders.Add(Constants.HttpHeaders.UserIdentity, serializedIdentity);
+            }
+
+            // Add the agent hint header if present.
+            if (!string.IsNullOrEmpty(_callContext.AgentHint))
+            {
+                httpClient.DefaultRequestHeaders.Add(Constants.HttpHeaders.AgentHint, _callContext.AgentHint);
             }
 
             return httpClient;

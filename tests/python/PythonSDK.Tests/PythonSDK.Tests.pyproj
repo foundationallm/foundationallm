@@ -24,6 +24,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="config\configuration_tests.py" />
+    <Compile Include="hubs\agent\agent_resolver_tests.py" />
+    <Compile Include="hubs\agent\agent_hub_tests.py" />
     <Compile Include="langchain\message_history\message_history_tests.py" />
     <Compile Include="pytest.ini" />
   </ItemGroup>
@@ -38,8 +41,11 @@
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="hubs\" />
+    <Folder Include="hubs\agent\" />
     <Folder Include="langchain\" />
     <Folder Include="langchain\message_history\" />
+    <Folder Include="config\" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

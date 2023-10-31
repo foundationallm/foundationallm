@@ -55,6 +55,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestUtils", "..\tests\dotne
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PythonSDK.Tests", "..\tests\python\PythonSDK.Tests\PythonSDK.Tests.pyproj", "{8FACDBA2-3FAD-4DBA-812A-67B9D1892F32}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AgentHubAPI.Tests", "..\tests\python\AgentHubAPI.Tests\AgentHubAPI.Tests.pyproj", "{A09449F4-008C-4BD8-AF3A-A98B7603D85D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -137,6 +139,8 @@ Global
 		{7F7CA6E9-F1F0-403D-B72D-2AC134F64CDE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8FACDBA2-3FAD-4DBA-812A-67B9D1892F32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8FACDBA2-3FAD-4DBA-812A-67B9D1892F32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A09449F4-008C-4BD8-AF3A-A98B7603D85D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A09449F4-008C-4BD8-AF3A-A98B7603D85D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -165,6 +169,7 @@ Global
 		{59C6DEDC-F60D-4EB9-A2E5-793EC42F3895} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
 		{7F7CA6E9-F1F0-403D-B72D-2AC134F64CDE} = {28E0E967-A94D-4820-8A61-0B71D3B2780F}
 		{8FACDBA2-3FAD-4DBA-812A-67B9D1892F32} = {23275624-C0DA-4E93-9291-081D75E8CCD2}
+		{A09449F4-008C-4BD8-AF3A-A98B7603D85D} = {23275624-C0DA-4E93-9291-081D75E8CCD2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF5DE858-4B85-4EE8-8A6D-46E8E4FBA078}
