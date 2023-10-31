@@ -114,7 +114,7 @@ resource "azurerm_application_gateway" "main" {
   }
 
   identity {
-    identity_ids = [var.identity_id]
+    identity_ids = [var.identity.id]
     type         = "UserAssigned"
   }
 
@@ -231,7 +231,7 @@ resource "azurerm_public_ip" "pip" {
 }
 
 resource "azurerm_role_assignment" "role_agw_mi" {
-  principal_id         = var.identity_id
+  principal_id         = var.identity.principal_id
   role_definition_name = "Contributor"
   scope                = azurerm_application_gateway.main.id
 }

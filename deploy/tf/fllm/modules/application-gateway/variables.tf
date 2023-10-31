@@ -14,9 +14,12 @@ variable "hostname" {
   type        = string
 }
 
-variable "identity_id" {
+variable "identity" {
   description = "The ID of the identity to use for the application gateway."
-  type        = string
+  type = object({
+    principal_id = string
+    id           = string
+  })
 }
 
 variable "key_vault_secret_id" {

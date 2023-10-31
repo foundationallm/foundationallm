@@ -264,7 +264,7 @@ module "application_gateway" {
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
   hostname                   = each.key
-  identity_id                = azurerm_user_assigned_identity.agw.id
+  identity                   = azurerm_user_assigned_identity.agw
   key_vault_secret_id        = data.azurerm_key_vault_certificate.agw[each.key].versionless_secret_id
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   public_dns_zone            = data.azurerm_dns_zone.public_dns
