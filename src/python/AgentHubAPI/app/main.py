@@ -1,6 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
-from app.routers import resolve, status
+from app.routers import resolve, status, list
 
 app = FastAPI(
     title='FoundationaLLM AgentHubAPI',
@@ -22,6 +22,7 @@ app = FastAPI(
 )
 
 app.include_router(resolve.router)
+app.include_router(list.router)
 app.include_router(status.router)
 
 @app.get('/')

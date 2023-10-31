@@ -18,7 +18,6 @@ public interface IAgentHubAPIService
     /// Calls the target Agent Hub and resolves a user prompt with the user's context
     /// </summary>
     /// <param name="userPrompt"></param>
-    /// <param name="userContext"></param>
     /// <returns></returns>
-    Task<AgentHubResponse> ResolveRequest(string userPrompt, string userContext);
+    Task<AgentHubResponse> ResolveRequest(string userPrompt);
 }

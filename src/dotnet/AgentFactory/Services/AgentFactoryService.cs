@@ -23,12 +23,10 @@ public class AgentFactoryService : IAgentFactoryService
 {
     private readonly IEnumerable<ILLMOrchestrationService> _orchestrationServices;
     private readonly IAgentHubAPIService _agentHubAPIService;
-    private readonly AgentFactorySettings _agentFactorySettings;
     private readonly IPromptHubAPIService _promptHubAPIService;
     private readonly IDataSourceHubAPIService _dataSourceHubAPIService;
 
     private readonly ILogger<AgentFactoryService> _logger;
-    private readonly IUserIdentityContext _userIdentity;
 
 
     //private LLMOrchestrationService _llmOrchestrationService = LLMOrchestrationService.LangChain;
@@ -45,27 +43,17 @@ public class AgentFactoryService : IAgentFactoryService
     /// <param name="userIdentity"></param>
     public AgentFactoryService(
         IEnumerable<ILLMOrchestrationService> orchestrationServices,
-
-        IOptions<AgentFactorySettings> agentFactorySettings,
-
         IAgentHubAPIService agentHubService,
         IPromptHubAPIService promptHubService,
         IDataSourceHubAPIService dataSourceHubService,
-
-        ILogger<AgentFactoryService> logger,
-        IUserIdentityContext userIdentity)
+        ILogger<AgentFactoryService> logger)
     {
         _orchestrationServices = orchestrationServices;
-
-        _agentFactorySettings = agentFactorySettings.Value;
-
         _agentHubAPIService = agentHubService;
         _promptHubAPIService = promptHubService;
         _dataSourceHubAPIService = dataSourceHubService;
 
         _logger = logger;
-        _userIdentity = userIdentity;
-
     }
 
     /// <summary>
@@ -94,7 +82,6 @@ public class AgentFactoryService : IAgentFactoryService
         {
             var agent = await AgentBuilder.Build(
                 completionRequest.UserPrompt,
-                _userIdentity.CurrentUserIdentity.UPN,
                 _agentHubAPIService,
                 _orchestrationServices,
                 _promptHubAPIService,
@@ -125,7 +112,6 @@ public class AgentFactoryService : IAgentFactoryService
         {
             var agent = await AgentBuilder.Build(
                 summaryRequest.UserPrompt,
-                _userIdentity.CurrentUserIdentity.UPN,
                 _agentHubAPIService,
                 _orchestrationServices,
                 _promptHubAPIService,

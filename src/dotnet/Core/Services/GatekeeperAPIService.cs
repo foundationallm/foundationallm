@@ -26,9 +26,7 @@ namespace FoundationaLLM.Core.Services
         /// <param name="httpClientFactoryService">The <see cref="IHttpClientFactoryService"/>
         /// used to retrieve an <see cref="HttpClient"/> instance that contains required
         /// headers for Gateway API requests.</param>
-        /// <param name="userIdentityContext">The <see cref="IUserIdentityContext"/> that contains
-        /// user context details for the current request.</param>
-        public GatekeeperAPIService(IHttpClientFactoryService httpClientFactoryService, IUserIdentityContext userIdentityContext)
+        public GatekeeperAPIService(IHttpClientFactoryService httpClientFactoryService)
         {
             _httpClientFactoryService = httpClientFactoryService;
             _jsonSerializerSettings = CommonJsonSerializerSettings.GetJsonSerializerSettings();

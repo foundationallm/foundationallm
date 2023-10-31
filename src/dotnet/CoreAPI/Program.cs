@@ -25,6 +25,8 @@ using Newtonsoft.Json;
 using Azure.Identity;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using FoundationaLLM.Common.Models.Chat;
+using FoundationaLLM.Common.Models.Context;
 
 namespace FoundationaLLM.Core.API
 {
@@ -79,7 +81,7 @@ namespace FoundationaLLM.Core.API
             builder.Services.AddScoped<IGatekeeperAPIService, GatekeeperAPIService>();
 
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
-            builder.Services.AddScoped<IUserIdentityContext, UserIdentityContext>();
+            builder.Services.AddScoped<ICallContext, CallContext>();
             builder.Services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
 
             // Register the authentication services
@@ -135,8 +137,8 @@ namespace FoundationaLLM.Core.API
             app.UseAuthentication();
             app.UseAuthorization();
 
-            // Register the middleware to set the user identity context.
-            app.UseMiddleware<UserIdentityMiddleware>();
+            // Register the middleware to extract the user identity context and other HTTP request context data required by the downstream services.
+            app.UseMiddleware<CallContextMiddleware>();
 
             app.UseExceptionHandler(exceptionHandlerApp
                     => exceptionHandlerApp.Run(async context
