@@ -440,7 +440,7 @@ module "storage" {
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rg["storage"]
-  resource_prefix            = "${local.resource_prefix_compact["storage"]}-prompt"
+  resource_prefix            = local.resource_prefix_compact["storage"]
   tags                       = azurerm_resource_group.rg["storage"].tags
 
   private_endpoint = {
