@@ -99,7 +99,7 @@ data "azurerm_key_vault" "keyvault_ops" {
 }
 
 data "azurerm_key_vault_certificate" "agw" {
-  for_each = toset(["www", "gateway"])
+  for_each = toset(["api", "www"])
 
   key_vault_id = data.azurerm_key_vault.keyvault_ops.id
   name         = replace("www.${var.public_domain}", ".", "-")
@@ -207,7 +207,7 @@ module "aks_backend" {
   source = "./modules/aks"
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
-  application_gateway        = module.application_gateway["gateway"]
+  application_gateway        = module.application_gateway["api"]
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rg["app"]
   resource_prefix            = "${local.resource_prefix["app"]}-BACKEND"
@@ -260,10 +260,7 @@ module "aks_frontend" {
 module "application_gateway" {
   source     = "./modules/application-gateway"
   depends_on = [azurerm_role_assignment.role_agw_mi]
-  for_each = toset([
-    "www",
-    "gateway",
-  ])
+  for_each   = toset(["api", "www", ])
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
   hostname                   = each.key
