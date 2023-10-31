@@ -234,7 +234,7 @@ module "aks_frontend" {
   source = "./modules/aks"
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
-  application_gateway        = module.application_gateway["gateway"]
+  application_gateway        = module.application_gateway["www"]
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rg["app"]
   resource_prefix            = "${local.resource_prefix["app"]}-FRONTEND"
