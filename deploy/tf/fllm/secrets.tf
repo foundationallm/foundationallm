@@ -68,8 +68,8 @@ resource "azurerm_key_vault_secret" "openai_key" {
 resource "azurerm_key_vault_secret" "core_entra_clientsecret" {
   name         = "foundationallm-chat-entra-clientsecret"
   key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-#  value        = azuread_application_password.core_entra.value
-  value        = ""
+  #  value        = azuread_application_password.core_entra.value
+  value = ""
 }
 
 resource "azurerm_key_vault_secret" "search_key" {
@@ -96,8 +96,8 @@ resource "azurerm_key_vault_secret" "search_key" {
 resource "azurerm_key_vault_secret" "client_entra_clientsecret" {
   name         = "foundationallm-coreapi-entra-clientsecret"
   key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-#  value        = azuread_application_password.client_entra.value
-  value        = ""
+  #  value        = azuread_application_password.client_entra.value
+  value = ""
 }
 
 resource "azurerm_key_vault_secret" "cosmosdb_key" {

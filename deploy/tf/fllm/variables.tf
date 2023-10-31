@@ -20,6 +20,12 @@ variable "location" {
   type        = string
 }
 
+variable "namespace" {
+  description = "The namespace to deploy Azure resources."
+  type        = string
+  default     = "default"
+}
+
 variable "project_id" {
   description = "The project identifier."
   type        = string
