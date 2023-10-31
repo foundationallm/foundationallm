@@ -48,7 +48,7 @@ locals {
     }
     subnet = {
       role  = "Network Contributor"
-      scope = var.subnet_id
+      scope = var.application_gateway.agw_subnet_id
     }
   }
 }

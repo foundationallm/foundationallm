@@ -11,8 +11,9 @@ variable "administrator_object_ids" {
 variable "application_gateway" {
   description = "Specify the application gateway for incoming traffic."
   type = object({
-    id          = string
-    identity_id = string
+    id            = string
+    identity_id   = string
+    agw_subnet_id = string
   })
 }
 
