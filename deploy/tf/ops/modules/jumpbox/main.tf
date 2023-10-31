@@ -23,37 +23,84 @@ locals {
   }
 }
 
-resource "azurerm_network_interface" "nic" {
-  enable_accelerated_networking = true
-  location                      = var.resource_group.location
-  name                          = "${var.resource_prefix}-nic"
-  resource_group_name           = var.resource_group.name
-  tags                          = var.tags
+resource "azurerm_monitor_metric_alert" "alert" {
+  for_each = local.alert
 
-  ip_configuration {
-    name                          = "internal"
-    private_ip_address_allocation = "Dynamic"
-    subnet_id                     = var.subnet_id
+  description         = each.value.description
+  frequency           = each.value.frequency
+  name                = "${var.resource_prefix}-vmss-${each.key}-alert"
+  resource_group_name = var.resource_group.name
+  scopes              = [azurerm_windows_virtual_machine_scale_set.main.id]
+  severity            = each.value.severity
+  tags                = var.tags
+  window_size         = each.value.window_size
+
+  action {
+    action_group_id = var.action_group_id
+  }
+
+  criteria {
+    aggregation      = each.value.aggregation
+    metric_name      = each.value.metric_name
+    metric_namespace = "Microsoft.Compute/virtualmachinescalesets"
+    operator         = each.value.operator
+    threshold        = each.value.threshold
   }
 }
 
-resource "azurerm_windows_virtual_machine" "main" {
+resource "azurerm_virtual_machine_scale_set_extension" "azure_monitor_agent" {
+  name                         = "AzureMonitorWindowsAgent"
+  publisher                    = "Microsoft.Azure.Monitor"
+  type                         = "AzureMonitorWindowsAgent"
+  type_handler_version         = "1.0"
+  virtual_machine_scale_set_id = azurerm_windows_virtual_machine_scale_set.main.id
+}
+
+resource "azurerm_virtual_machine_scale_set_extension" "dependency_agent" {
+  name                         = "DependencyAgentWindows"
+  publisher                    = "Microsoft.Azure.Monitoring.DependencyAgent"
+  settings                     = jsonencode({ enableAMA = true })
+  type                         = "DependencyAgentWindows"
+  type_handler_version         = "9.10"
+  virtual_machine_scale_set_id = azurerm_windows_virtual_machine_scale_set.main.id
+}
+
+resource "azurerm_monitor_data_collection_rule_association" "dcr_to_vmss" {
+  data_collection_rule_id = var.data_collection_rule_id
+  description             = "Associate DCR to VMSS."
+  name                    = "${var.resource_prefix}-dcra"
+  target_resource_id      = azurerm_windows_virtual_machine_scale_set.main.id
+}
+
+resource "azurerm_windows_virtual_machine_scale_set" "main" {
   admin_password             = random_password.password.result
   admin_username             = random_id.user.hex
-  computer_name              = replace(var.resource_prefix, "-", "")
+  computer_name_prefix       = replace(var.resource_prefix, "-", "")
   encryption_at_host_enabled = true
+  instances                  = 0
   location                   = var.resource_group.location
-  name                       = "${var.resource_prefix}-vm"
-  network_interface_ids      = [azurerm_network_interface.nic.id]
-  patch_mode                 = "AutomaticByOS"
+  name                       = "${var.resource_prefix}-vmss"
+  overprovision              = false
   resource_group_name        = var.resource_group.name
-  size                       = "Standard_DS3_v2"
+  sku                        = "Standard_DS3_v2"
   tags                       = var.tags
 
   boot_diagnostics {}
 
   identity {
     type = "SystemAssigned"
+  }
+
+  network_interface {
+    enable_accelerated_networking = true
+    name                          = "primary"
+    primary                       = true
+
+    ip_configuration {
+      name      = "internal"
+      primary   = true
+      subnet_id = var.subnet_id
+    }
   }
 
   os_disk {
@@ -67,57 +114,10 @@ resource "azurerm_windows_virtual_machine" "main" {
     sku       = "win10-22h2-pro"
     version   = "latest"
   }
-}
 
-resource "azurerm_monitor_metric_alert" "alert" {
-  for_each = local.alert
-
-  description         = each.value.description
-  frequency           = each.value.frequency
-  name                = "${var.resource_prefix}-vm-${each.key}-alert"
-  resource_group_name = var.resource_group.name
-  scopes              = [azurerm_windows_virtual_machine.main.id]
-  severity            = each.value.severity
-  tags                = var.tags
-  window_size         = each.value.window_size
-
-  action {
-    action_group_id = var.action_group_id
+  lifecycle {
+    ignore_changes = [instances]
   }
-
-  criteria {
-    aggregation      = each.value.aggregation
-    metric_name      = each.value.metric_name
-    metric_namespace = "Microsoft.Compute/virtualmachines"
-    operator         = each.value.operator
-    threshold        = each.value.threshold
-  }
-}
-
-resource "azurerm_virtual_machine_extension" "azure_monitor_agent" {
-  name                 = "AzureMonitorWindowsAgent"
-  publisher            = "Microsoft.Azure.Monitor"
-  type                 = "AzureMonitorWindowsAgent"
-  type_handler_version = "1.0"
-  virtual_machine_id   = azurerm_windows_virtual_machine.main.id
-  tags                 = var.tags
-}
-
-resource "azurerm_virtual_machine_extension" "dependency_agent" {
-  name                 = "DependencyAgentWindows"
-  publisher            = "Microsoft.Azure.Monitoring.DependencyAgent"
-  settings             = jsonencode({ enableAMA = true })
-  type                 = "DependencyAgentWindows"
-  type_handler_version = "9.10"
-  virtual_machine_id   = azurerm_windows_virtual_machine.main.id
-  tags                 = var.tags
-}
-
-resource "azurerm_monitor_data_collection_rule_association" "dcr_to_vmss" {
-  data_collection_rule_id = var.data_collection_rule_id
-  description             = "Associate DCR to VMSS."
-  name                    = "${var.resource_prefix}-dcra"
-  target_resource_id      = azurerm_windows_virtual_machine.main.id
 }
 
 resource "random_id" "user" {
@@ -136,8 +136,8 @@ module "diagnostics" {
   log_analytics_workspace_id = var.log_analytics_workspace_id
 
   monitored_services = {
-    vm = {
-      id = azurerm_windows_virtual_machine.main.id
+    vmss = {
+      id = azurerm_windows_virtual_machine_scale_set.main.id
     }
   }
 }
