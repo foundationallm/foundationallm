@@ -34,7 +34,7 @@ resource "azurerm_user_assigned_identity" "service_mi" {
   for_each = local.services
 
   location            = var.location
-  name                = "${local.resource_prefix["app"]}${each.key}-mi"
+  name                = "${local.resource_prefix["app"]}-${each.key}-mi"
   resource_group_name = azurerm_resource_group.rg["app"].name
 }
 
@@ -43,7 +43,7 @@ resource "azurerm_federated_identity_credential" "service_mi" {
 
   audience            = ["api://AzureADTokenExchange"]
   issuer              = module.aks_backend.oidcIssuerUrl
-  name                = "${each.value.name}/${each.key}"
+  name                = each.key
   parent_id           = each.value.id
   resource_group_name = each.value.resource_group_name
   subject             = "system:serviceaccount:${var.namespace}:${each.key}"
