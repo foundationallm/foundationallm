@@ -85,9 +85,9 @@ resource "azurerm_role_assignment" "app_config_kv_role" {
 data "azurerm_client_config" "current" {}
 
 resource "azurerm_role_assignment" "app_config_owner_role" {
-  principal_id = data.azurerm_client_config.current.object_id
+  principal_id         = data.azurerm_client_config.current.object_id
   role_definition_name = "App Configuration Data Owner"
-  scope = azurerm_app_configuration.main.id
+  scope                = azurerm_app_configuration.main.id
 }
 
 resource "azurerm_monitor_metric_alert" "alert" {

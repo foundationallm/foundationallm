@@ -8,11 +8,13 @@ locals {
   resource_prefix = { for k, _ in local.resource_group : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
 
   address_prefix = {
-    ado     = cidrsubnet(local.ops_parent_cidr, 5, 29)
-    agw     = cidrsubnet(local.network_cidr, 8, 0)
-    jumpbox = cidrsubnet(local.ops_parent_cidr, 5, 25)
-    ops     = cidrsubnet(local.ops_parent_cidr, 5, 27)
-    tfc     = cidrsubnet(local.ops_parent_cidr, 5, 31)
+    ado           = cidrsubnet(local.ops_parent_cidr, 5, 29)
+    agw           = cidrsubnet(local.network_cidr, 8, 0)
+    fllm_backend  = cidrsubnet(local.network_cidr, 6, 4) //10.0.16.0/22
+    fllm_frontend = cidrsubnet(local.network_cidr, 6, 3) //10.0.12.0/22
+    jumpbox       = cidrsubnet(local.ops_parent_cidr, 5, 25)
+    ops           = cidrsubnet(local.ops_parent_cidr, 5, 27)
+    tfc           = cidrsubnet(local.ops_parent_cidr, 5, 31)
   }
 
   default_nsg_rules = {
@@ -65,6 +67,12 @@ locals {
         source_port_range          = "*"
       }
     }
+  }
+
+  # TODO: Need to figure out how to restore the deny-all rules to the NSGs using these modified rules.
+  no_deny_nsg_rules = {
+    inbound  = { for k, v in local.default_nsg_rules.inbound : k => v if k != "deny-all-inbound" }
+    outbound = { for k, v in local.default_nsg_rules.outbound : k => v if k != "deny-all-outbound" }
   }
 
   private_dns_zone = {
@@ -255,7 +263,7 @@ locals {
       }
     }
     "FLLMBackend" = {
-      address_prefix = cidrsubnet(local.network_cidr, 7, 6) //10.0.12.0/23
+      address_prefix = local.address_prefix["fllm_backend"]
       delegations = {
         "Microsoft.ContainerService/managedClusters" = [
           "Microsoft.Network/virtualNetworks/subnets/action"
@@ -263,25 +271,19 @@ locals {
       }
 
       nsg_rules = {
-        inbound  = merge(local.default_nsg_rules.inbound, {})
+        inbound  = merge(local.no_deny_nsg_rules.inbound, {})
         outbound = merge({}, {})
       }
     }
     "FLLMServices" = {
       address_prefix = cidrsubnet(local.network_cidr, 8, 3)
-      delegations = { // TODO: Moved AKS out of here, do we still need this?
-        "Microsoft.ContainerService/managedClusters" = [
-          "Microsoft.Network/virtualNetworks/subnets/action"
-        ]
-      }
-
       nsg_rules = {
-        inbound  = merge(local.default_nsg_rules.inbound, {})
+        inbound  = merge(local.no_deny_nsg_rules.inbound, {})
         outbound = merge({}, {})
       }
     }
     "FLLMFrontEnd" = {
-      address_prefix = cidrsubnet(local.network_cidr, 7, 5) //10.0.10.0/23
+      address_prefix = local.address_prefix["fllm_frontend"]
       delegations = {
         "Microsoft.ContainerService/managedClusters" = [
           "Microsoft.Network/virtualNetworks/subnets/action"
@@ -433,6 +435,15 @@ locals {
             priority                   = 256
             protocol                   = "Tcp"
             source_address_prefixes    = [local.address_prefix["agw"]]
+            source_port_range          = "*"
+          }
+          "allow-aks-inbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_range     = "*"
+            priority                   = 264
+            protocol                   = "*"
+            source_address_prefixes    = [local.address_prefix["fllm_backend"], local.address_prefix["fllm_frontend"]]
             source_port_range          = "*"
           }
         })
