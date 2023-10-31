@@ -6,6 +6,7 @@ Param(
     [parameter(Mandatory=$false)][string]$backendAksName,
     [parameter(Mandatory=$false)][string]$resourceGroup,
     [parameter(Mandatory=$false)][string]$acrName,
+    [parameter(Mandatory=$false)][string]$acrRg,
     [parameter(Mandatory=$false)][string]$tag="latest",
     [parameter(Mandatory=$false)][string]$charts = "*",
     [parameter(Mandatory=$false)][string]$valuesFile = "",
@@ -62,7 +63,7 @@ Write-Host " --------------------------------------------------------"
 
 az aks get-credentials -n $backendAksName -g $resourceGroup
 
-$acrLogin=$(az acr show -n $acrName -g $resourceGroup -o json| ConvertFrom-Json).loginServer
+$acrLogin=$(az acr show -n $acrName -g $acrRg -o json| ConvertFrom-Json).loginServer
 Write-Host "acr login server is $acrLogin" -ForegroundColor Yellow
 
 validate
