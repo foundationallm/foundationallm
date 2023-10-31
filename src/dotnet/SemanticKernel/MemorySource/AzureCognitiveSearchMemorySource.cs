@@ -106,8 +106,8 @@ namespace FoundationaLLM.SemanticKernel.MemorySource
         {
             if (_config  == null)
             {
-                var blobServiceClient = new BlobServiceClient(_settings.ConfigBlobStorageConnection);
-                var storageClient = blobServiceClient.GetBlobContainerClient(_settings.ConfigBlobStorageContainer);
+                var blobServiceClient = new BlobServiceClient(_settings.BlobStorageConnection);
+                var storageClient = blobServiceClient.GetBlobContainerClient(_settings.BlobStorageContainer);
                 var blobClient = storageClient.GetBlobClient(_settings.ConfigFilePath);
                 var reader = new StreamReader(await blobClient.OpenReadAsync());
                 var configContent = await reader.ReadToEndAsync();

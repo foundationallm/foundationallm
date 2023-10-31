@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { Session } from '@/js/types';
+import type { Session } from '@/js/types';
 
 export default {
 	name: 'Index',

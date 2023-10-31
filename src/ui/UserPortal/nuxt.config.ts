@@ -1,3 +1,17 @@
+import fs from 'fs';
+
+const buildLoadingTemplate = (() => {
+	const path = 'server/buildLoadingTemplate.html';
+
+	try {
+		const data = fs.readFileSync(path, 'utf8');
+		return data;
+	} catch (error) {
+		console.error('Error reading build loading template!', error);
+		return null;
+	}
+})();
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	devtools: { enabled: true },
@@ -24,6 +38,13 @@ export default defineNuxtConfig({
 	],
 	build: {
 		transpile: ['primevue'],
+	},
+	devServer: {
+		...(buildLoadingTemplate
+			? {
+					loadingTemplate: () => buildLoadingTemplate,
+			  }
+			: {}),
 	},
 	vite: {
 		define: {

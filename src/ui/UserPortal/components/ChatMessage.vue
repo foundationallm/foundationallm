@@ -92,7 +92,7 @@
 
 <script lang="ts">
 import type { PropType } from 'vue';
-import { Message, CompletionPrompt } from '@/js/types';
+import type { Message, CompletionPrompt } from '@/js/types';
 import api from '@/js/api';
 
 export default {
@@ -107,7 +107,7 @@ export default {
 			type: Boolean,
 			required: false,
 			default: false,
-		}
+		},
 	},
 
 	emits: ['rate'],

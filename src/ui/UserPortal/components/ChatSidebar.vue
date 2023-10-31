@@ -93,7 +93,7 @@
 
 <script lang="ts">
 import type { PropType } from 'vue';
-import { Session } from '@/js/types';
+import type { Session } from '@/js/types';
 import api from '@/js/api';
 
 export default {
@@ -103,7 +103,7 @@ export default {
 		currentSession: {
 			type: [Object, null] as PropType<Session | null>,
 			required: true,
-		}
+		},
 	},
 
 	emits: ['change-session', 'session-updated'],

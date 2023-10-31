@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import type { PropType } from 'vue';
-import { Message, Session } from '@/js/types';
+import type { Message, Session } from '@/js/types';
 import api from '@/js/api';
 
 export default {
@@ -77,7 +77,7 @@ export default {
 			this.userSentMessage = false;
 			await this.getMessages();
 			this.isLoading = false;
-		}
+		},
 	},
 
 	methods: {

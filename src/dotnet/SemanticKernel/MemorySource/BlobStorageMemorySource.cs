@@ -34,7 +34,7 @@ namespace FoundationaLLM.SemanticKernel.MemorySource
             _settings = settings.Value;
             _logger = logger;
 
-            _blobServiceClient = new BlobServiceClient(_settings.ConfigBlobStorageConnection);
+            _blobServiceClient = new BlobServiceClient(_settings.BlobStorageConnection);
             _containerClients = new Dictionary<string, BlobContainerClient>();
         }
 
@@ -62,7 +62,7 @@ namespace FoundationaLLM.SemanticKernel.MemorySource
         {
             if (_config == null)
             {
-                var configContent = await ReadConfigContent(_settings.ConfigBlobStorageContainer, _settings.ConfigFilePath);
+                var configContent = await ReadConfigContent(_settings.BlobStorageContainer, _settings.ConfigFilePath);
 
                 var config = JsonConvert.DeserializeObject<BlobStorageMemorySourceConfig>(configContent);
 

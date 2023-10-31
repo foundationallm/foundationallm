@@ -1,20 +1,12 @@
-﻿namespace FoundationaLLM.SemanticKernel.Core.Models.ConfigurationOptions
+﻿using FoundationaLLM.Common.Models.Configuration.Storage;
+
+namespace FoundationaLLM.SemanticKernel.Core.Models.ConfigurationOptions
 {
     /// <summary>
     /// Provides configuration options for a Blob Storage service.
     /// </summary>
-    public record BlobStorageMemorySourceSettings
+    public record BlobStorageMemorySourceSettings : BlobStorageSettings
     {
-        /// <summary>
-        /// The name of the blob storage container.
-        /// </summary>
-        public required string ConfigBlobStorageContainer { get; init; }
-
-        /// <summary>
-        /// The connection string for the blob storage.
-        /// </summary>
-        public required string ConfigBlobStorageConnection { get; init; }
-
         /// <summary>
         /// The configurable file path.
         /// </summary>
