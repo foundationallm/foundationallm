@@ -75,7 +75,7 @@ resource "azurerm_monitor_data_collection_rule_association" "dcr_to_vmss" {
 resource "azurerm_windows_virtual_machine_scale_set" "main" {
   admin_password             = random_password.password.result
   admin_username             = random_id.user.hex
-  computer_name_prefix       = replace(var.resource_prefix, "-", "")
+  computer_name_prefix       = "jumpbox"
   encryption_at_host_enabled = true
   instances                  = 0
   location                   = var.resource_group.location
