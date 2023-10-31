@@ -712,7 +712,7 @@ module "appconfig" {
 
 module "application_gateway_certificate" {
   source   = "./modules/keyvault-acme-certificate"
-  for_each = toset(["api", "www", "gateway"])
+  for_each = toset(["api", "www",])
 
   administrator_email = "tbd@solliance.net"
   domain              = "${each.key}.${var.public_domain}"
