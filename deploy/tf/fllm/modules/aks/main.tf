@@ -46,6 +46,10 @@ locals {
       role  = "Contributor"
       scope = var.application_gateway.identity_id
     }
+    subnet = {
+      role  = "Network Contributor"
+      scope = var.subnet_id
+    }
   }
 }
 
