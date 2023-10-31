@@ -278,7 +278,7 @@ locals {
     "FLLMServices" = {
       address_prefix = cidrsubnet(local.network_cidr, 8, 3)
       nsg_rules = {
-        inbound  = merge(local.no_deny_nsg_rules.inbound, {})
+        inbound  = merge(local.default_nsg_rules.inbound, {})
         outbound = merge({}, {})
       }
     }
@@ -291,7 +291,7 @@ locals {
       }
 
       nsg_rules = {
-        inbound  = merge(local.default_nsg_rules.inbound, {})
+        inbound  = merge(local.no_deny_nsg_rules.inbound, {})
         outbound = merge({}, {})
       }
     }
