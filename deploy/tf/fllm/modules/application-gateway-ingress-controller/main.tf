@@ -118,22 +118,6 @@ resource "azurerm_application_gateway" "main" {
     type         = "UserAssigned"
   }
 
-  probe {
-    host                = local.fqdn
-    interval            = 30
-    name                = "https"
-    path                = "/"
-    protocol            = "Https"
-    timeout             = 1
-    unhealthy_threshold = 3
-  }
-
-  redirect_configuration {
-    name                 = "http-to-https"
-    redirect_type        = "Permanent"
-    target_listener_name = "https"
-  }
-
   request_routing_rule {
     backend_address_pool_name  = "default"
     backend_http_settings_name = "https"
@@ -141,14 +125,6 @@ resource "azurerm_application_gateway" "main" {
     name                       = "https"
     priority                   = 100
     rule_type                  = "Basic"
-  }
-
-  request_routing_rule {
-    http_listener_name          = "http"
-    name                        = "http"
-    priority                    = 200
-    redirect_configuration_name = "http-to-https"
-    rule_type                   = "Basic"
   }
 
   sku {
