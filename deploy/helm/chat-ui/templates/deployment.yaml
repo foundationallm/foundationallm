@@ -67,8 +67,8 @@ spec:
               protocol: TCP
           readinessProbe:
             httpGet:
-              path: /favicon.ico
-              port: 80
+              path: /status
+              port: 3000
             periodSeconds: 3
             timeoutSeconds: 1
           resources:
