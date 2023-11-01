@@ -63,7 +63,7 @@ resource "azapi_resource" "resource" {
   schema_validation_enabled = false
 
   body = jsonencode({
-    kind = "ContentModerator"
+    kind = "ContentSafety"
 
     identity = {
       type = "SystemAssigned"
