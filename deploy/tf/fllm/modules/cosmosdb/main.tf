@@ -15,7 +15,7 @@ locals {
 
 resource "azurerm_cosmosdb_account" "main" {
   kind                          = "GlobalDocumentDB"
-  local_authentication_disabled = true
+  local_authentication_disabled = false
   location                      = var.resource_group.location
   name                          = lower("${var.resource_prefix}-cdb")
   offer_type                    = "Standard"
