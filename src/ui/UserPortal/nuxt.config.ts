@@ -49,4 +49,7 @@ export default defineNuxtConfig({
 			  }
 			: {}),
 	},
+	runtimeConfig: {
+		APP_CONFIG_ENDPOINT: process.env.APP_CONFIG_ENDPOINT,
+	},
 });
