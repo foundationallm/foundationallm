@@ -344,10 +344,6 @@ locals {
   }
 }
 
-moved {
-  from = azurerm_app_configuration_key.config_key
-  to = azurerm_app_configuration_key.config_key_kv
-}
 resource "azurerm_app_configuration_key" "config_key_kv" {
   for_each = { for k, v in local.config_keys : k => v if lookup(v, "value", null) != null }
 
