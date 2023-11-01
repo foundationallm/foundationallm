@@ -47,7 +47,7 @@ resource "azurerm_key_vault_secret" "content_safety_apikey" {
 resource "azurerm_key_vault_secret" "openai_key" {
   name         = "foundationallm-azureopenai-api-key"
   key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-  value        = "" # For HA OpenAI, there is currently no key.
+  value        = "HAOpenAIKey" # For HA OpenAI, there is currently no key.
 }
 
 #data "azuread_application" "core_entra" {
