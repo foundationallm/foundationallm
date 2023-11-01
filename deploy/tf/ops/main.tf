@@ -278,17 +278,7 @@ locals {
     "FLLMServices" = {
       address_prefix = cidrsubnet(local.network_cidr, 8, 3)
       nsg_rules = {
-        inbound = merge(local.default_nsg_rules.inbound, {
-          "allow-aks-inbound" = {
-            access                     = "Allow"
-            destination_address_prefix = "VirtualNetwork"
-            destination_port_range     = "*"
-            priority                   = 256
-            protocol                   = "*"
-            source_address_prefixes    = [local.address_prefix["fllm_backend"]]
-            source_port_range          = "*"
-          }
-        })
+        inbound  = merge(local.default_nsg_rules.inbound, {})
         outbound = merge({}, {})
       }
     }
@@ -385,7 +375,17 @@ locals {
       address_prefix = cidrsubnet(local.network_cidr, 8, 4)
 
       nsg_rules = {
-        inbound  = merge(local.default_nsg_rules.inbound, {})
+        inbound = merge(local.default_nsg_rules.inbound, {
+          "allow-aks-inbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_range     = "*"
+            priority                   = 256
+            protocol                   = "*"
+            source_address_prefixes    = [local.address_prefix["fllm_backend"]]
+            source_port_range          = "*"
+          }
+        })
         outbound = merge(local.default_nsg_rules.outbound, {})
       }
     }
