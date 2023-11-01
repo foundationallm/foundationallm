@@ -360,6 +360,6 @@ resource "azurerm_app_configuration_key" "config_key_vault" {
   configuration_store_id = data.azurerm_app_configuration.appconfig.id
   key                    = each.key
   type                   = "vault"
-  vault_key_reference    = each.value.value
+  vault_key_reference    = each.value.vault_key_reference
   tags                   = local.tags
 }
