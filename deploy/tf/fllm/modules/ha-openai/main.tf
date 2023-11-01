@@ -80,13 +80,14 @@ resource "azurerm_api_management" "apim" {
 }
 
 resource "azurerm_api_management_api" "api" {
-  api_management_name = azurerm_api_management.apim.name
-  display_name        = "HA OpenAI"
-  name                = "${var.resource_prefix}-api"
-  path                = "openai"
-  protocols           = ["https"]
-  resource_group_name = var.resource_group.name
-  revision            = "1"
+  api_management_name   = azurerm_api_management.apim.name
+  display_name          = "HA OpenAI"
+  name                  = "${var.resource_prefix}-api"
+  path                  = "openai"
+  protocols             = ["https"]
+  resource_group_name   = var.resource_group.name
+  revision              = "1"
+  subscription_required = false
 
   import {
     content_format = "openapi+json-link"
