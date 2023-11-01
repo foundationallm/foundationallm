@@ -12,6 +12,7 @@ locals {
     agw           = cidrsubnet(local.network_cidr, 8, 0)
     fllm_backend  = cidrsubnet(local.network_cidr, 6, 4) //10.0.16.0/22
     fllm_frontend = cidrsubnet(local.network_cidr, 6, 3) //10.0.12.0/22
+    fllm_openai   = cidrsubnet(local.network_cidr, 8, 5)
     jumpbox       = cidrsubnet(local.ops_parent_cidr, 5, 25)
     ops           = cidrsubnet(local.ops_parent_cidr, 5, 27)
     tfc           = cidrsubnet(local.ops_parent_cidr, 5, 31)
@@ -306,7 +307,7 @@ locals {
       }
     }
     "FLLMOpenAI" = {
-      address_prefix = cidrsubnet(local.network_cidr, 8, 5)
+      address_prefix = local.address_prefix["fllm_openai"]
       service_endpoints = [
         "Microsoft.CognitiveServices"
       ]
@@ -338,6 +339,15 @@ locals {
             priority                   = 256
             protocol                   = "*"
             source_address_prefixes    = [local.address_prefix["fllm_backend"]]
+            source_port_range          = "*"
+          }
+          "allow-apim-inbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_range     = "443"
+            priority                   = 320
+            protocol                   = "Tcp"
+            source_address_prefixes    = [local.address_prefix["fllm_openai"]]
             source_port_range          = "*"
           }
         })
