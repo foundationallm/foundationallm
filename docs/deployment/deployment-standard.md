@@ -71,3 +71,47 @@ Follow the steps below to deploy the solution to your Azure subscription. You wi
 ### Microsoft Entra authentication setup
 
 Follow the instructions in the [Entra setup document](./authentication-setup-entra.md) to configure Microsoft Entra authentication for the solution.
+
+## Update individual APIs or portals
+
+### Update individual APIs or portals when using Microsoft Azure Container Apps (ACA)
+
+To update an individual API or portal, you can use the following commands:
+
+1. Login with your Entra ID account:
+   
+    ```pwsh
+    az login
+    ```
+2. Set the target subscription:
+   
+    ```pwsh
+    az account set --subscription <target_subscription_id>
+    ```
+
+3. Navigate to the root folder of the repository, and checkout the branch you want to deploy:
+   
+    ```pwsh
+    cd <path_to_repository> 
+    git checkout <branch_name>
+    git pull
+    ```
+
+4. Update the `docker-compose.yml` file located in `deploy\docker` so that it lists only the images you are planning to update.
+5. Build and push the Docker images to the Azure Container Registry (ACR) using the following command (`BuildPush.ps1` is located in the  `scripts` folder):
+   
+    ```pwsh
+    .\BuildPush.ps1 -resourceGroup <resource_group_name> -acrName <acr_name>
+    ```
+   where `<resource_group_name>` is the name of the resource group where the Azure Container Registry is located, and `<acr_name>` is the name of the Azure Container Registry.
+
+6. For each ACA you want to update, run the following script:
+
+    ```pwsh
+    az containerapp update --name <aca_name> --resource-group <resource_group_name> --image <image_name>
+    ```
+    where `<aca_name>` is the name of the ACA, `<resource_group_name>` is the name of the resource group where the ACA is located, and `<image_name>` is the name of the image you want to update (the structure of the image name is `<acr_name>.azurecr.io/<image_name>:latest`, where `<acr_name>` is the name of the Azure Container Registry, and `<image_name>` is the name of the Docker image).
+
+### Update individual APIs or portals when using Microsoft Azure Kubernetes Service (AKS)
+
+Coming soon...
