@@ -331,6 +331,15 @@ locals {
             source_address_prefix      = "AzureLoadBalancer"
             source_port_range          = "*"
           }
+          "allow-aks-inbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_range     = "*"
+            priority                   = 256
+            protocol                   = "*"
+            source_address_prefixes    = [local.address_prefix["fllm_backend"]]
+            source_port_range          = "*"
+          }
         })
         outbound = merge({}, {
           "allow-storage" = {
