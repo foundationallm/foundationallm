@@ -197,7 +197,7 @@ locals {
       value = "data-sources"
     }
     "FoundationaLLM:DurableSystemPrompt:BlobStorageContainer" = {
-      value = "system-prompt"
+      value = "prompts"
     }
     "FoundationaLLM:LangChain:Summary:MaxTokens" = {
       value = "4097"
@@ -212,7 +212,7 @@ locals {
       value = "0"
     }
     "FoundationaLLM:PromptHub:PromptMetadata:StorageContainer" = {
-      value = "system-prompt"
+      value = "prompts"
     }
     "FoundationaLLM:Refinement" = {
       value = ""
