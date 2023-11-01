@@ -344,6 +344,13 @@ locals {
   }
 }
 
+resource "azurerm_app_configuration_feature" "test" {
+  configuration_store_id = data.azurerm_app_configuration.appconfig.id
+  name                   = "FoundationaLLM-AllowAgentHint"
+  enabled                = true
+  tags                   = local.tags
+}
+
 resource "azurerm_app_configuration_key" "config_key_kv" {
   for_each = { for k, v in local.config_keys : k => v if lookup(v, "value", null) != null }
 
