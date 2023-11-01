@@ -8,15 +8,7 @@ import { AppConfigurationClient } from '@azure/app-configuration';
 export default defineEventHandler(async (event) => {
 	const key = getRouterParam(event, 'key');
 	const config = useRuntimeConfig();
-	console.log('ENV', process.env);
-	console.log('CONFIG', config);
-
-	let appConfigClient;
-	try {
-		appConfigClient = new AppConfigurationClient(process.env.NUXT_APP_CONFIG_ENDPOINT);
-	} catch (error) {
-		appConfigClient = new AppConfigurationClient(process.env.NUXT_ENV_APP_CONFIG_ENDPOINT);
-	}
+	const appConfigClient = new AppConfigurationClient(config.APP_CONFIG_ENDPOINT);
 
 	try {
 		const setting = await appConfigClient.getConfigurationSetting({ key });
