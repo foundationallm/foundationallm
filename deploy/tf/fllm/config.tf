@@ -351,7 +351,7 @@ resource "azurerm_app_configuration_key" "config_key_kv" {
   key                    = each.key
   type                   = "kv"
   value                  = each.value.value
-  # tags = local.tags
+  tags                   = local.tags
 }
 
 resource "azurerm_app_configuration_key" "config_key_vault" {
