@@ -7,7 +7,7 @@ locals {
       value = "http://foundationallm-agent-hub-api/agenthub"
     }
     "FoundationaLLM:APIs:CoreAPI:APIUrl" = {
-      value = "https://${data.azurerm_dns_zone.public_dns.name}/core"
+      value = "https://api.${data.azurerm_dns_zone.public_dns.name}"
     }
     "FoundationaLLM:APIs:DataSourceHubAPI:APIUrl" = {
       value = "http://foundationallm-data-source-hub-api/datasourcehub"
@@ -152,6 +152,9 @@ locals {
     }
     "FoundationaLLM:Branding:PageTitle" = {
       value = "FoundationaLLM Chat Copilot"
+    }
+    "FoundationaLLM:Branding:BackgroundColor" = {
+      value = "#FFF"
     }
     "FoundationaLLM:Branding:PrimaryColor" = {
       value = "#131833"
