@@ -1,0 +1,6 @@
+{
+	"type": "openai",
+	"provider": "microsoft",
+	"temperature": 0,
+	"use_chat": false
+}

@@ -156,6 +156,11 @@
           "contentType": null
         },
         {
+          "key": "FoundationaLLM:SystemAgents:StorageContainer",
+          "value": "system-agents",
+          "contentType": null
+        },
+        {
           "key": "FoundationaLLM:AgentHub:StorageManager:BlobStorage:ConnectionString",
           "value": "[concat('{\"uri\":\"https://',variables('keyVaultSettings').name, '.vault.azure.net/secrets/foundationallm-agenthub-storagemanager-blobstorage-connectionstring\"}')]",
           "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
