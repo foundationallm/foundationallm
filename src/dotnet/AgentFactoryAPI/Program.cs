@@ -166,7 +166,11 @@ namespace FoundationaLLM.AgentFactory.API
                     }
                 });
 
-            app.UseHttpsRedirection();
+            bool.TryParse(builder.Configuration[$"FoundationaLLM:APIs:{HttpClients.AgentFactoryAPI}:ForceHttpsRedirection"], out var forceHttpsRedirection);
+            if (forceHttpsRedirection)
+            {
+                app.UseHttpsRedirection();
+            }
             app.UseAuthorization();
             app.MapControllers();
 

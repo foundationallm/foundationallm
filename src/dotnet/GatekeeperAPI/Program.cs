@@ -151,7 +151,11 @@ namespace FoundationaLLM.Gatekeeper.API
                     }
                 });
 
-            app.UseHttpsRedirection();
+            bool.TryParse(builder.Configuration[$"FoundationaLLM:APIs:{HttpClients.GatekeeperAPI}:ForceHttpsRedirection"], out var forceHttpsRedirection);
+            if (forceHttpsRedirection)
+            {
+                app.UseHttpsRedirection();
+            }
             app.UseAuthorization();
 
             app.MapControllers();

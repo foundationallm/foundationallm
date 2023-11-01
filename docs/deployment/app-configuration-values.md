@@ -11,6 +11,7 @@ FoundationaLLM uses Azure App Configuration to store configuration values, Key V
 | `FoundationaLLM:APIs:AgentFactoryAPI:APIKey` | Key Vault secret name: `foundationallm-apis-agentfactoryapi-apikey` | This is a Key Vault reference. |
 | `FoundationaLLM:APIs:AgentFactoryAPI:APIUrl` | Enter the URL to the service. |   |
 | `FoundationaLLM:APIs:AgentFactoryAPI:AppInsightsConnectionString` | Key Vault secret name: `foundationallm-app-insights-connection-string` | This is a Key Vault reference. |
+| `FoundationaLLM:APIs:AgentFactoryAPI:ForceHttpsRedirection` | true | By default, the Agent Factory API forces HTTPS redirection. To override this behavior and allow it to handle HTTP requests, set this value to false. |
 | `FoundationaLLM:APIs:AgentHubAPI:APIKey` | Key Vault secret name: `foundationallm-apis-agenthubapi-apikey` | This is a Key Vault reference. |
 | `FoundationaLLM:APIs:AgentHubAPI:APIUrl` | Enter the URL to the service. |   |
 | `FoundationaLLM:APIs:CoreAPI:APIUrl` | Enter the URL to the service. |   |
@@ -20,6 +21,7 @@ FoundationaLLM uses Azure App Configuration to store configuration values, Key V
 | `FoundationaLLM:APIs:GatekeeperAPI:APIKey` | Key Vault secret name: `foundationallm-apis-gatekeeperapi-apikey` | This is a Key Vault reference. |
 | `FoundationaLLM:APIs:GatekeeperAPI:APIUrl` | Enter the URL to the service. |   |
 | `FoundationaLLM:APIs:GatekeeperAPI:AppInsightsConnectionString` | Key Vault secret name: `foundationallm-app-insights-connection-string` | This is a Key Vault reference. |
+| `FoundationaLLM:APIs:GatekeeperAPI:ForceHttpsRedirection` | true | By default, the Gatekeeper API forces HTTPS redirection. To override this behavior and allow it to handle HTTP requests, set this value to false. |
 | `FoundationaLLM:APIs:LangChainAPI:APIKey` | Key Vault secret name: `foundationallm-apis-langchainapi-apikey` | This is a Key Vault reference. |
 | `FoundationaLLM:APIs:LangChainAPI:APIUrl` | Enter the URL to the service. |   |
 | `FoundationaLLM:APIs:PromptHubAPI:APIKey` | Key Vault secret name: `foundationallm-apis-prompthubapi-apikey` | This is a Key Vault reference. |
