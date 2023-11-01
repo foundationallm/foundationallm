@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import type { AuthConfigOptions } from '@js/auth';
-import { getAppConfigSetting } from '@/js/config';
+import api from '@/js/api';
 
 export const appConfig = defineStore('appConfig', {
 	state: () => ({
@@ -51,22 +51,22 @@ export const appConfig = defineStore('appConfig', {
 				authScopes,
 				authCallbackPath,
 			] = await Promise.all([
-				getAppConfigSetting('FoundationaLLM:APIs:CoreAPI:APIUrl'),
-				getAppConfigSetting('FoundationaLLM:Branding:KioskMode'),
-				getAppConfigSetting('FoundationaLLM:Branding:PageTitle'),
-				getAppConfigSetting('FoundationaLLM:Branding:LogoUrl'),
-				getAppConfigSetting('FoundationaLLM:Branding:LogoText'),
-				getAppConfigSetting('FoundationaLLM:Branding:BackgroundColor'),
-				getAppConfigSetting('FoundationaLLM:Branding:PrimaryColor'),
-				getAppConfigSetting('FoundationaLLM:Branding:SecondaryColor'),
-				getAppConfigSetting('FoundationaLLM:Branding:AccentColor'),
-				getAppConfigSetting('FoundationaLLM:Branding:PrimaryTextColor'),
-				getAppConfigSetting('FoundationaLLM:Branding:SecondaryTextColor'),
-				getAppConfigSetting('FoundationaLLM:Chat:Entra:ClientId'),
-				getAppConfigSetting('FoundationaLLM:Chat:Entra:Instance'),
-				getAppConfigSetting('FoundationaLLM:Chat:Entra:TenantId'),
-				getAppConfigSetting('FoundationaLLM:Chat:Entra:Scopes'),
-				getAppConfigSetting('FoundationaLLM:Chat:Entra:CallbackPath'),
+				api.getConfigValue('FoundationaLLM:APIs:CoreAPI:APIUrl'),
+				api.getConfigValue('FoundationaLLM:Branding:KioskMode'),
+				api.getConfigValue('FoundationaLLM:Branding:PageTitle'),
+				api.getConfigValue('FoundationaLLM:Branding:LogoUrl'),
+				api.getConfigValue('FoundationaLLM:Branding:LogoText'),
+				api.getConfigValue('FoundationaLLM:Branding:BackgroundColor'),
+				api.getConfigValue('FoundationaLLM:Branding:PrimaryColor'),
+				api.getConfigValue('FoundationaLLM:Branding:SecondaryColor'),
+				api.getConfigValue('FoundationaLLM:Branding:AccentColor'),
+				api.getConfigValue('FoundationaLLM:Branding:PrimaryTextColor'),
+				api.getConfigValue('FoundationaLLM:Branding:SecondaryTextColor'),
+				api.getConfigValue('FoundationaLLM:Chat:Entra:ClientId'),
+				api.getConfigValue('FoundationaLLM:Chat:Entra:Instance'),
+				api.getConfigValue('FoundationaLLM:Chat:Entra:TenantId'),
+				api.getConfigValue('FoundationaLLM:Chat:Entra:Scopes'),
+				api.getConfigValue('FoundationaLLM:Chat:Entra:CallbackPath'),
 			]);
 
 			this.apiUrl = apiUrl;

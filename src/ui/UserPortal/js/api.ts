@@ -23,6 +23,10 @@ export default {
 		return this.bearerToken;
 	},
 
+	async getConfigValue(variable: string) {
+		return await $fetch(`/api/config/${variable}`);
+	},
+
 	async fetch(url: string, opts: any = {}) {
 		const options = opts;
 		options.headers = opts.headers || {};
