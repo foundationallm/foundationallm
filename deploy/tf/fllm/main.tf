@@ -102,7 +102,7 @@ data "azurerm_key_vault_certificate" "agw" {
   for_each = toset(["api", "www"])
 
   key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-  name         = replace("www.${var.public_domain}", ".", "-")
+  name         = replace("${each.key}.${var.public_domain}", ".", "-")
 }
 
 data "azurerm_log_analytics_workspace" "logs" {

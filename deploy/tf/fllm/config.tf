@@ -526,12 +526,12 @@ locals {
 }
 
 resource "azurerm_app_configuration_key" "config_key" {
-  for_each               = local.config_keys
+  for_each = local.config_keys
 
   configuration_store_id = data.azurerm_app_configuration.appconfig.id
   content_type           = each.value.contentType
   key                    = each.key
-  type                   = "vault"
-  value                  = each.value.value
+  # type                   = "vault"
+  value = each.value.value
 }
 
