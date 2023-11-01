@@ -75,11 +75,6 @@ locals {
   }
 }
 
-import {
-  id = "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-OAI-rg/providers/Microsoft.CognitiveServices/accounts/EUS-FLLM-DEMO-OAI-content-safety"
-  to = module.content_safety.azapi_resource.main
-}
-
 # Data Sources
 data "azurerm_application_insights" "ai" {
   name                = "${local.resource_prefix_backend["ops"]}-ai"
