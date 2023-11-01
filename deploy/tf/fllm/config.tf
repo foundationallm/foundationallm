@@ -153,6 +153,9 @@ locals {
     "FoundationaLLM:Branding:PageTitle" = {
       value = "FoundationaLLM Chat Copilot"
     }
+    "FoundationaLLM:Branding:BackgroundColor" = {
+      value = "#FFF"
+    }
     "FoundationaLLM:Branding:PrimaryColor" = {
       value = "#131833"
     }
