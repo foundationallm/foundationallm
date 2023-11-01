@@ -278,7 +278,17 @@ locals {
     "FLLMServices" = {
       address_prefix = cidrsubnet(local.network_cidr, 8, 3)
       nsg_rules = {
-        inbound  = merge(local.default_nsg_rules.inbound, {})
+        inbound = merge(local.default_nsg_rules.inbound, {
+          "allow-aks-inbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "VirtualNetwork"
+            destination_port_range     = "*"
+            priority                   = 256
+            protocol                   = "*"
+            source_address_prefixes    = [local.address_prefix["fllm_backend"]]
+            source_port_range          = "*"
+          }
+        })
         outbound = merge({}, {})
       }
     }
@@ -712,7 +722,7 @@ module "appconfig" {
 
 module "application_gateway_certificate" {
   source   = "./modules/keyvault-acme-certificate"
-  for_each = toset(["api", "www",])
+  for_each = toset(["api", "www", ])
 
   administrator_email = "tbd@solliance.net"
   domain              = "${each.key}.${var.public_domain}"
