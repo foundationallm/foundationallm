@@ -53,6 +53,10 @@ resource "azurerm_private_endpoint" "ple" {
   }
 }
 
+moved{
+  from = azapi_resource.main
+  to = azapi_resource.resource
+}
 resource "azapi_resource" "resource" {
   location                  = var.resource_group.location
   name                      = "${var.resource_prefix}-content-safety"
