@@ -1,7 +1,9 @@
 output "endpoint" {
-  value = azurerm_cognitive_account.main.endpoint
+  description = "The endpoint for the cognitive services account."
+  value       = local.main.properties.endpoint
 }
 
 output "key" {
-  value = azurerm_cognitive_account.main.primary_access_key
+  description = "The primary access key for the cognitive services account."
+  value       = local.main.properties.primaryAccessKey
 }

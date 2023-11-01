@@ -20,6 +20,7 @@ variable "resource_group" {
   description = "The resource group to deploy resources into"
 
   type = object({
+    id       = string
     location = string
     name     = string
   })

@@ -1,24 +1,56 @@
 locals {
-  alert = {
-
-  }
+  alert = {}
+  main  = jsondecode(azapi_resource.main.output)
 }
 
-resource "azurerm_cognitive_account" "main" {
-  kind                          = "ContentModerator"
-  location                      = var.resource_group.location
-  name                          = "${var.resource_prefix}-content-safety"
-  resource_group_name           = var.resource_group.name
-  sku_name                      = "S0"
-  custom_subdomain_name         = lower("${var.resource_prefix}-content-safety")
-  public_network_access_enabled = false
+# resource "azurerm_cognitive_account" "main" {
+#   kind                          = "ContentSafety"
+#   location                      = var.resource_group.location
+#   name                          = "${var.resource_prefix}-content-safety"
+#   resource_group_name           = var.resource_group.name
+#   sku_name                      = "S0"
+#   custom_subdomain_name         = lower("${var.resource_prefix}-content-safety")
+#   public_network_access_enabled = false
 
-  identity {
-    type = "SystemAssigned"
-  }
+#   identity {
+#     type = "SystemAssigned"
+#   }
 
-  tags = var.tags
+#   tags = var.tags
+# }
+
+resource "azapi_resource" "main" {
+  location                  = var.resource_group.location
+  name                      = "${var.resource_prefix}-content-safety"
+  parent_id                 = var.resource_group.id
+  type                      = "Microsoft.CognitiveServices/accounts@2023-05-01"
+  tags                      = var.tags
+  response_export_values    = ["*"]
+  schema_validation_enabled = false
+
+  body = jsonencode({
+    kind = "ContentModerator"
+
+    identity = {
+      type = "SystemAssigned"
+    }
+
+    properties = {
+      allowedFqdnList               = []
+      apiProperties                 = {}
+      customSubDomainName           = lower("${var.resource_prefix}-content-safety")
+      disableLocalAuth              = false
+      dynamicThrottlingEnabled      = false
+      publicNetworkAccess           = "Disabled"
+      restrictOutboundNetworkAccess = false
+    }
+    sku = {
+      name = "S0"
+      tier = "Standard"
+    }
+  })
 }
+
 
 resource "azurerm_monitor_metric_alert" "alert" {
   for_each = local.alert
@@ -27,7 +59,7 @@ resource "azurerm_monitor_metric_alert" "alert" {
   frequency           = each.value.frequency
   name                = "${var.resource_prefix}-content-safety-${each.key}-alert"
   resource_group_name = var.resource_group.name
-  scopes              = [azurerm_cognitive_account.main.id]
+  scopes              = [local.main.properties.id]
   severity            = each.value.severity
   tags                = var.tags
   window_size         = each.value.window_size
@@ -61,7 +93,7 @@ resource "azurerm_private_endpoint" "ple" {
   private_service_connection {
     is_manual_connection           = false
     name                           = "${var.resource_prefix}-content-safety-connection"
-    private_connection_resource_id = azurerm_cognitive_account.main.id
+    private_connection_resource_id = local.main.properties.id
     subresource_names              = ["account"]
   }
 }
@@ -73,7 +105,7 @@ module "diagnostics" {
 
   monitored_services = {
     contentSafety = {
-      id = azurerm_cognitive_account.main.id
+      id = local.main.properties.id
     }
   }
 }
