@@ -63,8 +63,14 @@ spec:
           {{- end }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 3000
               protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /favicon.ico
+              port: 80
+            periodSeconds: 3
+            timeoutSeconds: 1
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
