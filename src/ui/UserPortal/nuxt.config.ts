@@ -1,7 +1,5 @@
 import fs from 'fs';
 
-console.log('ENV', process.env);
-
 const buildLoadingTemplate = (() => {
 	const path = 'server/buildLoadingTemplate.html';
 
