@@ -33,7 +33,7 @@ env:
   configmap: 
     - name: AZURE_CLIENT_ID
   secret:
-    - name: APP_CONFIG_ENDPOINT
+    - name: NUXT_APP_CONFIG_ENDPOINT
   values:
     - name: ASPNETCORE_ENVIRONMENT
       value: Production
