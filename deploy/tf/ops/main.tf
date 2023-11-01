@@ -483,7 +483,7 @@ locals {
       address_prefix = local.address_prefix["jumpbox"]
 
       nsg_rules = {
-        inbound = merge({}, {
+        inbound = merge(local.no_deny_nsg_rules.inbound, {
           "allow-rdp" = {
             access                     = "Allow"
             destination_address_prefix = "VirtualNetwork"
@@ -504,7 +504,7 @@ locals {
           }
         })
 
-        outbound = merge({}, {
+        outbound = merge(local.no_deny_nsg_rules.outbound, {
           "allow-vnet-outbound" = {
             access                     = "Allow"
             destination_address_prefix = "VirtualNetwork"
@@ -512,6 +512,15 @@ locals {
             priority                   = 128
             protocol                   = "*"
             source_address_prefix      = "VirtualNetwork"
+            source_port_range          = "*"
+          }
+          "allow-internet-outbound" = {
+            access                     = "Allow"
+            destination_address_prefix = "Internet"
+            destination_port_range     = "*"
+            priority                   = 256
+            protocol                   = "*"
+            source_address_prefix      = "*"
             source_port_range          = "*"
           }
         })
