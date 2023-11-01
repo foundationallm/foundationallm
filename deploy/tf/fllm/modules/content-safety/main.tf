@@ -37,7 +37,6 @@ resource "azapi_resource" "main" {
 
     properties = {
       allowedFqdnList               = []
-      apiProperties                 = {}
       customSubDomainName           = lower("${var.resource_prefix}-content-safety")
       disableLocalAuth              = false
       dynamicThrottlingEnabled      = false
@@ -46,7 +45,6 @@ resource "azapi_resource" "main" {
     }
     sku = {
       name = "S0"
-      tier = "Standard"
     }
   })
 }
