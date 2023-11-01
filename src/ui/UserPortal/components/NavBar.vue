@@ -5,7 +5,7 @@
 			<img v-if="logoURL !== ''" :src="logoURL" />
 			<span v-else>{{ logoText }}</span>
 
-			<template v-if="!isKioskMode">
+			<template v-if="!appConfigStore.isKioskMode">
 				<Button v-if="isSidebarClosed" icon="pi pi-arrow-right" size="small" severity="secondary" @click="closeSidebar(false)" />
 				<Button v-else icon="pi pi-arrow-left" size="small" severity="secondary" @click="closeSidebar(true)" />
 			</template>
@@ -18,6 +18,7 @@
 					<template v-if="currentSession">
 						<span>{{ currentSession.name }}</span>
 						<Button
+							v-if="!appConfigStore.isKioskMode"
 							v-tooltip.bottom="'Copy link to chat session'"
 							class="button--share"
 							icon="pi pi-copy"
@@ -50,10 +51,11 @@
 </template>
 
 <script lang="ts">
+import { mapStores } from 'pinia';
 import type { PropType } from 'vue';
 import type { Session } from '@/js/types';
+import { appConfig } from '@/stores/appConfig';
 import { getMsalInstance, getLoginRequest } from '@/js/auth';
-import getAppConfigSetting from '@/js/config';
 
 export default {
 	name: 'NavBar',
@@ -72,14 +74,21 @@ export default {
 			logoText: '',
 			logoURL: '',
 			isSidebarClosed: true,
-			isKioskMode: true,
 			signedIn: false,
 			accountName: '',
 			userName: '',
 		};
 	},
 
+	computed: {
+		...mapStores(appConfig),
+	},
+
 	async created() {
+		this.logoText = this.appConfigStore.logoText;
+		this.logoURL = this.appConfigStore.logoUrl;
+		this.closeSidebar(this.appConfigStore.isKioskMode);
+
 		if (process.client) {
 			const msalInstance = await getMsalInstance();
 			const accounts = await msalInstance.getAllAccounts();
@@ -88,10 +97,6 @@ export default {
 				this.accountName = accounts[0].name;
 				this.userName = accounts[0].username;
 			}
-			this.logoText = await getAppConfigSetting('FoundationaLLM:Branding:LogoText');
-			this.logoURL = await getAppConfigSetting('FoundationaLLM:Branding:LogoUrl');
-			this.isKioskMode = Boolean(await getAppConfigSetting('FoundationaLLM:Branding:KioskMode'));
-			this.closeSidebar(this.isKioskMode);
 		}
 	},
 

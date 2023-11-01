@@ -10,26 +10,29 @@
 </template>
 
 <script lang="ts">
-import getAppConfigSetting from '@/js/config';
+import { mapStores } from 'pinia';
+import { appConfig } from '@/stores/appConfig';
 
 export default {
 	data() {
 		return {
 			pageTitle: 'FoundationaLLM',
-			style: {},
 		};
 	},
 
-	async created() {
-		this.pageTitle = await getAppConfigSetting('FoundationaLLM:Branding:PageTitle');
-		this.style = {
-			'--primary-bg': await getAppConfigSetting('FoundationaLLM:Branding:BackgroundColor'),
-			'--primary-color': await getAppConfigSetting('FoundationaLLM:Branding:PrimaryColor'),
-			'--secondary-color': await getAppConfigSetting('FoundationaLLM:Branding:SecondaryColor'),
-			'--accent-color': await getAppConfigSetting('FoundationaLLM:Branding:AccentColor'),
-			'--primary-text': await getAppConfigSetting('FoundationaLLM:Branding:PrimaryTextColor'),
-			'--secondary-text': await getAppConfigSetting('FoundationaLLM:Branding:SecondaryTextColor'),
-		};
+	computed: {
+		...mapStores(appConfig),
+
+		style() {
+			return {
+				'--primary-bg': this.appConfigStore.primaryBg,
+				'--primary-color': this.appConfigStore.primaryColor,
+				'--secondary-color': this.appConfigStore.secondaryColor,
+				'--accent-color': this.appConfigStore.accentColor,
+				'--primary-text': this.appConfigStore.primaryText,
+				'--secondary-text': this.appConfigStore.secondaryText,
+			};
+		},
 	},
 };
 </script>

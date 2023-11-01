@@ -1,25 +1,24 @@
 <template>
 	<div class="login-page">
-		<img :src="logoURL" class="logo" />
+		<img :src="logoUrl" class="logo" />
 		<Button icon="pi pi-sign-in" label="Sign In" size="large" @click="signIn"></Button>
 	</div>
 </template>
 
 <script lang="ts">
+import { mapStores } from 'pinia';
+import { appConfig } from '@/stores/appConfig';
 import { getMsalInstance, getLoginRequest } from '@/js/auth';
-import getAppConfigSetting from '@/js/config';
 
 export default {
 	name: 'Login',
 
-	data() {
-		return {
-			logoURL: '',
-		};
-	},
+	computed: {
+		...mapStores(appConfig),
 
-	async created() {
-		this.logoURL = await getAppConfigSetting('FoundationaLLM:Branding:LogoUrl');
+		logoUrl() {
+			return this.appConfigStore.logoUrl;
+		},
 	},
 
 	methods: {

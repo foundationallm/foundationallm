@@ -15,6 +15,9 @@ const buildLoadingTemplate = (() => {
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	devtools: { enabled: true },
+	modules: [
+		'@pinia/nuxt',
+	],
 	components: true,
 	app: {
 		head: {
@@ -29,7 +32,7 @@ export default defineNuxtConfig({
 		},
 	},
 	routeRules: {
-		'/': { ssr: false },
+		// '/': { ssr: false },
 	},
 	css: [
 		'primevue/resources/themes/viva-light/theme.css',
@@ -45,10 +48,5 @@ export default defineNuxtConfig({
 					loadingTemplate: () => buildLoadingTemplate,
 			  }
 			: {}),
-	},
-	vite: {
-		define: {
-			APP_CONFIG_ENDPOINT: JSON.stringify(process.env.APP_CONFIG_ENDPOINT),
-		},
 	},
 });

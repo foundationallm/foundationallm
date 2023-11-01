@@ -63,7 +63,7 @@ namespace FoundationaLLM.Core.API
                     policy =>
                     {
                         policy.AllowAnyOrigin();
-                        policy.AllowAnyHeader();
+                        policy.WithHeaders("DNT", "Keep-Alive", "User-Agent", "X-Requested-With", "If-Modified-Since", "Cache-Control", "Content-Type", "Range", "Authorization", "X-AGENT-HINT");
                         policy.AllowAnyMethod();
                     });
             });
@@ -133,6 +133,9 @@ namespace FoundationaLLM.Core.API
 
             var app = builder.Build();
 
+            // Set the CORS policy before other middleware.
+            app.UseCors(allowAllCorsOrigins);
+
             // For the CoreAPI, we need to make sure that UseAuthentication is called before the UserIdentityMiddleware.
             app.UseAuthentication();
             app.UseAuthorization();
@@ -162,8 +165,6 @@ namespace FoundationaLLM.Core.API
 
             app.UseHttpsRedirection();
             app.MapControllers();
-
-            app.UseCors(allowAllCorsOrigins);
 
             app.Run();
         }

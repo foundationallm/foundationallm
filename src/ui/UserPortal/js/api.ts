@@ -1,18 +1,15 @@
 /* eslint-disable prettier/prettier */
-import { Message, Session, CompletionPrompt } from '@/js/types';
+import type { Message, Session, CompletionPrompt } from '@/js/types';
 import { getMsalInstance } from '@/js/auth';
-import getAppConfigSetting from './config';
-
-//const API_URL = await getAppConfigSetting("FoundationaLLM:APIs:CoreAPI:APIUrl");
-let API_URL: string;
-async function loadConfig() {
-  const apiUrl = await getAppConfigSetting("FoundationaLLM:APIs:CoreAPI:APIUrl") as string;
-	API_URL = apiUrl ? apiUrl.replace(/\/$/, "") : '';
-}
-loadConfig();
 
 export default {
+	apiUrl: null as string | null,
 	bearerToken: null as string | null,
+
+	setApiUrl(url: string) {
+		// Set the api url and remove a trailing slash if there is one.
+		this.apiUrl = url.replace(/\/$/, '');
+	},
 
 	async getBearerToken() {
 		if (this.bearerToken) return this.bearerToken;
@@ -37,19 +34,19 @@ export default {
 		const bearerToken = await this.getBearerToken();
 		options.headers['Authorization'] = `Bearer ${bearerToken}`;
 
-		return await $fetch(url, options);
+		return await $fetch(`${this.apiUrl}${url}`, options);
 	},
 
 	async getSessions() {
-		return await this.fetch(`${API_URL}/sessions`) as Array<Session>;
+		return await this.fetch(`/sessions`) as Array<Session>;
 	},
 
 	async addSession() {
-		return await this.fetch(`${API_URL}/sessions`, { method: 'POST' }) as Session;
+		return await this.fetch(`/sessions`, { method: 'POST' }) as Session;
 	},
 
 	async renameSession(sessionId: string, newChatSessionName: string) {
-		return await this.fetch(`${API_URL}/sessions/${sessionId}/rename`, {
+		return await this.fetch(`/sessions/${sessionId}/rename`, {
 			method: 'POST',
 			params: {
 				newChatSessionName
@@ -58,22 +55,22 @@ export default {
 	},
 
 	async summarizeSessionName(sessionId: string, text: string) {
-		return await this.fetch(`${API_URL}/sessions/${sessionId}/summarize-name`, {
+		return await this.fetch(`/sessions/${sessionId}/summarize-name`, {
 			method: 'POST',
 			body: JSON.stringify(text),
 		}) as { text: string };
 	},
 
 	async deleteSession(sessionId: string) {
-		return await this.fetch(`${API_URL}/sessions/${sessionId}`, { method: 'DELETE' }) as Session;
+		return await this.fetch(`/sessions/${sessionId}`, { method: 'DELETE' }) as Session;
 	},
 
 	async getMessages(sessionId: string) {
-		return await this.fetch(`${API_URL}/sessions/${sessionId}/messages`) as Array<Message>;
+		return await this.fetch(`/sessions/${sessionId}/messages`) as Array<Message>;
 	},
 
 	async getPrompt(sessionId: string, promptId: string) {
-		return await this.fetch(`${API_URL}/sessions/${sessionId}/completionprompts/${promptId}`) as CompletionPrompt;
+		return await this.fetch(`/sessions/${sessionId}/completionprompts/${promptId}`) as CompletionPrompt;
 	},
 
 	async rateMessage(message: Message, rating: Message['rating']) {
@@ -83,7 +80,7 @@ export default {
 		if (rating !== null) params.rating = rating;
 
 		return await this.fetch(
-			`${API_URL}/sessions/${message.sessionId}/message/${message.id}/rate`, {
+			`/sessions/${message.sessionId}/message/${message.id}/rate`, {
 				method: 'POST',
 				params
 			}
@@ -91,7 +88,7 @@ export default {
 	},
 
 	async sendMessage(sessionId: string, text: string) {
-		return (await this.fetch(`${API_URL}/sessions/${sessionId}/completion`, {
+		return (await this.fetch(`/sessions/${sessionId}/completion`, {
 			method: 'POST',
 			body: JSON.stringify(text),
 		})) as string;
