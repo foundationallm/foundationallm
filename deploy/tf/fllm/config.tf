@@ -106,6 +106,14 @@ locals {
       })
       contentType = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
     }
+    "FoundationaLLM:APIs:AgentFactoryAPI:ForceHttpsRedirection" = {
+      value      = "false"
+      contentType = null
+    }
+    "FoundationaLLM:APIs:GatekeeperAPI:ForceHttpsRedirection" = {
+      value      = "false"
+      contentType = null
+    }
     "FoundationaLLM:AgentHub:AgentMetadata:StorageContainer" = {
       value       = "agents"
       contentType = null
