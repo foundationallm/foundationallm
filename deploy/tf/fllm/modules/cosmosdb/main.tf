@@ -14,14 +14,16 @@ locals {
 }
 
 resource "azurerm_cosmosdb_account" "main" {
-  kind                          = "GlobalDocumentDB"
-  local_authentication_disabled = false
-  location                      = var.resource_group.location
-  name                          = lower("${var.resource_prefix}-cdb")
-  offer_type                    = "Standard"
-  public_network_access_enabled = false
-  resource_group_name           = var.resource_group.name
-  tags                          = var.tags
+  ip_range_filter                   = "104.42.195.92,40.76.54.131,52.169.50.45,52.176.6.30,52.187.184.26"
+  is_virtual_network_filter_enabled = true
+  kind                              = "GlobalDocumentDB"
+  local_authentication_disabled     = false
+  location                          = var.resource_group.location
+  name                              = lower("${var.resource_prefix}-cdb")
+  offer_type                        = "Standard"
+  public_network_access_enabled     = true
+  resource_group_name               = var.resource_group.name
+  tags                              = var.tags
 
   capacity {
     total_throughput_limit = max(sum(concat([0], [for c in var.containers : c.max_throughput])), 1000)
