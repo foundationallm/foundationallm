@@ -118,16 +118,6 @@ resource "azurerm_application_gateway" "main" {
     type         = "UserAssigned"
   }
 
-  probe {
-    host                = local.fqdn
-    interval            = 30
-    name                = "https"
-    path                = "/"
-    protocol            = "Https"
-    timeout             = 1
-    unhealthy_threshold = 3
-  }
-
   redirect_configuration {
     name                 = "http-to-https"
     redirect_type        = "Permanent"

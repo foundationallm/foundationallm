@@ -185,7 +185,7 @@ Version:
 
 ### <a name="module_application_gateway"></a> [application\_gateway](#module\_application\_gateway)
 
-Source: ./modules/application-gateway
+Source: ./modules/application-gateway-ingress-controller
 
 Version:
 

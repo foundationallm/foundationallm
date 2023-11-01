@@ -258,7 +258,7 @@ module "aks_frontend" {
 }
 
 module "application_gateway" {
-  source     = "./modules/application-gateway"
+  source     = "./modules/application-gateway-ingress-controller"
   depends_on = [azurerm_role_assignment.role_agw_mi]
   for_each   = toset(["api", "www", ])
 
