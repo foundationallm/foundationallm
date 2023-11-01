@@ -344,7 +344,7 @@ locals {
   }
 }
 
-resource "azurerm_app_configuration_feature" "test" {
+resource "azurerm_app_configuration_feature" "feature" {
   configuration_store_id = data.azurerm_app_configuration.appconfig.id
   name                   = "FoundationaLLM-AllowAgentHint"
   enabled                = true
