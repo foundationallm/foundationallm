@@ -4,3 +4,6 @@
 *
 # explicitly list included directories
 !deploy/tf/
+.git/
+**/.terraform/
+!**/.terraform/modules/
