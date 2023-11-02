@@ -32,7 +32,6 @@ resource "azurerm_monitor_metric_alert" "alert" {
   }
 }
 
-
 resource "azurerm_private_endpoint" "ple" {
   location            = var.resource_group.location
   name                = "${var.resource_prefix}-content-safety-pe"
