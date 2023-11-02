@@ -81,7 +81,7 @@ locals {
     "FoundationaLLM:AzureOpenAI:API:Version" = {
       value = "2023-05-15"
     }
-    "FoundationaLLM:BlobStorageMemorySource:ConfigBlobStorageContainer" = {
+    "FoundationaLLM:BlobStorageMemorySource:BlobStorageContainer" = {
       value = "memory-source"
     }
     "FoundationaLLM:BlobStorageMemorySource:ConfigFilePath" = {
@@ -149,7 +149,7 @@ locals {
     "FoundationaLLM:CognitiveSearch:MaxVectorSearchResults" = {
       value = "10"
     }
-    "FoundationaLLM:CognitiveSearchMemorySource:ConfigBlobStorageContainer" = {
+    "FoundationaLLM:CognitiveSearchMemorySource:BlobStorageContainer" = {
       value = "memory-source"
     }
     "FoundationaLLM:CognitiveSearchMemorySource:ConfigFilePath" = {
@@ -298,17 +298,11 @@ locals {
     "FoundationaLLM:AzureOpenAI:API:Key" = {
       vault_key_reference = azurerm_key_vault_secret.openai_key.versionless_id
     }
-    "FoundationaLLM:BlobStorage:ConnectionString" = {
-      vault_key_reference = azurerm_key_vault_secret.storage_connection_string.versionless_id
-    }
     "FoundationaLLM:BlobStorageMemorySource:BlobStorageConnection" = {
       vault_key_reference = azurerm_key_vault_secret.storage_connection_string.versionless_id
     }
     "FoundationaLLM:Chat:Entra:ClientSecret" = {
       vault_key_reference = azurerm_key_vault_secret.client_entra_clientsecret.versionless_id
-    }
-    "FoundationaLLM:CognitiveSearch:ConfigBlobStorageConnection" = {
-      vault_key_reference = azurerm_key_vault_secret.storage_connection_string.versionless_id
     }
     "FoundationaLLM:CognitiveSearch:Key" = {
       vault_key_reference = azurerm_key_vault_secret.search_key.versionless_id
