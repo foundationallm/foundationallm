@@ -126,6 +126,24 @@ resource "azurerm_cognitive_deployment" "deployment" {
   }
 }
 
+resource "azurerm_cognitive_deployment" "deployment" {
+  count = length(azurerm_cognitive_account.openai)
+
+  cognitive_account_id = azurerm_cognitive_account.openai[count.index].id
+  name                 = "embeddings"
+
+  model {
+    format  = "OpenAI"
+    name    = "text-embedding-ada-002"
+    version = "2"
+  }
+
+  scale {
+    capacity = "60"
+    type     = "Standard"
+  }
+}
+
 resource "azurerm_role_assignment" "openai_apim" {
   principal_id         = azurerm_api_management.apim.identity.0.principal_id
   role_definition_name = "Key Vault Secrets User"
