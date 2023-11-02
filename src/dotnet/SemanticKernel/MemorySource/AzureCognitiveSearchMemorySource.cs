@@ -19,11 +19,11 @@ namespace FoundationaLLM.SemanticKernel.MemorySource
     public class AzureCognitiveSearchMemorySource : IMemorySource
     {
         private readonly SearchIndexClient _adminClient;
-        private SearchClient _searchClient;
+        private SearchClient? _searchClient;
         private readonly AzureCognitiveSearchMemorySourceSettings _settings;
         private readonly ILogger _logger;
 
-        private AzureCognitiveSearchMemorySourceConfig _config;
+        private AzureCognitiveSearchMemorySourceConfig? _config;
 
         /// <summary>
         /// Constructor for the Azure Cognitive Search memory source.
@@ -62,7 +62,7 @@ namespace FoundationaLLM.SemanticKernel.MemorySource
 
             var memories = new List<string>();
 
-            foreach (var memorySource in _config.FacetedQueryMemorySources)
+            foreach (var memorySource in _config!.FacetedQueryMemorySources)
             {
                 var searchOptions = new SearchOptions
                 {
@@ -74,7 +74,7 @@ namespace FoundationaLLM.SemanticKernel.MemorySource
 
                 var facetTemplates = memorySource.Facets.ToDictionary(f => f.Facet.Split(',')[0], f => f.CountMemoryTemplate);
 
-                var result = await _searchClient
+                var result = await _searchClient!
                     .SearchAsync<SearchDocument>("*", searchOptions);
 
                 long totalCount = 0;
@@ -98,8 +98,7 @@ namespace FoundationaLLM.SemanticKernel.MemorySource
 
         private void EnsureSearchClient()
         {
-            if (_searchClient == null)
-                _searchClient = _adminClient.GetSearchClient(_settings.IndexName);
+            _searchClient ??= _adminClient.GetSearchClient(_settings.IndexName);
         }
 
         private async Task EnsureConfig()

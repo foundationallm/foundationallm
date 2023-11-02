@@ -85,7 +85,7 @@ namespace FoundationaLLM.SemanticKernel.TextEmbedding
                 if (embeddingFieldAttribute != null)
                 {
                     var newCurrentPath = string.IsNullOrEmpty(currentPath) ? property.Name : $"{currentPath}.{property.Name}";
-                    embeddingFields.Add(newCurrentPath, embeddingFieldAttribute.Label);
+                    embeddingFields.Add(newCurrentPath, embeddingFieldAttribute.Label!);
 
                     var propertyInfo = property.PropertyType.GetTypeInfo();
                     if (propertyInfo.ImplementedInterfaces.Select(ii => ii.Name).Contains("IEnumerable")

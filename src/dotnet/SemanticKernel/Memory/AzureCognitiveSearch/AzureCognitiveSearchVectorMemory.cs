@@ -28,7 +28,7 @@ namespace FoundationaLLM.SemanticKernel.Memory.AzureCognitiveSearch
     public class AzureCognitiveSearchVectorMemory : ISemanticTextMemory
     {
         private readonly SearchIndexClient _adminClient;
-        private SearchClient _searchClient;
+        private SearchClient? _searchClient;
         private readonly string _searchIndexName;
 
         private readonly ConcurrentDictionary<string, SearchClient> _clientsByIndex = new();
@@ -163,7 +163,7 @@ namespace FoundationaLLM.SemanticKernel.Memory.AzureCognitiveSearch
                 vectorizer(item, embbedding.ToArray());
 
                 // This will send the vectorized object to the Azure Cognitive Search index.
-                await _searchClient.IndexDocumentsAsync(IndexDocumentsBatch.Upload(new object[] { item }));
+                await _searchClient!.IndexDocumentsAsync(IndexDocumentsBatch.Upload(new object[] { item }));
 
                 _logger.LogInformation($"Saved vector for item: {itemName} of type {item.GetType().Name}");
             }
@@ -194,7 +194,7 @@ namespace FoundationaLLM.SemanticKernel.Memory.AzureCognitiveSearch
                         var propertyValue = property.GetValue(item);
 
                         Console.WriteLine($"Found key property: {propertyName}, Value: {propertyValue}");
-                        await _searchClient.DeleteDocumentsAsync(propertyName, new[] { propertyValue?.ToString() });
+                        await _searchClient!.DeleteDocumentsAsync(propertyName, new[] { propertyValue?.ToString() });
 
                         _logger.LogInformation("Deleted vector from Cognitive Search");
                         return;

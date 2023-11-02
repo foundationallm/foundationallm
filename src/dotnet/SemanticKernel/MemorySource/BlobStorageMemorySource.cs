@@ -17,7 +17,7 @@ namespace FoundationaLLM.SemanticKernel.MemorySource
         private readonly BlobStorageMemorySourceSettings _settings;
         private readonly ILogger _logger;
 
-        private BlobStorageMemorySourceConfig _config;
+        private BlobStorageMemorySourceConfig? _config;
 
         private readonly BlobServiceClient _blobServiceClient;
         private readonly Dictionary<string, BlobContainerClient> _containerClients;
@@ -46,7 +46,7 @@ namespace FoundationaLLM.SemanticKernel.MemorySource
         {
             await EnsureConfig();
 
-            var filesContent = await Task.WhenAll(_config.TextFileMemorySources
+            var filesContent = await Task.WhenAll(_config!.TextFileMemorySources
                 .Select(tfms => tfms.TextFiles.Select(tf => ReadTextFileContent(tfms.ContainerName, tf)))
                 .SelectMany(x => x));
 
@@ -99,15 +99,12 @@ namespace FoundationaLLM.SemanticKernel.MemorySource
             var blobClient = containerClient.GetBlobClient(file.FileName);
             var fileType = Path.GetExtension(file.FileName).ToUpper();
 
-            switch (fileType)
+            return fileType switch
             {
-                case ".TXT":
-                    return (await (new StreamReader(await blobClient.OpenReadAsync())).ReadToEndAsync(), file.SplitIntoChunks);
-                case ".PDF":
-                    return (await GetPdfText(blobClient), file.SplitIntoChunks);
-                default:
-                    return (string.Empty, false);
-            }
+                ".TXT" => (await (new StreamReader(await blobClient.OpenReadAsync())).ReadToEndAsync(), file.SplitIntoChunks),
+                ".PDF" => (await GetPdfText(blobClient), file.SplitIntoChunks),
+                _ => (string.Empty, false),
+            };
         }
 
         private async Task<string> GetPdfText(BlobClient blobClient)
@@ -117,11 +114,9 @@ namespace FoundationaLLM.SemanticKernel.MemorySource
                 var ms = new MemoryStream();
                 await blobClient.DownloadToAsync(ms);
 
-                using (var pdfDocument = PdfDocument.Open(ms.ToArray()))
-                {
-                    var pages = pdfDocument.GetPages();
-                    return string.Join(Environment.NewLine, pages.Select(p => p.Text).ToArray());
-                }
+                using var pdfDocument = PdfDocument.Open(ms.ToArray());
+                var pages = pdfDocument.GetPages();
+                return string.Join(Environment.NewLine, pages.Select(p => p.Text).ToArray());
             }
             catch (Exception ex)
             {
