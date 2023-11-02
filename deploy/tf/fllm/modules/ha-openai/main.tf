@@ -126,7 +126,7 @@ resource "azurerm_cognitive_deployment" "deployment" {
   }
 }
 
-resource "azurerm_cognitive_deployment" "deployment" {
+resource "azurerm_cognitive_deployment" "embeddings_deployment" {
   count = length(azurerm_cognitive_account.openai)
 
   cognitive_account_id = azurerm_cognitive_account.openai[count.index].id
