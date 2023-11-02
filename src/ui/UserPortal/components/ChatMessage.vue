@@ -18,7 +18,7 @@
 						:class="message.sender === 'User' ? 'token-chip--out' : 'token-chip--in'" 
 						:pt="{
 							root: { style: { borderRadius: '24px', marginRight: '12px' } },
-							label: { style: { color: message.sender === 'User' ? 'var(--primary-text)' : 'var(--secondary-text)' } }
+							label: { style: { color: message.sender === 'User' ? 'var(--primary-color)' : 'var(--accent-color)' } }
 						}"
 					/>
 					{{ $filters.timeAgo(new Date(message.timeStamp)) }}
@@ -255,5 +255,12 @@ export default {
 .prompt-text {
 	white-space: pre-wrap;
 	overflow-wrap: break-word;
+}
+</style>
+
+<style lang="scss">
+.p-chip .p-chip-text {
+	line-height: 1.1;
+	font-size: 0.75rem;
 }
 </style>

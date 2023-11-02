@@ -92,6 +92,7 @@ FoundationaLLM uses Azure App Configuration to store configuration values, Key V
 | `FoundationaLLM:CosmosDB:MonitoredContainers` | customer, product |   |
 | `FoundationaLLM:DataSourceHub:DataSourceMetadata:StorageContainer` | data-sources |   |
 | `FoundationaLLM:DataSourceHub:StorageManager:BlobStorage:ConnectionString` | Key Vault secret name: `foundationallm-datasourcehub-storagemanager-blobstorage-connectionstring` | This is a Key Vault reference. |
+| `FoundationaLLM:DataSources:AboutFoundationaLLM:BlobStorage:ConnectionString` | Key Vault secret name: `foundationallm-datasourcehub-storagemanager-blobstorage-connectionstring` | This is a Key Vault reference. |
 | `FoundationaLLM:DurableSystemPrompt:BlobStorageConnection` | Key Vault secret name: `foundationallm-durablesystemprompt-blobstorageconnection` | This is a Key Vault reference. |
 | `FoundationaLLM:DurableSystemPrompt:BlobStorageContainer` | system-prompt |   |
 | `FoundationaLLM:LangChain:CSVFile:URL` | Key Vault secret name: `foundationallm-langchain-csvfile-url` | This is a Key Vault reference. |

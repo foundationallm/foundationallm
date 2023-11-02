@@ -251,17 +251,17 @@
           "contentType": null
         },
         {
-          "key": "FoundationaLLM:BlobStorage:ConnectionString",
-          "value": "[concat('{\"uri\":\"https://',variables('keyVaultSettings').name, '.vault.azure.net/secrets/foundationallm-blobstoragememorysource-blobstorageconnection\"}')]",
-          "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
-        },
-        {
           "key": "FoundationaLLM:BlobStorageMemorySource:BlobStorageConnection",
           "value": "[concat('{\"uri\":\"https://',variables('keyVaultSettings').name, '.vault.azure.net/secrets/foundationallm-blobstoragememorysource-blobstorageconnection\"}')]",
           "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
         },
         {
-          "key": "FoundationaLLM:BlobStorageMemorySource:ConfigBlobStorageContainer",
+          "key": "FoundationaLLM:DataSources:AboutFoundationaLLM:BlobStorage:ConnectionString",
+          "value": "[concat('{\"uri\":\"https://',variables('keyVaultSettings').name, '.vault.azure.net/secrets/foundationallm-blobstoragememorysource-blobstorageconnection\"}')]",
+          "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+        },
+        {
+          "key": "FoundationaLLM:BlobStorageMemorySource:BlobStorageContainer",
           "value": "memory-source",
           "contentType": null
         },
@@ -361,11 +361,6 @@
           "contentType": null
         },
         {
-          "key": "FoundationaLLM:CognitiveSearch:ConfigBlobStorageConnection",
-          "value": "[concat('{\"uri\":\"https://',variables('keyVaultSettings').name, '.vault.azure.net/secrets/foundationallm-cognitivesearch-configblobstorageconnection\"}')]",
-          "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
-        },
-        {
           "key": "FoundationaLLM:CognitiveSearch:EndPoint",
           "value": "[concat('https://', variables('cognitiveSearchSettings').name, '.search.windows.net')]",
           "contentType": null
@@ -391,7 +386,7 @@
           "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
         },
         {
-          "key": "FoundationaLLM:CognitiveSearchMemorySource:ConfigBlobStorageContainer",
+          "key": "FoundationaLLM:CognitiveSearchMemorySource:BlobStorageContainer",
           "value": "memory-source",
           "contentType": null
         },
