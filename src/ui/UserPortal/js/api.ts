@@ -23,8 +23,12 @@ export default {
 		return this.bearerToken;
 	},
 
-	async getConfigValue(variable: string) {
-		return await $fetch(`/api/config/${variable}`);
+	async getConfigValue(key: string) {
+		return await $fetch(`/api/config/`, {
+			params: {
+				key
+			}
+		});
 	},
 
 	async fetch(url: string, opts: any = {}) {
@@ -87,14 +91,16 @@ export default {
 			`/sessions/${message.sessionId}/message/${message.id}/rate`, {
 				method: 'POST',
 				params
-			}
+			},
 		) as Message;
 	},
 
-	async sendMessage(sessionId: string, text: string) {
+	async sendMessage(sessionId: string, text: string, agent: string) {
+		const headers = agent ? { 'X-AGENT-HINT': agent } : {};
 		return (await this.fetch(`/sessions/${sessionId}/completion`, {
 			method: 'POST',
 			body: JSON.stringify(text),
+			headers,
 		})) as string;
 	},
 };

@@ -32,6 +32,17 @@
 						<span>Please select a session</span>
 					</template>
 				</div>
+				<div class="navbar__content__left__item">
+					<template v-if="currentSession && allowAgentHint">
+						<Dropdown
+							v-model="agentSelection"
+							:options="agents"
+							optionLabel="label"
+							placeholder="--Select--"
+							@change="handleAgentChange"
+						/>
+					</template>
+				</div>
 			</div>
 
 			<!-- Right side content -->
@@ -77,6 +88,9 @@ export default {
 			signedIn: false,
 			accountName: '',
 			userName: '',
+			allowAgentHint: false,
+			agentSelection: null,
+			agents: [],
 		};
 	},
 
@@ -84,10 +98,23 @@ export default {
 		...mapStores(appConfig),
 	},
 
+	watch: {
+		currentSession(newSession: Session, oldSession: Session) {
+			if (newSession.id === oldSession.id) return;
+			this.agentSelection = this.agents.find(agent => agent.value === this.appConfigStore.selectedAgents.get(newSession.id)) || null;
+		},
+	},
+
 	async created() {
+		this.allowAgentHint = this.appConfigStore.allowAgentHint.enabled;
 		this.logoText = this.appConfigStore.logoText;
 		this.logoURL = this.appConfigStore.logoUrl;
 		this.closeSidebar(this.appConfigStore.isKioskMode);
+
+		this.agents.push({ label: '--select--', value: null});
+		for (const agent of this.appConfigStore.agents) {
+			this.agents.push({ label: agent, value: agent });
+		}
 
 		if (process.client) {
 			const msalInstance = await getMsalInstance();
@@ -113,6 +140,16 @@ export default {
 			this.$toast.add({
 				severity: 'success',
 				detail: 'Chat link copied!',
+				life: 2000,
+			});
+		},
+
+		handleAgentChange() {
+			this.appConfigStore.selectedAgents.set(this.currentSession.id, this.agentSelection.value);
+			const message = this.agentSelection.value ? `Agent changed to ${this.agentSelection.label}` : `Cleared agent hint selection`;
+			this.$toast.add({
+				severity: 'success',
+				detail: message,
 				life: 2000,
 			});
 		},
@@ -193,6 +230,11 @@ export default {
 	padding: 24px;
 	border-bottom: 1px solid #EAEAEA;
 	background-color: var(--accent-color);
+}
+
+.navbar__content__left {
+	display: flex;
+	align-items: center;
 }
 
 .navbar__content__left__item {
