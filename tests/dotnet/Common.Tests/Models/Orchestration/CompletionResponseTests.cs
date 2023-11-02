@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Models.Orchestration;
+using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,6 +70,37 @@ namespace FoundationaLLM.Common.Tests.Models.Orchestration
             Assert.Equal(expectedUserPromptTokens, completionResponse.PromptTokens);
             Assert.Equal(expectedResponseTokens, completionResponse.CompletionTokens);
             Assert.Equal(expectedUserPromptEmbedding, completionResponse.UserPromptEmbedding);
+        }
+
+        [Fact]
+        public void TestTotalTokensCalculation()
+        {
+            // Arrange
+            var completionResponse = new CompletionResponse();
+            completionResponse.PromptTokens = 5;
+            completionResponse.CompletionTokens = 10;
+
+            // Act
+            var totalTokens = completionResponse.TotalTokens;
+
+            // Assert
+            Assert.Equal(15, totalTokens);
+        }
+
+        [Fact]
+        public void TestDefaultCompletionResponseInitialization()
+        {
+            // Arrange
+            var completionResponse = new CompletionResponse();
+
+            // Act
+
+            // Assert
+            Assert.Equal(0, completionResponse.PromptTokens);
+            Assert.Equal(0, completionResponse.CompletionTokens);
+            Assert.Equal(0, completionResponse.TotalTokens);
+            Assert.Equal(0.0f, completionResponse.TotalCost);
+            Assert.Null(completionResponse.UserPromptEmbedding);
         }
 
         public CompletionResponse CreateCompletionResponse(string completion, string userPrompt, int userPromptTokens, int responseTokens,float[]? userPromptEmbedding)

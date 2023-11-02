@@ -46,9 +46,8 @@ FoundationaLLM uses Azure App Configuration to store configuration values, Key V
 | `FoundationaLLM:AzureOpenAI:API:Endpoint` | Enter the URL to the service. |   |
 | `FoundationaLLM:AzureOpenAI:API:Key` | Key Vault secret name: `foundationallm-azureopenai-api-key` | This is a Key Vault reference. |
 | `FoundationaLLM:AzureOpenAI:API:Version` | 2023-05-15 |   |
-| `FoundationaLLM:BlobStorage:ConnectionString` | Key Vault secret name: `foundationallm-blobstoragememorysource-blobstorageconnection` | This is a Key Vault reference. |
 | `FoundationaLLM:BlobStorageMemorySource:BlobStorageConnection` | Key Vault secret name: `foundationallm-blobstoragememorysource-blobstorageconnection` | This is a Key Vault reference. |
-| `FoundationaLLM:BlobStorageMemorySource:ConfigBlobStorageContainer` | memory-source |   |
+| `FoundationaLLM:BlobStorageMemorySource:BlobStorageContainer` | memory-source |   |
 | `FoundationaLLM:BlobStorageMemorySource:ConfigFilePath` | BlobMemorySourceConfig.json |   |
 | `FoundationaLLM:Branding:AccentColor` | #fff |   |
 | `FoundationaLLM:Branding:AllowAgentSelection` | default, SDZWA | These are merely sample agent names. Define one or more agents configured for your environment. **Note:** This value corresponds with the `FoundationaLLM-AllowAgentHint` feature flag. If the feature flag is `true`, then the User Portal UI uses these values to provide agent hints to the Agent Hub in completions-based requests. Otherwise, these values are ignored. |
@@ -69,13 +68,12 @@ FoundationaLLM uses Azure App Configuration to store configuration values, Key V
 | `FoundationaLLM:Chat:Entra:Instance` | Enter the URL to the service. |   |
 | `FoundationaLLM:Chat:Entra:Scopes` | api://FoundationaLLM-Auth/Data.Read |   |
 | `FoundationaLLM:Chat:Entra:TenantId` |   |   |
-| `FoundationaLLM:CognitiveSearch:ConfigBlobStorageConnection` | Key Vault secret name: `foundationallm-cognitivesearch-configblobstorageconnection` | This is a Key Vault reference. |
 | `FoundationaLLM:CognitiveSearch:EndPoint` | Enter the URL to the service. |   |
 | `FoundationaLLM:CognitiveSearch:IndexName` | vector-index |   |
 | `FoundationaLLM:CognitiveSearch:Key` | Key Vault secret name: `foundationallm-cognitivesearch-key` | This is a Key Vault reference. |
 | `FoundationaLLM:CognitiveSearch:MaxVectorSearchResults` | 10 |   |
 | `FoundationaLLM:CognitiveSearchMemorySource:BlobStorageConnection` | Key Vault secret name: `foundationallm-cognitivesearchmemorysource-blobstorageconnection` | This is a Key Vault reference. |
-| `FoundationaLLM:CognitiveSearchMemorySource:ConfigBlobStorageContainer` | memory-source |   |
+| `FoundationaLLM:CognitiveSearchMemorySource:BlobStorageContainer` | memory-source |   |
 | `FoundationaLLM:CognitiveSearchMemorySource:ConfigFilePath` | ACSMemorySourceConfig.json |   |
 | `FoundationaLLM:CognitiveSearchMemorySource:EndPoint` | Enter the URL to the service. |   |
 | `FoundationaLLM:CognitiveSearchMemorySource:IndexName` | vector-index |   |

@@ -7,4 +7,5 @@ class AgentType(str,Enum):
     BLOB_STORAGE = "blob-storage",
     ANOMALY = "anomaly",
     CONVERSATIONAL = "conversational",
-    SUMMARY = "summary"
+    SUMMARY = "summary",
+    GENERIC_RESOLVER = "generic-resolver"

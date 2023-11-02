@@ -52,6 +52,20 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
 
             switch (_agentMetadata.Type)
             {
+                case "generic-resolver":
+                    dataSourceMetadata = new BlobStorageDataSource
+                    {
+                        Name = dataSource.Name,
+                        Type = _agentMetadata.Type,
+                        Description = dataSource.Description,
+                        Configuration = new BlobStorageConfiguration
+                        {
+                            ConnectionStringSecretName = dataSource.Authentication!["connection_string_secret"],
+                            ContainerName = dataSource.Container,
+                            Files = dataSource.Files
+                        }
+                    };
+                    break;
                 case "blob-storage":
                     dataSourceMetadata = new BlobStorageDataSource
                     {

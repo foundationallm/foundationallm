@@ -6,4 +6,5 @@ from .csv_agent import CSVAgent
 from .sql_db_agent import SqlDbAgent
 from .summary_agent import SummaryAgent
 from .blob_storage_agent import BlobStorageAgent
+from .generic_resolver_agent import GenericResolverAgent
 from .agent_factory import AgentFactory

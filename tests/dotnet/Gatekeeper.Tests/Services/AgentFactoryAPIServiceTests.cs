@@ -10,12 +10,13 @@ namespace Gatekeeper.Tests.Services
 {
     public class AgentFactoryAPIServiceTests
     {
-        private readonly AgentFactoryAPIService _agentFactoryService;
+        private readonly AgentFactoryAPIService _testedService;
+
         private readonly IHttpClientFactoryService _httpClientFactoryService = Substitute.For<IHttpClientFactoryService>();
         
         public AgentFactoryAPIServiceTests()
         {
-            _agentFactoryService = new AgentFactoryAPIService(_httpClientFactoryService);
+            _testedService = new AgentFactoryAPIService(_httpClientFactoryService);
         }
 
         [Fact]
@@ -34,7 +35,7 @@ namespace Gatekeeper.Tests.Services
             _httpClientFactoryService.CreateClient(Arg.Any<string>()).Returns(httpClient);
 
             // Act
-            var completionResponse = await _agentFactoryService.GetCompletion(completionRequest);
+            var completionResponse = await _testedService.GetCompletion(completionRequest);
 
             // Assert
             Assert.NotNull(completionResponse);
@@ -57,7 +58,7 @@ namespace Gatekeeper.Tests.Services
             _httpClientFactoryService.CreateClient(Arg.Any<string>()).Returns(httpClient);
 
             // Act
-            var completionResponse = await _agentFactoryService.GetCompletion(completionRequest);
+            var completionResponse = await _testedService.GetCompletion(completionRequest);
 
             // Assert
             Assert.NotNull(completionResponse);
@@ -80,7 +81,7 @@ namespace Gatekeeper.Tests.Services
             _httpClientFactoryService.CreateClient(Arg.Any<string>()).Returns(httpClient);
 
             // Act
-            var summaryResponse = await _agentFactoryService.GetSummary(summaryRequest);
+            var summaryResponse = await _testedService.GetSummary(summaryRequest);
 
             // Assert
             Assert.NotNull(summaryResponse);
@@ -103,7 +104,7 @@ namespace Gatekeeper.Tests.Services
             _httpClientFactoryService.CreateClient(Arg.Any<string>()).Returns(httpClient);
 
             // Act
-            var summaryResponse = await _agentFactoryService.GetSummary(summaryRequest);
+            var summaryResponse = await _testedService.GetSummary(summaryRequest);
 
             // Assert
             Assert.NotNull(summaryResponse);

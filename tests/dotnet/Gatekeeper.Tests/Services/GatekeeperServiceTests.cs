@@ -8,7 +8,7 @@ namespace Gatekeeper.Tests.Services
 {
     public class GatekeeperServiceTests
     {
-        private readonly GatekeeperService _gatekeeperService;
+        private readonly GatekeeperService _testedService;
 
         private readonly IContentSafetyService _contentSafetyService = Substitute.For<IContentSafetyService>();
         private readonly IAgentFactoryAPIService _agentFactoryAPIService = Substitute.For<IAgentFactoryAPIService>();
@@ -16,7 +16,7 @@ namespace Gatekeeper.Tests.Services
 
         public GatekeeperServiceTests()
         {
-            _gatekeeperService = new GatekeeperService(_agentFactoryAPIService, _refinementService, _contentSafetyService);
+            _testedService = new GatekeeperService(_agentFactoryAPIService, _refinementService, _contentSafetyService);
         }
 
         [Fact]
@@ -30,15 +30,15 @@ namespace Gatekeeper.Tests.Services
 
             var expectedResult = new CompletionResponse { Completion = "Completion from Agent Factory API Service." };
 
-            var safeContentResult = new AnalyzeTextFilterResult { Reason = "Safe", Safe = true };
+            var safeContentResult = new AnalyzeTextFilterResult { Safe = true, Reason = string.Empty };
             _contentSafetyService.AnalyzeText(completionRequest.UserPrompt).Returns(safeContentResult);
             _agentFactoryAPIService.GetCompletion(completionRequest).Returns(expectedResult);
 
             // Act
-            var result = await _gatekeeperService.GetCompletion(completionRequest);
+            var actualResult = await _testedService.GetCompletion(completionRequest);
 
             // Assert
-            Assert.Equal(expectedResult, result);
+            Assert.Equal(expectedResult, actualResult);
         }
 
         [Fact]
@@ -52,16 +52,16 @@ namespace Gatekeeper.Tests.Services
 
             var expectedResult = new SummaryResponse { Summary = "Summary from Agent Factory API Service." };
 
-            var safeContentResult = new AnalyzeTextFilterResult { Reason="Safe", Safe = true };
+            var safeContentResult = new AnalyzeTextFilterResult { Safe = true, Reason = string.Empty };
 
             _contentSafetyService.AnalyzeText(summaryRequest.UserPrompt).Returns(safeContentResult);
             _agentFactoryAPIService.GetSummary(summaryRequest).Returns(expectedResult);
 
             // Act
-            var result = await _gatekeeperService.GetSummary(summaryRequest);
+            var actualResult = await _testedService.GetSummary(summaryRequest);
 
             // Assert
-            Assert.Equal(expectedResult, result);
+            Assert.Equal(expectedResult, actualResult);
         }
     }
 }

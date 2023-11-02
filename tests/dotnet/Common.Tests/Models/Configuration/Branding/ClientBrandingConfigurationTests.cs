@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Models.Configuration.Branding;
+using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace FoundationaLLM.Common.Tests.Models.Configuration.Branding
             // Arrange
             var brandingConfig = new ClientBrandingConfiguration
             {
+                PageTitle = "Title",
                 CompanyName = "Company_1",
                 FavIconUrl = "Favicon_1",
                 LogoUrl = "Logo_1",
@@ -22,10 +24,14 @@ namespace FoundationaLLM.Common.Tests.Models.Configuration.Branding
                 PrimaryColor = "#FFFFFF",
                 SecondaryColor = "#000000",
                 AccentColor = "#FFA500",
-                BackgroundColor = "#F0F0F0"
+                BackgroundColor = "#F0F0F0",
+                PrimaryTextColor = "#FFFFFF",
+                SecondaryTextColor = "#000000",
+                KioskMode = false
             };
 
             // Assert
+            Assert.Equal("Title", brandingConfig.PageTitle);
             Assert.Equal("Company_1", brandingConfig.CompanyName);
             Assert.Equal("Favicon_1", brandingConfig.FavIconUrl);
             Assert.Equal("Logo_1", brandingConfig.LogoUrl);
@@ -34,6 +40,10 @@ namespace FoundationaLLM.Common.Tests.Models.Configuration.Branding
             Assert.Equal("#000000", brandingConfig.SecondaryColor);
             Assert.Equal("#FFA500", brandingConfig.AccentColor);
             Assert.Equal("#F0F0F0", brandingConfig.BackgroundColor);
+            Assert.Equal("#FFFFFF", brandingConfig.PrimaryTextColor);
+            Assert.Equal("#000000", brandingConfig.SecondaryTextColor);
+            Assert.False(brandingConfig.KioskMode);
+
         }
     }
 }

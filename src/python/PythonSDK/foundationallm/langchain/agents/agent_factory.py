@@ -10,6 +10,7 @@ from foundationallm.langchain.agents import SqlDbAgent
 from foundationallm.langchain.agents import SummaryAgent
 from foundationallm.langchain.agents import BlobStorageAgent
 from foundationallm.langchain.agents import ConversationalAgent
+from foundationallm.langchain.agents import GenericResolverAgent
 
 
 class AgentFactory:
@@ -57,5 +58,7 @@ class AgentFactory:
                 return SummaryAgent(self.completion_request, llm=self.llm, config=self.config)
             case 'blob-storage':
                 return BlobStorageAgent(self.completion_request, llm=self.llm, config=self.config)
+            case 'generic-resolver':
+                return GenericResolverAgent(self.completion_request, llm=self.llm, config=self.config)
             case _:
                 return ConversationalAgent(self.completion_request, llm=self.llm, config=self.config)
