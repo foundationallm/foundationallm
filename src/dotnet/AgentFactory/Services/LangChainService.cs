@@ -58,10 +58,11 @@ namespace FoundationaLLM.AgentFactory.Services
                 new StringContent(
                     body,
                     Encoding.UTF8, "application/json"));
+            var responseContent = await responseMessage.Content.ReadAsStringAsync();
 
             if (responseMessage.IsSuccessStatusCode)
             {
-                var responseContent = await responseMessage.Content.ReadAsStringAsync();
+                
                 var completionResponse = JsonConvert.DeserializeObject<LLMOrchestrationCompletionResponse>(responseContent);
 
                 return new LLMOrchestrationCompletionResponse
@@ -72,6 +73,8 @@ namespace FoundationaLLM.AgentFactory.Services
                     CompletionTokens = completionResponse.CompletionTokens
                 };
             }
+
+            _logger.LogWarning($"The LangChain orchestration service returned status code {responseMessage.StatusCode}: {responseContent}");
 
             return new LLMOrchestrationCompletionResponse
             {
