@@ -17,14 +17,14 @@ namespace FoundationaLLM.SemanticKernel.Chat
         readonly int _maxTokens;
         readonly int _maxPromptTokens;
         readonly Dictionary<string, Type> _memoryTypes;
-        readonly ITokenizer? _tokenizer;
-        readonly PromptOptimizationSettings? _promptOptimizationSettings;
+        readonly ITokenizer _tokenizer;
+        readonly PromptOptimizationSettings _promptOptimizationSettings;
 
         const int BufferTokens = 50;
 
         string _systemPrompt = string.Empty;
-        List<object> _memories = new List<object>();
-        List<(AuthorRole AuthorRole, string Content)> _messages = new List<(AuthorRole AuthorRole, string Content)>();
+        List<object> _memories = new();
+        List<(AuthorRole AuthorRole, string Content)> _messages = new();
 
         /// <summary>
         /// Constructor for Chat Builder class.
@@ -46,20 +46,18 @@ namespace FoundationaLLM.SemanticKernel.Chat
             _memoryTypes = memoryTypes;
 
             // If no external tokenizer has been provided, use our own
-            _tokenizer = tokenizer != null ? tokenizer : new SemanticKernelTokenizer();
+            _tokenizer = tokenizer ?? new SemanticKernelTokenizer();
             
-            _promptOptimizationSettings = promptOptimizationSettings != null
-                ? promptOptimizationSettings
-                : new PromptOptimizationSettings 
-                {
-                    CompletionsMinTokens = 50,
-                    CompletionsMaxTokens = 300,
-                    SystemMaxTokens = 1500,
-                    MemoryMinTokens = 500,
-                    MemoryMaxTokens = 2500,
-                    MessagesMinTokens = 1000,
-                    MessagesMaxTokens = 3000
-                };
+            _promptOptimizationSettings = promptOptimizationSettings ?? new PromptOptimizationSettings
+            {
+                CompletionsMinTokens = 50,
+                CompletionsMaxTokens = 300,
+                SystemMaxTokens = 1500,
+                MemoryMinTokens = 500,
+                MemoryMaxTokens = 2500,
+                MessagesMinTokens = 1000,
+                MessagesMaxTokens = 3000
+            };
 
             // Use BufferTokens (default 50) tokens as a buffer for extra needs resulting from concatenation, new lines, etc.
             _maxPromptTokens = _maxTokens - _promptOptimizationSettings.CompletionsMaxTokens - BufferTokens;
@@ -141,9 +139,6 @@ namespace FoundationaLLM.SemanticKernel.Chat
         /// <exception cref="Exception"></exception>
         private void OptimizePromptSize()
         {
-            return; 
-
-            /*
             var systemPromptTokens = _tokenizer.GetTokensCount(_systemPrompt);
 
             var memories = _memories.Select(m => new
@@ -286,7 +281,6 @@ namespace FoundationaLLM.SemanticKernel.Chat
 
             // Error! Most likely, the prompt optimization settings are inconsistent
             throw new Exception("Cannot produce a prompt using the current prompt optimization settings.");
-            */
         }
     }
 }
