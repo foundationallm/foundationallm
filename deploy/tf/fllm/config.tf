@@ -298,6 +298,9 @@ locals {
     "FoundationaLLM:AzureOpenAI:API:Key" = {
       vault_key_reference = azurerm_key_vault_secret.openai_key.versionless_id
     }
+    "FoundationaLLM:DataSources:AboutFoundationaLLM:BlobStorage:ConnectionString" = {
+      vault_key_reference = azurerm_key_vault_secret.storage_connection_string.versionless_id
+    }
     "FoundationaLLM:BlobStorageMemorySource:BlobStorageConnection" = {
       vault_key_reference = azurerm_key_vault_secret.storage_connection_string.versionless_id
     }
