@@ -259,7 +259,7 @@ locals {
     "Datasources" = {
       address_prefix = cidrsubnet(local.network_cidr, 8, 2)
       nsg_rules = {
-        inbound  = merge(local.default_nsg_rules.inbound, {
+        inbound = merge(local.default_nsg_rules.inbound, {
           "allow-aks-inbound" = {
             access                     = "Allow"
             destination_address_prefix = "VirtualNetwork"

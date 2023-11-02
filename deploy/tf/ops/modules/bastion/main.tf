@@ -1,4 +1,6 @@
 resource "azurerm_bastion_host" "main" {
+  copy_paste_enabled  = true
+  file_copy_enabled   = true
   location            = var.resource_group.location
   name                = "${var.resource_prefix}-bh"
   resource_group_name = var.resource_group.name
