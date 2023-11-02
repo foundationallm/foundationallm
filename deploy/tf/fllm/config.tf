@@ -90,6 +90,9 @@ locals {
     "FoundationaLLM:Branding:AccentColor" = {
       value = "#FFF"
     }
+    "FoundationaLLM:Branding:AllowAgentSelection" = {
+      value = "false"
+    }
     "FoundationaLLM:Branding:CompanyName" = {
       value = "FoundationaLLM"
     }
