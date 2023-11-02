@@ -11,7 +11,7 @@ from langchain.embeddings import OpenAIEmbeddings
 from foundationallm.models.orchestration import MessageHistoryItem
 from foundationallm.langchain.message_history import build_message_history
 
-__vector_store = {}
+vector_store = {}
 
 class BlobStorageAgent(AgentBase):
     """
@@ -41,8 +41,8 @@ class BlobStorageAgent(AgentBase):
         Creates a vector index from files in the indicated blob storage container and files list
         """
 
-        if self.container_name in __vector_store:
-            return __vector_store[self.container_name]
+        if self.container_name in vector_store:
+            return vector_store[self.container_name]
 
         loaders = []    
         if "*" in self.file_names:
@@ -68,7 +68,7 @@ class BlobStorageAgent(AgentBase):
         )
     
         index = VectorstoreIndexCreator(embedding=embeddings).from_loaders(loaders)
-        __vector_store[self.container_name] = index
+        vector_store[self.container_name] = index
         return index             
        
     def run(self, prompt: str) -> CompletionResponse:
