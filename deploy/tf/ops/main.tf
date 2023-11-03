@@ -658,6 +658,14 @@ resource "azurerm_monitor_action_group" "do_nothing" {
   tags                = azurerm_resource_group.rg["ops"].tags
 }
 
+resource "azurerm_monitor_workspace" "amw" {
+  location                      = azurerm_resource_group.rg["ops"].location
+  name                          = "${local.resource_prefix["ops"]}-amw"
+  public_network_access_enabled = false
+  resource_group_name           = azurerm_resource_group.rg["ops"].name
+  tags                          = azurerm_resource_group.rg["ops"].tags
+}
+
 resource "azurerm_private_dns_zone" "private_dns" {
   for_each = local.private_dns_zone
 
