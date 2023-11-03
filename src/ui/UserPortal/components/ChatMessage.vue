@@ -7,7 +7,7 @@
 			<div class="message__header">
 				<!-- Sender -->
 				<span class="header__sender">
-					<img v-if="message.sender !== 'User'" class="avatar" src="~/assets/brain-royalty-free.png">
+					<img v-if="message.sender !== 'User'" class="avatar" src="~/assets/FLLM-Agent-Light.svg">
 					<span>{{ message.sender }}</span>
 				</span>
 

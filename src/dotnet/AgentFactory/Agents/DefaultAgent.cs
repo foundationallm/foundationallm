@@ -136,6 +136,8 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
             {
                 Completion = result.Completion!,
                 UserPrompt = completionRequest.UserPrompt,
+                PromptTemplate = result.PromptTemplate,
+                AgentName = result.AgentName,
                 PromptTokens = result.PromptTokens,
                 CompletionTokens = result.CompletionTokens,
             };
