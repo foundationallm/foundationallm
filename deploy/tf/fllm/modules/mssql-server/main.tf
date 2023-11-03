@@ -39,7 +39,7 @@ resource "azurerm_mssql_elasticpool" "main" {
   resource_group_name = var.resource_group.name
   server_name         = azurerm_mssql_server.main.name
   license_type        = "LicenseIncluded"
-  max_size_gb         = 32
+  max_size_gb         = 64
 
   sku {
     name     = "GP_Gen5"
