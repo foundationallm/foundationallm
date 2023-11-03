@@ -39,6 +39,11 @@ variable "publisher" {
   }
 }
 
+variable "subnet_id" {
+  description = "The subnet ID to deploy the OpenAI endpoint into."
+  type        = string
+}
+
 variable "resource_group" {
   description = "The resource group to deploy resources into"
 

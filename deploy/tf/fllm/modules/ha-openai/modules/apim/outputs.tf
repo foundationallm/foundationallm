@@ -1,4 +1,4 @@
 output "endpoint" {
   description = "The endpoint for the API Management instance."
-  value       = module.apim.endpoint
+  value       = azurerm_api_management.main.gateway_url
 }

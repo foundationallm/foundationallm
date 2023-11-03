@@ -75,6 +75,157 @@ locals {
   }
 }
 
+moved {
+  from = module.openai_ha.azurerm_cognitive_account.openai[0]
+  to   = module.openai_ha.module.openai[0].azurerm_cognitive_account.main
+}
+moved {
+  from = module.openai_ha.azurerm_cognitive_account.openai[1]
+  to   = module.openai_ha.module.openai[1].azurerm_cognitive_account.main
+}
+moved {
+  from = module.openai_ha.azurerm_cognitive_deployment.deployment[0]
+  to   = module.openai_ha.module.openai[0].azurerm_cognitive_deployment.completions
+}
+moved {
+  from = module.openai_ha.azurerm_cognitive_deployment.deployment[1]
+  to   = module.openai_ha.module.openai[1].azurerm_cognitive_deployment.completions
+}
+moved {
+  from = module.openai_ha.azurerm_key_vault_secret.openai_primary_key[0]
+  to   = module.openai_ha.module.openai[0].azurerm_key_vault_secret.openai_primary_key
+}
+moved {
+  from = module.openai_ha.azurerm_key_vault_secret.openai_primary_key[1]
+  to   = module.openai_ha.module.openai[1].azurerm_key_vault_secret.openai_primary_key
+}
+moved {
+  from = module.openai_ha.azurerm_key_vault_secret.openai_secondary_key[0]
+  to   = module.openai_ha.module.openai[0].azurerm_key_vault_secret.openai_secondary_key
+}
+moved {
+  from = module.openai_ha.azurerm_key_vault_secret.openai_secondary_key[1]
+  to   = module.openai_ha.module.openai[1].azurerm_key_vault_secret.openai_secondary_key
+}
+moved {
+  from = module.openai_ha.azurerm_monitor_metric_alert.openai_alert["openai0-availability"]
+  to   = module.openai_ha.module.openai[0].azurerm_monitor_metric_alert.alert["availability"]
+}
+moved {
+  from = module.openai_ha.azurerm_monitor_metric_alert.openai_alert["openai0-latency"]
+  to   = module.openai_ha.module.openai[0].azurerm_monitor_metric_alert.alert["latency"]
+}
+moved {
+  from = module.openai_ha.azurerm_monitor_metric_alert.openai_alert["openai1-availability"]
+  to   = module.openai_ha.module.openai[1].azurerm_monitor_metric_alert.alert["availability"]
+}
+moved {
+  from = module.openai_ha.azurerm_monitor_metric_alert.openai_alert["openai1-latency"]
+  to   = module.openai_ha.module.openai[1].azurerm_monitor_metric_alert.alert["latency"]
+}
+moved {
+  from = module.openai_ha.azurerm_private_endpoint.ple[0]
+  to   = module.openai_ha.module.openai[0].azurerm_private_endpoint.ple
+}
+moved {
+  from = module.openai_ha.azurerm_private_endpoint.ple[1]
+  to   = module.openai_ha.module.openai[1].azurerm_private_endpoint.ple
+}
+moved {
+  from = module.openai_ha.module.diagnostics.azurerm_monitor_diagnostic_setting.setting["openai-0"]
+  to   = module.openai_ha.module.openai[0].module.diagnostics.azurerm_monitor_diagnostic_setting.setting["openai-0"]
+}
+moved {
+  from = module.openai_ha.module.diagnostics.azurerm_monitor_diagnostic_setting.setting["openai-1"]
+  to   = module.openai_ha.module.openai[1].module.diagnostics.azurerm_monitor_diagnostic_setting.setting["openai-1"]
+}
+
+
+
+
+
+moved {
+  from = module.openai_ha.module.diagnostics.azurerm_monitor_diagnostic_setting.setting["apim"]
+  to   = module.openai_ha.module.apim.module.diagnostics.azurerm_monitor_diagnostic_setting.setting["apim"]
+}
+
+moved {
+  from = module.openai_ha.azurerm_api_management_api_policy.api_policy
+  to   = module.openai_ha.module.apim.azurerm_api_management_api_policy.api_policy
+}
+
+moved {
+  from = module.openai_ha.azurerm_api_management_api.api
+  to   = module.openai_ha.module.apim.azurerm_api_management_api.api
+}
+
+moved {
+  from = module.openai_ha.azurerm_api_management_backend.backends[0]
+  to   = module.openai_ha.module.apim.azurerm_api_management_backend.backends[0]
+}
+moved {
+  from = module.openai_ha.azurerm_api_management_backend.backends[1]
+  to   = module.openai_ha.module.apim.azurerm_api_management_backend.backends[1]
+}
+moved {
+  from = module.openai_ha.azurerm_api_management_named_value.openai_primary_key[0]
+  to   = module.openai_ha.module.apim.azurerm_api_management_named_value.openai_primary_key[0]
+}
+moved {
+  from = module.openai_ha.azurerm_api_management_named_value.openai_primary_key[1]
+  to   = module.openai_ha.module.apim.azurerm_api_management_named_value.openai_primary_key[1]
+}
+moved {
+  from = module.openai_ha.azurerm_api_management_named_value.openai_secondary_key[0]
+  to   = module.openai_ha.module.apim.azurerm_api_management_named_value.openai_secondary_key[0]
+}
+moved {
+  from = module.openai_ha.azurerm_api_management_named_value.openai_secondary_key[1]
+  to   = module.openai_ha.module.apim.azurerm_api_management_named_value.openai_secondary_key[1]
+}
+moved {
+  from = module.openai_ha.azurerm_api_management.apim
+  to   = module.openai_ha.module.apim.azurerm_api_management.main
+}
+moved {
+  from = module.openai_ha.azurerm_monitor_metric_alert.apim_alert["capacity"]
+  to   = module.openai_ha.module.apim.azurerm_monitor_metric_alert.alert["capacity"]
+}
+moved {
+  from = module.openai_ha.azurerm_private_dns_a_record.apim[0]
+  to   = module.openai_ha.module.apim.azurerm_private_dns_a_record.apim[0]
+}
+
+moved {
+  from = module.openai_ha.azurerm_private_dns_a_record.apim[4]
+  to   = module.openai_ha.module.apim.azurerm_private_dns_a_record.apim[4]
+}
+
+moved {
+  from = module.openai_ha.azurerm_private_dns_a_record.apim[3]
+  to   = module.openai_ha.module.apim.azurerm_private_dns_a_record.apim[3]
+}
+
+moved {
+  from = module.openai_ha.azurerm_private_dns_a_record.apim[1]
+  to   = module.openai_ha.module.apim.azurerm_private_dns_a_record.apim[1]
+}
+
+moved {
+  from = module.openai_ha.azurerm_private_dns_a_record.apim[2]
+  to   = module.openai_ha.module.apim.azurerm_private_dns_a_record.apim[2]
+}
+
+moved {
+  from = module.openai_ha.azurerm_role_assignment.openai_apim
+  to   = module.openai_ha.module.apim.azurerm_role_assignment.role
+}
+
+moved {
+  from = module.openai_ha.azurerm_public_ip.apim_mgmt_ip
+  to   = module.openai_ha.module.apim.azurerm_public_ip.pip
+}
+
 # Data Sources
 data "azurerm_application_insights" "ai" {
   name                = "${local.resource_prefix_backend["ops"]}-ai"
@@ -379,6 +530,7 @@ module "openai_ha" {
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rg["oai"]
   resource_prefix            = local.resource_prefix["oai"]
+  subnet_id                  = data.azurerm_subnet.subnet["FLLMOpenAI"].id
   tags                       = azurerm_resource_group.rg["oai"].tags
 
   private_endpoint = {
