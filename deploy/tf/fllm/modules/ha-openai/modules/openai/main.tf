@@ -48,7 +48,7 @@ resource "azurerm_cognitive_deployment" "completions" {
   }
 
   scale {
-    capacity = "60"
+    capacity = "120"
     type     = "Standard"
   }
 }
@@ -64,7 +64,7 @@ resource "azurerm_cognitive_deployment" "embeddings" {
   }
 
   scale {
-    capacity = "60"
+    capacity = "120"
     type     = "Standard"
   }
 }
