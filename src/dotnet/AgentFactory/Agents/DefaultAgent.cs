@@ -51,7 +51,8 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
             var dataSource = dataSourceResponse.DataSources![0];
 
             switch (_agentMetadata.Type)
-            {              
+            {
+                case "csv":
                 case "generic-resolver":                   
                 case "blob-storage":
                     dataSourceMetadata = new BlobStorageDataSource
@@ -66,22 +67,10 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
                             Files = dataSource.Files
                         }
                     };
-                    break;
-                case "csv":
-                    dataSourceMetadata = new CSVFileDataSource
-                    {
-                        Name = dataSource.Name,
-                        Type = _agentMetadata.Type,
-                        Description = dataSource.Description,
-                        Configuration = new CSVFileConfiguration
-                        {
-                           PathValueIsSecret = Convert.ToBoolean(dataSource.Authentication!["path_value_is_secret"]),
-                           SourceFilePath = dataSource.Authentication!["source_file_path"],
-                        }
-                    };
-                    break;
+                    break;              
+                    
                 case "search-service":
-                    break;
+                    break;                
                 case "anomaly":
                 case "sql":
                     dataSourceMetadata = new SQLDatabaseDataSource
