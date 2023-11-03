@@ -91,6 +91,24 @@ moved {
   from = module.openai_ha.azurerm_cognitive_deployment.deployment[1]
   to   = module.openai_ha.module.openai[1].azurerm_cognitive_deployment.completions
 }
+import {
+  id = "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-OAI-rg/providers/Microsoft.CognitiveServices/accounts/EUS-FLLM-DEMO-OAI-0-openai/deployments/embeddings"
+  to = module.openai_ha.module.openai[0].azurerm_cognitive_deployment.embeddings
+}
+
+import {
+  id = "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-OAI-rg/providers/Microsoft.CognitiveServices/accounts/EUS-FLLM-DEMO-OAI-1-openai/deployments/embeddings"
+  to = module.openai_ha.module.openai[1].azurerm_cognitive_deployment.embeddings
+}
+import {
+  id = "https://eus-fllm-demo-ops-appconfig.azconfig.io/kv/FoundationaLLM:DataSources:AboutFoundationaLLM:BlobStorage:ConnectionString?label="
+  to = azurerm_app_configuration_key.config_key_vault["FoundationaLLM:DataSources:AboutFoundationaLLM:BlobStorage:ConnectionString"]
+}
+import {
+  id = "https://eus-fllm-demo-ops-appconfig.azconfig.io/kv/FoundationaLLM:Branding:AllowAgentSelection?label="
+  to = azurerm_app_configuration_key.config_key_kv["FoundationaLLM:Branding:AllowAgentSelection"]
+}
+
 moved {
   from = module.openai_ha.azurerm_key_vault_secret.openai_primary_key[0]
   to   = module.openai_ha.module.openai[0].azurerm_key_vault_secret.openai_primary_key
