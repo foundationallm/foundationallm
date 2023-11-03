@@ -9,3 +9,4 @@ class SQLDataSourceMetadata(DataSourceMetadata):
     include_tables: Optional[List[str]] = None
     exclude_tables: Optional[List[str]] = None
     few_shot_example_count: Optional[int] = None
+    row_level_security_enabled: Optional[bool] = False

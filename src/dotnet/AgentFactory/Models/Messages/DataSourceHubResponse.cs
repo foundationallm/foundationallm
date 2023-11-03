@@ -102,5 +102,11 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Messages
         /// </summary>
         [JsonProperty("few_shot_example_count")]
         public int? FewShotExampleCount { get; set; }
+
+        /// <summary>
+        /// Flag indicating if row level security is enabled.
+        /// </summary>
+        [JsonProperty("row_level_security_enabled")]
+        public bool? RowLevelSecurityEnabled { get; set; }
     }
 }

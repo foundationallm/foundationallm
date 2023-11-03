@@ -51,21 +51,8 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
             var dataSource = dataSourceResponse.DataSources![0];
 
             switch (_agentMetadata.Type)
-            {
-                case "generic-resolver":
-                    dataSourceMetadata = new BlobStorageDataSource
-                    {
-                        Name = dataSource.Name,
-                        Type = _agentMetadata.Type,
-                        Description = dataSource.Description,
-                        Configuration = new BlobStorageConfiguration
-                        {
-                            ConnectionStringSecretName = dataSource.Authentication!["connection_string_secret"],
-                            ContainerName = dataSource.Container,
-                            Files = dataSource.Files
-                        }
-                    };
-                    break;
+            {              
+                case "generic-resolver":                   
                 case "blob-storage":
                     dataSourceMetadata = new BlobStorageDataSource
                     {
@@ -95,6 +82,7 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
                     break;
                 case "search-service":
                     break;
+                case "anomaly":
                 case "sql":
                     dataSourceMetadata = new SQLDatabaseDataSource
                     {
@@ -108,14 +96,16 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
                             Port = Convert.ToInt32(dataSource.Authentication["port"]),
                             DatabaseName = dataSource.Authentication["database"],
                             Username = dataSource.Authentication["username"],
-                            PasswordSecretName = dataSource.Authentication["password_secret"],
+                            PasswordSecretSettingKeyName = dataSource.Authentication["password_secret"],
                             IncludeTables = dataSource.IncludeTables!,
+                            ExcludeTables = dataSource.ExcludeTables!,
+                            RowLevelSecurityEnabled = dataSource.RowLevelSecurityEnabled ?? false,
                             FewShotExampleCount = dataSource.FewShotExampleCount ?? 0
                         }
                     };
                     break;
                 default:
-                    throw new ArgumentException($"The {dataSourceResponse.DataSources[0].UnderlyingImplementation} data source type is not supported.");
+                    throw new ArgumentException($"The {_agentMetadata.Type} data source type is not supported.");
             }
 
             //create LLMOrchestrationCompletionRequest template

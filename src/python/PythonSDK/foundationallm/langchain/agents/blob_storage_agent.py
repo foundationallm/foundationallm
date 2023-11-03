@@ -41,9 +41,9 @@ class BlobStorageAgent(AgentBase):
         Creates a vector index from files in the indicated blob storage container and files list
         """
 
-        if self.container_name in vector_store:
+        if self.container_name in vector_store:            
             return vector_store[self.container_name]
-
+        
         loaders = []    
         if "*" in self.file_names:
             # Load all files in the container

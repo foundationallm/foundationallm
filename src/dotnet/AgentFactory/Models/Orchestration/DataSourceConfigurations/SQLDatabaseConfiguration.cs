@@ -40,8 +40,8 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Orchestration.DataSourceConfig
         /// <summary>
         /// The name of the secret in Key Vault from where the password can be retrieved.
         /// </summary>
-        [JsonProperty("password_secret_name")]
-        public string? PasswordSecretName { get; set; }
+        [JsonProperty("password_secret_setting_key_name")]
+        public string? PasswordSecretSettingKeyName { get; set; }
 
         /// <summary>
         /// List of tables to allow access to in the database.
@@ -50,9 +50,21 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Orchestration.DataSourceConfig
         public List<string> IncludeTables { get; set; } = new List<string>();
 
         /// <summary>
+        /// List of tables to allow access to in the database.
+        /// </summary>
+        [JsonProperty("exclude_tables")]
+        public List<string> ExcludeTables { get; set; } = new List<string>();
+
+        /// <summary>
         /// The number of rows from each table to provide as examples to the language model.
         /// </summary>
         [JsonProperty("few_shot_example_count")]
         public int FewShotExampleCount { get; set; } = 0;
+
+        /// <summary>
+        /// Flag indicating whether row level security is enabled.
+        /// </summary>
+        [JsonProperty("row_level_security_enabled")]
+        public bool RowLevelSecurityEnabled { get; set; } = false;
     }
 }
