@@ -20,6 +20,18 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Orchestration
         public string? UserPrompt { get; set; }
 
         /// <summary>
+        /// The prompt template used by the LLM.
+        /// </summary>
+        [JsonProperty("prompt_template")]
+        public string? PromptTemplate { get; set; }
+
+        /// <summary>
+        /// The name of the FoundationaLLM agent.
+        /// </summary>
+        [JsonProperty("agent_name")]
+        public string? AgentName { get; set; }
+
+        /// <summary>
         /// The number of tokens in the prompt.
         /// </summary>
         [JsonProperty("prompt_tokens")]

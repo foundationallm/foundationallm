@@ -137,7 +137,9 @@ public class CoreService : ICoreService
             // Add to prompt and completion to cache, then persist in Cosmos as transaction.
             var promptMessage = new Message(sessionId, nameof(Participants.User), result.PromptTokens, userPrompt, result.UserPromptEmbedding, null);
             var completionMessage = new Message(sessionId, nameof(Participants.Assistant), result.CompletionTokens, result.Completion, null, null);
-            var completionPrompt = new CompletionPrompt(sessionId, completionMessage.Id, result.UserPrompt);
+            var completionPromptText =
+                $"User prompt: {result.UserPrompt}{Environment.NewLine}Agent: {result.AgentName}{Environment.NewLine}Prompt template: {result.PromptTemplate}";
+            var completionPrompt = new CompletionPrompt(sessionId, completionMessage.Id, completionPromptText);
             completionMessage.CompletionPromptId = completionPrompt.Id;
 
             await AddPromptCompletionMessagesAsync(sessionId, promptMessage, completionMessage, completionPrompt);

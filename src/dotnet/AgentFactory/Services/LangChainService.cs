@@ -69,6 +69,8 @@ namespace FoundationaLLM.AgentFactory.Services
                 {
                     Completion = completionResponse!.Completion,
                     UserPrompt = completionResponse.UserPrompt,
+                    PromptTemplate = request.Agent?.PromptTemplate,
+                    AgentName = request.Agent?.Name,
                     PromptTokens = completionResponse.PromptTokens,
                     CompletionTokens = completionResponse.CompletionTokens
                 };
@@ -80,6 +82,8 @@ namespace FoundationaLLM.AgentFactory.Services
             {
                 Completion = "A problem on my side prevented me from responding.",
                 UserPrompt = request.UserPrompt,
+                PromptTemplate = request.Agent?.PromptTemplate,
+                AgentName = request.Agent?.Name,
                 PromptTokens = 0,
                 CompletionTokens = 0               
             };

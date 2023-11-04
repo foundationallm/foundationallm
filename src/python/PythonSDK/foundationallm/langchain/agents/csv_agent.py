@@ -1,12 +1,12 @@
+from io import StringIO
 from langchain.agents import create_csv_agent
 from langchain.agents.agent_types import AgentType
 from langchain.callbacks import get_openai_callback
-
 from foundationallm.config import Configuration
 from foundationallm.langchain.agents import AgentBase
-from foundationallm.langchain.data_sources.csv import CSVConfiguration
 from foundationallm.langchain.language_models import LanguageModelBase
 from foundationallm.models.orchestration import CompletionRequest, CompletionResponse
+from foundationallm.storage import BlobStorageManager
 
 class CSVAgent(AgentBase):
     """
@@ -16,6 +16,8 @@ class CSVAgent(AgentBase):
     def __init__(self, completion_request: CompletionRequest, llm: LanguageModelBase, config: Configuration):
         """
         Initializes a CSV agent.
+        
+        Note: The CSV agent supports a single file.
 
         Parameters
         ----------
@@ -29,15 +31,15 @@ class CSVAgent(AgentBase):
         """
         self.agent_prompt_prefix = completion_request.agent.prompt_template
         self.llm = llm.get_language_model()
-        self.data_source_config: CSVConfiguration = completion_request.data_source.configuration
-        if self.data_source_config.path_value_is_secret:
-            self.source_file_path = config.get_value(self.data_source_config.source_file_path)
-        else:
-            self.source_file_path = self.data_source_config.source_file_path
-        
+        connection_string = config.get_value(completion_request.data_source.configuration.connection_string_secret)        
+        container_name = completion_request.data_source.configuration.container        
+        file_name = completion_request.data_source.configuration.files[0]        
+        bsm = BlobStorageManager(blob_connection_string=connection_string, container_name=container_name)
+        file_content = bsm.read_file_content(file_name).decode('utf-8')       
+        sio = StringIO(file_content)        
         self.agent = create_csv_agent(
             llm = self.llm,
-            path = self.source_file_path,
+            path = sio,
             verbose = True,
             agent_type = AgentType.ZERO_SHOT_REACT_DESCRIPTION,
             prefix = self.agent_prompt_prefix

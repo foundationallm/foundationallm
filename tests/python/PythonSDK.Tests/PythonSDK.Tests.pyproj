@@ -28,6 +28,7 @@
     <Compile Include="hubs\agent\agent_resolver_tests.py" />
     <Compile Include="hubs\agent\agent_hub_tests.py" />
     <Compile Include="hubs\data_source\data_source_repository_tests.py" />
+    <Compile Include="langchain\agents\csv_agent_tests.py" />
     <Compile Include="langchain\message_history\message_history_tests.py" />
     <Compile Include="pytest.ini" />
     <Compile Include="langchain\agents\generic_resolver_agent_tests.py" />
