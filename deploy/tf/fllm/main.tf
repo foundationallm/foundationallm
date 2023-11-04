@@ -77,8 +77,8 @@ locals {
 }
 
 import {
-  id = "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-APP-rg/providers/Microsoft.Insights/dataCollectionEndpoints/MSProm-eastus-EUS-FLLM-DEMO-APP-BACKEND-aks"
-  to = module.aks_backend.module.prometheus_collector.azurerm_monitor_data_collection_endpoint.dce
+  id = "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-APP-rg/providers/Microsoft.Insights/dataCollectionRules/MSProm-eastus-EUS-FLLM-DEMO-APP-BACKEND-aks"
+  to = module.aks_backend.module.prometheus_collector.azurerm_monitor_data_collection_rule.dcr
 }
 
 # Data Sources
