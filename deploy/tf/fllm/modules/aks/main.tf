@@ -236,8 +236,8 @@ module "diagnostics" {
 module "prometheus_collector" {
   source = "./modules/prometheus-collector"
 
+  azure_monitor_workspace_id = var.azure_monitor_workspace_id
   cluster                    = azurerm_kubernetes_cluster.main
-  log_analytics_workspace_id = var.log_analytics_workspace_id
   resource_group             = var.resource_group
   resource_prefix            = var.resource_prefix
 }

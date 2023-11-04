@@ -16,7 +16,7 @@ resource "azurerm_monitor_data_collection_rule" "dcr" {
 
   destinations {
     monitor_account {
-      monitor_account_id = var.log_analytics_workspace_id
+      monitor_account_id = var.azure_monitor_workspace_id
       name               = "MonitoringAccount1"
     }
   }
@@ -60,13 +60,13 @@ resource "azurerm_monitor_data_collection_rule_association" "dcra" {
 #   }
 
 #   azure_monitor_workspace_integrations {
-#     resource_id = var.log_analytics_workspace_id
+#     resource_id = var.azure_monitor_workspace_id
 #   }
 # }
 
 # resource "azurerm_role_assignment" "datareaderrole" {
-#   scope              = var.log_analytics_workspace_id
-#   role_definition_id = "/subscriptions/${split("/", var.log_analytics_workspace_id)[2]}/providers/Microsoft.Authorization/roleDefinitions/b0d8363b-8ddd-447d-831f-62ca05bff136"
+#   scope              = var.azure_monitor_workspace_id
+#   role_definition_id = "/subscriptions/${split("/", var.azure_monitor_workspace_id)[2]}/providers/Microsoft.Authorization/roleDefinitions/b0d8363b-8ddd-447d-831f-62ca05bff136"
 #   principal_id       = azurerm_dashboard_grafana.grafana.identity.0.principal_id
 # }
 
@@ -78,7 +78,7 @@ resource "azurerm_monitor_alert_prometheus_rule_group" "node_recording_rules_rul
   description         = "Node Recording Rules Rule Group"
   rule_group_enabled  = true
   interval            = "PT1M"
-  scopes              = [var.log_analytics_workspace_id, var.cluster.id]
+  scopes              = [var.azure_monitor_workspace_id, var.cluster.id]
 
   rule {
     enabled    = true
@@ -168,7 +168,7 @@ resource "azurerm_monitor_alert_prometheus_rule_group" "kubernetes_recording_rul
   description         = "Kubernetes Recording Rules Rule Group"
   rule_group_enabled  = true
   interval            = "PT1M"
-  scopes              = [var.log_analytics_workspace_id, var.cluster.id]
+  scopes              = [var.azure_monitor_workspace_id, var.cluster.id]
 
   rule {
     enabled    = true
@@ -325,7 +325,7 @@ resource "azurerm_monitor_alert_prometheus_rule_group" "node_and_kubernetes_reco
   description         = "Node and Kubernetes Recording Rules Rule Group for Windows Nodes"
   rule_group_enabled  = true
   interval            = "PT1M"
-  scopes              = [var.log_analytics_workspace_id, var.cluster.id]
+  scopes              = [var.azure_monitor_workspace_id, var.cluster.id]
 
   rule {
     enabled    = true
@@ -456,7 +456,7 @@ resource "azurerm_monitor_alert_prometheus_rule_group" "node_recording_rules_rul
   description         = "Node and Kubernetes Recording Rules Rule Group for Windows Nodes"
   rule_group_enabled  = true
   interval            = "PT1M"
-  scopes              = [var.log_analytics_workspace_id, var.cluster.id]
+  scopes              = [var.azure_monitor_workspace_id, var.cluster.id]
 
   rule {
     enabled    = true

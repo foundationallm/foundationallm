@@ -1,7 +1,8 @@
 locals {
-  resource_prefix         = { for k, _ in local.resource_group : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
-  resource_prefix_compact = { for k, _ in local.resource_group : k => join("-", [local.location_compact, var.project_id, local.environment_compact, upper(k)]) }
-  resource_prefix_backend = { for k, _ in local.resource_group_backend : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
+  azure_monitor_workspace_id = jsondecode(data.azapi_resource.amw.output).id
+  resource_prefix            = { for k, _ in local.resource_group : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
+  resource_prefix_compact    = { for k, _ in local.resource_group : k => join("-", [local.location_compact, var.project_id, local.environment_compact, upper(k)]) }
+  resource_prefix_backend    = { for k, _ in local.resource_group_backend : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
 
   environment_compact = local.environment_compacts[var.environment]
   environment_compacts = {
@@ -76,6 +77,13 @@ locals {
 }
 
 # Data Sources
+data "azapi_resource" "amw" {
+  name                   = "${local.resource_prefix_backend["ops"]}-amw"
+  parent_id              = data.azurerm_resource_group.backend["ops"].id
+  response_export_values = ["*"]
+  type                   = "Microsoft.Monitor/accounts@2023-04-03"
+}
+
 data "azurerm_application_insights" "ai" {
   name                = "${local.resource_prefix_backend["ops"]}-ai"
   resource_group_name = data.azurerm_resource_group.backend["ops"].name
@@ -208,6 +216,7 @@ module "aks_backend" {
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
   application_gateway        = module.application_gateway["api"]
+  azure_monitor_workspace_id = local.azure_monitor_workspace_id
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rg["app"]
   resource_prefix            = "${local.resource_prefix["app"]}-BACKEND"
@@ -235,6 +244,7 @@ module "aks_frontend" {
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
   application_gateway        = module.application_gateway["www"]
+  azure_monitor_workspace_id = local.azure_monitor_workspace_id
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rg["app"]
   resource_prefix            = "${local.resource_prefix["app"]}-FRONTEND"

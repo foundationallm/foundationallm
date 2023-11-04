@@ -17,6 +17,11 @@ variable "application_gateway" {
   })
 }
 
+variable "azure_monitor_workspace_id" {
+  description = "The ID of the Azure Monitor workspace to send prometheus data to."
+  type        = string
+}
+
 variable "log_analytics_workspace_id" {
   description = "The ID of the Log Analytics workspace to send diagnostics data to."
   type        = string

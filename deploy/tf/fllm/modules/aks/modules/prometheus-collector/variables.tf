@@ -16,6 +16,10 @@
 #     agw_subnet_id = string
 #   })
 # }
+variable "azure_monitor_workspace_id" {
+  description = "The ID of the Azure Monitor workspace to send prometheus data to."
+  type        = string
+}
 
 variable "cluster" {
   description = "The AKS Cluster Details."
@@ -23,11 +27,6 @@ variable "cluster" {
     name = string
     id   = string
   })
-}
-
-variable "log_analytics_workspace_id" {
-  description = "The ID of the Log Analytics workspace to send diagnostics data to."
-  type        = string
 }
 
 # variable "private_endpoint" {
