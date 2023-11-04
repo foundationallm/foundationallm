@@ -94,6 +94,7 @@ locals {
     gateway_scm          = "scm.azure-api.net"
     monitor              = "privatelink.monitor.azure.com"
     openai               = "privatelink.openai.azure.com"
+    prometheus           = "privatelink.${var.location}.prometheus.monitor.azure.com"
     queue                = "privatelink.queue.core.windows.net"
     search               = "privatelink.search.windows.net"
     sites                = "privatelink.azurewebsites.net"
@@ -658,14 +659,6 @@ resource "azurerm_monitor_action_group" "do_nothing" {
   tags                = azurerm_resource_group.rg["ops"].tags
 }
 
-resource "azurerm_monitor_workspace" "amw" {
-  location                      = azurerm_resource_group.rg["ops"].location
-  name                          = "${local.resource_prefix["ops"]}-amw"
-  public_network_access_enabled = false
-  resource_group_name           = azurerm_resource_group.rg["ops"].name
-  tags                          = azurerm_resource_group.rg["ops"].tags
-}
-
 resource "azurerm_private_dns_zone" "private_dns" {
   for_each = local.private_dns_zone
 
@@ -863,6 +856,22 @@ module "logs" {
   resource_group                   = azurerm_resource_group.rg["ops"]
   resource_prefix                  = local.resource_prefix["ops"]
   tags                             = azurerm_resource_group.rg["ops"].tags
+}
+
+module "monitor_workspace" {
+  source = "./modules/monitor-workspace"
+
+  action_group_id = azurerm_monitor_action_group.do_nothing.id
+  resource_group  = azurerm_resource_group.rg["ops"]
+  resource_prefix = local.resource_prefix["ops"]
+  tags            = azurerm_resource_group.rg["ops"].tags
+
+  private_endpoint = {
+    subnet_id = azurerm_subnet.subnet["ops"].id
+    private_dns_zone_ids = [
+      azurerm_private_dns_zone.private_dns["prometheus"].id,
+    ]
+  }
 }
 
 module "nsg" {
