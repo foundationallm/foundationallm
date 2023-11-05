@@ -11,6 +11,7 @@
   - [Optional Inputs](#optional-inputs)
     - [ client\_entra\_application](#-client_entra_application)
     - [ core\_entra\_application](#-core_entra_application)
+    - [ namespace](#-namespace)
   - [Outputs](#outputs)
   - [Resources](#resources)
   - [Requirements](#requirements)
@@ -34,6 +35,13 @@ You must enable host-based encryption on the subscription before deploying this 
 
 ```bash
 az feature register --namespace Microsoft.Compute --name EncryptionAtHost
+```
+
+Also Graphana Dashboards:
+
+```bash
+az provider register "Microsoft.Dashboard"
+az provider show --namespace "Microsoft.Dashboard" --query "registrationState"
 ```
 
 <!-- BEGIN_TF_DOCS -->
