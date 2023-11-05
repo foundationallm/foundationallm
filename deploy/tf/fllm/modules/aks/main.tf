@@ -241,3 +241,11 @@ module "prometheus_collector" {
   resource_group             = var.resource_group
   resource_prefix            = var.resource_prefix
 }
+
+module "prometheus_dashboard" {
+  source = "./modules/prometheus-dashboard"
+
+  azure_monitor_workspace_id = var.azure_monitor_workspace_id
+  resource_group             = var.resource_group
+  resource_prefix            = "dashboard"
+}

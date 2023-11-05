@@ -3,14 +3,6 @@ variable "azure_monitor_workspace_id" {
   type        = string
 }
 
-variable "cluster" {
-  description = "The AKS Cluster Details."
-  type = object({
-    name = string
-    id   = string
-  })
-}
-
 variable "resource_group" {
   description = "The resource group to deploy resources into"
 
