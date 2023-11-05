@@ -157,6 +157,12 @@ Source: ./modules/nsg
 
 Version:
 
+### <a name="module_prometheus_dashboard"></a> [prometheus\_dashboard](#module\_prometheus\_dashboard)
+
+Source: ./modules/prometheus-dashboard
+
+Version:
+
 ### <a name="module_storage_ops"></a> [storage\_ops](#module\_storage\_ops)
 
 Source: ./modules/storage-account

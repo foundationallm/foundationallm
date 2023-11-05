@@ -5,7 +5,8 @@ locals {
   # 10.0.252.0/22,10.0.252.0-10.0.255.255,1024 addresses
   ops_parent_cidr = cidrsubnet(local.network_cidr, 6, 63)
 
-  resource_prefix = { for k, _ in local.resource_group : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
+  resource_prefix         = { for k, _ in local.resource_group : k => join("-", [local.location_short, var.project_id, var.environment, upper(k)]) }
+  resource_prefix_compact = { for k, _ in local.resource_group : k => join("", [local.location_compact, var.project_id, local.environment_compact, upper(k)]) }
 
   address_prefix = {
     ado           = cidrsubnet(local.ops_parent_cidr, 5, 29)
@@ -70,6 +71,11 @@ locals {
     }
   }
 
+  environment_compact = local.environment_compacts[var.environment]
+  environment_compacts = {
+    DEMO = "d"
+  }
+
   # TODO: Need to figure out how to restore the deny-all rules to the NSGs using these modified rules.
   no_deny_nsg_rules = {
     inbound  = { for k, v in local.default_nsg_rules.inbound : k => v if k != "deny-all-inbound" }
@@ -126,8 +132,13 @@ locals {
     }
   }
 
-  short_location = local.short_locations[var.location]
-  short_locations = {
+  location_compact = local.location_compacts[var.location]
+  location_compacts = {
+    eastus = "E"
+  }
+
+  location_short = local.location_shorts[var.location]
+  location_shorts = {
     eastus = "EUS"
   }
 
@@ -884,6 +895,15 @@ module "nsg" {
   rules_outbound  = local.subnet[each.key].nsg_rules.outbound
   subnet_id       = each.value.id
   tags            = azurerm_resource_group.rg["net"].tags
+}
+
+module "prometheus_dashboard" {
+  source = "./modules/prometheus-dashboard"
+
+  azure_monitor_workspace_id = module.monitor_workspace.id
+  resource_group             = azurerm_resource_group.rg["ops"]
+  resource_prefix            = local.resource_prefix_compact["ops"]
+  tags                       = azurerm_resource_group.rg["ops"].tags
 }
 
 module "storage_ops" {
