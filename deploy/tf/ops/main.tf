@@ -645,10 +645,14 @@ locals {
 }
 
 ## Data Sources
+data "azurerm_client_config" "current" {}
+
 data "azurerm_dns_zone" "public_dns" {
   name                = var.public_domain
   resource_group_name = "GLB-FLLM-DEMO-DNS-rg"
 }
+
+data "azurerm_subscription" "current" {}
 
 data "tfe_ip_ranges" "tfc" {}
 
@@ -695,6 +699,14 @@ resource "azurerm_resource_group" "rg" {
   location = var.location
   name     = "${local.resource_prefix[each.key]}-rg"
   tags     = merge(each.value.tags, local.tags)
+}
+
+resource "azurerm_role_assignment" "owner" {
+  for_each = toset(["Key Vault Administrator"])
+
+  principal_id         = data.azurerm_client_config.current.object_id
+  role_definition_name = each.value
+  scope                = data.azurerm_subscription.current.id
 }
 
 # TODO: need principal ID for the following
