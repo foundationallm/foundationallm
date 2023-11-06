@@ -644,6 +644,11 @@ locals {
   }
 }
 
+import {
+  id = "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/providers/Microsoft.Authorization/roleAssignments/48f9b32e-c2fe-4929-8b80-b8194f32624a"
+  to = azurerm_role_assignment.owner["Key Vault Administrator"]
+}
+
 ## Data Sources
 data "azurerm_client_config" "current" {}
 
