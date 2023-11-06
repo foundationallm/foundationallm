@@ -26,7 +26,7 @@ variable "resource_group" {
 }
 
 variable "resource_prefix" {
-  description = "The name prefix for the cosmosdb resources."
+  description = "The name prefix for the resources."
   type        = string
 }
 
