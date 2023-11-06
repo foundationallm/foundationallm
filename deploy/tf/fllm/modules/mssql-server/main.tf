@@ -13,20 +13,42 @@ locals {
   }
 }
 
-data "azurerm_client_config" "current" {}
+resource "azurerm_monitor_metric_alert" "alert" {
+  for_each = local.alert
+
+  description         = each.value.description
+  frequency           = each.value.frequency
+  name                = "${var.resource_prefix}-mssql-${each.key}-alert"
+  resource_group_name = var.resource_group.name
+  scopes              = [azurerm_mssql_elasticpool.main.id]
+  severity            = each.value.severity
+  tags                = var.tags
+  window_size         = each.value.window_size
+
+  action {
+    action_group_id = var.action_group_id
+  }
+
+  criteria {
+    aggregation      = each.value.aggregation
+    metric_name      = each.value.metric_name
+    metric_namespace = "Microsoft.Sql/servers/elasticpools"
+    operator         = each.value.operator
+    threshold        = each.value.threshold
+  }
+}
 
 resource "azurerm_mssql_server" "main" {
-
   location                      = var.resource_group.location
-  name                          = lower(join("", split("-", "${var.resource_prefix}-mssql")))
   minimum_tls_version           = "1.2"
+  name                          = lower(join("", split("-", "${var.resource_prefix}-mssql")))
   public_network_access_enabled = false
   resource_group_name           = var.resource_group.name
   version                       = "12.0"
 
   azuread_administrator {
-    login_username              = "ADAdmin"
-    object_id                   = var.sql_admin_object_id
+    login_username              = var.sql_admin.login_username
+    object_id                   = var.sql_admin.object_id
     azuread_authentication_only = false # TODO: set to false when we have apps that no longer use SQL auth
   }
 
@@ -54,31 +76,6 @@ resource "azurerm_mssql_elasticpool" "main" {
   }
 
   tags = var.tags
-}
-
-resource "azurerm_monitor_metric_alert" "alert" {
-  for_each = local.alert
-
-  description         = each.value.description
-  frequency           = each.value.frequency
-  name                = "${var.resource_prefix}-mssql-${each.key}-alert"
-  resource_group_name = var.resource_group.name
-  scopes              = [azurerm_mssql_elasticpool.main.id]
-  severity            = each.value.severity
-  tags                = var.tags
-  window_size         = each.value.window_size
-
-  action {
-    action_group_id = var.action_group_id
-  }
-
-  criteria {
-    aggregation      = each.value.aggregation
-    metric_name      = each.value.metric_name
-    metric_namespace = "Microsoft.Sql/servers/elasticpools"
-    operator         = each.value.operator
-    threshold        = each.value.threshold
-  }
 }
 
 resource "azurerm_private_endpoint" "ple" {
@@ -112,3 +109,7 @@ module "diagnostics" {
     }
   }
 }
+
+# TODO: add audits
+# TODO: add vulnerability assessment
+# TODO: automatic tuning
