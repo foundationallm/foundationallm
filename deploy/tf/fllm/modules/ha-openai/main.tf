@@ -40,10 +40,6 @@ module "apim" {
   }
 }
 
-moved {
-  from = module.openai_keyvault
-  to   = module.keyvault
-}
 module "keyvault" {
   source = "../keyvault"
 
@@ -52,6 +48,7 @@ module "keyvault" {
   resource_group             = var.resource_group
   resource_prefix            = var.resource_prefix
   tags                       = var.tags
+  tenant_id                  = var.tenant_id
 
   private_endpoint = {
     subnet_id            = var.private_endpoint.subnet_id

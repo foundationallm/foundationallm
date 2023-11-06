@@ -391,6 +391,7 @@ module "openai_ha" {
   resource_prefix            = local.resource_prefix["oai"]
   subnet_id                  = data.azurerm_subnet.subnet["FLLMOpenAI"].id
   tags                       = azurerm_resource_group.rg["oai"].tags
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
 
   private_endpoint = {
     subnet_id = data.azurerm_subnet.subnet["FLLMOpenAI"].id

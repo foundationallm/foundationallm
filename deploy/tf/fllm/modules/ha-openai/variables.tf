@@ -15,7 +15,7 @@ variable "log_analytics_workspace_id" {
 }
 
 variable "private_endpoint" {
-  description = "The private endpoint configuration for KeyVault."
+  description = "The private endpoint configuration."
   type = object({
     subnet_id = string
     apim_private_dns_zones = list(object({
@@ -39,11 +39,6 @@ variable "publisher" {
   }
 }
 
-variable "subnet_id" {
-  description = "The subnet ID to deploy the OpenAI endpoint into."
-  type        = string
-}
-
 variable "resource_group" {
   description = "The resource group to deploy resources into"
 
@@ -58,7 +53,17 @@ variable "resource_prefix" {
   type        = string
 }
 
+variable "subnet_id" {
+  description = "The subnet ID to deploy the OpenAI endpoint into."
+  type        = string
+}
+
 variable "tags" {
   description = "A map of tags for the resource."
   type        = map(string)
+}
+
+variable "tenant_id" {
+  description = "The ID of the tenant to deploy resources into."
+  type        = string
 }
