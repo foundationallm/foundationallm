@@ -901,6 +901,7 @@ module "prometheus_dashboard" {
   source = "./modules/prometheus-dashboard"
 
   azure_monitor_workspace_id = module.monitor_workspace.id
+  log_analytics_workspace_id = module.logs.id
   resource_group             = azurerm_resource_group.rg["ops"]
   resource_prefix            = local.resource_prefix_compact["ops"]
   tags                       = azurerm_resource_group.rg["ops"].tags

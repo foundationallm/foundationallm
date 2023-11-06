@@ -3,6 +3,11 @@ variable "azure_monitor_workspace_id" {
   type        = string
 }
 
+variable "log_analytics_workspace_id" {
+  description = "The ID of the Log Analytics workspace to send diagnostics data to."
+  type        = string
+}
+
 variable "resource_group" {
   description = "The resource group to deploy resources into"
 
