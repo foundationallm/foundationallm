@@ -8,6 +8,14 @@ variable "log_analytics_workspace_id" {
   type        = string
 }
 
+variable "private_endpoint" {
+  description = "The private endpoint configuration."
+  type = object({
+    subnet_id            = string
+    private_dns_zone_ids = list(string)
+  })
+}
+
 variable "resource_group" {
   description = "The resource group to deploy resources into"
 

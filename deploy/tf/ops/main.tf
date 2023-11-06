@@ -98,6 +98,7 @@ locals {
     gateway_portal       = "portal.azure-api.net"
     gateway_public       = "azure-api.net"
     gateway_scm          = "scm.azure-api.net"
+    grafana              = "privatelink.grafana.azure.com"
     monitor              = "privatelink.monitor.azure.com"
     openai               = "privatelink.openai.azure.com"
     prometheus           = "privatelink.${var.location}.prometheus.monitor.azure.com"
@@ -905,6 +906,13 @@ module "prometheus_dashboard" {
   resource_group             = azurerm_resource_group.rg["ops"]
   resource_prefix            = local.resource_prefix_compact["ops"]
   tags                       = azurerm_resource_group.rg["ops"].tags
+
+  private_endpoint = {
+    subnet_id = azurerm_subnet.subnet["ops"].id
+    private_dns_zone_ids = [
+      azurerm_private_dns_zone.private_dns["grafana"].id,
+    ]
+  }
 }
 
 module "storage_ops" {

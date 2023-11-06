@@ -20,7 +20,26 @@ resource "azurerm_role_assignment" "datareaderrole" {
   principal_id       = azurerm_dashboard_grafana.main.identity.0.principal_id
 }
 
-#TODO Add Private Endpoint
+resource "azurerm_private_endpoint" "ple" {
+  location            = var.resource_group.location
+  name                = "${var.resource_prefix}-grafana-pe"
+  resource_group_name = var.resource_group.name
+  subnet_id           = var.private_endpoint.subnet_id
+  tags                = var.tags
+
+  private_dns_zone_group {
+    name                 = "grafana"
+    private_dns_zone_ids = var.private_endpoint.private_dns_zone_ids
+  }
+
+  private_service_connection {
+    is_manual_connection           = false
+    name                           = "${var.resource_prefix}-grafana-connection"
+    private_connection_resource_id = azurerm_dashboard_grafana.main.id
+    subresource_names              = ["grafana"]
+  }
+}
+
 module "diagnostics" {
   source = "../diagnostics"
 
