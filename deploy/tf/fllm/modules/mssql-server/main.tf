@@ -47,8 +47,8 @@ resource "azurerm_mssql_server" "main" {
   version                       = "12.0"
 
   azuread_administrator {
-    login_username              = var.sql_admin.login_username
-    object_id                   = var.sql_admin.object_id
+    login_username              = "ADAdmin"
+    object_id                   = var.sql_admin_object_id
     azuread_authentication_only = false # TODO: set to false when we have apps that no longer use SQL auth
   }
 

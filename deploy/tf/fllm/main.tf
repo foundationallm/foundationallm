@@ -453,7 +453,9 @@ module "storage" {
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rg["storage"]
   resource_prefix            = local.resource_prefix_compact["storage"]
+  subscription_id            = data.azurerm_client_config.current.subscription_id
   tags                       = azurerm_resource_group.rg["storage"].tags
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
 
   private_endpoint = {
     subnet_id = data.azurerm_subnet.subnet["FLLMStorage"].id
@@ -475,7 +477,9 @@ module "storage_data" {
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rg["data"]
   resource_prefix            = local.resource_prefix["data"]
+  subscription_id            = data.azurerm_client_config.current.subscription_id
   tags                       = azurerm_resource_group.rg["data"].tags
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
 
   private_endpoint = {
     subnet_id = data.azurerm_subnet.subnet["Datasources"].id

@@ -116,6 +116,14 @@ Type: `string`
 
 Default: `"default"`
 
+### <a name="input_test_db_password"></a> [test\_db\_password](#input\_test\_db\_password)
+
+Description: The test database password.
+
+Type: `string`
+
+Default: `""`
+
 ## Outputs
 
 No outputs.

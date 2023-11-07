@@ -90,6 +90,11 @@ resource "azurerm_storage_account" "main" {
   network_rules {
     bypass         = ["AzureServices", "Logging", "Metrics"]
     default_action = "Deny"
+
+    private_link_access {
+      endpoint_resource_id = "/subscriptions/${var.subscription_id}/providers/Microsoft.Security/datascanners/storageDataScanner"
+      endpoint_tenant_id   = var.tenant_id
+    }
   }
 
   sas_policy {

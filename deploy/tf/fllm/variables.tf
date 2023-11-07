@@ -47,6 +47,6 @@ variable "sql_admin_ad_group" {
 variable "test_db_password" {
   description = "The test database password."
   type        = string
-  default = ""
-  sensitive = true
+  default     = ""
+  sensitive   = true
 }

@@ -51,7 +51,17 @@ variable "shares" {
   }))
 }
 
+variable "subscription_id" {
+  description = "The ID of the subscription to deploy resources into."
+  type        = string
+}
+
 variable "tags" {
   description = "A map of tags for the resource."
   type        = map(string)
+}
+
+variable "tenant_id" {
+  description = "The ID of the tenant to deploy resources into."
+  type        = string
 }
