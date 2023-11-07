@@ -160,6 +160,11 @@ data "azurerm_resource_group" "backend" {
   name = "${local.resource_prefix_backend[each.key]}-rg"
 }
 
+data "azurerm_storage_account" "storage_ops" {
+  name                = lower(replace("${local.resource_prefix_backend["ops"]}-sa", "-", ""))
+  resource_group_name = data.azurerm_resource_group.backend["ops"].name
+}
+
 data "azurerm_subnet" "subnet" {
   for_each = toset([
     "AppGateway",
@@ -435,14 +440,24 @@ module "sql" {
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rg["data"]
   resource_prefix            = local.resource_prefix["data"]
-  sql_admin_object_id        = var.sql_admin_ad_group.object_id
   tags                       = azurerm_resource_group.rg["data"].tags
+
+  azuread_administrator = {
+    id   = var.sql_admin_ad_group.object_id
+    name = var.sql_admin_ad_group.name
+  }
 
   private_endpoint = {
     subnet_id = data.azurerm_subnet.subnet["Datasources"].id
     private_dns_zone_ids = [
       data.azurerm_private_dns_zone.private_dns["sql_server"].id,
     ]
+  }
+
+  vulnerability_assessment = {
+    container = "vulnerability-assessment"
+    endpoint  = data.azurerm_storage_account.storage_ops.primary_blob_endpoint
+    id        = data.azurerm_storage_account.storage_ops.id
   }
 }
 

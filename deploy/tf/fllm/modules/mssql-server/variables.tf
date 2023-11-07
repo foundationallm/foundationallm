@@ -3,6 +3,14 @@ variable "action_group_id" {
   type        = string
 }
 
+variable "azuread_administrator" {
+  description = "The Azure AD administrator."
+  type = object({
+    id   = string
+    name = string
+  })
+}
+
 variable "log_analytics_workspace_id" {
   description = "The ID of the Log Analytics workspace to send diagnostics data to."
   type        = string
@@ -30,12 +38,16 @@ variable "resource_prefix" {
   type        = string
 }
 
-variable "sql_admin_object_id" {
-  description = "The object ID of the SQL administrator."
-  type        = string
-}
-
 variable "tags" {
   description = "A map of tags for the resource."
   type        = map(string)
+}
+
+variable "vulnerability_assessment" {
+  description = "The vulnerability assessment configuration."
+  type = object({
+    container = string
+    endpoint  = string
+    id        = string
+  })
 }

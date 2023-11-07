@@ -1,4 +1,6 @@
 locals {
+  database_id_master = "${azurerm_mssql_server.main.id}/databases/master"
+
   alert = {
     cpu = {
       aggregation = "Average"
@@ -20,7 +22,7 @@ resource "azurerm_monitor_metric_alert" "alert" {
   frequency           = each.value.frequency
   name                = "${var.resource_prefix}-mssql-${each.key}-alert"
   resource_group_name = var.resource_group.name
-  scopes              = [azurerm_mssql_elasticpool.main.id]
+  scopes              = [azurerm_mssql_elasticpool.pool.id]
   severity            = each.value.severity
   tags                = var.tags
   window_size         = each.value.window_size
@@ -38,44 +40,85 @@ resource "azurerm_monitor_metric_alert" "alert" {
   }
 }
 
+resource "azurerm_mssql_database_extended_auditing_policy" "master" {
+  depends_on = [azurerm_mssql_server_extended_auditing_policy.server]
+
+  database_id            = local.database_id_master
+  log_monitoring_enabled = true
+}
+
+resource "azurerm_mssql_firewall_rule" "allow_azure_services" {
+  name             = "AllowAzureServices"
+  server_id        = azurerm_mssql_server.main.id
+  start_ip_address = "0.0.0.0"
+  end_ip_address   = "0.0.0.0"
+}
+
 resource "azurerm_mssql_server" "main" {
   location                      = var.resource_group.location
   minimum_tls_version           = "1.2"
-  name                          = lower(join("", split("-", "${var.resource_prefix}-mssql")))
-  public_network_access_enabled = false
+  name                          = lower(join("", split("-", "${var.resource_prefix}-mssql"))) # TODO: we don't need to remove the dashes
+  public_network_access_enabled = true
   resource_group_name           = var.resource_group.name
+  tags                          = var.tags
   version                       = "12.0"
 
   azuread_administrator {
-    login_username              = "ADAdmin"
-    object_id                   = var.sql_admin_object_id
+    login_username              = var.azuread_administrator.name
+    object_id                   = var.azuread_administrator.id
     azuread_authentication_only = false # TODO: set to false when we have apps that no longer use SQL auth
   }
 
-  tags = var.tags
+  identity {
+    type = "SystemAssigned"
+  }
 }
 
-resource "azurerm_mssql_elasticpool" "main" {
+resource "azurerm_mssql_server_extended_auditing_policy" "server" {
+  log_monitoring_enabled = true
+  server_id              = azurerm_mssql_server.main.id
+}
+
+resource "azurerm_mssql_server_security_alert_policy" "alerts" {
+  resource_group_name = var.resource_group.name
+  server_name         = azurerm_mssql_server.main.name
+  state               = "Enabled"
+}
+
+resource "azurerm_mssql_server_vulnerability_assessment" "report" {
+  server_security_alert_policy_id = azurerm_mssql_server_security_alert_policy.alerts.id
+  storage_container_path          = "${var.vulnerability_assessment.endpoint}${var.vulnerability_assessment.container}/"
+
+  recurring_scans {
+    enabled = true
+    emails  = []
+  }
+}
+
+moved {
+  from = azurerm_mssql_elasticpool.main
+  to   = azurerm_mssql_elasticpool.pool
+}
+resource "azurerm_mssql_elasticpool" "pool" {
+  license_type        = "LicenseIncluded"
   location            = var.resource_group.location
+  max_size_gb         = 128
   name                = "${var.resource_prefix}-mssql-ep"
   resource_group_name = var.resource_group.name
   server_name         = azurerm_mssql_server.main.name
-  license_type        = "LicenseIncluded"
-  max_size_gb         = 64
+  tags                = var.tags
 
   sku {
-    name     = "GP_Gen5"
     capacity = 4
-    tier     = "GeneralPurpose"
     family   = "Gen5"
+    name     = "GP_Gen5"
+    tier     = "GeneralPurpose"
   }
 
   per_database_settings {
     max_capacity = 4
     min_capacity = 0.25
   }
-
-  tags = var.tags
 }
 
 resource "azurerm_private_endpoint" "ple" {
@@ -98,18 +141,24 @@ resource "azurerm_private_endpoint" "ple" {
   }
 }
 
+# resource "azurerm_role_assignment" "blob_contributor" {
+#   principal_id         = azurerm_mssql_server.main.identity.0.principal_id
+#   role_definition_name = "Storage Blob Data Contributor"
+#   scope                = var.vulnerability_assessment.id
+# }
+
 module "diagnostics" {
   source = "../diagnostics"
 
   log_analytics_workspace_id = var.log_analytics_workspace_id
 
   monitored_services = {
-    mssql = {
-      id = azurerm_mssql_elasticpool.main.id
-    }
+    audits = { id = local.database_id_master }
+    mssql  = { id = azurerm_mssql_server.main.id }
+    pool   = { id = azurerm_mssql_elasticpool.pool.id }
+
   }
 }
 
-# TODO: add audits
-# TODO: add vulnerability assessment
+
 # TODO: automatic tuning
