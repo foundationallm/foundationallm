@@ -141,11 +141,11 @@ resource "azurerm_private_endpoint" "ple" {
   }
 }
 
-# resource "azurerm_role_assignment" "blob_contributor" {
-#   principal_id         = azurerm_mssql_server.main.identity.0.principal_id
-#   role_definition_name = "Storage Blob Data Contributor"
-#   scope                = var.vulnerability_assessment.id
-# }
+resource "azurerm_role_assignment" "blob_contributor" {
+  principal_id         = azurerm_mssql_server.main.identity.0.principal_id
+  role_definition_name = "Storage Blob Data Contributor"
+  scope                = var.vulnerability_assessment.id
+}
 
 module "diagnostics" {
   source = "../diagnostics"
