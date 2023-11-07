@@ -3,8 +3,7 @@ from langchain.agents.agent_types import AgentType
 from langchain.callbacks import get_openai_callback
 from langchain.prompts import PromptTemplate
 
-from foundationallm.config import Configuration
-from foundationallm.context import Context
+from foundationallm.config import Configuration, Context
 from foundationallm.langchain.agents import AgentBase
 from foundationallm.langchain.data_sources.sql import SQLDatabaseConfiguration
 from foundationallm.langchain.data_sources.sql import SQLDatabaseFactory

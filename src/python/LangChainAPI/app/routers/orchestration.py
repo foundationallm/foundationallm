@@ -2,8 +2,7 @@ from typing import Optional
 from fastapi import APIRouter, Depends, Header
 from app.dependencies import validate_api_key_header
 
-from foundationallm.config import Configuration
-from foundationallm.context import Context
+from foundationallm.config import Configuration, Context
 from foundationallm.models.orchestration import CompletionRequest, CompletionResponse
 from foundationallm.langchain.orchestration import OrchestrationManager
 

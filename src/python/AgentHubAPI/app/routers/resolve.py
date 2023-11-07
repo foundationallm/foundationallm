@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Header
 from typing import Optional
 from app.dependencies import validate_api_key_header
-from foundationallm.context import Context
+from foundationallm.config import Context
 from foundationallm.hubs.agent import AgentHub, AgentHubRequest, AgentHubResponse
 
 router = APIRouter(

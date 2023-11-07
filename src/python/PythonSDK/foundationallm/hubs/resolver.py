@@ -2,8 +2,8 @@ from abc import ABC, abstractmethod
 from .metadata import Metadata
 from .repository import Repository
 from typing import List
-from foundationallm.context import Context
-from foundationallm.config import Configuration
+
+from foundationallm.config import Configuration, Context
 
 class Resolver(ABC):
     """The Resolver class is responsible for resolving a request to a list of metadata value."""

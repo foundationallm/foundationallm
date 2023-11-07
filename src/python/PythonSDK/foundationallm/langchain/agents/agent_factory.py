@@ -1,7 +1,6 @@
 from unittest.mock import Base
 from langchain.base_language import BaseLanguageModel
-from foundationallm.config import Configuration
-from foundationallm.context import Context
+from foundationallm.config import Configuration, Context
 from foundationallm.models.orchestration import CompletionRequest
 from foundationallm.langchain.agents import AgentBase
 from foundationallm.langchain.agents import AnomalyDetectionAgent
