@@ -43,11 +43,11 @@ variable "tags" {
   type        = map(string)
 }
 
-variable "vulnerability_assessment" {
-  description = "The vulnerability assessment configuration."
-  type = object({
-    container = string
-    endpoint  = string
-    id        = string
-  })
-}
+# variable "vulnerability_assessment" {
+#   description = "The vulnerability assessment configuration."
+#   type = object({
+#     container = string
+#     endpoint  = string
+#     id        = string
+#   })
+# }

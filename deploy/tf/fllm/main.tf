@@ -454,11 +454,11 @@ module "sql" {
     ]
   }
 
-  vulnerability_assessment = {
-    container = "vulnerability-assessment"
-    endpoint  = data.azurerm_storage_account.storage_ops.primary_blob_endpoint
-    id        = data.azurerm_storage_account.storage_ops.id
-  }
+  # vulnerability_assessment = {
+  #   container = "vulnerability-assessment"
+  #   endpoint  = data.azurerm_storage_account.storage_ops.primary_blob_endpoint
+  #   id        = data.azurerm_storage_account.storage_ops.id
+  # }
 }
 
 module "storage" {

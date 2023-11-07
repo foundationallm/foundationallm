@@ -79,26 +79,33 @@ resource "azurerm_mssql_server_extended_auditing_policy" "server" {
   server_id              = azurerm_mssql_server.main.id
 }
 
-resource "azurerm_mssql_server_security_alert_policy" "alerts" {
-  resource_group_name = var.resource_group.name
-  server_name         = azurerm_mssql_server.main.name
-  state               = "Enabled"
+# resource "azurerm_mssql_server_security_alert_policy" "alerts" {
+#   resource_group_name = var.resource_group.name
+#   server_name         = azurerm_mssql_server.main.name
+#   state               = "Enabled"
+# }
+
+# resource "azurerm_mssql_server_vulnerability_assessment" "report" {
+#   server_security_alert_policy_id = azurerm_mssql_server_security_alert_policy.alerts.id
+#   storage_container_path          = "${var.vulnerability_assessment.endpoint}${var.vulnerability_assessment.container}/"
+
+#   recurring_scans {
+#     enabled = true
+#     emails  = []
+#   }
+# }
+
+resource "azapi_resource" "vulnerability_assessment" {
+  type      = "Microsoft.Sql/servers/sqlVulnerabilityAssessments@2022-05-01-preview"
+  name      = "default"
+  parent_id = azurerm_mssql_server.main.id
+  body = jsonencode({
+    properties = {
+      state = "Enabled"
+    }
+  })
 }
 
-resource "azurerm_mssql_server_vulnerability_assessment" "report" {
-  server_security_alert_policy_id = azurerm_mssql_server_security_alert_policy.alerts.id
-  storage_container_path          = "${var.vulnerability_assessment.endpoint}${var.vulnerability_assessment.container}/"
-
-  recurring_scans {
-    enabled = true
-    emails  = []
-  }
-}
-
-moved {
-  from = azurerm_mssql_elasticpool.main
-  to   = azurerm_mssql_elasticpool.pool
-}
 resource "azurerm_mssql_elasticpool" "pool" {
   license_type        = "LicenseIncluded"
   location            = var.resource_group.location
@@ -141,11 +148,11 @@ resource "azurerm_private_endpoint" "ple" {
   }
 }
 
-resource "azurerm_role_assignment" "blob_contributor" {
-  principal_id         = azurerm_mssql_server.main.identity.0.principal_id
-  role_definition_name = "Storage Blob Data Contributor"
-  scope                = var.vulnerability_assessment.id
-}
+# resource "azurerm_role_assignment" "blob_contributor" {
+#   principal_id         = azurerm_mssql_server.main.identity.0.principal_id
+#   role_definition_name = "Storage Blob Data Contributor"
+#   scope                = var.vulnerability_assessment.id
+# }
 
 module "diagnostics" {
   source = "../diagnostics"
