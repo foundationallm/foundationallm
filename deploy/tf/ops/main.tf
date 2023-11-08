@@ -753,7 +753,7 @@ resource "azurerm_virtual_network" "network" {
 
 ## Modules
 module "ado_agent" {
-  source = "./modules/azure-devops-agent"
+  source = "../modules/azure-devops-agent"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
   data_collection_rule_id    = module.logs.data_collection_rule_id
@@ -765,7 +765,7 @@ module "ado_agent" {
 }
 
 module "ampls" {
-  source = "./modules/monitor-private-link-scope"
+  source = "../modules/monitor-private-link-scope"
 
   resource_group  = azurerm_resource_group.rg["ops"]
   resource_prefix = local.resource_prefix["ops"]
@@ -781,7 +781,7 @@ module "ampls" {
 }
 
 module "appconfig" {
-  source = "./modules/app-config"
+  source = "../modules/app-config"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
   log_analytics_workspace_id = module.logs.id
@@ -799,7 +799,7 @@ module "appconfig" {
 }
 
 module "application_gateway_certificate" {
-  source   = "./modules/keyvault-acme-certificate"
+  source   = "../modules/keyvault-acme-certificate"
   for_each = toset(["api", "www", ])
 
   administrator_email = "tbd@solliance.net"
@@ -809,7 +809,7 @@ module "application_gateway_certificate" {
 }
 
 module "application_insights" {
-  source = "./modules/application-insights"
+  source = "../modules/application-insights"
 
   action_group_id                  = azurerm_monitor_action_group.do_nothing.id
   azure_monitor_private_link_scope = module.ampls
@@ -820,7 +820,7 @@ module "application_insights" {
 }
 
 module "bastion" {
-  source = "./modules/bastion"
+  source = "../modules/bastion"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
   log_analytics_workspace_id = module.logs.id
@@ -831,7 +831,7 @@ module "bastion" {
 }
 
 module "container_registry" {
-  source = "./modules/container-registry"
+  source = "../modules/container-registry"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
   log_analytics_workspace_id = module.logs.id
@@ -849,7 +849,7 @@ module "container_registry" {
 }
 
 module "jumpbox" {
-  source = "./modules/jumpbox"
+  source = "../modules/jumpbox"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
   data_collection_rule_id    = module.logs.data_collection_rule_id
@@ -861,13 +861,14 @@ module "jumpbox" {
 }
 
 module "keyvault" {
-  source = "./modules/keyvault"
+  source = "../modules/keyvault"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
   log_analytics_workspace_id = module.logs.id
   resource_group             = azurerm_resource_group.rg["ops"]
   resource_prefix            = local.resource_prefix["ops"]
   tags                       = azurerm_resource_group.rg["ops"].tags
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
 
   private_endpoint = {
     subnet_id = azurerm_subnet.subnet["ops"].id
@@ -878,7 +879,7 @@ module "keyvault" {
 }
 
 module "logs" {
-  source = "./modules/log-analytics-workspace"
+  source = "../modules/log-analytics-workspace"
 
   action_group_id                  = azurerm_monitor_action_group.do_nothing.id
   azure_monitor_private_link_scope = module.ampls
@@ -888,7 +889,7 @@ module "logs" {
 }
 
 module "monitor_workspace" {
-  source = "./modules/monitor-workspace"
+  source = "../modules/monitor-workspace"
 
   action_group_id = azurerm_monitor_action_group.do_nothing.id
   resource_group  = azurerm_resource_group.rg["ops"]
@@ -905,7 +906,7 @@ module "monitor_workspace" {
 
 module "nsg" {
   for_each = azurerm_subnet.subnet
-  source   = "./modules/nsg"
+  source   = "../modules/nsg"
 
   resource_group  = azurerm_resource_group.rg["net"]
   resource_prefix = "${local.resource_prefix["net"]}-${each.key}"
@@ -916,7 +917,7 @@ module "nsg" {
 }
 
 module "prometheus_dashboard" {
-  source = "./modules/prometheus-dashboard"
+  source = "../modules/prometheus-dashboard"
 
   azure_monitor_workspace_id = module.monitor_workspace.id
   log_analytics_workspace_id = module.logs.id
@@ -933,13 +934,15 @@ module "prometheus_dashboard" {
 }
 
 module "storage_ops" {
-  source = "./modules/storage-account"
+  source = "../modules/storage-account"
 
   action_group_id            = azurerm_monitor_action_group.do_nothing.id
   log_analytics_workspace_id = module.logs.id
   resource_group             = azurerm_resource_group.rg["ops"]
   resource_prefix            = local.resource_prefix["ops"]
+  subscription_id            = data.azurerm_client_config.current.subscription_id
   tags                       = azurerm_resource_group.rg["ops"].tags
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
 
   private_endpoint = {
     subnet_id = azurerm_subnet.subnet["ops"].id
@@ -955,7 +958,7 @@ module "storage_ops" {
 }
 
 module "tfc_agent" {
-  source = "./modules/tfc-agent"
+  source = "../modules/tfc-agent"
 
   action_group_id         = azurerm_monitor_action_group.do_nothing.id
   log_analytics_workspace = module.logs

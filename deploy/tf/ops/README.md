@@ -90,91 +90,91 @@ The following Modules are called:
 
 ### <a name="module_ado_agent"></a> [ado\_agent](#module\_ado\_agent)
 
-Source: ./modules/azure-devops-agent
+Source: ../modules/azure-devops-agent
 
 Version:
 
 ### <a name="module_ampls"></a> [ampls](#module\_ampls)
 
-Source: ./modules/monitor-private-link-scope
+Source: ../modules/monitor-private-link-scope
 
 Version:
 
 ### <a name="module_appconfig"></a> [appconfig](#module\_appconfig)
 
-Source: ./modules/app-config
+Source: ../modules/app-config
 
 Version:
 
 ### <a name="module_application_gateway_certificate"></a> [application\_gateway\_certificate](#module\_application\_gateway\_certificate)
 
-Source: ./modules/keyvault-acme-certificate
+Source: ../modules/keyvault-acme-certificate
 
 Version:
 
 ### <a name="module_application_insights"></a> [application\_insights](#module\_application\_insights)
 
-Source: ./modules/application-insights
+Source: ../modules/application-insights
 
 Version:
 
 ### <a name="module_bastion"></a> [bastion](#module\_bastion)
 
-Source: ./modules/bastion
+Source: ../modules/bastion
 
 Version:
 
 ### <a name="module_container_registry"></a> [container\_registry](#module\_container\_registry)
 
-Source: ./modules/container-registry
+Source: ../modules/container-registry
 
 Version:
 
 ### <a name="module_jumpbox"></a> [jumpbox](#module\_jumpbox)
 
-Source: ./modules/jumpbox
+Source: ../modules/jumpbox
 
 Version:
 
 ### <a name="module_keyvault"></a> [keyvault](#module\_keyvault)
 
-Source: ./modules/keyvault
+Source: ../modules/keyvault
 
 Version:
 
 ### <a name="module_logs"></a> [logs](#module\_logs)
 
-Source: ./modules/log-analytics-workspace
+Source: ../modules/log-analytics-workspace
 
 Version:
 
 ### <a name="module_monitor_workspace"></a> [monitor\_workspace](#module\_monitor\_workspace)
 
-Source: ./modules/monitor-workspace
+Source: ../modules/monitor-workspace
 
 Version:
 
 ### <a name="module_nsg"></a> [nsg](#module\_nsg)
 
-Source: ./modules/nsg
+Source: ../modules/nsg
 
 Version:
 
 ### <a name="module_prometheus_dashboard"></a> [prometheus\_dashboard](#module\_prometheus\_dashboard)
 
-Source: ./modules/prometheus-dashboard
+Source: ../modules/prometheus-dashboard
 
 Version:
 
 ### <a name="module_storage_ops"></a> [storage\_ops](#module\_storage\_ops)
 
-Source: ./modules/storage-account
+Source: ../modules/storage-account
 
 Version:
 
 ### <a name="module_tfc_agent"></a> [tfc\_agent](#module\_tfc\_agent)
 
-Source: ./modules/tfc-agent
+Source: ../modules/tfc-agent
 
 Version:
 <!-- END_TF_DOCS -->
