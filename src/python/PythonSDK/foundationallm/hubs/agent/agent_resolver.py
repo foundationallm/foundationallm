@@ -1,7 +1,8 @@
-from foundationallm.hubs.agent import AgentMetadata, AgentHubRequest, AgentHubResponse, agent_metadata
-from foundationallm.hubs import Resolver
 from typing import List
-from foundationallm.context import Context
+
+from foundationallm.config import Context
+from foundationallm.hubs import Resolver
+from foundationallm.hubs.agent import AgentMetadata, AgentHubRequest, AgentHubResponse, agent_metadata
 
 class AgentResolver(Resolver):
     """

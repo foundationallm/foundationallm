@@ -48,7 +48,7 @@ resource "azurerm_cognitive_deployment" "completions" {
   }
 
   scale {
-    capacity = "60"
+    capacity = "120"
     type     = "Standard"
   }
 }
@@ -56,6 +56,7 @@ resource "azurerm_cognitive_deployment" "completions" {
 resource "azurerm_cognitive_deployment" "embeddings" {
   cognitive_account_id = azurerm_cognitive_account.main.id
   name                 = "embeddings"
+  rai_policy_name      = "Microsoft.Default"
 
   model {
     format  = "OpenAI"
@@ -64,7 +65,7 @@ resource "azurerm_cognitive_deployment" "embeddings" {
   }
 
   scale {
-    capacity = "60"
+    capacity = "120"
     type     = "Standard"
   }
 }

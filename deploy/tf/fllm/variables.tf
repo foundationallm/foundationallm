@@ -43,3 +43,10 @@ variable "sql_admin_ad_group" {
     object_id = string
   })
 }
+
+variable "test_db_password" {
+  description = "The test database password."
+  type        = string
+  default     = ""
+  sensitive   = true
+}

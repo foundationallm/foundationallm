@@ -5,7 +5,8 @@ locals {
   # 10.0.252.0/22,10.0.252.0-10.0.255.255,1024 addresses
   ops_parent_cidr = cidrsubnet(local.network_cidr, 6, 63)
 
-  resource_prefix = { for k, _ in local.resource_group : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
+  resource_prefix         = { for k, _ in local.resource_group : k => join("-", [local.location_short, var.project_id, var.environment, upper(k)]) }
+  resource_prefix_compact = { for k, _ in local.resource_group : k => join("", [local.location_compact, var.project_id, local.environment_compact, upper(k)]) }
 
   address_prefix = {
     ado           = cidrsubnet(local.ops_parent_cidr, 5, 29)
@@ -70,6 +71,11 @@ locals {
     }
   }
 
+  environment_compact = local.environment_compacts[var.environment]
+  environment_compacts = {
+    DEMO = "d"
+  }
+
   # TODO: Need to figure out how to restore the deny-all rules to the NSGs using these modified rules.
   no_deny_nsg_rules = {
     inbound  = { for k, v in local.default_nsg_rules.inbound : k => v if k != "deny-all-inbound" }
@@ -92,8 +98,10 @@ locals {
     gateway_portal       = "portal.azure-api.net"
     gateway_public       = "azure-api.net"
     gateway_scm          = "scm.azure-api.net"
+    grafana              = "privatelink.grafana.azure.com"
     monitor              = "privatelink.monitor.azure.com"
     openai               = "privatelink.openai.azure.com"
+    prometheus           = "privatelink.${var.location}.prometheus.monitor.azure.com"
     queue                = "privatelink.queue.core.windows.net"
     search               = "privatelink.search.windows.net"
     sites                = "privatelink.azurewebsites.net"
@@ -125,8 +133,13 @@ locals {
     }
   }
 
-  short_location = local.short_locations[var.location]
-  short_locations = {
+  location_compact = local.location_compacts[var.location]
+  location_compacts = {
+    eastus = "E"
+  }
+
+  location_short = local.location_shorts[var.location]
+  location_shorts = {
     eastus = "EUS"
   }
 
@@ -631,11 +644,20 @@ locals {
   }
 }
 
+import {
+  id = "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/providers/Microsoft.Authorization/roleAssignments/48f9b32e-c2fe-4929-8b80-b8194f32624a"
+  to = azurerm_role_assignment.owner["Key Vault Administrator"]
+}
+
 ## Data Sources
+data "azurerm_client_config" "current" {}
+
 data "azurerm_dns_zone" "public_dns" {
   name                = var.public_domain
   resource_group_name = "GLB-FLLM-DEMO-DNS-rg"
 }
+
+data "azurerm_subscription" "current" {}
 
 data "tfe_ip_ranges" "tfc" {}
 
@@ -682,6 +704,14 @@ resource "azurerm_resource_group" "rg" {
   location = var.location
   name     = "${local.resource_prefix[each.key]}-rg"
   tags     = merge(each.value.tags, local.tags)
+}
+
+resource "azurerm_role_assignment" "owner" {
+  for_each = toset(["Key Vault Administrator"])
+
+  principal_id         = data.azurerm_client_config.current.object_id
+  role_definition_name = each.value
+  scope                = data.azurerm_subscription.current.id
 }
 
 # TODO: need principal ID for the following
@@ -857,6 +887,22 @@ module "logs" {
   tags                             = azurerm_resource_group.rg["ops"].tags
 }
 
+module "monitor_workspace" {
+  source = "./modules/monitor-workspace"
+
+  action_group_id = azurerm_monitor_action_group.do_nothing.id
+  resource_group  = azurerm_resource_group.rg["ops"]
+  resource_prefix = local.resource_prefix["ops"]
+  tags            = azurerm_resource_group.rg["ops"].tags
+
+  private_endpoint = {
+    subnet_id = azurerm_subnet.subnet["ops"].id
+    private_dns_zone_ids = [
+      azurerm_private_dns_zone.private_dns["prometheus"].id,
+    ]
+  }
+}
+
 module "nsg" {
   for_each = azurerm_subnet.subnet
   source   = "./modules/nsg"
@@ -867,6 +913,23 @@ module "nsg" {
   rules_outbound  = local.subnet[each.key].nsg_rules.outbound
   subnet_id       = each.value.id
   tags            = azurerm_resource_group.rg["net"].tags
+}
+
+module "prometheus_dashboard" {
+  source = "./modules/prometheus-dashboard"
+
+  azure_monitor_workspace_id = module.monitor_workspace.id
+  log_analytics_workspace_id = module.logs.id
+  resource_group             = azurerm_resource_group.rg["ops"]
+  resource_prefix            = local.resource_prefix_compact["ops"]
+  tags                       = azurerm_resource_group.rg["ops"].tags
+
+  private_endpoint = {
+    subnet_id = azurerm_subnet.subnet["ops"].id
+    private_dns_zone_ids = [
+      azurerm_private_dns_zone.private_dns["grafana"].id,
+    ]
+  }
 }
 
 module "storage_ops" {

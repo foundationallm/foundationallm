@@ -1,10 +1,14 @@
+from pydantic import BaseModel
 from typing import List, Union
-from .orchestration_response import OrchestrationResponse
 
-class CompletionResponse(OrchestrationResponse):
+class CompletionResponse(BaseModel):
     """
     Response from a language model.
     """
-    
+    user_prompt: str
     completion: Union[str, set, List[str]]
     user_prompt_embedding: List[float] = list()
+    prompt_tokens: int = 0
+    completion_tokens: int = 0
+    total_tokens: int = 0
+    total_cost: float = 0.0

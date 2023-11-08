@@ -56,9 +56,12 @@ The following resources are used by this module:
 - [azurerm_private_dns_zone.private_dns](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone) (resource)
 - [azurerm_private_dns_zone_virtual_network_link.link](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) (resource)
 - [azurerm_resource_group.rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) (resource)
+- [azurerm_role_assignment.owner](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) (resource)
 - [azurerm_subnet.subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) (resource)
 - [azurerm_virtual_network.network](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network) (resource)
+- [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
 - [azurerm_dns_zone.public_dns](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/dns_zone) (data source)
+- [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) (data source)
 - [tfe_ip_ranges.tfc](https://registry.terraform.io/providers/hashicorp/tfe/latest/docs/data-sources/ip_ranges) (data source)
 
 ## Requirements
@@ -77,7 +80,7 @@ The following requirements are needed by this module:
 
 The following providers are used by this module:
 
-- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (3.78.0)
+- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (3.79.0)
 
 - <a name="provider_tfe"></a> [tfe](#provider\_tfe) (0.49.2)
 
@@ -145,9 +148,21 @@ Source: ./modules/log-analytics-workspace
 
 Version:
 
+### <a name="module_monitor_workspace"></a> [monitor\_workspace](#module\_monitor\_workspace)
+
+Source: ./modules/monitor-workspace
+
+Version:
+
 ### <a name="module_nsg"></a> [nsg](#module\_nsg)
 
 Source: ./modules/nsg
+
+Version:
+
+### <a name="module_prometheus_dashboard"></a> [prometheus\_dashboard](#module\_prometheus\_dashboard)
+
+Source: ./modules/prometheus-dashboard
 
 Version:
 

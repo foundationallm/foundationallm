@@ -1,6 +1,7 @@
 from abc import ABC
+
+from foundationallm.config import Context
 from foundationallm.hubs import Resolver
-from foundationallm.context import Context
 
 class HubBase(ABC):
     """The HubBase class is responsible for managing and resolving requests."""

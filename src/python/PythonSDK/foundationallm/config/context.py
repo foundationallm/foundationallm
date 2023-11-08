@@ -1,6 +1,6 @@
 import json
 from typing import Optional
-from foundationallm.context import UserIdentity
+from foundationallm.config import UserIdentity
 
 class Context:
     def __init__(self, user_identity: Optional[UserIdentity] = None):

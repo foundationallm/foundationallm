@@ -11,6 +11,7 @@
   - [Optional Inputs](#optional-inputs)
     - [ client\_entra\_application](#-client_entra_application)
     - [ core\_entra\_application](#-core_entra_application)
+    - [ namespace](#-namespace)
   - [Outputs](#outputs)
   - [Resources](#resources)
   - [Requirements](#requirements)
@@ -34,6 +35,13 @@ You must enable host-based encryption on the subscription before deploying this 
 
 ```bash
 az feature register --namespace Microsoft.Compute --name EncryptionAtHost
+```
+
+Also Graphana Dashboards:
+
+```bash
+az provider register "Microsoft.Dashboard"
+az provider show --namespace "Microsoft.Dashboard" --query "registrationState"
 ```
 
 <!-- BEGIN_TF_DOCS -->
@@ -108,6 +116,14 @@ Type: `string`
 
 Default: `"default"`
 
+### <a name="input_test_db_password"></a> [test\_db\_password](#input\_test\_db\_password)
+
+Description: The test database password.
+
+Type: `string`
+
+Default: `""`
+
 ## Outputs
 
 No outputs.
@@ -138,6 +154,7 @@ The following resources are used by this module:
 - [azurerm_user_assigned_identity.agw](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) (resource)
 - [azurerm_user_assigned_identity.service_mi](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) (resource)
 - [random_string.api_key](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) (resource)
+- [azapi_resource.amw](https://registry.terraform.io/providers/azure/azapi/latest/docs/data-sources/resource) (data source)
 - [azurerm_app_configuration.appconfig](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/app_configuration) (data source)
 - [azurerm_application_insights.ai](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) (data source)
 - [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
@@ -148,6 +165,7 @@ The following resources are used by this module:
 - [azurerm_monitor_action_group.do_nothing](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) (data source)
 - [azurerm_private_dns_zone.private_dns](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) (data source)
 - [azurerm_resource_group.backend](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) (data source)
+- [azurerm_storage_account.storage_ops](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) (data source)
 - [azurerm_subnet.subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) (data source)
 - [azurerm_virtual_network.network](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) (data source)
 
@@ -167,7 +185,9 @@ The following requirements are needed by this module:
 
 The following providers are used by this module:
 
-- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (3.78.0)
+- <a name="provider_azapi"></a> [azapi](#provider\_azapi) (1.10.0)
+
+- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (3.79.0)
 
 - <a name="provider_random"></a> [random](#provider\_random) (3.5.1)
 
@@ -205,12 +225,6 @@ Source: ./modules/cosmosdb
 
 Version:
 
-### <a name="module_cosmosdb_data"></a> [cosmosdb\_data](#module\_cosmosdb\_data)
-
-Source: ./modules/cosmosdb
-
-Version:
-
 ### <a name="module_openai_ha"></a> [openai\_ha](#module\_openai\_ha)
 
 Source: ./modules/ha-openai
@@ -223,19 +237,7 @@ Source: ./modules/search
 
 Version:
 
-### <a name="module_sql"></a> [sql](#module\_sql)
-
-Source: ./modules/mssql-server
-
-Version:
-
 ### <a name="module_storage"></a> [storage](#module\_storage)
-
-Source: ./modules/storage-account
-
-Version:
-
-### <a name="module_storage_data"></a> [storage\_data](#module\_storage\_data)
 
 Source: ./modules/storage-account
 

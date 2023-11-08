@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
 
-from foundationallm.models.orchestration import OrchestrationResponse
+from foundationallm.models.orchestration import CompletionResponse
 
 class AgentBase(ABC):
     """Abstract base class for Agents"""
     
     @abstractmethod
-    def run(self, prompt: str) -> OrchestrationResponse:
+    def run(self, prompt: str) -> CompletionResponse:
         """
         Execute the agent's run method
         
@@ -17,6 +17,6 @@ class AgentBase(ABC):
 
         Returns
         -------
-        OrchestrationResponse
+        CompletionResponse
             Returns a response containing the completion plus token usage and cost details.
         """

@@ -116,6 +116,11 @@ resource "azurerm_kubernetes_cluster" "main" {
     log_analytics_workspace_id = var.log_analytics_workspace_id
   }
 
+  monitor_metrics {
+    annotations_allowed = null
+    labels_allowed      = null
+  }
+
   network_profile {
     dns_service_ip = "10.100.254.1"
     network_plugin = "azure"
@@ -124,7 +129,8 @@ resource "azurerm_kubernetes_cluster" "main" {
   }
 
   oms_agent {
-    log_analytics_workspace_id = var.log_analytics_workspace_id
+    log_analytics_workspace_id      = var.log_analytics_workspace_id
+    msi_auth_for_monitoring_enabled = true
   }
 }
 
@@ -225,4 +231,13 @@ module "diagnostics" {
       id = azurerm_kubernetes_cluster.main.id
     }
   }
+}
+
+module "prometheus_collector" {
+  source = "./modules/prometheus-collector"
+
+  azure_monitor_workspace_id = var.azure_monitor_workspace_id
+  cluster                    = azurerm_kubernetes_cluster.main
+  resource_group             = var.resource_group
+  resource_prefix            = var.resource_prefix
 }

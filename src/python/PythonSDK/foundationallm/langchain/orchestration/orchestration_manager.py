@@ -1,7 +1,5 @@
 from langchain.base_language import BaseLanguageModel
-from foundationallm.credentials import Credential
-from foundationallm.config import Configuration
-from foundationallm.context import Context
+from foundationallm.config import Configuration, Context
 from foundationallm.models.metadata.language_model import LanguageModel
 from foundationallm.langchain.language_models import LanguageModelFactory
 from foundationallm.langchain.agents import AgentFactory, AgentBase
@@ -19,8 +17,8 @@ class OrchestrationManager:
         completion_request : CompletionRequest
             The CompletionRequest is the metadata object containing the details needed for
             the OrchestrationManager to assemble an agent with a language model and data source.
-        credential : Credential
-            The type of credential to use for authenticating against the SDK.
+        context : Context
+            The user context under which to execution completion requests.
         """
         self.completion_request = completion_request
         self.config = configuration

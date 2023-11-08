@@ -33,8 +33,6 @@ locals {
   }
 }
 
-data "azurerm_client_config" "current" {}
-
 resource "azurerm_key_vault" "main" {
   enable_rbac_authorization     = true
   location                      = var.resource_group.location
@@ -44,7 +42,7 @@ resource "azurerm_key_vault" "main" {
   resource_group_name           = var.resource_group.name
   sku_name                      = "standard"
   soft_delete_retention_days    = 7
-  tenant_id                     = data.azurerm_client_config.current.tenant_id
+  tenant_id                     = var.tenant_id
   tags                          = var.tags
 }
 
@@ -92,12 +90,6 @@ resource "azurerm_private_endpoint" "ple" {
     private_connection_resource_id = azurerm_key_vault.main.id
     subresource_names              = ["vault"]
   }
-}
-
-resource "azurerm_role_assignment" "role" {
-  principal_id         = data.azurerm_client_config.current.object_id
-  role_definition_name = "Key Vault Administrator"
-  scope                = azurerm_key_vault.main.id
 }
 
 # Modules

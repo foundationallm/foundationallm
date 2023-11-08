@@ -22,12 +22,8 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="foundationallm\context\context.py" />
-    <Compile Include="foundationallm\context\user_identity.py" />
-    <Compile Include="foundationallm\context\__init__.py" />
-    <Compile Include="foundationallm\credentials\azure_credential.py" />
-    <Compile Include="foundationallm\credentials\credential.py" />
-    <Compile Include="foundationallm\credentials\__init__.py" />
+    <Compile Include="foundationallm\config\context.py" />
+    <Compile Include="foundationallm\config\user_identity.py" />
     <Compile Include="foundationallm\models\list_option.py" />
     <Compile Include="foundationallm\langchain\agents\generic_resolver_agent.py" />
     <Compile Include="foundationallm\hubs\agent\agent_type.py" />
@@ -130,13 +126,9 @@
     <Compile Include="foundationallm\models\metadata\__init__.py" />
     <Compile Include="foundationallm\langchain\data_sources\data_source_configuration.py" />
     <Compile Include="foundationallm\models\orchestration\completion_request.py" />
-    <Compile Include="foundationallm\models\message.py" />
     <Compile Include="foundationallm\models\orchestration\completion_response.py" />
     <Compile Include="foundationallm\models\orchestration\message_history_item.py" />
-    <Compile Include="foundationallm\models\orchestration\orchestration_request.py" />
-    <Compile Include="foundationallm\models\orchestration\orchestration_response.py" />
     <Compile Include="foundationallm\models\orchestration\__init__.py" />
-    <Compile Include="foundationallm\models\session.py" />
     <Compile Include="foundationallm\models\__init__.py" />
     <Compile Include="foundationallm\config\configuration.py" />
     <Compile Include="foundationallm\config\__init__.py" />
@@ -177,8 +169,7 @@
     <Folder Include="foundationallm\models\metadata\" />
     <Folder Include="foundationallm\models\orchestration\" />
     <Folder Include="foundationallm\hubs\" />
-    <Folder Include="foundationallm\credentials\" />
-    <Folder Include="foundationallm\context\" />
+    <Folder Include="foundationallm\resolvers\" />
     <Folder Include="foundationallm\storage\" />
   </ItemGroup>
   <ItemGroup>

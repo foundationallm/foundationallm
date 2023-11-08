@@ -123,5 +123,5 @@ resource "azurerm_key_vault_secret" "langchain_csvfile_url" {
 resource "azurerm_key_vault_secret" "langchain_sqldatabase_testdb_pw" {
   name         = "foundationallm-langchain-sqldatabase-testdb-password"
   key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-  value        = ""
+  value        = var.test_db_password
 }

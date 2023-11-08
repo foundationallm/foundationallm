@@ -1,7 +1,8 @@
 locals {
-  resource_prefix         = { for k, _ in local.resource_group : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
-  resource_prefix_compact = { for k, _ in local.resource_group : k => join("-", [local.location_compact, var.project_id, local.environment_compact, upper(k)]) }
-  resource_prefix_backend = { for k, _ in local.resource_group_backend : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
+  azure_monitor_workspace_id = jsondecode(data.azapi_resource.amw.output).id
+  resource_prefix            = { for k, _ in local.resource_group : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
+  resource_prefix_compact    = { for k, _ in local.resource_group : k => join("-", [local.location_compact, var.project_id, local.environment_compact, upper(k)]) }
+  resource_prefix_backend    = { for k, _ in local.resource_group_backend : k => join("-", [local.short_location, var.project_id, var.environment, upper(k)]) }
 
   environment_compact = local.environment_compacts[var.environment]
   environment_compacts = {
@@ -14,36 +15,11 @@ locals {
   }
 
   resource_group = {
-    agw = {
-      tags = {
-        "Purpose" = "Networking"
-      }
-    }
-    app = {
-      tags = {
-        "Purpose" = "Application"
-      }
-    }
-    data = {
-      tags = {
-        "Purpose" = "Storage"
-      }
-    }
-    storage = {
-      tags = {
-        Purpose = "Storage"
-      }
-    }
-    oai = {
-      tags = {
-        "Purpose" = "OpenAI"
-      }
-    }
-    vec = {
-      tags = {
-        "Purpose" = "Vectorization"
-      }
-    }
+    agw     = { tags = { "Purpose" = "Networking" } }
+    app     = { tags = { "Purpose" = "Application" } }
+    oai     = { tags = { "Purpose" = "OpenAI" } }
+    storage = { tags = { "Purpose" = "Storage" } }
+    vec     = { tags = { "Purpose" = "Vectorization" } }
   }
 
   resource_group_backend = {
@@ -75,158 +51,19 @@ locals {
   }
 }
 
-moved {
-  from = module.openai_ha.azurerm_cognitive_account.openai[0]
-  to   = module.openai_ha.module.openai[0].azurerm_cognitive_account.main
-}
-moved {
-  from = module.openai_ha.azurerm_cognitive_account.openai[1]
-  to   = module.openai_ha.module.openai[1].azurerm_cognitive_account.main
-}
-moved {
-  from = module.openai_ha.azurerm_cognitive_deployment.deployment[0]
-  to   = module.openai_ha.module.openai[0].azurerm_cognitive_deployment.completions
-}
-moved {
-  from = module.openai_ha.azurerm_cognitive_deployment.deployment[1]
-  to   = module.openai_ha.module.openai[1].azurerm_cognitive_deployment.completions
-}
-moved {
-  from = module.openai_ha.azurerm_key_vault_secret.openai_primary_key[0]
-  to   = module.openai_ha.module.openai[0].azurerm_key_vault_secret.openai_primary_key
-}
-moved {
-  from = module.openai_ha.azurerm_key_vault_secret.openai_primary_key[1]
-  to   = module.openai_ha.module.openai[1].azurerm_key_vault_secret.openai_primary_key
-}
-moved {
-  from = module.openai_ha.azurerm_key_vault_secret.openai_secondary_key[0]
-  to   = module.openai_ha.module.openai[0].azurerm_key_vault_secret.openai_secondary_key
-}
-moved {
-  from = module.openai_ha.azurerm_key_vault_secret.openai_secondary_key[1]
-  to   = module.openai_ha.module.openai[1].azurerm_key_vault_secret.openai_secondary_key
-}
-moved {
-  from = module.openai_ha.azurerm_monitor_metric_alert.openai_alert["openai0-availability"]
-  to   = module.openai_ha.module.openai[0].azurerm_monitor_metric_alert.alert["availability"]
-}
-moved {
-  from = module.openai_ha.azurerm_monitor_metric_alert.openai_alert["openai0-latency"]
-  to   = module.openai_ha.module.openai[0].azurerm_monitor_metric_alert.alert["latency"]
-}
-moved {
-  from = module.openai_ha.azurerm_monitor_metric_alert.openai_alert["openai1-availability"]
-  to   = module.openai_ha.module.openai[1].azurerm_monitor_metric_alert.alert["availability"]
-}
-moved {
-  from = module.openai_ha.azurerm_monitor_metric_alert.openai_alert["openai1-latency"]
-  to   = module.openai_ha.module.openai[1].azurerm_monitor_metric_alert.alert["latency"]
-}
-moved {
-  from = module.openai_ha.azurerm_private_endpoint.ple[0]
-  to   = module.openai_ha.module.openai[0].azurerm_private_endpoint.ple
-}
-moved {
-  from = module.openai_ha.azurerm_private_endpoint.ple[1]
-  to   = module.openai_ha.module.openai[1].azurerm_private_endpoint.ple
-}
-moved {
-  from = module.openai_ha.module.diagnostics.azurerm_monitor_diagnostic_setting.setting["openai-0"]
-  to   = module.openai_ha.module.openai[0].module.diagnostics.azurerm_monitor_diagnostic_setting.setting["openai-0"]
-}
-moved {
-  from = module.openai_ha.module.diagnostics.azurerm_monitor_diagnostic_setting.setting["openai-1"]
-  to   = module.openai_ha.module.openai[1].module.diagnostics.azurerm_monitor_diagnostic_setting.setting["openai-1"]
-}
-
-
-
-
-
-moved {
-  from = module.openai_ha.module.diagnostics.azurerm_monitor_diagnostic_setting.setting["apim"]
-  to   = module.openai_ha.module.apim.module.diagnostics.azurerm_monitor_diagnostic_setting.setting["apim"]
-}
-
-moved {
-  from = module.openai_ha.azurerm_api_management_api_policy.api_policy
-  to   = module.openai_ha.module.apim.azurerm_api_management_api_policy.api_policy
-}
-
-moved {
-  from = module.openai_ha.azurerm_api_management_api.api
-  to   = module.openai_ha.module.apim.azurerm_api_management_api.api
-}
-
-moved {
-  from = module.openai_ha.azurerm_api_management_backend.backends[0]
-  to   = module.openai_ha.module.apim.azurerm_api_management_backend.backends[0]
-}
-moved {
-  from = module.openai_ha.azurerm_api_management_backend.backends[1]
-  to   = module.openai_ha.module.apim.azurerm_api_management_backend.backends[1]
-}
-moved {
-  from = module.openai_ha.azurerm_api_management_named_value.openai_primary_key[0]
-  to   = module.openai_ha.module.apim.azurerm_api_management_named_value.openai_primary_key[0]
-}
-moved {
-  from = module.openai_ha.azurerm_api_management_named_value.openai_primary_key[1]
-  to   = module.openai_ha.module.apim.azurerm_api_management_named_value.openai_primary_key[1]
-}
-moved {
-  from = module.openai_ha.azurerm_api_management_named_value.openai_secondary_key[0]
-  to   = module.openai_ha.module.apim.azurerm_api_management_named_value.openai_secondary_key[0]
-}
-moved {
-  from = module.openai_ha.azurerm_api_management_named_value.openai_secondary_key[1]
-  to   = module.openai_ha.module.apim.azurerm_api_management_named_value.openai_secondary_key[1]
-}
-moved {
-  from = module.openai_ha.azurerm_api_management.apim
-  to   = module.openai_ha.module.apim.azurerm_api_management.main
-}
-moved {
-  from = module.openai_ha.azurerm_monitor_metric_alert.apim_alert["capacity"]
-  to   = module.openai_ha.module.apim.azurerm_monitor_metric_alert.alert["capacity"]
-}
-moved {
-  from = module.openai_ha.azurerm_private_dns_a_record.apim[0]
-  to   = module.openai_ha.module.apim.azurerm_private_dns_a_record.apim[0]
-}
-
-moved {
-  from = module.openai_ha.azurerm_private_dns_a_record.apim[4]
-  to   = module.openai_ha.module.apim.azurerm_private_dns_a_record.apim[4]
-}
-
-moved {
-  from = module.openai_ha.azurerm_private_dns_a_record.apim[3]
-  to   = module.openai_ha.module.apim.azurerm_private_dns_a_record.apim[3]
-}
-
-moved {
-  from = module.openai_ha.azurerm_private_dns_a_record.apim[1]
-  to   = module.openai_ha.module.apim.azurerm_private_dns_a_record.apim[1]
-}
-
-moved {
-  from = module.openai_ha.azurerm_private_dns_a_record.apim[2]
-  to   = module.openai_ha.module.apim.azurerm_private_dns_a_record.apim[2]
-}
-
-moved {
-  from = module.openai_ha.azurerm_role_assignment.openai_apim
-  to   = module.openai_ha.module.apim.azurerm_role_assignment.role
-}
-
-moved {
-  from = module.openai_ha.azurerm_public_ip.apim_mgmt_ip
-  to   = module.openai_ha.module.apim.azurerm_public_ip.pip
+import {
+  id = "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DATA-rg/providers/Microsoft.Sql/servers/eusfllmdemodatamssql/sqlVulnerabilityAssessments/default?api-version=2023-05-01-preview"
+  to = module.sql.azapi_resource.vulnerability_assessment
 }
 
 # Data Sources
+data "azapi_resource" "amw" {
+  name                   = "${local.resource_prefix_backend["ops"]}-amw"
+  parent_id              = data.azurerm_resource_group.backend["ops"].id
+  response_export_values = ["*"]
+  type                   = "Microsoft.Monitor/accounts@2023-04-03"
+}
+
 data "azurerm_application_insights" "ai" {
   name                = "${local.resource_prefix_backend["ops"]}-ai"
   resource_group_name = data.azurerm_resource_group.backend["ops"].name
@@ -303,6 +140,11 @@ data "azurerm_resource_group" "backend" {
   name = "${local.resource_prefix_backend[each.key]}-rg"
 }
 
+data "azurerm_storage_account" "storage_ops" {
+  name                = lower(replace("${local.resource_prefix_backend["ops"]}-sa", "-", ""))
+  resource_group_name = data.azurerm_resource_group.backend["ops"].name
+}
+
 data "azurerm_subnet" "subnet" {
   for_each = toset([
     "AppGateway",
@@ -359,6 +201,7 @@ module "aks_backend" {
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
   application_gateway        = module.application_gateway["api"]
+  azure_monitor_workspace_id = local.azure_monitor_workspace_id
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rg["app"]
   resource_prefix            = "${local.resource_prefix["app"]}-BACKEND"
@@ -386,6 +229,7 @@ module "aks_frontend" {
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
   application_gateway        = module.application_gateway["www"]
+  azure_monitor_workspace_id = local.azure_monitor_workspace_id
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rg["app"]
   resource_prefix            = "${local.resource_prefix["app"]}-FRONTEND"
@@ -482,46 +326,6 @@ module "cosmosdb" {
   }
 }
 
-module "cosmosdb_data" {
-  source = "./modules/cosmosdb"
-
-  action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
-  resource_group             = azurerm_resource_group.rg["data"]
-  resource_prefix            = local.resource_prefix["data"]
-  tags                       = azurerm_resource_group.rg["data"].tags
-
-  containers = {
-    embedding = {
-      partition_key_path = "/id"
-      max_throughput     = 1000
-    }
-    completions = {
-      partition_key_path = "/sessionId"
-      max_throughput     = 1000
-    }
-    product = {
-      partition_key_path = "/categoryId"
-      max_throughput     = 1000
-    }
-    customer = {
-      partition_key_path = "/customerId"
-      max_throughput     = 1000
-    }
-    leases = {
-      partition_key_path = "/id"
-      max_throughput     = 1000
-    }
-  }
-
-  private_endpoint = {
-    subnet_id = data.azurerm_subnet.subnet["Datasources"].id
-    private_dns_zone_ids = [
-      data.azurerm_private_dns_zone.private_dns["cosmosdb"].id,
-    ]
-  }
-}
-
 module "openai_ha" {
   source = "./modules/ha-openai"
 
@@ -532,6 +336,7 @@ module "openai_ha" {
   resource_prefix            = local.resource_prefix["oai"]
   subnet_id                  = data.azurerm_subnet.subnet["FLLMOpenAI"].id
   tags                       = azurerm_resource_group.rg["oai"].tags
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
 
   private_endpoint = {
     subnet_id = data.azurerm_subnet.subnet["FLLMOpenAI"].id
@@ -568,24 +373,6 @@ module "search" {
   }
 }
 
-module "sql" {
-  source = "./modules/mssql-server"
-
-  action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
-  resource_group             = azurerm_resource_group.rg["data"]
-  resource_prefix            = local.resource_prefix["data"]
-  sql_admin_object_id        = var.sql_admin_ad_group.object_id
-  tags                       = azurerm_resource_group.rg["data"].tags
-
-  private_endpoint = {
-    subnet_id = data.azurerm_subnet.subnet["Datasources"].id
-    private_dns_zone_ids = [
-      data.azurerm_private_dns_zone.private_dns["sql_server"].id,
-    ]
-  }
-}
-
 module "storage" {
   source = "./modules/storage-account"
 
@@ -593,32 +380,12 @@ module "storage" {
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
   resource_group             = azurerm_resource_group.rg["storage"]
   resource_prefix            = local.resource_prefix_compact["storage"]
+  subscription_id            = data.azurerm_client_config.current.subscription_id
   tags                       = azurerm_resource_group.rg["storage"].tags
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
 
   private_endpoint = {
     subnet_id = data.azurerm_subnet.subnet["FLLMStorage"].id
-    private_dns_zone_ids = {
-      blob  = [data.azurerm_private_dns_zone.private_dns["blob"].id]
-      dfs   = [data.azurerm_private_dns_zone.private_dns["dfs"].id]
-      file  = [data.azurerm_private_dns_zone.private_dns["file"].id]
-      queue = [data.azurerm_private_dns_zone.private_dns["queue"].id]
-      table = [data.azurerm_private_dns_zone.private_dns["table"].id]
-      web   = [data.azurerm_private_dns_zone.private_dns["sites"].id]
-    }
-  }
-}
-
-module "storage_data" {
-  source = "./modules/storage-account"
-
-  action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
-  resource_group             = azurerm_resource_group.rg["data"]
-  resource_prefix            = local.resource_prefix["data"]
-  tags                       = azurerm_resource_group.rg["data"].tags
-
-  private_endpoint = {
-    subnet_id = data.azurerm_subnet.subnet["Datasources"].id
     private_dns_zone_ids = {
       blob  = [data.azurerm_private_dns_zone.private_dns["blob"].id]
       dfs   = [data.azurerm_private_dns_zone.private_dns["dfs"].id]

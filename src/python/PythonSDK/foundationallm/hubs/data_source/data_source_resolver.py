@@ -1,6 +1,6 @@
+from foundationallm.config import Context
 from foundationallm.hubs.data_source import DataSourceHubRequest, DataSourceHubResponse
 from foundationallm.hubs import Resolver
-from foundationallm.context import Context
 
 class DataSourceResolver(Resolver):
     """The DataSourceResolver class is responsible for resolving a request to a metadata value."""
