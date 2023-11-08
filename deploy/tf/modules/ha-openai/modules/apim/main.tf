@@ -161,9 +161,6 @@ resource "azurerm_api_management_named_value" "openai_secondary_key" {
   ]
 }
 
-
-
-
 resource "azurerm_monitor_metric_alert" "alert" {
   for_each = local.alert
 

@@ -51,11 +51,6 @@ locals {
   }
 }
 
-import {
-  id = "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DATA-rg/providers/Microsoft.Sql/servers/eusfllmdemodatamssql/sqlVulnerabilityAssessments/default?api-version=2023-05-01-preview"
-  to = module.sql.azapi_resource.vulnerability_assessment
-}
-
 # Data Sources
 data "azapi_resource" "amw" {
   name                   = "${local.resource_prefix_backend["ops"]}-amw"
