@@ -24,14 +24,19 @@ locals {
 }
 
 resource "azurerm_app_configuration" "main" {
+  depends_on = [
+    azurerm_key_vault_key.app_config_key,
+    azurerm_role_assignment.app_config_kv_role
+  ]
 
   location                   = var.resource_group.location
   name                       = "${var.resource_prefix}-appconfig"
   public_network_access      = "Disabled"
   purge_protection_enabled   = true
   resource_group_name        = var.resource_group.name
-  soft_delete_retention_days = 1
   sku                        = "standard"
+  soft_delete_retention_days = 1
+  tags = var.tags
 
   identity {
     type = "UserAssigned"
@@ -39,32 +44,13 @@ resource "azurerm_app_configuration" "main" {
       azurerm_user_assigned_identity.app_config_mi.id
     ]
   }
-
-  #  encryption {
-  #    key_vault_key_identifier = azurerm_key_vault_key.app_config_key.id
-  #    identity_client_id       = azurerm_user_assigned_identity.app_config_mi.client_id
-  #  }
-
-  tags = var.tags
-
-  depends_on = [
-    azurerm_key_vault_key.app_config_key,
-    azurerm_role_assignment.app_config_kv_role
-  ]
-}
-
-resource "azurerm_user_assigned_identity" "app_config_mi" {
-  location            = var.resource_group.location
-  name                = "${var.resource_prefix}-mi"
-  resource_group_name = var.resource_group.name
-  tags                = var.tags
 }
 
 resource "azurerm_key_vault_key" "app_config_key" {
-  name         = "${var.resource_prefix}-key"
-  key_vault_id = var.encryption_keyvault_id
-  key_type     = "RSA"
   key_size     = 2048
+  key_type     = "RSA"
+  key_vault_id = var.encryption_keyvault_id
+  name         = "${var.resource_prefix}-key"
 
   key_opts = [
     "decrypt",
@@ -72,22 +58,8 @@ resource "azurerm_key_vault_key" "app_config_key" {
     "sign",
     "unwrapKey",
     "verify",
-    "wrapKey"
+    "wrapKey",
   ]
-}
-
-resource "azurerm_role_assignment" "app_config_kv_role" {
-  principal_id         = azurerm_user_assigned_identity.app_config_mi.principal_id
-  role_definition_name = "Key Vault Crypto Service Encryption User"
-  scope                = var.encryption_keyvault_id
-}
-
-data "azurerm_client_config" "current" {}
-
-resource "azurerm_role_assignment" "app_config_owner_role" {
-  principal_id         = data.azurerm_client_config.current.object_id
-  role_definition_name = "App Configuration Data Owner"
-  scope                = azurerm_app_configuration.main.id
 }
 
 resource "azurerm_monitor_metric_alert" "alert" {
@@ -133,6 +105,19 @@ resource "azurerm_private_endpoint" "ple" {
     private_connection_resource_id = azurerm_app_configuration.main.id
     subresource_names              = ["configurationStores"]
   }
+}
+
+resource "azurerm_role_assignment" "app_config_kv_role" {
+  principal_id         = azurerm_user_assigned_identity.app_config_mi.principal_id
+  role_definition_name = "Key Vault Crypto Service Encryption User"
+  scope                = var.encryption_keyvault_id
+}
+
+resource "azurerm_user_assigned_identity" "app_config_mi" {
+  location            = var.resource_group.location
+  name                = "${var.resource_prefix}-mi"
+  resource_group_name = var.resource_group.name
+  tags                = var.tags
 }
 
 module "diagnostics" {
