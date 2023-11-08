@@ -197,7 +197,7 @@ resource "azurerm_user_assigned_identity" "agw" {
 
 # Modules
 module "aks_backend" {
-  source = "./modules/aks"
+  source = "../modules/aks"
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
   application_gateway        = module.application_gateway["api"]
@@ -225,7 +225,7 @@ module "aks_backend" {
 }
 
 module "aks_frontend" {
-  source = "./modules/aks"
+  source = "../modules/aks"
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
   application_gateway        = module.application_gateway["www"]
@@ -253,7 +253,7 @@ module "aks_frontend" {
 }
 
 module "application_gateway" {
-  source     = "./modules/application-gateway-ingress-controller"
+  source     = "../modules/application-gateway-ingress-controller"
   depends_on = [azurerm_role_assignment.role_agw_mi]
   for_each   = toset(["api", "www", ])
 
@@ -270,7 +270,7 @@ module "application_gateway" {
 }
 
 module "content_safety" {
-  source = "./modules/content-safety"
+  source = "../modules/content-safety"
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
@@ -287,7 +287,7 @@ module "content_safety" {
 }
 
 module "cosmosdb" {
-  source = "./modules/cosmosdb"
+  source = "../modules/cosmosdb"
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
@@ -327,7 +327,7 @@ module "cosmosdb" {
 }
 
 module "openai_ha" {
-  source = "./modules/ha-openai"
+  source = "../modules/ha-openai"
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
   instance_count             = 2
@@ -357,7 +357,7 @@ module "openai_ha" {
 }
 
 module "search" {
-  source = "./modules/search"
+  source = "../modules/search"
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
@@ -374,7 +374,7 @@ module "search" {
 }
 
 module "storage" {
-  source = "./modules/storage-account"
+  source = "../modules/storage-account"
 
   action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id

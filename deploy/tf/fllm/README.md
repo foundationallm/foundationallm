@@ -12,6 +12,7 @@
     - [ client\_entra\_application](#-client_entra_application)
     - [ core\_entra\_application](#-core_entra_application)
     - [ namespace](#-namespace)
+    - [ test\_db\_password](#-test_db_password)
   - [Outputs](#outputs)
   - [Resources](#resources)
   - [Requirements](#requirements)
@@ -22,22 +23,19 @@
     - [ application\_gateway](#-application_gateway)
     - [ content\_safety](#-content_safety)
     - [ cosmosdb](#-cosmosdb)
-    - [ cosmosdb\_data](#-cosmosdb_data)
     - [ openai\_ha](#-openai_ha)
     - [ search](#-search)
-    - [ sql](#-sql)
     - [ storage](#-storage)
-    - [ storage\_data](#-storage_data)
 
 ## Pre-requisites
 
-You must enable host-based encryption on the subscription before deploying this module.  This is done by running the following command:
+You need to enable host-based encryption on your subscription before deploying this module. To do so, run the following command:
 
 ```bash
 az feature register --namespace Microsoft.Compute --name EncryptionAtHost
 ```
 
-Also Graphana Dashboards:
+Furthermore, we also need to enable the following provider to support Graphana dashboards.
 
 ```bash
 az provider register "Microsoft.Dashboard"
@@ -197,49 +195,49 @@ The following Modules are called:
 
 ### <a name="module_aks_backend"></a> [aks\_backend](#module\_aks\_backend)
 
-Source: ./modules/aks
+Source: ../modules/aks
 
 Version:
 
 ### <a name="module_aks_frontend"></a> [aks\_frontend](#module\_aks\_frontend)
 
-Source: ./modules/aks
+Source: ../modules/aks
 
 Version:
 
 ### <a name="module_application_gateway"></a> [application\_gateway](#module\_application\_gateway)
 
-Source: ./modules/application-gateway-ingress-controller
+Source: ../modules/application-gateway-ingress-controller
 
 Version:
 
 ### <a name="module_content_safety"></a> [content\_safety](#module\_content\_safety)
 
-Source: ./modules/content-safety
+Source: ../modules/content-safety
 
 Version:
 
 ### <a name="module_cosmosdb"></a> [cosmosdb](#module\_cosmosdb)
 
-Source: ./modules/cosmosdb
+Source: ../modules/cosmosdb
 
 Version:
 
 ### <a name="module_openai_ha"></a> [openai\_ha](#module\_openai\_ha)
 
-Source: ./modules/ha-openai
+Source: ../modules/ha-openai
 
 Version:
 
 ### <a name="module_search"></a> [search](#module\_search)
 
-Source: ./modules/search
+Source: ../modules/search
 
 Version:
 
 ### <a name="module_storage"></a> [storage](#module\_storage)
 
-Source: ./modules/storage-account
+Source: ../modules/storage-account
 
 Version:
 <!-- END_TF_DOCS -->
