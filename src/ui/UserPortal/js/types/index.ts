@@ -4,6 +4,7 @@ export interface Message {
 	sessionId: string;
 	timeStamp: string;
 	sender: 'User' | 'Assistant';
+	senderDisplayName: string | null;
 	tokens: number;
 	text: string;
 	rating: boolean | null;

@@ -8,7 +8,7 @@
 				<!-- Sender -->
 				<span class="header__sender">
 					<img v-if="message.sender !== 'User'" class="avatar" src="~/assets/FLLM-Agent-Light.svg">
-					<span>{{ message.sender }}</span>
+					<span>{{ getDisplayName() }}</span>
 				</span>
 
 				<!-- Tokens & Timestamp -->
@@ -142,6 +142,14 @@ export default {
 			};
 
 			displayNextWord();
+		},
+
+		getDisplayName() {
+			if (this.message.senderDisplayName) {
+				return this.message.sender === 'User' ? this.message.senderDisplayName : `${this.message.sender} - ${this.message.senderDisplayName}`;
+			}
+			
+			return this.message.sender;
 		},
 
 		handleRate(message: Message, isLiked: boolean) {

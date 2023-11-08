@@ -36,7 +36,7 @@ To enable Microsoft Entra authentication, you need to create two applications in
 ### Pre-requisites
 
 > [!NOTE]
-> Make sure that you have [deployed the solution](../deployment/deployment-standard.md) before proceeding with the steps below.
+> Make sure that you have [deployed the solution](../deployment/deployment-starter.md) before proceeding with the steps below.
 
 #### Setup App Configuration access
 

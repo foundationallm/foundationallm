@@ -1,35 +1,72 @@
 # Configure local development environment
 
 - [Configure local development environment](#configure-local-development-environment)
-  - [Requirements](#requirements)
-  - [Chat](#chat)
-    - [Chat app settings](#chat-app-settings)
-  - [Core API](#core-api)
-    - [Core API app settings](#core-api-app-settings)
-  - [Gatekeeper API](#gatekeeper-api)
-    - [Gatekeeper API app settings](#gatekeeper-api-app-settings)
-  - [Agent Factory API](#agent-factory-api)
-    - [Agent Factory API app settings](#agent-factory-api-app-settings)
-  - [PythonSDK](#pythonsdk)
-    - [PythonSDK Environment Variables](#pythonsdk-environment-variables)
-  - [Agent Hub API](#agent-hub-api)
-    - [Agent Hub API Environment Variables](#agent-hub-api-environment-variables)
-  - [Data Source Hub API](#data-source-hub-api)
-    - [Data Source Hub API Environment Variables](#data-source-hub-api-environment-variables)
-  - [Prompt Hub API](#prompt-hub-api)
-    - [Prompt Hub API Environment Variables](#prompt-hub-api-environment-variables)
-  - [LangChain API](#langchain-api)
-    - [LangChain API Environment Variables](#langchain-api-environment-variables)
-  - [Semantic Kernel API](#semantic-kernel-api)
-    - [Semantic Kernel API app settings](#semantic-kernel-api-app-settings)
+  - [Prerequisites](#prerequisites)
+  - [UI](#ui)
+    - [User Portal](#user-portal)
+    - [Chat (deprecated)](#chat-deprecated)
+      - [Chat app settings](#chat-app-settings)
+  - [.NET projects](#net-projects)
+    - [Core API](#core-api)
+      - [Core API app settings](#core-api-app-settings)
+    - [Gatekeeper API](#gatekeeper-api)
+      - [Gatekeeper API app settings](#gatekeeper-api-app-settings)
+    - [Agent Factory API](#agent-factory-api)
+      - [Agent Factory API app settings](#agent-factory-api-app-settings)
+    - [Semantic Kernel API](#semantic-kernel-api)
+      - [Semantic Kernel API app settings](#semantic-kernel-api-app-settings)
+  - [Python projects](#python-projects)
+    - [Python Environment Variables](#python-environment-variables)
+    - [Agent Hub API](#agent-hub-api)
+      - [Agent Hub API Environment Variables](#agent-hub-api-environment-variables)
+    - [Data Source Hub API](#data-source-hub-api)
+      - [Data Source Hub API Environment Variables](#data-source-hub-api-environment-variables)
+    - [Prompt Hub API](#prompt-hub-api)
+      - [Prompt Hub API Environment Variables](#prompt-hub-api-environment-variables)
+    - [LangChain API](#langchain-api)
+      - [LangChain API Environment Variables](#langchain-api-environment-variables)
+  - [Running the solution locally](#running-the-solution-locally)
+    - [Configure and run the backend components](#configure-and-run-the-backend-components)
+    - [Configure and run the frontend components](#configure-and-run-the-frontend-components)
 
-## Requirements
+## Prerequisites
 
-Environment variable needs to be set for Application Configuration Service URL. This environment variable needs to be named `FoundationaLLM:AppConfig:ConnectionString`.
+- Environment variables:
+  - Create an environment variable for the Application Configuration Service connection string named `FoundationaLLM:AppConfig:ConnectionString`. This is used by the .NET projects.
+  - Create an environment variable for the Application Configuration Service URI named `foundationallm-app-configuration-uri`. This is used by the Python projects.
+- Backend (APIs and worker services):
+  - Visual Studio 2022 17.6 or later (required for passthrough Visual Studio authentication for the Docker container) with the [Python workload installed](https://learn.microsoft.com/visualstudio/python/installing-python-support-in-visual-studio?view=vs-2022)
+  - [.NET 7 SDK](https://dotnet.microsoft.com/download/dotnet) or greater
+  - [Python 3.11](https://www.python.org/downloads/) or greater (learn more about [Python environments in Visual Studio](https://learn.microsoft.com/visualstudio/python/managing-python-environments-in-visual-studio?view=vs-2022))
+  - Docker Desktop (with WSL for Windows machines) ([Mac install](https://docs.docker.com/desktop/install/mac-install/) or [Windows install](https://docs.docker.com/desktop/install/windows-install/))
+  - Azure CLI ([v2.51.0 or greater](https://learn.microsoft.com/cli/azure/install-azure-cli))
+  - [Helm 3.11.1 or greater](https://helm.sh/docs/intro/install/)
+- Frontend (Vue.js (Nuxt) web app)
+  - [Visual Studio Code](https://code.visualstudio.com/Download) (recommended for development)
+  - [Node.js](https://nodejs.org/en/) v18.0.0 or newer
+  - [NPM](https://www.npmjs.com/)
+  - Recommended way to install the latest version of NPM and node.js on Windows:
+    - Install NVM from https://github.com/coreybutler/nvm-windows
+    - Run nvm install latest
+    - Run nvm list (to see the versions of NPM/node.js available)
+    - Run nvm use latest (to use the latest available version)
 
-## Chat
+## UI
 
-### Chat app settings
+### User Portal
+
+The `UserPortal` project is a Vue.js (Nuxt) project. To configure it to run locally, follow these steps:
+
+1. Open the `/src/UserPortal` folder in Visual Studio Code.
+2. Copy the `.env.example` file in the root directory to a new file named `.env` and update the values:
+   1. The `APP_CONFIG_ENDPOINT` value should be the Connection String for the Azure App Configuration service. This should be the same value as the `FoundationaLLM:AppConfig:ConnectionString` environment variable.
+   2. The `LOCAL_API_URL` should be the URL of the local Core API service (https://localhost:63279). **Important:** Only set this value if you wish to debug the entire solution locally and bypass the App Config service value for the CORE API URL. If you do not wish to debug the entire solution locally, leave this value empty or comment it out.
+
+### Chat (deprecated)
+
+The `Chat` Blazor web app is deprecated and will be removed in a future release. It is only included in the solution for reference purposes.
+
+#### Chat app settings
 
 > Make sure the contents of the `appsettings.json` file has this structure and similar values:
 
@@ -66,9 +103,11 @@ Environment variable needs to be set for Application Configuration Service URL. 
 
 ```
 
-## Core API
+## .NET projects
 
-### Core API app settings
+### Core API
+
+#### Core API app settings
 
 > Make sure the contents of the `appsettings.json` file has this structure and similar values:
 
@@ -96,15 +135,15 @@ Environment variable needs to be set for Application Configuration Service URL. 
 {  
   "APIs": {
     "GatekeeperAPI": {
-      "APIUrl": "<...>"
+      "APIUrl": "<...>" // Default local value: https://localhost:7180/
     }
   }
 }
 ```
 
-## Gatekeeper API
+### Gatekeeper API
 
-### Gatekeeper API app settings
+#### Gatekeeper API app settings
 
 > Make sure the contents of the `appsettings.json` file has this structure and similar values:
 
@@ -138,20 +177,16 @@ Environment variable needs to be set for Application Configuration Service URL. 
   "FoundationaLLM": {
     "APIs": {
       "AgentFactoryAPI": {
-        "APIUrl": "<...>"
-      },
-    
-      "GatekeeperAPI": {
-        "APIUrl": "<...>"
+        "APIUrl": "<...>"  // Default local value: https://localhost:7324/
       }
     }
   }
 }
 ```
 
-## Agent Factory API
+### Agent Factory API
 
-### Agent Factory API app settings
+#### Agent Factory API app settings
 
 > Make sure the contents of the `appsettings.json` file has this structure and similar values:
 
@@ -184,100 +219,29 @@ Environment variable needs to be set for Application Configuration Service URL. 
 {
   "FoundationaLLM": {
     "APIs": {
-      "AgentFactoryAPI": {
-        "APIUrl": "<...>"
-      },
       "LangChainAPI": {
-        "APIUrl": "<...>"
+        "APIUrl": "<...>"  // Default local value: http://localhost:8765/
       },
       "SemanticKernelAPI": {
-        "APIUrl": "<...>"
+        "APIUrl": "<...>"  // Default local value: https://localhost:7062/
       },
       "AgentHubAPI": {
-        "APIUrl": "<...>"
+        "APIUrl": "<...>"  // Default local value: http://localhost:8742/
       },
       "PromptHubAPI": {
-        "APIUrl": "<...>"
+        "APIUrl": "<...>"  // Default local value: http://localhost:8642/
       },
       "DataSourceHubAPI": {
-        "APIUrl": "<...>"
+        "APIUrl": "<...>"  // Default local value: http://localhost:8842/
       }
     }
   }
 }
 ```
 
-## PythonSDK
+### Semantic Kernel API
 
-### PythonSDK Environment Variables
-
-The PythonSDK has two different run options. One, to use environment variables, and another to access all settings from the Azure App Configuration service. This behavior is controlled via the environment variable `foundationallm-configuration-allow-environment-variables`, set to True if using environment variabes, False if using Azure App Configuration.
-
-The local environment also requires the environment variable `foundationallm-app-configuration-uri`.
-
-If `foundationallm-configuration-allow-environment-variables` is true, and the value being requested is not found, it will back off to the Azure App Configuration service.
-
-Mandatory environment variables:
-
-| Name | Value | Description |
-| ---- | ----- | ----------- |
-| foundationallm-configuration-allow-environment-variables | True | Allow environment variables |
-| foundationallm-app-configuration-uri | REDACTED | Azure App Configuration URI |
-
-Environment variables required if `foundationallm-configuration-allow-environment-variables` is set to `True`:
-
-| Name | Value | Description |
-| ---- | ----- | ----------- |
-| FoundationaLLM:AgentHub:StorageManager:BlobStorage:ConnectionString | REDACTED | Storage account that contains the Agent metadata container |
-| FoundationaLLM:AgentHub:AgentMetadata:StorageContainer | agent | Agent metadata storage container name |
-| FoundationaLLM:DataSourceHub:StorageManager:BlobStorage:ConnectionString | REDACTED | Storage account that contains the DataSource metadata container |
-| FoundationaLLM:DataSourceHub:DataSourceMetadata:StorageContainer | data-sources | Datasource metadata storage container name |
-| FoundationaLLM:PromptHub:StorageManager:BlobStorage:ConnectionString | REDACTED | Storage account that contains the Prompt metadata container |
-| FoundationaLLM:PromptHub:PromptMetadata:StorageContainer | prompts | Prompt metadata storage container name |
-| FoundationaLLM:AzureOpenAI:API:Endpoint | REDACTED | Azure Open AI instance URL |
-| FoundationaLLM:AzureOpenAI:API:Key | REDACTED | Azure Open AI instance key |
-| FoundationaLLM:AzureOpenAI:API:Version | 2023-07-01-preview | Azure Open AI API version |
-| FoundationaLLM:AzureOpenAI:API:Completions:DeploymentName | completions | Azure Open AI completions deployment name |
-| FoundationaLLM:AzureOpenAI:API:Completions:ModelVersion | 0301 | Azure Open AI completions model version |
-| FoundationaLLM:AzureOpenAI:API:Completions:MaxTokens | 4097 | Azure Open AI completions max tokens |
-| FoundationaLLM:AzureOpenAI:API:Completions:Temperature | 0 | Azure Open AI completions temperature |
-| FoundationaLLM:LangChain:Summary:ModelName | gpt-35-turbo | LangChain summary model name |
-| FoundationaLLM:LangChain:Summary:MaxTokens | 4097 | LangChain summary model max tokens |
-| FoundationaLLM:OpenAI:API:Key | REDACTED | OpenAI API key |
-| FoundationaLLM:OpenAI:API:Endpoint | REDACTED | OpenAI API endpoint |
-| FoundationaLLM:OpenAI:API:Temperature | 0 | OpenAI API temperature |
-
-## Agent Hub API
-
-### Agent Hub API Environment Variables
-
-| Name | Value | Description |
-| ---- | ----- | ----------- |
-
-## Data Source Hub API
-
-### Data Source Hub API Environment Variables
-
-| Name | Value | Description |
-| ---- | ----- | ----------- |
-
-## Prompt Hub API
-
-### Prompt Hub API Environment Variables
-
-| Name | Value | Description |
-| ---- | ----- | ----------- |
-
-## LangChain API
-
-### LangChain API Environment Variables
-
-| Name | Value | Description |
-| ---- | ----- | ----------- |
-
-## Semantic Kernel API
-
-### Semantic Kernel API app settings
+#### Semantic Kernel API app settings
 
 > Make sure the contents of the `appsettings.json` file has this structure and similar values:
 
@@ -366,3 +330,113 @@ Environment variables required if `foundationallm-configuration-allow-environmen
   }
 }
 ```
+
+## Python projects
+
+### Python Environment Variables
+
+Create a local environment variable named `foundationallm-app-configuration-uri`. The value should be the URI of the Azure App Configuration service and _not_ the connection string. We use role-based access controls (RBAC) to access the Azure App Configuration service, so the connection string is not required.
+
+| Name | Value | Description |
+| ---- | ----- | ----------- |
+| foundationallm-app-configuration-uri | REDACTED | Azure App Configuration URI |
+
+### Agent Hub API
+
+#### Agent Hub API Environment Variables
+
+| Name | Value | Description |
+| ---- | ----- | ----------- |
+
+### Data Source Hub API
+
+#### Data Source Hub API Environment Variables
+
+| Name | Value | Description |
+| ---- | ----- | ----------- |
+
+### Prompt Hub API
+
+#### Prompt Hub API Environment Variables
+
+| Name | Value | Description |
+| ---- | ----- | ----------- |
+
+### LangChain API
+
+#### LangChain API Environment Variables
+
+| Name | Value | Description |
+| ---- | ----- | ----------- |
+
+## Running the solution locally
+
+### Configure and run the backend components
+
+The backend components consist of the .NET projects and the Python projects. The .NET projects are all ASP.NET Core Web API projects. The Python projects are all FastAPI projects.
+
+1. Open the solution in Visual Studio 2022 17.6 or later. The solution file is located at `/src/FoundationaLLM.sln`.
+2. Reference the API sections above to configure the app settings for each project. This primarily involves just creating the `appsettings.development.json` file for each of the .NET (located under the `dotnet` solution folder) API projects and adding the documented values within. For local development, use the `localhost` URLs for each of the API projects.
+
+    > [!NOTE]
+    > The `appsettings.development.json` files are excluded from source control. This is to prevent sensitive information from being committed to source control. You will need to create these files locally.
+
+    ![The appsettings.development.json files are displayed in Solution Explorer within Visual Studio.](media/appsettings-development-files.png)
+
+3. Expand the `python` solution folder.
+
+    ![The Visual Studio python solution folder is expanded.](media/vs-python-folder.png)
+
+4. Expand the `AgentHubAPI` project, then expand the `Python Environments` folder underneath it. You will likely see a warning icon next to an environment named `env`. This is because the Python environment has not been created yet.
+
+    ![The Python Environments folder is displayed with a warning icon.](media/python-env-with-warning.png)
+
+5. Right-click the `Python Environments` folder and select `Add Environment...`.
+
+    ![The Add Environment option is highlighted.](media/add-environment.png)
+
+6. Ensure the **Name** field is set to `env` and the **Version** field is set to `Python 3.11` (or your latest version). Also make sure the **Install packages from file** field is set to the `requirements.txt` file for the project. This will install the required Python packages after creating the environment. Click **Create**.
+
+    ![The Add Environment dialog is displayed with the name and version fields set.](media/add-python-environment-dialog.png)
+
+7. You should now see the `env` environment listed under the `Python Environments` folder. The warning icon should be gone.
+
+    ![The Python Environments folder is displayed with the env environment listed.](media/python-env-without-warning.png)
+
+8. Complete steps 4-7 for the `DataSourceHubAPI`, `LangChainAPI`, `PromptHubAPI`, and `PythonSDK` projects. You may optionally complete these steps for the Python test projects as well.
+
+9. Right-click the Solution in Visual Studio, then select `Configure Startup Projects...`.
+
+    ![The Configure Startup Projects option is highlighted.](media/configure-startup-projects.png)
+
+10. Select the `Multiple startup projects` option, then set the `Action` for the following projects to `Start`. Click **OK**.
+  
+      - AgentFactoryAPI
+      - AgentHubAPI
+      - CoreAPI
+      - DataSourceHubAPI
+      - GatekeeperAPI
+      - LangChainAPI
+      - PromptHubAPI
+      - SemanticKernelAPI
+  
+      ![The Multiple startup projects option is selected and the Action for the listed projects is set to Start.](media/multiple-startup-projects.png)
+
+11. Press `F5` to start debugging the solution. This will start all of the .NET projects and the Python projects. The Vue.js (Nuxt) web app will not be started by default. To start it, follow the steps below.
+
+### Configure and run the frontend components
+
+The frontend components consist of the Vue.js (Nuxt) web app.
+
+1. Open the `/src/UserPortal` folder in Visual Studio Code.
+
+2. Open the `.env` file and update the `LOCAL_API_URL` value to the URL of the local Core API service (https://localhost:63279). **Important:** Only set this value if you wish to debug the entire solution locally and bypass the App Config service value for the CORE API URL. If you do not wish to debug the entire solution locally, leave this value empty or comment it out.
+
+3. Open a terminal in Visual Studio Code and run the following commands:
+
+    ```bash
+    npm install
+    npm run dev
+    ```
+
+4. The web app should now be running at http://localhost:3000.

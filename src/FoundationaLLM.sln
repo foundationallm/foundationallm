@@ -57,6 +57,8 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PythonSDK.Tests", "..\tests
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AgentHubAPI.Tests", "..\tests\python\AgentHubAPI.Tests\AgentHubAPI.Tests.pyproj", "{A09449F4-008C-4BD8-AF3A-A98B7603D85D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgentFactory.Tests", "AgentFactory.Tests\AgentFactory.Tests.csproj", "{BD184A53-281D-4CC8-AF48-27A9325C93D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -141,6 +143,10 @@ Global
 		{8FACDBA2-3FAD-4DBA-812A-67B9D1892F32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A09449F4-008C-4BD8-AF3A-A98B7603D85D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A09449F4-008C-4BD8-AF3A-A98B7603D85D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD184A53-281D-4CC8-AF48-27A9325C93D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD184A53-281D-4CC8-AF48-27A9325C93D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD184A53-281D-4CC8-AF48-27A9325C93D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD184A53-281D-4CC8-AF48-27A9325C93D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -170,6 +176,7 @@ Global
 		{7F7CA6E9-F1F0-403D-B72D-2AC134F64CDE} = {28E0E967-A94D-4820-8A61-0B71D3B2780F}
 		{8FACDBA2-3FAD-4DBA-812A-67B9D1892F32} = {23275624-C0DA-4E93-9291-081D75E8CCD2}
 		{A09449F4-008C-4BD8-AF3A-A98B7603D85D} = {23275624-C0DA-4E93-9291-081D75E8CCD2}
+		{BD184A53-281D-4CC8-AF48-27A9325C93D0} = {28E0E967-A94D-4820-8A61-0B71D3B2780F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF5DE858-4B85-4EE8-8A6D-46E8E4FBA078}

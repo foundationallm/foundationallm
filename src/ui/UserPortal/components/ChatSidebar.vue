@@ -127,11 +127,18 @@ export default {
 
 	async created() {
 		if (process.client) {
-			await this.getSessions();
 
+			// No need to load sessions if in kiosk mode, simply create a new one and skip.
 			if (this.appConfigStore.isKioskMode) {
 				const newSession = await api.addSession();
 				this.handleSessionSelected(newSession);
+				return;
+			}
+
+			await this.getSessions();
+
+			if (this.sessions.length === 0) {
+				this.handleAddSession();
 			} else {
 				const sessionId = this.$nuxt._route.query.chat;
 				const existingSession = this.sessions.find((session: Session) => session.id === sessionId);
@@ -152,8 +159,7 @@ export default {
 		},
 
 		async getSessions() {
-			const session = await api.getSessions();
-			this.sessions = session;
+			this.sessions = await api.getSessions();
 		},
 
 		async handleRenameSession() {
@@ -164,8 +170,8 @@ export default {
 		},
 
 		async handleAddSession() {
-			const session = await api.addSession();
-			this.handleSessionSelected(session);
+			const newSession = await api.addSession();
+			this.handleSessionSelected(newSession);
 			await this.getSessions();
 		},
 
@@ -177,6 +183,16 @@ export default {
 			await api.deleteSession(this.sessionToDelete!.id);
 			this.sessionToDelete = null;
 			await this.getSessions();
+
+			if (this.sessions.length === 0) {
+				this.handleAddSession();
+				return;
+			}
+
+			const lastSession = this.sessions[this.sessions.length - 1];
+			if (lastSession) {
+				this.handleSessionSelected(lastSession);
+			}
 		},
 	},
 };

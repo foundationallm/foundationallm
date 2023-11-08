@@ -6,7 +6,7 @@ Foundationa**LLM** deploys into your own Azure Subscription. By default it will 
 
 - Azure Subscription
 - Subscription access to Azure OpenAI service. Start here to [Request Access to Azure OpenAI Service](https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR7en2Ais5pxKtso_Pz4b1_xUOFA5Qk1UWDRBMjg0WFhPMkIzTzhKQ1dWNyQlQCN0PWcu)
-- .NET 7 SDK
+- [.NET 7 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
 - Docker Desktop
 - Azure CLI ([v2.51.0 or greater](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli))
 - [Helm 3.11.1 or greater](https://helm.sh/docs/intro/install/)
@@ -24,7 +24,7 @@ Follow the steps below to deploy the solution to your Azure subscription. You wi
     git clone https://github.com/solliancenet/foundationallm.git
     ```
 
-1. Run the following script to provision the infrastructure and deploy the API and frontend. This will provision all of the required infrastructure, deploy the API and web app services, and import data into Cosmos DB.
+1. Open a PowerShell instance and run the following script to provision the infrastructure and deploy the API and frontend. This will provision all of the required infrastructure, deploy the API and web app services, and import data into Cosmos DB.
 
     1. Option 1: Full deployment using Microsoft Azure Container Apps (ACA)
 
@@ -32,6 +32,8 @@ Follow the steps below to deploy the solution to your Azure subscription. You wi
         cd foundationallm
         ./deploy/scripts/Unified-Deploy.ps1 -resourceGroup <rg_name> -location <location> -subscription <target_subscription_id>
         ```
+
+        >**NOTE**: Make sure to set the `<location>` value to a region that supports Azure OpenAI services.  See [Azure OpenAI service regions](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=cognitive-services&regions=all) for more information.
 
     2. Option 2: Full deployment using Microsoft Azure Kubernetes Service (AKS)
         To deploy to an AKS environment instead, run the same script with the added argument `-deployAks 1`, as shown below.  This will provision all of the required infrastructure, deploy the API and web app services as pods in an AKS cluster, and import data into Cosmos DB.
@@ -63,8 +65,6 @@ Follow the steps below to deploy the solution to your Azure subscription. You wi
         cd foundationallm
         ./deploy/scripts/Unified-Deploy.ps1 -resourceGroup <rg_name> -location <location> -subscription <target_subscription_id> -deployAks 1 -openAiRg <openai_rg_name> -openAiName <openai_resource_name> -openAiCompletionsDeployment <completions_deployment_name> -openAiEmbeddingsDeployment <embeddings_deployment_name>
         ```
-
->**NOTE**: Make sure to set the `<location>` value to a region that supports Azure OpenAI services.  See [Azure OpenAI service regions](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=cognitive-services&regions=all) for more information.
 
 ## Post-deployment configuration
 

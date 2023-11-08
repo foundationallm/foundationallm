@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Common.Models.Chat;
 using Microsoft.Extensions.Logging;
@@ -15,6 +16,7 @@ public class CoreService : ICoreService
     private readonly ICosmosDbService _cosmosDbService;
     private readonly IGatekeeperAPIService _gatekeeperAPIService;
     private readonly ILogger<CoreService> _logger;
+    private readonly ICallContext _callContext;
     private readonly string _sessionType;
 
     /// <summary>
@@ -47,16 +49,19 @@ public class CoreService : ICoreService
     /// <see cref="CoreService"/> type name.</param>
     /// <param name="settings">The <see cref="ClientBrandingConfiguration"/>
     /// settings retrieved by the injected <see cref="IOptions{TOptions}"/>.</param>
+    /// <param name="callContext">Contains contextual data for the calling service.</param>
     public CoreService(
         ICosmosDbService cosmosDbService,
         IGatekeeperAPIService gatekeeperAPIService,
         ILogger<CoreService> logger,
-        IOptions<ClientBrandingConfiguration> settings)
+        IOptions<ClientBrandingConfiguration> settings,
+        ICallContext callContext)
     {
         _cosmosDbService = cosmosDbService;
         _gatekeeperAPIService = gatekeeperAPIService;
         _logger = logger;
         _sessionType = settings.Value.KioskMode ? SessionTypes.KioskSession : SessionTypes.Session;
+        _callContext = callContext;
     }
 
     /// <summary>
@@ -135,8 +140,8 @@ public class CoreService : ICoreService
             var result = await _gatekeeperAPIService.GetCompletion(completionRequest);
 
             // Add to prompt and completion to cache, then persist in Cosmos as transaction.
-            var promptMessage = new Message(sessionId, nameof(Participants.User), result.PromptTokens, userPrompt, result.UserPromptEmbedding, null);
-            var completionMessage = new Message(sessionId, nameof(Participants.Assistant), result.CompletionTokens, result.Completion, null, null);
+            var promptMessage = new Message(sessionId, nameof(Participants.User), result.PromptTokens, userPrompt, result.UserPromptEmbedding, null, _callContext.CurrentUserIdentity?.Name);
+            var completionMessage = new Message(sessionId, nameof(Participants.Assistant), result.CompletionTokens, result.Completion, null, null, result.AgentName);
             var completionPromptText =
                 $"User prompt: {result.UserPrompt}{Environment.NewLine}Agent: {result.AgentName}{Environment.NewLine}Prompt template: {result.PromptTemplate}";
             var completionPrompt = new CompletionPrompt(sessionId, completionMessage.Id, completionPromptText);

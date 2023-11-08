@@ -51,9 +51,13 @@ if ($stepLoginAzure) {
 # Write-Host "Choosing your subscription" -ForegroundColor Yellow
 az account set --subscription $subscription
 
-$rg = $(az group show -g $resourceGroup -o json | ConvertFrom-Json)
-if (-not $rg) {
+if (-Not (az group list --query '[].name' -o json | ConvertFrom-Json) -Contains $resourceGroup) {
+    Write-Host("The resource group $resourceGroup was not found, creating it...")
     $rg = $(az group create -g $resourceGroup -l $location --subscription $subscription)
+    if (-Not (az group list --query '[].name' -o json | ConvertFrom-Json) -Contains $resourceGroup) {
+        Write-Error("The resource group $resourceGroup was not found, and could not be created.")
+        exit 1
+    }
 }
 
 if (-not $resourcePrefix) {
@@ -61,7 +65,7 @@ if (-not $resourcePrefix) {
     $utf8 = New-Object -TypeName System.Text.UTF8Encoding
     $hash = [System.BitConverter]::ToString($crypt.ComputeHash($utf8.GetBytes($resourceGroup)))
     $hash = $hash.replace('-', '').toLower()
-    $resourcePrefix = $hash.Substring(0, 5)
+    $resourcePrefix = "fllm$($hash.Substring(0, 5))"
 }
 
 if ($stepDeployOpenAi) {
@@ -204,13 +208,17 @@ if ($stepImportData) {
 
 if ($deployAks) {
     $webappHostname = $(az aks show -n $aksName -g $resourceGroup -o json --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName | ConvertFrom-Json)
+    $coreApiUri = "https://$webappHostname/core"
 }
 else {
     $webappHostname = $(az deployment group show -g $resourceGroup -n foundationallm-azuredeploy -o json --query properties.outputs.webFqdn.value | ConvertFrom-Json)
+    $coreApiHostname = $(az deployment group show -g $resourceGroup -n foundationallm-azuredeploy -o json --query properties.outputs.coreApiFqdn.value | ConvertFrom-Json)
+    $coreApiUri = "https://$coreApiHostname"
 }
 
 Write-Host "===========================================================" -ForegroundColor Yellow
 Write-Host "The frontend is hosted at https://$webappHostname" -ForegroundColor Yellow
+Write-Host "The Core API is hosted at $coreApiUri" -ForegroundColor Yellow
 Write-Host "===========================================================" -ForegroundColor Yellow
 
 Pop-Location

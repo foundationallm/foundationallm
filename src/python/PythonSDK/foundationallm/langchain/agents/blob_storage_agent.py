@@ -64,7 +64,7 @@ class BlobStorageAgent(AgentBase):
             openai_api_key = self.__config.get_value("FoundationaLLM:AzureOpenAI:API:Key"),
             openai_api_type = "azure",
             deployment = "embeddings",
-            chunk_size=1
+            chunk_size=10     
         )
     
         index = VectorstoreIndexCreator(embedding=embeddings).from_loaders(loaders)

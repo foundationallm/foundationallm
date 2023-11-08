@@ -15,7 +15,7 @@ Table of contents:
 
 ## Prerequisites
 
-- You have a FoundationaLLM solution [deployed](deployment-standard.md) and running.
+- You have a FoundationaLLM solution [deployed](deployment-starter.md) and running.
 - You have a user account with the `Contributor` role on the Azure resource group or subscription where the solution is deployed.
 
 ## Azure App Configuration service

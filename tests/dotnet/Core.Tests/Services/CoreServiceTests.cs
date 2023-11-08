@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Models.Chat;
+﻿using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Chat;
 using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Core.Interfaces;
@@ -16,6 +17,7 @@ namespace FoundationaLLM.Core.Tests.Services
 
         private readonly ICosmosDbService _cosmosDbService = Substitute.For<ICosmosDbService>();
         private readonly IGatekeeperAPIService _gatekeeperAPIService = Substitute.For<IGatekeeperAPIService>();
+        private readonly ICallContext _callContext = Substitute.For<ICallContext>();
         private readonly ILogger<CoreService> _logger = Substitute.For<ILogger<CoreService>>();
         private readonly IOptions<ClientBrandingConfiguration> _brandingConfig = Substitute.For<IOptions<ClientBrandingConfiguration>>();
 
@@ -23,7 +25,7 @@ namespace FoundationaLLM.Core.Tests.Services
         {
             _brandingConfig.Value.Returns(new ClientBrandingConfiguration());
 
-            _testedService = new CoreService(_cosmosDbService, _gatekeeperAPIService, _logger, _brandingConfig);
+            _testedService = new CoreService(_cosmosDbService, _gatekeeperAPIService, _logger, _brandingConfig, _callContext);
         }
 
         #region GetAllChatSessionsAsync
