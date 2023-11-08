@@ -225,12 +225,6 @@ Source: ./modules/cosmosdb
 
 Version:
 
-### <a name="module_cosmosdb_data"></a> [cosmosdb\_data](#module\_cosmosdb\_data)
-
-Source: ./modules/cosmosdb
-
-Version:
-
 ### <a name="module_openai_ha"></a> [openai\_ha](#module\_openai\_ha)
 
 Source: ./modules/ha-openai
@@ -243,19 +237,7 @@ Source: ./modules/search
 
 Version:
 
-### <a name="module_sql"></a> [sql](#module\_sql)
-
-Source: ./modules/mssql-server
-
-Version:
-
 ### <a name="module_storage"></a> [storage](#module\_storage)
-
-Source: ./modules/storage-account
-
-Version:
-
-### <a name="module_storage_data"></a> [storage\_data](#module\_storage\_data)
 
 Source: ./modules/storage-account
 

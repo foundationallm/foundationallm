@@ -15,36 +15,11 @@ locals {
   }
 
   resource_group = {
-    agw = {
-      tags = {
-        "Purpose" = "Networking"
-      }
-    }
-    app = {
-      tags = {
-        "Purpose" = "Application"
-      }
-    }
-    data = {
-      tags = {
-        "Purpose" = "Storage"
-      }
-    }
-    storage = {
-      tags = {
-        Purpose = "Storage"
-      }
-    }
-    oai = {
-      tags = {
-        "Purpose" = "OpenAI"
-      }
-    }
-    vec = {
-      tags = {
-        "Purpose" = "Vectorization"
-      }
-    }
+    agw     = { tags = { "Purpose" = "Networking" } }
+    app     = { tags = { "Purpose" = "Application" } }
+    oai     = { tags = { "Purpose" = "OpenAI" } }
+    storage = { tags = { "Purpose" = "Storage" } }
+    vec     = { tags = { "Purpose" = "Vectorization" } }
   }
 
   resource_group_backend = {
@@ -351,46 +326,6 @@ module "cosmosdb" {
   }
 }
 
-module "cosmosdb_data" {
-  source = "./modules/cosmosdb"
-
-  action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
-  resource_group             = azurerm_resource_group.rg["data"]
-  resource_prefix            = local.resource_prefix["data"]
-  tags                       = azurerm_resource_group.rg["data"].tags
-
-  containers = {
-    embedding = {
-      partition_key_path = "/id"
-      max_throughput     = 1000
-    }
-    completions = {
-      partition_key_path = "/sessionId"
-      max_throughput     = 1000
-    }
-    product = {
-      partition_key_path = "/categoryId"
-      max_throughput     = 1000
-    }
-    customer = {
-      partition_key_path = "/customerId"
-      max_throughput     = 1000
-    }
-    leases = {
-      partition_key_path = "/id"
-      max_throughput     = 1000
-    }
-  }
-
-  private_endpoint = {
-    subnet_id = data.azurerm_subnet.subnet["Datasources"].id
-    private_dns_zone_ids = [
-      data.azurerm_private_dns_zone.private_dns["cosmosdb"].id,
-    ]
-  }
-}
-
 module "openai_ha" {
   source = "./modules/ha-openai"
 
@@ -438,34 +373,6 @@ module "search" {
   }
 }
 
-module "sql" {
-  source = "./modules/mssql-server"
-
-  action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
-  resource_group             = azurerm_resource_group.rg["data"]
-  resource_prefix            = local.resource_prefix["data"]
-  tags                       = azurerm_resource_group.rg["data"].tags
-
-  azuread_administrator = {
-    id   = var.sql_admin_ad_group.object_id
-    name = var.sql_admin_ad_group.name
-  }
-
-  private_endpoint = {
-    subnet_id = data.azurerm_subnet.subnet["Datasources"].id
-    private_dns_zone_ids = [
-      data.azurerm_private_dns_zone.private_dns["sql_server"].id,
-    ]
-  }
-
-  # vulnerability_assessment = {
-  #   container = "vulnerability-assessment"
-  #   endpoint  = data.azurerm_storage_account.storage_ops.primary_blob_endpoint
-  #   id        = data.azurerm_storage_account.storage_ops.id
-  # }
-}
-
 module "storage" {
   source = "./modules/storage-account"
 
@@ -479,30 +386,6 @@ module "storage" {
 
   private_endpoint = {
     subnet_id = data.azurerm_subnet.subnet["FLLMStorage"].id
-    private_dns_zone_ids = {
-      blob  = [data.azurerm_private_dns_zone.private_dns["blob"].id]
-      dfs   = [data.azurerm_private_dns_zone.private_dns["dfs"].id]
-      file  = [data.azurerm_private_dns_zone.private_dns["file"].id]
-      queue = [data.azurerm_private_dns_zone.private_dns["queue"].id]
-      table = [data.azurerm_private_dns_zone.private_dns["table"].id]
-      web   = [data.azurerm_private_dns_zone.private_dns["sites"].id]
-    }
-  }
-}
-
-module "storage_data" {
-  source = "./modules/storage-account"
-
-  action_group_id            = data.azurerm_monitor_action_group.do_nothing.id
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
-  resource_group             = azurerm_resource_group.rg["data"]
-  resource_prefix            = local.resource_prefix["data"]
-  subscription_id            = data.azurerm_client_config.current.subscription_id
-  tags                       = azurerm_resource_group.rg["data"].tags
-  tenant_id                  = data.azurerm_client_config.current.tenant_id
-
-  private_endpoint = {
-    subnet_id = data.azurerm_subnet.subnet["Datasources"].id
     private_dns_zone_ids = {
       blob  = [data.azurerm_private_dns_zone.private_dns["blob"].id]
       dfs   = [data.azurerm_private_dns_zone.private_dns["dfs"].id]
