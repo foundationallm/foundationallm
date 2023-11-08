@@ -23,14 +23,6 @@ locals {
   }
 }
 
-resource "azurerm_search_service" "main" {
-  location                      = var.resource_group.location
-  name                          = "${lower(join("", split("-", var.resource_prefix)))}search"
-  resource_group_name           = var.resource_group.name
-  sku                           = "standard"
-  public_network_access_enabled = false
-}
-
 resource "azurerm_monitor_metric_alert" "alert" {
   for_each = local.alert
 
@@ -74,6 +66,14 @@ resource "azurerm_private_endpoint" "ple" {
     private_connection_resource_id = azurerm_search_service.main.id
     subresource_names              = ["searchService"]
   }
+}
+
+resource "azurerm_search_service" "main" {
+  location                      = var.resource_group.location
+  name                          = lower(replace("${var.resource_prefix}-search","-",""))
+  public_network_access_enabled = false
+  resource_group_name           = var.resource_group.name
+  sku                           = "standard"
 }
 
 module "diagnostics" {
