@@ -4,7 +4,6 @@ from pydantic import parse_obj_as
 from langchain.prompts import PromptTemplate
 from langchain.schema.messages import AIMessage
 from foundationallm.langchain.agents.agent_base import AgentBase
-from foundationallm.models.orchestration import OrchestrationResponse
 from langchain.base_language import BaseLanguageModel
 from foundationallm.config import Configuration
 from langchain.callbacks import get_openai_callback
@@ -27,7 +26,7 @@ class GenericResolverAgent(AgentBase):
         self.container_name = completion_request.data_source.configuration.container
         self.file_names = completion_request.data_source.configuration.files
         # prompt template expects options list and user_prompt as inputs        
-        self.prompt_template = PromptTemplate.from_template(completion_request.agent.prompt_template)        
+        self.prompt_prefix = PromptTemplate.from_template(completion_request.agent.prompt_prefix)        
         self.options_list = self.build_options_list(options_list = self.load_options())        
             
     def load_options(self) -> List[ListOption]:        
@@ -57,7 +56,7 @@ class GenericResolverAgent(AgentBase):
             options_str +=  "Description: " + option.description + "\n\n"        
         return options_str
  
-    def run(self, prompt: str) -> OrchestrationResponse:
+    def run(self, prompt: str) -> CompletionResponse:
         """
         Evaluates a list of options against the incoming user prompt.
 
@@ -74,7 +73,7 @@ class GenericResolverAgent(AgentBase):
         """
         try:           
             with get_openai_callback() as cb:
-                chain = self.prompt_template | self.llm          
+                chain = self.prompt_prefix | self.llm          
                 completion_message:AIMessage = chain.invoke({"options": self.options_list, "user_prompt": prompt})                
                 return CompletionResponse(
                     completion = completion_message.content,

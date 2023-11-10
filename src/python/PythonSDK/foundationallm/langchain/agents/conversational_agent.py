@@ -28,7 +28,7 @@ class ConversationalAgent(AgentBase):
         config : Configuration
             Application configuration class for retrieving configuration settings.
         """
-        self.agent_prompt_prefix = completion_request.agent.prompt_template
+        self.prompt_prefix = completion_request.agent.prompt_prefix
         self.message_history = completion_request.message_history
         self.llm = llm.get_language_model()
 
@@ -49,7 +49,7 @@ class ConversationalAgent(AgentBase):
             agent = AgentType.CONVERSATIONAL_REACT_DESCRIPTION,
             verbose = True,
             agent_kwargs={
-                'prefix': self.agent_prompt_prefix
+                'prefix': self.prompt_prefix
             },
             memory = self.memory
         )

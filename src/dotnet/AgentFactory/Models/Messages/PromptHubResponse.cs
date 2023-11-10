@@ -8,10 +8,10 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Messages
     public record PromptHubResponse
     {
         /// <summary>
-        /// The list of prompts returned from a Prompt Hub request.
+        /// The prompt metadata object returned from a Prompt Hub request.
         /// </summary>
-        [JsonProperty("prompts")]
-        public PromptMetadata[]? Prompts { get; set; }
+        [JsonProperty("prompt")]
+        public PromptMetadata? Prompt { get; set; }
     }
 
     /// <summary>
@@ -19,18 +19,22 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Messages
     /// </summary>
     public record PromptMetadata
     {
-
         /// <summary>
-        /// Name of the prompt
+        /// Name of the prompt.
         /// </summary>
         [JsonProperty("name")]
         public string? Name { get; set; }
 
         /// <summary>
-        /// Content of the prompt
+        /// Text of the prompt prefix to be assigned to an agent.
         /// </summary>
-        [JsonProperty("prompt")]
-        public string? Prompt { get; set; }
+        [JsonProperty("prompt_prefix")]
+        public string? PromptPrefix { get; set; }
 
+        /// <summary>
+        /// Text of the prompt suffix to be assigned to an agent.
+        /// </summary>
+        [JsonProperty("prompt_suffix")]
+        public string? PromptSuffix { get; set; }
     }
 }

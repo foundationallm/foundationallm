@@ -8,9 +8,15 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata
     public class Agent: MetadataBase
     {
         /// <summary>
-        /// The prompt template to assign the agent.
+        /// The prompt prefix to assign the agent.
         /// </summary>
-        [JsonProperty("prompt_template")]
-        public string? PromptTemplate { get; set; }
+        [JsonProperty("prompt_prefix")]
+        public string? PromptPrefix { get; set; }
+
+        /// <summary>
+        /// The prompt suffix to assign the agent.
+        /// </summary>
+        [JsonProperty("prompt_suffix")]
+        public string? PromptSuffix { get; set; }
     }
 }

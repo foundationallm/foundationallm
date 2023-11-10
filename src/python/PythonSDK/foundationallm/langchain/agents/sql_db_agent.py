@@ -1,7 +1,6 @@
 from langchain.agents import create_sql_agent
 from langchain.agents.agent_types import AgentType
 from langchain.callbacks import get_openai_callback
-from langchain.prompts import PromptTemplate
 
 from foundationallm.config import Configuration, Context
 from foundationallm.langchain.agents import AgentBase
@@ -29,8 +28,10 @@ class SqlDbAgent(AgentBase):
             The language model to use for executing the completion request.
         config : Configuration
             Application configuration class for retrieving configuration settings.
+        context : Context
+            User context under which to run the completion request.
         """
-        self.agent_prompt_prefix = completion_request.agent.prompt_template
+        self.agent_prompt_prefix = completion_request.agent.prompt_prefix
         self.agent_prompt_suffix = completion_request.agent.prompt_suffix
             
         self.llm = llm.get_language_model()

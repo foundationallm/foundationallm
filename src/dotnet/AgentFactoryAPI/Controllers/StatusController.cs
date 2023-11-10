@@ -1,7 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FoundationaLLM.Core.API.Controllers
+namespace FoundationaLLM.AgentFactory.API.Controllers
 {
     /// <summary>
     /// Provides methods for checking the status of the service.
@@ -12,7 +12,7 @@ namespace FoundationaLLM.Core.API.Controllers
     public class StatusController : ControllerBase
     {
         /// <summary>
-        /// Returns the status of the Core API service.
+        /// Returns the status of the Agent Factory API service.
         /// </summary>
         [HttpGet(Name = "GetServiceStatus")]
         public IActionResult Get()
@@ -21,13 +21,13 @@ namespace FoundationaLLM.Core.API.Controllers
         }
 
         /// <summary>
-        /// Returns the allowed HTTP methods for the Core API service.
+        /// Returns the allowed HTTP methods for the Agent Factory API service.
         /// </summary>
         [HttpOptions]
         public IActionResult Options()
         {
             HttpContext.Response.Headers.Add("Allow", new[] { "GET", "POST", "OPTIONS" });
-            
+
             return Ok();
         }
     }

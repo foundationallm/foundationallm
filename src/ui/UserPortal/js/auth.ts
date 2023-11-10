@@ -1,4 +1,4 @@
-import { LogLevel, PublicClientApplication } from '@azure/msal-browser';
+import { LogLevel, PublicClientApplication, EventType } from '@azure/msal-browser';
 
 const ENABLE_LOGS = false;
 
@@ -65,8 +65,54 @@ function getMsalConfig() {
 	};
 }
 
+// Create a timer to refresh the token on expiration.
+let tokenExpirationTimer: any;
+export async function createTokenRefreshTimer() {
+	const accounts = await msalInstance.getAllAccounts();
+	if (accounts.length > 0) {
+		const account = accounts[0];
+		if (account.idTokenClaims?.exp) {
+			const tokenExpirationTime = account.idTokenClaims.exp * 1000;
+			const currentTime = Date.now();
+			const timeUntilExpiration = tokenExpirationTime - currentTime;
+
+			clearTimeout(tokenExpirationTimer);
+
+			tokenExpirationTimer = setTimeout(() => {
+				refreshToken(account);
+			}, timeUntilExpiration);
+			console.log(`Set access token timer refresh in ${timeUntilExpiration / 1000} seconds.`);
+		}
+	}
+}
+
+export async function refreshToken(account: any) {
+	try {
+		await msalInstance.acquireTokenSilent({
+			account,
+			scopes: [configOptions.scopes],
+		});
+		console.log('Refreshed access token.');
+		createTokenRefreshTimer();
+	} catch (error) {
+		console.error('Token refresh error:', error);
+		sessionStorage.clear();
+		window.location = '/login';
+	}
+}
+
+let msalInstance: any;
 export async function getMsalInstance() {
-	const msalInstance = new PublicClientApplication(getMsalConfig());
+	if (msalInstance) return msalInstance;
+
+	msalInstance = new PublicClientApplication(getMsalConfig());
+
+	msalInstance.addEventCallback((event) => {
+		if (event.eventType === EventType.LOGIN_SUCCESS) {
+			createTokenRefreshTimer();
+		}
+	});
+
 	await msalInstance.initialize();
 	return msalInstance;
 }
@@ -84,3 +130,15 @@ export const graphConfig = {
 	graphMeEndpoint: 'https://graph.microsoft.com/v1.0/me',
 	graphMailEndpoint: 'https://graph.microsoft.com/v1.0/me/messages',
 };
+
+export async function attemptLogin() {
+	const msalInstance = await getMsalInstance();
+	const loginRequest = await getLoginRequest();
+
+	const response = await msalInstance.loginPopup(loginRequest);
+	if (response.account) {
+		createTokenRefreshTimer();
+	}
+
+	return response;
+}

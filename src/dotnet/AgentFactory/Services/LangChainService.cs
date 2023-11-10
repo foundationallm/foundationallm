@@ -69,7 +69,7 @@ namespace FoundationaLLM.AgentFactory.Services
                 {
                     Completion = completionResponse!.Completion,
                     UserPrompt = completionResponse.UserPrompt,
-                    PromptTemplate = request.Agent?.PromptTemplate,
+                    PromptTemplate = request.Agent?.PromptPrefix,
                     AgentName = request.Agent?.Name,
                     PromptTokens = completionResponse.PromptTokens,
                     CompletionTokens = completionResponse.CompletionTokens
@@ -82,7 +82,7 @@ namespace FoundationaLLM.AgentFactory.Services
             {
                 Completion = "A problem on my side prevented me from responding.",
                 UserPrompt = request.UserPrompt,
-                PromptTemplate = request.Agent?.PromptTemplate,
+                PromptTemplate = request.Agent?.PromptPrefix,
                 AgentName = request.Agent?.Name,
                 PromptTokens = 0,
                 CompletionTokens = 0               
@@ -108,7 +108,7 @@ namespace FoundationaLLM.AgentFactory.Services
                     Name = "summarizer",
                     Type = "summary",
                     Description = "Useful for summarizing input text based on a set of rules.",
-                    PromptTemplate = "Write a concise two-word summary of the following:\n\"{text}\"\nCONCISE SUMMARY IN TWO WORDS:"
+                    PromptPrefix = "Write a concise two-word summary of the following:\n\"{text}\"\nCONCISE SUMMARY IN TWO WORDS:"
                 },
                 LanguageModel = new LanguageModel
                 {

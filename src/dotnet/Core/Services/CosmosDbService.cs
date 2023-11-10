@@ -222,7 +222,7 @@ namespace FoundationaLLM.Core.Services
         /// <returns>List of distinct chat session items.</returns>
         public async Task<List<Session>> GetSessionsAsync(string type)
         {
-            var query = new QueryDefinition("SELECT DISTINCT * FROM c WHERE c.type = @type")
+            var query = new QueryDefinition("SELECT DISTINCT * FROM c WHERE c.type = @type ORDER BY c._ts DESC")
                 .WithParameter("@type", type);
 
             var response = _completions.GetItemQueryIterator<Session>(query);

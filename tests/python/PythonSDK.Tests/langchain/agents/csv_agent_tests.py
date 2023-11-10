@@ -18,7 +18,7 @@ def test_config():
 def test_completion_request():
      req = CompletionRequest(
                          user_prompt="How many survey responses are there?",
-                         agent=Agent(name="survey-results", type="csv", description="Useful for answering analytical questions about survey responses.", prompt_template="You are an analytic agent named Khalil that helps people find information about the results of a survey.\nProvide consise answers that are polite and professional.\nDo not make anything up, only use the data provided from the survey responses.\nAnswer any questions step-by-step.\n"),
+                         agent=Agent(name="survey-results", type="csv", description="Useful for answering analytical questions about survey responses.", prompt_prefix="You are an analytic agent named Khalil that helps people find information about the results of a survey.\nProvide consise answers that are polite and professional.\nDo not make anything up, only use the data provided from the survey responses.\nAnswer any questions step-by-step.\n"),
                          data_source=DataSource(name="survey-results-csv", type="blob-storage", description="Information about the survey collected by Hargrove.", configuration=BlobStorageConfiguration(connection_string_secret="FoundationaLLM:BlobStorage:ConnectionString", container="hai-source", files = ["surveydata.csv"])),
                          language_model=LanguageModel(type=LanguageModelTypes.OPENAI, provider=LanguageModelProviders.MICROSOFT, temperature=0, use_chat=True),
                          message_history=[]

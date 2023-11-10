@@ -1,7 +1,9 @@
-from foundationallm.hubs import Metadata
+from pydantic import BaseModel
+from typing import Optional
 
-class PromptMetadata(Metadata):
-    """Class representing the metadata for a prompt"""
+class PromptMetadata(BaseModel):
+    """Class representing the metadata for a prompt."""
 
     name: str    
-    prompt: str
+    prompt_prefix: Optional[str] = None
+    prompt_suffix: Optional[str] = None

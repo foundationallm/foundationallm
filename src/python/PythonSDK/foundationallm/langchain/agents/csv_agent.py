@@ -29,7 +29,7 @@ class CSVAgent(AgentBase):
         config : Configuration
             Application configuration class for retrieving configuration settings.
         """
-        self.agent_prompt_prefix = completion_request.agent.prompt_template
+        self.agent_prompt_prefix = completion_request.agent.prompt_prefix
         self.llm = llm.get_language_model()
         connection_string = config.get_value(completion_request.data_source.configuration.connection_string_secret)        
         container_name = completion_request.data_source.configuration.container        
@@ -74,7 +74,7 @@ class CSVAgent(AgentBase):
         with get_openai_callback() as cb:
             return CompletionResponse(
                 completion = self.agent.run(prompt),
-                user_prompt= prompt,
+                user_prompt = prompt,
                 completion_tokens = cb.completion_tokens,
                 prompt_tokens = cb.prompt_tokens,
                 total_tokens = cb.total_tokens,

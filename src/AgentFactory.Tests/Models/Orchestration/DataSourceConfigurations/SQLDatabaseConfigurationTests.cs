@@ -24,7 +24,6 @@ namespace FoundationaLLM.AgentFactory.Tests.Models.Orchestration.DataSourceConfi
                 Port = _port,
                 DatabaseName = _databaseName,
                 Username = _username,
-                PasswordSecretName = _passwordSecretName,
                 IncludeTables = _includeTables,
                 FewShotExampleCount = _fewShotExampleCount
             };
@@ -39,7 +38,6 @@ namespace FoundationaLLM.AgentFactory.Tests.Models.Orchestration.DataSourceConfi
             Assert.Equal(_port, _configuration.Port);
             Assert.Equal(_databaseName, _configuration.DatabaseName);
             Assert.Equal(_username, _configuration.Username);
-            Assert.Equal(_passwordSecretName, _configuration.PasswordSecretName);
             Assert.Equal(_includeTables, _configuration.IncludeTables);
             Assert.Equal(_fewShotExampleCount, _configuration.FewShotExampleCount);
         }
@@ -57,7 +55,6 @@ namespace FoundationaLLM.AgentFactory.Tests.Models.Orchestration.DataSourceConfi
             Assert.Equal(_configuration.Port, deserializedConfig?.Port);
             Assert.Equal(_configuration.DatabaseName, deserializedConfig?.DatabaseName);
             Assert.Equal(_configuration.Username, deserializedConfig?.Username);
-            Assert.Equal(_configuration.PasswordSecretName, deserializedConfig?.PasswordSecretName);
             Assert.Equal(_configuration.IncludeTables, deserializedConfig?.IncludeTables);
             Assert.Equal(_configuration.FewShotExampleCount, deserializedConfig?.FewShotExampleCount);
         }

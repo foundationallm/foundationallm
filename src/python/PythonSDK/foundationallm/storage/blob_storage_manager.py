@@ -46,25 +46,26 @@ class BlobStorageManager(StorageManagerBase):
         full_path = self.__get_full_path(path)             
         blob = self.blob_container_client.get_blob_client(full_path)        
         return blob.exists()
-        
 
     def read_file_content(self, path, read_into_stream=True) -> bytes:
-        full_path = self.__get_full_path(path)        
-        if read_into_stream:
-            blob = self.blob_container_client.get_blob_client(full_path)
-            stream = BytesIO()
-            blob.download_blob().readinto(stream)
-            return stream.getvalue()
+        if self.file_exists(path):
+            full_path = self.__get_full_path(path)
+            if read_into_stream:
+                blob = self.blob_container_client.get_blob_client(full_path)
+                stream = BytesIO()
+                blob.download_blob().readinto(stream)
+                return stream.getvalue()
+            else:
+                blob = self.blob_container_client.download_blob(full_path)
+                return blob.content_as_bytes()
         else:
-            return self.blob_container_client.download_blob(full_path).content_as_bytes()
-       
+            return None
 
     def write_file_content(self, path, content, overwrite=True, lease=None):
         full_path = self.__get_full_path(path)          
         blob = self.blob_container_client.get_blob_client(full_path)
         blob.upload_blob(content, overwrite=overwrite, lease=lease)
-       
-    
+
     def delete_file(self, path):
         full_path = self.__get_full_path(path)       
         self.blob_container_client.delete_blob(full_path, delete_snapshots='include')

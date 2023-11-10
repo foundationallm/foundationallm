@@ -11,7 +11,6 @@ from foundationallm.langchain.agents import BlobStorageAgent
 from foundationallm.langchain.agents import ConversationalAgent
 from foundationallm.langchain.agents import GenericResolverAgent
 
-
 class AgentFactory:
     """
     Factory to determine which agent to use.

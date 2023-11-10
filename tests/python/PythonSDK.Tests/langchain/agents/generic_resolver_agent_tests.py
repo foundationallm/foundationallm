@@ -17,7 +17,7 @@ def test_config():
 def test_completion_request():
      req = CompletionRequest(
                          user_prompt="What is FoundationaLLM?",
-                         agent=Agent(name="demo-resolver", type="generic-resolver", description="Useful for choosing one or more items from a list of FoundationaLLM demo options.", prompt_template="You are a demo option selector in the FoundationaLLM system. Your job is to select one or more options from a list of options that can best satisfy the incoming User Prompt. An option consists of a name and description. Evaluate each option by its description.\n\nYou are to select the number of options that are requested in the user prompt. Provide the answer in natural language.\n\nExample: The best option for your request is the default demo.\n\nDo not make anything up, do not create a fake conversation, use only the data provided here.\n\n{options}\n\nUser Prompt:{user_prompt}\n\nAnswer:\n"),
+                         agent=Agent(name="demo-resolver", type="generic-resolver", description="Useful for choosing one or more items from a list of FoundationaLLM demo options.", prompt_prefix="You are a demo option selector in the FoundationaLLM system. Your job is to select one or more options from a list of options that can best satisfy the incoming User Prompt. An option consists of a name and description. Evaluate each option by its description.\n\nYou are to select the number of options that are requested in the user prompt. Provide the answer in natural language.\n\nExample: The best option for your request is the default demo.\n\nDo not make anything up, do not create a fake conversation, use only the data provided here.\n\n{options}\n\nUser Prompt:{user_prompt}\n\nAnswer:\n"),
                          data_source=DataSource(name="foundationallm-demos", type="blob-storage", description="Information about FoundationaLLM demos.", configuration=BlobStorageConfiguration(connection_string_secret="FoundationaLLM:BlobStorage:ConnectionString", container="foundationallm-demo-source", files = ["demos.json"])),
                          language_model=LanguageModel(type=LanguageModelTypes.OPENAI, provider=LanguageModelProviders.MICROSOFT, temperature=0, use_chat=True),
                          message_history=[MessageHistoryItem(sender="User", text="What is FoundationaLLM?"),  
@@ -45,6 +45,7 @@ class GenericResolverAgentTests:
 
     def test_read_json_options_from_storage(self, test_completion_request, test_llm, test_config):
        agent = GenericResolverAgent(completion_request=test_completion_request,llm=test_llm, config=test_config)
+       print(agent)
        options_list = agent.load_options()       
        assert len(options_list) > 0
         
