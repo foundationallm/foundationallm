@@ -18,7 +18,6 @@ namespace FoundationaLLM.AgentFactory.Tests.Models.Orchestration.Metadata
                 Port = 1234,
                 DatabaseName = "TestDatabaseName",
                 Username = "TestUsername",
-                PasswordSecretName = "TestPasswordSecretName",
                 IncludeTables = new List<string> { "table1", "table2" },
                 FewShotExampleCount = 5
             };
@@ -46,7 +45,6 @@ namespace FoundationaLLM.AgentFactory.Tests.Models.Orchestration.Metadata
             Assert.Equal(_configuration.Port, deserializedSQLDatabaseDataSource?.Configuration?.Port);
             Assert.Equal(_configuration.DatabaseName, deserializedSQLDatabaseDataSource?.Configuration?.DatabaseName);
             Assert.Equal(_configuration.Username, deserializedSQLDatabaseDataSource?.Configuration?.Username);
-            Assert.Equal(_configuration.PasswordSecretName, deserializedSQLDatabaseDataSource?.Configuration?.PasswordSecretName);
             Assert.Equal(_configuration.IncludeTables, deserializedSQLDatabaseDataSource?.Configuration?.IncludeTables);
             Assert.Equal(_configuration.FewShotExampleCount, deserializedSQLDatabaseDataSource?.Configuration?.FewShotExampleCount);
         }

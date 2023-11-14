@@ -1,5 +1,4 @@
 ﻿using FoundationaLLM.AgentFactory.Core.Models.Messages;
-using FoundationaLLM.Common.Models.Orchestration;
 
 namespace FoundationaLLM.AgentFactory.Core.Interfaces;
 
@@ -15,9 +14,10 @@ public interface IPromptHubAPIService
     Task<string> Status();
 
     /// <summary>
-    /// Gets an agent based on its name.  Passes the userContext such that the prompt is built with any user based attributes.
+    /// Used to get prompts for a target agent and user context.
     /// </summary>
-    /// <param name="agentName"></param>
-    /// <returns></returns>
-    Task<PromptHubResponse> ResolveRequest(string agentName);
+    /// <param name="agentName">Name of the agent for which to retrieve prompt values.</param>
+    /// <param name="promptName">Name of the prompt for which to retrieve prompt values.</param>
+    /// <returns>Returns a <see cref="PromptHubResponse"/> object containing the list of prompts for the specified agent.</returns>
+    Task<PromptHubResponse> ResolveRequest(string agentName, string promptName = "default");
 }

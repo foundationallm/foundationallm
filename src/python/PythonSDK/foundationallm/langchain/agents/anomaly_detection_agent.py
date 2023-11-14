@@ -39,7 +39,7 @@ class AnomalyDetectionAgent(AgentBase):
         config : Configuration
             Application configuration class for retrieving configuration settings.
         """
-        self.agent_prompt_prefix = completion_request.agent.prompt_template #PromptTemplate.from_template(completion_request.agent.prompt_template)
+        self.agent_prompt_prefix = completion_request.agent.prompt_prefix
         self.llm = llm.get_language_model()
         # Currently set up to use a SQL Database table as the source system.
         self.sql_db_config: SQLDatabaseConfiguration = completion_request.data_source.configuration

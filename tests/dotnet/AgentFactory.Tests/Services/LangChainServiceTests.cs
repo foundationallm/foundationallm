@@ -30,7 +30,8 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
                     Name = "summarizer",
                     Type = "summary",
                     Description = "Test Description",
-                    PromptTemplate = "Test Prompt Template"
+                    PromptPrefix = "Prefix_1", 
+                    PromptSuffix = "Sufix_1"
                 },
                 LanguageModel = new LanguageModel
                 {

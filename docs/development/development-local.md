@@ -9,6 +9,8 @@
   - [.NET projects](#net-projects)
     - [Core API](#core-api)
       - [Core API app settings](#core-api-app-settings)
+    - [CoreWorkerService](#coreworkerservice)
+      - [CoreWorkerService app settings](#coreworkerservice-app-settings)
     - [Gatekeeper API](#gatekeeper-api)
       - [Gatekeeper API app settings](#gatekeeper-api-app-settings)
     - [Agent Factory API](#agent-factory-api)
@@ -133,9 +135,48 @@ The `Chat` Blazor web app is deprecated and will be removed in a future release.
 
 ```json
 {  
-  "APIs": {
-    "GatekeeperAPI": {
-      "APIUrl": "<...>" // Default local value: https://localhost:7180/
+  "FoundationaLLM": {
+    "APIs": {
+      "GatekeeperAPI": {
+        "APIUrl": "<...>" // Default local value: https://localhost:7180/
+      }
+    }
+  }
+}
+```
+
+### CoreWorkerService
+
+The `CoreWorkerService` project is a .NET worker service that acts as the Cosmos DB change feed processor. When you debug it locally, it runs within a Docker container. Because of this, it is important to make sure the App Configuration service connection string is set in the `appsettings.Development.json` file. This is because the Docker container will not have access to the environment variable.
+
+#### CoreWorkerService app settings
+
+> Make sure the contents of the `appsettings.json` file has this structure and similar values:
+
+```json
+{
+  "DetailedErrors": true,
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "FoundationaLLM": {
+    "AppConfig": {
+      "ConnectionString": ""
+    }
+  }
+}
+```
+
+> Create the `appsettings.Development.json` file or update it with the following content and replace all `<...>` placeholders with the values from your deployment:
+
+```json
+{  
+  "FoundationaLLM": {
+    "AppConfig": {
+      "ConnectionString": "<...>"
     }
   }
 }
@@ -414,6 +455,7 @@ The backend components consist of the .NET projects and the Python projects. The
       - AgentFactoryAPI
       - AgentHubAPI
       - CoreAPI
+      - CoreWorkerService
       - DataSourceHubAPI
       - GatekeeperAPI
       - LangChainAPI

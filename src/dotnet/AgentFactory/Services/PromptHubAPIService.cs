@@ -68,16 +68,17 @@ public class PromptHubAPIService : IPromptHubAPIService
     /// <summary>
     /// Used to get prompts for a target agent and user context.
     /// </summary>
-    /// <param name="agentName"></param>
-    /// <returns></returns>
-    public async Task<PromptHubResponse> ResolveRequest(string agentName)
+    /// <param name="agentName">Name of the agent for which to retrieve prompt values.</param>
+    /// <param name="promptName">Name of the prompt for which to retrieve prompt values.</param>
+    /// <returns>Returns a <see cref="PromptHubResponse"/> object containing the list of prompts for the specified agent.</returns>
+    public async Task<PromptHubResponse> ResolveRequest(string agentName, string promptName = "default")
     {
         try
         {
-            PromptHubRequest phm = new PromptHubRequest { AgentName = agentName };
+            var request = new PromptHubRequest { AgentName = agentName, PromptName = promptName };
             
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.PromptHubAPI);
-            var body = JsonConvert.SerializeObject(phm, _jsonSerializerSettings);
+            var body = JsonConvert.SerializeObject(request, _jsonSerializerSettings);
             var responseMessage = await client.PostAsync("resolve", new StringContent(
                     body,
                     Encoding.UTF8, "application/json"));

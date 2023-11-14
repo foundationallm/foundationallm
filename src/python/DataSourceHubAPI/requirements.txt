@@ -5,3 +5,4 @@ azure-appconfiguration-provider==1.0.0
 azure-identity==1.14.0
 azure-keyvault-secrets==4.7.0
 azure-storage-blob==12.18.2
+email-validator==2.0.0.post2

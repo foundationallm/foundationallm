@@ -1,4 +1,4 @@
-import { getMsalInstance } from '@/js/auth';
+import { getMsalInstance, createTokenRefreshTimer } from '@/js/auth';
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
 	if (process.server) return;
@@ -8,5 +8,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 	const accounts = await msalInstance.getAllAccounts();
 	if (accounts.length === 0 && to.path !== '/login') {
 		return navigateTo({ path: '/login', query: from.query });
+	} else {
+		createTokenRefreshTimer();
 	}
 });

@@ -405,8 +405,8 @@
     private async Task SimulatePrompts()
     {
         _loadingCompletion = true;
-        _messagesInChat?.Add(new Message(CurrentSession?.SessionId ?? Interface.EMPTY_SESSION, "User", 0, UserPrompt ?? "", null, null));
-        _messagesInChat?.Add(new Message(CurrentSession?.SessionId ?? Interface.EMPTY_SESSION, "Assistant", 0, "Loading", null, null));
+        _messagesInChat?.Add(new Message(CurrentSession?.SessionId ?? Interface.EMPTY_SESSION, "User", 0, UserPrompt ?? "", null, null, ""));
+        _messagesInChat?.Add(new Message(CurrentSession?.SessionId ?? Interface.EMPTY_SESSION, "Assistant", 0, "Loading", null, null, ""));
         await OnChatUpdated.InvokeAsync();
         await ScrollLastChatToView();
     }

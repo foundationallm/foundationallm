@@ -9,22 +9,22 @@ namespace FoundationaLLM.Core.Interfaces;
 public interface ICosmosDbService
 {
     /// <summary>
-    /// Indicates whether the Azure Cosmos DB change feed is initialized.
-    /// </summary>
-    bool IsInitialized { get; }
-
-    /// <summary>
     /// Gets a list of all current chat sessions.
     /// </summary>
+    /// <param name="type">The session type to return.</param>
+    /// <param name="upn">The user principal name used for retrieving
+    /// sessions for the signed in user.</param>
     /// <returns>List of distinct chat session items.</returns>
-    Task<List<Session>> GetSessionsAsync(string type);
+    Task<List<Session>> GetSessionsAsync(string type, string upn);
 
     /// <summary>
     /// Gets a list of all current chat messages for a specified session identifier.
     /// </summary>
-    /// <param name="sessionId">Chat session identifier used to filter messsages.</param>
+    /// <param name="sessionId">Chat session identifier used to filter messages.</param>
+    /// <param name="upn">The user principal name used for retrieving the messages for
+    /// the signed in user.</param>
     /// <returns>List of chat message items for the specified session.</returns>
-    Task<List<Message>> GetSessionMessagesAsync(string sessionId);
+    Task<List<Message>> GetSessionMessagesAsync(string sessionId, string upn);
 
     /// <summary>
     /// Performs a point read to retrieve a single chat session item.
@@ -84,25 +84,17 @@ public interface ICosmosDbService
     Task UpsertSessionBatchAsync(params dynamic[] messages);
 
     /// <summary>
+    /// Create or update a user session from the passed in Session object.
+    /// </summary>
+    /// <param name="session">The chat session item to create or replace.</param>
+    /// <returns></returns>
+    Task UpsertUserSessionAsync(Session session);
+
+    /// <summary>
     /// Batch deletes an existing chat session and all related messages.
     /// </summary>
     /// <param name="sessionId">Chat session identifier used to flag messages and sessions for deletion.</param>
     Task DeleteSessionAndMessagesAsync(string sessionId);
-
-    /// <summary>
-    /// Inserts a product into the product container.
-    /// </summary>
-    /// <param name="product">Product item to create.</param>
-    /// <returns>Newly created product item.</returns>
-    Task<Product> InsertProductAsync(Product product);
-
-    /// <summary>
-    /// Deletes a product by its Id and category (its partition key).
-    /// </summary>
-    /// <param name="productId">The Id of the product to delete.</param>
-    /// <param name="categoryId">The category Id of the product to delete.</param>
-    /// <returns></returns>
-    Task DeleteProductAsync(string productId, string categoryId);
 
     /// <summary>
     /// Reads all documents retrieved by Vector Search.

@@ -8,6 +8,7 @@ using FoundationaLLM.SemanticKernel.Core.Interfaces;
 using FoundationaLLM.SemanticKernel.Core.Models.ConfigurationOptions;
 using FoundationaLLM.SemanticKernel.Core.Services;
 using FoundationaLLM.SemanticKernel.MemorySource;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 
 namespace FoundationaLLM.SemanticKernel.API
 {
@@ -71,6 +72,12 @@ namespace FoundationaLLM.SemanticKernel.API
 
             // Simple, static system prompt service
             //builder.Services.AddSingleton<ISystemPromptService, InMemorySystemPromptService>();
+            builder.Services.AddApplicationInsightsTelemetry(new ApplicationInsightsServiceOptions
+            {
+                ConnectionString = builder.Configuration["FoundationaLLM:APIs:SemanticKernelAPI:AppInsightsConnectionString"],
+                DeveloperMode = builder.Environment.IsDevelopment()
+            });
+            builder.Services.AddServiceProfiler();
 
             // System prompt service backed by an Azure blob storage account
             builder.Services.AddOptions<DurableSystemPromptServiceSettings>()

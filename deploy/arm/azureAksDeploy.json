@@ -106,6 +106,36 @@
           "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
         },
         {
+          "key": "FoundationaLLM:APIs:AgentHubAPI:AppInsightsConnectionString",
+          "value": "[concat('{\"uri\":\"https://',variables('keyVaultSettings').name, '.vault.azure.net/secrets/foundationallm-app-insights-connection-string\"}')]",
+          "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+        },
+        {
+          "key": "FoundationaLLM:APIs:DataSourceHubAPI:AppInsightsConnectionString",
+          "value": "[concat('{\"uri\":\"https://',variables('keyVaultSettings').name, '.vault.azure.net/secrets/foundationallm-app-insights-connection-string\"}')]",
+          "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+        },
+        {
+          "key": "FoundationaLLM:APIs:LangChainAPI:AppInsightsConnectionString",
+          "value": "[concat('{\"uri\":\"https://',variables('keyVaultSettings').name, '.vault.azure.net/secrets/foundationallm-app-insights-connection-string\"}')]",
+          "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+        },
+        {
+          "key": "FoundationaLLM:APIs:PromptHubAPI:AppInsightsConnectionString",
+          "value": "[concat('{\"uri\":\"https://',variables('keyVaultSettings').name, '.vault.azure.net/secrets/foundationallm-app-insights-connection-string\"}')]",
+          "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+        },
+        {
+          "key": "FoundationaLLM:APIs:SemanticKernelAPI:AppInsightsConnectionString",
+          "value": "[concat('{\"uri\":\"https://',variables('keyVaultSettings').name, '.vault.azure.net/secrets/foundationallm-app-insights-connection-string\"}')]",
+          "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+        },
+        {
+          "key": "FoundationaLLM:CoreWorkerService:AppInsightsConnectionString",
+          "value": "[concat('{\"uri\":\"https://',variables('keyVaultSettings').name, '.vault.azure.net/secrets/foundationallm-app-insights-connection-string\"}')]",
+          "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+        },
+        {
           "key": "FoundationaLLM:APIs:AgentFactoryAPI:APIKey",
           "value": "[concat('{\"uri\":\"https://',variables('keyVaultSettings').name, '.vault.azure.net/secrets/foundationallm-apis-agentfactoryapi-apikey\"}')]",
           "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
@@ -437,7 +467,7 @@
         },
         {
           "key": "FoundationaLLM:CosmosDB:Containers",
-          "value": "completions, customer, product",
+          "value": "Sessions, UserSessions",
           "contentType": null
         },
         {
@@ -457,7 +487,7 @@
         },
         {
           "key": "FoundationaLLM:CosmosDB:MonitoredContainers",
-          "value": "customer, product",
+          "value": "Sessions",
           "contentType": null
         },
         {
@@ -633,8 +663,16 @@
       ],
       "featureFlags": [
         {
-          "key": ".appconfig.featureflag/FoundationaLLM-AllowAgentHint",
-          "value": "false"
+          "key": "FoundationaLLM-AllowAgentHint",
+          "label": "",
+          "value": {
+            "id": "FoundationaLLM-AllowAgentHint",
+            "description": "",
+            "enabled": false,
+            "conditions": {
+              "client_filters": []
+            }
+          }
         }
       ]
     },
@@ -646,24 +684,14 @@
       "hostingMode": "default"
     },
     "cosmosContainers": {
-      "embeddingContainer": {
-        "name": "embedding",
-        "partitionKeyPath": "/id",
+      "userSessionsContainer": {
+        "name": "UserSessions",
+        "partitionKeyPath": "/upn",
         "maxThroughput": 1000
       },
-      "completionsContainer": {
-        "name": "completions",
+      "sessionsContainer": {
+        "name": "Sessions",
         "partitionKeyPath": "/sessionId",
-        "maxThroughput": 1000
-      },
-      "productContainer": {
-        "name": "product",
-        "partitionKeyPath": "/categoryId",
-        "maxThroughput": 1000
-      },
-      "customerContainer": {
-        "name": "customer",
-        "partitionKeyPath": "/customerId",
         "maxThroughput": 1000
       },
       "leasesContainer": {
@@ -802,7 +830,7 @@
     },
     {
       "copy": {
-        "name": "configStoreKeyValue",
+        "name": "apiUrlConfigKeyValue",
         "count": "[length(variables('appConfigSettings').apiUrlConfigKeys)]"
       },
       "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
@@ -823,9 +851,9 @@
       },
       "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
       "apiVersion": "2021-10-01-preview",
-      "name": "[format('{0}/{1}/{2}', variables('appConfigSettings').name, '.appconfig.featureflag', variables('appConfigSettings').featureFlags[copyIndex()].key)]",
+      "name": "[format('{0}/{1}', variables('appConfigSettings').name, format('.appconfig.featureflag~2F{0}${1}', variables('appConfigSettings').featureFlags[copyIndex()].key, variables('appConfigSettings').featureFlags[copyIndex()].label))]",
       "properties": {
-        "value": "[variables('appConfigSettings').featureFlags[copyIndex()].value]",
+        "value": "[string(variables('appConfigSettings').featureFlags[copyIndex()].value)]",
         "contentType": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8"
       },
       "dependsOn": [

@@ -11,8 +11,12 @@ class PromptHubStorageManager(BlobStorageManager):
          super().__init__(blob_connection_string=connection_string,
                              container_name=container_name)
          
-     def read_file_content(self, path) -> str:        
-         return super().read_file_content(path).decode()
+     def read_file_content(self, path) -> str:
+         file_content = super().read_file_content(path)
+         if file_content is not None:
+            return file_content.decode()
+         else:
+             return None
      
      def list_blobs(self, path):
           blob_list: List[dict] = list(super().list_blobs(path=path))          

@@ -8,7 +8,7 @@
 <script lang="ts">
 import { mapStores } from 'pinia';
 import { appConfig } from '@/stores/appConfig';
-import { getMsalInstance, getLoginRequest } from '@/js/auth';
+import { attemptLogin } from '@/js/auth';
 
 export default {
 	name: 'Login',
@@ -23,9 +23,7 @@ export default {
 
 	methods: {
 		async signIn() {
-			const loginRequest = await getLoginRequest();
-			const msalInstance = await getMsalInstance();
-			const response = await msalInstance.loginPopup(loginRequest);
+			const response = await attemptLogin();
 			if (response.account) {
 				this.$router.push({ path: '/', query: this.$nuxt._route.query });
 			}

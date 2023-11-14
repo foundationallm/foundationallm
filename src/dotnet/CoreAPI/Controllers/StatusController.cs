@@ -1,10 +1,5 @@
 ﻿using Asp.Versioning;
-using FoundationaLLM.Core.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using FoundationaLLM.Common.Interfaces;
-using Microsoft.Identity.Web;
 
 namespace FoundationaLLM.Core.API.Controllers
 {
@@ -17,7 +12,7 @@ namespace FoundationaLLM.Core.API.Controllers
     public class StatusController : ControllerBase
     {
         /// <summary>
-        /// Returns the status of the Core service.
+        /// Returns the status of the Core API service.
         /// </summary>
         [HttpGet(Name = "GetServiceStatus")]
         public IActionResult Get()
@@ -26,7 +21,7 @@ namespace FoundationaLLM.Core.API.Controllers
         }
 
         /// <summary>
-        /// Returns the allowed HTTP methods for the Core service.
+        /// Returns the allowed HTTP methods for the Core API service.
         /// </summary>
         [HttpOptions]
         public IActionResult Options()

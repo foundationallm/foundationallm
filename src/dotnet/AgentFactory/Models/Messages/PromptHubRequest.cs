@@ -8,9 +8,15 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Messages
     public record PromptHubRequest
     {
         /// <summary>
-        /// Gets the list of prompts for a target agent from the Prompt Hub.
+        /// Name of the agent for which the prompt values should be retrieved from the Prompt Hub.
         /// </summary>
         [JsonProperty("agent_name")]
         public string? AgentName { get; set; }
+
+        /// <summary>
+        /// Name of the prompt for which the prompt values should be retrieved from the Prompt Hub.
+        /// </summary>
+        [JsonProperty("prompt_name")]
+        public string? PromptName { get; set; } = "default";
     }
 }

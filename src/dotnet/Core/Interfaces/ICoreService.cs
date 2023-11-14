@@ -11,11 +11,6 @@ namespace FoundationaLLM.Core.Interfaces;
 public interface ICoreService
 {
     /// <summary>
-    /// Indicates whether the service is ready to accept requests.
-    /// </summary>
-    string Status { get; }
-
-    /// <summary>
     /// Returns list of chat session ids and names.
     /// </summary>
     Task<List<Session>> GetAllChatSessionsAsync();
