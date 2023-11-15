@@ -24,17 +24,19 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
 
         [Theory]
         [MemberData(nameof(GetInvalidFields))]
-        public void Create_Message_FailsWithInvalidValues(string sessionId, string sender, int? tokens, string text, float[]? vector, bool? rating)
+        public void Create_Message_FailsWithInvalidValues(string sessionId, string sender, int? tokens, string text,
+            float[]? vector, bool? rating, string upn)
         {
-            Assert.Throws<Exception>(() => CreateMessage(sessionId, sender, tokens, text, vector, rating));
+            Assert.Throws<Exception>(() => CreateMessage(sessionId, sender, tokens, text, vector, rating, upn));
         }
 
         [Theory]
         [MemberData(nameof(GetValidFields))]
-        public void Create_Message_SucceedsWithValidValues(string sessionId, string sender, int? tokens, string text, float[]? vector, bool? rating)
+        public void Create_Message_SucceedsWithValidValues(string sessionId, string sender, int? tokens, string text,
+            float[]? vector, bool? rating, string upn)
         {
             //Act
-            var exception = Record.Exception(() => CreateMessage(sessionId, sender, tokens, text, vector, rating));
+            var exception = Record.Exception(() => CreateMessage(sessionId, sender, tokens, text, vector, rating, upn));
 
             //Assert
             Assert.Null(exception);
@@ -44,12 +46,13 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
         public void Constructor_ShouldInitializeProperties()
         {
             // Arrange
-            string expectedSessionId = "Session_1";
-            string expectedSender = "Sender_1";
+            var expectedSessionId = "Session_1";
+            var expectedSender = "Sender_1";
             int? expectedTokens = 10;
-            string expectedText = "Text";
+            var expectedText = "Text";
             float[] expectedVector = new float[] { 1,2,3 };
             bool? expectedRating = true;
+            var expectedUpn = "test@foundationallm.ai";
 
             // Act
             var message = CreateMessage(
@@ -58,7 +61,8 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
                 expectedTokens,
                 expectedText,
                 expectedVector,
-                expectedRating
+                expectedRating,
+                expectedUpn
             );
 
             // Assert
@@ -70,11 +74,13 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
             Assert.Equal(expectedText, message.Text);
             Assert.Equal(expectedRating, message.Rating);
             Assert.Equal(expectedVector, message.Vector);
+            Assert.Equal(expectedUpn, message.UPN);
         }
 
-        public Message CreateMessage(string sessionId, string sender, int? tokens, string text, float[]? vector, bool? rating)
+        public Message CreateMessage(string sessionId, string sender, int? tokens, string text,
+            float[]? vector, bool? rating, string upn)
         {
-            return new Message(sessionId, sender, tokens, text, vector, rating);
+            return new Message(sessionId, sender, tokens, text, vector, rating, upn);
         }
     }
 }

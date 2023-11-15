@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Chat;
 using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.Models.Orchestration;
@@ -24,7 +25,12 @@ namespace FoundationaLLM.Core.Tests.Services
         public CoreServiceTests()
         {
             _brandingConfig.Value.Returns(new ClientBrandingConfiguration());
-
+            _callContext.CurrentUserIdentity.Returns(new UnifiedUserIdentity
+            {
+                Name = "Test User",
+                UPN = "test@foundationallm.ai",
+                Username = "test@foundationallm.ai"
+            });
             _testedService = new CoreService(_cosmosDbService, _gatekeeperAPIService, _logger, _brandingConfig, _callContext);
         }
 
@@ -35,7 +41,7 @@ namespace FoundationaLLM.Core.Tests.Services
         {
             // Arrange
             var expectedSessions = new List<Session>() { new Session() };
-            _cosmosDbService.GetSessionsAsync(Arg.Any<string>()).Returns(expectedSessions);
+            _cosmosDbService.GetSessionsAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(expectedSessions);
 
             // Act
             var actualSessions = await _testedService.GetAllChatSessionsAsync();
@@ -53,9 +59,10 @@ namespace FoundationaLLM.Core.Tests.Services
         {
             // Arrange
             var sessionId = Guid.NewGuid().ToString();
-            var message = new Message(sessionId, "sender", 0, "text", null, null);
+            var upn = "test@founationallm.ai";
+            var message = new Message(sessionId, "sender", 0, "text", null, null, upn);
             var expectedMessages = new List<Message>() { message };
-            _cosmosDbService.GetSessionMessagesAsync(sessionId).Returns(expectedMessages);
+            _cosmosDbService.GetSessionMessagesAsync(sessionId, upn).Returns(expectedMessages);
 
             // Act
             var actualMessages = await _testedService.GetChatSessionMessagesAsync(sessionId);
@@ -69,7 +76,7 @@ namespace FoundationaLLM.Core.Tests.Services
         {
             // Arrange
             string sessionId = null!;
-            _cosmosDbService.GetSessionMessagesAsync(sessionId).ReturnsNull();
+            _cosmosDbService.GetSessionMessagesAsync(sessionId, "").ReturnsNull();
 
             // Assert
             var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () =>
@@ -198,10 +205,11 @@ namespace FoundationaLLM.Core.Tests.Services
             // Arrange
             var sessionId = Guid.NewGuid().ToString();
             var userPrompt = "Prompt";
+            var upn = "test@foundationallm.ai";
             var expectedCompletion = new Completion() { Text = "Completion" };
 
             var expectedMessages = new List<Message>();
-            _cosmosDbService.GetSessionMessagesAsync(sessionId).Returns(expectedMessages);
+            _cosmosDbService.GetSessionMessagesAsync(sessionId, upn).Returns(expectedMessages);
 
             var completionResponse = new CompletionResponse() { Completion = "Completion" };
             _gatekeeperAPIService.GetCompletion(Arg.Any<CompletionRequest>()).Returns(completionResponse);
@@ -336,7 +344,8 @@ namespace FoundationaLLM.Core.Tests.Services
             var rating = true;
             var id = Guid.NewGuid().ToString();
             var sessionId = Guid.NewGuid().ToString();
-            var expectedMessage = new Message(sessionId, string.Empty, default, "Text", null, rating);
+            var upn = "";
+            var expectedMessage = new Message(sessionId, string.Empty, default, "Text", null, rating, upn);
             _cosmosDbService.UpdateMessageRatingAsync(id, sessionId, rating).Returns(expectedMessage);
 
             // Act

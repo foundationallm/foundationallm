@@ -91,6 +91,7 @@ if ($stepDeployOpenAi) {
 ## Getting OpenAI info
 if ($openAiName) {
     $openAi = $(az cognitiveservices account show -n $openAiName -g $openAiRg -o json | ConvertFrom-Json)
+    $openAiEndpoint = $openAi.properties.endpoint
 }
 else {
     $openAi = $(az cognitiveservices account list -g $resourceGroup -o json | ConvertFrom-Json)
@@ -116,7 +117,7 @@ if ($stepDeployArm) {
         -location $location `
         -template $armTemplate `
         -deployAks $deployAks `
-        -openAiEndpoint $openAi.properties.endpoint `
+        -openAiEndpoint $openAiEndpoint `
         -openAiKey $openAiKey `
         -openAiCompletionsDeployment $openAiCompletionsDeployment `
         -openAiEmbeddingsDeployment $openAiEmbeddingsDeployment

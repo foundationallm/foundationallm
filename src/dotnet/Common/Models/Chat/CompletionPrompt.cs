@@ -25,6 +25,10 @@
         /// The completion prompt.
         /// </summary>
         public string Prompt { get; set; }
+        /// <summary>
+        /// Deleted flag used for soft delete.
+        /// </summary>
+        public bool Deleted { get; set; }
 
         /// <summary>
         /// Constructor for Completion Prompt.

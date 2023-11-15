@@ -53,6 +53,14 @@ public record Message
     [SimpleField]
     public bool? Rating { get; set; }
     /// <summary>
+    /// The UPN of the user who created the chat session.
+    /// </summary>
+    public string UPN { get; set; }
+    /// <summary>
+    /// Deleted flag used for soft delete.
+    /// </summary>
+    public bool Deleted { get; set; }
+    /// <summary>
     /// The vector associated with the message.
     /// </summary>
     [FieldBuilderIgnore]
@@ -66,7 +74,7 @@ public record Message
     /// Constructor for Message.
     /// </summary>
     public Message(string sessionId, string sender, int? tokens, string text,
-        float[]? vector, bool? rating, string? senderDisplayName = null)
+        float[]? vector, bool? rating, string upn, string? senderDisplayName = null)
     {
         Id = Guid.NewGuid().ToString();
         Type = nameof(Message);
@@ -78,5 +86,6 @@ public record Message
         Text = text;
         Rating = rating;
         Vector = vector;
+        UPN = upn;
     }
 }

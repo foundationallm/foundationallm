@@ -3,6 +3,12 @@ variable "action_group_id" {
   type        = string
 }
 
+variable "customer_managed_key_id" {
+  default     = null
+  description = "The ID of the customer managed key to use for encryption."
+  type        = string
+}
+
 variable "log_analytics_workspace_id" {
   description = "The ID of the Log Analytics workspace to send diagnostics data to."
   type        = string

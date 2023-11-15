@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Common.Models;
 using FoundationaLLM.Common.Models.Chat;
 using FoundationaLLM.Common.Models.Search;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Utils;
@@ -18,24 +19,14 @@ namespace FoundationaLLM.Core.Services
     /// </summary>
     public class CosmosDbService : ICosmosDbService
     {
-        private readonly Container _completions;
-        private readonly Container _customer;
-        private readonly Container _product;
-        private readonly Container _leases;
+        private readonly Container _sessions;
+        private readonly Container _userSessions;
         private readonly Database _database;
         private readonly Dictionary<string, Container> _containers;
-
-        private readonly IGatekeeperAPIService _ragService;
         private readonly CosmosDbSettings _settings;
         private readonly ILogger _logger;
 
-        private List<ChangeFeedProcessor>? _changeFeedProcessors;
-        private bool _changeFeedsInitialized = false;
-
-        /// <summary>
-        /// Indicates whether the Azure Cosmos DB change feed is initialized.
-        /// </summary>
-        public bool IsInitialized => _changeFeedsInitialized;
+        private const string SoftDeleteQueryRestriction = " (not IS_DEFINED(c.deleted) OR c.deleted = false)";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CosmosDbService"/> class.
@@ -49,12 +40,9 @@ namespace FoundationaLLM.Core.Services
         /// <exception cref="ArgumentException">Thrown if any of the required settings
         /// are null or empty.</exception>
         public CosmosDbService(
-            IGatekeeperAPIService ragService,
-            IOptions<CosmosDbSettings> settings, 
+            IOptions<CosmosDbSettings> settings,
             ILogger<CosmosDbService> logger)
         {
-            _ragService = ragService;
-
             _settings = settings.Value;
             ArgumentException.ThrowIfNullOrEmpty(_settings.Endpoint);
             ArgumentException.ThrowIfNullOrEmpty(_settings.Key);
@@ -101,136 +89,32 @@ namespace FoundationaLLM.Core.Services
                 _containers.Add(containerName.Trim(), container);
             }
 
-            _completions = _containers["completions"];
-            _customer = _containers["customer"];
-            _product = _containers["product"];
-
-            _leases = database?.GetContainer(_settings.ChangeFeedLeaseContainer)
-                ?? throw new ArgumentException($"Unable to connect to the {_settings.ChangeFeedLeaseContainer} container required to listen to the CosmosDB change feed.");
-
-            //Task.Run(() => StartChangeFeedProcessors());
+            _sessions = database?.GetContainer(CosmosDbContainers.Sessions) ??
+                        throw new ArgumentException($"Unable to connect to existing Azure Cosmos DB container ({CosmosDbContainers.Sessions}).");
+            _userSessions = database?.GetContainer(CosmosDbContainers.UserSessions) ??
+                            throw new ArgumentException($"Unable to connect to existing Azure Cosmos DB container ({CosmosDbContainers.UserSessions}).");
             _logger.LogInformation("Cosmos DB service initialized.");
-        }
-
-        private async Task StartChangeFeedProcessors()
-        {
-            _logger.LogInformation("Initializing the change feed processors...");
-            _changeFeedProcessors = new List<ChangeFeedProcessor>();
-
-            try
-            {
-                foreach (var monitoredContainerName in _settings.MonitoredContainers.Split(',').Select(s => s.Trim()))
-                {
-                    var changeFeedProcessor = _containers[monitoredContainerName]
-                        .GetChangeFeedProcessorBuilder<dynamic>($"{monitoredContainerName}ChangeFeed", GenericChangeFeedHandler)
-                        .WithInstanceName($"{monitoredContainerName}ChangeInstance")
-                        .WithErrorNotification(GenericChangeFeedErrorHandler)
-                        .WithLeaseContainer(_leases)
-                        .Build();
-                    await changeFeedProcessor.StartAsync();
-                    _changeFeedProcessors.Add(changeFeedProcessor);
-                    _logger.LogInformation($"Initialized the change feed processor for the {monitoredContainerName} container.");
-                }
-
-                _changeFeedsInitialized = true;
-                _logger.LogInformation("Finished initializing the change feed processors.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error initializing change feed processors.");
-            }
-        }
-
-        // This is an example of a dynamic change feed handler that can handle a range of preconfigured entities.
-        private async Task GenericChangeFeedHandler(
-            ChangeFeedProcessorContext context,
-            IReadOnlyCollection<dynamic> changes,
-            CancellationToken cancellationToken)
-        {
-            if (changes.Count == 0)
-                return;
-
-            var batchRef = Guid.NewGuid().ToString();
-            _logger.LogInformation($"Starting to generate embeddings for {changes.Count} entities (batch ref {batchRef}).");
-
-            // Using dynamic type as this container has two different entities.
-            foreach (var item in changes)
-            {
-                try
-                {
-                    if (cancellationToken.IsCancellationRequested)
-                        break;
-
-                    var jObject = item as JObject;
-                    if (jObject != null)
-                    {
-                        var typeMetadata = ModelRegistry.IdentifyType(jObject);
-
-                        if (typeMetadata == null)
-                        {
-                            _logger.LogError($"Unsupported entity type in Cosmos DB change feed handler: {jObject}");
-                        }
-                        else
-                        {
-                            if (typeMetadata.Type != null)
-                            {
-                                var entity = jObject.ToObject(typeMetadata.Type);
-
-                                // Add the entity to the Semantic Kernel memory used by the RAG service
-                                // We want to keep the foundationallm.SemanticKernel project isolated from any domain-specific
-                                // references/dependencies, so we use a generic mechanism to get the name of the entity as well as to 
-                                // set the vector property on the entity.
-                                if (entity != null)
-                                    if (typeMetadata.NamingProperties != null)
-                                        await _ragService.AddMemory(
-                                            entity,
-                                            string.Join(" ", entity.GetPropertyValues(typeMetadata.NamingProperties)),
-                                            (e, v) => { ((e as EmbeddedEntity)!).vector = v; });
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, $"Error processing an item in the change feed handler: {item}");
-                }
-            }
-
-            _logger.LogInformation($"Finished generating embeddings (batch ref {batchRef}).");
-        }
-
-        private async Task GenericChangeFeedErrorHandler(
-            string LeaseToken,
-            Exception exception)
-        {
-            if (exception is ChangeFeedProcessorUserException userException)
-            {
-                Console.WriteLine($"Lease {LeaseToken} processing failed with unhandled exception from user delegate {userException.InnerException}");
-            }
-            else
-            {
-                Console.WriteLine($"Lease {LeaseToken} failed with {exception}");
-            }
-
-            await Task.CompletedTask;
         }
 
         /// <summary>
         /// Gets a list of all current chat sessions.
         /// </summary>
-        /// <param name="type">Identifier for kiosk and normal session.</param>
+        /// <param name="type">The session type to return.</param>
+        /// <param name="upn">The user principal name used for retrieving
+        /// sessions for the signed in user.</param>
         /// <returns>List of distinct chat session items.</returns>
-        public async Task<List<Session>> GetSessionsAsync(string type)
+        public async Task<List<Session>> GetSessionsAsync(string type, string upn)
         {
-            var query = new QueryDefinition("SELECT DISTINCT * FROM c WHERE c.type = @type ORDER BY c._ts DESC")
-                .WithParameter("@type", type);
+            var query = new QueryDefinition($"SELECT DISTINCT * FROM c WHERE c.type = @type AND c.upn = @upn AND {SoftDeleteQueryRestriction} ORDER BY c._ts DESC")
+                .WithParameter("@type", type)
+                .WithParameter("@upn", upn);
 
-            var response = _completions.GetItemQueryIterator<Session>(query);
+            var response = _userSessions.GetItemQueryIterator<Session>(query);
 
             List<Session> output = new();
             while (response.HasMoreResults)
             {
-                FeedResponse<Session> results = await response.ReadNextAsync();
+                var results = await response.ReadNextAsync();
                 output.AddRange(results);
             }
 
@@ -243,24 +127,29 @@ namespace FoundationaLLM.Core.Services
         /// <returns>The chat session item.</returns>
         public async Task<Session> GetSessionAsync(string id)
         {
-            return await _completions.ReadItemAsync<Session>(
+            var session = await _sessions.ReadItemAsync<Session>(
                 id: id,
                 partitionKey: new PartitionKey(id));
+            
+            return session;
         }
 
         /// <summary>
         /// Gets a list of all current chat messages for a specified session identifier.
         /// </summary>
-        /// <param name="sessionId">Chat session identifier used to filter messsages.</param>
+        /// <param name="sessionId">Chat session identifier used to filter messages.</param>
+        /// <param name="upn">The user principal name used for retrieving the messages for
+        /// the signed in user.</param>
         /// <returns>List of chat message items for the specified session.</returns>
-        public async Task<List<Message>> GetSessionMessagesAsync(string sessionId)
+        public async Task<List<Message>> GetSessionMessagesAsync(string sessionId, string upn)
         {
             var query =
-                new QueryDefinition("SELECT * FROM c WHERE c.sessionId = @sessionId AND c.type = @type")
+                new QueryDefinition($"SELECT * FROM c WHERE c.sessionId = @sessionId AND c.type = @type AND c.upn = @upn AND {SoftDeleteQueryRestriction}")
                     .WithParameter("@sessionId", sessionId)
-                    .WithParameter("@type", nameof(Message));
+                    .WithParameter("@type", nameof(Message))
+                    .WithParameter("@upn", upn);
 
-            var results = _completions.GetItemQueryIterator<Message>(query);
+            var results = _sessions.GetItemQueryIterator<Message>(query);
 
             List<Message> output = new();
             while (results.HasMoreResults)
@@ -280,7 +169,7 @@ namespace FoundationaLLM.Core.Services
         public async Task<Session> InsertSessionAsync(Session session)
         {
             PartitionKey partitionKey = new(session.SessionId);
-            return await _completions.CreateItemAsync(
+            return await _sessions.CreateItemAsync(
                 item: session,
                 partitionKey: partitionKey
             );
@@ -294,7 +183,7 @@ namespace FoundationaLLM.Core.Services
         public async Task<Message> InsertMessageAsync(Message message)
         {
             PartitionKey partitionKey = new(message.SessionId);
-            return await _completions.CreateItemAsync(
+            return await _sessions.CreateItemAsync(
                 item: message,
                 partitionKey: partitionKey
             );
@@ -308,7 +197,7 @@ namespace FoundationaLLM.Core.Services
         public async Task<Message> UpdateMessageAsync(Message message)
         {
             PartitionKey partitionKey = new(message.SessionId);
-            return await _completions.ReplaceItemAsync(
+            return await _sessions.ReplaceItemAsync(
                 item: message,
                 id: message.Id,
                 partitionKey: partitionKey
@@ -324,7 +213,7 @@ namespace FoundationaLLM.Core.Services
         /// <returns>Revised chat message item.</returns>
         public async Task<Message> UpdateMessageRatingAsync(string id, string sessionId, bool? rating)
         {
-            var response = await _completions.PatchItemAsync<Message>(
+            var response = await _sessions.PatchItemAsync<Message>(
                 id: id,
                 partitionKey: new PartitionKey(sessionId),
                 patchOperations: new[]
@@ -343,7 +232,7 @@ namespace FoundationaLLM.Core.Services
         public async Task<Session> UpdateSessionAsync(Session session)
         {
             PartitionKey partitionKey = new(session.SessionId);
-            return await _completions.ReplaceItemAsync(
+            return await _sessions.ReplaceItemAsync(
                 item: session,
                 id: session.Id,
                 partitionKey: partitionKey
@@ -358,7 +247,7 @@ namespace FoundationaLLM.Core.Services
         /// <returns>Revised chat session item.</returns>
         public async Task<Session> UpdateSessionNameAsync(string id, string name)
         {
-            var response = await _completions.PatchItemAsync<Session>(
+            var response = await _sessions.PatchItemAsync<Session>(
                 id: id,
                 partitionKey: new PartitionKey(id),
                 patchOperations: new[]
@@ -381,7 +270,7 @@ namespace FoundationaLLM.Core.Services
             }
 
             PartitionKey partitionKey = new(messages.First().SessionId);
-            var batch = _completions.CreateTransactionalBatch(partitionKey);
+            var batch = _sessions.CreateTransactionalBatch(partitionKey);
             foreach (var message in messages)
             {
                 batch.UpsertItem(
@@ -390,6 +279,19 @@ namespace FoundationaLLM.Core.Services
             }
 
             await batch.ExecuteAsync();
+        }
+
+        /// <summary>
+        /// Create or update a user session from the passed in Session object.
+        /// </summary>
+        /// <param name="session">The chat session item to create or replace.</param>
+        /// <returns></returns>
+        public async Task UpsertUserSessionAsync(Session session)
+        {
+            PartitionKey partitionKey = new(session.UPN);
+            await _userSessions.UpsertItemAsync(
+               item: session,
+               partitionKey: partitionKey);
         }
 
         /// <summary>
@@ -402,14 +304,14 @@ namespace FoundationaLLM.Core.Services
 
             // TODO: await container.DeleteAllItemsByPartitionKeyStreamAsync(partitionKey);
 
-            var query = new QueryDefinition("SELECT c.id FROM c WHERE c.sessionId = @sessionId")
+            var query = new QueryDefinition($"SELECT * FROM c WHERE c.sessionId = @sessionId AND {SoftDeleteQueryRestriction}")
                 .WithParameter("@sessionId", sessionId);
 
-            var response = _completions.GetItemQueryIterator<dynamic>(query);
+            var response = _sessions.GetItemQueryIterator<dynamic>(query);
 
             Console.WriteLine($"Deleting {sessionId} session and related messages.");
 
-            var batch = _completions.CreateTransactionalBatch(partitionKey);
+            var batch = _sessions.CreateTransactionalBatch(partitionKey);
             var count = 0;
 
             // Local function to execute and reset the batch.
@@ -419,7 +321,7 @@ namespace FoundationaLLM.Core.Services
                 {
                     await batch.ExecuteAsync();
                     count = 0;
-                    batch = _completions.CreateTransactionalBatch(partitionKey);
+                    batch = _sessions.CreateTransactionalBatch(partitionKey);
                 }
             }
 
@@ -428,7 +330,8 @@ namespace FoundationaLLM.Core.Services
                 var results = await response.ReadNextAsync();
                 foreach (var item in results)
                 {
-                    batch.DeleteItem(item.id.ToString());
+                    item.deleted = true;
+                    batch.UpsertItem(item);
                     count++;
                     if (count >= 100) // Execute the batch after adding 100 items (100 actions per batch execution is the limit).
                     {
@@ -438,57 +341,6 @@ namespace FoundationaLLM.Core.Services
             }
 
             await ExecuteBatchAsync();
-        }
-
-        /// <summary>
-        /// Inserts a product into the product container.
-        /// </summary>
-        /// <param name="product">Product item to create.</param>
-        /// <returns>Newly created product item.</returns>
-        public async Task<Product> InsertProductAsync(Product product)
-        {
-            try
-            {
-                return await _product.CreateItemAsync(product);
-            }
-            catch (CosmosException ex)
-            {
-                // Ignore conflict errors.
-                if (ex.StatusCode == System.Net.HttpStatusCode.Conflict)
-                {
-                    _logger.LogInformation("Product Already added.");
-                }
-                else
-                {
-                    _logger.LogError(ex.Message);
-                    throw;
-                }
-                return product;
-            }
-        }
-
-        /// <summary>
-        /// Deletes a product by its Id and category (its partition key).
-        /// </summary>
-        /// <param name="productId">The Id of the product to delete.</param>
-        /// <param name="categoryId">The category Id of the product to delete.</param>
-        /// <returns></returns>
-        public async Task DeleteProductAsync(string productId, string categoryId)
-        {
-            try
-            {
-                // Delete from Cosmos DB product container.
-                await _product.DeleteItemAsync<Product>(id: productId, partitionKey: new PartitionKey(categoryId));
-            }
-            catch (CosmosException ex)
-            {
-                if (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    _logger.LogInformation("The product has already been removed.");
-                }
-                else
-                    throw;
-            }
         }
 
         /// <summary>
@@ -509,7 +361,7 @@ namespace FoundationaLLM.Core.Services
                         document.itemId, new PartitionKey(document.partitionKey));
 
 
-                    if ((int) response.StatusCode < 200 || (int) response.StatusCode >= 400)
+                    if ((int)response.StatusCode < 200 || (int)response.StatusCode >= 400)
                         _logger.LogError(
                             $"Failed to retrieve an item for id '{document.itemId}' - status code '{response.StatusCode}");
 
@@ -547,9 +399,10 @@ namespace FoundationaLLM.Core.Services
         /// <returns></returns>
         public async Task<CompletionPrompt> GetCompletionPrompt(string sessionId, string completionPromptId)
         {
-            return await _completions.ReadItemAsync<CompletionPrompt>(
+            return await _sessions.ReadItemAsync<CompletionPrompt>(
                 id: completionPromptId,
                 partitionKey: new PartitionKey(sessionId));
         }
+
     }
 }

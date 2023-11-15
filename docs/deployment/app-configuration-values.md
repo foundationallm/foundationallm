@@ -14,20 +14,25 @@ FoundationaLLM uses Azure App Configuration to store configuration values, Key V
 | `FoundationaLLM:APIs:AgentFactoryAPI:ForceHttpsRedirection` | true | By default, the Agent Factory API forces HTTPS redirection. To override this behavior and allow it to handle HTTP requests, set this value to false. |
 | `FoundationaLLM:APIs:AgentHubAPI:APIKey` | Key Vault secret name: `foundationallm-apis-agenthubapi-apikey` | This is a Key Vault reference. |
 | `FoundationaLLM:APIs:AgentHubAPI:APIUrl` | Enter the URL to the service. |   |
+| `FoundationaLLM:APIs:AgentHubAPI:AppInsightsConnectionString` | Key Vault secret name: `foundationallm-app-insights-connection-string` | This is a Key Vault reference. |
 | `FoundationaLLM:APIs:CoreAPI:APIUrl` | Enter the URL to the service. |   |
 | `FoundationaLLM:APIs:CoreAPI:AppInsightsConnectionString` | Key Vault secret name: `foundationallm-app-insights-connection-string` | This is a Key Vault reference. |
 | `FoundationaLLM:APIs:DataSourceHubAPI:APIKey` | Key Vault secret name: `foundationallm-apis-datasourcehubapi-apikey` | This is a Key Vault reference. |
 | `FoundationaLLM:APIs:DataSourceHubAPI:APIUrl` | Enter the URL to the service. |   |
+| `FoundationaLLM:APIs:DataSourceHubAPI:AppInsightsConnectionString` | Key Vault secret name: `foundationallm-app-insights-connection-string` | This is a Key Vault reference. |
 | `FoundationaLLM:APIs:GatekeeperAPI:APIKey` | Key Vault secret name: `foundationallm-apis-gatekeeperapi-apikey` | This is a Key Vault reference. |
 | `FoundationaLLM:APIs:GatekeeperAPI:APIUrl` | Enter the URL to the service. |   |
 | `FoundationaLLM:APIs:GatekeeperAPI:AppInsightsConnectionString` | Key Vault secret name: `foundationallm-app-insights-connection-string` | This is a Key Vault reference. |
 | `FoundationaLLM:APIs:GatekeeperAPI:ForceHttpsRedirection` | true | By default, the Gatekeeper API forces HTTPS redirection. To override this behavior and allow it to handle HTTP requests, set this value to false. |
 | `FoundationaLLM:APIs:LangChainAPI:APIKey` | Key Vault secret name: `foundationallm-apis-langchainapi-apikey` | This is a Key Vault reference. |
 | `FoundationaLLM:APIs:LangChainAPI:APIUrl` | Enter the URL to the service. |   |
+| `FoundationaLLM:APIs:LangChainAPI:AppInsightsConnectionString` | Key Vault secret name: `foundationallm-app-insights-connection-string` | This is a Key Vault reference. |
 | `FoundationaLLM:APIs:PromptHubAPI:APIKey` | Key Vault secret name: `foundationallm-apis-prompthubapi-apikey` | This is a Key Vault reference. |
 | `FoundationaLLM:APIs:PromptHubAPI:APIUrl` | Enter the URL to the service. |   |
+| `FoundationaLLM:APIs:PromptHubAPI:AppInsightsConnectionString` | Key Vault secret name: `foundationallm-app-insights-connection-string` | This is a Key Vault reference. |
 | `FoundationaLLM:APIs:SemanticKernelAPI:APIKey` | Key Vault secret name: `foundationallm-apis-semantickernelapi-apikey` | This is a Key Vault reference. |
 | `FoundationaLLM:APIs:SemanticKernelAPI:APIUrl` | Enter the URL to the service. |   |
+| `FoundationaLLM:APIs:SemanticKernelAPI:AppInsightsConnectionString` | Key Vault secret name: `foundationallm-app-insights-connection-string` | This is a Key Vault reference. |
 | `FoundationaLLM:AzureContentSafety:APIKey` | Key Vault secret name: `foundationallm-azurecontentsafety-apikey` | This is a Key Vault reference. |
 | `FoundationaLLM:AzureContentSafety:APIUrl` | Enter the URL to the service. |   |
 | `FoundationaLLM:AzureContentSafety:HateSeverity` | 2 |   |
@@ -84,12 +89,13 @@ FoundationaLLM uses Azure App Configuration to store configuration values, Key V
 | `FoundationaLLM:CoreAPI:Entra:Instance` | Enter the URL to the service. |   |
 | `FoundationaLLM:CoreAPI:Entra:Scopes` | Data.Read |   |
 | `FoundationaLLM:CoreAPI:Entra:TenantId` |   |   |
+| `FoundationaLLM:CoreWorkerService:AppInsightsConnectionString` | Key Vault secret name: `foundationallm-app-insights-connection-string` | This is a Key Vault reference. |
 | `FoundationaLLM:CosmosDB:ChangeFeedLeaseContainer` | leases |   |
-| `FoundationaLLM:CosmosDB:Containers` | completions, customer, product |   |
+| `FoundationaLLM:CosmosDB:Containers` | Sessions, UserSessions |   |
 | `FoundationaLLM:CosmosDB:Database` | database |   |
 | `FoundationaLLM:CosmosDB:Endpoint` | Enter the URL to the service. |   |
 | `FoundationaLLM:CosmosDB:Key` | Key Vault secret name: `foundationallm-cosmosdb-key` | This is a Key Vault reference. |
-| `FoundationaLLM:CosmosDB:MonitoredContainers` | customer, product |   |
+| `FoundationaLLM:CosmosDB:MonitoredContainers` | Sessions |   |
 | `FoundationaLLM:DataSourceHub:DataSourceMetadata:StorageContainer` | data-sources |   |
 | `FoundationaLLM:DataSourceHub:StorageManager:BlobStorage:ConnectionString` | Key Vault secret name: `foundationallm-datasourcehub-storagemanager-blobstorage-connectionstring` | This is a Key Vault reference. |
 | `FoundationaLLM:DataSources:AboutFoundationaLLM:BlobStorage:ConnectionString` | Key Vault secret name: `foundationallm-datasourcehub-storagemanager-blobstorage-connectionstring` | This is a Key Vault reference. |

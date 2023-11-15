@@ -28,7 +28,7 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
         {
             // Arrange
             var session = new Session();
-            var message = new Message("1", "sender1", null, "The message", null, null);
+            var message = new Message("1", "sender1", null, "The message", null, null, "test@foundationallm.ai");
 
             // Act
             session.AddMessage(message);
@@ -42,10 +42,10 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
         {
             // Arrange
             var session = new Session();
-            var initialMessage = new Message("1", "sender1", null, "The message", null, null);
+            var initialMessage = new Message("1", "sender1", null, "The message", null, null, "test@foundationallm.ai");
             session.AddMessage(initialMessage);
 
-            var updatedMessage = new Message("1", "sender1", null, "The message updated", null, null);
+            var updatedMessage = new Message("1", "sender1", null, "The message updated", null, null, "test@foundationallm.ai");
             updatedMessage.Id = initialMessage.Id;
 
             // Act

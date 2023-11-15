@@ -7,7 +7,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Models.Orchestration
 {
     public class LLMOrchestrationCompletionRequestTests
     {
-        private readonly Agent _agent = new Agent { PromptTemplate = "TestPromptTemplate" };
+        private readonly Agent _agent = new Agent { PromptPrefix = "Prefix_1", PromptSuffix = "Suffix_1" };
         private readonly MetadataBase _dataSourceMetadata = new MetadataBase { Name = "TestDataSource" };
         private readonly LanguageModel _languageModel = new LanguageModel { Type = "TestType" };
         private readonly List<MessageHistoryItem> _messageHistory  = new List<MessageHistoryItem>{
@@ -44,7 +44,8 @@ namespace FoundationaLLM.AgentFactory.Tests.Models.Orchestration
             var deserializedCompletionRequest = JsonConvert.DeserializeObject<LLMOrchestrationCompletionRequest>(serializedJson);
 
             // Assert
-            Assert.Equal(_agent.PromptTemplate, deserializedCompletionRequest?.Agent?.PromptTemplate);
+            Assert.Equal(_agent.PromptSuffix, deserializedCompletionRequest?.Agent?.PromptSuffix);
+            Assert.Equal(_agent.PromptPrefix, deserializedCompletionRequest?.Agent?.PromptPrefix);
             Assert.Equal(_dataSourceMetadata.Name, deserializedCompletionRequest?.DataSourceMetadata?.Name);
             Assert.Equal(_languageModel.Type, deserializedCompletionRequest?.LanguageModel?.Type);
             Assert.Equal(_messageHistory[0].Sender, deserializedCompletionRequest?.MessageHistory[0].Sender);

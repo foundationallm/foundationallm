@@ -26,8 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\tests\dotnet\TestUtils\TestUtils.csproj" />
-    <ProjectReference Include="..\dotnet\AgentFactory\AgentFactory.csproj" />
+    <ProjectReference Include="..\TestUtils\TestUtils.csproj" />
+    <ProjectReference Include="..\..\..\src\dotnet\AgentFactory\AgentFactory.csproj" />
   </ItemGroup>
 
 </Project>
