@@ -12,7 +12,7 @@ namespace FoundationaLLM.SemanticKernel.API.Controllers
     /// </summary>
     [ApiVersion(1.0)]
     [ApiController]
-    //[APIKeyAuthentication]
+    [APIKeyAuthentication]
     [Route("[controller]")]
     public class OrchestrationController : ControllerBase
     {
