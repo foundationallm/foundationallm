@@ -35,9 +35,30 @@ resource "azurerm_cognitive_account" "main" {
   resource_group_name           = var.resource_group.name
   sku_name                      = "S0"
   tags                          = var.tags
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      customer_managed_key
+    ]
+  }
 }
 
+resource "azurerm_cognitive_account_customer_managed_key" "cmk" {
+  count      = var.customer_managed_key.enabled == false ? 0 : 1
+  depends_on = [azurerm_role_assignment.key_vault_crypto_user]
+
+  cognitive_account_id = azurerm_cognitive_account.main.id
+  key_vault_key_id     = var.customer_managed_key.key_vault_key_id
+}
+
+
 resource "azurerm_cognitive_deployment" "completions" {
+  depends_on = [azurerm_cognitive_account_customer_managed_key.cmk] # Prevent terraform from trying to destroy in parallel.
+
   cognitive_account_id = azurerm_cognitive_account.main.id
   name                 = "completions"
 
@@ -48,12 +69,14 @@ resource "azurerm_cognitive_deployment" "completions" {
   }
 
   scale {
-    capacity = "120"
+    capacity = var.capacity.completions
     type     = "Standard"
   }
 }
 
 resource "azurerm_cognitive_deployment" "embeddings" {
+  depends_on = [azurerm_cognitive_account_customer_managed_key.cmk] # Prevent terraform from trying to destroy in parallel.
+
   cognitive_account_id = azurerm_cognitive_account.main.id
   name                 = "embeddings"
   rai_policy_name      = "Microsoft.Default"
@@ -65,7 +88,7 @@ resource "azurerm_cognitive_deployment" "embeddings" {
   }
 
   scale {
-    capacity = "120"
+    capacity = var.capacity.embeddings
     type     = "Standard"
   }
 }
@@ -130,9 +153,17 @@ resource "azurerm_private_endpoint" "ple" {
   }
 }
 
+resource "azurerm_role_assignment" "key_vault_crypto_user" {
+  count = var.customer_managed_key.enabled == false ? 0 : 1
+
+  principal_id         = azurerm_cognitive_account.main.identity[0].principal_id
+  role_definition_name = "Key Vault Crypto User"
+  scope                = var.resource_group.id
+}
+
 # Modules
 module "diagnostics" {
-  source = "../../../diagnostics"
+  source = "../diagnostics"
 
   log_analytics_workspace_id = var.log_analytics_workspace_id
 

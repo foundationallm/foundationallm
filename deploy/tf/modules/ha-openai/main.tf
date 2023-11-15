@@ -57,7 +57,7 @@ module "keyvault" {
 }
 
 module "openai" {
-  source     = "./modules/openai"
+  source     = "../openai"
   count      = var.instance_count
   depends_on = [module.keyvault] # Make terraform wait for secrets to destroy before deleting the PLE
 
