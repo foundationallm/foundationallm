@@ -12,7 +12,7 @@ using System.Text;
 namespace FoundationaLLM.SemanticKernel.Plugins.Memory
 {
     /// <summary>
-    /// 
+    /// Vector memory store plugin for Semantic Kernel.
     /// </summary>
     public class VectorMemoryStore
     {

@@ -4,7 +4,7 @@ using Microsoft.SemanticKernel.Connectors.AI.OpenAI;
 namespace FoundationaLLM.SemanticKernel.Core.Plugins.Core
 {
     /// <summary>
-    /// Plugin for input text summarizer.
+    /// Text summarizer plugin for Semantic Kernel.
     /// </summary>
     public class TextSummaryPlugin
     {
