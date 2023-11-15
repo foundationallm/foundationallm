@@ -1,13 +1,11 @@
 ﻿using FoundationaLLM.Common.Models;
 using FoundationaLLM.Common.Models.Chat;
-using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Search;
 using FoundationaLLM.SemanticKernel.Chat;
 using FoundationaLLM.SemanticKernel.Core.Interfaces;
 using FoundationaLLM.SemanticKernel.Core.Models.ConfigurationOptions;
-using FoundationaLLM.SemanticKernel.Memory;
-using FoundationaLLM.SemanticKernel.Memory.AzureCognitiveSearch;
-using FoundationaLLM.SemanticKernel.Skills.Core;
+using FoundationaLLM.SemanticKernel.Core.Plugins.Core;
+using FoundationaLLM.SemanticKernel.Plugins.Memory;
 using FoundationaLLM.SemanticKernel.Text;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -15,6 +13,7 @@ using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.AI.ChatCompletion;
 using Microsoft.SemanticKernel.AI.Embeddings;
 using Microsoft.SemanticKernel.AI.TextCompletion;
+using Microsoft.SemanticKernel.Connectors.Memory.AzureCognitiveSearch;
 using Microsoft.SemanticKernel.Plugins.Memory;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
@@ -27,22 +26,23 @@ namespace FoundationaLLM.SemanticKernel.Core.Services;
 public class SemanticKernelService : ISemanticKernelService
 {
     readonly SemanticKernelServiceSettings _settings;
-
     readonly IKernel _semanticKernel;
     readonly IEnumerable<IMemorySource> _memorySources;
     readonly ILogger<SemanticKernelService> _logger;
     readonly ISystemPromptService _systemPromptService;
-    readonly IChatCompletion _chat;
-    readonly AzureCognitiveSearchVectorMemory _longTermMemory;
-    readonly ShortTermVolatileMemoryStore _shortTermMemory;
+    readonly VectorMemoryStore _longTermMemory;
+    readonly VectorMemoryStore _shortTermMemory;
     readonly Dictionary<string, Type> _memoryTypes;
 
-    bool _memoryInitialized = false;
+    readonly string _shortTermCollectionName = "short-term";
+
+    bool _serviceInitialized = false;
+    bool _shortTermMemoryInitialized = false;
 
     /// <summary>
-    /// Flag for the memory stores initialization.
+    /// Flag for the service initialization.
     /// </summary>
-    public bool IsInitialized => _memoryInitialized;
+    public bool IsInitialized => _serviceInitialized;
 
     /// <summary>
     /// Constructor for the Semantic Kernel service.
@@ -85,58 +85,66 @@ public class SemanticKernelService : ISemanticKernelService
 
         _semanticKernel = builder.Build();
 
-        _longTermMemory = new AzureCognitiveSearchVectorMemory(
-            _settings.CognitiveSearch.Endpoint,
-            _settings.CognitiveSearch.Key,
+        // The long-term memory uses an Azure Cognitive Search memory store
+        _longTermMemory = new VectorMemoryStore(
             _settings.CognitiveSearch.IndexName,
+            new AzureCognitiveSearchMemoryStore(
+                _settings.CognitiveSearch.Endpoint,
+                _settings.CognitiveSearch.Key),
             _semanticKernel.GetService<ITextEmbeddingGeneration>(),
-            _logger);
+            loggerFactory.CreateLogger<VectorMemoryStore>());
 
-        _shortTermMemory = new ShortTermVolatileMemoryStore(
+        _shortTermMemory = new VectorMemoryStore(
+            _shortTermCollectionName,
+            new VolatileMemoryStore(),
             _semanticKernel.GetService<ITextEmbeddingGeneration>(),
-            _logger);
+            loggerFactory.CreateLogger<VectorMemoryStore>());
 
-        Task.Run(() =>  InitializeMemory());
+        _serviceInitialized = true;
 
-        _semanticKernel.RegisterMemory(_longTermMemory);
-
-        _chat = _semanticKernel.GetService<IChatCompletion>();
         _logger.LogInformation("Semantic Kernel orchestration service initialized.");
     }
 
-    /// <summary>
-    /// Initialize the long-term and the short-term memory stores.
-    /// </summary>
-    /// <returns></returns>
-    private async Task InitializeMemory()
+    private async Task EnsureShortTermMemory()
     {
         try
         {
-            _logger.LogInformation("Initializing the Semantic Kernel orchestration service memory...");
-            await _longTermMemory.Initialize(_memoryTypes.Values.ToList());
+            if (_shortTermMemoryInitialized)
+                return;
 
-            // Get current short term memories
+            // The memories collection in the short term memory store must be created explicitly
+            await _shortTermMemory.MemoryStore.CreateCollectionAsync(_shortTermCollectionName);
+
+            // Get current short term memories. Short term memories are generated or loaded at runtime and kept in SK's volatile memory.
+            //The memories (data) here were generated from ACSMemorySourceConfig.json in blob storage that was used to execute faceted queries in Cog Search to iterate through
+            //each product category stored and count up the number of products in each category. The query also counts all the products for the entire company.
+            //The content here has embeddings generated on it so it can be used in a vector query by the user
+
             // TODO: Explore the option of moving static memories loaded from blob storage into the long-term memory (e.g., the Azure Cognitive Search index).
             // For now, the static memories are re-loaded each time together with the analytical short-term memories originating from Azure Cognitive Search faceted queries.
-            var shortTermMemories = new List<string>(); 
+            var shortTermMemories = new List<string>();
             foreach (var memorySource in _memorySources)
             {
                 shortTermMemories.AddRange(await memorySource.GetMemories());
             }
 
-            await _shortTermMemory.Initialize(shortTermMemories
-                .Select(m => (object) new ShortTermMemory
+            foreach (var stm in shortTermMemories
+                .Select(m => (object)new ShortTermMemory
                 {
                     entityType__ = nameof(ShortTermMemory),
                     memory__ = m
-                }).ToList());
+                }))
+            {
+                await _shortTermMemory.AddMemory(stm, "N/A");
+            }
 
-            _memoryInitialized = true;
-            _logger.LogInformation("Semantic Kernel orchestration service memory initialized.");
+            _shortTermMemoryInitialized = true;
+            _logger.LogInformation("Semantic Kernel service short-term memory initialized.");
+
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "The Semantic Kernel orchestration service memory failed to initialize.");
+            _logger.LogError(ex, "The Semantic Kernel service short-term memory failed to initialize.");
         }
     }
 
@@ -148,24 +156,27 @@ public class SemanticKernelService : ISemanticKernelService
     /// <returns>The completion text.</returns>
     public async Task<string> GetCompletion(string userPrompt, List<MessageHistoryItem> messageHistory)
     {
-        var memorySkill = new TextEmbeddingObjectMemorySkill(
+        await EnsureShortTermMemory();
+
+        var memoryPlugin = new TextEmbeddingObjectMemoryPlugin(
             _longTermMemory,
             _shortTermMemory,
             _logger);
 
-        var memories = await memorySkill.RecallAsync(
+        var memories = await memoryPlugin.RecallAsync(
             userPrompt,
             _settings.CognitiveSearch.IndexName,
             0.8,
             _settings.CognitiveSearch.MaxVectorSearchResults);
 
-        // Read the resulting user prompt embedding as soon as possile
-        var userPromptEmbedding = memorySkill.LastInputTextEmbedding?.ToArray();
+        // Read the resulting user prompt embedding as soon as possible
+        var userPromptEmbedding = memoryPlugin.LastInputTextEmbedding?.ToArray();
 
-        var memoryCollection = new List<string>();
-
-        if (!string.IsNullOrEmpty(memories))
-            memoryCollection = JsonConvert.DeserializeObject<List<string>>(memories);
+        List<string> memoryCollection;
+        if (string.IsNullOrEmpty(memories))
+            memoryCollection = new List<string>();
+        else
+            memoryCollection = JsonConvert.DeserializeObject<List<string>>(memories)!;
 
         var chatHistory = new ChatBuilder(
                 _semanticKernel,
@@ -175,7 +186,7 @@ public class SemanticKernelService : ISemanticKernelService
             .WithSystemPrompt(
                 await _systemPromptService.GetPrompt(_settings.OpenAI.ChatCompletionPromptName))
             .WithMemories(
-                memoryCollection ?? new List<string>())
+                memoryCollection!)
             .WithMessageHistory(
                 messageHistory.Select(m => (new AuthorRole(m.Sender.ToLower()), m.Text.NormalizeLineEndings())).ToList())
             .Build();
@@ -189,10 +200,7 @@ public class SemanticKernelService : ISemanticKernelService
         var reply = await completionResults[0].GetChatMessageAsync();
         var rawResult = (completionResults[0] as ITextResult)!.ModelResult.GetOpenAIChatResult();
 
-        var completion = new CompletionResponse(reply.Content, chatHistory[0].Content, rawResult.Usage.PromptTokens,
-            rawResult.Usage.CompletionTokens, userPromptEmbedding);
-
-        return completion.Completion;
+        return reply.Content;
     }
 
     /// <summary>
@@ -202,17 +210,16 @@ public class SemanticKernelService : ISemanticKernelService
     /// <returns>The prompt summary.</returns>
     public async Task<string> GetSummary(string userPrompt)
     {
-        var summarizerSkill = new GenericSummarizerSkill(
-            await _systemPromptService.GetPrompt(_settings.OpenAI.ShortSummaryPromptName),
-            500,
-            _semanticKernel);
+        var summarizerPlugin = new TextSummaryPlugin(
+                    await _systemPromptService.GetPrompt(_settings.OpenAI.ShortSummaryPromptName),
+                    500,
+                    _semanticKernel);
 
-        var result = await summarizerSkill.SummarizeConversationAsync(
-            userPrompt,
-            _semanticKernel.CreateNewContext());
+        var updatedContext = await summarizerPlugin.SummarizeTextAsync(
+            userPrompt);
 
-        //Remove all non-alpha numeric characters (Turbo has a habit of putting things in quotes even when you tell it not to
-        var summary = Regex.Replace(result, @"[^a-zA-Z0-9\s]", "");
+        //Remove all non-alpha numeric characters (Turbo has a habit of putting things in quotes even when you tell it not to)
+        var summary = Regex.Replace(updatedContext, @"[^a-zA-Z0-9.\s]", "");
 
         return summary;
     }
@@ -222,16 +229,10 @@ public class SemanticKernelService : ISemanticKernelService
     /// </summary>
     /// <param name="item">The object instance to be added to the memory.</param>
     /// <param name="itemName">The name of the object instance.</param>
-    /// <param name="vectorizer">The logic that sets the embedding vector as a property on the object.</param>
     /// <returns></returns>
-    public async Task AddMemory(object item, string itemName, Action<object, float[]> vectorizer)
+    public async Task AddMemory(object item, string itemName)
     {
-        if (item is EmbeddedEntity entity)
-            entity.entityType__ = item.GetType().Name;
-        else
-            throw new ArgumentException("Only objects derived from EmbeddedEntity can be added to memory.");
-
-        await _longTermMemory.AddMemory(item, itemName, vectorizer);
+        await _longTermMemory.AddMemory(item, itemName);
     }
 
     /// <summary>

@@ -27,9 +27,8 @@ public interface ISemanticKernelService
     /// </summary>
     /// <param name="item">The object instance to be added to the memory.</param>
     /// <param name="itemName">The name of the object instance.</param>
-    /// <param name="vectorizer">The logic that sets the embedding vector as a property on the object.</param>
     /// <returns></returns>
-    Task AddMemory(object item, string itemName, Action<object, float[]> vectorizer);
+    Task AddMemory(object item, string itemName);
 
     /// <summary>
     /// Removes an object instance and its associated vectorization from the underlying memory.
