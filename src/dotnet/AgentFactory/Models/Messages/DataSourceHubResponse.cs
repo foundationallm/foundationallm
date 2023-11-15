@@ -80,6 +80,13 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Messages
         public List<string>? Files { get; set; }
 
         /// <summary>
+        /// Discriptor for the type of data in the data source.
+        /// </summary>
+        /// <example>Survey data for a CSV file that contains survey results.</example>
+        [JsonProperty("data_description")]
+        public string? DataDescription { get; set; }
+
+        /// <summary>
         /// The dialect of the data source (SQL, etc)
         /// </summary>
         [JsonProperty("dialect")]

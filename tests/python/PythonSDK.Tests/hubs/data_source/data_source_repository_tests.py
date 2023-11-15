@@ -15,3 +15,8 @@ class DataSourceRepositoryTests:
         ds = data_source_repository.get_metadata_by_name("anomaly-ds")
         print(ds)
         assert ds.name == "anomaly-ds"
+
+    def test_blob_data_source_has_data_description(self, data_source_repository):
+        ds = data_source_repository.get_metadata_by_name("hai-ds")
+        print(ds)
+        assert ds.data_description == "Survey data"

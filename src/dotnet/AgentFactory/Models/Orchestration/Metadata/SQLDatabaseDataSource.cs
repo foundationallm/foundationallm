@@ -6,7 +6,7 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata
     /// <summary>
     /// SQL Database data source metadata model.
     /// </summary>
-    public class SQLDatabaseDataSource: MetadataBase
+    public class SQLDatabaseDataSource: DataSourceBase
     {
         /// <summary>
         /// SQL Database configuration settings.

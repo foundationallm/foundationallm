@@ -64,7 +64,8 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
                             ConnectionStringSecretName = dataSource.Authentication!["connection_string_secret"],
                             ContainerName = dataSource.Container,
                             Files = dataSource.Files
-                        }
+                        },
+                        DataDescription = dataSource.DataDescription
                     };
                     break;              
                     
@@ -89,7 +90,8 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
                             ExcludeTables = dataSource.ExcludeTables!,
                             RowLevelSecurityEnabled = dataSource.RowLevelSecurityEnabled ?? false,
                             FewShotExampleCount = dataSource.FewShotExampleCount ?? 0
-                        }
+                        },
+                        DataDescription = dataSource.DataDescription
                     };
                     break;
                 default:
