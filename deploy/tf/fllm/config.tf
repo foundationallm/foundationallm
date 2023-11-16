@@ -91,7 +91,7 @@ locals {
       value = "#FFF"
     }
     "FoundationaLLM:Branding:AllowAgentSelection" = {
-      value = "default, anomaly, hai, movies, sdzwa, weather, weather-sec"
+      value = "default, anomaly, demos, hai, movies, sdzwa, solliance, weather, weather-sec"
     }
     "FoundationaLLM:Branding:CompanyName" = {
       value = "FoundationaLLM"
