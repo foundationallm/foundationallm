@@ -1,0 +1,45 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "publicIPAddresses_EUS_FLLM_DEMO_AGW_api_pip_name": {
+            "value": null
+        },
+        "publicIPAddresses_EUS_FLLM_DEMO_AGW_www_pip_name": {
+            "value": null
+        },
+        "applicationGateways_EUS_FLLM_DEMO_AGW_api_agw_name": {
+            "value": null
+        },
+        "applicationGateways_EUS_FLLM_DEMO_AGW_www_agw_name": {
+            "value": null
+        },
+        "metricAlerts_EUS_FLLM_DEMO_AGW_api_agw_requests_alert_name": {
+            "value": null
+        },
+        "metricAlerts_EUS_FLLM_DEMO_AGW_www_agw_requests_alert_name": {
+            "value": null
+        },
+        "userAssignedIdentities_EUS_FLLM_DEMO_AGW_agw_uai_name": {
+            "value": null
+        },
+        "metricAlerts_EUS_FLLM_DEMO_AGW_api_agw_backendhealth_alert_name": {
+            "value": null
+        },
+        "metricAlerts_EUS_FLLM_DEMO_AGW_www_agw_backendhealth_alert_name": {
+            "value": null
+        },
+        "metricAlerts_EUS_FLLM_DEMO_AGW_api_agw_failedrequests_alert_name": {
+            "value": null
+        },
+        "metricAlerts_EUS_FLLM_DEMO_AGW_www_agw_failedrequests_alert_name": {
+            "value": null
+        },
+        "actionGroups_EUS_FLLM_DEMO_OPS_ag_externalid": {
+            "value": null
+        },
+        "virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid": {
+            "value": null
+        }
+    }
+}

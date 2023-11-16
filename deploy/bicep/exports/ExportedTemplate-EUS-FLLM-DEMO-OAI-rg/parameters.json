@@ -1,0 +1,78 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "users_1_lastName": {
+            "value": null
+        },
+        "vaults_EUS_FLLM_DEMO_OAI_kv_name": {
+            "value": null
+        },
+        "service_EUS_FLLM_DEMO_OAI_apim_name": {
+            "value": null
+        },
+        "publicIPAddresses_EUS_FLLM_DEMO_OAI_pip_name": {
+            "value": null
+        },
+        "privateEndpoints_EUS_FLLM_DEMO_OAI_kv_pe_name": {
+            "value": null
+        },
+        "accounts_EUS_FLLM_DEMO_OAI_0_openai_name": {
+            "value": null
+        },
+        "accounts_EUS_FLLM_DEMO_OAI_1_openai_name": {
+            "value": null
+        },
+        "privateEndpoints_EUS_FLLM_DEMO_OAI_0_openai_pe_name": {
+            "value": null
+        },
+        "privateEndpoints_EUS_FLLM_DEMO_OAI_1_openai_pe_name": {
+            "value": null
+        },
+        "metricAlerts_EUS_FLLM_DEMO_OAI_kv_latency_alert_name": {
+            "value": null
+        },
+        "accounts_EUS_FLLM_DEMO_OAI_content_safety_name": {
+            "value": null
+        },
+        "metricAlerts_EUS_FLLM_DEMO_OAI_apim_capacity_alert_name": {
+            "value": null
+        },
+        "metricAlerts_EUS_FLLM_DEMO_OAI_kv_saturation_alert_name": {
+            "value": null
+        },
+        "privateEndpoints_EUS_FLLM_DEMO_OAI_content_safety_pe_name": {
+            "value": null
+        },
+        "metricAlerts_EUS_FLLM_DEMO_OAI_kv_availability_alert_name": {
+            "value": null
+        },
+        "metricAlerts_EUS_FLLM_DEMO_OAI_openai_openai0_latency_alert_name": {
+            "value": null
+        },
+        "metricAlerts_EUS_FLLM_DEMO_OAI_openai_openai1_latency_alert_name": {
+            "value": null
+        },
+        "metricAlerts_EUS_FLLM_DEMO_OAI_openai_openai0_availability_alert_name": {
+            "value": null
+        },
+        "metricAlerts_EUS_FLLM_DEMO_OAI_openai_openai1_availability_alert_name": {
+            "value": null
+        },
+        "virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid": {
+            "value": null
+        },
+        "actionGroups_EUS_FLLM_DEMO_OPS_ag_externalid": {
+            "value": null
+        },
+        "privateDnsZones_privatelink_openai_azure_com_externalid": {
+            "value": null
+        },
+        "privateDnsZones_privatelink_cognitiveservices_azure_com_externalid": {
+            "value": null
+        },
+        "privateDnsZones_privatelink_vaultcore_azure_net_externalid": {
+            "value": null
+        }
+    }
+}

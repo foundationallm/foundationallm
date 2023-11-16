@@ -1,0 +1,1481 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageAccounts_efllmdstoragesa_name": {
+            "defaultValue": "efllmdstoragesa",
+            "type": "String"
+        },
+        "privateEndpoints_e_FLLM_d_STORAGE_dfs_pe_name": {
+            "defaultValue": "e-FLLM-d-STORAGE-dfs-pe",
+            "type": "String"
+        },
+        "privateEndpoints_e_FLLM_d_STORAGE_web_pe_name": {
+            "defaultValue": "e-FLLM-d-STORAGE-web-pe",
+            "type": "String"
+        },
+        "privateEndpoints_e_FLLM_d_STORAGE_blob_pe_name": {
+            "defaultValue": "e-FLLM-d-STORAGE-blob-pe",
+            "type": "String"
+        },
+        "privateEndpoints_e_FLLM_d_STORAGE_file_pe_name": {
+            "defaultValue": "e-FLLM-d-STORAGE-file-pe",
+            "type": "String"
+        },
+        "privateEndpoints_e_FLLM_d_STORAGE_queue_pe_name": {
+            "defaultValue": "e-FLLM-d-STORAGE-queue-pe",
+            "type": "String"
+        },
+        "privateEndpoints_e_FLLM_d_STORAGE_table_pe_name": {
+            "defaultValue": "e-FLLM-d-STORAGE-table-pe",
+            "type": "String"
+        },
+        "databaseAccounts_eus_fllm_demo_storage_cdb_name": {
+            "defaultValue": "eus-fllm-demo-storage-cdb",
+            "type": "String"
+        },
+        "privateEndpoints_EUS_FLLM_DEMO_STORAGE_sql_pe_name": {
+            "defaultValue": "EUS-FLLM-DEMO-STORAGE-sql-pe",
+            "type": "String"
+        },
+        "metricAlerts_e_FLLM_d_STORAGE_sa_availability_alert_name": {
+            "defaultValue": "e-FLLM-d-STORAGE-sa-availability-alert",
+            "type": "String"
+        },
+        "metricAlerts_EUS_FLLM_DEMO_STORAGE_cdb_availability_alert_name": {
+            "defaultValue": "EUS-FLLM-DEMO-STORAGE-cdb-availability-alert",
+            "type": "String"
+        },
+        "systemTopics_efllmdstoragesa_e890ac3a_6c93_4b83_8f98_137345ee5922_name": {
+            "defaultValue": "efllmdstoragesa-e890ac3a-6c93-4b83-8f98-137345ee5922",
+            "type": "String"
+        },
+        "actionGroups_EUS_FLLM_DEMO_OPS_ag_externalid": {
+            "defaultValue": "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-OPS-rg/providers/Microsoft.Insights/actionGroups/EUS-FLLM-DEMO-OPS-ag",
+            "type": "String"
+        },
+        "virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid": {
+            "defaultValue": "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-NET-rg/providers/Microsoft.Network/virtualNetworks/EUS-FLLM-DEMO-NET-vnet",
+            "type": "String"
+        },
+        "privateDnsZones_privatelink_blob_core_windows_net_externalid": {
+            "defaultValue": "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DNS-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net",
+            "type": "String"
+        },
+        "privateDnsZones_privatelink_dfs_core_windows_net_externalid": {
+            "defaultValue": "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DNS-rg/providers/Microsoft.Network/privateDnsZones/privatelink.dfs.core.windows.net",
+            "type": "String"
+        },
+        "privateDnsZones_privatelink_file_core_windows_net_externalid": {
+            "defaultValue": "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DNS-rg/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net",
+            "type": "String"
+        },
+        "privateDnsZones_privatelink_queue_core_windows_net_externalid": {
+            "defaultValue": "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DNS-rg/providers/Microsoft.Network/privateDnsZones/privatelink.queue.core.windows.net",
+            "type": "String"
+        },
+        "privateDnsZones_privatelink_table_core_windows_net_externalid": {
+            "defaultValue": "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DNS-rg/providers/Microsoft.Network/privateDnsZones/privatelink.table.core.windows.net",
+            "type": "String"
+        },
+        "privateDnsZones_privatelink_azurewebsites_net_externalid": {
+            "defaultValue": "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DNS-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azurewebsites.net",
+            "type": "String"
+        },
+        "privateDnsZones_privatelink_documents_azure_com_externalid": {
+            "defaultValue": "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DNS-rg/providers/Microsoft.Network/privateDnsZones/privatelink.documents.azure.com",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "apiVersion": "2023-09-15",
+            "name": "[parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name')]",
+            "location": "East US",
+            "tags": {
+                "Environment": "DEMO",
+                "Project": "FLLM",
+                "Purpose": "Storage",
+                "Workspace": "FoundationaLLM-Platform"
+            },
+            "kind": "GlobalDocumentDB",
+            "identity": {
+                "type": "None"
+            },
+            "properties": {
+                "publicNetworkAccess": "Disabled",
+                "enableAutomaticFailover": false,
+                "enableMultipleWriteLocations": false,
+                "isVirtualNetworkFilterEnabled": false,
+                "virtualNetworkRules": [],
+                "disableKeyBasedMetadataWriteAccess": false,
+                "enableFreeTier": false,
+                "enableAnalyticalStorage": false,
+                "analyticalStorageConfiguration": {
+                    "schemaType": "WellDefined"
+                },
+                "createMode": "Default",
+                "databaseAccountOfferType": "Standard",
+                "defaultIdentity": "FirstPartyIdentity",
+                "networkAclBypass": "None",
+                "disableLocalAuth": false,
+                "enablePartitionMerge": false,
+                "enableBurstCapacity": false,
+                "minimalTlsVersion": "Tls12",
+                "consistencyPolicy": {
+                    "defaultConsistencyLevel": "Session",
+                    "maxIntervalInSeconds": 5,
+                    "maxStalenessPrefix": 100
+                },
+                "locations": [
+                    {
+                        "locationName": "East US",
+                        "provisioningState": "Succeeded",
+                        "failoverPriority": 0,
+                        "isZoneRedundant": false
+                    }
+                ],
+                "cors": [],
+                "capabilities": [],
+                "ipRules": [],
+                "backupPolicy": {
+                    "type": "Continuous",
+                    "continuousModeProperties": {
+                        "tier": "Continuous30Days"
+                    }
+                },
+                "networkAclBypassResourceIds": [],
+                "capacity": {
+                    "totalThroughputLimit": 5000
+                },
+                "keysMetadata": {}
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2023-01-01",
+            "name": "[parameters('storageAccounts_efllmdstoragesa_name')]",
+            "location": "eastus",
+            "tags": {
+                "Environment": "DEMO",
+                "Project": "FLLM",
+                "Purpose": "Storage",
+                "Workspace": "FoundationaLLM-Platform"
+            },
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "defaultToOAuthAuthentication": true,
+                "publicNetworkAccess": "Disabled",
+                "sasPolicy": {
+                    "sasExpirationPeriod": "00.04:00:00",
+                    "expirationAction": "Log"
+                },
+                "allowCrossTenantReplication": true,
+                "isNfsV3Enabled": false,
+                "isSftpEnabled": false,
+                "minimumTlsVersion": "TLS1_2",
+                "allowBlobPublicAccess": false,
+                "allowSharedKeyAccess": true,
+                "isHnsEnabled": false,
+                "networkAcls": {
+                    "resourceAccessRules": [
+                        {
+                            "tenantId": "22179471-b099-4504-bfdb-3f184cdae122",
+                            "resourceId": "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/providers/Microsoft.Security/datascanners/storageDataScanner"
+                        }
+                    ],
+                    "bypass": "Logging, Metrics, AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Deny"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "requireInfrastructureEncryption": true,
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
+            "apiVersion": "2023-09-15",
+            "name": "[concat(parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), '/database')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "database"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions",
+            "apiVersion": "2023-09-15",
+            "name": "[concat(parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), '/00000000-0000-0000-0000-000000000001')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'))]"
+            ],
+            "properties": {
+                "roleName": "Cosmos DB Built-in Data Reader",
+                "type": "BuiltInRole",
+                "assignableScopes": [
+                    "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'))]"
+                ],
+                "permissions": [
+                    {
+                        "dataActions": [
+                            "Microsoft.DocumentDB/databaseAccounts/readMetadata",
+                            "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/executeQuery",
+                            "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/readChangeFeed",
+                            "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/items/read"
+                        ],
+                        "notDataActions": []
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions",
+            "apiVersion": "2023-09-15",
+            "name": "[concat(parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), '/00000000-0000-0000-0000-000000000002')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'))]"
+            ],
+            "properties": {
+                "roleName": "Cosmos DB Built-in Data Contributor",
+                "type": "BuiltInRole",
+                "assignableScopes": [
+                    "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'))]"
+                ],
+                "permissions": [
+                    {
+                        "dataActions": [
+                            "Microsoft.DocumentDB/databaseAccounts/readMetadata",
+                            "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/*",
+                            "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/items/*"
+                        ],
+                        "notDataActions": []
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.EventGrid/systemTopics",
+            "apiVersion": "2023-06-01-preview",
+            "name": "[parameters('systemTopics_efllmdstoragesa_e890ac3a_6c93_4b83_8f98_137345ee5922_name')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "properties": {
+                "source": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]",
+                "topicType": "microsoft.storage.storageaccounts"
+            }
+        },
+        {
+            "type": "Microsoft.EventGrid/systemTopics/eventSubscriptions",
+            "apiVersion": "2023-06-01-preview",
+            "name": "[concat(parameters('systemTopics_efllmdstoragesa_e890ac3a_6c93_4b83_8f98_137345ee5922_name'), '/StorageAntimalwareSubscription')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventGrid/systemTopics', parameters('systemTopics_efllmdstoragesa_e890ac3a_6c93_4b83_8f98_137345ee5922_name'))]"
+            ],
+            "properties": {
+                "destination": {
+                    "properties": {
+                        "maxEventsPerBatch": 1,
+                        "preferredBatchSizeInKilobytes": 64,
+                        "azureActiveDirectoryTenantId": "33e01921-4d64-4f8c-a055-5bdaffd5e33d",
+                        "azureActiveDirectoryApplicationIdOrUri": "f1f8da5f-609a-401d-85b2-d498116b7265"
+                    },
+                    "endpointType": "WebHook"
+                },
+                "filter": {
+                    "includedEventTypes": [
+                        "Microsoft.Storage.BlobCreated"
+                    ],
+                    "advancedFilters": [
+                        {
+                            "values": [
+                                "BlockBlob"
+                            ],
+                            "operatorType": "StringContains",
+                            "key": "data.blobType"
+                        }
+                    ]
+                },
+                "eventDeliverySchema": "EventGridSchema",
+                "retryPolicy": {
+                    "maxDeliveryAttempts": 30,
+                    "eventTimeToLiveInMinutes": 1440
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Insights/metricAlerts",
+            "apiVersion": "2018-03-01",
+            "name": "[parameters('metricAlerts_e_FLLM_d_STORAGE_sa_availability_alert_name')]",
+            "location": "global",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "tags": {
+                "Environment": "DEMO",
+                "Project": "FLLM",
+                "Purpose": "Storage",
+                "Workspace": "FoundationaLLM-Platform"
+            },
+            "properties": {
+                "description": "Alert on Storage Account Threshold - Account availability less than 99% for 5 minutes",
+                "severity": 1,
+                "enabled": true,
+                "scopes": [
+                    "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+                ],
+                "evaluationFrequency": "PT1M",
+                "windowSize": "PT5M",
+                "criteria": {
+                    "allOf": [
+                        {
+                            "threshold": 99,
+                            "name": "Metric1",
+                            "metricNamespace": "Microsoft.Storage/storageaccounts",
+                            "metricName": "Availability",
+                            "operator": "LessThan",
+                            "timeAggregation": "Average",
+                            "skipMetricValidation": false,
+                            "criterionType": "StaticThresholdCriterion"
+                        }
+                    ],
+                    "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
+                },
+                "autoMitigate": true,
+                "actions": [
+                    {
+                        "actionGroupId": "[parameters('actionGroups_EUS_FLLM_DEMO_OPS_ag_externalid')]",
+                        "webHookProperties": {}
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Insights/metricAlerts",
+            "apiVersion": "2018-03-01",
+            "name": "[parameters('metricAlerts_EUS_FLLM_DEMO_STORAGE_cdb_availability_alert_name')]",
+            "location": "global",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'))]"
+            ],
+            "tags": {
+                "Environment": "DEMO",
+                "Project": "FLLM",
+                "Purpose": "Storage",
+                "Workspace": "FoundationaLLM-Platform"
+            },
+            "properties": {
+                "description": "Service availability less than 99% for 1 hour",
+                "severity": 0,
+                "enabled": true,
+                "scopes": [
+                    "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'))]"
+                ],
+                "evaluationFrequency": "PT1M",
+                "windowSize": "PT1H",
+                "criteria": {
+                    "allOf": [
+                        {
+                            "threshold": 99,
+                            "name": "Metric1",
+                            "metricNamespace": "Microsoft.DocumentDB/DatabaseAccounts",
+                            "metricName": "ServiceAvailability",
+                            "operator": "LessThan",
+                            "timeAggregation": "Average",
+                            "skipMetricValidation": false,
+                            "criterionType": "StaticThresholdCriterion"
+                        }
+                    ],
+                    "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
+                },
+                "autoMitigate": true,
+                "actions": [
+                    {
+                        "actionGroupId": "[parameters('actionGroups_EUS_FLLM_DEMO_OPS_ag_externalid')]",
+                        "webHookProperties": {}
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints",
+            "apiVersion": "2023-05-01",
+            "name": "[parameters('privateEndpoints_e_FLLM_d_STORAGE_blob_pe_name')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "tags": {
+                "Environment": "DEMO",
+                "Project": "FLLM",
+                "Purpose": "Storage",
+                "Workspace": "FoundationaLLM-Platform"
+            },
+            "properties": {
+                "privateLinkServiceConnections": [
+                    {
+                        "name": "e-FLLM-d-STORAGE-blob-connection",
+                        "id": "[concat(resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_e_FLLM_d_STORAGE_blob_pe_name')), '/privateLinkServiceConnections/e-FLLM-d-STORAGE-blob-connection')]",
+                        "properties": {
+                            "privateLinkServiceId": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]",
+                            "groupIds": [
+                                "blob"
+                            ],
+                            "privateLinkServiceConnectionState": {
+                                "status": "Approved",
+                                "description": "Auto-Approved",
+                                "actionsRequired": "None"
+                            }
+                        }
+                    }
+                ],
+                "manualPrivateLinkServiceConnections": [],
+                "subnet": {
+                    "id": "[concat(parameters('virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid'), '/subnets/FLLMStorage')]"
+                },
+                "ipConfigurations": [],
+                "customDnsConfigs": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints",
+            "apiVersion": "2023-05-01",
+            "name": "[parameters('privateEndpoints_e_FLLM_d_STORAGE_dfs_pe_name')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "tags": {
+                "Environment": "DEMO",
+                "Project": "FLLM",
+                "Purpose": "Storage",
+                "Workspace": "FoundationaLLM-Platform"
+            },
+            "properties": {
+                "privateLinkServiceConnections": [
+                    {
+                        "name": "e-FLLM-d-STORAGE-dfs-connection",
+                        "id": "[concat(resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_e_FLLM_d_STORAGE_dfs_pe_name')), '/privateLinkServiceConnections/e-FLLM-d-STORAGE-dfs-connection')]",
+                        "properties": {
+                            "privateLinkServiceId": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]",
+                            "groupIds": [
+                                "dfs"
+                            ],
+                            "privateLinkServiceConnectionState": {
+                                "status": "Approved",
+                                "description": "Auto-Approved",
+                                "actionsRequired": "None"
+                            }
+                        }
+                    }
+                ],
+                "manualPrivateLinkServiceConnections": [],
+                "subnet": {
+                    "id": "[concat(parameters('virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid'), '/subnets/FLLMStorage')]"
+                },
+                "ipConfigurations": [],
+                "customDnsConfigs": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints",
+            "apiVersion": "2023-05-01",
+            "name": "[parameters('privateEndpoints_e_FLLM_d_STORAGE_file_pe_name')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "tags": {
+                "Environment": "DEMO",
+                "Project": "FLLM",
+                "Purpose": "Storage",
+                "Workspace": "FoundationaLLM-Platform"
+            },
+            "properties": {
+                "privateLinkServiceConnections": [
+                    {
+                        "name": "e-FLLM-d-STORAGE-file-connection",
+                        "id": "[concat(resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_e_FLLM_d_STORAGE_file_pe_name')), '/privateLinkServiceConnections/e-FLLM-d-STORAGE-file-connection')]",
+                        "properties": {
+                            "privateLinkServiceId": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]",
+                            "groupIds": [
+                                "file"
+                            ],
+                            "privateLinkServiceConnectionState": {
+                                "status": "Approved",
+                                "description": "Auto-Approved",
+                                "actionsRequired": "None"
+                            }
+                        }
+                    }
+                ],
+                "manualPrivateLinkServiceConnections": [],
+                "subnet": {
+                    "id": "[concat(parameters('virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid'), '/subnets/FLLMStorage')]"
+                },
+                "ipConfigurations": [],
+                "customDnsConfigs": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints",
+            "apiVersion": "2023-05-01",
+            "name": "[parameters('privateEndpoints_e_FLLM_d_STORAGE_queue_pe_name')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "tags": {
+                "Environment": "DEMO",
+                "Project": "FLLM",
+                "Purpose": "Storage",
+                "Workspace": "FoundationaLLM-Platform"
+            },
+            "properties": {
+                "privateLinkServiceConnections": [
+                    {
+                        "name": "e-FLLM-d-STORAGE-queue-connection",
+                        "id": "[concat(resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_e_FLLM_d_STORAGE_queue_pe_name')), '/privateLinkServiceConnections/e-FLLM-d-STORAGE-queue-connection')]",
+                        "properties": {
+                            "privateLinkServiceId": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]",
+                            "groupIds": [
+                                "queue"
+                            ],
+                            "privateLinkServiceConnectionState": {
+                                "status": "Approved",
+                                "description": "Auto-Approved",
+                                "actionsRequired": "None"
+                            }
+                        }
+                    }
+                ],
+                "manualPrivateLinkServiceConnections": [],
+                "subnet": {
+                    "id": "[concat(parameters('virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid'), '/subnets/FLLMStorage')]"
+                },
+                "ipConfigurations": [],
+                "customDnsConfigs": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints",
+            "apiVersion": "2023-05-01",
+            "name": "[parameters('privateEndpoints_e_FLLM_d_STORAGE_table_pe_name')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "tags": {
+                "Environment": "DEMO",
+                "Project": "FLLM",
+                "Purpose": "Storage",
+                "Workspace": "FoundationaLLM-Platform"
+            },
+            "properties": {
+                "privateLinkServiceConnections": [
+                    {
+                        "name": "e-FLLM-d-STORAGE-table-connection",
+                        "id": "[concat(resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_e_FLLM_d_STORAGE_table_pe_name')), '/privateLinkServiceConnections/e-FLLM-d-STORAGE-table-connection')]",
+                        "properties": {
+                            "privateLinkServiceId": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]",
+                            "groupIds": [
+                                "table"
+                            ],
+                            "privateLinkServiceConnectionState": {
+                                "status": "Approved",
+                                "description": "Auto-Approved",
+                                "actionsRequired": "None"
+                            }
+                        }
+                    }
+                ],
+                "manualPrivateLinkServiceConnections": [],
+                "subnet": {
+                    "id": "[concat(parameters('virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid'), '/subnets/FLLMStorage')]"
+                },
+                "ipConfigurations": [],
+                "customDnsConfigs": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints",
+            "apiVersion": "2023-05-01",
+            "name": "[parameters('privateEndpoints_e_FLLM_d_STORAGE_web_pe_name')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "tags": {
+                "Environment": "DEMO",
+                "Project": "FLLM",
+                "Purpose": "Storage",
+                "Workspace": "FoundationaLLM-Platform"
+            },
+            "properties": {
+                "privateLinkServiceConnections": [
+                    {
+                        "name": "e-FLLM-d-STORAGE-web-connection",
+                        "id": "[concat(resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_e_FLLM_d_STORAGE_web_pe_name')), '/privateLinkServiceConnections/e-FLLM-d-STORAGE-web-connection')]",
+                        "properties": {
+                            "privateLinkServiceId": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]",
+                            "groupIds": [
+                                "web"
+                            ],
+                            "privateLinkServiceConnectionState": {
+                                "status": "Approved",
+                                "description": "Auto-Approved",
+                                "actionsRequired": "None"
+                            }
+                        }
+                    }
+                ],
+                "manualPrivateLinkServiceConnections": [],
+                "subnet": {
+                    "id": "[concat(parameters('virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid'), '/subnets/FLLMStorage')]"
+                },
+                "ipConfigurations": [],
+                "customDnsConfigs": [
+                    {
+                        "fqdn": "efllmdstoragesa.z13.web.core.windows.net",
+                        "ipAddresses": [
+                            "10.0.4.6"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints",
+            "apiVersion": "2023-05-01",
+            "name": "[parameters('privateEndpoints_EUS_FLLM_DEMO_STORAGE_sql_pe_name')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'))]"
+            ],
+            "tags": {
+                "Environment": "DEMO",
+                "Project": "FLLM",
+                "Purpose": "Storage",
+                "Workspace": "FoundationaLLM-Platform"
+            },
+            "properties": {
+                "privateLinkServiceConnections": [
+                    {
+                        "name": "EUS-FLLM-DEMO-STORAGE-sql-connection",
+                        "id": "[concat(resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_EUS_FLLM_DEMO_STORAGE_sql_pe_name')), '/privateLinkServiceConnections/EUS-FLLM-DEMO-STORAGE-sql-connection')]",
+                        "properties": {
+                            "privateLinkServiceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'))]",
+                            "groupIds": [
+                                "Sql"
+                            ],
+                            "privateLinkServiceConnectionState": {
+                                "status": "Approved",
+                                "actionsRequired": "None"
+                            }
+                        }
+                    }
+                ],
+                "manualPrivateLinkServiceConnections": [],
+                "subnet": {
+                    "id": "[concat(parameters('virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid'), '/subnets/FLLMStorage')]"
+                },
+                "ipConfigurations": [],
+                "customDnsConfigs": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('privateEndpoints_e_FLLM_d_STORAGE_blob_pe_name'), '/blob')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_e_FLLM_d_STORAGE_blob_pe_name'))]"
+            ],
+            "properties": {
+                "privateDnsZoneConfigs": [
+                    {
+                        "name": "privatelink.blob.core.windows.net",
+                        "properties": {
+                            "privateDnsZoneId": "[parameters('privateDnsZones_privatelink_blob_core_windows_net_externalid')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('privateEndpoints_e_FLLM_d_STORAGE_dfs_pe_name'), '/dfs')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_e_FLLM_d_STORAGE_dfs_pe_name'))]"
+            ],
+            "properties": {
+                "privateDnsZoneConfigs": [
+                    {
+                        "name": "privatelink.dfs.core.windows.net",
+                        "properties": {
+                            "privateDnsZoneId": "[parameters('privateDnsZones_privatelink_dfs_core_windows_net_externalid')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('privateEndpoints_e_FLLM_d_STORAGE_file_pe_name'), '/file')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_e_FLLM_d_STORAGE_file_pe_name'))]"
+            ],
+            "properties": {
+                "privateDnsZoneConfigs": [
+                    {
+                        "name": "privatelink.file.core.windows.net",
+                        "properties": {
+                            "privateDnsZoneId": "[parameters('privateDnsZones_privatelink_file_core_windows_net_externalid')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('privateEndpoints_e_FLLM_d_STORAGE_queue_pe_name'), '/queue')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_e_FLLM_d_STORAGE_queue_pe_name'))]"
+            ],
+            "properties": {
+                "privateDnsZoneConfigs": [
+                    {
+                        "name": "privatelink.queue.core.windows.net",
+                        "properties": {
+                            "privateDnsZoneId": "[parameters('privateDnsZones_privatelink_queue_core_windows_net_externalid')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('privateEndpoints_EUS_FLLM_DEMO_STORAGE_sql_pe_name'), '/sql')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_EUS_FLLM_DEMO_STORAGE_sql_pe_name'))]"
+            ],
+            "properties": {
+                "privateDnsZoneConfigs": [
+                    {
+                        "name": "privatelink.documents.azure.com",
+                        "properties": {
+                            "privateDnsZoneId": "[parameters('privateDnsZones_privatelink_documents_azure_com_externalid')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('privateEndpoints_e_FLLM_d_STORAGE_table_pe_name'), '/table')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_e_FLLM_d_STORAGE_table_pe_name'))]"
+            ],
+            "properties": {
+                "privateDnsZoneConfigs": [
+                    {
+                        "name": "privatelink.table.core.windows.net",
+                        "properties": {
+                            "privateDnsZoneId": "[parameters('privateDnsZones_privatelink_table_core_windows_net_externalid')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('privateEndpoints_e_FLLM_d_STORAGE_web_pe_name'), '/web')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_e_FLLM_d_STORAGE_web_pe_name'))]"
+            ],
+            "properties": {
+                "privateDnsZoneConfigs": [
+                    {
+                        "name": "privatelink.azurewebsites.net",
+                        "properties": {
+                            "privateDnsZoneId": "[parameters('privateDnsZones_privatelink_azurewebsites_net_externalid')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_efllmdstoragesa_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "changeFeed": {
+                    "enabled": false
+                },
+                "restorePolicy": {
+                    "enabled": false
+                },
+                "containerDeleteRetentionPolicy": {
+                    "enabled": true,
+                    "days": 30
+                },
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "allowPermanentDelete": false,
+                    "enabled": true,
+                    "days": 30
+                },
+                "isVersioningEnabled": true
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/fileServices",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_efllmdstoragesa_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "protocolSettings": {
+                    "smb": {}
+                },
+                "cors": {
+                    "corsRules": []
+                },
+                "shareDeleteRetentionPolicy": {
+                    "enabled": true,
+                    "days": 30
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/privateEndpointConnections",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_efllmdstoragesa_name'), '/', parameters('storageAccounts_efllmdstoragesa_name'), '.2003a8b1-0274-4082-9b4f-69e113889118')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "properties": {
+                "provisioningState": "Succeeded",
+                "privateEndpoint": {},
+                "privateLinkServiceConnectionState": {
+                    "status": "Approved",
+                    "description": "Auto-Approved",
+                    "actionRequired": "None"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/privateEndpointConnections",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_efllmdstoragesa_name'), '/', parameters('storageAccounts_efllmdstoragesa_name'), '.32191dcc-5e9b-427b-9516-fa3bc4920570')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "properties": {
+                "provisioningState": "Succeeded",
+                "privateEndpoint": {},
+                "privateLinkServiceConnectionState": {
+                    "status": "Approved",
+                    "description": "Auto-Approved",
+                    "actionRequired": "None"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/privateEndpointConnections",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_efllmdstoragesa_name'), '/', parameters('storageAccounts_efllmdstoragesa_name'), '.9372f45d-62c9-4cc5-92ef-11b16de61927')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "properties": {
+                "provisioningState": "Succeeded",
+                "privateEndpoint": {},
+                "privateLinkServiceConnectionState": {
+                    "status": "Approved",
+                    "description": "Auto-Approved",
+                    "actionRequired": "None"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/privateEndpointConnections",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_efllmdstoragesa_name'), '/', parameters('storageAccounts_efllmdstoragesa_name'), '.9783273b-7c94-4b57-b6fa-0ac74465412e')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "properties": {
+                "provisioningState": "Succeeded",
+                "privateEndpoint": {},
+                "privateLinkServiceConnectionState": {
+                    "status": "Approved",
+                    "description": "Auto-Approved",
+                    "actionRequired": "None"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/privateEndpointConnections",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_efllmdstoragesa_name'), '/', parameters('storageAccounts_efllmdstoragesa_name'), '.b9c2be2b-5764-4fd0-8b08-999ac179952c')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "properties": {
+                "provisioningState": "Succeeded",
+                "privateEndpoint": {},
+                "privateLinkServiceConnectionState": {
+                    "status": "Approved",
+                    "description": "Auto-Approved",
+                    "actionRequired": "None"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/privateEndpointConnections",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_efllmdstoragesa_name'), '/', parameters('storageAccounts_efllmdstoragesa_name'), '.e79faf8b-c93c-46ae-8219-e8de2cd03059')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "properties": {
+                "provisioningState": "Succeeded",
+                "privateEndpoint": {},
+                "privateLinkServiceConnectionState": {
+                    "status": "Approved",
+                    "description": "Auto-Approved",
+                    "actionRequired": "None"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/queueServices",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_efllmdstoragesa_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/tableServices",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_efllmdstoragesa_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/privateEndpointConnections",
+            "apiVersion": "2023-09-15",
+            "name": "[concat(parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), '/EUS-FLLM-DEMO-STORAGE-sql-pe')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'))]",
+                "[resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_EUS_FLLM_DEMO_STORAGE_sql_pe_name'))]"
+            ],
+            "properties": {
+                "provisioningState": "Succeeded",
+                "groupId": "Sql",
+                "privateEndpoint": {
+                    "id": "[resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_EUS_FLLM_DEMO_STORAGE_sql_pe_name'))]"
+                },
+                "privateLinkServiceConnectionState": {
+                    "status": "Approved"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+            "apiVersion": "2023-09-15",
+            "name": "[concat(parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), '/database/completions')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), 'database')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "completions",
+                    "indexingPolicy": {
+                        "indexingMode": "consistent",
+                        "automatic": true,
+                        "includedPaths": [
+                            {
+                                "path": "/*"
+                            }
+                        ],
+                        "excludedPaths": [
+                            {
+                                "path": "/\"_etag\"/?"
+                            }
+                        ]
+                    },
+                    "partitionKey": {
+                        "paths": [
+                            "/sessionId"
+                        ],
+                        "kind": "Hash",
+                        "version": 2
+                    },
+                    "uniqueKeyPolicy": {
+                        "uniqueKeys": []
+                    },
+                    "conflictResolutionPolicy": {
+                        "mode": "LastWriterWins",
+                        "conflictResolutionPath": "/_ts"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+            "apiVersion": "2023-09-15",
+            "name": "[concat(parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), '/database/customer')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), 'database')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "customer",
+                    "indexingPolicy": {
+                        "indexingMode": "consistent",
+                        "automatic": true,
+                        "includedPaths": [
+                            {
+                                "path": "/*"
+                            }
+                        ],
+                        "excludedPaths": [
+                            {
+                                "path": "/\"_etag\"/?"
+                            }
+                        ]
+                    },
+                    "partitionKey": {
+                        "paths": [
+                            "/customerId"
+                        ],
+                        "kind": "Hash",
+                        "version": 2
+                    },
+                    "uniqueKeyPolicy": {
+                        "uniqueKeys": []
+                    },
+                    "conflictResolutionPolicy": {
+                        "mode": "LastWriterWins",
+                        "conflictResolutionPath": "/_ts"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+            "apiVersion": "2023-09-15",
+            "name": "[concat(parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), '/database/embedding')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), 'database')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "embedding",
+                    "indexingPolicy": {
+                        "indexingMode": "consistent",
+                        "automatic": true,
+                        "includedPaths": [
+                            {
+                                "path": "/*"
+                            }
+                        ],
+                        "excludedPaths": [
+                            {
+                                "path": "/\"_etag\"/?"
+                            }
+                        ]
+                    },
+                    "partitionKey": {
+                        "paths": [
+                            "/id"
+                        ],
+                        "kind": "Hash",
+                        "version": 2
+                    },
+                    "uniqueKeyPolicy": {
+                        "uniqueKeys": []
+                    },
+                    "conflictResolutionPolicy": {
+                        "mode": "LastWriterWins",
+                        "conflictResolutionPath": "/_ts"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+            "apiVersion": "2023-09-15",
+            "name": "[concat(parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), '/database/leases')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), 'database')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "leases",
+                    "indexingPolicy": {
+                        "indexingMode": "consistent",
+                        "automatic": true,
+                        "includedPaths": [
+                            {
+                                "path": "/*"
+                            }
+                        ],
+                        "excludedPaths": [
+                            {
+                                "path": "/\"_etag\"/?"
+                            }
+                        ]
+                    },
+                    "partitionKey": {
+                        "paths": [
+                            "/id"
+                        ],
+                        "kind": "Hash",
+                        "version": 2
+                    },
+                    "uniqueKeyPolicy": {
+                        "uniqueKeys": []
+                    },
+                    "conflictResolutionPolicy": {
+                        "mode": "LastWriterWins",
+                        "conflictResolutionPath": "/_ts"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+            "apiVersion": "2023-09-15",
+            "name": "[concat(parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), '/database/product')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), 'database')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "product",
+                    "indexingPolicy": {
+                        "indexingMode": "consistent",
+                        "automatic": true,
+                        "includedPaths": [
+                            {
+                                "path": "/*"
+                            }
+                        ],
+                        "excludedPaths": [
+                            {
+                                "path": "/\"_etag\"/?"
+                            }
+                        ]
+                    },
+                    "partitionKey": {
+                        "paths": [
+                            "/categoryId"
+                        ],
+                        "kind": "Hash",
+                        "version": 2
+                    },
+                    "uniqueKeyPolicy": {
+                        "uniqueKeys": []
+                    },
+                    "conflictResolutionPolicy": {
+                        "mode": "LastWriterWins",
+                        "conflictResolutionPath": "/_ts"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_efllmdstoragesa_name'), '/default/agents')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_efllmdstoragesa_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_efllmdstoragesa_name'), '/default/data-sources')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_efllmdstoragesa_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_efllmdstoragesa_name'), '/default/demos-source')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_efllmdstoragesa_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_efllmdstoragesa_name'), '/default/foundationallm-source')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_efllmdstoragesa_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_efllmdstoragesa_name'), '/default/hai-source')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_efllmdstoragesa_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_efllmdstoragesa_name'), '/default/prompts')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_efllmdstoragesa_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_efllmdstoragesa_name'), '/default/sdzwa-source')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_efllmdstoragesa_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-01-01",
+            "name": "[concat(parameters('storageAccounts_efllmdstoragesa_name'), '/default/solliance-source')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_efllmdstoragesa_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_efllmdstoragesa_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/throughputSettings",
+            "apiVersion": "2023-09-15",
+            "name": "[concat(parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), '/database/completions/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), 'database', 'completions')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), 'database')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "throughput": 100,
+                    "autoscaleSettings": {
+                        "maxThroughput": 1000
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/throughputSettings",
+            "apiVersion": "2023-09-15",
+            "name": "[concat(parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), '/database/customer/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), 'database', 'customer')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), 'database')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "throughput": 100,
+                    "autoscaleSettings": {
+                        "maxThroughput": 1000
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/throughputSettings",
+            "apiVersion": "2023-09-15",
+            "name": "[concat(parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), '/database/embedding/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), 'database', 'embedding')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), 'database')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "throughput": 100,
+                    "autoscaleSettings": {
+                        "maxThroughput": 1000
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/throughputSettings",
+            "apiVersion": "2023-09-15",
+            "name": "[concat(parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), '/database/leases/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), 'database', 'leases')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), 'database')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "throughput": 100,
+                    "autoscaleSettings": {
+                        "maxThroughput": 1000
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/throughputSettings",
+            "apiVersion": "2023-09-15",
+            "name": "[concat(parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), '/database/product/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), 'database', 'product')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'), 'database')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_eus_fllm_demo_storage_cdb_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "throughput": 100,
+                    "autoscaleSettings": {
+                        "maxThroughput": 1000
+                    }
+                }
+            }
+        }
+    ]
+}

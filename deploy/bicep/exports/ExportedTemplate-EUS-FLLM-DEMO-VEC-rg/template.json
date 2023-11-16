@@ -1,0 +1,236 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "searchServices_eusfllmdemovecsearch_name": {
+            "defaultValue": "eusfllmdemovecsearch",
+            "type": "String"
+        },
+        "privateEndpoints_EUS_FLLM_DEMO_VEC_search_pe_name": {
+            "defaultValue": "EUS-FLLM-DEMO-VEC-search-pe",
+            "type": "String"
+        },
+        "metricAlerts_EUS_FLLM_DEMO_VEC_search_latency_alert_name": {
+            "defaultValue": "EUS-FLLM-DEMO-VEC-search-latency-alert",
+            "type": "String"
+        },
+        "metricAlerts_EUS_FLLM_DEMO_VEC_search_throttling_alert_name": {
+            "defaultValue": "EUS-FLLM-DEMO-VEC-search-throttling-alert",
+            "type": "String"
+        },
+        "actionGroups_EUS_FLLM_DEMO_OPS_ag_externalid": {
+            "defaultValue": "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-OPS-rg/providers/Microsoft.Insights/actionGroups/EUS-FLLM-DEMO-OPS-ag",
+            "type": "String"
+        },
+        "virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid": {
+            "defaultValue": "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-NET-rg/providers/Microsoft.Network/virtualNetworks/EUS-FLLM-DEMO-NET-vnet",
+            "type": "String"
+        },
+        "privateDnsZones_privatelink_search_windows_net_externalid": {
+            "defaultValue": "/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DNS-rg/providers/Microsoft.Network/privateDnsZones/privatelink.search.windows.net",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Search/searchServices",
+            "apiVersion": "2023-11-01",
+            "name": "[parameters('searchServices_eusfllmdemovecsearch_name')]",
+            "location": "East US",
+            "sku": {
+                "name": "standard"
+            },
+            "properties": {
+                "replicaCount": 1,
+                "partitionCount": 1,
+                "hostingMode": "default",
+                "publicNetworkAccess": "Disabled",
+                "networkRuleSet": {
+                    "ipRules": []
+                },
+                "encryptionWithCmk": {
+                    "enforcement": "Disabled"
+                },
+                "disableLocalAuth": false,
+                "authOptions": {
+                    "apiKeyOnly": {}
+                },
+                "semanticSearch": "disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Insights/metricAlerts",
+            "apiVersion": "2018-03-01",
+            "name": "[parameters('metricAlerts_EUS_FLLM_DEMO_VEC_search_latency_alert_name')]",
+            "location": "global",
+            "dependsOn": [
+                "[resourceId('Microsoft.Search/searchServices', parameters('searchServices_eusfllmdemovecsearch_name'))]"
+            ],
+            "tags": {
+                "Environment": "DEMO",
+                "Project": "FLLM",
+                "Purpose": "Vectorization",
+                "Workspace": "FoundationaLLM-Platform"
+            },
+            "properties": {
+                "description": "Service latency greater than 5s for 1 hour",
+                "severity": 0,
+                "enabled": true,
+                "scopes": [
+                    "[resourceId('Microsoft.Search/searchServices', parameters('searchServices_eusfllmdemovecsearch_name'))]"
+                ],
+                "evaluationFrequency": "PT1M",
+                "windowSize": "PT1H",
+                "criteria": {
+                    "allOf": [
+                        {
+                            "threshold": 5,
+                            "name": "Metric1",
+                            "metricNamespace": "Microsoft.Search/searchServices",
+                            "metricName": "SearchLatency",
+                            "operator": "GreaterThan",
+                            "timeAggregation": "Average",
+                            "skipMetricValidation": false,
+                            "criterionType": "StaticThresholdCriterion"
+                        }
+                    ],
+                    "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
+                },
+                "autoMitigate": true,
+                "actions": [
+                    {
+                        "actionGroupId": "[parameters('actionGroups_EUS_FLLM_DEMO_OPS_ag_externalid')]",
+                        "webHookProperties": {}
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Insights/metricAlerts",
+            "apiVersion": "2018-03-01",
+            "name": "[parameters('metricAlerts_EUS_FLLM_DEMO_VEC_search_throttling_alert_name')]",
+            "location": "global",
+            "dependsOn": [
+                "[resourceId('Microsoft.Search/searchServices', parameters('searchServices_eusfllmdemovecsearch_name'))]"
+            ],
+            "tags": {
+                "Environment": "DEMO",
+                "Project": "FLLM",
+                "Purpose": "Vectorization",
+                "Workspace": "FoundationaLLM-Platform"
+            },
+            "properties": {
+                "description": "Service throttled search queries greater than 25% for 1 hour",
+                "severity": 0,
+                "enabled": true,
+                "scopes": [
+                    "[resourceId('Microsoft.Search/searchServices', parameters('searchServices_eusfllmdemovecsearch_name'))]"
+                ],
+                "evaluationFrequency": "PT1M",
+                "windowSize": "PT1H",
+                "criteria": {
+                    "allOf": [
+                        {
+                            "threshold": 25,
+                            "name": "Metric1",
+                            "metricNamespace": "Microsoft.Search/searchServices",
+                            "metricName": "SearchLatency",
+                            "operator": "GreaterThan",
+                            "timeAggregation": "Average",
+                            "skipMetricValidation": false,
+                            "criterionType": "StaticThresholdCriterion"
+                        }
+                    ],
+                    "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
+                },
+                "autoMitigate": true,
+                "actions": [
+                    {
+                        "actionGroupId": "[parameters('actionGroups_EUS_FLLM_DEMO_OPS_ag_externalid')]",
+                        "webHookProperties": {}
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints",
+            "apiVersion": "2023-05-01",
+            "name": "[parameters('privateEndpoints_EUS_FLLM_DEMO_VEC_search_pe_name')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Search/searchServices', parameters('searchServices_eusfllmdemovecsearch_name'))]"
+            ],
+            "tags": {
+                "Environment": "DEMO",
+                "Project": "FLLM",
+                "Purpose": "Vectorization",
+                "Workspace": "FoundationaLLM-Platform"
+            },
+            "properties": {
+                "privateLinkServiceConnections": [
+                    {
+                        "name": "EUS-FLLM-DEMO-VEC-search-connection",
+                        "id": "[concat(resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_EUS_FLLM_DEMO_VEC_search_pe_name')), '/privateLinkServiceConnections/EUS-FLLM-DEMO-VEC-search-connection')]",
+                        "properties": {
+                            "privateLinkServiceId": "[resourceId('Microsoft.Search/searchServices', parameters('searchServices_eusfllmdemovecsearch_name'))]",
+                            "groupIds": [
+                                "searchService"
+                            ],
+                            "privateLinkServiceConnectionState": {
+                                "status": "Approved",
+                                "description": "Auto-approved",
+                                "actionsRequired": "None"
+                            }
+                        }
+                    }
+                ],
+                "manualPrivateLinkServiceConnections": [],
+                "subnet": {
+                    "id": "[concat(parameters('virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid'), '/subnets/Vectorization')]"
+                },
+                "ipConfigurations": [],
+                "customDnsConfigs": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('privateEndpoints_EUS_FLLM_DEMO_VEC_search_pe_name'), '/search')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_EUS_FLLM_DEMO_VEC_search_pe_name'))]"
+            ],
+            "properties": {
+                "privateDnsZoneConfigs": [
+                    {
+                        "name": "privatelink.search.windows.net",
+                        "properties": {
+                            "privateDnsZoneId": "[parameters('privateDnsZones_privatelink_search_windows_net_externalid')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Search/searchServices/privateEndpointConnections",
+            "apiVersion": "2023-11-01",
+            "name": "[concat(parameters('searchServices_eusfllmdemovecsearch_name'), '/EUS-FLLM-DEMO-VEC-search-pe.ac63a4e7-885b-4458-855d-8501f6018cf8')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Search/searchServices', parameters('searchServices_eusfllmdemovecsearch_name'))]",
+                "[resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_EUS_FLLM_DEMO_VEC_search_pe_name'))]"
+            ],
+            "properties": {
+                "privateEndpoint": {
+                    "id": "[resourceId('Microsoft.Network/privateEndpoints', parameters('privateEndpoints_EUS_FLLM_DEMO_VEC_search_pe_name'))]"
+                },
+                "privateLinkServiceConnectionState": {
+                    "status": "Approved",
+                    "description": "Auto-approved",
+                    "actionsRequired": "None"
+                },
+                "provisioningState": "Succeeded",
+                "groupId": "searchService"
+            }
+        }
+    ]
+}
