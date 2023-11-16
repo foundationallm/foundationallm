@@ -1,4 +1,4 @@
-from enum import Enum, auto
+from enum import Enum
 
-class LanguageModelType(Enum):
+class LanguageModelType(str, Enum):
     OPENAI = "openai"

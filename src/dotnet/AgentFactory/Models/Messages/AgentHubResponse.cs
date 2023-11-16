@@ -66,8 +66,8 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Messages
         /// <summary>
         /// The type of the language model
         /// </summary>
-        [JsonProperty("model_type")]
-        public string? ModelType { get; set; }
+        [JsonProperty("type")]
+        public string? Type { get; set; }
 
         /// <summary>
         /// The provider of the language model

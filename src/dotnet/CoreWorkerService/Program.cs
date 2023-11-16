@@ -15,17 +15,10 @@ builder.Configuration.AddEnvironmentVariables();
 builder.Configuration.AddAzureAppConfiguration(options =>
 {
     options.Connect(builder.Configuration["FoundationaLLM:AppConfig:ConnectionString"]);
-#if DEBUG
-    var credential = new DefaultAzureCredential();
-#else
-    var credential = new ChainedTokenCredential(
-            new ManagedIdentityCredential(clientId),
-            new AzureCliCredential()
-        );
-#endif
+
     options.ConfigureKeyVault(options =>
     {
-        options.SetCredential(credential);
+        options.SetCredential(new DefaultAzureCredential());
     });
 });
 

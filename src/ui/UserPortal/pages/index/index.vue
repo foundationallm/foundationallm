@@ -44,7 +44,7 @@ export default {
 
 		handleThreadSessionUpdated(session: Session) {
 			this.currentSession = session;
-			this.$refs.sidebar.getSessions();
+			this.$refs.sidebar.getSessions(session);
 		},
 
 		closeSidebar(closed: boolean) {

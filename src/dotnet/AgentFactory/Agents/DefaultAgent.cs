@@ -112,7 +112,7 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
                 },
                 LanguageModel = new LanguageModel()
                 {
-                    Type = _agentMetadata.LanguageModel!.ModelType,
+                    Type = _agentMetadata.LanguageModel!.Type,
                     Provider = _agentMetadata.LanguageModel.Provider,
                     Temperature = _agentMetadata.LanguageModel.Temperature ?? 0f,
                     UseChat = _agentMetadata.LanguageModel.UseChat ?? true

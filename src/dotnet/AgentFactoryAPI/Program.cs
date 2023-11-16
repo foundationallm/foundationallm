@@ -18,6 +18,7 @@ using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.Extensions.Http.Resilience;
 using Microsoft.Extensions.Options;
 using Polly;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -180,6 +181,8 @@ namespace FoundationaLLM.AgentFactory.API
 
         /// <summary>
         /// Bind the downstream API settings to the configuration and register the HTTP clients.
+        /// The AddResilienceHandler extension method is used to add the standard Polly resilience
+        /// strategies to the HTTP clients.
         /// </summary>
         /// <param name="builder"></param>
         private static void RegisterDownstreamServices(WebApplicationBuilder builder)
@@ -196,12 +199,23 @@ namespace FoundationaLLM.AgentFactory.API
             };
             downstreamAPISettings.DownstreamAPIs[HttpClients.AgentHubAPI] = agentHubAPISettings;
 
+            // See: https://www.pollydocs.org/strategies/retry.html
+            var retryOptions = new HttpRetryStrategyOptions
+            {
+                BackoffType = DelayBackoffType.Exponential,
+                MaxRetryAttempts = 5,
+                UseJitter = true
+            };
+
             builder.Services
                     .AddHttpClient(HttpClients.AgentHubAPI,
                         client => { client.BaseAddress = new Uri(agentHubAPISettings.APIUrl); })
-                    .AddTransientHttpErrorPolicy(policyBuilder =>
-                        policyBuilder.WaitAndRetryAsync(
-                            3, retryNumber => TimeSpan.FromMilliseconds(600)));
+                    .AddResilienceHandler(
+                        "DownstreamPipeline",
+                        strategyBuilder =>
+                        {
+                            strategyBuilder.AddRetry(retryOptions);
+                        });
 
             var dataSourceHubAPISettings = new DownstreamAPIKeySettings
             {
@@ -211,11 +225,14 @@ namespace FoundationaLLM.AgentFactory.API
             downstreamAPISettings.DownstreamAPIs[HttpClients.DataSourceHubAPI] = dataSourceHubAPISettings;
 
             builder.Services
-                    .AddHttpClient(HttpClients.DataSourceHubAPI,
-                        client => { client.BaseAddress = new Uri(dataSourceHubAPISettings.APIUrl); })
-                    .AddTransientHttpErrorPolicy(policyBuilder =>
-                        policyBuilder.WaitAndRetryAsync(
-                            3, retryNumber => TimeSpan.FromMilliseconds(600)));
+                .AddHttpClient(HttpClients.DataSourceHubAPI,
+                    client => { client.BaseAddress = new Uri(dataSourceHubAPISettings.APIUrl); })
+                .AddResilienceHandler(
+                    "DownstreamPipeline",
+                    strategyBuilder =>
+                    {
+                        strategyBuilder.AddRetry(retryOptions);
+                    });
 
             var promptHubAPISettings = new DownstreamAPIKeySettings
             {
@@ -227,9 +244,12 @@ namespace FoundationaLLM.AgentFactory.API
             builder.Services
                     .AddHttpClient(HttpClients.PromptHubAPI,
                         client => { client.BaseAddress = new Uri(promptHubAPISettings.APIUrl); })
-                    .AddTransientHttpErrorPolicy(policyBuilder =>
-                        policyBuilder.WaitAndRetryAsync(
-                            3, retryNumber => TimeSpan.FromMilliseconds(600)));
+                    .AddResilienceHandler(
+                        "DownstreamPipeline",
+                        strategyBuilder =>
+                        {
+                            strategyBuilder.AddRetry(retryOptions);
+                        });
 
             var langChainAPISettings = new DownstreamAPIKeySettings
             {
@@ -241,9 +261,12 @@ namespace FoundationaLLM.AgentFactory.API
             builder.Services
                     .AddHttpClient(HttpClients.LangChainAPI,
                         client => { client.BaseAddress = new Uri(langChainAPISettings.APIUrl); })
-                    .AddTransientHttpErrorPolicy(policyBuilder =>
-                        policyBuilder.WaitAndRetryAsync(
-                            3, retryNumber => TimeSpan.FromMilliseconds(600)));
+                    .AddResilienceHandler(
+                        "DownstreamPipeline",
+                        strategyBuilder =>
+                        {
+                            strategyBuilder.AddRetry(retryOptions);
+                        });
 
             var semanticKernelAPISettings = new DownstreamAPIKeySettings
             {
@@ -255,9 +278,12 @@ namespace FoundationaLLM.AgentFactory.API
             builder.Services
                     .AddHttpClient(HttpClients.SemanticKernelAPI,
                         client => { client.BaseAddress = new Uri(semanticKernelAPISettings.APIUrl); })
-                    .AddTransientHttpErrorPolicy(policyBuilder =>
-                        policyBuilder.WaitAndRetryAsync(
-                            3, retryNumber => TimeSpan.FromMilliseconds(600)));
+                    .AddResilienceHandler(
+                        "DownstreamPipeline",
+                        strategyBuilder =>
+                        {
+                            strategyBuilder.AddRetry(retryOptions);
+                        });
 
             builder.Services.AddSingleton<IDownstreamAPISettings>(downstreamAPISettings);
         }

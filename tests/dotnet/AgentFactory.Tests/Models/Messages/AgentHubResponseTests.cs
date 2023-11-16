@@ -54,7 +54,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Models.Messages
         public void LanguageModelMetadata_WhenInitialized_ShouldSetProperties()
         {
             // Arrange
-            var modelType = "TestModelType";
+            var type = "TestType";
             var provider = "TestProvider";
             var temperature = 0.5f;
             var useChat = true;
@@ -62,14 +62,14 @@ namespace FoundationaLLM.AgentFactory.Tests.Models.Messages
             // Act
             var metadata = new LanguageModelMetadata
             {
-                ModelType = modelType,
+                Type = type,
                 Provider = provider,
                 Temperature = temperature,
                 UseChat = useChat
             };
 
             // Assert
-            Assert.Equal(modelType, metadata.ModelType);
+            Assert.Equal(type, metadata.Type);
             Assert.Equal(provider, metadata.Provider);
             Assert.Equal(temperature, metadata.Temperature);
             Assert.Equal(useChat, metadata.UseChat);

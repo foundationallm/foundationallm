@@ -27,6 +27,7 @@ using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using FoundationaLLM.Common.Models.Chat;
 using FoundationaLLM.Common.Models.Context;
+using Microsoft.Extensions.Http.Resilience;
 
 namespace FoundationaLLM.Core.API
 {
@@ -171,6 +172,8 @@ namespace FoundationaLLM.Core.API
 
         /// <summary>
         /// Bind the downstream API settings to the configuration and register the HTTP clients.
+        /// The AddResilienceHandler extension method is used to add the standard Polly resilience
+        /// strategies to the HTTP clients.
         /// </summary>
         /// <param name="builder"></param>
         private static void RegisterDownstreamServices(WebApplicationBuilder builder)
@@ -190,9 +193,18 @@ namespace FoundationaLLM.Core.API
             builder.Services
                     .AddHttpClient(HttpClients.GatekeeperAPI,
                         client => { client.BaseAddress = new Uri(gatekeeperAPISettings.APIUrl); })
-                    .AddTransientHttpErrorPolicy(policyBuilder =>
-                        policyBuilder.WaitAndRetryAsync(
-                            3, retryNumber => TimeSpan.FromMilliseconds(600)));
+                    .AddResilienceHandler(
+                        "DownstreamPipeline",
+                        static strategyBuilder =>
+                        {
+                            // See: https://www.pollydocs.org/strategies/retry.html
+                            strategyBuilder.AddRetry(new HttpRetryStrategyOptions
+                            {
+                                BackoffType = DelayBackoffType.Exponential,
+                                MaxRetryAttempts = 5,
+                                UseJitter = true
+                            });
+                        });
 
             builder.Services.AddSingleton<IDownstreamAPISettings>(downstreamAPISettings);
         }

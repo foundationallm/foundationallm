@@ -5,9 +5,6 @@ using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
-using FoundationaLLM.Common.Models.Authentication;
-using FoundationaLLM.Common.Models.Chat;
-using FoundationaLLM.Common.Models.Configuration;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services;
@@ -15,8 +12,8 @@ using FoundationaLLM.Gatekeeper.Core.Interfaces;
 using FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions;
 using FoundationaLLM.Gatekeeper.Core.Services;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.Extensions.Http.Resilience;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
 using Polly;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -166,6 +163,8 @@ namespace FoundationaLLM.Gatekeeper.API
 
         /// <summary>
         /// Bind the downstream API settings to the configuration and register the HTTP clients.
+        /// The AddResilienceHandler extension method is used to add the standard Polly resilience
+        /// strategies to the HTTP clients.
         /// </summary>
         /// <param name="builder"></param>
         private static void RegisterDownstreamServices(WebApplicationBuilder builder)
@@ -186,9 +185,18 @@ namespace FoundationaLLM.Gatekeeper.API
             builder.Services
                     .AddHttpClient(HttpClients.AgentFactoryAPI,
                         client => { client.BaseAddress = new Uri(agentFactoryAPISettings.APIUrl); })
-                    .AddTransientHttpErrorPolicy(policyBuilder =>
-                        policyBuilder.WaitAndRetryAsync(
-                            3, retryNumber => TimeSpan.FromMilliseconds(600)));
+                    .AddResilienceHandler(
+                        "DownstreamPipeline",
+                        static strategyBuilder =>
+                        {
+                            // See: https://www.pollydocs.org/strategies/retry.html
+                            strategyBuilder.AddRetry(new HttpRetryStrategyOptions
+                            {
+                                BackoffType = DelayBackoffType.Exponential,
+                                MaxRetryAttempts = 5,
+                                UseJitter = true
+                            });
+                        });
 
             builder.Services.AddSingleton<IDownstreamAPISettings>(downstreamAPISettings);
         }

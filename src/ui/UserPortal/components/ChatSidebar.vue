@@ -158,8 +158,22 @@ export default {
 			this.newSessionName = '';
 		},
 
-		async getSessions() {
-			this.sessions = await api.getSessions();
+		
+		async getSessions(session?: Session) {
+			const sessions = await api.getSessions();
+			if (session) {
+				// If the passed in session is already in the list, replace it.
+				// This is because the passed in session has been updated, most likely renamed.
+				// Since there is a slight delay in the backend updating the session name, this
+				// ensures the session name is updated in the sidebar immediately.
+				const index = sessions.findIndex(s => s.id === session.id);
+				if (index !== -1) {
+					sessions.splice(index, 1, session);
+				}
+				this.sessions = sessions;
+			} else {
+				this.sessions = sessions;
+			}
 		},
 
 		async handleRenameSession() {

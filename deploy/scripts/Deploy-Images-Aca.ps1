@@ -69,6 +69,10 @@ Write-Host "CoreAPI deployment - core-api" -ForegroundColor Yellow
 $command = "az containerapp update --name $($deploymentOutputs.coreAcaName.value) --resource-group $resourceGroup --image $acrLogin/core-api:$tag"
 Invoke-Expression "$command"
 
+Write-Host "CoreWorker deployment - core-job" -ForegroundColor Yellow
+$command = "az containerapp update --name $($deploymentOutputs.coreJobAcaName.value) --resource-group $resourceGroup --image $acrLogin/core-job:$tag"
+Invoke-Expression "$command"
+
 Write-Host "DataSourceHubAPI deployment - data-source-hub-api" -ForegroundColor Yellow
 $command = "az containerapp update --name $($deploymentOutputs.datasourcehubAcaName.value) --resource-group $resourceGroup --image $acrLogin/data-source-hub-api:$tag"
 Invoke-Expression "$command"

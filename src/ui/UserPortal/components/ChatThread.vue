@@ -138,6 +138,7 @@ export default {
 				const sessionFullText = this.messages.map((message) => message.text).join('\n');
 				const { text: newSessionName } = await api.summarizeSessionName(this.session!.id, sessionFullText);
 				await api.renameSession(this.session!.id, newSessionName);
+				this.session!.name = newSessionName;
 				this.$emit('session-updated', { ...this.session, name: newSessionName });
 			}
 		},

@@ -918,7 +918,7 @@
       "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]", "[resourceId('Microsoft.OperationalInsights/workspaces', variables('laSettings').name)]" ],
       "properties": {
         "attributes": { "enabled": true },
-        "value": "[reference(resourceId('Microsoft.Insights/components', variables('laSettings').name), '2014-04-01').InstrumentationKey]"
+        "value": "[reference(resourceId('Microsoft.Insights/components', variables('laSettings').name), '2015-05-01').ConnectionString]"
       }
     },
     {
