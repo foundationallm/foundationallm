@@ -291,20 +291,12 @@ module "cosmosdb" {
   tags                       = azurerm_resource_group.rg["storage"].tags
 
   containers = {
-    embedding = {
-      partition_key_path = "/id"
+    UserSessions = {
+      partition_key_path = "/upn"
       max_throughput     = 1000
     }
-    completions = {
+    Sessions = {
       partition_key_path = "/sessionId"
-      max_throughput     = 1000
-    }
-    product = {
-      partition_key_path = "/categoryId"
-      max_throughput     = 1000
-    }
-    customer = {
-      partition_key_path = "/customerId"
       max_throughput     = 1000
     }
     leases = {
