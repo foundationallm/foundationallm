@@ -7,5 +7,6 @@
 		"type": "openai",
 		"provider": "microsoft",
 		"temperature": 0
-	}
+	},
+	"orchestrator": "LangChain"
 }
