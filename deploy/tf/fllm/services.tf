@@ -9,6 +9,9 @@ locals {
     "core-api" = {
       issuer = module.aks_backend.oidcIssuerUrl
     }
+    "core-job" = {
+      issuer = module.aks_backend.oidcIssuerUrl
+    }
     "data-source-hub-api" = {
       issuer = module.aks_backend.oidcIssuerUrl
     }
