@@ -70,7 +70,7 @@ resource "azurerm_private_endpoint" "ple" {
 
 resource "azurerm_search_service" "main" {
   location                      = var.resource_group.location
-  name                          = lower(replace("${var.resource_prefix}-search","-",""))
+  name                          = lower(replace("${var.resource_prefix}-search", "-", ""))
   public_network_access_enabled = false
   resource_group_name           = var.resource_group.name
   sku                           = "standard"

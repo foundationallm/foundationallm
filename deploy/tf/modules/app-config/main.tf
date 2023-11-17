@@ -36,7 +36,7 @@ resource "azurerm_app_configuration" "main" {
   resource_group_name        = var.resource_group.name
   sku                        = "standard"
   soft_delete_retention_days = 1
-  tags = var.tags
+  tags                       = var.tags
 
   identity {
     type = "UserAssigned"
