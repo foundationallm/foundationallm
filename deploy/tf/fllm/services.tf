@@ -67,3 +67,9 @@ resource "azurerm_role_assignment" "key_vault_service_mi" {
   role_definition_name = "Key Vault Secrets User"
   scope                = data.azurerm_key_vault.keyvault_ops.id
 }
+
+resource "azurerm_role_assignment" "cosmos_service_mi" {
+  principal_id         = azurerm_user_assigned_identity.service_mi["core-job"].principal_id
+  role_definition_name = "Contributor"
+  scope                = module.cosmosdb.id
+}
