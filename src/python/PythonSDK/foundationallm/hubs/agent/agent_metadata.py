@@ -10,3 +10,4 @@ class AgentMetadata(Metadata):
     type: AgentType
     allowed_data_source_names: Optional[List[str]] = None
     language_model: Optional[LanguageModelMetadata] = None
+    orchestrator: Optional[str] = None

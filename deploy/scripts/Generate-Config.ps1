@@ -104,6 +104,11 @@ if ($deployAks) {
     $coreApiMiClientId = $coreApiMi.clientId
     Write-Host "Core MI Client Id: $coreApiMiClientId" -ForegroundColor Yellow
 
+    $coreJobMi = $(az identity show -g $resourceGroup -n $resourcePrefix-core-job-mi -o json | ConvertFrom-Json)
+    EnsureSuccess "Error getting core job mi"
+    $coreJobMiClientId = $coreJobMi.clientId
+    Write-Host "Core Job MI Client Id: $coreJobMiClientId" -ForegroundColor Yellow
+
     $dataSourceHubApiMi = $(az identity show -g $resourceGroup -n $resourcePrefix-data-source-hub-mi -o json | ConvertFrom-Json)
     EnsureSuccess "Error getting data source hub mi"
     $dataSourceHubApiMiClientId = $dataSourceHubApiMi.clientId
@@ -142,6 +147,7 @@ if ($deployAks) {
     $tokens.agentHubApiMiClientId = $agentHubApiMiClientId
     $tokens.chatUiMiClientId = $chatUiMiClientId
     $tokens.coreApiMiClientId = $coreApiMiClientId
+    $tokens.coreJobMiClientId = $coreJobMiClientId
     $tokens.dataSourceHubApiMiClientId = $dataSourceHubApiMiClientId
     $tokens.gatekeeperApiMiClientId = $gatekeeperApiMiClientId
     $tokens.langChainApiMiClientId = $langChainApiMiClientId
