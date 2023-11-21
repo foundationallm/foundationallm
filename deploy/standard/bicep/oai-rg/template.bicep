@@ -1008,79 +1008,9 @@ resource service_EUS_FLLM_DEMO_OAI_apim_name_1 'Microsoft.ApiManagement/service/
   }
 }
 
-resource accounts_EUS_FLLM_DEMO_OAI_0_openai_name_completions 'Microsoft.CognitiveServices/accounts/deployments@2023-10-01-preview' = {
-  parent: accounts_EUS_FLLM_DEMO_OAI_0_openai_name_resource
-  name: 'completions'
-  sku: {
-    name: 'Standard'
-    capacity: 120
-  }
-  properties: {
-    model: {
-      format: 'OpenAI'
-      name: 'gpt-35-turbo'
-      version: '0301'
-    }
-    versionUpgradeOption: 'OnceNewDefaultVersionAvailable'
-    currentCapacity: 120
-  }
-}
 
-resource accounts_EUS_FLLM_DEMO_OAI_1_openai_name_completions 'Microsoft.CognitiveServices/accounts/deployments@2023-10-01-preview' = {
-  parent: accounts_EUS_FLLM_DEMO_OAI_1_openai_name_resource
-  name: 'completions'
-  sku: {
-    name: 'Standard'
-    capacity: 120
-  }
-  properties: {
-    model: {
-      format: 'OpenAI'
-      name: 'gpt-35-turbo'
-      version: '0301'
-    }
-    versionUpgradeOption: 'OnceNewDefaultVersionAvailable'
-    currentCapacity: 120
-  }
-}
 
-resource accounts_EUS_FLLM_DEMO_OAI_0_openai_name_embeddings 'Microsoft.CognitiveServices/accounts/deployments@2023-10-01-preview' = {
-  parent: accounts_EUS_FLLM_DEMO_OAI_0_openai_name_resource
-  name: 'embeddings'
-  sku: {
-    name: 'Standard'
-    capacity: 120
-  }
-  properties: {
-    model: {
-      format: 'OpenAI'
-      name: 'text-embedding-ada-002'
-      version: '2'
-    }
-    versionUpgradeOption: 'OnceNewDefaultVersionAvailable'
-    currentCapacity: 120
-    raiPolicyName: 'Microsoft.Default'
-  }
-}
 
-resource accounts_EUS_FLLM_DEMO_OAI_1_openai_name_embeddings 'Microsoft.CognitiveServices/accounts/deployments@2023-10-01-preview' = {
-  parent: accounts_EUS_FLLM_DEMO_OAI_1_openai_name_resource
-  name: 'embeddings'
-  sku: {
-    name: 'Standard'
-    capacity: 120
-  }
-  properties: {
-    model: {
-      format: 'OpenAI'
-      name: 'text-embedding-ada-002'
-      version: '2'
-    }
-    versionUpgradeOption: 'OnceNewDefaultVersionAvailable'
-    currentCapacity: 120
-    raiPolicyName: 'Microsoft.Default'
-  }
-}
 
 resource accounts_EUS_FLLM_DEMO_OAI_0_openai_name_accounts_EUS_FLLM_DEMO_OAI_0_openai_name_pe_00dddfb6_4018_4472_834f_6186e9cccac2 'Microsoft.CognitiveServices/accounts/privateEndpointConnections@2023-10-01-preview' = {
   parent: accounts_EUS_FLLM_DEMO_OAI_0_openai_name_resource

@@ -2,34 +2,20 @@ param environment string
 param instanceCount int = 2
 param location string
 param project string
+param timestamp string = utcNow()
 
-var name = 'oai-${environment}-${location}-oai-${project}'
+param capacity object = {
+  completions: 1
+  embeddings: 1
+}
 
-resource main 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' = [for x in range(0, instanceCount): {
-  kind: 'OpenAI'
-  location: location
-  name: '${name}-${x}'
-
-  identity: {
-    type: 'SystemAssigned'
-  }
-
-  properties: {
-    allowedFqdnList: []
-    customSubDomainName: '${name}-${x}'
-    disableLocalAuth: false
-    dynamicThrottlingEnabled: false
-    publicNetworkAccess: 'Disabled'
-    restrictOutboundNetworkAccess: false
-  }
-
-  sku: {
-    name: 'S0'
-  }
-
-  tags: {
-    Environment: environment
-    Project: project
-    Purpose: 'OpenAI'
+module openai './modules/openai.bicep' = [for x in range(0, instanceCount): {
+  name: 'ha-openai-openai-${timestamp}-${x}'
+  params: {
+    capacity: capacity
+    environment: environment
+    location: location
+    project: project
+    instanceId: x
   }
 }]
