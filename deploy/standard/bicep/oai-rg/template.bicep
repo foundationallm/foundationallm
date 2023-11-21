@@ -24,57 +24,9 @@ param privateDnsZones_privatelink_openai_azure_com_externalid string = '/subscri
 param privateDnsZones_privatelink_cognitiveservices_azure_com_externalid string = '/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DNS-rg/providers/Microsoft.Network/privateDnsZones/privatelink.cognitiveservices.azure.com'
 param privateDnsZones_privatelink_vaultcore_azure_net_externalid string = '/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DNS-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net'
 
-resource accounts_EUS_FLLM_DEMO_OAI_0_openai_name_resource 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' = {
-  name: accounts_EUS_FLLM_DEMO_OAI_0_openai_name
-  location: 'eastus'
-  tags: {
-    Environment: 'DEMO'
-    Project: 'FLLM'
-    Purpose: 'OpenAI'
-    Workspace: 'FoundationaLLM-Platform'
-  }
-  sku: {
-    name: 'S0'
-  }
-  kind: 'OpenAI'
-  identity: {
-    type: 'SystemAssigned'
-  }
-  properties: {
-    customSubDomainName: 'eus-fllm-demo-oai-0'
-    publicNetworkAccess: 'Disabled'
-    restrictOutboundNetworkAccess: false
-    allowedFqdnList: []
-    disableLocalAuth: false
-    dynamicThrottlingEnabled: false
-  }
-}
 
-resource accounts_EUS_FLLM_DEMO_OAI_1_openai_name_resource 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' = {
-  name: accounts_EUS_FLLM_DEMO_OAI_1_openai_name
-  location: 'eastus'
-  tags: {
-    Environment: 'DEMO'
-    Project: 'FLLM'
-    Purpose: 'OpenAI'
-    Workspace: 'FoundationaLLM-Platform'
-  }
-  sku: {
-    name: 'S0'
-  }
-  kind: 'OpenAI'
-  identity: {
-    type: 'SystemAssigned'
-  }
-  properties: {
-    customSubDomainName: 'eus-fllm-demo-oai-1'
-    publicNetworkAccess: 'Disabled'
-    restrictOutboundNetworkAccess: false
-    allowedFqdnList: []
-    disableLocalAuth: false
-    dynamicThrottlingEnabled: false
-  }
-}
+
+
 
 resource accounts_EUS_FLLM_DEMO_OAI_content_safety_name_resource 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' = {
   name: accounts_EUS_FLLM_DEMO_OAI_content_safety_name
