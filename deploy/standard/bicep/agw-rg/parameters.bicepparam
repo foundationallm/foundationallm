@@ -1,0 +1,27 @@
+using './template.bicep'
+
+param publicIPAddresses_EUS_FLLM_DEMO_AGW_api_pip_name = null
+
+param publicIPAddresses_EUS_FLLM_DEMO_AGW_www_pip_name = null
+
+param applicationGateways_EUS_FLLM_DEMO_AGW_api_agw_name = null
+
+param applicationGateways_EUS_FLLM_DEMO_AGW_www_agw_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_AGW_api_agw_requests_alert_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_AGW_www_agw_requests_alert_name = null
+
+param userAssignedIdentities_EUS_FLLM_DEMO_AGW_agw_uai_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_AGW_api_agw_backendhealth_alert_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_AGW_www_agw_backendhealth_alert_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_AGW_api_agw_failedrequests_alert_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_AGW_www_agw_failedrequests_alert_name = null
+
+param actionGroups_EUS_FLLM_DEMO_OPS_ag_externalid = null
+
+param virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid = null

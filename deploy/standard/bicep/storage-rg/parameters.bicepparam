@@ -1,0 +1,43 @@
+using './template.bicep'
+
+param storageAccounts_efllmdstoragesa_name = null
+
+param privateEndpoints_e_FLLM_d_STORAGE_dfs_pe_name = null
+
+param privateEndpoints_e_FLLM_d_STORAGE_web_pe_name = null
+
+param privateEndpoints_e_FLLM_d_STORAGE_blob_pe_name = null
+
+param privateEndpoints_e_FLLM_d_STORAGE_file_pe_name = null
+
+param privateEndpoints_e_FLLM_d_STORAGE_queue_pe_name = null
+
+param privateEndpoints_e_FLLM_d_STORAGE_table_pe_name = null
+
+param databaseAccounts_eus_fllm_demo_storage_cdb_name = null
+
+param privateEndpoints_EUS_FLLM_DEMO_STORAGE_sql_pe_name = null
+
+param metricAlerts_e_FLLM_d_STORAGE_sa_availability_alert_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_STORAGE_cdb_availability_alert_name = null
+
+param systemTopics_efllmdstoragesa_e890ac3a_6c93_4b83_8f98_137345ee5922_name = null
+
+param actionGroups_EUS_FLLM_DEMO_OPS_ag_externalid = null
+
+param virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid = null
+
+param privateDnsZones_privatelink_blob_core_windows_net_externalid = null
+
+param privateDnsZones_privatelink_dfs_core_windows_net_externalid = null
+
+param privateDnsZones_privatelink_file_core_windows_net_externalid = null
+
+param privateDnsZones_privatelink_queue_core_windows_net_externalid = null
+
+param privateDnsZones_privatelink_table_core_windows_net_externalid = null
+
+param privateDnsZones_privatelink_azurewebsites_net_externalid = null
+
+param privateDnsZones_privatelink_documents_azure_com_externalid = null

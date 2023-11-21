@@ -1,0 +1,37 @@
+using './template.bicep'
+
+param bastionHosts_EUS_FLLM_DEMO_NET_bh_name = null
+
+param virtualNetworks_EUS_FLLM_DEMO_NET_vnet_name = null
+
+param publicIPAddresses_EUS_FLLM_DEMO_NET_pip_name = null
+
+param networkSecurityGroups_EUS_FLLM_DEMO_NET_ado_nsg_name = null
+
+param networkSecurityGroups_EUS_FLLM_DEMO_NET_ops_nsg_name = null
+
+param networkSecurityGroups_EUS_FLLM_DEMO_NET_tfc_nsg_name = null
+
+param networkSecurityGroups_EUS_FLLM_DEMO_NET_jumpbox_nsg_name = null
+
+param networkSecurityGroups_EUS_FLLM_DEMO_NET_AppGateway_nsg_name = null
+
+param networkSecurityGroups_EUS_FLLM_DEMO_NET_FLLMOpenAI_nsg_name = null
+
+param networkSecurityGroups_EUS_FLLM_DEMO_NET_Datasources_nsg_name = null
+
+param networkSecurityGroups_EUS_FLLM_DEMO_NET_FLLMBackend_nsg_name = null
+
+param networkSecurityGroups_EUS_FLLM_DEMO_NET_FLLMStorage_nsg_name = null
+
+param networkSecurityGroups_EUS_FLLM_DEMO_NET_FLLMFrontEnd_nsg_name = null
+
+param networkSecurityGroups_EUS_FLLM_DEMO_NET_FLLMServices_nsg_name = null
+
+param networkSecurityGroups_EUS_FLLM_DEMO_NET_Vectorization_nsg_name = null
+
+param networkSecurityGroups_EUS_FLLM_DEMO_NET_AzureBastionSubnet_nsg_name = null
+
+param applicationGateways_EUS_FLLM_DEMO_AGW_www_agw_externalid = null
+
+param applicationGateways_EUS_FLLM_DEMO_AGW_api_agw_externalid = null

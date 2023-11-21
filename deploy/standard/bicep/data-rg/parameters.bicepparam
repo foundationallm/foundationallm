@@ -1,0 +1,59 @@
+using './template.bicep'
+
+param vulnerabilityAssessments_Default_storageContainerPath = null
+
+param servers_eusfllmdemodatamssql_name = null
+
+param storageAccounts_stcocotemp_name = null
+
+param storageAccounts_eusfllmdemodatasa_name = null
+
+param privateEndpoints_cocorahs_st_temp_kab_name = null
+
+param databaseAccounts_eus_fllm_demo_data_cdb_name = null
+
+param privateEndpoints_EUS_FLLM_DEMO_DATA_dfs_pe_name = null
+
+param privateEndpoints_EUS_FLLM_DEMO_DATA_sql_pe_name = null
+
+param privateEndpoints_EUS_FLLM_DEMO_DATA_web_pe_name = null
+
+param privateEndpoints_EUS_FLLM_DEMO_DATA_blob_pe_name = null
+
+param privateEndpoints_EUS_FLLM_DEMO_DATA_file_pe_name = null
+
+param privateEndpoints_EUS_FLLM_DEMO_DATA_queue_pe_name = null
+
+param privateEndpoints_EUS_FLLM_DEMO_DATA_table_pe_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_DATA_mssql_cpu_alert_name = null
+
+param privateEndpoints_EUS_FLLM_DEMO_DATA_sqlServer_pe_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_DATA_sa_availability_alert_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_DATA_cdb_availability_alert_name = null
+
+param systemTopics_stcocotemp_f0d1fd7b_3864_45c9_9a81_6649ae2c59dd_name = null
+
+param systemTopics_eusfllmdemodatasa_aadfcca5_584f_459b_8f07_4cc521f6fef4_name = null
+
+param actionGroups_EUS_FLLM_DEMO_OPS_ag_externalid = null
+
+param virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid = null
+
+param privateDnsZones_privatelink_blob_core_windows_net_externalid = null
+
+param privateDnsZones_privatelink_dfs_core_windows_net_externalid = null
+
+param privateDnsZones_privatelink_file_core_windows_net_externalid = null
+
+param privateDnsZones_privatelink_queue_core_windows_net_externalid = null
+
+param privateDnsZones_privatelink_documents_azure_com_externalid = null
+
+param privateDnsZones_privatelink_database_windows_net_externalid = null
+
+param privateDnsZones_privatelink_table_core_windows_net_externalid = null
+
+param privateDnsZones_privatelink_azurewebsites_net_externalid = null

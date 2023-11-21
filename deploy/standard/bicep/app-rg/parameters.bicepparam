@@ -1,0 +1,91 @@
+using './template.bicep'
+
+param privateEndpoints_EUS_FLLM_DEMO_APP_BACKEND_aks_pe_name = null
+
+param privateEndpoints_EUS_FLLM_DEMO_APP_FRONTEND_aks_pe_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_APP_BACKEND_aks_cpu_alert_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_APP_BACKEND_aks_mem_alert_name = null
+
+param managedClusters_EUS_FLLM_DEMO_APP_BACKEND_aks_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_APP_FRONTEND_aks_cpu_alert_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_APP_FRONTEND_aks_mem_alert_name = null
+
+param managedClusters_EUS_FLLM_DEMO_APP_FRONTEND_aks_name = null
+
+param userAssignedIdentities_EUS_FLLM_DEMO_APP_chat_ui_mi_name = null
+
+param userAssignedIdentities_EUS_FLLM_DEMO_APP_core_api_mi_name = null
+
+param dataCollectionRules_MSCI_eastus_eus_fllm_demo_app_backend_aks_name = null
+
+param userAssignedIdentities_EUS_FLLM_DEMO_APP_BACKEND_aks_mi_name = null
+
+param dataCollectionRules_MSProm_eastus_EUS_FLLM_DEMO_APP_BACKEND_aks_name = null
+
+param userAssignedIdentities_EUS_FLLM_DEMO_APP_FRONTEND_aks_mi_name = null
+
+param dataCollectionRules_MSProm_eastus_EUS_FLLM_DEMO_APP_FRONTEND_aks_name = null
+
+param userAssignedIdentities_EUS_FLLM_DEMO_APP_agent_hub_api_mi_name = null
+
+param userAssignedIdentities_EUS_FLLM_DEMO_APP_langchain_api_mi_name = null
+
+param userAssignedIdentities_EUS_FLLM_DEMO_APP_gatekeeper_api_mi_name = null
+
+param userAssignedIdentities_EUS_FLLM_DEMO_APP_prompt_hub_api_mi_name = null
+
+param metricAlerts_CPU_Usage_Percentage___EUS_FLLM_DEMO_APP_FRONTEND_aks_name = null
+
+param dataCollectionEndpoints_MSProm_eastus_eus_fllm_demo_app_backend_aks_name = null
+
+param dataCollectionEndpoints_MSProm_eastus_EUS_FLLM_DEMO_APP_FRONTEND_aks_name = null
+
+param userAssignedIdentities_EUS_FLLM_DEMO_APP_agent_factory_api_mi_name = null
+
+param userAssignedIdentities_EUS_FLLM_DEMO_APP_data_source_hub_api_mi_name = null
+
+param userAssignedIdentities_EUS_FLLM_DEMO_APP_semantic_kernel_api_mi_name = null
+
+param metricAlerts_Memory_Working_Set_Percentage___EUS_FLLM_DEMO_APP_FRONTEND_aks_name = null
+
+param prometheusRuleGroups_NodeRecordingRulesRuleGroup_EUS_FLLM_DEMO_APP_BACKEND_aks_name = null
+
+param prometheusRuleGroups_NodeRecordingRulesRuleGroup_EUS_FLLM_DEMO_APP_FRONTEND_aks_name = null
+
+param prometheusRuleGroups_NodeRecordingRulesRuleGroup_Win_EUS_FLLM_DEMO_APP_BACKEND_aks_name = null
+
+param prometheusRuleGroups_NodeRecordingRulesRuleGroup_Win_EUS_FLLM_DEMO_APP_FRONTEND_aks_name = null
+
+param prometheusRuleGroups_KubernetesRecordingRulesRuleGroup_EUS_FLLM_DEMO_APP_BACKEND_aks_name = null
+
+param prometheusRuleGroups_KubernetesRecordingRulesRuleGroup_EUS_FLLM_DEMO_APP_FRONTEND_aks_name = null
+
+param prometheusRuleGroups_NodeAndKubernetesRecordingRulesRuleGroup_Win_EUS_FLLM_DEMO_APP_BACKEND_aks_name = null
+
+param prometheusRuleGroups_NodeAndKubernetesRecordingRulesRuleGroup_Win_EUS_FLLM_DEMO_APP_FRONTEND_aks_name = null
+
+param accounts_eus_fllm_demo_ops_amw_externalid = null
+
+param virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid = null
+
+param applicationGateways_EUS_FLLM_DEMO_AGW_api_agw_externalid = null
+
+param workspaces_EUS_FLLM_DEMO_OPS_la_externalid = null
+
+param publicIPAddresses_3bb8b2a2_472e_4d28_915a_f14d2beca423_externalid = null
+
+param privateDnsZones_privatelink_eastus_azmk8s_io_externalid = null
+
+param userAssignedIdentities_EUS_FLLM_DEMO_APP_BACKEND_aks_agentpool_externalid = null
+
+param applicationGateways_EUS_FLLM_DEMO_AGW_www_agw_externalid = null
+
+param publicIPAddresses_c299afba_4567_422e_94d5_09428a36fbbe_externalid = null
+
+param userAssignedIdentities_EUS_FLLM_DEMO_APP_FRONTEND_aks_agentpool_externalid = null
+
+param actiongroups_EUS_FLLM_DEMO_OPS_ag_externalid = null

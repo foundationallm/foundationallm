@@ -1,0 +1,49 @@
+using './template.bicep'
+
+param users_1_lastName = null
+
+param vaults_EUS_FLLM_DEMO_OAI_kv_name = null
+
+param service_EUS_FLLM_DEMO_OAI_apim_name = null
+
+param publicIPAddresses_EUS_FLLM_DEMO_OAI_pip_name = null
+
+param privateEndpoints_EUS_FLLM_DEMO_OAI_kv_pe_name = null
+
+param accounts_EUS_FLLM_DEMO_OAI_0_openai_name = null
+
+param accounts_EUS_FLLM_DEMO_OAI_1_openai_name = null
+
+param privateEndpoints_EUS_FLLM_DEMO_OAI_0_openai_pe_name = null
+
+param privateEndpoints_EUS_FLLM_DEMO_OAI_1_openai_pe_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_OAI_kv_latency_alert_name = null
+
+param accounts_EUS_FLLM_DEMO_OAI_content_safety_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_OAI_apim_capacity_alert_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_OAI_kv_saturation_alert_name = null
+
+param privateEndpoints_EUS_FLLM_DEMO_OAI_content_safety_pe_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_OAI_kv_availability_alert_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_OAI_openai_openai0_latency_alert_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_OAI_openai_openai1_latency_alert_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_OAI_openai_openai0_availability_alert_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_OAI_openai_openai1_availability_alert_name = null
+
+param virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid = null
+
+param actionGroups_EUS_FLLM_DEMO_OPS_ag_externalid = null
+
+param privateDnsZones_privatelink_openai_azure_com_externalid = null
+
+param privateDnsZones_privatelink_cognitiveservices_azure_com_externalid = null
+
+param privateDnsZones_privatelink_vaultcore_azure_net_externalid = null

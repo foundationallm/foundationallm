@@ -1,0 +1,15 @@
+using './template.bicep'
+
+param searchServices_eusfllmdemovecsearch_name = null
+
+param privateEndpoints_EUS_FLLM_DEMO_VEC_search_pe_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_VEC_search_latency_alert_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_VEC_search_throttling_alert_name = null
+
+param actionGroups_EUS_FLLM_DEMO_OPS_ag_externalid = null
+
+param virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid = null
+
+param privateDnsZones_privatelink_search_windows_net_externalid = null

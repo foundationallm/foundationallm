@@ -1,0 +1,23 @@
+using './template.bicep'
+
+param virtualMachineScaleSets_EUS_FLLM_DEMO_JBX_vmss_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_JBX_vmss_cpu_alert_name = null
+
+param metricAlerts_EUS_FLLM_DEMO_JBX_vmss_disk_alert_name = null
+
+param virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid = null
+
+param disks_EUS_FLLM_DEMO_JBX_vmEUS_FLLM_DEMO_JBX_vmsOS__1_90783b1585464fbeac8766369c3e9569_externalid = null
+
+param disks_EUS_FLLM_DEMO_JBX_vmEUS_FLLM_DEMO_JBX_vmsOS__1_8931c3b217314710be0aa6ef665a0076_externalid = null
+
+param disks_EUS_FLLM_DEMO_JBX_vmEUS_FLLM_DEMO_JBX_vmsOS__1_b35b5c9e79dc4a5a94c110645119dcb4_externalid = null
+
+param disks_EUS_FLLM_DEMO_JBX_vmEUS_FLLM_DEMO_JBX_vmsOS__1_b1777ab752494061bdb2d909cd6a018d_externalid = null
+
+param disks_EUS_FLLM_DEMO_JBX_vmEUS_FLLM_DEMO_JBX_vmsOS__1_ac6015517acd415282c4772fc5da11bf_externalid = null
+
+param disks_EUS_FLLM_DEMO_JBX_vmEUS_FLLM_DEMO_JBX_vmsOS__1_4cf95b847c81423c9e704a243548bd51_externalid = null
+
+param actionGroups_EUS_FLLM_DEMO_OPS_ag_externalid = null
