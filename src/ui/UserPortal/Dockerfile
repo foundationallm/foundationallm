@@ -29,3 +29,4 @@ ENV PORT=$PORT
 COPY --from=build /src/.output /src/.output
 
 CMD [ "node", ".output/server/index.mjs" ]
+LABEL org.opencontainers.image.source=https://github.com/solliancenet/foundationallm
