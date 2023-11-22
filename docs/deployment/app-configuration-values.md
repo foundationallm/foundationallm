@@ -89,7 +89,7 @@ FoundationaLLM uses Azure App Configuration to store configuration values, Key V
 | `FoundationaLLM:CoreAPI:Entra:Instance` | Enter the URL to the service. |   |
 | `FoundationaLLM:CoreAPI:Entra:Scopes` | Data.Read |   |
 | `FoundationaLLM:CoreAPI:Entra:TenantId` |   |   |
-| `FoundationaLLM:CoreWorkerService:AppInsightsConnectionString` | Key Vault secret name: `foundationallm-app-insights-connection-string` | This is a Key Vault reference. |
+| `FoundationaLLM:CoreWorker:AppInsightsConnectionString` | Key Vault secret name: `foundationallm-app-insights-connection-string` | This is a Key Vault reference. |
 | `FoundationaLLM:CosmosDB:ChangeFeedLeaseContainer` | leases |   |
 | `FoundationaLLM:CosmosDB:Containers` | Sessions, UserSessions |   |
 | `FoundationaLLM:CosmosDB:Database` | database |   |

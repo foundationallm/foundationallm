@@ -1,52 +1,24 @@
 <template>
 	<div class="chat-app">
-		<NavBar :currentSession="currentSession" @close-sidebar="closeSidebar" />
+		<NavBar @close-sidebar="closeSidebar" />
 		<div class="chat-content">
-			<ChatSidebar v-show="!isSidebarClosed" ref="sidebar" :currentSession="currentSession" @change-session="handleChangeSession" @session-updated="handleSessionUpdated" />
-			<ChatThread :session="currentSession" :sidebar-closed="isSidebarClosed" @session-updated="handleThreadSessionUpdated" />
+			<ChatSidebar v-show="!isSidebarClosed" />
+			<ChatThread :sidebar-closed="isSidebarClosed" />
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { mapStores } from 'pinia';
-import { appConfig } from '@/stores/appConfig';
-import type { Session } from '@/js/types';
-
 export default {
 	name: 'Index',
 
 	data() {
 		return {
-			currentSession: {} as Session,
-			isSidebarClosed: true,
+			isSidebarClosed: false,
 		};
 	},
 
-	computed: {
-		...mapStores(appConfig),
-	},
-
 	methods: {
-		handleSessionUpdated(session: Session) {
-			this.currentSession = session;
-		},
-
-		handleChangeSession(session: Session) {
-			if (this.appConfigStore.isKioskMode) {
-				this.$router.push({ query: {} });
-			} else {
-				const query = { chat: session.id };
-				this.$router.push({ query });
-			}
-			this.currentSession = session;
-		},
-
-		handleThreadSessionUpdated(session: Session) {
-			this.currentSession = session;
-			this.$refs.sidebar.getSessions(session);
-		},
-
 		closeSidebar(closed: boolean) {
 			this.isSidebarClosed = closed;
 		},

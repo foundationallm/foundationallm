@@ -1,7 +1,7 @@
 using Azure.Identity;
 using FoundationaLLM.Core.Models.Configuration;
 
-using CoreWorkerService;
+using CoreWorker;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Services;
 
@@ -29,7 +29,7 @@ builder.Services.AddSingleton<ICosmosDbChangeFeedService, CosmosDbChangeFeedServ
 builder.Services.AddHostedService<ChangeFeedWorker>();
 builder.Services.AddApplicationInsightsTelemetryWorkerService(options =>
 {
-    options.ConnectionString = builder.Configuration["FoundationaLLM:CoreWorkerService:AppInsightsConnectionString"];
+    options.ConnectionString = builder.Configuration["FoundationaLLM:CoreWorker:AppInsightsConnectionString"];
 });
 
 var host = builder.Build();

@@ -135,7 +135,8 @@ export async function attemptLogin() {
 	const msalInstance = await getMsalInstance();
 	const loginRequest = await getLoginRequest();
 
-	const response = await msalInstance.loginPopup(loginRequest);
+	await msalInstance.handleRedirectPromise();
+	const response = await msalInstance.loginRedirect(loginRequest);
 	if (response.account) {
 		createTokenRefreshTimer();
 	}

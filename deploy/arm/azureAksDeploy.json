@@ -131,7 +131,7 @@
           "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
         },
         {
-          "key": "FoundationaLLM:CoreWorkerService:AppInsightsConnectionString",
+          "key": "FoundationaLLM:CoreWorker:AppInsightsConnectionString",
           "value": "[concat('{\"uri\":\"https://',variables('keyVaultSettings').name, '.vault.azure.net/secrets/foundationallm-app-insights-connection-string\"}')]",
           "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
         },
@@ -362,7 +362,7 @@
         },
         {
           "key": "FoundationaLLM:Chat:Entra:ClientId",
-          "value": "0b08d115-b517-4d7f-b883-a1665191d14d",
+          "value": "",
           "contentType": null
         },
         {
@@ -382,7 +382,7 @@
         },
         {
           "key": "FoundationaLLM:Chat:Entra:TenantId",
-          "value": "d280491c-b27a-41bf-9623-21b60cf430b3",
+          "value": "",
           "contentType": null
         },
         {
@@ -442,7 +442,7 @@
         },
         {
           "key": "FoundationaLLM:CoreAPI:Entra:ClientId",
-          "value": "b7bfdfd8-fd88-4bec-a6db-7fd1ecac40db",
+          "value": "",
           "contentType": null
         },
         {
@@ -462,7 +462,7 @@
         },
         {
           "key": "FoundationaLLM:CoreAPI:Entra:TenantId",
-          "value": "d280491c-b27a-41bf-9623-21b60cf430b3",
+          "value": "",
           "contentType": null
         },
         {

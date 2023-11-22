@@ -77,6 +77,12 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
                 UserPrompt = "TestUserPrompt"
             };
 
+            var request = new LLMOrchestrationRequest
+            {
+                SessionId = "TestSessionId",
+                UserPrompt = "TestUserPrompt"
+            };
+
             var userPromptSerialized = JsonConvert.SerializeObject(userPrompt);
 
             var response = new HttpResponseMessage
@@ -92,7 +98,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
             _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.LangChainAPI).Returns(httpClient);
 
             // Act
-            var result = await _langChainService.GetSummary(userPromptSerialized);
+            var result = await _langChainService.GetSummary(request);
 
             // Assert
             Assert.NotNull(result);

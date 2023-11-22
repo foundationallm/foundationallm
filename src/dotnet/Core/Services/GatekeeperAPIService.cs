@@ -66,7 +66,7 @@ namespace FoundationaLLM.Core.Services
         }
 
         /// <inheritdoc/>
-        public async Task<string> GetSummary(string content)
+        public async Task<string> GetSummary(SummaryRequest summaryRequest)
         {
             // TODO: Call RefinementService to refine userPrompt
             // await _refinementService.RefineUserPrompt(content);
@@ -75,7 +75,7 @@ namespace FoundationaLLM.Core.Services
 
             var responseMessage = await client.PostAsync("orchestration/summary",
                 new StringContent(
-                    JsonConvert.SerializeObject(new SummaryRequest { UserPrompt = content }, _jsonSerializerSettings),
+                    JsonConvert.SerializeObject(summaryRequest, _jsonSerializerSettings),
                     Encoding.UTF8, "application/json"));
 
             if (responseMessage.IsSuccessStatusCode)

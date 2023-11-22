@@ -17,7 +17,7 @@ services:
     image: ${REGISTRY:-foundationallm}/core-job:${TAG:-latest}
     build:
       context: ../../src
-      dockerfile: ./dotnet/CoreWorkerService/Dockerfile
+      dockerfile: ./dotnet/CoreWorker/Dockerfile
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       Logging__Loglevel__Default: 'Debug'

@@ -1,6 +1,17 @@
+import logging
+import os
 import uvicorn
 from fastapi import FastAPI
+from app.dependencies import get_config
 from app.routers import resolve, status, list
+from azure.monitor.opentelemetry import configure_azure_monitor
+
+config = get_config()
+
+# configure_azure_monitor(
+#     connection_string=config.get_value('FoundationaLLM:APIs:AgentHubAPI:AppInsightsConnectionString'),
+#     disable_offline_storage=True
+# )
 
 app = FastAPI(
     title='FoundationaLLM AgentHubAPI',
@@ -16,8 +27,8 @@ app = FastAPI(
     docs_url='/swagger',
     redoc_url=None,
     license_info={
-        "name": "FoundationaLLM Software License",
-        "url": "https://www.foundationallm.ai/license",
+        'name': 'FoundationaLLM Software License',
+        'url': 'https://www.foundationallm.ai/license',
     }
 )
 
@@ -38,4 +49,4 @@ async def root():
     return { 'message': 'FoundationaLLM AgentHubAPI' }
 
 if __name__ == '__main__':
-    uvicorn.run('main:app', host='0.0.0.0', port=8742, reload=True, forwarded_allow_ips='*', proxy_headers=True)
+    uvicorn.run('app.main:app', host='0.0.0.0', port=8742, reload=True, forwarded_allow_ips='*', proxy_headers=True)

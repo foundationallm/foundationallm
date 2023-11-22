@@ -68,25 +68,26 @@ public class DataSourceHubAPIService : IDataSourceHubAPIService
     /// <summary>
     /// Gets a list of DataSources from the DataSource Hub
     /// </summary>
-    /// <param name="sources"></param>
+    /// <param name="sources">The data sources to resolve.</param>
+    /// <param name="sessionId">The session ID.</param>
     /// <returns></returns>
-    public async Task<DataSourceHubResponse> ResolveRequest(List<string> sources)
+    public async Task<DataSourceHubResponse> ResolveRequest(List<string> sources, string sessionId)
     {
         try
         {
-            DataSourceHubRequest phm = new DataSourceHubRequest { DataSources =  sources };
+            var request = new DataSourceHubRequest { DataSources =  sources, SessionId = sessionId };
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.DataSourceHubAPI);
             
             var responseMessage = await client.PostAsync("resolve", new StringContent(
-                    JsonConvert.SerializeObject(phm, _jsonSerializerSettings),
+                    JsonConvert.SerializeObject(request, _jsonSerializerSettings),
                     Encoding.UTF8, "application/json"));
 
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var dshr = JsonConvert.DeserializeObject<DataSourceHubResponse>(responseContent, _jsonSerializerSettings);
+                var response = JsonConvert.DeserializeObject<DataSourceHubResponse>(responseContent, _jsonSerializerSettings);
                 
-                return dshr!;
+                return response!;
             }
         }
         catch (Exception ex)

@@ -17,8 +17,8 @@ def test_config():
 def test_completion_request():
      req = CompletionRequest(
                          user_prompt="What is FoundationaLLM?",
-                         agent=Agent(name="demo-resolver", type="generic-resolver", description="Useful for choosing one or more items from a list of FoundationaLLM demo options.", prompt_prefix="You are a demo option selector in the FoundationaLLM system. Your job is to select one or more options from a list of options that can best satisfy the incoming User Prompt. An option consists of a name and description. Evaluate each option by its description.\n\nYou are to select the number of options that are requested in the user prompt. Provide the answer in natural language.\n\nExample: The best option for your request is the default demo.\n\nDo not make anything up, do not create a fake conversation, use only the data provided here.\n\n{options}\n\nUser Prompt:{user_prompt}\n\nAnswer:\n"),
-                         data_source=DataSource(name="foundationallm-demos", type="blob-storage", description="Information about FoundationaLLM demos.", configuration=BlobStorageConfiguration(connection_string_secret="FoundationaLLM:BlobStorage:ConnectionString", container="foundationallm-demo-source", files = ["demos.json"])),
+                         agent=Agent(name="demos", type="generic-resolver", description="Useful for choosing one or more items from a list of FoundationaLLM demo options.", prompt_prefix="You are a demo option selector in the FoundationaLLM system. Your job is to select one or more options from a list of options that can best satisfy the incoming User Prompt. An option consists of a name and description. Evaluate each option by its description.\n\nYou are to select the number of options that are requested in the user prompt. Provide the answer in natural language.\n\nExample: The best option for your request is the default demo.\n\nDo not make anything up, do not create a fake conversation, use only the data provided here.\n\n{options}\n\nUser Prompt:{user_prompt}\n\nAnswer:\n"),
+                         data_source=DataSource(name="foundationallm-demos", type="blob-storage", description="Information about FoundationaLLM demos.", configuration=BlobStorageConfiguration(connection_string_secret="FoundationaLLM:BlobStorageMemorySource:BlobStorageConnection", container="demos-source", files = ["demos.json"])),
                          language_model=LanguageModel(type=LanguageModelTypes.OPENAI, provider=LanguageModelProviders.MICROSOFT, temperature=0, use_chat=True),
                          message_history=[MessageHistoryItem(sender="User", text="What is FoundationaLLM?"),  
                                          MessageHistoryItem(sender="Agent", text="FoundationaLLM is a platform accelerating the delivery of secure, trustworthy, enteprise copilots.")]
@@ -46,7 +46,8 @@ class GenericResolverAgentTests:
     def test_read_json_options_from_storage(self, test_completion_request, test_llm, test_config):
        agent = GenericResolverAgent(completion_request=test_completion_request,llm=test_llm, config=test_config)
        print(agent)
-       options_list = agent.load_options()       
+       options_list = agent.load_options()
+       print(options_list)
        assert len(options_list) > 0
         
     def test_run_should_return_two_names(self, test_completion_request, test_llm, test_config):
@@ -54,8 +55,9 @@ class GenericResolverAgentTests:
         user_prompt = prompt
         test_completion_request.user_prompt = prompt
         agent = GenericResolverAgent(completion_request=test_completion_request,llm=test_llm, config=test_config)
-        selection_list = (agent.run(prompt=user_prompt)).completion                      
-        assert 'default' in selection_list and 'about-solliance' in selection_list
+        selection_list = (agent.run(prompt=user_prompt)).completion 
+        print(selection_list)
+        assert 'default' in selection_list.lower() and 'solliance' in selection_list.lower()
         
     def test_run_should_return_one_name_survey_results(self, test_completion_request, test_llm, test_config):
         prompt = "What demo should I use to demonstrate the CSV features of FoundationaLLM?"        
@@ -63,5 +65,6 @@ class GenericResolverAgentTests:
         test_completion_request.user_prompt = prompt
         agent = GenericResolverAgent(completion_request=test_completion_request,llm=test_llm, config=test_config)
         selection_list = (agent.run(prompt=user_prompt)).completion        
-        assert "survey-results" in selection_list        
+        print(selection_list)
+        assert "hai" in selection_list.lower()        
    

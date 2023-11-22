@@ -19,7 +19,7 @@ using FoundationaLLM.Common.Constants;
 namespace FoundationaLLM.AgentFactory.Core.Services;
 
 /// <summary>
-/// Class for the Agent Hub API Service
+/// Class for the Agent Hub API Service.
 /// </summary>
 public class AgentHubAPIService : IAgentHubAPIService
 {
@@ -76,25 +76,26 @@ public class AgentHubAPIService : IAgentHubAPIService
     /// <summary>
     /// Gets a set of agents from the Agent Hub based on the prompt and user context.
     /// </summary>
-    /// <param name="userPrompt"></param>
+    /// <param name="userPrompt">The user prompt to resolve.</param>
+    /// <param name="sessionId">The session ID.</param>
     /// <returns></returns>
-    public async Task<AgentHubResponse> ResolveRequest(string userPrompt)
+    public async Task<AgentHubResponse> ResolveRequest(string userPrompt, string sessionId)
     {
         try
         {
-            AgentHubRequest ahm = new AgentHubRequest { UserPrompt = userPrompt };
+            var request = new AgentHubRequest { UserPrompt = userPrompt, SessionId = sessionId };
 
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.AgentHubAPI);
                         
             var responseMessage = await client.PostAsync("resolve", new StringContent(
-                    JsonConvert.SerializeObject(ahm, _jsonSerializerSettings),
+                    JsonConvert.SerializeObject(request, _jsonSerializerSettings),
                     Encoding.UTF8, "application/json"));
 
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var ahr = JsonConvert.DeserializeObject<AgentHubResponse>(responseContent, _jsonSerializerSettings);
-                return ahr!;
+                var response = JsonConvert.DeserializeObject<AgentHubResponse>(responseContent, _jsonSerializerSettings);
+                return response!;
             }
         }
         catch (Exception ex)

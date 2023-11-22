@@ -12,6 +12,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Models.Orchestration.DataSourceConfi
         private readonly string _username = "TestUsername";
         private readonly string _passwordSecretName = "TestPasswordSecretName";
         private readonly List<string> _includeTables = new List<string> { "table1", "table2" };
+        private readonly List<string> _excludeTables = new List<string> { "table3", "table4" };
         private readonly int _fewShotExampleCount = 5;
         private readonly SQLDatabaseConfiguration _configuration;
 
@@ -25,6 +26,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Models.Orchestration.DataSourceConfi
                 DatabaseName = _databaseName,
                 Username = _username,
                 IncludeTables = _includeTables,
+                ExcludeTables = _excludeTables,
                 FewShotExampleCount = _fewShotExampleCount
             };
         }
@@ -39,6 +41,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Models.Orchestration.DataSourceConfi
             Assert.Equal(_databaseName, _configuration.DatabaseName);
             Assert.Equal(_username, _configuration.Username);
             Assert.Equal(_includeTables, _configuration.IncludeTables);
+            Assert.Equal(_excludeTables, _configuration.ExcludeTables);
             Assert.Equal(_fewShotExampleCount, _configuration.FewShotExampleCount);
         }
 
@@ -56,6 +59,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Models.Orchestration.DataSourceConfi
             Assert.Equal(_configuration.DatabaseName, deserializedConfig?.DatabaseName);
             Assert.Equal(_configuration.Username, deserializedConfig?.Username);
             Assert.Equal(_configuration.IncludeTables, deserializedConfig?.IncludeTables);
+            Assert.Equal(_configuration.ExcludeTables, deserializedConfig?.ExcludeTables);
             Assert.Equal(_configuration.FewShotExampleCount, deserializedConfig?.FewShotExampleCount);
         }
     }

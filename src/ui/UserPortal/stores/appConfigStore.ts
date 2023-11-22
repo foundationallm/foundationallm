@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import type { AuthConfigOptions } from '@js/auth';
 import api from '@/js/api';
 
-export const appConfig = defineStore('appConfig', {
+export const useAppConfigStore = defineStore('appConfig', {
 	state: () => ({
 		// API: Defines API-specific settings such as the base URL for application requests.
 		apiUrl: null,

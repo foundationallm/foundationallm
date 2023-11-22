@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { mapStores } from 'pinia';
-import { appConfig } from '@/stores/appConfig';
+import { useAppConfigStore } from '@/stores/appConfigStore';
 
 export default {
 	data() {
@@ -21,7 +21,7 @@ export default {
 	},
 
 	computed: {
-		...mapStores(appConfig),
+		...mapStores(useAppConfigStore),
 
 		style() {
 			return {

@@ -93,28 +93,16 @@
 
 <script lang="ts">
 import { mapStores } from 'pinia';
-import type { PropType } from 'vue';
 import type { Session } from '@/js/types';
-import { appConfig } from '@/stores/appConfig';
-import api from '@/js/api';
+import { useAppConfigStore } from '@/stores/appConfigStore';
+import { useAppStore } from '@/stores/appStore';
+declare const process: any;
 
 export default {
 	name: 'ChatSidebar',
 
-	props: {
-		currentSession: {
-			type: [Object, null] as PropType<Session | null>,
-			required: true,
-		},
-	},
-
-	emits: ['change-session', 'session-updated'],
-
-	expose: ['getSessions'],
-
 	data() {
 		return {
-			sessions: [] as Array<Session>,
 			sessionToRename: null as Session | null,
 			newSessionName: '' as string,
 			sessionToDelete: null as Session | null,
@@ -122,28 +110,21 @@ export default {
 	},
 
 	computed: {
-		...mapStores(appConfig),
+		...mapStores(useAppConfigStore),
+		...mapStores(useAppStore),
+
+		sessions() {
+			return this.appStore.sessions;
+		},
+
+		currentSession() {
+			return this.appStore.currentSession;
+		},
 	},
 
 	async created() {
 		if (process.client) {
-
-			// No need to load sessions if in kiosk mode, simply create a new one and skip.
-			if (this.appConfigStore.isKioskMode) {
-				const newSession = await api.addSession();
-				this.handleSessionSelected(newSession);
-				return;
-			}
-
-			await this.getSessions();
-
-			if (this.sessions.length === 0) {
-				this.handleAddSession();
-			} else {
-				const sessionId = this.$nuxt._route.query.chat;
-				const existingSession = this.sessions.find((session: Session) => session.id === sessionId);
-				this.handleSessionSelected(existingSession || this.sessions[0]);
-			}
+			await this.appStore.init(this.$nuxt._route.query.chat);
 		}
 	},
 
@@ -158,59 +139,23 @@ export default {
 			this.newSessionName = '';
 		},
 
-		
-		async getSessions(session?: Session) {
-			const sessions = await api.getSessions();
-			if (session) {
-				// If the passed in session is already in the list, replace it.
-				// This is because the passed in session has been updated, most likely renamed.
-				// Since there is a slight delay in the backend updating the session name, this
-				// ensures the session name is updated in the sidebar immediately.
-				const index = sessions.findIndex(s => s.id === session.id);
-				if (index !== -1) {
-					sessions.splice(index, 1, session);
-				}
-				this.sessions = sessions;
-			} else {
-				this.sessions = sessions;
-			}
-		},
-
-		async handleRenameSession() {
-			await api.renameSession(this.sessionToRename!.id, this.newSessionName);
-			this.sessionToRename!.name = this.newSessionName;
-			this.$emit('session-updated', this.sessionToRename);
-			this.sessionToRename = null;
+		handleSessionSelected(session: Session) {
+			this.appStore.changeSession(session);
 		},
 
 		async handleAddSession() {
-			const newSession = await api.addSession();
+			const newSession = await this.appStore.addSession();
 			this.handleSessionSelected(newSession);
-			await this.getSessions();
-
-			this.sessions = [newSession, ...this.sessions];
 		},
 
-		handleSessionSelected(session: Session) {
-			this.$emit('change-session', session);
+		handleRenameSession() {
+			this.appStore.renameSession(this.sessionToRename!, this.newSessionName);
+			this.sessionToRename = null;
 		},
 
 		async handleDeleteSession() {
-			await api.deleteSession(this.sessionToDelete!.id);
-			await this.getSessions();
-
-			this.sessions = this.sessions.filter((session: Session) => session.id !== this.sessionToDelete!.id);
+			await this.appStore.deleteSession(this.sessionToDelete!);
 			this.sessionToDelete = null;
-
-			if (this.sessions.length === 0) {
-				this.handleAddSession();
-				return;
-			}
-
-			const lastSession = this.sessions[this.sessions.length - 1];
-			if (lastSession) {
-				this.handleSessionSelected(lastSession);
-			}
 		},
 	},
 };

@@ -8,7 +8,13 @@
 			placeholder="What would you like to ask?"
 			@keydown.enter="handleSend"
 		/>
-		<Button :disabled="disabled" class="submit" icon="pi pi-send" label="Send" @click="handleSend" />
+		<Button
+			:disabled="disabled"
+			class="submit"
+			icon="pi pi-send"
+			label="Send"
+			@click="handleSend"
+		/>
 	</div>
 </template>
 

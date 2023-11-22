@@ -24,8 +24,8 @@ namespace FoundationaLLM.AgentFactory.Interfaces
         /// <summary>
         /// Method for retrieving a string summarizing text passed into the function.
         /// </summary>
-        /// <param name="content">The text to summarize.</param>
+        /// <param name="orchestrationRequest">TThe orchestration request that includes the text to summarize.</param>
         /// <returns>Returns a string containing the summary.</returns>
-        Task<string> GetSummary(string content);
+        Task<string> GetSummary(LLMOrchestrationRequest orchestrationRequest);
     }
 }

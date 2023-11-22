@@ -10,15 +10,15 @@ public interface IGatekeeperAPIService
     /// <summary>
     /// Requests a completion from the downstream APIs via the Gatekeeper API.
     /// </summary>
-    /// <param name="completionRequest"></param>
+    /// <param name="completionRequest">The completion request object.</param>
     /// <returns></returns>
     Task<CompletionResponse> GetCompletion(CompletionRequest completionRequest);
     /// <summary>
     /// Requests a summary from the downstream APIs via the Gatekeeper API.
     /// </summary>
-    /// <param name="content"></param>
+    /// <param name="summaryRequest">The summary request object.</param>
     /// <returns></returns>
-    Task<string> GetSummary(string content);
+    Task<string> GetSummary(SummaryRequest summaryRequest);
     /// <summary>
     /// Adds the entity to the orchestrator's memory used by the RAG service.
     /// </summary>

@@ -16,17 +16,17 @@ using System.Runtime.CompilerServices;
 namespace FoundationaLLM.AgentFactory.Core.Agents
 {
     /// <summary>
-    /// Base class for an agent
+    /// Base class for an agent.
     /// </summary>
     public class AgentBase
     {
         /// <summary>
-        /// The agent metadata
+        /// The agent metadata.
         /// </summary>
         protected readonly AgentMetadata _agentMetadata;
 
         /// <summary>
-        /// The orchestration service for the agent
+        /// The orchestration service for the agent.
         /// </summary>
         protected readonly ILLMOrchestrationService _orchestrationService;
 
@@ -41,7 +41,7 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
         protected readonly IDataSourceHubAPIService _dataSourceHubService;
 
         /// <summary>
-        /// Constructor for the AgentBase class
+        /// Constructor for the AgentBase class.
         /// </summary>
         /// <param name="agentMetadata"></param>
         /// <param name="orchestrationService"></param>
@@ -60,11 +60,10 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
         }
 
         /// <summary>
-        /// This will setup the agent based on its metadata
+        /// This will setup the agent based on its metadata.
         /// </summary>
-        /// <param name="userPrompt"></param>
         /// <returns></returns>
-        public virtual async Task Configure(string userPrompt)
+        public virtual async Task Configure(string userPrompt, string sessionId)
         {
             await Task.CompletedTask;
         }

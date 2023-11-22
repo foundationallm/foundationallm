@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.AgentFactory.Models.ConfigurationOptions;
+﻿using FoundationaLLM.AgentFactory.Core.Models.Orchestration;
+using FoundationaLLM.AgentFactory.Models.ConfigurationOptions;
 using FoundationaLLM.AgentFactory.Services;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Chat;
@@ -25,6 +26,15 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
             var userPrompt = "TestUserPrompt";
             var messageHistory = new List<MessageHistoryItem>();
 
+            var request = new LLMOrchestrationCompletionRequest
+            {
+                SessionId = "TestSessionId",
+                UserPrompt = userPrompt,
+                MessageHistory = messageHistory,
+                Agent = null,
+                LanguageModel = null
+            };
+
             var response = new HttpResponseMessage
             {
                 Content = new StringContent(JsonConvert.SerializeObject(new CompletionResponse
@@ -45,7 +55,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
             httpClientFactoryService.CreateClient(Common.Constants.HttpClients.SemanticKernelAPI).Returns(httpClient);
 
             // Act
-            var result = await semanticKernelService.GetCompletion(userPrompt, messageHistory);
+            var result = await semanticKernelService.GetCompletion(request);
 
             // Assert
             Assert.NotNull(result);
@@ -57,7 +67,11 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
         public async Task GetSummary_Success_ReturnsSummary()
         {
             // Arrange
-            var content = "TestContent";
+            var request = new LLMOrchestrationRequest
+            {
+                SessionId = "TestSessionId",
+                UserPrompt = "TestUserPrompt"
+            };
 
             var response = new HttpResponseMessage
             {
@@ -75,7 +89,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
             httpClientFactoryService.CreateClient(Common.Constants.HttpClients.SemanticKernelAPI).Returns(httpClient);
 
             // Act
-            var result = await semanticKernelService.GetSummary(content);
+            var result = await semanticKernelService.GetSummary(request);
 
             // Assert
             Assert.NotNull(result);

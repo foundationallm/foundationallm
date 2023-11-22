@@ -1,6 +1,7 @@
+import logging
 from typing import Optional
-from fastapi import APIRouter, Depends, Header
-from app.dependencies import validate_api_key_header
+from fastapi import APIRouter, Depends, Header, HTTPException
+from app.dependencies import get_config, validate_api_key_header
 
 from foundationallm.config import Configuration, Context
 from foundationallm.models.orchestration import CompletionRequest, CompletionResponse
@@ -13,8 +14,6 @@ router = APIRouter(
     dependencies=[Depends(validate_api_key_header)],
     responses={404: {'description':'Not found'}}
 )
-
-config = Configuration()
 
 @router.post('/completion')
 async def get_completion(completion_request: CompletionRequest, x_user_identity: Optional[str] = Header(None)) -> CompletionResponse:
@@ -32,5 +31,12 @@ async def get_completion(completion_request: CompletionRequest, x_user_identity:
     CompletionResponse
         Object containing the completion response and token usage details.
     """
-    orchestration_manager = OrchestrationManager(completion_request = completion_request, configuration=config, context=Context(user_identity=x_user_identity))
-    return orchestration_manager.run(completion_request.user_prompt)
+    try:
+        orchestration_manager = OrchestrationManager(completion_request = completion_request, configuration=get_config(), context=Context(user_identity=x_user_identity))
+        return orchestration_manager.run(completion_request.user_prompt)
+    except Exception as e:
+        logging.error(e, stack_info=True, exc_info=True)
+        raise HTTPException(
+            status_code = 500,
+            detail = e.message
+        )

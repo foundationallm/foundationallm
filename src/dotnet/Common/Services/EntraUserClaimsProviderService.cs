@@ -11,7 +11,7 @@ namespace FoundationaLLM.Common.Services
 {
     /// <summary>
     /// Provides a common interface for retrieving and resolving user claims
-    /// from Microsoft Entra to a <see cref="UnifiedUserIdentity"/> object.
+    /// from Microsoft Entra ID to a <see cref="UnifiedUserIdentity"/> object.
     /// </summary>
     public class EntraUserClaimsProviderService : IUserClaimsProviderService
     {
@@ -25,9 +25,20 @@ namespace FoundationaLLM.Common.Services
             return new UnifiedUserIdentity
             {
                 Name = userPrincipal.FindFirstValue("name"),
-                Username = userPrincipal.FindFirstValue("preferred_username"),
-                UPN = userPrincipal.FindFirstValue("preferred_username")
+                Username = ResolveUsername(userPrincipal),
+                UPN = ResolveUsername(userPrincipal)
             };
+        }
+
+        /// <summary>
+        /// Resolves the username from the provided <see cref="ClaimsPrincipal"/> object.
+        /// </summary>
+        /// <param name="userPrincipal">The claims principal object that contains the authenticated identity.</param>
+        /// <returns></returns>
+        private string ResolveUsername(ClaimsPrincipal? userPrincipal)
+        {
+            // Depending on which Microsoft Entra ID license the user has, the username may be extracted from the Identity.Name value or the preferred_username claim.
+            return (!string.IsNullOrWhiteSpace(userPrincipal?.Identity?.Name) ? userPrincipal.Identity.Name : userPrincipal?.FindFirstValue("preferred_username")) ?? string.Empty;
         }
     }
 }
