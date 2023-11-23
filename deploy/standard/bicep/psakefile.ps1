@@ -27,7 +27,7 @@ foreach ($resourceGroup in $resourceGroups.GetEnumerator()) {
     $deployments.Add($resourceGroup.Name, "$($resourceGroup.Value)-${timestamp}")
 }
 
-task default -depends DNS
+task default -depends DNS, Networking, OpenAI, ResourceGroups
 
 task DNS -depends ResourceGroups, Networking -description "Ensure DNS resources exist" {
     $vnetId = $(
