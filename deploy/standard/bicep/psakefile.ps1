@@ -24,6 +24,14 @@ $resourceGroups = @{
 
 task default -depends OpenAI
 
+task Networking -depends ResourceGroups -description "Ensure networking resources exist" {
+    az deployment group create `
+        --name "$($resourceGroups["net"])-${timestamp}" `
+        --parameters environment=$environment location=$location project=$project `
+        --resource-group $resourceGroups["net"] `
+        --template-file ./networking-rg/template.bicep 
+}
+
 task OpenAI -depends ResourceGroups -description "Ensure OpenAI accounts exist" {
     az deployment group create `
         --name "openai-$($resourceGroups["oai"])-${timestamp}" `
