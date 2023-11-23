@@ -1,6 +1,7 @@
 param environmentName string
 param location string
 param project string
+param timestamp string = utcNow()
 
 output vnetId string = main.id
 
@@ -66,18 +67,12 @@ resource main 'Microsoft.Network/virtualNetworks@2023-05-01' = {
 }
 
 @batchSize(1)
-resource subnet 'Microsoft.Network/virtualNetworks/subnets@2023-05-01' = [for subnet in subnets: {
-  name: subnet.name
-  parent: main
-
-  properties: {
+module subnet './modules/subnet.bicep' = [for subnet in subnets: {
+  name: '${subnet.name}-${timestamp}'
+  params: {
     addressPrefix: subnet.addressPrefix
-    privateEndpointNetworkPolicies: 'Enabled'
-    privateLinkServiceNetworkPolicies: 'Enabled'
-    serviceEndpoints: subnet.?serviceEndpoints ?? []
-
-    // networkSecurityGroup: {
-    //   id: networkSecurityGroups_EUS_FLLM_DEMO_NET_ado_nsg_name_resource.id
-    // }
+    name: subnet.name
+    serviceEndpoints: subnet.?serviceEndpoints
+    vnetName: main.name
   }
 }]
