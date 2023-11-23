@@ -6,6 +6,7 @@ param timestamp string = utcNow()
 output vnetId string = main.id
 
 var name = 'vnet-${environmentName}-${location}-net-${project}'
+
 var subnets = [
   {
     name: 'AppGateway'
@@ -47,22 +48,23 @@ var subnets = [
   }
 ]
 
+var tags = {
+  Environment: environmentName
+  IaC: 'Bicep'
+  Project: project
+  Purpose: 'Networking'
+}
+
 resource main 'Microsoft.Network/virtualNetworks@2023-05-01' = {
   name: name
   location: location
+  tags: tags
 
   properties: {
     enableDdosProtection: false
     addressSpace: {
       addressPrefixes: [ '10.0.0.0/16' ]
     }
-  }
-
-  tags: {
-    Environment: environmentName
-    IaC: 'Bicep'
-    Project: project
-    Purpose: 'Networking'
   }
 }
 
@@ -71,8 +73,10 @@ module subnet './modules/subnet.bicep' = [for subnet in subnets: {
   name: '${subnet.name}-${timestamp}'
   params: {
     addressPrefix: subnet.addressPrefix
+    location: location
     name: subnet.name
     serviceEndpoints: subnet.?serviceEndpoints
+    tags: tags
     vnetName: main.name
   }
 }]
