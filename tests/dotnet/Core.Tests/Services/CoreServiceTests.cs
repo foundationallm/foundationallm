@@ -279,9 +279,14 @@ namespace FoundationaLLM.Core.Tests.Services
             var sessionId = Guid.NewGuid().ToString();
             var prompt = "Prompt";
             var summary = "Summary";
+            var summaryRequest = new SummaryRequest
+            {
+                SessionId = sessionId,
+                UserPrompt = prompt
+            };
             var expectedCompletion = new Completion() { Text = summary };
 
-            _gatekeeperAPIService.GetSummary(prompt).Returns(summary);
+            _gatekeeperAPIService.GetSummary(summaryRequest).Returns(summary);
             _cosmosDbService.UpdateSessionNameAsync(sessionId, summary).Returns(new Session());
 
             // Act

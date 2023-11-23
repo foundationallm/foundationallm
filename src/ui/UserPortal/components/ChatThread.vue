@@ -16,7 +16,7 @@
 						:key="message.id"
 						:message="message"
 						:showWordAnimation="index === 0 && userSentMessage && message.sender === 'Assistant'"
-						@rate="handleRateMessage(messages.length - 1 - index, $event)"
+						@rate="handleRateMessage($event.message, $event.isLiked)"
 					/>
 				</template>
 
@@ -42,19 +42,14 @@
 
 <script lang="ts">
 import { mapStores } from 'pinia';
-import type { PropType } from 'vue';
 import type { Message, Session } from '@/js/types';
-import api from '@/js/api';
-import { appConfig } from '@/stores/appConfig';
+import { useAppConfigStore } from '@/stores/appConfigStore';
+import { useAppStore } from '@/stores/appStore';
 
 export default {
 	name: 'ChatThread',
 
 	props: {
-		session: {
-			type: [Object, null] as PropType<Session | null>,
-			required: true,
-		},
 		sidebarClosed: {
 			type: Boolean,
 			required: false,
@@ -66,81 +61,44 @@ export default {
 
 	data() {
 		return {
-			messages: [] as Array<Message>,
 			isLoading: true,
 			userSentMessage: false,
 		};
 	},
 
 	computed: {
-		...mapStores(appConfig),
+		...mapStores(useAppConfigStore),
+		...mapStores(useAppStore),
+
+		currentSession() {
+			return this.appStore.currentSession;
+		},
+
+		messages() {
+			return this.appStore.currentMessages;
+		},
 	},
 
 	watch: {
-		async session(newSession: Session, oldSession: Session) {
-			if (newSession.id === oldSession.id) return;
+		async currentSession(newSession: Session, oldSession: Session) {
+			if (newSession.id === oldSession?.id) return;
 			this.isLoading = true;
 			this.userSentMessage = false;
-			await this.getMessages();
+			await this.appStore.getMessages();
 			this.isLoading = false;
 		},
 	},
 
 	methods: {
-		async getMessages() {
-			const data = await api.getMessages(this.session!.id);
-			this.messages = data;
-		},
-
-		async handleRateMessage(messageIndex: number, { message, isLiked }: { message: Message; isLiked: Message['rating'] }) {
-			await api.rateMessage(message, isLiked);
-			this.messages[messageIndex].rating = isLiked;
+		async handleRateMessage(message: Message, isLiked: Message['rating']) {
+			await this.appStore.rateMessage(message, isLiked);
 		},
 
 		async handleSend(text: string) {
 			if (!text) return;
 
 			this.userSentMessage = true;
-
-			const tempUserMessage: Message = {
-				completionPromptId: null,
-				id: '',
-				rating: null,
-				sender: 'User',
-				sessionId: this.session!.id,
-				text,
-				timeStamp: new Date().toISOString(),
-				tokens: 0,
-				type: 'Message',
-				vector: [],
-			};
-			this.messages.push(tempUserMessage);
-
-			const tempAssistantMessage: Message = {
-				completionPromptId: null,
-				id: '',
-				rating: null,
-				sender: 'Assistant',
-				sessionId: this.session!.id,
-				text: '',
-				timeStamp: new Date().toISOString(),
-				tokens: 0,
-				type: 'LoadingMessage',
-				vector: [],
-			};
-			this.messages.push(tempAssistantMessage);
-
-			await api.sendMessage(this.session!.id, text, this.appConfigStore.selectedAgents.get(this.session.id));
-			await this.getMessages();
-
-			// Update the session name based on the message sent
-			if (this.messages.length === 2) {
-				const sessionFullText = this.messages.map((message) => message.text).join('\n');
-				const { text: newSessionName } = await api.summarizeSessionName(this.session!.id, sessionFullText);
-				await api.renameSession(this.session!.id, newSessionName);
-				this.session!.name = newSessionName;
-				this.$emit('session-updated', { ...this.session, name: newSessionName });
-			}
+			await this.appStore.sendMessage(text);
 		},
 	},
 };

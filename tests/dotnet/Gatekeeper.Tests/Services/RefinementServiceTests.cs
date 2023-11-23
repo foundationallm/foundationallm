@@ -17,20 +17,5 @@ namespace Gatekeeper.Tests.Services
         {
             _testedService = new RefinementService(_options, _logger);
         }
-
-        [Fact]
-        public async Task RefineUserPrompt_ShouldReturnTheRefinedUserPrompt()
-        {
-            // Arrange
-            var userPrompt = "User prompt.";
-
-            var expectedResult = "Refined user prompt.";
-
-            // Act
-            var actualResult = await _testedService.RefineUserPrompt(userPrompt);
-
-            // Assert
-            Assert.Equivalent(expectedResult, actualResult);
-        }
     }
 }

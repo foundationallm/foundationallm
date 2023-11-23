@@ -1,21 +1,21 @@
-# Authentication setup: Microsoft Entra
+# Authentication setup: Microsoft Entra ID
 
-FoundationaLLM comes with out-of-the-box support for Microsoft Entra authentication. This means that you can use your Microsoft Entra account to log in to the chat interface.
+FoundationaLLM comes with out-of-the-box support for Microsoft Entra ID authentication. This means that you can use your Microsoft Entra ID account to log in to the chat interface.
 
 Table of contents:
 
-- [Authentication setup: Microsoft Entra](#authentication-setup-microsoft-entra)
-  - [Creating the Microsoft Entra applications](#creating-the-microsoft-entra-applications)
+- [Authentication setup: Microsoft Entra ID](#authentication-setup-microsoft-entra-id)
+  - [Creating the Microsoft Entra ID applications](#creating-the-microsoft-entra-id-applications)
     - [Pre-requisites](#pre-requisites)
       - [Setup App Configuration access](#setup-app-configuration-access)
       - [Obtain the URL for the chat UI application](#obtain-the-url-for-the-chat-ui-application)
     - [Creating the client application](#creating-the-client-application)
-      - [Register the client application in the Microsoft Entra admin center](#register-the-client-application-in-the-microsoft-entra-admin-center)
+      - [Register the client application in the Microsoft Entra ID admin center](#register-the-client-application-in-the-microsoft-entra-id-admin-center)
       - [Add a redirect URI to the client application](#add-a-redirect-uri-to-the-client-application)
       - [Implicit grant and hybrid flows for the client application](#implicit-grant-and-hybrid-flows-for-the-client-application)
       - [Client secret for the client application](#client-secret-for-the-client-application)
     - [Creating the API application](#creating-the-api-application)
-      - [Register the API application in the Microsoft Entra admin center](#register-the-api-application-in-the-microsoft-entra-admin-center)
+      - [Register the API application in the Microsoft Entra ID admin center](#register-the-api-application-in-the-microsoft-entra-id-admin-center)
       - [Implicit grant and hybrid flows for the API application](#implicit-grant-and-hybrid-flows-for-the-api-application)
       - [Client secret for the API application](#client-secret-for-the-api-application)
       - [Expose an API for the API application](#expose-an-api-for-the-api-application)
@@ -26,9 +26,9 @@ Table of contents:
     - [Restart Core API and Chat UI applications in an ACA Deployment](#restart-core-api-and-chat-ui-applications-in-an-aca-deployment)
     - [Restart Core API and Chat UI applications in an AKS Deployment](#restart-core-api-and-chat-ui-applications-in-an-aks-deployment)
 
-## Creating the Microsoft Entra applications
+## Creating the Microsoft Entra ID applications
 
-To enable Microsoft Entra authentication, you need to create two applications in the Microsoft Azure portal:
+To enable Microsoft Entra ID authentication, you need to create two applications in the Microsoft Azure portal:
 
 - A client application that will be used by the chat interface to authenticate users.
 - An API application that will be used by the Core API to authenticate users.
@@ -72,9 +72,9 @@ If you performed an **Azure Kubernetes Service (AKS)** deployment, follow these 
 
 ### Creating the client application
 
-#### Register the client application in the Microsoft Entra admin center
+#### Register the client application in the Microsoft Entra ID admin center
 
-1. Sign in to the [Microsoft Entra admin center](https://entra.microsoft.com/) as at least a Cloud Application Administrator.
+1. Sign in to the [Microsoft Entra ID admin center](https://entra.microsoft.com/) as at least a Cloud Application Administrator.
 2. Browse to **Identity** > **Applications** > **App registrations**.
 
     ![The app registrations menu item in the left-hand menu is highlighted.](media/entra-app-registrations.png)
@@ -93,12 +93,9 @@ If you performed an **Azure Kubernetes Service (AKS)** deployment, follow these 
 #### Add a redirect URI to the client application
 
 1. Under **Manage**, select **Authentication**.
-2. Under **Platform configurations**, select **Add a platform**. In the pane that opens, select **Web**. This is for the Blazor version of the chat application.
-3. For **Redirect URIs**, enter `<YOUR_CHAT_APP_URL>/signin-oidc`, replacing `<YOUR_CHAT_APP_URL>` with the chat UI application URL obtained in the [Pre-requisites](#pre-requisites) section above. For example, it should look something like `https://d85a09ce067141d5807a.eastus.aksapp.io/signin-oidc` for an AKS deployment, or `https://fllmaca002chatuica.graybush-c554b849.eastus.azurecontainerapps.io/signin-oidc` for an ACA deployment.
-4. Add another **Redirect URI** for local development. For **Redirect URIs**, enter `https://localhost:7258/signin-oidc`.
-5. Under **Platform configurations**, select **Add a platform**. In the pane that opens, select **Single-page application**. This is for the Vue.js version of the chat application.
-6. Add a **Redirect URI** under Single-page application for your deployed Vue.js application. Enter `<YOUR_CHAT_APP_URL>/signin-oidc`, replacing `<YOUR_CHAT_APP_URL>` with the chat UI application URL obtained in the [Pre-requisites](#pre-requisites) section above. For example, it should look something like `https://d85a09ce067141d5807a.eastus.aksapp.io/signin-oidc` for an AKS deployment, or `https://fllmaca002chatuica.graybush-c554b849.eastus.azurecontainerapps.io/signin-oidc` for an ACA deployment.
-7. Add a **Redirect URI** under Single-page application for local development of the Vue.js application: `http://localhost:3000/signin-oidc`.
+2. Under **Platform configurations**, select **Add a platform**. In the pane that opens, select **Single-page application**. This is for the Vue.js chat application.
+3. Add a **Redirect URI** under Single-page application for your deployed Vue.js application. Enter `<YOUR_CHAT_APP_URL>/signin-oidc`, replacing `<YOUR_CHAT_APP_URL>` with the chat UI application URL obtained in the [Pre-requisites](#pre-requisites) section above. For example, it should look something like `https://d85a09ce067141d5807a.eastus.aksapp.io/signin-oidc` for an AKS deployment, or `https://fllmaca002chatuica.graybush-c554b849.eastus.azurecontainerapps.io/signin-oidc` for an ACA deployment.
+4. Add a **Redirect URI** under Single-page application for local development of the Vue.js application: `http://localhost:3000/signin-oidc`.
 
     ![The Authentication left-hand menu item and redirect URIs are highlighted.](media/entra-app-client-authentication-uris.png)
 
@@ -125,9 +122,9 @@ If you performed an **Azure Kubernetes Service (AKS)** deployment, follow these 
 
 ### Creating the API application
 
-#### Register the API application in the Microsoft Entra admin center
+#### Register the API application in the Microsoft Entra ID admin center
 
-1. Return to the [Microsoft Entra admin center](https://entra.microsoft.com).
+1. Return to the [Microsoft Entra ID admin center](https://entra.microsoft.com).
 2. Browse to **Identity** > **Applications** > **App registrations** and select **+ New registration**.
 
     ![The app registrations menu item in the left-hand menu is highlighted.](media/entra-app-registrations.png)
@@ -144,9 +141,10 @@ If you performed an **Azure Kubernetes Service (AKS)** deployment, follow these 
 
 #### Implicit grant and hybrid flows for the API application
 
-1. Check **Access tokens** and **ID tokens** under **Implicit grant**.
-2. Select **Configure** to apply the changes.
-3. Select **Save** at the bottom of the page to save the changes.
+1. Select **Authentication** under **Manage** in the left-hand menu.
+2. Check **Access tokens** and **ID tokens** under **Implicit grant**.
+3. Select **Configure** to apply the changes.
+4. Select **Save** at the bottom of the page to save the changes.
 
     ![Both the Access tokens and ID tokens checkboxes are checked and the Save button is highlighted.](media/entra-app-client-authentication-implicit-grant.png)
 
@@ -197,7 +195,7 @@ If you performed an **Azure Kubernetes Service (AKS)** deployment, follow these 
 5. Check the box next to **Key** in the header to select all items.
 6. Select **Edit** to open a JSON editor for the selected items.
 
-    ![The configuration settings are filtered by entra and all items are selected.](media/app-configuration-entra-settings.png "App Configuration settings for Microsoft Entra authentication")
+    ![The configuration settings are filtered by entra and all items are selected.](media/app-configuration-entra-settings.png "App Configuration settings for Microsoft Entra ID authentication")
 
 7. Replace the values for the following settings with the values that you recorded earlier:
    - `FoundationaLLM:Chat:Entra:ClientId`: The **Application (client) ID** of the client application that you [created earlier](#register-the-client-application-in-the-microsoft-entra-admin-center).
@@ -229,7 +227,7 @@ Key Vault stores the secrets for the client and API applications. You need to up
 
 ## Next steps
 
-Now that Entra authentication is fully configured, restart the Core API and chat applications to apply the changes. Navigate to your chat application or refresh the page if it is already open. It should automatically prompt you to sign in with your Microsoft Entra account.
+Now that Entra authentication is fully configured, restart the Core API and chat applications to apply the changes. Navigate to your chat application or refresh the page if it is already open. It should automatically prompt you to sign in with your Microsoft Entra ID account.
 
 ### Restart Core API and Chat UI applications in an ACA Deployment
 

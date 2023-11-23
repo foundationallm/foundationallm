@@ -1,15 +1,18 @@
-from typing import List
 from foundationallm.config import Configuration
-from langchain.base_language import BaseLanguageModel
-from langchain.callbacks import get_openai_callback
 from foundationallm.langchain.agents.agent_base import AgentBase
 from foundationallm.models.orchestration import CompletionRequest, CompletionResponse
-from langchain.document_loaders import AzureBlobStorageFileLoader, AzureBlobStorageContainerLoader
-from langchain.indexes import VectorstoreIndexCreator
-from langchain.indexes.vectorstore import VectorStoreIndexWrapper
-from langchain.embeddings import OpenAIEmbeddings
-from foundationallm.models.orchestration import MessageHistoryItem
 from foundationallm.langchain.message_history import build_message_history
+from typing import List
+from langchain.base_language import BaseLanguageModel
+from langchain.callbacks import get_openai_callback
+from langchain.document_loaders import AzureBlobStorageFileLoader, AzureBlobStorageContainerLoader
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.vectorstores import Chroma
+from langchain.prompts import PromptTemplate
+from langchain.schema.document import Document
+from langchain.schema.runnable import RunnablePassthrough
+from langchain.schema import StrOutputParser
 
 vector_store = {}
 
@@ -34,9 +37,10 @@ class BlobStorageAgent(AgentBase):
         self.container_name = completion_request.data_source.configuration.container        
         self.file_names = completion_request.data_source.configuration.files
         self.message_history = completion_request.message_history
-        self.__config = config        
+        self.__config = config
         
-    def __get_vector_index(self) -> VectorStoreIndexWrapper:
+                
+    def __get_vector_index(self) -> Chroma:
         """
         Creates a vector index from files in the indicated blob storage container and files list
         """
@@ -44,19 +48,16 @@ class BlobStorageAgent(AgentBase):
         if self.container_name in vector_store:            
             return vector_store[self.container_name]
         
-        loaders = []    
+        docs = []
         if "*" in self.file_names:
             # Load all files in the container
-            loaders.append(AzureBlobStorageContainerLoader(conn_str=self.connection_string, container=self.container_name))
+            loader = AzureBlobStorageContainerLoader(conn_str=self.connection_string, container=self.container_name)
+            docs.extend(loader.load())
         else:
             # Load specific files
             for file_name in self.file_names:
-                loaders.append(AzureBlobStorageFileLoader(conn_str=self.connection_string, container=self.container_name, blob_name=file_name))
-        
-        # Optional parameters for VectorStoreIndexCreator: 
-        #       embeddings (defaults to langchain's own embeddings), 
-        #       text_splitter(defaults to TextSplitter)
-        #       vectorstore_cls (defaults to Chroma)
+                loader = AzureBlobStorageFileLoader(conn_str=self.connection_string, container=self.container_name, blob_name=file_name)
+                docs.extend(loader.load())
 
         embeddings = OpenAIEmbeddings(
             openai_api_base = self.__config.get_value("FoundationaLLM:AzureOpenAI:API:Endpoint"),
@@ -66,11 +67,19 @@ class BlobStorageAgent(AgentBase):
             deployment = "embeddings",
             chunk_size=10     
         )
-    
-        index = VectorstoreIndexCreator(embedding=embeddings).from_loaders(loaders)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+        splits = text_splitter.split_documents(docs)
+        
+        index = Chroma.from_documents(documents=splits, embedding=embeddings, collection_name=self.container_name)
         vector_store[self.container_name] = index
         return index             
-       
+    
+    def __format_docs(self, docs:List[Document]) -> str:
+        """
+        Generates a formatted string from a list of documents for use as the context for the completion request.
+        """
+        return "\n\n".join(doc.page_content for doc in docs)
+ 
     def run(self, prompt: str) -> CompletionResponse:
         """
         Executes a completion request by querying the vector index with the user prompt.
@@ -89,8 +98,18 @@ class BlobStorageAgent(AgentBase):
 
         with get_openai_callback() as cb:
             index = self.__get_vector_index()
-            query = self.prompt_prefix + build_message_history(self.message_history) + "Request: "+ prompt + "\n"            
-            completion = index.query(query, self.llm)
+            retriever = index.as_retriever()
+            prompt_builder = self.prompt_prefix + build_message_history(self.message_history) + "\n\nQuestion: {question}\n\nContext: {context}\n\nAnswer:"
+            custom_prompt = PromptTemplate.from_template(prompt_builder)            
+           
+            rag_chain = (
+                { "context": retriever | self.__format_docs, "question": RunnablePassthrough()}
+                | custom_prompt
+                | self.llm
+                | StrOutputParser()
+            )    
+            completion = rag_chain.invoke(prompt)
+            
             return CompletionResponse(
                 completion = completion,
                 user_prompt = prompt,

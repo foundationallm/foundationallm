@@ -137,6 +137,13 @@ if ($charts.Contains("core-api") -or  $charts.Contains("*")) {
     Invoke-Expression "$command"
 }
 
+if ($charts.Contains("core-job") -or  $charts.Contains("*")) {
+    Write-Host "Worker job chart - core-job" -ForegroundColor Yellow
+    $command = "helm upgrade --install $name-core-job ./core-job -f $valuesFile --set image.repository=$acrLogin/core-job --set image.tag=$tag --set hpa.activated=$autoscale"
+    $command = createHelmCommand $command 
+    Invoke-Expression "$command"
+}
+
 if ($charts.Contains("data-source-hub-api") -or  $charts.Contains("*")) {
     Write-Host "API chart - data-source-hub-api" -ForegroundColor Yellow
     $command = "helm upgrade --install $name-data-source-hub-api ./data-source-hub-api -f $valuesFile --set ingress.hosts='{$aksHost}' --set image.repository=$acrLogin/data-source-hub-api --set image.tag=$tag --set hpa.activated=$autoscale"

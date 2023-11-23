@@ -16,5 +16,4 @@ async def get_status() -> str:
     string
         String containing the current status of the API.
     """
-    
     return 'ready'

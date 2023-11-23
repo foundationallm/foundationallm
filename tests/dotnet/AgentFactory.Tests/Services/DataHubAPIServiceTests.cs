@@ -46,6 +46,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
         {
             // Arrange
             var sources = new List<string> { "Source1", "Source2" };
+            var sessionId = "TestSessionId";
 
             var response = new HttpResponseMessage
             {
@@ -63,7 +64,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
             _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.DataSourceHubAPI).Returns(httpClient);
 
             // Act
-            var result = await _dataSourceHubAPIService.ResolveRequest(sources);
+            var result = await _dataSourceHubAPIService.ResolveRequest(sources, sessionId);
 
             // Assert
             Assert.NotNull(result);

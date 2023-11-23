@@ -37,6 +37,11 @@ $services = @(
         Dockerfile='../../src/dotnet/CoreAPI/Dockerfile'
     }
     [pscustomobject]@{
+        Name='core-job';
+        Context='../../src';
+        Dockerfile='../../src/dotnet/CoreWorker/Dockerfile'
+    }
+    [pscustomobject]@{
         Name='data-source-hub-api';
         Context='../../src/python';
         Dockerfile='../../src/python/DataSourceHubAPI/Dockerfile'

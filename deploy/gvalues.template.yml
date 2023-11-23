@@ -6,6 +6,7 @@ azureWorkloadIdentity:
   agentHubApiClientId: {{agentHubApiMiClientId}}
   chatUiClientId: {{chatUiMiClientId}}
   coreApiClientId: {{coreApiMiClientId}}
+  coreJobClientId: {{coreJobMiClientId}}
   dataSourceHubApiClientId: {{dataSourceHubApiMiClientId}}
   gatekeeperApiClientId: {{gatekeeperApiMiClientId}}
   langChainApiClientId: {{langChainApiMiClientId}}

@@ -77,7 +77,11 @@ namespace FoundationaLLM.Core.Tests.Services
             // Arrange
             var expected = "Test Response";
             var response = new SummaryResponse { Summary = expected };
-            var summaryRequest = "Test Prompt";
+            var summaryRequest = new SummaryRequest
+            {
+                SessionId = "TestSessionId",
+                UserPrompt = "Test Prompt"
+            };
 
             // Create a mock message handler
             var mockHandler = new MockHttpMessageHandler(HttpStatusCode.OK, response);
@@ -100,7 +104,11 @@ namespace FoundationaLLM.Core.Tests.Services
         {
             // Arrange
             var expected = "[No Summary]";
-            var summaryRequest = "Test Prompt";
+            var summaryRequest = new SummaryRequest
+            {
+                SessionId = "TestSessionId",
+                UserPrompt = "Test Prompt"
+            };
 
             // Create a mock message handler
             var mockHandler = new MockHttpMessageHandler(HttpStatusCode.InternalServerError, string.Empty);

@@ -45,49 +45,68 @@ namespace FoundationaLLM.AgentFactory.Services
         public bool IsInitialized => GetServiceStatus();
 
         /// <summary>
-        /// Gets a completion from the Semantic Kernal
+        /// Gets a completion from the Semantic Kernel service.
         /// </summary>
-        /// <param name="userPrompt"></param>
-        /// <param name="messageHistory"></param>
-        /// <returns></returns>
-        public async Task<CompletionResponse> GetCompletion(string userPrompt, List<MessageHistoryItem> messageHistory)
+        /// <param name="request">Request object populated from the hub APIs including agent, prompt, data source, and model information.</param>
+        /// <returns>Returns a completion response from the orchestration engine.</param>
+        public async Task<LLMOrchestrationCompletionResponse> GetCompletion(LLMOrchestrationCompletionRequest request)
         {
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.SemanticKernelAPI);
 
+            var completionRequest = new CompletionRequest
+            {
+                SessionId = request.SessionId ?? string.Empty,
+                UserPrompt = request.UserPrompt ?? string.Empty,
+                MessageHistory = request.MessageHistory
+            };
+
             var responseMessage = await client.PostAsync("orchestration/completion",
                 new StringContent(
-                    JsonConvert.SerializeObject(new CompletionRequest { UserPrompt = userPrompt, MessageHistory = messageHistory }, _jsonSerializerSettings),
+                    JsonConvert.SerializeObject(completionRequest, _jsonSerializerSettings),
                     Encoding.UTF8, "application/json"));
 
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
                 var completionResponse = JsonConvert.DeserializeObject<CompletionResponse>(responseContent)!;
-                return completionResponse;
+                return new LLMOrchestrationCompletionResponse
+                {
+                    Completion = completionResponse!.Completion,
+                    UserPrompt = completionResponse.UserPrompt,
+                    PromptTemplate = request.Agent?.PromptPrefix,
+                    AgentName = request.Agent?.Name,
+                    PromptTokens = completionResponse.PromptTokens,
+                    CompletionTokens = completionResponse.CompletionTokens
+                };
             }
             
-            return new CompletionResponse
+            return new LLMOrchestrationCompletionResponse
             {
                 Completion = "A problem on my side prevented me from responding.",
-                UserPrompt = userPrompt,
+                UserPrompt = request.UserPrompt,
+                PromptTemplate = request.Agent?.PromptPrefix,
+                AgentName = request.Agent?.Name,
                 PromptTokens = 0,
-                CompletionTokens = 0,
-                UserPromptEmbedding = new float[] { 0 }
+                CompletionTokens = 0
             };
         }
 
         /// <summary>
-        /// Gets a summary from the Semantic Kernal
+        /// Gets a summary from the Semantic Kernel service.
         /// </summary>
-        /// <param name="content"></param>
-        /// <returns></returns>
-        public async Task<string> GetSummary(string content)
+        /// <param name="orchestrationRequest">The orchestration request that includes the text to summarize.</param>
+        /// <returns>Returns a summary of the input text.</returns>
+        public async Task<string> GetSummary(LLMOrchestrationRequest orchestrationRequest)
         {
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.SemanticKernelAPI);
 
             var responseMessage = await client.PostAsync("orchestration/summary",
                 new StringContent(
-                    JsonConvert.SerializeObject(new SummaryRequest { UserPrompt = content }, _jsonSerializerSettings),
+                    JsonConvert.SerializeObject(new SummaryRequest
+                    {
+                        SessionId = orchestrationRequest.SessionId,
+                        UserPrompt = orchestrationRequest.UserPrompt
+                    }, _jsonSerializerSettings),
                     Encoding.UTF8, "application/json"));
 
             if (responseMessage.IsSuccessStatusCode)
@@ -95,7 +114,7 @@ namespace FoundationaLLM.AgentFactory.Services
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
                 var summaryResponse = JsonConvert.DeserializeObject<SummaryResponse>(responseContent);
 
-                return summaryResponse!.Summary;
+                return summaryResponse!.Summary!;
             }
             else
                 return "A problem on my side prevented me from responding.";
@@ -126,7 +145,7 @@ namespace FoundationaLLM.AgentFactory.Services
         }
 
         /// <summary>
-        /// Gets the target Semantic Kernal API status
+        /// Gets the target Semantic Kernel API status.
         /// </summary>
         /// <returns></returns>
         private bool GetServiceStatus()
@@ -136,17 +155,6 @@ namespace FoundationaLLM.AgentFactory.Services
                 new HttpRequestMessage(HttpMethod.Get, "status"));
 
             return responseMessage.Content.ToString() == "ready";
-        }
-
-        /// <summary>
-        /// Makes a call to get a completion from the Semantic Kernal
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public Task<LLMOrchestrationCompletionResponse> GetCompletion(LLMOrchestrationCompletionRequest request)
-        {
-            throw new NotImplementedException();
         }
     }
 }

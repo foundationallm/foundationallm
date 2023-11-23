@@ -18,7 +18,7 @@ Param(
     [parameter(Mandatory = $false)][bool]$stepDeployTls = $true,
     [parameter(Mandatory = $false)][bool]$stepDeployImages = $true,
     [parameter(Mandatory = $false)][bool]$stepUploadSystemPrompts = $true,
-    [parameter(Mandatory = $false)][bool]$stepImportData = $true,
+    [parameter(Mandatory = $false)][bool]$stepImportData = $false,
     [parameter(Mandatory = $false)][bool]$stepLoginAzure = $true,
     [parameter(Mandatory = $false)][string]$resourcePrefix = $null
 )
@@ -51,10 +51,10 @@ if ($stepLoginAzure) {
 # Write-Host "Choosing your subscription" -ForegroundColor Yellow
 az account set --subscription $subscription
 
-if (-Not (az group list --query '[].name' -o json | ConvertFrom-Json) -Contains $resourceGroup) {
+if (-Not (az group list --query "[?name=='$resourceGroup'].name" -o json | ConvertFrom-Json) -Contains $resourceGroup) {
     Write-Host("The resource group $resourceGroup was not found, creating it...")
     $rg = $(az group create -g $resourceGroup -l $location --subscription $subscription)
-    if (-Not (az group list --query '[].name' -o json | ConvertFrom-Json) -Contains $resourceGroup) {
+    if (-Not (az group list --query "[?name=='$resourceGroup'].name" -o json | ConvertFrom-Json) -Contains $resourceGroup) {
         Write-Error("The resource group $resourceGroup was not found, and could not be created.")
         exit 1
     }

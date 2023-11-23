@@ -48,10 +48,22 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
             };
 
             // Act
-            var completionResponse = await _agentFactoryService.GetCompletion(completionRequest);
+            var result = await _agentFactoryService.GetCompletion(completionRequest);
 
             // Assert
-            Assert.NotNull(completionResponse);
+            Assert.NotNull(result);
+            Assert.Equal(completionRequest.UserPrompt, result.UserPrompt);
+        }
+
+        [Fact]
+        public async Task GetCompletion_ExceptionThrown_ReturnsErrorResponse()
+        {
+            // Act 
+            var result = await _agentFactoryService.GetCompletion(new CompletionRequest { });
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal("A problem on my side prevented me from responding.", result.Completion);
         }
 
         [Fact]

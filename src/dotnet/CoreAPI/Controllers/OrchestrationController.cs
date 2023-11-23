@@ -61,7 +61,7 @@ namespace FoundationaLLM.Core.API.Controllers
         [HttpPost("summary", Name = "GetSummary")]
         public async Task<IActionResult> GetSummary(SummaryRequest summaryRequest)
         {
-            var summaryResponse = await _gatekeeperAPIService.GetSummary(summaryRequest.UserPrompt);
+            var summaryResponse = await _gatekeeperAPIService.GetSummary(summaryRequest);
 
             return Ok(summaryResponse);
         }

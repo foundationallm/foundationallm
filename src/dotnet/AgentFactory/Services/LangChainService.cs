@@ -62,7 +62,6 @@ namespace FoundationaLLM.AgentFactory.Services
 
             if (responseMessage.IsSuccessStatusCode)
             {
-                
                 var completionResponse = JsonConvert.DeserializeObject<LLMOrchestrationCompletionResponse>(responseContent);
 
                 return new LLMOrchestrationCompletionResponse
@@ -85,7 +84,7 @@ namespace FoundationaLLM.AgentFactory.Services
                 PromptTemplate = request.Agent?.PromptPrefix,
                 AgentName = request.Agent?.Name,
                 PromptTokens = 0,
-                CompletionTokens = 0               
+                CompletionTokens = 0
             };
         }
 
@@ -94,15 +93,16 @@ namespace FoundationaLLM.AgentFactory.Services
         /// <summary>
         /// Summarizes the input text.
         /// </summary>
-        /// <param name="userPrompt">Text to summarize.</param>
+        /// <param name="orchestrationRequest">The orchestration request that includes the text to summarize.</param>
         /// <returns>Returns a summary of the input text.</returns>
-        public async Task<string> GetSummary(string userPrompt)
+        public async Task<string> GetSummary(LLMOrchestrationRequest orchestrationRequest)
         {
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.LangChainAPI);
 
             var request = new LLMOrchestrationCompletionRequest()
             {
-                UserPrompt = userPrompt,
+                SessionId = orchestrationRequest.SessionId,
+                UserPrompt = orchestrationRequest.UserPrompt,
                 Agent = new Agent
                 {
                     Name = "summarizer",

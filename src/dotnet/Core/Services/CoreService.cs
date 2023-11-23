@@ -119,6 +119,7 @@ public class CoreService : ICoreService
 
             var completionRequest = new CompletionRequest
             {
+                SessionId = sessionId,
                 UserPrompt = userPrompt,
                 MessageHistory = messageHistoryList
             };
@@ -158,7 +159,13 @@ public class CoreService : ICoreService
 
             await Task.CompletedTask;
 
-            var summary = await _gatekeeperAPIService.GetSummary(prompt);
+            var summaryRequest = new SummaryRequest()
+            {
+                SessionId = sessionId,
+                UserPrompt = prompt
+            };
+
+            var summary = await _gatekeeperAPIService.GetSummary(summaryRequest);
 
             await RenameChatSessionAsync(sessionId, summary);
 

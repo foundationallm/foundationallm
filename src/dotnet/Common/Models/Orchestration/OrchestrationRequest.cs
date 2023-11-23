@@ -8,9 +8,15 @@ namespace FoundationaLLM.Common.Models.Orchestration
     public class OrchestrationRequest
     {
         /// <summary>
+        /// The session ID.
+        /// </summary>
+        [JsonProperty("session_id")]
+        public string? SessionId { get; set; }
+        
+        /// <summary>
         /// Represent the input or user prompt.
         /// </summary>
         [JsonProperty("user_prompt")]
-        public string UserPrompt { get; set; }
+        public string? UserPrompt { get; set; }
     }
 }

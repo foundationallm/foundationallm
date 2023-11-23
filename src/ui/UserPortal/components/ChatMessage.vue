@@ -148,7 +148,6 @@ export default {
 			if (this.message.senderDisplayName) {
 				return this.message.sender === 'User' ? this.message.senderDisplayName : `${this.message.sender} - ${this.message.senderDisplayName}`;
 			}
-			
 			return this.message.sender;
 		},
 

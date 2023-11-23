@@ -8,6 +8,12 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Messages
     public record DataSourceHubRequest
     {
         /// <summary>
+        /// The session ID.
+        /// </summary>
+        [JsonProperty("session_id")]
+        public string? SessionId { get; set; }
+
+        /// <summary>
         /// List of data sources to be returned from the Data Source Hub.
         /// </summary>
         [JsonProperty("data_sources")]

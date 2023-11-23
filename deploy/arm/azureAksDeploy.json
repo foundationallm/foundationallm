@@ -131,7 +131,7 @@
           "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
         },
         {
-          "key": "FoundationaLLM:CoreWorkerService:AppInsightsConnectionString",
+          "key": "FoundationaLLM:CoreWorker:AppInsightsConnectionString",
           "value": "[concat('{\"uri\":\"https://',variables('keyVaultSettings').name, '.vault.azure.net/secrets/foundationallm-app-insights-connection-string\"}')]",
           "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
         },
@@ -296,6 +296,11 @@
           "contentType": null
         },
         {
+          "key": "FoundationaLLM:Branding:AllowAgentSelection",
+          "value": "default, anomaly, hai, movies, sdzwa, weather, weather-sec",
+          "contentType": null
+        },
+        {
           "key": "FoundationaLLM:Branding:BackgroundColor",
           "value": "#fff",
           "contentType": null
@@ -357,7 +362,7 @@
         },
         {
           "key": "FoundationaLLM:Chat:Entra:ClientId",
-          "value": "0b08d115-b517-4d7f-b883-a1665191d14d",
+          "value": "",
           "contentType": null
         },
         {
@@ -377,7 +382,7 @@
         },
         {
           "key": "FoundationaLLM:Chat:Entra:TenantId",
-          "value": "d280491c-b27a-41bf-9623-21b60cf430b3",
+          "value": "",
           "contentType": null
         },
         {
@@ -437,7 +442,7 @@
         },
         {
           "key": "FoundationaLLM:CoreAPI:Entra:ClientId",
-          "value": "b7bfdfd8-fd88-4bec-a6db-7fd1ecac40db",
+          "value": "",
           "contentType": null
         },
         {
@@ -457,7 +462,7 @@
         },
         {
           "key": "FoundationaLLM:CoreAPI:Entra:TenantId",
-          "value": "d280491c-b27a-41bf-9623-21b60cf430b3",
+          "value": "",
           "contentType": null
         },
         {
@@ -745,6 +750,9 @@
     },
     "coreSettings": {
       "miName": "[format('{0}-core-mi', parameters('name'))]"
+    },
+    "coreJobSettings": {
+      "miName": "[format('{0}-core-job-mi', parameters('name'))]"
     },
     "dataSourceHubSettings": {
       "miName": "[format('{0}-data-source-hub-mi', parameters('name'))]"
@@ -1803,6 +1811,28 @@
     {
       "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
       "apiVersion": "2023-01-31",
+      "name": "[variables('coreJobSettings').miName]",
+      "location": "[parameters('location')]"
+    },
+    {
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials",
+      "apiVersion": "2023-01-31",
+      "name": "[format('{0}/{1}', variables('coreJobSettings').miName, 'coreJobId')]",
+      "properties": {
+        "audiences": [
+          "api://AzureADTokenExchange"
+        ],
+        "issuer": "[reference(resourceId('Microsoft.ContainerService/managedClusters', variables('aksSettings').name), providers('Microsoft.ContainerService','managedClusters').apiVersions[0]).oidcIssuerProfile.issuerURL]",
+        "subject": "system:serviceaccount:default:core-job"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.ContainerService/managedClusters', variables('aksSettings').name)]",
+        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('coreJobSettings').miName)]"
+      ]
+    },
+    {
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+      "apiVersion": "2023-01-31",
       "name": "[variables('dataSourceHubSettings').miName]",
       "location": "[parameters('location')]"
     },
@@ -1970,6 +2000,20 @@
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
       "scope": "[format('Microsoft.KeyVault/vaults/{0}', variables('keyVaultSettings').name)]",
+      "name": "[guid(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('{0}corejobmi', parameters('name'))), variables('keyVaultSettings').name)]",
+      "properties": {
+        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('roleIdMapping')['Key Vault Secrets User'])]",
+        "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('coreJobSettings').miName), providers('Microsoft.ManagedIdentity', 'userAssignedIdentities').apiVersions[0]).principalId]",
+        "principalType": "ServicePrincipal"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]"
+      ]
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "scope": "[format('Microsoft.KeyVault/vaults/{0}', variables('keyVaultSettings').name)]",
       "name": "[guid(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('{0}datasourcehubmi', parameters('name'))), variables('keyVaultSettings').name)]",
       "properties": {
         "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('roleIdMapping')['Key Vault Secrets User'])]",
@@ -2086,6 +2130,20 @@
       "properties": {
         "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('roleIdMapping')['App Configuration Data Reader'])]",
         "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('coreSettings').miName), providers('Microsoft.ManagedIdentity', 'userAssignedIdentities').apiVersions[0]).principalId]",
+        "principalType": "ServicePrincipal"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.AppConfiguration/configurationStores', variables('appConfigSettings').name)]"
+      ]
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "scope": "[format('Microsoft.AppConfiguration/configurationStores/{0}', variables('appConfigSettings').name)]",
+      "name": "[guid(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('{0}corejobmi', parameters('name'))), variables('appConfigSettings').name)]",
+      "properties": {
+        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('roleIdMapping')['App Configuration Data Reader'])]",
+        "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('coreJobSettings').miName), providers('Microsoft.ManagedIdentity', 'userAssignedIdentities').apiVersions[0]).principalId]",
         "principalType": "ServicePrincipal"
       },
       "dependsOn": [

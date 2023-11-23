@@ -141,7 +141,7 @@ locals {
     }
     "FoundationaLLM:Chat:Entra:TenantId" = {
       # value = data.azurerm_client_config.current.tenant_id
-      value = "d280491c-b27a-41bf-9623-21b60cf430b3"
+      value = ""
     }
     "FoundationaLLM:CognitiveSearch:EndPoint" = {
       value = module.search.endpoint
@@ -179,7 +179,7 @@ locals {
     }
     "FoundationaLLM:CoreAPI:Entra:TenantId" = {
       # value = data.azurerm_client_config.current.tenant_id
-      value = "d280491c-b27a-41bf-9623-21b60cf430b3"
+      value = ""
     }
     "FoundationaLLM:CosmosDB:ChangeFeedLeaseContainer" = {
       value = "leases"

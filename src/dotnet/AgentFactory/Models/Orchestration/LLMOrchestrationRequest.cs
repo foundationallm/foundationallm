@@ -8,6 +8,12 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Orchestration
     public class LLMOrchestrationRequest
     {
         /// <summary>
+        /// The session ID.
+        /// </summary>
+        [JsonProperty("session_id")]
+        public string? SessionId { get; set; }
+
+        /// <summary>
         /// Prompt entered by the user.
         /// </summary>
         [JsonProperty("user_prompt")]

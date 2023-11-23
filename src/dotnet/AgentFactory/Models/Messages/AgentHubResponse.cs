@@ -40,7 +40,7 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Messages
         public string? Description { get; set; }
 
         /// <summary>
-        /// The orchestration to execute.
+        /// The orchestration engine to use.
         /// </summary>
         [JsonProperty("orchestrator")]
         public string? Orchestrator { get; set; }

@@ -13,7 +13,7 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
     /// </summary>
     public class DefaultAgent : AgentBase
     {
-        LLMOrchestrationCompletionRequest _completionRequestTemplate = null!;
+        private LLMOrchestrationCompletionRequest _completionRequestTemplate = null!;
 
         /// <summary>
         /// Constructor for default agent.
@@ -32,18 +32,19 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
         }
 
         /// <summary>
-        /// used to configure the DeafultAgent class.
+        /// Used to configure the DeafultAgent class.
         /// </summary>
         /// <param name="userPrompt"></param>
+        /// <param name="sessionId"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public async override Task Configure(string userPrompt)
+        public override async Task Configure(string userPrompt, string sessionId)
         {
             //get prompts for the agent from the prompt hub
-            var promptResponse = await _promptHubService.ResolveRequest(_agentMetadata.Name!);
+            var promptResponse = await _promptHubService.ResolveRequest(_agentMetadata.Name!, sessionId);
 
             //get data sources listed for the agent           
-            var dataSourceResponse = await _dataSourceHubService.ResolveRequest(_agentMetadata.AllowedDataSourceNames!);
+            var dataSourceResponse = await _dataSourceHubService.ResolveRequest(_agentMetadata.AllowedDataSourceNames!, sessionId);
 
             MetadataBase dataSourceMetadata = null!;
 
@@ -123,21 +124,22 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
         }
 
         /// <summary>
-        /// Calls the orchestration service for the agent to get a completion
+        /// Calls the orchestration service for the agent to get a completion.
         /// </summary>
         /// <param name="completionRequest"></param>
         /// <returns></returns>
-        public async override Task<CompletionResponse> GetCompletion(CompletionRequest completionRequest)
+        public override async Task<CompletionResponse> GetCompletion(CompletionRequest completionRequest)
         {
+            _completionRequestTemplate.SessionId = completionRequest.SessionId;
             _completionRequestTemplate.UserPrompt = completionRequest.UserPrompt;
             _completionRequestTemplate.MessageHistory = completionRequest.MessageHistory;
 
             var result = await _orchestrationService.GetCompletion(_completionRequestTemplate);
 
-            return new CompletionResponse()
+            return new CompletionResponse
             {
                 Completion = result.Completion!,
-                UserPrompt = completionRequest.UserPrompt,
+                UserPrompt = completionRequest.UserPrompt!,
                 PromptTemplate = result.PromptTemplate,
                 AgentName = result.AgentName,
                 PromptTokens = result.PromptTokens,
@@ -146,13 +148,18 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
         }
 
         /// <summary>
-        /// Calls the orchestration service for the agent to get a summary
+        /// Calls the orchestration service for the agent to get a summary.
         /// </summary>
         /// <param name="summaryRequest"></param>
         /// <returns></returns>
-        public async override Task<SummaryResponse> GetSummary(SummaryRequest summaryRequest)
+        public override async Task<SummaryResponse> GetSummary(SummaryRequest summaryRequest)
         {
-            var summary = await _orchestrationService.GetSummary(summaryRequest.UserPrompt);
+            var orchestrationRequest = new LLMOrchestrationRequest
+            {
+                SessionId = summaryRequest.SessionId,
+                UserPrompt = summaryRequest.UserPrompt
+            };
+            var summary = await _orchestrationService.GetSummary(orchestrationRequest);
 
             return new SummaryResponse
             {

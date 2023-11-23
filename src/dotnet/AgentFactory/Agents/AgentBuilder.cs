@@ -13,6 +13,7 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
         /// Used to build an agenet given the inbound parameters.
         /// </summary>
         /// <param name="userPrompt"></param>
+        /// <param name="sessionId"></param>
         /// <param name="agentHubAPIService"></param>
         /// <param name="orchestrationServices"></param>
         /// <param name="promptHubAPIService"></param>
@@ -21,12 +22,13 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
         /// <exception cref="ArgumentException"></exception>
         public static async Task<AgentBase> Build(
             string userPrompt,
+            string sessionId,
             IAgentHubAPIService agentHubAPIService,
             IEnumerable<ILLMOrchestrationService> orchestrationServices,
             IPromptHubAPIService promptHubAPIService,
             IDataSourceHubAPIService dataSourceHubAPIService)
         {
-            var agentResponse = await agentHubAPIService.ResolveRequest(userPrompt);
+            var agentResponse = await agentHubAPIService.ResolveRequest(userPrompt, sessionId);
             var agentInfo = agentResponse.Agent;
 
             // TODO: Extend the Agent Hub API service response to include the orchestrator
@@ -43,7 +45,7 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
             AgentBase? agent = null;
             agent = new DefaultAgent(agentInfo!, orchestrationService, promptHubAPIService, dataSourceHubAPIService);           
 
-            await agent.Configure(userPrompt);
+            await agent.Configure(userPrompt, sessionId);
 
             return agent;
         }

@@ -69,13 +69,14 @@ public class PromptHubAPIService : IPromptHubAPIService
     /// Used to get prompts for a target agent and user context.
     /// </summary>
     /// <param name="agentName">Name of the agent for which to retrieve prompt values.</param>
+    /// <param name="sessionId">The session ID.</param>
     /// <param name="promptName">Name of the prompt for which to retrieve prompt values.</param>
     /// <returns>Returns a <see cref="PromptHubResponse"/> object containing the list of prompts for the specified agent.</returns>
-    public async Task<PromptHubResponse> ResolveRequest(string agentName, string promptName = "default")
+    public async Task<PromptHubResponse> ResolveRequest(string agentName, string sessionId, string promptName = "default")
     {
         try
         {
-            var request = new PromptHubRequest { AgentName = agentName, PromptName = promptName };
+            var request = new PromptHubRequest { AgentName = agentName, PromptName = promptName, SessionId = sessionId };
             
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.PromptHubAPI);
             var body = JsonConvert.SerializeObject(request, _jsonSerializerSettings);
@@ -86,8 +87,8 @@ public class PromptHubAPIService : IPromptHubAPIService
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var phr = JsonConvert.DeserializeObject<PromptHubResponse>(responseContent, _jsonSerializerSettings);
-                return phr!;
+                var response = JsonConvert.DeserializeObject<PromptHubResponse>(responseContent, _jsonSerializerSettings);
+                return response!;
             }
         }
         catch (Exception ex)

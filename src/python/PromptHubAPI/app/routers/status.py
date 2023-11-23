@@ -7,5 +7,13 @@ router = APIRouter(
 )
 
 @router.get('')
-async def get_status():
+async def get_status() -> str:
+    """
+    Retrieves the status of the API.
+    
+    Returns
+    -------
+    string
+        String containing the current status of the API.
+    """
     return 'ready'

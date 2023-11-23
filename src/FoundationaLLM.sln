@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat", "ui\Chat\Chat.csproj", "{E8C2FE79-83B4-460F-BACD-467E9200C9DD}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "dotnet\Core\Core.csproj", "{5AA7F0B6-30E6-451A-B1BE-F003BD3EC203}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SemanticKernel", "dotnet\SemanticKernel\SemanticKernel.csproj", "{503CE23D-63D7-4A26-8475-AA71A45D519B}"
@@ -59,7 +57,7 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AgentHubAPI.Tests", "..\tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgentFactory.Tests", "..\tests\dotnet\AgentFactory.Tests\AgentFactory.Tests.csproj", "{BD184A53-281D-4CC8-AF48-27A9325C93D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreWorkerService", "dotnet\CoreWorkerService\CoreWorkerService.csproj", "{0DEF31F7-72E4-428A-A32B-C11F9C28B192}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWorker", "dotnet\CoreWorker\CoreWorker.csproj", "{0DEF31F7-72E4-428A-A32B-C11F9C28B192}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,10 +65,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E8C2FE79-83B4-460F-BACD-467E9200C9DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E8C2FE79-83B4-460F-BACD-467E9200C9DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E8C2FE79-83B4-460F-BACD-467E9200C9DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E8C2FE79-83B4-460F-BACD-467E9200C9DD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5AA7F0B6-30E6-451A-B1BE-F003BD3EC203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5AA7F0B6-30E6-451A-B1BE-F003BD3EC203}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AA7F0B6-30E6-451A-B1BE-F003BD3EC203}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -158,7 +152,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{E8C2FE79-83B4-460F-BACD-467E9200C9DD} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
 		{5AA7F0B6-30E6-451A-B1BE-F003BD3EC203} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
 		{503CE23D-63D7-4A26-8475-AA71A45D519B} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
 		{DF3AF954-1999-4244-A783-BCE96EE17816} = {32FD7A00-B42E-4B0B-B09C-9CE48D8E047B}

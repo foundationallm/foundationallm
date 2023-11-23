@@ -377,7 +377,7 @@
         },
         {
           "key": "FoundationaLLM:Chat:Entra:ClientId",
-          "value": "0b08d115-b517-4d7f-b883-a1665191d14d",
+          "value": "",
           "contentType": null
         },
         {
@@ -397,7 +397,7 @@
         },
         {
           "key": "FoundationaLLM:Chat:Entra:TenantId",
-          "value": "d280491c-b27a-41bf-9623-21b60cf430b3",
+          "value": "",
           "contentType": null
         },
         {
@@ -457,7 +457,7 @@
         },
         {
           "key": "FoundationaLLM:CoreAPI:Entra:ClientId",
-          "value": "b7bfdfd8-fd88-4bec-a6db-7fd1ecac40db",
+          "value": "",
           "contentType": null
         },
         {
@@ -477,11 +477,11 @@
         },
         {
           "key": "FoundationaLLM:CoreAPI:Entra:TenantId",
-          "value": "d280491c-b27a-41bf-9623-21b60cf430b3",
+          "value": "",
           "contentType": null
         },
         {
-          "key": "FoundationaLLM:CoreWorkerService:AppInsightsConnectionString",
+          "key": "FoundationaLLM:CoreWorker:AppInsightsConnectionString",
           "value": "[concat('{\"uri\":\"https://',variables('keyVaultSettings').name, '.vault.azure.net/secrets/foundationallm-app-insights-connection-string\"}')]",
           "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
         },
@@ -783,7 +783,7 @@
       "name": "[format('{0}-vnet', parameters('name'))]",
       "addressPrefix": "10.244.0.0/16",
       "subnets": {
-        "aks-subnet": {
+        "aca-subnet": {
           "addressPrefix": "10.244.0.0/16"
         }
       }
@@ -1457,14 +1457,14 @@
         },
         "subnets": [
           {
-            "name": "aks-subnet",
-            "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetSettings').name, 'aks-subnet')]",
+            "name": "aca-subnet",
+            "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetSettings').name, 'aca-subnet')]",
             "properties": {
-              "addressPrefix": "[variables('vnetSettings').subnets['aks-subnet'].addressPrefix]",
+              "addressPrefix": "[variables('vnetSettings').subnets['aca-subnet'].addressPrefix]",
               "delegations": [
                 {
                   "name": "Microsoft.App.environments",
-                  "id": "[concat(resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetSettings').name, 'aks-subnet'), '/delegations/Microsoft.App.environments')]",
+                  "id": "[concat(resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetSettings').name, 'aca-subnet'), '/delegations/Microsoft.App.environments')]",
                   "properties": {
                     "serviceName": "Microsoft.App/environments"
                   },
@@ -1484,17 +1484,17 @@
     {
       "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2022-09-01",
-      "name": "[concat(variables('vnetSettings').name, '/aks-subnet')]",
+      "name": "[concat(variables('vnetSettings').name, '/aca-subnet')]",
       "dependsOn": [
         "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetSettings').name)]",
-        "[resourceId('Microsoft.Network/networkSecurityGroups', concat(variables('vnetSettings').name, '-aks-subnet-nsg'))]"
+        "[resourceId('Microsoft.Network/networkSecurityGroups', concat(variables('vnetSettings').name, '-aca-subnet-nsg'))]"
       ],
       "properties": {
-        "addressPrefix": "[variables('vnetSettings').subnets['aks-subnet'].addressPrefix]",
+        "addressPrefix": "[variables('vnetSettings').subnets['aca-subnet'].addressPrefix]",
         "delegations": [
           {
             "name": "Microsoft.App.environments",
-            "id": "[concat(resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetSettings').name, 'aks-subnet'), '/delegations/Microsoft.App.environments')]",
+            "id": "[concat(resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetSettings').name, 'aca-subnet'), '/delegations/Microsoft.App.environments')]",
             "properties": {
               "serviceName": "Microsoft.App/environments"
             },
@@ -1504,8 +1504,8 @@
         "privateEndpointNetworkPolicies": "Disabled",
         "privateLinkServiceNetworkPolicies": "Enabled",
         "networkSecurityGroup": {
-          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(variables('vnetSettings').name, '-aks-subnet-nsg'))]",
-          "name": "[concat(variables('vnetSettings').name, '-aks-subnet-nsg')]",
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(variables('vnetSettings').name, '-aca-subnet-nsg'))]",
+          "name": "[concat(variables('vnetSettings').name, '-aca-subnet-nsg')]",
           "properties": {
             "flushConnection": false,
             "securityRules": [
@@ -1545,7 +1545,7 @@
     {
       "type": "Microsoft.Network/networkSecurityGroups",
       "apiVersion": "2023-04-01",
-      "name": "[concat(variables('vnetSettings').name, '-aks-subnet-nsg')]",
+      "name": "[concat(variables('vnetSettings').name, '-aca-subnet-nsg')]",
       "location": "[parameters('location')]",
       "properties": {
         "flushConnection": false,
@@ -1589,7 +1589,7 @@
       "properties": {
         "vnetConfiguration": {
           "internal": false,
-          "infrastructureSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetSettings').name, 'aks-subnet')]"
+          "infrastructureSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetSettings').name, 'aca-subnet')]"
         },
         "appLogsConfiguration": {
           "destination": "log-analytics",

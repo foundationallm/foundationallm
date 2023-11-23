@@ -11,7 +11,7 @@
 			</template>
 		</div>
 
-		<!-- Sidebar -->
+		<!-- Navbar content -->
 		<div class="navbar__content">
 			<div class="navbar__content__left">
 				<div class="navbar__content__left__item">
@@ -32,6 +32,7 @@
 						<span>Please select a session</span>
 					</template>
 				</div>
+
 				<div class="navbar__content__left__item">
 					<template v-if="currentSession && allowAgentHint">
 						<Dropdown
@@ -53,7 +54,7 @@
 				</div>
 				<!-- Logged in user name -->
 				<div v-else class="navbar__content__right__item">
-					<span>Welcome {{ accountName }}</span>
+					<span>Welcome, {{ accountName }}</span>
 					<Button class="button--auth" icon="pi pi-sign-out" label="Sign Out" @click="signOut()"></Button>
 				</div>
 			</div>
@@ -63,20 +64,13 @@
 
 <script lang="ts">
 import { mapStores } from 'pinia';
-import type { PropType } from 'vue';
 import type { Session } from '@/js/types';
-import { appConfig } from '@/stores/appConfig';
+import { useAppConfigStore } from '@/stores/appConfigStore';
+import { useAppStore } from '@/stores/appStore';
 import { getMsalInstance, getLoginRequest } from '@/js/auth';
 
 export default {
 	name: 'NavBar',
-
-	props: {
-		currentSession: {
-			type: [Object, null] as PropType<Session | null>,
-			required: true,
-		},
-	},
 
 	emits: ['close-sidebar'],
 
@@ -95,12 +89,17 @@ export default {
 	},
 
 	computed: {
-		...mapStores(appConfig),
+		...mapStores(useAppConfigStore),
+		...mapStores(useAppStore),
+
+		currentSession() {
+			return this.appStore.currentSession;
+		},
 	},
 
 	watch: {
 		currentSession(newSession: Session, oldSession: Session) {
-			if (newSession.id === oldSession.id) return;
+			if (newSession.id === oldSession?.id) return;
 			this.agentSelection = this.agents.find(agent => agent.value === this.appConfigStore.selectedAgents.get(newSession.id)) || null;
 		},
 	},
@@ -174,7 +173,7 @@ export default {
 				account: msalInstance.getAccount(accountFilter),
 			};
 
-			await msalInstance.logoutPopup(logoutRequest);
+			await msalInstance.logoutRedirect(logoutRequest);
 			this.signedIn = false;
 			this.accountName = '';
 			this.userName = '';

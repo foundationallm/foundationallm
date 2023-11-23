@@ -1,5 +1,4 @@
 ﻿using Asp.Versioning;
-using Azure.AI.OpenAI;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Common.Models.Chat;
 using Microsoft.AspNetCore.Mvc;

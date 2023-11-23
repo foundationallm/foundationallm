@@ -13,9 +13,9 @@ Select the links in the table above to learn more about each deployment choice.
 
 ## Post-deployment configuration
 
-### Microsoft Entra authentication setup
+### Microsoft Entra ID authentication setup
 
-Follow the instructions in the [Entra setup document](./authentication-setup-entra.md) to configure Microsoft Entra authentication for the solution.
+Follow the instructions in the [Microsoft Entra ID setup document](./authentication-setup-entra.md) to configure Microsoft Entra ID authentication for the solution.
 
 ### Deployment validation
 

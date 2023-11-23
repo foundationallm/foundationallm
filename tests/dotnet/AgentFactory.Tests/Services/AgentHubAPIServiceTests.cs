@@ -47,6 +47,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
         {
             // Arrange
             var userPrompt = "TestUserPrompt";
+            var sessionId = "TestSessionId";
 
             var response = new HttpResponseMessage
             {
@@ -65,7 +66,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
             _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.AgentHubAPI).Returns(httpClient);
 
             // Act
-            var result = await _agentHubAPIService.ResolveRequest(userPrompt);
+            var result = await _agentHubAPIService.ResolveRequest(userPrompt, sessionId);
 
             // Assert
             Assert.NotNull(result);
