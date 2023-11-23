@@ -18,30 +18,7 @@ param applicationGateways_EUS_FLLM_DEMO_AGW_www_agw_externalid string = '/subscr
 param applicationGateways_EUS_FLLM_DEMO_AGW_api_agw_externalid string = '/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-AGW-rg/providers/Microsoft.Network/applicationGateways/EUS-FLLM-DEMO-AGW-api-agw'
 
 
-resource publicIPAddresses_EUS_FLLM_DEMO_NET_pip_name_resource 'Microsoft.Network/publicIPAddresses@2023-05-01' = {
-  name: publicIPAddresses_EUS_FLLM_DEMO_NET_pip_name
-  location: 'eastus'
-  tags: {
-    Environment: 'DEMO'
-    Project: 'FLLM'
-    Purpose: 'Networking'
-    Workspace: 'foundationallm-ops'
-  }
-  sku: {
-    name: 'Standard'
-    tier: 'Regional'
-  }
-  properties: {
-    ipAddress: '172.191.239.98'
-    publicIPAddressVersion: 'IPv4'
-    publicIPAllocationMethod: 'Static'
-    idleTimeoutInMinutes: 4
-    ipTags: []
-    ddosSettings: {
-      protectionMode: 'VirtualNetworkInherited'
-    }
-  }
-}
+
 
 resource networkSecurityGroups_EUS_FLLM_DEMO_NET_ado_nsg_name_allow_ado_agents_inbound 'Microsoft.Network/networkSecurityGroups/securityRules@2023-05-01' = {
   name: '${networkSecurityGroups_EUS_FLLM_DEMO_NET_ado_nsg_name}/allow-ado-agents-inbound'
