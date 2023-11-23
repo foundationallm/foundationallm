@@ -1,4 +1,4 @@
-param environment string
+param environmentName string
 param instanceCount int = 2
 param location string
 param project string
@@ -13,7 +13,7 @@ module openai './modules/openai.bicep' = [for x in range(0, instanceCount): {
   name: 'ha-openai-openai-${timestamp}-${x}'
   params: {
     capacity: capacity
-    environment: environment
+    environmentName: environmentName
     location: location
     project: project
     instanceId: x

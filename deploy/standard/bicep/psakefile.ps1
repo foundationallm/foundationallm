@@ -22,22 +22,59 @@ $resourceGroups = @{
     vec     = "rg-${environment}-${location}-vec-${project}"
 }
 
-task default -depends OpenAI
+$deployments = @{}
+foreach ($resourceGroup in $resourceGroups.GetEnumerator()) {
+    $deployments.Add($resourceGroup.Name, "$($resourceGroup.Value)-${timestamp}")
+}
+
+task default -depends DNS
+
+task DNS -depends ResourceGroups, Networking -description "Ensure DNS resources exist" {
+    $vnetId = $(
+        az deployment group show `
+            --name $deployments["net"] `
+            --output tsv `
+            --query properties.outputs.vnetId.value `
+            --resource-group $resourceGroups["net"] 
+    )
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "The VNet ID could not be retrieved."
+    }
+
+    az deployment group create `
+        --name $deployments["dns"] `
+        --parameters environmentName=$environment location=$location project=$project vnetId=$vnetId `
+        --resource-group $resourceGroups["dns"] `
+        --template-file ./dns-rg/template.bicep 
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "The DNS deployment failed."
+    }
+}
 
 task Networking -depends ResourceGroups -description "Ensure networking resources exist" {
     az deployment group create `
-        --name "$($resourceGroups["net"])-${timestamp}" `
-        --parameters environment=$environment location=$location project=$project `
+        --name $deployments["net"] `
+        --parameters environmentName=$environment location=$location project=$project `
         --resource-group $resourceGroups["net"] `
         --template-file ./networking-rg/template.bicep 
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "The networking deployment failed."
+    }
 }
 
 task OpenAI -depends ResourceGroups -description "Ensure OpenAI accounts exist" {
     az deployment group create `
-        --name "openai-$($resourceGroups["oai"])-${timestamp}" `
-        --parameters environment=$environment location=$location project=$project `
+        --name $deployments["oai"] `
+        --parameters environmentName=$environment location=$location project=$project `
         --resource-group $resourceGroups["oai"] `
         --template-file ./openai-rg/template.bicep 
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "The OpenAI deployment failed."
+    }
 }
 
 task ResourceGroups -description "Ensure resource groups exist" {
@@ -47,7 +84,7 @@ task ResourceGroups -description "Ensure resource groups exist" {
             az group create -g $resourceGroup -l $location --subscription $subscription
 
             if (-Not (az group list --query '[].name' -o json | ConvertFrom-Json) -Contains $resourceGroup) {
-               throw "The resource group $resourceGroup was not found, and could not be created."
+                throw "The resource group $resourceGroup was not found, and could not be created."
             } 
         }
         else {

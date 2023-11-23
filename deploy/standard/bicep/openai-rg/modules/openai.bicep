@@ -1,4 +1,4 @@
-param environment string
+param environmentName string
 param instanceId int
 param location string
 param project string
@@ -8,7 +8,7 @@ param capacity object = {
   embeddings: 1
 }
 
-var name = 'oai-${environment}-${location}-oai-${project}-${instanceId}'
+var name = 'oai-${environmentName}-${location}-oai-${project}-${instanceId}'
 
 var deploymentConfig = [
   {
@@ -56,7 +56,7 @@ resource main 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' = {
   }
 
   tags: {
-    Environment: environment
+    Environment: environmentName
     IaC: 'Bicep'
     Project: project
     Purpose: 'OpenAI'
