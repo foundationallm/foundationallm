@@ -44,6 +44,18 @@ task DNS -depends ResourceGroups, Networking -description "Ensure DNS resources 
     if ($LASTEXITCODE -ne 0) {
         throw "The DNS deployment failed."
     }
+
+    $script:privateDnsZoneId = $(
+        az deployment group show `
+            --name $deployments["dns"] `
+            --output json `
+            --query properties.outputs.ids.value `
+            --resource-group $resourceGroups["dns"] | ConvertFrom-Json
+    )
+
+    if($LASTEXITCODE -ne 0) {
+        throw "The private DNS zone IDs could not be retrieved."
+    }
 }
 
 task Networking -depends ResourceGroups -description "Ensure networking resources exist" {
