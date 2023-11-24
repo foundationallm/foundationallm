@@ -344,20 +344,33 @@ resource main 'Microsoft.Network/virtualNetworks@2023-05-01' = {
     addressSpace: {
       addressPrefixes: [ '10.0.0.0/16' ]
     }
+    subnets: [for (subnet, i) in subnets: {
+      name: subnet.name
+      properties: {
+        addressPrefix: subnet.addressPrefix
+        privateEndpointNetworkPolicies: 'Enabled'
+        privateLinkServiceNetworkPolicies: 'Enabled'
+        serviceEndpoints: subnet.?serviceEndpoints
+
+        networkSecurityGroup: {
+          id: nsg[i].id
+        }
+      }
+    }]
   }
 }
 
-@batchSize(1)
-module subnet './modules/subnet.bicep' = [for subnet in subnets: {
-  name: '${subnet.name}-${timestamp}'
+resource nsg 'Microsoft.Network/networkSecurityGroups@2023-05-01' = [for subnet in subnets: {
+  location: location
+  name: 'nsg-${name}-${subnet.name}'
+  tags: tags
+}]
+
+module nsgRules './modules/nsgRules.bicep' = [for (subnet, i) in subnets: {
+  name: 'nsg-${subnet.name}-${timestamp}'
   params: {
-    addressPrefix: subnet.addressPrefix
-    location: location
-    name: subnet.name
+    name: nsg[i].name
     rulesInbound: subnet.?rules.?inbound
     rulesOutbound: subnet.?rules.?outbound
-    serviceEndpoints: subnet.?serviceEndpoints
-    tags: tags
-    vnetName: main.name
   }
 }]
