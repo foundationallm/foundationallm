@@ -39,13 +39,18 @@ module ampls 'modules/ampls.bicep' = {
   }
 }
 
-module logsAnalytics 'modules/logAnalytics.bicep' = {
-  name: 'logsAnalytics-${timestamp}'
+module logAnalytics 'modules/logAnalytics.bicep' = {
+  name: 'logAnalytics-${timestamp}'
   params: {
-    ampls: ampls.outputs
+    actionGroupId: actionGroup.outputs.id
     environmentName: environmentName
     location: location
     project: project
     workload: 'ops'
+
+    ampls: {
+      id: ampls.outputs.id
+      name: ampls.outputs.name
+    }
   }
 }

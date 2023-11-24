@@ -1,3 +1,4 @@
+param actionGroupId string
 param ampls object
 param environmentName string
 param location string
@@ -145,6 +146,29 @@ resource dcr 'Microsoft.Insights/dataCollectionRules@2022-06-01' = {
 }
 
 /**
+ * Resource for configuring diagnostic settings for Log Analytics workspace.
+ */
+resource diagnostics 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = {
+  scope: main
+  name: 'diag-la'
+  properties: {
+    workspaceId: main.id
+    logs: [
+      {
+        category: 'Audit'
+        enabled: true
+      }
+    ]
+    metrics: [
+      {
+        category: 'AllMetrics'
+        enabled: true
+      }
+    ]
+  }
+}
+
+/**
  * Creates a scoped service for private link integration with Azure Log Analytics.
  */
 resource scopedService 'microsoft.insights/privatelinkscopes/scopedresources@2021-07-01-preview' = {
@@ -162,11 +186,12 @@ resource scopedService 'microsoft.insights/privatelinkscopes/scopedresources@202
 */
 resource solution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = [for solution in solutions: {
   location: location
-  name: solution.name
+  name: '${solution.name}(${main.name})'
 
   plan: {
     name: '${solution.name}(${main.name})'
     product: solution.product
+    promotionCode: ''
     publisher: solution.publisher
   }
 
@@ -196,7 +221,7 @@ resource alert 'microsoft.insights/scheduledqueryrules@2023-03-15-preview' = [fo
     windowSize: alert.windowSize
 
     actions: {
-      actionGroups: [ ampls.id ]
+      actionGroups: [ actionGroupId ]
     }
 
     criteria: {

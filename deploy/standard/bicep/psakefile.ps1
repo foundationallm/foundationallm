@@ -103,8 +103,6 @@ task Ops -depends ResourceGroups, Networking, DNS -description "Ensure ops resou
         | Where-Object -Property key -eq "blob" `
         | Select-Object -Property id -First 1
 
-    Write-Host "The monitor private DNS zone ID is $($monitor.id)."
-
     az deployment group create `
         --name $deployments["ops"] `
         --resource-group $resourceGroups["ops"] `
