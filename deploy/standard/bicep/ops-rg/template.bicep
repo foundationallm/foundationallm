@@ -42,7 +42,7 @@ module ampls 'modules/ampls.bicep' = {
 module logsAnalytics 'modules/logAnalytics.bicep' = {
   name: 'logsAnalytics-${timestamp}'
   params: {
-    amplsName: ampls.outputs.name
+    ampls: ampls.outputs
     environmentName: environmentName
     location: location
     project: project

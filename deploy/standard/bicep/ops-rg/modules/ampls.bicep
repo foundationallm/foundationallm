@@ -14,7 +14,8 @@ var tags = {
   Purpose: 'DevOps'
 }
 
-output name string= main.name
+output id string = main.id
+output name string = main.name
 
 /*
   Resource representing the main Microsoft Insights Private Link Scope.
@@ -63,7 +64,6 @@ resource dns 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-05-01
     }]
   }
 }
-
 
 /**
  * Creates a private endpoint for Azure Monitor.

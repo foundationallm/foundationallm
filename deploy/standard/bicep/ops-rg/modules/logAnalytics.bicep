@@ -1,10 +1,37 @@
-param amplsName string
+param ampls object
 param environmentName string
 param location string
 param project string
 param workload string
 
 var name = 'la-${environmentName}-${location}-${workload}-${project}'
+
+var alerts = [
+  {
+    description: 'Data ingestion is exceeding the ingestion rate limit.'
+    evaluationFrequency: 'PT5M'
+    name: 'RateLimit'
+    query: '_LogOperation | where Category == "Ingestion" | where Operation has "Ingestion rate"'
+    severity: 2
+    windowSize: 'PT5M'
+  }
+  {
+    description: 'Data ingestion has hit the daily cap.'
+    evaluationFrequency: 'PT5M'
+    name: 'IngestionCap'
+    query: '_LogOperation | where Category == "Ingestion" | where Operation has "Data collection"'
+    severity: 2
+    windowSize: 'PT5M'
+  }
+  {
+    description: 'Operational issues.'
+    evaluationFrequency: 'P1D'
+    name: 'Issues'
+    query: '_LogOperation | where Level == "Warning"'
+    severity: 3
+    windowSize: 'P1D'
+  }
+]
 
 var solutions = [
   {
@@ -117,8 +144,11 @@ resource dcr 'Microsoft.Insights/dataCollectionRules@2022-06-01' = {
   }
 }
 
+/**
+ * Creates a scoped service for private link integration with Azure Log Analytics.
+ */
 resource scopedService 'microsoft.insights/privatelinkscopes/scopedresources@2021-07-01-preview' = {
-  name: '${amplsName}/amplss-${name}'
+  name: '${ampls.name}/amplss-${name}'
   properties: {
     linkedResourceId: main.id
   }
@@ -145,4 +175,46 @@ resource solution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' 
   }
 }]
 
+/**
+ * Resource definition for creating Log Analytics alerts.
+ */
+resource alert 'microsoft.insights/scheduledqueryrules@2023-03-15-preview' = [for alert in alerts: {
+  kind: 'LogAlert'
+  location: location
+  name: 'alert-${alert.name}-${name}'
+  tags: tags
 
+  properties: {
+    autoMitigate: false
+    checkWorkspaceAlertsStorageConfigured: false
+    displayName: alert.description
+    enabled: true
+    evaluationFrequency: alert.evaluationFrequency
+    scopes: [ main.id ]
+    severity: alert.severity
+    skipQueryValidation: false
+    windowSize: alert.windowSize
+
+    actions: {
+      actionGroups: [ ampls.id ]
+    }
+
+    criteria: {
+      allOf: [
+        {
+          operator: 'GreaterThan'
+          query: alert.query
+          resourceIdColumn: '_ResourceId'
+          threshold: 0
+          timeAggregation: 'Count'
+
+          failingPeriods: {
+            minFailingPeriodsToAlert: 1
+            numberOfEvaluationPeriods: 1
+          }
+        }
+      ]
+    }
+
+  }
+}]
