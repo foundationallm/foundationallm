@@ -17,6 +17,16 @@ var privateDnsZones = [
   }
 ]
 
+module actionGroup 'modules/actionGroup.bicep' = {
+  name: 'actionGroup-${timestamp}'
+  params: {
+    environmentName: environmentName
+    location: location
+    project: project
+    workload: 'ops'
+  }
+}
+
 module ampls 'modules/ampls.bicep' = {
   name: 'ampls-${timestamp}'
   params: {

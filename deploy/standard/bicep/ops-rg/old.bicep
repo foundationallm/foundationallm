@@ -11,7 +11,6 @@ param privateEndpoints_EFLLMdOPS_grafana_pe_name string = 'EFLLMdOPS-grafana-pe'
 param privateEndpoints_EUS_FLLM_DEMO_OPS_kv_pe_name string = 'EUS-FLLM-DEMO-OPS-kv-pe'
 param privateEndpoints_EUS_FLLM_DEMO_OPS_dfs_pe_name string = 'EUS-FLLM-DEMO-OPS-dfs-pe'
 param privateEndpoints_EUS_FLLM_DEMO_OPS_web_pe_name string = 'EUS-FLLM-DEMO-OPS-web-pe'
-param privatelinkscopes_EUS_FLLM_DEMO_OPS_ampls_name string = 'EUS-FLLM-DEMO-OPS-ampls'
 param privateEndpoints_EUS_FLLM_DEMO_OPS_blob_pe_name string = 'EUS-FLLM-DEMO-OPS-blob-pe'
 param privateEndpoints_EUS_FLLM_DEMO_OPS_file_pe_name string = 'EUS-FLLM-DEMO-OPS-file-pe'
 param privateEndpoints_EUS_FLLM_DEMO_OPS_queue_pe_name string = 'EUS-FLLM-DEMO-OPS-queue-pe'
@@ -26,7 +25,6 @@ param actionGroups_Application_Insights_Smart_Detection_name string = 'Applicati
 param metricAlerts_EUS_FLLM_DEMO_OPS_ado_vmss_cpu_alert_name string = 'EUS-FLLM-DEMO-OPS-ado-vmss-cpu-alert'
 param metricAlerts_EUS_FLLM_DEMO_OPS_tfca_aci_cpu_alert_name string = 'EUS-FLLM-DEMO-OPS-tfca-aci-cpu-alert'
 param metricAlerts_EUS_FLLM_DEMO_OPS_tfca_aci_ram_alert_name string = 'EUS-FLLM-DEMO-OPS-tfca-aci-ram-alert'
-param privateEndpoints_EUS_FLLM_DEMO_OPS_azuremonitor_pe_name string = 'EUS-FLLM-DEMO-OPS-azuremonitor-pe'
 param metricAlerts_EUS_FLLM_DEMO_OPS_ado_vmss_disk_alert_name string = 'EUS-FLLM-DEMO-OPS-ado-vmss-disk-alert'
 param metricAlerts_EUS_FLLM_DEMO_OPS_kv_saturation_alert_name string = 'EUS-FLLM-DEMO-OPS-kv-saturation-alert'
 param userAssignedIdentities_EUS_FLLM_DEMO_OPS_mi_name string = 'EUS-FLLM-DEMO-OPS-mi'
@@ -51,7 +49,6 @@ param virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid string = '/subscriptions
 param privateDnsZones_privatelink_grafana_azure_com_externalid string = '/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DNS-rg/providers/Microsoft.Network/privateDnsZones/privatelink.grafana.azure.com'
 param privateDnsZones_privatelink_azconfig_io_externalid string = '/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DNS-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azconfig.io'
 param privateDnsZones_privatelink_blob_core_windows_net_externalid string = '/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DNS-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net'
-param privateDnsZones_privatelink_monitor_azure_com_externalid string = '/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DNS-rg/providers/Microsoft.Network/privateDnsZones/privatelink.monitor.azure.com'
 param privateDnsZones_privatelink_dfs_core_windows_net_externalid string = '/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DNS-rg/providers/Microsoft.Network/privateDnsZones/privatelink.dfs.core.windows.net'
 param privateDnsZones_privatelink_file_core_windows_net_externalid string = '/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DNS-rg/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net'
 param privateDnsZones_privatelink_vaultcore_azure_net_externalid string = '/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DNS-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net'
@@ -379,31 +376,7 @@ resource actionGroups_Application_Insights_Smart_Detection_name_resource 'micros
   }
 }
 
-resource actionGroups_EUS_FLLM_DEMO_OPS_ag_name_resource 'microsoft.insights/actionGroups@2023-01-01' = {
-  name: actionGroups_EUS_FLLM_DEMO_OPS_ag_name
-  location: 'Global'
-  tags: {
-    Environment: 'DEMO'
-    Project: 'FLLM'
-    Purpose: 'DevOps'
-    Workspace: 'foundationallm-ops'
-  }
-  properties: {
-    groupShortName: 'do-nothing'
-    enabled: true
-    emailReceivers: []
-    smsReceivers: []
-    webhookReceivers: []
-    eventHubReceivers: []
-    itsmReceivers: []
-    azureAppPushReceivers: []
-    automationRunbookReceivers: []
-    voiceReceivers: []
-    logicAppReceivers: []
-    azureFunctionReceivers: []
-    armRoleReceivers: []
-  }
-}
+
 
 
 
