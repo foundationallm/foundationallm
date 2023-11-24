@@ -95,11 +95,27 @@ task OpenAI -depends ResourceGroups -description "Ensure OpenAI accounts exist" 
 }
 
 task Ops -depends ResourceGroups, Networking, DNS -description "Ensure ops resources exist" {
+    $monitor = $script:privateDnsZoneId `
+        | Where-Object -Property key -eq "monitor" `
+        | Select-Object -Property id -First 1
+
+    $blob = $script:privateDnsZoneId `
+        | Where-Object -Property key -eq "blob" `
+        | Select-Object -Property id -First 1
+
+    Write-Host "The monitor private DNS zone ID is $($monitor.id)."
+
     az deployment group create `
         --name $deployments["ops"] `
-        --parameters environmentName=$environment location=$location project=$project vnetId=$script:vnetId `
         --resource-group $resourceGroups["ops"] `
-        --template-file ./ops-rg/template.bicep 
+        --template-file ./ops-rg/template.bicep `
+        --parameters `
+            blobPrivateDnsZoneId=$($blob.id) `
+            environmentName=$environment `
+            location=$location `
+            monitorPrivateDnsZoneId=$($monitor.id) `
+            project=$project `
+            vnetId=$script:vnetId
 
     if ($LASTEXITCODE -ne 0) {
         throw "The ops deployment failed."
