@@ -14,6 +14,8 @@ var tags = {
   Purpose: 'DevOps'
 }
 
+output name string= main.name
+
 /*
   Resource representing the main Microsoft Insights Private Link Scope.
   This resource is used to configure access mode settings for ingestion and query.

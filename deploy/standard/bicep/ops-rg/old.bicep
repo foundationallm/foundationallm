@@ -5,7 +5,6 @@ param vaults_EUS_FLLM_DEMO_OPS_kv_name string = 'EUS-FLLM-DEMO-OPS-kv'
 param accounts_eus_fllm_demo_ops_amw_name string = 'eus-fllm-demo-ops-amw'
 param components_EUS_FLLM_DEMO_OPS_ai_name string = 'EUS-FLLM-DEMO-OPS-ai'
 param storageAccounts_eusfllmdemoopssa_name string = 'eusfllmdemoopssa'
-param actionGroups_EUS_FLLM_DEMO_OPS_ag_name string = 'EUS-FLLM-DEMO-OPS-ag'
 param registries_EUSFLLMDEMOOPScr_name string = 'EUSFLLMDEMOOPScr'
 param privateEndpoints_EFLLMdOPS_grafana_pe_name string = 'EFLLMdOPS-grafana-pe'
 param privateEndpoints_EUS_FLLM_DEMO_OPS_kv_pe_name string = 'EUS-FLLM-DEMO-OPS-kv-pe'
@@ -17,7 +16,6 @@ param privateEndpoints_EUS_FLLM_DEMO_OPS_queue_pe_name string = 'EUS-FLLM-DEMO-O
 param privateEndpoints_EUS_FLLM_DEMO_OPS_table_pe_name string = 'EUS-FLLM-DEMO-OPS-table-pe'
 param workspaces_EUS_FLLM_DEMO_OPS_la_name string = 'EUS-FLLM-DEMO-OPS-la'
 param privateEndpoints_EUS_FLLM_DEMO_OPS_registry_pe_name string = 'EUS-FLLM-DEMO-OPS-registry-pe'
-param dataCollectionRules_MSVMI_EUS_FLLM_DEMO_OPS_la_name string = 'MSVMI-EUS-FLLM-DEMO-OPS-la'
 param privateEndpoints_EUS_FLLM_DEMO_OPS_appconfig_pe_name string = 'EUS-FLLM-DEMO-OPS-appconfig-pe'
 param metricAlerts_EUS_FLLM_DEMO_OPS_kv_latency_alert_name string = 'EUS-FLLM-DEMO-OPS-kv-latency-alert'
 param virtualMachineScaleSets_EUS_FLLM_DEMO_OPS_ado_vmss_name string = 'EUS-FLLM-DEMO-OPS-ado-vmss'
@@ -31,7 +29,6 @@ param userAssignedIdentities_EUS_FLLM_DEMO_OPS_mi_name string = 'EUS-FLLM-DEMO-O
 param containerGroups_EUS_FLLM_DEMO_OPS_tfca_aci_name string = 'EUS-FLLM-DEMO-OPS-tfca-aci'
 param metricAlerts_EUS_FLLM_DEMO_OPS_kv_availability_alert_name string = 'EUS-FLLM-DEMO-OPS-kv-availability-alert'
 param metricAlerts_EUS_FLLM_DEMO_OPS_sa_availability_alert_name string = 'EUS-FLLM-DEMO-OPS-sa-availability-alert'
-param solutions_Security_eus_fllm_demo_ops_la_name string = 'Security(eus-fllm-demo-ops-la)'
 param scheduledqueryrules_EUS_FLLM_DEMO_OPS_la_issues_alert_name string = 'EUS-FLLM-DEMO-OPS-la-issues-alert'
 param metricAlerts_EUS_FLLM_DEMO_OPS_appconfig_latency_alert_name string = 'EUS-FLLM-DEMO-OPS-appconfig-latency-alert'
 param privateEndpoints_EUS_FLLM_DEMO_OPS_prometheusMetrics_pe_name string = 'EUS-FLLM-DEMO-OPS-prometheusMetrics-pe'
@@ -39,11 +36,7 @@ param configurationStores_eus_fllm_demo_ops_appconfig_name string = 'eus-fllm-de
 param scheduledqueryrules_EUS_FLLM_DEMO_OPS_la_rate_limit_alert_name string = 'EUS-FLLM-DEMO-OPS-la-rate-limit-alert'
 param metricAlerts_EUS_FLLM_DEMO_OPS_appconfig_storageUsage_alert_name string = 'EUS-FLLM-DEMO-OPS-appconfig-storageUsage-alert'
 param scheduledqueryrules_EUS_FLLM_DEMO_OPS_la_ingestion_cap_alert_name string = 'EUS-FLLM-DEMO-OPS-la-ingestion-cap-alert'
-param solutions_ContainerInsights_EUS_FLLM_DEMO_OPS_la_name string = 'ContainerInsights(EUS-FLLM-DEMO-OPS-la)'
-param solutions_SecurityCenterFree_EUS_FLLM_DEMO_OPS_la_name string = 'SecurityCenterFree(EUS-FLLM-DEMO-OPS-la)'
 param systemTopics_eusfllmdemoopssa_d63dac3c_9957_4c24_9baf_ffb984d8ffc4_name string = 'eusfllmdemoopssa-d63dac3c-9957-4c24-9baf-ffb984d8ffc4'
-param solutions_SQLVulnerabilityAssessment_eus_fllm_demo_ops_la_name string = 'SQLVulnerabilityAssessment(eus-fllm-demo-ops-la)'
-param solutions_SQLAdvancedThreatProtection_eus_fllm_demo_ops_la_name string = 'SQLAdvancedThreatProtection(eus-fllm-demo-ops-la)'
 param smartdetectoralertrules_failure_anomalies_eus_fllm_demo_ops_ai_name string = 'failure anomalies - eus-fllm-demo-ops-ai'
 param virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid string = '/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-NET-rg/providers/Microsoft.Network/virtualNetworks/EUS-FLLM-DEMO-NET-vnet'
 param privateDnsZones_privatelink_grafana_azure_com_externalid string = '/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DNS-rg/providers/Microsoft.Network/privateDnsZones/privatelink.grafana.azure.com'
@@ -432,32 +425,7 @@ resource accounts_eus_fllm_demo_ops_amw_name_resource 'microsoft.monitor/account
   properties: {}
 }
 
-resource workspaces_EUS_FLLM_DEMO_OPS_la_name_resource 'Microsoft.OperationalInsights/workspaces@2021-12-01-preview' = {
-  name: workspaces_EUS_FLLM_DEMO_OPS_la_name
-  location: 'eastus'
-  tags: {
-    Environment: 'DEMO'
-    Project: 'FLLM'
-    Purpose: 'DevOps'
-    Workspace: 'foundationallm-ops'
-  }
-  properties: {
-    sku: {
-      name: 'PerGB2018'
-    }
-    retentionInDays: 30
-    features: {
-      enableLogAccessUsingOnlyResourcePermissions: true
-      disableLocalAuth: false
-    }
-    workspaceCapping: {
-      dailyQuotaGb: -1
-    }
-    publicNetworkAccessForIngestion: 'Enabled'
-    publicNetworkAccessForQuery: 'Enabled'
-    forceCmkForQuery: false
-  }
-}
+
 
 resource storageAccounts_eusfllmdemoopssa_name_resource 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: storageAccounts_eusfllmdemoopssa_name
@@ -1023,70 +991,6 @@ resource components_EUS_FLLM_DEMO_OPS_ai_name_slowserverresponsetime 'microsoft.
     Enabled: true
     SendEmailsToSubscriptionOwners: true
     CustomEmails: []
-  }
-}
-
-resource dataCollectionRules_MSVMI_EUS_FLLM_DEMO_OPS_la_name_resource 'Microsoft.Insights/dataCollectionRules@2022-06-01' = {
-  name: dataCollectionRules_MSVMI_EUS_FLLM_DEMO_OPS_la_name
-  location: 'eastus'
-  tags: {
-    Environment: 'DEMO'
-    Project: 'FLLM'
-    Purpose: 'DevOps'
-    Workspace: 'foundationallm-ops'
-  }
-  properties: {
-    description: 'Data collection rule for VM Insights.'
-    dataSources: {
-      performanceCounters: [
-        {
-          streams: [
-            'Microsoft-InsightsMetrics'
-          ]
-          samplingFrequencyInSeconds: 60
-          counterSpecifiers: [
-            '\\VmInsights\\DetailedMetrics'
-          ]
-          name: 'VMInsightsPerfCounters'
-        }
-      ]
-      extensions: [
-        {
-          streams: [
-            'Microsoft-ServiceMap'
-          ]
-          extensionName: 'DependencyAgent'
-          inputDataSources: []
-          name: 'DependencyAgentDataSource'
-        }
-      ]
-    }
-    destinations: {
-      logAnalytics: [
-        {
-          workspaceResourceId: workspaces_EUS_FLLM_DEMO_OPS_la_name_resource.id
-          name: 'VMInsightsPerf-Logs-Dest'
-        }
-      ]
-    }
-    dataFlows: [
-      {
-        streams: [
-          'Microsoft-InsightsMetrics'
-        ]
-        destinations: [
-          'VMInsightsPerf-Logs-Dest'
-        ]
-      }
-      {
-        streams: [
-          'Microsoft-ServiceMap'
-        ]
-        destinations: [
-          'VMInsightsPerf-Logs-Dest'
-        ]
-      }
-    ]
   }
 }
 
@@ -11193,84 +11097,6 @@ resource workspaces_EUS_FLLM_DEMO_OPS_la_name_WVDSessionHostManagement 'Microsof
   }
 }
 
-resource solutions_ContainerInsights_EUS_FLLM_DEMO_OPS_la_name_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
-  name: solutions_ContainerInsights_EUS_FLLM_DEMO_OPS_la_name
-  location: 'eastus'
-  plan: {
-    name: 'ContainerInsights(eus-fllm-demo-ops-la)'
-    promotionCode: ''
-    product: 'OMSGallery/ContainerInsights'
-    publisher: 'Microsoft'
-  }
-  properties: {
-    workspaceResourceId: workspaces_EUS_FLLM_DEMO_OPS_la_name_resource.id
-    containedResources: []
-  }
-}
-
-resource solutions_Security_eus_fllm_demo_ops_la_name_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
-  name: solutions_Security_eus_fllm_demo_ops_la_name
-  location: 'eastus'
-  plan: {
-    name: 'Security(eus-fllm-demo-ops-la)'
-    promotionCode: ''
-    product: 'OMSGallery/Security'
-    publisher: 'Microsoft'
-  }
-  properties: {
-    workspaceResourceId: workspaces_EUS_FLLM_DEMO_OPS_la_name_resource.id
-    containedResources: [
-      '${workspaces_EUS_FLLM_DEMO_OPS_la_name_resource.id}/views/Security(EUS-FLLM-DEMO-OPS-la)'
-    ]
-  }
-}
-
-resource solutions_SecurityCenterFree_EUS_FLLM_DEMO_OPS_la_name_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
-  name: solutions_SecurityCenterFree_EUS_FLLM_DEMO_OPS_la_name
-  location: 'eastus'
-  plan: {
-    name: 'SecurityCenterFree(eus-fllm-demo-ops-la)'
-    promotionCode: ''
-    product: 'OMSGallery/SecurityCenterFree'
-    publisher: 'Microsoft'
-  }
-  properties: {
-    workspaceResourceId: workspaces_EUS_FLLM_DEMO_OPS_la_name_resource.id
-    containedResources: []
-  }
-}
-
-resource solutions_SQLAdvancedThreatProtection_eus_fllm_demo_ops_la_name_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
-  name: solutions_SQLAdvancedThreatProtection_eus_fllm_demo_ops_la_name
-  location: 'eastus'
-  plan: {
-    name: 'SQLAdvancedThreatProtection(eus-fllm-demo-ops-la)'
-    promotionCode: ''
-    product: 'OMSGallery/SQLAdvancedThreatProtection'
-    publisher: 'Microsoft'
-  }
-  properties: {
-    workspaceResourceId: workspaces_EUS_FLLM_DEMO_OPS_la_name_resource.id
-    containedResources: []
-  }
-}
-
-resource solutions_SQLVulnerabilityAssessment_eus_fllm_demo_ops_la_name_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
-  name: solutions_SQLVulnerabilityAssessment_eus_fllm_demo_ops_la_name
-  location: 'eastus'
-  plan: {
-    name: 'SQLVulnerabilityAssessment(eus-fllm-demo-ops-la)'
-    promotionCode: ''
-    product: 'OMSGallery/SQLVulnerabilityAssessment'
-    publisher: 'Microsoft'
-  }
-  properties: {
-    workspaceResourceId: workspaces_EUS_FLLM_DEMO_OPS_la_name_resource.id
-    containedResources: [
-      '${workspaces_EUS_FLLM_DEMO_OPS_la_name_resource.id}/views/SQLVulnerabilityAssessment(EUS-FLLM-DEMO-OPS-la)'
-    ]
-  }
-}
 
 resource storageAccounts_eusfllmdemoopssa_name_default 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01' = {
   parent: storageAccounts_eusfllmdemoopssa_name_resource
@@ -11915,13 +11741,7 @@ resource privatelinkscopes_EUS_FLLM_DEMO_OPS_ampls_name_EUS_FLLM_DEMO_OPS_ai_amp
   }
 }
 
-resource privatelinkscopes_EUS_FLLM_DEMO_OPS_ampls_name_EUS_FLLM_DEMO_OPS_la_amplss 'microsoft.insights/privatelinkscopes/scopedresources@2021-07-01-preview' = {
-  parent: privatelinkscopes_EUS_FLLM_DEMO_OPS_ampls_name_resource
-  name: 'EUS-FLLM-DEMO-OPS-la-amplss'
-  properties: {
-    linkedResourceId: workspaces_EUS_FLLM_DEMO_OPS_la_name_resource.id
-  }
-}
+
 
 resource scheduledqueryrules_EUS_FLLM_DEMO_OPS_la_ingestion_cap_alert_name_resource 'microsoft.insights/scheduledqueryrules@2023-03-15-preview' = {
   name: scheduledqueryrules_EUS_FLLM_DEMO_OPS_la_ingestion_cap_alert_name
