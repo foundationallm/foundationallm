@@ -39,6 +39,18 @@ module ampls 'modules/ampls.bicep' = {
   }
 }
 
+module applicationInights 'modules/applicationInsights.bicep' = {
+  name: 'appInsights-${timestamp}'
+  params: {
+    amplsName: ampls.outputs.name
+    environmentName: environmentName
+    location: location
+    logAnalyticWorkspaceId: logAnalytics.outputs.id
+    project: project
+    workload: 'ops'
+  }
+}
+
 module logAnalytics 'modules/logAnalytics.bicep' = {
   name: 'logAnalytics-${timestamp}'
   params: {

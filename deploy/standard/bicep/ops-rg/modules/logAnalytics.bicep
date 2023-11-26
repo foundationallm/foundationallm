@@ -7,6 +7,8 @@ param workload string
 
 var name = 'la-${environmentName}-${location}-${workload}-${project}'
 
+output id string = main.id
+
 var alerts = [
   {
     description: 'Data ingestion is exceeding the ingestion rate limit.'

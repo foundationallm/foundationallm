@@ -3,7 +3,6 @@ param containerGroups_EUS_FLLM_DEMO_OPS_tfca_aci_workspaceKey string
 param grafana_efllmdopsgd_name string = 'efllmdopsgd'
 param vaults_EUS_FLLM_DEMO_OPS_kv_name string = 'EUS-FLLM-DEMO-OPS-kv'
 param accounts_eus_fllm_demo_ops_amw_name string = 'eus-fllm-demo-ops-amw'
-param components_EUS_FLLM_DEMO_OPS_ai_name string = 'EUS-FLLM-DEMO-OPS-ai'
 param storageAccounts_eusfllmdemoopssa_name string = 'eusfllmdemoopssa'
 param registries_EUSFLLMDEMOOPScr_name string = 'EUSFLLMDEMOOPScr'
 param privateEndpoints_EFLLMdOPS_grafana_pe_name string = 'EFLLMdOPS-grafana-pe'
@@ -694,29 +693,7 @@ resource systemTopics_eusfllmdemoopssa_d63dac3c_9957_4c24_9baf_ffb984d8ffc4_name
   }
 }
 
-resource components_EUS_FLLM_DEMO_OPS_ai_name_resource 'microsoft.insights/components@2020-02-02' = {
-  name: components_EUS_FLLM_DEMO_OPS_ai_name
-  location: 'eastus'
-  tags: {
-    Environment: 'DEMO'
-    Project: 'FLLM'
-    Purpose: 'DevOps'
-    Workspace: 'foundationallm-ops'
-  }
-  kind: 'web'
-  properties: {
-    Application_Type: 'web'
-    SamplingPercentage: 100
-    RetentionInDays: 30
-    DisableIpMasking: false
-    WorkspaceResourceId: workspaces_EUS_FLLM_DEMO_OPS_la_name_resource.id
-    IngestionMode: 'LogAnalytics'
-    publicNetworkAccessForIngestion: 'Enabled'
-    publicNetworkAccessForQuery: 'Enabled'
-    DisableLocalAuth: false
-    ForceCustomerStorageForProfiler: false
-  }
-}
+
 
 resource components_EUS_FLLM_DEMO_OPS_ai_name_degradationindependencyduration 'microsoft.insights/components/ProactiveDetectionConfigs@2018-05-01-preview' = {
   parent: components_EUS_FLLM_DEMO_OPS_ai_name_resource
@@ -11729,14 +11706,4 @@ resource metricAlerts_EUS_FLLM_DEMO_OPS_tfca_aci_ram_alert_name_resource 'Micros
     ]
   }
 }
-
-resource privatelinkscopes_EUS_FLLM_DEMO_OPS_ampls_name_EUS_FLLM_DEMO_OPS_ai_amplss 'microsoft.insights/privatelinkscopes/scopedresources@2021-07-01-preview' = {
-  parent: privatelinkscopes_EUS_FLLM_DEMO_OPS_ampls_name_resource
-  name: 'EUS-FLLM-DEMO-OPS-ai-amplss'
-  properties: {
-    linkedResourceId: components_EUS_FLLM_DEMO_OPS_ai_name_resource.id
-  }
-}
-
-
 
