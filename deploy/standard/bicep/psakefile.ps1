@@ -39,7 +39,7 @@ task DNS -depends ResourceGroups, Networking -description "Ensure DNS resources 
         --name $deployments["dns"] `
         --parameters environmentName=$environment location=$location project=$project vnetId=$script:vnetId `
         --resource-group $resourceGroups["dns"] `
-        --template-file ./dns-rg/template.bicep 
+        --template-file ./dns-rg.bicep 
 
     if ($LASTEXITCODE -ne 0) {
         throw "The DNS deployment failed."
@@ -63,7 +63,7 @@ task Networking -depends ResourceGroups -description "Ensure networking resource
         --name $deployments["net"] `
         --parameters environmentName=$environment location=$location project=$project `
         --resource-group $resourceGroups["net"] `
-        --template-file ./networking-rg/template.bicep 
+        --template-file ./networking-rg.bicep 
 
     if ($LASTEXITCODE -ne 0) {
         throw "The networking deployment failed."
@@ -87,7 +87,7 @@ task OpenAI -depends ResourceGroups -description "Ensure OpenAI accounts exist" 
         --name $deployments["oai"] `
         --parameters environmentName=$environment location=$location project=$project `
         --resource-group $resourceGroups["oai"] `
-        --template-file ./openai-rg/template.bicep 
+        --template-file ./openai-rg.bicep 
 
     if ($LASTEXITCODE -ne 0) {
         throw "The OpenAI deployment failed."
@@ -111,7 +111,7 @@ task Ops -depends ResourceGroups, Networking, DNS -description "Ensure ops resou
     az deployment group create `
         --name $deployments["ops"] `
         --resource-group $resourceGroups["ops"] `
-        --template-file ./ops-rg/template.bicep `
+        --template-file ./ops-rg.bicep `
         --parameters `
         blobPrivateDnsZoneId=$($blob.id) `
         environmentName=$environment `
