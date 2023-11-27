@@ -242,6 +242,5 @@ resource alert 'microsoft.insights/scheduledqueryrules@2023-03-15-preview' = [fo
         }
       ]
     }
-
   }
 }]
