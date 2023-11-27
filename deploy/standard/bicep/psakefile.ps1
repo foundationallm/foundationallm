@@ -94,6 +94,7 @@ task OpenAI -depends ResourceGroups -description "Ensure OpenAI accounts exist" 
     }
 }
 
+# task Ops -description "Ensure ops resources exist" {
 task Ops -depends ResourceGroups, Networking, DNS -description "Ensure ops resources exist" {
     $monitor = $script:privateDnsZoneId `
     | Where-Object -Property key -eq "monitor" `
@@ -117,7 +118,7 @@ task Ops -depends ResourceGroups, Networking, DNS -description "Ensure ops resou
         location=$location `
         monitorPrivateDnsZoneId=$($monitor.id) `
         project=$project `
-        vault=$($vault.id) `
+        vaultPrivateDnsZoneId=$($vault.id) `
         vnetId=$script:vnetId
 
     if ($LASTEXITCODE -ne 0) {

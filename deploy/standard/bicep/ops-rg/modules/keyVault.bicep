@@ -7,7 +7,7 @@ param subnetId string
 param workload string
 param zoneId string
 
-var logs = [ 'Audit Logs', 'Azure Policy Evaluation Details' ]
+var logs = [ 'AuditEvent', 'AzurePolicyEvaluationDetails' ]
 var name = 'kv-${environmentName}-${location}-${workload}-${project}'
 
 var alerts = [
