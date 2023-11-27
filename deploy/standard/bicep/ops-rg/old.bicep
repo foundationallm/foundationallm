@@ -1,7 +1,6 @@
 @secure()
 param containerGroups_EUS_FLLM_DEMO_OPS_tfca_aci_workspaceKey string
 param grafana_efllmdopsgd_name string = 'efllmdopsgd'
-param vaults_EUS_FLLM_DEMO_OPS_kv_name string = 'EUS-FLLM-DEMO-OPS-kv'
 param accounts_eus_fllm_demo_ops_amw_name string = 'eus-fllm-demo-ops-amw'
 param storageAccounts_eusfllmdemoopssa_name string = 'eusfllmdemoopssa'
 param registries_EUSFLLMDEMOOPScr_name string = 'EUSFLLMDEMOOPScr'
@@ -16,22 +15,16 @@ param privateEndpoints_EUS_FLLM_DEMO_OPS_table_pe_name string = 'EUS-FLLM-DEMO-O
 param workspaces_EUS_FLLM_DEMO_OPS_la_name string = 'EUS-FLLM-DEMO-OPS-la'
 param privateEndpoints_EUS_FLLM_DEMO_OPS_registry_pe_name string = 'EUS-FLLM-DEMO-OPS-registry-pe'
 param privateEndpoints_EUS_FLLM_DEMO_OPS_appconfig_pe_name string = 'EUS-FLLM-DEMO-OPS-appconfig-pe'
-param metricAlerts_EUS_FLLM_DEMO_OPS_kv_latency_alert_name string = 'EUS-FLLM-DEMO-OPS-kv-latency-alert'
 param virtualMachineScaleSets_EUS_FLLM_DEMO_OPS_ado_vmss_name string = 'EUS-FLLM-DEMO-OPS-ado-vmss'
 param actionGroups_Application_Insights_Smart_Detection_name string = 'Application Insights Smart Detection'
 param metricAlerts_EUS_FLLM_DEMO_OPS_ado_vmss_cpu_alert_name string = 'EUS-FLLM-DEMO-OPS-ado-vmss-cpu-alert'
 param metricAlerts_EUS_FLLM_DEMO_OPS_tfca_aci_cpu_alert_name string = 'EUS-FLLM-DEMO-OPS-tfca-aci-cpu-alert'
 param metricAlerts_EUS_FLLM_DEMO_OPS_tfca_aci_ram_alert_name string = 'EUS-FLLM-DEMO-OPS-tfca-aci-ram-alert'
 param metricAlerts_EUS_FLLM_DEMO_OPS_ado_vmss_disk_alert_name string = 'EUS-FLLM-DEMO-OPS-ado-vmss-disk-alert'
-param metricAlerts_EUS_FLLM_DEMO_OPS_kv_saturation_alert_name string = 'EUS-FLLM-DEMO-OPS-kv-saturation-alert'
 param userAssignedIdentities_EUS_FLLM_DEMO_OPS_mi_name string = 'EUS-FLLM-DEMO-OPS-mi'
 param containerGroups_EUS_FLLM_DEMO_OPS_tfca_aci_name string = 'EUS-FLLM-DEMO-OPS-tfca-aci'
-param metricAlerts_EUS_FLLM_DEMO_OPS_kv_availability_alert_name string = 'EUS-FLLM-DEMO-OPS-kv-availability-alert'
 param metricAlerts_EUS_FLLM_DEMO_OPS_sa_availability_alert_name string = 'EUS-FLLM-DEMO-OPS-sa-availability-alert'
-param metricAlerts_EUS_FLLM_DEMO_OPS_appconfig_latency_alert_name string = 'EUS-FLLM-DEMO-OPS-appconfig-latency-alert'
 param privateEndpoints_EUS_FLLM_DEMO_OPS_prometheusMetrics_pe_name string = 'EUS-FLLM-DEMO-OPS-prometheusMetrics-pe'
-param configurationStores_eus_fllm_demo_ops_appconfig_name string = 'eus-fllm-demo-ops-appconfig'
-param metricAlerts_EUS_FLLM_DEMO_OPS_appconfig_storageUsage_alert_name string = 'EUS-FLLM-DEMO-OPS-appconfig-storageUsage-alert'
 param systemTopics_eusfllmdemoopssa_d63dac3c_9957_4c24_9baf_ffb984d8ffc4_name string = 'eusfllmdemoopssa-d63dac3c-9957-4c24-9baf-ffb984d8ffc4'
 param smartdetectoralertrules_failure_anomalies_eus_fllm_demo_ops_ai_name string = 'failure anomalies - eus-fllm-demo-ops-ai'
 param virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid string = '/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-NET-rg/providers/Microsoft.Network/virtualNetworks/EUS-FLLM-DEMO-NET-vnet'
@@ -48,32 +41,7 @@ param privateDnsZones_eastus_privatelink_azurecr_io_externalid string = '/subscr
 param privateDnsZones_privatelink_table_core_windows_net_externalid string = '/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DNS-rg/providers/Microsoft.Network/privateDnsZones/privatelink.table.core.windows.net'
 param privateDnsZones_privatelink_azurewebsites_net_externalid string = '/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-DNS-rg/providers/Microsoft.Network/privateDnsZones/privatelink.azurewebsites.net'
 
-resource configurationStores_eus_fllm_demo_ops_appconfig_name_resource 'Microsoft.AppConfiguration/configurationStores@2023-03-01' = {
-  name: configurationStores_eus_fllm_demo_ops_appconfig_name
-  location: 'eastus'
-  tags: {
-    Environment: 'DEMO'
-    Project: 'FLLM'
-    Purpose: 'DevOps'
-    Workspace: 'foundationallm-ops'
-  }
-  sku: {
-    name: 'standard'
-  }
-  identity: {
-    type: 'UserAssigned'
-    userAssignedIdentities: {
-      '/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-OPS-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/EUS-FLLM-DEMO-OPS-mi': {}
-    }
-  }
-  properties: {
-    encryption: {}
-    publicNetworkAccess: 'Disabled'
-    disableLocalAuth: false
-    softDeleteRetentionInDays: 1
-    enablePurgeProtection: true
-  }
-}
+
 
 resource virtualMachineScaleSets_EUS_FLLM_DEMO_OPS_ado_vmss_name_resource 'Microsoft.Compute/virtualMachineScaleSets@2023-03-01' = {
   name: virtualMachineScaleSets_EUS_FLLM_DEMO_OPS_ado_vmss_name
@@ -976,41 +944,7 @@ resource privateEndpoints_EFLLMdOPS_grafana_pe_name_resource 'Microsoft.Network/
   }
 }
 
-resource privateEndpoints_EUS_FLLM_DEMO_OPS_appconfig_pe_name_resource 'Microsoft.Network/privateEndpoints@2023-05-01' = {
-  name: privateEndpoints_EUS_FLLM_DEMO_OPS_appconfig_pe_name
-  location: 'eastus'
-  tags: {
-    Environment: 'DEMO'
-    Project: 'FLLM'
-    Purpose: 'DevOps'
-    Workspace: 'foundationallm-ops'
-  }
-  properties: {
-    privateLinkServiceConnections: [
-      {
-        name: 'EUS-FLLM-DEMO-OPS-appconfig-connection'
-        id: '${privateEndpoints_EUS_FLLM_DEMO_OPS_appconfig_pe_name_resource.id}/privateLinkServiceConnections/EUS-FLLM-DEMO-OPS-appconfig-connection'
-        properties: {
-          privateLinkServiceId: configurationStores_eus_fllm_demo_ops_appconfig_name_resource.id
-          groupIds: [
-            'configurationStores'
-          ]
-          privateLinkServiceConnectionState: {
-            status: 'Approved'
-            description: 'Auto-Approved'
-            actionsRequired: 'None'
-          }
-        }
-      }
-    ]
-    manualPrivateLinkServiceConnections: []
-    subnet: {
-      id: '${virtualNetworks_EUS_FLLM_DEMO_NET_vnet_externalid}/subnets/ops'
-    }
-    ipConfigurations: []
-    customDnsConfigs: []
-  }
-}
+
 
 
 
@@ -10799,19 +10733,7 @@ resource smartdetectoralertrules_failure_anomalies_eus_fllm_demo_ops_ai_name_res
   }
 }
 
-resource configurationStores_eus_fllm_demo_ops_appconfig_name_configurationStores_eus_fllm_demo_ops_appconfig_name_connection 'Microsoft.AppConfiguration/configurationStores/privateEndpointConnections@2023-03-01' = {
-  parent: configurationStores_eus_fllm_demo_ops_appconfig_name_resource
-  name: '${configurationStores_eus_fllm_demo_ops_appconfig_name}-connection'
-  properties: {
-    privateEndpoint: {
-      id: privateEndpoints_EUS_FLLM_DEMO_OPS_appconfig_pe_name_resource.id
-    }
-    privateLinkServiceConnectionState: {
-      status: 'Approved'
-      description: 'Auto-Approved'
-    }
-  }
-}
+
 
 resource registries_EUSFLLMDEMOOPScr_name_registries_EUSFLLMDEMOOPScr_name_583606f6817a4533a73ae7fb8c881c31 'Microsoft.ContainerRegistry/registries/privateEndpointConnections@2023-08-01-preview' = {
   parent: registries_EUSFLLMDEMOOPScr_name_resource
@@ -10913,91 +10835,9 @@ resource metricAlerts_EUS_FLLM_DEMO_OPS_ado_vmss_disk_alert_name_resource 'Micro
   }
 }
 
-resource metricAlerts_EUS_FLLM_DEMO_OPS_appconfig_latency_alert_name_resource 'Microsoft.Insights/metricAlerts@2018-03-01' = {
-  name: metricAlerts_EUS_FLLM_DEMO_OPS_appconfig_latency_alert_name
-  location: 'global'
-  tags: {
-    Environment: 'DEMO'
-    Project: 'FLLM'
-    Purpose: 'DevOps'
-    Workspace: 'foundationallm-ops'
-  }
-  properties: {
-    description: 'Service request latency greater than 1000ms for 1 hour'
-    severity: 0
-    enabled: true
-    scopes: [
-      configurationStores_eus_fllm_demo_ops_appconfig_name_resource.id
-    ]
-    evaluationFrequency: 'PT1M'
-    windowSize: 'PT1H'
-    criteria: {
-      allOf: [
-        {
-          threshold: 1000
-          name: 'Metric1'
-          metricNamespace: 'Microsoft.AppConfiguration/configurationStores'
-          metricName: 'DailyStorageUsage'
-          operator: 'GreaterThan'
-          timeAggregation: 'Maximum'
-          skipMetricValidation: false
-          criterionType: 'StaticThresholdCriterion'
-        }
-      ]
-      'odata.type': 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
-    }
-    autoMitigate: true
-    actions: [
-      {
-        actionGroupId: actionGroups_EUS_FLLM_DEMO_OPS_ag_name_resource.id
-        webHookProperties: {}
-      }
-    ]
-  }
-}
 
-resource metricAlerts_EUS_FLLM_DEMO_OPS_appconfig_storageUsage_alert_name_resource 'Microsoft.Insights/metricAlerts@2018-03-01' = {
-  name: metricAlerts_EUS_FLLM_DEMO_OPS_appconfig_storageUsage_alert_name
-  location: 'global'
-  tags: {
-    Environment: 'DEMO'
-    Project: 'FLLM'
-    Purpose: 'DevOps'
-    Workspace: 'foundationallm-ops'
-  }
-  properties: {
-    description: 'Service maximum storage usage greater than 75% for 1 hour'
-    severity: 0
-    enabled: true
-    scopes: [
-      configurationStores_eus_fllm_demo_ops_appconfig_name_resource.id
-    ]
-    evaluationFrequency: 'PT1M'
-    windowSize: 'PT1H'
-    criteria: {
-      allOf: [
-        {
-          threshold: 75
-          name: 'Metric1'
-          metricNamespace: 'Microsoft.AppConfiguration/configurationStores'
-          metricName: 'DailyStorageUsage'
-          operator: 'GreaterThan'
-          timeAggregation: 'Maximum'
-          skipMetricValidation: false
-          criterionType: 'StaticThresholdCriterion'
-        }
-      ]
-      'odata.type': 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
-    }
-    autoMitigate: true
-    actions: [
-      {
-        actionGroupId: actionGroups_EUS_FLLM_DEMO_OPS_ag_name_resource.id
-        webHookProperties: {}
-      }
-    ]
-  }
-}
+
+
 
 
 
