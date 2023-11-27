@@ -9,21 +9,19 @@ param groupIds array
 /**
  * Creates a private DNS zone group for Azure Monitor.
  */
-resource dns 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-05-01' = [for zone in privateDnsZones: {
-  name: zone.name
+resource dns 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-05-01' = {
+  name: 'default'
   parent: main
 
   properties: {
-    privateDnsZoneConfigs: [
-      {
-        name: zone.name
-        properties: {
-          privateDnsZoneId: zone.id
-        }
+    privateDnsZoneConfigs: [for zone in privateDnsZones: {
+      name: zone.name
+      properties: {
+        privateDnsZoneId: zone.id
       }
-    ]
+    }]
   }
-}]
+}
 
 /**
  * Creates a private endpoint for Azure Monitor.
