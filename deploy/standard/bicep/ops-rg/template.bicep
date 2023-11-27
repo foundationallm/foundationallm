@@ -4,6 +4,7 @@ param location string
 param monitorPrivateDnsZoneId string
 param project string
 param timestamp string = utcNow()
+param vaultPrivateDnsZoneId string
 param vnetId string
 
 var privateDnsZones = [
@@ -14,6 +15,10 @@ var privateDnsZones = [
   {
     id: monitorPrivateDnsZoneId
     name: 'monitor'
+  }
+  {
+    id: vaultPrivateDnsZoneId
+    name: 'vault'
   }
 ]
 
@@ -48,6 +53,20 @@ module applicationInights 'modules/applicationInsights.bicep' = {
     logAnalyticWorkspaceId: logAnalytics.outputs.id
     project: project
     workload: 'ops'
+  }
+}
+
+module keyVault 'modules/keyVault.bicep' = {
+  name: 'keyVault-${timestamp}'
+  params: {
+    actionGroupId: actionGroup.outputs.id
+    environmentName: environmentName
+    location: location
+    logAnalyticWorkspaceId: logAnalytics.outputs.id
+    project: project
+    subnetId: '${vnetId}/subnets/ops'
+    workload: 'ops'
+    zoneId: vaultPrivateDnsZoneId
   }
 }
 

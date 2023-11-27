@@ -53,7 +53,7 @@ task DNS -depends ResourceGroups, Networking -description "Ensure DNS resources 
             --resource-group $resourceGroups["dns"] | ConvertFrom-Json
     )
 
-    if($LASTEXITCODE -ne 0) {
+    if ($LASTEXITCODE -ne 0) {
         throw "The private DNS zone IDs could not be retrieved."
     }
 }
@@ -96,24 +96,29 @@ task OpenAI -depends ResourceGroups -description "Ensure OpenAI accounts exist" 
 
 task Ops -depends ResourceGroups, Networking, DNS -description "Ensure ops resources exist" {
     $monitor = $script:privateDnsZoneId `
-        | Where-Object -Property key -eq "monitor" `
-        | Select-Object -Property id -First 1
+    | Where-Object -Property key -eq "monitor" `
+    | Select-Object -Property id -First 1
 
     $blob = $script:privateDnsZoneId `
-        | Where-Object -Property key -eq "blob" `
-        | Select-Object -Property id -First 1
+    | Where-Object -Property key -eq "blob" `
+    | Select-Object -Property id -First 1
+
+    $vault = $script:privateDnsZoneId `
+    | Where-Object -Property key -eq "vault" `
+    | Select-Object -Property id -First 1
 
     az deployment group create `
         --name $deployments["ops"] `
         --resource-group $resourceGroups["ops"] `
         --template-file ./ops-rg/template.bicep `
         --parameters `
-            blobPrivateDnsZoneId=$($blob.id) `
-            environmentName=$environment `
-            location=$location `
-            monitorPrivateDnsZoneId=$($monitor.id) `
-            project=$project `
-            vnetId=$script:vnetId
+        blobPrivateDnsZoneId=$($blob.id) `
+        environmentName=$environment `
+        location=$location `
+        monitorPrivateDnsZoneId=$($monitor.id) `
+        project=$project `
+        vault=$($vault.id) `
+        vnetId=$script:vnetId
 
     if ($LASTEXITCODE -ne 0) {
         throw "The ops deployment failed."
