@@ -15,7 +15,7 @@ resource dns 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-05-01
 
   properties: {
     privateDnsZoneConfigs: [for zone in privateDnsZones: {
-      name: zone.name
+      name: zone.key
       properties: {
         privateDnsZoneId: zone.id
       }

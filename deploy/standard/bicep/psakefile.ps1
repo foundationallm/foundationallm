@@ -96,32 +96,18 @@ task OpenAI -depends ResourceGroups -description "Ensure OpenAI accounts exist" 
 
 # task Ops -description "Ensure ops resources exist" {
 task Ops -depends ResourceGroups, Networking, DNS -description "Ensure ops resources exist" {
-    $monitor = $script:privateDnsZoneId `
-    | Where-Object -Property key -eq "monitor" `
-    | Select-Object -Property id -First 1
-
-    $blob = $script:privateDnsZoneId `
-    | Where-Object -Property key -eq "blob" `
-    | Select-Object -Property id -First 1
-
-    $vault = $script:privateDnsZoneId `
-    | Where-Object -Property key -eq "vault" `
-    | Select-Object -Property id -First 1
-
-    #oms, ods, agentsvc
+    $opsZones = $($script:privateDnsZoneId | ConvertTo-Json -Compress)
 
     az deployment group create `
         --name $deployments["ops"] `
         --resource-group $resourceGroups["ops"] `
         --template-file ./ops-rg.bicep `
         --parameters `
-        blobPrivateDnsZoneId=$($blob.id) `
         environmentName=$environment `
         location=$location `
-        monitorPrivateDnsZoneId=$($monitor.id) `
+        privateDnsZones=$opsZones `
         project=$project `
-        vaultPrivateDnsZoneId=$($vault.id) `
-        vnetId=$script:vnetId
+        vnetId=$script:vnetId 
 
     if ($LASTEXITCODE -ne 0) {
         throw "The ops deployment failed."
@@ -134,7 +120,7 @@ task ResourceGroups -description "Ensure resource groups exist" {
             Write-Host "The resource group $resourceGroup was not found, creating it..."
             az group create -g $resourceGroup -l $location --subscription $subscription
 
-            if (-Not (az group list --query '[].name' -o json | ConvertFrom-Json) -Contains $resourceGroup) {
+            if (-Not ($(az group list --query '[].name' -o json | ConvertFrom-Json) -Contains $resourceGroup)) {
                 throw "The resource group $resourceGroup was not found, and could not be created."
             } 
         }

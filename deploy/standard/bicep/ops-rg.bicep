@@ -1,26 +1,14 @@
-param blobPrivateDnsZoneId string
 param environmentName string
 param location string
-param monitorPrivateDnsZoneId string
+param privateDnsZones array
 param project string
 param timestamp string = utcNow()
-param vaultPrivateDnsZoneId string
 param vnetId string
 
-var privateDnsZones = [
-  {
-    id: blobPrivateDnsZoneId
-    name: 'blob'
-  }
-  {
-    id: monitorPrivateDnsZoneId
-    name: 'monitor'
-  }
-  {
-    id: vaultPrivateDnsZoneId
-    name: 'vault'
-  }
-]
+var amplsZones = filter(
+  privateDnsZones, 
+  (zone) => contains(['monitor', 'blob', 'ods', 'oms', 'agentsvc'], zone.key)
+)
 
 module actionGroup 'modules/actionGroup.bicep' = {
   name: 'actionGroup-${timestamp}'
@@ -37,7 +25,7 @@ module ampls 'modules/ampls.bicep' = {
   params: {
     environmentName: environmentName
     location: location
-    privateDnsZones: filter(privateDnsZones, (zone) => zone.name == 'monitor' || zone.name == 'blob')
+    privateDnsZones: amplsZones
     project: project
     subnetId: '${vnetId}/subnets/ops'
     workload: 'ops'
@@ -63,10 +51,10 @@ module keyVault 'modules/keyVault.bicep' = {
     environmentName: environmentName
     location: location
     logAnalyticWorkspaceId: logAnalytics.outputs.id
+    privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'vault')
     project: project
     subnetId: '${vnetId}/subnets/ops'
     workload: 'ops'
-    zoneId: vaultPrivateDnsZoneId
   }
 }
 
