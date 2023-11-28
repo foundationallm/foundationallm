@@ -6,8 +6,8 @@ param timestamp string = utcNow()
 param vnetId string
 
 var amplsZones = filter(
-  privateDnsZones, 
-  (zone) => contains(['monitor', 'blob', 'ods', 'oms', 'agentsvc'], zone.key)
+  privateDnsZones,
+  (zone) => contains([ 'monitor', 'blob', 'ods', 'oms', 'agentsvc' ], zone.key)
 )
 
 module actionGroup 'modules/actionGroup.bicep' = {
@@ -26,6 +26,20 @@ module ampls 'modules/ampls.bicep' = {
     environmentName: environmentName
     location: location
     privateDnsZones: amplsZones
+    project: project
+    subnetId: '${vnetId}/subnets/ops'
+    workload: 'ops'
+  }
+}
+
+module appConfig 'modules/appConfig.bicep' = {
+  name: 'appConfig-${timestamp}'
+  params: {
+    actionGroupId: actionGroup.outputs.id
+    environmentName: environmentName
+    location: location
+    logAnalyticWorkspaceId: logAnalytics.outputs.id
+    privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'configuration_stores')
     project: project
     subnetId: '${vnetId}/subnets/ops'
     workload: 'ops'
