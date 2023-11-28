@@ -37,7 +37,7 @@ module ampls 'modules/ampls.bicep' = {
   params: {
     environmentName: environmentName
     location: location
-    privateDnsZones: privateDnsZones
+    privateDnsZones: filter(privateDnsZones, (zone) => zone.name == 'monitor' || zone.name == 'blob')
     project: project
     subnetId: '${vnetId}/subnets/ops'
     workload: 'ops'

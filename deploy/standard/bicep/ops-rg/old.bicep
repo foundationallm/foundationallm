@@ -21,7 +21,6 @@ param metricAlerts_EUS_FLLM_DEMO_OPS_ado_vmss_cpu_alert_name string = 'EUS-FLLM-
 param metricAlerts_EUS_FLLM_DEMO_OPS_tfca_aci_cpu_alert_name string = 'EUS-FLLM-DEMO-OPS-tfca-aci-cpu-alert'
 param metricAlerts_EUS_FLLM_DEMO_OPS_tfca_aci_ram_alert_name string = 'EUS-FLLM-DEMO-OPS-tfca-aci-ram-alert'
 param metricAlerts_EUS_FLLM_DEMO_OPS_ado_vmss_disk_alert_name string = 'EUS-FLLM-DEMO-OPS-ado-vmss-disk-alert'
-param userAssignedIdentities_EUS_FLLM_DEMO_OPS_mi_name string = 'EUS-FLLM-DEMO-OPS-mi'
 param containerGroups_EUS_FLLM_DEMO_OPS_tfca_aci_name string = 'EUS-FLLM-DEMO-OPS-tfca-aci'
 param metricAlerts_EUS_FLLM_DEMO_OPS_sa_availability_alert_name string = 'EUS-FLLM-DEMO-OPS-sa-availability-alert'
 param privateEndpoints_EUS_FLLM_DEMO_OPS_prometheusMetrics_pe_name string = 'EUS-FLLM-DEMO-OPS-prometheusMetrics-pe'
@@ -339,16 +338,7 @@ resource actionGroups_Application_Insights_Smart_Detection_name_resource 'micros
 
 
 
-resource userAssignedIdentities_EUS_FLLM_DEMO_OPS_mi_name_resource 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
-  name: userAssignedIdentities_EUS_FLLM_DEMO_OPS_mi_name
-  location: 'eastus'
-  tags: {
-    Environment: 'DEMO'
-    Project: 'FLLM'
-    Purpose: 'DevOps'
-    Workspace: 'foundationallm-ops'
-  }
-}
+
 
 resource accounts_eus_fllm_demo_ops_amw_name_resource 'microsoft.monitor/accounts@2023-04-03' = {
   name: accounts_eus_fllm_demo_ops_amw_name

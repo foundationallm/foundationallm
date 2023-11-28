@@ -10,6 +10,7 @@ Each service is associated with a specific private DNS zone.
 The private DNS zone names are constructed using placeholders for location and environment suffixes.
 */
 var privateDnsZone = {
+  agentsvc :'privatelink.agentsvc.azure-automation.net'
   aks: 'privatelink.${location}.azmk8s.io'
   blob: 'privatelink.blob.${environment().suffixes.storage}'
   cognitiveservices: 'privatelink.cognitiveservices.azure.com'
@@ -27,6 +28,8 @@ var privateDnsZone = {
   gateway_scm: 'scm.azure-api.net'
   grafana: 'privatelink.grafana.azure.com'
   monitor: 'privatelink.monitor.azure.com'
+  ods :'privatelink.ods.opinsights.azure.com'
+  oms :'privatelink.oms.opinsights.azure.com'
   openai: 'privatelink.openai.azure.com'
   prometheus: 'privatelink.${location}.prometheus.monitor.azure.com'
   queue: 'privatelink.queue.${environment().suffixes.storage}'
@@ -36,6 +39,9 @@ var privateDnsZone = {
   table: 'privatelink.table.${environment().suffixes.storage}'
   vault: 'privatelink.vaultcore.azure.net'
 }
+
+
+
 
 /*
   This block of code generates an output array called 'ids' that contains information about private DNS zones.

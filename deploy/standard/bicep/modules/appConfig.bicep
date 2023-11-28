@@ -1,29 +1,48 @@
-resource configurationStores_eus_fllm_demo_ops_appconfig_name_resource 'Microsoft.AppConfiguration/configurationStores@2023-03-01' = {
-  name: configurationStores_eus_fllm_demo_ops_appconfig_name
-  location: 'eastus'
-  tags: {
-    Environment: 'DEMO'
-    Project: 'FLLM'
-    Purpose: 'DevOps'
-    Workspace: 'foundationallm-ops'
-  }
-  sku: {
-    name: 'standard'
-  }
+param environmentName string
+param location string
+param workload string
+param project string
+
+var name = 'appconfig-${environmentName}-${location}-${workload}-${project}'
+
+var tags= {
+  Environment: environmentName
+  IaC: 'Bicep'
+  Project: project
+  Purpose: 'DevOps'
+}
+
+resource main 'Microsoft.AppConfiguration/configurationStores@2023-03-01' = {
+  name: name
+  location: location
+  tags: tags
+
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
       '/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/EUS-FLLM-DEMO-OPS-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/EUS-FLLM-DEMO-OPS-mi': {}
     }
   }
+
   properties: {
+    disableLocalAuth: false
+    enablePurgeProtection: true
     encryption: {}
     publicNetworkAccess: 'Disabled'
-    disableLocalAuth: false
     softDeleteRetentionInDays: 1
-    enablePurgeProtection: true
+  }
+
+  sku: {
+    name: 'standard'
   }
 }
+
+resource uai 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
+  location: location
+  name: 'uai-${name}'
+  tags: tags
+}
+
 
 resource privateEndpoints_EUS_FLLM_DEMO_OPS_appconfig_pe_name_resource 'Microsoft.Network/privateEndpoints@2023-05-01' = {
   name: privateEndpoints_EUS_FLLM_DEMO_OPS_appconfig_pe_name
@@ -160,3 +179,4 @@ resource metricAlerts_EUS_FLLM_DEMO_OPS_appconfig_storageUsage_alert_name_resour
     ]
   }
 }
+

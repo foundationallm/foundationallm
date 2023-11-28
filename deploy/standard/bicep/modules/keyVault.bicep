@@ -6,6 +6,7 @@ param project string
 param subnetId string
 param workload string
 param zoneId string
+param timestamp string = utcNow()
 
 var logs = [ 'AuditEvent', 'AzurePolicyEvaluationDetails' ]
 var name = 'kv-${environmentName}-${location}-${workload}-${project}'
@@ -79,48 +80,48 @@ resource main 'Microsoft.KeyVault/vaults@2023-07-01' = {
   }
 }
 
-/*
-  This resource block creates a metric alert for a Key Vault resource.
-  It iterates over the 'alerts' array and creates a metric alert for each alert object.
-  The alert properties are defined based on the values provided in the alert object.
-*/
-resource alert 'Microsoft.Insights/metricAlerts@2018-03-01' = [for alert in alerts: {
-  name: 'alert-${alert.name}-${name}'
-  location: 'global'
-  tags: tags
-  properties: {
-    autoMitigate: true
-    description: alert.description
-    enabled: true
-    evaluationFrequency: alert.evaluationFrequency
-    scopes: [ main.id ]
-    severity: alert.severity
-    windowSize: alert.windowSize
+// /*
+//   This resource block creates a metric alert for a Key Vault resource.
+//   It iterates over the 'alerts' array and creates a metric alert for each alert object.
+//   The alert properties are defined based on the values provided in the alert object.
+// */
+// resource alert 'Microsoft.Insights/metricAlerts@2018-03-01' = [for alert in alerts: {
+//   name: 'alert-${alert.name}-${name}'
+//   location: 'global'
+//   tags: tags
+//   properties: {
+//     autoMitigate: true
+//     description: alert.description
+//     enabled: true
+//     evaluationFrequency: alert.evaluationFrequency
+//     scopes: [ main.id ]
+//     severity: alert.severity
+//     windowSize: alert.windowSize
 
-    actions: [
-      {
-        actionGroupId: actionGroupId
-        webHookProperties: {}
-      }
-    ]
+//     actions: [
+//       {
+//         actionGroupId: actionGroupId
+//         webHookProperties: {}
+//       }
+//     ]
 
-    criteria: {
-      'odata.type': 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
-      allOf: [
-        {
-          criterionType: 'StaticThresholdCriterion'
-          metricName: alert.metricName
-          metricNamespace: 'Microsoft.KeyVault/vaults'
-          name: alert.name
-          operator: alert.operator
-          skipMetricValidation: false
-          threshold: alert.threshold
-          timeAggregation: alert.timeAggregation
-        }
-      ]
-    }
-  }
-}]
+//     criteria: {
+//       'odata.type': 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
+//       allOf: [
+//         {
+//           criterionType: 'StaticThresholdCriterion'
+//           metricName: alert.metricName
+//           
+//           name: alert.name
+//           operator: alert.operator
+//           skipMetricValidation: false
+//           threshold: alert.threshold
+//           timeAggregation: alert.timeAggregation
+//         }
+//       ]
+//     }
+//   }
+// }]
 
 /**
  * Resource for configuring diagnostic settings.
@@ -143,45 +144,80 @@ resource diagnostics 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' 
   }
 }
 
-/**
- * Creates a private DNS zone group for Azure Monitor.
- */
-resource dns 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-05-01' = {
-  name: 'vault'
-  parent: endpoint
+// /**
+//  * Creates a private DNS zone group for Azure Monitor.
+//  */
+// resource dns 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-05-01' = {
+//   name: 'vault'
+//   parent: endpoint
 
-  properties: {
-    privateDnsZoneConfigs: [ {
-        name: 'vault'
-        properties: {
-          privateDnsZoneId: zoneId
-        }
-      } ]
+//   properties: {
+//     privateDnsZoneConfigs: [ {
+//         name: 'vault'
+//         properties: {
+//           privateDnsZoneId: zoneId
+//         }
+//       } ]
+//   }
+// }
+
+// /**
+//  * Creates a private endpoint for Azure Monitor.
+//  */
+// resource endpoint 'Microsoft.Network/privateEndpoints@2023-05-01' = {
+//   name: 'pe-${main.name}'
+//   location: location
+//   tags: tags
+
+//   properties: {
+//     privateLinkServiceConnections: [
+//       {
+//         name: 'connection-vault-${name}'
+
+//         properties: {
+//           groupIds: [ 'vault' ]
+//           privateLinkServiceId: main.id
+//         }
+//       }
+//     ]
+
+//     subnet: {
+//       id: subnetId
+//     }
+//   }
+// }
+
+module metricAlerts 'utility/metricAlerts.bicep' = {
+  name: 'alert-${main.name}-${timestamp}'
+  params: {
+    actionGroupId: actionGroupId
+    alerts: alerts
+    metricNamespace: 'Microsoft.KeyVault/vaults'
+    nameSuffix: name
+    serviceId: main.id
+    tags: tags
   }
 }
 
-/**
- * Creates a private endpoint for Azure Monitor.
- */
-resource endpoint 'Microsoft.Network/privateEndpoints@2023-05-01' = {
-  name: 'pe-${main.name}'
-  location: location
-  tags: tags
+module privateEndpoint 'utility/privateEndpoint.bicep' = {
+  name: 'pe-${main.name}-${timestamp}'
+  params: {
+    groupIds: [ 'vault' ]
+    location: location
+    nameSuffix: name
+    subnetId: subnetId
+    tags: tags
 
-  properties: {
-    privateLinkServiceConnections: [
+    privateDnsZones: [
       {
-        name: 'connection-vault-${name}'
-
-        properties: {
-          groupIds: [ 'vault' ]
-          privateLinkServiceId: main.id
-        }
+        id: zoneId
+        name: 'vault'
       }
     ]
 
-    subnet: {
-      id: subnetId
+    service: {
+      name: main.name
+      id: main.id
     }
   }
 }

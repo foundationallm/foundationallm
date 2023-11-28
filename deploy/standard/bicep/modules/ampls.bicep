@@ -3,6 +3,7 @@ param location string
 param privateDnsZones array
 param project string
 param subnetId string
+param timestamp string = utcNow()
 param workload string
 
 var name = 'ampls-${environmentName}-${location}-${workload}-${project}'
@@ -34,45 +35,104 @@ resource main 'microsoft.insights/privatelinkscopes@2021-07-01-preview' = {
   }
 }
 
-/**
- * Creates a private DNS zone group for Azure Monitor.
- */
-resource dns 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-05-01' = {
-  name: 'azuremonitor'
-  parent: endpoint
+// /**
+//  * Creates a private DNS zone group for Azure Monitor.
+//  */
+// resource dns 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-05-01' = {
+//   name: 'azuremonitor'
+//   parent: endpoint
 
-  properties: {
-    privateDnsZoneConfigs: [for zone in privateDnsZones: {
-      name: zone.name
-      properties: {
-        privateDnsZoneId: zone.id
-      }
-    }]
-  }
-}
+//   properties: {
+//     privateDnsZoneConfigs: [for zone in privateDnsZones: {
+//       name: zone.name
+//       properties: {
+//         privateDnsZoneId: zone.id
+//       }
+//     }]
+//   }
+// }
 
-/**
- * Creates a private endpoint for Azure Monitor.
- */
-resource endpoint 'Microsoft.Network/privateEndpoints@2023-05-01' = {
-  name: 'pe-${main.name}'
-  location: location
-  tags: tags
+// /**
+//  * Creates a private endpoint for Azure Monitor.
+//  */
+// resource endpoint 'Microsoft.Network/privateEndpoints@2023-05-01' = {
+//   name: 'pe-${main.name}'
+//   location: location
+//   tags: tags
 
-  properties: {
-    privateLinkServiceConnections: [
-      {
-        name: 'connection-azuremonitor-${name}'
+//   properties: {
+//     privateLinkServiceConnections: [
+//       {
+//         name: 'connection-azuremonitor-${name}'
 
-        properties: {
-          groupIds: [ 'azuremonitor' ]
-          privateLinkServiceId: main.id
-        }
-      }
-    ]
+//         properties: {
+//           groupIds: [ 'azuremonitor' ]
+//           privateLinkServiceId: main.id
+//         }
+//       }
+//     ]
 
-    subnet: {
-      id: subnetId
+//     subnet: {
+//       id: subnetId
+//     }
+//   }
+// }
+
+// /**
+//  * Creates a private DNS zone group for Azure Monitor.
+//  */
+// resource dns 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-05-01' = {
+//   name: 'default'
+//   parent: endpoint
+
+//   properties: {
+//     privateDnsZoneConfigs: [for zone in privateDnsZones: {
+//       name: zone.name
+//       properties: {
+//         privateDnsZoneId: zone.id
+//       }
+//     }]
+//   }
+// }
+
+// /**
+//  * Creates a private endpoint for Azure Monitor.
+//  */
+// resource endpoint 'Microsoft.Network/privateEndpoints@2023-05-01' = {
+//   name: 'pe-${main.name}'
+//   location: location
+//   tags: tags
+
+//   properties: {
+//     privateLinkServiceConnections: [for groupId in [ 'azuremonitor' ]: {
+//       name: 'connection-${groupId}-${name}'
+
+//       properties: {
+//         groupIds: [ groupId ]
+//         privateLinkServiceId: main.id
+//       }
+//     }
+//     ]
+
+//     subnet: {
+//       id: subnetId
+//     }
+//   }
+// }
+
+module privateEndpoint 'utility/privateEndpoint.bicep' = {
+  name: 'pe-${main.name}-${timestamp}'
+  params: {
+    groupIds: [ 'azuremonitor' ]
+    location: location
+    nameSuffix: name
+    privateDnsZones: privateDnsZones
+    subnetId: subnetId
+    tags: tags
+    
+    service:{
+      id: main.id
+      name: main.name
     }
   }
 }

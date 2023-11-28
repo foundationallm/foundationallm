@@ -108,6 +108,8 @@ task Ops -depends ResourceGroups, Networking, DNS -description "Ensure ops resou
     | Where-Object -Property key -eq "vault" `
     | Select-Object -Property id -First 1
 
+    #oms, ods, agentsvc
+
     az deployment group create `
         --name $deployments["ops"] `
         --resource-group $resourceGroups["ops"] `
