@@ -85,5 +85,7 @@ public class CompletionResponse
     /// </summary>
     public CompletionResponse()
     {
+        Completion = string.Empty;
+        UserPrompt = string.Empty;
     }
 }

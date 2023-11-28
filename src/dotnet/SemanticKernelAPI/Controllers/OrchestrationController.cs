@@ -23,10 +23,7 @@ namespace FoundationaLLM.SemanticKernel.API.Controllers
         /// </summary>
         /// <param name="semanticKernelService"></param>
         public OrchestrationController(
-            ISemanticKernelService semanticKernelService)
-        {
-            _semanticKernelService = semanticKernelService;
-        }
+            ISemanticKernelService semanticKernelService) => _semanticKernelService = semanticKernelService;
 
         /// <summary>
         /// Gets a completion from the Semantic Kernel service.
@@ -36,7 +33,7 @@ namespace FoundationaLLM.SemanticKernel.API.Controllers
         [HttpPost("completion")]
         public async Task<CompletionResponse> GetCompletion([FromBody] CompletionRequest request)
         {
-            var completionResponse = await _semanticKernelService.GetCompletion(request.UserPrompt, request.MessageHistory ?? new List<MessageHistoryItem>());
+            var completionResponse = await _semanticKernelService.GetCompletion(request.UserPrompt ?? string.Empty, request.MessageHistory ?? new List<MessageHistoryItem>());
 
             return new CompletionResponse() { Completion = completionResponse };
         }
@@ -49,7 +46,7 @@ namespace FoundationaLLM.SemanticKernel.API.Controllers
         [HttpPost("summary")]
         public async Task<SummaryResponse> GetSummary([FromBody] SummaryRequest request)
         {
-            var info = await _semanticKernelService.GetSummary(request.UserPrompt);
+            var info = await _semanticKernelService.GetSummary(request.UserPrompt ?? string.Empty);
 
             return new SummaryResponse() { Summary = info };
         }
@@ -59,23 +56,19 @@ namespace FoundationaLLM.SemanticKernel.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("memory/add")]
-        public Task AddMemory()
-        {
+        public Task AddMemory() =>
             //await _semanticKernelService.AddMemory();
 
             throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Removes an object instance and its associated vectorization from the memory store.
         /// </summary>
         /// <returns></returns>
         [HttpDelete("memory/remove")]
-        public Task RemoveMemory()
-        {
+        public Task RemoveMemory() =>
             //await _semanticKernelService.RemoveMemory();
 
             throw new NotImplementedException();
-        }
     }
 }

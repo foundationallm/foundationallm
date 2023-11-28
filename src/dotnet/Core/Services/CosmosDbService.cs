@@ -31,8 +31,6 @@ namespace FoundationaLLM.Core.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="CosmosDbService"/> class.
         /// </summary>
-        /// <param name="ragService">The service used to make calls to the Gatekeeper
-        /// API to add the entity to the orchestrator's memory used by the RAG service.</param>
         /// <param name="settings">The <see cref="CosmosDbSettings"/> settings retrieved
         /// by the injected <see cref="IOptions{TOptions}"/>.</param>
         /// <param name="logger">The logging interface used to log under the
@@ -397,12 +395,9 @@ namespace FoundationaLLM.Core.Services
         /// <param name="sessionId">The session id from which to retrieve the completion prompt.</param>
         /// <param name="completionPromptId">The id of the completion prompt to retrieve.</param>
         /// <returns></returns>
-        public async Task<CompletionPrompt> GetCompletionPrompt(string sessionId, string completionPromptId)
-        {
-            return await _sessions.ReadItemAsync<CompletionPrompt>(
+        public async Task<CompletionPrompt> GetCompletionPrompt(string sessionId, string completionPromptId) =>
+            await _sessions.ReadItemAsync<CompletionPrompt>(
                 id: completionPromptId,
                 partitionKey: new PartitionKey(sessionId));
-        }
-
     }
 }

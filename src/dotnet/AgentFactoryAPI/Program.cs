@@ -11,9 +11,6 @@ using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
-using FoundationaLLM.Common.Models.Authentication;
-using FoundationaLLM.Common.Models.Chat;
-using FoundationaLLM.Common.Models.Configuration;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services;
@@ -48,6 +45,8 @@ namespace FoundationaLLM.AgentFactory.API
                 {
                     options.SetCredential(new DefaultAzureCredential());
                 });
+                options.Select("FoundationaLLM:APIs:*");
+                options.Select("FoundationaLLM:AgentFactory:*");
             });
             if (builder.Environment.IsDevelopment())
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);

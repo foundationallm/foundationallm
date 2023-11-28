@@ -38,5 +38,5 @@ async def get_completion(completion_request: CompletionRequest, x_user_identity:
         logging.error(e, stack_info=True, exc_info=True)
         raise HTTPException(
             status_code = 500,
-            detail = e.message
+            detail = str(e)
         )

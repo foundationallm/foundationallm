@@ -22,7 +22,7 @@ namespace FoundationaLLM.Common.Tests.Middleware
             var context = new DefaultHttpContext();
             var claimsProviderService = Substitute.For<IUserClaimsProviderService>();
             var callContext = Substitute.For<ICallContext>();
-            var middleware = new CallContextMiddleware(next: (innerHttpContext) => Task.FromResult(0));
+            var middleware = new CallContextMiddleware(next: _ => Task.FromResult(0));
             context.User = new ClaimsPrincipal(new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, "1"),
@@ -46,7 +46,7 @@ namespace FoundationaLLM.Common.Tests.Middleware
             var context = new DefaultHttpContext();
             var claimsProviderService = Substitute.For<IUserClaimsProviderService>();
             var callContext = Substitute.For<ICallContext>();
-            var middleware = new CallContextMiddleware(next: (innerHttpContext) => Task.FromResult(0));
+            var middleware = new CallContextMiddleware(next: _ => Task.FromResult(0));
             var userIdentity = new UnifiedUserIdentity { Username = "testuser@example.com", UPN = "testuser@example.com", Name = "testuser" };
             context.Request.Headers[Constants.HttpHeaders.UserIdentity] = JsonConvert.SerializeObject(userIdentity);
 
@@ -64,7 +64,7 @@ namespace FoundationaLLM.Common.Tests.Middleware
             var context = new DefaultHttpContext();
             var claimsProviderService = Substitute.For<IUserClaimsProviderService>();
             var callContext = Substitute.For<ICallContext>();
-            var middleware = new CallContextMiddleware(next: (innerHttpContext) => Task.FromResult(0));
+            var middleware = new CallContextMiddleware(next: _ => Task.FromResult(0));
             var agentHint = "test-agent-hint";
             context.Request.Headers[Constants.HttpHeaders.AgentHint] = agentHint;
 

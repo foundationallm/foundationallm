@@ -6,8 +6,20 @@
 			<span v-else>{{ logoText }}</span>
 
 			<template v-if="!appConfigStore.isKioskMode">
-				<Button v-if="isSidebarClosed" icon="pi pi-arrow-right" size="small" severity="secondary" @click="closeSidebar(false)" />
-				<Button v-else icon="pi pi-arrow-left" size="small" severity="secondary" @click="closeSidebar(true)" />
+				<Button
+					v-if="isSidebarClosed"
+					icon="pi pi-arrow-right"
+					size="small"
+					severity="secondary"
+					@click="closeSidebar(false)"
+				/>
+				<Button
+					v-else
+					icon="pi pi-arrow-left"
+					size="small"
+					severity="secondary"
+					@click="closeSidebar(true)"
+				/>
 			</template>
 		</div>
 
@@ -48,14 +60,15 @@
 
 			<!-- Right side content -->
 			<div class="navbar__content__right">
-				<!-- Auth button -->
-				<div v-if="!signedIn" class="navbar__content__right__item">
-					<Button class="button--auth" icon="pi pi-sign-in" label="Sign In" @click="signIn()"></Button>
-				</div>
-				<!-- Logged in user name -->
-				<div v-else class="navbar__content__right__item">
-					<span>Welcome, {{ accountName }}</span>
-					<Button class="button--auth" icon="pi pi-sign-out" label="Sign Out" @click="signOut()"></Button>
+				<!-- Logged in user name and sign out -->
+				<div v-if="authStore.isAuthed" class="navbar__content__right__item">
+					<span>Welcome, {{ authStore.currentAccount?.name }}</span>
+					<Button
+						class="button--auth"
+						icon="pi pi-sign-out"
+						label="Sign Out"
+						@click="handleLogout()"
+					></Button>
 				</div>
 			</div>
 		</div>
@@ -67,7 +80,7 @@ import { mapStores } from 'pinia';
 import type { Session } from '@/js/types';
 import { useAppConfigStore } from '@/stores/appConfigStore';
 import { useAppStore } from '@/stores/appStore';
-import { getMsalInstance, getLoginRequest } from '@/js/auth';
+import { useAuthStore } from '@/stores/authStore';
 
 export default {
 	name: 'NavBar',
@@ -79,9 +92,6 @@ export default {
 			logoText: '',
 			logoURL: '',
 			isSidebarClosed: true,
-			signedIn: false,
-			accountName: '',
-			userName: '',
 			allowAgentHint: false,
 			agentSelection: null,
 			agents: [],
@@ -91,6 +101,7 @@ export default {
 	computed: {
 		...mapStores(useAppConfigStore),
 		...mapStores(useAppStore),
+		...mapStores(useAuthStore),
 
 		currentSession() {
 			return this.appStore.currentSession;
@@ -113,16 +124,6 @@ export default {
 		this.agents.push({ label: '--select--', value: null});
 		for (const agent of this.appConfigStore.agents) {
 			this.agents.push({ label: agent, value: agent });
-		}
-
-		if (process.client) {
-			const msalInstance = await getMsalInstance();
-			const accounts = await msalInstance.getAllAccounts();
-			if (accounts.length > 0) {
-				this.signedIn = true;
-				this.accountName = accounts[0].name;
-				this.userName = accounts[0].username;
-			}
 		}
 	},
 
@@ -153,32 +154,8 @@ export default {
 			});
 		},
 
-		async signIn() {
-			const loginRequest = await getLoginRequest();
-			const msalInstance = await getMsalInstance();
-			const response = await msalInstance.loginPopup(loginRequest);
-			if (response.account) {
-				this.signedIn = true;
-				this.accountName = response.account.name;
-				this.userName = response.account.username;
-			}
-		},
-
-		async signOut() {
-			const msalInstance = await getMsalInstance();
-			const accountFilter = {
-				username: this.userName,
-			};
-			const logoutRequest = {
-				account: msalInstance.getAccount(accountFilter),
-			};
-
-			await msalInstance.logoutRedirect(logoutRequest);
-			this.signedIn = false;
-			this.accountName = '';
-			this.userName = '';
-			this.$router.push({ path: '/login' });
-			// await msalInstance.logout();
+		async handleLogout() {
+			await this.authStore.logout();
 		},
 	},
 };

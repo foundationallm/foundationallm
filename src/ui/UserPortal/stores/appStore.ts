@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { useAppConfigStore } from './appConfigStore';
+import { useAuthStore } from './authStore';
 import type { Session, Message } from '@/js/types';
 import api from '@/js/api';
 
@@ -110,12 +111,13 @@ export const useAppStore = defineStore('app', {
 		async sendMessage(text: string) {
 			if (!text) return;
 
+			const authStore = useAuthStore();
 			const tempUserMessage: Message = {
 				completionPromptId: null,
 				id: '',
 				rating: null,
 				sender: 'User',
-				senderDisplayName: 'User',
+				senderDisplayName: authStore.currentAccount?.name ?? 'You',
 				sessionId: this.currentSession!.id,
 				text,
 				timeStamp: new Date().toISOString(),

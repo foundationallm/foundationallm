@@ -1,0 +1,38 @@
+name: .NET Build & Test
+
+on:
+  pull_request:
+    types: [synchronize, opened, reopened, labeled, unlabeled]
+    branches: [main]
+
+env:
+  DOTNET_VERSION: '8.0.x'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        service: [AgentFactoryAPI, CoreAPI, CoreWorker, GatekeeperAPI, SemanticKernelAPI]
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET 📦
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Install dependencies 📂
+      working-directory: ./src
+      run: dotnet restore ./dotnet/${{ matrix.service }}/${{ matrix.service }}.csproj
+
+    - name: Build 🧱
+      working-directory: ./src
+      run: dotnet build ./dotnet/${{ matrix.service }}/${{ matrix.service }}.csproj --configuration Release --no-restore
+
+    - name: Test 🧪
+      working-directory: ./src
+      run: dotnet test ./dotnet/${{ matrix.service }}/${{ matrix.service }}.csproj --configuration Release --no-build
+

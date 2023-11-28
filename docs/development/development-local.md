@@ -177,6 +177,9 @@ The `CoreWorker` project is a .NET worker service that acts as the Cosmos DB cha
     "APIs": {
       "AgentFactoryAPI": {
         "APIUrl": "<...>"  // Default local value: https://localhost:7324/
+      },
+      "GatekeeperIntegrationAPI": {
+        "APIUrl": "<...>"  // Default local value: http://localhost:8042/
       }
     }
   }
@@ -350,6 +353,13 @@ Create a local environment variable named `foundationallm-app-configuration-uri`
 ### Data Source Hub API
 
 #### Data Source Hub API Environment Variables
+
+| Name | Value | Description |
+| ---- | ----- | ----------- |
+
+### Gatekeeper Integration API
+
+#### Gatekeeper Integration API Environment Variables
 
 | Name | Value | Description |
 | ---- | ----- | ----------- |

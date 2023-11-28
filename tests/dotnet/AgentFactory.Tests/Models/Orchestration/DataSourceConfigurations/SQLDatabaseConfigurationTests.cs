@@ -10,7 +10,6 @@ namespace FoundationaLLM.AgentFactory.Tests.Models.Orchestration.DataSourceConfi
         private readonly int _port = 1234;
         private readonly string _databaseName = "TestDatabaseName";
         private readonly string _username = "TestUsername";
-        private readonly string _passwordSecretName = "TestPasswordSecretName";
         private readonly List<string> _includeTables = new List<string> { "table1", "table2" };
         private readonly List<string> _excludeTables = new List<string> { "table3", "table4" };
         private readonly int _fewShotExampleCount = 5;

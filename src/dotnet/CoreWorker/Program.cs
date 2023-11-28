@@ -1,6 +1,5 @@
 using Azure.Identity;
 using FoundationaLLM.Core.Models.Configuration;
-
 using CoreWorker;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Services;
@@ -20,6 +19,8 @@ builder.Configuration.AddAzureAppConfiguration(options =>
     {
         options.SetCredential(new DefaultAzureCredential());
     });
+    options.Select("FoundationaLLM:CoreWorker:*");
+    options.Select("FoundationaLLM:CosmosDB:*");
 });
 
 builder.Services.AddOptions<CosmosDbSettings>()

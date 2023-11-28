@@ -48,7 +48,7 @@ namespace FoundationaLLM.Core.Services
             var defaultCompletionResponse = new CompletionResponse
             {
                 Completion = "A problem on my side prevented me from responding.",
-                UserPrompt = completionRequest.UserPrompt,
+                UserPrompt = completionRequest.UserPrompt ?? string.Empty,
                 PromptTokens = 0,
                 CompletionTokens = 0,
                 UserPromptEmbedding = new float[] {0}
@@ -90,15 +90,11 @@ namespace FoundationaLLM.Core.Services
         }
 
         /// <inheritdoc/>
-        public Task AddMemory(object item, string itemName, Action<object, float[]> vectorizer)
-        {
+        public Task AddMemory(object item, string itemName, Action<object, float[]> vectorizer) =>
             throw new NotImplementedException();
-        }
 
         /// <inheritdoc/>
-        public Task RemoveMemory(object item)
-        {
+        public Task RemoveMemory(object item) =>
             throw new NotImplementedException();
-        }
     }
 }

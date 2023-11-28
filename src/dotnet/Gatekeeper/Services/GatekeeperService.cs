@@ -38,7 +38,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
             //TODO: Call RefinementService to refine userPrompt
             //await _refinementService.RefineUserPrompt(completionRequest.Prompt);
 
-            var result = await _contentSafetyService.AnalyzeText(completionRequest.UserPrompt);
+            var result = await _contentSafetyService.AnalyzeText(completionRequest.UserPrompt ?? string.Empty);
             
             if (result.Safe)
                 return await _agentFactoryAPIService.GetCompletion(completionRequest);
@@ -56,7 +56,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
             //TODO: Call RefinementService to refine userPrompt
             //await _refinementService.RefineUserPrompt(summaryRequest.Prompt);
 
-            var result = await _contentSafetyService.AnalyzeText(summaryRequest.UserPrompt);
+            var result = await _contentSafetyService.AnalyzeText(summaryRequest.UserPrompt ?? string.Empty);
 
             if (result.Safe)
                 return await _agentFactoryAPIService.GetSummary(summaryRequest);

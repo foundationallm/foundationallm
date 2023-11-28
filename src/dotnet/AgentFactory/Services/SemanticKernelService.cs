@@ -48,7 +48,7 @@ namespace FoundationaLLM.AgentFactory.Services
         /// Gets a completion from the Semantic Kernel service.
         /// </summary>
         /// <param name="request">Request object populated from the hub APIs including agent, prompt, data source, and model information.</param>
-        /// <returns>Returns a completion response from the orchestration engine.</param>
+        /// <returns>Returns a completion response from the orchestration engine.</returns>
         public async Task<LLMOrchestrationCompletionResponse> GetCompletion(LLMOrchestrationCompletionRequest request)
         {
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.SemanticKernelAPI);
