@@ -82,6 +82,7 @@ module appConfig 'modules/appConfig.bicep' = {
     subnetId: '${vnetId}/subnets/ops'
     tags: tags
     uaiId: uaiAppConfig.id
+    vaultName: keyVault.outputs.name
   }
 }
 

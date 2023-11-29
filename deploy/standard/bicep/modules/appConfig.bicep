@@ -26,6 +26,9 @@ param timestamp string = utcNow()
 @description('User Assigned Identity Id')
 param uaiId string
 
+@description('Vault Name to create keys in')
+param vaultName string
+
 /** Locals **/
 @description('App Configuration logs to enable')
 var logs = [ 'HttpRequest', 'Audit' ]
@@ -104,6 +107,24 @@ resource diagnostics 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' 
         category: 'AllMetrics'
         enabled: true
       }
+    ]
+  }
+}
+
+@description('CMK Key for App Configuration (TODO)')
+resource key 'Microsoft.KeyVault/vaults/keys@2021-11-01-preview' = {
+  name: '${vaultName}/key-${name}'
+  tags: tags
+  properties: {
+    keySize: 2048
+    kty: 'RSA'
+    keyOps: [
+      'decrypt'
+      'encrypt'
+      'sign'
+      'unwrapKey'
+      'verify'
+      'wrapKey'
     ]
   }
 }

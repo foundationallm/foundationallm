@@ -5,7 +5,7 @@ param logAnalyticWorkspaceId string
 param project string
 param subnetId string
 param workload string
-param privateDnsZones array 
+param privateDnsZones array
 param timestamp string = utcNow()
 
 var logs = [ 'AuditEvent', 'AzurePolicyEvaluationDetails' ]
@@ -54,6 +54,8 @@ var tags = {
   Purpose: 'DevOps'
 }
 
+output name string = main.name
+
 /*
 * Creates a key vault.  
 */
@@ -72,6 +74,11 @@ resource main 'Microsoft.KeyVault/vaults@2023-07-01' = {
     publicNetworkAccess: 'Disabled'
     softDeleteRetentionInDays: 7
     tenantId: subscription().tenantId
+
+    networkAcls: {
+      bypass: 'AzureServices'
+      defaultAction: 'Deny'
+    }
 
     sku: {
       family: 'A'
