@@ -21,3 +21,4 @@ chromadb==0.4.14
 unstructured==0.10.22
 unstructured[all-docs]==0.10.22
 azure-appconfiguration-provider==1.0.0
+pylint==3.0.2

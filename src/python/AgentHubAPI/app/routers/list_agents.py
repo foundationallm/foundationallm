@@ -1,8 +1,10 @@
-import logging
-from fastapi import APIRouter, Depends, HTTPException
-from app.dependencies import validate_api_key_header
-from foundationallm.hubs.agent import AgentHub
+"""
+The API endpoint for listing available agents.
+"""
 from typing import List
+from fastapi import APIRouter, Depends
+from foundationallm.hubs.agent import AgentHub
+from app.dependencies import validate_api_key_header, handle_exception
 
 router = APIRouter(
     prefix='/list',
@@ -13,7 +15,7 @@ router = APIRouter(
 )
 
 @router.get('')
-async def list() -> List:
+async def list_agents() -> List:
     """
     Retrieves a list of available agents.
     
@@ -25,8 +27,4 @@ async def list() -> List:
     try:
         return AgentHub().list()
     except Exception as e:
-        logging.error(e, stack_info=True, exc_info=True)
-        raise HTTPException(
-            status_code = 500,
-            detail = str(e)
-        )
+        handle_exception(e)

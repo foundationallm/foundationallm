@@ -36,8 +36,8 @@ namespace FoundationaLLM.AgentFactory.Tests.Agents
                 Agent = new AgentMetadata { 
                     Orchestrator = "LangChain", 
                     Type = "search-service", 
-                    LanguageModel = new LanguageModelMetadata { }, 
-                    AllowedDataSourceNames = new List<string> { "DataSource_Test" } 
+                    LanguageModel = new LanguageModel { }, 
+                    AllowedDataSourceNames = ["DataSource_Test"] 
                 }
             };
             var sessionId = "TestSessionId";
@@ -47,13 +47,13 @@ namespace FoundationaLLM.AgentFactory.Tests.Agents
             // Configure DataSourceHubAPIService
             _dataSourceHubAPIService.ResolveRequest(Arg.Any<List<string>>(), sessionId).Returns(new DataSourceHubResponse
             {
-                DataSources = new List<DataSourceMetadata>
-                    {
+                DataSources =
+                    [
                         new DataSourceMetadata
                         {
                             Name = userPrompt
                         }
-                    }
+                    ]
             });
 
             // Configure PromptHubAPIService

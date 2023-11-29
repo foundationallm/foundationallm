@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata;
+using Newtonsoft.Json;
 
 namespace FoundationaLLM.AgentFactory.Core.Models.Messages
 {
@@ -19,26 +20,8 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Messages
     /// <summary>
     /// The information about an agent returned from the Agent Hub.
     /// </summary>
-    public record AgentMetadata
+    public class AgentMetadata : MetadataBase
     {
-        /// <summary>
-        /// The name of the agent.
-        /// </summary>
-        [JsonProperty("name")]
-        public string? Name { get; set; }
-
-        /// <summary>
-        /// The type of agent, ex. blob-storage, csv, sql, etc.
-        /// </summary>
-        [JsonProperty("type")]
-        public string? Type { get; set; }
-
-        /// <summary>
-        /// The description of the agent.
-        /// </summary>
-        [JsonProperty("description")]
-        public string? Description { get; set; }
-
         /// <summary>
         /// The orchestration engine to use.
         /// </summary>
@@ -55,62 +38,12 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Messages
         /// The lanauge model used by the agent.
         /// </summary>
         [JsonProperty("language_model")]
-        public LanguageModelMetadata? LanguageModel { get; set; }
-    }
-
-    /// <summary>
-    /// The language model used by the Agent.
-    /// </summary>
-    public record LanguageModelMetadata
-    {
-        /// <summary>
-        /// The type of the language model
-        /// </summary>
-        [JsonProperty("type")]
-        public string? Type { get; set; }
+        public LanguageModel? LanguageModel { get; set; }
 
         /// <summary>
-        /// The provider of the language model
+        /// The embedding model used by the agent.
         /// </summary>
-        [JsonProperty("provider")]
-        public string? Provider { get; set; }
-
-        /// <summary>
-        /// The temperature to use for the model request.
-        /// </summary>
-        [JsonProperty("temperature")]
-        public float? Temperature { get; set; }
-
-        /// <summary>
-        /// Use the chat history in the request.
-        /// </summary>
-        [JsonProperty("use_chat")]
-        public bool? UseChat { get; set; }
-    }
-
-    /// <summary>
-    /// The supported language models.
-    /// </summary>
-    public enum LanguageModelType
-    {
-        /// <summary>
-        /// MICROSOFT
-        /// </summary>
-        MICROSOFT,
-        /// <summary>
-        /// OPENAI
-        /// </summary>
-        OPENAI
-    }
-
-    /// <summary>
-    /// The supported language model providers
-    /// </summary>
-    public enum LanguageModelProvider
-    {
-        /// <summary>
-        /// OPENAI
-        /// </summary>
-        OPENAI
+        [JsonProperty("embedding_model")]
+        public EmbeddingModel? EmbeddingModel { get; set; }
     }
 }

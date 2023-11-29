@@ -85,7 +85,7 @@ namespace FoundationaLLM.SemanticKernel.API
                 ConnectionString = builder.Configuration["FoundationaLLM:APIs:SemanticKernelAPI:AppInsightsConnectionString"],
                 DeveloperMode = builder.Environment.IsDevelopment()
             });
-            builder.Services.AddServiceProfiler();
+            //builder.Services.AddServiceProfiler();
 
             // System prompt service backed by an Azure blob storage account
             builder.Services.AddOptions<DurableSystemPromptServiceSettings>()

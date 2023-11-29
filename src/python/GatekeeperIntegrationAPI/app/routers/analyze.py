@@ -1,7 +1,9 @@
-import logging
-from fastapi import APIRouter, Depends, HTTPException
-from app.dependencies import validate_api_key_header
+"""
+The API endpoint for analyzing text to identify PII (personally identifiable information) entities.
+"""
 from typing import List
+from fastapi import APIRouter, Depends
+from app.dependencies import validate_api_key_header, handle_exception
 
 router = APIRouter(
     prefix='/analyze',
@@ -12,20 +14,19 @@ router = APIRouter(
 )
 
 @router.post('')
+# Temporary pylint disable until implemented
+#pylint: disable=unused-argument
 async def analyze(text: str | None = None) -> List:
     """
-    Analyze text to identify PII (personally identifiable information) entities.
+    Analyze text to identify PII.
     
     Returns
     -------
     List
-        Returns a list of PII (personally identifiable information) entities identified in the analyzed text.
+        Returns a list of PII (personally identifiable information) entities identified
+        in the analyzed text.
     """
     try:
         return ["Not implemented"]
     except Exception as e:
-        logging.error(e, stack_info=True, exc_info=True)
-        raise HTTPException(
-            status_code = 500,
-            detail = str(e)
-        )
+        handle_exception(e)

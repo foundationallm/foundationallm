@@ -1,4 +1,3 @@
-from unittest.mock import Base
 from langchain.base_language import BaseLanguageModel
 from foundationallm.config import Configuration, Context
 from foundationallm.models.orchestration import CompletionRequest
@@ -15,8 +14,9 @@ class AgentFactory:
     """
     Factory to determine which agent to use.
     """
-    
-    def __init__(self, completion_request: CompletionRequest, llm: BaseLanguageModel, config: Configuration, context: Context):
+
+    def __init__(self, completion_request: CompletionRequest, llm: BaseLanguageModel,
+                 config: Configuration, context: Context):
         """
         Initializes an AgentFactory for selecting which agent to use for completion.
 
@@ -33,7 +33,7 @@ class AgentFactory:
         self.llm = llm
         self.config = config
         self.context = context
-                        
+
     def get_agent(self) -> AgentBase:
         """
         Retrieves the best agent for responding to the user prompt.
@@ -47,16 +47,23 @@ class AgentFactory:
         """
         match self.agent.type:
             case 'anomaly':
-                return AnomalyDetectionAgent(self.completion_request, llm=self.llm, config=self.config)
+                return AnomalyDetectionAgent(self.completion_request,
+                                             llm=self.llm, config=self.config)
             case 'csv':
-                return CSVAgent(self.completion_request, llm=self.llm, config=self.config)
+                return CSVAgent(self.completion_request, llm=self.llm,
+                                config=self.config)
             case 'sql':
-                return SqlDbAgent(self.completion_request, llm=self.llm, config=self.config, context=self.context)
+                return SqlDbAgent(self.completion_request, llm=self.llm,
+                                  config=self.config, context=self.context)
             case 'summary':
-                return SummaryAgent(self.completion_request, llm=self.llm, config=self.config)
+                return SummaryAgent(self.completion_request, llm=self.llm,
+                                    config=self.config)
             case 'blob-storage':
-                return BlobStorageAgent(self.completion_request, llm=self.llm, config=self.config)
+                return BlobStorageAgent(self.completion_request, llm=self.llm,
+                                        config=self.config)
             case 'generic-resolver':
-                return GenericResolverAgent(self.completion_request, llm=self.llm, config=self.config)
+                return GenericResolverAgent(self.completion_request, llm=self.llm,
+                                            config=self.config)
             case _:
-                return ConversationalAgent(self.completion_request, llm=self.llm, config=self.config)
+                return ConversationalAgent(self.completion_request, llm=self.llm,
+                                           config=self.config)

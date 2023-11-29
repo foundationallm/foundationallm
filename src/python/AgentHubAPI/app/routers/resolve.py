@@ -1,9 +1,11 @@
-import logging
-from fastapi import APIRouter, Depends, Header, HTTPException
+"""
+The API endpoint for returning the appropriate agent for the specified user prompt.
+"""
 from typing import Optional
-from app.dependencies import validate_api_key_header
+from fastapi import APIRouter, Depends, Header
 from foundationallm.config import Context
 from foundationallm.hubs.agent import AgentHub, AgentHubRequest, AgentHubResponse
+from app.dependencies import validate_api_key_header, handle_exception
 
 router = APIRouter(
     prefix='/resolve',
@@ -14,7 +16,8 @@ router = APIRouter(
 )
 
 @router.post('')
-async def resolve(request: AgentHubRequest, x_user_identity: Optional[str] = Header(None), x_agent_hint: Optional[str] = Header(None)) -> AgentHubResponse:
+async def resolve(request: AgentHubRequest, x_user_identity: Optional[str] = Header(None),
+                  x_agent_hint: Optional[str] = Header(None)) -> AgentHubResponse:
     """
     Resolves the best agent to use for the specified user prompt.
 
@@ -33,11 +36,7 @@ async def resolve(request: AgentHubRequest, x_user_identity: Optional[str] = Hea
         Object containing the metadata for the resolved agent.
     """
     try:
-        context = Context(user_identity=x_user_identity)   
+        context = Context(user_identity=x_user_identity)
         return AgentHub().resolve(request=request, user_context=context, hint=x_agent_hint)
     except Exception as e:
-        logging.error(e, stack_info=True, exc_info=True)
-        raise HTTPException(
-            status_code = 500,
-            detail = str(e)
-        )
+        handle_exception(e)

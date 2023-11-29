@@ -8,8 +8,6 @@ var builder = Host.CreateApplicationBuilder(args);
 
 builder.Configuration.Sources.Clear();
 builder.Configuration.AddJsonFile("appsettings.json", false, true);
-if (builder.Environment.IsDevelopment())
-    builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
 builder.Configuration.AddEnvironmentVariables();
 builder.Configuration.AddAzureAppConfiguration(options =>
 {
@@ -22,6 +20,8 @@ builder.Configuration.AddAzureAppConfiguration(options =>
     options.Select("FoundationaLLM:CoreWorker:*");
     options.Select("FoundationaLLM:CosmosDB:*");
 });
+if (builder.Environment.IsDevelopment())
+    builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
 
 builder.Services.AddOptions<CosmosDbSettings>()
     .Bind(builder.Configuration.GetSection("FoundationaLLM:CosmosDB"));

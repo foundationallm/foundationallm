@@ -1,3 +1,7 @@
+"""
+Main entry-point for the FoundationaLLM DataSourceHubAPI.
+Runs web server exposing the API.
+"""
 import uvicorn
 from fastapi import FastAPI
 from app.dependencies import get_config
@@ -8,7 +12,8 @@ config = get_config()
 app = FastAPI(
     title='FoundationaLLM GatekeeperIntegrationAPI',
     summary='API for extending the FoundationaLLM GatekeeperAPI',
-    description='The FoundationaLLM GatekeeperIntegrationAPI is a service used to extend the FoundationaLLM GatekeeperAPI with extra capabilities',
+    description="""The FoundationaLLM GatekeeperIntegrationAPI is a service used to extend the
+            FoundationaLLM GatekeeperAPI with extra capabilities""",
     version='1.0.0',
     contact={
         'name':'Solliance, Inc.',
@@ -41,4 +46,5 @@ async def root():
     return { 'message': 'FoundationaLLM GatekeeperIntegrationAPI' }
 
 if __name__ == '__main__':
-    uvicorn.run('main:app', host='0.0.0.0', port=8042, reload=True, forwarded_allow_ips='*', proxy_headers=True)
+    uvicorn.run('main:app', host='0.0.0.0', port=8042, reload=True,
+                forwarded_allow_ips='*', proxy_headers=True)

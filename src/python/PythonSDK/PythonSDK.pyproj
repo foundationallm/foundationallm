@@ -4,7 +4,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>2469cc23-7f26-4b84-8878-98d90604eee8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>main.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -24,6 +25,9 @@
   <ItemGroup>
     <Compile Include="foundationallm\config\context.py" />
     <Compile Include="foundationallm\config\user_identity.py" />
+    <Compile Include="foundationallm\langchain\language_models\openai\openai_model.py" />
+    <Compile Include="foundationallm\models\language_models\embedding_model.py" />
+    <Compile Include="foundationallm\models\language_models\__init__.py" />
     <Compile Include="foundationallm\models\list_option.py" />
     <Compile Include="foundationallm\langchain\agents\generic_resolver_agent.py" />
     <Compile Include="foundationallm\hubs\agent\agent_type.py" />
@@ -48,9 +52,6 @@
     <Compile Include="foundationallm\hubs\agent\agent_metadata.py" />
     <Compile Include="foundationallm\hubs\agent\agent_repository.py" />
     <Compile Include="foundationallm\hubs\agent\agent_resolver.py" />
-    <Compile Include="foundationallm\hubs\agent\language_model_metadata.py" />
-    <Compile Include="foundationallm\hubs\agent\language_model_provider.py" />
-    <Compile Include="foundationallm\hubs\agent\language_model_type.py" />
     <Compile Include="foundationallm\hubs\agent\__init__.py" />
     <Compile Include="foundationallm\hubs\data_source\data_source_hub_request.py" />
     <Compile Include="foundationallm\hubs\data_source\data_source_hub_response.py" />
@@ -77,8 +78,8 @@
     <Compile Include="foundationallm\langchain\data_sources\blob\blob_storage_configuration.py" />
     <Compile Include="foundationallm\langchain\data_sources\blob\__init__.py" />
     <Compile Include="foundationallm\langchain\data_sources\sql\mariadb.py" />
-    <Compile Include="foundationallm\langchain\language_models\language_model_types.py" />
-    <Compile Include="foundationallm\langchain\language_models\openai\azure_openai_api_types.py" />
+    <Compile Include="foundationallm\models\language_models\language_model_type.py" />
+    <Compile Include="foundationallm\models\language_models\azure_openai_api_types.py" />
     <Compile Include="foundationallm\langchain\agents\anomaly_detection_agent.py" />
     <Compile Include="foundationallm\langchain\agents\csv_agent.py" />
     <Compile Include="foundationallm\langchain\agents\conversational_agent.py" />
@@ -96,15 +97,10 @@
     <Compile Include="foundationallm\langchain\data_sources\sql\sql_database_factory.py" />
     <Compile Include="foundationallm\langchain\data_sources\sql\__init__.py" />
     <Compile Include="foundationallm\langchain\data_sources\__init__.py" />
-    <Compile Include="foundationallm\langchain\language_models\openai\azure_chat_model.py" />
     <Compile Include="foundationallm\langchain\language_models\language_model_base.py" />
     <Compile Include="foundationallm\langchain\language_models\language_model_factory.py" />
-    <Compile Include="foundationallm\langchain\language_models\openai\azure_text_completion_model.py" />
-    <Compile Include="foundationallm\langchain\language_models\openai\openai_chat_model.py" />
-    <Compile Include="foundationallm\langchain\language_models\openai\openai_model_base.py" />
-    <Compile Include="foundationallm\langchain\language_models\openai\openai_text_completion_model.py" />
     <Compile Include="foundationallm\langchain\language_models\openai\__init__.py" />
-    <Compile Include="foundationallm\langchain\language_models\language_model_providers.py" />
+    <Compile Include="foundationallm\models\language_models\language_model_provider.py" />
     <Compile Include="foundationallm\langchain\language_models\__init__.py" />
     <Compile Include="foundationallm\langchain\message_history\build_message_history.py" />
     <Compile Include="foundationallm\langchain\message_history\__init__.py" />
@@ -121,7 +117,7 @@
     <Compile Include="foundationallm\hubs\prompt\prompt_hub_response.py" />
     <Compile Include="foundationallm\models\metadata\agent.py" />
     <Compile Include="foundationallm\models\metadata\data_source.py" />
-    <Compile Include="foundationallm\models\metadata\language_model.py" />
+    <Compile Include="foundationallm\models\language_models\language_model.py" />
     <Compile Include="foundationallm\models\metadata\metadata_base.py" />
     <Compile Include="foundationallm\models\metadata\__init__.py" />
     <Compile Include="foundationallm\langchain\data_sources\data_source_configuration.py" />
@@ -141,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
+    <Content Include=".pylintrc" />
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +164,7 @@
     <Folder Include="foundationallm\langchain\toolkits\" />
     <Folder Include="foundationallm\models\" />
     <Folder Include="foundationallm\models\metadata\" />
+    <Folder Include="foundationallm\models\language_models\" />
     <Folder Include="foundationallm\models\orchestration\" />
     <Folder Include="foundationallm\hubs\" />
     <Folder Include="foundationallm\resolvers\" />

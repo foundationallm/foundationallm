@@ -13,8 +13,9 @@ class ConversationalAgent(AgentBase):
     """
     Default agent with basic conversational capabilities.
     """
-    
-    def __init__(self, completion_request: CompletionRequest, llm: LanguageModelBase, config: Configuration):
+
+    def __init__(self, completion_request: CompletionRequest,
+                 llm: LanguageModelBase, config: Configuration):
         """
         Initializes a DefaultAgent
 
@@ -30,7 +31,7 @@ class ConversationalAgent(AgentBase):
         """
         self.prompt_prefix = completion_request.agent.prompt_prefix
         self.message_history = completion_request.message_history
-        self.llm = llm.get_language_model()
+        self.llm = llm.get_completion_model(completion_request.language_model)
 
         self.search = DuckDuckGoSearchRun()
         self.tools = [
@@ -40,9 +41,9 @@ class ConversationalAgent(AgentBase):
                 description="useful for when you need to answer questions about current events or the current state of the world"
             ),
         ]
-        
+
         self.memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
-        
+
         self.agent = initialize_agent(
             tools = self.tools,
             llm = self.llm,
@@ -64,7 +65,7 @@ class ConversationalAgent(AgentBase):
             Returns the prompt template for the agent.
         """
         return self.agent.agent.llm_chain.prompt.template
-        
+
     def run(self, prompt: str) -> CompletionResponse:
         """
         Executes a completion request using a default agent.

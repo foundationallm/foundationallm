@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.AgentFactory.Core.Models.Messages;
+using FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata;
 
 namespace FoundationaLLM.AgentFactory.Tests.Models.Messages
 {
@@ -24,7 +25,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Models.Messages
         public void AgentMetadata_WhenInitialized_ShouldSetProperties()
         {
             // Arrange
-            var languageModel = new LanguageModelMetadata();
+            var languageModel = new LanguageModel();
             var allowedDataSourceNames = new List<string> { "TestDataSource" };
 
             // Act
@@ -60,7 +61,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Models.Messages
             var useChat = true;
 
             // Act
-            var metadata = new LanguageModelMetadata
+            var metadata = new LanguageModel
             {
                 Type = type,
                 Provider = provider,

@@ -8,8 +8,8 @@ namespace FoundationaLLM.AgentFactory.Tests.Models.Orchestration.Metadata
         public void LanguageModelProviders_Values_ShouldMatchExpected()
         {
             // Assert
-            Assert.Equal("microsoft", LanguageModelProviders.MICROSOFT);
-            Assert.Equal("openai", LanguageModelProviders.OPENAI);
+            Assert.Equal("microsoft", LanguageModelProvider.MICROSOFT);
+            Assert.Equal("openai", LanguageModelProvider.OPENAI);
         }
     }
 }

@@ -1,25 +1,24 @@
-import pandas as pd
 from io import StringIO
 from operator import itemgetter
+import pandas as pd
 from langchain.agents import AgentExecutor, ZeroShotAgent
 from langchain.chains import LLMChain
 from langchain.memory import ConversationBufferMemory
 from langchain.tools.python.tool import PythonAstREPLTool
 from langchain.callbacks import get_openai_callback
-
 from foundationallm.config import Configuration
 from foundationallm.langchain.agents import AgentBase
 from foundationallm.langchain.language_models import LanguageModelBase
 from foundationallm.models.orchestration import CompletionRequest, CompletionResponse
 from foundationallm.storage import BlobStorageManager
-from foundationallm.models.orchestration import MessageHistoryItem
 
 class CSVAgent(AgentBase):
     """
     Agent for analyzing the contents of delimited files (e.g., CSV).
     """
-    
-    def __init__(self, completion_request: CompletionRequest, llm: LanguageModelBase, config: Configuration):
+
+    def __init__(self, completion_request: CompletionRequest,
+                 llm: LanguageModelBase, config: Configuration):
         """
         Initializes a CSV agent.
         
@@ -37,14 +36,15 @@ class CSVAgent(AgentBase):
         """
         self.prompt_prefix = completion_request.agent.prompt_prefix
         self.prompt_suffix = completion_request.agent.prompt_suffix
-        self.llm = llm.get_language_model()
+        self.llm = llm.get_completion_model(completion_request.language_model)
         self.message_history = completion_request.message_history
 
         storage_manager = BlobStorageManager(
-            blob_connection_string = config.get_value(completion_request.data_source.configuration.connection_string_secret),
+            blob_connection_string = config.get_value(
+                completion_request.data_source.configuration.connection_string_secret),
             container_name = completion_request.data_source.configuration.container
         )
-        
+
         file_name = completion_request.data_source.configuration.files[0]
         file_content = storage_manager.read_file_content(file_name).decode('utf-8')
         sio = StringIO(file_content)
@@ -53,7 +53,8 @@ class CSVAgent(AgentBase):
             PythonAstREPLTool(
                 locals={"df": df},
                 name=completion_request.data_source.data_description or 'CSV data',
-                description=completion_request.data_source.description or 'Useful for when you need to answer questions about data in CSV files.'
+                description=completion_request.data_source.description \
+                    or 'Useful for when you need to answer questions about data in CSV files.'
             )
         ]
         memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
@@ -66,7 +67,7 @@ class CSVAgent(AgentBase):
                 else:
                     ai_output = message.text
             memory.save_context({"input": user_input}, {"output": ai_output})
-            
+
         prompt = ZeroShotAgent.create_prompt(
             tools,
             prefix = self.prompt_prefix,
@@ -98,7 +99,7 @@ class CSVAgent(AgentBase):
             Returns the prompt template for the agent.
         """
         return self.agent.agent.llm_chain.prompt.template
-    
+
     def run(self, prompt: str) -> CompletionResponse:
         """
         Executes a query against the contents of a CSV file.

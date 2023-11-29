@@ -16,7 +16,7 @@ from foundationallm.langchain.tools import SecureSQLDatabaseQueryTool
 
 class SecureSQLDatabaseToolkit(BaseToolkit):
     """Toolkit for securely interacting with SQL databases."""
-    
+
     db: SQLDatabase = Field(exclude=True)
     llm: BaseLanguageModel = Field(exclude=True)
     username: str = Field(exclude=True)
@@ -26,7 +26,7 @@ class SecureSQLDatabaseToolkit(BaseToolkit):
     def dialect(self) -> str:
         """Return string representation of SQL dialect to use."""
         return self.db.dialect
-    
+
     class Config:
         """Configuration for this pydantic object."""
         arbitrary_types_allowed = True

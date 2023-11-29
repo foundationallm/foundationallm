@@ -1,11 +1,12 @@
 from abc import ABC, abstractmethod
-
 from langchain.base_language import BaseLanguageModel
+from langchain.embeddings.base import Embeddings
 from foundationallm.config import Configuration
+from foundationallm.models.language_models import EmbeddingModel, LanguageModel
 
 class LanguageModelBase(ABC):
     """Abstract base class for language models."""
-    
+
     def __init__(self, config: Configuration):
         """
         Initializer
@@ -18,13 +19,23 @@ class LanguageModelBase(ABC):
         self.config = config
 
     @abstractmethod
-    def get_language_model(self) -> BaseLanguageModel:
+    def get_completion_model(self, language_model: LanguageModel) -> BaseLanguageModel:
         """
-        Retrieve language model
+        Retrieve the completion model.
         
         Returns
         -------
         BaseLanguageModel
-            The language model to use.
+            The completion large language model to use.
         """
-    
+
+    @abstractmethod
+    def get_embedding_model(self, embedding_model: EmbeddingModel) -> Embeddings:
+        """
+        Retrieve the embeddings model.
+        
+        Returns
+        -------
+        Embeddings
+            The embeddings large language model to use.
+        """

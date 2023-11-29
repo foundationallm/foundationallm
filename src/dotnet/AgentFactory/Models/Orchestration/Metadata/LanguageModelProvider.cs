@@ -1,10 +1,15 @@
 ﻿namespace FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata
 {
     /// <summary>
-    /// Enumerator of the Language Model types.
+    /// Enumerator of the Langauge Model providers.
     /// </summary>
-    public class LanguageModelTypes
+    public class LanguageModelProvider
     {
+        /// <summary>
+        /// Microsoft
+        /// </summary>
+        public static string MICROSOFT = "microsoft";
+
         /// <summary>
         /// OpenAI
         /// </summary>

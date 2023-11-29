@@ -29,7 +29,7 @@
   <ItemGroup>
     <Compile Include="app\dependencies.py" />
     <Compile Include="app\main.py" />
-    <Compile Include="app\routers\list.py" />
+    <Compile Include="app\routers\list_agents.py" />
     <Compile Include="app\routers\resolve.py" />
     <Compile Include="app\routers\status.py" />
     <Compile Include="app\routers\__init__.py" />
@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
+    <Content Include=".pylintrc" />
     <Content Include="requirements.txt" />
     <Content Include="startup.sh" />
   </ItemGroup>

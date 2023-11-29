@@ -7,6 +7,7 @@
     <UserSecretsId>dotnet-CoreWorker-66b793a2-9018-4ae5-9ed4-b893e8a3e240</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 	<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	<DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>

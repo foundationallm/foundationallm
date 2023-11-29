@@ -1,3 +1,6 @@
+"""
+Status API endpoint that acts as a health check for the API.
+"""
 from fastapi import APIRouter
 
 router = APIRouter(

@@ -19,7 +19,7 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata
         /// Provider of the language model.
         /// </summary>
         [JsonProperty("provider")]
-        public string? Provider { get; set; } = LanguageModelProviders.MICROSOFT;
+        public string? Provider { get; set; } = LanguageModelProvider.MICROSOFT;
 
         /// <summary>
         /// Temperature value to assign on the language model.

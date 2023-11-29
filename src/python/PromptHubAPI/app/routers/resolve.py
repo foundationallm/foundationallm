@@ -1,7 +1,10 @@
+"""
+The API endpoint for returning the appropriate agent prompt for the specified user prompt.
+"""
 import logging
 from fastapi import APIRouter, Depends, HTTPException
-from app.dependencies import validate_api_key_header
 from foundationallm.hubs.prompt import PromptHubRequest, PromptHubResponse, PromptHub
+from app.dependencies import validate_api_key_header
 
 router = APIRouter(
     prefix='/resolve',
@@ -18,7 +21,8 @@ async def resolve(request: PromptHubRequest) -> PromptHubResponse:
     Parameters
     ----------
     request : PromptHubRequest
-        The request object containing the agent and prompt names to use in resolving the prompt to return.
+        The request object containing the agent and prompt names to use 
+        in resolving the prompt to return.
     
     Returns
     -------
@@ -32,4 +36,4 @@ async def resolve(request: PromptHubRequest) -> PromptHubResponse:
         raise HTTPException(
             status_code = 500,
             detail = str(e)
-        )
+        ) from e

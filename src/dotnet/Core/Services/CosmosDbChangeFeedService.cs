@@ -7,6 +7,9 @@ using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Models.Chat;
 using Microsoft.Azure.Cosmos.Fluent;
 using System.Runtime;
+using System.Runtime.CompilerServices;
+using Polly;
+using Polly.Retry;
 
 namespace FoundationaLLM.Core.Services
 {
@@ -21,6 +24,7 @@ namespace FoundationaLLM.Core.Services
 
         private readonly ILogger<CosmosDbChangeFeedService> _logger;
         private readonly ICosmosDbService _cosmosDbService;
+        private readonly ResiliencePipeline _resiliencePipeline;
 
         private bool _changeFeedsInitialized = false;
 
@@ -64,6 +68,21 @@ namespace FoundationaLLM.Core.Services
                         throw new ArgumentException($"Unable to connect to existing Azure Cosmos DB container ({CosmosDbContainers.Sessions}).");
             _leases = database?.GetContainer(CosmosDbContainers.Leases) ??
                       throw new ArgumentException($"Unable to connect to existing Azure Cosmos DB container ({CosmosDbContainers.Leases}).");
+
+            _resiliencePipeline = new ResiliencePipelineBuilder().AddRetry(new RetryStrategyOptions
+            {
+                ShouldHandle = new PredicateBuilder().Handle<Exception>(),
+                MaxRetryAttempts = 6,
+                BackoffType = DelayBackoffType.Exponential,
+                UseJitter = true,
+                OnRetry = args =>
+                {
+                    var exception = args.Outcome.Exception!;
+                    _logger.LogWarning($"Change Feed processor resilience strategy handling: {exception.Message}");
+                    _logger.LogWarning($" ... automatically delaying for {args.RetryDelay.TotalMilliseconds}ms.");
+                    return default;
+                }
+            }).Build();
         }
 
         /// <inheritdoc/>
@@ -115,7 +134,11 @@ namespace FoundationaLLM.Core.Services
             {
                 try
                 {
-                    await _cosmosDbService.UpsertUserSessionAsync(record);
+                    
+                    await _resiliencePipeline.ExecuteAsync(async token =>
+                    {
+                        await _cosmosDbService.UpsertUserSessionAsync(record, token);
+                    }, cancellationToken);
                 }
                 catch (Exception ex)
                 {

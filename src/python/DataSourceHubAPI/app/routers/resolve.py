@@ -1,7 +1,11 @@
+"""
+The API endpoint for returning the appropriate data source for the specified user prompt.
+"""
 import logging
 from fastapi import APIRouter, Depends, HTTPException
+from foundationallm.hubs.data_source import (DataSourceHubRequest,
+                                             DataSourceHubResponse, DataSourceHub)
 from app.dependencies import validate_api_key_header
-from foundationallm.hubs.data_source import DataSourceHubRequest, DataSourceHubResponse, DataSourceHub
 
 router = APIRouter(
     prefix='/resolve',
@@ -11,14 +15,15 @@ router = APIRouter(
 )
 
 @router.post('')
-async def resolve(request:DataSourceHubRequest) -> DataSourceHubResponse:    
+async def resolve(request:DataSourceHubRequest) -> DataSourceHubResponse:
     """
     Resolves the best data source to use for the specified user prompt.
 
     Parameters
     ----------
     request : DataSourceHubRequest
-        The request object containing the user prompt to use in resolving the best data source to return.
+        The request object containing the user prompt to use in resolving 
+        the best data source to return.
     
     Returns
     -------
@@ -32,4 +37,4 @@ async def resolve(request:DataSourceHubRequest) -> DataSourceHubResponse:
         raise HTTPException(
             status_code = 500,
             detail = str(e)
-        )
+        ) from e
