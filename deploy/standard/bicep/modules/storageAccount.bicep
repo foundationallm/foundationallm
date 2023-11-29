@@ -1,74 +1,84 @@
+/** Inputs **/
+@description('Location for all resources')
+param location string
 
-resource storageAccounts_eusfllmdemoopssa_name_resource 'Microsoft.Storage/storageAccounts@2023-01-01' = {
-  name: storageAccounts_eusfllmdemoopssa_name
-  location: 'eastus'
-  tags: {
-    Environment: 'DEMO'
-    Project: 'FLLM'
-    Purpose: 'DevOps'
-    Workspace: 'foundationallm-ops'
-  }
-  sku: {
-    name: 'Standard_LRS'
-    tier: 'Standard'
-  }
+@description('Resource suffix for all resources')
+param resourceSuffix string
+
+@description('Tags for all resources')
+param tags object
+
+/** Locals **/
+@description('The Resource Name')
+var name = 'appconfig-${resourceSuffix}'
+
+/** Resources **/
+@description('The Storage Account')
+resource main 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   kind: 'StorageV2'
+  location: location
+  name: name
+  tags: tags
+
   identity: {
     type: 'SystemAssigned'
   }
+
+  sku: {
+    name: 'Standard_LRS'
+  }
+
   properties: {
+    accessTier: 'Hot'
+    allowBlobPublicAccess: false
+    allowCrossTenantReplication: true
+    allowSharedKeyAccess: true
     defaultToOAuthAuthentication: true
+    isHnsEnabled: false
+    isNfsV3Enabled: false
+    isSftpEnabled: false
+    minimumTlsVersion: 'TLS1_2'
     publicNetworkAccess: 'Disabled'
+    supportsHttpsTrafficOnly: true
+
+    encryption: {
+      keySource: 'Microsoft.Storage'
+      requireInfrastructureEncryption: true
+
+      services: {
+        file: {
+          enabled: true
+          keyType: 'Account'
+        }
+        blob: {
+          enabled: true
+          keyType: 'Account'
+        }
+      }
+    }
+
+    networkAcls: {
+      bypass: 'Logging, Metrics, AzureServices'
+      defaultAction: 'Deny'
+      ipRules: []
+      virtualNetworkRules: []
+
+      resourceAccessRules: [
+        {
+          tenantId: subscription().tenantId
+          resourceId: subscriptionResourceId('Microsoft.Security/datascanners', 'storageDataScanner')
+        }
+      ]
+    }
+
     sasPolicy: {
       sasExpirationPeriod: '00.04:00:00'
       expirationAction: 'Log'
     }
-    allowCrossTenantReplication: true
-    isNfsV3Enabled: false
-    isSftpEnabled: false
-    minimumTlsVersion: 'TLS1_2'
-    allowBlobPublicAccess: false
-    allowSharedKeyAccess: true
-    isHnsEnabled: false
-    networkAcls: {
-      resourceAccessRules: [
-        {
-          tenantId: '22179471-b099-4504-bfdb-3f184cdae122'
-          resourceId: '/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/providers/Microsoft.Security/datascanners/storageDataScanner'
-        }
-      ]
-      bypass: 'Logging, Metrics, AzureServices'
-      virtualNetworkRules: []
-      ipRules: []
-      defaultAction: 'Deny'
-    }
-    supportsHttpsTrafficOnly: true
-    encryption: {
-      requireInfrastructureEncryption: true
-      services: {
-        file: {
-          keyType: 'Account'
-          enabled: true
-        }
-        blob: {
-          keyType: 'Account'
-          enabled: true
-        }
-      }
-      keySource: 'Microsoft.Storage'
-    }
-    accessTier: 'Hot'
   }
 }
 
-resource systemTopics_eusfllmdemoopssa_d63dac3c_9957_4c24_9baf_ffb984d8ffc4_name_resource 'Microsoft.EventGrid/systemTopics@2023-06-01-preview' = {
-  name: systemTopics_eusfllmdemoopssa_d63dac3c_9957_4c24_9baf_ffb984d8ffc4_name
-  location: 'eastus'
-  properties: {
-    source: storageAccounts_eusfllmdemoopssa_name_resource.id
-    topicType: 'microsoft.storage.storageaccounts'
-  }
-}
+
 
 
 resource privateEndpoints_EUS_FLLM_DEMO_OPS_blob_pe_name_resource 'Microsoft.Network/privateEndpoints@2023-05-01' = {
@@ -492,3 +502,11 @@ resource metricAlerts_EUS_FLLM_DEMO_OPS_sa_availability_alert_name_resource 'Mic
   }
 }
 
+resource systemTopics_eusfllmdemoopssa_d63dac3c_9957_4c24_9baf_ffb984d8ffc4_name_resource 'Microsoft.EventGrid/systemTopics@2023-06-01-preview' = {
+  name: systemTopics_eusfllmdemoopssa_d63dac3c_9957_4c24_9baf_ffb984d8ffc4_name
+  location: 'eastus'
+  properties: {
+    source: storageAccounts_eusfllmdemoopssa_name_resource.id
+    topicType: 'microsoft.storage.storageaccounts'
+  }
+}
