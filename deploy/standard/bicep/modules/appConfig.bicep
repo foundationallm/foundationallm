@@ -1,17 +1,42 @@
+/** Inputs **/
+@description('Action Group Id for alerts')
 param actionGroupId string
-param environmentName string
-param location string
-param logAnalyticWorkspaceId string
-param privateDnsZones array
-param project string
-param subnetId string
-param timestamp string = utcNow()
-param workload string
 
-var logs = ['HttpRequest', 'Audit']
-var name = '${serviceType}-${environmentName}-${location}-${workload}-${project}'
+@description('Location for all resources')
+param location string
+
+@description('Log Analytic Workspace Id to use for diagnostics')
+param logAnalyticWorkspaceId string
+
+@description('Private DNS Zones for private endpoint')
+param privateDnsZones array
+
+@description('Resource suffix for all resources')
+param resourceSuffix string
+
+@description('Subnet Id for private endpoint')
+param subnetId string
+
+@description('Tags for all resources')
+param tags object
+
+@description('Timestamp for nested deployments')
+param timestamp string = utcNow()
+
+@description('User Assigned Identity Id')
+param uaiId string
+
+/** Locals **/
+@description('App Configuration logs to enable')
+var logs = [ 'HttpRequest', 'Audit' ]
+
+@description('App Configuration name')
+var name = 'appconfig-${resourceSuffix}'
+
+@description('App Configuration Service Type token')
 var serviceType = 'appconfig'
 
+@description('Metric alerts for App Configuration')
 var alerts = [
   {
     name: 'storageUsage'
@@ -37,13 +62,8 @@ var alerts = [
   }
 ]
 
-var tags = {
-  Environment: environmentName
-  IaC: 'Bicep'
-  Project: project
-  Purpose: 'DevOps'
-}
-
+/** Resources **/
+@description('App Configuration')
 resource main 'Microsoft.AppConfiguration/configurationStores@2023-03-01' = {
   name: name
   location: location
@@ -52,7 +72,7 @@ resource main 'Microsoft.AppConfiguration/configurationStores@2023-03-01' = {
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${uai.id}': {}
+      '${uaiId}': {}
     }
   }
 
@@ -69,10 +89,8 @@ resource main 'Microsoft.AppConfiguration/configurationStores@2023-03-01' = {
   }
 }
 
-/**
- * Resource for configuring diagnostic settings.
- */
- resource diagnostics 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = {
+@description('Diagnostic settings for App Configuration')
+resource diagnostics 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = {
   scope: main
   name: 'diag-${serviceType}'
   properties: {
@@ -90,12 +108,8 @@ resource main 'Microsoft.AppConfiguration/configurationStores@2023-03-01' = {
   }
 }
 
-resource uai 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
-  location: location
-  name: 'uai-${name}'
-  tags: tags
-}
-
+/** Nested Modules **/
+@description('Metric alerts for App Configuration')
 module metricAlerts 'utility/metricAlerts.bicep' = {
   name: 'alert-${main.name}-${timestamp}'
   params: {
@@ -108,6 +122,7 @@ module metricAlerts 'utility/metricAlerts.bicep' = {
   }
 }
 
+@description('Private endpoint for App Configuration')
 module privateEndpoint 'utility/privateEndpoint.bicep' = {
   name: 'pe-${main.name}-${timestamp}'
   params: {
