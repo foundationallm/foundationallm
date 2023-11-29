@@ -1,14 +1,11 @@
 param location string
-param nameSuffix string
 param privateDnsZones array
 param service object
 param subnetId string
 param tags object
-param groupIds array
+param groupId string
 
-/**
- * Creates a private DNS zone group for Azure Monitor.
- */
+@description('DNS registration for the private endpoint.')
 resource dns 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-05-01' = {
   name: 'default'
   parent: main
@@ -23,23 +20,22 @@ resource dns 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-05-01
   }
 }
 
-/**
- * Creates a private endpoint for Azure Monitor.
- */
+@description('The private endpoint resource.')
 resource main 'Microsoft.Network/privateEndpoints@2023-05-01' = {
-  name: 'pe-${service.name}'
+  name: 'pe-${service.name}-${groupId}'
   location: location
   tags: tags
 
   properties: {
-    privateLinkServiceConnections: [for groupId in groupIds: {
-      name: 'connection-${groupId}-${nameSuffix}'
+    privateLinkServiceConnections: [
+      {
+        name: 'connection-${service.name}-${groupId}'
 
-      properties: {
-        groupIds: [ groupId ]
-        privateLinkServiceId: service.id
+        properties: {
+          groupIds: [ groupId ]
+          privateLinkServiceId: service.id
+        }
       }
-    }
     ]
 
     subnet: {

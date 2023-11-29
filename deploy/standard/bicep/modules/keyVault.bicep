@@ -123,9 +123,8 @@ module metricAlerts 'utility/metricAlerts.bicep' = {
 module privateEndpoint 'utility/privateEndpoint.bicep' = {
   name: 'pe-${main.name}-${timestamp}'
   params: {
-    groupIds: [ 'vault' ]
+    groupId: 'vault'
     location: location
-    nameSuffix: name
     privateDnsZones: privateDnsZones
     subnetId: subnetId
     tags: tags

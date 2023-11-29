@@ -38,14 +38,13 @@ resource main 'microsoft.insights/privatelinkscopes@2021-07-01-preview' = {
 module privateEndpoint 'utility/privateEndpoint.bicep' = {
   name: 'pe-${main.name}-${timestamp}'
   params: {
-    groupIds: [ 'azuremonitor' ]
+    groupId: 'azuremonitor'
     location: location
-    nameSuffix: name
     privateDnsZones: privateDnsZones
     subnetId: subnetId
     tags: tags
-    
-    service:{
+
+    service: {
       id: main.id
       name: main.name
     }

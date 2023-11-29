@@ -45,6 +45,3 @@ resource scopedService 'microsoft.insights/privatelinkscopes/scopedresources@202
     linkedResourceId: main.id
   }
 }
-
-
-

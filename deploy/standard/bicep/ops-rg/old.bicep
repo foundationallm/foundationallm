@@ -510,40 +510,7 @@ resource grafana_efllmdopsgd_name_EFLLMdOPS_grafana_connection 'Microsoft.Dashbo
 
 
 
-resource systemTopics_eusfllmdemoopssa_d63dac3c_9957_4c24_9baf_ffb984d8ffc4_name_StorageAntimalwareSubscription 'Microsoft.EventGrid/systemTopics/eventSubscriptions@2023-06-01-preview' = {
-  parent: systemTopics_eusfllmdemoopssa_d63dac3c_9957_4c24_9baf_ffb984d8ffc4_name_resource
-  name: 'StorageAntimalwareSubscription'
-  properties: {
-    destination: {
-      properties: {
-        maxEventsPerBatch: 1
-        preferredBatchSizeInKilobytes: 64
-        azureActiveDirectoryTenantId: '33e01921-4d64-4f8c-a055-5bdaffd5e33d'
-        azureActiveDirectoryApplicationIdOrUri: 'f1f8da5f-609a-401d-85b2-d498116b7265'
-      }
-      endpointType: 'WebHook'
-    }
-    filter: {
-      includedEventTypes: [
-        'Microsoft.Storage.BlobCreated'
-      ]
-      advancedFilters: [
-        {
-          values: [
-            'BlockBlob'
-          ]
-          operatorType: 'StringContains'
-          key: 'data.blobType'
-        }
-      ]
-    }
-    eventDeliverySchema: 'EventGridSchema'
-    retryPolicy: {
-      maxDeliveryAttempts: 30
-      eventTimeToLiveInMinutes: 1440
-    }
-  }
-}
+
 
 
 

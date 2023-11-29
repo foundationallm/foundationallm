@@ -1,28 +1,33 @@
+/** Inputs **/
+@description('The environment name token used in naming resources.')
 param environmentName string
+
+@description('Location used for all resources.')
 param location string
+
+@description('Private DNS Zones for Private Link Endpoints')
 param privateDnsZones array
+
+@description('Project Name, used in naming resources.')
 param project string
-param timestamp string = utcNow()
-param vnetId string
 
+/** Locals **/
+@description('Resource Suffix used in naming resources.')
 var resourceSuffix = '${environmentName}-${location}-${workload}-${project}'
-var workload = 'ops'
 
-var amplsZones = filter(
-  privateDnsZones,
-  (zone) => contains([ 'monitor', 'blob', 'ods', 'oms', 'agentsvc' ], zone.key)
-)
-
+@description('Role Assignments to create')
 var roleAssignmentsToCreate = [for roleDefinitionId in items(roleDefinitionIds): {
   name: guid(uaiAppConfig.id, resourceGroup().id, roleDefinitionId.value)
   roleDefinitionId: roleDefinitionId.value
 }]
 
 // See: https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles
+@description('Role Definition Ids')
 var roleDefinitionIds = {
   'Key Vault Crypto Service Encryption User': 'e147488a-f6f5-4113-8e2d-b22465e65bf6'
 }
 
+@description('Tags for all resources')
 var tags = {
   Environment: environmentName
   IaC: 'Bicep'
@@ -30,13 +35,29 @@ var tags = {
   Purpose: 'DevOps'
 }
 
-// Resources
-resource uaiAppConfig 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
-  location: location
-  name: 'uai-appconfig-${resourceSuffix}'
-  tags: tags
-}
+@description('Timestamp used in naming nested deployments.')
+param timestamp string = utcNow()
 
+@description('Virtual Network ID, used to find the subnet IDs.')
+param vnetId string
+
+@description('Workload Token used in naming resources.')
+var workload = 'ops'
+
+@description('Private DNS Zones for Azure Monitor Private Link Scope')
+var zonesAmpls = filter(
+  privateDnsZones,
+  (zone) => contains([ 'monitor', 'blob', 'ods', 'oms', 'agentsvc' ], zone.key)
+)
+
+@description('Private DNS Zones for Storage Accounts')
+var zonesStorage = filter(
+  privateDnsZones,
+  (zone) => contains([ 'blob','dfs','file','queue','table','web' ], zone.key)
+)
+
+/** Resources **/
+@description('Role Assignments')
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for roleAssignmentToCreate in roleAssignmentsToCreate: {
   name: roleAssignmentToCreate.name
   scope: resourceGroup()
@@ -47,7 +68,16 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
   }
 }]
 
-// Modules
+
+@description('User Assigned Identity for App Configuration')
+resource uaiAppConfig 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
+  location: location
+  name: 'uai-appconfig-${resourceSuffix}'
+  tags: tags
+}
+
+/** Modules **/
+@description('Azure Monitor Action Group')
 module actionGroup 'modules/actionGroup.bicep' = {
   name: 'actionGroup-${timestamp}'
   params: {
@@ -58,18 +88,20 @@ module actionGroup 'modules/actionGroup.bicep' = {
   }
 }
 
+@description('Azure Monitor Private Link Scope')
 module ampls 'modules/ampls.bicep' = {
   name: 'ampls-${timestamp}'
   params: {
     environmentName: environmentName
     location: location
-    privateDnsZones: amplsZones
+    privateDnsZones: zonesAmpls
     project: project
     subnetId: '${vnetId}/subnets/ops'
     workload: 'ops'
   }
 }
 
+@description('App Configuration')
 module appConfig 'modules/appConfig.bicep' = {
   dependsOn: [ roleAssignment ]
   name: 'appConfig-${timestamp}'
@@ -86,6 +118,7 @@ module appConfig 'modules/appConfig.bicep' = {
   }
 }
 
+@description('Application Insights')
 module applicationInights 'modules/applicationInsights.bicep' = {
   name: 'appInsights-${timestamp}'
   params: {
@@ -98,6 +131,7 @@ module applicationInights 'modules/applicationInsights.bicep' = {
   }
 }
 
+@description('Key Vault')
 module keyVault 'modules/keyVault.bicep' = {
   name: 'keyVault-${timestamp}'
   params: {
@@ -112,6 +146,7 @@ module keyVault 'modules/keyVault.bicep' = {
   }
 }
 
+@description('Log Analytics')
 module logAnalytics 'modules/logAnalytics.bicep' = {
   name: 'logAnalytics-${timestamp}'
   params: {
@@ -125,5 +160,19 @@ module logAnalytics 'modules/logAnalytics.bicep' = {
       id: ampls.outputs.id
       name: ampls.outputs.name
     }
+  }
+}
+
+@description('Storage Account')
+module storage 'modules/storageAccount.bicep'={
+  name: 'storage-${timestamp}'
+  params: {
+    actionGroupId: actionGroup.outputs.id
+    location: location
+    logAnalyticWorkspaceId: logAnalytics.outputs.id
+    privateDnsZones: zonesStorage
+    resourceSuffix: resourceSuffix
+    subnetId: '${vnetId}/subnets/ops'
+    tags: tags
   }
 }

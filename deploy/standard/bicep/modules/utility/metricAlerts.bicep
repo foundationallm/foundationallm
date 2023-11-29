@@ -1,9 +1,9 @@
 param actionGroupId string
-param alerts array 
+param alerts array
 param metricNamespace string
-param nameSuffix string 
+param nameSuffix string
 param serviceId string
-param tags object 
+param tags object
 
 /*
   This resource block creates a metric alert for a resource.

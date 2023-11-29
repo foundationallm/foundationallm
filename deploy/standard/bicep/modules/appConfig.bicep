@@ -42,26 +42,26 @@ var serviceType = 'appconfig'
 @description('Metric alerts for App Configuration')
 var alerts = [
   {
-    name: 'storageUsage'
+    description: 'Service maximum storage usage greater than 75% for 1 hour'
+    evaluationFrequency: 'PT1M'
     metricName: 'DailyStorageUsage'
+    name: 'storageUsage'
     operator: 'GreaterThan'
+    severity: 0
     threshold: 75
     timeAggregation: 'Maximum'
     windowSize: 'PT1H'
-    evaluationFrequency: 'PT1M'
-    description: 'Service maximum storage usage greater than 75% for 1 hour'
-    severity: 0
   }
   {
-    name: 'latency'
+    description: 'Throttling occured within the last 5 minutes'
+    evaluationFrequency: 'PT1M'
     metricName: 'ThrottledHttpRequestCount'
+    name: 'latency'
     operator: 'GreaterThan'
+    severity: 0
     threshold: 3
     timeAggregation: 'Maximum'
     windowSize: 'PT5M'
-    evaluationFrequency: 'PT1M'
-    description: 'Throttling occured within the last 5 minutes'
-    severity: 0
   }
 ]
 
@@ -147,9 +147,8 @@ module metricAlerts 'utility/metricAlerts.bicep' = {
 module privateEndpoint 'utility/privateEndpoint.bicep' = {
   name: 'pe-${main.name}-${timestamp}'
   params: {
-    groupIds: [ 'configurationStores' ]
+    groupId: 'configurationStores'
     location: location
-    nameSuffix: name
     privateDnsZones: privateDnsZones
     subnetId: subnetId
     tags: tags
