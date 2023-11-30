@@ -163,6 +163,18 @@ module logAnalytics 'modules/logAnalytics.bicep' = {
   }
 }
 
+@description('Azure Monitor Workspace')
+module monitorWorkspace 'modules/monitorWorksapce.bicep' = {
+  name: 'monitorWorkspace-${timestamp}'
+  params: {
+    location: location
+    privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'prometheusMetrics')
+    resourceSuffix: resourceSuffix
+    subnetId: '${vnetId}/subnets/ops'
+    tags: tags
+  }
+}
+
 @description('Storage Account')
 module storage 'modules/storageAccount.bicep'={
   name: 'storage-${timestamp}'

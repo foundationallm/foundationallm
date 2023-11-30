@@ -31,7 +31,7 @@ var privateDnsZone = {
   ods :'privatelink.ods.opinsights.azure.com'
   oms :'privatelink.oms.opinsights.azure.com'
   openai: 'privatelink.openai.azure.com'
-  prometheus: 'privatelink.${location}.prometheus.monitor.azure.com'
+  prometheusMetrics: 'privatelink.${location}.prometheus.monitor.azure.com'
   queue: 'privatelink.queue.${environment().suffixes.storage}'
   search: 'privatelink.search.windows.net'
   sites: 'privatelink.azurewebsites.net'
