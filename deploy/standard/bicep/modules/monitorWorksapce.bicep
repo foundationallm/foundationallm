@@ -18,12 +18,15 @@ param tags object
 param timestamp string = utcNow()
 
 /** Locals **/
-
 @description('The Resource Name')
 var name = '${serviceType}-${resourceSuffix}'
 
 @description('The Resource Service Type token')
 var serviceType = 'amw'
+
+/** Outputs **/
+@description('The Resource Id')
+output id string = main.id
 
 /** Resources **/
 resource main 'microsoft.monitor/accounts@2023-04-03' = {

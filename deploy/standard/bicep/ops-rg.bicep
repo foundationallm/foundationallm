@@ -131,6 +131,19 @@ module applicationInights 'modules/applicationInsights.bicep' = {
   }
 }
 
+@description('Azure Managed Grafana')
+module grafana 'modules/grafana.bicep' = {
+  name: 'grafana-${timestamp}'
+  params: {
+    azureMonitorWorkspaceResourceId: monitorWorkspace.outputs.id
+    location: location
+    privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'grafana')
+    resourceSuffix: resourceSuffix
+    subnetId: '${vnetId}/subnets/ops'
+    tags: tags
+  }
+}
+
 @description('Key Vault')
 module keyVault 'modules/keyVault.bicep' = {
   name: 'keyVault-${timestamp}'
