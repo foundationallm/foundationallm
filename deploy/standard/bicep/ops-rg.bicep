@@ -50,10 +50,16 @@ var zonesAmpls = filter(
   (zone) => contains([ 'monitor', 'blob', 'ods', 'oms', 'agentsvc' ], zone.key)
 )
 
+@description('Private DNS Zones for Container Registry')
+var zonesRegistry = filter(
+  privateDnsZones,
+  (zone) => contains([ 'cr', 'cr_region' ], zone.key)
+)
+
 @description('Private DNS Zones for Storage Accounts')
 var zonesStorage = filter(
   privateDnsZones,
-  (zone) => contains([ 'blob','dfs','file','queue','table','web' ], zone.key)
+  (zone) => contains([ 'blob', 'dfs', 'file', 'queue', 'table', 'web' ], zone.key)
 )
 
 /** Resources **/
@@ -67,7 +73,6 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
     principalType: 'ServicePrincipal'
   }
 }]
-
 
 @description('User Assigned Identity for App Configuration')
 resource uaiAppConfig 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
@@ -131,6 +136,20 @@ module applicationInights 'modules/applicationInsights.bicep' = {
   }
 }
 
+@description('Azure Container Registry')
+module containerRegistry 'modules/containerRegistry.bicep' = {
+  name: 'containerRegistry-${timestamp}'
+  params: {
+    agentPoolSubnetId: '${vnetId}/subnets/ops'
+    location: location
+    logAnalyticWorkspaceId: logAnalytics.outputs.id
+    privateDnsZones: zonesRegistry
+    resourceSuffix: resourceSuffix
+    subnetId: '${vnetId}/subnets/ops'
+    tags: tags
+  }
+}
+
 @description('Azure Managed Grafana')
 module grafana 'modules/grafana.bicep' = {
   name: 'grafana-${timestamp}'
@@ -189,7 +208,7 @@ module monitorWorkspace 'modules/monitorWorksapce.bicep' = {
 }
 
 @description('Storage Account')
-module storage 'modules/storageAccount.bicep'={
+module storage 'modules/storageAccount.bicep' = {
   name: 'storage-${timestamp}'
   params: {
     actionGroupId: actionGroup.outputs.id
