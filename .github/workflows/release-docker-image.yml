@@ -1,0 +1,101 @@
+name: Docker Image Build and Push
+
+on:
+  workflow_call:
+    inputs:
+      registry:
+        type: string
+        default: ghcr.io
+      docker_username:
+        type: string
+        default: ${{ github.actor }}
+      docker_password:
+        type: string
+        default: ${{ secrets.GITHUB_TOKEN }}
+      image:
+        type: string
+        required: true
+      context:
+        type: string
+        required: true
+      dockerfile:
+        type: string
+        required: true
+
+jobs:
+  docker_image_build_and_push:
+    # strategy:
+    #   matrix:
+    #     include:
+    #     - name: agent-factory-api
+    #       context: ./src
+    #       dockerfile: ./src/dotnet/AgentFactoryAPI/Dockerfile
+    #     - name: agent-hub-api
+    #       context: ./src/python
+    #       dockerfile: ./src/python/AgentHubAPI/Dockerfile
+    #     - name: chat-ui
+    #       context: ./src/ui/UserPortal
+    #       dockerfile: ./src/ui/UserPortal/Dockerfile
+    #     - name: core-api
+    #       context: ./src
+    #       dockerfile: ./src/dotnet/CoreAPI/Dockerfile
+    #     - name: core-job
+    #       context: ./src
+    #       dockerfile: ./src/dotnet/CoreWorker/Dockerfile
+    #     - name: data-source-hub-api
+    #       context: ./src/python
+    #       dockerfile: ./src/python/DataSourceHubAPI/Dockerfile
+    #     - name: gatekeeper-api
+    #       context: ./src
+    #       dockerfile: ./src/dotnet/GatekeeperAPI/Dockerfile
+    #     - name: langchain-api
+    #       context: ./src/python
+    #       dockerfile: ./src/python/LangChainAPI/Dockerfile
+    #     - name: prompt-hub-api
+    #       context: ./src/python
+    #       dockerfile: ./src/python/PromptHubAPI/Dockerfile
+    #     - name: semantic-kernel-api
+    #       context: ./src
+    #       dockerfile: ./src/dotnet/SemanticKernelAPI/Dockerfile
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    - name: Fetching the Latest Release Tag number
+      id: releaseVersion
+      run: |
+        release_json=$(curl https://api.github.com/repos/${{ github.repository }}/releases)
+        release_tag=$(echo "$release_json" | jq -r '.[0].tag_name')
+        echo "release_tag: Latest Tag is : $release_tag"
+        echo "release_tag=$release_tag" >> $GITHUB_OUTPUT
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Log in to the Container registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ github.events.inputs.registry }}
+        username: ${{ github.events.inputs.docker_username }}
+        password: ${{ github.events.inputs.docker_password }}
+
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: |
+          ${{ env.REGISTRY }}/${{ github.repository }}/${{ github.events.inputs.image }}
+        tags: |
+          type=raw,latest
+          type=raw,release
+          type=sha
+
+    - name: Build and push Docker images
+      uses: docker/build-push-action@v5
+      with:
+        context: ${{ github.events.inputs.context }}
+        file: ${{ github.events.inputs.dockerfile }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        push: true

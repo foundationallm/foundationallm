@@ -5,7 +5,7 @@ import logging
 from typing import Annotated
 from fastapi import Depends, HTTPException
 from fastapi.security import APIKeyHeader
-from foundationallm.config import Configuration
+from foundationallm.integration.config import Configuration
 
 __config: Configuration = None
 

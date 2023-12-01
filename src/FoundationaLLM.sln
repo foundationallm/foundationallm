@@ -67,6 +67,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWorker", "dotnet\CoreWo
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "GatekeeperIntegrationAPI", "python\GatekeeperIntegrationAPI\GatekeeperIntegrationAPI.pyproj", "{F74CBB5A-97B9-4F68-8077-8BAB49C841DC}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "IntegrationSDK", "python\IntegrationSDK\IntegrationSDK.pyproj", "{196A5BCC-F189-443D-8D84-4B3BE66BBA9F}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "IntegrationSDK.Tests", "..\tests\python\IntegrationSDK.Tests\IntegrationSDK.Tests.pyproj", "{6330DD34-9B05-4BD9-98E7-507134751CCA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -157,6 +161,10 @@ Global
 		{0DEF31F7-72E4-428A-A32B-C11F9C28B192}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F74CBB5A-97B9-4F68-8077-8BAB49C841DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F74CBB5A-97B9-4F68-8077-8BAB49C841DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{196A5BCC-F189-443D-8D84-4B3BE66BBA9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{196A5BCC-F189-443D-8D84-4B3BE66BBA9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6330DD34-9B05-4BD9-98E7-507134751CCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6330DD34-9B05-4BD9-98E7-507134751CCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -188,6 +196,8 @@ Global
 		{BD184A53-281D-4CC8-AF48-27A9325C93D0} = {28E0E967-A94D-4820-8A61-0B71D3B2780F}
 		{0DEF31F7-72E4-428A-A32B-C11F9C28B192} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
 		{F74CBB5A-97B9-4F68-8077-8BAB49C841DC} = {32FD7A00-B42E-4B0B-B09C-9CE48D8E047B}
+		{196A5BCC-F189-443D-8D84-4B3BE66BBA9F} = {32FD7A00-B42E-4B0B-B09C-9CE48D8E047B}
+		{6330DD34-9B05-4BD9-98E7-507134751CCA} = {23275624-C0DA-4E93-9291-081D75E8CCD2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF5DE858-4B85-4EE8-8A6D-46E8E4FBA078}

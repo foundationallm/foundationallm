@@ -5,7 +5,7 @@ Runs web server exposing the API.
 import uvicorn
 from fastapi import FastAPI
 from app.dependencies import get_config
-from app.routers import analyze, anonymize, status
+from app.routers import analyze, status
 
 config = get_config()
 
@@ -30,7 +30,6 @@ app = FastAPI(
 )
 
 app.include_router(analyze.router)
-app.include_router(anonymize.router)
 app.include_router(status.router)
 
 @app.get('/')

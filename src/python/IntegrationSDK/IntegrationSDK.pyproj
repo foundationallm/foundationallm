@@ -2,19 +2,18 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>f74cbb5a-97b9-4f68-8077-8bab49c841dc</ProjectGuid>
+    <ProjectGuid>196a5bcc-f189-443d-8d84-4b3be66bba9f</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>app/main.py</StartupFile>
-    <SearchPath>..\IntegrationSDK</SearchPath>
+    <StartupFile>
+    </StartupFile>
+    <SearchPath>
+    </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>GatekeeperIntegrationAPI</Name>
-    <RootNamespace>GatekeeperIntegrationAPI</RootNamespace>
+    <Name>IntegrationSDK</Name>
+    <RootNamespace>GatekeeperIntegration</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
-    <IsWindowsApplication>False</IsWindowsApplication>
-    <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -25,29 +24,28 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="app\dependencies.py" />
-    <Compile Include="app\main.py" />
-    <Compile Include="app\routers\analyze.py" />
-    <Compile Include="app\routers\status.py" />
-    <Compile Include="app\routers\__init__.py" />
-    <Compile Include="app\__init__.py" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="app\" />
-    <Folder Include="app\routers\" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include=".gitignore" />
     <Content Include=".pylintrc" />
     <Content Include="requirements.txt" />
-    <Content Include="startup.sh" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IntegrationSDK\IntegrationSDK.pyproj">
-      <Name>IntegrationSDK</Name>
-      <Project>{196a5bcc-f189-443d-8d84-4b3be66bba9f}</Project>
-      <Private>True</Private>
-    </ProjectReference>
+    <Compile Include="foundationallm\integration\config\configuration.py" />
+    <Compile Include="foundationallm\integration\config\__init__.py" />
+    <Compile Include="foundationallm\integration\models\analyze_request.py" />
+    <Compile Include="foundationallm\integration\models\analyze_response.py" />
+    <Compile Include="foundationallm\integration\models\pii_result.py" />
+    <Compile Include="foundationallm\integration\models\pii_result_anonymized.py" />
+    <Compile Include="foundationallm\integration\models\__init__.py" />
+    <Compile Include="foundationallm\integration\mspresidio\analyzer.py" />
+    <Compile Include="foundationallm\integration\mspresidio\__init__.py" />
+    <Compile Include="main.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="foundationallm\" />
+    <Folder Include="foundationallm\integration\" />
+    <Folder Include="foundationallm\integration\config\" />
+    <Folder Include="foundationallm\integration\models\" />
+    <Folder Include="foundationallm\integration\mspresidio\" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

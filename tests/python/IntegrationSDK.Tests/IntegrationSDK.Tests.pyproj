@@ -2,19 +2,20 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>f74cbb5a-97b9-4f68-8077-8bab49c841dc</ProjectGuid>
+    <ProjectGuid>6330dd34-9b05-4bd9-98e7-507134751cca</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>app/main.py</StartupFile>
-    <SearchPath>..\IntegrationSDK</SearchPath>
+    <StartupFile>
+    </StartupFile>
+    <SearchPath>..\..\..\src\python\IntegrationSDK</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>GatekeeperIntegrationAPI</Name>
-    <RootNamespace>GatekeeperIntegrationAPI</RootNamespace>
+    <Name>IntegrationSDK.Tests</Name>
+    <RootNamespace>GatekeeperIntegration.Tests</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
-    <IsWindowsApplication>False</IsWindowsApplication>
-    <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
+    <TestFramework>pytest</TestFramework>
+    <UnitTestPattern>test*.py</UnitTestPattern>
+    <UnitTestRootDirectory>.</UnitTestRootDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -25,29 +26,15 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="app\dependencies.py" />
-    <Compile Include="app\main.py" />
-    <Compile Include="app\routers\analyze.py" />
-    <Compile Include="app\routers\status.py" />
-    <Compile Include="app\routers\__init__.py" />
-    <Compile Include="app\__init__.py" />
+    <Folder Include="foundationallm\" />
+    <Folder Include="foundationallm\integration\" />
+    <Folder Include="foundationallm\integration\config\" />
+    <Folder Include="foundationallm\integration\mspresidio\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="app\" />
-    <Folder Include="app\routers\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include=".gitignore" />
     <Content Include=".pylintrc" />
+    <Content Include="pytest.ini" />
     <Content Include="requirements.txt" />
-    <Content Include="startup.sh" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\IntegrationSDK\IntegrationSDK.pyproj">
-      <Name>IntegrationSDK</Name>
-      <Project>{196a5bcc-f189-443d-8d84-4b3be66bba9f}</Project>
-      <Private>True</Private>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">
@@ -59,6 +46,17 @@
       <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
       <Architecture>X64</Architecture>
     </Interpreter>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="foundationallm\integration\config\configuration_tests.py" />
+    <Compile Include="foundationallm\integration\mspresidio\analyzer_tests.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\python\IntegrationSDK\IntegrationSDK.pyproj">
+      <Name>IntegrationSDK</Name>
+      <Project>{196a5bcc-f189-443d-8d84-4b3be66bba9f}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
