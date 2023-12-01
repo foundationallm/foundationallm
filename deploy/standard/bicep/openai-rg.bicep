@@ -11,8 +11,8 @@ param instanceCount int = 2
 @description('Location used for all resources.')
 param location string
 
-@description('Log Analytic Workspace Id to use for diagnostics')
-param logAnalyticWorkspaceId string
+@description('Log Analytics Workspace Id to use for diagnostics')
+param logAnalyticsWorkspaceId string
 
 @description('Private DNS Zones for private endpoint')
 param privateDnsZones array
@@ -52,7 +52,7 @@ module keyVault 'modules/keyVault.bicep' = {
   params: {
     actionGroupId: actionGroupId
     location: location
-    logAnalyticWorkspaceId: logAnalyticWorkspaceId
+    logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'vault')
     resourceSuffix: resourceSuffix
     subnetId: '${vnetId}/subnets/FLLMOpenAI'
