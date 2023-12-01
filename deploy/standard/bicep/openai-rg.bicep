@@ -46,6 +46,7 @@ var tags = {
 @description('Workload Token used in naming resources.')
 var workload = 'oai'
 
+/** Nested Modules **/
 @description('Key Vault')
 module keyVault 'modules/keyVault.bicep' = {
   name: 'keyVault-${timestamp}'
@@ -60,6 +61,7 @@ module keyVault 'modules/keyVault.bicep' = {
   }
 }
 
+@description('OpenAI')
 module openai './modules/openai.bicep' = [for x in range(0, instanceCount): {
   name: 'ha-openai-openai-${timestamp}-${x}'
   params: {

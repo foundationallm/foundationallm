@@ -105,7 +105,6 @@ task OpenAI -depends ResourceGroups, Ops, Networking, DNS -description "Ensure O
     }
 }
 
-# task Ops -description "Ensure ops resources exist" {
 task Ops -depends ResourceGroups, Networking, DNS -description "Ensure ops resources exist" {
     $opsZones = $($script:privateDnsZoneId | ConvertTo-Json -Compress)
 
