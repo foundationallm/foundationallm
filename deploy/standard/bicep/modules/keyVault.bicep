@@ -1,16 +1,30 @@
+/** Inputs **/
+@description('Action Group Id for alerts')
 param actionGroupId string
-param environmentName string
+
+@description('Location for all resources')
 param location string
+
+@description('Log Analytic Workspace Id to use for diagnostics')
 param logAnalyticWorkspaceId string
-param project string
-param subnetId string
-param workload string
+
+@description('Private DNS Zones for private endpoint')
 param privateDnsZones array
+
+@description('Resource suffix for all resources')
+param resourceSuffix string
+
+@description('Subnet Id for private endpoint')
+param subnetId string
+
+@description('Tags for all resources')
+param tags object
+
+@description('Timestamp for nested deployments')
 param timestamp string = utcNow()
 
-var logs = [ 'AuditEvent', 'AzurePolicyEvaluationDetails' ]
-var name = 'kv-${environmentName}-${location}-${workload}-${project}'
-
+/** Locals **/
+@description('Metric alerts for the resource.')
 var alerts = [
   {
     description: 'Service availability less than 99% for 1 hour'
@@ -47,18 +61,20 @@ var alerts = [
   }
 ]
 
-var tags = {
-  Environment: environmentName
-  IaC: 'Bicep'
-  Project: project
-  Purpose: 'DevOps'
-}
+@description('The Resource logs to enable')
+var logs = [ 'AuditEvent', 'AzurePolicyEvaluationDetails' ]
 
+@description('The Resource Name')
+var name = '${serviceType}-${resourceSuffix}'
+
+@description('The Resource Service Type token')
+var serviceType = 'kv'
+
+/** Outputs **/
 output name string = main.name
 
-/*
-* Creates a key vault.  
-*/
+/** Resources **/
+@description('Resource for configuring the Key Vault.')
 resource main 'Microsoft.KeyVault/vaults@2023-07-01' = {
   name: name
   location: location
@@ -87,9 +103,8 @@ resource main 'Microsoft.KeyVault/vaults@2023-07-01' = {
   }
 }
 
-/**
- * Resource for configuring diagnostic settings.
- */
+/** Nested Modules **/
+@description('Resource for configuring the Key Vault diagnostics.')
 resource diagnostics 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = {
   scope: main
   name: 'diag-kv'
@@ -108,6 +123,7 @@ resource diagnostics 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' 
   }
 }
 
+@description('Resource for configuring the Key Vault metric alerts.')
 module metricAlerts 'utility/metricAlerts.bicep' = {
   name: 'alert-${main.name}-${timestamp}'
   params: {
@@ -120,6 +136,7 @@ module metricAlerts 'utility/metricAlerts.bicep' = {
   }
 }
 
+@description('Resource for configuring the Key Vault private endpoint.')
 module privateEndpoint 'utility/privateEndpoint.bicep' = {
   name: 'pe-${main.name}-${timestamp}'
   params: {

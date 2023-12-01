@@ -10,6 +10,8 @@ $subscription = "4dae7dc4-ef9c-4591-b247-8eacb27f3c9e"
 $timestamp = [int](Get-Date -UFormat %s -Millisecond 0)
 
 properties {
+    $actionGroupId = ""
+    $logAnalyticsWorkspaceId = ""
     $privateDnsZoneId = @{}
     $vnetId = ""
 }
@@ -82,12 +84,21 @@ task Networking -depends ResourceGroups -description "Ensure networking resource
     }
 }
 
-task OpenAI -depends ResourceGroups -description "Ensure OpenAI accounts exist" {
+task OpenAI -depends ResourceGroups, Ops, Networking, DNS -description "Ensure OpenAI accounts exist" {
+    $privateDnsZones = $($script:privateDnsZoneId | ConvertTo-Json -Compress)
+
     az deployment group create `
         --name $deployments["oai"] `
-        --parameters environmentName=$environment location=$location project=$project `
         --resource-group $resourceGroups["oai"] `
-        --template-file ./openai-rg.bicep 
+        --template-file ./openai-rg.bicep `
+        --parameters `
+        actionGroupId=$script:actionGroupId `
+        environmentName=$environment `
+        location=$location `
+        logAnalyticsWorkspaceId=$script:logAnalyticsWorkspaceId `
+        privateDnsZones=$privateDnsZones `
+        project=$project `
+        vnetId=$script:vnetId
 
     if ($LASTEXITCODE -ne 0) {
         throw "The OpenAI deployment failed."
@@ -111,6 +122,30 @@ task Ops -depends ResourceGroups, Networking, DNS -description "Ensure ops resou
 
     if ($LASTEXITCODE -ne 0) {
         throw "The ops deployment failed."
+    }
+
+    $script:actionGroupId = $(
+        az deployment group show `
+            --name $deployments["ops"] `
+            --output tsv `
+            --query properties.outputs.actionGroupId.value `
+            --resource-group $resourceGroups["ops"] 
+    )
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "The Action Group ID could not be retrieved."
+    }
+
+    $script:logAnalyticsWorkspaceId = $(
+        az deployment group show `
+            --name $deployments["ops"] `
+            --output tsv `
+            --query properties.outputs.logAnalyticsWorkspaceId.value `
+            --resource-group $resourceGroups["ops"] 
+    )
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "The Log Analytics Workspace ID could not be retrieved."
     }
 }
 

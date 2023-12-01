@@ -11,6 +11,12 @@ param privateDnsZones array
 @description('Project Name, used in naming resources.')
 param project string
 
+@description('Timestamp used in naming nested deployments.')
+param timestamp string = utcNow()
+
+@description('Virtual Network ID, used to find the subnet IDs.')
+param vnetId string
+
 /** Locals **/
 @description('Resource Suffix used in naming resources.')
 var resourceSuffix = '${environmentName}-${location}-${workload}-${project}'
@@ -35,12 +41,6 @@ var tags = {
   Purpose: 'DevOps'
 }
 
-@description('Timestamp used in naming nested deployments.')
-param timestamp string = utcNow()
-
-@description('Virtual Network ID, used to find the subnet IDs.')
-param vnetId string
-
 @description('Workload Token used in naming resources.')
 var workload = 'ops'
 
@@ -61,6 +61,13 @@ var zonesStorage = filter(
   privateDnsZones,
   (zone) => contains([ 'blob', 'dfs', 'file', 'queue', 'table', 'web' ], zone.key)
 )
+
+/** Outputs **/
+@description('Azure Monitor Action Group')
+output actionGroupId string = actionGroup.outputs.id
+
+@description('Log Analytics Workspace')
+output logAnalyticsWorkspaceId string = logAnalytics.outputs.id
 
 /** Resources **/
 @description('Role Assignments')
@@ -168,13 +175,12 @@ module keyVault 'modules/keyVault.bicep' = {
   name: 'keyVault-${timestamp}'
   params: {
     actionGroupId: actionGroup.outputs.id
-    environmentName: environmentName
     location: location
     logAnalyticWorkspaceId: logAnalytics.outputs.id
     privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'vault')
-    project: project
+    resourceSuffix: resourceSuffix
     subnetId: '${vnetId}/subnets/ops'
-    workload: 'ops'
+    tags: tags
   }
 }
 
