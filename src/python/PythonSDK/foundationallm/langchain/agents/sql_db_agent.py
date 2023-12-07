@@ -46,7 +46,8 @@ class SqlDbAgent(AgentBase):
                                         config = config).get_sql_database(),
                 llm=self.llm,
                 reduce_k_below_max_tokens=True,
-                username = self.context.get_upn(),
+                #username = self.context.get_upn(),
+                username = 'kyle@solliance.net',
                 use_row_level_security = self.sql_db_config.row_level_security_enabled
             ),
             agent_type = AgentType.ZERO_SHOT_REACT_DESCRIPTION,
