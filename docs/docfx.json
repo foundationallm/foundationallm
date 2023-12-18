@@ -1,0 +1,82 @@
+{
+    "metadata": [
+      {
+        "src": [
+          {
+            "src": "../src/dotnet",
+            "files": [
+              "**/**.csproj"
+            ],
+            "exclude": [
+              "**/obj/**",
+              "**/bin/**",
+              "_site/**"
+            ]
+          }
+        ],
+        "dest": "api/dotnet",
+        "includePrivateMembers": false,
+        "disableGitFeatures": false,
+        "disableDefaultFilter": false,
+        "noRestore": false,
+        "memberLayout": "samePage",
+        "namespaceLayout": "nested",
+        "EnumSortOrder": "alphabetic",
+        "allowCompilationErrors": false
+      }
+    ],
+    "build": {
+      "globalMetadata": {
+        "_appName": "FoundationaLLM",
+        "_appTitle": "FoundationaLLM",
+        "_appFaviconPath": "media/favicon.ico",
+        "_appLogoPath": "media/fllm-icon.svg",
+        "_appFooter": "© FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href=\"https://foundationallm.ai\">foundationallm.ai</a>.",
+        "_enableSearch": true,
+        "_disableSideFilter": false,
+        "_disableNewTab": false,
+        "_disableContribution": false,
+        "_disableBreadcrumb": false,
+        "_disableNextArticle": false,
+        "_lang": "en"
+      },
+      "content": [
+        {
+          "files": [
+            "api/dotnet/**.yml",
+            "api/dotnet/README.md"
+          ]
+        },
+        {
+          "files": [
+            "**.md",
+            "**.yml",
+            "toc.yml",
+            "*.md"
+          ]
+        }
+      ],
+      "resource": [
+        {
+          "files": [
+            "**/media/**"
+          ]
+        }
+      ],
+      "output": "_site",
+      "globalMetadataFiles": [],
+      "fileMetadataFiles": [],
+      "template": [
+        "default",
+        "modern",
+        "templates/foundationallm"
+      ],
+      "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ],
+      "postProcessors": ["ExtractSearchIndex"],
+      "markdownEngineName": "markdig",
+      "noLangKeyword": false,
+      "keepFileLink": false,
+      "cleanupCacheHistory": false,
+      "disableGitFeatures": false
+    }
+  }

@@ -18,7 +18,6 @@ Param(
     [parameter(Mandatory = $false)][bool]$stepDeployTls = $true,
     [parameter(Mandatory = $false)][bool]$stepDeployImages = $true,
     [parameter(Mandatory = $false)][bool]$stepUploadSystemPrompts = $true,
-    [parameter(Mandatory = $false)][bool]$stepImportData = $false,
     [parameter(Mandatory = $false)][bool]$stepLoginAzure = $true,
     [parameter(Mandatory = $false)][string]$resourcePrefix = $null
 )
@@ -137,11 +136,6 @@ if ($deployAks) {
     # Write-Host "Retrieving credentials" -ForegroundColor Yellow
     az aks get-credentials -n $aksName -g $resourceGroup --overwrite-existing
 }
-else {
-    if ([string]::IsNullOrEmpty($cosmosDbAccountName)) {
-        $cosmosDbAccountName = $(az deployment group show -g $resourceGroup -n foundationallm-azuredeploy -o json --query properties.outputs.cosmosDbAccountName.value | ConvertFrom-Json)
-    }
-}
 
 # Generate Config
 New-Item -ItemType Directory -Force -Path $(./Join-Path-Recursively.ps1 -pathParts .., __values)
@@ -200,11 +194,6 @@ if ($stepDeployImages) {
     else {
         & ./Deploy-Images-Aca.ps1 -resourceGroup $resourceGroup -acrName $acrName
     }
-}
-
-if ($stepImportData) {
-    # Import Data
-    & ./Import-Data.ps1 -resourceGroup $resourceGroup -cosmosDbAccountName $cosmosDbAccountName
 }
 
 if ($deployAks) {

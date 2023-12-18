@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Constants;
+﻿using System.Text.RegularExpressions;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Common.Models.Chat;
@@ -48,11 +49,9 @@ public class CoreService : ICoreService
     /// <summary>
     /// Returns list of chat session ids and names.
     /// </summary>
-    public async Task<List<Session>> GetAllChatSessionsAsync()
-    {
-        return await _cosmosDbService.GetSessionsAsync(_sessionType, _callContext.CurrentUserIdentity?.UPN ?? 
-            throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat sessions."));
-    }
+    public async Task<List<Session>> GetAllChatSessionsAsync() =>
+        await _cosmosDbService.GetSessionsAsync(_sessionType, _callContext.CurrentUserIdentity?.UPN ?? 
+                                                              throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat sessions."));
 
     /// <summary>
     /// Returns the chat messages related to an existing session.
@@ -166,6 +165,9 @@ public class CoreService : ICoreService
             };
 
             var summary = await _gatekeeperAPIService.GetSummary(summaryRequest);
+
+            // Remove any punctuation from the summary.
+            summary = Regex.Replace(summary, @"[^\w\s]", string.Empty);
 
             await RenameChatSessionAsync(sessionId, summary);
 

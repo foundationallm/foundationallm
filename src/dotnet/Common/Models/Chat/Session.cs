@@ -53,16 +53,15 @@ public record Session
         TokensUsed = 0;
         Name = "New Chat";
         Messages = new List<Message>();
+        UPN = string.Empty;
     }
 
     /// <summary>
     /// Adds a message to the list of messages associated with the session.
     /// </summary>
     /// <param name="message">The message to be added.</param>
-    public void AddMessage(Message message)
-    {
+    public void AddMessage(Message message) =>
         Messages.Add(message);
-    }
 
     /// <summary>
     /// Updates an existing message in the list of messages associated with the session.

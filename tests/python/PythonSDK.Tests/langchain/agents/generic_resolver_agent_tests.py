@@ -3,9 +3,9 @@ from foundationallm.config import Configuration
 from foundationallm.models import ListOption
 from foundationallm.models.orchestration import MessageHistoryItem
 from foundationallm.models.orchestration import CompletionRequest
-from foundationallm.models.metadata import Agent, DataSource, LanguageModel
+from foundationallm.models.metadata import Agent, DataSource
 from foundationallm.langchain.data_sources.blob import BlobStorageConfiguration
-from foundationallm.langchain.language_models import LanguageModelTypes, LanguageModelProviders
+from foundationallm.models.language_models import LanguageModelType, LanguageModelProvider, LanguageModel
 from foundationallm.langchain.language_models import LanguageModelFactory
 from foundationallm.langchain.agents import GenericResolverAgent
 
@@ -15,15 +15,36 @@ def test_config():
 
 @pytest.fixture
 def test_completion_request():
-     req = CompletionRequest(
-                         user_prompt="What is FoundationaLLM?",
-                         agent=Agent(name="demos", type="generic-resolver", description="Useful for choosing one or more items from a list of FoundationaLLM demo options.", prompt_prefix="You are a demo option selector in the FoundationaLLM system. Your job is to select one or more options from a list of options that can best satisfy the incoming User Prompt. An option consists of a name and description. Evaluate each option by its description.\n\nYou are to select the number of options that are requested in the user prompt. Provide the answer in natural language.\n\nExample: The best option for your request is the default demo.\n\nDo not make anything up, do not create a fake conversation, use only the data provided here.\n\n{options}\n\nUser Prompt:{user_prompt}\n\nAnswer:\n"),
-                         data_source=DataSource(name="foundationallm-demos", type="blob-storage", description="Information about FoundationaLLM demos.", configuration=BlobStorageConfiguration(connection_string_secret="FoundationaLLM:BlobStorageMemorySource:BlobStorageConnection", container="demos-source", files = ["demos.json"])),
-                         language_model=LanguageModel(type=LanguageModelTypes.OPENAI, provider=LanguageModelProviders.MICROSOFT, temperature=0, use_chat=True),
-                         message_history=[MessageHistoryItem(sender="User", text="What is FoundationaLLM?"),  
-                                         MessageHistoryItem(sender="Agent", text="FoundationaLLM is a platform accelerating the delivery of secure, trustworthy, enteprise copilots.")]
-                         )
-     return req
+    req = CompletionRequest(
+        user_prompt="What is FoundationaLLM?",
+        agent=Agent(
+            name="demos",
+            type="generic-resolver",
+            description="Useful for choosing one or more items from a list of FoundationaLLM demo options.",
+            prompt_prefix="You are a demo option selector in the FoundationaLLM system. Your job is to select one or more options from a list of options that can best satisfy the incoming User Prompt. An option consists of a name and description. Evaluate each option by its description.\n\nYou are to select the number of options that are requested in the user prompt. Provide the answer in natural language.\n\nExample: The best option for your request is the default demo.\n\nDo not make anything up, do not create a fake conversation, use only the data provided here.\n\n{options}\n\nUser Prompt:{user_prompt}\n\nAnswer:\n"
+        ),
+        data_source=DataSource(
+            name="foundationallm-demos",
+            type="blob-storage",
+            description="Information about FoundationaLLM demos.",
+            configuration=BlobStorageConfiguration(
+                connection_string_secret="FoundationaLLM:BlobStorageMemorySource:BlobStorageConnection",
+                container="demos-source",
+                files = ["demos.json"]
+            )
+        ),
+        language_model=LanguageModel(
+            type=LanguageModelType.OPENAI,
+            provider=LanguageModelProvider.MICROSOFT,
+            temperature=0,
+            use_chat=True
+        ),
+        message_history=[
+            MessageHistoryItem(sender="User", text="What is FoundationaLLM?"),  
+            MessageHistoryItem(sender="Agent", text="FoundationaLLM is a platform accelerating the delivery of secure, trustworthy, enteprise copilots.")
+        ]
+    )
+    return req
 
 
 @pytest.fixture

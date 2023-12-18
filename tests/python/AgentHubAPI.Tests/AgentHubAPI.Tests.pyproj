@@ -23,6 +23,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include=".pylintrc" />
     <Content Include="pytest.ini" />
     <Content Include="requirements.txt" />
   </ItemGroup>
@@ -43,6 +44,7 @@
     <Folder Include="app\routers\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="app\routers\list_agents_tests.py" />
     <Compile Include="app\routers\resolve_tests.py" />
   </ItemGroup>
   <ItemGroup>

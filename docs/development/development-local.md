@@ -1,34 +1,5 @@
 # Configure local development environment
 
-- [Configure local development environment](#configure-local-development-environment)
-  - [Prerequisites](#prerequisites)
-  - [UI](#ui)
-    - [User Portal](#user-portal)
-  - [.NET projects](#net-projects)
-    - [Core API](#core-api)
-      - [Core API app settings](#core-api-app-settings)
-    - [CoreWorker](#CoreWorker)
-      - [CoreWorker app settings](#CoreWorker-app-settings)
-    - [Gatekeeper API](#gatekeeper-api)
-      - [Gatekeeper API app settings](#gatekeeper-api-app-settings)
-    - [Agent Factory API](#agent-factory-api)
-      - [Agent Factory API app settings](#agent-factory-api-app-settings)
-    - [Semantic Kernel API](#semantic-kernel-api)
-      - [Semantic Kernel API app settings](#semantic-kernel-api-app-settings)
-  - [Python projects](#python-projects)
-    - [Python Environment Variables](#python-environment-variables)
-    - [Agent Hub API](#agent-hub-api)
-      - [Agent Hub API Environment Variables](#agent-hub-api-environment-variables)
-    - [Data Source Hub API](#data-source-hub-api)
-      - [Data Source Hub API Environment Variables](#data-source-hub-api-environment-variables)
-    - [Prompt Hub API](#prompt-hub-api)
-      - [Prompt Hub API Environment Variables](#prompt-hub-api-environment-variables)
-    - [LangChain API](#langchain-api)
-      - [LangChain API Environment Variables](#langchain-api-environment-variables)
-  - [Running the solution locally](#running-the-solution-locally)
-    - [Configure and run the backend components](#configure-and-run-the-backend-components)
-    - [Configure and run the frontend components](#configure-and-run-the-frontend-components)
-
 ## Prerequisites
 
 - Environment variables:
@@ -41,6 +12,7 @@
   - [Python 3.11](https://www.python.org/downloads/) or greater (learn more about [Python environments in Visual Studio](https://learn.microsoft.com/visualstudio/python/managing-python-environments-in-visual-studio?view=vs-2022))
   - Docker Desktop (with WSL for Windows machines) ([Mac install](https://docs.docker.com/desktop/install/mac-install/) or [Windows install](https://docs.docker.com/desktop/install/windows-install/))
   - Azure CLI ([v2.51.0 or greater](https://learn.microsoft.com/cli/azure/install-azure-cli))
+  - [Microsoft Azure PowerShell](https://learn.microsoft.com/powershell/azure/install-azure-powershell)
   - [Helm 3.11.1 or greater](https://helm.sh/docs/intro/install/)
 - Frontend (Vue.js (Nuxt) web app)
   - [Visual Studio Code](https://code.visualstudio.com/Download) (recommended for development)
@@ -177,6 +149,9 @@ The `CoreWorker` project is a .NET worker service that acts as the Cosmos DB cha
     "APIs": {
       "AgentFactoryAPI": {
         "APIUrl": "<...>"  // Default local value: https://localhost:7324/
+      },
+      "GatekeeperIntegrationAPI": {
+        "APIUrl": "<...>"  // Default local value: http://localhost:8042/
       }
     }
   }
@@ -354,6 +329,13 @@ Create a local environment variable named `foundationallm-app-configuration-uri`
 | Name | Value | Description |
 | ---- | ----- | ----------- |
 
+### Gatekeeper Integration API
+
+#### Gatekeeper Integration API Environment Variables
+
+| Name | Value | Description |
+| ---- | ----- | ----------- |
+
 ### Prompt Hub API
 
 #### Prompt Hub API Environment Variables
@@ -416,6 +398,7 @@ The backend components consist of the .NET projects and the Python projects. The
       - CoreWorker
       - DataSourceHubAPI
       - GatekeeperAPI
+      - GatekeeperIntegrationAPI
       - LangChainAPI
       - PromptHubAPI
       - SemanticKernelAPI
@@ -428,7 +411,7 @@ The backend components consist of the .NET projects and the Python projects. The
 
 The frontend components consist of the Vue.js (Nuxt) web app.
 
-1. Open the `/src/UserPortal` folder in Visual Studio Code.
+1. Open the `/src/ui/UserPortal` folder in Visual Studio Code.
 
 2. Open the `.env` file and update the `LOCAL_API_URL` value to the URL of the local Core API service (https://localhost:63279). **Important:** Only set this value if you wish to debug the entire solution locally and bypass the App Config service value for the CORE API URL. If you do not wish to debug the entire solution locally, leave this value empty or comment it out.
 

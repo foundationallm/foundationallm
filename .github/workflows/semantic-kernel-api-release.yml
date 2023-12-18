@@ -1,0 +1,14 @@
+name: Semantic Kernel API Release
+
+on:
+  workflow_dispatch:
+    inputs: {}
+
+jobs:
+  release_docker_image:
+    name: Release Docker Image
+    uses: ./.github/workflows/release-docker-image.yml
+    with:
+      image: semantic-kernel-api
+      context: ./src
+      dockerfile: ./src/dotnet/SemanticKernelAPI/Dockerfile

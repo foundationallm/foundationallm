@@ -1,22 +1,26 @@
-import logging
-import os
+"""
+Main entry-point for the FoundationaLLM DataSourceHubAPI.
+Runs web server exposing the API.
+"""
 import uvicorn
 from fastapi import FastAPI
 from app.dependencies import get_config
 from app.routers import resolve, status
-from azure.monitor.opentelemetry import configure_azure_monitor
+#from azure.monitor.opentelemetry import configure_azure_monitor
 
 config = get_config()
 
 # configure_azure_monitor(
-#     connection_string=config.get_value('FoundationaLLM:APIs:DataSourceHubAPI:AppInsightsConnectionString'),
+#     connection_string=
+#       config.get_value('FoundationaLLM:APIs:DataSourceHubAPI:AppInsightsConnectionString'),
 #     disable_offline_storage=True
 # )
 
 app = FastAPI(
     title='FoundationaLLM DataSourceHubAPI',
     summary='API for retrieving DataSource metadata',
-    description='The FoundationaLLM DataSourceHubAPI is a wrapper around DataSourceHub functionality contained in the foundationallm.core Python SDK.',
+    description="""The FoundationaLLM DataSourceHubAPI is a wrapper around DataSourceHub
+                functionality contained in the foundationallm.core Python SDK.""",
     version='1.0.0',
     contact={
         'name':'Solliance, Inc.',
@@ -48,4 +52,5 @@ async def root():
     return { 'message': 'FoundationaLLM DataSourceHubAPI' }
 
 if __name__ == '__main__':
-    uvicorn.run('main:app', host='0.0.0.0', port=8842, reload=True, forwarded_allow_ips='*', proxy_headers=True)
+    uvicorn.run('main:app', host='0.0.0.0', port=8842,
+                reload=True, forwarded_allow_ips='*', proxy_headers=True)

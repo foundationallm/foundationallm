@@ -1,0 +1,18 @@
+<Project>
+  <ItemGroup Label="Analyzers" Condition=" '$(SKIP_ANALYZERS)' == '' ">
+    <PackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" PrivateAssets="All" />
+    <PackageReference Include="SonarAnalyzer.CSharp" PrivateAssets="All" />
+    <PackageReference Include="StyleCop.Analyzers" PrivateAssets="All" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+    <AdditionalFiles Include="$(MsBuildThisFileDirectory)analyzers\Stylecop.json" Visible="false" />
+    <EditorConfigFiles Include="$(MsBuildThisFileDirectory)analyzers\Stylecop.globalconfig" />
+    <EditorConfigFiles Include="$(MsBuildThisFileDirectory)analyzers\$(ProjectType).globalconfig" />
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(SKIP_ANALYZERS)' == '' ">
+    <RunAnalyzers>true</RunAnalyzers>
+    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+  </PropertyGroup>
+</Project>

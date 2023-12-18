@@ -15,10 +15,7 @@ namespace FoundationaLLM.SemanticKernel.API.Controllers
         /// Returns the status of the Semantic Kernel API service.
         /// </summary>
         [HttpGet(Name = "GetServiceStatus")]
-        public IActionResult Get()
-        {
-            return Ok();
-        }
+        public IActionResult Get() => Ok();
 
         /// <summary>
         /// Returns the allowed HTTP methods for the Semantic Kernel API service.
@@ -26,7 +23,7 @@ namespace FoundationaLLM.SemanticKernel.API.Controllers
         [HttpOptions]
         public IActionResult Options()
         {
-            HttpContext.Response.Headers.Add("Allow", new[] { "GET", "POST", "OPTIONS", "DELETE" });
+            HttpContext.Response.Headers.Append("Allow", new[] { "GET", "POST", "OPTIONS", "DELETE" });
 
             return Ok();
         }

@@ -1,6 +1,6 @@
+from typing import Optional
 from foundationallm.hubs import Metadata
 from .sql_authentication_type import SQLAuthenticationType
-from typing import Optional
 
 class SQLAuthenticationMetadata(Metadata):
     authentication_type: SQLAuthenticationType

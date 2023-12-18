@@ -1,0 +1,13 @@
+name: Prompt Hub API Release
+
+on:
+  workflow_dispatch:
+    inputs: {}
+
+jobs:
+  release_docker_image:
+    uses: ./.github/workflows/release-docker-image.yml
+    with:
+      image: prompt-hub-api
+      context: ./src/python
+      dockerfile: ./src/python/PromptHubAPI/Dockerfile

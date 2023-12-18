@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import type { Message, Session, CompletionPrompt } from '@/js/types';
+import type { Message, Session, CompletionPrompt, Agent } from '@/js/types';
 import { getMsalInstance } from '@/js/auth';
 
 export default {
@@ -18,7 +18,7 @@ export default {
 		const accounts = msalInstance.getAllAccounts();
 		const account = accounts[0];
 		const bearerToken = await msalInstance.acquireTokenSilent({ account });
-		
+
 		this.bearerToken = bearerToken.accessToken;
 		return this.bearerToken;
 	},
@@ -87,20 +87,23 @@ export default {
 		} = {};
 		if (rating !== null) params.rating = rating;
 
-		return await this.fetch(
-			`/sessions/${message.sessionId}/message/${message.id}/rate`, {
+		return await this.fetch(`/sessions/${message.sessionId}/message/${message.id}/rate`, {
 				method: 'POST',
 				params
 			},
 		) as Message;
 	},
 
-	async sendMessage(sessionId: string, text: string, agent: string) {
-		const headers = agent ? { 'X-AGENT-HINT': agent } : {};
-		return (await this.fetch(`/sessions/${sessionId}/completion`, {
+	async sendMessage(sessionId: string, text: string, agent: Agent) {
+		const headers = agent ? { 'X-AGENT-HINT': JSON.stringify(agent) } : {};
+		return await this.fetch(`/sessions/${sessionId}/completion`, {
 			method: 'POST',
 			body: JSON.stringify(text),
 			headers,
-		})) as string;
+		}) as string;
+	},
+
+	async getAllowedAgents() {
+		return await this.fetch('/UserProfiles/agents') as Agent[];
 	},
 };

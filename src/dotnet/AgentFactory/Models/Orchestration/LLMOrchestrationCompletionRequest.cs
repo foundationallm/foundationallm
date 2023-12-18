@@ -30,6 +30,12 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Orchestration
         public LanguageModel? LanguageModel { get; set; }
 
         /// <summary>
+        /// Embedding model metadata.
+        /// </summary>
+        [JsonProperty("embedding_model")]
+        public EmbeddingModel? EmbeddingModel { get; set; }
+
+        /// <summary>
         /// Message history list
         /// </summary>
         [JsonProperty("message_history")]

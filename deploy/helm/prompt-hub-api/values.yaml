@@ -5,7 +5,7 @@
 replicaCount: 1
 serviceAccountName: prompt-hub-api
 image:
-  repository: bhm7vnpxv6irqcr.azurecr.io/prompt-hub-api
+  repository: ghcr.io/solliancenet/foundationallm/prompt-hub-api
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: latest
@@ -23,22 +23,7 @@ tolerations: []
 affinity: {}
 
 ingress:
-  enabled: true
-  protocol: #http | https (set by script)
-  annotations:
-    kubernetes.io/ingress.class: addon-http-application-routing
-    ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    ingress.kubernetes.io/rewrite-target: /$2
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
-    nginx.ingress.kubernetes.io/enable-cors:            "true"
-    nginx.ingress.kubernetes.io/secure-backends:        "true"
-    nginx.ingress.kubernetes.io/cors-allow-origin:     "*"
-    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
-    nginx.ingress.kubernetes.io/cors-allow-headers:     "*"
-    nginx.ingress.kubernetes.io/cors-allow-methods:     "*"
-  tls:
-  - secretName: tls-prod
+  enabled: false
 
 env:
   configmap: 

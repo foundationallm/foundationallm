@@ -1,5 +1,5 @@
-from .metadata_base import MetadataBase
 from typing import Optional
+from .metadata_base import MetadataBase
 
 class Agent(MetadataBase):
     """Agent metadata model."""

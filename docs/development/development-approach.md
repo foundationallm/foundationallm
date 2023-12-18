@@ -1,4 +1,4 @@
-# FoundationaLLM DevOps Rules and Guidelines
+# FoundationaLLM DevOps rules and guidelines
 
 FoundationaLLM adheres to the trunk-based development philosophy. If you are a member of the FoundationaLLM core development team or you want to contribute to the code, we strongly encourage you to go through the following materials:
 

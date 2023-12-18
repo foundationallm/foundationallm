@@ -59,5 +59,9 @@ namespace FoundationaLLM.Common.Models.Configuration.Branding
         /// The text color that overlays the <see cref="SecondaryColor"/> of the client in hex format.
         /// </summary>
         public string? SecondaryTextColor { get; set; }
+        /// <summary>
+        /// Comma-separated list of global agents..
+        /// </summary>
+        public string? AllowAgentSelection { get; set; }
     }
 }

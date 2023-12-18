@@ -1,6 +1,5 @@
-import tiktoken
 from typing import List
-
+import tiktoken
 from langchain.callbacks import get_openai_callback
 from langchain.chains.combine_documents.base import BaseCombineDocumentsChain
 from langchain.chains.summarize import load_summarize_chain
@@ -17,8 +16,9 @@ class SummaryAgent(AgentBase):
     """
     Agent for summarizing input text.
     """
-        
-    def __init__(self, completion_request: CompletionRequest, llm: LanguageModelBase, config: Configuration):
+
+    def __init__(self, completion_request: CompletionRequest,
+                 llm: LanguageModelBase, config: Configuration):
         """
         Initializes a SummaryAgent
 
@@ -31,16 +31,18 @@ class SummaryAgent(AgentBase):
             The language model to use for executing the completion request.
         config : Configuration
             Application configuration class for retrieving configuration settings.
-        """        
-        self.config = config        
-        self.summarizer_chain_prompt = PromptTemplate.from_template(completion_request.agent.prompt_prefix)
-        self.llm = llm.get_language_model()
+        """
+        self.config = config
+        self.summarizer_chain_prompt = PromptTemplate.from_template(
+                                        completion_request.agent.prompt_prefix)
+        self.llm = llm.get_completion_model(completion_request.language_model)
         self.model_name = self.config.get_value("FoundationaLLM:LangChain:Summary:ModelName")
         self.max_tokens = self.config.get_value("FoundationaLLM:LangChain:Summary:MaxTokens")
-        
+
     def __get_text_as_documents(self, prompt: str) -> List[Document]:
         """
-        Splits text into smaller parts and creates smaller documents to split the summarization task into smaller jobs.
+        Splits text into smaller parts and creates smaller documents
+            to split the summarization task into smaller jobs.
 
         Parameters
         ----------
@@ -57,7 +59,7 @@ class SummaryAgent(AgentBase):
 
         # Create multiple documents
         return [Document(page_content=t) for t in texts]
-    
+
     def __get_summarizer_chain(self, prompt: str) -> BaseCombineDocumentsChain:
         """
         Builds a LangChain summarizer chain to use for summarizing the user prompt.
@@ -74,10 +76,10 @@ class SummaryAgent(AgentBase):
         """
         model_name = self.model_name
         max_tokens = int(self.max_tokens)
-        
+
         encoding = tiktoken.encoding_for_model(model_name)
         num_tokens = len(encoding.encode(prompt))
-    
+
         # Summarize output filter
         if num_tokens < max_tokens:
             return load_summarize_chain(

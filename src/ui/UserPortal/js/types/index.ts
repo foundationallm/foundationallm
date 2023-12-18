@@ -28,3 +28,8 @@ export interface CompletionPrompt {
 	messageId: string;
 	prompt: string;
 }
+
+export interface Agent {
+	name: string;
+	private: boolean;
+}

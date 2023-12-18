@@ -2,7 +2,6 @@ using Azure.Identity;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Configuration;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.SemanticKernel.Core.Interfaces;
 using FoundationaLLM.SemanticKernel.Core.Models.ConfigurationOptions;
@@ -35,6 +34,10 @@ namespace FoundationaLLM.SemanticKernel.API
                 {
                     options.SetCredential(new DefaultAzureCredential());
                 });
+                options.Select("FoundationaLLM:APIs:*");
+                options.Select("FoundationaLLM:DurableSystemPrompt:*");
+                options.Select("FoundationaLLM:CognitiveSearchMemorySource:*");
+                options.Select("FoundationaLLM:CoreAPI:BlobStorageMemorySource:*");
             });
             if (builder.Environment.IsDevelopment())
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
@@ -82,7 +85,7 @@ namespace FoundationaLLM.SemanticKernel.API
                 ConnectionString = builder.Configuration["FoundationaLLM:APIs:SemanticKernelAPI:AppInsightsConnectionString"],
                 DeveloperMode = builder.Environment.IsDevelopment()
             });
-            builder.Services.AddServiceProfiler();
+            //builder.Services.AddServiceProfiler();
 
             // System prompt service backed by an Azure blob storage account
             builder.Services.AddOptions<DurableSystemPromptServiceSettings>()

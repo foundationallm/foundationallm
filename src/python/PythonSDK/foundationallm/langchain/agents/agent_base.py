@@ -4,7 +4,7 @@ from foundationallm.models.orchestration import CompletionResponse
 
 class AgentBase(ABC):
     """Abstract base class for Agents"""
-    
+
     @abstractmethod
     def run(self, prompt: str) -> CompletionResponse:
         """

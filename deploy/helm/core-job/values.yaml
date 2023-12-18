@@ -5,7 +5,7 @@
 replicaCount: 1
 serviceAccountName: core-job
 image:
-  repository: bhm7vnpxv6irqcr.azurecr.io/chatservicewebapi
+  repository: ghcr.io/solliancenet/foundationallm/core-job
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: latest

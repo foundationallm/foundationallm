@@ -12,11 +12,6 @@
     "location": {
       "type": "string",
       "defaultValue": "eastus",
-      "allowedValues": [
-        "southcentralus",
-        "eastus",
-        "westeurope"
-      ],
       "metadata": {
         "description": "Location where all resources will be deployed. This value defaults to the **East US** region."
       }
@@ -492,7 +487,7 @@
         },
         {
           "key": "FoundationaLLM:CosmosDB:Containers",
-          "value": "Sessions, UserSessions",
+          "value": "Sessions, UserSessions, UserProfiles",
           "contentType": null
         },
         {
@@ -699,6 +694,11 @@
         "partitionKeyPath": "/upn",
         "maxThroughput": 1000
       },
+      "userProfilesContainer": {
+        "name": "UserProfiles",
+        "partitionKeyPath": "/upn",
+        "maxThroughput": 1000
+      },
       "sessionsContainer": {
         "name": "Sessions",
         "partitionKeyPath": "/sessionId",
@@ -719,19 +719,48 @@
       "instances": [
         {
           "key": "agentfactory",
-          "containerPort": 80
+          "containerPort": 80,
+          "replicas": 1,
+          "resources": {
+            "cpu": 0.25,
+            "memory": "0.25Gi"
+          }
         },
         {
           "key": "core",
-          "containerPort": 80
+          "containerPort": 80,
+          "replicas": 1,
+          "resources": {
+            "cpu": 0.25,
+            "memory": "0.25Gi"
+          }
         },
         {
           "key": "gatekeeper",
-          "containerPort": 80
+          "containerPort": 80,
+          "replicas": 1,
+          "resources": {
+            "cpu": 0.25,
+            "memory": "0.25Gi"
+          }
         },
         {
           "key": "semantickernel",
-          "containerPort": 80
+          "containerPort": 80,
+          "replicas": 1,
+          "resources": {
+            "cpu": 0.25,
+            "memory": "0.25Gi"
+          }
+        },
+        {
+          "key": "vectorization",
+          "containerPort": 80,
+          "replicas": 1,
+          "resources": {
+            "cpu": 0.25,
+            "memory": "0.25Gi"
+          }
         }
       ]
     },
@@ -739,7 +768,20 @@
       "name": "[parameters('name')]",
       "instances": [
         {
-          "key": "corejob"
+          "key": "corejob",
+          "replicas": 1,
+          "resources": {
+            "cpu": 0.25,
+            "memory": "0.25Gi"
+          }
+        },
+        {
+          "key": "vectorizationjob",
+          "replicas": 1,
+          "resources": {
+            "cpu": 0.25,
+            "memory": "0.25Gi"
+          }
         }
       ]
     },
@@ -748,7 +790,12 @@
       "instances": [
         {
           "key": "chatui",
-          "containerPort": 3000
+          "containerPort": 3000,
+          "replicas": 1,
+          "resources": {
+            "cpu": 0.25,
+            "memory": "0.25Gi"
+          }
         }
       ]
     },
@@ -760,24 +807,53 @@
       "instances": [
         {
           "key": "agenthub",
-          "containerPort": 80
+          "containerPort": 80,
+          "replicas": 1,
+          "resources": {
+            "cpu": 0.25,
+            "memory": "0.25Gi"
+          }
         },
         {
           "key": "datasourcehub",
-          "containerPort": 80
+          "containerPort": 80,
+          "replicas": 1,
+          "resources": {
+            "cpu": 0.25,
+            "memory": "0.25Gi"
+          }
+        },
+        {
+          "key": "gatekeeperint",
+          "containerPort": 80,
+          "replicas": 1,
+          "resources": {
+            "cpu": 0.25,
+            "memory": "0.25Gi"
+          }
         },
         {
           "key": "langchain",
-          "containerPort": 80
+          "containerPort": 80,
+          "replicas": 10,
+          "resources": {
+            "cpu": 0.5,
+            "memory": "2Gi"
+          }
         },
         {
           "key": "prompthub",
-          "containerPort": 80
+          "containerPort": 80,
+          "replicas": 1,
+          "resources": {
+            "cpu": 0.25,
+            "memory": "0.25Gi"
+          }
         }
       ]
     },
     "safetySettings": {
-      "name": "[format('{0}', parameters('name'))]"
+      "name": "[format('{0}-contentsafety', parameters('name'))]"
     },
     "vnetSettings": {
       "name": "[format('{0}-vnet', parameters('name'))]",
@@ -799,8 +875,6 @@
     "aiSettings": {
       "name": "[format('{0}-ai', parameters('name'))]"
     },
-
-    "langChainApiKey": "[concat('sk-', uniqueString(tenant().tenantId, subscription().subscriptionId, resourceGroup().id))]",
     "roleIdMapping": {
       "Key Vault Administrator": "00482a5a-887f-4fb3-b363-3b7fe8e74483",
       "Key Vault Certificates Officer": "a4417e6f-fecd-4de8-b567-7b0420556985",
@@ -1439,9 +1513,14 @@
       "apiVersion": "2021-09-01",
       "name": "[format('{0}sa', parameters('name'))]",
       "location": "[parameters('location')]",
-      "kind": "Storage",
+      "kind": "StorageV2",
       "sku": {
-        "name": "Standard_LRS"
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "properties": {
+        "isHnsEnabled": true,
+        "accessTier": "Hot"
       }
     },
     {
@@ -1685,16 +1764,16 @@
                 }
               ],
               "resources": {
-                "cpu": 0.5,
-                "memory": "1Gi"
+                "cpu": "[variables('dotnetAcaSettings').instances[copyIndex()].resources.cpu]",
+                "memory": "[variables('dotnetAcaSettings').instances[copyIndex()].resources.memory]"
               },
               "probes": [],
               "volumeMounts": []
             }
           ],
           "scale": {
-            "minReplicas": 2,
-            "maxReplicas": 10
+            "minReplicas": "[variables('dotnetAcaSettings').instances[copyIndex()].replicas]",
+            "maxReplicas": "[variables('dotnetAcaSettings').instances[copyIndex()].replicas]"
           },
           "volumes": []
         }
@@ -1772,16 +1851,16 @@
                 }
               ],
               "resources": {
-                "cpu": 0.5,
-                "memory": "1Gi"
+                "cpu": "[variables('dotnetWorkerAcaSettings').instances[copyIndex()].resources.cpu]",
+                "memory": "[variables('dotnetWorkerAcaSettings').instances[copyIndex()].resources.memory]"
               },
               "probes": [],
               "volumeMounts": []
             }
           ],
           "scale": {
-            "minReplicas": 2,
-            "maxReplicas": 10
+            "minReplicas": "[variables('dotnetWorkerAcaSettings').instances[copyIndex()].replicas]",
+            "maxReplicas": "[variables('dotnetWorkerAcaSettings').instances[copyIndex()].replicas]"
           },
           "volumes": []
         }
@@ -1886,16 +1965,16 @@
                 }
               ],
               "resources": {
-                "cpu": 0.5,
-                "memory": "1Gi"
+                "cpu": "[variables('dotnetWorkerAcaSettings').instances[copyIndex()].resources.cpu]",
+                "memory": "[variables('dotnetWorkerAcaSettings').instances[copyIndex()].resources.memory]"
               },
               "probes": [],
               "volumeMounts": []
             }
           ],
           "scale": {
-            "minReplicas": 2,
-            "maxReplicas": 10
+            "minReplicas": "[variables('nodejsAcaSettings').instances[copyIndex()].replicas]",
+            "maxReplicas": "[variables('nodejsAcaSettings').instances[copyIndex()].replicas]"
           },
           "volumes": []
         }
@@ -2000,16 +2079,16 @@
                 }
               ],
               "resources": {
-                "cpu": 0.5,
-                "memory": "1Gi"
+                "cpu": "[variables('pythonAcaSettings').instances[copyIndex()].resources.cpu]",
+                "memory": "[variables('pythonAcaSettings').instances[copyIndex()].resources.memory]"
               },
               "probes": [],
               "volumeMounts": []
             }
           ],
           "scale": {
-            "minReplicas": 2,
-            "maxReplicas": 10
+            "minReplicas": "[variables('pythonAcaSettings').instances[copyIndex()].replicas]",
+            "maxReplicas": "[variables('pythonAcaSettings').instances[copyIndex()].replicas]"
           },
           "volumes": []
         }
@@ -2100,6 +2179,14 @@
     "semantickernelAcaName": {
       "type": "string",
       "value": "[format('{0}semantickernelca', parameters('name'))]"
+    },
+    "vectorizationAcaName": {
+      "type": "string",
+      "value": "[format('{0}vectorizationca', parameters('name'))]"
+    },
+    "vectorizationJobAcaName": {
+      "type": "string",
+      "value": "[format('{0}vectorizationjobca', parameters('name'))]"
     },
     "chatuiAcaName": {
       "type": "string",

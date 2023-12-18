@@ -1,4 +1,3 @@
-from langchain.tools import PythonREPLTool
 import pandas as pd
 from sqlalchemy import create_engine
 
@@ -8,6 +7,7 @@ from langchain.agents.agent_types import AgentType
 from langchain.callbacks import get_openai_callback
 from langchain.prompts import PromptTemplate
 from langchain.tools.python.tool import PythonREPLTool
+from langchain.schema.output_parser import OutputParserException
 
 from foundationallm.config import Configuration
 from foundationallm.langchain.agents import AgentBase
@@ -40,10 +40,10 @@ class AnomalyDetectionAgent(AgentBase):
             Application configuration class for retrieving configuration settings.
         """
         self.agent_prompt_prefix = completion_request.agent.prompt_prefix
-        self.llm = llm.get_language_model()
+        self.llm = llm.get_completion_model(completion_request.language_model)
         # Currently set up to use a SQL Database table as the source system.
         self.sql_db_config: SQLDatabaseConfiguration = completion_request.data_source.configuration
-        
+
         self.sql_agent_prompt = """You are an anomaly detection agent designed to interact with a SQL database. Given an input question, first create a syntactically correct {dialect} query to run, then look at the results of the query and return the answer to the input question.
         Unless the user specifies a specific number of examples they wish to obtain, always limit your query to at most {top_k} results using the TOP clause as per MS SQL. You can order the results by a relevant column to return the most interesting examples in the database.
         Never query for all the columns from a specific table, only ask for the relevant columns given the question.
@@ -57,13 +57,14 @@ class AnomalyDetectionAgent(AgentBase):
         Question: {input}
         Thought: I should evaluate the question to see if it is related to the database. If so, I should look at the tables in the database to see what I can query. Then I should query the schema of the most relevant tables. If not, I should provide my name and details about the types of questions I can answer. Finally, create a nice sentence that answers the question.
         {agent_scratchpad}"""
-        
+
         #If the question does not seem related to the database, politely answer with your name and details about the types of questions you can answer.
-        
+
         self.sql_agent = create_sql_agent(
             llm = self.llm,
             toolkit = SecureSQLDatabaseToolkit(
-                db = SQLDatabaseFactory(sql_db_config = self.sql_db_config, config = config).get_sql_database(),
+                db = SQLDatabaseFactory(sql_db_config = self.sql_db_config,
+                                        config = config).get_sql_database(),
                 llm=self.llm,
                 reduce_k_below_max_tokens=True,
                 username = self.sql_db_config.username, # TODO: This should be the logged in user.
@@ -77,10 +78,11 @@ class AnomalyDetectionAgent(AgentBase):
                 'handle_parsing_errors': True
             }
         )
-        
+
         self.df = pd.read_sql(
             'SELECT * FROM RumInventory',
-            create_engine(MicrosoftSQLServer(sql_db_config = self.sql_db_config, config = config).get_connection_string()),
+            create_engine(MicrosoftSQLServer(sql_db_config = self.sql_db_config,
+                                             config = config).get_connection_string()),
             index_col='Id'
         )
 
@@ -88,16 +90,18 @@ class AnomalyDetectionAgent(AgentBase):
             llm = self.llm,
             df = self.df,
             verbose = True,
-            prefix = 'You are a helpful agent designed to retrieve statistics about data in a Pandas DataFrame named "df".'
+            prefix = 'You are a helpful agent designed to retrieve statistics about data in a Pandas DataFrame named "df".',
+            handle_parsing_errors='Get the final answer from the output without quotes, verify it is correct, and return that as the response!'
         )
-        
+
         self.python_agent = create_python_agent(
             llm = self.llm,
             tool = PythonREPLTool(),
             agent_type = AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-            verbose = True
+            verbose = True,
+            handle_parsing_errors='Get the final answer from the output without quotes, verify it is correct, and return that as the response!'
         )
-        
+
         self.tools = [
             Tool(
                 name = 'product_database',
@@ -106,10 +110,15 @@ class AnomalyDetectionAgent(AgentBase):
                 handle_tool_error = True
             )
         ]
-        
+
         self.toolkit = AnomalyDetectionToolkit(df_agent=self.statistics_agent, py_agent=self.python_agent)
-        
-        
+
+        self.agent_prompt_suffix = """Begin!
+
+        Question: {input}
+        Thought: I should use the tools available to determine if they input record is anomalous. Validate the output is properly formatted or try again. Finally, generate a nice sentence that answers the question.
+        {agent_scratchpad}"""
+
         self.agent = initialize_agent(
             tools = self.tools + self.toolkit.get_tools(),
             llm = self.llm,
@@ -118,10 +127,12 @@ class AnomalyDetectionAgent(AgentBase):
             max_iterations = 10,
             early_stopping_method = 'generate',
             agent_kwargs={
-                'prefix': self.agent_prompt_prefix
-            }
+                'prefix': self.agent_prompt_prefix,
+                'suffix': self.agent_prompt_suffix
+            },
+            handle_parsing_errors='Get the final answer from the output without quotes, verify it is correct, and return that as the response!'
         )
-        
+
     @property
     def prompt_template(self) -> str:
         """
@@ -132,7 +143,7 @@ class AnomalyDetectionAgent(AgentBase):
             Returns the prompt template for the agent.
         """
         return self.agent.agent.llm_chain.prompt.template
-        
+
     def run(self, prompt: str) -> CompletionResponse:
         """
         Executes an anomaly detection request.
@@ -149,11 +160,16 @@ class AnomalyDetectionAgent(AgentBase):
             the user_prompt, and token utilization and execution cost details.
         """
         with get_openai_callback() as cb:
+            try:
+                completion = self.agent.run(prompt)
+            except OutputParserException as e:
+                completion = str(e)
+
             return CompletionResponse(
-                completion = self.agent.run(prompt),
-                user_prompt= prompt,
-                completion_tokens = cb.completion_tokens,
-                prompt_tokens = cb.prompt_tokens,
-                total_tokens = cb.total_tokens,
-                total_cost = cb.total_cost
+                    completion = completion.replace('Could not parse LLM output: ', '').replace('`', ''),
+                    user_prompt= prompt,
+                    completion_tokens = cb.completion_tokens,
+                    prompt_tokens = cb.prompt_tokens,
+                    total_tokens = cb.total_tokens,
+                    total_cost = cb.total_cost
             )

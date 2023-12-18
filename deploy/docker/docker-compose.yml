@@ -65,6 +65,34 @@ services:
       Logging__Loglevel__Default: 'Debug'
       Logging__Loglevel__Microsoft__AspNetCore: 'Debug'
 
+  vectorization-api:
+    image: ${REGISTRY:-foundationallm}/vectorization-api:${TAG:-latest}
+    build:
+      context: ../../src/
+      dockerfile: ./dotnet/VectorizationAPI/Dockerfile
+    ports:
+    - "80:80"
+    environment:
+      DOTNET_URLS: http://+:80
+      ASPNETCORE_ENVIRONMENT: Production
+      AllowedHosts: '*'
+      Logging__Loglevel__Default: 'Debug'
+      Logging__Loglevel__Microsoft__AspNetCore: 'Debug'
+
+  vectorization-job:
+    image: ${REGISTRY:-foundationallm}/vectorization-job:${TAG:-latest}
+    build:
+      context: ../../src/
+      dockerfile: ./dotnet/VectorizationWorker/Dockerfile
+    ports:
+    - "80:80"
+    environment:
+      DOTNET_URLS: http://+:80
+      ASPNETCORE_ENVIRONMENT: Production
+      AllowedHosts: '*'
+      Logging__Loglevel__Default: 'Debug'
+      Logging__Loglevel__Microsoft__AspNetCore: 'Debug'
+
   langchain-api:
     image: ${REGISTRY:-foundationallm}/langchain-api:${TAG:-latest}
     build:

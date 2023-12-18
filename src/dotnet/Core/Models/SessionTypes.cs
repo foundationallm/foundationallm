@@ -18,7 +18,7 @@ namespace FoundationaLLM.Core.Models
 
         /// <summary>
         /// Named session with matching type for the Session.
-        /// /// </summary>
+        /// </summary>
         public const string Session = "Session";
     }
 }

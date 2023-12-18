@@ -7,3 +7,4 @@ azure-keyvault-secrets==4.7.0
 azure-storage-blob==12.18.2
 email-validator==2.0.0.post2
 azure-monitor-opentelemetry==1.1.0
+pylint==3.0.2

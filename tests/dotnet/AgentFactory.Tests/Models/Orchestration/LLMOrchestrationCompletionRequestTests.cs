@@ -44,12 +44,12 @@ namespace FoundationaLLM.AgentFactory.Tests.Models.Orchestration
             var deserializedCompletionRequest = JsonConvert.DeserializeObject<LLMOrchestrationCompletionRequest>(serializedJson);
 
             // Assert
-            Assert.Equal(_agent.PromptSuffix, deserializedCompletionRequest?.Agent?.PromptSuffix);
-            Assert.Equal(_agent.PromptPrefix, deserializedCompletionRequest?.Agent?.PromptPrefix);
-            Assert.Equal(_dataSourceMetadata.Name, deserializedCompletionRequest?.DataSourceMetadata?.Name);
-            Assert.Equal(_languageModel.Type, deserializedCompletionRequest?.LanguageModel?.Type);
-            Assert.Equal(_messageHistory[0].Sender, deserializedCompletionRequest?.MessageHistory[0].Sender);
-            Assert.Equal(_messageHistory[1].Text, deserializedCompletionRequest?.MessageHistory[1].Text);
+            Assert.Equal(_agent.PromptSuffix ?? string.Empty, deserializedCompletionRequest?.Agent?.PromptSuffix);
+            Assert.Equal(_agent.PromptPrefix ?? string.Empty, deserializedCompletionRequest?.Agent?.PromptPrefix);
+            Assert.Equal(_dataSourceMetadata.Name ?? string.Empty, deserializedCompletionRequest?.DataSourceMetadata?.Name);
+            Assert.Equal(_languageModel.Type ?? string.Empty, deserializedCompletionRequest?.LanguageModel?.Type);
+            Assert.Equal(_messageHistory[0].Sender, deserializedCompletionRequest?.MessageHistory?[0].Sender);
+            Assert.Equal(_messageHistory[1].Text, deserializedCompletionRequest?.MessageHistory?[1].Text);
         }
     }
 }

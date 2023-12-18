@@ -15,6 +15,10 @@ public static class HttpClients
     /// </summary>
     public const string GatekeeperAPI = "GatekeeperAPI";
     /// <summary>
+    /// Named client with matching configuration for the Gatekeeper Integration API.
+    /// </summary>
+    public const string GatekeeperIntegrationAPI = "GatekeeperIntegrationAPI";
+    /// <summary>
     /// Named client with matching configuration for the Agent Factory API.
     /// </summary>
     public const string AgentFactoryAPI = "AgentFactoryAPI";

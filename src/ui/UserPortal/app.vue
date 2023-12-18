@@ -47,4 +47,8 @@ main {
 	margin: 0;
 	font-family: 'Poppins', sans-serif;
 }
+
+.p-component {
+	border-radius: 0px;
+}
 </style>

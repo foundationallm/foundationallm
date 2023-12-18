@@ -17,12 +17,10 @@ namespace FoundationaLLM.Common.Settings
         /// Configures the Newtonsoft JSON serializer settings.
         /// </summary>
         /// <returns></returns>
-        public static JsonSerializerSettings GetJsonSerializerSettings()
-        {
-            return new JsonSerializerSettings()
+        public static JsonSerializerSettings GetJsonSerializerSettings() =>
+            new JsonSerializerSettings()
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
-        }
     }
 }

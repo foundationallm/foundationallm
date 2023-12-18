@@ -2,6 +2,7 @@
 using FoundationaLLM.AgentFactory.Core.Interfaces;
 using FoundationaLLM.AgentFactory.Core.Models.Messages;
 using FoundationaLLM.AgentFactory.Core.Models.Orchestration;
+using FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata;
 using FoundationaLLM.AgentFactory.Interfaces;
 using FoundationaLLM.Common.Models.Chat;
 using FoundationaLLM.Common.Models.Orchestration;
@@ -17,8 +18,8 @@ namespace FoundationaLLM.AgentFactory.Tests.Agents
         private readonly AgentMetadata _agentMetadata = new AgentMetadata
         {
             Name = "TestAgent",
-            AllowedDataSourceNames = new List<string> { "TestDataSource" },
-            LanguageModel = new LanguageModelMetadata
+            AllowedDataSourceNames = ["TestDataSource"],
+            LanguageModel = new LanguageModel
             {
                 Type = "TestModelType",
                 Provider = "TestProvider",
@@ -26,7 +27,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Agents
                 UseChat = true
             }
         };
-        private readonly PromptHubResponse _promptResponse =  new PromptHubResponse
+        private readonly PromptHubResponse _promptResponse = new()
         {
             Prompt = new PromptMetadata
             {

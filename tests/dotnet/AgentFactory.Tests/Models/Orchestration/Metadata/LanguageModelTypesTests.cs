@@ -8,7 +8,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Models.Orchestration.Metadata
         public void LanguageModelTypes_Values_ShouldMatchExpected()
         {
             // Assert
-            Assert.Equal("openai", LanguageModelTypes.OPENAI);
+            Assert.Equal("openai", LanguageModelType.OPENAI);
         }
     }
 }

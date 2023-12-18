@@ -1,0 +1,32 @@
+# Default values for vectorization-job.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+serviceAccountName: vectorization-job
+image:
+  repository: ghcr.io/solliancenet/foundationallm/vectorization-job
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: latest
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+env:
+  configmap: 
+    - name: AZURE_CLIENT_ID
+  secret:
+    - name: FoundationaLLM__AppConfig__ConnectionString
+  values:
+    - name: ASPNETCORE_ENVIRONMENT
+      value: Production

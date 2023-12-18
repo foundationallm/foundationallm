@@ -1,0 +1,14 @@
+name: Data Source Hub API Release
+
+on:
+  workflow_dispatch:
+    inputs: {}
+
+jobs:
+  release_docker_image:
+    name: Release Docker Image
+    uses: ./.github/workflows/release-docker-image.yml
+    with:
+      image: data-source-hub-api
+      context: ./src/python
+      dockerfile: ./src/python/DataSourceHubAPI/Dockerfile

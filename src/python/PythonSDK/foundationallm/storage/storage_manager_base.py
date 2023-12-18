@@ -1,6 +1,9 @@
 from abc import ABC, abstractmethod
 class StorageManagerBase(ABC):
-    """ The StorageManagerBase class is responsible for defining how to interact with a storage account."""
+    """
+    The StorageManagerBase class is responsible for defining how to
+        interact with a storage account.
+    """
     @abstractmethod
     def file_exists(self, path) -> bool:
         pass

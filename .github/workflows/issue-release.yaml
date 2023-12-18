@@ -1,0 +1,61 @@
+name: Release Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_update:
+        type: choice
+        description: Semantic version update type
+        required: true
+        options:
+          - NONE
+          - MAJOR
+          - MINOR
+          - PATCH
+      prerelease_version_update:
+        type: choice
+        description: Pre-release suffix update type
+        required: true
+        options:
+          - REMOVE
+          - ALPHA
+          - BETA
+          - RC
+      changelog:
+        type: string
+        description: Release changelog
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: Fetching the Latest Release Tag number
+      id: releaseVersion
+      run: |
+        release_json=$(curl https://api.github.com/repos/${{ github.repository }}/releases)
+        release_tag=$(echo "$release_json" | jq -r '.[0].tag_name')
+        echo "release_tag: Latest Tag is : $release_tag"
+        echo "release_tag=$release_tag" >> $GITHUB_OUTPUT
+
+    - name: Bumping Release Index
+      id: bump_version
+      uses: cookbenjamin/update-version@v1.0.1
+      with:
+        current-version: ${{ steps.releaseVersion.outputs.release_tag }}
+        increment-version-fragment: ${{ github.event.inputs.version_update }}
+        prerelease-fragment: ${{ github.event.inputs.prerelease_version_update }}
+
+    - name: Create Release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: actions/create-release@v1
+      with:
+        tag_name: ${{ steps.bump_version.outputs.updated-version }}
+        release_name: Release ${{ steps.bump_version.outputs.updated-version }}
+        body: |
+          ${{ github.event.inputs.changelog }}
+        draft: false
+        prerelease: false

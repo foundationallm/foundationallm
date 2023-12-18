@@ -22,3 +22,4 @@ unstructured==0.10.22
 unstructured[all-docs]==0.10.22
 azure-appconfiguration-provider==1.0.0
 azure-monitor-opentelemetry==1.1.0
+pylint==3.0.2

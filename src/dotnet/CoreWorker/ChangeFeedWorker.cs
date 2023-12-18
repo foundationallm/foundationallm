@@ -2,7 +2,7 @@ using FoundationaLLM.Core.Interfaces;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 
-namespace CoreWorker
+namespace FoundationaLLM.Core.Worker
 {
     /// <summary>
     /// Background service that runs the Change Feed Processor.

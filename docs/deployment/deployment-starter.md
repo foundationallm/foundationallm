@@ -1,16 +1,21 @@
-# Deployment - Standard
+# Deployment - Starter
 
 Foundationa**LLM** deploys into your own Azure Subscription. By default it will deploy to Azure Container Apps (ACA) that make it fast to get started. When you want to deploy to production at scale, you can also deploy to Azure Kubernetes Service (AKS). Given that there are Azure Subscription quota limits to the number of Azure OpenAI Service resources you can deploy, you can choose to use an existing Azure OpenAI Service resource instead of a creating a new one with your deployment.
 
 ## Prerequisites
 
-- Azure Subscription
-- Subscription access to Azure OpenAI service. Start here to [Request Access to Azure OpenAI Service](https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR7en2Ais5pxKtso_Pz4b1_xUOFA5Qk1UWDRBMjg0WFhPMkIzTzhKQ1dWNyQlQCN0PWcu)
-- [.NET 7 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
-- Docker Desktop
-- Azure CLI ([v2.51.0 or greater](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli))
-- [Helm 3.11.1 or greater](https://helm.sh/docs/intro/install/)
-- Visual Studio 2022 (only needed if you plan to run/debug the solution locally)
+- Azure Subscription (Subscription needs to be whitelisted for Azure OpenAI).
+- Subscription access to Azure OpenAI service. Start here to [Request Access to Azure OpenAI Service](https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR7en2Ais5pxKtso_Pz4b1_xUNTZBNzRKNlVQSFhZMU9aV09EVzYxWFdORCQlQCN0PWcu).
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0).
+- Docker Desktop.
+- Azure CLI ([v2.51.0 or greater](https://docs.microsoft.com/cli/azure/install-azure-cli)).
+- Helm ([v3.11.1 or greater](https://helm.sh/docs/intro/install/)).
+- Visual Studio 2022 (only needed if you plan to run/debug the solution locally).
+- Minimum quota of 65 CPUs across all VM family types. Start here to [Manage VM Quotas](https://learn.microsoft.com/azure/quotas/per-vm-quota-requests).
+- Two App Registrations created in the Entra ID tenant (Azure Active Directory).
+- User with the following role assignments:
+    - Owner on the target subscription;
+    - Owner on the two app registrations.
 
 ## Deployment steps
 
@@ -33,9 +38,10 @@ Follow the steps below to deploy the solution to your Azure subscription. You wi
         ./deploy/scripts/Unified-Deploy.ps1 -resourceGroup <rg_name> -location <location> -subscription <target_subscription_id>
         ```
 
-        >**NOTE**: Make sure to set the `<location>` value to a region that supports Azure OpenAI services.  See [Azure OpenAI service regions](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=cognitive-services&regions=all) for more information.
+        >**NOTE**: Make sure to set the `<location>` value to a region that supports Azure OpenAI services.  See [Azure OpenAI service regions](https://azure.microsoft.com/explore/global-infrastructure/products-by-region/?products=cognitive-services&regions=all) for more information.
 
     2. Option 2: Full deployment using Microsoft Azure Kubernetes Service (AKS)
+
         To deploy to an AKS environment instead, run the same script with the added argument `-deployAks 1`, as shown below.  This will provision all of the required infrastructure, deploy the API and web app services as pods in an AKS cluster, and import data into Cosmos DB.
 
         ```pwsh
@@ -44,7 +50,9 @@ Follow the steps below to deploy the solution to your Azure subscription. You wi
         ```
 
     3. Option 3: Deployment using an existing Azure OpenAI resource
+
         To deploy using an already provisioned Azure OpenAI resource, add the following parameters:
+
         | Parameter | Description |
         | --- | --- |
         | `-openAiRg` | The name of the resource group containing the Azure OpenAI resource. |
@@ -112,6 +120,3 @@ To update an individual API or portal, you can use the following commands:
     ```
     where `<aca_name>` is the name of the ACA, `<resource_group_name>` is the name of the resource group where the ACA is located, and `<image_name>` is the name of the image you want to update (the structure of the image name is `<acr_name>.azurecr.io/<image_name>:latest`, where `<acr_name>` is the name of the Azure Container Registry, and `<image_name>` is the name of the Docker image).
 
-### Update individual APIs or portals when using Microsoft Azure Kubernetes Service (AKS)
-
-Coming soon...

@@ -24,9 +24,13 @@ class SecureSQLDatabaseQueryTool(BaseSQLDatabaseTool, BaseTool):
         query: str,
         run_manager: Optional[CallbackManagerForToolRun] = None,
     ) -> str:
-        """Execute the query, conditionally wrapping it in MSSQL row-level security statements. Return the results or an error message."""
+        """
+        Execute the query, conditionally wrapping it in MSSQL row-level security statements.
+        Return the results or an error message.
+        """
         if (self.use_row_level_security) and (self.db.dialect=='mssql') and (self.username!=''):
-            if (query.startswith(f"EXECUTE AS USER = '{self.username}';")) and (query.endswith('REVERT;')):
+            if (query.startswith(f"EXECUTE AS USER = '{self.username}';")) \
+                and (query.endswith('REVERT;')):
                 query = query
             else:
                 query = (
@@ -36,5 +40,5 @@ class SecureSQLDatabaseQueryTool(BaseSQLDatabaseTool, BaseTool):
                 )
         else:
             query = query
-        
+
         return self.db.run_no_throw(query)

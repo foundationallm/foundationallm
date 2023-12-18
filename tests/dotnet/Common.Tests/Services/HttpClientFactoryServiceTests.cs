@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FoundationaLLM.Common.Models.Metadata;
 using NSubstitute.Core;
 
 namespace FoundationaLLM.Common.Tests.Services
@@ -38,7 +39,11 @@ namespace FoundationaLLM.Common.Tests.Services
                 Username = "TestUsername",
                 Name = "TestName"
             };
-            var agentHint = "TestAgentHint";
+            var agentHint = new Agent
+            {
+                Name = "TestAgentHint",
+                Private = false
+            };
 
             _apiSettings.DownstreamAPIs.Returns(new System.Collections.Generic.Dictionary<string, DownstreamAPIKeySettings>
             {
@@ -67,7 +72,7 @@ namespace FoundationaLLM.Common.Tests.Services
             Assert.Equal(httpClient.Timeout, TimeSpan.FromSeconds(600));
             Assert.Equal(result.DefaultRequestHeaders.GetValues(Constants.HttpHeaders.APIKey), new[] { apiKey });
             Assert.Equal(result.DefaultRequestHeaders.GetValues(Constants.HttpHeaders.UserIdentity), new[] { JsonConvert.SerializeObject(userContext) });
-            Assert.Equal(result.DefaultRequestHeaders.GetValues(Constants.HttpHeaders.AgentHint), new[] { agentHint });
+            Assert.Equal(result.DefaultRequestHeaders.GetValues(Constants.HttpHeaders.AgentHint), new[] { JsonConvert.SerializeObject(agentHint) });
         }
     }
 }

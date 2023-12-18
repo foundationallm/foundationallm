@@ -184,10 +184,3 @@ if ($deployAks)
     & ./Token-Replace.ps1 -inputFile $gvaluesTemplatePath -outputFile $outputFilePath -tokens $tokens
     Pop-Location
 }
-
-Write-Host "Generating migration settings file..." -ForegroundColor Yellow
-Push-Location $($MyInvocation.InvocationName | Split-Path)
-$migrationSettingsTemplatePath = $(./Join-Path-Recursively -pathParts $migrationSettingsTemplate.Split(","))
-$outputFilePath = $(./Join-Path-Recursively -pathParts .., migrationsettings.json)
-& ./Token-Replace.ps1 -inputFile $migrationSettingsTemplatePath -outputFile $outputFilePath -tokens $tokens
-Pop-Location

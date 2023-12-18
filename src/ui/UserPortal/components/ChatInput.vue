@@ -75,3 +75,15 @@ export default {
 	flex-basis: auto;
 }
 </style>
+
+<style lang="scss">
+@media only screen and (max-width: 545px) {
+	.submit .p-button-label {
+		display: none;
+	}
+
+	.submit .p-button-icon {
+		margin: 0;
+	}
+}
+</style>

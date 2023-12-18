@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FoundationaLLM.Common.Models.Metadata;
 
 namespace FoundationaLLM.Common.Interfaces
 {
@@ -23,7 +24,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// <summary>
         /// The current agent hint. If empty, there is no associated header value.
         /// </summary>
-        string? AgentHint { get; set; }
+        Agent? AgentHint { get; set; }
 
         /// <summary>
         /// The current <see cref="UnifiedUserIdentity"/> object resolved

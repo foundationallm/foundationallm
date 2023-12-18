@@ -8,5 +8,12 @@
 		"provider": "microsoft",
 		"temperature": 0
 	},
+	"embedding_model": {
+        "type": "openai",
+        "provider": "microsoft",
+        "deployment": "embeddings",
+        "model": "text-embedding-ada-002",
+        "chunk_size": 10
+    },
 	"orchestrator": "LangChain"
 }

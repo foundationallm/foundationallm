@@ -1,0 +1,13 @@
+{{- $name := include "vectorization-api.fullname" . -}}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "cfg-{{ $name }}"
+  labels:
+    app: {{ template "vectorization-api.name" . }}
+    chart: {{ template "vectorization-api.chart" .}}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data: 
+  AZURE_CLIENT_ID: {{ .Values.azureWorkloadIdentity.vectorizationApiClientId }}

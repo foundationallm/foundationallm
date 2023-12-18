@@ -19,3 +19,8 @@ Fixes #{bug number} (in this specific format)
 - [ ]  I have included unit tests for the issue/feature
 - [ ]  I have included inline docs for my changes, where applicable
 - [ ]  I have successfully run a local build
+- [ ]  I have provided the required update scripts, where applicable
+- [ ]  I have updated relevant docs, where applicable
+
+> [!NOTE]
+> Instead of adding `X`'s inside the checkboxes you wish to check above, first submit the PR, then check the boxes in the rendered description.

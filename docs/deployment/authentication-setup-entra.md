@@ -2,30 +2,6 @@
 
 FoundationaLLM comes with out-of-the-box support for Microsoft Entra ID authentication. This means that you can use your Microsoft Entra ID account to log in to the chat interface.
 
-Table of contents:
-
-- [Authentication setup: Microsoft Entra ID](#authentication-setup-microsoft-entra-id)
-  - [Creating the Microsoft Entra ID applications](#creating-the-microsoft-entra-id-applications)
-    - [Pre-requisites](#pre-requisites)
-      - [Setup App Configuration access](#setup-app-configuration-access)
-      - [Obtain the URL for the chat UI application](#obtain-the-url-for-the-chat-ui-application)
-    - [Creating the client application](#creating-the-client-application)
-      - [Register the client application in the Microsoft Entra ID admin center](#register-the-client-application-in-the-microsoft-entra-id-admin-center)
-      - [Add a redirect URI to the client application](#add-a-redirect-uri-to-the-client-application)
-      - [Implicit grant and hybrid flows for the client application](#implicit-grant-and-hybrid-flows-for-the-client-application)
-      - [Client secret for the client application](#client-secret-for-the-client-application)
-    - [Creating the API application](#creating-the-api-application)
-      - [Register the API application in the Microsoft Entra ID admin center](#register-the-api-application-in-the-microsoft-entra-id-admin-center)
-      - [Implicit grant and hybrid flows for the API application](#implicit-grant-and-hybrid-flows-for-the-api-application)
-      - [Client secret for the API application](#client-secret-for-the-api-application)
-      - [Expose an API for the API application](#expose-an-api-for-the-api-application)
-      - [Add authorized client application](#add-authorized-client-application)
-    - [Update App Configuration settings](#update-app-configuration-settings)
-    - [Update Key Vault secrets](#update-key-vault-secrets)
-  - [Next steps](#next-steps)
-    - [Restart Core API and Chat UI applications in an ACA Deployment](#restart-core-api-and-chat-ui-applications-in-an-aca-deployment)
-    - [Restart Core API and Chat UI applications in an AKS Deployment](#restart-core-api-and-chat-ui-applications-in-an-aks-deployment)
-
 ## Creating the Microsoft Entra ID applications
 
 To enable Microsoft Entra ID authentication, you need to create two applications in the Microsoft Azure portal:
@@ -36,7 +12,7 @@ To enable Microsoft Entra ID authentication, you need to create two applications
 ### Pre-requisites
 
 > [!NOTE]
-> Make sure that you have [deployed the solution](../deployment/deployment-starter.md) before proceeding with the steps below.
+> Make sure that you have [deployed the solution](../deployment/index.md) before proceeding with the steps below.
 
 #### Setup App Configuration access
 

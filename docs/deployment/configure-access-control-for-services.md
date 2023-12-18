@@ -2,17 +2,6 @@
 
 FoundationaLLM takes a least privilege approach to access control. This means that by default, users have no access to any resources. You must explicitly grant access to users for each resource they need to access. This guide walks you through the process of granting access to users as needed.
 
-Table of contents:
-
-- [Configure access control for services](#configure-access-control-for-services)
-  - [Prerequisites](#prerequisites)
-  - [Azure App Configuration service](#azure-app-configuration-service)
-    - [App Configuration roles](#app-configuration-roles)
-    - [Grant access to the App Configuration service](#grant-access-to-the-app-configuration-service)
-  - [Azure Key Vault service](#azure-key-vault-service)
-    - [Key Vault roles](#key-vault-roles)
-    - [Grant access to the Key Vault service](#grant-access-to-the-key-vault-service)
-
 ## Prerequisites
 
 - You have a FoundationaLLM solution [deployed](deployment-starter.md) and running.

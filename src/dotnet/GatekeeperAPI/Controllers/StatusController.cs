@@ -15,10 +15,7 @@ namespace FoundationaLLM.Gatekeeper.API.Controllers
         /// Returns the status of the Gatekeeper API service.
         /// </summary>
         [HttpGet(Name = "GetServiceStatus")]
-        public IActionResult Get()
-        {
-            return Ok();
-        }
+        public IActionResult Get() => Ok();
 
         /// <summary>
         /// Returns the allowed HTTP methods for the Gatekeeper API service.
@@ -26,7 +23,7 @@ namespace FoundationaLLM.Gatekeeper.API.Controllers
         [HttpOptions]
         public IActionResult Options()
         {
-            HttpContext.Response.Headers.Add("Allow", new[] { "GET", "POST", "OPTIONS" });
+            HttpContext.Response.Headers.Append("Allow", new[] { "GET", "POST", "OPTIONS" });
 
             return Ok();
         }

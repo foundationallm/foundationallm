@@ -2,11 +2,7 @@
 using FoundationaLLM.Common.Models.Authentication;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FoundationaLLM.Common.Models.Metadata;
 
 namespace FoundationaLLM.Common.Middleware
 {
@@ -22,10 +18,8 @@ namespace FoundationaLLM.Common.Middleware
         /// Initializes a new instance of the <see cref="CallContextMiddleware"/> class.
         /// </summary>
         /// <param name="next"></param>
-        public CallContextMiddleware(RequestDelegate next)
-        {
+        public CallContextMiddleware(RequestDelegate next) =>
             _next = next;
-        }
 
         /// <summary>
         /// Executes the middleware.
@@ -55,7 +49,7 @@ namespace FoundationaLLM.Common.Middleware
             var agentHint = context.Request.Headers[Constants.HttpHeaders.AgentHint].FirstOrDefault();
             if (!string.IsNullOrEmpty(agentHint))
             {
-                callContext.AgentHint = agentHint;
+                callContext.AgentHint = JsonConvert.DeserializeObject<Agent>(agentHint);
             }
 
             // Call the next delegate/middleware in the pipeline:

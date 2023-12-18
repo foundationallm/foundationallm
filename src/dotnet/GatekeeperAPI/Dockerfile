@@ -29,3 +29,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "FoundationaLLM.Gatekeeper.API.dll"]
+LABEL org.opencontainers.image.source=https://github.com/solliancenet/foundationallm

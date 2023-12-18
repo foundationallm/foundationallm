@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { useAppConfigStore } from './appConfigStore';
-import type { Session, Message } from '@/js/types';
+import { useAuthStore } from './authStore';
+import type { Session, Message, Agent } from '@/js/types';
 import api from '@/js/api';
 
 export const useAppStore = defineStore('app', {
@@ -8,6 +9,9 @@ export const useAppStore = defineStore('app', {
 		sessions: [] as Session[],
 		currentSession: null as Session | null,
 		currentMessages: [] as Message[],
+		isSidebarClosed: false as boolean,
+		agents: [] as Agent[],
+		selectedAgents: new Map(),
 	}),
 
 	getters: {},
@@ -107,15 +111,24 @@ export const useAppStore = defineStore('app', {
 			this.currentMessages = data;
 		},
 
+		getSessionAgent(session: Session) {
+			return this.selectedAgents.get(session.id);
+		},
+
+		setSessionAgent(session: Session, agent: Agent) {
+			return this.selectedAgents.set(session.id, agent);
+		},
+
 		async sendMessage(text: string) {
 			if (!text) return;
 
+			const authStore = useAuthStore();
 			const tempUserMessage: Message = {
 				completionPromptId: null,
 				id: '',
 				rating: null,
 				sender: 'User',
-				senderDisplayName: 'User',
+				senderDisplayName: authStore.currentAccount?.name ?? 'You',
 				sessionId: this.currentSession!.id,
 				text,
 				timeStamp: new Date().toISOString(),
@@ -140,11 +153,10 @@ export const useAppStore = defineStore('app', {
 			};
 			this.currentMessages.push(tempAssistantMessage);
 
-			const appConfigStore = useAppConfigStore();
 			await api.sendMessage(
 				this.currentSession!.id,
 				text,
-				appConfigStore.selectedAgents.get(this.currentSession.id),
+				this.getSessionAgent(this.currentSession!),
 			);
 			await this.getMessages();
 
@@ -189,5 +201,14 @@ export const useAppStore = defineStore('app', {
 
 			this.currentSession = newSession;
 		},
+
+		toggleSidebar() {
+			this.isSidebarClosed = !this.isSidebarClosed;
+		},
+
+		async getAgents() {
+			this.agents = await api.getAllowedAgents();
+			return this.agents;
+		}
 	},
 });

@@ -25,3 +25,4 @@ flask-sqlalchemy==3.1.1
 chromadb==0.4.14
 unstructured==0.10.22
 unstructured[all-docs]==0.10.22
+pylint==3.0.2

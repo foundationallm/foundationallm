@@ -1,3 +1,4 @@
+using System.Net;
 using Asp.Versioning;
 using Azure.Identity;
 using FoundationaLLM.AgentFactory.Core.Interfaces;
@@ -11,12 +12,10 @@ using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
-using FoundationaLLM.Common.Models.Authentication;
-using FoundationaLLM.Common.Models.Chat;
-using FoundationaLLM.Common.Models.Configuration;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services;
+using FoundationaLLM.Common.Settings;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.Extensions.Http.Resilience;
 using Microsoft.Extensions.Options;
@@ -48,6 +47,8 @@ namespace FoundationaLLM.AgentFactory.API
                 {
                     options.SetCredential(new DefaultAzureCredential());
                 });
+                options.Select("FoundationaLLM:APIs:*");
+                options.Select("FoundationaLLM:AgentFactory:*");
             });
             if (builder.Environment.IsDevelopment())
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
@@ -58,7 +59,7 @@ namespace FoundationaLLM.AgentFactory.API
                 ConnectionString = builder.Configuration["FoundationaLLM:APIs:AgentFactoryAPI:AppInsightsConnectionString"],
                 DeveloperMode = builder.Environment.IsDevelopment()
             });
-            builder.Services.AddServiceProfiler();
+            //builder.Services.AddServiceProfiler();
             builder.Services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ContractResolver = Common.Settings.CommonJsonSerializerSettings.GetJsonSerializerSettings().ContractResolver;
@@ -199,13 +200,7 @@ namespace FoundationaLLM.AgentFactory.API
             };
             downstreamAPISettings.DownstreamAPIs[HttpClients.AgentHubAPI] = agentHubAPISettings;
 
-            // See: https://www.pollydocs.org/strategies/retry.html
-            var retryOptions = new HttpRetryStrategyOptions
-            {
-                BackoffType = DelayBackoffType.Exponential,
-                MaxRetryAttempts = 5,
-                UseJitter = true
-            };
+            var retryOptions = CommonHttpRetryStrategyOptions.GetCommonHttpRetryStrategyOptions();
 
             builder.Services
                     .AddHttpClient(HttpClients.AgentHubAPI,

@@ -20,7 +20,7 @@ Do you have an idea for a feature or a general question about something not cove
 
 ### Reproducing issues
 
-Point us to a [minimalistic project that reproduces this issue (repro)](./docs/contributing/repro.md) hosted in a public GitHub repo.
+Point us to a [minimalistic project that reproduces this issue (repro)](./docs/development/contributing/repro.md) hosted in a public GitHub repo.
 
 We will close this issue if:
 

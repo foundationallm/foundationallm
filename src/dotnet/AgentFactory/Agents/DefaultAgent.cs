@@ -103,7 +103,7 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
             _completionRequestTemplate = new LLMOrchestrationCompletionRequest()
             {
                 UserPrompt = null, // to be filled in GetCompletion / GetSummary
-                Agent = new Agent()
+                Agent = new Agent
                 {
                     Name = _agentMetadata.Name,
                     Type = _agentMetadata.Type,
@@ -111,13 +111,8 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
                     PromptPrefix = promptResponse.Prompt?.PromptPrefix,
                     PromptSuffix = promptResponse.Prompt?.PromptSuffix
                 },
-                LanguageModel = new LanguageModel()
-                {
-                    Type = _agentMetadata.LanguageModel!.Type,
-                    Provider = _agentMetadata.LanguageModel.Provider,
-                    Temperature = _agentMetadata.LanguageModel.Temperature ?? 0f,
-                    UseChat = _agentMetadata.LanguageModel.UseChat ?? true
-                },
+                LanguageModel = _agentMetadata.LanguageModel,
+                EmbeddingModel = _agentMetadata.EmbeddingModel,
                 DataSourceMetadata = dataSourceMetadata,
                 MessageHistory = null // to be filled in GetCompletion
             };

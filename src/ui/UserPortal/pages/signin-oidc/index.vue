@@ -1,31 +1,34 @@
 <template>
 	<div class="login-page">
 		<div class="login-container">
-			<img :src="logoUrl" class="logo" />
+			<img :src="appConfigStore.logoUrl" class="logo" />
 			<Button icon="pi pi-microsoft" label="Sign in" size="large" @click="signIn"></Button>
 		</div>
 	</div>
 </template>
 
+<script setup lang="ts">
+definePageMeta({
+	name: 'auth/login',
+});
+</script>
+
 <script lang="ts">
 import { mapStores } from 'pinia';
 import { useAppConfigStore } from '@/stores/appConfigStore';
-import { attemptLogin } from '@/js/auth';
+import { useAuthStore } from '@/stores/authStore';
 
 export default {
 	name: 'Login',
 
 	computed: {
 		...mapStores(useAppConfigStore),
-
-		logoUrl() {
-			return this.appConfigStore.logoUrl;
-		},
+		...mapStores(useAuthStore),
 	},
 
 	methods: {
 		async signIn() {
-			const response = await attemptLogin();
+			const response = await this.authStore.login();
 			if (response.account) {
 				this.$router.push({ path: '/', query: this.$nuxt._route.query });
 			}

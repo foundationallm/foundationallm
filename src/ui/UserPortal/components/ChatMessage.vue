@@ -1,8 +1,5 @@
 <template>
-	<div
-		class="message-row"
-		:class="message.sender === 'User' ? 'message--out' : 'message--in'"
-	>
+	<div class="message-row" :class="message.sender === 'User' ? 'message--out' : 'message--in'">
 		<div class="message">
 			<div class="message__header">
 				<!-- Sender -->
@@ -12,16 +9,20 @@
 				</span>
 
 				<!-- Tokens & Timestamp -->
-				<span>
-					<Chip 
-						:label="`Tokens: ${message.tokens}`" 
-						:class="message.sender === 'User' ? 'token-chip--out' : 'token-chip--in'" 
+				<span class="message__header--right">
+					<Chip
+						:label="`Tokens: ${message.tokens}`"
+						class="token-chip"
+						:class="message.sender === 'User' ? 'token-chip--out' : 'token-chip--in'"
 						:pt="{
-							root: { style: { borderRadius: '24px', marginRight: '12px' } },
-							label: { style: { color: message.sender === 'User' ? 'var(--primary-color)' : 'var(--accent-color)' } }
+							label: {
+								style: {
+									color: message.sender === 'User' ? 'var(--primary-color)' : 'var(--accent-color)',
+								},
+							},
 						}"
 					/>
-					{{ $filters.timeAgo(new Date(message.timeStamp)) }}
+					<span class="time-stamp">{{ $filters.timeAgo(new Date(message.timeStamp)) }}</span>
 				</span>
 			</div>
 
@@ -38,6 +39,7 @@
 					<!-- Like -->
 					<span>
 						<Button
+							class="message__button"
 							:disabled="message.type === 'LoadingMessage'"
 							size="small"
 							text
@@ -50,6 +52,7 @@
 					<!-- Dislike -->
 					<span>
 						<Button
+							class="message__button"
 							:disabled="message.type === 'LoadingMessage'"
 							size="small"
 							text
@@ -63,6 +66,7 @@
 				<!-- View prompt -->
 				<span class="view-prompt">
 					<Button
+						class="message__button"
 						:disabled="message.type === 'LoadingMessage'"
 						size="small"
 						text
@@ -73,11 +77,11 @@
 
 					<!-- Prompt dialog -->
 					<Dialog
+						class="prompt-dialog"
 						:visible="viewPrompt"
 						modal
 						header="Completion Prompt"
 						:closable="false"
-						:style="{ width: '50vw' }"
 					>
 						<p class="prompt-text">{{ prompt.prompt }}</p>
 						<template #footer>
@@ -88,6 +92,11 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- Date Divider -->
+	<Divider v-if="message.sender == 'User'" align="center" type="solid" class="date-separator">
+		{{ $filters.timeAgo(new Date(message.timeStamp)) }}
+	</Divider>
 </template>
 
 <script lang="ts">
@@ -145,10 +154,9 @@ export default {
 		},
 
 		getDisplayName() {
-			if (this.message.senderDisplayName) {
-				return this.message.sender === 'User' ? this.message.senderDisplayName : `${this.message.sender} - ${this.message.senderDisplayName}`;
-			}
-			return this.message.sender;
+			return this.message.sender === 'User'
+				? this.message.senderDisplayName
+				: `${this.message.sender} - ${this.message.senderDisplayName}`;
 		},
 
 		handleRate(message: Message, isLiked: boolean) {
@@ -178,6 +186,10 @@ export default {
 	box-shadow: 0 5px 10px 0 rgba(27, 29, 33, 0.1);
 }
 
+.date-separator {
+	display: none;
+}
+
 .message--in {
 	.message {
 		background-color: rgba(250, 250, 250, 1);
@@ -199,6 +211,12 @@ export default {
 	padding-left: 12px;
 	padding-right: 12px;
 	padding-top: 8px;
+}
+
+.message__header--right {
+	display: flex;
+	align-items: center;
+	flex-shrink: 0;
 }
 
 .message__body {
@@ -225,6 +243,11 @@ export default {
 	width: 32px;
 	height: 32px;
 	border-radius: 50%;
+	margin-right: 12px;
+}
+
+.token-chip {
+	border-radius: 24px;
 	margin-right: 12px;
 }
 
@@ -263,11 +286,45 @@ export default {
 	white-space: pre-wrap;
 	overflow-wrap: break-word;
 }
+
+@media only screen and (max-width: 950px) {
+	.message {
+		width: 95%;
+	}
+}
 </style>
 
 <style lang="scss">
 .p-chip .p-chip-text {
 	line-height: 1.1;
 	font-size: 0.75rem;
+}
+.prompt-dialog {
+	width: 50vw;
+}
+
+@media only screen and (max-width: 950px) {
+	.prompt-dialog {
+		width: 90vw;
+	}
+
+}
+
+@media only screen and (max-width: 545px) {
+	.date-separator {
+		display: flex !important;
+	}
+	.time-stamp {
+		display: none;
+	}
+	.token-chip {
+		margin-right: 0px !important;
+	}
+	.message__button .p-button-label {
+		display: none;
+	}
+	.message__button .p-button-icon {
+		margin-right: 0px;
+	}
 }
 </style>

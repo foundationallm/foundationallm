@@ -3,6 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{79FE9DBE-1155-4F78-A41F-FE95DEFA19DD}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		eng\Analyzers.targets = eng\Analyzers.targets
+	EndProjectSection
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "dotnet\Core\Core.csproj", "{5AA7F0B6-30E6-451A-B1BE-F003BD3EC203}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SemanticKernel", "dotnet\SemanticKernel\SemanticKernel.csproj", "{503CE23D-63D7-4A26-8475-AA71A45D519B}"
@@ -55,9 +61,21 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PythonSDK.Tests", "..\tests
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AgentHubAPI.Tests", "..\tests\python\AgentHubAPI.Tests\AgentHubAPI.Tests.pyproj", "{A09449F4-008C-4BD8-AF3A-A98B7603D85D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgentFactory.Tests", "..\tests\dotnet\AgentFactory.Tests\AgentFactory.Tests.csproj", "{BD184A53-281D-4CC8-AF48-27A9325C93D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgentFactory.Tests", "AgentFactory.Tests\AgentFactory.Tests.csproj", "{BD184A53-281D-4CC8-AF48-27A9325C93D0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWorker", "dotnet\CoreWorker\CoreWorker.csproj", "{0DEF31F7-72E4-428A-A32B-C11F9C28B192}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vectorization", "dotnet\Vectorization\Vectorization.csproj", "{3A73EEED-1602-4CAC-BAAD-56062A3431CC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectorizationAPI", "dotnet\VectorizationAPI\VectorizationAPI.csproj", "{3D8E64BB-C0D0-433A-AC4C-B9FFCFA4E013}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectorizationWorker", "dotnet\VectorizationWorker\VectorizationWorker.csproj", "{7EE65CBF-9052-4C02-BCDD-61C88A1E10E1}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "GatekeeperIntegrationAPI", "python\GatekeeperIntegrationAPI\GatekeeperIntegrationAPI.pyproj", "{F74CBB5A-97B9-4F68-8077-8BAB49C841DC}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "IntegrationSDK", "python\IntegrationSDK\IntegrationSDK.pyproj", "{196A5BCC-F189-443D-8D84-4B3BE66BBA9F}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "IntegrationSDK.Tests", "..\tests\python\IntegrationSDK.Tests\IntegrationSDK.Tests.pyproj", "{6330DD34-9B05-4BD9-98E7-507134751CCA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -147,6 +165,24 @@ Global
 		{0DEF31F7-72E4-428A-A32B-C11F9C28B192}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DEF31F7-72E4-428A-A32B-C11F9C28B192}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DEF31F7-72E4-428A-A32B-C11F9C28B192}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A73EEED-1602-4CAC-BAAD-56062A3431CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A73EEED-1602-4CAC-BAAD-56062A3431CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A73EEED-1602-4CAC-BAAD-56062A3431CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A73EEED-1602-4CAC-BAAD-56062A3431CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D8E64BB-C0D0-433A-AC4C-B9FFCFA4E013}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D8E64BB-C0D0-433A-AC4C-B9FFCFA4E013}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D8E64BB-C0D0-433A-AC4C-B9FFCFA4E013}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D8E64BB-C0D0-433A-AC4C-B9FFCFA4E013}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EE65CBF-9052-4C02-BCDD-61C88A1E10E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EE65CBF-9052-4C02-BCDD-61C88A1E10E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EE65CBF-9052-4C02-BCDD-61C88A1E10E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EE65CBF-9052-4C02-BCDD-61C88A1E10E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F74CBB5A-97B9-4F68-8077-8BAB49C841DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F74CBB5A-97B9-4F68-8077-8BAB49C841DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{196A5BCC-F189-443D-8D84-4B3BE66BBA9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{196A5BCC-F189-443D-8D84-4B3BE66BBA9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6330DD34-9B05-4BD9-98E7-507134751CCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6330DD34-9B05-4BD9-98E7-507134751CCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -177,6 +213,12 @@ Global
 		{A09449F4-008C-4BD8-AF3A-A98B7603D85D} = {23275624-C0DA-4E93-9291-081D75E8CCD2}
 		{BD184A53-281D-4CC8-AF48-27A9325C93D0} = {28E0E967-A94D-4820-8A61-0B71D3B2780F}
 		{0DEF31F7-72E4-428A-A32B-C11F9C28B192} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
+		{3A73EEED-1602-4CAC-BAAD-56062A3431CC} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
+		{3D8E64BB-C0D0-433A-AC4C-B9FFCFA4E013} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
+		{7EE65CBF-9052-4C02-BCDD-61C88A1E10E1} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
+		{F74CBB5A-97B9-4F68-8077-8BAB49C841DC} = {32FD7A00-B42E-4B0B-B09C-9CE48D8E047B}
+		{196A5BCC-F189-443D-8D84-4B3BE66BBA9F} = {32FD7A00-B42E-4B0B-B09C-9CE48D8E047B}
+		{6330DD34-9B05-4BD9-98E7-507134751CCA} = {23275624-C0DA-4E93-9291-081D75E8CCD2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF5DE858-4B85-4EE8-8A6D-46E8E4FBA078}

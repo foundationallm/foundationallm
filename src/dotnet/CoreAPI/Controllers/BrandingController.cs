@@ -22,19 +22,15 @@ namespace FoundationaLLM.Core.API.Controllers
         /// Constructor for the Branding Controller.
         /// </summary>
         /// <param name="settings"></param>
-        public BrandingController(IOptions<ClientBrandingConfiguration> settings)
-        {
+        public BrandingController(IOptions<ClientBrandingConfiguration> settings) =>
             _settings = settings.Value;
-        }
 
         /// <summary>
         /// Retrieves the branding information for the client.
         /// </summary>
         [AllowAnonymous]
         [HttpGet(Name = "GetBranding")]
-        public IActionResult Index()
-        {
-            return Ok(_settings);
-        }
+        public IActionResult Index() =>
+            Ok(_settings);
     }
 }

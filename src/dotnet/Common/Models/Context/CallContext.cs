@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Metadata;
 
 namespace FoundationaLLM.Common.Models.Context
 {
@@ -12,7 +13,7 @@ namespace FoundationaLLM.Common.Models.Context
     public class CallContext : ICallContext
     {
         /// <inheritdoc/>
-        public string? AgentHint { get; set; }
+        public Agent? AgentHint { get; set; }
         /// <inheritdoc/>
         public UnifiedUserIdentity? CurrentUserIdentity { get; set; }
     }

@@ -1,4 +1,4 @@
-from enum import Enum, auto
+from enum import Enum
 
 class SQLAuthenticationType(Enum):
     CONNECTION_STRING = "connection-string"

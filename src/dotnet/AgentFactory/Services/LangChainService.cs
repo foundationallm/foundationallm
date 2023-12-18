@@ -112,8 +112,8 @@ namespace FoundationaLLM.AgentFactory.Services
                 },
                 LanguageModel = new LanguageModel
                 {
-                    Type = LanguageModelTypes.OPENAI,
-                    Provider = LanguageModelProviders.MICROSOFT,
+                    Type = LanguageModelType.OPENAI,
+                    Provider = LanguageModelProvider.MICROSOFT,
                     Temperature = 0f,
                     UseChat = true
                 }

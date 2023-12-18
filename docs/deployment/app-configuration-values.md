@@ -24,6 +24,8 @@ FoundationaLLM uses Azure App Configuration to store configuration values, Key V
 | `FoundationaLLM:APIs:GatekeeperAPI:APIUrl` | Enter the URL to the service. |   |
 | `FoundationaLLM:APIs:GatekeeperAPI:AppInsightsConnectionString` | Key Vault secret name: `foundationallm-app-insights-connection-string` | This is a Key Vault reference. |
 | `FoundationaLLM:APIs:GatekeeperAPI:ForceHttpsRedirection` | true | By default, the Gatekeeper API forces HTTPS redirection. To override this behavior and allow it to handle HTTP requests, set this value to false. |
+| `FoundationaLLM:APIs:GatekeeperIntegrationAPI:APIKey` | Key Vault secret name: `foundationallm-apis-gatekeeperintegrationapi-apikey` | This is a Key Vault reference. |
+| `FoundationaLLM:APIs:GatekeeperIntegrationAPI:APIUrl` | Enter the URL to the service. |   |
 | `FoundationaLLM:APIs:LangChainAPI:APIKey` | Key Vault secret name: `foundationallm-apis-langchainapi-apikey` | This is a Key Vault reference. |
 | `FoundationaLLM:APIs:LangChainAPI:APIUrl` | Enter the URL to the service. |   |
 | `FoundationaLLM:APIs:LangChainAPI:AppInsightsConnectionString` | Key Vault secret name: `foundationallm-app-insights-connection-string` | This is a Key Vault reference. |
@@ -127,6 +129,7 @@ FoundationaLLM uses Azure App Configuration to store configuration values, Key V
 | `FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.MessagesMinTokens` | 100 |   |
 | `FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.SystemMaxTokens` | 1500 |   |
 | `FoundationaLLM:SemanticKernelAPI:OpenAI.ShortSummaryPromptName` | Summarizer.TwoWords |   |
+| `FoundationaLLM:Vectorization:WorkerSettings`| `{"RequestManagers": [{ "RequestSourceName": "extract", "MaxHandlerInstances": 1 }], "QueuingEngine": 1 }`  | |
 
 ## Feature flags
 

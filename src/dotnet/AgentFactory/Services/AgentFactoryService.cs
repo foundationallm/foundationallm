@@ -27,19 +27,14 @@ public class AgentFactoryService : IAgentFactoryService
 
     private readonly ILogger<AgentFactoryService> _logger;
 
-
-    //private LLMOrchestrationService _llmOrchestrationService = LLMOrchestrationService.LangChain;
-
     /// <summary>
     /// Constructor for the Agent Factory Service.
     /// </summary>
     /// <param name="orchestrationServices"></param>
-    /// <param name="agentFactorySettings"></param>
     /// <param name="agentHubService"></param>    
     /// <param name="promptHubService"></param>    
     /// <param name="dataSourceHubService"></param>    
     /// <param name="logger"></param>
-    /// <param name="userIdentity"></param>
     public AgentFactoryService(
         IEnumerable<ILLMOrchestrationService> orchestrationServices,
         IAgentHubAPIService agentHubService,
@@ -80,8 +75,8 @@ public class AgentFactoryService : IAgentFactoryService
         try
         {
             var agent = await AgentBuilder.Build(
-                completionRequest.UserPrompt,
-                completionRequest.SessionId,
+                completionRequest.UserPrompt ?? string.Empty,
+                completionRequest.SessionId ?? string.Empty,
                 _agentHubAPIService,
                 _orchestrationServices,
                 _promptHubAPIService,
@@ -95,7 +90,7 @@ public class AgentFactoryService : IAgentFactoryService
             return new CompletionResponse
             {
                 Completion = "A problem on my side prevented me from responding.",
-                UserPrompt = completionRequest.UserPrompt,
+                UserPrompt = completionRequest.UserPrompt ?? string.Empty,
                 PromptTokens = 0,
                 CompletionTokens = 0,
                 UserPromptEmbedding = new float[] { 0 }
@@ -111,8 +106,8 @@ public class AgentFactoryService : IAgentFactoryService
         try
         {
             var agent = await AgentBuilder.Build(
-                summaryRequest.UserPrompt,
-                summaryRequest.SessionId,
+                summaryRequest.UserPrompt ?? string.Empty,
+                summaryRequest.SessionId ?? string.Empty,
                 _agentHubAPIService,
                 _orchestrationServices,
                 _promptHubAPIService,

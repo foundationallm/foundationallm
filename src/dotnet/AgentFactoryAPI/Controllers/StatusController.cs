@@ -15,10 +15,7 @@ namespace FoundationaLLM.AgentFactory.API.Controllers
         /// Returns the status of the Agent Factory API service.
         /// </summary>
         [HttpGet(Name = "GetServiceStatus")]
-        public IActionResult Get()
-        {
-            return Ok();
-        }
+        public IActionResult Get() => Ok();
 
         /// <summary>
         /// Returns the allowed HTTP methods for the Agent Factory API service.
@@ -26,7 +23,7 @@ namespace FoundationaLLM.AgentFactory.API.Controllers
         [HttpOptions]
         public IActionResult Options()
         {
-            HttpContext.Response.Headers.Add("Allow", new[] { "GET", "POST", "OPTIONS" });
+            HttpContext.Response.Headers.Append("Allow", new[] { "GET", "POST", "OPTIONS" });
 
             return Ok();
         }

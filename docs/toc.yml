@@ -1,0 +1,61 @@
+items:
+- name: Deployment
+  href: deployment/index.md
+  items:
+  - name: Deployment options
+    href: deployment/index.md
+  - name: Deployment - Starter
+    href: deployment/deployment-starter.md
+  - name: Authentication setup Microsoft Entra ID
+    href: deployment/authentication-setup-entra.md
+  - name: Azure App Configuration values
+    href: deployment/app-configuration-values.md
+  - name: Configuration for deployment
+    href: deployment/deployment-configuration.md
+  - name: Configure access control for services
+    href: deployment/configure-access-control-for-services.md
+- name: Development
+  href: development/index.md
+  items:
+  - name: Development approach
+    href: development/index.md
+  - name: Configure local development environment
+    href: development/development-local.md
+  - name: FoundationaLLM DevOps rules and guidelines
+    href: development/development-approach.md
+  - name: Contributing
+    href: development/contributing/index.md
+    items:
+    - name: Contributing to FoundationaLLM
+      href: development/contributing/index.md
+    - name: Bug report reproduction guide
+      href: development/contributing/repro.md
+    - name: Git workflow
+      href: development/contributing/git-workflow.md
+    - name: Style guide
+      href: development/contributing/style-guide.md
+- name: Setup guides
+  href: setup-guides/index.md
+  items:
+  - name: Setup guides
+    href: setup-guides/index.md
+  - name: Agents
+    href: setup-guides/agents/index.md
+    items:
+    - name: Agents
+      href: setup-guides/agents/index.md
+    - name: SQL database agent setup procedures
+      href: setup-guides/agents/sql-database-agents.md
+- name: API
+  href: api/index.md
+  items:
+  - name: Dotnet
+    href: api/dotnet/index.md
+    items:
+    - name: FoundationaLLM
+      href: api/dotnet/FoundationaLLM.html
+  - name: Python
+    href: api/python/index.md
+    items:
+    - name: Python
+      href: api/python/index.md
