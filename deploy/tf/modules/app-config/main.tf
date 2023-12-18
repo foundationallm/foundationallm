@@ -14,7 +14,7 @@ locals {
       aggregation = "Maximum"
       description = "Service request latency greater than 1000ms for 1 hour"
       frequency   = "PT1M"
-      metric_name = "DailyStorageUsage"
+      metric_name = "DailyStorageUsage" # TODO: this is obviously a bug.
       operator    = "GreaterThan"
       threshold   = 1000
       window_size = "PT1H"

@@ -1,0 +1,399 @@
+/** Inputs **/
+@description('Action Group Id for alerts')
+param actionGroupId string
+
+@description('Cognitive Account Endpoints')
+param cognitiveAccounts array
+
+@description('Location for all resources')
+param location string
+
+@description('Log Analytic Workspace Id to use for diagnostics')
+param logAnalyticWorkspaceId string
+
+@description('Private DNS Zones for private endpoint')
+param privateDnsZones array
+
+@description('The API publisher details.')
+param publisher object = {
+  publisherEmail: 'info@solliance.net' //TODO Param
+  publisherName: 'FoundationaLLM' /// todo param
+}
+
+@description('Resource suffix for all resources')
+param resourceSuffix string
+
+@description('Subnet Id for private endpoint')
+param subnetId string
+
+@description('Tags for all resources')
+param tags object
+
+@description('Timestamp for nested deployments')
+param timestamp string = utcNow()
+
+/** Locals **/
+@description('Metric alerts for the resource.')
+var alerts = [
+  {
+    description: 'Service capacity greater than 75% for 1 hour'
+    evaluationFrequency: 'PT1M'
+    metricName: 'Capacity'
+    name: 'availability'
+    operator: 'GreaterThan'
+    severity: 0
+    threshold: 75
+    timeAggregation: 'Average'
+    windowSize: 'PT1H'
+  }
+]
+
+@description('Enumerate backend names for the HA OpenAI API Policy routing.')
+var backendNames = [for (account, i) in cognitiveAccounts: 'backend-${account.name}']
+
+@description('Enumerate choices for the HA OpenAI API Policy routing.')
+var backendChoices = [for (name, i) in backendNames: format(choiceTemplate, i + 1, name)]
+
+@description('Backend choices for the HA OpenAI API Policy routing.')
+var choices = join(backendChoices, '')
+
+@description('Template for backend choices.')
+var choiceTemplate = '''
+<when condition="@(context.Variables.GetValueOrDefault<int>("backendId") == {0})">
+  <set-backend-service backend-id="{1}"/>
+</when>
+'''
+
+@description('The Resource logs to enable')
+var logs = [ 'WebSocketConnectionLogs', 'GatewayLogs' ]
+
+@description('The Resource Name')
+var name = '${serviceType}-${resourceSuffix}'
+
+@description('Rendered policy that randomly distributes requests across OpenAI backends.')
+var policy = format(policyTemplate, length(cognitiveAccounts) + 1, choices)
+
+@description('Template for OpenAI routing policy.')
+var policyTemplate = '''
+<policies>
+  <inbound>
+    <base />
+    <set-variable name="backendId" value="@(new Random(context.RequestId.GetHashCode()).Next(1, {0}))" />
+    <choose>
+      {1}
+      <otherwise>
+        <!-- Should never happen, but you never know ;) -->
+        <return-response>
+          <set-status code="500" reason="InternalServerError" />
+          <set-header name="Microsoft-Azure-Api-Management-Correlation-Id" exists-action="override">
+            <value>@{{return Guid.NewGuid().ToString();}}</value>
+          </set-header>
+          <set-body>A gateway-related error occurred while processing the request.</set-body>
+        </return-response>
+      </otherwise>
+    </choose>
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>
+'''
+
+// See: https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles
+@description('Role Definition Ids')
+var roleDefinitionIds = {
+  'Key Vault Secrets User': '4633458b-17de-408a-b874-0445c86b69e6'
+}
+
+@description('Role Assignments to create')
+var roleAssignmentsToCreate = [for roleDefinitionId in items(roleDefinitionIds): {
+  name: guid(main.id, resourceGroup().id, roleDefinitionId.value)
+  roleDefinitionId: roleDefinitionId.value
+}]
+
+@description('The Resource Service Type token')
+var serviceType = 'apim'
+
+/** Outputs **/
+
+/** Resources **/
+@description('API Management')
+resource main 'Microsoft.ApiManagement/service@2023-03-01-preview' = {
+  location: location
+  name: name
+  tags: tags
+
+  identity: {
+    type: 'SystemAssigned'
+  }
+
+  sku: {
+    capacity: 1
+    name: 'Developer'
+  }
+
+  properties: {
+    apiVersionConstraint: {}
+    certificates: []
+    developerPortalStatus: 'Enabled'
+    legacyPortalStatus: 'Enabled'
+    natGatewayState: 'Disabled'
+    notificationSenderEmail: 'apimgmt-noreply@mail.windowsazure.com'
+    publicIpAddressId: pip.id
+    publicNetworkAccess: 'Enabled'
+    publisherEmail: publisher.publisherEmail
+    publisherName: publisher.publisherName
+    virtualNetworkConfiguration: { subnetResourceId: subnetId }
+    virtualNetworkType: 'Internal'
+
+    customProperties: {
+      'Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2': 'False'
+      'Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Ssl30': 'false'
+      'Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10': 'false'
+      'Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11': 'false'
+      'Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA': 'false'
+      'Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA': 'false'
+      'Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA': 'false'
+      'Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA': 'false'
+      'Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA': 'false'
+      'Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256': 'false'
+      'Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_GCM_SHA256': 'false'
+      'Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_256_CBC_SHA': 'false'
+      'Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_256_CBC_SHA256': 'false'
+      'Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_256_GCM_SHA384': 'false'
+      'Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168': 'false'
+      'Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Ssl30': 'false'
+      'Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10': 'false'
+      'Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11': 'false'
+    }
+
+    hostnameConfigurations: [
+      {
+        certificateSource: 'BuiltIn'
+        defaultSslBinding: true
+        hostName: '${name}.azure-api.net'
+        negotiateClientCertificate: false
+        type: 'Proxy'
+      }
+    ]
+  }
+}
+
+@description('HA OpenAI API')
+resource api 'Microsoft.ApiManagement/service/apis@2023-03-01-preview' = {
+  parent: main
+  name: 'api-${name}'
+  properties: {
+    apiRevision: '1'
+    displayName: 'HA OpenAI'
+    isCurrent: true
+    path: 'openai'
+    protocols: [ 'https' ]
+    subscriptionRequired: false
+
+    authenticationSettings: {
+      oAuth2AuthenticationSettings: []
+      openidAuthenticationSettings: []
+    }
+
+    subscriptionKeyParameterNames: {
+      header: 'api-key'
+      query: 'subscription-key'
+    }
+  }
+}
+
+@description('HA OpenAI API Policy')
+resource apiPolicy 'Microsoft.ApiManagement/service/apis/policies@2023-03-01-preview' = {
+  dependsOn: [ backend ]
+  name: 'policy'
+  parent: api
+
+  properties: {
+    format: 'rawxml'
+    value: policy
+  }
+}
+
+@description('Diagnostic settings for the resource')
+resource diagnostics 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = {
+  scope: main
+  name: 'diag-${serviceType}'
+  properties: {
+    workspaceId: logAnalyticWorkspaceId
+    logs: [for log in logs: {
+      category: log
+      enabled: true
+    }]
+    metrics: [
+      {
+        category: 'AllMetrics'
+        enabled: true
+      }
+    ]
+  }
+}
+
+@description('Loggers')
+resource loggerAzureMonitor 'Microsoft.ApiManagement/service/loggers@2023-03-01-preview' = {
+  name: 'azuremonitor'
+  parent: main
+
+  properties: {
+    isBuffered: true
+    loggerType: 'azureMonitor'
+  }
+}
+
+@description('Portal Configs')
+resource portalConfigs 'Microsoft.ApiManagement/service/portalconfigs@2023-03-01-preview' = {
+  name: 'default'
+  parent: main
+
+  properties: {
+    enableBasicAuth: false
+    signin: { require: false }
+    signup: { termsOfService: { requireConsent: false } }
+    cors: { allowedOrigins: [] }
+
+    csp: {
+      mode: 'disabled'
+      reportUri: []
+      allowedSources: []
+    }
+
+    delegation: {
+      delegateRegistration: false
+      delegateSubscription: false
+    }
+  }
+}
+
+@description('Public IP Address')
+resource pip 'Microsoft.Network/publicIPAddresses@2023-05-01' = {
+  name: 'pip-${name}'
+  location: location
+  tags: tags
+
+  sku: {
+    name: 'Standard'
+    tier: 'Regional'
+  }
+
+  properties: {
+    ipAddress: '172.190.223.143'
+    publicIPAddressVersion: 'IPv4'
+    publicIPAllocationMethod: 'Static'
+    idleTimeoutInMinutes: 4
+    ipTags: []
+
+    ddosSettings: {
+      protectionMode: 'VirtualNetworkInherited'
+    }
+
+    dnsSettings: {
+      domainNameLabel: name
+      fqdn: '${name}.${location}.cloudapp.azure.com'
+    }
+  }
+}
+
+@description('Role Assignments')
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for roleAssignmentToCreate in roleAssignmentsToCreate: {
+  name: roleAssignmentToCreate.name
+  scope: resourceGroup()
+  properties: {
+    principalId: main.identity.principalId
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleAssignmentToCreate.roleDefinitionId)
+    principalType: 'ServicePrincipal'
+  }
+}]
+
+@description('Service Diagnostics')
+resource sesrviceDiagnostics 'Microsoft.ApiManagement/service/diagnostics@2023-03-01-preview' = {
+  name: 'azuremonitor'
+  parent: main
+
+  properties: {
+    logClientIp: true
+    loggerId: loggerAzureMonitor.id
+
+    backend: {
+      request: {
+        dataMasking: {
+          queryParams: [
+            {
+              mode: 'Hide'
+              value: '*'
+            }
+          ]
+        }
+      }
+    }
+
+    frontend: {
+      request: {
+        dataMasking: {
+          queryParams: [
+            {
+              mode: 'Hide'
+              value: '*'
+            }
+          ]
+        }
+      }
+    }
+
+    sampling: {
+      percentage: 100
+      samplingType: 'fixed'
+    }
+  }
+}
+
+@description('Service Diagnostics Logger')
+resource serviceDiagnosticsLogger 'Microsoft.ApiManagement/service/diagnostics/loggers@2018-01-01' = {
+  parent: sesrviceDiagnostics
+  name: 'azuremonitor'
+}
+
+//** Nested Modules **//
+module backend 'apimBackend.bicep' = [for (account, i) in cognitiveAccounts: {
+  dependsOn: [ roleAssignment ]
+  name: 'backend-${account.name}-${timestamp}'
+  params: {
+    account: account
+    apimName: main.name
+    name: backendNames[i]
+  }
+}]
+
+@description('Private DNS A-records.')
+module dnsRecord 'utility/privateDnsARecord.bicep' = [for zone in privateDnsZones: {
+  name: 'a-record-${zone.name}-${timestamp}'
+  scope: resourceGroup(zone.resourceGroup)
+  params: {
+    ipAddresses: main.properties.privateIPAddresses
+    name: main.name
+    privateDnsZones: privateDnsZones
+  }
+}]
+
+@description('Resource for configuring the Key Vault metric alerts.')
+module metricAlerts 'utility/metricAlerts.bicep' = {
+  name: 'alert-${main.name}-${timestamp}'
+  params: {
+    actionGroupId: actionGroupId
+    alerts: alerts
+    metricNamespace: 'Microsoft.ApiManagement/service'
+    nameSuffix: name
+    serviceId: main.id
+    tags: tags
+  }
+}
