@@ -20,15 +20,18 @@ Coming soon.
 
 ### Chat UI will not load
 
-Ensure that all configuration values have been set in the Azure Key Vault along with the corresponding App Configuration settings. These include:
+Ensure the environment variable is set:
 
-- FoundationaLLM:AppConfig:ConnectionString
-- FoundationaLLM:CosmosDB
+FoundationaLLM:AppConfig:ConnectionString
+
+Ensure that all configuration values have been set in the App Configuration/Azure Key Vault. These include the following with App Config name mapped to Azure Key Vault name (if applicable):
+
+- FoundationaLLM:CosmosDB:Key (foundationallm-cosmosdb-key)
 - FoundationaLLM:Branding
 - FoundationaLLM:APIs:CoreAPI:AppInsightsConnectionString
 - FoundationaLLM:APIs:{HttpClients.GatekeeperAPI}:APIUrl
-- FoundationaLLM:APIs:{HttpClients.GatekeeperAPI}:APIKey
-- FoundationaLLM:CoreAPI:Entra:ClientSecret
+- FoundationaLLM:APIs:{HttpClients.GatekeeperAPI}:APIKey (foundationallm-apis-gatekeeperapi-apikey)
+- FoundationaLLM:CoreAPI:Entra:ClientSecret (foundationallm-coreapi-entra-clientsecret)
 - FoundationaLLM:CoreAPI:Entra:Instance
 - FoundationaLLM:CoreAPI:Entra:TenantId
 - FoundationaLLM:CoreAPI:Entra:ClientId

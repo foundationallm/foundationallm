@@ -24,12 +24,15 @@ Coming soon.
 
 ### Service is not starting
 
-Ensure that all configuration values have been set in the Azure Key Vault along with the corresponding App Configuration settings. These include:
+Ensure the environment variable is set:
 
 - FoundationaLLM:AppConfig:ConnectionString
+
+Ensure that all configuration values have been set in the App Configuration/Azure Key Vault. These include the following with App Config name mapped to Azure Key Vault name (if applicable):
+
 - FoundationaLLM:APIs:SemanticKernelAPI:AppInsightsConnectionString
 - FoundationaLLM:APIs:{HttpClients.SemanticKernelAPI}:APIUrl
-- FoundationaLLM:APIs:{HttpClients.SemanticKernelAPI}:APIKey
+- FoundationaLLM:APIs:{HttpClients.SemanticKernelAPI}:APIKey(foundationallm-apis-sementickernalapi-apikey)
 - FoundationaLLM:DurableSystemPrompt
 - FoundationaLLM:CognitiveSearchMemorySource
 - FoundationaLLM:BlobStorageMemorySource

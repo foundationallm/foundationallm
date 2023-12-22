@@ -4,13 +4,13 @@ The Agent Factory API facilities requests from the Gatekeeper API or other exter
 
 ## Overview
 
-The Agent Factory API is secured via Azure AD and an `X-API-KEY` and requires a user context that is typically passed from the Azure AD/Identity platform secured UI/application.
+The Agent Factory API is secured via an `X-API-KEY` and requires a user context that is typically passed from the Azure Entra/Identity platform secured UI/application.
 
 The Agent Factory API provides the following services:
 
 - Handles Completion and Summary requests from the Gatekeeper API
 - Determines the best agent or agents for a user prompt
-- Determines the best orchestrator (Semantic Kernel or LangChain)
+- Based on agent configuration, the agent factory will call the specific orchestrator (Semantic Kernel or LangChain)
 - Builds a target(s) agent for the user prompt
   - Looks for a proper prompt to send to the sub-agents
   - Loads data sources for target agents (Data Source API)
@@ -32,20 +32,23 @@ Coming soon.
 
 ### Service is not starting
 
-Ensure that all configuration values have been set in the Azure Key Vault along with the corresponding App Configuration settings. These include:
+Ensure the environment variable is set:
 
 - FoundationaLLM:AppConfig:ConnectionString
-- FoundationaLLM:APIs:AgentFactoryAPI:AppInsightsConnectionString
+
+Ensure that all configuration values have been set in the App Configuration/Azure Key Vault. These include the following with App Config name mapped to Azure Key Vault name (if applicable):
+
+- FoundationaLLM:APIs:AgentFactoryAPI:AppInsightsConnectionString (foundationallm-apis-agentfactoryapi-apikey)
 - FoundationaLLM:APIs:{HttpClients.AgentFactoryAPI}:APIUrl
-- FoundationaLLM:APIs:{HttpClients.AgentFactoryAPI}:APIKey
+- FoundationaLLM:APIs:{HttpClients.AgentFactoryAPI}:APIKey (foundationallm-apis-agentfactoryapi-apikey)
 - FoundationaLLM:APIs:{HttpClients.SemanticKernelAPI}:APIUrl
-- FoundationaLLM:APIs:{HttpClients.SemanticKernelAPI}:APIKey
+- FoundationaLLM:APIs:{HttpClients.SemanticKernelAPI}:APIKey (foundationallm-apis-semantickernalapi-apikey)
 - FoundationaLLM:APIs:{HttpClients.LangChainAPI}:APIUrl
-- FoundationaLLM:APIs:{HttpClients.LangChainAPI}:APIKey
+- FoundationaLLM:APIs:{HttpClients.LangChainAPI}:APIKey (foundationallm-apis-langchainapi-apikey)
 - FoundationaLLM:APIs:{HttpClients.AgentHubAPI}:APIUrl
-- FoundationaLLM:APIs:{HttpClients.AgentHubAPI}:APIKey
+- FoundationaLLM:APIs:{HttpClients.AgentHubAPI}:APIKey (foundationallm-apis-agenthubapi-apikey)
 - FoundationaLLM:APIs:{HttpClients.PromptHubAPI}:APIUrl
-- FoundationaLLM:APIs:{HttpClients.PromptHubAPI}:APIKey
+- FoundationaLLM:APIs:{HttpClients.PromptHubAPI}:APIKey (foundationallm-apis-prompthubapi-apikey)
 - FoundationaLLM:AgentFactory
 
 > NOTE: The APIUrl and APIKey (and most other values) are configured automatically for you via the deployment process, however, if the endpoints change due to some post configuration change, you will need to validate the urls and keys are still valid.

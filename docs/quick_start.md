@@ -21,7 +21,7 @@ Due to the Azure Open AI limits and requirements, we have provided the [Unified-
 
 For in-depth steps on how to deploy the FoundationaLLM platform, reference the [Deployment - Standard documentation](https://github.com/solliancenet/foundationallm/blob/main/docs/deployment/deployment-standard.md).
 
-## Setp 2: Configuration
+## Step 2: Configuration
 
 After deploying the ARM template there are some extra steps to get the platform to a fully functioning state.  
 
@@ -30,10 +30,10 @@ Although we have tried to make things as seamless as possible via the ARM templa
 These include:
 
 - [Create and configure an Azure Entra application](https://github.com/solliancenet/foundationallm/blob/main/docs/deployment/authentication-setup-entra.md)
-- [Create and configure the Azure Key Vault secrets](https://github.com/solliancenet/foundationallm/blob/main/docs/deployment/deployment-configuration.md)
-- Set the App Configuration configuration values.
 
 > NOTE:  In the next couple weeks we will be publishing configuration validation scripts that will help you to ensure that you have configured everything properly and for future debugging/testing purposes.
+
+> NOTE: When changing these values, they may not propogate to the nodes immediately.  You should also check to see if you are referencing specific versions from app config in the key vault.
 
 ## Step 3: Verify Services
 
@@ -61,7 +61,7 @@ When running locally, the following ports will typically be used but are subject
 - Data Source Hub API : https://localhost:8842/
 - LangChain Hub API : https://localhost:8765/
 
-The APIs are secured via a 'X-API-KEY' header.  These values are generated during the ARM template deployment and automatically set in the Azure Key Vault.  By default, they are automatically set to the generated resource group name.  As a follow on step, you will want to modify these values to something unique per service.
+The APIs are secured via a 'X-API-KEY' header.  These values are generated during the ARM template deployment and automatically set in the Azure Key Vault via the deployment script.  As a follow on step, you will want to modify these values to something unique per service.
 
 > NOTE: When running via AKS or ACS, the urls will be generated during deployment of the services to the container instances (ex https://abc.xyz.eastus.azurecontainerapps.io/ or https://abc.eastus.aksapp.io/).
 
@@ -75,4 +75,4 @@ As a follow on to the basic setup and configuration, we encourage you to explore
 
 ## Licensing
 
-This code is provided free for personal use. For other uses, please review our [licensing and support details](https://www.foundationallm.ai/license).
+Please review our [licensing and support details](https://github.com/solliancenet/foundationallm/blob/main/LICENSE).

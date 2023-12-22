@@ -4,7 +4,7 @@ The Gatekeeper API facilities requests from the Core API or other external appli
 
 ## Overview
 
-The Gatekeeper API is secured via Azure AD and an `X-API-KEY` and requires a user context that is typically passed from the Azure AD/Identity platform secured UI/application.
+The Gatekeeper API is secured via an `X-API-KEY` and requires a user context that is typically passed from the Azure Entra/Identity platform secured UI/application.
 
 The Gatekeeper API provides the following services:
 
@@ -20,12 +20,15 @@ Coming soon.
 
 ### Service is not starting
 
-Ensure that all configuration values have been set in the Azure Key Vault along with the corresponding App Configuration settings. These include:
+Ensure the environment variable is set:
 
 - FoundationaLLM:AppConfig:ConnectionString
+
+Ensure that all configuration values have been set in the Azure Key Vault along with the corresponding App Configuration settings. These include:
+
 - FoundationaLLM:APIs:GatekeeperAPI:AppInsightsConnectionString
 - FoundationaLLM:APIs:{HttpClients.GatekeeperAPI}
-- FoundationaLLM:AzureContentSafety
-- FoundationaLLM:CoreAPI:Entra:ClientSecret
-- FoundationaLLM:APIs:{HttpClients.AgentFactoryAPI}
-- FoundationaLLM:APIs:{HttpClients.AgentFactoryAPI}
+- FoundationaLLM:AzureContentSafety:APIUrl
+- FoundationaLLM:AzureContentSafety:APIKey (foundationallm-azurecontentsafety-apikey)
+- FoundationaLLM:APIs:{HttpClients.AgentFactoryAPI}:APIUrl
+- FoundationaLLM:APIs:{HttpClients.AgentFactoryAPI}:APIKey (foundationallm-apis-agentfactoryapi-apikey)

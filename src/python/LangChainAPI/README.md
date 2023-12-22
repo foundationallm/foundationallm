@@ -23,13 +23,16 @@ Coming soon.
 
 ### Service is not starting
 
-Ensure that all configuration values have been set in the Azure Key Vault along with the corresponding App Configuration settings. These include:
+Ensure the environment variable is set:
 
 - FoundationaLLM:AppConfig:ConnectionString
-- FoundationaLLM:APIs:LangChainAPI:Key
+
+Ensure that all configuration values have been set in the App Configuration/Azure Key Vault. These include the following with App Config name mapped to Azure Key Vault name (if applicable):
+
+- FoundationaLLM:APIs:LangChainAPI:Key (foundationallm-apis-langchainapi-apikey)
 - FoundationaLLM:AzureOpenAI:API:Endpoint
 - FoundationaLLM:AzureOpenAI:API:Version
-- FoundationaLLM:AzureOpenAI:API:Key
+- FoundationaLLM:AzureOpenAI:API:Key (foundationallm-azureopenai-api-key)
 
 ### Data Source Hub not returning agents
 
