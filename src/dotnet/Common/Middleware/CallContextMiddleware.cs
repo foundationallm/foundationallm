@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Models.Authentication;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using FoundationaLLM.Common.Models.Metadata;
+using Microsoft.AspNetCore.Authentication;
 
 namespace FoundationaLLM.Common.Middleware
 {
@@ -21,7 +22,7 @@ namespace FoundationaLLM.Common.Middleware
         public CallContextMiddleware(RequestDelegate next) =>
             _next = next;
 
-        /// <summary>
+        //// <summary>
         /// Executes the middleware.
         /// </summary>
         /// <param name="context">The current HTTP request context.</param>
@@ -35,6 +36,7 @@ namespace FoundationaLLM.Common.Middleware
             {
                 // Extract from ClaimsPrincipal if available:
                 callContext.CurrentUserIdentity = claimsProviderService.GetUserIdentity(context.User);
+                callContext.Token = await context.GetTokenAsync("access_token");
             }
             else
             {
