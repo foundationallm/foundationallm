@@ -22,7 +22,7 @@ namespace FoundationaLLM.Common.Middleware
         public CallContextMiddleware(RequestDelegate next) =>
             _next = next;
 
-        //// <summary>
+        /// <summary>
         /// Executes the middleware.
         /// </summary>
         /// <param name="context">The current HTTP request context.</param>
