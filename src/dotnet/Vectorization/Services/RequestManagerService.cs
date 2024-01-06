@@ -55,25 +55,14 @@ namespace FoundationaLLM.Vectorization.Services
         }
 
         /// <inheritdoc/>
-        public Task Start()
+        public async Task Run()
         {
-            _logger.LogInformation($"Starting the request manager service for the source [{_settings.RequestSourceName}]...");
+            _logger.LogInformation($"The request manager service associated with source [{_settings.RequestSourceName}] started processing requests.");
 
-            var result = Task.Run(() => Run());
-
-            _logger.LogInformation($"The request manager service for the source [{_settings.RequestSourceName}] started successfully.");
-            return result;
-        }
-
-        /// <summary>
-        /// Starts the vectorization requests processing loop.
-        /// </summary>
-        private async void Run()
-        {
             while (true)
             {
                 if (_cancellationToken.IsCancellationRequested)
-                    return;
+                    break;
 
                 try
                 {
@@ -101,6 +90,8 @@ namespace FoundationaLLM.Vectorization.Services
                     _logger.LogError(ex, $"Error in request processing loop (request source name: {_settings.RequestSourceName}).");
                 }
             }
+
+            _logger.LogInformation($"The request manager service associated with source [{_settings.RequestSourceName}] finished processing requests.");
         }
 
         private async Task ProcessRequest(VectorizationRequest request)
@@ -132,11 +123,16 @@ namespace FoundationaLLM.Vectorization.Services
         {
             var nextStep = request.MoveToNextStep();
 
-            if (!_requestSourceServices.ContainsKey(nextStep)
-                || _requestSourceServices[nextStep] == null)
-                throw new VectorizationException($"Could not find the [{nextStep}] request source service for request id {request.Id}.");
+            if (!string.IsNullOrEmpty(nextStep))
+            {
+                // The vectorization request still has steps to be processed
 
-            await _requestSourceServices[nextStep].SubmitRequest(request);
+                if (!_requestSourceServices.ContainsKey(nextStep)
+                    || _requestSourceServices[nextStep] == null)
+                    throw new VectorizationException($"Could not find the [{nextStep}] request source service for request id {request.Id}.");
+
+                await _requestSourceServices[nextStep].SubmitRequest(request);
+            }
         }
     }
 }

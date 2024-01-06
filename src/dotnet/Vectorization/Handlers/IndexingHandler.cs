@@ -5,7 +5,8 @@ namespace FoundationaLLM.Vectorization.Handlers
 {
     public class IndexingHandler : VectorizationStepHandlerBase
     {
-        public IndexingHandler() : base(VectorizationSteps.Index)
+        public IndexingHandler(
+            Dictionary<string, string> parameters) : base(VectorizationSteps.Index, parameters)
         {
         }
 

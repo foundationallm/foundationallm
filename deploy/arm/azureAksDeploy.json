@@ -664,6 +664,11 @@
           "key": "FoundationaLLM:SemanticKernelAPI:OpenAI:Key",
           "value": "[concat('{\"uri\":\"https://',variables('keyVaultSettings').name, '.vault.azure.net/secrets/foundationallm-semantickernelapi-openai-key\"}')]",
           "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+        },
+        {
+          "key": "FoundationaLLM:Vectorization:WorkerSettings",
+          "value": "{\n\t\"RequestManagers\": [\n\t\t{\n\t\t\t\"RequestSourceName\": \"extract\",\n\t\t\t\"MaxHandlerInstances\": 1\n\t\t},\n\t\t{\n\t\t\t\"RequestSourceName\": \"partition\",\n\t\t\t\"MaxHandlerInstances\": 1\n\t\t},\n\t\t{\n\t\t\t\"RequestSourceName\": \"embed\",\n\t\t\t\"MaxHandlerInstances\": 1\n\t\t},\n\t\t{\n\t\t\t\"RequestSourceName\": \"index\",\n\t\t\t\"MaxHandlerInstances\": 1\n\t\t}\n\t],\n\t\"QueuingEngine\": \"None\"\n}",
+          "contentType": "application/json"
         }
       ],
       "featureFlags": [
@@ -728,11 +733,6 @@
           "addressPrefix": "10.244.0.0/16"
         }
       }
-    },
-    "acrSettings": {
-      "name": "[format('{0}cr', parameters('name'))]",
-      "sku": "Basic",
-      "tier": "Basic"
     },
     "aksSettings": {
       "name": "[format('{0}-aks', parameters('name'))]",
@@ -1309,97 +1309,6 @@
         ],
         "virtualNetworkPeerings": [],
         "enableDdosProtection": false
-      }
-    },
-    {
-      "type": "Microsoft.ContainerRegistry/registries",
-      "apiVersion": "2023-01-01-preview",
-      "name": "[variables('acrSettings').name]",
-      "location": "[parameters('location')]",
-      "sku": {
-        "name": "[variables('acrSettings').sku]",
-        "tier": "[variables('acrSettings').tier]"
-      },
-      "properties": {
-        "adminUserEnabled": true,
-        "policies": {
-          "quarantinePolicy": {
-            "status": "disabled"
-          },
-          "trustPolicy": {
-            "type": "Notary",
-            "status": "disabled"
-          },
-          "retentionPolicy": {
-            "days": 7,
-            "status": "disabled"
-          },
-          "exportPolicy": {
-            "status": "enabled"
-          },
-          "azureADAuthenticationAsArmPolicy": {
-            "status": "enabled"
-          },
-          "softDeletePolicy": {
-            "retentionDays": 7,
-            "status": "disabled"
-          }
-        },
-        "encryption": {
-          "status": "disabled"
-        },
-        "dataEndpointEnabled": false,
-        "publicNetworkAccess": "Enabled",
-        "networkRuleBypassOptions": "AzureServices",
-        "zoneRedundancy": "Disabled",
-        "anonymousPullEnabled": false
-      }
-    },
-    {
-      "type": "Microsoft.ContainerRegistry/registries/scopeMaps",
-      "apiVersion": "2023-01-01-preview",
-      "name": "[concat(variables('acrSettings').name, '/_repositories_admin')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.ContainerRegistry/registries', variables('acrSettings').name)]"
-      ],
-      "properties": {
-        "description": "Can perform all read, write and delete operations on the registry",
-        "actions": [
-          "repositories/*/metadata/read",
-          "repositories/*/metadata/write",
-          "repositories/*/content/read",
-          "repositories/*/content/write",
-          "repositories/*/content/delete"
-        ]
-      }
-    },
-    {
-      "type": "Microsoft.ContainerRegistry/registries/scopeMaps",
-      "apiVersion": "2023-01-01-preview",
-      "name": "[concat(variables('acrSettings').name, '/_repositories_pull')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.ContainerRegistry/registries', variables('acrSettings').name)]"
-      ],
-      "properties": {
-        "description": "Can pull any repository of the registry",
-        "actions": [
-          "repositories/*/content/read"
-        ]
-      }
-    },
-    {
-      "type": "Microsoft.ContainerRegistry/registries/scopeMaps",
-      "apiVersion": "2023-01-01-preview",
-      "name": "[concat(variables('acrSettings').name, '/_repositories_push')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.ContainerRegistry/registries', variables('acrSettings').name)]"
-      ],
-      "properties": {
-        "description": "Can push to any repository of the registry",
-        "actions": [
-          "repositories/*/content/read",
-          "repositories/*/content/write"
-        ]
       }
     },
     {
@@ -1990,13 +1899,13 @@
     {
       "type": "Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials",
       "apiVersion": "2023-01-31",
-      "name": "[format('{0}/{1}', variables('vectorizationSettings').miName, 'semanticKernelId')]",
+      "name": "[format('{0}/{1}', variables('vectorizationSettings').miName, 'vectorizationId')]",
       "properties": {
         "audiences": [
           "api://AzureADTokenExchange"
         ],
         "issuer": "[reference(resourceId('Microsoft.ContainerService/managedClusters', variables('aksSettings').name), providers('Microsoft.ContainerService','managedClusters').apiVersions[0]).oidcIssuerProfile.issuerURL]",
-        "subject": "system:serviceaccount:default:semantic-kernel-api"
+        "subject": "system:serviceaccount:default:vectorization-api"
       },
       "dependsOn": [
         "[resourceId('Microsoft.ContainerService/managedClusters', variables('aksSettings').name)]",
@@ -2012,13 +1921,13 @@
     {
       "type": "Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials",
       "apiVersion": "2023-01-31",
-      "name": "[format('{0}/{1}', variables('vectorizationJobSettings').miName, 'semanticKernelId')]",
+      "name": "[format('{0}/{1}', variables('vectorizationJobSettings').miName, 'vectorizationJobId')]",
       "properties": {
         "audiences": [
           "api://AzureADTokenExchange"
         ],
         "issuer": "[reference(resourceId('Microsoft.ContainerService/managedClusters', variables('aksSettings').name), providers('Microsoft.ContainerService','managedClusters').apiVersions[0]).oidcIssuerProfile.issuerURL]",
-        "subject": "system:serviceaccount:default:semantic-kernel-api"
+        "subject": "system:serviceaccount:default:vectorization-job"
       },
       "dependsOn": [
         "[resourceId('Microsoft.ContainerService/managedClusters', variables('aksSettings').name)]",

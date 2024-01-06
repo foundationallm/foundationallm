@@ -20,13 +20,13 @@ namespace FoundationaLLM.Vectorization.Handlers
             switch (step)
             {
                 case VectorizationSteps.Extract:
-                    return new ExtractionHandler();
+                    return new ExtractionHandler(parameters);
                 case VectorizationSteps.Partition:
-                    return new PartitionHandler();
+                    return new PartitionHandler(parameters);
                 case VectorizationSteps.Embed:
-                    return new EmbeddingHandler();
+                    return new EmbeddingHandler(parameters);
                 case VectorizationSteps.Index:
-                    return new IndexingHandler();
+                    return new IndexingHandler(parameters);
                 default:
                     throw new VectorizationException($"There is no handler available for the vectorization pipeline step [{step}].");
             }

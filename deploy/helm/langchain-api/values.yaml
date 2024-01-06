@@ -5,7 +5,7 @@
 replicaCount: 1
 serviceAccountName: langchain-api
 image:
-  repository: bhm7vnpxv6irqcr.azurecr.io/langchain-api
+  repository: ghcr.io/solliancenet/foundationallm/langchain-api
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: latest

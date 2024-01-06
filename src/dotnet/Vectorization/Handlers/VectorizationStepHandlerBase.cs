@@ -7,14 +7,16 @@ namespace FoundationaLLM.Vectorization.Handlers
     public class VectorizationStepHandlerBase : IVectorizationStepHandler
     {
         protected readonly string _stepId = string.Empty;
+        protected readonly Dictionary<string, string> _parameters;
 
         /// <inheritdoc/>
         public string StepId => _stepId;
 
         public VectorizationStepHandlerBase(
-            string stepId)
+            string stepId, Dictionary<string, string> parameters)
         {
             _stepId = stepId;
+            _parameters = parameters;
         }
 
         /// <inheritdoc/>
@@ -41,9 +43,7 @@ namespace FoundationaLLM.Vectorization.Handlers
                 throw new VectorizationException($"The request with id {request.Id} does not contain a step with id {_stepId}.");
         }
 
-        protected virtual async Task ProcessRequest(VectorizationRequest request, VectorizationState state, CancellationToken cancellationToken)
-        {
-            await Task.Delay(TimeSpan.FromSeconds(30));
-        }
+        protected virtual async Task ProcessRequest(VectorizationRequest request, VectorizationState state, CancellationToken cancellationToken) =>
+            await Task.Delay(TimeSpan.FromSeconds(30), cancellationToken);
     }
 }

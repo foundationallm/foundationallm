@@ -5,7 +5,8 @@ namespace FoundationaLLM.Vectorization.Handlers
 {
     public class EmbeddingHandler : VectorizationStepHandlerBase
     {
-        public EmbeddingHandler() : base(VectorizationSteps.Embed)
+        public EmbeddingHandler(
+            Dictionary<string, string> parameters) : base(VectorizationSteps.Embed, parameters)
         {
         }
 

@@ -37,6 +37,10 @@ The core problems to deliver enterprise copilots are:
 - The top AI risks (inaccuracy, cybersecurity, compliance, explainability, privacy) are not being mitigated.
 - Delivery of a copilot solution is time consuming, expensive and frustrating.
 
+## Documentation
+
+Get up to speed with Foundationa**LLM** by reading the [documentation](https://docs.foundationallm.ai). This includes deployment instructions, quickstarts, architecture, and API references.
+
 ## Getting Started
 
 FoundationalLLM provides a simple command line driven approach to getting your first deployment up and running. Basically, it's two commands. After that, you can customize the solution, run it locally on your machine and update the deployment with your customizations.

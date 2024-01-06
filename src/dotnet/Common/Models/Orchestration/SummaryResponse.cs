@@ -8,5 +8,5 @@ public class SummaryResponse
     /// <summary>
     /// The summary response.
     /// </summary>
-    public string? Summary { get; init; }
+    public string? Summary { get; set; }
 }

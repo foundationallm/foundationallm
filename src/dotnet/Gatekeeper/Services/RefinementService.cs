@@ -31,8 +31,5 @@ public class RefinementService : IRefinementService
     /// </summary>
     /// <param name="userPrompt">The user prompt text.</param>
     /// <returns>The refined user prompt text.</returns>
-    public Task<string> RefineUserPrompt(string userPrompt)
-    {
-        throw new NotImplementedException();
-    }
+    public Task<string> RefineUserPrompt(string userPrompt) => throw new NotImplementedException();
 }

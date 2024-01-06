@@ -9,9 +9,9 @@ namespace FoundationaLLM.Vectorization.Interfaces
     public interface IRequestManagerService
     {
         /// <summary>
-        /// Starts the vectorization requests processing cycle.
+        /// Runs the vectorization requests processing cycle.
         /// </summary>
-        /// <returns>A <see cref="Task"/> to await the completion of the startup.</returns>
-        Task Start();
+        /// <returns>A <see cref="Task"/> to await the completion of the run.</returns>
+        Task Run();
     }
 }

@@ -8,6 +8,7 @@ namespace FoundationaLLM.Vectorization.Models.Configuration
         public List<RequestManagerServiceSettings>? RequestManagers { get; set; }
 
         [JsonPropertyOrder(1)]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public VectorizationQueuing QueuingEngine { get; set; }
     }
 }

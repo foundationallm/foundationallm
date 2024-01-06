@@ -5,7 +5,8 @@ namespace FoundationaLLM.Vectorization.Handlers
 {
     public class ExtractionHandler : VectorizationStepHandlerBase
     {
-        public ExtractionHandler() : base(VectorizationSteps.Extract)
+        public ExtractionHandler(
+            Dictionary<string, string> parameters) : base(VectorizationSteps.Extract, parameters)
         {
         }
 

@@ -1,7 +1,6 @@
 #! /usr/bin/pwsh
 
 Param(
-    [parameter(Mandatory = $false)][string]$acrName = $null,
     [parameter(Mandatory = $true)][string]$resourceGroup,
     [parameter(Mandatory = $true)][string]$location,
     [parameter(Mandatory = $true)][string]$subscription,
@@ -13,7 +12,6 @@ Param(
     [parameter(Mandatory = $false)][bool]$stepDeployArm = $true,
     [parameter(Mandatory = $false)][bool]$stepDeployOpenAi = $true,
     [parameter(Mandatory = $false)][bool]$deployAks = $false,
-    [parameter(Mandatory = $false)][bool]$stepBuildPush = $true,
     [parameter(Mandatory = $false)][bool]$stepDeployCertManager = $true,
     [parameter(Mandatory = $false)][bool]$stepDeployTls = $true,
     [parameter(Mandatory = $false)][bool]$stepDeployImages = $true,
@@ -127,6 +125,11 @@ if ($stepDeployArm) {
     }
 }
 
+if ($stepUploadSystemPrompts) {
+    # Upload System Prompts
+    & ./UploadSystemPrompts.ps1 -resourceGroup $resourceGroup -location $location
+}
+
 if ($deployAks) {
     # Connecting kubectl to AKS
     Write-Host "Retrieving Aks Name" -ForegroundColor Yellow
@@ -135,72 +138,42 @@ if ($deployAks) {
 
     # Write-Host "Retrieving credentials" -ForegroundColor Yellow
     az aks get-credentials -n $aksName -g $resourceGroup --overwrite-existing
-}
 
-# Generate Config
-New-Item -ItemType Directory -Force -Path $(./Join-Path-Recursively.ps1 -pathParts .., __values)
-$gValuesLocation = $(./Join-Path-Recursively.ps1 -pathParts .., __values, $gValuesFile)
-& ./Generate-Config.ps1 `
-    -resourceGroup $resourceGroup `
-    -openAiName $openAiName `
-    -openAiRg $openAiRg `
-    -outputFile $gValuesLocation `
-    -deployAks $deployAks
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "Error generating config" -ForegroundColor Red
-    exit $LASTEXITCODE
-}
-
-# Create Secrets
-if ([string]::IsNullOrEmpty($acrName)) {
-    $acrName = $(az acr list --resource-group $resourceGroup -o json | ConvertFrom-Json).name
-}
-
-Write-Host "The Name of your ACR: $acrName" -ForegroundColor Yellow
-# & ./Create-Secret.ps1 -resourceGroup $resourceGroup -acrName $acrName
-
-if ($deployAks) {
-    az aks update -n $aksName -g $resourceGroup --attach-acr $acrName
-}
-
-if ($deployAks -And $stepDeployCertManager) {
-    # Deploy Cert Manager
-    & ./DeployCertManager.ps1
-}
-
-if ($deployAks -And $stepDeployTls) {
-    # Deploy TLS
-    & ./DeployTlsSupport.ps1 -sslSupport prod -resourceGroup $resourceGroup -aksName $aksName
-}
-
-if ($stepBuildPush) {
-    # Build an Push
-    & ./BuildPush.ps1 -resourceGroup $resourceGroup -acrName $acrName
-}
-
-if ($stepUploadSystemPrompts) {
-    # Upload System Prompts
-    & ./UploadSystemPrompts.ps1 -resourceGroup $resourceGroup -location $location
-}
-
-if ($stepDeployImages) {
-    # Deploy images in AKS
+    # Generate Config
+    New-Item -ItemType Directory -Force -Path $(./Join-Path-Recursively.ps1 -pathParts .., __values)
     $gValuesLocation = $(./Join-Path-Recursively.ps1 -pathParts .., __values, $gValuesFile)
-    $chartsToDeploy = "*"
-
-    if ($deployAks) {
-        & ./Deploy-Images-Aks.ps1 -aksName $aksName -resourceGroup $resourceGroup -charts $chartsToDeploy -acrName $acrName -valuesFile $gValuesLocation
+    & ./Generate-Config.ps1 `
+        -resourceGroup $resourceGroup `
+        -openAiName $openAiName `
+        -openAiRg $openAiRg `
+        -outputFile $gValuesLocation `
+        -deployAks $deployAks
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "Error generating config" -ForegroundColor Red
+        exit $LASTEXITCODE
     }
-    else {
-        & ./Deploy-Images-Aca.ps1 -resourceGroup $resourceGroup -acrName $acrName
-    }
-}
 
-if ($deployAks) {
+    if ($stepDeployCertManager) {
+        # Deploy Cert Manager
+        & ./DeployCertManager.ps1
+    }
+
+    if ($stepDeployTls) {
+        # Deploy TLS
+        & ./DeployTlsSupport.ps1 -sslSupport prod -resourceGroup $resourceGroup -aksName $aksName
+    }
+
+    if ($stepDeployImages) {
+        # Deploy images in AKS
+        $gValuesLocation = $(./Join-Path-Recursively.ps1 -pathParts .., __values, $gValuesFile)
+        $chartsToDeploy = "*"
+
+        & ./Deploy-Images-Aks.ps1 -aksName $aksName -resourceGroup $resourceGroup -charts $chartsToDeploy -valuesFile $gValuesLocation
+    }
+
     $webappHostname = $(az aks show -n $aksName -g $resourceGroup -o json --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName | ConvertFrom-Json)
     $coreApiUri = "https://$webappHostname/core"
-}
-else {
+} else {
     $webappHostname = $(az deployment group show -g $resourceGroup -n foundationallm-azuredeploy -o json --query properties.outputs.webFqdn.value | ConvertFrom-Json)
     $coreApiHostname = $(az deployment group show -g $resourceGroup -n foundationallm-azuredeploy -o json --query properties.outputs.coreApiFqdn.value | ConvertFrom-Json)
     $coreApiUri = "https://$coreApiHostname"

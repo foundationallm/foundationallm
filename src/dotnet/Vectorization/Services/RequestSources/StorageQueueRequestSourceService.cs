@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace FoundationaLLM.Vectorization.Services.RequestSources
 {
-    public class QueueRequestSourceService : IRequestSourceService
+    public class StorageQueueRequestSourceService : IRequestSourceService
     {
         private readonly string _sourceName;
-        private readonly ILogger<QueueRequestSourceService> _logger;
+        private readonly ILogger<StorageQueueRequestSourceService> _logger;
 
         /// <inheritdoc/>
         public string SourceName => _sourceName;
 
-        public QueueRequestSourceService(
+        public StorageQueueRequestSourceService(
             string sourceName,
-            ILogger<QueueRequestSourceService> logger)
+            ILogger<StorageQueueRequestSourceService> logger)
         {
             _sourceName = sourceName;
             _logger = logger;

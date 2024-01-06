@@ -5,7 +5,8 @@ namespace FoundationaLLM.Vectorization.Handlers
 {
     public class PartitionHandler : VectorizationStepHandlerBase
     {
-        public PartitionHandler() : base(VectorizationSteps.Partition)
+        public PartitionHandler(
+            Dictionary<string, string> parameters) : base(VectorizationSteps.Partition, parameters)
         {
         }
 

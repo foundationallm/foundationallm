@@ -664,6 +664,11 @@
           "key": "FoundationaLLM:SemanticKernelAPI:OpenAI.ShortSummaryPromptName",
           "value": "Summarizer.TwoWords",
           "contentType": null
+        },
+        {
+          "key": "FoundationaLLM:Vectorization:WorkerSettings",
+          "value": "{\n\t\"RequestManagers\": [\n\t\t{\n\t\t\t\"RequestSourceName\": \"extract\",\n\t\t\t\"MaxHandlerInstances\": 1\n\t\t},\n\t\t{\n\t\t\t\"RequestSourceName\": \"partition\",\n\t\t\t\"MaxHandlerInstances\": 1\n\t\t},\n\t\t{\n\t\t\t\"RequestSourceName\": \"embed\",\n\t\t\t\"MaxHandlerInstances\": 1\n\t\t},\n\t\t{\n\t\t\t\"RequestSourceName\": \"index\",\n\t\t\t\"MaxHandlerInstances\": 1\n\t\t}\n\t],\n\t\"QueuingEngine\": \"None\"\n}",
+          "contentType": "application/json"
         }
       ], 
       "featureFlags": [
@@ -719,6 +724,8 @@
       "instances": [
         {
           "key": "agentfactory",
+          "image": "ghcr.io/solliancenet/foundationallm/agent-factory-api",
+          "tag": "0.1",
           "containerPort": 80,
           "replicas": 1,
           "resources": {
@@ -728,6 +735,8 @@
         },
         {
           "key": "core",
+          "image": "ghcr.io/solliancenet/foundationallm/core-api",
+          "tag": "0.1",
           "containerPort": 80,
           "replicas": 1,
           "resources": {
@@ -737,6 +746,8 @@
         },
         {
           "key": "gatekeeper",
+          "image": "ghcr.io/solliancenet/foundationallm/gatekeeper-api",
+          "tag": "0.1",
           "containerPort": 80,
           "replicas": 1,
           "resources": {
@@ -746,6 +757,8 @@
         },
         {
           "key": "semantickernel",
+          "image": "ghcr.io/solliancenet/foundationallm/semantic-kernel-api",
+          "tag": "0.1",
           "containerPort": 80,
           "replicas": 1,
           "resources": {
@@ -755,6 +768,8 @@
         },
         {
           "key": "vectorization",
+          "image": "ghcr.io/solliancenet/foundationallm/vectorization-api",
+          "tag": "0.1",
           "containerPort": 80,
           "replicas": 1,
           "resources": {
@@ -769,6 +784,8 @@
       "instances": [
         {
           "key": "corejob",
+          "image": "ghcr.io/solliancenet/foundationallm/core-job",
+          "tag": "0.1",
           "replicas": 1,
           "resources": {
             "cpu": 0.25,
@@ -777,20 +794,8 @@
         },
         {
           "key": "vectorizationjob",
-          "replicas": 1,
-          "resources": {
-            "cpu": 0.25,
-            "memory": "0.25Gi"
-          }
-        }
-      ]
-    },
-    "nodejsAcaSettings": {
-      "name": "[parameters('name')]",
-      "instances": [
-        {
-          "key": "chatui",
-          "containerPort": 3000,
+          "image": "ghcr.io/solliancenet/foundationallm/vectorization-job",
+          "tag": "0.1",
           "replicas": 1,
           "resources": {
             "cpu": 0.25,
@@ -802,11 +807,29 @@
     "keyVaultSettings": {
       "name": "[format('{0}-kv', parameters('name'))]"
     },
+    "nodejsAcaSettings": {
+      "name": "[parameters('name')]",
+      "instances": [
+        {
+          "key": "chatui",
+          "image": "ghcr.io/solliancenet/foundationallm/chat-ui",
+          "tag": "0.1",
+          "containerPort": 3000,
+          "replicas": 1,
+          "resources": {
+            "cpu": 0.25,
+            "memory": "0.25Gi"
+          }
+        }
+      ]
+    },
     "pythonAcaSettings": {
       "name": "[parameters('name')]",
       "instances": [
         {
           "key": "agenthub",
+          "image": "ghcr.io/solliancenet/foundationallm/agent-hub-api",
+          "tag": "0.1",
           "containerPort": 80,
           "replicas": 1,
           "resources": {
@@ -816,6 +839,8 @@
         },
         {
           "key": "datasourcehub",
+          "image": "ghcr.io/solliancenet/foundationallm/data-source-hub-api",
+          "tag": "0.1",
           "containerPort": 80,
           "replicas": 1,
           "resources": {
@@ -825,6 +850,8 @@
         },
         {
           "key": "gatekeeperint",
+          "image": "ghcr.io/solliancenet/foundationallm/gatekeeper-integration-api",
+          "tag": "0.1",
           "containerPort": 80,
           "replicas": 1,
           "resources": {
@@ -834,6 +861,8 @@
         },
         {
           "key": "langchain",
+          "image": "ghcr.io/solliancenet/foundationallm/langchain-api",
+          "tag": "0.1",
           "containerPort": 80,
           "replicas": 10,
           "resources": {
@@ -843,6 +872,8 @@
         },
         {
           "key": "prompthub",
+          "image": "ghcr.io/solliancenet/foundationallm/prompt-hub-api",
+          "tag": "0.1",
           "containerPort": 80,
           "replicas": 1,
           "resources": {
@@ -863,11 +894,6 @@
           "addressPrefix": "10.244.0.0/16"
         }
       }
-    },
-    "acrSettings": {
-      "name": "[format('{0}cr', parameters('name'))]",
-      "sku": "Standard",
-      "tier": "Standard"
     },
     "laSettings": {
       "name": "[format('{0}-la', parameters('name'))]"
@@ -1378,97 +1404,6 @@
       }
     },
     {
-      "type": "Microsoft.ContainerRegistry/registries",
-      "apiVersion": "2023-01-01-preview",
-      "name": "[variables('acrSettings').name]",
-      "location": "[parameters('location')]",
-      "sku": {
-        "name": "[variables('acrSettings').sku]",
-        "tier": "[variables('acrSettings').tier]"
-      },
-      "properties": {
-        "adminUserEnabled": true,
-        "policies": {
-          "quarantinePolicy": {
-            "status": "disabled"
-          },
-          "trustPolicy": {
-            "type": "Notary",
-            "status": "disabled"
-          },
-          "retentionPolicy": {
-            "days": 7,
-            "status": "disabled"
-          },
-          "exportPolicy": {
-            "status": "enabled"
-          },
-          "azureADAuthenticationAsArmPolicy": {
-            "status": "enabled"
-          },
-          "softDeletePolicy": {
-            "retentionDays": 7,
-            "status": "disabled"
-          }
-        },
-        "encryption": {
-          "status": "disabled"
-        },
-        "dataEndpointEnabled": false,
-        "publicNetworkAccess": "Enabled",
-        "networkRuleBypassOptions": "AzureServices",
-        "zoneRedundancy": "Disabled",
-        "anonymousPullEnabled": true
-      }
-    },
-    {
-      "type": "Microsoft.ContainerRegistry/registries/scopeMaps",
-      "apiVersion": "2023-01-01-preview",
-      "name": "[concat(variables('acrSettings').name, '/_repositories_admin')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.ContainerRegistry/registries', variables('acrSettings').name)]"
-      ],
-      "properties": {
-        "description": "Can perform all read, write and delete operations on the registry",
-        "actions": [
-          "repositories/*/metadata/read",
-          "repositories/*/metadata/write",
-          "repositories/*/content/read",
-          "repositories/*/content/write",
-          "repositories/*/content/delete"
-        ]
-      }
-    },
-    {
-      "type": "Microsoft.ContainerRegistry/registries/scopeMaps",
-      "apiVersion": "2023-01-01-preview",
-      "name": "[concat(variables('acrSettings').name, '/_repositories_pull')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.ContainerRegistry/registries', variables('acrSettings').name)]"
-      ],
-      "properties": {
-        "description": "Can pull any repository of the registry",
-        "actions": [
-          "repositories/*/content/read"
-        ]
-      }
-    },
-    {
-      "type": "Microsoft.ContainerRegistry/registries/scopeMaps",
-      "apiVersion": "2023-01-01-preview",
-      "name": "[concat(variables('acrSettings').name, '/_repositories_push')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.ContainerRegistry/registries', variables('acrSettings').name)]"
-      ],
-      "properties": {
-        "description": "Can push to any repository of the registry",
-        "actions": [
-          "repositories/*/content/read",
-          "repositories/*/content/write"
-        ]
-      }
-    },
-    {
       "type": "Microsoft.OperationalInsights/workspaces",
       "apiVersion": "2021-12-01-preview",
       "name": "[variables('laSettings').name]",
@@ -1684,7 +1619,7 @@
             "name": "Consumption"
           },
           {
-            "workloadProfileType": "E4",
+            "workloadProfileType": "D4",
             "name": "Warm",
             "minimumCount": 1,
             "maximumCount": 10
@@ -1755,7 +1690,7 @@
         "template": {
           "containers": [
             {
-              "image": "mcr.microsoft.com/k8se/quickstart:latest",
+              "image": "[format('{0}:{1}', variables('dotnetAcaSettings').instances[copyIndex()].image, variables('dotnetAcaSettings').instances[copyIndex()].tag)]",
               "name": "[format('{0}{1}ca', variables('dotnetAcaSettings').name, variables('dotnetAcaSettings').instances[copyIndex()].key)]",
               "env": [
                 {
@@ -1842,7 +1777,7 @@
         "template": {
           "containers": [
             {
-              "image": "mcr.microsoft.com/k8se/quickstart:latest",
+              "image": "[format('{0}:{1}', variables('dotnetWorkerAcaSettings').instances[copyIndex()].image, variables('dotnetWorkerAcaSettings').instances[copyIndex()].tag)]",
               "name": "[format('{0}{1}ca', variables('dotnetWorkerAcaSettings').name, variables('dotnetWorkerAcaSettings').instances[copyIndex()].key)]",
               "env": [
                 {
@@ -1956,7 +1891,7 @@
         "template": {
           "containers": [
             {
-              "image": "mcr.microsoft.com/k8se/quickstart:latest",
+              "image": "[format('{0}:{1}', variables('nodejsAcaSettings').instances[copyIndex()].image, variables('nodejsAcaSettings').instances[copyIndex()].tag)]",
               "name": "[format('{0}{1}ca', variables('nodejsAcaSettings').name, variables('nodejsAcaSettings').instances[copyIndex()].key)]",
               "env": [
                 {
@@ -2070,7 +2005,7 @@
         "template": {
           "containers": [
             {
-              "image": "mcr.microsoft.com/k8se/quickstart:latest",
+              "image": "[format('{0}:{1}', variables('pythonAcaSettings').instances[copyIndex()].image, variables('pythonAcaSettings').instances[copyIndex()].tag)]",
               "name": "[format('{0}{1}ca', variables('pythonAcaSettings').name, variables('pythonAcaSettings').instances[copyIndex()].key)]",
               "env": [
                 {

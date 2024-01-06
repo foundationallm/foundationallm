@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Vectorization.Exceptions;
+﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Vectorization.Exceptions;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Models;
 using FoundationaLLM.Vectorization.Models.Configuration;
@@ -88,7 +89,7 @@ namespace FoundationaLLM.Vectorization
                 throw new ArgumentNullException(nameof(settings));
 
             foreach (var rm in settings.RequestManagers)
-                if (string.IsNullOrEmpty(rm.RequestSourceName))
+                if (!VectorizationSteps.ValidateStepName(rm.RequestSourceName))
                     throw new ArgumentException("Invalid request source name.");
         }
 
@@ -99,7 +100,7 @@ namespace FoundationaLLM.Vectorization
                 case VectorizationQueuing.None:
                     return new MemoryRequestSourceService(name, _loggerFactory!.CreateLogger<MemoryRequestSourceService>());
                 case VectorizationQueuing.AzureStorageQueue:
-                    return new QueueRequestSourceService(name, _loggerFactory!.CreateLogger<QueueRequestSourceService>());
+                    return new StorageQueueRequestSourceService(name, _loggerFactory!.CreateLogger<StorageQueueRequestSourceService>());
                 default:
                     throw new VectorizationException($"The vectorization queuing mechanism [{queuing}] is not supported.");
             }

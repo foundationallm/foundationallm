@@ -7,7 +7,6 @@ Param (
     # [parameter(Mandatory = $false)][string]$openAiDeployment,
     [parameter(Mandatory = $false)][string[]]$outputFile = $null,
     [parameter(Mandatory = $false)][string[]]$gvaluesTemplate = "..,gvalues.template.yml",
-    [parameter(Mandatory = $false)][string[]]$migrationSettingsTemplate = "..,migrationsettings.template.json",
     [parameter(Mandatory = $false)][string]$ingressClass = "addon-http-application-routing",
     [parameter(Mandatory = $false)][string]$domain,
     [parameter(Mandatory = $true)][bool]$deployAks
@@ -119,6 +118,11 @@ if ($deployAks) {
     $gatekeeperApiMiClientId = $gatekeeperApiMi.clientId
     Write-Host "Gatekeeper MI Client Id: $gatekeeperApiMiClientId" -ForegroundColor Yellow
 
+    $gatekeeperIntegrationApiMi = $(az identity show -g $resourceGroup -n $resourcePrefix-gatekeeper-int-mi -o json | ConvertFrom-Json)
+    EnsureSuccess "Error getting gatekeeper integration mi"
+    $gatekeeperIntegrationApiMiClientId = $gatekeeperIntegrationApiMi.clientId
+    Write-Host "Gatekeeper Integration MI Client Id: $gatekeeperIntegrationApiMiClientId" -ForegroundColor Yellow
+
     $langChainApiMi = $(az identity show -g $resourceGroup -n $resourcePrefix-langchain-mi -o json | ConvertFrom-Json)
     EnsureSuccess "Error getting langchain mi"
     $langChainApiMiClientId = $langChainApiMi.clientId
@@ -133,6 +137,16 @@ if ($deployAks) {
     EnsureSuccess "Error getting semantic kernel mi"
     $semanticKernelApiMiClientId = $semanticKernelApiMi.clientId
     Write-Host "Semantic Kernel MI Client Id: $semanticKernelApiMiClientId" -ForegroundColor Yellow
+
+    $vectorizationApiMi = $(az identity show -g $resourceGroup -n $resourcePrefix-vectorization-mi -o json | ConvertFrom-Json)
+    EnsureSuccess "Error getting vectorization mi"
+    $vectorizationApiMiClientId = $vectorizationApiMi.clientId
+    Write-Host "Vectorization MI Client Id: $vectorizationApiMiClientId" -ForegroundColor Yellow
+
+    $vectorizationJobMi = $(az identity show -g $resourceGroup -n $resourcePrefix-vectorization-job-mi -o json | ConvertFrom-Json)
+    EnsureSuccess "Error getting vectorization job mi"
+    $vectorizationJobMiClientId = $vectorizationJobMi.clientId
+    Write-Host "Vectorization Job MI Client Id: $vectorizationJobMiClientId" -ForegroundColor Yellow
 }
 
 $tenantId = $(az account show --query homeTenantId --output tsv)
@@ -150,9 +164,12 @@ if ($deployAks) {
     $tokens.coreJobMiClientId = $coreJobMiClientId
     $tokens.dataSourceHubApiMiClientId = $dataSourceHubApiMiClientId
     $tokens.gatekeeperApiMiClientId = $gatekeeperApiMiClientId
+    $tokens.gatekeeperIntegrationApiMiClientId = $gatekeeperIntegrationApiMiClientId
     $tokens.langChainApiMiClientId = $langChainApiMiClientId
     $tokens.promptHubApiMiClientId = $promptHubApiMiClientId
     $tokens.semanticKernelApiMiClientId = $semanticKernelApiMiClientId
+    $tokens.vectorizationApiMiClientId = $vectorizationApiMiClientId
+    $tokens.vectorizationJobMiClientId = $vectorizationJobMiClientId
 }
 
 $tokens.tenantId = $tenantId

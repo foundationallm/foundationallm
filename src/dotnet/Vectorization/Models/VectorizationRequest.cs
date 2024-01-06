@@ -49,24 +49,24 @@ namespace FoundationaLLM.Vectorization.Models
         /// Indicates whether the vectorization process is complete or not.
         /// </summary>
         [JsonIgnore]
-        public bool Complete => this.RemainingSteps.Count == 0;
+        public bool Complete => RemainingSteps.Count == 0;
 
         /// <summary>
         /// Advances the vectorization pipeline to the next step, returning the name of the next step to execute.
         /// The name returned is used to choose the next request source to which the vectorization request will be added.
         /// </summary>
-        public string MoveToNextStep()
+        /// <returns>The name of the next step to execute if there are steps left to execute or null if the processing
+        /// of the vectorization request is complete.</returns>
+        public string? MoveToNextStep()
         {
-            if (this.RemainingSteps.Count == 0)
-            {
-                throw new VectorizationException("The list of remaining steps is empty");
-            }
+            var stepName = RemainingSteps.First();
+            RemainingSteps.RemoveAt(0);
+            CompletedSteps.Add(stepName);
 
-            var stepName = this.RemainingSteps.First();
-            this.RemainingSteps.RemoveAt(0);
-            this.CompletedSteps.Add(stepName);
 
-            return stepName;
+            return RemainingSteps.Count == 0
+                ? null
+                : RemainingSteps[0];
         }
 
         /// <summary>
@@ -74,14 +74,14 @@ namespace FoundationaLLM.Vectorization.Models
         /// </summary>
         public string RollbackToPreviousStep()
         {
-            if (this.CompletedSteps.Count == 0)
+            if (CompletedSteps.Count == 0)
             {
                 throw new VectorizationException("The list of completed steps is empty");
             }
 
-            var stepName = this.CompletedSteps.Last();
-            this.CompletedSteps.RemoveAt(this.CompletedSteps.Count - 1);
-            this.RemainingSteps.Insert(0, stepName);
+            var stepName = CompletedSteps.Last();
+            CompletedSteps.RemoveAt(this.CompletedSteps.Count - 1);
+            RemainingSteps.Insert(0, stepName);
 
             return stepName;
         }
@@ -91,7 +91,7 @@ namespace FoundationaLLM.Vectorization.Models
         /// </summary>
         /// <param name="step">The identifier of the vectorization pipeline step.</param>
         /// <returns>An instances of the <see cref="VectorizationStep"/> class with the details required by the step handler.</returns>
-        public VectorizationStep? this[string step]
-        { get { return Steps.SingleOrDefault(s => s.Id == step); } }
+        public VectorizationStep? this[string step] =>
+            Steps.SingleOrDefault(s => s.Id == step);
     }
 }

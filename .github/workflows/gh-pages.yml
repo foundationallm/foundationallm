@@ -3,11 +3,9 @@ name: github-pages
 on:
     push:
       branches: [ main ]
-    pull_request:
-        branches: [ main ]
 
 permissions:
-    contents: read
+    contents: write
     pages: write
     id-token: write
 
@@ -21,7 +19,6 @@ jobs:
     publish-docs:
       environment:
         name: github-pages
-        url: ${{ steps.deployment.outputs.page_url }}
       runs-on: ubuntu-latest
       steps:
       - name: Checkout
@@ -36,11 +33,12 @@ jobs:
   
       - name: Setup Pages
         uses: actions/configure-pages@v3
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
-        with:
-          # Upload entire repository
-          path: 'docs/_site'
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
+        if: |
+            github.event.repository.fork == false &&
+            github.ref_name == github.event.repository.default_branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: docs/_site
+            cname: docs.foundationallm.ai

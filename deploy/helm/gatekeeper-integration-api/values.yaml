@@ -5,7 +5,7 @@
 replicaCount: 1
 serviceAccountName: gatekeeper-integration-api
 image:
-  repository: bhm7vnpxv6irqcr.azurecr.io/gatekeeper-integration-api
+  repository: ghcr.io/solliancenet/foundationallm/gatekeeper-integration-api
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: latest

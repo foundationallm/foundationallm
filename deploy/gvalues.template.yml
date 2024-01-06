@@ -9,9 +9,12 @@ azureWorkloadIdentity:
   coreJobClientId: {{coreJobMiClientId}}
   dataSourceHubApiClientId: {{dataSourceHubApiMiClientId}}
   gatekeeperApiClientId: {{gatekeeperApiMiClientId}}
+  gatekeeperIntegrationApiMiClientId: {{gatekeeperIntegrationApiMiClientId}}
   langChainApiClientId: {{langChainApiMiClientId}}
   promptHubApiClientId: {{promptHubApiMiClientId}}
   semanticKernelApiClientId: {{semanticKernelApiMiClientId}}
+  vectorizationApiMiClientId: {{vectorizationApiMiClientId}}
+  vectorizationJobMiClientId: {{vectorizationJobMiClientId}}
   tenantId: {{tenantId}}
 
 ingress:

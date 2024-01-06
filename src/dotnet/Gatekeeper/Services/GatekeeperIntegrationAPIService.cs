@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Gatekeeper.Core.Interfaces;
+using FoundationaLLM.Gatekeeper.Core.Models.Integration;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -27,19 +28,20 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         }
 
         /// <inheritdoc/>
-        public async Task<List<string>> AnalyzeText(string text)
+        public async Task<List<PIIResult>> AnalyzeText(string text)
         {
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperIntegrationAPI);
 
-            var responseMessage = await client.PostAsync("analyze",
-            new StringContent(text, Encoding.UTF8, "application/text"));
+            var content = JsonConvert.SerializeObject(new AnalyzeRequest() { Content = text, Anonymize = false, Language = "en" });
+
+            var responseMessage = await client.PostAsync("analyze", new StringContent(content, Encoding.UTF8, "application/json"));
 
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var analysisResults = JsonConvert.DeserializeObject<List<string>>(responseContent);
+                var analysisResults = JsonConvert.DeserializeObject<AnalyzeResponse>(responseContent);
 
-                return analysisResults ?? [];
+                return analysisResults!.Results;
             }
             else
                 return [];
@@ -50,14 +52,16 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         {
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperIntegrationAPI);
 
-            var responseMessage = await client.PostAsync("anonymize",
-            new StringContent(text, Encoding.UTF8, "application/text"));
+            var content = JsonConvert.SerializeObject(new AnalyzeRequest() { Content = text, Anonymize = true, Language = "en" });
+
+            var responseMessage = await client.PostAsync("analyze", new StringContent(content, Encoding.UTF8, "application/json"));
 
             if (responseMessage.IsSuccessStatusCode)
             {
-                var anonymizedText = await responseMessage.Content.ReadAsStringAsync();
+                var responseContent = await responseMessage.Content.ReadAsStringAsync();
+                var analysisResults = JsonConvert.DeserializeObject<AnonymizeResponse>(responseContent);
 
-                return anonymizedText;
+                return analysisResults!.Content;
             }
             else
                 return "A problem on my side prevented me from responding.";

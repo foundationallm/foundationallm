@@ -28,14 +28,11 @@ namespace FoundationaLLM.Vectorization
 
         public async Task Run()
         {
-            while (!_cancellationToken.IsCancellationRequested)
-            {
-                if (_logger.IsEnabled(LogLevel.Information))
-                {
-                    _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                }
-                await Task.Delay(10000, _cancellationToken);
-            }
+            var requestManagerTasks = _requestManagerServices
+                .Select(async rms => await rms.Run())
+                .ToArray();
+
+            await Task.WhenAll(requestManagerTasks);
         }
     }
 }
