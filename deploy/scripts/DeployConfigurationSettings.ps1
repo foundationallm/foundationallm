@@ -3,26 +3,28 @@ Param (
     [parameter(Mandatory = $true)][string]$location,
     [parameter(Mandatory = $true)][string]$name,
     [parameter(Mandatory = $true)][string]$keyvaultName,
-    [parameter(Mandatory = $true)][string]$configurationFile="appconfig.json"
+    [parameter(Mandatory = $false)][string]$configurationFile="appconfig.json"
 )
 
 Push-Location $($MyInvocation.InvocationName | Split-Path)
 
-$config = Get-Content $configurationFile -Raw | ConvertFrom-Json
+$config = Get-Content -Raw -Path $configurationFile | ConvertFrom-Json
 
 for ( $idx = 0; $idx -lt $config.count; $idx++ )
 {
+    Write-Host $config[$idx].key
     if ($config[$idx].keyVault)
     {
-        az appconfig kv set-keyvault -n $name --key $config[$idx].key --secret-identifier https://$($keyvaultName).vault.azure.net/Secrets/$($config.[idx].value)
+        $secretName = $config[$idx].value
+        az appconfig kv set-keyvault -n $name --key $config[$idx].key --secret-identifier https://$($keyvaultName).vault.azure.net/Secrets/$($secretName)/ -y
     }
-    else if ($config[$idx].featureFlag)
+    elseif ($config[$idx].featureFlag)
     {
-        az appconfig feature set -n $name --key $config[$idx].key --value $config[$idx].value
+        az appconfig feature set -n $name --feature $config[$idx].value --key $config[$idx].key -y
     }
     else
     {
-        az appconfig kv set -n $name --key $config[$idx].key --value $config[$idx].value
+        az appconfig kv set -n $name --key $config[$idx].key --value "$($config[$idx].value)" -y
     }
 }
 
