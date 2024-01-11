@@ -63,10 +63,7 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
         /// This will setup the agent based on its metadata.
         /// </summary>
         /// <returns></returns>
-        public virtual async Task Configure(string userPrompt, string sessionId)
-        {
-            await Task.CompletedTask;
-        }
+        public virtual async Task Configure(string userPrompt, string sessionId) => await Task.CompletedTask;
 
         /// <summary>
         /// The call to execute a completion after the agent is configured.

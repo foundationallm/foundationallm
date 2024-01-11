@@ -41,11 +41,7 @@ namespace FoundationaLLM.Gatekeeper.API
             builder.Configuration.AddEnvironmentVariables();
             builder.Configuration.AddAzureAppConfiguration(options =>
             {
-<<<<<<< Updated upstream
-                options.Connect(builder.Configuration[AppConfigurationKeys.FoundationaLLM_AppConfig_ConnectionString]);
-=======
                 options.Connect(builder.Configuration[appConfigConnectionString]);
->>>>>>> Stashed changes
                 options.ConfigureKeyVault(options =>
                 {
                     options.SetCredential(new DefaultAzureCredential());

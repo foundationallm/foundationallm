@@ -3,7 +3,10 @@ Class: SearchServiceRetriever
 Description: LangChain retriever for Azure AI Search.
 """
 from langchain.schema import BaseRetriever
-from langchain_openai import AzureOpenAIEmbeddings
+
+#new langchain
+#from langchain_openai import AzureOpenAIEmbeddings
+
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.callbacks.manager import (
     AsyncCallbackManagerForRetrieverRun,
@@ -46,7 +49,7 @@ class SearchServiceRetriever(BaseRetriever):
     embedding_field_name: Optional[str] = "Embedding"
     text_field_name: Optional[str] = "Text"
     credential: AzureKeyCredential
-    embedding_model: AzureOpenAIEmbeddings
+    embedding_model: OpenAIEmbeddings
 
     class Config:
         """Configuration for this pydantic object."""

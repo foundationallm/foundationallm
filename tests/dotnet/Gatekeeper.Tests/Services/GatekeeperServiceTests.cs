@@ -21,15 +21,9 @@ namespace Gatekeeper.Tests.Services
         public GatekeeperServiceTests()
         {
             _testedService = new GatekeeperService(
-<<<<<<< Updated upstream
                 _agentFactoryAPIService,
                 _contentSafetyService,
                 _gatekeeperIntegrationAPIService,
-=======
-                _agentFactoryAPIService, 
-                _contentSafetyService, 
-                _gatekeeperIntegrationAPIService, 
->>>>>>> Stashed changes
                 _gatekeeperServiceSettings);
         }
 

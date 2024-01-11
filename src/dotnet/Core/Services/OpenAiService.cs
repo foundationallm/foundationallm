@@ -145,10 +145,7 @@ public class OpenAiService : IOpenAiService
     /// </summary>
     /// <param name="input">The input for which to create embeddings.</param>
     /// <returns>Response from the OpenAI model as an array of vectors along with tokens for the prompt and response.</returns>
-    public async Task<(float[] response, int responseTokens)> GetEmbeddingsAsync(dynamic input)
-    {
-        return await GetEmbeddingsAsync(input, null);
-    }
+    public async Task<(float[] response, int responseTokens)> GetEmbeddingsAsync(dynamic input) => await GetEmbeddingsAsync(input, null);
 
     /// <summary>
     /// Sends a prompt to the deployed OpenAI LLM model and returns the response.

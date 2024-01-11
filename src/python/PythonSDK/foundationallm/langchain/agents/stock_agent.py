@@ -15,13 +15,22 @@ from langchain.callbacks import get_openai_callback
 from langchain.prompts import PromptTemplate
 
 from langchain.text_splitter import CharacterTextSplitter
-from langchain_community.document_loaders import UnstructuredXMLLoader
 from langchain.document_loaders import PyPDFLoader
-from langchain_community.document_loaders import TextLoader
+
+#Move to new langchain...
+#from langchain_community.document_loaders import UnstructuredXMLLoader
+#from langchain_community.document_loaders import TextLoader
+#rom langchain_community.vectorstores.azuresearch import AzureSearch
+#from langchain_openai import AzureOpenAIEmbeddings
+
+from langchain.embeddings import OpenAIEmbeddings
+
+from langchain.document_loaders import UnstructuredXMLLoader
+from langchain.document_loaders import TextLoader
+from langchain.vectorstores.azuresearch import AzureSearch
+
 from langchain.document_loaders.csv_loader import CSVLoader
-from langchain_openai import AzureOpenAIEmbeddings
 from langchain.vectorstores import Chroma
-from langchain_community.vectorstores.azuresearch import AzureSearch
 from langchain.chains import ConversationalRetrievalChain, RetrievalQAWithSourcesChain
 
 from foundationallm.config import Configuration
@@ -77,7 +86,11 @@ class StockAgent(AgentBase):
         azure_endpoint = config.get_value(completion_request.data_source.configuration.open_ai_endpoint)
         azure_key = config.get_value(completion_request.data_source.configuration.open_ai_key)
         model = config.get_value(completion_request.data_source.configuration.embedding_model) #"embeddings"
-        self.embeddings: AzureOpenAIEmbeddings = AzureOpenAIEmbeddings(azure_endpoint=azure_endpoint, openai_api_key=azure_key, deployment=model, chunk_size=1)
+
+        #move to new langchain_openai
+        #self.embeddings: AzureOpenAIEmbeddings = AzureOpenAIEmbeddings(azure_endpoint=azure_endpoint, openai_api_key=azure_key, deployment=model, chunk_size=1)
+
+        self.embeddings = OpenAIEmbeddings(deployment=model,chunk_size=1)
 
         # Load the CSV file
         company = completion_request.data_source.configuration.company
