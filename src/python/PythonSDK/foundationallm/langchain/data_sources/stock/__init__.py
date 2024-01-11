@@ -1,0 +1,1 @@
+from .stock_configuration import StockConfiguration

@@ -9,3 +9,4 @@ from .blob_storage_agent import BlobStorageAgent
 from .generic_resolver_agent import GenericResolverAgent
 from .search_service_agent import SearchServiceAgent
 from .agent_factory import AgentFactory
+from .stock_agent import StockAgent

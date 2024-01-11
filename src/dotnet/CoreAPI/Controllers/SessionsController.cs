@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using FoundationaLLM.Common.Interfaces;
 using Microsoft.Identity.Web;
+using System.Reflection.Metadata.Ecma335;
 
 namespace FoundationaLLM.Core.API.Controllers
 {

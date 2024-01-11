@@ -1,12 +1,14 @@
 import pandas as pd
 from sqlalchemy import create_engine
 
-from langchain.agents import create_sql_agent, create_pandas_dataframe_agent, initialize_agent, Tool
-from langchain.agents.agent_toolkits import create_python_agent
+from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent
+from langchain_experimental.agents.agent_toolkits import create_python_agent
+from langchain_experimental.tools.python.tool import PythonREPLTool
+
+from langchain.agents import create_sql_agent, initialize_agent, Tool
 from langchain.agents.agent_types import AgentType
 from langchain.callbacks import get_openai_callback
 from langchain.prompts import PromptTemplate
-from langchain.tools.python.tool import PythonREPLTool
 from langchain.schema.output_parser import OutputParserException
 
 from foundationallm.config import Configuration
@@ -47,9 +49,9 @@ class AnomalyDetectionAgent(AgentBase):
         self.sql_agent_prompt = """You are an anomaly detection agent designed to interact with a SQL database. Given an input question, first create a syntactically correct {dialect} query to run, then look at the results of the query and return the answer to the input question.
         Unless the user specifies a specific number of examples they wish to obtain, always limit your query to at most {top_k} results using the TOP clause as per MS SQL. You can order the results by a relevant column to return the most interesting examples in the database.
         Never query for all the columns from a specific table, only ask for the relevant columns given the question.
-        
+
         DO NOT make any DML statements (INSERT, UPDATE, DELETE, DROP etc.) to the database.
-        
+
         Use only the tools below for interacting with the database. Only use the information returned by the below tools to construct your final answer. You MUST double check your query before executing it. If you get an error while executing a query, rewrite the query and try again.
         """
         self.sql_agent_prompt_suffix = completion_request.agent.prompt_suffix or """Begin!
@@ -137,7 +139,7 @@ class AnomalyDetectionAgent(AgentBase):
     def prompt_template(self) -> str:
         """
         Property for viewing the agent's prompt template.
-        
+
         Returns
         str
             Returns the prompt template for the agent.
@@ -152,11 +154,11 @@ class AnomalyDetectionAgent(AgentBase):
         ----------
         prompt : str
             The prompt for which a completion is begin generated.
-        
+
         Returns
         -------
         CompletionResponse
-            Returns a CompletionResponse with the anomaly detection completion response, 
+            Returns a CompletionResponse with the anomaly detection completion response,
             the user_prompt, and token utilization and execution cost details.
         """
         with get_openai_callback() as cb:

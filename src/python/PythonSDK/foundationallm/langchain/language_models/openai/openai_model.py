@@ -20,7 +20,7 @@ class OpenAIModel(LanguageModelBase):
     def __init__(self, config: Configuration):
         """
         Initializes an OpenAI completion language model.
-        
+
         Parameters
         ----------
         language_model: LanguageModel
@@ -33,7 +33,7 @@ class OpenAIModel(LanguageModelBase):
     def get_completion_model(self, language_model: LanguageModel) -> BaseLanguageModel:
         """
         Returns an OpenAI completion model.
-        
+
         Returns
         -------
         BaseLanguageModel
@@ -41,11 +41,19 @@ class OpenAIModel(LanguageModelBase):
         """
         use_chat = language_model.use_chat
 
+        if ( language_model.config_value_base_name is not None ):
+            config_value_base_name = language_model.config_value_base_name
+
         if language_model.provider == LanguageModelProvider.MICROSOFT:
-            config_value_base_name = 'FoundationaLLM:AzureOpenAI:API'
+
+            if ( language_model.config_value_base_name is None ):
+                config_value_base_name = 'FoundationaLLM:AzureOpenAI:API'
+
             openai_api_type = AzureOpenAIAPIType.AZURE
         else:
-            config_value_base_name = 'FoundationaLLM:OpenAI:API'
+            if ( language_model.config_value_base_name is None ):
+                config_value_base_name = 'FoundationaLLM:OpenAI:API'
+
             openai_api_type = None
 
         openai_api_base = self.config.get_value(f'{config_value_base_name}:Endpoint')
@@ -91,7 +99,7 @@ class OpenAIModel(LanguageModelBase):
     def get_embedding_model(self, embedding_model: EmbeddingModel) -> Embeddings:
         """
         Retrieves the OpenAI embedding model.
-        
+
         Returns
         -------
         Embeddings

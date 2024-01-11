@@ -32,12 +32,18 @@ namespace FoundationaLLM.Core.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            string appConfigConnectionString = builder.Environment.IsDevelopment() ? "FoundationaLLM:AppConfig:ConnectionString:Dev" : "FoundationaLLM:AppConfig:ConnectionString";
+
             builder.Configuration.Sources.Clear();
             builder.Configuration.AddJsonFile("appsettings.json", false, true);
             builder.Configuration.AddEnvironmentVariables();
             builder.Configuration.AddAzureAppConfiguration(options =>
             {
+<<<<<<< Updated upstream
                 options.Connect(builder.Configuration[AppConfigurationKeys.FoundationaLLM_AppConfig_ConnectionString]);
+=======
+                options.Connect(builder.Configuration[appConfigConnectionString]);
+>>>>>>> Stashed changes
                 options.ConfigureKeyVault(options =>
                 {
                     options.SetCredential(new DefaultAzureCredential());

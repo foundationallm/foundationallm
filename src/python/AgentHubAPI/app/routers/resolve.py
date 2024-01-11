@@ -30,7 +30,7 @@ async def resolve(request: AgentHubRequest, x_user_identity: Optional[str] = Hea
         The optional X-USER-IDENTITY header value.
     x_agent_hint : str
         The optional X-AGENT-HINT header value.
-    
+
     Returns
     -------
     AgentHubResponse

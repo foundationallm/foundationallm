@@ -10,6 +10,7 @@ class CompletionRequest(BaseModel):
     Orchestration completion request.
     """
     user_prompt: str
+    session_id: str
     agent: Optional[Agent] = None
     data_source: Optional[DataSource] = None
     language_model: Optional[LanguageModel] = None

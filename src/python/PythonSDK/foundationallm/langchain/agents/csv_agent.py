@@ -4,7 +4,7 @@ import pandas as pd
 from langchain.agents import AgentExecutor, ZeroShotAgent
 from langchain.chains import LLMChain
 from langchain.memory import ConversationBufferMemory
-from langchain.tools.python.tool import PythonAstREPLTool
+from langchain_experimental.tools.python.tool import PythonAstREPLTool
 from langchain.callbacks import get_openai_callback
 from foundationallm.config import Configuration
 from foundationallm.langchain.agents import AgentBase
@@ -21,7 +21,7 @@ class CSVAgent(AgentBase):
                  llm: LanguageModelBase, config: Configuration):
         """
         Initializes a CSV agent.
-        
+
         Note: The CSV agent supports a single file.
 
         Parameters
@@ -93,7 +93,7 @@ class CSVAgent(AgentBase):
     def prompt_template(self) -> str:
         """
         Property for viewing the agent's prompt template.
-        
+
         Returns
         str
             Returns the prompt template for the agent.
@@ -103,16 +103,16 @@ class CSVAgent(AgentBase):
     def run(self, prompt: str) -> CompletionResponse:
         """
         Executes a query against the contents of a CSV file.
-        
+
         Parameters
         ----------
         prompt : str
             The prompt for which a completion is begin generated.
-        
+
         Returns
         -------
         CompletionResponse
-            Returns a CompletionResponse with the CSV file query completion response, 
+            Returns a CompletionResponse with the CSV file query completion response,
             the user_prompt, and token utilization and execution cost details.
         """
         with get_openai_callback() as cb:

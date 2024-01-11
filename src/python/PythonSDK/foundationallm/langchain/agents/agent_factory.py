@@ -38,7 +38,7 @@ class AgentFactory:
     def get_agent(self) -> AgentBase:
         """
         Retrieves the best agent for responding to the user prompt.
-        
+
         Returns
         -------
         AgentBase
@@ -47,6 +47,10 @@ class AgentFactory:
             available agents are not suited to respond to the user prompt.
         """
         match self.agent.type:
+            case 'stock':
+                from foundationallm.langchain.agents import StockAgent
+                return StockAgent(self.completion_request,
+                                             llm=self.llm, config=self.config)
             case 'anomaly':
                 return AnomalyDetectionAgent(self.completion_request,
                                              llm=self.llm, config=self.config)

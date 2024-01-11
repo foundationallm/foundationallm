@@ -43,7 +43,7 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
             //get prompts for the agent from the prompt hub
             var promptResponse = await _promptHubService.ResolveRequest(_agentMetadata.Name!, sessionId);
 
-            //get data sources listed for the agent           
+            //get data sources listed for the agent
             var dataSourceResponse = await _dataSourceHubService.ResolveRequest(_agentMetadata.AllowedDataSourceNames!, sessionId);
 
             MetadataBase dataSourceMetadata = null!;
@@ -53,7 +53,7 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
             switch (_agentMetadata.Type)
             {
                 case "csv":
-                case "generic-resolver":                   
+                case "generic-resolver":
                 case "blob-storage":
                     dataSourceMetadata = new BlobStorageDataSource
                     {
@@ -68,8 +68,33 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
                         },
                         DataDescription = dataSource.DataDescription
                     };
-                    break;              
-                    
+                    break;
+                case "stock":
+                    //TODO
+                    dataSourceMetadata = new StockDataSource
+                    {
+                        Name = dataSource.Name,
+                        Type = _agentMetadata.Type,
+                        Description = dataSource.Description,
+                        DataDescription = dataSource.DataDescription,
+                        Configuration = new StockConfiguration
+                        {
+                            ConfigValueBaseName = dataSource.ConfigValueBaseName,
+                            OpenAIEndpoint = dataSource.OpenAIEndpoint,
+                            OpenAIKey = dataSource.OpenAIKey,
+                            SearchEndpoint = dataSource.SearchEndpoint,
+                            EmbeddingModel = dataSource.EmbeddingModel,
+                            SearchKey = dataSource.SearchKey,
+                            ConnectionStringSecretName = dataSource.ConnectionStringSecret,
+                            ContainerName = dataSource.Container,
+                            RetrieverMode = dataSource.RetrieverMode,
+                            LoadMode = dataSource.LoadMode,
+                            Company = dataSource.Company,
+                            Sources = dataSource.Sources
+                        }
+
+                    };
+                    break;
                 case "search-service":
                     dataSourceMetadata = new SearchServiceDataSource
                     {
@@ -85,9 +110,9 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
                             TextFieldName = dataSource.TextFieldName,
                             TopN = dataSource.TopN
                         },
-                        DataDescription = dataSource.DataDescription                        
+                        DataDescription = dataSource.DataDescription
                     };
-                    break;                
+                    break;
                 case "anomaly":
                 case "sql":
                     dataSourceMetadata = new SQLDatabaseDataSource

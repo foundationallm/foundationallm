@@ -26,5 +26,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="clientName">The named <see cref="HttpClient"/> client configuration.</param>
         /// <returns></returns>
         HttpClient CreateClient(string clientName);
+
+        string GetAgent();
     }
 }

@@ -3,6 +3,7 @@ Class: SearchServiceRetriever
 Description: LangChain retriever for Azure AI Search.
 """
 from langchain.schema import BaseRetriever
+from langchain_openai import AzureOpenAIEmbeddings
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.callbacks.manager import (
     AsyncCallbackManagerForRetrieverRun,
@@ -33,52 +34,66 @@ class SearchServiceRetriever(BaseRetriever):
             "Id": "<GUID>",
             "Embedding": [0.1, 0.2, 0.3, ...], # embedding vector of the Text
             "Text": "text of the chunk",
-            "Description": "General description about the source of the text",            
+            "Description": "General description about the source of the text",
             "AdditionalMetadata": "JSON string of metadata"
             "ExternalSourceName": "name and location the text came from, url, blob storage url"
             "IsReference": "true/false if the document is a reference document"
         }
     """
     endpoint: str
-    index_name: str
+    indexes : List[str]
     top_n : int
     embedding_field_name: Optional[str] = "Embedding"
     text_field_name: Optional[str] = "Text"
     credential: AzureKeyCredential
-    embedding_model: OpenAIEmbeddings
+    embedding_model: AzureOpenAIEmbeddings
 
     class Config:
-        """Configuration for this pydantic object."""        
+        """Configuration for this pydantic object."""
         arbitrary_types_allowed = True
 
     def __get_embeddings(self, text: str) -> List[float]:
         """
         Returns embeddings vector for a given text.
         """
-        embedding = self.embedding_model.embed_query(text)        
+        embedding = self.embedding_model.embed_query(text)
         return embedding
 
     def _get_relevant_documents(
         self, query: str, *, run_manager: CallbackManagerForRetrieverRun
     ) -> List[Document]:
         """
-        Performs a synchronous hybrid search on Azure AI Search index        
-        """        
-        search_client = SearchClient(self.endpoint, self.index_name, self.credential)
-        vector_query = VectorizedQuery(vector=self.__get_embeddings(query),
-                                        k_nearest_neighbors=3,
-                                        fields=self.embedding_field_name)
-        results = search_client.search(
-            search_text=query,
-            vector_queries=[vector_query],
-            top=self.top_n,
-            select=[self.text_field_name]
-        )
-        results_list = [
-            Document(                
-                page_content=result[self.text_field_name]
-            ) for result in results
-        ]
+        Performs a synchronous hybrid search on Azure AI Search index
+        """
+
+        results_list = []
+
+        for index_name in self.indexes:
+
+            try:
+
+                search_client = SearchClient(self.endpoint, index_name, self.credential)
+                vector_query = VectorizedQuery(vector=self.__get_embeddings(query),
+                                                k_nearest_neighbors=3,
+                                                fields=self.embedding_field_name)
+                results = search_client.search(
+                    search_text=query,
+                    vector_queries=[vector_query],
+                    top=self.top_n,
+                    select=[self.text_field_name]
+                )
+
+                for result in results:
+                    try:
+                        results_list.append(Document(
+                            page_content=result[self.text_field_name]
+                        ))
+                    except Exception as e:
+                        print(e)
+
+            except Exception as e:
+                print(e)
+
         return results_list
 
     async def _aget_relevant_documents(

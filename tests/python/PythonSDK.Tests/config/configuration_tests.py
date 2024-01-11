@@ -25,10 +25,9 @@ class ConfigurationTests:
         actual = test_config.get_feature_flag("FoundationaLLM-AllowAgentHint")       
         assert actual == True
         
-
     def test_config_setting_change(self):        
         app_config_uri = os.environ['foundationallm-app-configuration-uri']
-        client = AzureAppConfigurationClient(app_config_uri, DefaultAzureCredential())
+        client = AzureAppConfigurationClient(app_config_uri, DefaultAzureCredential( exclude_environment_credential=True))
         config_setting = client.add_configuration_setting(ConfigurationSetting(
             key='FoundationaLLM:Test:TestSetting',
             value='Original'

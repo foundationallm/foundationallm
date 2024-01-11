@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.AgentFactory.Core.Interfaces;
 using FoundationaLLM.AgentFactory.Interfaces;
 using FoundationaLLM.AgentFactory.Models.Orchestration;
+using System.Collections;
 
 namespace FoundationaLLM.AgentFactory.Core.Agents
 {
@@ -9,6 +10,10 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
     /// </summary>
     public class AgentBuilder
     {
+        Hashtable agentCache = new Hashtable();
+        Hashtable datasourceCache = new Hashtable();
+        Hashtable promptCache = new Hashtable();
+
         /// <summary>
         /// Used to build an agenet given the inbound parameters.
         /// </summary>

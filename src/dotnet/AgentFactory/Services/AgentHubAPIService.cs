@@ -15,6 +15,7 @@ using System.Runtime;
 using System.Text;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Constants;
+using System.Collections;
 
 namespace FoundationaLLM.AgentFactory.Core.Services;
 
@@ -27,6 +28,7 @@ public class AgentHubAPIService : IAgentHubAPIService
     readonly ILogger<AgentHubAPIService> _logger;
     private readonly IHttpClientFactoryService _httpClientFactoryService;
     readonly JsonSerializerSettings _jsonSerializerSettings;
+    static Hashtable _cache = new Hashtable();
 
 
     /// <summary>
@@ -83,6 +85,14 @@ public class AgentHubAPIService : IAgentHubAPIService
     {
         try
         {
+            string responseContent = null;
+
+            if ( _cache.ContainsKey($"{sessionId}-{_httpClientFactoryService.GetAgent()}") )
+            {
+                responseContent = _cache[$"{sessionId}-{_httpClientFactoryService.GetAgent()}"].ToString();
+                var response = JsonConvert.DeserializeObject<AgentHubResponse>(responseContent, _jsonSerializerSettings);
+                return response!;
+            }
             var request = new AgentHubRequest { UserPrompt = userPrompt, SessionId = sessionId };
 
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.AgentHubAPI);
@@ -93,7 +103,8 @@ public class AgentHubAPIService : IAgentHubAPIService
 
             if (responseMessage.IsSuccessStatusCode)
             {
-                var responseContent = await responseMessage.Content.ReadAsStringAsync();
+                responseContent = await responseMessage.Content.ReadAsStringAsync();
+                _cache.Add($"{sessionId}-{_httpClientFactoryService.GetAgent()}", responseContent);
                 var response = JsonConvert.DeserializeObject<AgentHubResponse>(responseContent, _jsonSerializerSettings);
                 return response!;
             }

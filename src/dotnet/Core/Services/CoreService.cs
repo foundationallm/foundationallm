@@ -154,6 +154,8 @@ public class CoreService : ICoreService
     {
         try
         {
+            return new Completion { Text = sessionId };
+
             ArgumentNullException.ThrowIfNull(sessionId);
 
             await Task.CompletedTask;

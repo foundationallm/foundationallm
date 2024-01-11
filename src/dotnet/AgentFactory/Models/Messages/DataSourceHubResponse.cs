@@ -16,7 +16,7 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Messages
     }
 
     /// <summary>
-    /// SQL DataSource 
+    /// SQL DataSource
     /// </summary>
     public record SQLDataSourceMetadata : DataSourceMetadata
     {
@@ -24,7 +24,7 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Messages
     }
 
     /// <summary>
-    /// Blob Storage DataSource 
+    /// Blob Storage DataSource
     /// </summary>
     public record BlobStorageDataSourceMetadata : DataSourceMetadata
     {
@@ -139,5 +139,38 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Messages
         /// </summary>
         [JsonProperty("text_field_name")]
         public string? TextFieldName { get; set; }
+
+        [JsonProperty("open_ai_endpoint")]
+        public string? OpenAIEndpoint { get; set; }
+
+        [JsonProperty("open_ai_key")]
+        public string? OpenAIKey { get; set; }
+
+        [JsonProperty("search_endpoint")]
+        public string? SearchEndpoint { get; set; }
+
+        [JsonProperty("search_key")]
+        public string? SearchKey { get; set; }
+
+        [JsonProperty("connection_string_secret")]
+        public string? ConnectionStringSecret { get; set; }
+
+        [JsonProperty("embedding_model")]
+        public string? EmbeddingModel { get; set; }
+
+        [JsonProperty("sources")]
+        public string[]? Sources { get; set; }
+
+        [JsonProperty("config_value_base_name")]
+        public string? ConfigValueBaseName { get; set; }
+
+        [JsonProperty("retriever_mode")]
+        public string? RetrieverMode { get; set; }
+
+        [JsonProperty("load_mode")]
+        public string? LoadMode { get; set; }
+
+        [JsonProperty("company")]
+        public string? Company { get; set; }
     }
 }
