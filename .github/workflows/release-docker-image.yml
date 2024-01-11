@@ -46,7 +46,7 @@ jobs:
       uses: docker/metadata-action@v5
       with:
         images: |
-          ghcr.io/fllm-exp01/${{ inputs.image }}
+          ghcr.io/solliancenet/fllm-exp01/${{ inputs.image }}
         tags: |
           type=raw,latest
           type=sha,format=short

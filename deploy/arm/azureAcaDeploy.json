@@ -794,7 +794,7 @@
       "instances": [
         {
           "key": "agentfactory",
-          "image": "ghcr.io/fllm-exp01/agent-factory-api",
+          "image": "ghcr.io/solliancenet/fllm-exp01/agent-factory-api",
           "tag": "latest",
           "containerPort": 80,
           "replicas": 1,
@@ -805,7 +805,7 @@
         },
         {
           "key": "core",
-          "image": "ghcr.io/fllm-exp01/core-api",
+          "image": "ghcr.io/solliancenet/fllm-exp01/core-api",
           "tag": "latest",
           "containerPort": 80,
           "replicas": 1,
@@ -816,7 +816,7 @@
         },
         {
           "key": "management",
-          "image": "ghcr.io/fllm-exp01/management-api",
+          "image": "ghcr.io/solliancenet/fllm-exp01/management-api",
           "tag": "latest",
           "containerPort": 80,
           "replicas": 1,
@@ -827,7 +827,7 @@
         },
         {
           "key": "gatekeeper",
-          "image": "ghcr.io/fllm-exp01/gatekeeper-api",
+          "image": "ghcr.io/solliancenet/fllm-exp01/gatekeeper-api",
           "tag": "latest",
           "containerPort": 80,
           "replicas": 1,
@@ -838,7 +838,7 @@
         },
         {
           "key": "semantickernel",
-          "image": "ghcr.io/fllm-exp01/semantic-kernel-api",
+          "image": "ghcr.io/solliancenet/fllm-exp01/semantic-kernel-api",
           "tag": "latest",
           "containerPort": 80,
           "replicas": 1,
@@ -849,7 +849,7 @@
         },
         {
           "key": "vectorization",
-          "image": "ghcr.io/fllm-exp01/vectorization-api",
+          "image": "ghcr.io/solliancenet/fllm-exp01/vectorization-api",
           "tag": "latest",
           "containerPort": 80,
           "replicas": 1,
@@ -865,7 +865,7 @@
       "instances": [
         {
           "key": "corejob",
-          "image": "ghcr.io/fllm-exp01/core-job",
+          "image": "ghcr.io/solliancenet/fllm-exp01/core-job",
           "tag": "latest",
           "replicas": 1,
           "resources": {
@@ -875,7 +875,7 @@
         },
         {
           "key": "vectorizationjob",
-          "image": "ghcr.io/fllm-exp01/vectorization-job",
+          "image": "ghcr.io/solliancenet/fllm-exp01/vectorization-job",
           "tag": "latest",
           "replicas": 1,
           "resources": {
@@ -893,7 +893,7 @@
       "instances": [
         {
           "key": "chatui",
-          "image": "ghcr.io/fllm-exp01/chat-ui",
+          "image": "ghcr.io/solliancenet/fllm-exp01/chat-ui",
           "tag": "latest",
           "containerPort": 3000,
           "replicas": 1,
@@ -904,7 +904,7 @@
         },
         {
           "key": "managementui",
-          "image": "ghcr.io/fllm-exp01/management-ui",
+          "image": "ghcr.io/solliancenet/fllm-exp01/management-ui",
           "tag": "latest",
           "containerPort": 3000,
           "replicas": 1,
@@ -920,7 +920,7 @@
       "instances": [
         {
           "key": "agenthub",
-          "image": "ghcr.io/fllm-exp01/agent-hub-api",
+          "image": "ghcr.io/solliancenet/fllm-exp01/agent-hub-api",
           "tag": "latest",
           "containerPort": 80,
           "replicas": 1,
@@ -931,7 +931,7 @@
         },
         {
           "key": "datasourcehub",
-          "image": "ghcr.io/fllm-exp01/data-source-hub-api",
+          "image": "ghcr.io/solliancenet/fllm-exp01/data-source-hub-api",
           "tag": "latest",
           "containerPort": 80,
           "replicas": 1,
@@ -942,7 +942,7 @@
         },
         {
           "key": "gatekeeperint",
-          "image": "ghcr.io/fllm-exp01/gatekeeper-integration-api",
+          "image": "ghcr.io/solliancenet/fllm-exp01/gatekeeper-integration-api",
           "tag": "latest",
           "containerPort": 80,
           "replicas": 1,
@@ -953,7 +953,7 @@
         },
         {
           "key": "langchain",
-          "image": "ghcr.io/fllm-exp01/langchain-api",
+          "image": "ghcr.io/solliancenet/fllm-exp01/langchain-api",
           "tag": "latest",
           "containerPort": 80,
           "replicas": 10,
@@ -964,7 +964,7 @@
         },
         {
           "key": "prompthub",
-          "image": "ghcr.io/fllm-exp01/prompt-hub-api",
+          "image": "ghcr.io/solliancenet/fllm-exp01/prompt-hub-api",
           "tag": "latest",
           "containerPort": 80,
           "replicas": 1,
