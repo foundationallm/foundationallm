@@ -90,7 +90,7 @@ class StockAgent(AgentBase):
         #move to new langchain_openai
         #self.embeddings: AzureOpenAIEmbeddings = AzureOpenAIEmbeddings(azure_endpoint=azure_endpoint, openai_api_key=azure_key, deployment=model, chunk_size=1)
 
-        self.embeddings = OpenAIEmbeddings(deployment=model,chunk_size=1)
+        self.embeddings = OpenAIEmbeddings(deployment=model,chunk_size=1,openai_api_key=azure_key, openai_endpoint=azure_endpoint)
 
         # Load the CSV file
         company = completion_request.data_source.configuration.company
