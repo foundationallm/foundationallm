@@ -72,22 +72,30 @@ class SearchServiceFilterRetriever(BaseRetriever):
 
         results_list = []
 
+        search_client = SearchClient(self.endpoint, self.index_name, self.credential)
+
         for filter in self.filters:
 
             try:
-
-                search_client = SearchClient(self.endpoint, self.index_name, self.credential)
                 vector_query = VectorizedQuery(vector=self.__get_embeddings(query),
                                                 k_nearest_neighbors=3,
                                                 fields=self.embedding_field_name)
 
-                results = search_client.search(
-                    search_text=query,
-                    filter=filter,
-                    vector_queries=[vector_query],
-                    top=self.top_n,
-                    select=[self.text_field_name]
-                )
+                if (filter == "*"):
+                        results = search_client.search(
+                        search_text=query,
+                        vector_queries=[vector_query],
+                        top=self.top_n,
+                        select=[self.text_field_name]
+                    )
+                else:
+                    results = search_client.search(
+                        search_text=query,
+                        filter=filter,
+                        vector_queries=[vector_query],
+                        top=self.top_n,
+                        select=[self.text_field_name]
+                    )
 
                 for result in results:
                     try:
@@ -99,6 +107,9 @@ class SearchServiceFilterRetriever(BaseRetriever):
 
             except Exception as e:
                 print(e)
+
+            if ( filter == "*"):
+                break
 
         return results_list
 

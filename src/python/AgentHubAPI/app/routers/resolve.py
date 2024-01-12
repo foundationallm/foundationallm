@@ -40,7 +40,7 @@ async def resolve(request: AgentHubRequest, x_user_identity: Optional[str] = Hea
         context = Context(user_identity=x_user_identity)
         if x_agent_hint is not None and len(x_agent_hint.strip()) > 0:
             agent_hint = AgentHint.model_validate_json(x_agent_hint)
-            return AgentHub().resolve(request=request, user_context=context, hint=agent_hint)
-        return AgentHub().resolve(request=request, user_context=context)
+            return AgentHub(config=request.app.extra['config']).resolve(request=request, user_context=context, hint=agent_hint)
+        return AgentHub(config=request.app.extra['config']).resolve(request=request, user_context=context)
     except Exception as e:
         handle_exception(e)

@@ -51,8 +51,10 @@ async def get_completion(completion_request: CompletionRequest, request : Reques
             completion_request.data_source = DataSource(**completion_request.data_source.dict())
             completion_request.data_source.configuration = StockConfiguration(**jData['data_source']['configuration'])
 
+        config=request.app.extra['config']
+
         orchestration_manager = OrchestrationManager(completion_request = completion_request,
-                                                     configuration=get_config(),
+                                                     configuration=config,
                                                      context=Context(user_identity=x_user_identity))
         return orchestration_manager.run(completion_request.user_prompt)
     except Exception as e:

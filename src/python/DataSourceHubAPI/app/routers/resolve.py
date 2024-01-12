@@ -32,7 +32,7 @@ async def resolve(request:DataSourceHubRequest,
         The optional X-USER-IDENTITY header value.
     x_agent_hint : str
         The optional X-AGENT-HINT header value.
-        
+
     Returns
     -------
     DataSourceHubResponse
@@ -42,8 +42,8 @@ async def resolve(request:DataSourceHubRequest,
         context = Context(user_identity=x_user_identity)
         if x_agent_hint is not None and len(x_agent_hint.strip()) > 0:
             agent_hint = AgentHint.model_validate_json(x_agent_hint)
-            return DataSourceHub().resolve(request=request, user_context=context, hint=agent_hint)
-        return DataSourceHub().resolve(request=request, user_context=context)
+            return DataSourceHub(config=request.app.extra['config']).resolve(request=request, user_context=context, hint=agent_hint)
+        return DataSourceHub(config=request.app.extra['config']).resolve(request=request, user_context=context)
     except Exception as e:
         logging.error(e, stack_info=True, exc_info=True)
         raise HTTPException(
