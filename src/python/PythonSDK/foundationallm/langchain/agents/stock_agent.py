@@ -67,8 +67,10 @@ class StockAgent(AgentBase):
         self.llm = llm.get_completion_model(completion_request.language_model)
         self.message_history = completion_request.message_history
 
-        self.storage_connection_string = config.get_value(completion_request.data_source.configuration.connection_string_secret)
-        self.container_name = completion_request.data_source.configuration.container
+        self.data_source = completion_request.data_source[0]
+
+        self.storage_connection_string = config.get_value(self.data_source.configuration.connection_string_secret)
+        self.container_name = self.data_source.configuration.container
 
         self.storage_manager = BlobStorageManager(
             self.storage_connection_string, self.container_name
@@ -76,15 +78,15 @@ class StockAgent(AgentBase):
 
         self.blob_service_client = self.storage_manager.blob_service_client
 
-        self.search_endpoint = config.get_value(completion_request.data_source.configuration.search_endpoint)
-        self.search_key = config.get_value(completion_request.data_source.configuration.search_key)
+        self.search_endpoint = config.get_value(self.data_source.configuration.search_endpoint)
+        self.search_key = config.get_value(self.data_source.configuration.search_key)
 
-        self.vector_store_address = config.get_value(completion_request.data_source.configuration.search_endpoint)
-        self.vector_store_password = config.get_value(completion_request.data_source.configuration.search_key)
+        self.vector_store_address = config.get_value(self.data_source.configuration.search_endpoint)
+        self.vector_store_password = config.get_value(self.data_source.configuration.search_key)
 
-        azure_endpoint = config.get_value(completion_request.data_source.configuration.open_ai_endpoint)
-        azure_key = config.get_value(completion_request.data_source.configuration.open_ai_key)
-        model = config.get_value(completion_request.data_source.configuration.embedding_model) #"embeddings"
+        azure_endpoint = config.get_value(self.data_source.configuration.open_ai_endpoint)
+        azure_key = config.get_value(self.data_source.configuration.open_ai_key)
+        model = config.get_value(self.data_source.configuration.embedding_model) #"embeddings"
 
         #self.embeddings: AzureOpenAIEmbeddings = AzureOpenAIEmbeddings(azure_endpoint=azure_endpoint, openai_api_key=azure_key, deployment=model, chunk_size=1)
         #self.embeddings = OpenAIEmbeddings(deployment=model,chunk_size=1,openai_api_key=azure_key, openai_endpoint=azure_endpoint,openai_api_type="azure")
@@ -98,12 +100,12 @@ class StockAgent(AgentBase):
             )
 
         # Load the CSV file
-        company = completion_request.data_source.configuration.company
-        retriever_mode = completion_request.data_source.configuration.retriever_mode
-        load_mode = completion_request.data_source.configuration.load_mode
+        company = self.data_source.configuration.company
+        retriever_mode = self.data_source.configuration.retriever_mode
+        load_mode = self.data_source.configuration.load_mode
 
-        self.index_name = completion_request.data_source.configuration.index_name
-        temp_sources = completion_request.data_source.configuration.sources
+        self.index_name = self.data_source.configuration.index_name
+        temp_sources = self.data_source.configuration.sources
         self.filters = []
 
         for source in temp_sources:
