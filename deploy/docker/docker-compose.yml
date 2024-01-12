@@ -1,7 +1,7 @@
 services:
   core-api:
     image: ${REGISTRY:-foundationallm}/core-api:${TAG:-latest}
-    profiles: ["all", "core", "dotnet"]
+    profiles: ["all", "core", "dotnet", "novector"]
     build:
       context: ../../src
       dockerfile: ./dotnet/CoreAPI/Dockerfile
@@ -16,7 +16,7 @@ services:
 
   core-job:
     image: ${REGISTRY:-foundationallm}/core-job:${TAG:-latest}
-    profiles: ["all", "core", "dotnet"]
+    profiles: ["all", "core", "dotnet", "novector"]
     build:
       context: ../../src
       dockerfile: ./dotnet/CoreWorker/Dockerfile
@@ -24,24 +24,10 @@ services:
       ASPNETCORE_ENVIRONMENT: Production
       Logging__Loglevel__Default: 'Debug'
       Logging__Loglevel__Microsoft__AspNetCore: 'Debug'
-  management-api:
-    image: ${REGISTRY:-foundationallm}/management-api:${TAG:-latest}
-    profiles: ["all", "core", "dotnet", "mgmt"]
-    build:
-      context: ../../src
-      dockerfile: ./dotnet/ManagementAPI/Dockerfile
-    ports:
-    - "80:80"
-    environment:
-      DOTNET_URLS: http://+:80
-      ASPNETCORE_ENVIRONMENT: Production
-      AllowedHosts: '*'
-      Logging__Loglevel__Default: 'Debug'
-      Logging__Loglevel__Microsoft__AspNetCore: 'Debug'
 
   agent-factory-api:
     image: ${REGISTRY:-foundationallm}/agent-factory-api:${TAG:-latest}
-    profiles: ["all", "agentfactory", "dotnet"]
+    profiles: ["all", "agentfactory", "dotnet", "novector"]
     build:
       context: ../../src/
       dockerfile: ./dotnet/AgentFactoryAPI/Dockerfile
@@ -56,7 +42,7 @@ services:
 
   gatekeeper-api:
     image: ${REGISTRY:-foundationallm}/gatekeeper-api:${TAG:-latest}
-    profiles: ["all", "gatekeeper", "dotnet"]
+    profiles: ["all", "gatekeeper", "dotnet", "novector"]
     build:
       context: ../../src/
       dockerfile: ./dotnet/GatekeeperAPI/Dockerfile
@@ -71,7 +57,7 @@ services:
 
   semantic-kernel-api:
     image: ${REGISTRY:-foundationallm}/semantic-kernel-api:${TAG:-latest}
-    profiles: ["all", "semantic", "dotnet"]
+    profiles: ["all", "semantic", "dotnet", "novector"]
     build:
       context: ../../src/
       dockerfile: ./dotnet/SemanticKernelAPI/Dockerfile
@@ -116,43 +102,51 @@ services:
 
   langchain-api:
     image: ${REGISTRY:-foundationallm}/langchain-api:${TAG:-latest}
-    profiles: ["all", "langchain-api", "python"]
+    profiles: ["all", "langchain-api", "python", "novector"]
     build:
       context: ../../src/python
       dockerfile: ./LangChainAPI/Dockerfile
     ports:
     - "8081:80"
+    environment:
+      ENV: 'production'
 
   agent-hub-api:
     image: ${REGISTRY:-foundationallm}/agent-hub-api:${TAG:-latest}
-    profiles: ["all", "agent-hub-api", "python"]
+    profiles: ["all", "agent-hub-api", "python", "novector"]
     build:
       context: ../../src/python
       dockerfile: ./AgentHubAPI/Dockerfile
     ports:
     - "8081:80"
+    environment:
+      ENV: 'production'
 
   data-source-hub-api:
     image: ${REGISTRY:-foundationallm}/data-source-hub-api:${TAG:-latest}
-    profiles: ["all", "data-source-hub-api", "python"]
+    profiles: ["all", "data-source-hub-api", "python", "novector"]
     build:
       context: ../../src/python
       dockerfile: ./DataSourceHubAPI/Dockerfile
     ports:
     - "8081:80"
+    environment:
+      ENV: 'production'
 
   prompt-hub-api:
     image: ${REGISTRY:-foundationallm}/prompt-hub-api:${TAG:-latest}
-    profiles: ["all", "prompt-source-hub-api", "python"]
+    profiles: ["all", "prompt-source-hub-api", "python", "novector"]
     build:
       context: ../../src/python
       dockerfile: ./PromptHubAPI/Dockerfile
     ports:
     - "8081:80"
+    environment:
+      ENV: 'production'
 
   chat-ui:
     image: ${REGISTRY:-foundationallm}/chat-ui:${TAG:-latest}
-    profiles: ["all", "core", "chat", "ui"]
+    profiles: ["all", "core", "chat", "ui", "novector"]
     build:
       context: ../../src/ui/UserPortal
       dockerfile: ./Dockerfile
@@ -165,8 +159,10 @@ services:
       DetailedErrors: 'true'
       Logging__Loglevel__Default: 'Debug'
       Logging__Loglevel__Microsoft__AspNetCore: 'Debug'
+
   management-ui:
     image: ${REGISTRY:-foundationallm}/management-ui:${TAG:-latest}
+    profiles: ["all", "core", "chat", "ui"]
     build:
       context: ../../src/ui/ManagementPortal
       dockerfile: ./Dockerfile

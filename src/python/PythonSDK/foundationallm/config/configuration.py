@@ -17,7 +17,7 @@ class Configuration():
             else:
                 app_config_uri = os.environ['foundationallm-app-configuration-uri']
         except Exception as e:
-            raise e
+            app_config_uri = os.environ['foundationallm-app-configuration-uri']
 
         credential = DefaultAzureCredential( exclude_environment_credential=True)
 

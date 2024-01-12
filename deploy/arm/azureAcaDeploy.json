@@ -1897,6 +1897,14 @@
                 {
                   "name": "FoundationaLLM__AppConfig__ConnectionString",
                   "value": "[listKeys(resourceId('Microsoft.AppConfiguration/configurationStores',variables('appConfigSettings').name), '2023-03-01').value[2].connectionString]"
+                },
+                {
+                  "name": "FoundationaLLM__AppConfig__ConnectionString__Dev",
+                  "value": "[listKeys(resourceId('Microsoft.AppConfiguration/configurationStores',variables('appConfigSettings').name), '2023-03-01').value[2].connectionString]"
+                },
+                {
+                  "name": "ENV",
+                  "value": "production"
                 }
               ],
               "resources": {
@@ -2125,6 +2133,10 @@
                 {
                   "name": "foundationallm-app-configuration-uri",
                   "value": "[reference(resourceId('Microsoft.AppConfiguration/configurationStores',variables('appConfigSettings').name), '2023-03-01').endpoint]"
+                },
+                {
+                  "name": "ENV",
+                  "value": "production"
                 }
               ],
               "resources": {
