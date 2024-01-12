@@ -23,7 +23,7 @@ def test_completion_request():
             description="Useful for choosing one or more items from a list of FoundationaLLM demo options.",
             prompt_prefix="You are a demo option selector in the FoundationaLLM system. Your job is to select one or more options from a list of options that can best satisfy the incoming User Prompt. An option consists of a name and description. Evaluate each option by its description.\n\nYou are to select the number of options that are requested in the user prompt. Provide the answer in natural language.\n\nExample: The best option for your request is the default demo.\n\nDo not make anything up, do not create a fake conversation, use only the data provided here.\n\n{options}\n\nUser Prompt:{user_prompt}\n\nAnswer:\n"
         ),
-        data_source=DataSource(
+        data_sources=[DataSource(
             name="foundationallm-demos",
             type="blob-storage",
             description="Information about FoundationaLLM demos.",
@@ -32,7 +32,7 @@ def test_completion_request():
                 container="demos-source",
                 files = ["demos.json"]
             )
-        ),
+        )],
         language_model=LanguageModel(
             type=LanguageModelType.OPENAI,
             provider=LanguageModelProvider.MICROSOFT,

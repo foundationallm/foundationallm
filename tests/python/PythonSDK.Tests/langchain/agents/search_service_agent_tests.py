@@ -24,7 +24,7 @@ def test_sotu_completion_request():
              description="Useful for searching for information about the State of the Union address from February 2023.",
              prompt_prefix="You are a political science professional named Baldwin. You are responsible for answering questions regarding the February 2023 State of the Union Address.\nAnswer only questions about the February 2023 State of the Union address. Do not make anything up. Check your answers before replying.\nProvide concise answers that are polite and professional."
          ),
-         data_source=DataSource(
+         data_sources=[DataSource(
              name="sotu-ds",
              type="search-service",
              description="Transcript from the February 2023 State of the Union Address",
@@ -36,7 +36,7 @@ def test_sotu_completion_request():
                  text_field_name="Text",
                  top_n = 3
              )
-         ),
+         )],
          language_model=LanguageModel(
             type=LanguageModelType.OPENAI,
             provider=LanguageModelProvider.MICROSOFT,
@@ -45,8 +45,8 @@ def test_sotu_completion_request():
          embedding_model = EmbeddingModel(
             type = LanguageModelType.OPENAI,
             provider = LanguageModelProvider.MICROSOFT,
-            deployment = 'embeddings',
-            model = 'text-embedding-ada-002',
+            deployment = 'FoundationaLLM:AzureOpenAI:API:Embeddings:DeploymentName',
+            model = 'FoundationaLLM:AzureOpenAI:API:Embeddings:ModelName',
             chunk_size = 10
         ), 
         message_history=[]

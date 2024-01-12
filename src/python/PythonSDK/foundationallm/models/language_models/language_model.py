@@ -10,3 +10,8 @@ class LanguageModel(BaseModel):
     temperature: Annotated[float, confloat(ge=0, le=1)] = 0
     use_chat: bool = True
     config_value_base_name: Optional[str] = "FoundationaLLM:AzureOpenAI:API"
+    api_endpoint: Optional[str] = "FoundationaLLM:AzureOpenAI:API:Endpoint"
+    api_key: Optional[str] = "FoundationaLLM:AzureOpenAI:API:Key"
+    api_version: Optional[str] = "FoundationaLLM:AzureOpenAI:API:Version"
+    version: Optional[str] = "FoundationaLLM:AzureOpenAI:API:Completions:ModelVersion"
+    deployment: Optional[str] = "FoundationaLLM:AzureOpenAI:API:Completions:DeploymentName"

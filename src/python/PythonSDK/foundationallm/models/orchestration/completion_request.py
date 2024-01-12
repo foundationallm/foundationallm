@@ -12,7 +12,7 @@ class CompletionRequest(BaseModel):
     user_prompt: str
     session_id: str
     agent: Optional[Agent] = None
-    data_source: Optional[DataSource] = None
+    data_sources: Optional[List[DataSource]] = []
     language_model: Optional[LanguageModel] = None
     embedding_model: Optional[EmbeddingModel] = None
     message_history: Optional[List[MessageHistoryItem]] = []
