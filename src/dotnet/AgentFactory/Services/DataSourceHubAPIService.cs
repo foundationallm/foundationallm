@@ -85,7 +85,8 @@ public class DataSourceHubAPIService : IDataSourceHubAPIService
             {
                 responseContent = _cache[_cacheKey].ToString();
                 var response = JsonConvert.DeserializeObject<DataSourceHubResponse>(responseContent, _jsonSerializerSettings);
-                return response!;
+                if(response.DataSources.Count != 0)
+                    return response!;
             }
 
             var request = new DataSourceHubRequest { DataSources =  sources, SessionId = sessionId };
