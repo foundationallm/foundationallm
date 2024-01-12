@@ -794,7 +794,7 @@
       "instances": [
         {
           "key": "agentfactory",
-          "image": "ghcr.io/solliancenet/foundationallm/agent-factory-api",
+          "image": "ghcr.io/solliancenet/fllm-exp02/agent-factory-api",
           "tag": "0.1",
           "containerPort": 80,
           "replicas": 1,
@@ -805,7 +805,7 @@
         },
         {
           "key": "core",
-          "image": "ghcr.io/solliancenet/foundationallm/core-api",
+          "image": "ghcr.io/solliancenet/fllm-exp02/core-api",
           "tag": "0.1",
           "containerPort": 80,
           "replicas": 1,
@@ -816,7 +816,7 @@
         },
         {
           "key": "management",
-          "image": "ghcr.io/solliancenet/foundationallm/management-api",
+          "image": "ghcr.io/solliancenet/fllm-exp02/management-api",
           "tag": "0.1",
           "containerPort": 80,
           "replicas": 1,
@@ -827,7 +827,7 @@
         },
         {
           "key": "gatekeeper",
-          "image": "ghcr.io/solliancenet/foundationallm/gatekeeper-api",
+          "image": "ghcr.io/solliancenet/fllm-exp02/gatekeeper-api",
           "tag": "0.1",
           "containerPort": 80,
           "replicas": 1,
@@ -838,7 +838,7 @@
         },
         {
           "key": "semantickernel",
-          "image": "ghcr.io/solliancenet/foundationallm/semantic-kernel-api",
+          "image": "ghcr.io/solliancenet/fllm-exp02/semantic-kernel-api",
           "tag": "0.1",
           "containerPort": 80,
           "replicas": 1,
@@ -849,7 +849,7 @@
         },
         {
           "key": "vectorization",
-          "image": "ghcr.io/solliancenet/foundationallm/vectorization-api",
+          "image": "ghcr.io/solliancenet/fllm-exp02/vectorization-api",
           "tag": "0.1",
           "containerPort": 80,
           "replicas": 1,
@@ -865,7 +865,7 @@
       "instances": [
         {
           "key": "corejob",
-          "image": "ghcr.io/solliancenet/foundationallm/core-job",
+          "image": "ghcr.io/solliancenet/fllm-exp02/core-job",
           "tag": "0.1",
           "replicas": 1,
           "resources": {
@@ -875,7 +875,7 @@
         },
         {
           "key": "vectorizationjob",
-          "image": "ghcr.io/solliancenet/foundationallm/vectorization-job",
+          "image": "ghcr.io/solliancenet/fllm-exp02/vectorization-job",
           "tag": "0.1",
           "replicas": 1,
           "resources": {
@@ -893,7 +893,7 @@
       "instances": [
         {
           "key": "chatui",
-          "image": "ghcr.io/solliancenet/foundationallm/chat-ui",
+          "image": "ghcr.io/solliancenet/fllm-exp02/chat-ui",
           "tag": "0.1",
           "containerPort": 3000,
           "replicas": 1,
@@ -904,7 +904,7 @@
         },
         {
           "key": "managementui",
-          "image": "ghcr.io/solliancenet/foundationallm/management-ui",
+          "image": "ghcr.io/solliancenet/fllm-exp02/management-ui",
           "tag": "0.1",
           "containerPort": 3000,
           "replicas": 1,
@@ -920,7 +920,7 @@
       "instances": [
         {
           "key": "agenthub",
-          "image": "ghcr.io/solliancenet/foundationallm/agent-hub-api",
+          "image": "ghcr.io/solliancenet/fllm-exp02/agent-hub-api",
           "tag": "0.1",
           "containerPort": 80,
           "replicas": 1,
@@ -931,7 +931,7 @@
         },
         {
           "key": "datasourcehub",
-          "image": "ghcr.io/solliancenet/foundationallm/data-source-hub-api",
+          "image": "ghcr.io/solliancenet/fllm-exp02/data-source-hub-api",
           "tag": "0.1",
           "containerPort": 80,
           "replicas": 1,
@@ -942,7 +942,7 @@
         },
         {
           "key": "gatekeeperint",
-          "image": "ghcr.io/solliancenet/foundationallm/gatekeeper-integration-api",
+          "image": "ghcr.io/solliancenet/fllm-exp02/gatekeeper-integration-api",
           "tag": "0.1",
           "containerPort": 80,
           "replicas": 1,
@@ -953,7 +953,7 @@
         },
         {
           "key": "langchain",
-          "image": "ghcr.io/solliancenet/foundationallm/langchain-api",
+          "image": "ghcr.io/solliancenet/fllm-exp02/langchain-api",
           "tag": "0.1",
           "containerPort": 80,
           "replicas": 10,
@@ -964,7 +964,7 @@
         },
         {
           "key": "prompthub",
-          "image": "ghcr.io/solliancenet/foundationallm/prompt-hub-api",
+          "image": "ghcr.io/solliancenet/fllm-exp02/prompt-hub-api",
           "tag": "0.1",
           "containerPort": 80,
           "replicas": 1,

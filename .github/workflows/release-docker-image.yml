@@ -23,13 +23,13 @@ jobs:
       contents: read
       packages: write
     steps:
-    - name: Fetching the Latest Release Tag number
-      id: releaseVersion
-      run: |
-        release_json=$(curl https://api.github.com/repos/${{ github.repository }}/releases)
-        release_tag=$(echo "$release_json" | jq -r '.[0].tag_name')
-        echo "release_tag: Latest Tag is : $release_tag"
-        echo "release_tag=$release_tag" >> $GITHUB_OUTPUT
+    # - name: Fetching the Latest Release Tag number
+    #   id: releaseVersion
+    #   run: |
+    #     release_json=$(curl https://api.github.com/repos/${{ github.repository }}/releases)
+    #     release_tag=$(echo "$release_json" | jq -r '.[0].tag_name')
+    #     echo "release_tag: Latest Tag is : $release_tag"
+    #     echo "release_tag=$release_tag" >> $GITHUB_OUTPUT
 
     - name: Checkout code
       uses: actions/checkout@v2
@@ -46,14 +46,11 @@ jobs:
       uses: docker/metadata-action@v5
       with:
         images: |
-          ghcr.io/${{ github.repository }}/${{ inputs.image }}
+          ghcr.io/solliancenet/fllm-exp02/${{ inputs.image }}
         tags: |
           type=raw,latest
           type=raw,release
-          type=pep440,pattern={{version}},value=${{ steps.releaseVersion.outputs.release_tag }}
-          type=pep440,pattern={{major}}.{{minor}},value=${{ steps.releaseVersion.outputs.release_tag }}
-          type=pep440,pattern={{major}},value=${{ steps.releaseVersion.outputs.release_tag }}
-          type=sha,format=long
+          type=sha,format=short
 
     - name: Build and push Docker images
       uses: docker/build-push-action@v5
@@ -64,7 +61,7 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
         push: true
 
-  helm_chart_package_and_push:
+  # helm_chart_package_and_push:
     runs-on: ubuntu-latest
     permissions:
       contents: read
