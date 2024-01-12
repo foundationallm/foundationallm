@@ -37,7 +37,7 @@ from foundationallm.langchain.agents import AgentBase
 from foundationallm.langchain.language_models import LanguageModelBase
 from foundationallm.models.orchestration import CompletionRequest, CompletionResponse
 from foundationallm.storage import BlobStorageManager
-from foundationallm.langchain.retrievers import SearchServiceRetriever
+from foundationallm.langchain.retrievers import SearchServiceFilterRetriever
 
 class StockAgent(AgentBase):
     """
@@ -274,7 +274,7 @@ class StockAgent(AgentBase):
 
         credential = AzureKeyCredential(self.vector_store_password)
 
-        return SearchServiceRetriever(
+        return SearchServiceFilterRetriever(
                     endpoint=self.vector_store_address,
                     indexes = self.sources,
                     index_name="cjg-vector-index",
@@ -289,7 +289,7 @@ class StockAgent(AgentBase):
 
         credential = AzureKeyCredential(self.vector_store_password)
 
-        return SearchServiceRetriever(
+        return SearchServiceFilterRetriever(
                     endpoint=self.vector_store_address,
                     index_name=self.index_name,
                     filters=self.filters,
