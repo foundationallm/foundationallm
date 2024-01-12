@@ -220,7 +220,7 @@ class StockAgent(AgentBase):
         csv_retriever = csv_db.as_retriever()
         return csv_retriever
 
-    def azure_search_vectorize(self, docs, path="cjg-vector-index", chunk_size=1000, chunk_overlap=0):
+    def azure_search_vectorize(self, docs, path, chunk_size=1000, chunk_overlap=0):
         from azure.search.documents.indexes.models import (
             SearchIndex,
             SearchField,

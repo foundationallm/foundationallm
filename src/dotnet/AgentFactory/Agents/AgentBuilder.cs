@@ -10,10 +10,6 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
     /// </summary>
     public class AgentBuilder
     {
-        Hashtable agentCache = new Hashtable();
-        Hashtable datasourceCache = new Hashtable();
-        Hashtable promptCache = new Hashtable();
-
         /// <summary>
         /// Used to build an agenet given the inbound parameters.
         /// </summary>
