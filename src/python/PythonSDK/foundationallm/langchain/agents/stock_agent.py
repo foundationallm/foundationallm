@@ -107,7 +107,7 @@ class StockAgent(AgentBase):
         self.filters = []
 
         for source in temp_sources:
-            self.filters.append(f"search.ismatch('{source}', 'metadata', 'full', 'any')")
+            self.filters.append(f"search.ismatch('{source}', 'metadata', 'simple', 'all')")
 
         if ( retriever_mode == "azure" ):
             local_path = f"{company}-financials"
