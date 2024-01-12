@@ -79,9 +79,11 @@ public class DataSourceHubAPIService : IDataSourceHubAPIService
         {
             string responseContent = null;
 
-            if (_cache.ContainsKey($"{sessionId}-{_httpClientFactoryService.GetAgent()}"))
+            string _cacheKey = $"{sessionId}-{_httpClientFactoryService.GetAgent()}";
+
+            if (_cache.ContainsKey(_cacheKey))
             {
-                responseContent = _cache[$"{sessionId}-{_httpClientFactoryService.GetAgent()}"].ToString();
+                responseContent = _cache[_cacheKey].ToString();
                 var response = JsonConvert.DeserializeObject<DataSourceHubResponse>(responseContent, _jsonSerializerSettings);
                 return response!;
             }
@@ -96,7 +98,12 @@ public class DataSourceHubAPIService : IDataSourceHubAPIService
             if (responseMessage.IsSuccessStatusCode)
             {
                 responseContent = await responseMessage.Content.ReadAsStringAsync();
-                _cache.Add($"{sessionId}-{_httpClientFactoryService.GetAgent()}", responseContent);
+
+                if (_cache.ContainsKey(_cacheKey))
+                    _cache[_cacheKey] = responseContent;
+                else
+                    _cache.Add(_cacheKey, responseContent);
+
                 var response = JsonConvert.DeserializeObject<DataSourceHubResponse>(responseContent, _jsonSerializerSettings);
                 
                 return response!;

@@ -60,7 +60,7 @@ namespace FoundationaLLM.AgentFactory.Services
                     Encoding.UTF8, "application/json"));
             var responseContent = await responseMessage.Content.ReadAsStringAsync();
 
-            if (responseMessage.IsSuccessStatusCode)
+            if(responseMessage.IsSuccessStatusCode)
             {
                 var completionResponse = JsonConvert.DeserializeObject<LLMOrchestrationCompletionResponse>(responseContent);
 

@@ -22,8 +22,7 @@ from langchain.document_loaders import PyPDFLoader
 #from langchain_community.document_loaders import TextLoader
 #rom langchain_community.vectorstores.azuresearch import AzureSearch
 #from langchain_openai import AzureOpenAIEmbeddings
-
-from langchain.embeddings import OpenAIEmbeddings
+from langchain.embeddings.openai import OpenAIEmbeddings
 
 from langchain.document_loaders import UnstructuredXMLLoader
 from langchain.document_loaders import TextLoader
@@ -87,24 +86,31 @@ class StockAgent(AgentBase):
         azure_key = config.get_value(completion_request.data_source.configuration.open_ai_key)
         model = config.get_value(completion_request.data_source.configuration.embedding_model) #"embeddings"
 
-        #move to new langchain_openai
         #self.embeddings: AzureOpenAIEmbeddings = AzureOpenAIEmbeddings(azure_endpoint=azure_endpoint, openai_api_key=azure_key, deployment=model, chunk_size=1)
+        #self.embeddings = OpenAIEmbeddings(deployment=model,chunk_size=1,openai_api_key=azure_key, openai_endpoint=azure_endpoint,openai_api_type="azure")
 
-        self.embeddings = OpenAIEmbeddings(deployment=model,chunk_size=1,openai_api_key=azure_key, openai_endpoint=azure_endpoint)
+        self.embeddings = OpenAIEmbeddings(
+                deployment=model,
+                #model="text-embedding-ada-002",
+                openai_api_base=azure_endpoint,
+                openai_api_key=azure_key,
+                openai_api_type="azure",
+            )
 
         # Load the CSV file
         company = completion_request.data_source.configuration.company
         retriever_mode = completion_request.data_source.configuration.retriever_mode
         load_mode = completion_request.data_source.configuration.load_mode
 
+        self.index_name = completion_request.data_source.configuration.index_name
         temp_sources = completion_request.data_source.configuration.sources
-        self.sources = []
+        self.filters = []
 
         for source in temp_sources:
-            self.sources.append(f'{company}-{source}')
+            self.filters.append(f"search.ismatch('{source}', 'metadata', 'full', 'any')")
 
         if ( retriever_mode == "azure" ):
-            local_path = "cjg-vector-index"
+            local_path = f"{company}-financials"
             retriever = self.get_azure_retiever(local_path, embedding_field_name="content_vector", text_field_name="content")
 
         if ( retriever == "chroma" ):
@@ -285,7 +291,8 @@ class StockAgent(AgentBase):
 
         return SearchServiceRetriever(
                     endpoint=self.vector_store_address,
-                    indexes=self.sources,
+                    index_name=self.index_name,
+                    filters=self.filters,
                     top_n=top_n,
                     embedding_field_name=embedding_field_name,
                     text_field_name=text_field_name,

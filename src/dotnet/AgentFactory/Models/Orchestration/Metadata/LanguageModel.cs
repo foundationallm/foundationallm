@@ -21,6 +21,9 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata
         [JsonProperty("model")]
         public string? Model { get; set; }
 
+        [JsonProperty("index_name")]
+        public string? IndexName { get; set; }
+
         /// <summary>
         /// Type property.
         /// </summary>

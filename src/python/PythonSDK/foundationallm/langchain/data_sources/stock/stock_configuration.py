@@ -14,6 +14,8 @@ class StockConfiguration(DataSourceConfiguration):
 
     embedding_model : str
 
+    index_name : str
+
     sources : List[str]
 
     retriever_mode : str

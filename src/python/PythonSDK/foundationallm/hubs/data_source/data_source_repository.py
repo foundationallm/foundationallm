@@ -64,7 +64,8 @@ class DataSourceRepository(Repository):
                                     mgr.read_file_content(config_file)))
             # if a datasource is not deserializable, skip it
             # pylint: disable=bare-except
-            except:
+            except Exception as ex:
+                print(ex)
                 continue
         return configs
 

@@ -6,8 +6,8 @@ from langchain.schema import BaseRetriever
 
 #new langchain
 #from langchain_openai import AzureOpenAIEmbeddings
-
 from langchain.embeddings.openai import OpenAIEmbeddings
+
 from langchain.callbacks.manager import (
     AsyncCallbackManagerForRetrieverRun,
     CallbackManagerForRetrieverRun,
@@ -44,7 +44,8 @@ class SearchServiceRetriever(BaseRetriever):
         }
     """
     endpoint: str
-    indexes : List[str]
+    index_name: str
+    filters : List[str]
     top_n : int
     embedding_field_name: Optional[str] = "Embedding"
     text_field_name: Optional[str] = "Text"
@@ -71,16 +72,18 @@ class SearchServiceRetriever(BaseRetriever):
 
         results_list = []
 
-        for index_name in self.indexes:
+        for filter in self.filters:
 
             try:
 
-                search_client = SearchClient(self.endpoint, index_name, self.credential)
+                search_client = SearchClient(self.endpoint, self.index_name, self.credential)
                 vector_query = VectorizedQuery(vector=self.__get_embeddings(query),
                                                 k_nearest_neighbors=3,
                                                 fields=self.embedding_field_name)
+
                 results = search_client.search(
                     search_text=query,
+                    filter=filter,
                     vector_queries=[vector_query],
                     top=self.top_n,
                     select=[self.text_field_name]

@@ -39,6 +39,9 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Orchestration.DataSourceConfig
         [JsonProperty("embedding_model")]
         public string EmbeddingModel { get; set; }
 
+        [JsonProperty("index_name")]
+        public string? IndexName { get; set; }
+
         [JsonProperty("config_value_base_name")]
         public string ConfigValueBaseName { get; set; }
 

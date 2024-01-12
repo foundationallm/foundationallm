@@ -79,6 +79,7 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
                         DataDescription = dataSource.DataDescription,
                         Configuration = new StockConfiguration
                         {
+                            IndexName = dataSource.IndexName,
                             ConfigValueBaseName = dataSource.ConfigValueBaseName,
                             OpenAIEndpoint = dataSource.OpenAIEndpoint,
                             OpenAIKey = dataSource.OpenAIKey,

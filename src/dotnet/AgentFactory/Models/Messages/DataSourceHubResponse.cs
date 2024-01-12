@@ -158,6 +158,7 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Messages
         [JsonProperty("embedding_model")]
         public string? EmbeddingModel { get; set; }
 
+        
         [JsonProperty("sources")]
         public string[]? Sources { get; set; }
 
