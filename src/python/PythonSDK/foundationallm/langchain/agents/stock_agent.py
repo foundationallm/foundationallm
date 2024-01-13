@@ -116,17 +116,8 @@ class StockAgent(AgentBase):
             retriever = self.get_azure_retiever(local_path, embedding_field_name="content_vector", text_field_name="content", top_n=self.data_source.top_n)
 
         if ( retriever == "chroma" ):
-            local_path = f"c:/temp/{company}"
-            #retriever = self.load_csvs(local_path, retriever_mode=retriever_mode, load_mode=load_mode)
-            #retriever = self.load_10q(local_path, retriever_mode=retriever_mode, load_mode=load_mode)
+            local_path = f"/temp/{company}"
             retriever = self.get_chroma_retiever(local_path)
-
-            download = False
-
-            if ( download == True ):
-                #download the files from storage account...
-                self.download(path=local_path)
-                self.load_data(retriever_mode=retriever_mode, local_path=local_path, load_mode=load_mode)
 
         tools = []
 
@@ -195,24 +186,6 @@ class StockAgent(AgentBase):
                 total_cost = cb.total_cost
             )
 
-    def who_is_question_for(self, question):
-
-        template = """
-        There are three executives in an earnings call taking questions from analysts.  You are to determine who the question is directed at.  You can pick from the CEO, Kevin Blair.  The CFO Andrew Gregory Jr. or the CCO Robert Derrick.  Only response with 'CEO', 'CFO' or 'CCO'.
-        Question:
-        {input}
-        """
-
-        llm_prompt = PromptTemplate(
-            input_variables=["input"],
-            template=template,
-        )
-
-        chain = LLMChain(llm=self.llm, prompt=llm_prompt)
-
-        res = chain.invoke({"input" : question}, return_only_outputs=True) # prompt is human input from request body
-
-        print(f'{res["text"]} : {question}')
 
     def chroma_vectorize(self, docs, path, chunk_size=1000, chunk_overlap=0):
         print(f"Sending docs to Chroma")
@@ -279,7 +252,7 @@ class StockAgent(AgentBase):
         return SearchServiceFilterRetriever(
                     endpoint=self.vector_store_address,
                     indexes = self.sources,
-                    index_name="cjg-vector-index",
+                    index_name=self.index_name,
                     top_n=5,
                     embedding_field_name="Embedding",
                     text_field_name="Text",
@@ -287,7 +260,7 @@ class StockAgent(AgentBase):
                     embedding_model=self.embeddings
             )
 
-    def get_azure_retiever(self, path="cjg-vector-index", top_n=5, embedding_field_name="Embedding", text_field_name="Text"):
+    def get_azure_retiever(self, path, top_n=5, embedding_field_name="Embedding", text_field_name="Text"):
 
         credential = AzureKeyCredential(self.vector_store_password)
 
@@ -302,7 +275,7 @@ class StockAgent(AgentBase):
                     embedding_model=self.embeddings
             )
 
-    def get_chroma_retiever(self, path="cjg-vector-index"):
+    def get_chroma_retiever(self, path):
 
         prsstdb = Chroma(
                 persist_directory=path,
@@ -310,41 +283,6 @@ class StockAgent(AgentBase):
             )
 
         return prsstdb.as_retriever()
-
-    def load_data(self, retriever_mode = "azure", local_path="", load_mode="load"):
-
-        csv_retriever = self.load_csvs(local_path, retriever_mode=retriever_mode, load_mode=load_mode)
-
-        pdf_retriever = self.load_pdfs(local_path, retriever_mode=retriever_mode, load_mode=load_mode)
-
-        docs_10k_retriever = self.load_10k(local_path, retriever_mode=retriever_mode, load_mode=load_mode)
-
-        docs_10q_retriever = self.load_10q(local_path, retriever_mode=retriever_mode, load_mode=load_mode)
-
-        docs_14a_retriever = self.load_14a(local_path, retriever_mode=retriever_mode, load_mode=load_mode)
-
-        transcripts_retriever = self.load_transcripts(local_path, retriever_mode=retriever_mode, load_mode=load_mode)
-
-    def load_pdfs(self, path, retriever_mode = "azure", load_mode="load"):
-        return self.load_pdf_docs(path, "pdfs", retriever_mode=retriever_mode, retriever_path="/synovus/pdfs", chunk_size=1000, chunk_overlap=0)
-
-    def load_competitors(self, path, retriever_mode = "azure", load_mode="load"):
-        return self.load_xml_docs(path, "competitors", retriever_mode=retriever_mode, retriever_path="/synovus/competitors", chunk_size=1000, chunk_overlap=0)
-
-    def load_10k(self, path, retriever_mode = "azure", load_mode="load"):
-        return self.load_xml_docs(path, "10k", retriever_mode=retriever_mode, retriever_path="/synovus/10k", chunk_size=1000, chunk_overlap=0)
-
-    def load_10q(self, path, retriever_mode = "azure", load_mode="load"):
-        return self.load_xml_docs(path, "10q", retriever_mode=retriever_mode, retriever_path="/synovus/10q", chunk_size=1000, chunk_overlap=0)
-
-    def load_14a(self, path, retriever_mode = "azure", load_mode="load"):
-        return self.load_xml_docs(path, "14a", retriever_mode=retriever_mode, retriever_path="/synovus/14a", chunk_size=1000, chunk_overlap=0)
-
-    def load_transcripts(self, path, retriever_mode = "azure", load_mode="load"):
-        return self.load_text_docs(path, "transcripts", retriever_mode=retriever_mode, retriever_path="/synovus/transcripts", chunk_size=1000, chunk_overlap=0)
-
-    def load_csvs(self, path, retriever_mode = "azure", load_mode="load"):
-        return self.load_csv_docs(path, "csvs", retriever_mode=retriever_mode, retriever_path="/synovus/csvs", chunk_size=1000, chunk_overlap=0, load_mode=load_mode)
 
     def vectorize_docs(self, docs, retriever_mode = "azure", retriever_path = "", chunk_size=1000, chunk_overlap=0, load_mode="load"):
 
@@ -366,9 +304,9 @@ class StockAgent(AgentBase):
 
             credential = AzureKeyCredential(self.vector_store_password)
 
-            retriever = SearchServiceRetriever(
+            retriever = SearchServiceFilterRetriever(
                     endpoint=self.vector_store_address,
-                    index_name="cjg-vector-index",
+                    index_name=self.index_name,
                     top_n=5,
                     embedding_field_name="Embedding",
                     text_field_name="Text",
@@ -489,11 +427,13 @@ class StockAgent(AgentBase):
 
         return self.vectorize_docs(docs, retriever_path=retriever_path, retriever_mode=retriever_mode, load_mode=load_mode)
 
-    def download_live_transcript(self, container_name="transcripts"):
+    def download_live_transcript(self, container_name="transcripts", retriever_path="transcripts", retriever_mode="azure", load_mode="index"):
 
         text = self.download_blob_to_text(self.blob_service_client, container_name, "transcripts/2021-04-20-earnings-call.txt")
 
-        loader = TextLoader(text).load()
+        docs = TextLoader(text).load()
+
+        self.vectorize_docs(docs, retriever_path=retriever_path, retriever_mode=retriever_mode, load_mode=load_mode)
 
     #download the files from storage account...
     def download(self, local_path="", remote_file_path=""):
@@ -530,5 +470,3 @@ class StockAgent(AgentBase):
         with open(file=os.path.join(r'filepath', f'{local_path}/{blob_name}'), mode="wb") as sample_blob:
             download_stream = blob_client.download_blob()
             sample_blob.write(download_stream.readall())
-
-    #index them...
