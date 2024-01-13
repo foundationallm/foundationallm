@@ -113,7 +113,7 @@ class StockAgent(AgentBase):
 
         if ( retriever_mode == "azure" ):
             local_path = f"{company}-financials"
-            retriever = self.get_azure_retiever(local_path, embedding_field_name="content_vector", text_field_name="content", top_n=15)
+            retriever = self.get_azure_retiever(local_path, embedding_field_name="content_vector", text_field_name="content", top_n=20)
 
         if ( retriever == "chroma" ):
             local_path = f"c:/temp/{company}"
