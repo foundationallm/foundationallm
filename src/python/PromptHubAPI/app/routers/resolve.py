@@ -3,7 +3,7 @@ The API endpoint for returning the appropriate agent prompt for the specified us
 """
 import logging
 from typing import Optional
-from fastapi import APIRouter, Depends, HTTPException, Header
+from fastapi import APIRouter, Depends, HTTPException, Header, Request
 from foundationallm.config import Context
 from foundationallm.models import AgentHint
 from foundationallm.hubs.prompt import PromptHubRequest, PromptHubResponse, PromptHub
@@ -17,7 +17,7 @@ router = APIRouter(
 )
 
 @router.post('')
-async def resolve(request: PromptHubRequest,
+async def resolve(prompt_request: PromptHubRequest, request : Request,
                   x_user_identity: Optional[str] = Header(None),
                   x_agent_hint: str = Header(None)) -> PromptHubResponse:
     """
@@ -26,13 +26,13 @@ async def resolve(request: PromptHubRequest,
     Parameters
     ----------
     request : PromptHubRequest
-        The request object containing the agent and prompt names to use 
+        The request object containing the agent and prompt names to use
         in resolving the prompt to return.
     x_user_identity : str
         The optional X-USER-IDENTITY header value.
     x_agent_hint : str
         The optional X-AGENT-HINT header value.
-        
+
     Returns
     -------
     PromptHubResponse
@@ -42,8 +42,8 @@ async def resolve(request: PromptHubRequest,
         context = Context(user_identity=x_user_identity)
         if x_agent_hint is not None and len(x_agent_hint.strip()) > 0:
             agent_hint = AgentHint.model_validate_json(x_agent_hint)
-            return PromptHub().resolve(request=request, user_context=context, hint=agent_hint)
-        return PromptHub().resolve(request, user_context=context)
+            return PromptHub().resolve(request=prompt_request, user_context=context, hint=agent_hint)
+        return PromptHub().resolve(prompt_request, user_context=context)
     except Exception as e:
         logging.error(e, stack_info=True, exc_info=True)
         raise HTTPException(

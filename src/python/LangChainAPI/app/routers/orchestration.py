@@ -48,8 +48,8 @@ async def get_completion(completion_request: CompletionRequest, request : Reques
 
         #cast the datasource to the correct type
         if ( agent_type == 'stock'):
-            #completion_request.data_sources = DataSource(**completion_request.data_source.dict())
-            completion_request.data_sources.append(StockConfiguration(**jData['data_source']['configuration']))
+            completion_request.data_sources = []
+            completion_request.data_sources.append(StockConfiguration(**jData['data_sources'][0]['configuration']))
 
         config=request.app.extra['config']
 

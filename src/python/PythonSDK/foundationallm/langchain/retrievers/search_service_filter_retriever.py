@@ -81,7 +81,7 @@ class SearchServiceFilterRetriever(BaseRetriever):
                                                 k_nearest_neighbors=3,
                                                 fields=self.embedding_field_name)
 
-                if (filter == "*"):
+                if (filter == "search.ismatch('*', 'metadata', 'simple', 'all')"):
                         results = search_client.search(
                         search_text=query,
                         vector_queries=[vector_query],
@@ -108,7 +108,7 @@ class SearchServiceFilterRetriever(BaseRetriever):
             except Exception as e:
                 print(e)
 
-            if ( filter == "*"):
+            if ( filter == "search.ismatch('*', 'metadata', 'simple', 'all')"):
                 break
 
         return results_list

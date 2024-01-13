@@ -73,30 +73,30 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
                         break;
                     case "stock":
                     //TODO
-                    dataSourceMetadata = new StockDataSource
-                    {
-                        Name = dataSource.Name,
-                        Type = _agentMetadata.Type,
-                        Description = dataSource.Description,
-                        DataDescription = dataSource.DataDescription,
-                        Configuration = new StockConfiguration
+                        dataSourceMetadata.Add ( new StockDataSource
                         {
-                            IndexName = dataSource.IndexName,
-                            ConfigValueBaseName = dataSource.ConfigValueBaseName,
-                            OpenAIEndpoint = dataSource.OpenAIEndpoint,
-                            OpenAIKey = dataSource.OpenAIKey,
-                            SearchEndpoint = dataSource.SearchEndpoint,
-                            EmbeddingModel = dataSource.EmbeddingModel,
-                            SearchKey = dataSource.SearchKey,
-                            ConnectionStringSecretName = dataSource.ConnectionStringSecret,
-                            ContainerName = dataSource.Container,
-                            RetrieverMode = dataSource.RetrieverMode,
-                            LoadMode = dataSource.LoadMode,
-                            Company = dataSource.Company,
-                            Sources = dataSource.Sources
-                        }
+                            Name = dataSource.Name,
+                            Type = _agentMetadata.Type,
+                            Description = dataSource.Description,
+                            DataDescription = dataSource.DataDescription,
+                            Configuration = new StockConfiguration
+                            {
+                                IndexName = dataSource.IndexName,
+                                ConfigValueBaseName = dataSource.ConfigValueBaseName,
+                                OpenAIEndpoint = dataSource.OpenAIEndpoint,
+                                OpenAIKey = dataSource.OpenAIKey,
+                                SearchEndpoint = dataSource.SearchEndpoint,
+                                EmbeddingModel = dataSource.EmbeddingModel,
+                                SearchKey = dataSource.SearchKey,
+                                ConnectionStringSecretName = dataSource.ConnectionStringSecret,
+                                ContainerName = dataSource.Container,
+                                RetrieverMode = dataSource.RetrieverMode,
+                                LoadMode = dataSource.LoadMode,
+                                Company = dataSource.Company,
+                                Sources = dataSource.Sources
+                            }
 
-                    };
+                        });
                     break;
                     case "search-service":
                         dataSourceMetadata.Add(new SearchServiceDataSource

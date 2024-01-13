@@ -42,7 +42,6 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
                 throw new ArgumentException($"The agent factory does not support the {orchestrationType} orchestration type.");
             var orchestrationService = SelectOrchestrationService(llmOrchestrationType, orchestrationServices);
 
-            
             AgentBase? agent = null;
             agent = new DefaultAgent(agentInfo!, orchestrationService, promptHubAPIService, dataSourceHubAPIService);           
 
