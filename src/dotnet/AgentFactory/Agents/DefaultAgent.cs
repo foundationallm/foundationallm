@@ -87,6 +87,7 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
                                 OpenAIKey = dataSource.OpenAIKey,
                                 SearchEndpoint = dataSource.SearchEndpoint,
                                 EmbeddingModel = dataSource.EmbeddingModel,
+                                TopN = dataSource.TopN,
                                 SearchKey = dataSource.SearchKey,
                                 ConnectionStringSecretName = dataSource.ConnectionStringSecret,
                                 ContainerName = dataSource.Container,

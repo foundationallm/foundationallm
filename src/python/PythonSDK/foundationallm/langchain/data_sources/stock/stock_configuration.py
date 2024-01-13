@@ -14,6 +14,8 @@ class StockConfiguration(DataSourceConfiguration):
 
     embedding_model : str
 
+    top_n : int
+
     index_name : str
 
     sources : List[str]

@@ -44,6 +44,8 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Orchestration.DataSourceConfig
 
         [JsonProperty("config_value_base_name")]
         public string ConfigValueBaseName { get; set; }
+        [JsonProperty("top_n")]
+        public int? TopN { get; set; } = 20;
 
         [JsonProperty("sources")]
         public string[]? Sources { get; set; }

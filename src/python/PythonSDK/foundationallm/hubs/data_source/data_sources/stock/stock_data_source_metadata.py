@@ -16,6 +16,8 @@ class StockDataSourceMetadata(DataSourceMetadata):
 
     config_value_base_name : str
 
+    top_n : int
+
     index_name : str
     sources : List[str]
 
