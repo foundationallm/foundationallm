@@ -1,1 +1,2 @@
 from .search_service_retriever import SearchServiceRetriever
+from .search_service_filter_retriever import SearchServiceFilterRetriever

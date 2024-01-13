@@ -3,7 +3,11 @@ Class: SearchServiceRetriever
 Description: LangChain retriever for Azure AI Search.
 """
 from langchain.schema import BaseRetriever
+
+#new langchain
+#from langchain_openai import AzureOpenAIEmbeddings
 from langchain.embeddings.openai import OpenAIEmbeddings
+
 from langchain.callbacks.manager import (
     AsyncCallbackManagerForRetrieverRun,
     CallbackManagerForRetrieverRun,
@@ -14,7 +18,7 @@ from azure.core.credentials import AzureKeyCredential
 from typing import List, Optional
 from langchain.schema.document import Document
 
-class SearchServiceRetriever(BaseRetriever):
+class SearchServiceFilterRetriever(BaseRetriever):
     """
     LangChain retriever for Azure AI Search.
     Properties:
@@ -41,6 +45,7 @@ class SearchServiceRetriever(BaseRetriever):
     """
     endpoint: str
     index_name: str
+    filters : List[str]
     top_n : int
     embedding_field_name: Optional[str] = "Embedding"
     text_field_name: Optional[str] = "Text"
@@ -64,21 +69,48 @@ class SearchServiceRetriever(BaseRetriever):
         """
         Performs a synchronous hybrid search on Azure AI Search index
         """
+
+        results_list = []
+
         search_client = SearchClient(self.endpoint, self.index_name, self.credential)
-        vector_query = VectorizedQuery(vector=self.__get_embeddings(query),
-                                        k_nearest_neighbors=3,
-                                        fields=self.embedding_field_name)
-        results = search_client.search(
-            search_text=query,
-            vector_queries=[vector_query],
-            top=self.top_n,
-            select=[self.text_field_name]
-        )
-        results_list = [
-            Document(
-                page_content=result[self.text_field_name]
-            ) for result in results
-        ]
+
+        for filter in self.filters:
+
+            try:
+                vector_query = VectorizedQuery(vector=self.__get_embeddings(query),
+                                                k_nearest_neighbors=3,
+                                                fields=self.embedding_field_name)
+
+                if (filter == "search.ismatch('*', 'metadata', 'simple', 'all')"):
+                        results = search_client.search(
+                        search_text=query,
+                        vector_queries=[vector_query],
+                        top=self.top_n,
+                        select=[self.text_field_name]
+                    )
+                else:
+                    results = search_client.search(
+                        search_text=query,
+                        filter=filter,
+                        vector_queries=[vector_query],
+                        top=self.top_n,
+                        select=[self.text_field_name]
+                    )
+
+                for result in results:
+                    try:
+                        results_list.append(Document(
+                            page_content=result[self.text_field_name]
+                        ))
+                    except Exception as e:
+                        print(e)
+
+            except Exception as e:
+                print(e)
+
+            if ( filter == "search.ismatch('*', 'metadata', 'simple', 'all')"):
+                break
+
         return results_list
 
     async def _aget_relevant_documents(

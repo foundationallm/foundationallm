@@ -12,7 +12,6 @@ export const useAppStore = defineStore('app', {
 		isSidebarClosed: false as boolean,
 		agents: [] as Agent[],
 		selectedAgents: new Map(),
-		lastSelectedAgent: null as Agent | null,
 	}),
 
 	getters: {},
@@ -113,21 +112,10 @@ export const useAppStore = defineStore('app', {
 		},
 
 		getSessionAgent(session: Session) {
-			var selectedAgent = this.selectedAgents.get(session.id);
-			if (!selectedAgent) {
-				if (this.lastSelectedAgent) {
-					// Default to the last selected agent to make the selection "sticky" across sessions.
-					selectedAgent = this.lastSelectedAgent;
-				} else {
-					// Default to the first agent in the list.
-					selectedAgent = this.agents[0];
-				}
-			}
-			return selectedAgent;
+			return this.selectedAgents.get(session.id);
 		},
 
 		setSessionAgent(session: Session, agent: Agent) {
-			this.lastSelectedAgent = agent;
 			return this.selectedAgents.set(session.id, agent);
 		},
 

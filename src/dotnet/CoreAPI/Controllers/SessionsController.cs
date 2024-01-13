@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using FoundationaLLM.Common.Interfaces;
 using Microsoft.Identity.Web;
+using System.Reflection.Metadata.Ecma335;
+using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Core.Services;
 
 namespace FoundationaLLM.Core.API.Controllers
 {
@@ -20,6 +23,7 @@ namespace FoundationaLLM.Core.API.Controllers
     {
         private readonly ICoreService _coreService;
         private readonly ILogger<SessionsController> _logger;
+        private readonly IGatekeeperAPIService _gatekeeperAPIService;
 
         /// <summary>
         /// Constructor for the Core Controller.
@@ -29,9 +33,11 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <param name="logger">The logging interface used to log under the
         /// <see cref="SessionsController"/> type name.</param>
         public SessionsController(ICoreService coreService,
+            IGatekeeperAPIService gatekeeperAPIService,
             ILogger<SessionsController> logger)
         {
             _coreService = coreService;
+            _gatekeeperAPIService = gatekeeperAPIService;
             _logger = logger;
         }
 
@@ -75,8 +81,18 @@ namespace FoundationaLLM.Core.API.Controllers
         /// Creates a new chat session.
         /// </summary>
         [HttpPost(Name = "CreateNewChatSession")]
-        public async Task<Session> CreateNewChatSession() =>
-            await _coreService.CreateNewChatSessionAsync();
+        public async Task<Session> CreateNewChatSession()
+        {
+            Session _s = await _coreService.CreateNewChatSessionAsync();
+
+            CompletionRequest completionRequest = new CompletionRequest();
+            completionRequest.SessionId = _s.SessionId;
+            completionRequest.UserPrompt = "--warmup--";
+
+            var completionResponse = await _gatekeeperAPIService.GetCompletion(completionRequest);
+
+            return _s;
+        }
 
         /// <summary>
         /// Rename the chat session.

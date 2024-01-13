@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Text;
 using FoundationaLLM.Common.Interfaces;
+using System.Collections;
 
 namespace FoundationaLLM.AgentFactory.Core.Services;
 
@@ -18,6 +19,7 @@ public class PromptHubAPIService : IPromptHubAPIService
     readonly ILogger<PromptHubAPIService> _logger;
     private readonly IHttpClientFactoryService _httpClientFactoryService;
     readonly JsonSerializerSettings _jsonSerializerSettings;
+    static Hashtable _cache = new Hashtable();
 
     /// <summary>
     /// Constructor for the PromptHub API Service
@@ -76,6 +78,17 @@ public class PromptHubAPIService : IPromptHubAPIService
     {
         try
         {
+            string responseContent = null;
+
+            string _cacheKey = $"{sessionId}-{_httpClientFactoryService.GetAgent()}";
+
+            if (_cache.ContainsKey(_cacheKey))
+            {
+                responseContent = _cache[_cacheKey].ToString();
+                var response = JsonConvert.DeserializeObject<PromptHubResponse>(responseContent, _jsonSerializerSettings);
+                return response!;
+            }
+
             var request = new PromptHubRequest { AgentName = agentName, PromptName = promptName, SessionId = sessionId };
             
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.PromptHubAPI);
@@ -86,7 +99,11 @@ public class PromptHubAPIService : IPromptHubAPIService
 
             if (responseMessage.IsSuccessStatusCode)
             {
-                var responseContent = await responseMessage.Content.ReadAsStringAsync();
+                responseContent = await responseMessage.Content.ReadAsStringAsync();
+                if (_cache.ContainsKey(_cacheKey))
+                    _cache[_cacheKey] = responseContent;
+                else
+                    _cache.Add(_cacheKey, responseContent);
                 var response = JsonConvert.DeserializeObject<PromptHubResponse>(responseContent, _jsonSerializerSettings);
                 return response!;
             }

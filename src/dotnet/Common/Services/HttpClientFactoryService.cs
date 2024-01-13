@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -66,6 +67,17 @@ namespace FoundationaLLM.Common.Services
             }
 
             return httpClient;
+        }
+
+        public string GetAgent()
+        {
+            // Add the agent hint header if present.
+            if (_callContext.AgentHint != null)
+            {
+                return JsonConvert.SerializeObject(_callContext.AgentHint); 
+            }
+
+            return "default";
         }
     }
 }

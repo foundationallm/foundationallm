@@ -5,6 +5,7 @@ class AgentType(str,Enum):
     CSV = "csv"
     SQL = "sql"
     BLOB_STORAGE = "blob-storage"
+    STOCK = "stock"
     ANOMALY = "anomaly"
     CONVERSATIONAL = "conversational"
     SUMMARY = "summary"

@@ -5,8 +5,9 @@ from .data_sources.sql import SQLDataSourceMetadata
 from .data_sources.blob_storage import BlobStorageDataSourceMetadata
 from .data_sources.csv import CSVDataSourceMetadata
 from .data_sources.search_service import SearchServiceDataSourceMetadata
+from .data_sources.stock import StockDataSourceMetadata
 
 class DataSourceHubResponse(BaseModel):
     data_sources: List[Union[DataSourceMetadata, SQLDataSourceMetadata,
                              BlobStorageDataSourceMetadata, CSVDataSourceMetadata,
-                             SearchServiceDataSourceMetadata]]
+                             SearchServiceDataSourceMetadata, StockDataSourceMetadata]]

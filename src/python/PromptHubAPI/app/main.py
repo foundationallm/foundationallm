@@ -20,13 +20,13 @@ app = FastAPI(
     title='FoundationaLLM PromptHubAPI',
     summary='API for retrieving Prompt metadata',
     description="""The FoundationaLLM PromptHubAPI is a wrapper around
-                PromptHub functionality contained in the 
+                PromptHub functionality contained in the
                 foundationallm.core Python SDK.""",
     version='1.0.0',
     contact={
         'name':'Solliance, Inc.',
         'email':'contact@solliance.net',
-        'url':'https://solliance.net/' 
+        'url':'https://solliance.net/'
     },
     openapi_url='/swagger/v1/swagger.json',
     docs_url='/swagger',
@@ -34,7 +34,8 @@ app = FastAPI(
     license_info={
         'name': 'FoundationaLLM Software License',
         'url': 'https://www.foundationallm.ai/license',
-    }
+    },
+    config=config
 )
 
 app.include_router(resolve.router)
@@ -44,7 +45,7 @@ app.include_router(status.router)
 async def root():
     """
     Root path of the API.
-    
+
     Returns
     -------
     str

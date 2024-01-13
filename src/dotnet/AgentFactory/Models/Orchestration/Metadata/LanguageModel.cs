@@ -16,6 +16,21 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata
         public string? Type { get; set; }
 
         /// <summary>
+        /// Type property.
+        /// </summary>
+        [JsonProperty("model")]
+        public string? Model { get; set; }
+
+        [JsonProperty("index_name")]
+        public string? IndexName { get; set; }
+
+        /// <summary>
+        /// Type property.
+        /// </summary>
+        [JsonProperty("config_value_base_name")]
+        public string? ConfigValueBaseName { get; set; }
+
+        /// <summary>
         /// Provider of the language model.
         /// </summary>
         [JsonProperty("provider")]

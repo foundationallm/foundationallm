@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Text;
 using FoundationaLLM.Common.Interfaces;
+using System.Collections;
 
 namespace FoundationaLLM.AgentFactory.Core.Services;
 
@@ -18,6 +19,7 @@ public class DataSourceHubAPIService : IDataSourceHubAPIService
     readonly ILogger<DataSourceHubAPIService> _logger;
     private readonly IHttpClientFactoryService _httpClientFactoryService;
     readonly JsonSerializerSettings _jsonSerializerSettings;
+    static Hashtable _cache = new Hashtable();
 
     /// <summary>
     /// Constructor of the DataSource Hub API Service
@@ -75,6 +77,18 @@ public class DataSourceHubAPIService : IDataSourceHubAPIService
     {
         try
         {
+            string responseContent = null;
+
+            string _cacheKey = $"{sessionId}-{_httpClientFactoryService.GetAgent()}";
+
+            if (_cache.ContainsKey(_cacheKey))
+            {
+                responseContent = _cache[_cacheKey].ToString();
+                var response = JsonConvert.DeserializeObject<DataSourceHubResponse>(responseContent, _jsonSerializerSettings);
+                if(response.DataSources.Count != 0)
+                    return response!;
+            }
+
             var request = new DataSourceHubRequest { DataSources =  sources, SessionId = sessionId };
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.DataSourceHubAPI);
             
@@ -84,7 +98,13 @@ public class DataSourceHubAPIService : IDataSourceHubAPIService
 
             if (responseMessage.IsSuccessStatusCode)
             {
-                var responseContent = await responseMessage.Content.ReadAsStringAsync();
+                responseContent = await responseMessage.Content.ReadAsStringAsync();
+
+                if (_cache.ContainsKey(_cacheKey))
+                    _cache[_cacheKey] = responseContent;
+                else
+                    _cache.Add(_cacheKey, responseContent);
+
                 var response = JsonConvert.DeserializeObject<DataSourceHubResponse>(responseContent, _jsonSerializerSettings);
                 
                 return response!;

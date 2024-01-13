@@ -43,7 +43,7 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
             //get prompts for the agent from the prompt hub
             var promptResponse = await _promptHubService.ResolveRequest(_agentMetadata.Name!, sessionId);
 
-            //get data sources listed for the agent           
+            //get data sources listed for the agent
             var dataSourceResponse = await _dataSourceHubService.ResolveRequest(_agentMetadata.AllowedDataSourceNames!, sessionId);
 
             List<MetadataBase> dataSourceMetadata = new List<MetadataBase>();
@@ -71,7 +71,34 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
                             DataDescription = dataSource.DataDescription
                         });
                         break;
+                    case "stock":
+                    //TODO
+                        dataSourceMetadata.Add ( new StockDataSource
+                        {
+                            Name = dataSource.Name,
+                            Type = _agentMetadata.Type,
+                            Description = dataSource.Description,
+                            DataDescription = dataSource.DataDescription,
+                            Configuration = new StockConfiguration
+                            {
+                                IndexName = dataSource.IndexName,
+                                ConfigValueBaseName = dataSource.ConfigValueBaseName,
+                                OpenAIEndpoint = dataSource.OpenAIEndpoint,
+                                OpenAIKey = dataSource.OpenAIKey,
+                                SearchEndpoint = dataSource.SearchEndpoint,
+                                EmbeddingModel = dataSource.EmbeddingModel,
+                                TopN = dataSource.TopN,
+                                SearchKey = dataSource.SearchKey,
+                                ConnectionStringSecretName = dataSource.ConnectionStringSecret,
+                                ContainerName = dataSource.Container,
+                                RetrieverMode = dataSource.RetrieverMode,
+                                LoadMode = dataSource.LoadMode,
+                                Company = dataSource.Company,
+                                Sources = dataSource.Sources
+                            }
 
+                        });
+                    break;
                     case "search-service":
                         dataSourceMetadata.Add(new SearchServiceDataSource
                         {
