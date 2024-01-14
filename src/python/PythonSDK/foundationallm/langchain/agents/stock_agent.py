@@ -69,15 +69,6 @@ class StockAgent(AgentBase):
 
         self.data_source = completion_request.data_sources[0]
 
-        self.storage_connection_string = config.get_value(self.data_source.connection_string_secret)
-        self.container_name = self.data_source.container
-
-        self.storage_manager = BlobStorageManager(
-            self.storage_connection_string, self.container_name
-        )
-
-        self.blob_service_client = self.storage_manager.blob_service_client
-
         self.search_endpoint = config.get_value(self.data_source.search_endpoint)
         self.search_key = config.get_value(self.data_source.search_key)
 
@@ -102,7 +93,7 @@ class StockAgent(AgentBase):
         # Load the CSV file
         company = self.data_source.company
         retriever_mode = self.data_source.retriever_mode
-        load_mode = self.data_source.load_mode
+        self.load_mode = self.data_source.load_mode
 
         self.index_name = self.data_source.index_name
         temp_sources = self.data_source.sources
@@ -113,11 +104,11 @@ class StockAgent(AgentBase):
 
         if ( retriever_mode == "azure" ):
             local_path = f"{company}-financials"
-            retriever = self.get_azure_retiever(local_path, embedding_field_name="content_vector", text_field_name="content", top_n=self.data_source.top_n)
+            self.retriever = self.get_azure_retiever(local_path, embedding_field_name="content_vector", text_field_name="content", top_n=self.data_source.top_n)
 
-        if ( retriever == "chroma" ):
+        if ( retriever_mode == "chroma" ):
             local_path = f"/temp/{company}"
-            retriever = self.get_chroma_retiever(local_path)
+            self.retriever = self.get_chroma_retiever(local_path)
 
         tools = []
 
@@ -139,7 +130,7 @@ class StockAgent(AgentBase):
 
         self.llm_chain = ConversationalRetrievalChain.from_llm(
             llm=self.llm,
-            retriever=retriever,
+            retriever=self.retriever,
             return_source_documents=False,
             memory=memory,
             chain_type="stuff",
@@ -187,78 +178,6 @@ class StockAgent(AgentBase):
             )
 
 
-    def chroma_vectorize(self, docs, path, chunk_size=1000, chunk_overlap=0):
-        print(f"Sending docs to Chroma")
-        text_splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-        csv_texts = text_splitter.split_documents(docs)
-        csv_db = Chroma.from_documents(csv_texts, self.embeddings, persist_directory=path)
-        csv_retriever = csv_db.as_retriever()
-        return csv_retriever
-
-    def azure_search_vectorize(self, docs, path, chunk_size=1000, chunk_overlap=0):
-        from azure.search.documents.indexes.models import (
-            SearchIndex,
-            SearchField,
-            SearchFieldDataType,
-            SimpleField,
-            SearchableField,
-            VectorSearch,
-            HnswAlgorithmConfiguration
-        )
-
-        print(f"Sending docs to Azure Search")
-        text_splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-        docs = text_splitter.split_documents(docs)
-
-        default_fields = [
-            SimpleField(
-                name="id",
-                type=SearchFieldDataType.String,
-                key=True,
-                filterable=True,
-            ),
-            SearchableField(
-                name="Text",
-                type=SearchFieldDataType.String,
-            ),
-            SearchField(
-                name="Embedding",
-                type=SearchFieldDataType.Collection(SearchFieldDataType.Single),
-                searchable=True,
-                vector_search_dimensions=len(self.embeddings.embed_query("Text")),
-                vector_search_configuration="default",
-            ),
-            SearchableField(
-                name="AdditionalMetadata",
-                type=SearchFieldDataType.String,
-            ),
-        ]
-
-        vector_store: AzureSearch = AzureSearch(
-            azure_search_endpoint=self.vector_store_address,
-            azure_search_key=self.vector_store_password,
-            index_name=path,
-            embedding_function=self.embeddings.embed_query,
-            embedding_size=1536,
-            fields=default_fields,
-            #api_version="2023-07-01-Preview"
-            connection_verify=False
-        )
-
-        vector_store.add_documents(documents=docs, connection_verify=False)
-
-        credential = AzureKeyCredential(self.vector_store_password)
-
-        return SearchServiceFilterRetriever(
-                    endpoint=self.vector_store_address,
-                    indexes = self.sources,
-                    index_name=self.index_name,
-                    top_n=5,
-                    embedding_field_name="Embedding",
-                    text_field_name="Text",
-                    credential=credential,
-                    embedding_model=self.embeddings
-            )
 
     def get_azure_retiever(self, path, top_n=5, embedding_field_name="Embedding", text_field_name="Text"):
 
@@ -283,190 +202,3 @@ class StockAgent(AgentBase):
             )
 
         return prsstdb.as_retriever()
-
-    def vectorize_docs(self, docs, retriever_mode = "azure", retriever_path = "", chunk_size=1000, chunk_overlap=0, load_mode="load"):
-
-        retriever = None
-
-        if ( load_mode == "index" ):
-
-            print(f'Vectorizing docs to {retriever_mode}')
-
-            if ( retriever_mode == "azure" ):
-                retriever = self.azure_search_vectorize(docs, '')
-
-            if ( retriever_mode == "chroma" ):
-                retriever = self.chroma_vectorize(docs, retriever_path, chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-
-        print(f'Getting retriever {retriever_mode}')
-
-        if ( retriever_mode == "azure" ):
-
-            credential = AzureKeyCredential(self.vector_store_password)
-
-            retriever = SearchServiceFilterRetriever(
-                    endpoint=self.vector_store_address,
-                    index_name=self.index_name,
-                    top_n=5,
-                    embedding_field_name="Embedding",
-                    text_field_name="Text",
-                    credential=credential,
-                    embedding_model=self.embeddings
-            )
-
-        if ( retriever_mode == "chroma" ):
-            prsstdb = Chroma(
-                persist_directory=retriever_path,
-                embedding_function=self.embeddings
-            )
-
-            retriever = prsstdb.as_retriever()
-
-        return retriever
-
-    def load_pdf_docs(self, path, local_path, retriever_mode = "azure", retriever_path = "", chunk_size=1000, chunk_overlap=0, load_mode="load"):
-
-        print(f'Loading pdf docs {path}/{local_path}')
-
-        docs = None
-        files = os.listdir(f"{path}/{local_path}")
-
-        for file in files:
-
-            if ( file.endswith(".pdf") == False ):
-                continue
-
-            print(f'\tLoading {path}/{local_path}/{file}')
-
-            loader = PyPDFLoader(
-                f"{path}/{local_path}/{file}",
-            )
-
-            doc = loader.load()
-
-            if ( docs == None ):
-                docs = doc
-            else:
-                docs += doc
-
-        return self.vectorize_docs(docs, retriever_path=retriever_path, retriever_mode=retriever_mode, load_mode=load_mode)
-
-    def load_text_docs(self, path, local_path, retriever_mode = "azure", retriever_path = "", chunk_size=1000, chunk_overlap=0, load_mode="load"):
-
-        print(f'Loading text docs {path}/{local_path}')
-
-        docs = None
-        files = os.listdir(f"{path}/{local_path}")
-
-        for file in files:
-
-            print(f'\tLoading {path}/{local_path}/{file}')
-
-            loader = TextLoader(
-                f"{path}/{local_path}/{file}",
-            )
-
-            doc = loader.load()
-
-            if ( docs == None ):
-                docs = doc
-            else:
-                docs += doc
-
-        return self.vectorize_docs(docs, retriever_path=retriever_path, retriever_mode=retriever_mode, load_mode=load_mode)
-
-    def load_xml_docs(self, path, local_path, retriever_mode = "azure", retriever_path = "", chunk_size=1000, chunk_overlap=0, load_mode="load"):
-
-        docs = None
-
-        if (load_mode == "index"):
-            print(f'Loading xml docs {path}/{local_path}')
-
-            files = os.listdir(f"{path}/{local_path}")
-
-            for file in files:
-
-                print(f'\tLoading {path}/{local_path}/{file}')
-
-                loader = UnstructuredXMLLoader(
-                    f"{path}/{local_path}/{file}",
-                )
-
-                doc = loader.load()
-
-                if ( docs == None ):
-                    docs = doc
-                else:
-                    docs += doc
-
-        return self.vectorize_docs(docs, retriever_path=retriever_path, retriever_mode=retriever_mode, load_mode=load_mode)
-
-    def load_csv_docs(self, path, local_path, retriever_mode = "azure", retriever_path = "", chunk_size=1000, chunk_overlap=0, load_mode="load"):
-
-        print(f'Loading csvs docs {path}/{local_path}')
-
-        docs = None
-        files = os.listdir(f"{path}/{local_path}")
-
-        for file in files:
-            if ( file.endswith(".csv") == False ):
-                continue
-
-            print(f'\tLoading {path}/{local_path}/{file}')
-
-            loader = CSVLoader(
-                f"{path}/{local_path}/{file}",
-            )
-
-            doc = loader.load()
-
-            if ( docs == None ):
-                docs = doc
-            else:
-                docs += doc
-
-        return self.vectorize_docs(docs, retriever_path=retriever_path, retriever_mode=retriever_mode, load_mode=load_mode)
-
-    def download_live_transcript(self, container_name="transcripts", retriever_path="transcripts", retriever_mode="azure", load_mode="index"):
-
-        text = self.download_blob_to_text(self.blob_service_client, container_name, "transcripts/2021-04-20-earnings-call.txt")
-
-        docs = TextLoader(text).load()
-
-        self.vectorize_docs(docs, retriever_path=retriever_path, retriever_mode=retriever_mode, load_mode=load_mode)
-
-    #download the files from storage account...
-    def download(self, local_path="", remote_file_path=""):
-
-        container_client = self.blob_service_client.get_container_client(self.storage_manager.container_name)
-
-        blob_list = container_client.list_blobs(remote_file_path)
-
-        for blob in blob_list:
-            print(blob.name + '\n')
-
-            if( blob.size != 0):
-                self.download_blob_to_file(self.blob_service_client, self.storage_manager.container_name, blob.name, local_path)
-
-    def download_blob_to_text(self, blob_service_client: BlobServiceClient, container_name, blob_name, local_path):
-        blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
-
-        file_path = f'{local_path}/{blob_name}'
-        dir_path = os.path.split(file_path)[0]
-        os.makedirs(dir_path, exist_ok=True)
-
-        with open(file=os.path.join(r'filepath', f'{local_path}/{blob_name}'), mode="wb") as sample_blob:
-            download_stream = blob_client.download_blob()
-            sample_blob.write(download_stream.readall())
-
-    def download_blob_to_file(self, blob_service_client: BlobServiceClient, container_name, blob_name, local_path):
-
-        blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
-
-        file_path = f'{local_path}/{blob_name}'
-        dir_path = os.path.split(file_path)[0]
-        os.makedirs(dir_path, exist_ok=True)
-
-        with open(file=os.path.join(r'filepath', f'{local_path}/{blob_name}'), mode="wb") as sample_blob:
-            download_stream = blob_client.download_blob()
-            sample_blob.write(download_stream.readall())

@@ -82,17 +82,6 @@ public class AgentFactoryService : IAgentFactoryService
                 _promptHubAPIService,
                 _dataSourceHubAPIService);
 
-            if (completionRequest.UserPrompt == "--warmup--")
-                return new CompletionResponse
-                {
-                    Completion = "Warmed up.",
-                    UserPrompt = completionRequest.UserPrompt ?? string.Empty,
-                    PromptTokens = 0,
-                    CompletionTokens = 0,
-                    UserPromptEmbedding = new float[] { 0 }
-                };
-
-
             return await agent.GetCompletion(completionRequest);
         }
         catch (Exception ex)
