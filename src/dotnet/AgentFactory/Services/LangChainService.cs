@@ -68,6 +68,7 @@ namespace FoundationaLLM.AgentFactory.Services
                 {
                     Completion = completionResponse!.Completion,
                     UserPrompt = completionResponse.UserPrompt,
+                    FullPrompt = completionResponse.FullPrompt,
                     PromptTemplate = request.Agent?.PromptPrefix,
                     AgentName = request.Agent?.Name,
                     PromptTokens = completionResponse.PromptTokens,

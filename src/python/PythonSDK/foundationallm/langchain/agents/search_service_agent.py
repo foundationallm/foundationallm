@@ -4,11 +4,12 @@ Description: A RAG agent for performing hybrid searches on Azure AI Search.
 """
 from typing import List
 from azure.core.credentials import AzureKeyCredential
+from langchain.callbacks.tracers import ConsoleCallbackHandler
 from langchain.base_language import BaseLanguageModel
 from langchain.callbacks import get_openai_callback
 from langchain.prompts import PromptTemplate
 from langchain.schema.document import Document
-from langchain.schema.runnable import RunnablePassthrough
+from langchain.schema.runnable import RunnablePassthrough, RunnableLambda
 from langchain.schema import StrOutputParser
 from foundationallm.config import Configuration
 from foundationallm.langchain.agents.agent_base import AgentBase
@@ -51,14 +52,32 @@ class SearchServiceAgent(AgentBase):
             ),
             embedding_model = llm.get_embedding_model(completion_request.embedding_model)
         )
-        self.message_history = completion_request.message_history        
+        self.message_history = completion_request.message_history
+        self.full_prompt = ""
         
     def __format_docs(self, docs:List[Document]) -> str:
         """
         Generates a formatted string from a list of documents for use
         as the context for the completion request.
         """
-        return "\n\n".join(doc.page_content for doc in docs)        
+        return "\n\n".join(doc.page_content for doc in docs)
+
+    def __record_full_prompt(self, prompt: str) -> str:
+        """
+        Records the full prompt for the completion request.
+
+        Parameters
+        ----------
+        prompt : str
+            The prompt that is populated with context.
+        
+        Returns
+        -------
+        str
+            Returns the full prompt.
+        """
+        self.full_prompt = prompt
+        return prompt
 
     def run(self, prompt: str) -> CompletionResponse:
         """
@@ -67,7 +86,7 @@ class SearchServiceAgent(AgentBase):
         Parameters
         ----------
         prompt : str
-            The prompt for which a summary completion is begin generated.
+            The prompt for the completion request.
         
         Returns
         -------
@@ -75,21 +94,23 @@ class SearchServiceAgent(AgentBase):
             Returns a CompletionResponse with the generated summary, the user_prompt,
             and token utilization and execution cost details.
         """
-        with get_openai_callback() as cb:            
-            prompt_builder = self.prompt_prefix + build_message_history(self.message_history) + \
+        with get_openai_callback() as cb:
+            prompt_builder = self.prompt_prefix + \
                         "\n\nQuestion: {question}\n\nContext: {context}\n\nAnswer:"
             custom_prompt = PromptTemplate.from_template(prompt_builder)
 
             rag_chain = (
                 { "context": self.retriever | self.__format_docs, "question": RunnablePassthrough()}
                 | custom_prompt
+                | RunnableLambda(self.__record_full_prompt)
                 | self.llm
                 | StrOutputParser()
             )
-
+            completion = rag_chain.invoke(prompt, config={'callbacks': [ConsoleCallbackHandler()]})                  
             return CompletionResponse(
-                completion = rag_chain.invoke(prompt),
+                completion = completion,
                 user_prompt = prompt,
+                full_prompt = self.full_prompt.text,
                 completion_tokens = cb.completion_tokens,
                 prompt_tokens = cb.prompt_tokens,
                 total_tokens = cb.total_tokens,

@@ -34,7 +34,8 @@ class Configuration:
         Raises an exception if the configuration value is not found.
         """
         app_config_uri = os.environ['foundationallm-app-configuration-uri']
-        credential = DefaultAzureCredential()
+        credential = DefaultAzureCredential(
+            exclude_environment_credential=True)
         # Connect to Azure App Configuration with key filter
         selectors = [SettingSelector(
             key_filter="FoundationaLLM:APIs:GatekeeperIntegrationAPI:*")]

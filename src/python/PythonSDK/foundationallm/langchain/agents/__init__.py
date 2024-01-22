@@ -7,5 +7,6 @@ from .sql_db_agent import SqlDbAgent
 from .summary_agent import SummaryAgent
 from .blob_storage_agent import BlobStorageAgent
 from .generic_resolver_agent import GenericResolverAgent
+from .cxo_agent import CXOAgent
 from .search_service_agent import SearchServiceAgent
 from .agent_factory import AgentFactory

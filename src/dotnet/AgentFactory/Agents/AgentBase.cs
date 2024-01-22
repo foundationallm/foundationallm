@@ -1,17 +1,7 @@
 ﻿using FoundationaLLM.AgentFactory.Core.Interfaces;
 using FoundationaLLM.AgentFactory.Core.Models.Messages;
-using FoundationaLLM.AgentFactory.Core.Models.Orchestration.DataSourceConfigurations;
-using FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata;
-using FoundationaLLM.AgentFactory.Core.Models.Orchestration;
 using FoundationaLLM.AgentFactory.Interfaces;
-using FoundationaLLM.AgentFactory.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
 
 namespace FoundationaLLM.AgentFactory.Core.Agents
 {
@@ -63,10 +53,8 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
         /// This will setup the agent based on its metadata.
         /// </summary>
         /// <returns></returns>
-        public virtual async Task Configure(string userPrompt, string sessionId)
-        {
+        public virtual async Task Configure(string userPrompt, string sessionId) =>
             await Task.CompletedTask;
-        }
 
         /// <summary>
         /// The call to execute a completion after the agent is configured.

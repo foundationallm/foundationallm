@@ -45,5 +45,18 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Messages
         /// </summary>
         [JsonProperty("embedding_model")]
         public EmbeddingModel? EmbeddingModel { get; set; }
+
+        /// <summary>
+        /// The maximum number of messages from the chat history to be
+        /// taken into consideration when building the prompt.
+        /// </summary>
+        [JsonProperty("max_message_history_size")]
+        public int? MaxMessageHistorySize { get; set; }
+
+        /// <summary>
+        /// The prompt container from which prompt values will be retrieved.
+        /// </summary>
+        [JsonProperty("prompt_container")]
+        public string? PromptContainer { get; set; }
     }
 }

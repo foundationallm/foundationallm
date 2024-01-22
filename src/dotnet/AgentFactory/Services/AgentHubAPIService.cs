@@ -15,6 +15,8 @@ using System.Runtime;
 using System.Text;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata;
+using FoundationaLLM.Common.Models.Chat;
 
 namespace FoundationaLLM.AgentFactory.Core.Services;
 
@@ -61,7 +63,7 @@ public class AgentHubAPIService : IAgentHubAPIService
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                return responseContent;
+                return JsonConvert.DeserializeObject<string>(responseContent)!;
             }
         }
         catch (Exception ex)
@@ -73,19 +75,23 @@ public class AgentHubAPIService : IAgentHubAPIService
         return "Error";
     }
 
-    /// <summary>
-    /// Gets a set of agents from the Agent Hub based on the prompt and user context.
-    /// </summary>
-    /// <param name="userPrompt">The user prompt to resolve.</param>
-    /// <param name="sessionId">The session ID.</param>
-    /// <returns></returns>
-    public async Task<AgentHubResponse> ResolveRequest(string userPrompt, string sessionId)
+    /// <inheritdoc/>
+    public async Task<AgentHubResponse> ResolveRequest(string userPrompt, string sessionId,
+        string? agentHintOverride = null)
     {
         try
         {
             var request = new AgentHubRequest { UserPrompt = userPrompt, SessionId = sessionId };
 
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.AgentHubAPI);
+
+            if (!string.IsNullOrWhiteSpace(agentHintOverride))
+            {
+                var agentHint = JsonConvert.SerializeObject(
+                    new FoundationaLLM.Common.Models.Metadata.Agent { Name = agentHintOverride },
+                    _jsonSerializerSettings);
+                client.DefaultRequestHeaders.Add(HttpHeaders.AgentHint, agentHint);
+            }
                         
             var responseMessage = await client.PostAsync("resolve", new StringContent(
                     JsonConvert.SerializeObject(request, _jsonSerializerSettings),
@@ -105,5 +111,30 @@ public class AgentHubAPIService : IAgentHubAPIService
         }
 
         return new AgentHubResponse();
-    }  
+    }
+
+    /// <inheritdoc/>
+    public async Task<List<AgentMetadata>> ListAgents()
+    {
+        try
+        {
+            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.AgentHubAPI);
+
+            var responseMessage = await client.GetAsync("list");
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var responseContent = await responseMessage.Content.ReadAsStringAsync();
+                var response = JsonConvert.DeserializeObject<List<AgentMetadata>>(responseContent, _jsonSerializerSettings);
+                return response!;
+            }
+
+            throw new Exception($"The Agent Hub API call returned with status {responseMessage.StatusCode}.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error retrieving list of agents from Agent Hub.");
+            throw;
+        }
+    }
 }

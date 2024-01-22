@@ -22,6 +22,11 @@ export const useAppConfigStore = defineStore('appConfig', {
 		accentColor: null,
 		primaryText: null,
 		secondaryText: null,
+		accentText: null,
+		primaryButtonBg: null,
+		primaryButtonText: null,
+		secondaryButtonBg: null,
+		secondaryButtonText: null,
 
 		// Auth: These settings configure the MSAL authentication.
 		auth: {
@@ -49,6 +54,11 @@ export const useAppConfigStore = defineStore('appConfig', {
 				accentColor,
 				primaryText,
 				secondaryText,
+				accentText,
+				primaryButtonBg,
+				primaryButtonText,
+				secondaryButtonBg,
+				secondaryButtonText,
 				authClientId,
 				authInstance,
 				authTenantId,
@@ -68,6 +78,11 @@ export const useAppConfigStore = defineStore('appConfig', {
 				api.getConfigValue('FoundationaLLM:Branding:AccentColor'),
 				api.getConfigValue('FoundationaLLM:Branding:PrimaryTextColor'),
 				api.getConfigValue('FoundationaLLM:Branding:SecondaryTextColor'),
+				api.getConfigValue('FoundationaLLM:Branding:AccentTextColor'),
+				api.getConfigValue('FoundationaLLM:Branding:PrimaryButtonBackgroundColor'),
+				api.getConfigValue('FoundationaLLM:Branding:PrimaryButtonTextColor'),
+				api.getConfigValue('FoundationaLLM:Branding:SecondaryButtonBackgroundColor'),
+				api.getConfigValue('FoundationaLLM:Branding:SecondaryButtonTextColor'),
 				api.getConfigValue('FoundationaLLM:Chat:Entra:ClientId'),
 				api.getConfigValue('FoundationaLLM:Chat:Entra:Instance'),
 				api.getConfigValue('FoundationaLLM:Chat:Entra:TenantId'),
@@ -96,6 +111,11 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.accentColor = accentColor;
 			this.primaryText = primaryText;
 			this.secondaryText = secondaryText;
+			this.accentText = accentText;
+			this.primaryButtonBg = primaryButtonBg;
+			this.primaryButtonText = primaryButtonText;
+			this.secondaryButtonBg = secondaryButtonBg;
+			this.secondaryButtonText = secondaryButtonText;
 		},
 	},
 });

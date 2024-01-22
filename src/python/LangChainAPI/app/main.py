@@ -2,13 +2,14 @@
 Main entry-point for the FoundationaLLM LangChainAPI.
 Runs web server exposing the API.
 """
-import uvicorn
 from fastapi import FastAPI
 from app.dependencies import get_config
-from app.routers import orchestration, status
+from app.routers import (
+    manage,
+    orchestration,
+    status
+)
 #from azure.monitor.opentelemetry import configure_azure_monitor
-
-config = get_config()
 
 # configure_azure_monitor(
 #     connection_string=
@@ -33,9 +34,11 @@ app = FastAPI(
     license_info={
         'name': 'FoundationaLLM Software License',
         'url': 'https://www.foundationallm.ai/license',
-    }
+    },
+    config=get_config()
 )
 
+app.include_router(manage.router)
 app.include_router(orchestration.router)
 app.include_router(status.router)
 
@@ -50,7 +53,3 @@ async def root():
         Returns a JSON object containing a message and value.
     """
     return { 'message': 'FoundationaLLM LangChainAPI' }
-
-if __name__ == '__main__':
-    uvicorn.run('app.main:app', host='0.0.0.0', port=8765, reload=True,
-                forwarded_allow_ips='*', proxy_headers=True)

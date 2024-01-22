@@ -16,7 +16,8 @@ class Configuration():
         except Exception as e:
             raise e
 
-        credential = DefaultAzureCredential()
+        credential = DefaultAzureCredential(
+            exclude_environment_credential=True)
 
         # Connect to Azure App Configuration.
         self.__config = load(endpoint=app_config_uri, credential=credential,

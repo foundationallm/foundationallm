@@ -9,6 +9,7 @@ from foundationallm.langchain.agents import SummaryAgent
 from foundationallm.langchain.agents import BlobStorageAgent
 from foundationallm.langchain.agents import ConversationalAgent
 from foundationallm.langchain.agents import GenericResolverAgent
+from foundationallm.langchain.agents import CXOAgent
 from foundationallm.langchain.agents import SearchServiceAgent
 
 class AgentFactory:
@@ -68,6 +69,9 @@ class AgentFactory:
             case 'search-service':
                 return SearchServiceAgent(self.completion_request, llm=self.llm,
                                            config=self.config)
+            case 'cxo':
+                return CXOAgent(self.completion_request,
+                                             llm=self.llm, config=self.config)
             case _:
                 return ConversationalAgent(self.completion_request, llm=self.llm,
                                            config=self.config)

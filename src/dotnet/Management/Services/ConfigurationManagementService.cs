@@ -131,6 +131,12 @@ namespace FoundationaLLM.Management.Services
                         case AppConfigurationKeys.FoundationaLLM_Branding_AccentColor:
                             brandingConfiguration.AccentColor = setting.Value;
                             break;
+                        case AppConfigurationKeys.FoundationaLLM_Branding_AccentTextColor:
+                            brandingConfiguration.AccentTextColor = setting.Value;
+                            break;
+                        case AppConfigurationKeys.FoundationaLLM_Branding_AllowAgentSelection:
+                            brandingConfiguration.AllowAgentSelection = setting.Value;
+                            break;
                         case AppConfigurationKeys.FoundationaLLM_Branding_BackgroundColor:
                             brandingConfiguration.BackgroundColor = setting.Value;
                             break;
@@ -164,6 +170,18 @@ namespace FoundationaLLM.Management.Services
                         case AppConfigurationKeys.FoundationaLLM_Branding_SecondaryTextColor:
                             brandingConfiguration.SecondaryTextColor = setting.Value;
                             break;
+                        case AppConfigurationKeys.FoundationaLLM_Branding_PrimaryButtonBackgroundColor:
+                            brandingConfiguration.PrimaryButtonBackgroundColor = setting.Value;
+                            break;
+                        case AppConfigurationKeys.FoundationaLLM_Branding_PrimaryButtonTextColor:
+                            brandingConfiguration.PrimaryButtonTextColor = setting.Value;
+                            break;
+                        case AppConfigurationKeys.FoundationaLLM_Branding_SecondaryButtonBackgroundColor:
+                            brandingConfiguration.SecondaryButtonBackgroundColor = setting.Value;
+                            break;
+                        case AppConfigurationKeys.FoundationaLLM_Branding_SecondaryButtonTextColor:
+                            brandingConfiguration.SecondaryButtonTextColor = setting.Value;
+                            break;
                     }
                 }
             }
@@ -184,6 +202,10 @@ namespace FoundationaLLM.Management.Services
                 {
                     new(AppConfigurationKeys.FoundationaLLM_Branding_AccentColor,
                         brandingConfiguration.AccentColor),
+                    new(AppConfigurationKeys.FoundationaLLM_Branding_AccentTextColor,
+                        brandingConfiguration.AccentTextColor),
+                    new(AppConfigurationKeys.FoundationaLLM_Branding_AllowAgentSelection,
+                        brandingConfiguration.AllowAgentSelection),
                     new(AppConfigurationKeys.FoundationaLLM_Branding_BackgroundColor,
                         brandingConfiguration.BackgroundColor),
                     new(AppConfigurationKeys.FoundationaLLM_Branding_CompanyName,
@@ -205,7 +227,15 @@ namespace FoundationaLLM.Management.Services
                     new(AppConfigurationKeys.FoundationaLLM_Branding_SecondaryColor,
                         brandingConfiguration.SecondaryColor),
                     new(AppConfigurationKeys.FoundationaLLM_Branding_SecondaryTextColor,
-                        brandingConfiguration.SecondaryTextColor)
+                        brandingConfiguration.SecondaryTextColor),
+                    new(AppConfigurationKeys.FoundationaLLM_Branding_PrimaryButtonBackgroundColor,
+                        brandingConfiguration.PrimaryButtonBackgroundColor),
+                    new(AppConfigurationKeys.FoundationaLLM_Branding_PrimaryButtonTextColor,
+                        brandingConfiguration.PrimaryButtonTextColor),
+                    new(AppConfigurationKeys.FoundationaLLM_Branding_SecondaryButtonBackgroundColor,
+                        brandingConfiguration.SecondaryButtonBackgroundColor),
+                    new(AppConfigurationKeys.FoundationaLLM_Branding_SecondaryButtonTextColor,
+                        brandingConfiguration.SecondaryButtonTextColor)
                 };
                 foreach (var setting in settings)
                 {

@@ -273,6 +273,26 @@ namespace FoundationaLLM.Common.Constants
         /// </summary>
         public const string FoundationaLLM_Branding_AccentColor = "FoundationaLLM:Branding:AccentColor";
         /// <summary>
+        /// The key for the FoundationaLLM:Branding:AccentTextColor app configuration setting.
+        /// </summary>
+        public const string FoundationaLLM_Branding_AccentTextColor = "FoundationaLLM:Branding:AccentTextColor";
+        /// <summary>
+        /// The key for the FoundationaLLM:Branding:PrimaryButtonBackgroundColor app configuration setting.
+        /// </summary>
+        public const string FoundationaLLM_Branding_PrimaryButtonBackgroundColor = "FoundationaLLM:Branding:PrimaryButtonBackgroundColor";
+        /// <summary>
+        /// The key for the FoundationaLLM:Branding:PrimaryButtonTextColor app configuration setting.
+        /// </summary>
+        public const string FoundationaLLM_Branding_PrimaryButtonTextColor = "FoundationaLLM:Branding:PrimaryButtonTextColor";
+        /// <summary>
+        /// The key for the FoundationaLLM:Branding:SecondaryButtonBackgroundColor app configuration setting.
+        /// </summary>
+        public const string FoundationaLLM_Branding_SecondaryButtonBackgroundColor = "FoundationaLLM:Branding:SecondaryButtonBackgroundColor";
+        /// <summary>
+        /// The key for the FoundationaLLM:Branding:SecondaryButtonTextColor app configuration setting.
+        /// </summary>
+        public const string FoundationaLLM_Branding_SecondaryButtonTextColor = "FoundationaLLM:Branding:SecondaryButtonTextColor";
+        /// <summary>
         /// The key for the FoundationaLLM:Branding:AllowAgentSelection app configuration setting.
         /// This value corresponds with the `FoundationaLLM-AllowAgentHint` feature flag. If the feature flag is `true`,
         /// then the User Portal UI uses these values to provide agent hints to the Agent Hub in completions-based

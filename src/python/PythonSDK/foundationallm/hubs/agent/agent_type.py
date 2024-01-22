@@ -10,3 +10,4 @@ class AgentType(str,Enum):
     SUMMARY = "summary"
     GENERIC_RESOLVER = "generic-resolver"
     SEARCH_SERVICE = "search-service"
+    CXO = "cxo"

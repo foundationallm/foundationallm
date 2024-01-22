@@ -5,7 +5,7 @@
     <ProjectGuid>f74cbb5a-97b9-4f68-8077-8bab49c841dc</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>app/main.py</StartupFile>
+    <StartupFile>run.py</StartupFile>
     <SearchPath>..\IntegrationSDK</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -28,9 +28,11 @@
     <Compile Include="app\dependencies.py" />
     <Compile Include="app\main.py" />
     <Compile Include="app\routers\analyze.py" />
+    <Compile Include="app\routers\manage.py" />
     <Compile Include="app\routers\status.py" />
     <Compile Include="app\routers\__init__.py" />
     <Compile Include="app\__init__.py" />
+    <Compile Include="run.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\" />
@@ -40,7 +42,6 @@
     <Content Include=".gitignore" />
     <Content Include=".pylintrc" />
     <Content Include="requirements.txt" />
-    <Content Include="startup.sh" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IntegrationSDK\IntegrationSDK.pyproj">

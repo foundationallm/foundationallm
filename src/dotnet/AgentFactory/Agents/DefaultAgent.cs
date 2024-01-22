@@ -5,6 +5,11 @@ using FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata;
 using FoundationaLLM.AgentFactory.Core.Models.Orchestration;
 using FoundationaLLM.AgentFactory.Interfaces;
 using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.AgentFactory.Core.Services;
+using FoundationaLLM.Common.Models.Cache;
+using FoundationaLLM.Common.Models.Context;
+using Microsoft.Extensions.Logging;
 
 namespace FoundationaLLM.AgentFactory.Core.Agents
 {
@@ -14,6 +19,9 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
     public class DefaultAgent : AgentBase
     {
         private LLMOrchestrationCompletionRequest _completionRequestTemplate = null!;
+        private readonly ICacheService _cacheService;
+        private readonly ICallContext _callContext;
+        private readonly ILogger<DefaultAgent> _logger;
 
         /// <summary>
         /// Constructor for default agent.
@@ -22,13 +30,18 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
         /// <param name="orchestrationService"></param>
         /// <param name="promptHubService"></param>
         /// <param name="dataSourceHubService"></param>
+        /// <param name="logger">The logger used for logging.</param>
         public DefaultAgent(
             AgentMetadata agentMetadata,
             ILLMOrchestrationService orchestrationService,
             IPromptHubAPIService promptHubService,
-            IDataSourceHubAPIService dataSourceHubService)
+            IDataSourceHubAPIService dataSourceHubService,
+            ILogger<DefaultAgent> logger)
             : base(agentMetadata, orchestrationService, promptHubService, dataSourceHubService)
         {
+            _cacheService = cacheService;
+            _callContext = callContext;
+            _logger = logger;
         }
 
         /// <summary>
@@ -40,79 +53,131 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
         /// <exception cref="ArgumentException"></exception>
         public override async Task Configure(string userPrompt, string sessionId)
         {
-            //get prompts for the agent from the prompt hub
-            var promptResponse = await _promptHubService.ResolveRequest(_agentMetadata.Name!, sessionId);
+            // Get prompts for the agent from the prompt hub.
+            var promptResponse = _callContext.AgentHint != null
+                ? await _cacheService.Get<PromptHubResponse>(
+                    new CacheKey(_callContext.AgentHint.Name!, "prompt"),
+                    async () => {
+                        return await _promptHubService.ResolveRequest(
+                            _agentMetadata.PromptContainer ?? _agentMetadata.Name!,
+                            sessionId
+                        );
+                    },
+                    false,
+                    TimeSpan.FromHours(1))
+                : await _promptHubService.ResolveRequest(
+                    _agentMetadata.PromptContainer ?? _agentMetadata.Name!,
+                    sessionId
+                  );
+
+            if (promptResponse is {Prompt: not null})
+            {
+                _logger.LogInformation("The DefaultAgent received the following prompt from the Prompt Hub: {PromptName}.",
+                    promptResponse!.Prompt!.Name);
+            }
 
             //get data sources listed for the agent           
             var dataSourceResponse = await _dataSourceHubService.ResolveRequest(_agentMetadata.AllowedDataSourceNames!, sessionId);
 
-            MetadataBase dataSourceMetadata = null!;
-
-            var dataSource = dataSourceResponse.DataSources![0];
-
-            switch (_agentMetadata.Type)
+            if (dataSourceResponse is {DataSources: not null})
             {
-                case "csv":
-                case "generic-resolver":                   
-                case "blob-storage":
-                    dataSourceMetadata = new BlobStorageDataSource
-                    {
-                        Name = dataSource.Name,
-                        Type = _agentMetadata.Type,
-                        Description = dataSource.Description,
-                        Configuration = new BlobStorageConfiguration
+                _logger.LogInformation(
+                    "The DefaultAgent received the following data sources from the Data Source Hub: {DataSourceList}.",
+                    string.Join(",", dataSourceResponse!.DataSources!.Select(ds => ds.Name)));
+            }
+
+            var dataSourceMetadata = new List<MetadataBase>();
+
+            var dataSources = dataSourceResponse!.DataSources!;
+                        
+            foreach (var dataSource in dataSources)
+            {
+                switch (dataSource.UnderlyingImplementation)
+                {
+                    case "csv":
+                    case "generic-resolver":
+                    case "blob-storage":
+                        dataSourceMetadata.Add(new BlobStorageDataSource
                         {
-                            ConnectionStringSecretName = dataSource.Authentication!["connection_string_secret"],
-                            ContainerName = dataSource.Container,
-                            Files = dataSource.Files
-                        },
-                        DataDescription = dataSource.DataDescription
-                    };
-                    break;              
-                    
-                case "search-service":
-                    dataSourceMetadata = new SearchServiceDataSource
-                    {
-                        Name = dataSource.Name,
-                        Type = _agentMetadata.Type,
-                        Description = dataSource.Description,
-                        Configuration = new SearchServiceConfiguration
+                            Name = dataSource.Name,
+                            Type = dataSource.UnderlyingImplementation,
+                            Description = dataSource.Description,
+                            Configuration = new BlobStorageConfiguration
+                            {
+                                ConnectionStringSecretName = dataSource.Authentication!["connection_string_secret"],
+                                ContainerName = dataSource.Container,
+                                Files = dataSource.Files
+                            },
+                            DataDescription = dataSource.DataDescription
+                        });
+                        break;
+
+                    case "search-service":
+                        dataSourceMetadata.Add(new SearchServiceDataSource
                         {
-                            Endpoint = dataSource.Authentication!["endpoint"],
-                            KeySecret = dataSource.Authentication["key_secret"],
-                            IndexName = dataSource.IndexName,
-                            EmbeddingFieldName = dataSource.EmbeddingFieldName,
-                            TextFieldName = dataSource.TextFieldName,
-                            TopN = dataSource.TopN
-                        },
-                        DataDescription = dataSource.DataDescription                        
-                    };
-                    break;                
-                case "anomaly":
-                case "sql":
-                    dataSourceMetadata = new SQLDatabaseDataSource
-                    {
-                        Name = dataSource.Name,
-                        Type = _agentMetadata.Type,
-                        Description = dataSource.Description,
-                        Configuration = new SQLDatabaseConfiguration
+                            Name = dataSource.Name,
+                            Type = dataSource.UnderlyingImplementation,
+                            Description = dataSource.Description,
+                            Configuration = new SearchServiceConfiguration
+                            {
+                                Endpoint = dataSource.Authentication!["endpoint"],
+                                KeySecret = dataSource.Authentication["key_secret"],
+                                IndexName = dataSource.IndexName,
+                                EmbeddingFieldName = dataSource.EmbeddingFieldName,
+                                TextFieldName = dataSource.TextFieldName,
+                                TopN = dataSource.TopN
+                            },
+                            DataDescription = dataSource.DataDescription
+                        });
+                        break;
+                    case "anomaly":
+                    case "sql":
+                        dataSourceMetadata.Add(new SQLDatabaseDataSource
                         {
-                            Dialect = dataSource.Dialect,
-                            Host = dataSource.Authentication!["host"],
-                            Port = Convert.ToInt32(dataSource.Authentication["port"]),
-                            DatabaseName = dataSource.Authentication["database"],
-                            Username = dataSource.Authentication["username"],
-                            PasswordSecretSettingKeyName = dataSource.Authentication["password_secret"],
-                            IncludeTables = dataSource.IncludeTables!,
-                            ExcludeTables = dataSource.ExcludeTables!,
-                            RowLevelSecurityEnabled = dataSource.RowLevelSecurityEnabled ?? false,
-                            FewShotExampleCount = dataSource.FewShotExampleCount ?? 0
-                        },
-                        DataDescription = dataSource.DataDescription
-                    };
-                    break;
-                default:
-                    throw new ArgumentException($"The {_agentMetadata.Type} data source type is not supported.");
+                            Name = dataSource.Name,
+                            Type = dataSource.UnderlyingImplementation,
+                            Description = dataSource.Description,
+                            Configuration = new SQLDatabaseConfiguration
+                            {
+                                Dialect = dataSource.Dialect,
+                                Host = dataSource.Authentication!["host"],
+                                Port = Convert.ToInt32(dataSource.Authentication["port"]),
+                                DatabaseName = dataSource.Authentication["database"],
+                                Username = dataSource.Authentication["username"],
+                                PasswordSecretSettingKeyName = dataSource.Authentication["password_secret"],
+                                IncludeTables = dataSource.IncludeTables!,
+                                ExcludeTables = dataSource.ExcludeTables!,
+                                RowLevelSecurityEnabled = dataSource.RowLevelSecurityEnabled ?? false,
+                                FewShotExampleCount = dataSource.FewShotExampleCount ?? 0
+                            },
+                            DataDescription = dataSource.DataDescription
+                        });
+                        break;
+                    case "cxo":
+                        dataSourceMetadata.Add(new CXODataSource
+                        {
+                            Name = dataSource.Name,
+                            Type = _agentMetadata.Type,
+                            Description = dataSource.Description,
+                            DataDescription = dataSource.DataDescription,
+                            Configuration = new CXOConfiguration
+                            {
+                                Endpoint = dataSource.Authentication!["endpoint"],
+                                KeySecret = dataSource.Authentication["key_secret"],
+                                IndexName = dataSource.IndexName,
+                                EmbeddingFieldName = dataSource.EmbeddingFieldName,
+                                TextFieldName = dataSource.TextFieldName,
+                                TopN = dataSource.TopN,
+                                RetrieverMode = dataSource.RetrieverMode,
+                                Company = dataSource.Company,
+                                Sources = dataSource.Sources
+                            }
+
+                        });
+                        break;
+                    default:
+                        throw new ArgumentException($"The {dataSource.UnderlyingImplementation} data source type is not supported.");
+                }
             }
 
             //create LLMOrchestrationCompletionRequest template
@@ -151,6 +216,7 @@ namespace FoundationaLLM.AgentFactory.Core.Agents
             {
                 Completion = result.Completion!,
                 UserPrompt = completionRequest.UserPrompt!,
+                FullPrompt = result.FullPrompt,
                 PromptTemplate = result.PromptTemplate,
                 AgentName = result.AgentName,
                 PromptTokens = result.PromptTokens,

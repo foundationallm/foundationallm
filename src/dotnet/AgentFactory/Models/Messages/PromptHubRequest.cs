@@ -14,10 +14,10 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Messages
         public string? SessionId { get; set; }
 
         /// <summary>
-        /// Name of the agent for which the prompt values should be retrieved from the Prompt Hub.
+        /// The prompt container from which prompt values will be retrieved.
         /// </summary>
-        [JsonProperty("agent_name")]
-        public string? AgentName { get; set; }
+        [JsonProperty("prompt_container")]
+        public string? PromptContainer { get; set; }
 
         /// <summary>
         /// Name of the prompt for which the prompt values should be retrieved from the Prompt Hub.

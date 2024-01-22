@@ -52,7 +52,7 @@ public class DataSourceHubAPIService : IDataSourceHubAPIService
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                return responseContent;
+                return JsonConvert.DeserializeObject<string>(responseContent)!;
             }
         }
         catch (Exception ex)

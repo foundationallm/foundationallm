@@ -25,9 +25,15 @@
   <ItemGroup>
     <Compile Include="foundationallm\config\context.py" />
     <Compile Include="foundationallm\config\user_identity.py" />
+    <Compile Include="foundationallm\hubs\data_source\data_sources\cxo\cxo_data_source_metadata.py" />
+    <Compile Include="foundationallm\hubs\data_source\data_sources\cxo\__init__.py" />
+    <Compile Include="foundationallm\langchain\agents\cxo_agent.py" />
     <Compile Include="foundationallm\langchain\agents\search_service_agent.py" />
+    <Compile Include="foundationallm\langchain\data_sources\cxo\cxo_configuration.py" />
+    <Compile Include="foundationallm\langchain\data_sources\cxo\__init__.py" />
     <Compile Include="foundationallm\langchain\data_sources\search_service\search_service_configuration.py" />
     <Compile Include="foundationallm\langchain\data_sources\search_service\__init__.py" />
+    <Compile Include="foundationallm\langchain\retrievers\search_service_filter_retriever.py" />
     <Compile Include="foundationallm\langchain\retrievers\search_service_retriever.py" />
     <Compile Include="foundationallm\langchain\retrievers\__init__.py" />
     <Compile Include="foundationallm\models\agent_hint.py" />
@@ -151,6 +157,7 @@
     <Folder Include="foundationallm\hubs\data_source\data_sources\" />
     <Folder Include="foundationallm\hubs\data_source\data_sources\blob_storage\" />
     <Folder Include="foundationallm\hubs\data_source\data_sources\csv\" />
+    <Folder Include="foundationallm\hubs\data_source\data_sources\cxo\" />
     <Folder Include="foundationallm\hubs\data_source\data_sources\search_service\" />
     <Folder Include="foundationallm\hubs\data_source\data_sources\sql\" />
     <Folder Include="foundationallm\hubs\agent\" />
@@ -160,6 +167,7 @@
     <Folder Include="foundationallm\langchain\agents\" />
     <Folder Include="foundationallm\langchain\data_sources\blob\" />
     <Folder Include="foundationallm\langchain\data_sources\csv\" />
+    <Folder Include="foundationallm\langchain\data_sources\cxo\" />
     <Folder Include="foundationallm\langchain\data_sources\search_service\" />
     <Folder Include="foundationallm\langchain\language_models\" />
     <Folder Include="foundationallm\langchain\language_models\openai\" />

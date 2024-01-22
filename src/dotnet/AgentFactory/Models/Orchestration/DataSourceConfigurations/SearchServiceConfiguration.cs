@@ -8,6 +8,12 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Orchestration.DataSourceConfig
     public class SearchServiceConfiguration
     {
         /// <summary>
+        /// The type of configuration. This value should not be changed.
+        /// </summary>
+        [JsonProperty("configuration_type")]
+        public string ConfigurationType = "search_service";
+
+        /// <summary>
         /// The endpoint of the Search Service
         /// </summary>
         [JsonProperty("endpoint")]

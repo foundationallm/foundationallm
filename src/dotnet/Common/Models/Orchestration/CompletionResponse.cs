@@ -21,6 +21,12 @@ public class CompletionResponse
     public string UserPrompt { get; set; }
 
     /// <summary>
+    /// The full prompt composed by the LLM.
+    /// </summary>
+    [JsonProperty("full_prompt")]
+    public string? FullPrompt { get; set; }
+
+    /// <summary>
     /// The prompt template used by the LLM.
     /// </summary>
     [JsonProperty("prompt_template")]

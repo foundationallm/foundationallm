@@ -1,8 +1,9 @@
-from typing import List, Optional
+from typing import List, Optional, Literal
 from foundationallm.langchain.data_sources import DataSourceConfiguration
 
 class SQLDatabaseConfiguration(DataSourceConfiguration):
     """Configuration settings for a connection to a SQL database."""
+    configuration_type: Literal['sql_database']
     dialect: str
     host: str
     port: int = None

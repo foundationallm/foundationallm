@@ -8,6 +8,11 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Orchestration.DataSourceConfig
     public class SQLDatabaseConfiguration
     {
         /// <summary>
+        /// The type of configuration. This value should not be changed.
+        /// </summary>
+        [JsonProperty("configuration_type")]
+        public string ConfigurationType = "sql_database";
+        /// <summary>
         /// The SQL dialect
         /// </summary>
         [JsonProperty("dialect")]

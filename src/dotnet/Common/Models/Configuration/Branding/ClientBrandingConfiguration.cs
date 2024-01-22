@@ -44,9 +44,29 @@ namespace FoundationaLLM.Common.Models.Configuration.Branding
         /// </summary>
         public string? AccentColor { get; set; }
         /// <summary>
+        /// The accent text color of the client in hex format.
+        /// </summary>
+        public string? AccentTextColor { get; set; }
+        /// <summary>
         /// The background color of the client in hex format.
         /// </summary>
         public string? BackgroundColor { get; set; }
+        /// <summary>
+        /// The background color of the client's primary button in hex format.
+        /// </summary>
+        public string? PrimaryButtonBackgroundColor { get; set; }
+        /// <summary>
+        /// The text color of the client's primary button in hex format.
+        /// </summary>
+        public string? PrimaryButtonTextColor { get; set; }
+        /// <summary>
+        /// The background color of the client's secondary button in hex format.
+        /// </summary>
+        public string? SecondaryButtonBackgroundColor { get; set; }
+        /// <summary>
+        /// The text color of the client's secondary button in hex format.
+        /// </summary>
+        public string? SecondaryButtonTextColor { get; set; }
         /// <summary>
         /// Flag indicating whether we use kiosk mode or not.
         /// </summary>

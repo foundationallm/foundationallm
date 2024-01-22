@@ -132,7 +132,7 @@ public class CoreService : ICoreService
             var promptMessage = new Message(sessionId, nameof(Participants.User), result.PromptTokens, userPrompt, result.UserPromptEmbedding, null, upn, _callContext.CurrentUserIdentity?.Name);
             var completionMessage = new Message(sessionId, nameof(Participants.Assistant), result.CompletionTokens, result.Completion, null, null, upn, result.AgentName);
             var completionPromptText =
-                $"User prompt: {result.UserPrompt}{Environment.NewLine}Agent: {result.AgentName}{Environment.NewLine}Prompt template: {result.PromptTemplate}";
+                $"User prompt: {result.UserPrompt}{Environment.NewLine}Agent: {result.AgentName}{Environment.NewLine}Prompt template: {(!string.IsNullOrWhiteSpace(result.FullPrompt) ? result.FullPrompt : result.PromptTemplate)}";
             var completionPrompt = new CompletionPrompt(sessionId, completionMessage.Id, completionPromptText);
             completionMessage.CompletionPromptId = completionPrompt.Id;
 

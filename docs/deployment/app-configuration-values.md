@@ -61,6 +61,7 @@ FoundationaLLM uses Azure App Configuration to store configuration values, Key V
 | `FoundationaLLM:BlobStorageMemorySource:BlobStorageContainer` | memory-source |   |
 | `FoundationaLLM:BlobStorageMemorySource:ConfigFilePath` | BlobMemorySourceConfig.json |   |
 | `FoundationaLLM:Branding:AccentColor` | #fff |   |
+| `FoundationaLLM:Branding:AccentTextColor` | #131833 |   |
 | `FoundationaLLM:Branding:AllowAgentSelection` | default, SDZWA | These are merely sample agent names. Define one or more agents configured for your environment. **Note:** This value corresponds with the `FoundationaLLM-AllowAgentHint` feature flag. If the feature flag is `true`, then the User Portal UI uses these values to provide agent hints to the Agent Hub in completions-based requests. Otherwise, these values are ignored. |
 | `FoundationaLLM:Branding:BackgroundColor` | #fff |   |
 | `FoundationaLLM:Branding:CompanyName` | FoundationaLLM |   |
@@ -73,6 +74,10 @@ FoundationaLLM uses Azure App Configuration to store configuration values, Key V
 | `FoundationaLLM:Branding:PrimaryTextColor` | #fff |   |
 | `FoundationaLLM:Branding:SecondaryColor` | #334581 |   |
 | `FoundationaLLM:Branding:SecondaryTextColor` | #fff |   |
+| `FoundationaLLM:Branding:PrimaryButtonBackgroundColor` | #5472d4 |   |
+| `FoundationaLLM:Branding:PrimaryButtonTextColor` | #fff |   |
+| `FoundationaLLM:Branding:SecondaryButtonBackgroundColor` | #70829a |   |
+| `FoundationaLLM:Branding:SecondaryButtonTextColor` | #fff |   |
 | `FoundationaLLM:Chat:Entra:CallbackPath` | /signin-oidc |   |
 | `FoundationaLLM:Chat:Entra:ClientId` |   |   |
 | `FoundationaLLM:Chat:Entra:ClientSecret` | Key Vault secret name: `foundationallm-chat-entra-clientsecret` | This is a Key Vault reference. |

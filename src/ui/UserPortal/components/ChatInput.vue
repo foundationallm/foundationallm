@@ -10,7 +10,7 @@
 		/>
 		<Button
 			:disabled="disabled"
-			class="submit"
+			class="primary-button submit"
 			icon="pi pi-send"
 			label="Send"
 			@click="handleSend"
@@ -53,6 +53,12 @@ export default {
 	background-color: white;
 	border-radius: 8px;
 	width: 100%;
+}
+
+.primary-button {
+	background-color: var(--primary-button-bg)!important;
+	border-color: var(--primary-button-bg)!important;
+	color: var(--primary-button-text)!important;
 }
 
 .pre-input {
