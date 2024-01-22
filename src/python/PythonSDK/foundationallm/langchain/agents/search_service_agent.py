@@ -12,6 +12,7 @@ from langchain.schema.runnable import RunnablePassthrough
 from langchain.schema import StrOutputParser
 from foundationallm.config import Configuration
 from foundationallm.langchain.agents.agent_base import AgentBase
+from foundationallm.langchain.data_sources.search_service.search_service_configuration import SearchServiceConfiguration
 from foundationallm.models.orchestration import CompletionRequest, CompletionResponse
 from foundationallm.langchain.retrievers import SearchServiceRetriever
 from foundationallm.langchain.message_history import build_message_history
@@ -36,17 +37,21 @@ class SearchServiceAgent(AgentBase):
         config : Configuration
             Application configuration class for retrieving configuration settings.
         """
+        ds_config = {}
+        for ds in completion_request.data_sources:
+            ds_config: SearchServiceConfiguration = ds.configuration
+
         self.llm = llm.get_completion_model(completion_request.language_model)        
         self.prompt_prefix = completion_request.agent.prompt_prefix        
         self.retriever = SearchServiceRetriever( 
-            endpoint = completion_request.data_source.configuration.endpoint,
-            index_name = completion_request.data_source.configuration.index_name,
-            top_n = completion_request.data_source.configuration.top_n,
-            embedding_field_name = completion_request.data_source.configuration.embedding_field_name,
-            text_field_name = completion_request.data_source.configuration.text_field_name,
+            endpoint = config.get_value(ds_config.endpoint),
+            index_name = ds_config.index_name,
+            top_n = ds_config.top_n,
+            embedding_field_name = ds_config.embedding_field_name,
+            text_field_name = ds_config.text_field_name,
             credential = AzureKeyCredential(
                 config.get_value(
-                    completion_request.data_source.configuration.key_secret
+                    ds_config.key_secret
                 )
             ),
             embedding_model = llm.get_embedding_model(completion_request.embedding_model)
@@ -76,7 +81,7 @@ class SearchServiceAgent(AgentBase):
             and token utilization and execution cost details.
         """
         with get_openai_callback() as cb:            
-            prompt_builder = self.prompt_prefix + build_message_history(self.message_history) + \
+            prompt_builder = self.prompt_prefix + \
                         "\n\nQuestion: {question}\n\nContext: {context}\n\nAnswer:"
             custom_prompt = PromptTemplate.from_template(prompt_builder)
 

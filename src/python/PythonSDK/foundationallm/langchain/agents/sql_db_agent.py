@@ -32,11 +32,15 @@ class SqlDbAgent(AgentBase):
         context : Context
             User context under which to run the completion request.
         """
+        ds_config = {}
+        for ds in completion_request.data_sources:
+            ds_config: SQLDatabaseConfiguration = ds.configuration
+
         self.agent_prompt_prefix = completion_request.agent.prompt_prefix
         self.agent_prompt_suffix = completion_request.agent.prompt_suffix
 
         self.llm = llm.get_completion_model(completion_request.language_model)
-        self.sql_db_config: SQLDatabaseConfiguration = completion_request.data_source.configuration
+        self.sql_db_config: SQLDatabaseConfiguration = ds_config
         self.context = context
 
         self.agent = create_sql_agent(

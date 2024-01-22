@@ -10,6 +10,7 @@ from langchain.schema.runnable import RunnablePassthrough
 from langchain.schema import StrOutputParser
 from foundationallm.config import Configuration
 from foundationallm.langchain.agents.agent_base import AgentBase
+from foundationallm.langchain.data_sources.blob.blob_storage_configuration import BlobStorageConfiguration
 from foundationallm.models.orchestration import CompletionRequest, CompletionResponse
 from foundationallm.langchain.message_history import build_message_history
 
@@ -35,13 +36,15 @@ class BlobStorageAgent(AgentBase):
         config : Configuration
             Application configuration class for retrieving configuration settings.
         """
+        ds_config = {}
+        for ds in completion_request.data_sources:
+            ds_config: BlobStorageConfiguration = ds.configuration
         self.llm = llm.get_completion_model(completion_request.language_model)
         self.embedding = llm.get_embedding_model(completion_request.embedding_model)
         self.prompt_prefix = completion_request.agent.prompt_prefix
-        self.connection_string = config.get_value(
-            completion_request.data_source.configuration.connection_string_secret)
-        self.container_name = completion_request.data_source.configuration.container
-        self.file_names = completion_request.data_source.configuration.files
+        self.connection_string = config.get_value(ds_config.connection_string_secret)
+        self.container_name = ds_config.container
+        self.file_names = ds_config.files
         self.message_history = completion_request.message_history
 
     def __get_vector_index(self) -> Chroma:

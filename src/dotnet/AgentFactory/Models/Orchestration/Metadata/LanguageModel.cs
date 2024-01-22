@@ -34,5 +34,36 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata
         /// </summary>
         [JsonProperty("use_chat")]
         public bool UseChat { get; set; } = true;
+
+        /// <summary>
+        /// The endpoint to use to access the language model.
+        /// </summary>
+        [JsonProperty("api_endpoint")]
+        public string? ApiEndpoint { get; set; }
+
+        /// <summary>
+        /// The API key of the language model endpoint to use to access the language model.
+        /// </summary>
+        [JsonProperty("api_key")]
+        public string? ApiKey { get; set; }
+
+        /// <summary>
+        /// API version of the language model endpoint.
+        /// </summary>
+        [JsonProperty("api_version")]
+        public string? ApiVersion { get; set; }
+
+        /// <summary>
+        /// Version of the deployed model.
+        /// </summary>
+        [JsonProperty("version")]
+        public string? Version { get; set; }
+
+        /// <summary>
+        /// Name of the deployment of the model.
+        /// </summary>
+        [JsonProperty("deployment")]
+        public string? Deployment { get; set; }
+
     }
 }

@@ -41,15 +41,16 @@ class OpenAIModel(LanguageModelBase):
         """
         use_chat = language_model.use_chat
 
-        if language_model.provider == LanguageModelProvider.MICROSOFT:
-            config_value_base_name = 'FoundationaLLM:AzureOpenAI:API'
+        if language_model.provider == LanguageModelProvider.MICROSOFT:        
             openai_api_type = AzureOpenAIAPIType.AZURE
-        else:
-            config_value_base_name = 'FoundationaLLM:OpenAI:API'
+        else:        
             openai_api_type = None
 
-        openai_api_base = self.config.get_value(f'{config_value_base_name}:Endpoint')
-        openai_api_key = self.config.get_value(f'{config_value_base_name}:Key')
+        openai_api_base = self.config.get_value(language_model.api_endpoint)
+        openai_api_key = self.config.get_value(language_model.api_key)
+        openai_api_version = self.config.get_value(language_model.api_version)
+        openai_deployment_name = self.config.get_value(language_model.deployment)
+        
         temperature = language_model.temperature or 0
 
         if openai_api_type == AzureOpenAIAPIType.AZURE:
@@ -59,9 +60,9 @@ class OpenAIModel(LanguageModelBase):
                     openai_api_base = openai_api_base,
                     openai_api_key = openai_api_key,
                     openai_api_type = openai_api_type,
-                    openai_api_version = self.config.get_value(f'{config_value_base_name}:Version'),
-                    model_version = self.config.get_value(f'{config_value_base_name}:Completions:ModelVersion'),
-                    deployment_name = self.config.get_value(f'{config_value_base_name}:Completions:DeploymentName'),
+                    openai_api_version = openai_api_version,
+                    model_version = self.config.get_value(language_model.version),
+                    deployment_name = openai_deployment_name
                     #max_tokens = self.config.get_value(f'{config_value_base_name}:Completions:MaxTokens')
                 )
             else:
@@ -70,8 +71,8 @@ class OpenAIModel(LanguageModelBase):
                     openai_api_base = openai_api_base,
                     openai_api_key = openai_api_key,
                     openai_api_type = openai_api_type,
-                    openai_api_version = self.config.get_value(f'{config_value_base_name}:Version'),
-                    deployment_name = self.config.get_value(f'{config_value_base_name}:Completions:DeploymentName'),
+                    openai_api_version = openai_api_version,
+                    deployment_name = openai_deployment_name
                     #max_tokens = self.config.get_value(f'{config_value_base_name}:Completions:MaxTokens')
                 )
         else:
@@ -100,19 +101,17 @@ class OpenAIModel(LanguageModelBase):
         if embedding_model is None:
             raise ValueError('Expected populated embedding_model, got None.')
 
-        if embedding_model.provider == LanguageModelProvider.MICROSOFT:
-            config_value_base_name = 'FoundationaLLM:AzureOpenAI:API'
+        if embedding_model.provider == LanguageModelProvider.MICROSOFT:            
             openai_api_type = AzureOpenAIAPIType.AZURE
         else:
-            config_value_base_name = 'FoundationaLLM:OpenAI:API'
             openai_api_type = None
 
         return OpenAIEmbeddings(
-            openai_api_base = self.config.get_value(f'{config_value_base_name}:Endpoint'),
-            openai_api_key = self.config.get_value(f'{config_value_base_name}:Key'),
+            openai_api_base = self.config.get_value(embedding_model.api_endpoint),
+            openai_api_key = self.config.get_value(embedding_model.api_key),
             openai_api_type = openai_api_type,
-            openai_api_version = self.config.get_value(f'{config_value_base_name}:Version'),
+            openai_api_version = self.config.get_value(embedding_model.api_version),
             chunk_size = embedding_model.chunk_size,
-            deployment = embedding_model.deployment or self.config.get_value(f'{config_value_base_name}:Embeddings:DeploymentName'),
-            model = embedding_model.model or self.config.get_value(f'{config_value_base_name}:Embeddings:ModelName')
+            deployment = self.config.get_value(embedding_model.deployment),
+            model = self.config.get_value(embedding_model.model)
         )

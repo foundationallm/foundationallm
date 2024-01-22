@@ -21,6 +21,8 @@ namespace FoundationaLLM.AgentFactory.Core.Services;
 public class AgentFactoryService : IAgentFactoryService
 {
     private readonly IEnumerable<ILLMOrchestrationService> _orchestrationServices;
+    private readonly ICacheService _cacheService;
+    private readonly ICallContext _callContext;
     private readonly IAgentHubAPIService _agentHubAPIService;
     private readonly IPromptHubAPIService _promptHubAPIService;
     private readonly IDataSourceHubAPIService _dataSourceHubAPIService;
@@ -31,18 +33,24 @@ public class AgentFactoryService : IAgentFactoryService
     /// Constructor for the Agent Factory Service.
     /// </summary>
     /// <param name="orchestrationServices"></param>
+    /// <param name="cacheService">The <see cref="ICacheService"/> used to cache agent-related artifacts.</param>
+    /// <param name="callContext">The call context of the request being handled.</param>
     /// <param name="agentHubService"></param>    
     /// <param name="promptHubService"></param>    
     /// <param name="dataSourceHubService"></param>    
     /// <param name="logger"></param>
     public AgentFactoryService(
         IEnumerable<ILLMOrchestrationService> orchestrationServices,
+        ICacheService cacheService,
+        ICallContext callContext,
         IAgentHubAPIService agentHubService,
         IPromptHubAPIService promptHubService,
         IDataSourceHubAPIService dataSourceHubService,
         ILogger<AgentFactoryService> logger)
     {
         _orchestrationServices = orchestrationServices;
+        _cacheService = cacheService;
+        _callContext = callContext;
         _agentHubAPIService = agentHubService;
         _promptHubAPIService = promptHubService;
         _dataSourceHubAPIService = dataSourceHubService;
@@ -77,6 +85,8 @@ public class AgentFactoryService : IAgentFactoryService
             var agent = await AgentBuilder.Build(
                 completionRequest.UserPrompt ?? string.Empty,
                 completionRequest.SessionId ?? string.Empty,
+                _cacheService,
+                _callContext,
                 _agentHubAPIService,
                 _orchestrationServices,
                 _promptHubAPIService,
@@ -108,6 +118,8 @@ public class AgentFactoryService : IAgentFactoryService
             var agent = await AgentBuilder.Build(
                 summaryRequest.UserPrompt ?? string.Empty,
                 summaryRequest.SessionId ?? string.Empty,
+                _cacheService,
+                _callContext,
                 _agentHubAPIService,
                 _orchestrationServices,
                 _promptHubAPIService,

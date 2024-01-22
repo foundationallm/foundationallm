@@ -1,10 +1,7 @@
 ﻿using FoundationaLLM.AgentFactory.Core.Models.Orchestration;
-using FoundationaLLM.AgentFactory.Core.Models.Orchestration.DataSourceConfigurations;
 using FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata;
 using FoundationaLLM.AgentFactory.Interfaces;
 using FoundationaLLM.AgentFactory.Models.ConfigurationOptions;
-using FoundationaLLM.Common.Models.Chat;
-using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -36,6 +33,7 @@ namespace FoundationaLLM.AgentFactory.Services
             _logger = logger;
             _httpClientFactoryService = httpClientFactoryService;
             _jsonSerializerSettings = CommonJsonSerializerSettings.GetJsonSerializerSettings();
+            _jsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
         }
 
         /// <summary>

@@ -720,6 +720,10 @@ namespace FoundationaLLM.Common.Constants
         /// </summary>
         public const string FoundationaLLM_CosmosDB = "FoundationaLLM:CosmosDB";
         /// <summary>
+        /// The key section for the FoundationaLLM:APIs:CoreAPI app configuration settings.
+        /// </summary>
+        public const string FoundationaLLM_APIs_CoreAPI = "FoundationaLLM:APIs:CoreAPI";
+        /// <summary>
         /// The key section for the FoundationaLLM:APIs:AgentFactoryAPI app configuration settings.
         /// </summary>
         public const string FoundationaLLM_APIs_AgentFactoryAPI = "FoundationaLLM:APIs:AgentFactoryAPI";

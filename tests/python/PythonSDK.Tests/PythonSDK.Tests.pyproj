@@ -33,6 +33,7 @@
     <Compile Include="langchain\agents\search_service_agent_tests.py" />
     <Compile Include="langchain\agents\blob_storage_agent_tests.py" />
     <Compile Include="langchain\agents\csv_agent_tests.py" />
+    <Compile Include="langchain\agents\summary_agent_tests.py" />
     <Compile Include="langchain\message_history\message_history_tests.py" />
     <Compile Include="pytest.ini" />
     <Compile Include="langchain\agents\generic_resolver_agent_tests.py" />

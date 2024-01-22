@@ -66,6 +66,8 @@ namespace FoundationaLLM.Core.API
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_CosmosDB));
             builder.Services.AddOptions<ClientBrandingConfiguration>()
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Branding));
+            builder.Services.AddOptions<CoreServiceSettings>()
+                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIs_CoreAPI));
 
             // Register the downstream services and HTTP clients.
             RegisterDownstreamServices(builder);
@@ -73,7 +75,6 @@ namespace FoundationaLLM.Core.API
             builder.Services.AddScoped<ICosmosDbService, CosmosDbService>();
             builder.Services.AddScoped<ICoreService, CoreService>();
             builder.Services.AddScoped<IUserProfileService, UserProfileService>();
-            builder.Services.AddScoped<IGatekeeperAPIService, GatekeeperAPIService>();
 
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             builder.Services.AddScoped<ICallContext, CallContext>();
@@ -194,7 +195,30 @@ namespace FoundationaLLM.Core.API
                             CommonHttpRetryStrategyOptions.GetCommonHttpRetryStrategyOptions();
                         });
 
+            var agentFactoryAPISettings = new DownstreamAPIKeySettings
+            {
+                APIUrl = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_AgentFactoryAPI_APIUrl]!,
+                APIKey = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_AgentFactoryAPI_APIKey]!
+            };
+
+            downstreamAPISettings.DownstreamAPIs[HttpClients.AgentFactoryAPI] = agentFactoryAPISettings;
+
+            builder.Services
+                    .AddHttpClient(HttpClients.AgentFactoryAPI,
+                        client => { client.BaseAddress = new Uri(agentFactoryAPISettings.APIUrl); })
+                    .AddResilienceHandler(
+                        "DownstreamPipeline",
+                        static strategyBuilder =>
+                        {
+                            CommonHttpRetryStrategyOptions.GetCommonHttpRetryStrategyOptions();
+                        });
+
             builder.Services.AddSingleton<IDownstreamAPISettings>(downstreamAPISettings);
+
+            builder.Services.AddScoped<IDownstreamAPIService, DownstreamAPIService>((serviceProvider)
+                => new DownstreamAPIService(HttpClients.GatekeeperAPI, serviceProvider.GetService<IHttpClientFactoryService>()!));
+            builder.Services.AddScoped<IDownstreamAPIService, DownstreamAPIService>((serviceProvider)
+                => new DownstreamAPIService(HttpClients.AgentFactoryAPI, serviceProvider.GetService<IHttpClientFactoryService>()!));
         }
 
         /// <summary>
