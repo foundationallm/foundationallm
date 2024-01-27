@@ -5,7 +5,7 @@ param location string
 param project string
 param workload string
 
-var name = 'la-${environmentName}-${location}-${workload}'
+var name = 'la-${environmentName}-${location}-${workload}-${project}'
 
 output id string = main.id
 
