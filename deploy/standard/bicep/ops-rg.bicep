@@ -25,7 +25,7 @@ param vnetId string
 
 /** Locals **/
 @description('Resource Suffix used in naming resources.')
-var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
+var resourceSuffix = '${environmentName}-${location}-${workload}-${project}'
 
 @description('Tags for all resources')
 var tags = {
@@ -130,33 +130,6 @@ module applicationInights 'modules/applicationInsights.bicep' = {
   }
 }
 
-// @description('Azure Container Registry')
-// module containerRegistry 'modules/containerRegistry.bicep' = {
-//   name: 'containerRegistry-${timestamp}'
-//   params: {
-//     agentPoolSubnetId: '${vnetId}/subnets/ops'
-//     location: location
-//     logAnalyticWorkspaceId: logAnalytics.outputs.id
-//     privateDnsZones: zonesRegistry
-//     resourceSuffix: resourceSuffix
-//     subnetId: '${vnetId}/subnets/ops'
-//     tags: tags
-//   }
-// }
-
-// @description('Azure Managed Grafana')
-// module grafana 'modules/grafana.bicep' = {
-//   name: 'grafana-${timestamp}'
-//   params: {
-//     azureMonitorWorkspaceResourceId: monitorWorkspace.outputs.id
-//     location: location
-//     privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'grafana')
-//     resourceSuffix: resourceSuffix
-//     subnetId: '${vnetId}/subnets/ops'
-//     tags: tags
-//   }
-// }
-
 @description('Key Vault')
 module keyVault 'modules/keyVault.bicep' = {
   name: 'keyVault-${timestamp}'
@@ -189,18 +162,6 @@ module logAnalytics 'modules/logAnalytics.bicep' = {
     }
   }
 }
-
-// @description('Azure Monitor Workspace')
-// module monitorWorkspace 'modules/monitorWorksapce.bicep' = {
-//   name: 'monitorWorkspace-${timestamp}'
-//   params: {
-//     location: location
-//     privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'prometheusMetrics')
-//     resourceSuffix: resourceSuffix
-//     subnetId: '${vnetId}/subnets/ops'
-//     tags: tags
-//   }
-// }
 
 // See: https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles
 module uaiAppConfigRoleAssignments 'modules/utility/roleAssignments.bicep' = {
