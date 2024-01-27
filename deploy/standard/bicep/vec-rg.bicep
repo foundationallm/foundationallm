@@ -28,7 +28,7 @@ param vnetId string
 
 /** Locals **/
 @description('KeyVault resource suffix')
-var kvResourceSuffix = '${environmentName}-${location}-${workload}-ops'
+var kvResourceSuffix = '${environmentName}-${location}-ops-${project}'
 
 @description('Resource Suffix used in naming resources.')
 var resourceSuffix = '${environmentName}-${location}-${workload}-${project}'
