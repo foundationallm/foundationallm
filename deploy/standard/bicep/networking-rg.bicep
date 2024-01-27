@@ -14,6 +14,8 @@ param cidrVnet string = '10.220.128.0/21'
 
 param createVpnGateway bool = false
 
+param vnetName string = 'vnet-${environmentName}-${location}-net'
+
 @description('Resource Suffix used in naming resources.')
 var resourceSuffix = '${environmentName}-${location}-${workload}-${project}'
 
@@ -22,7 +24,7 @@ var workload = 'net'
 
 output vnetId string = main.id
 
-var name = 'vnet-${environmentName}-${location}-net'
+var name = vnetName
 var cidrAppGateway = cidrSubnet(cidrVnet, 24, 0)
 var cidrFllmBackend = cidrSubnet(cidrVnet, 24, 1)
 var cidrFllmFrontend = cidrSubnet(cidrVnet, 24, 2)
@@ -528,7 +530,7 @@ var tags = {
 }
 
 resource main 'Microsoft.Network/virtualNetworks@2023-05-01' = {
-  name: 'EBTICP-D-NA24-AI-VNET'
+  name: name
   location: location
   tags: tags
 

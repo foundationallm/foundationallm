@@ -52,6 +52,8 @@ $resourceGroups = @{
 
 $dnsResourceGroupName = $resourceGroups["dns"]
 
+$vnetName = "EBTICP-D-NA24-AI-VNET"
+
 $deployments = @{}
 foreach ($resourceGroup in $resourceGroups.GetEnumerator()) {
     $deployments.Add($resourceGroup.Name, "$($resourceGroup.Value)-${timestamp}")
@@ -193,6 +195,7 @@ task Networking -depends ResourceGroups {
             location=$location `
             project=$project `
             createVpnGateway=$createVpnGateway `
+            vnetName=$vnetName `
         --resource-group $resourceGroups["net"] `
         --template-file ./networking-rg.bicep 
 
