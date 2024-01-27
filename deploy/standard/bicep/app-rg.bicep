@@ -28,6 +28,9 @@ param dnsResourceGroupName string
 @description('The environment name token used in naming resources.')
 param environmentName string
 
+@description('AKS namespace')
+param k8sNamespace string
+
 @description('Location used for all resources.')
 param location string
 
@@ -36,6 +39,14 @@ param logAnalyticsWorkspaceId string
 
 @description('Log Analytics Workspace Resource Id to use for diagnostics')
 param logAnalyticsWorkspaceResourceId string
+
+@description('Management UI OIDC Client Secret')
+@secure()
+param managementUiClientSecret string
+
+@description('Management API OIDC Client Secret')
+@secure()
+param managementApiClientSecret string
 
 @description('Networking Resource Group Name')
 param networkingResourceGroupName string
@@ -90,6 +101,9 @@ var backendServices = {
 var chatUiService = { 'chat-ui': { displayName: 'Chat' } }
 var coreApiService = { 'core-api': { displayName: 'CoreAPI' } }
 
+var managementUiService = { 'management-ui': { displayName: 'ManagementUI' } }
+var managementApiService = { 'management-api': { displayName: 'ManagementAPI' } }
+
 @description('Workload Token used in naming resources.')
 var workload = 'svc'
 
@@ -142,7 +156,7 @@ module backendServiceResources 'modules/service.bicep' = [for service in items(b
     params: {
       displayName: service.value.displayName
       location: location
-      namespace: 'default'
+      namespace: k8sNamespace
       oidcIssuerUrl: aksBackend.outputs.oidcIssuerUrl
       opsResourceGroupName: opsResourceGroupName
       opsResourceSuffix: opsResourceSuffix
@@ -160,7 +174,26 @@ module chatUiServiceResources 'modules/service.bicep' = [for service in items(ch
       clientSecret: chatUiClientSecret
       displayName: service.value.displayName
       location: location
-      namespace: 'default'
+      namespace: k8sNamespace
+      oidcIssuerUrl: aksFrontend.outputs.oidcIssuerUrl
+      opsResourceGroupName: opsResourceGroupName
+      opsResourceSuffix: opsResourceSuffix
+      resourceSuffix: resourceSuffix
+      serviceName: service.key
+      storageResourceGroupName: storageResourceGroupName
+      tags: tags
+      useOidc: true
+    }
+  }
+]
+
+module managementUiServiceResources 'modules/service.bicep' = [for service in items(managementUiService): {
+    name: 'feSvc-${service.key}'
+    params: {
+      clientSecret: managementUiClientSecret
+      displayName: service.value.displayName
+      location: location
+      namespace: k8sNamespace
       oidcIssuerUrl: aksFrontend.outputs.oidcIssuerUrl
       opsResourceGroupName: opsResourceGroupName
       opsResourceSuffix: opsResourceSuffix
@@ -179,7 +212,7 @@ module coreApiServiceResources 'modules/service.bicep' = [for service in items(c
       clientSecret: coreApiClientSecret
       displayName: service.value.displayName
       location: location
-      namespace: 'default'
+      namespace: k8sNamespace
       oidcIssuerUrl: aksBackend.outputs.oidcIssuerUrl
       opsResourceGroupName: opsResourceGroupName
       opsResourceSuffix: opsResourceSuffix
@@ -191,3 +224,23 @@ module coreApiServiceResources 'modules/service.bicep' = [for service in items(c
     }
   }
 ]
+
+module managementApiServiceResources 'modules/service.bicep' = [for service in items(managementApiService): {
+    name: 'feSvc-${service.key}'
+    params: {
+      clientSecret: managementApiClientSecret
+      displayName: service.value.displayName
+      location: location
+      namespace: k8sNamespace
+      oidcIssuerUrl: aksBackend.outputs.oidcIssuerUrl
+      opsResourceGroupName: opsResourceGroupName
+      opsResourceSuffix: opsResourceSuffix
+      resourceSuffix: resourceSuffix
+      serviceName: service.key
+      storageResourceGroupName: storageResourceGroupName
+      tags: tags
+      useOidc: true
+    }
+  }
+]
+

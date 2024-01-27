@@ -5,6 +5,9 @@ $ErrorActionPreference = "Stop"
 
 $script:chatUiClientSecret="CHAT-CLIENT-SECRET"
 $script:coreApiClientSecret="CORE-CLIENT-SECRET"
+$script:managementUiClientSecret="MGMT-CLIENT-SECRET"
+$script:managementApiClientSecret="MGMT-CLIENT-SECRET"
+$script:k8sNamespace="default"
 $administratorObjectId = "d3bd4e8e-d413-477d-a420-0792b0504adf"
 $environment = "stg"
 $location = "eastus2"
@@ -123,9 +126,12 @@ task App -depends Agw, ResourceGroups, Ops, Networking, DNS {
                                     coreApiClientSecret=$script:coreApiClientSecret `
                                     dnsResourceGroupName=$dnsResourceGroupName `
                                     environmentName=$environment `
+                                    k8sNamespace=$script:k8sNamespace `
                                     location=$location `
                                     logAnalyticsWorkspaceId=$script:logAnalyticsWorkspaceId `
                                     logAnalyticsWorkspaceResourceId=$script:logAnalyticsWorkspaceId `
+                                    managementUiClientSecret=$script:managementUiClientSecret `
+                                    managementApiClientSecret=$script:managementApiClientSecret `
                                     networkingResourceGroupName=$($resourceGroups["net"]) `
                                     opsResourceGroupName=$($resourceGroups["ops"]) `
                                     privateDnsZones=$privateDnsZones `

@@ -92,14 +92,56 @@ var subnets = [
         }
       ]
     }
+    serviceEndpoints: [
+      {
+        service: 'Microsoft.KeyVault'
+        locations: [ '*' ]
+      }
+    ]
   }
   {
     name: 'FLLMBackend'
     addressPrefix: cidrFllmBackend
+    inbound: [
+      {
+        access: 'Allow'
+        destinationAddressPrefix: 'VirtualNetwork'
+        destinationPortRange: '*'
+        name: 'allow-vpn'
+        priority: 512
+        protocol: '*'
+        sourcePortRange: '*'
+        sourceAddressPrefixes: [ '172.16.0.0/24' ]
+      }
+    ]
+    serviceEndpoints: [
+      {
+        service: 'Microsoft.KeyVault'
+        locations: [ '*' ]
+      }
+    ]
   }
   {
     name: 'FLLMFrontEnd'
     addressPrefix: cidrFllmFrontend
+    inbound: [
+      {
+        access: 'Allow'
+        destinationAddressPrefix: 'VirtualNetwork'
+        destinationPortRange: '*'
+        name: 'allow-vpn'
+        priority: 512
+        protocol: '*'
+        sourcePortRange: '*'
+        sourceAddressPrefixes: [ '172.16.0.0/24' ]
+      }
+    ]
+    serviceEndpoints: [
+      {
+        service: 'Microsoft.KeyVault'
+        locations: [ '*' ]
+      }
+    ]
   }
   {
     name: 'GatewaySubnet'
@@ -108,6 +150,20 @@ var subnets = [
   {
     name: 'FLLMNetSvc'
     addressPrefix: cidrNetSvc
+    rules: {
+      inbound: [
+        {
+          access: 'Allow'
+          destinationAddressPrefix: 'VirtualNetwork'
+          destinationPortRange: '*'
+          name: 'allow-vpn'
+          priority: 256
+          protocol: '*'
+          sourcePortRange: '*'
+          sourceAddressPrefixes: [ '172.16.0.0/24' ]
+        }
+      ]
+    }
     delegations: [
       {
         name: 'Microsoft.Network/dnsResolvers'
@@ -123,6 +179,16 @@ var subnets = [
     rules: {
       inbound: [
         {
+          access: 'Allow'
+          destinationAddressPrefix: 'VirtualNetwork'
+          destinationPortRange: '*'
+          name: 'allow-vpn'
+          priority: 512
+          protocol: '*'
+          sourcePortRange: '*'
+          sourceAddressPrefixes: [ '172.16.0.0/24' ]
+        }
+          {
           access: 'Allow'
           destinationAddressPrefix: 'VirtualNetwork'
           destinationPortRange: '3443'
@@ -226,7 +292,23 @@ var subnets = [
         locations: [ '*' ]
       }
       {
+        service: 'Microsoft.Storage'
+        locations: [ '*' ]
+      }
+      {
+        service: 'Microsoft.Sql'
+        locations: [ '*' ]
+      }
+      {
+        service: 'Microsoft.ServiceBus'
+        locations: [ '*' ]
+      }
+      {
         service: 'Microsoft.KeyVault'
+        locations: [ '*' ]
+      }
+      {
+        service: 'Microsoft.EventHub'
         locations: [ '*' ]
       }
     ]
@@ -236,6 +318,16 @@ var subnets = [
     addressPrefix: cidrFllmServices
     rules: {
       inbound: [
+        {
+          access: 'Allow'
+          destinationAddressPrefix: 'VirtualNetwork'
+          destinationPortRange: '*'
+          name: 'allow-vpn'
+          priority: 512
+          protocol: '*'
+          sourcePortRange: '*'
+          sourceAddressPrefixes: [ '172.16.0.0/24' ]
+        }
         {
           name: 'deny-all-inbound'
           protocol: '*'
@@ -248,12 +340,28 @@ var subnets = [
         }
       ]
     }
+    serviceEndpoints: [
+      {
+        service: 'Microsoft.KeyVault'
+        locations: [ '*' ]
+      }
+    ]
   }
   {
     name: 'FLLMStorage'
     addressPrefix: cidrFllmStorage
     rules: {
       inbound: [
+        {
+          access: 'Allow'
+          destinationAddressPrefix: 'VirtualNetwork'
+          destinationPortRange: '*'
+          name: 'allow-vpn'
+          priority: 512
+          protocol: '*'
+          sourcePortRange: '*'
+          sourceAddressPrefixes: [ '172.16.0.0/24' ]
+        }
         {
           access: 'Allow'
           destinationAddressPrefix: 'VirtualNetwork'
@@ -289,6 +397,12 @@ var subnets = [
         }
       ]
     }
+    serviceEndpoints: [
+      {
+        service: 'Microsoft.KeyVault'
+        locations: [ '*' ]
+      }
+    ]
   }
   {
     name: 'ops' // TODO: PLEs.  Maybe put these in FLLMServices?
@@ -299,11 +413,21 @@ var subnets = [
           access: 'Allow'
           destinationAddressPrefix: 'VirtualNetwork'
           destinationPortRange: '*'
-          name: 'allow-rdp-services' // TODO: Don't think we need this rule.
-          priority: 256
-          protocol: 'Tcp'
+          name: 'allow-ops' // TODO: If we end up using a separate subnet for jumpboxes, this will need to change
+          priority: 128
+          protocol: '*'
           sourcePortRange: '*'
-          sourceAddressPrefixes: [ cidrAppGateway ]
+          sourceAddressPrefixes: [ cidrFllmOps ]
+        }
+        {
+          access: 'Allow'
+          destinationAddressPrefix: 'VirtualNetwork'
+          destinationPortRange: '*'
+          name: 'allow-vpn'
+          priority: 512
+          protocol: '*'
+          sourcePortRange: '*'
+          sourceAddressPrefixes: [ '172.16.0.0/24' ]
         }
         {
           access: 'Allow'
@@ -330,12 +454,28 @@ var subnets = [
         }
       ]
     }
+    serviceEndpoints: [
+      {
+        service: 'Microsoft.KeyVault'
+        locations: [ '*' ]
+      }
+    ]
   }
   {
     name: 'Vectorization'
     addressPrefix: cidrFllmVec
     rules: {
       inbound: [
+        {
+          access: 'Allow'
+          destinationAddressPrefix: 'VirtualNetwork'
+          destinationPortRange: '*'
+          name: 'allow-vpn'
+          priority: 512
+          protocol: '*'
+          sourcePortRange: '*'
+          sourceAddressPrefixes: [ '172.16.0.0/24' ]
+        }
         {
           access: 'Allow'
           destinationAddressPrefix: 'VirtualNetwork'
@@ -371,6 +511,12 @@ var subnets = [
         }
       ]
     }
+    serviceEndpoints: [
+      {
+        service: 'Microsoft.KeyVault'
+        locations: [ '*' ]
+      }
+    ]
   }
 ]
 

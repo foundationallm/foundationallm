@@ -56,8 +56,10 @@ module cosmosdb 'modules/cosmosdb.bicep' = {
   name: 'cosmosdb-${timestamp}'
   params: {
     actionGroupId: actionGroupId
+    kvResourceSuffix: kvResourceSuffix
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
+    opsResourceGroupName: opsResourceGroupName
     privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'cosmosdb')
     resourceSuffix: resourceSuffix
     subnetId: '${vnetId}/subnets/FLLMStorage'

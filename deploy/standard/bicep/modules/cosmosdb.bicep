@@ -2,11 +2,17 @@
 @description('Action Group Id for alerts')
 param actionGroupId string
 
+@description('KeyVault resource suffix for all resources')
+param kvResourceSuffix string = resourceSuffix
+
 @description('Location for all resources')
 param location string
 
 @description('Log Analytic Workspace Id to use for diagnostics')
 param logAnalyticWorkspaceId string
+
+@description('OPS Resource Group name.')
+param opsResourceGroupName string = resourceGroup().name
 
 @description('Private DNS Zones for private endpoint')
 param privateDnsZones array
@@ -66,6 +72,15 @@ var containers = [
     }
   }
 ]
+
+@description('The Resource Name')
+var formattedKvName = toLower(replace('${kvServiceType}-${kvResourceSuffix}', '-', ''))
+
+@description('The Resource Name')
+var kvName = substring(formattedKvName,0,min([length(formattedKvName),24]))
+
+@description('The Resource Service Type token')
+var kvServiceType = 'kv'
 
 @description('The Resource logs to enable')
 var logs = [
@@ -264,5 +279,17 @@ module privateEndpoint 'utility/privateEndpoint.bicep' = {
       id: main.id
       name: main.name
     }
+  }
+}
+
+@description('CosmosDB Access Key KeyVault Secret.')
+module cosmosDbKey 'kvSecret.bicep' = {
+  name: 'cosmosKey-${timestamp}'
+  scope: resourceGroup(opsResourceGroupName)
+  params: {
+    kvName: kvName
+    secretName: 'foundationallm-cosmosdb-key'
+    secretValue: main.listKeys().primaryMasterKey
+    tags: tags
   }
 }
