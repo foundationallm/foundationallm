@@ -62,10 +62,10 @@ foreach ($resourceGroup in $resourceGroups.GetEnumerator()) {
     #$appGateways =  "[{`"key`":`"api`",`"id`":`"/subscriptions/$($subscription)/resourceGroups/EBTICP-D-NA24-AIAGW-RGRP/providers/Microsoft.Network/applicationGateways/agw-api-dev-canadaeast-agw-wtwAI`",`"resourceGroup`":`"EBTICP-D-NA24-AIAGW-RGRP`"},{`"key`":`"www`",`"id`":`"/subscriptions/$($subscription)/resourceGroups/EBTICP-D-NA24-AIAGW-RGRP/providers/Microsoft.Network/applicationGateways/agw-www-dev-canadaeast-agw-wtwAI`",`"resourceGroup`":`"EBTICP-D-NA24-AIAGW-RGRP`"}]"
     #$script:applicationGateways = $appGateways
     #DPS:  moved zones here for re-use compatible with secondary executions & skip logic
-    $zones       =  "[{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.agentsvc.azure-automation.net`",`"key`":`"agentsvc`",`"name`":`"privatelink.agentsvc.azure-automation.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.canadaeast.azmk8s.io`",`"key`":`"aks`",`"name`":`"privatelink.canadaeast.azmk8s.io`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net`",`"key`":`"blob`",`"name`":`"privatelink.blob.core.windows.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.cognitiveservices.azure.com`",`"key`":`"cognitiveservices`",`"name`":`"privatelink.cognitiveservices.azure.com`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.azconfig.io`",`"key`":`"configuration_stores`",`"name`":`"privatelink.azconfig.io`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.documents.azure.com`",`"key`":`"cosmosdb`",`"name`":`"privatelink.documents.azure.com`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.azurecr.io`",`"key`":`"cr`",`"name`":`"privatelink.azurecr.io`"},{`"id`":`"/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/canadaeast.privatelink.azurecr.io`",`"key`":`"cr_region`",`"name`":`"canadaeast.privatelink.azurecr.io`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.dfs.core.windows.net`",`"key`":`"dfs`",`"name`":`"privatelink.dfs.core.windows.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net`",`"key`":`"file`",`"name`":`"privatelink.file.core.windows.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.azure-api.net`",`"key`":`"gateway`",`"name`":`"privatelink.azure-api.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/developer.azure-api.net`",`"key`":`"gateway_developer`",`"name`":`"developer.azure-api.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/management.azure-api.net`",`"key`":`"gateway_management`",`"name`":`"management.azure-api.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/portal.azure-api.net`",`"key`":`"gateway_portal`",`"name`":`"portal.azure-api.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/azure-api.net`",`"key`":`"gateway_public`",`"name`":`"azure-api.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/scm.azure-api.net`",`"key`":`"gateway_scm`",`"name`":`"scm.azure-api.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.monitor.azure.com`",`"key`":`"monitor`",`"name`":`"privatelink.monitor.azure.com`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.ods.opinsights.azure.com`",`"key`":`"ods`",`"name`":`"privatelink.ods.opinsights.azure.com`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.oms.opinsights.azure.com`",`"key`":`"oms`",`"name`":`"privatelink.oms.opinsights.azure.com`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.prometheus.monitor.azure.com`",`"key`":`"openai`",`"name`":`"privatelink.openai.azure.com`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.queue.core.windows.net`",`"key`":`"queue`",`"name`":`"privatelink.queue.core.windows.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.search.windows.net`",`"key`":`"search`",`"name`":`"privatelink.search.windows.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.azurewebsites.net`",`"key`":`"sites`",`"name`":`"privatelink.azurewebsites.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net`",`"key`":`"sql_server`",`"name`":`"privatelink.database.windows.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.table.core.windows.net`",`"key`":`"table`",`"name`":`"privatelink.table.core.windows.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net`",`"key`":`"vault`",`"name`":`"privatelink.vaultcore.azure.net`"}]" 
-    $script:privateDnsZones = $zones 
-    
-task default -depends Agw, Storage, App, DNS, Networking, OpenAI, Ops, ResourceGroups, Vec
+    $zones       =  "[{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.agentsvc.azure-automation.net`",`"key`":`"agentsvc`",`"name`":`"privatelink.agentsvc.azure-automation.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.canadaeast.azmk8s.io`",`"key`":`"aks`",`"name`":`"privatelink.canadaeast.azmk8s.io`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net`",`"key`":`"blob`",`"name`":`"privatelink.blob.core.windows.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.cognitiveservices.azure.com`",`"key`":`"cognitiveservices`",`"name`":`"privatelink.cognitiveservices.azure.com`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.azconfig.io`",`"key`":`"configuration_stores`",`"name`":`"privatelink.azconfig.io`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.documents.azure.com`",`"key`":`"cosmosdb`",`"name`":`"privatelink.documents.azure.com`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.azurecr.io`",`"key`":`"cr`",`"name`":`"privatelink.azurecr.io`"},{`"id`":`"/subscriptions/4dae7dc4-ef9c-4591-b247-8eacb27f3c9e/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/canadaeast.privatelink.azurecr.io`",`"key`":`"cr_region`",`"name`":`"canadaeast.privatelink.azurecr.io`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.dfs.core.windows.net`",`"key`":`"dfs`",`"name`":`"privatelink.dfs.core.windows.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net`",`"key`":`"file`",`"name`":`"privatelink.file.core.windows.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.azure-api.net`",`"key`":`"gateway`",`"name`":`"privatelink.azure-api.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/developer.azure-api.net`",`"key`":`"gateway_developer`",`"name`":`"developer.azure-api.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/management.azure-api.net`",`"key`":`"gateway_management`",`"name`":`"management.azure-api.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/portal.azure-api.net`",`"key`":`"gateway_portal`",`"name`":`"portal.azure-api.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/azure-api.net`",`"key`":`"gateway_public`",`"name`":`"azure-api.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/scm.azure-api.net`",`"key`":`"gateway_scm`",`"name`":`"scm.azure-api.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.monitor.azure.com`",`"key`":`"monitor`",`"name`":`"privatelink.monitor.azure.com`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.ods.opinsights.azure.com`",`"key`":`"ods`",`"name`":`"privatelink.ods.opinsights.azure.com`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.oms.opinsights.azure.com`",`"key`":`"oms`",`"name`":`"privatelink.oms.opinsights.azure.com`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.prometheus.monitor.azure.com`",`"key`":`"openai`",`"name`":`"privatelink.openai.azure.com`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.queue.core.windows.net`",`"key`":`"queue`",`"name`":`"privatelink.queue.core.windows.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.search.windows.net`",`"key`":`"search`",`"name`":`"privatelink.search.windows.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.azurewebsites.net`",`"key`":`"sites`",`"name`":`"privatelink.azurewebsites.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net`",`"key`":`"sql_server`",`"name`":`"privatelink.database.windows.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.table.core.windows.net`",`"key`":`"table`",`"name`":`"privatelink.table.core.windows.net`"},{`"id`":`"/subscriptions/$($subscription)/resourceGroups/$($dnsResourceGroupName)/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net`",`"key`":`"vault`",`"name`":`"privatelink.vaultcore.azure.net`"}]"
+    $script:privateDnsZones = $zones
+
+task default -depends Agw, App, DNS, Networking, OpenAI, Ops, ResourceGroups, SetSubscription, Storage, Vec
 
 task Agw -depends ResourceGroups, Ops, Networking {
     if ($skipAgw -eq $true) {
@@ -87,12 +87,12 @@ task Agw -depends ResourceGroups, Ops, Networking {
         networkingResourceGroupName="$($resourceGroups["net"])" `
         opsResourceGroupName="$($resourceGroups["ops"])" `
         project=$project `
-        vnetId=$script:vnetId 
+        vnetId=$script:vnetId
 
     if ($LASTEXITCODE -ne 0) {
         throw "The agw deployment failed."
     }
-   
+
     $script:agws = $(
         az deployment group show `
             --name $deployments["agw"] `
@@ -197,7 +197,7 @@ task Networking -depends ResourceGroups {
             createVpnGateway=$createVpnGateway `
             vnetName=$vnetName `
         --resource-group $resourceGroups["net"] `
-        --template-file ./networking-rg.bicep 
+        --template-file ./networking-rg.bicep
 
     if ($LASTEXITCODE -ne 0) {
         throw "The networking deployment failed."
@@ -208,7 +208,7 @@ task Networking -depends ResourceGroups {
             --name $deployments["net"] `
             --output tsv `
             --query properties.outputs.vnetId.value `
-            --resource-group $resourceGroups["net"] 
+            --resource-group $resourceGroups["net"]
     )
 
     if ($LASTEXITCODE -ne 0) {
@@ -230,7 +230,7 @@ task OpenAI -depends ResourceGroups, Ops, Networking, DNS {
                 --resource-group $resourceGroups["ops"] `
                 --workspace-name "la-${environment}-${location}-ops" `
                 --query id `
-                --output tsv 
+                --output tsv
         )
     }
     else {
@@ -284,7 +284,7 @@ task Ops -depends ResourceGroups, Networking, DNS {
             location=$location `
             privateDnsZones=$opsZones `
             project=$project `
-            vnetId=$script:vnetId 
+            vnetId=$script:vnetId
 
     if ($LASTEXITCODE -ne 0) {
         throw "The ops deployment failed."
@@ -295,7 +295,7 @@ task Ops -depends ResourceGroups, Networking, DNS {
             --name $deployments["ops"] `
             --output tsv `
             --query properties.outputs.actionGroupId.value `
-            --resource-group $resourceGroups["ops"] 
+            --resource-group $resourceGroups["ops"]
     )
 
     if ($LASTEXITCODE -ne 0) {
@@ -307,7 +307,7 @@ task Ops -depends ResourceGroups, Networking, DNS {
             --name $deployments["ops"] `
             --output tsv `
             --query properties.outputs.logAnalyticsWorkspaceId.value `
-            --resource-group $resourceGroups["ops"] 
+            --resource-group $resourceGroups["ops"]
     )
 
     if ($LASTEXITCODE -ne 0) {
@@ -330,7 +330,7 @@ task ResourceGroups -depends SetSubscription {
 
             if (-Not ($(az group list --query '[].name' -o json | ConvertFrom-Json) -Contains $resourceGroup)) {
                 throw "The resource group $resourceGroup was not found, and could not be created."
-            } 
+            }
         }
         else {
             Write-Host -ForegroundColor Blue "The resource group $resourceGroup was found."
@@ -339,7 +339,7 @@ task ResourceGroups -depends SetSubscription {
 }
 
 task SetSubscription {
-    az account set -s $($subscription)
+    az account set --subscription $subscription
 }
 
 task Storage -depends ResourceGroups, Ops, Networking, DNS {
@@ -371,7 +371,7 @@ task Storage -depends ResourceGroups, Ops, Networking, DNS {
     }
 }
 
-task Vec -depends ResourceGroups, Ops, Networking, DNS { 
+task Vec -depends ResourceGroups, Ops, Networking, DNS {
     if ($skipVec -eq $true) {
         Write-Host -ForegroundColor Yellow "Skipping Vec creation."
         return;
