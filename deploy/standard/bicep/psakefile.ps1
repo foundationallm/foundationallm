@@ -239,6 +239,7 @@ task OpenAI -depends ResourceGroups, Ops, Networking, DNS {
         --template-file ./openai-rg.bicep `
         --parameters actionGroupId=$script:actionGroupId `
                         administratorObjectId=$administratorObjectId `
+                        dnsResourceGroupName=$dnsResourceGroupName `
                         environmentName=$environment `
                         location=$location `
                         logAnalyticsWorkspaceId=$script:logAnalyticsWorkspaceId `
@@ -348,7 +349,6 @@ task Storage -depends ResourceGroups, Ops, Networking, DNS {
         --template-file ./storage-rg.bicep `
         --parameters `
             actionGroupId=$script:actionGroupId `
-            dnsResourceGroupName=$dnsResourceGroupName `
             environmentName=$environment `
             location=$location `
             logAnalyticsWorkspaceId=$script:logAnalyticsWorkspaceId `

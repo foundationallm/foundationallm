@@ -5,6 +5,9 @@ param administratorObjectId string
 @description('Action Group to use for alerts.')
 param actionGroupId string
 
+@description('DNS resource group name')
+param dnsResourceGroupName string
+
 @description('The environment name token used in naming resources.')
 param environmentName string
 
@@ -67,6 +70,7 @@ module apim 'modules/apim.bicep' = {
   name: 'apim-${timestamp}'
   params: {
     actionGroupId: actionGroupId
+    dnsResourceGroupName: dnsResourceGroupName
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     privateDnsZones: zonesApim
