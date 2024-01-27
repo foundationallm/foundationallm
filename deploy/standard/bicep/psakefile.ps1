@@ -11,7 +11,7 @@ $script:k8sNamespace="default"
 $administratorObjectId = "d3bd4e8e-d413-477d-a420-0792b0504adf"
 $environment = "stg"
 $location = "eastus2"
-$project = "wtw01"
+$project = "fllm01"
 $skipResourceGroups = $false
 $skipNetworking = $false
 $skipOps = $false
@@ -38,16 +38,16 @@ properties {
 }
 
 $resourceGroups = @{
-    agw     = "EBTICP-D-NA24-AIAGW-RGRP"
-    app     = "EBTICP-D-NA24-AIApp-RGRP"
-    data    = "EBTICP-D-NA24-AIData-RGRP"
-    dns     = "EBTICP-D-NA24-AIDNS-RGRP"
-    jbx     = "EBTICP-D-NA24-AIJBX-RGRP"
-    net     = "EBTICP-D-NA24-AI-RGRP"
-    oai     = "EBTICP-D-NA24-AIOpenAI-RGRP"
-    ops     = "EBTICP-D-NA24-AIOps-RGRP"
-    storage = "EBTICP-D-NA24-AIStorage-RGRP"
-    vec     = "EBTICP-D-NA24-AIVector-RGRP"
+    agw     = "rg-${environment}-${location}-agw-${project}"
+    app     = "rg-${environment}-${location}-app-${project}"
+    data    = "rg-${environment}-${location}-data-${project}"
+    dns     = "rg-${environment}-${location}-dns-${project}"
+    jbx     = "rg-${environment}-${location}-jbx-${project}"
+    net     = "rg-${environment}-${location}-net-${project}"
+    oai     = "rg-${environment}-${location}-oai-${project}"
+    ops     = "rg-${environment}-${location}-ops-${project}"
+    storage = "rg-${environment}-${location}-storage-${project}"
+    vec     = "rg-${environment}-${location}-vec-${project}"
 }
 
 $dnsResourceGroupName = $resourceGroups["dns"]
@@ -225,7 +225,7 @@ task OpenAI -depends ResourceGroups, Ops, Networking, DNS {
         $script:logAnalyticsWorkspaceId = $(
             az monitor log-analytics workspace show `
                 --resource-group $resourceGroups["ops"] `
-                --workspace-name "la-${environment}-${location}-ops" `
+                --workspace-name "la-${environment}-${location}-ops-${project}" `
                 --query id `
                 --output tsv
         )
