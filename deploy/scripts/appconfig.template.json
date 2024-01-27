@@ -6,16 +6,28 @@
     "value": "{\"id\":\"FoundationaLLM-AllowAgentHint\",\"description\":\"\",\"enabled\":true,\"conditions\":{\"client_filters\":[]}}"
   },
   {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:AgentHub:AgentMetadata:StorageContainer",
+    "value": "agents"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:AgentHub:StorageManager:BlobStorage:ConnectionString",
+    "value": "foundationallm-storage-connectionstring"
+  },
+  {
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:AgentFactoryAPI:APIKey",
-    "value": "foundationallm-apis-agentfactoryapi-apikey"
+    "value": "foundationallm-apis-agent-factory-api-apikey"
   },
   {
     "keyVault": false,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:AgentFactoryAPI:APIUrl",
-    "value": "https://agent-factory-api"
+    "value": "http://foundationallm-agent-factory-api/agentfactory"
   },
   {
     "keyVault": true,
@@ -33,13 +45,13 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:AgentHubAPI:APIKey",
-    "value": "foundationallm-apis-agenthubapi-apikey"
+    "value": "foundationallm-apis-agent-hub-api-apikey"
   },
   {
     "keyVault": false,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:AgentHubAPI:APIUrl",
-    "value": "https://agent-hub-api"
+    "value": "http://foundationallm-agent-hub-api/agenthub"
   },
   {
     "keyVault": true,
@@ -51,7 +63,7 @@
     "keyVault": false,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:CoreAPI:APIUrl",
-    "value": "https://core-api"
+    "value": "https://{{ CoreApiHostname }}"
   },
   {
     "keyVault": true,
@@ -63,13 +75,13 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:DataSourceHubAPI:APIKey",
-    "value": "foundationallm-apis-datasourcehubapi-apikey"
+    "value": "foundationallm-apis-data-source-hub-api-apikey"
   },
   {
     "keyVault": false,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:DataSourceHubAPI:APIUrl",
-    "value": "https://data-source-hub-api"
+    "value": "http://foundationallm-data-source-hub-api/datasourcehub"
   },
   {
     "keyVault": true,
@@ -81,13 +93,13 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:GatekeeperAPI:APIKey",
-    "value": "foundationallm-apis-gatekeeperapi-apikey"
+    "value": "foundationallm-apis-gatekeeper-api-apikey"
   },
   {
     "keyVault": false,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:GatekeeperAPI:APIUrl",
-    "value": "https://gatekeeper-api"
+    "value": "http://foundationallm-gatekeeper-api/gatekeeper"
   },
   {
     "keyVault": true,
@@ -104,14 +116,32 @@
   {
     "keyVault": true,
     "featureFlag": false,
+    "key": "FoundationaLLM:APIs:GatekeeperIntegrationAPI:APIKey",
+    "value": "foundationallm-apis-gatekeeper-integration-api-apikey"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:APIs:GatekeeperIntegrationAPI:APIUrl",
+    "value": "http://foundationallm-gatekeeper-integration-api/gatekeeperintegration"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:APIs:GatekeeperIntegrationAPI:AppInsightsConnectionString",
+    "value": "foundationallm-app-insights-connection-string"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
     "key": "FoundationaLLM:APIs:LangChainAPI:APIKey",
-    "value": "foundationallm-apis-langchainapi-apikey"
+    "value": "foundationallm-apis-langchain-api-apikey"
   },
   {
     "keyVault": false,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:LangChainAPI:APIUrl",
-    "value": "https://langchain-api"
+    "value": "http://foundationallm-langchain-api/langchain"
   },
   {
     "keyVault": true,
@@ -123,13 +153,13 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:PromptHubAPI:APIKey",
-    "value": "foundationallm-apis-prompthubapi-apikey"
+    "value": "foundationallm-apis-prompt-hub-api-apikey"
   },
   {
     "keyVault": false,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:PromptHubAPI:APIUrl",
-    "value": "https://prompt-hub-api"
+    "value": "http://foundationallm-prompt-hub-api/prompthub"
   },
   {
     "keyVault": true,
@@ -141,13 +171,13 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:SemanticKernelAPI:APIKey",
-    "value": "foundationallm-apis-semantickernelapi-apikey"
+    "value": "foundationallm-apis-semantic-kernel-api-apikey"
   },
   {
     "keyVault": false,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:SemanticKernelAPI:APIUrl",
-    "value": "https://semantic-kernel-api"
+    "value": "http://foundationallm-semantic-kernel-api/semantickernel"
   },
   {
     "keyVault": true,
@@ -162,16 +192,46 @@
     "value": "false"
   },
   {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:APIs:VectorizationAPI:APIKey",
+    "value": "foundationallm-apis-vectorization-api-apikey"
+  },
+  {
     "keyVault": false,
     "featureFlag": false,
-    "key": "FoundationaLLM:AgentHub:AgentMetadata:StorageContainer",
-    "value": "agents"
+    "key": "FoundationaLLM:APIs:VectorizationAPI:APIUrl",
+    "value": "http://foundationallm-vectorization-api/semantickernel"
   },
   {
     "keyVault": true,
     "featureFlag": false,
-    "key": "FoundationaLLM:AgentHub:StorageManager:BlobStorage:ConnectionString",
-    "value": "foundationallm-agenthub-storagemanager-blobstorage-connectionstring"
+    "key": "FoundationaLLM:APIs:VectorizationAPI:AppInsightsConnectionString",
+    "value": "foundationallm-app-insights-connection-string"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:APIs:VectorizationAPI:ForceHttpsRedirection",
+    "value": "false"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:APIs:VectorizationWorker:APIKey",
+    "value": "foundationallm-apis-vectorization-api-apikey"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:APIs:VectorizationWorker:APIUrl",
+    "value": "http://foundationallm-vectorization-api/semantickernel"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:APIs:VectorizationWorker:AppInsightsConnectionString",
+    "value": "foundationallm-app-insights-connection-string"
   },
   {
     "keyVault": true,
@@ -285,7 +345,7 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:BlobStorageMemorySource:BlobStorageConnection",
-    "value": "foundationallm-blobstoragememorysource-blobstorageconnection"
+    "value": "foundationallm-storage-connectionstring"
   },
   {
     "keyVault": false,
@@ -339,7 +399,7 @@
     "keyVault": false,
     "featureFlag": false,
     "key": "FoundationaLLM:Branding:LogoText",
-    "value": ""
+    "value": "Logo Text"
   },
   {
     "keyVault": false,
@@ -392,7 +452,7 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:Chat:Entra:ClientSecret",
-    "value": "foundationallm-chat-entra-clientsecret"
+    "value": "foundationallm-apis-chat-ui-entra-clientsecret"
   },
   {
     "keyVault": false,
@@ -439,7 +499,7 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:CognitiveSearchMemorySource:BlobStorageConnection",
-    "value": "foundationallm-cognitivesearchmemorysource-blobstorageconnection"
+    "value": "foundationallm-storage-connectionstring"
   },
   {
     "keyVault": false,
@@ -469,7 +529,7 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:CognitiveSearchMemorySource:Key",
-    "value": "foundationallm-cognitivesearchmemorysource-key"
+    "value": "foundationallm-cognitivesearch-key"
   },
   {
     "keyVault": false,
@@ -486,7 +546,7 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:CoreAPI:Entra:ClientSecret",
-    "value": "foundationallm-coreapi-entra-clientsecret"
+    "value": "foundationallm-apis-core-api-entra-clientsecret"
   },
   {
     "keyVault": false,
@@ -557,19 +617,19 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:DataSourceHub:StorageManager:BlobStorage:ConnectionString",
-    "value": "foundationallm-datasourcehub-storagemanager-blobstorage-connectionstring"
+    "value": "foundationallm-storage-connectionstring"
   },
   {
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:DataSources:AboutFoundationaLLM:BlobStorage:ConnectionString",
-    "value": "foundationallm-blobstoragememorysource-blobstorageconnection"
+    "value": "foundationallm-storage-connectionstring"
   },
   {
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:DurableSystemPrompt:BlobStorageConnection",
-    "value": "foundationallm-durablesystemprompt-blobstorageconnection"
+    "value": "foundationallm-storage-connectionstring"
   },
   {
     "keyVault": false,
@@ -594,5 +654,125 @@
     "featureFlag": false,
     "key": "FoundationaLLM:LangChain:Summary:MaxTokens",
     "value": "4097"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:LangChain:Summary:ModelName",
+    "value": "gpt-35-turbo"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:LangChainAPI:Key",
+    "value": "foundationallm-apis-langchain-api-apikey"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:PromptHub:PromptMetadata:StorageContainer",
+    "value": "prompts"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:PromptHub:StorageManager:BlobStorage:ConnectionString",
+    "value": "foundationallm-storage-connectionstring"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Vectorization:VectorizationWorker",
+    "value": "{\r\n\t\"RequestManagers\": [\r\n\t\t{\r\n\t\t\t\"RequestSourceName\": \"extract\",\r\n\t\t\t\"MaxHandlerInstances\": 1\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"RequestSourceName\": \"partition\",\r\n\t\t\t\"MaxHandlerInstances\": 1\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"RequestSourceName\": \"embed\",\r\n\t\t\t\"MaxHandlerInstances\": 1\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"RequestSourceName\": \"index\",\r\n\t\t\t\"MaxHandlerInstances\": 1\r\n\t\t}\r\n\t],\r\n\t\"RequestSources\": [\r\n\t\t{\r\n\t\t\t\"Name\": \"extract\",\r\n\t\t\t\"ConnectionConfigurationName\": \"Extract:ConnectionString\",\r\n\t\t\t\"VisibilityTimeoutSeconds\": 120\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"Name\": \"partition\",\r\n\t\t\t\"ConnectionConfigurationName\": \"Partition:ConnectionString\",\r\n\t\t\t\"VisibilityTimeoutSeconds\": 120\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"Name\": \"embed\",\r\n\t\t\t\"ConnectionConfigurationName\": \"Embed:ConnectionString\",\r\n\t\t\t\"VisibilityTimeoutSeconds\": 120\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"Name\": \"index\",\r\n\t\t\t\"ConnectionConfigurationName\": \"Index:ConnectionString\",\r\n\t\t\t\"VisibilityTimeoutSeconds\": 120\r\n\t\t}\r\n\t],\r\n\t\"QueuingEngine\": \"AzureStorageQueue\"\r\n}"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Vectorization:Queues:Embed:ConnectionString",
+    "value": "foundationallm-storage-connectionstring"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Vectorization:Queues:Extract:ConnectionString",
+    "value": "foundationallm-storage-connectionstring"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Vectorization:Queues:Index:ConnectionString",
+    "value": "foundationallm-storage-connectionstring"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Vectorization:Queues:Partition:ConnectionString",
+    "value": "foundationallm-storage-connectionstring"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Vectorization:StateService:Storage:AuthenticationType",
+    "value": "ConnectionString"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Vectorization:StateService:Storage:ConnectionString",
+    "value": "foundationallm-storage-connectionstring"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Vectorization:ResourceProviderService:Storage:AuthenticationType",
+    "value": "ConnectionString"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Vectorization:ResourceProviderService:Storage:ConnectionString",
+    "value": "foundationallm-storage-connectionstring"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:APIKey",
+    "value": "foundationallm-azureopenai-api-key"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:AuthenticationType",
+    "value": "APIKey"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:DeploymentName",
+    "value": "embeddings"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:Endpoint",
+    "value": "{{ OpenAiEndpointUri }}"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Vectorization:AzureAISearchIndexingService:APIKey",
+    "value": "foundationallm-cognitivesearch-key"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType",
+    "value": "APIKey"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Vectorization:AzureAISearchIndexingService:Endpoint",
+    "value": "{{ CognitiveSearchEndpointUri }}"
   }
 ]
