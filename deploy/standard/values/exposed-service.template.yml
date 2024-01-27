@@ -1,0 +1,30 @@
+appConfig:
+  uri: https://appconfig-wtw01-stg-eastus2-ops.azconfig.io
+  connectionString: Endpoint=https://appconfig-wtw01-stg-eastus2-ops.azconfig.io;Id=rg52;Secret=/wQZTrL3a2M814AYfANbGGHGto77S0klHDhr70D1tbY=
+azureWorkloadIdentity:
+  agentFactoryApiClientId: 29c0c784-4c94-46b1-a946-ec53b44065c9
+  agentHubApiClientId: 5539f2d9-0e8b-4f6a-bbea-7f3f1647c2da
+  chatUiClientId: 8c639642-7db2-4412-8d0b-7a66031039af
+  coreApiClientId: 01fd1712-917e-44d4-88d0-14fe0c69a1e1
+  coreJobClientId: c17e269b-ff68-428c-9834-0aabae56d515
+  dataSourceHubApiClientId: 7be04a8e-ff99-4309-a010-3148217a3a9f
+  gatekeeperApiClientId: bdacb658-6e81-4b51-b870-bc46347dea54
+  gatekeeperIntegrationApiClientId: e365bf67-6bc3-4980-b0d2-adfb41632279
+  langChainApiClientId: 0e5ffad8-0662-45db-94cd-043085c29cd8
+  managementApiClientId: 0e5ffad8-0662-45db-94cd-043085c29cd8
+  managementUiClientId: baf6f666-79cf-4663-a6d6-85f2e1656048
+  promptHubApiClientId: 11920cd3-19ea-4468-8305-8510bba219fb
+  semanticKernelApiClientId: ea440a3f-0407-480d-956c-997467fd0bcc
+  vectorizationApiClientId: 16e4386e-a027-49b7-924e-19cb8b5e913d
+  vectorizationJobClientId: af63e069-7fa1-4b92-8005-ba367a8c9d18
+  tenantId: d280491c-b27a-41bf-9623-21b60cf430b3
+
+ingress:
+  enabled: true
+  protocol: https
+  hosts:
+  - {{ serviceHostname }}
+  annotations:
+    appgw.ingress.kubernetes.io/appgw-ssl-certificate: {{ serviceAgwSslCert }}
+    appgw.ingress.kubernetes.io/request-timeout: '600'
+    kubernetes.iio/ingress.class: azure/application-gateway
