@@ -1,15 +1,38 @@
+@description('The environment name token used in naming resources.')
 param environmentName string
+
+@description('Location used for all resources.')
 param location string
+
+@description('Project Name, used in naming resources.')
 param project string
+
+@description('Timestamp used in naming nested deployments.')
 param timestamp string = utcNow()
+
 param cidrVnet string = '10.220.128.0/21'
+
+param createVpnGateway bool = false
+
+@description('Resource Suffix used in naming resources.')
+var resourceSuffix = '${environmentName}-${location}-${workload}-${project}'
+
+@description('Workload Token used in naming resources.')
+var workload = 'net'
+
 output vnetId string = main.id
 
-var name = 'vnet-${environmentName}-${location}-net-${project}'
+var name = 'vnet-${environmentName}-${location}-net'
 var cidrAppGateway = cidrSubnet(cidrVnet, 24, 0)
 var cidrFllmBackend = cidrSubnet(cidrVnet, 24, 1)
 var cidrFllmFrontend = cidrSubnet(cidrVnet, 24, 2)
 var cidrFllmOpenAi = cidrSubnet(cidrVnet, 26, 12)
+var cidrFllmServices = cidrSubnet(cidrVnet, 26, 13)
+var cidrFllmStorage = cidrSubnet(cidrVnet, 26, 14)
+var cidrFllmOps = cidrSubnet(cidrVnet, 26, 15)
+var cidrFllmVec = cidrSubnet(cidrVnet, 26, 16)
+var cidrVpnGateway = cidrSubnet(cidrVnet, 24, 5)
+var cidrNetSvc = cidrSubnet(cidrVnet,24,6)
 
 var subnets = [
   {
@@ -78,6 +101,22 @@ var subnets = [
     name: 'FLLMFrontEnd'
     addressPrefix: cidrFllmFrontend
   }
+  {
+    name: 'GatewaySubnet'
+    addressPrefix: cidrVpnGateway
+  }
+  {
+    name: 'FLLMNetSvc'
+    addressPrefix: cidrNetSvc
+    delegations: [
+      {
+        name: 'Microsoft.Network/dnsResolvers'
+        properties: {
+          serviceName: 'Microsoft.Network/dnsResolvers'
+        }
+      }
+    ]
+  }  
   {
     name: 'FLLMOpenAI'
     addressPrefix: cidrFllmOpenAi
@@ -186,11 +225,15 @@ var subnets = [
         service: 'Microsoft.CognitiveServices' // TODO: Is this needed?
         locations: [ '*' ]
       }
+      {
+        service: 'Microsoft.KeyVault'
+        locations: [ '*' ]
+      }
     ]
   }
   {
     name: 'FLLMServices'
-    addressPrefix: cidrSubnet(cidrVnet, 26, 13)
+    addressPrefix: cidrFllmServices
     rules: {
       inbound: [
         {
@@ -208,7 +251,7 @@ var subnets = [
   }
   {
     name: 'FLLMStorage'
-    addressPrefix: cidrSubnet(cidrVnet, 26, 14)
+    addressPrefix: cidrFllmStorage
     rules: {
       inbound: [
         {
@@ -249,7 +292,7 @@ var subnets = [
   }
   {
     name: 'ops' // TODO: PLEs.  Maybe put these in FLLMServices?
-    addressPrefix: cidrSubnet(cidrVnet, 26, 15)
+    addressPrefix: cidrFllmOps
     rules: {
       inbound: [
         {
@@ -290,7 +333,7 @@ var subnets = [
   }
   {
     name: 'Vectorization'
-    addressPrefix: cidrSubnet(cidrVnet, 26, 16)
+    addressPrefix: cidrFllmVec
     rules: {
       inbound: [
         {
@@ -339,7 +382,7 @@ var tags = {
 }
 
 resource main 'Microsoft.Network/virtualNetworks@2023-05-01' = {
-  name: name
+  name: 'EBTICP-D-NA24-AI-VNET'
   location: location
   tags: tags
 
@@ -355,8 +398,9 @@ resource main 'Microsoft.Network/virtualNetworks@2023-05-01' = {
         privateEndpointNetworkPolicies: 'Enabled'
         privateLinkServiceNetworkPolicies: 'Enabled'
         serviceEndpoints: subnet.?serviceEndpoints
+        delegations: subnet.?delegations
 
-        networkSecurityGroup: {
+        networkSecurityGroup: subnet.name == 'GatewaySubnet' ? null :{
           id: nsg[i].outputs.id
         }
       }
@@ -373,3 +417,12 @@ module nsg 'modules/nsg.bicep' = [for subnet in subnets: {
     tags: tags
   }
 }]
+
+module vpn 'modules/vpnGateway.bicep' = if (createVpnGateway) {
+  name: 'vpnGw-${timestamp}'
+  params: {
+    location: location
+    resourceSuffix: resourceSuffix
+    vnetId: main.id
+  }
+}

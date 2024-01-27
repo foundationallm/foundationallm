@@ -1,6 +1,12 @@
 /** Inputs **/
+@description('Administrator Object Id')
+param administratorObjectId string
+
 @description('Action Group to use for alerts.')
 param actionGroupId string
+
+@description('DNS resource group name')
+param dnsResourceGroupName string
 
 @description('The environment name token used in naming resources.')
 param environmentName string
@@ -13,6 +19,9 @@ param location string
 
 @description('Log Analytics Workspace Id to use for diagnostics')
 param logAnalyticsWorkspaceId string
+
+@description('OPS Resource Group name')
+param opsResourceGroupName string
 
 @description('Private DNS Zones for private endpoint')
 param privateDnsZones array
@@ -32,9 +41,11 @@ param capacity object = {
 }
 
 /** Locals **/
+@description('KeyVault resource suffix')
+var kvResourceSuffix = '${project}-${environmentName}-${location}-ops' 
 
 @description('Resource Suffix used in naming resources.')
-var resourceSuffix = '${environmentName}-${location}-${workload}-${project}'
+var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
 
 @description('Tags for all resources')
 var tags = {
@@ -59,10 +70,11 @@ module apim 'modules/apim.bicep' = {
   name: 'apim-${timestamp}'
   params: {
     actionGroupId: actionGroupId
+    dnsResourceGroupName: dnsResourceGroupName
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     privateDnsZones: zonesApim
-    resourceSuffix: resourceSuffix
+    resourceSuffix: '${resourceSuffix}'   //DPS:  added apim to mmake distinct after 2nd run failure, determine if this is still needed
     subnetId: '${vnetId}/subnets/FLLMOpenAI'
     tags: tags
 
@@ -72,14 +84,17 @@ module apim 'modules/apim.bicep' = {
       keys: openai[x].outputs.keys
     }]
   }
+  dependsOn: [openai]
 }
 
 @description('Content Safety')
 module contentSafety 'modules/contentSaftey.bicep' = {
   name: 'contentSafety-${timestamp}'
   params: {
+    kvResourceSuffix: kvResourceSuffix
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
+    opsResourceGroupName: opsResourceGroupName
     privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'cognitiveservices')
     resourceSuffix: resourceSuffix
     subnetId: '${vnetId}/subnets/FLLMOpenAI'
@@ -92,6 +107,7 @@ module keyVault 'modules/keyVault.bicep' = {
   name: 'keyVault-${timestamp}'
   params: {
     actionGroupId: actionGroupId
+    administratorObjectId: administratorObjectId
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'vault')
@@ -109,6 +125,8 @@ module openai './modules/openai.bicep' = [for x in range(0, instanceCount): {
     capacity: capacity
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
+    opsKvResourceSuffix: kvResourceSuffix
+    opsResourceGroupName: opsResourceGroupName
     privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'openai')
     resourceSuffix: '${resourceSuffix}-${x}'
     subnetId: '${vnetId}/subnets/FLLMOpenAI'
