@@ -1,50 +1,15 @@
-/** Inputs **/
-@description('AMPLS Name')
 param amplsName string
-
-@description('The environment name token used in naming resources.')
 param environmentName string
-
-@description('Location used for all resources.')
 param location string
-
-@description('Log Analytics Workspace Id.')
 param logAnalyticWorkspaceId string
-
-@description('Project Name, used in naming resources.')
 param project string
-
-@description('Resource suffix')
-param resourceSuffix string
-
-@description('Tags for all resources')
-param tags object
-
-@description('Timestamp for nested deployments')
-param timestamp string = utcNow()
-
-@description('Workload Name, used in naming resources.')
 param workload string
 
-/** Locals **/
-@description('The Resource Name')
-var formattedKvName = toLower(replace('${kvServiceType}-${resourceSuffix}', '-', ''))
+var name = 'ai-${environmentName}-${location}-${workload}-${project}'
 
-@description('The Resource Name')
-var kvName = substring(formattedKvName,0,min([length(formattedKvName),24]))
-
-@description('The Resource Service Type token')
-var kvServiceType = 'kv'
-
-@description('Resource name.')
-var name = 'ai-${environmentName}-${location}-${workload}'
-
-/** Outputs **/
-@description('Application Insights Connection String KeyVault Secret Uri.')
-output aiConnectionStringSecretUri string = aiConnectionString.outputs.secretUri
-
-/** Resources **/
-@description('Resource representing an Azure Application Insights component.')
+/**
+ * Resource representing an Azure Application Insights component.
+ */
 resource main 'microsoft.insights/components@2020-02-02' = {
   kind: 'web'
   location: location
@@ -78,16 +43,5 @@ resource scopedService 'microsoft.insights/privatelinkscopes/scopedresources@202
   name: '${amplsName}/amplss-${name}'
   properties: {
     linkedResourceId: main.id
-  }
-}
-
-@description('Application Insights connection string.')
-module aiConnectionString 'kvSecret.bicep' = {
-  name: 'aiConn-${timestamp}'
-  params: {
-    kvName: kvName
-    secretName: 'foundationallm-app-insights-connection-string'
-    secretValue: main.properties.ConnectionString
-    tags: tags
   }
 }
