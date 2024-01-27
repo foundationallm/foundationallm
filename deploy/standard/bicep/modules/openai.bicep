@@ -17,6 +17,12 @@ param location string
 @description('Log Analytic Workspace Id to use for diagnostics')
 param logAnalyticWorkspaceId string
 
+@description('KeyVault resource suffix for all resources')
+param opsKvResourceSuffix string = resourceSuffix
+
+@description('OPS Resource Group name.')
+param opsResourceGroupName string = resourceGroup().name
+
 @description('Private DNS Zones for private endpoint')
 param privateDnsZones array
 
@@ -59,21 +65,6 @@ var alerts = [
   }
 ]
 
-@description('The Account Keys to place in Key Vault')
-var keyNames = map([ 'key1', 'key2' ], item => {
-    name: item
-    secretName: '${item}-${resourceSuffix}'
-  })
-
-@description('The Resource logs to enable')
-var logs = [ 'Trace', 'RequestResponse', 'Audit' ]
-
-@description('The Resource Name')
-var name = '${serviceType}-${resourceSuffix}'
-
-@description('The Resource Service Type token')
-var serviceType = 'oai'
-
 @description('The Model Deployment Config')
 var deploymentConfig = [
   {
@@ -83,7 +74,7 @@ var deploymentConfig = [
     model: {
       format: 'OpenAI'
       name: 'gpt-35-turbo'
-      version: '0301'
+      version: '0613'  //DPS:  Version needed to be upgraded for Canada east region..  0301 not available
     }
   }
   {
@@ -98,6 +89,27 @@ var deploymentConfig = [
   }
 ]
 
+@description('The Account Keys to place in Key Vault')
+var keyNames = map([ 'key1', 'key2' ], item => {
+    name: item
+    secretName: '${item}-${resourceSuffix}'
+  })
+
+@description('The Resource Service Type token')
+var kvServiceType = 'kv'
+
+@description('The Resource logs to enable')
+var logs = [ 'Trace', 'RequestResponse', 'Audit' ]
+
+@description('The Resource Name')
+var name = '${serviceType}-${resourceSuffix}'
+
+@description('The Resource Name')
+var opsFormattedKvName = toLower(replace('${kvServiceType}-${opsKvResourceSuffix}', '-', ''))
+
+@description('The Resource Name')
+var opsKvName = substring(opsFormattedKvName,0,min([length(opsFormattedKvName),24]))
+
 // See: https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles
 @description('Role Definition Ids')
 var roleDefinitionIds = {
@@ -109,6 +121,9 @@ var roleAssignmentsToCreate = [for roleDefinitionId in items(roleDefinitionIds):
   name: guid(main.id, resourceGroup().id, roleDefinitionId.value)
   roleDefinitionId: roleDefinitionId.value
 }]
+
+@description('The Resource Service Type token')
+var serviceType = 'oai'
 
 /** Outputs **/
 @description('The Account Name')
@@ -122,6 +137,9 @@ output keys array = [for (k, i) in keyNames: {
   name: k.secretName
   secretIdentifier: secret[i].properties.secretUri
 }]
+
+@description('The OpenAI API Key Secret URI (Currently just a placeholder).')
+output openAiKeySecretUri string = apiKeySecret.outputs.secretUri
 
 /** Resources **/
 resource main 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' = {
@@ -233,5 +251,17 @@ module privateEndpoint 'utility/privateEndpoint.bicep' = {
       name: main.name
       id: main.id
     }
+  }
+}
+
+@description('OpenAI API Key OPS KeyVault Secret (Currently unused but added as a placeholder).')
+module apiKeySecret 'kvSecret.bicep' = {
+  name: 'oaiApiKey-${timestamp}'
+  scope: resourceGroup(opsResourceGroupName)
+  params: {
+    kvName: opsKvName
+    secretName: 'foundationallm-azureopenai-api-key'
+    secretValue: 'HAOpenAIKey'
+    tags: tags
   }
 }

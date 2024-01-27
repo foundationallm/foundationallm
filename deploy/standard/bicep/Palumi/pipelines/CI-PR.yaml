@@ -1,0 +1,60 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+pr:
+- main
+
+trigger: none
+
+pool:
+  name: ICT Central Build Agent Windows Pool
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- checkout: self
+  clean: true
+  lfs: true
+  fetchDepth: 100
+- task: UseDotNet@2
+  displayName: Use .NET Core sdk
+  inputs:
+    packageType: sdk
+    version: 6.0.x
+- task: DotNetCoreCLI@2
+  displayName: DotNet Restore
+  inputs:
+    command: 'restore'
+    feedsToUse: 'select'
+    vstsFeed: 'b7339b32-5c18-43b5-88b2-b5086a222dde/de2c1a15-e28a-4fc4-bdaf-872c357feba5'
+- task: DotNetCoreCLI@2
+  displayName: DotNet Build
+  inputs:
+    command: 'build'
+    arguments: '--configuration Release --no-restore'
+- task: DotNetCoreCLI@2
+  displayName: DotNet Test
+  inputs:
+    command: 'test'
+    arguments: '--no-restore --verbosity normal'
+- task: CopyFiles@2
+  inputs:
+    Contents: '**/Ict*.nupkg'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/packages'
+    flattenFolders: true
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/packages'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+- task: NuGetCommand@2
+  displayName: Publish Package to Nuget
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: 'pulumi/pulumi'
+    allowPackageConflicts: true

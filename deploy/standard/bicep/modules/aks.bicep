@@ -8,6 +8,12 @@ param admnistratorObjectIds array
 @description('Application Gateway Details')
 param agw object
 
+@description('Application Gateway resource group name')
+param agwResourceGroupName string
+
+@description('DNS resource group name')
+param dnsResourceGroupName string
+
 @description('The Kubernetes Version')
 param kubernetesVersion string = '1.26.6'
 
@@ -89,6 +95,8 @@ var name = '${serviceType}-${resourceSuffix}'
 var serviceType = 'aks'
 
 /** Outputs **/
+@description('AKS OIDC Issuer URL')
+output oidcIssuerUrl string = main.properties.oidcIssuerProfile.issuerURL
 
 /** Resources **/
 @description('The AKS Cluster')
@@ -156,13 +164,13 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
         }
       }
     }
-
+    //DPS:  CPU count hit errors with subscription limitation for VCPUs in AKS.  Revist later
     agentPoolProfiles: [
       {
-        count: 2
+        count: 1
         enableAutoScaling: true
-        maxCount: 6
-        minCount: 2
+        maxCount: 3
+        minCount: 1
         mode: 'System'
         name: 'system'
         osDiskSizeGB: 1024
@@ -182,7 +190,7 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
       {
         count: 1
         enableAutoScaling: true
-        maxCount: 3
+        maxCount: 2
         minCount: 1
         mode: 'User'
         name: 'user'
@@ -307,7 +315,7 @@ resource uai 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
 /** Nested Modules **/
 module agwClusterRoleAssignment 'utility/roleAssignments.bicep' = {
   name: 'agwra-${resourceSuffix}-${timestamp}'
-  scope: resourceGroup(agw.resourceGroup)
+  scope: resourceGroup(agwResourceGroupName)
   params: {
     principalId: uai.properties.principalId
     roleDefinitionIds: {
@@ -318,7 +326,7 @@ module agwClusterRoleAssignment 'utility/roleAssignments.bicep' = {
 
 module dnsRoleAssignment 'utility/roleAssignments.bicep' = [for zone in privateDnsZones: {
   name: 'dnsra-${resourceSuffix}-${timestamp}'
-  scope: resourceGroup(zone.resourceGroup)
+  scope: resourceGroup(dnsResourceGroupName)
   params: {
     principalId: uai.properties.principalId
     roleDefinitionIds: {
@@ -370,7 +378,7 @@ module privateEndpoint 'utility/privateEndpoint.bicep' = {
 
 module agwAgicRoleAssignment 'utility/roleAssignments.bicep' = {
   name: 'agwagicra-${resourceSuffix}-${timestamp}'
-  scope: resourceGroup(agw.resourceGroup)
+  scope: resourceGroup(agwResourceGroupName)
   params: {
     principalId: main.properties.addonProfiles.ingressApplicationGateway.identity.objectId
     roleDefinitionIds: {

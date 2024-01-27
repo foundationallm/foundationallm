@@ -1,4 +1,10 @@
 /** Inputs **/
+@description('Administrator Object Id')
+param administratorObjectId string
+
+@description('Administrator principal type.')
+param administratorPrincipalType string = 'Group'
+
 @description('The environment name token used in naming resources.')
 param environmentName string
 
@@ -19,7 +25,7 @@ param vnetId string
 
 /** Locals **/
 @description('Resource Suffix used in naming resources.')
-var resourceSuffix = '${environmentName}-${location}-${workload}-${project}'
+var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
 
 @description('Tags for all resources')
 var tags = {
@@ -95,6 +101,8 @@ module appConfig 'modules/appConfig.bicep' = {
   dependsOn: [ uaiAppConfigRoleAssignments ]
   name: 'appConfig-${timestamp}'
   params: {
+    administratorObjectId: administratorObjectId
+    administratorPrincipalType: administratorPrincipalType
     actionGroupId: actionGroup.outputs.id
     location: location
     logAnalyticWorkspaceId: logAnalytics.outputs.id
@@ -116,42 +124,46 @@ module applicationInights 'modules/applicationInsights.bicep' = {
     location: location
     logAnalyticWorkspaceId: logAnalytics.outputs.id
     project: project
+    resourceSuffix: resourceSuffix
+    tags: tags
     workload: 'ops'
   }
 }
 
-@description('Azure Container Registry')
-module containerRegistry 'modules/containerRegistry.bicep' = {
-  name: 'containerRegistry-${timestamp}'
-  params: {
-    agentPoolSubnetId: '${vnetId}/subnets/ops'
-    location: location
-    logAnalyticWorkspaceId: logAnalytics.outputs.id
-    privateDnsZones: zonesRegistry
-    resourceSuffix: resourceSuffix
-    subnetId: '${vnetId}/subnets/ops'
-    tags: tags
-  }
-}
+// @description('Azure Container Registry')
+// module containerRegistry 'modules/containerRegistry.bicep' = {
+//   name: 'containerRegistry-${timestamp}'
+//   params: {
+//     agentPoolSubnetId: '${vnetId}/subnets/ops'
+//     location: location
+//     logAnalyticWorkspaceId: logAnalytics.outputs.id
+//     privateDnsZones: zonesRegistry
+//     resourceSuffix: resourceSuffix
+//     subnetId: '${vnetId}/subnets/ops'
+//     tags: tags
+//   }
+// }
 
-@description('Azure Managed Grafana')
-module grafana 'modules/grafana.bicep' = {
-  name: 'grafana-${timestamp}'
-  params: {
-    azureMonitorWorkspaceResourceId: monitorWorkspace.outputs.id
-    location: location
-    privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'grafana')
-    resourceSuffix: resourceSuffix
-    subnetId: '${vnetId}/subnets/ops'
-    tags: tags
-  }
-}
+// @description('Azure Managed Grafana')
+// module grafana 'modules/grafana.bicep' = {
+//   name: 'grafana-${timestamp}'
+//   params: {
+//     azureMonitorWorkspaceResourceId: monitorWorkspace.outputs.id
+//     location: location
+//     privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'grafana')
+//     resourceSuffix: resourceSuffix
+//     subnetId: '${vnetId}/subnets/ops'
+//     tags: tags
+//   }
+// }
 
 @description('Key Vault')
 module keyVault 'modules/keyVault.bicep' = {
   name: 'keyVault-${timestamp}'
   params: {
     actionGroupId: actionGroup.outputs.id
+    administratorObjectId: administratorObjectId
+    administratorPrincipalType: administratorPrincipalType
     location: location
     logAnalyticWorkspaceId: logAnalytics.outputs.id
     privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'vault')
@@ -178,17 +190,17 @@ module logAnalytics 'modules/logAnalytics.bicep' = {
   }
 }
 
-@description('Azure Monitor Workspace')
-module monitorWorkspace 'modules/monitorWorksapce.bicep' = {
-  name: 'monitorWorkspace-${timestamp}'
-  params: {
-    location: location
-    privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'prometheusMetrics')
-    resourceSuffix: resourceSuffix
-    subnetId: '${vnetId}/subnets/ops'
-    tags: tags
-  }
-}
+// @description('Azure Monitor Workspace')
+// module monitorWorkspace 'modules/monitorWorksapce.bicep' = {
+//   name: 'monitorWorkspace-${timestamp}'
+//   params: {
+//     location: location
+//     privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'prometheusMetrics')
+//     resourceSuffix: resourceSuffix
+//     subnetId: '${vnetId}/subnets/ops'
+//     tags: tags
+//   }
+// }
 
 // See: https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles
 module uaiAppConfigRoleAssignments 'modules/utility/roleAssignments.bicep' = {

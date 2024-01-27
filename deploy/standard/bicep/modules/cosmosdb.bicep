@@ -80,8 +80,11 @@ var logs = [
   'TableApiRequests'
 ]
 
+@description('Formatted untruncated resource name')
+var formattedName = toLower('${serviceType}-${resourceSuffix}')
+
 @description('The Resource Name')
-var name = '${serviceType}-${resourceSuffix}'
+var name = substring(formattedName,0,min([length(formattedName),44]))
 
 @description('The Resource Service Type token')
 var serviceType = 'cdb'

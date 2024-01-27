@@ -2,11 +2,17 @@
 @description('Action Group Id for alerts')
 param actionGroupId string
 
+@description('KeyVault resource suffix for all resources')
+param kvResourceSuffix string = resourceSuffix
+
 @description('Location for all resources')
 param location string
 
 @description('Log Analytic Workspace Id to use for diagnostics')
 param logAnalyticWorkspaceId string
+
+@description('OPS Resource Group name.')
+param opsResourceGroupName string = resourceGroup().name
 
 @description('Private DNS Zones for private endpoint')
 param privateDnsZones array
@@ -39,17 +45,33 @@ var alerts = [
   }
 ]
 
+@description('The Resource Name')
+var formattedKvName = toLower(replace('${kvServiceType}-${kvResourceSuffix}', '-', ''))
+
+@description('The Resource Name')
+var kvName = substring(formattedKvName,0,min([length(formattedKvName),24]))
+
+@description('The Resource Service Type token')
+var kvServiceType = 'kv'
+
 @description('The Resource logs to enable')
 var logs = {
   blobServices: [ 'StorageRead', 'StorageWrite', 'StorageDelete' ]
   fileServices: [ 'StorageRead', 'StorageWrite', 'StorageDelete' ]
 }
 
+@description('Formatted untruncated resource name')
+var formattedName = toLower(replace('${serviceType}-${resourceSuffix}', '-', ''))
+
 @description('The Resource Name')
-var name = replace('${serviceType}-${resourceSuffix}', '-', '')
+var name = substring(formattedName,0,min([length(formattedName),24]))
 
 @description('The Resource Service Type token')
 var serviceType = 'sa'
+
+/** Outputs **/
+@description('Storage Account Connection String KeyVault Secret Uri.')
+output storageConnectionStringSecretUri string = storageConnectionString.outputs.secretUri
 
 /** Resources **/
 @description('The Storage Account')
@@ -245,3 +267,15 @@ module privateEndpoint 'utility/privateEndpoint.bicep' = [for zone in privateDns
     }
   }
 }]
+
+@description('Storage Connection String KeyVault Secret.')
+module storageConnectionString 'kvSecret.bicep' = {
+  name: 'storageConn-${timestamp}'
+  scope: resourceGroup(opsResourceGroupName)
+  params: {
+    kvName: kvName
+    secretName: 'foundationallm-storage-connectionstring'
+    secretValue: 'DefaultEndpointsProtocol=https;AccountName=${main.name};AccountKey=${main.listKeys().keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
+    tags: tags
+  }
+}
