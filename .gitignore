@@ -376,3 +376,4 @@ log
 *.pyproj.user
 
 .DS_Store
+**/Deployment-Manifest.json

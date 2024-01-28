@@ -27,37 +27,14 @@ if ($stepLoginAzure) {
     az login
 }
 
-$project = "wtw01"
-$environment = "stg"
-$location = "eastus2"
+$manifest = $(Get-Content ./Deployment-Manifest.json | ConvertFrom-Json)
 
-$resourceGroups = @{
-    agw     = "EBTICP-D-NA24-AIAGW-RGRP"
-    app     = "EBTICP-D-NA24-AIApp-RGRP"
-    data    = "EBTICP-D-NA24-AIData-RGRP"
-    dns     = "EBTICP-D-NA24-AIDNS-RGRP"
-    jbx     = "EBTICP-D-NA24-AIJBX-RGRP"
-    net     = "EBTICP-D-NA24-AI-RGRP"
-    oai     = "EBTICP-D-NA24-AIOpenAI-RGRP"
-    ops     = "EBTICP-D-NA24-AIOps-RGRP"
-    storage = "EBTICP-D-NA24-AIStorage-RGRP"
-    vec     = "EBTICP-D-NA24-AIVector-RGRP"
-}
-
-$domains = @{
-    chatui = "www.internal.foundationallm.ai"
-    coreapi = "api.internal.foundationallm.ai"
-    managementapi = "management-api.internal.foundationallm.ai"
-    managementui = "management.internal.foundationallm.ai"
-}
-
-$entraClientIds = @{
-    chat = "0b08d115-b517-4d7f-b883-a1665191d14d"
-    core = "b7bfdfd8-fd88-4bec-a6db-7fd1ecac40db"
-    managementui = "aa5cba99-e753-4d91-b2f8-85a6b650d022"
-    managementapi = "dc4b7d98-e404-4044-8040-4c7a5551e862"
-    vectorizationapi = ""
-}
+$domains = $manifest.domains
+$entraClientIds = $manifest.entraClientIds
+$environment = $manifest.environment
+$location = $manifest.location
+$project = $manifest.project
+$resourceGroups = $manifest.resourceGroups
 
 if ($stepUploadSystemPrompts) {
     # Upload System Prompts

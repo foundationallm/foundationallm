@@ -1,0 +1,30 @@
+{
+  "environment": "stg",
+  "location": "eastus2",
+  "project": "fllm01",
+  "domains": {
+    "chatui": "www.internal.foundationallm.ai",
+    "coreapi": "api.internal.foundationallm.ai",
+    "managementapi": "management-api.internal.foundationallm.ai",
+    "managementui": "management.internal.foundationallm.ai"
+  },
+  "entraClientIds": {
+    "chat": "",
+    "core": "",
+    "managementapi": "",
+    "managementui": "",
+    "vectorizationapi": ""
+  },
+  "resourceGroups": {
+    "dns": "",
+    "jbx": "",
+    "agw": "",
+    "app": "",
+    "ops": "",
+    "net": "",
+    "vec": "",
+    "oai": "",
+    "data": "",
+    "storage": ""
+  }
+}
