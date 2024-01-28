@@ -3,33 +3,34 @@
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
-$script:chatUiClientSecret="CHAT-CLIENT-SECRET"
-$script:coreApiClientSecret="CORE-CLIENT-SECRET"
-$script:managementUiClientSecret="MGMT-CLIENT-SECRET"
-$script:managementApiClientSecret="MGMT-CLIENT-SECRET"
-$script:k8sNamespace="default"
 $administratorObjectId = "d3bd4e8e-d413-477d-a420-0792b0504adf"
 $environment = "stg"
 $location = "eastus2"
-$project = "wtw01"
-$skipResourceGroups = $false
-$skipNetworking = $false
-$skipOps = $false
-$skipDns = $false
-$skipAgw = $false
-$skipStorage = $false
+$project = "fllm01"
 $regenerateScripts = $false
+$script:chatUiClientSecret="CHAT-CLIENT-SECRET"
+$script:coreApiClientSecret="CORE-CLIENT-SECRET"
+$script:k8sNamespace="default"
+$script:managementApiClientSecret="MGMT-CLIENT-SECRET"
+$script:managementUiClientSecret="MGMT-CLIENT-SECRET"
+$skipAgw = $false
+$skipAgw = $false
 $skipApp = $false
 $skipDns = $false
+$skipDns = $false
+$skipNetworking = $false
 $skipNetworking = $false
 $skipOai = $false
 $skipOps = $false
+$skipOps = $false
+$skipResourceGroups = $false
 $skipResourceGroups = $false
 $skipStorage = $false
+$skipStorage = $false
 $skipVec = $false
-$skipAgw = $false
 $subscription = "4dae7dc4-ef9c-4591-b247-8eacb27f3c9e"
 $timestamp = [int](Get-Date -UFormat %s -Millisecond 0)
+$vnetName = $null
 
 properties {
     $actionGroupId = ""
@@ -54,7 +55,7 @@ $resourceGroups = @{
 
 $dnsResourceGroupName = $resourceGroups["dns"]
 
-$vnetName = "EBTICP-D-NA24-AI-VNET"
+
 
 $deployments = @{}
 foreach ($resourceGroup in $resourceGroups.GetEnumerator()) {
@@ -83,7 +84,7 @@ task Agw -depends ResourceGroups, Ops, Networking {
         networkingResourceGroupName="$($resourceGroups["net"])" `
         opsResourceGroupName="$($resourceGroups["ops"])" `
         project=$project `
-        vnetId=$script:vnetId 
+        vnetId=$script:vnetId
 
     if ($LASTEXITCODE -ne 0) {
         throw "The agw deployment failed."
@@ -142,13 +143,13 @@ task DNS -depends ResourceGroups, Networking {
         return;
     }
 
-    Write-Host -ForegroundColor Blue "Ensure DNS resources exist" 
+    Write-Host -ForegroundColor Blue "Ensure DNS resources exist"
 
     az deployment group create `
         --name $deployments["dns"] `
         --parameters environmentName=$environment location=$location project=$project vnetId=$script:vnetId `
         --resource-group $resourceGroups["dns"] `
-        --template-file ./dns-rg.bicep 
+        --template-file ./dns-rg.bicep
 
     if ($LASTEXITCODE -ne 0) {
         throw "The DNS deployment failed."
@@ -175,6 +176,10 @@ task Networking -depends ResourceGroups {
 
     Write-Host -ForegroundColor Blue "Ensure networking resources exist"
 
+    if ($vnetName -eq $null) {
+        $vnetName = "vnet-${environment}-${location}-net"
+    }
+
     az deployment group create `
         --name $deployments["net"] `
         --parameters `
@@ -184,7 +189,7 @@ task Networking -depends ResourceGroups {
             createVpnGateway=$createVpnGateway `
             vnetName=$vnetName `
         --resource-group $resourceGroups["net"] `
-        --template-file ./networking-rg.bicep 
+        --template-file ./networking-rg.bicep
 
     if ($LASTEXITCODE -ne 0) {
         throw "The networking deployment failed."
@@ -195,7 +200,7 @@ task Networking -depends ResourceGroups {
             --name $deployments["net"] `
             --output tsv `
             --query properties.outputs.vnetId.value `
-            --resource-group $resourceGroups["net"] 
+            --resource-group $resourceGroups["net"]
     )
 
     if ($LASTEXITCODE -ne 0) {
@@ -217,7 +222,7 @@ task OpenAI -depends ResourceGroups, Ops, Networking, DNS {
                 --resource-group $resourceGroups["ops"] `
                 --workspace-name "la-${environment}-${location}-ops-${project}" `
                 --query id `
-                --output tsv 
+                --output tsv
         )
     }
     else {
@@ -226,7 +231,7 @@ task OpenAI -depends ResourceGroups, Ops, Networking, DNS {
     }
 
     $privateDnsZones = $($script:privateDnsZoneId | ConvertTo-Json -Compress)
-    
+
     Write-Host -ForegroundColor Blue "Ensure OpenAI accounts exist"
 
     az deployment group create `
@@ -266,7 +271,7 @@ task Ops -depends ResourceGroups, Networking, DNS {
         location=$location `
         privateDnsZones=$opsZones `
         project=$project `
-        vnetId=$script:vnetId 
+        vnetId=$script:vnetId
 
     if ($LASTEXITCODE -ne 0) {
         throw "The ops deployment failed."
@@ -277,7 +282,7 @@ task Ops -depends ResourceGroups, Networking, DNS {
             --name $deployments["ops"] `
             --output tsv `
             --query properties.outputs.actionGroupId.value `
-            --resource-group $resourceGroups["ops"] 
+            --resource-group $resourceGroups["ops"]
     )
 
     if ($LASTEXITCODE -ne 0) {
@@ -289,7 +294,7 @@ task Ops -depends ResourceGroups, Networking, DNS {
             --name $deployments["ops"] `
             --output tsv `
             --query properties.outputs.logAnalyticsWorkspaceId.value `
-            --resource-group $resourceGroups["ops"] 
+            --resource-group $resourceGroups["ops"]
     )
 
     if ($LASTEXITCODE -ne 0) {
@@ -312,7 +317,7 @@ task ResourceGroups {
 
             if (-Not ($(az group list --query '[].name' -o json | ConvertFrom-Json) -Contains $resourceGroup)) {
                 throw "The resource group $resourceGroup was not found, and could not be created."
-            } 
+            }
         }
         else {
             Write-Host -ForegroundColor Blue "The resource group $resourceGroup was found."
@@ -347,7 +352,7 @@ task Storage -depends ResourceGroups, Ops, Networking, DNS {
     }
 }
 
-task Vec -depends ResourceGroups, Ops, Networking, DNS { 
+task Vec -depends ResourceGroups, Ops, Networking, DNS {
     if ($skipVec -eq $true) {
         Write-Host -ForegroundColor Yellow "Skipping Vec creation."
         return;
