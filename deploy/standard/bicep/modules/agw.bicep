@@ -234,7 +234,7 @@ resource main 'Microsoft.Network/applicationGateways@2023-05-01' = {
       maxRequestBodySizeInKb: 128
       requestBodyCheck: true
       ruleSetType: 'OWASP'
-      ruleSetVersion: '3.1'
+      ruleSetVersion: '3.2'
     }
   }
 }
