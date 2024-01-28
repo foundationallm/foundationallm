@@ -1,5 +1,5 @@
-chat-ui-values.yml
-core-api-values.yml
-management-api-values.yml
-management-ui-values.yml
+chatui-values.yml
+coreapi-values.yml
+managementapi-values.yml
+managementui-values.yml
 microservice-values.yml

@@ -51,6 +51,14 @@ $domains = @{
     managementui = "management.internal.foundationallm.ai"
 }
 
+$entraClientIds = @{
+    chat = "0b08d115-b517-4d7f-b883-a1665191d14d"
+    core = "b7bfdfd8-fd88-4bec-a6db-7fd1ecac40db"
+    managementui = "aa5cba99-e753-4d91-b2f8-85a6b650d022"
+    managementapi = "dc4b7d98-e404-4044-8040-4c7a5551e862"
+    vectorizationapi = ""
+}
+
 if ($stepUploadSystemPrompts) {
     # Upload System Prompts
     #& ./UploadSystemPrompts.ps1 -resourceGroup $resourceGroup -location $location
@@ -58,6 +66,7 @@ if ($stepUploadSystemPrompts) {
 
 # Generate Config
 & ./Generate-Config.ps1 `
+    -entraClientIds $entraClientIds `
     -resourceGroups $resourceGroups `
     -resourceSuffix "$project-$environment-$location" `
     -domains $domains
@@ -77,9 +86,9 @@ if ($stepDeployImages) {
     #& ./Deploy-Images-Aks-Standard.ps1 -aksName $aksName -resourceGroup $resourceGroup -charts $chartsToDeploy
 }
 
-Write-Host "===========================================================" -ForegroundColor Yellow
-Write-Host "The frontend is hosted at https://$webappHostname" -ForegroundColor Yellow
-Write-Host "The Core API is hosted at $coreApiUri" -ForegroundColor Yellow
-Write-Host "===========================================================" -ForegroundColor Yellow
+# Write-Host "===========================================================" -ForegroundColor Yellow
+# Write-Host "The frontend is hosted at https://$webappHostname" -ForegroundColor Yellow
+# Write-Host "The Core API is hosted at $coreApiUri" -ForegroundColor Yellow
+# Write-Host "===========================================================" -ForegroundColor Yellow
 
 Pop-Location

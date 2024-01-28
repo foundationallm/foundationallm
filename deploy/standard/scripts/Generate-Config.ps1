@@ -1,6 +1,7 @@
 #! /usr/bin/pwsh
 
 Param (
+    [parameter(Mandatory = $true)][object]$entraClientIds,
     [parameter(Mandatory = $true)][object]$resourceGroups,
     [parameter(Mandatory = $true)][string]$resourceSuffix,
     [parameter(Mandatory = $true)][object]$domains
@@ -23,6 +24,15 @@ function EnsureSuccess($message) {
         Write-Host $message -ForegroundColor Red
         exit $LASTEXITCODE
     }
+}
+
+function PopulateTemplate($tokens, $template, $output) {
+    Push-Location $($MyInvocation.InvocationName | Split-Path)
+    $templatePath = $(./Join-Path-Recursively -pathParts $template.Split(","))
+    $outputFilePath = $(./Join-Path-Recursively -pathParts $output.Split(","))
+    Write-Host "Generating $outputFilePath file..." -ForegroundColor Yellow
+    & ./Token-Replace.ps1 -inputFile $templatePath -outputFile $outputFilePath -tokens $tokens
+    Pop-Location
 }
 
 $svcResourceSuffix = "$project-$environment-$location-svc"
@@ -124,13 +134,27 @@ $docdb = EnsureAndReturnFirstItem $docdb "CosmosDB (Document Db)"
 $docdbKey = $(az cosmosdb keys list -g $($resourceGroups["storage"]) -n $docdb.name -o json --query primaryMasterKey | ConvertFrom-Json)
 Write-Host "Document Db Account: $($docdb.name)" -ForegroundColor Yellow
 
+## Getting Content Safety endpoint
+$contentSafety = $(az cognitiveservices list -g $($resourceGroups["oai"]) --query "[?kind=='ContentSafety'].{uri: properties.endpoint}" -o json | ConvertFrom-Json)
+$contentSafety = EnsureAndReturnFirstItem $contentSafety "Content Safety"
+
+## Getting OpenAI endpoint
+$apim = $(az apim list -g $($resourceGroups["oai"]) --query "[].{uri: gatewayUrl}" -o json | ConvertFrom-Json)
+$apim = EnsureAndReturnFirstItem $apim "OpenAI Endpoint (APIM)"
+
+## Getting Cognitive search endpoint
+$cogSearch = $(az search service list -g $($resourceGroups["vec"]) --query "[].{name: name}" -o json | ConvertFrom-Json) 
+$cogSearch = EnsureAndReturnFirstItem $cogSearch "Cognitive Search"
+$cogSearchUri = "http://$($cogSearch.name).search.windows.net"
+
 # Setting tokens
-$tokens.coreApiHostname = "api.internal.foundationallm.ai"
-$tokens.contentSafetyEndpointUri = "TODO"
-$tokens.openAiEndpointUri = "TODO"
-$tokens.chatEntraClientId = "TODO"
-$tokens.coreEntraClientId = "TODO"
-$tokens.cognitiveSearchEndpointUri = "TODO"
+$tokens.contentSafetyEndpointUri = $contentSafety.uri
+$tokens.openAiEndpointUri = $apim.uri
+$tokens.chatEntraClientId = $entraClientIds["chat"]
+$tokens.coreEntraClientId = $entraClientIds["core"]
+$tokens.cognitiveSearchEndpointUri = $cogSearchUri
+
+$tokens.coreApiHostname = $domains["coreapi"]
 
 $tokens.cosmosConnectionString = "AccountEndpoint=$($docdb.documentEndpoint);AccountKey=$docdbKey"
 $tokens.cosmosEndpoint = $docdb.documentEndpoint
@@ -162,12 +186,11 @@ Write-Host "appconfig.json file will be generated with values:"
 Write-Host ($tokens | ConvertTo-Json) -ForegroundColor Yellow
 Write-Host "===========================================================" -ForegroundColor Yellow
 
-Write-Host "Generating appconfig.json file..." -ForegroundColor Yellow
-Push-Location $($MyInvocation.InvocationName | Split-Path)
-$template = "..,config,appconfig.template.json"
-$outputFile = "..,config,appconfig.json"
-$templatePath = $(./Join-Path-Recursively -pathParts $template.Split(","))
-$outputFilePath = $(./Join-Path-Recursively -pathParts $outputFile.Split(","))
-& ./Token-Replace.ps1 -inputFile $templatePath -outputFile $outputFilePath -tokens $tokens
-Pop-Location
+PopulateTemplate $tokens "..,config,appconfig.template.json" "..,config,appconfig.json"
+PopulateTemplate $tokens "..,values,internal-service.template.yml" "..,values,microservice-values.yml"
 
+foreach ($domain in $domains.GetEnumerator()) {
+    $tokens.serviceHostname = $domain.Value
+    $tokens.serviceAgwSslCert = "$($domain.Key)Ssl"
+    PopulateTemplate $tokens "..,values,exposed-service.template.yml" "..,values,$($domain.Key)-values.yml"
+}

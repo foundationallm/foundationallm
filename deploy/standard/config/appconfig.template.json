@@ -3,7 +3,7 @@
     "keyVault": false,
     "featureFlag": true,
     "key": ".appconfig.featureflag/FoundationaLLM-AllowAgentHint",
-    "value": "{\"id\":\"FoundationaLLM-AllowAgentHint\",\"description\":\"\",\"enabled\":true,\"conditions\":{\"client_filters\":[]}}"
+    "value": "FoundationaLLM-AllowAgentHint"
   },
   {
     "keyVault": false,
@@ -683,7 +683,7 @@
     "keyVault": false,
     "featureFlag": false,
     "key": "FoundationaLLM:Vectorization:VectorizationWorker",
-    "value": "{\r\n\t\"RequestManagers\": [\r\n\t\t{\r\n\t\t\t\"RequestSourceName\": \"extract\",\r\n\t\t\t\"MaxHandlerInstances\": 1\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"RequestSourceName\": \"partition\",\r\n\t\t\t\"MaxHandlerInstances\": 1\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"RequestSourceName\": \"embed\",\r\n\t\t\t\"MaxHandlerInstances\": 1\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"RequestSourceName\": \"index\",\r\n\t\t\t\"MaxHandlerInstances\": 1\r\n\t\t}\r\n\t],\r\n\t\"RequestSources\": [\r\n\t\t{\r\n\t\t\t\"Name\": \"extract\",\r\n\t\t\t\"ConnectionConfigurationName\": \"Extract:ConnectionString\",\r\n\t\t\t\"VisibilityTimeoutSeconds\": 120\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"Name\": \"partition\",\r\n\t\t\t\"ConnectionConfigurationName\": \"Partition:ConnectionString\",\r\n\t\t\t\"VisibilityTimeoutSeconds\": 120\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"Name\": \"embed\",\r\n\t\t\t\"ConnectionConfigurationName\": \"Embed:ConnectionString\",\r\n\t\t\t\"VisibilityTimeoutSeconds\": 120\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"Name\": \"index\",\r\n\t\t\t\"ConnectionConfigurationName\": \"Index:ConnectionString\",\r\n\t\t\t\"VisibilityTimeoutSeconds\": 120\r\n\t\t}\r\n\t],\r\n\t\"QueuingEngine\": \"AzureStorageQueue\"\r\n}"
+    "value": "{\"RequestManagers\": [{\"RequestSourceName\": \"extract\",\"MaxHandlerInstances\": 1},{\"RequestSourceName\": \"partition\",\"MaxHandlerInstances\": 1},{\"RequestSourceName\": \"embed\",\"MaxHandlerInstances\": 1},{\"RequestSourceName\": \"index\",\"MaxHandlerInstances\": 1}],\"RequestSources\": [{\"Name\": \"extract\",\"ConnectionConfigurationName\": \"Extract:ConnectionString\",\"VisibilityTimeoutSeconds\": 120},{\"Name\": \"partition\",\"ConnectionConfigurationName\": \"Partition:ConnectionString\",\"VisibilityTimeoutSeconds\": 120},{\"Name\": \"embed\",\"ConnectionConfigurationName\": \"Embed:ConnectionString\",\"VisibilityTimeoutSeconds\": 120},{\"Name\": \"index\",\"ConnectionConfigurationName\": \"Index:ConnectionString\",\"VisibilityTimeoutSeconds\": 120}],\"QueuingEngine\": \"AzureStorageQueue\"}"
   },
   {
     "keyVault": true,

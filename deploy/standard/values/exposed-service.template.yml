@@ -23,8 +23,8 @@ ingress:
   enabled: true
   protocol: https
   hosts:
-  - {{ serviceHostname }}
+  - {{serviceHostname}}
   annotations:
-    appgw.ingress.kubernetes.io/appgw-ssl-certificate: {{ serviceAgwSslCert }}
+    appgw.ingress.kubernetes.io/appgw-ssl-certificate: {{serviceAgwSslCert}}
     appgw.ingress.kubernetes.io/request-timeout: '600'
     kubernetes.iio/ingress.class: azure/application-gateway
