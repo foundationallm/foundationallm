@@ -3,14 +3,16 @@
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
-$administratorObjectId = "d3bd4e8e-d413-477d-a420-0792b0504adf"
-$environment = "stg"
-$location = "eastus2"
-$project = "fllm01"
+$manifest = $(Get-Content ../scripts/Deployment-Manifest.json | ConvertFrom-Json)
+
+$administratorObjectId = $manifest.adminObjectId
+$environment = $manifest.environment
+$location = $manifest.location
+$project = $manifest.project
 $regenerateScripts = $false
 $script:chatUiClientSecret="CHAT-CLIENT-SECRET"
 $script:coreApiClientSecret="CORE-CLIENT-SECRET"
-$script:k8sNamespace="default"
+$script:k8sNamespace=$manifest.k8sNamespace
 $script:managementApiClientSecret="MGMT-CLIENT-SECRET"
 $script:managementUiClientSecret="MGMT-CLIENT-SECRET"
 $skipAgw = $false
@@ -28,38 +30,24 @@ $skipResourceGroups = $false
 $skipStorage = $false
 $skipStorage = $false
 $skipVec = $false
-$subscription = "4dae7dc4-ef9c-4591-b247-8eacb27f3c9e"
+$subscription = $manifest.subscription
 $timestamp = [int](Get-Date -UFormat %s -Millisecond 0)
-$vnetName = $null
+$vnetName = $manifest.vnetName
 
 properties {
     $actionGroupId = ""
     $applicationGateways = @{}
     $logAnalyticsWorkspaceId = ""
-    $privateDnsZoneId = @{}
+    $privateDnsZones = @{}
     $vnetId = ""
 }
 
-$resourceGroups = @{
-    agw     = "rg-${environment}-${location}-agw-${project}"
-    app     = "rg-${environment}-${location}-app-${project}"
-    data    = "rg-${environment}-${location}-data-${project}"
-    dns     = "rg-${environment}-${location}-dns-${project}"
-    jbx     = "rg-${environment}-${location}-jbx-${project}"
-    net     = "rg-${environment}-${location}-net-${project}"
-    oai     = "rg-${environment}-${location}-oai-${project}"
-    ops     = "rg-${environment}-${location}-ops-${project}"
-    storage = "rg-${environment}-${location}-storage-${project}"
-    vec     = "rg-${environment}-${location}-vec-${project}"
-}
-
-$dnsResourceGroupName = $resourceGroups["dns"]
-
-
+$resourceGroups = $manifest.resourceGroups
+$createVpnGateway = $manifest.createVpnGateway
 
 $deployments = @{}
-foreach ($resourceGroup in $resourceGroups.GetEnumerator()) {
-    $deployments.Add($resourceGroup.Name, "$($resourceGroup.Value)-${timestamp}")
+$resourceGroups.PSObject.Properties | ForEach-Object {
+    $deployments.Add($_.Name, "$($_.Value)-${timestamp}")
 }
 
 task default -depends Agw, Storage, App, DNS, Networking, OpenAI, Ops, ResourceGroups, Vec
@@ -74,17 +62,17 @@ task Agw -depends ResourceGroups, Ops, Networking {
 
     az deployment group create `
         --name $deployments["agw"] `
-        --resource-group $resourceGroups["agw"] `
+        --resource-group $resourceGroups.agw `
         --template-file ./agw-rg.bicep `
         --parameters `
-        actionGroupId=$script:actionGroupId `
-        environmentName=$environment `
-        location=$location `
-        logAnalyticsWorkspaceId=$script:logAnalyticsWorkspaceId `
-        networkingResourceGroupName="$($resourceGroups["net"])" `
-        opsResourceGroupName="$($resourceGroups["ops"])" `
-        project=$project `
-        vnetId=$script:vnetId
+            actionGroupId=$script:actionGroupId `
+            environmentName=$environment `
+            location=$location `
+            logAnalyticsWorkspaceId=$script:logAnalyticsWorkspaceId `
+            networkingResourceGroupName="$($resourceGroups.net)" `
+            opsResourceGroupName="$($resourceGroups.ops)" `
+            project=$project `
+            vnetId=$script:vnetId
 
     if ($LASTEXITCODE -ne 0) {
         throw "The agw deployment failed."
@@ -95,8 +83,8 @@ task Agw -depends ResourceGroups, Ops, Networking {
             --name $deployments["agw"] `
             --output json `
             --query properties.outputs.applicationGateways.value `
-            --resource-group $resourceGroups["agw"]
-    )
+            --resource-group $resourceGroups.agw | ConvertFrom-Json
+    ) | ConvertTo-Json -Compress
 }
 
 task App -depends Agw, ResourceGroups, Ops, Networking, DNS {
@@ -106,18 +94,21 @@ task App -depends Agw, ResourceGroups, Ops, Networking, DNS {
     }
 
     Write-Host -ForegroundColor Blue "Ensure app resources exist"
-    $privateDnsZones = $($script:privateDnsZoneId | ConvertTo-Json -Compress)
+    $dnsZoneTypes = @("aks")
+    $aksDnsZones = ($script:privateDnsZones | ConvertFrom-Json).where({ $dnsZoneTypes -Contains $_.key })
+    $privateDnsZones = $("[$($aksDnsZones | ConvertTo-Json -Compress)]") | ConvertTo-Json
+    $appGateways = $($script:applicationGateways | ConvertTo-Json -Compress)
 
     az deployment group create --name  $deployments["app"] `
-                        --resource-group $resourceGroups["app"] `
+                        --resource-group $resourceGroups.app `
                         --template-file ./app-rg.bicep `
                         --parameters actionGroupId=$script:actionGroupId `
                                     administratorObjectId=$administratorObjectId `
-                                    agwResourceGroupName=$($resourceGroups["agw"]) `
+                                    agwResourceGroupName=$($resourceGroups.agw) `
                                     applicationGateways="$appGateways" `
                                     chatUiClientSecret=$script:chatUiClientSecret `
                                     coreApiClientSecret=$script:coreApiClientSecret `
-                                    dnsResourceGroupName=$dnsResourceGroupName `
+                                    dnsResourceGroupName=$($resourceGroups.dns) `
                                     environmentName=$environment `
                                     k8sNamespace=$script:k8sNamespace `
                                     location=$location `
@@ -125,11 +116,11 @@ task App -depends Agw, ResourceGroups, Ops, Networking, DNS {
                                     logAnalyticsWorkspaceResourceId=$script:logAnalyticsWorkspaceId `
                                     managementUiClientSecret=$script:managementUiClientSecret `
                                     managementApiClientSecret=$script:managementApiClientSecret `
-                                    networkingResourceGroupName=$($resourceGroups["net"]) `
-                                    opsResourceGroupName=$($resourceGroups["ops"]) `
+                                    networkingResourceGroupName=$($resourceGroups.net) `
+                                    opsResourceGroupName=$($resourceGroups.ops) `
                                     privateDnsZones=$privateDnsZones `
                                     project=$project `
-                                    storageResourceGroupName=$($resourceGroups["storage"]) `
+                                    storageResourceGroupName=$($resourceGroups.storage) `
                                     vnetId=$script:vnetId
 
     if ($LASTEXITCODE -ne 0) {
@@ -147,21 +138,25 @@ task DNS -depends ResourceGroups, Networking {
 
     az deployment group create `
         --name $deployments["dns"] `
-        --parameters environmentName=$environment location=$location project=$project vnetId=$script:vnetId `
-        --resource-group $resourceGroups["dns"] `
+        --parameters `
+            environmentName=$environment `
+            location=$location `
+            project=$project `
+            vnetId=$script:vnetId `
+        --resource-group $resourceGroups.dns `
         --template-file ./dns-rg.bicep
 
     if ($LASTEXITCODE -ne 0) {
         throw "The DNS deployment failed."
     }
 
-    $script:privateDnsZoneId = $(
+    $script:privateDnsZones = $(
         az deployment group show `
             --name $deployments["dns"] `
             --output json `
             --query properties.outputs.ids.value `
-            --resource-group $resourceGroups["dns"] | ConvertFrom-Json
-    )
+            --resource-group $resourceGroups.dns | ConvertFrom-Json
+    ) | ConvertTo-Json -Compress
 
     if ($LASTEXITCODE -ne 0) {
         throw "The private DNS zone IDs could not be retrieved."
@@ -188,7 +183,7 @@ task Networking -depends ResourceGroups {
             project=$project `
             createVpnGateway=$createVpnGateway `
             vnetName=$vnetName `
-        --resource-group $resourceGroups["net"] `
+        --resource-group $resourceGroups.net `
         --template-file ./networking-rg.bicep
 
     if ($LASTEXITCODE -ne 0) {
@@ -200,7 +195,7 @@ task Networking -depends ResourceGroups {
             --name $deployments["net"] `
             --output tsv `
             --query properties.outputs.vnetId.value `
-            --resource-group $resourceGroups["net"]
+            --resource-group $resourceGroups.net
     )
 
     if ($LASTEXITCODE -ne 0) {
@@ -219,7 +214,7 @@ task OpenAI -depends ResourceGroups, Ops, Networking, DNS {
         Write-Host -ForegroundColor Yellow "Log Analytics Workspace not found.  Attempting to locate it..."
         $script:logAnalyticsWorkspaceId = $(
             az monitor log-analytics workspace show `
-                --resource-group $resourceGroups["ops"] `
+                --resource-group $resourceGroups.ops `
                 --workspace-name "la-${environment}-${location}-ops-${project}" `
                 --query id `
                 --output tsv
@@ -230,13 +225,13 @@ task OpenAI -depends ResourceGroups, Ops, Networking, DNS {
         Write-Host -ForegroundColor Blue "Log Analytics Workspace found: ${script:logAnalyticsWorkspaceId}."
     }
 
-    $privateDnsZones = $($script:privateDnsZoneId | ConvertTo-Json -Compress)
+    $privateDnsZones = $($script:privateDnsZones | ConvertTo-Json -Compress)
 
     Write-Host -ForegroundColor Blue "Ensure OpenAI accounts exist"
 
     az deployment group create `
         --name $deployments["oai"] `
-        --resource-group $resourceGroups["oai"] `
+        --resource-group $resourceGroups.oai `
         --template-file ./openai-rg.bicep `
         --parameters `
         actionGroupId=$script:actionGroupId `
@@ -260,11 +255,11 @@ task Ops -depends ResourceGroups, Networking, DNS {
 
     Write-Host -ForegroundColor Blue "Ensure ops resources exist"
 
-    $opsZones = $($script:privateDnsZoneId | ConvertTo-Json -Compress)
+    $opsZones = $($script:privateDnsZones | ConvertTo-Json -Compress)
 
     az deployment group create `
         --name $deployments["ops"] `
-        --resource-group $resourceGroups["ops"] `
+        --resource-group $resourceGroups.ops `
         --template-file ./ops-rg.bicep `
         --parameters `
         environmentName=$environment `
@@ -282,7 +277,7 @@ task Ops -depends ResourceGroups, Networking, DNS {
             --name $deployments["ops"] `
             --output tsv `
             --query properties.outputs.actionGroupId.value `
-            --resource-group $resourceGroups["ops"]
+            --resource-group $resourceGroups.ops
     )
 
     if ($LASTEXITCODE -ne 0) {
@@ -294,7 +289,7 @@ task Ops -depends ResourceGroups, Networking, DNS {
             --name $deployments["ops"] `
             --output tsv `
             --query properties.outputs.logAnalyticsWorkspaceId.value `
-            --resource-group $resourceGroups["ops"]
+            --resource-group $resourceGroups.ops
     )
 
     if ($LASTEXITCODE -ne 0) {
@@ -310,17 +305,17 @@ task ResourceGroups {
 
     Write-Host -ForegroundColor Blue "Ensure resource groups exist"
 
-    foreach ($resourceGroup in $resourceGroups.values) {
-        if (-Not ($(az group list --query '[].name' -o json | ConvertFrom-Json) -Contains $resourceGroup)) {
-            Write-Host "The resource group $resourceGroup was not found, creating it..."
-            az group create -g $resourceGroup -l $location --subscription $subscription
+    $resourceGroups.PSObject.Properties | ForEach-Object {
+        if (-Not ($(az group list --query '[].name' -o json | ConvertFrom-Json) -Contains $($_.Value))) {
+            Write-Host "The resource group $($_.Value) was not found, creating it..."
+            az group create -g $($_.Value) -l $location --subscription $subscription
 
-            if (-Not ($(az group list --query '[].name' -o json | ConvertFrom-Json) -Contains $resourceGroup)) {
-                throw "The resource group $resourceGroup was not found, and could not be created."
+            if (-Not ($(az group list --query '[].name' -o json | ConvertFrom-Json) -Contains $($_.Value))) {
+                throw "The resource group $($_.Value) was not found, and could not be created."
             }
         }
         else {
-            Write-Host -ForegroundColor Blue "The resource group $resourceGroup was found."
+            Write-Host -ForegroundColor Blue "The resource group $($_.Value) was found."
         }
     }
 }
@@ -332,20 +327,23 @@ task Storage -depends ResourceGroups, Ops, Networking, DNS {
     }
 
     Write-Host -ForegroundColor Blue "Ensure Storage resources exist"
-    $privateDnsZones = $($script:privateDnsZoneId | ConvertTo-Json -Compress)
+    $dnsZoneTypes = @("blob","cosmosdb","dfs","file","queue","table","web")
+    $storageDnsZones = ($script:privateDnsZones | ConvertFrom-Json).where({ $dnsZoneTypes -Contains $_.key })
+    $privateDnsZones = $($storageDnsZones | ConvertTo-Json -Compress) | ConvertTo-Json
 
     az deployment group create `
         --name $deployments["storage"] `
-        --resource-group $resourceGroups["storage"] `
+        --resource-group $resourceGroups.storage `
         --template-file ./storage-rg.bicep `
         --parameters `
-        actionGroupId=$script:actionGroupId `
-        environmentName=$environment `
-        location=$location `
-        logAnalyticsWorkspaceId=$script:logAnalyticsWorkspaceId `
-        privateDnsZones=$privateDnsZones `
-        project=$project `
-        vnetId=$script:vnetId
+            actionGroupId=$script:actionGroupId `
+            environmentName=$environment `
+            location=$location `
+            logAnalyticsWorkspaceId=$script:logAnalyticsWorkspaceId `
+            opsResourceGroupName=$($resourceGroups.ops) `
+            privateDnsZones=$privateDnsZones `
+            project=$project `
+            vnetId=$script:vnetId
 
     if ($LASTEXITCODE -ne 0) {
         throw "The storage deployment failed."
@@ -359,11 +357,11 @@ task Vec -depends ResourceGroups, Ops, Networking, DNS {
     }
 
     Write-Host -ForegroundColor Blue "Ensure vec resources exist"
-    $privateDnsZones = $($script:privateDnsZoneId | ConvertTo-Json -Compress)
+    $privateDnsZones = $($script:privateDnsZones | ConvertTo-Json -Compress)
 
     az deployment group create `
         --name $deployments["vec"] `
-        --resource-group $resourceGroups["vec"] `
+        --resource-group $resourceGroups.vec `
         --template-file ./vec-rg.bicep `
         --parameters `
         actionGroupId=$script:actionGroupId `

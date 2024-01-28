@@ -3,9 +3,9 @@ param environmentName string
 param location string
 param logAnalyticWorkspaceId string
 param project string
-param workload string
+param resourceSuffix string
 
-var name = 'ai-${environmentName}-${location}-${workload}-${project}'
+var name = 'ai-${resourceSuffix}'
 
 /**
  * Resource representing an Azure Application Insights component.

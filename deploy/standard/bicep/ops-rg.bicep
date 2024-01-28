@@ -19,7 +19,7 @@ param vnetId string
 
 /** Locals **/
 @description('The Resource Name')
-var formattedKvName = toLower(replace('${kvServiceType}-${kvResourceSuffix}', '-', ''))
+var formattedKvName = toLower('${kvServiceType}-${kvResourceSuffix}')
 
 @description('The Resource Name')
 var kvName = substring(formattedKvName,0,min([length(formattedKvName),24]))
@@ -31,7 +31,7 @@ var kvResourceSuffix = resourceSuffix
 var kvServiceType = 'kv'
 
 @description('Resource Suffix used in naming resources.')
-var resourceSuffix = '${environmentName}-${location}-${workload}-${project}'
+var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
 
 @description('Tags for all resources')
 var tags = {
@@ -83,9 +83,8 @@ module actionGroup 'modules/actionGroup.bicep' = {
   name: 'actionGroup-${timestamp}'
   params: {
     environmentName: environmentName
-    location: location
     project: project
-    workload: 'ops'
+    resourceSuffix: resourceSuffix
   }
 }
 
@@ -97,8 +96,8 @@ module ampls 'modules/ampls.bicep' = {
     location: location
     privateDnsZones: zonesAmpls
     project: project
+    resourceSuffix: resourceSuffix
     subnetId: '${vnetId}/subnets/ops'
-    workload: 'ops'
   }
 }
 
@@ -128,7 +127,7 @@ module applicationInights 'modules/applicationInsights.bicep' = {
     location: location
     logAnalyticWorkspaceId: logAnalytics.outputs.id
     project: project
-    workload: 'ops'
+    resourceSuffix: resourceSuffix
   }
 }
 
@@ -182,7 +181,7 @@ module logAnalytics 'modules/logAnalytics.bicep' = {
     environmentName: environmentName
     location: location
     project: project
-    workload: 'ops'
+    resourceSuffix: resourceSuffix
 
     ampls: {
       id: ampls.outputs.id

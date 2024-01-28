@@ -74,7 +74,7 @@ var containers = [
 ]
 
 @description('The Resource Name')
-var formattedKvName = toLower(replace('${kvServiceType}-${kvResourceSuffix}', '-', ''))
+var formattedKvName = toLower('${kvServiceType}-${kvResourceSuffix}')
 
 @description('The Resource Name')
 var kvName = substring(formattedKvName,0,min([length(formattedKvName),24]))

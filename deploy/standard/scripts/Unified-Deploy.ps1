@@ -27,7 +27,7 @@ if ($stepLoginAzure) {
     az login
 }
 
-$manifest = $(Get-Content ./Deployment-Manifest.json | ConvertFrom-Json)
+$manifest = $(Get-Content -Raw -Path ./Deployment-Manifest.json | ConvertFrom-Json)
 
 $domains = $manifest.domains
 $entraClientIds = $manifest.entraClientIds

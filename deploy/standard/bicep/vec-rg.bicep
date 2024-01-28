@@ -25,7 +25,7 @@ param vnetId string
 
 /** Locals **/
 @description('Resource Suffix used in naming resources.')
-var resourceSuffix = '${environmentName}-${location}-${workload}-${project}'
+var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
 
 @description('Tags for all resources')
 var tags = {

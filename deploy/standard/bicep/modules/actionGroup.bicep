@@ -1,9 +1,8 @@
 param environmentName string
-param location string
+param resourceSuffix string
 param project string
-param workload string
 
-var name = 'ag-${environmentName}-${location}-${workload}-${project}'
+var name = 'ag-${resourceSuffix}'
 
 output id string = main.id
 

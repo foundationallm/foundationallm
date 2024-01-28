@@ -3,9 +3,9 @@ param ampls object
 param environmentName string
 param location string
 param project string
-param workload string
+param resourceSuffix string
 
-var name = 'la-${environmentName}-${location}-${workload}-${project}'
+var name = 'la-${resourceSuffix}'
 
 output id string = main.id
 

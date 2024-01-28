@@ -8,7 +8,7 @@ param createVpnGateway bool = false
 
 param vnetName string = 'vnet-${environmentName}-${location}-net'
 
-@description('Resource Suffix used in naming resources.')
+@description('Resource Suffix used in naming resources.') // TODO Make this consistent on next new deploy
 var resourceSuffix = '${environmentName}-${location}-${workload}-${project}'
 
 @description('Workload Token used in naming resources.')
@@ -17,10 +17,14 @@ var workload = 'net'
 output vnetId string = main.id
 
 var name = vnetName
-var cidrAppGateway = cidrSubnet(cidrVnet, 24, 0)
-var cidrFllmBackend = cidrSubnet(cidrVnet, 24, 1)
-var cidrFllmFrontend = cidrSubnet(cidrVnet, 24, 2)
-var cidrFllmOpenAi = cidrSubnet(cidrVnet, 26, 12)
+var cidrAppGateway = cidrSubnet(cidrVnet, 24, 0) // 10.220.128.0/24
+var cidrFllmBackend = cidrSubnet(cidrVnet, 24, 1) // 10.220.129.0/24
+var cidrFllmFrontend = cidrSubnet(cidrVnet, 24, 2) // 10.220.130.0/24
+var cidrFllmOpenAi = cidrSubnet(cidrVnet, 26, 12) // 10.220.131.0/26
+var cidrFllmOps = cidrSubnet(cidrVnet, 26, 15) // 10.220.131.192/26
+var cidrFllmVec = cidrSubnet(cidrVnet, 26, 16) // 10.220.132.0/26
+var cidrVpnGateway = cidrSubnet(cidrVnet, 24, 5) // 10.220.133.0/24
+var cidrNetSvc = cidrSubnet(cidrVnet, 24, 6) // 10.220.134.0/24
 
 var subnets = [
   {
@@ -394,7 +398,7 @@ var subnets = [
   }
   {
     name: 'ops' // TODO: PLEs.  Maybe put these in FLLMServices?
-    addressPrefix: cidrSubnet(cidrVnet, 26, 15)
+    addressPrefix: cidrFllmOps
     rules: {
       inbound: [
         {
@@ -451,7 +455,7 @@ var subnets = [
   }
   {
     name: 'Vectorization'
-    addressPrefix: cidrSubnet(cidrVnet, 26, 16)
+    addressPrefix: cidrFllmVec
     rules: {
       inbound: [
         {
@@ -532,8 +536,9 @@ resource main 'Microsoft.Network/virtualNetworks@2023-05-01' = {
         privateEndpointNetworkPolicies: 'Enabled'
         privateLinkServiceNetworkPolicies: 'Enabled'
         serviceEndpoints: subnet.?serviceEndpoints
+        delegations: subnet.?delegations
 
-        networkSecurityGroup: {
+        networkSecurityGroup: subnet.name == 'GatewaySubnet' ? null : {
           id: nsg[i].outputs.id
         }
       }
@@ -541,7 +546,7 @@ resource main 'Microsoft.Network/virtualNetworks@2023-05-01' = {
   }
 }
 
-module nsg 'modules/nsg.bicep' = [for subnet in subnets: {
+module nsg 'modules/nsg.bicep' = [for subnet in subnets: if (subnet.name != 'GatewaySubnet') {
   name: 'nsg-${subnet.name}-${timestamp}'
   params: {
     location: location
@@ -550,3 +555,12 @@ module nsg 'modules/nsg.bicep' = [for subnet in subnets: {
     tags: tags
   }
 }]
+
+module vpn 'modules/vpnGateway.bicep' = if (createVpnGateway) {
+  name: 'vpnGw-${timestamp}'
+  params: {
+    location: location
+    resourceSuffix: resourceSuffix
+    vnetId: main.id
+  }
+}

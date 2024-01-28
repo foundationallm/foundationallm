@@ -107,7 +107,7 @@ $services = @{
 ### Getting Resources
 $tokens = @{}
 
-$appConfigInstances = @(az appconfig show -n "appconfig-$resourceSuffix-ops" -g $($resourceGroups["ops"]) -o json | ConvertFrom-Json)
+$appConfigInstances = @(az appconfig show -n "appconfig-$resourceSuffix-ops" -g $($resourceGroups.ops) -o json | ConvertFrom-Json)
 if ($appConfigInstances.Length -lt 1) {
     Write-Host "Error getting app config" -ForegroundColor Red
     exit 1
@@ -115,12 +115,12 @@ if ($appConfigInstances.Length -lt 1) {
 $appConfig = $appConfigInstances.name
 Write-Host "App Config: $appConfig" -ForegroundColor Yellow
 
-$appConfigEndpoint = $(az appconfig show -g $($resourceGroups["ops"]) -n $appConfig --query 'endpoint' -o json | ConvertFrom-Json)
-$appConfigConnectionString = $(az appconfig credential list -n $appConfig -g $($resourceGroups["ops"]) --query "[?name=='Primary Read Only'].{connectionString: connectionString}" -o json | ConvertFrom-Json).connectionString
+$appConfigEndpoint = $(az appconfig show -g $($resourceGroups.ops) -n $appConfig --query 'endpoint' -o json | ConvertFrom-Json)
+$appConfigConnectionString = $(az appconfig credential list -n $appConfig -g $($resourceGroups.ops) --query "[?name=='Primary Read Only'].{connectionString: connectionString}" -o json | ConvertFrom-Json).connectionString
 
 ## Getting managed identities
 foreach ($service in $services.GetEnumerator()) {
-    $mi = $(az identity show -g $($resourceGroups["app"]) -n $($service.Value.miName) -o json | ConvertFrom-Json)
+    $mi = $(az identity show -g $($resourceGroups.app) -n $($service.Value.miName) -o json | ConvertFrom-Json)
     EnsureSuccess "Error getting $($service.Key) managed identity!"
     $service.Value.miClientId = $mi.clientId
     Write-Host "$($service.Key) MI Client Id: $($service.Value.miClientId)" -ForegroundColor Yellow
@@ -129,32 +129,31 @@ foreach ($service in $services.GetEnumerator()) {
 $tenantId = $(az account show --query homeTenantId --output tsv)
 
 ## Getting CosmosDb info
-$docdb = $(az cosmosdb list -g $($resourceGroups["storage"]) --query "[?kind=='GlobalDocumentDB'].{name: name, kind:kind, documentEndpoint:documentEndpoint}" -o json | ConvertFrom-Json)
+$docdb = $(az cosmosdb list -g $($resourceGroups.storage) --query "[?kind=='GlobalDocumentDB'].{name: name, kind:kind, documentEndpoint:documentEndpoint}" -o json | ConvertFrom-Json)
 $docdb = EnsureAndReturnFirstItem $docdb "CosmosDB (Document Db)"
-$docdbKey = $(az cosmosdb keys list -g $($resourceGroups["storage"]) -n $docdb.name -o json --query primaryMasterKey | ConvertFrom-Json)
 Write-Host "Document Db Account: $($docdb.name)" -ForegroundColor Yellow
 
 ## Getting Content Safety endpoint
-$contentSafety = $(az cognitiveservices list -g $($resourceGroups["oai"]) --query "[?kind=='ContentSafety'].{uri: properties.endpoint}" -o json | ConvertFrom-Json)
+$contentSafety = $(az cognitiveservices list -g $($resourceGroups.oai) --query "[?kind=='ContentSafety'].{uri: properties.endpoint}" -o json | ConvertFrom-Json)
 $contentSafety = EnsureAndReturnFirstItem $contentSafety "Content Safety"
 
 ## Getting OpenAI endpoint
-$apim = $(az apim list -g $($resourceGroups["oai"]) --query "[].{uri: gatewayUrl}" -o json | ConvertFrom-Json)
+$apim = $(az apim list -g $($resourceGroups.oai) --query "[].{uri: gatewayUrl}" -o json | ConvertFrom-Json)
 $apim = EnsureAndReturnFirstItem $apim "OpenAI Endpoint (APIM)"
 
 ## Getting Cognitive search endpoint
-$cogSearch = $(az search service list -g $($resourceGroups["vec"]) --query "[].{name: name}" -o json | ConvertFrom-Json) 
+$cogSearch = $(az search service list -g $($resourceGroups.vec) --query "[].{name: name}" -o json | ConvertFrom-Json) 
 $cogSearch = EnsureAndReturnFirstItem $cogSearch "Cognitive Search"
 $cogSearchUri = "http://$($cogSearch.name).search.windows.net"
 
 # Setting tokens
 $tokens.contentSafetyEndpointUri = $contentSafety.uri
 $tokens.openAiEndpointUri = $apim.uri
-$tokens.chatEntraClientId = $entraClientIds["chat"]
-$tokens.coreEntraClientId = $entraClientIds["core"]
+$tokens.chatEntraClientId = $entraClientIds.chat
+$tokens.coreEntraClientId = $entraClientIds.core
 $tokens.cognitiveSearchEndpointUri = $cogSearchUri
 
-$tokens.coreApiHostname = $domains["coreapi"]
+$tokens.coreApiHostname = $domains.coreapi
 
 $tokens.cosmosConnectionString = "AccountEndpoint=$($docdb.documentEndpoint);AccountKey=$docdbKey"
 $tokens.cosmosEndpoint = $docdb.documentEndpoint
@@ -189,8 +188,8 @@ Write-Host "===========================================================" -Foregr
 PopulateTemplate $tokens "..,config,appconfig.template.json" "..,config,appconfig.json"
 PopulateTemplate $tokens "..,values,internal-service.template.yml" "..,values,microservice-values.yml"
 
-foreach ($domain in $domains.GetEnumerator()) {
-    $tokens.serviceHostname = $domain.Value
-    $tokens.serviceAgwSslCert = "$($domain.Key)Ssl"
-    PopulateTemplate $tokens "..,values,exposed-service.template.yml" "..,values,$($domain.Key)-values.yml"
+$domains.PSObject.Properties | ForEach-Object {
+    $tokens.serviceHostname = $_.Value
+    $tokens.serviceAgwSslCert = $_.Name
+    PopulateTemplate $tokens "..,values,exposed-service.template.yml" "..,values,$($_.Name)-values.yml"
 }

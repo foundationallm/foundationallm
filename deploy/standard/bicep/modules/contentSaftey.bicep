@@ -1,9 +1,15 @@
 /** Inputs **/
+@description('KeyVault resource suffix for all resources')
+param kvResourceSuffix string = resourceSuffix
+
 @description('Location for all resources')
 param location string
 
 @description('Log Analytic Workspace Id to use for diagnostics')
 param logAnalyticWorkspaceId string
+
+@description('OPS Resource Group name.')
+param opsResourceGroupName string = resourceGroup().name
 
 @description('Private DNS Zones for private endpoint')
 param privateDnsZones array
@@ -21,6 +27,15 @@ param tags object
 param timestamp string = utcNow()
 
 /** Locals **/
+@description('The Resource Name')
+var formattedKvName = toLower('${kvServiceType}-${kvResourceSuffix}')
+
+@description('The Resource Name')
+var kvName = substring(formattedKvName,0,min([length(formattedKvName),24]))
+
+@description('The Resource Service Type token')
+var kvServiceType = 'kv'
+
 @description('The Resource logs to enable')
 var logs = [ 'Trace', 'RequestResponse', 'Audit' ]
 
@@ -31,6 +46,8 @@ var name = '${serviceType}-${resourceSuffix}'
 var serviceType = 'content-safety'
 
 /** Outputs **/
+@description('Content Safety API Key KeyVault Secret Uri.')
+output apiKeySecretUri string = apiKeySecret.outputs.secretUri
 
 /** Resources **/
 resource main 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' = {
@@ -91,5 +108,17 @@ module privateEndpoint 'utility/privateEndpoint.bicep' = {
       name: main.name
       id: main.id
     }
+  }
+}
+
+@description('Content Safety API Key KeyVault Secret.')
+module apiKeySecret 'kvSecret.bicep' = {
+  name: 'csApiKey-${timestamp}'
+  scope: resourceGroup(opsResourceGroupName)
+  params: {
+    kvName: kvName
+    secretName: 'foundationallm-azurecontentsafety-apikey'
+    secretValue: main.listKeys().key1
+    tags: tags
   }
 }

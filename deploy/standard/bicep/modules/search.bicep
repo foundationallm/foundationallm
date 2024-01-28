@@ -2,11 +2,17 @@
 @description('Action Group Id for alerts')
 param actionGroupId string
 
+@description('KeyVault resource suffix for all resources')
+param kvResourceSuffix string = resourceSuffix
+
 @description('Location for all resources')
 param location string
 
 @description('Log Analytic Workspace Id to use for diagnostics')
 param logAnalyticsWorkspaceId string
+
+@description('OPS Resource Group name.')
+param opsResourceGroupName string = resourceGroup().name
 
 @description('Private DNS Zones for private endpoint')
 param privateDnsZones array
@@ -50,18 +56,31 @@ var alerts = [
   }
 ]
 
+@description('The Resource Name')
+var formattedKvName = toLower('${kvServiceType}-${kvResourceSuffix}')
+
+@description('The Resource Name')
+var kvName = substring(formattedKvName,0,min([length(formattedKvName),24]))
+
+@description('The Resource Service Type token')
+var kvServiceType = 'kv'
+
 @description('The Resource logs to enable')
 var logs = [
   'OperationLogs'
 ]
 
+@description('Formatted untruncated resource name')
+var formattedName = toLower('${serviceType}-${resourceSuffix}')
+
 @description('The Resource Name')
-var name = '${serviceType}-${resourceSuffix}'
+var name = substring(formattedName,0,min([length(formattedName),60]))
 
 @description('The Resource Service Type token')
 var serviceType = 'search'
 
 /** Outputs **/
+output searchKeySecretUri string = cogSearchKey.outputs.secretUri
 
 /** Resources **/
 @description('The Azure AI Search resource.')
@@ -142,5 +161,17 @@ module privateEndpoint 'utility/privateEndpoint.bicep' = {
       id: main.id
       name: main.name
     }
+  }
+}
+
+@description('Cognitive Search key KeyVault Secret.')
+module cogSearchKey 'kvSecret.bicep' = {
+  name: 'cogSearchKey-${timestamp}'
+  scope: resourceGroup(opsResourceGroupName)
+  params: {
+    kvName: kvName
+    secretName: 'foundationallm-cognitivesearch-key'
+    secretValue: main.listAdminKeys().primaryKey
+    tags: tags
   }
 }

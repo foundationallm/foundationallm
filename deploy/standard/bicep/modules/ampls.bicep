@@ -2,11 +2,11 @@ param environmentName string
 param location string
 param privateDnsZones array
 param project string
+param resourceSuffix string
 param subnetId string
 param timestamp string = utcNow()
-param workload string
 
-var name = 'ampls-${environmentName}-${location}-${workload}-${project}'
+var name = 'ampls-${resourceSuffix}'
 
 var tags = {
   Environment: environmentName

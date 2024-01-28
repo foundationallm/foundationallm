@@ -11,6 +11,9 @@ param location string
 @description('Log Analytics Workspace Id to use for diagnostics')
 param logAnalyticsWorkspaceId string
 
+@description('OPS Resource Group name')
+param opsResourceGroupName string
+
 @description('Private DNS Zones for private endpoint')
 param privateDnsZones array
 
@@ -24,8 +27,11 @@ param timestamp string = utcNow()
 param vnetId string
 
 /** Locals **/
+@description('KeyVault resource suffix')
+var kvResourceSuffix = '${project}-${environmentName}-${location}-ops' 
+
 @description('Resource Suffix used in naming resources.')
-var resourceSuffix = '${environmentName}-${location}-${workload}-${project}'
+var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
 
 @description('Tags for all resources')
 var tags = {
@@ -66,8 +72,10 @@ module storage 'modules/storageAccount.bicep' = {
   name: 'storage-${timestamp}'
   params: {
     actionGroupId: actionGroupId
+    kvResourceSuffix: kvResourceSuffix
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
+    opsResourceGroupName: opsResourceGroupName
     privateDnsZones: zonesStorage
     resourceSuffix: resourceSuffix
     subnetId: '${vnetId}/subnets/FLLMStorage'
