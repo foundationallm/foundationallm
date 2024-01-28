@@ -1,4 +1,10 @@
 /** Inputs **/
+@description('Administrator Object Id')
+param administratorObjectId string
+
+@description('Administrator principal type.')
+param administratorPrincipalType string = 'Group'
+
 @description('The environment name token used in naming resources.')
 param environmentName string
 
@@ -106,6 +112,8 @@ module appConfig 'modules/appConfig.bicep' = {
   dependsOn: [ uaiAppConfigRoleAssignments ]
   name: 'appConfig-${timestamp}'
   params: {
+    administratorObjectId: administratorObjectId
+    administratorPrincipalType: administratorPrincipalType
     actionGroupId: actionGroup.outputs.id
     location: location
     logAnalyticWorkspaceId: logAnalytics.outputs.id
@@ -163,6 +171,8 @@ module keyVault 'modules/keyVault.bicep' = {
   name: 'keyVault-${timestamp}'
   params: {
     actionGroupId: actionGroup.outputs.id
+    administratorObjectId: administratorObjectId
+    administratorPrincipalType: administratorPrincipalType
     allowAzureServices: false
     location: location
     logAnalyticWorkspaceId: logAnalytics.outputs.id

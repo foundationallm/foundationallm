@@ -51,7 +51,7 @@ var appConfigName = '${appConfigServiceType}-${opsResourceSuffix}'
 var appConfigServiceType = 'appconfig'
 
 @description('The Resource Name')
-var formattedKvName = toLower(replace('${kvServiceType}-${opsResourceSuffix}', '-', ''))
+var formattedKvName = toLower('${kvServiceType}-${opsResourceSuffix}')
 
 @description('The Resource Name')
 var kvName = substring(formattedKvName,0,min([length(formattedKvName),24]))

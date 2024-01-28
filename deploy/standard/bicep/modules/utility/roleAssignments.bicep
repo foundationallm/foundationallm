@@ -4,6 +4,9 @@ param principalId string
 @description('Roles to assign.')
 param roleDefinitionIds object
 
+@description('Principal type.')
+param principalType string = 'ServicePrincipal'
+
 /** Locals **/
 @description('Role Assignments to create')
 var roleAssignmentsToCreate = [for roleDefinitionId in items(roleDefinitionIds): {
@@ -17,6 +20,6 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
   properties: {
     principalId: principalId
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleAssignmentToCreate.roleDefinitionId)
-    principalType: 'ServicePrincipal'
+    principalType: principalType
   }
 }]

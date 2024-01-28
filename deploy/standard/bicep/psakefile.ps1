@@ -215,7 +215,7 @@ task OpenAI -depends ResourceGroups, Ops, Networking, DNS {
         $script:logAnalyticsWorkspaceId = $(
             az monitor log-analytics workspace show `
                 --resource-group $resourceGroups.ops `
-                --workspace-name "la-${environment}-${location}-ops-${project}" `
+                --workspace-name "la-${project}-${environment}-${location}-ops" `
                 --query id `
                 --output tsv
         )
@@ -225,22 +225,25 @@ task OpenAI -depends ResourceGroups, Ops, Networking, DNS {
         Write-Host -ForegroundColor Blue "Log Analytics Workspace found: ${script:logAnalyticsWorkspaceId}."
     }
 
-    $privateDnsZones = $($script:privateDnsZones | ConvertTo-Json -Compress)
+    $dnsZoneTypes = @("cognitiveservices","gateway_developer","gateway_management","gateway_portal","gateway_public","gateway_scm","openai","vault")
+    $openAiDnsZones = ($script:privateDnsZones | ConvertFrom-Json).where({ $dnsZoneTypes -Contains $_.key })
+    $privateDnsZones = $($openAiDnsZones | ConvertTo-Json -Compress) | ConvertTo-Json
 
     Write-Host -ForegroundColor Blue "Ensure OpenAI accounts exist"
 
-    az deployment group create `
-        --name $deployments["oai"] `
-        --resource-group $resourceGroups.oai `
+    az deployment group create --name $deployments.oai `
+        --resource-group  $resourceGroups.oai `
         --template-file ./openai-rg.bicep `
-        --parameters `
-        actionGroupId=$script:actionGroupId `
-        environmentName=$environment `
-        location=$location `
-        logAnalyticsWorkspaceId=$script:logAnalyticsWorkspaceId `
-        privateDnsZones=$privateDnsZones `
-        project=$project `
-        vnetId=$script:vnetId
+        --parameters actionGroupId=$script:actionGroupId `
+                        administratorObjectId=$administratorObjectId `
+                        dnsResourceGroupName=$($resourceGroups.dns) `
+                        environmentName=$environment `
+                        location=$location `
+                        logAnalyticsWorkspaceId=$script:logAnalyticsWorkspaceId `
+                        opsResourceGroupName=$($resourceGroups.ops) `
+                        privateDnsZones=$privateDnsZones `
+                        project=$project `
+                        vnetId=$script:vnetId
 
     if ($LASTEXITCODE -ne 0) {
         throw "The OpenAI deployment failed."
@@ -262,11 +265,12 @@ task Ops -depends ResourceGroups, Networking, DNS {
         --resource-group $resourceGroups.ops `
         --template-file ./ops-rg.bicep `
         --parameters `
-        environmentName=$environment `
-        location=$location `
-        privateDnsZones=$opsZones `
-        project=$project `
-        vnetId=$script:vnetId
+            administratorObjectId=$administratorObjectId `
+            environmentName=$environment `
+            location=$location `
+            privateDnsZones=$opsZones `
+            project=$project `
+            vnetId=$script:vnetId
 
     if ($LASTEXITCODE -ne 0) {
         throw "The ops deployment failed."
@@ -357,20 +361,23 @@ task Vec -depends ResourceGroups, Ops, Networking, DNS {
     }
 
     Write-Host -ForegroundColor Blue "Ensure vec resources exist"
-    $privateDnsZones = $($script:privateDnsZones | ConvertTo-Json -Compress)
+    $dnsZoneTypes = @("search")
+    $vecDnsZones = ($script:privateDnsZones | ConvertFrom-Json).where({ $dnsZoneTypes -Contains $_.key })
+    $privateDnsZones = $("[$($vecDnsZones | ConvertTo-Json -Compress)]") | ConvertTo-Json
 
     az deployment group create `
-        --name $deployments["vec"] `
+        --name $deployments.vec `
         --resource-group $resourceGroups.vec `
         --template-file ./vec-rg.bicep `
         --parameters `
-        actionGroupId=$script:actionGroupId `
-        environmentName=$environment `
-        location=$location `
-        logAnalyticsWorkspaceId=$script:logAnalyticsWorkspaceId `
-        privateDnsZones=$privateDnsZones `
-        project=$project `
-        vnetId=$script:vnetId
+            actionGroupId=$script:actionGroupId `
+            environmentName=$environment `
+            location=$location `
+            logAnalyticsWorkspaceId=$script:logAnalyticsWorkspaceId `
+            opsResourceGroupName=$($resourceGroups.ops) `
+            privateDnsZones=$privateDnsZones `
+            project=$project `
+            vnetId=$script:vnetId
 
     if ($LASTEXITCODE -ne 0) {
         throw "The vec deployment failed."

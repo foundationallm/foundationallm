@@ -190,7 +190,7 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
       {
         count: 1
         enableAutoScaling: true
-        maxCount: 2
+        maxCount: 3
         minCount: 1
         mode: 'User'
         name: 'user'
