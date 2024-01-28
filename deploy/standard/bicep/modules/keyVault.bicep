@@ -2,6 +2,9 @@
 @description('Action Group Id for alerts')
 param actionGroupId string
 
+@description('Allows Azure services to bypass network rules')
+param allowAzureServices bool = true
+
 @description('Location for all resources')
 param location string
 
@@ -92,7 +95,7 @@ resource main 'Microsoft.KeyVault/vaults@2023-07-01' = {
     tenantId: subscription().tenantId
 
     networkAcls: {
-      bypass: 'AzureServices'
+      bypass: allowAzureServices ? 'AzureServices' : null
       defaultAction: 'Deny'
     }
 

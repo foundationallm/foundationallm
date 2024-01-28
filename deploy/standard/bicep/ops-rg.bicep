@@ -164,6 +164,7 @@ module keyVault 'modules/keyVault.bicep' = {
   name: 'keyVault-${timestamp}'
   params: {
     actionGroupId: actionGroup.outputs.id
+    allowAzureServices: false
     location: location
     logAnalyticWorkspaceId: logAnalytics.outputs.id
     privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'vault')
