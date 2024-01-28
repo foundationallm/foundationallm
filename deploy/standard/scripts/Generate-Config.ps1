@@ -134,7 +134,7 @@ $docdb = EnsureAndReturnFirstItem $docdb "CosmosDB (Document Db)"
 Write-Host "Document Db Account: $($docdb.name)" -ForegroundColor Yellow
 
 ## Getting Content Safety endpoint
-$contentSafety = $(az cognitiveservices list -g $($resourceGroups.oai) --query "[?kind=='ContentSafety'].{uri: properties.endpoint}" -o json | ConvertFrom-Json)
+$contentSafety = $(az cognitiveservices account list -g $($resourceGroups.oai) --query "[?kind=='ContentSafety'].{uri: properties.endpoint}" -o json | ConvertFrom-Json)
 $contentSafety = EnsureAndReturnFirstItem $contentSafety "Content Safety"
 
 ## Getting OpenAI endpoint
@@ -155,9 +155,7 @@ $tokens.cognitiveSearchEndpointUri = $cogSearchUri
 
 $tokens.coreApiHostname = $domains.coreapi
 
-$tokens.cosmosConnectionString = "AccountEndpoint=$($docdb.documentEndpoint);AccountKey=$docdbKey"
 $tokens.cosmosEndpoint = $docdb.documentEndpoint
-$tokens.cosmosKey = $docdbKey
 
 $tokens.agentFactoryApiMiClientId = $services["agentfactoryapi"].miClientId
 $tokens.agentHubApiMiClientId = $services["agenthubapi"].miClientId

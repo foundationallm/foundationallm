@@ -444,7 +444,8 @@
     "value": "/signin-oidc"
   },
   {
-    "contentType": "",
+    "keyVault": false,
+    "featureFlag": false,
     "key": "FoundationaLLM:Chat:Entra:ClientId",
     "value": "{{chatEntraClientId}}"
   },
@@ -467,7 +468,8 @@
     "value": "api://{{coreEntraClientId}}/Data.Read"
   },
   {
-    "contentType": "",
+    "keyVault": false,
+    "featureFlag": false,
     "key": "FoundationaLLM:Chat:Entra:TenantId",
     "value": "{{tenantId}}"
   },
@@ -538,7 +540,8 @@
     "value": "/signin-oidc"
   },
   {
-    "contentType": "",
+    "keyVault": false,
+    "featureFlag": false,
     "key": "FoundationaLLM:CoreAPI:Entra:ClientId",
     "value": "{{coreEntraClientId}}"
   },
@@ -561,7 +564,8 @@
     "value": "Data.Read"
   },
   {
-    "contentType": "",
+    "keyVault": false,
+    "featureFlag": false,
     "key": "FoundationaLLM:CoreAPI:Entra:TenantId",
     "value": "{{tenantId}}"
   },
