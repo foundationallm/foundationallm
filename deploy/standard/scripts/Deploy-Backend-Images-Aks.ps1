@@ -68,7 +68,7 @@ if ($charts.Contains("agent-hub-api") -or  $charts.Contains("*")) {
 
 if ($charts.Contains("core-api") -or  $charts.Contains("*")) {
     Write-Host "API chart - core-api" -ForegroundColor Yellow
-    $command = "helm upgrade --install $name-core-api oci://ghcr.io/solliancenet/foundationallm/helm/core-api -f ../values/core-api-values.yml"
+    $command = "helm upgrade --install $name-core-api oci://ghcr.io/solliancenet/foundationallm/helm/core-api -f ../values/coreapi-values.yml"
     $command = createHelmCommand $command 
     Invoke-Expression "$command"
 }
@@ -110,7 +110,7 @@ if ($charts.Contains("langchain-api") -or  $charts.Contains("*")) {
 
 if ($charts.Contains("management-api") -or  $charts.Contains("*")) {
     Write-Host "API chart - management-api" -ForegroundColor Yellow
-    $command = "helm upgrade --install $name-management-api oci://ghcr.io/solliancenet/foundationallm/helm/management-api -f ../values/management-api-values.yml"
+    $command = "helm upgrade --install $name-management-api oci://ghcr.io/solliancenet/foundationallm/helm/management-api -f ../values/managementapi-values.yml"
     $command = createHelmCommand $command 
     Invoke-Expression "$command"
 }

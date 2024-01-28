@@ -2,6 +2,12 @@
 @description('Action Group Id for alerts')
 param actionGroupId string
 
+@description('Containers to create')
+param containers array = []
+
+@description('Flag to enable HNS')
+param enableHns bool = false
+
 @description('KeyVault resource suffix for all resources')
 param kvResourceSuffix string = resourceSuffix
 
@@ -16,6 +22,9 @@ param opsResourceGroupName string = resourceGroup().name
 
 @description('Private DNS Zones for private endpoint')
 param privateDnsZones array
+
+@description('Queues to create')
+param queues array = []
 
 @description('Resource suffix for all resources')
 param resourceSuffix string
@@ -95,7 +104,7 @@ resource main 'Microsoft.Storage/storageAccounts@2023-01-01' = {
     allowCrossTenantReplication: true
     allowSharedKeyAccess: true
     defaultToOAuthAuthentication: true
-    isHnsEnabled: false
+    isHnsEnabled: enableHns
     isNfsV3Enabled: false
     isSftpEnabled: false
     minimumTlsVersion: 'TLS1_2'
@@ -112,6 +121,10 @@ resource main 'Microsoft.Storage/storageAccounts@2023-01-01' = {
           keyType: 'Account'
         }
         blob: {
+          enabled: true
+          keyType: 'Account'
+        }
+        queue: {
           enabled: true
           keyType: 'Account'
         }
@@ -162,6 +175,18 @@ resource blob 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01' = {
     }
   }
 }
+
+@description('Blob containers')
+resource blobContainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01' = [
+  for container in containers: {
+    name: container
+    parent: blob
+    properties: {
+      publicAccess: 'None'
+      metadata: []
+    }
+  }
+]
 
 @description('Diagnostic settings for the resource.')
 resource blobServicesDiagnostics 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = {
@@ -226,6 +251,17 @@ resource queue 'Microsoft.Storage/storageAccounts/queueServices@2023-01-01' = {
     cors: { corsRules: [] }
   }
 }
+
+@description('Queues')
+resource storageQueues 'Microsoft.Storage/storageAccounts/queueServices/queues@2023-01-01' = [
+  for q in queues: {
+    name: q
+    parent: queue
+    properties: {
+      metadata: []
+    }
+  }
+]
 
 @description('The table service settings.')
 resource table 'Microsoft.Storage/storageAccounts/tableServices@2023-01-01' = {

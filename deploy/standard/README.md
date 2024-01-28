@@ -106,4 +106,5 @@ Follow the instructions in the [Authentication setup document](https://docs.foun
 | createVpnGateway | Flag to enable/disable creation of a VPN Gateway for private network access | `true` |
 | publicEndpoints | Flag to enable/disable exposing service endpoints on the public Internet | `true` |
 | createApimUdr | Flag to enable/disable creating UDR rule to support APIM deployment in a peered VNET environment | `false` |
-| vnetName | Desired VNET name for deployment.
+| vnetName | Desired VNET name for deployment. | N/A |
+| vnetCidr | Desired VNET CIDR Address range. | `10.220.128.0/21` |

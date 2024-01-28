@@ -136,6 +136,7 @@ module applicationInights 'modules/applicationInsights.bicep' = {
     logAnalyticWorkspaceId: logAnalytics.outputs.id
     project: project
     resourceSuffix: resourceSuffix
+    tags: tags
   }
 }
 
