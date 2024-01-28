@@ -24,6 +24,18 @@ param timestamp string = utcNow()
 param vnetId string
 
 /** Locals **/
+@description('The Resource Name')
+var formattedKvName = toLower(replace('${kvServiceType}-${kvResourceSuffix}', '-', ''))
+
+@description('The Resource Name')
+var kvName = substring(formattedKvName,0,min([length(formattedKvName),24]))
+
+@description('KeyVault resource suffix')
+var kvResourceSuffix = resourceSuffix
+
+@description('The Resource Service Type token')
+var kvServiceType = 'kv'
+
 @description('Resource Suffix used in naming resources.')
 var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
 
@@ -223,6 +235,28 @@ module storage 'modules/storageAccount.bicep' = {
     privateDnsZones: zonesStorage
     resourceSuffix: resourceSuffix
     subnetId: '${vnetId}/subnets/ops'
+    tags: tags
+  }
+}
+
+@description('Placeholder configuration setting for CSV file')
+module csvFileSecret 'modules/kvSecret.bicep' = {
+  name: 'csvFileSecret-${timestamp}'
+  params: {
+    kvName: kvName
+    secretName: 'foundationallm-langchain-csvfile-url'
+    secretValue: 'FIXME'
+    tags: tags
+  }
+}
+
+@description('Placeholder configuration setting for Test DB Password')
+module dbPasswdSecret 'modules/kvSecret.bicep' = {
+  name: 'dbPasswdSecret-${timestamp}'
+  params: {
+    kvName: kvName
+    secretName: 'foundationallm-langchain-sqldatabase-testdb-password'
+    secretValue: 'FIXME'
     tags: tags
   }
 }

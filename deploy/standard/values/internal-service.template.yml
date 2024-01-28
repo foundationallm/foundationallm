@@ -15,8 +15,8 @@ azureWorkloadIdentity:
   managementUiClientId: {{managementUiMiClientId}}
   promptHubApiClientId: {{promptHubApiMiClientId}}
   semanticKernelApiClientId: {{semanticKernelApiMiClientId}}
-  vectorizationApiMiClientId: {{vectorizationApiMiClientId}}
-  vectorizationJobMiClientId: {{vectorizationJobMiClientId}}
+  vectorizationApiClientId: {{vectorizationApiMiClientId}}
+  vectorizationJobClientId: {{vectorizationJobMiClientId}}
   tenantId: {{tenantId}}
 
 ingress:
