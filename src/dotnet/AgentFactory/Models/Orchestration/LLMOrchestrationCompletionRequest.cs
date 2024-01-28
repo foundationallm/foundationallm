@@ -1,6 +1,8 @@
 ﻿using FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata;
 using FoundationaLLM.Common.Models.Chat;
+using FoundationaLLM.Common.Models.Metadata;
 using Newtonsoft.Json;
+using Agent = FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata.Agent;
 
 namespace FoundationaLLM.AgentFactory.Core.Models.Orchestration
 {
@@ -20,8 +22,8 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Orchestration
         /// <summary>
         /// Data source metadata
         /// </summary>
-        [JsonProperty("data_source")]
-        public MetadataBase? DataSourceMetadata { get; set; }
+        [JsonProperty("data_sources")]
+        public List<MetadataBase>? DataSourceMetadata { get; set; }
 
         /// <summary>
         /// Language model metadata.

@@ -1,13 +1,14 @@
 import pandas as pd
 from sqlalchemy import create_engine
 
-from langchain.agents import create_sql_agent, create_pandas_dataframe_agent, initialize_agent, Tool
-from langchain.agents.agent_toolkits import create_python_agent
-from langchain.agents.agent_types import AgentType
-from langchain.callbacks import get_openai_callback
-from langchain.prompts import PromptTemplate
-from langchain.tools.python.tool import PythonREPLTool
-from langchain.schema.output_parser import OutputParserException
+from langchain.agents import AgentType, initialize_agent
+from langchain_community.agent_toolkits import create_sql_agent
+from langchain_community.callbacks import get_openai_callback
+from langchain_core.exceptions import OutputParserException
+from langchain_core.prompts import PromptTemplate
+from langchain_core.tools import Tool
+from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe_agent, create_python_agent
+from langchain_experimental.tools.python.tool import PythonREPLTool
 
 from foundationallm.config import Configuration
 from foundationallm.langchain.agents import AgentBase
@@ -17,7 +18,6 @@ from foundationallm.langchain.toolkits import SecureSQLDatabaseToolkit
 from foundationallm.models.orchestration import CompletionRequest, CompletionResponse
 from foundationallm.langchain.data_sources.sql import SQLDatabaseConfiguration
 from foundationallm.langchain.data_sources.sql.mssql import MicrosoftSQLServer
-
 from foundationallm.langchain.toolkits import AnomalyDetectionToolkit
 
 class AnomalyDetectionAgent(AgentBase):
@@ -39,11 +39,14 @@ class AnomalyDetectionAgent(AgentBase):
         config : Configuration
             Application configuration class for retrieving configuration settings.
         """
+        # Currently set up to use a SQL Database table as the source system.
+        self.sql_db_config = {}
+        for ds in completion_request.data_sources:
+            self.sql_db_config: SQLDatabaseConfiguration = ds.configuration
+
         self.agent_prompt_prefix = completion_request.agent.prompt_prefix
         self.llm = llm.get_completion_model(completion_request.language_model)
-        # Currently set up to use a SQL Database table as the source system.
-        self.sql_db_config: SQLDatabaseConfiguration = completion_request.data_source.configuration
-
+                
         self.sql_agent_prompt = """You are an anomaly detection agent designed to interact with a SQL database. Given an input question, first create a syntactically correct {dialect} query to run, then look at the results of the query and return the answer to the input question.
         Unless the user specifies a specific number of examples they wish to obtain, always limit your query to at most {top_k} results using the TOP clause as per MS SQL. You can order the results by a relevant column to return the most interesting examples in the database.
         Never query for all the columns from a specific table, only ask for the relevant columns given the question.

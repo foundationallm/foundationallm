@@ -1,22 +1,30 @@
-from langchain.base_language import BaseLanguageModel
+from langchain_core.language_models import BaseLanguageModel
+
 from foundationallm.config import Configuration, Context
 from foundationallm.models.orchestration import CompletionRequest
 from foundationallm.langchain.agents import AgentBase
-from foundationallm.langchain.agents import AnomalyDetectionAgent
-from foundationallm.langchain.agents import CSVAgent
-from foundationallm.langchain.agents import SqlDbAgent
-from foundationallm.langchain.agents import SummaryAgent
-from foundationallm.langchain.agents import BlobStorageAgent
-from foundationallm.langchain.agents import ConversationalAgent
-from foundationallm.langchain.agents import GenericResolverAgent
+from foundationallm.langchain.agents import (
+    AnomalyDetectionAgent,
+    CSVAgent,
+    SqlDbAgent,
+    SummaryAgent,
+    BlobStorageAgent,
+    GenericResolverAgent,
+    CXOAgent,
+    SearchServiceAgent
+)
 
 class AgentFactory:
     """
     Factory to determine which agent to use.
     """
 
-    def __init__(self, completion_request: CompletionRequest, llm: BaseLanguageModel,
-                 config: Configuration, context: Context):
+    def __init__(
+            self,
+            completion_request: CompletionRequest,
+            llm: BaseLanguageModel,
+            config: Configuration,
+            context: Context):
         """
         Initializes an AgentFactory for selecting which agent to use for completion.
 
@@ -64,6 +72,11 @@ class AgentFactory:
             case 'generic-resolver':
                 return GenericResolverAgent(self.completion_request, llm=self.llm,
                                             config=self.config)
-            case _:
-                return ConversationalAgent(self.completion_request, llm=self.llm,
+            case 'search-service':
+                return SearchServiceAgent(self.completion_request, llm=self.llm,
                                            config=self.config)
+            case 'cxo':
+                return CXOAgent(self.completion_request,
+                                             llm=self.llm, config=self.config)
+            case _:
+                raise ValueError(f'No agent found for the specified agent type: {self.agent.type}.')

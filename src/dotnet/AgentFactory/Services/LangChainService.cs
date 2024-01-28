@@ -1,16 +1,15 @@
 ﻿using FoundationaLLM.AgentFactory.Core.Models.Orchestration;
-using FoundationaLLM.AgentFactory.Core.Models.Orchestration.DataSourceConfigurations;
-using FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata;
 using FoundationaLLM.AgentFactory.Interfaces;
 using FoundationaLLM.AgentFactory.Models.ConfigurationOptions;
-using FoundationaLLM.Common.Models.Chat;
-using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Text;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Metadata;
+using Agent = FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata.Agent;
 
 namespace FoundationaLLM.AgentFactory.Services
 {
@@ -36,6 +35,7 @@ namespace FoundationaLLM.AgentFactory.Services
             _logger = logger;
             _httpClientFactoryService = httpClientFactoryService;
             _jsonSerializerSettings = CommonJsonSerializerSettings.GetJsonSerializerSettings();
+            _jsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
         }
 
         /// <summary>
@@ -68,6 +68,7 @@ namespace FoundationaLLM.AgentFactory.Services
                 {
                     Completion = completionResponse!.Completion,
                     UserPrompt = completionResponse.UserPrompt,
+                    FullPrompt = completionResponse.FullPrompt,
                     PromptTemplate = request.Agent?.PromptPrefix,
                     AgentName = request.Agent?.Name,
                     PromptTokens = completionResponse.PromptTokens,
@@ -112,8 +113,8 @@ namespace FoundationaLLM.AgentFactory.Services
                 },
                 LanguageModel = new LanguageModel
                 {
-                    Type = LanguageModelType.OPENAI,
-                    Provider = LanguageModelProvider.MICROSOFT,
+                    Type = LanguageModelTypes.OPENAI,
+                    Provider = LanguageModelProviders.MICROSOFT,
                     Temperature = 0f,
                     UseChat = true
                 }

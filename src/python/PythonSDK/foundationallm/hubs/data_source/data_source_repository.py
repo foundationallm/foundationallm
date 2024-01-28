@@ -10,6 +10,7 @@ from .data_sources.sql import SQLDataSourceMetadata
 from .data_sources.blob_storage import BlobStorageDataSourceMetadata
 from .data_sources.search_service import SearchServiceDataSourceMetadata
 from .data_sources.csv import CSVDataSourceMetadata
+from .data_sources.cxo import CXODataSourceMetadata
 
 class DataSourceRepository(Repository):
     """ The DataSourceRepository is responsible for retrieving data source metadata from storage."""
@@ -21,11 +22,11 @@ class DataSourceRepository(Repository):
             Agents may have allowed datasources defined.
             In storage, they are stored as JSON files with the naming pattern
             of datasourcename.json.
-        
+
         Args:
         pattern (List[str]): The pattern defines the specific data sources to return (by name),
                                 if empty or None, return all data sources.
-        
+
         """
         mgr = DataSourceHubStorageManager(prefix=self.container_prefix, config=self.config)
         config_files = []
@@ -41,6 +42,10 @@ class DataSourceRepository(Repository):
             try:
                 common_datasource_metadata = DataSourceMetadata.model_validate_json(
                                     mgr.read_file_content(config_file))
+                if common_datasource_metadata.underlying_implementation == \
+                            UnderlyingImplementation.CXO:
+                    configs.append(CXODataSourceMetadata.model_validate_json(
+                                    mgr.read_file_content(config_file)))
                 if common_datasource_metadata.underlying_implementation == \
                             UnderlyingImplementation.SQL:
                     configs.append(SQLDataSourceMetadata.model_validate_json(
@@ -59,8 +64,9 @@ class DataSourceRepository(Repository):
                                     mgr.read_file_content(config_file)))
             # if a datasource is not deserializable, skip it
             # pylint: disable=bare-except
-            except:
-                continue
+            except Exception as e:
+                print(e)
+
         return configs
 
     def get_metadata_by_name(self, name: str) -> DataSourceMetadata:

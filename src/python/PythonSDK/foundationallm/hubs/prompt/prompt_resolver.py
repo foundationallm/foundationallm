@@ -20,7 +20,7 @@ class PromptResolver(Resolver):
                 self.repository.container_prefix = path_prefix
         response = PromptHubResponse(prompt=
                                  self.repository.get_metadata_by_name(
-                                     request.agent_name + '.' + request.prompt_name)
+                                     request.prompt_container + '.' + request.prompt_name)
                                  )
         # reset any container prefix override
         self.repository.container_prefix = None

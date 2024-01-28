@@ -4,15 +4,16 @@ using System.Threading.Tasks;
 namespace FoundationaLLM.Vectorization.Interfaces
 {
     /// <summary>
-    /// Provides access to a content source.
+    /// Provides access to files from a content source.
     /// </summary>
     public interface IContentSourceService
     {
         /// <summary>
-        /// Reads the binary content of a specified document from the content source.
+        /// Reads the binary content of a specified file from the storage.
         /// </summary>
-        /// <param name="filePath">The path of the document to read.</param>
-        /// <returns>The binary content of the document.</returns>
-        Task<BinaryData> ReadFileAsync(string filePath);
+        /// <param name="multipartId">The multipart unique identifier of the file being read.</param>
+        /// <param name="cancellationToken">The cancellation token that signals that operations should be cancelled.</param>
+        /// <returns>The string content of the file.</returns>
+        Task<String> ExtractTextFromFileAsync(List<string> multipartId, CancellationToken cancellationToken);
     }
 }

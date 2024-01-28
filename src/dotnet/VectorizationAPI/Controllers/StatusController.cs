@@ -15,10 +15,9 @@ namespace FoundationaLLM.Vectorization.API.Controllers
         /// Returns the status of the Vectorization API service.
         /// </summary>
         [HttpGet(Name = "GetServiceStatus")]
-        public IActionResult Get()
-        {
-            return Ok();
-        }
+        public IActionResult Get() => Ok();
+
+        private static readonly string[] MethodNames = ["GET", "POST", "OPTIONS", "DELETE"];
 
         /// <summary>
         /// Returns the allowed HTTP methods for the Vectorization API service.
@@ -26,7 +25,7 @@ namespace FoundationaLLM.Vectorization.API.Controllers
         [HttpOptions]
         public IActionResult Options()
         {
-            HttpContext.Response.Headers.Add("Allow", new[] { "GET", "POST", "OPTIONS", "DELETE" });
+            HttpContext.Response.Headers.Append("Allow", MethodNames);
 
             return Ok();
         }

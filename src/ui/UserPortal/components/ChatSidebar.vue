@@ -8,6 +8,7 @@
 				:icon="appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
 				size="small"
 				severity="secondary"
+				class="secondary-button"
 				@click="appStore.toggleSidebar"
 			/>
 		</div>
@@ -62,7 +63,7 @@
 			<div>
 				<span class="chat-sidebar__username">{{ accountName }}</span>
 				<Button
-					class="chat-sidebar__sign-out"
+					class="chat-sidebar__sign-out secondary-button"
 					icon="pi pi-sign-out"
 					label="Sign Out"
 					severity="secondary"
@@ -332,6 +333,12 @@ export default {
 }
 .chat-sidebar__sign-out {
 	width: 100%;
+}
+
+.secondary-button {
+	background-color: var(--secondary-button-bg)!important;
+	border-color: var(--secondary-button-bg)!important;
+	color: var(--secondary-button-text)!important;
 }
 
 .chat-sidebar__username {

@@ -6,14 +6,19 @@ items:
     href: deployment/index.md
   - name: Deployment - Starter
     href: deployment/deployment-starter.md
-  - name: Authentication setup Microsoft Entra ID
-    href: deployment/authentication-setup-entra.md
   - name: Azure App Configuration values
     href: deployment/app-configuration-values.md
   - name: Configuration for deployment
     href: deployment/deployment-configuration.md
   - name: Configure access control for services
     href: deployment/configure-access-control-for-services.md
+  - name: Authentication setup
+    href: deployment/authentication/index.md
+    items:
+    - name: Core authentication setup - Microsoft Entra ID
+      href: deployment/authentication/core-authentication-setup-entra.md
+    - name: Management authentication setup - Microsoft Entra ID
+      href: deployment/authentication/management-authentication-setup-entra.md
 - name: Development
   href: development/index.md
   items:
@@ -21,6 +26,8 @@ items:
     href: development/index.md
   - name: Configure local development environment
     href: development/development-local.md
+  - name: Directly calling the APIs
+    href: development/directly-calling-apis.md
   - name: FoundationaLLM DevOps rules and guidelines
     href: development/development-approach.md
   - name: Contributing
@@ -39,6 +46,8 @@ items:
   items:
   - name: Setup guides
     href: setup-guides/index.md
+  - name: Quickstart guide
+    href: setup-guides/quickstart.md
   - name: Agents
     href: setup-guides/agents/index.md
     items:
@@ -46,6 +55,45 @@ items:
       href: setup-guides/agents/index.md
     - name: SQL database agent setup procedures
       href: setup-guides/agents/sql-database-agents.md
+  - name: Vectorization
+    href: setup-guides/vectorization/index.md
+    items:
+    - name: Vectorization
+      href: setup-guides/vectorization/index.md
+    - name: Vectorization API
+      href: setup-guides/vectorization/vectorization-api.md
+    - name: Vectorization Worker
+      href: setup-guides/vectorization/vectorization-worker.md
+- name: Operations
+  href: operations/index.md
+  items:
+  - name: Standard platform administration documentation
+    href: operations/index.md
+  - name: Backups & data resiliency
+    href: operations/backups.md
+  - name: Logging and auditing
+    href: operations/logs.md
+  - name: Guidance for creating release notes
+    href: operations/release-notes.md
+  - name: Platform security features & best practices
+    href: operations/security.md
+  - name: Troubleshooting & issue reporting guide
+    href: operations/troubleshooting.md
+  - name: Updating container versions in Standard Deployment
+    href: operations/update.md
+  - name: Vulnerabilities - Identification, communication, and remediation
+    href: operations/vulnerabilities.md
+  - name: Role-based access control (RBAC)
+    href: role-based-access-control/index.md
+    items:
+      - name: Understand FoundationaLLM role definitions
+        href: role-based-access-control/role-definitions.md
+      - name: Understand FoundationaLLM role assignments
+        href: role-based-access-control/role-assignments.md
+      - name: Understand scope for FoundationaLLM RBAC
+        href: role-based-access-control/scope.md
+      - name: Manage role assignments
+        href: role-based-access-control/role-management.md
 - name: API
   href: api/index.md
   items:

@@ -4,32 +4,23 @@ using Microsoft.Extensions.Logging;
 
 namespace FoundationaLLM.Vectorization
 {
-    public class VectorizationWorker
+    /// <summary>
+    /// Provides the core execution context for the vectorization worker.
+    /// </summary>
+    /// <param name="requestManagerServices">The collection of request managers to run.</param>
+    public class VectorizationWorker(
+        IEnumerable<IRequestManagerService> requestManagerServices)
     {
-        private readonly IDictionary<string, IRequestSourceService> _requestSourceServices;
-        private readonly IVectorizationStateService _vectorizationStateService;
-        private readonly IEnumerable<IRequestManagerService> _requestManagerServices;
-        private readonly ILogger<VectorizationWorker> _logger;
-        private readonly CancellationToken _cancellationToken;
+        private readonly IEnumerable<IRequestManagerService> _requestManagerServices = requestManagerServices;
 
-        public VectorizationWorker(
-            IVectorizationStateService vectorizationStateService,
-            IDictionary<string, IRequestSourceService> requestSourceServices,
-            IEnumerable<IRequestManagerService> requestManagerServices,
-            ILogger<VectorizationWorker> logger,
-            CancellationToken cancellationToken)
-        {
-            _vectorizationStateService = vectorizationStateService;
-            _requestSourceServices = requestSourceServices;
-            _requestManagerServices = requestManagerServices;
-            _logger = logger;
-            _cancellationToken = cancellationToken;
-        }
-
+        /// <summary>
+        /// Starts all the request managers and enters a holding pattern waiting on them to stop.
+        /// </summary>
+        /// <returns></returns>
         public async Task Run()
         {
             var requestManagerTasks = _requestManagerServices
-                .Select(async rms => await rms.Run())
+                .Select(rms => Task.Run(async () => await rms.Run()))
                 .ToArray();
 
             await Task.WhenAll(requestManagerTasks);

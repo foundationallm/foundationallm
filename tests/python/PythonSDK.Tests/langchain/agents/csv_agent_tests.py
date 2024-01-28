@@ -25,7 +25,7 @@ def test_completion_request():
            prompt_prefix = "You are an analytics agent named Khalil.\nYou help users answer questions about work from home survey data. If the user asks you to answer any other question besides questions about the data, politely suggest that go ask a human as you are a very focused agent.\nYou are working with a pandas dataframe in Python. The name of the dataframe is `df`.\nYou should use the tools below to answer the question posed of you:",
            prompt_suffix = "This is the result of `print(df.head())`:\n{df_head}\n\nBegin!\n\n{chat_history}\nQuestion: {input}\n{agent_scratchpad}"
         ),
-        data_source=DataSource(
+        data_sources=[DataSource(
            name="hai-ds",
            type="csv",
            description= "Useful for when you need to answer questions about survey data.",
@@ -35,7 +35,7 @@ def test_completion_request():
               container="hai-source",
               files = ["surveydata.csv"]
            )
-        ),
+        )],
         language_model = LanguageModel(
            type=LanguageModelType.OPENAI,
            provider=LanguageModelProvider.MICROSOFT,

@@ -2,7 +2,7 @@
 The API endpoint for listing available agents.
 """
 from typing import List
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from foundationallm.hubs.agent import AgentHub
 from app.dependencies import validate_api_key_header, handle_exception
 
@@ -15,9 +15,14 @@ router = APIRouter(
 )
 
 @router.get('')
-async def list_agents() -> List:
+async def list_agents(request: Request) -> List:
     """
     Retrieves a list of available agents.
+
+    Parameters
+    ----------
+    request : Request
+        The underlying HTTP request.
     
     Returns
     -------
@@ -25,6 +30,6 @@ async def list_agents() -> List:
         Returns a list of metadata objects for all available agents.
     """
     try:
-        return AgentHub().list()
+        return AgentHub(config=request.app.extra['config']).list()
     except Exception as e:
         handle_exception(e)

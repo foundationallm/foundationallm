@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Models.Orchestration;
+﻿using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Gatekeeper.Core.Interfaces;
 using FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions;
 using Microsoft.Extensions.Options;
@@ -8,35 +9,23 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
     /// <summary>
     /// Implements the <see cref="IGatekeeperService"/> interface.
     /// </summary>
-    public class GatekeeperService : IGatekeeperService
+    /// <remarks>
+    /// Constructor for the Gatekeeper service.
+    /// </remarks>
+    /// <param name="agentFactoryAPIService">The Agent Factory API client.</param>
+    /// <param name="contentSafetyService">The user prompt Content Safety service.</param>
+    /// <param name="gatekeeperIntegrationAPIService">The Gatekeeper Integration API client.</param>
+    /// <param name="gatekeeperServiceSettings">The configuration options for the Gatekeeper service.</param>
+    public class GatekeeperService(
+        IDownstreamAPIService agentFactoryAPIService,
+        IContentSafetyService contentSafetyService,
+        IGatekeeperIntegrationAPIService gatekeeperIntegrationAPIService,
+        IOptions<GatekeeperServiceSettings> gatekeeperServiceSettings) : IGatekeeperService
     {
-        private readonly IAgentFactoryAPIService _agentFactoryAPIService;
-        private readonly IRefinementService _refinementService;
-        private readonly IContentSafetyService _contentSafetyService;
-        private readonly IGatekeeperIntegrationAPIService _gatekeeperIntegrationAPIService;
-        private readonly GatekeeperServiceSettings _gatekeeperServiceSettings;
-
-        /// <summary>
-        /// Constructor for the Gatekeeper service.
-        /// </summary>
-        /// <param name="agentFactoryAPIService">The Agent Factory API client.</param>
-        /// <param name="refinementService">The user prompt Refinement service.</param>
-        /// <param name="contentSafetyService">The user prompt Content Safety service.</param>
-        /// <param name="gatekeeperIntegrationAPIService">The Gatekeeper Integration API client.</param>
-        /// <param name="gatekeeperServiceSettings">The configuration options for the Gatekeeper service.</param>
-        public GatekeeperService(
-            IAgentFactoryAPIService agentFactoryAPIService,
-            IRefinementService refinementService,
-            IContentSafetyService contentSafetyService,
-            IGatekeeperIntegrationAPIService gatekeeperIntegrationAPIService,
-            IOptions<GatekeeperServiceSettings> gatekeeperServiceSettings)
-        {
-            _gatekeeperIntegrationAPIService = gatekeeperIntegrationAPIService;
-            _agentFactoryAPIService = agentFactoryAPIService;
-            _refinementService = refinementService;
-            _contentSafetyService = contentSafetyService;
-            _gatekeeperServiceSettings = gatekeeperServiceSettings.Value;
-        }
+        private readonly IDownstreamAPIService _agentFactoryAPIService = agentFactoryAPIService;
+        private readonly IContentSafetyService _contentSafetyService = contentSafetyService;
+        private readonly IGatekeeperIntegrationAPIService _gatekeeperIntegrationAPIService = gatekeeperIntegrationAPIService;
+        private readonly GatekeeperServiceSettings _gatekeeperServiceSettings = gatekeeperServiceSettings.Value;
 
         /// <summary>
         /// Gets a completion from the Gatekeeper service.

@@ -17,7 +17,7 @@
 						:pt="{
 							label: {
 								style: {
-									color: message.sender === 'User' ? 'var(--primary-color)' : 'var(--accent-color)',
+									color: message.sender === 'User' ? 'var(--accent-text)' : 'var(--primary-text)',
 								},
 							},
 						}"

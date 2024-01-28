@@ -11,29 +11,23 @@ namespace FoundationaLLM.Core.API.Controllers
     /// <summary>
     /// Provides methods for interacting with the Core service.
     /// </summary>
+    /// <remarks>
+    /// Constructor for the Core Controller.
+    /// </remarks>
+    /// <param name="coreService">The Core service provides methods for managing chat
+    /// sessions and messages, and for getting completions from the orchestrator.</param>
+    /// <param name="logger">The logging interface used to log under the
+    /// <see cref="SessionsController"/> type name.</param>
     [Authorize]
     [Authorize(Policy = "RequiredScope")]
     [ApiVersion(1.0)]
     [ApiController]
     [Route("[controller]")]
-    public class SessionsController : ControllerBase
+    public class SessionsController(ICoreService coreService,
+        ILogger<SessionsController> logger) : ControllerBase
     {
-        private readonly ICoreService _coreService;
-        private readonly ILogger<SessionsController> _logger;
-
-        /// <summary>
-        /// Constructor for the Core Controller.
-        /// </summary>
-        /// <param name="coreService">The Core service provides methods for managing chat
-        /// sessions and messages, and for getting completions from the orchestrator.</param>
-        /// <param name="logger">The logging interface used to log under the
-        /// <see cref="SessionsController"/> type name.</param>
-        public SessionsController(ICoreService coreService,
-            ILogger<SessionsController> logger)
-        {
-            _coreService = coreService;
-            _logger = logger;
-        }
+        private readonly ICoreService _coreService = coreService;
+        private readonly ILogger<SessionsController> _logger = logger;
 
         /// <summary>
         /// Returns list of chat session ids and names.

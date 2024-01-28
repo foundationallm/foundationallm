@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Settings
 {
@@ -12,14 +8,15 @@ namespace FoundationaLLM.Common.Settings
     public record BlobStorageServiceSettings
     {
         /// <summary>
-        /// The name of the blob storage account.
-        /// </summary>
-        public required string AccountName { get; set; }
-
-        /// <summary>
         /// A <see cref="BlobStorageAuthenticationTypes"/> value indicating the type of authentication used.
         /// </summary>
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public required BlobStorageAuthenticationTypes AuthenticationType { get; set; }
+
+        /// <summary>
+        /// The name of the blob storage account.
+        /// </summary>
+        public string? AccountName { get; set; }
 
         /// <summary>
         /// The account key used for authentication.

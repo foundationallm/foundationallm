@@ -13,6 +13,12 @@ namespace FoundationaLLM.AgentFactory.Core.Models.Orchestration.DataSourceConfig
     public class BlobStorageConfiguration
     {
         /// <summary>
+        /// The type of configuration. This value should not be changed.
+        /// </summary>
+        [JsonProperty("configuration_type")]
+        public string ConfigurationType = "blob_storage";
+
+        /// <summary>
         /// The connection string key vault secret name that is retrieved from key vault.
         /// </summary>
         [JsonProperty("connection_string_secret")]

@@ -1,7 +1,6 @@
 ﻿using FoundationaLLM.AgentFactory.Core.Agents;
 using FoundationaLLM.AgentFactory.Core.Interfaces;
 using FoundationaLLM.AgentFactory.Core.Models.ConfigurationOptions;
-using FoundationaLLM.AgentFactory.Core.Models.Messages;
 using FoundationaLLM.AgentFactory.Core.Models.Orchestration;
 using FoundationaLLM.AgentFactory.Interfaces;
 using FoundationaLLM.AgentFactory.Models.ConfigurationOptions;
@@ -21,33 +20,43 @@ namespace FoundationaLLM.AgentFactory.Core.Services;
 public class AgentFactoryService : IAgentFactoryService
 {
     private readonly IEnumerable<ILLMOrchestrationService> _orchestrationServices;
+    private readonly ICacheService _cacheService;
+    private readonly ICallContext _callContext;
     private readonly IAgentHubAPIService _agentHubAPIService;
     private readonly IPromptHubAPIService _promptHubAPIService;
     private readonly IDataSourceHubAPIService _dataSourceHubAPIService;
 
     private readonly ILogger<AgentFactoryService> _logger;
+    private readonly ILoggerFactory _loggerFactory;
 
     /// <summary>
     /// Constructor for the Agent Factory Service.
     /// </summary>
     /// <param name="orchestrationServices"></param>
+    /// <param name="cacheService">The <see cref="ICacheService"/> used to cache agent-related artifacts.</param>
+    /// <param name="callContext">The call context of the request being handled.</param>
     /// <param name="agentHubService"></param>    
     /// <param name="promptHubService"></param>    
     /// <param name="dataSourceHubService"></param>    
-    /// <param name="logger"></param>
+    /// <param name="loggerFactory">The logger factory used to create loggers.</param>
     public AgentFactoryService(
         IEnumerable<ILLMOrchestrationService> orchestrationServices,
+        ICacheService cacheService,
+        ICallContext callContext,
         IAgentHubAPIService agentHubService,
         IPromptHubAPIService promptHubService,
         IDataSourceHubAPIService dataSourceHubService,
-        ILogger<AgentFactoryService> logger)
+        ILoggerFactory loggerFactory)
     {
         _orchestrationServices = orchestrationServices;
+        _cacheService = cacheService;
+        _callContext = callContext;
         _agentHubAPIService = agentHubService;
         _promptHubAPIService = promptHubService;
         _dataSourceHubAPIService = dataSourceHubService;
 
-        _logger = logger;
+        _loggerFactory = loggerFactory;
+        _logger = _loggerFactory.CreateLogger<AgentFactoryService>();
     }
 
     /// <summary>
@@ -77,10 +86,13 @@ public class AgentFactoryService : IAgentFactoryService
             var agent = await AgentBuilder.Build(
                 completionRequest.UserPrompt ?? string.Empty,
                 completionRequest.SessionId ?? string.Empty,
+                _cacheService,
+                _callContext,
                 _agentHubAPIService,
                 _orchestrationServices,
                 _promptHubAPIService,
-                _dataSourceHubAPIService);
+                _dataSourceHubAPIService,
+                _loggerFactory);
 
             return await agent.GetCompletion(completionRequest);
         }
@@ -108,10 +120,13 @@ public class AgentFactoryService : IAgentFactoryService
             var agent = await AgentBuilder.Build(
                 summaryRequest.UserPrompt ?? string.Empty,
                 summaryRequest.SessionId ?? string.Empty,
+                _cacheService,
+                _callContext,
                 _agentHubAPIService,
                 _orchestrationServices,
                 _promptHubAPIService,
-                _dataSourceHubAPIService);
+                _dataSourceHubAPIService,
+                _loggerFactory);
 
             return await agent.GetSummary(summaryRequest);
         }

@@ -4,48 +4,51 @@ using System;
 using FoundationaLLM.Vectorization.Interfaces;
 using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
+using FoundationaLLM.Vectorization.Models.Configuration;
 
 namespace FoundationaLLM.Vectorization.Services.RequestSources
 {
-    public class MemoryRequestSourceService : IRequestSourceService
+    /// <summary>
+    /// Implements an in-memory request source, suitable for testing and quick prototyping.
+    /// </summary>
+    /// <param name="settings">The settings used to initialize the request source.</param>
+    /// <param name="logger">The logger instnce used for logging.</param>
+    public class MemoryRequestSourceService(
+        RequestSourceServiceSettings settings,
+        ILogger<MemoryRequestSourceService> logger) : IRequestSourceService
     {
-        private readonly string _sourceName;
-        private readonly ILogger<MemoryRequestSourceService> _logger;
-        private readonly ConcurrentQueue<VectorizationRequest> _requests = new ConcurrentQueue<VectorizationRequest>();
+        private readonly RequestSourceServiceSettings _settings = settings;
+#pragma warning disable IDE0052 // Remove unread private members
+        private readonly ILogger<MemoryRequestSourceService> _logger = logger;
+#pragma warning restore IDE0052 // Remove unread private members
+        private readonly ConcurrentQueue<VectorizationRequest> _requests = new();
 
         /// <inheritdoc/>
-        public string SourceName => _sourceName;
-
-        public MemoryRequestSourceService(
-            string sourceName,
-            ILogger<MemoryRequestSourceService> logger)
-        {
-            _sourceName = sourceName;
-            _logger = logger;
-        }
-
-        /// <inheritdoc/>
-        public Task DeleteRequest(string requestId) => Task.CompletedTask;
+        public string SourceName => _settings.Name;
 
         /// <inheritdoc/>
         public Task<bool> HasRequests() =>
-            Task.FromResult(_requests.Count > 0);
+            Task.FromResult(!_requests.IsEmpty);
 
         /// <inheritdoc/>
-        public Task<IEnumerable<VectorizationRequest>> ReceiveRequests(int count)
+        public Task<IEnumerable<(VectorizationRequest Request, string MessageId, string PopReceipt)>> ReceiveRequests(int count)
         {
-            var result = new List<VectorizationRequest>();
+            var result = new List<(VectorizationRequest, string, string)>();
 
             for (int i = 0; i < count; i++)
             {
                 if (_requests.TryDequeue(out var request))
-                    result.Add(request);
+                    result.Add(new (request, string.Empty, string.Empty));
                 else
                     break;
             }
             
-            return Task.FromResult<IEnumerable<VectorizationRequest>>(result);
+            return Task.FromResult<IEnumerable<(VectorizationRequest, string, string)>>(result);
         }
+
+        /// <inheritdoc/>
+        public Task DeleteRequest(string requestId, string popReceipt) => Task.CompletedTask;
 
         /// <inheritdoc/>
         public Task SubmitRequest(VectorizationRequest request)

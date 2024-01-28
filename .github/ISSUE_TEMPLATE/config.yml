@@ -3,6 +3,9 @@ contact_links:
   - name: Visit our website
     url: https://www.foundationallm.ai
     about: Learn more about FoundationaLLM, our product offerings, services, or sign up for our newsletter.
+  - name: Read the docs
+    url: https://docs.foundationallm.ai
+    about: Read detailed FoundationaLLM documentation to get up to speed on the latest guidance, setup information, configuration steps, and application features.
   - name: Contact us
     url: https://www.foundationallm.ai/contact
     about: We'd love to hear from you! Contact us with any questions or comments about FoundationaLLM.

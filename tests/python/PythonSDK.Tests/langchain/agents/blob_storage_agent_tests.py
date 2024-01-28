@@ -24,7 +24,7 @@ def test_zoo_completion_request():
              description="Provides details about the San Diego Zoo Wildlife Alliance originating from the 2022 and 2023 issues of the journal.",
              prompt_prefix="You are the San Diego Zoo assistant named Sandy. You are responsible for answering questions related to the San Diego Zoo that is contained in the journal publications. Only answer questions that relate to the Zoo and journal content. Do not make anything up. Use only the data provided."
          ),
-         data_source=DataSource(
+         data_sources=[DataSource(
              name="sdzwa-ds",
              type="blob-storage",
              description="Information about the San Diego Zoo publications.",
@@ -39,7 +39,7 @@ def test_zoo_completion_request():
                      "SDZWA-Journal-September-2023.pdf"
                  ]
              )
-         ),
+         )],
          language_model=LanguageModel(
             type=LanguageModelType.OPENAI,
             provider=LanguageModelProvider.MICROSOFT,
@@ -64,7 +64,7 @@ def test_fllm_completion_request():
             description="Useful for answering questions from users.",
             prompt_prefix="You are an analytic agent named Khalil that helps people find information about FoundationaLLM.\nProvide concise answers that are polite and professional.\nDo not include in your answers things you are not sure about."
         ),
-        data_source=DataSource(
+        data_sources=[DataSource(
             name="about-foundationallm",
             type="blob-storage",
             description="Information about FoundationaLLM.",
@@ -73,7 +73,7 @@ def test_fllm_completion_request():
                 container="foundationallm-source",
                 files = ["about.txt"]
             )
-        ),
+        )],
         language_model=LanguageModel(
             type=LanguageModelType.OPENAI,
             provider=LanguageModelProvider.MICROSOFT,
@@ -83,8 +83,8 @@ def test_fllm_completion_request():
         embedding_model = EmbeddingModel(
             type = LanguageModelType.OPENAI,
             provider = LanguageModelProvider.MICROSOFT,
-            deployment = 'embeddings',
-            model = 'text-embedding-ada-002',
+            deployment = 'FoundationaLLM:AzureOpenAI:API:Embeddings:DeploymentName',
+            model = 'FoundationaLLM:AzureOpenAI:API:Embeddings:ModelName',
             chunk_size = 10
         ),
         message_history=[]
