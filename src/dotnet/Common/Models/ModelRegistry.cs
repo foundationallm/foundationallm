@@ -11,15 +11,15 @@ namespace FoundationaLLM.Common.Models
         /// <summary>
         /// Dictionary of model names and their corresponding entries in the registry.
         /// </summary>
-        public static Dictionary<string, ModelRegistryEntry> Models = new Dictionary<string, ModelRegistryEntry>
-            {
+        public static readonly Dictionary<string, ModelRegistryEntry> Models = new()
+        {
                 { 
                     nameof(Customer), 
                     new ModelRegistryEntry 
                     { 
                         Type = typeof(Customer),
-                        TypeMatchingProperties = new List<string> { "customerId", "firstName" },
-                        NamingProperties = new List<string> { "firstName", "lastName" },
+                        TypeMatchingProperties = ["customerId", "firstName"],
+                        NamingProperties = ["firstName", "lastName"],
                     } 
                 },
                 { 
@@ -27,8 +27,8 @@ namespace FoundationaLLM.Common.Models
                     new ModelRegistryEntry 
                     { 
                         Type = typeof(Product),
-                        TypeMatchingProperties = new List<string> { "sku" },
-                        NamingProperties = new List<string> { "name" }
+                        TypeMatchingProperties = ["sku"],
+                        NamingProperties = ["name"]
                     } 
                 },
                 { 
@@ -36,8 +36,8 @@ namespace FoundationaLLM.Common.Models
                     new ModelRegistryEntry 
                     { 
                         Type = typeof(SalesOrder),
-                        TypeMatchingProperties = new List<string> { "orderDate", "shipDate" },
-                        NamingProperties = new List<string> { "id" }
+                        TypeMatchingProperties = ["orderDate", "shipDate"],
+                        NamingProperties = ["id"]
                     } 
                 },
                 {
@@ -45,8 +45,8 @@ namespace FoundationaLLM.Common.Models
                     new ModelRegistryEntry
                     {
                         Type = typeof(ShortTermMemory),
-                        TypeMatchingProperties = new List<string> { "memory__" },
-                        NamingProperties = new List<string>()
+                        TypeMatchingProperties = ["memory__"],
+                        NamingProperties = []
                     }
                 }
             };
@@ -61,7 +61,7 @@ namespace FoundationaLLM.Common.Models
             var result = ModelRegistry
                 .Models
                 .Select(m => m.Value)
-                .SingleOrDefault(x => objProps.Intersect(x.TypeMatchingProperties!).Count() == x.TypeMatchingProperties!.Count());
+                .SingleOrDefault(x => objProps.Intersect(x.TypeMatchingProperties!).Count() == x.TypeMatchingProperties!.Count);
 
             return result;
         }

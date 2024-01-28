@@ -19,7 +19,7 @@ export default defineNuxtConfig({
 	components: true,
 	app: {
 		head: {
-			title: process.env.BRANDING_PAGE_TITLE ?? 'FoundationaLLM',
+			title: process.env.BRANDING_PAGE_TITLE ?? 'FoundationaLLM Management Portal',
 			link: [
 				{
 					rel: 'icon',

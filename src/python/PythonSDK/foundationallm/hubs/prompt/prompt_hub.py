@@ -5,7 +5,7 @@ from foundationallm.hubs import HubBase
 class PromptHub(HubBase):
     """The PromptHub class is responsible for resolving prompts."""
 
-    def __init__(self):
-         # initialize config
-        self.config = Configuration()
+    def __init__(self, config=None):
+        # initialize config
+        self.config = config or Configuration()
         super().__init__( resolver=PromptResolver(PromptRepository(self.config),config=self.config))

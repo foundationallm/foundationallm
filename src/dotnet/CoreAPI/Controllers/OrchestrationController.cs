@@ -1,9 +1,11 @@
 ﻿using Asp.Versioning;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Chat;
 using FoundationaLLM.Common.Models.Configuration.Authentication;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Core.Interfaces;
+using FoundationaLLM.Core.Models.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -15,55 +17,36 @@ namespace FoundationaLLM.Core.API.Controllers
     /// <summary>
     /// Methods for orchestration services exposed by the Gatekeeper API service.
     /// </summary>
+    /// <remarks>
+    /// Constructor for the Orchestration Controller.
+    /// </remarks>
+    /// <param name="coreService">The Core service provides methods for getting
+    /// completions from the orchestrator.</param>
+    /// <param name="logger">The logging interface used to log under the
+    /// <see cref="OrchestrationController"/> type name.</param>
     [Authorize]
     [Authorize(Policy = "RequiredScope")]
     [ApiVersion(1.0)]
     [ApiController]
     [Route("[controller]")]
-    public class OrchestrationController : ControllerBase
+    public class OrchestrationController(
+        ICoreService coreService,
+        ILogger<OrchestrationController> logger) : ControllerBase
     {
-        private readonly IGatekeeperAPIService _gatekeeperAPIService;
-        private readonly ILogger<OrchestrationController> _logger;
+        private readonly ICoreService _coreService = coreService;
+#pragma warning disable IDE0052 // Remove unread private members.
+        private readonly ILogger<OrchestrationController> _logger = logger;
 
         /// <summary>
-        /// Constructor for the Orchestration Controller.
+        /// Requests a completion from the downstream APIs.
         /// </summary>
-        /// <param name="gatekeeperAPIService">Provides methods for calling the Gatekeeper API.</param>
-        /// <param name="logger">The logging interface used to log under the
-        /// <see cref="OrchestrationController"/> type name.</param>
-        public OrchestrationController(IGatekeeperAPIService gatekeeperAPIService,
-            ILogger<OrchestrationController> logger)
-        {
-            _gatekeeperAPIService = gatekeeperAPIService;
-            _logger = logger;
-        }
-
-        /// <summary>
-        /// Requests a completion from the downstream APIs via the Gatekeeper API.
-        /// </summary>
-        /// <param name="completionRequest">The completion request containing the user
-        /// prompt and message history.</param>
-        [AllowAnonymous]
+        /// <param name="directCompletionRequest">The user prompt for which to generate a completion.</param>
         [HttpPost("completion", Name = "GetCompletion")]
-        public async Task<IActionResult> GetCompletion(CompletionRequest completionRequest)
+        public async Task<IActionResult> GetCompletion([FromBody] DirectCompletionRequest directCompletionRequest)
         {
-            var completionResponse = await _gatekeeperAPIService.GetCompletion(completionRequest);
+            var completionResponse = await _coreService.GetCompletionAsync(directCompletionRequest);
 
             return Ok(completionResponse);
-        }
-
-        /// <summary>
-        /// Requests a summary from the downstream APIs via the Gatekeeper API.
-        /// </summary>
-        /// <param name="summaryRequest">The summary request containing the user
-        /// prompt.</param>
-        [AllowAnonymous]
-        [HttpPost("summary", Name = "GetSummary")]
-        public async Task<IActionResult> GetSummary(SummaryRequest summaryRequest)
-        {
-            var summaryResponse = await _gatekeeperAPIService.GetSummary(summaryRequest);
-
-            return Ok(summaryResponse);
         }
     }
 }

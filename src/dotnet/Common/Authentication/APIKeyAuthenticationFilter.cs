@@ -7,17 +7,13 @@ namespace FoundationaLLM.Common.Authentication
     /// <summary>
     /// Auth filter for X-API-Key header validation.
     /// </summary>
-    public class APIKeyAuthenticationFilter : IAuthorizationFilter
+    /// <remarks>
+    /// Initializes a new instance of the APIKeyAuthenticationFilter class.
+    /// </remarks>
+    public class APIKeyAuthenticationFilter(
+        IAPIKeyValidationService apiKeyValidation) : IAuthorizationFilter
     {
-        private readonly IAPIKeyValidationService _apiKeyValidation;
-
-        /// <summary>
-        /// Initializes a new instance of the APIKeyAuthenticationFilter class.
-        /// </summary>
-        public APIKeyAuthenticationFilter(IAPIKeyValidationService apiKeyValidation)
-        {
-            _apiKeyValidation = apiKeyValidation;
-        }
+        private readonly IAPIKeyValidationService _apiKeyValidation = apiKeyValidation;
 
         /// <summary>
         /// Override for default OnAuthorization step to set UnauthorizedObjectResult on the context if the required header is missing or invalid.

@@ -19,6 +19,11 @@ const allowedKeys = [
 	'FoundationaLLM:Branding:AccentColor',
 	'FoundationaLLM:Branding:PrimaryTextColor',
 	'FoundationaLLM:Branding:SecondaryTextColor',
+	'FoundationaLLM:Branding:AccentTextColor',
+	'FoundationaLLM:Branding:PrimaryButtonBackgroundColor',
+	'FoundationaLLM:Branding:PrimaryButtonTextColor',
+	'FoundationaLLM:Branding:SecondaryButtonBackgroundColor',
+	'FoundationaLLM:Branding:SecondaryButtonTextColor',
 	'FoundationaLLM:Chat:Entra:ClientId',
 	'FoundationaLLM:Chat:Entra:Instance',
 	'FoundationaLLM:Chat:Entra:TenantId',
@@ -61,7 +66,8 @@ export default defineEventHandler(async (event) => {
 	} catch (error) {
 		// Respond with a 404 (Not Found) if the key does not exist in the Azure config service.
 		console.error(`Failed to load config value for "${key}", please ensure it exists and is the correct format.`);
-		setResponseStatus(event, 404, `Config value "${key}" not found.`);
-		return '404';
+		//setResponseStatus(event, 404, `Config value "${key}" not found.`);
+		//return '404';
+		return null;
 	}
 });

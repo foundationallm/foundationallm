@@ -69,6 +69,11 @@
           "contentType": null
         },
         {
+          "key": "FoundationaLLM:APIs:ManagementAPI:APIUrl",
+          "value": "management",
+          "contentType": null
+        },
+        {
           "key": "FoundationaLLM:APIs:DataSourceHubAPI:APIUrl",
           "value": "datasourcehub",
           "contentType": null
@@ -132,6 +137,11 @@
         },
         {
           "key": "FoundationaLLM:APIs:CoreAPI:AppInsightsConnectionString",
+          "value": "[concat('{\"uri\":\"https://',variables('keyVaultSettings').name, '.vault.azure.net/secrets/foundationallm-app-insights-connection-string\"}')]",
+          "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+        },
+        {
+          "key": "FoundationaLLM:APIs:ManagementAPI:AppInsightsConnectionString",
           "value": "[concat('{\"uri\":\"https://',variables('keyVaultSettings').name, '.vault.azure.net/secrets/foundationallm-app-insights-connection-string\"}')]",
           "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
         },
@@ -396,6 +406,36 @@
           "contentType": null
         },
         {
+          "key": "FoundationaLLM:Management:Entra:CallbackPath",
+          "value": "/signin-oidc",
+          "contentType": null
+        },
+        {
+          "key": "FoundationaLLM:Management:Entra:ClientId",
+          "value": "",
+          "contentType": null
+        },
+        {
+          "key": "FoundationaLLM:Management:Entra:ClientSecret",
+          "value": "[concat('{\"uri\":\"https://',variables('keyVaultSettings').name, '.vault.azure.net/secrets/foundationallm-management-entra-clientsecret\"}')]",
+          "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+        },
+        {
+          "key": "FoundationaLLM:Management:Entra:Instance",
+          "value": "https://login.microsoftonline.com/",
+          "contentType": null
+        },
+        {
+          "key": "FoundationaLLM:Management:Entra:Scopes",
+          "value": "api://FoundationaLLM-Management-Auth/Data.Manage",
+          "contentType": null
+        },
+        {
+          "key": "FoundationaLLM:Management:Entra:TenantId",
+          "value": "",
+          "contentType": null
+        },
+        {
           "key": "FoundationaLLM:CognitiveSearch:EndPoint",
           "value": "[concat('https://', variables('cognitiveSearchSettings').name, '.search.windows.net')]",
           "contentType": null
@@ -472,6 +512,36 @@
         },
         {
           "key": "FoundationaLLM:CoreAPI:Entra:TenantId",
+          "value": "",
+          "contentType": null
+        },
+        {
+          "key": "FoundationaLLM:ManagementAPI:Entra:CallbackPath",
+          "value": "/signin-oidc",
+          "contentType": null
+        },
+        {
+          "key": "FoundationaLLM:ManagementAPI:Entra:ClientId",
+          "value": "",
+          "contentType": null
+        },
+        {
+          "key": "FoundationaLLM:ManagementAPI:Entra:ClientSecret",
+          "value": "[concat('{\"uri\":\"https://',variables('keyVaultSettings').name, '.vault.azure.net/secrets/foundationallm-managementapi-entra-clientsecret\"}')]",
+          "contentType": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8"
+        },
+        {
+          "key": "FoundationaLLM:ManagementAPI:Entra:Instance",
+          "value": "https://login.microsoftonline.com/",
+          "contentType": null
+        },
+        {
+          "key": "FoundationaLLM:ManagementAPI:Entra:Scopes",
+          "value": "Data.Manage",
+          "contentType": null
+        },
+        {
+          "key": "FoundationaLLM:ManagementAPI:Entra:TenantId",
           "value": "",
           "contentType": null
         },
@@ -670,7 +740,7 @@
           "value": "{\n\t\"RequestManagers\": [\n\t\t{\n\t\t\t\"RequestSourceName\": \"extract\",\n\t\t\t\"MaxHandlerInstances\": 1\n\t\t},\n\t\t{\n\t\t\t\"RequestSourceName\": \"partition\",\n\t\t\t\"MaxHandlerInstances\": 1\n\t\t},\n\t\t{\n\t\t\t\"RequestSourceName\": \"embed\",\n\t\t\t\"MaxHandlerInstances\": 1\n\t\t},\n\t\t{\n\t\t\t\"RequestSourceName\": \"index\",\n\t\t\t\"MaxHandlerInstances\": 1\n\t\t}\n\t],\n\t\"QueuingEngine\": \"None\"\n}",
           "contentType": "application/json"
         }
-      ], 
+      ],
       "featureFlags": [
         {
           "key": "FoundationaLLM-AllowAgentHint",
@@ -725,7 +795,7 @@
         {
           "key": "agentfactory",
           "image": "ghcr.io/solliancenet/foundationallm/agent-factory-api",
-          "tag": "0.1",
+          "tag": "latest",
           "containerPort": 80,
           "replicas": 1,
           "resources": {
@@ -736,7 +806,18 @@
         {
           "key": "core",
           "image": "ghcr.io/solliancenet/foundationallm/core-api",
-          "tag": "0.1",
+          "tag": "latest",
+          "containerPort": 80,
+          "replicas": 1,
+          "resources": {
+            "cpu": 0.25,
+            "memory": "0.25Gi"
+          }
+        },
+        {
+          "key": "management",
+          "image": "ghcr.io/solliancenet/foundationallm/management-api",
+          "tag": "latest",
           "containerPort": 80,
           "replicas": 1,
           "resources": {
@@ -747,7 +828,7 @@
         {
           "key": "gatekeeper",
           "image": "ghcr.io/solliancenet/foundationallm/gatekeeper-api",
-          "tag": "0.1",
+          "tag": "latest",
           "containerPort": 80,
           "replicas": 1,
           "resources": {
@@ -758,7 +839,7 @@
         {
           "key": "semantickernel",
           "image": "ghcr.io/solliancenet/foundationallm/semantic-kernel-api",
-          "tag": "0.1",
+          "tag": "latest",
           "containerPort": 80,
           "replicas": 1,
           "resources": {
@@ -769,7 +850,7 @@
         {
           "key": "vectorization",
           "image": "ghcr.io/solliancenet/foundationallm/vectorization-api",
-          "tag": "0.1",
+          "tag": "latest",
           "containerPort": 80,
           "replicas": 1,
           "resources": {
@@ -785,7 +866,7 @@
         {
           "key": "corejob",
           "image": "ghcr.io/solliancenet/foundationallm/core-job",
-          "tag": "0.1",
+          "tag": "latest",
           "replicas": 1,
           "resources": {
             "cpu": 0.25,
@@ -795,7 +876,7 @@
         {
           "key": "vectorizationjob",
           "image": "ghcr.io/solliancenet/foundationallm/vectorization-job",
-          "tag": "0.1",
+          "tag": "latest",
           "replicas": 1,
           "resources": {
             "cpu": 0.25,
@@ -813,7 +894,18 @@
         {
           "key": "chatui",
           "image": "ghcr.io/solliancenet/foundationallm/chat-ui",
-          "tag": "0.1",
+          "tag": "latest",
+          "containerPort": 3000,
+          "replicas": 1,
+          "resources": {
+            "cpu": 0.25,
+            "memory": "0.25Gi"
+          }
+        },
+        {
+          "key": "managementui",
+          "image": "ghcr.io/solliancenet/foundationallm/management-ui",
+          "tag": "latest",
           "containerPort": 3000,
           "replicas": 1,
           "resources": {
@@ -829,7 +921,7 @@
         {
           "key": "agenthub",
           "image": "ghcr.io/solliancenet/foundationallm/agent-hub-api",
-          "tag": "0.1",
+          "tag": "latest",
           "containerPort": 80,
           "replicas": 1,
           "resources": {
@@ -840,7 +932,7 @@
         {
           "key": "datasourcehub",
           "image": "ghcr.io/solliancenet/foundationallm/data-source-hub-api",
-          "tag": "0.1",
+          "tag": "latest",
           "containerPort": 80,
           "replicas": 1,
           "resources": {
@@ -851,7 +943,7 @@
         {
           "key": "gatekeeperint",
           "image": "ghcr.io/solliancenet/foundationallm/gatekeeper-integration-api",
-          "tag": "0.1",
+          "tag": "latest",
           "containerPort": 80,
           "replicas": 1,
           "resources": {
@@ -862,18 +954,18 @@
         {
           "key": "langchain",
           "image": "ghcr.io/solliancenet/foundationallm/langchain-api",
-          "tag": "0.1",
+          "tag": "latest",
           "containerPort": 80,
-          "replicas": 10,
+          "replicas": 1,
           "resources": {
-            "cpu": 0.5,
-            "memory": "2Gi"
+            "cpu": 4,
+            "memory": "16Gi"
           }
         },
         {
           "key": "prompthub",
           "image": "ghcr.io/solliancenet/foundationallm/prompt-hub-api",
-          "tag": "0.1",
+          "tag": "latest",
           "containerPort": 80,
           "replicas": 1,
           "resources": {
@@ -1220,6 +1312,28 @@
     {
       "type": "Microsoft.KeyVault/vaults/secrets",
       "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-managementapi-entra-clientsecret')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": ""
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
+      "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-management-entra-clientsecret')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]" ],
+      "properties": {
+        "attributes": { "enabled": true },
+        "value": ""
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2023-02-01",
       "name": "[concat(variables('keyVaultSettings').name, '/foundationallm-cosmosdb-key')]",
       "location": "[parameters('location')]",
       "dependsOn": [ "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultSettings').name)]", "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbSettings').name)]" ],
@@ -1407,7 +1521,7 @@
       "type": "Microsoft.OperationalInsights/workspaces",
       "apiVersion": "2021-12-01-preview",
       "name": "[variables('laSettings').name]",
-      "location": "eastus",
+      "location": "[parameters('location')]",
       "properties": {
         "sku": {
           "name": "Standalone"
@@ -2079,6 +2193,18 @@
       "type": "string",
       "value": "[reference(resourceId('Microsoft.App/containerApps', format('{0}coreca', parameters('name'))), providers('Microsoft.App', 'containerApps').apiVersions[0]).configuration.ingress.fqdn]"
     },
+    "managementWebUrl": {
+      "type": "string",
+      "value": "[concat('https://', reference(resourceId('Microsoft.App/containerApps', format('{0}managementuica', parameters('name'))), providers('Microsoft.App', 'containerApps').apiVersions[0]).configuration.ingress.fqdn)]"
+    },
+    "managementWebFqdn": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.App/containerApps', format('{0}managementuica', parameters('name'))), providers('Microsoft.App', 'containerApps').apiVersions[0]).configuration.ingress.fqdn]"
+    },
+    "managementApiFqdn": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.App/containerApps', format('{0}managementca', parameters('name'))), providers('Microsoft.App', 'containerApps').apiVersions[0]).configuration.ingress.fqdn]"
+    },
     "agentfactoryAcaName": {
       "type": "string",
       "value": "[format('{0}agentfactoryca', parameters('name'))]"
@@ -2094,6 +2220,10 @@
     "coreJobAcaName": {
       "type": "string",
       "value": "[format('{0}corejobca', parameters('name'))]"
+    },
+    "managementAcaName": {
+      "type": "string",
+      "value": "[format('{0}managementca', parameters('name'))]"
     },
     "datasourcehubAcaName": {
       "type": "string",
@@ -2126,6 +2256,10 @@
     "chatuiAcaName": {
       "type": "string",
       "value": "[format('{0}chatuica', parameters('name'))]"
+    },
+    "managementuiAcaName": {
+      "type": "string",
+      "value": "[format('{0}managementuica', parameters('name'))]"
     },
     "resourcePrefix": {
       "type": "string",

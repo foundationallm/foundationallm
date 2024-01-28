@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Models.Orchestration;
+﻿using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Gatekeeper.Core.Interfaces;
 using FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions;
 using FoundationaLLM.Gatekeeper.Core.Models.ContentSafety;
@@ -13,7 +14,7 @@ namespace Gatekeeper.Tests.Services
         private readonly GatekeeperService _testedService;
 
         private readonly IContentSafetyService _contentSafetyService = Substitute.For<IContentSafetyService>();
-        private readonly IAgentFactoryAPIService _agentFactoryAPIService = Substitute.For<IAgentFactoryAPIService>();
+        private readonly IDownstreamAPIService _agentFactoryAPIService = Substitute.For<IDownstreamAPIService>();
         private readonly IRefinementService _refinementService = Substitute.For<IRefinementService>();
         private readonly IGatekeeperIntegrationAPIService _gatekeeperIntegrationAPIService = Substitute.For<IGatekeeperIntegrationAPIService>();
         private readonly IOptions<GatekeeperServiceSettings> _gatekeeperServiceSettings = Substitute.For<IOptions<GatekeeperServiceSettings>>();
@@ -21,10 +22,9 @@ namespace Gatekeeper.Tests.Services
         public GatekeeperServiceTests()
         {
             _testedService = new GatekeeperService(
-                _agentFactoryAPIService, 
-                _refinementService, 
-                _contentSafetyService, 
-                _gatekeeperIntegrationAPIService, 
+                _agentFactoryAPIService,
+                _contentSafetyService,
+                _gatekeeperIntegrationAPIService,
                 _gatekeeperServiceSettings);
         }
 

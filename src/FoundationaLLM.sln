@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "dotnet\Core\Core.csproj", "{5AA7F0B6-30E6-451A-B1BE-F003BD3EC203}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SemanticKernel", "dotnet\SemanticKernel\SemanticKernel.csproj", "{503CE23D-63D7-4A26-8475-AA71A45D519B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SemanticKernel-obsolete", "dotnet\SemanticKernel-obsolete\SemanticKernel-obsolete.csproj", "{503CE23D-63D7-4A26-8475-AA71A45D519B}"
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "LangChainAPI", "python\LangChainAPI\LangChainAPI.pyproj", "{DF3AF954-1999-4244-A783-BCE96EE17816}"
 EndProject
@@ -69,13 +69,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vectorization", "dotnet\Vec
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectorizationAPI", "dotnet\VectorizationAPI\VectorizationAPI.csproj", "{3D8E64BB-C0D0-433A-AC4C-B9FFCFA4E013}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectorizationWorker", "dotnet\VectorizationWorker\VectorizationWorker.csproj", "{7EE65CBF-9052-4C02-BCDD-61C88A1E10E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectorizationWorker", "dotnet\VectorizationWorker\VectorizationWorker.csproj", "{7EE65CBF-9052-4C02-BCDD-61C88A1E10E1}"
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "GatekeeperIntegrationAPI", "python\GatekeeperIntegrationAPI\GatekeeperIntegrationAPI.pyproj", "{F74CBB5A-97B9-4F68-8077-8BAB49C841DC}"
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "IntegrationSDK", "python\IntegrationSDK\IntegrationSDK.pyproj", "{196A5BCC-F189-443D-8D84-4B3BE66BBA9F}"
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "IntegrationSDK.Tests", "..\tests\python\IntegrationSDK.Tests\IntegrationSDK.Tests.pyproj", "{6330DD34-9B05-4BD9-98E7-507134751CCA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Management", "dotnet\Management\Management.csproj", "{46FB5F1B-57C6-4CA3-B626-887DF6D806DD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagementAPI", "dotnet\ManagementAPI\ManagementAPI.csproj", "{2D54392A-8D86-4F54-9993-FB3B6C4C090E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SemanticKernel", "dotnet\SemanticKernel\SemanticKernel.csproj", "{CDB843FE-108B-435A-BF17-68052C64F500}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -112,7 +118,6 @@ Global
 		{EE8C3883-3439-428E-8EB6-583052FBB012}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE8C3883-3439-428E-8EB6-583052FBB012}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CEA12F10-5DB4-485D-97D1-508286B9B30A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CEA12F10-5DB4-485D-97D1-508286B9B30A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEA12F10-5DB4-485D-97D1-508286B9B30A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEA12F10-5DB4-485D-97D1-508286B9B30A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{17C39EB0-0DCA-4B43-9232-FA8DB9A6E675}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -183,6 +188,18 @@ Global
 		{196A5BCC-F189-443D-8D84-4B3BE66BBA9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6330DD34-9B05-4BD9-98E7-507134751CCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6330DD34-9B05-4BD9-98E7-507134751CCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46FB5F1B-57C6-4CA3-B626-887DF6D806DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46FB5F1B-57C6-4CA3-B626-887DF6D806DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46FB5F1B-57C6-4CA3-B626-887DF6D806DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46FB5F1B-57C6-4CA3-B626-887DF6D806DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D54392A-8D86-4F54-9993-FB3B6C4C090E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D54392A-8D86-4F54-9993-FB3B6C4C090E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D54392A-8D86-4F54-9993-FB3B6C4C090E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D54392A-8D86-4F54-9993-FB3B6C4C090E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDB843FE-108B-435A-BF17-68052C64F500}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDB843FE-108B-435A-BF17-68052C64F500}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDB843FE-108B-435A-BF17-68052C64F500}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDB843FE-108B-435A-BF17-68052C64F500}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -219,6 +236,9 @@ Global
 		{F74CBB5A-97B9-4F68-8077-8BAB49C841DC} = {32FD7A00-B42E-4B0B-B09C-9CE48D8E047B}
 		{196A5BCC-F189-443D-8D84-4B3BE66BBA9F} = {32FD7A00-B42E-4B0B-B09C-9CE48D8E047B}
 		{6330DD34-9B05-4BD9-98E7-507134751CCA} = {23275624-C0DA-4E93-9291-081D75E8CCD2}
+		{46FB5F1B-57C6-4CA3-B626-887DF6D806DD} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
+		{2D54392A-8D86-4F54-9993-FB3B6C4C090E} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
+		{CDB843FE-108B-435A-BF17-68052C64F500} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF5DE858-4B85-4EE8-8A6D-46E8E4FBA078}

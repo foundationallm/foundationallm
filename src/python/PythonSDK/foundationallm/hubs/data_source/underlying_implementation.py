@@ -9,3 +9,4 @@ class UnderlyingImplementation(Enum):
     BLOB_STORAGE = "blob-storage"
     SEARCH_SERVICE = "search-service"
     CSV = "csv"
+    CXO = "cxo"

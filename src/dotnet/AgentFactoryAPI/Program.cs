@@ -1,4 +1,3 @@
-using System.Net;
 using Asp.Versioning;
 using Azure.Identity;
 using FoundationaLLM.AgentFactory.Core.Interfaces;
@@ -12,12 +11,13 @@ using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
+using FoundationaLLM.Common.Models.Configuration.API;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services;
+using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.Common.Settings;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
-using Microsoft.Extensions.Http.Resilience;
 using Microsoft.Extensions.Options;
 using Polly;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -42,13 +42,13 @@ namespace FoundationaLLM.AgentFactory.API
             builder.Configuration.AddEnvironmentVariables();
             builder.Configuration.AddAzureAppConfiguration(options =>
             {
-                options.Connect(builder.Configuration["FoundationaLLM:AppConfig:ConnectionString"]);
+                options.Connect(builder.Configuration[AppConfigurationKeys.FoundationaLLM_AppConfig_ConnectionString]);
                 options.ConfigureKeyVault(options =>
                 {
                     options.SetCredential(new DefaultAzureCredential());
                 });
-                options.Select("FoundationaLLM:APIs:*");
-                options.Select("FoundationaLLM:AgentFactory:*");
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIs);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_AgentFactory);
             });
             if (builder.Environment.IsDevelopment())
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
@@ -56,7 +56,7 @@ namespace FoundationaLLM.AgentFactory.API
             // Add services to the container.
             builder.Services.AddApplicationInsightsTelemetry(new ApplicationInsightsServiceOptions
             {
-                ConnectionString = builder.Configuration["FoundationaLLM:APIs:AgentFactoryAPI:AppInsightsConnectionString"],
+                ConnectionString = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_AgentFactoryAPI_AppInsightsConnectionString],
                 DeveloperMode = builder.Environment.IsDevelopment()
             });
             //builder.Services.AddServiceProfiler();
@@ -70,23 +70,23 @@ namespace FoundationaLLM.AgentFactory.API
             builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
             builder.Services.AddScoped<APIKeyAuthenticationFilter>();
             builder.Services.AddOptions<APIKeyValidationSettings>()
-                .Bind(builder.Configuration.GetSection("FoundationaLLM:APIs:AgentFactoryAPI"));
+                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIs_AgentFactoryAPI));
             builder.Services.AddTransient<IAPIKeyValidationService, APIKeyValidationService>();
 
             builder.Services.AddOptions<SemanticKernelServiceSettings>()
-                .Bind(builder.Configuration.GetSection("FoundationaLLM:APIs:SemanticKernelAPI"));
+                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIs_SemanticKernelAPI));
 
             builder.Services.AddOptions<LangChainServiceSettings>()
-                .Bind(builder.Configuration.GetSection("FoundationaLLM:APIs:LangChainAPI"));
+                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIs_LangChainAPI));
 
             builder.Services.AddOptions<AgentHubSettings>()
-                .Bind(builder.Configuration.GetSection("FoundationaLLM:APIs:AgentHubAPI"));
+                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIs_AgentHubAPI));
 
             builder.Services.AddOptions<PromptHubSettings>()
-                .Bind(builder.Configuration.GetSection("FoundationaLLM:APIs:PromptHubAPI"));
+                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIs_PromptHubAPI));
 
             builder.Services.AddOptions<AgentFactorySettings>()
-                .Bind(builder.Configuration.GetSection("FoundationaLLM:AgentFactory"));
+                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_AgentFactory));
             
             builder.Services.AddScoped<ILLMOrchestrationService, SemanticKernelService>();
             builder.Services.AddScoped<ILLMOrchestrationService, LangChainService>();
@@ -99,11 +99,13 @@ namespace FoundationaLLM.AgentFactory.API
             builder.Services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
             builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
 
+            builder.Services.AddSingleton<ICacheService, MemoryCacheService>();
+            builder.Services.AddHostedService<Warmup>();
+
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 
             // Register the downstream services and HTTP clients.
             RegisterDownstreamServices(builder);
-
 
             builder.Services
                 .AddApiVersioning(options =>
@@ -142,7 +144,13 @@ namespace FoundationaLLM.AgentFactory.API
 
                     // Adds auth via X-API-KEY header
                     options.AddAPIKeyAuth();
-                });
+                })
+                .AddSwaggerGenNewtonsoftSupport();
+
+            builder.Services.Configure<RouteOptions>(options =>
+            {
+                options.LowercaseUrls = true;
+            });
 
             var app = builder.Build();
 
@@ -169,7 +177,7 @@ namespace FoundationaLLM.AgentFactory.API
                     }
                 });
 
-            bool.TryParse(builder.Configuration[$"FoundationaLLM:APIs:{HttpClients.AgentFactoryAPI}:ForceHttpsRedirection"], out var forceHttpsRedirection);
+            bool.TryParse(builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_AgentFactoryAPI_ForceHttpsRedirection], out var forceHttpsRedirection);
             if (forceHttpsRedirection)
             {
                 app.UseHttpsRedirection();
@@ -195,8 +203,8 @@ namespace FoundationaLLM.AgentFactory.API
 
             var agentHubAPISettings = new DownstreamAPIKeySettings
             {
-                APIUrl = builder.Configuration[$"FoundationaLLM:APIs:{HttpClients.AgentHubAPI}:APIUrl"]!,
-                APIKey = builder.Configuration[$"FoundationaLLM:APIs:{HttpClients.AgentHubAPI}:APIKey"]!
+                APIUrl = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_AgentHubAPI_APIUrl]!,
+                APIKey = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_AgentHubAPI_APIKey]!
             };
             downstreamAPISettings.DownstreamAPIs[HttpClients.AgentHubAPI] = agentHubAPISettings;
 
@@ -214,8 +222,8 @@ namespace FoundationaLLM.AgentFactory.API
 
             var dataSourceHubAPISettings = new DownstreamAPIKeySettings
             {
-                APIUrl = builder.Configuration[$"FoundationaLLM:APIs:{HttpClients.DataSourceHubAPI}:APIUrl"]!,
-                APIKey = builder.Configuration[$"FoundationaLLM:APIs:{HttpClients.DataSourceHubAPI}:APIKey"]!
+                APIUrl = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_DataSourceHubAPI_APIUrl]!,
+                APIKey = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_DataSourceHubAPI_APIKey]!
             };
             downstreamAPISettings.DownstreamAPIs[HttpClients.DataSourceHubAPI] = dataSourceHubAPISettings;
 
@@ -231,8 +239,8 @@ namespace FoundationaLLM.AgentFactory.API
 
             var promptHubAPISettings = new DownstreamAPIKeySettings
             {
-                APIUrl = builder.Configuration[$"FoundationaLLM:APIs:{HttpClients.PromptHubAPI}:APIUrl"]!,
-                APIKey = builder.Configuration[$"FoundationaLLM:APIs:{HttpClients.PromptHubAPI}:APIKey"]!
+                APIUrl = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_PromptHubAPI_APIUrl]!,
+                APIKey = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_PromptHubAPI_APIKey]!
             };
             downstreamAPISettings.DownstreamAPIs[HttpClients.PromptHubAPI] = promptHubAPISettings;
 
@@ -248,8 +256,8 @@ namespace FoundationaLLM.AgentFactory.API
 
             var langChainAPISettings = new DownstreamAPIKeySettings
             {
-                APIUrl = builder.Configuration[$"FoundationaLLM:APIs:{HttpClients.LangChainAPI}:APIUrl"]!,
-                APIKey = builder.Configuration[$"FoundationaLLM:APIs:{HttpClients.LangChainAPI}:APIKey"]!
+                APIUrl = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_LangChainAPI_APIUrl]!,
+                APIKey = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_LangChainAPI_APIKey]!
             };
             downstreamAPISettings.DownstreamAPIs[HttpClients.LangChainAPI] = langChainAPISettings;
 
@@ -265,8 +273,8 @@ namespace FoundationaLLM.AgentFactory.API
 
             var semanticKernelAPISettings = new DownstreamAPIKeySettings
             {
-                APIUrl = builder.Configuration[$"FoundationaLLM:APIs:{HttpClients.SemanticKernelAPI}:APIUrl"]!,
-                APIKey = builder.Configuration[$"FoundationaLLM:APIs:{HttpClients.SemanticKernelAPI}:APIKey"]!
+                APIUrl = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_SemanticKernelAPI_APIUrl]!,
+                APIKey = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_SemanticKernelAPI_APIKey]!
             };
             downstreamAPISettings.DownstreamAPIs[HttpClients.SemanticKernelAPI] = semanticKernelAPISettings;
 

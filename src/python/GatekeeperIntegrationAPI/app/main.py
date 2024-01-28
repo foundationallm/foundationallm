@@ -2,12 +2,13 @@
 Main entry-point for the FoundationaLLM DataSourceHubAPI.
 Runs web server exposing the API.
 """
-import uvicorn
 from fastapi import FastAPI
 from app.dependencies import get_config
-from app.routers import analyze, status
-
-config = get_config()
+from app.routers import (
+    analyze,
+    manage,
+    status
+)
 
 app = FastAPI(
     title='FoundationaLLM GatekeeperIntegrationAPI',
@@ -26,10 +27,12 @@ app = FastAPI(
     license_info={
         'name': 'FoundationaLLM Software License',
         'url': 'https://www.foundationallm.ai/license',
-    }
+    },
+    config=get_config()
 )
 
 app.include_router(analyze.router)
+app.include_router(manage.router)
 app.include_router(status.router)
 
 @app.get('/')
@@ -43,7 +46,3 @@ async def root():
         Returns a JSON object containing a message and value.
     """
     return { 'message': 'FoundationaLLM GatekeeperIntegrationAPI' }
-
-if __name__ == '__main__':
-    uvicorn.run('main:app', host='0.0.0.0', port=8042, reload=True,
-                forwarded_allow_ips='*', proxy_headers=True)
