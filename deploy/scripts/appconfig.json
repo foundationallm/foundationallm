@@ -3,7 +3,7 @@
     "keyVault": false,
     "featureFlag": true,
     "key": ".appconfig.featureflag/FoundationaLLM-AllowAgentHint",
-    "value": "{\"id\":\"FoundationaLLM-AllowAgentHint\",\"description\":\"\",\"enabled\":true,\"conditions\":{\"client_filters\":[]}}"
+    "value": "FoundationaLLM-AllowAgentHint"
   },
   {
     "keyVault": false,

@@ -6,7 +6,7 @@ param subnetId string
 param timestamp string = utcNow()
 param workload string
 
-var name = 'ampls-${environmentName}-${location}-${workload}'
+var name = 'ampls-${environmentName}-${location}-${workload}-${project}'
 
 var tags = {
   Environment: environmentName

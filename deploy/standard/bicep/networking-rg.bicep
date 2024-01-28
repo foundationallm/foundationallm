@@ -1,15 +1,7 @@
-@description('The environment name token used in naming resources.')
 param environmentName string
-
-@description('Location used for all resources.')
 param location string
-
-@description('Project Name, used in naming resources.')
 param project string
-
-@description('Timestamp used in naming nested deployments.')
 param timestamp string = utcNow()
-
 param cidrVnet string = '10.220.128.0/21'
 
 param createVpnGateway bool = false
@@ -29,12 +21,6 @@ var cidrAppGateway = cidrSubnet(cidrVnet, 24, 0)
 var cidrFllmBackend = cidrSubnet(cidrVnet, 24, 1)
 var cidrFllmFrontend = cidrSubnet(cidrVnet, 24, 2)
 var cidrFllmOpenAi = cidrSubnet(cidrVnet, 26, 12)
-var cidrFllmServices = cidrSubnet(cidrVnet, 26, 13)
-var cidrFllmStorage = cidrSubnet(cidrVnet, 26, 14)
-var cidrFllmOps = cidrSubnet(cidrVnet, 26, 15)
-var cidrFllmVec = cidrSubnet(cidrVnet, 26, 16)
-var cidrVpnGateway = cidrSubnet(cidrVnet, 24, 5)
-var cidrNetSvc = cidrSubnet(cidrVnet,24,6)
 
 var subnets = [
   {
@@ -317,7 +303,7 @@ var subnets = [
   }
   {
     name: 'FLLMServices'
-    addressPrefix: cidrFllmServices
+    addressPrefix: cidrSubnet(cidrVnet, 26, 13)
     rules: {
       inbound: [
         {
@@ -351,7 +337,7 @@ var subnets = [
   }
   {
     name: 'FLLMStorage'
-    addressPrefix: cidrFllmStorage
+    addressPrefix: cidrSubnet(cidrVnet, 26, 14)
     rules: {
       inbound: [
         {
@@ -408,7 +394,7 @@ var subnets = [
   }
   {
     name: 'ops' // TODO: PLEs.  Maybe put these in FLLMServices?
-    addressPrefix: cidrFllmOps
+    addressPrefix: cidrSubnet(cidrVnet, 26, 15)
     rules: {
       inbound: [
         {
@@ -465,7 +451,7 @@ var subnets = [
   }
   {
     name: 'Vectorization'
-    addressPrefix: cidrFllmVec
+    addressPrefix: cidrSubnet(cidrVnet, 26, 16)
     rules: {
       inbound: [
         {
@@ -546,9 +532,8 @@ resource main 'Microsoft.Network/virtualNetworks@2023-05-01' = {
         privateEndpointNetworkPolicies: 'Enabled'
         privateLinkServiceNetworkPolicies: 'Enabled'
         serviceEndpoints: subnet.?serviceEndpoints
-        delegations: subnet.?delegations
 
-        networkSecurityGroup: subnet.name == 'GatewaySubnet' ? null :{
+        networkSecurityGroup: {
           id: nsg[i].outputs.id
         }
       }
@@ -565,12 +550,3 @@ module nsg 'modules/nsg.bicep' = [for subnet in subnets: {
     tags: tags
   }
 }]
-
-module vpn 'modules/vpnGateway.bicep' = if (createVpnGateway) {
-  name: 'vpnGw-${timestamp}'
-  params: {
-    location: location
-    resourceSuffix: resourceSuffix
-    vnetId: main.id
-  }
-}

@@ -5,13 +5,6 @@ param project string
 param timestamp string = utcNow()
 param vnetId string
 
-@description('Workload Token used in naming resources.')
-var workload = 'net'
-
-var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
-
-var resolverName = 'dns-${resourceSuffix}'
-
 /** Locals **/
 @description('Private DNS Zones to create.')
 var privateDnsZone = {
@@ -70,30 +63,3 @@ module dns './modules/dns.bicep' = [for zone in items(privateDnsZone): {
     }
   }
 }]
-
-
-resource resolver 'Microsoft.Network/dnsResolvers@2022-07-01' = {
-  name: resolverName
-  location: location
-  properties: {
-    virtualNetwork: {
-      id: vnetId
-    }
-  }
-}
-
-resource inboundEndpoint 'Microsoft.Network/dnsResolvers/inboundEndpoints@2022-07-01' = {
-  parent: resolver
-  name: resolverName
-  location: location
-  properties: {
-    ipConfigurations: [
-      {
-        privateIpAllocationMethod: 'Dynamic'
-        subnet: {
-          id: '${vnetId}/subnets/FLLMNetSvc'
-        }
-      }
-    ]
-  }
-}

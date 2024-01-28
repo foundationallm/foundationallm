@@ -2,12 +2,6 @@
 @description('Action Group Id for alerts')
 param actionGroupId string
 
-@description('Administrator Object Id')
-param administratorObjectId string
-
-@description('Administrator principal type.')
-param administratorPrincipalType string = 'Group'
-
 @description('Location for all resources')
 param location string
 
@@ -70,19 +64,13 @@ var alerts = [
 @description('The Resource logs to enable')
 var logs = [ 'AuditEvent', 'AzurePolicyEvaluationDetails' ]
 
-@description('Formatted untruncated resource name')
-var formattedName = toLower(replace('${serviceType}-${resourceSuffix}', '-', ''))
-
 @description('The Resource Name')
-var name = substring(formattedName,0,min([length(formattedName),24]))
+var name = '${serviceType}-${resourceSuffix}'
 
 @description('The Resource Service Type token')
 var serviceType = 'kv'
 
 /** Outputs **/
-@description('KeyVault resource Id')
-output keyVaultId string = main.id
-
 output name string = main.name
 
 /** Resources **/
@@ -161,18 +149,6 @@ module privateEndpoint 'utility/privateEndpoint.bicep' = {
     service: {
       name: main.name
       id: main.id
-    }
-  }
-}
-
-@description('Key Vault Secrets Officer Role for Administrator')
-module adminRole 'utility/roleAssignments.bicep' = {
-  name: 'kvAdminIAM-${timestamp}'
-  params: {
-    principalId: administratorObjectId
-    principalType: administratorPrincipalType
-    roleDefinitionIds: {
-      'Key Vault Secrets Officer': 'b86a8fe4-44ce-4948-aee5-eccb2c155cd7'
     }
   }
 }

@@ -2,12 +2,6 @@
 @description('Action Group Id for alerts')
 param actionGroupId string
 
-@description('Administrator Object Id')
-param administratorObjectId string
-
-@description('Administrator principal type.')
-param administratorPrincipalType string = 'Group'
-
 @description('Location for all resources')
 param location string
 
@@ -70,10 +64,6 @@ var alerts = [
     windowSize: 'PT5M'
   }
 ]
-
-/** Outputs **/
-@description('App Configuration resource Id')
-output appConfigId string = main.id
 
 /** Resources **/
 @description('App Configuration')
@@ -166,18 +156,6 @@ module privateEndpoint 'utility/privateEndpoint.bicep' = {
     service: {
       id: main.id
       name: main.name
-    }
-  }
-}
-
-@description('App Configuration Data Owner Role for Administrator')
-module adminRole 'utility/roleAssignments.bicep' = {
-  name: 'appConfigAdminIAM-${timestamp}'
-  params: {
-    principalId: administratorObjectId
-    principalType: administratorPrincipalType
-    roleDefinitionIds: {
-      'App Configuration Data Owner': '5ae67dd6-50cb-40e7-96ff-dc2bfa4b606b'
     }
   }
 }

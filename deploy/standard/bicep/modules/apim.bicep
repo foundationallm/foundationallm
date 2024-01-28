@@ -5,9 +5,6 @@ param actionGroupId string
 @description('Cognitive Account Endpoints')
 param cognitiveAccounts array
 
-@description('DNS resource group name')
-param dnsResourceGroupName string
-
 @description('Location for all resources')
 param location string
 
@@ -70,11 +67,8 @@ var choiceTemplate = '''
 @description('The Resource logs to enable')
 var logs = [ 'WebSocketConnectionLogs', 'GatewayLogs' ]
 
-@description('Formatted untruncated resource name')
-var formattedName = toLower('${serviceType}-${resourceSuffix}')
-
 @description('The Resource Name')
-var name = substring(formattedName,0,min([length(formattedName),50]))
+var name = '${serviceType}-${resourceSuffix}'
 
 @description('Rendered policy that randomly distributes requests across OpenAI backends.')
 var policy = format(policyTemplate, length(cognitiveAccounts) + 1, choices)
@@ -293,7 +287,7 @@ resource pip 'Microsoft.Network/publicIPAddresses@2023-05-01' = {
   }
 
   properties: {
-    // ipAddress: '172.190.223.143' //DPS:  seems this was inappripriately hard-coded
+    ipAddress: '172.190.223.143'
     publicIPAddressVersion: 'IPv4'
     publicIPAllocationMethod: 'Static'
     idleTimeoutInMinutes: 4
@@ -383,7 +377,7 @@ module backend 'apimBackend.bicep' = [for (account, i) in cognitiveAccounts: {
 @description('Private DNS A-records.')
 module dnsRecord 'utility/privateDnsARecord.bicep' = [for zone in privateDnsZones: {
   name: 'a-record-${zone.name}-${timestamp}'
-  scope: resourceGroup(dnsResourceGroupName)  //DPS:  Hard-coded due to issue with size of Private DNS Zone array, cannot 'fit' resourceGroup into array
+  scope: resourceGroup(zone.resourceGroup)
   params: {
     ipAddresses: main.properties.privateIPAddresses
     name: main.name
