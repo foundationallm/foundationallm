@@ -377,3 +377,5 @@ log
 
 .DS_Store
 **/Deployment-Manifest.json
+**/certbot.ini
+**/certbot/*
