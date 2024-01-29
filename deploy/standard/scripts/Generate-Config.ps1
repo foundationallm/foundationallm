@@ -4,7 +4,7 @@ Param (
     [parameter(Mandatory = $true)][object]$entraClientIds,
     [parameter(Mandatory = $true)][object]$resourceGroups,
     [parameter(Mandatory = $true)][string]$resourceSuffix,
-    [parameter(Mandatory = $true)][object]$domains
+    [parameter(Mandatory = $true)][object]$ingress
 )
 
 Set-StrictMode -Version 3.0
@@ -153,7 +153,9 @@ $tokens.chatEntraClientId = $entraClientIds.chat
 $tokens.coreEntraClientId = $entraClientIds.core
 $tokens.cognitiveSearchEndpointUri = $cogSearchUri
 
-$tokens.coreApiHostname = $domains.coreapi
+$tokens.coreApiHostname = $ingress.coreapi.host
+$tokens.managementApiHostname = $ingress.managementapi.host
+$tokens.vectorizationApiHostname = $ingress.vectorizationapi.host
 
 $tokens.cosmosEndpoint = $docdb.documentEndpoint
 
@@ -186,8 +188,10 @@ Write-Host "===========================================================" -Foregr
 PopulateTemplate $tokens "..,config,appconfig.template.json" "..,config,appconfig.json"
 PopulateTemplate $tokens "..,values,internal-service.template.yml" "..,values,microservice-values.yml"
 
-$domains.PSObject.Properties | ForEach-Object {
-    $tokens.serviceHostname = $_.Value
-    $tokens.serviceAgwSslCert = $_.Name
+$ingress.PSObject.Properties | ForEach-Object {
+    $tokens.serviceHostname = $_.Value.host
+    $tokens.servicePath = $_.Value.path
+    $tokens.servicePathType = $_.Value.pathType
+    $tokens.serviceAgwSslCert = $_.Value.sslCert
     PopulateTemplate $tokens "..,values,exposed-service.template.yml" "..,values,$($_.Name)-values.yml"
 }
