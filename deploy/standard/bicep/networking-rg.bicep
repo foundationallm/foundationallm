@@ -348,6 +348,16 @@ var subnets = [
           access: 'Allow'
           destinationAddressPrefix: 'VirtualNetwork'
           destinationPortRange: '*'
+          name: 'allow-ops' // TODO: If we end up using a separate subnet for jumpboxes, this will need to change
+          priority: 128
+          protocol: '*'
+          sourcePortRange: '*'
+          sourceAddressPrefixes: [ cidrFllmOps ]
+        }
+        {
+          access: 'Allow'
+          destinationAddressPrefix: 'VirtualNetwork'
+          destinationPortRange: '*'
           name: 'allow-vpn'
           priority: 512
           protocol: '*'

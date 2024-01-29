@@ -8,6 +8,9 @@ param containers array = []
 @description('Flag to enable HNS')
 param enableHns bool = false
 
+@description('Flag specifying if this is a datalake storage account')
+param isDataLake bool = false
+
 @description('KeyVault resource suffix for all resources')
 param kvResourceSuffix string = resourceSuffix
 
@@ -76,7 +79,7 @@ var formattedName = toLower(replace('${serviceType}-${resourceSuffix}', '-', '')
 var name = substring(formattedName,0,min([length(formattedName),24]))
 
 @description('The Resource Service Type token')
-var serviceType = 'sa'
+var serviceType = isDataLake ? 'adls' : 'sa'
 
 /** Outputs **/
 @description('Storage Account Connection String KeyVault Secret Uri.')
@@ -126,7 +129,6 @@ resource main 'Microsoft.Storage/storageAccounts@2023-01-01' = {
         }
         queue: {
           enabled: true
-          keyType: 'Account'
         }
       }
     }
@@ -160,15 +162,15 @@ resource blob 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01' = {
   properties: {
     changeFeed: { enabled: false }
     cors: { corsRules: [] }
-    isVersioningEnabled: true
+    isVersioningEnabled: !isDataLake
     restorePolicy: { enabled: false }
 
-    containerDeleteRetentionPolicy: {
+    containerDeleteRetentionPolicy: isDataLake ? null : {
       days: 30
       enabled: true
     }
 
-    deleteRetentionPolicy: {
+    deleteRetentionPolicy: isDataLake ? null : {
       allowPermanentDelete: false
       days: 30
       enabled: true
@@ -183,7 +185,7 @@ resource blobContainers 'Microsoft.Storage/storageAccounts/blobServices/containe
     parent: blob
     properties: {
       publicAccess: 'None'
-      metadata: []
+      metadata: null
     }
   }
 ]
@@ -216,7 +218,7 @@ resource file 'Microsoft.Storage/storageAccounts/fileServices@2023-01-01' = {
     cors: { corsRules: [] }
     protocolSettings: { smb: {} }
 
-    shareDeleteRetentionPolicy: {
+    shareDeleteRetentionPolicy: isDataLake ? null : {
       days: 30
       enabled: true
     }
@@ -258,7 +260,7 @@ resource storageQueues 'Microsoft.Storage/storageAccounts/queueServices/queues@2
     name: q
     parent: queue
     properties: {
-      metadata: []
+      metadata: null
     }
   }
 ]

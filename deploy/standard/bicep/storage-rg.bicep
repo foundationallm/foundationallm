@@ -74,6 +74,7 @@ module storage 'modules/storageAccount.bicep' = {
     actionGroupId: actionGroupId
     containers: ['agents','data-sources','foundationallm-source','prompts','resource-provider','vectorization-state']
     enableHns: true
+    isDataLake: true
     kvResourceSuffix: kvResourceSuffix
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId

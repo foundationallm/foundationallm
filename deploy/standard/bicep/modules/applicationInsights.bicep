@@ -23,9 +23,6 @@ param tags object
 @description('Timestamp for nested deployments')
 param timestamp string = utcNow()
 
-@description('Workload Name, used in naming resources.')
-param workload string
-
 /** Locals **/
 @description('The Resource Name')
 var formattedKvName = toLower('${kvServiceType}-${resourceSuffix}')
