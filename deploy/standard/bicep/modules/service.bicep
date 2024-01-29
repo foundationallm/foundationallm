@@ -7,9 +7,6 @@ param apiKey string = newGuid()
 @secure()
 param clientSecret string = ''
 
-@description('Display Name')
-param displayName string
-
 @description('Location for all resources')
 param location string
 
@@ -44,17 +41,11 @@ param timestamp string = utcNow()
 param useOidc bool = false
 
 /** Locals **/
-@description('The App Configuration Service name.')
-var appConfigName = '${appConfigServiceType}-${opsResourceSuffix}'
-
-@description('The App Configuration Service type token.')
-var appConfigServiceType = 'appconfig'
-
 @description('The Resource Name')
 var formattedKvName = toLower('${kvServiceType}-${opsResourceSuffix}')
 
 @description('The Resource Name')
-var kvName = substring(formattedKvName,0,min([length(formattedKvName),24]))
+var kvName = substring(formattedKvName, 0, min([ length(formattedKvName), 24 ]))
 
 @description('The Resource Service Type token')
 var kvServiceType = 'kv'
@@ -84,7 +75,7 @@ resource federatedIdentityCredential 'Microsoft.ManagedIdentity/userAssignedIden
   name: serviceName
   parent: managedIdentity
   properties: {
-    audiences: ['api://AzureADTokenExchange']
+    audiences: [ 'api://AzureADTokenExchange' ]
     issuer: oidcIssuerUrl
     subject: 'system:serviceaccount:${namespace}:${serviceName}'
   }
@@ -116,7 +107,7 @@ module storageRoleAssignments 'utility/roleAssignments.bicep' = {
 }
 
 @description('API Key for microservice (only created if not using Entra)')
-module apiKeySecret 'kvSecret.bicep' = if(!useOidc) {
+module apiKeySecret 'kvSecret.bicep' = if (!useOidc) {
   name: 'apiKey-${serviceName}-${timestamp}'
   scope: resourceGroup(opsResourceGroupName)
   params: {
@@ -127,21 +118,8 @@ module apiKeySecret 'kvSecret.bicep' = if(!useOidc) {
   }
 }
 
-// @description('App Configuration entry for API Key.')
-// module apiKeyConfigEntry 'appConfigEntry.bicep' = if(!useOidc) {
-//   name: 'acAPIKey-${serviceName}-${timestamp}'
-//   scope: resourceGroup(opsResourceGroupName)
-//   params: {
-//     appConfigName: appConfigName
-//     contentType: useOidc ? '' : 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8'
-//     name: 'FoundationaLLM:APIs:${displayName}:APIKey'
-//     tags: tags
-//     value: useOidc ? '' : '{"uri":"${apiKeySecret.outputs.secretUri}"}'
-//   }
-// }
-
 @description('Client secret for microservice (only created if using Entra)')
-module apiClientSecret 'kvSecret.bicep' = if(useOidc) {
+module apiClientSecret 'kvSecret.bicep' = if (useOidc) {
   name: 'apiClientSecret-${serviceName}-${timestamp}'
   scope: resourceGroup(opsResourceGroupName)
   params: {
@@ -151,16 +129,3 @@ module apiClientSecret 'kvSecret.bicep' = if(useOidc) {
     tags: tags
   }
 }
-
-// @description('App Configuration entry for Client Secret.')
-// module clientSecretConfigEntry 'appConfigEntry.bicep' = if(useOidc) {
-//   name: 'acClientSecret-${serviceName}-${timestamp}'
-//   scope: resourceGroup(opsResourceGroupName)
-//   params: {
-//     appConfigName: appConfigName
-//     contentType: useOidc ? 'application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8' : ''
-//     name: 'FoundationaLLM:${displayName}:Entra:ClientSecret'
-//     tags: tags
-//     value: useOidc ? '{"uri":"${apiClientSecret.outputs.secretUri}"}' : ''
-//   }
-// }
