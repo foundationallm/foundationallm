@@ -32,13 +32,13 @@ Param(
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
-$hosts = @(
-    "api",
-    "management",
-    "management-api",
-    "vectorization-api",
-    "www"
-)
+$hosts = @{
+    "api"               = @("coreapi", "managementapi")
+    "management"        = $null
+    "management-api"    = $null
+    "vectorization-api" = $null
+    "www"               = @("chatui", "managementui")
+}
 
 $directories = @{
     "config" = "./certbot/config"
@@ -53,10 +53,9 @@ foreach ($directory in $directories.GetEnumerator()) {
     }
 }
 
-foreach ($hostName in $hosts) {
-    $domain = "${hostName}.${baseDomain}"
+foreach ($hostName in $hosts.GetEnumerator()) {
+    $domain = "$($hostName.Key).${baseDomain}"
     $fullChain = Join-Path $directories["config"] "live" ${domain} "fullchain.pem"
-    $key_name = $domain -replace '\.', '-'
     $pfx = Join-Path $directories["certs"] "${domain}.pfx"
     $privKey = Join-Path $directories["config"] "live" ${domain} "privkey.pem"
 
@@ -102,13 +101,20 @@ foreach ($hostName in $hosts) {
     }
 
     # Import certificate into Azure Key Vault
-    az keyvault certificate import `
-        --file ${pfx} `
-        --name ${key_name} `
-        --vault-name ${keyVaultName}
+    $keyVaultAliases = $hostName.Value
+    if ($null -eq $keyVaultAliases) {
+        $keyVaultAliases = @($($domain -replace '\.', '-'))
+    }
 
-    if ($LASTEXITCODE -ne 0) {
-        Write-Error("Failed to import certificate for ${domain}")
-        exit 1
+    foreach ($alias in $keyVaultAliases) {
+        & az keyvault certificate import `
+            --file ${pfx} `
+            --name ${alias} `
+            --vault-name ${keyVaultName}
+
+        if ($LASTEXITCODE -ne 0) {
+            Write-Error("Failed to import certificate for ${domain}")
+            exit 1
+        }
     }
 }
