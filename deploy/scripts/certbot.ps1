@@ -33,7 +33,7 @@ Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
 $hosts = @{
-    "api"               = @("coreapi", "managementapi")
+    "api"               = @("coreapi", "managementapi", "vectorizationapi")
     "management"        = $null
     "management-api"    = $null
     "vectorization-api" = $null
