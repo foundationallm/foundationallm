@@ -131,7 +131,7 @@ if ($charts.Contains("semantic-kernel-api") -or  $charts.Contains("*")) {
 
 if ($charts.Contains("vectorization-api") -or  $charts.Contains("*")) {
     Write-Host "API chart - vectorization-api" -ForegroundColor Yellow
-    $command = "helm upgrade --install $name-vectorization-api oci://ghcr.io/solliancenet/foundationallm/helm/vectorization-api -f ../values/microservice-values.yml"
+    $command = "helm upgrade --install $name-vectorization-api oci://ghcr.io/solliancenet/foundationallm/helm/vectorization-api -f ../values/vectorizationapi-values.yml"
     $command = createHelmCommand $command 
     Invoke-Expression "$command"
 }
