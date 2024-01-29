@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { AuthConfigOptions } from '@js/auth';
+// import type { AuthConfigOptions } from '@js/auth';
 import api from '@/js/api';
 
 export const useAppConfigStore = defineStore('appConfig', {
@@ -7,13 +7,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 		// API: Defines API-specific settings such as the base URL for application requests.
 		apiUrl: null,
 
-		// Layout: These settings impact the structural layout of the chat interface.
-		isKioskMode: false,
-		allowAgentHint: false,
-		agents: [],
-
 		// Style: These settings impact the visual style of the chat interface.
-		pageTitle: null,
 		logoUrl: null,
 		logoText: null,
 		primaryBg: null,
@@ -35,17 +29,13 @@ export const useAppConfigStore = defineStore('appConfig', {
 			tenantId: null,
 			scopes: [],
 			callbackPath: null,
-		} as AuthConfigOptions,
+		},// as AuthConfigOptions,
 	}),
 	getters: {},
 	actions: {
 		async getConfigVariables() {
 			const [
-				apiUrl,
-				isKioskMode,
-				allowAgentHint,
-				agents,
-				pageTitle,
+				// apiUrl,
 				logoUrl,
 				logoText,
 				primaryBg,
@@ -65,13 +55,8 @@ export const useAppConfigStore = defineStore('appConfig', {
 				authScopes,
 				authCallbackPath,
 			] = await Promise.all([
-				api.getConfigValue('FoundationaLLM:APIs:CoreAPI:APIUrl'),
+				// api.getConfigValue('FoundationaLLM:APIs:ManagementAPI:APIUrl'),
 				
-				api.getConfigValue('FoundationaLLM:Branding:KioskMode'),
-				api.getConfigValue('.appconfig.featureflag/FoundationaLLM-AllowAgentHint'),
-				api.getConfigValue('FoundationaLLM:Branding:AllowAgentSelection'),
-				
-				api.getConfigValue('FoundationaLLM:Branding:PageTitle'),
 				api.getConfigValue('FoundationaLLM:Branding:LogoUrl'),
 				api.getConfigValue('FoundationaLLM:Branding:LogoText'),
 				api.getConfigValue('FoundationaLLM:Branding:BackgroundColor'),
@@ -85,21 +70,16 @@ export const useAppConfigStore = defineStore('appConfig', {
 				api.getConfigValue('FoundationaLLM:Branding:PrimaryButtonTextColor'),
 				api.getConfigValue('FoundationaLLM:Branding:SecondaryButtonBackgroundColor'),
 				api.getConfigValue('FoundationaLLM:Branding:SecondaryButtonTextColor'),
-				
-				api.getConfigValue('FoundationaLLM:Chat:Entra:ClientId'),
-				api.getConfigValue('FoundationaLLM:Chat:Entra:Instance'),
-				api.getConfigValue('FoundationaLLM:Chat:Entra:TenantId'),
-				api.getConfigValue('FoundationaLLM:Chat:Entra:Scopes'),
-				api.getConfigValue('FoundationaLLM:Chat:Entra:CallbackPath'),
+
+				api.getConfigValue('FoundationaLLM:Management:Entra:ClientId'),
+				api.getConfigValue('FoundationaLLM:Management:Entra:Instance'),
+				api.getConfigValue('FoundationaLLM:Management:Entra:TenantId'),
+				api.getConfigValue('FoundationaLLM:Management:Entra:Scopes'),
+				api.getConfigValue('FoundationaLLM:Management:Entra:CallbackPath'),
 			]);
 
-			this.apiUrl = apiUrl;
+			// this.apiUrl = apiUrl;
 
-			this.isKioskMode = JSON.parse(isKioskMode.toLowerCase());
-			this.allowAgentHint = JSON.parse(allowAgentHint.toLowerCase())?.enabled;
-			this.agents = agents.split(', ');
-
-			this.pageTitle = pageTitle;
 			this.logoUrl = logoUrl;
 			this.logoText = logoText;
 			this.primaryBg = primaryBg;
