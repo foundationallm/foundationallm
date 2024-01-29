@@ -6,7 +6,7 @@ Param(
     [parameter(Mandatory=$false)][string]$backendAksName,
     [parameter(Mandatory=$false)][string]$resourceGroup,
     [parameter(Mandatory=$false)][string]$charts = "*",
-    [parameter(Mandatory=$false)][string]$namespace = "default",
+    [parameter(Mandatory=$false)][string]$namespace = "fllm",
     [parameter(Mandatory=$false)][string]$frontendHostname="www.internal.foundationallm.ai",
     [parameter(Mandatory=$false)][string]$backendHostname="api.internal.foundationallm.ai",
     [parameter(Mandatory=$false)][bool]$autoscale=$false
