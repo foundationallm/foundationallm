@@ -30,7 +30,7 @@ spec:
     - host: {{ . }}
       http:
         paths:
-          - path: /
+          - path: /core
             pathType: Prefix
             backend:
               service:
