@@ -5,7 +5,7 @@ Param(
     [parameter(Mandatory=$false)][string]$aksName,
     [parameter(Mandatory=$false)][string]$resourceGroup,
     [parameter(Mandatory=$false)][string]$charts = "*",
-    [parameter(Mandatory=$false)][string]$namespace = "",
+    [parameter(Mandatory=$false)][string]$namespace = "fllm",
     [parameter(Mandatory=$false)][bool]$autoscale=$false
 )
 
@@ -26,12 +26,12 @@ function validate {
     }
 }
 
-function createHelmCommand([string]$command) {    
+function createHelmCommand([string]$command) {
 
     $newcommand = $command
 
     if (-not [string]::IsNullOrEmpty($namespace)) {
-        $newcommand = "$newcommand --namespace $namespace" 
+        $newcommand = "$newcommand --namespace $namespace"
     }
 
     return "$newcommand";
@@ -44,7 +44,7 @@ Write-Host " Additional parameters are:"  -ForegroundColor Yellow
 Write-Host " Release Name: $name"  -ForegroundColor Yellow
 Write-Host " AKS to use: $aksName in RG $resourceGroup"  -ForegroundColor Yellow
 Write-Host " Namespace (empty means the one in .kube/config): $namespace"  -ForegroundColor Yellow
-Write-Host " --------------------------------------------------------" 
+Write-Host " --------------------------------------------------------"
 
 validate
 

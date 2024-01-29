@@ -3,7 +3,7 @@
   "location": "eastus2",
   "project": "fllm01",
   "subscription": "",
-  "k8sNamespace": "default",
+  "k8sNamespace": "fllm",
   "adminObjectId": "",
   "createVpnGateway": true,
   "publicEndpoints": true,
