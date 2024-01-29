@@ -35,7 +35,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         protected override string _name => ResourceProviderNames.FoundationaLLM_Vectorization;
 
         /// <inheritdoc/>
-        protected override Dictionary<string, ResourceTypeDescriptor> _resourceTypes => new Dictionary<string, ResourceTypeDescriptor>
+        protected override Dictionary<string, ResourceTypeDescriptor> _resourceTypes => new()
         {
             {
                 VectorizationResourceTypeNames.ContentSourceProfiles,

@@ -24,6 +24,22 @@ namespace FoundationaLLM.Common.Interfaces
         Task Initialize();
 
         /// <summary>
+        /// Gets the resources based on the logical path of the resource type.
+        /// </summary>
+        /// <typeparam name="T">The type of the resource.</typeparam>
+        /// <param name="resourcePath">The logical path of the resource type.</param>
+        /// <returns>The <see cref="IList{T}"/> of resources corresponding to the specified logical path.</returns>
+        Task<IList<T>> GetResourcesAsync<T>(string resourcePath) where T : class;
+
+        /// <summary>
+        /// Gets the resources based on the logical path of the resource type.
+        /// </summary>
+        /// <typeparam name="T">The type of the resource.</typeparam>
+        /// <param name="resourcePath">The logical path of the resource type.</param>
+        /// <returns>The <see cref="IList{T}"/> of resources corresponding to the specified logical path.</returns>
+        IList<T> GetResources<T>(string resourcePath) where T : class;
+
+        /// <summary>
         /// Gets a resource based on its logical path.
         /// </summary>
         /// <typeparam name="T">The type of the resource.</typeparam>

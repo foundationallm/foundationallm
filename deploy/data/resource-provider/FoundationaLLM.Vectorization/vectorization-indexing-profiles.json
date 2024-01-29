@@ -1,0 +1,17 @@
+{
+	"IndexingProfiles": [
+		{
+			"Name": "AzureAISearch_Test_001",
+			"Description": "Azure AI Search index for vectorization testing.",
+			"Indexer": "AzureAISearchIndexer",
+			"Settings": {
+				"IndexName": "fllm-test-001"
+			},
+			"ConfigurationReferences": {
+				"APIKey": "FoundationaLLM:Vectorization:AzureAISearchIndexingService:APIKey",
+				"AuthenticationType": "FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType",
+				"Endpoint": "FoundationaLLM:Vectorization:AzureAISearchIndexingService:Endpoint"
+			}
+		}
+	]
+}
