@@ -1,5 +1,5 @@
 {
-    "name": "pass-through",
+    "name": "internal-context",
     "type": "knowledge-management",
     "description": "Session-less agent that issues the user prompt directly to the language model.",    
     "language_model": {
