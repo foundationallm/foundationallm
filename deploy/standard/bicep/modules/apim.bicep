@@ -146,7 +146,7 @@ resource main 'Microsoft.ApiManagement/service@2023-03-01-preview' = {
 
   properties: {
     apiVersionConstraint: {
-      minApiVersion: '2022-08-01'
+      minApiVersion: '2021-08-01'
     }
     certificates: []
     developerPortalStatus: 'Enabled'
