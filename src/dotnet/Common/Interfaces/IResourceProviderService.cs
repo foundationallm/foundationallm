@@ -84,7 +84,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// <typeparam name="T">The type of the resource.</typeparam>
         /// <param name="resourcePath">The logical path of the resource.</param>
         /// <param name="resource">The instance of the resource being created or updated.</param>
-        void UpsertResource<T>(string resourcePath, T resource) where T : class;
+        string UpsertResource<T>(string resourcePath, T resource) where T : class;
 
         /// <summary>
         /// Creates or updates a resource based on its logical path.
@@ -92,7 +92,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="resourcePath">The logical path of the resource.</param>
         /// <param name="serializedResource">The serialized instance of the resource being created or updated.</param>
         /// <returns></returns>
-        Task UpsertResourceAsync(string resourcePath, string serializedResource);
+        Task<string> UpsertResourceAsync(string resourcePath, string serializedResource);
 
         /// <summary>
         /// Deletes a resource based on its logical path.

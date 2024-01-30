@@ -23,5 +23,9 @@ namespace FoundationaLLM.Common.Constants
         /// The name of the FoundationaLLM.Configuration resource provider.
         /// </summary>
         public const string FoundationaLLM_Configuration = "FoundationaLLM.Configuration";
+        /// <summary>
+        /// The name of the FoundationaLLM.Prompt resource provider.
+        /// </summary>
+        public const string FoundationaLLM_Prompt = "FoundationaLLM.Prompt";
     }
 }

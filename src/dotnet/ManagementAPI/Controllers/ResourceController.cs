@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.ResourceProvider;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,7 +51,7 @@ namespace FoundationaLLM.Management.API.Controllers
         /// <param name="resourceProvider">The name of the resource provider that should handle the request.</param>
         /// <param name="resourcePath">The logical path of the resource type.</param>
         /// <param name="serializedResource">The serialized resource to be created or updated.</param>
-        /// <returns></returns>
+        /// <returns>The ObjectId of the created or updated resource.</returns>
         [HttpPost("{*resourcePath}", Name = "UpsertResource")]
         public async Task<IActionResult> UpsertResource(string instanceId, string resourceProvider, string resourcePath, [FromBody] object serializedResource) =>
             await HandleRequest(
@@ -58,8 +59,8 @@ namespace FoundationaLLM.Management.API.Controllers
                 resourcePath,
                 async (resourceProviderService) =>
                 {
-                    await resourceProviderService.UpsertResourceAsync(resourcePath, serializedResource.ToString()!);
-                    return new OkResult();
+                    var objectId = await resourceProviderService.UpsertResourceAsync(resourcePath, serializedResource.ToString()!);
+                    return new OkObjectResult(new ResourceProviderUpsertResult { ObjectId = objectId });
                 });
 
         /// <summary>

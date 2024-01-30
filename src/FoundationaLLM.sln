@@ -83,7 +83,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagementAPI", "dotnet\Man
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SemanticKernel", "dotnet\SemanticKernel\SemanticKernel.csproj", "{CDB843FE-108B-435A-BF17-68052C64F500}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agent", "dotnet\Agent\Agent.csproj", "{9BE97AEC-032C-454B-BDAA-29418A769237}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent", "dotnet\Agent\Agent.csproj", "{9BE97AEC-032C-454B-BDAA-29418A769237}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prompt", "dotnet\Prompt\Prompt.csproj", "{E04B4AA1-2C79-4153-87A0-2BAC1256E4DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -206,6 +208,10 @@ Global
 		{9BE97AEC-032C-454B-BDAA-29418A769237}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BE97AEC-032C-454B-BDAA-29418A769237}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BE97AEC-032C-454B-BDAA-29418A769237}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E04B4AA1-2C79-4153-87A0-2BAC1256E4DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E04B4AA1-2C79-4153-87A0-2BAC1256E4DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E04B4AA1-2C79-4153-87A0-2BAC1256E4DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E04B4AA1-2C79-4153-87A0-2BAC1256E4DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -246,6 +252,7 @@ Global
 		{2D54392A-8D86-4F54-9993-FB3B6C4C090E} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
 		{CDB843FE-108B-435A-BF17-68052C64F500} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
 		{9BE97AEC-032C-454B-BDAA-29418A769237} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
+		{E04B4AA1-2C79-4153-87A0-2BAC1256E4DE} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF5DE858-4B85-4EE8-8A6D-46E8E4FBA078}
