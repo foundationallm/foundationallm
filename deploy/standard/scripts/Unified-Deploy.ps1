@@ -29,7 +29,7 @@ if ($stepLoginAzure) {
 
 $manifest = $(Get-Content -Raw -Path ./Deployment-Manifest.json | ConvertFrom-Json)
 
-$domains = $manifest.domains
+$ingress = $manifest.ingress
 $entraClientIds = $manifest.entraClientIds
 $environment = $manifest.environment
 $location = $manifest.location
@@ -46,7 +46,7 @@ if ($stepUploadSystemPrompts) {
     -entraClientIds $entraClientIds `
     -resourceGroups $resourceGroups `
     -resourceSuffix "$project-$environment-$location" `
-    -domains $domains
+    -ingress $ingress
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Error generating config" -ForegroundColor Red
     exit $LASTEXITCODE

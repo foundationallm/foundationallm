@@ -7,34 +7,38 @@
 .DESCRIPTION
     The script generates SSL certificates for a list of domains using Certbot, and then imports the generated certificates into an Azure Key Vault.
 
-.PARAMETER key_vault_name
+.PARAMETER baseDomain
+    The base domain for the certificates.
+
+.PARAMETER keyVaultName
     The name of the Azure Key Vault where the certificates will be imported.
 
 .NOTES
     - This script requires Certbot and OpenSSL to be installed on the system.
+    - The script assumes that the Azure CLI is installed on the system.
     - The script assumes that the necessary DNS configuration for domain validation is already in place (see references below).
-
-.REFERENCES
     - Certbot DNS Azure documentation: https://docs.certbot-dns-azure.co.uk/en/latest/
     - Certbot DNS Azure GitHub repository: https://github.com/terrycain/certbot-dns-azure
 
 .EXAMPLE
-    .\certbot.ps1 -key_vault_name "mykeyvault"
+    .\certbot.ps1 -baseDomain "example.com" -keyVaultName "mykeyvault"
 #>
 
 Param(
-    [parameter(Mandatory = $true)][string]$key_vault_name
+    [parameter(Mandatory = $true)][string]$baseDomain,
+    [parameter(Mandatory = $true)][string]$keyVaultName
 )
 
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
-$domains = @(
-    "www.internal.foundationallm.ai",
-    "api.internal.foundationallm.ai",
-    "management-api.internal.foundationallm.ai",
-    "vectorization-api.internal.foundationallm.ai"
-)
+$hosts = @{
+    "api"               = @("coreapi", "managementapi", "vectorizationapi")
+    "management"        = $null
+    "management-api"    = $null
+    "vectorization-api" = $null
+    "www"               = @("chatui", "managementui")
+}
 
 $directories = @{
     "config" = "./certbot/config"
@@ -49,9 +53,9 @@ foreach ($directory in $directories.GetEnumerator()) {
     }
 }
 
-foreach ($domain in $domains) {
+foreach ($hostName in $hosts.GetEnumerator()) {
+    $domain = "$($hostName.Key).${baseDomain}"
     $fullChain = Join-Path $directories["config"] "live" ${domain} "fullchain.pem"
-    $key_name = $domain -replace '\.', '-'
     $pfx = Join-Path $directories["certs"] "${domain}.pfx"
     $privKey = Join-Path $directories["config"] "live" ${domain} "privkey.pem"
 
@@ -97,13 +101,20 @@ foreach ($domain in $domains) {
     }
 
     # Import certificate into Azure Key Vault
-    az keyvault certificate import `
-        --file ${pfx} `
-        --name ${key_name} `
-        --vault-name ${key_vault_name}
+    $keyVaultAliases = $hostName.Value
+    if ($null -eq $keyVaultAliases) {
+        $keyVaultAliases = @($($domain -replace '\.', '-'))
+    }
 
-    if ($LASTEXITCODE -ne 0) {
-        Write-Error("Failed to import certificate for ${domain}")
-        exit 1
+    foreach ($alias in $keyVaultAliases) {
+        & az keyvault certificate import `
+            --file ${pfx} `
+            --name ${alias} `
+            --vault-name ${keyVaultName}
+
+        if ($LASTEXITCODE -ne 0) {
+            Write-Error("Failed to import certificate for ${domain}")
+            exit 1
+        }
     }
 }

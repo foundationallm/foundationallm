@@ -72,12 +72,15 @@ builder.Services.AddOptions<SemanticKernelTextEmbeddingServiceSettings>()
 builder.Services.AddOptions<AzureAISearchIndexingServiceSettings>()
     .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Vectorization_AzureAISearchIndexingService));
 
-builder.Services.AddSingleton(
-    typeof(IEnumerable<IConfigurationSection>),
-    new IConfigurationSection[] {
-        builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Vectorization_Queues),
-        builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Vectorization_Steps)
-    });
+builder.Services.AddKeyedSingleton(
+    typeof(IConfigurationSection),
+    DependencyInjectionKeys.FoundationaLLM_Vectorization_Queues,
+    builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Vectorization_Queues));
+
+builder.Services.AddKeyedSingleton(
+    typeof(IConfigurationSection),
+    DependencyInjectionKeys.FoundationaLLM_Vectorization_Steps,
+    builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Vectorization_Steps));
 
 // Add services to the container.
 

@@ -1,8 +1,8 @@
-@description('API Management Instance Name')
-param apimName string
-
 @description('OpenAI Cognitive Account')
 param account object
+
+@description('API Management Instance Name')
+param apimName string
 
 @description('Backend Name')
 param name string
@@ -17,9 +17,12 @@ resource backend 'Microsoft.ApiManagement/service/backends@2023-03-01-preview' =
     url: '${account.endpoint}openai'
 
     credentials: {
-      query: {}
+      authorization: {
+        parameter: 'NA'
+        scheme: 'Custom'
+      }
       header: {
-        'api-key': map(account.keys, key => '{{${key.name}}}')
+        'api-key': ['{{${account.keys[0].name}}}']
       }
     }
 

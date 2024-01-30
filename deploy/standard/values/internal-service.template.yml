@@ -9,7 +9,7 @@ azureWorkloadIdentity:
   coreJobClientId: {{coreJobMiClientId}}
   dataSourceHubApiClientId: {{dataSourceHubApiMiClientId}}
   gatekeeperApiClientId: {{gatekeeperApiMiClientId}}
-  gatekeeperIntegrationApiMiClientId: {{gatekeeperIntegrationApiMiClientId}}
+  gatekeeperIntegrationApiClientId: {{gatekeeperIntegrationApiMiClientId}}
   langChainApiClientId: {{langChainApiMiClientId}}
   managementApiClientId: {{managementApiMiClientId}}
   managementUiClientId: {{managementUiMiClientId}}

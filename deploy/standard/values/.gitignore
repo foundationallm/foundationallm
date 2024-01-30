@@ -1,5 +1,1 @@
-chatui-values.yml
-coreapi-values.yml
-managementapi-values.yml
-managementui-values.yml
-microservice-values.yml
+*-values.yml

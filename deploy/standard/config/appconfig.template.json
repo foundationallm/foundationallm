@@ -201,7 +201,7 @@
     "keyVault": false,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:VectorizationAPI:APIUrl",
-    "value": "http://foundationallm-vectorization-api/semantickernel"
+    "value": "http://foundationallm-vectorization-api/vectorization"
   },
   {
     "keyVault": true,
@@ -219,13 +219,13 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:VectorizationWorker:APIKey",
-    "value": "foundationallm-apis-vectorization-api-apikey"
+    "value": "foundationallm-apis-vectorization-job-apikey"
   },
   {
     "keyVault": false,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:VectorizationWorker:APIUrl",
-    "value": "http://foundationallm-vectorization-api/semantickernel"
+    "value": "http://foundationallm-vectorization-job/vectorization"
   },
   {
     "keyVault": true,
