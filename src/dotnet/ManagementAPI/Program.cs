@@ -21,6 +21,7 @@ using FoundationaLLM.Management.Interfaces;
 using FoundationaLLM.Management.Models.Configuration;
 using FoundationaLLM.Management.Services;
 using FoundationaLLM.Management.Services.APIServices;
+using FoundationaLLM.Prompt.ResourceProviders;
 using FoundationaLLM.Vectorization.ResourceProviders;
 using Microsoft.Identity.Web;
 using Polly;
@@ -54,6 +55,7 @@ namespace FoundationaLLM.Management.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ManagementAPI_Entra);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Vectorization);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Agent);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Prompt);
             });
             if (builder.Environment.IsDevelopment())
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
@@ -152,6 +154,35 @@ namespace FoundationaLLM.Management.API
                     sp.GetRequiredService<IEnumerable<IStorageService>>()
                         .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_Agent_ResourceProviderService),
                     sp.GetRequiredService<ILogger<AgentResourceProviderService>>()));
+
+            #endregion
+
+            #region Prompt resource provider
+
+            builder.Services.AddOptions<BlobStorageServiceSettings>(
+                    DependencyInjectionKeys.FoundationaLLM_Prompt_ResourceProviderService)
+                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Prompt_ResourceProviderService_Storage));
+
+            builder.Services.AddSingleton<IStorageService, BlobStorageService>(sp =>
+            {
+                var settings = sp.GetRequiredService<IOptionsMonitor<BlobStorageServiceSettings>>()
+                    .Get(DependencyInjectionKeys.FoundationaLLM_Prompt_ResourceProviderService);
+                var logger = sp.GetRequiredService<ILogger<BlobStorageService>>();
+
+                return new BlobStorageService(
+                    Options.Create<BlobStorageServiceSettings>(settings),
+                    logger)
+                {
+                    InstanceName = DependencyInjectionKeys.FoundationaLLM_Prompt_ResourceProviderService
+                };
+            });
+
+            builder.Services.AddSingleton<IResourceProviderService, PromptResourceProviderService>(sp =>
+                new PromptResourceProviderService(
+                    sp.GetRequiredService<IOptions<InstanceSettings>>(),
+                    sp.GetRequiredService<IEnumerable<IStorageService>>()
+                        .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_Prompt_ResourceProviderService),
+                    sp.GetRequiredService<ILogger<PromptResourceProviderService>>()));
 
             #endregion
 

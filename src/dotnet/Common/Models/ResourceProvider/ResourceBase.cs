@@ -15,22 +15,22 @@ namespace FoundationaLLM.Common.Models.ResourceProvider
         /// <summary>
         /// The name of the resource.
         /// </summary>
-        [JsonProperty("name")]
+        [JsonProperty("name", Order = -5)]
         public required string Name { get; set; }
         /// <summary>
         /// The type of the resource.
         /// </summary>
-        [JsonProperty("type")]
+        [JsonProperty("type", Order = -4)]
         public required string Type { get; set; }
         /// <summary>
         /// The unique identifier of the resource.
         /// </summary>
-        [JsonProperty("object_id")]
+        [JsonProperty("object_id", Order = -3)]
         public required string ObjectId { get; set; }
         /// <summary>
         /// The description of the resource.
         /// </summary>
-        [JsonProperty("description")]
+        [JsonProperty("description", Order = -2)]
         public string? Description { get; set; }
     }
 }

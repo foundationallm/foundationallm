@@ -74,7 +74,7 @@ var deploymentConfig = [
     model: {
       format: 'OpenAI'
       name: 'gpt-35-turbo'
-      version: '0613'  //DPS:  Version needed to be upgraded for Canada east region..  0301 not available
+      version: '0613'  
     }
   }
   {

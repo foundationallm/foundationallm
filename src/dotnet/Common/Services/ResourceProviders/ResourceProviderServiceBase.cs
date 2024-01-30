@@ -149,21 +149,23 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         }
 
         /// <inheritdoc/>
-        public async Task UpsertResourceAsync(string resourcePath, string serializedResource)
+        public async Task<string> UpsertResourceAsync(string resourcePath, string serializedResource)
         {
             if (!_isInitialized)
                 throw new ResourceProviderException($"The resource provider {_name} is not initialized.");
             var instances = GetResourceInstancesFromPath(resourcePath);
             await UpsertResourceAsync(instances, serializedResource);
+            return GetObjectId(instances);
         }
 
         /// <inheritdoc/>
-        public void UpsertResource<T>(string resourcePath, T resource) where T : class
+        public string UpsertResource<T>(string resourcePath, T resource) where T : class
         {
             if (!_isInitialized)
                 throw new ResourceProviderException($"The resource provider {_name} is not initialized.");
             var instances = GetResourceInstancesFromPath(resourcePath);
             UpsertResource<T>(instances, resource);
+            return GetObjectId(instances);
         }    
 
         /// <inheritdoc/>

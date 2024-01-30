@@ -63,7 +63,7 @@ namespace FoundationaLLM.Vectorization.Services.ContentSources
 
                 using (var context = await pnpContextFactory.CreateAsync("Default"))
                 {
-                    string documentUrl = $"{context.Uri.PathAndQuery}/{documentRelativeUrl}";
+                    string documentUrl = $"{context.Uri.PathAndQuery}/{documentRelativeUrl}".Replace("//", "/");
                     // Get a reference to the file
                     IFile testDocument = await context.Web.GetFileByServerRelativeUrlAsync(documentUrl);
 
