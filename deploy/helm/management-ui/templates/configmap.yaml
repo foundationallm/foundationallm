@@ -12,4 +12,4 @@ metadata:
     heritage: {{ .Release.Service }}
 data: 
   AZURE_CLIENT_ID: {{ .Values.azureWorkloadIdentity.managementUiClientId }}
-  NUXT_BASE_URL: {{ .Values.baseUrl }}
+  NUXT_APP_BASE_URL: {{ .Values.baseUrl }}
