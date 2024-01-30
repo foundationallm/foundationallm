@@ -17,10 +17,6 @@ resource backend 'Microsoft.ApiManagement/service/backends@2023-03-01-preview' =
     url: '${account.endpoint}openai'
 
     credentials: {
-      authorization: {
-        parameter: 'NA'
-        scheme: 'Custom'
-      }
       header: {
         'api-key': ['{{${account.keys[0].name}}}']
       }

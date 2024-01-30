@@ -63,7 +63,7 @@
     "keyVault": false,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:CoreAPI:APIUrl",
-    "value": "https://{{coreApiHostname}}"
+    "value": "https://{{coreApiHostname}}/core"
   },
   {
     "keyVault": true,
@@ -150,6 +150,12 @@
     "value": "foundationallm-app-insights-connection-string"
   },
   {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:APIs:ManagementAPI:APIUrl",
+    "value": "https://{{managementApiHostname}}/management"
+  },
+  {
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:PromptHubAPI:APIKey",
@@ -201,7 +207,7 @@
     "keyVault": false,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:VectorizationAPI:APIUrl",
-    "value": "http://foundationallm-vectorization-api/vectorization"
+    "value": "https://{{vectorizationApiHostname}}/vectorization"
   },
   {
     "keyVault": true,
@@ -642,6 +648,12 @@
     "value": "prompts"
   },
   {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Instance:Id",
+    "value": "{{instanceId}}"
+  },
+  {
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:LangChain:CSVFile:URL",
@@ -670,6 +682,78 @@
     "featureFlag": false,
     "key": "FoundationaLLM:LangChainAPI:Key",
     "value": "foundationallm-apis-langchain-api-apikey"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Management:Entra:CallbackPath",
+    "value": "/signin-oidc"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Management:Entra:ClientId",
+    "value": "{{managementEntraClientId}}"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Management:Entra:ClientSecret",
+    "value": "foundationallm-apis-management-ui-entra-clientsecret"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Management:Entra:Instance",
+    "value": "https://login.microsoftonline.com/"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Management:Entra:Scopes",
+    "value": "api://{{managementEntraClientId}}/Data.Manage"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Management:Entra:TenantId",
+    "value": "{{tenantId}}"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:ManagementAPI:Entra:CallbackPath",
+    "value": "/signin-oidc"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:ManagementAPI:Entra:ClientId",
+    "value": "{{managementApiEntraClientId}}"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:ManagementAPI:Entra:ClientSecret",
+    "value": "foundationallm-apis-management-api-entra-clientsecret"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:ManagementAPI:Entra:Instance",
+    "value": "https://login.microsoftonline.com/"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:ManagementAPI:Entra:Scopes",
+    "value": "Data.Manage"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:ManagementAPI:Entra:TenantId",
+    "value": "{{tenantId}}"
   },
   {
     "keyVault": false,
@@ -778,5 +862,41 @@
     "featureFlag": false,
     "key": "FoundationaLLM:Vectorization:AzureAISearchIndexingService:Endpoint",
     "value": "{{cognitiveSearchEndpointUri}}"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:VectorizationAPI:Entra:CallbackPath",
+    "value": "/signin-oidc"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:VectorizationAPI:Entra:ClientId",
+    "value": "{{vectorizationApiEntraClientId}}"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:VectorizationAPI:Entra:ClientSecret",
+    "value": "foundationallm-apis-management-api-entra-clientsecret"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:VectorizationAPI:Entra:Instance",
+    "value": "https://login.microsoftonline.com/"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:VectorizationAPI:Entra:Scopes",
+    "value": "Data.Manage"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:VectorizationAPI:Entra:TenantId",
+    "value": "{{tenantId}}"
   }
 ]

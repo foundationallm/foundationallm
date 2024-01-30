@@ -29,6 +29,7 @@ if ($stepLoginAzure) {
 
 $manifest = $(Get-Content -Raw -Path ./Deployment-Manifest.json | ConvertFrom-Json)
 
+$instanceId = $manifest.instanceId
 $ingress = $manifest.ingress
 $entraClientIds = $manifest.entraClientIds
 $environment = $manifest.environment
@@ -43,6 +44,7 @@ if ($stepUploadSystemPrompts) {
 
 # Generate Config
 & ./Generate-Config.ps1 `
+    -instanceId $instanceId `
     -entraClientIds $entraClientIds `
     -resourceGroups $resourceGroups `
     -resourceSuffix "$project-$environment-$location" `

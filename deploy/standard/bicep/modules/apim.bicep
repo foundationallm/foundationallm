@@ -200,10 +200,12 @@ resource api 'Microsoft.ApiManagement/service/apis@2023-03-01-preview' = {
   properties: {
     apiRevision: '1'
     displayName: 'HA OpenAI'
+    format: 'openapi+json-link'
     isCurrent: true
     path: 'openai'
     protocols: [ 'https' ]
     subscriptionRequired: false
+    value: 'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/AzureOpenAI/inference/stable/2023-05-15/inference.json'
 
     authenticationSettings: {
       oAuth2AuthenticationSettings: []
@@ -323,7 +325,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
 }]
 
 @description('Service Diagnostics')
-resource sesrviceDiagnostics 'Microsoft.ApiManagement/service/diagnostics@2023-03-01-preview' = {
+resource serviceDiagnostics 'Microsoft.ApiManagement/service/diagnostics@2023-03-01-preview' = {
   name: 'azuremonitor'
   parent: main
 
@@ -364,11 +366,11 @@ resource sesrviceDiagnostics 'Microsoft.ApiManagement/service/diagnostics@2023-0
   }
 }
 
-@description('Service Diagnostics Logger')
-resource serviceDiagnosticsLogger 'Microsoft.ApiManagement/service/diagnostics/loggers@2018-01-01' = {
-  parent: sesrviceDiagnostics
-  name: 'azuremonitor'
-}
+// @description('Service Diagnostics Logger')
+// resource serviceDiagnosticsLogger 'Microsoft.ApiManagement/service/diagnostics/loggers@2022-08-01' = {
+//   parent: serviceDiagnostics
+//   name: 'azuremonitor'
+// }
 
 //** Nested Modules **//
 module backend 'apimBackend.bicep' = [for (account, i) in cognitiveAccounts: {

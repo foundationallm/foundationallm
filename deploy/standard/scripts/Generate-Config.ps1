@@ -1,6 +1,7 @@
 #! /usr/bin/pwsh
 
 Param (
+    [parameter(Mandatory = $true)][object]$instanceId,
     [parameter(Mandatory = $true)][object]$entraClientIds,
     [parameter(Mandatory = $true)][object]$resourceGroups,
     [parameter(Mandatory = $true)][string]$resourceSuffix,
@@ -147,15 +148,20 @@ $cogSearch = EnsureAndReturnFirstItem $cogSearch "Cognitive Search"
 $cogSearchUri = "http://$($cogSearch.name).search.windows.net"
 
 # Setting tokens
+$tokens.instanceId = $instanceId
+
 $tokens.contentSafetyEndpointUri = $contentSafety.uri
 $tokens.openAiEndpointUri = $apim.uri
 $tokens.chatEntraClientId = $entraClientIds.chat
 $tokens.coreEntraClientId = $entraClientIds.core
+$tokens.managementApiEntraClientId = $entraClientIds.managementapi
+$tokens.managementEntraClientId = $entraClientIds.managementUi
+$tokens.vectorizationEntraClientId = $entraClientIds.vectorizationapi
 $tokens.cognitiveSearchEndpointUri = $cogSearchUri
 
-$tokens.coreApiHostname = $ingress.coreapi.host
-$tokens.managementApiHostname = $ingress.managementapi.host
-$tokens.vectorizationApiHostname = $ingress.vectorizationapi.host
+$tokens.coreApiHostname = $ingress.apiIngress.coreapi.host
+$tokens.managementApiHostname = $ingress.apiIngress.managementapi.host
+$tokens.vectorizationApiHostname = $ingress.apiIngress.vectorizationapi.host
 
 $tokens.cosmosEndpoint = $docdb.documentEndpoint
 
@@ -188,10 +194,18 @@ Write-Host "===========================================================" -Foregr
 PopulateTemplate $tokens "..,config,appconfig.template.json" "..,config,appconfig.json"
 PopulateTemplate $tokens "..,values,internal-service.template.yml" "..,values,microservice-values.yml"
 
-$ingress.PSObject.Properties | ForEach-Object {
+$($ingress.apiIngress).PSObject.Properties | ForEach-Object {
     $tokens.serviceHostname = $_.Value.host
     $tokens.servicePath = $_.Value.path
     $tokens.servicePathType = $_.Value.pathType
     $tokens.serviceAgwSslCert = $_.Value.sslCert
     PopulateTemplate $tokens "..,values,exposed-service.template.yml" "..,values,$($_.Name)-values.yml"
+}
+
+$($ingress.frontendIngress).PSObject.Properties | ForEach-Object {
+    $tokens.serviceHostname = $_.Value.host
+    $tokens.servicePath = $_.Value.path
+    $tokens.servicePathType = $_.Value.pathType
+    $tokens.serviceAgwSslCert = $_.Value.sslCert
+    PopulateTemplate $tokens "..,values,frontend-service.template.yml" "..,values,$($_.Name)-values.yml"
 }

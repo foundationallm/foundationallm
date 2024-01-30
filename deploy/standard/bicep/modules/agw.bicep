@@ -99,7 +99,27 @@ resource main 'Microsoft.Network/applicationGateways@2023-05-01' = {
     loadDistributionPolicies: []
     privateLinkConfigurations: []
     redirectConfigurations: []
-    rewriteRuleSets: []
+    rewriteRuleSets: [
+      {
+        name: 'access-control-allow-origin-header'
+        properties: {
+          rewriteRules: [
+            {
+              name: 'access-control-allow-origin-header'
+              ruleSequence: 1
+              actionSet: {
+                responseHeaderConfigurations: [
+                  {
+                    headerName: 'Access-Control-Allow-Origin'
+                    headerValue: '*'
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
     routingRules: []
     sslProfiles: []
     trustedClientCertificates: []
