@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProvider;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace FoundationaLLM.Common.Services.ResourceProviders
 {
@@ -42,6 +43,15 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// The name of the resource provider. Must be overridden in derived classes.
         /// </summary>
         protected virtual string _name => throw new NotImplementedException();
+
+        /// <summary>
+        /// Default JSON serialization settings.
+        /// </summary>
+        protected virtual JsonSerializerSettings _serializerSettings => new()
+        {
+            TypeNameHandling = TypeNameHandling.Auto,
+            Formatting = Formatting.Indented
+        };
 
         /// <inheritdoc/>
         public string Name => _name;

@@ -26,11 +26,6 @@ namespace FoundationaLLM.Agent.ResourceProviders
             storageService,
             logger)
     {
-        private readonly JsonSerializerSettings _serializerSettings = new()
-        {
-            TypeNameHandling = TypeNameHandling.Auto,
-            Formatting = Formatting.Indented
-        };
         private ConcurrentDictionary<string, AgentReference> _agentReferences = [];
 
         private const string AGENT_REFERENCES_FILE_NAME = "_agent-references.json";

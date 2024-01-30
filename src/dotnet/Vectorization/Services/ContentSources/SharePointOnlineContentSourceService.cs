@@ -119,7 +119,7 @@ namespace FoundationaLLM.Vectorization.Services.ContentSources
                 var certificate = await GetCertificate();
                 var services = new ServiceCollection();
                 services.AddLogging();
-                services.AddPnPCore(async options =>
+                services.AddPnPCore(options =>
                 {
                     var authProvider = new X509CertificateAuthenticationProvider(
                         _settings.ClientId,

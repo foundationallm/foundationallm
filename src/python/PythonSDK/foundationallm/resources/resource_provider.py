@@ -41,10 +41,10 @@ class ResourceProvider:
         match provider_type:
             case "FoundationaLLM.Prompt":
                 # return the content of the referenced prompt file
-                full_path = f"{provider_type}/{resource}.txt"
+                full_path = f"{provider_type}/{resource}.json"
                 file_content = self.blob_storage_manager.read_file_content(full_path)
                 if file_content is not None:
-                    return file_content.decode("utf-8")
+                    return json.loads(file_content.decode("utf-8"))
                 
             case "FoundationaLLM.Vectorization":                
                 if resource_type == "indexingprofiles":
