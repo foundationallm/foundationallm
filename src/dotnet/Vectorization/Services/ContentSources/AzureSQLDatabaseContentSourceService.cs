@@ -73,7 +73,7 @@ namespace FoundationaLLM.Vectorization.Services.ContentSources
                             if (!reader.HasRows)
                                 throw new VectorizationException($"The file {identifierValue} was not found in the database.");
                             await reader.ReadAsync();
-                            return new BinaryData(reader[contentColumnName]);
+                            return new BinaryData(reader.GetSqlBytes(0).Buffer!);
                         }
                     }
                 }

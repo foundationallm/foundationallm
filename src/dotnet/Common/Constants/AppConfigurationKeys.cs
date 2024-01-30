@@ -13,6 +13,10 @@ namespace FoundationaLLM.Common.Constants
     public static class AppConfigurationKeys
     {
         /// <summary>
+        /// The key for the FoundationaLLM:Instance:Id app configuration setting.
+        /// </summary>
+        public const string FoundationaLLM_Instance_Id = "FoundationaLLM:Instance:Id";
+        /// <summary>
         /// The key for the FoundationaLLM:AgentHub:AgentMetadata:StorageContainer app configuration setting.
         /// </summary>
         public const string FoundationaLLM_AgentHub_AgentMetadata_StorageContainer = "FoundationaLLM:AgentHub:AgentMetadata:StorageContainer";
@@ -661,6 +665,10 @@ namespace FoundationaLLM.Common.Constants
     public static class AppConfigurationKeyFilters
     {
         /// <summary>
+        /// The key filter for the FoundationaLLM:Instance:* app configuration settings.
+        /// </summary>
+        public const string FoundationaLLM_Instance = "FoundationaLLM:Instance:*";
+        /// <summary>
         /// The key filter for the FoundationaLLM:Branding:* app configuration settings.
         /// </summary>
         public const string FoundationaLLM_Branding = "FoundationaLLM:Branding:*";
@@ -720,6 +728,10 @@ namespace FoundationaLLM.Common.Constants
         /// The key filter for the FoundationaLLM:Vectorization:* app configuration settings.
         /// </summary>
         public const string FoundationaLLM_Vectorization = "FoundationaLLM:Vectorization:*";
+        /// <summary>
+        /// The key filter for the FoundationaLLM:Agent:* app configuration settings.
+        /// </summary>
+        public const string FoundationaLLM_Agent = "FoundationaLLM:Agent:*";
     }
 
     /// <summary>
@@ -727,6 +739,10 @@ namespace FoundationaLLM.Common.Constants
     /// </summary>
     public static class AppConfigurationKeySections
     {
+        /// <summary>
+        /// The key section for the FoundationaLLM:Instance app configuration settings.
+        /// </summary>
+        public const string FoundationaLLM_Instance = "FoundationaLLM:Instance";
         /// <summary>
         /// The key section for the FoundationaLLM:Branding app configuration settings.
         /// </summary>
@@ -817,10 +833,6 @@ namespace FoundationaLLM.Common.Constants
         /// </summary>
         public const string FoundationaLLM_Vectorization_StateService = "FoundationaLLM:Vectorization:StateService:Storage";
         /// <summary>
-        /// The key section for the FoundationaLLM:Vectorization:ResourceProviderService:Storage app configuration settings.
-        /// </summary>
-        public const string FoundationaLLM_Vectorization_ResourceProviderService_Storage = "FoundationaLLM:Vectorization:ResourceProviderService:Storage";
-        /// <summary>
         /// The key section for the FoundationaLLM:Vectorization:ContentSources app configuration settings.
         /// </summary>
         public const string FoundationaLLM_Vectorization_ContentSources = "FoundationaLLM:Vectorization:ContentSources";
@@ -833,5 +845,19 @@ namespace FoundationaLLM.Common.Constants
         /// The key section for the FoundationaLLM:Vectorization:AzureAISearchIndexingService app configuration settings.
         /// </summary>
         public const string FoundationaLLM_Vectorization_AzureAISearchIndexingService = "FoundationaLLM:Vectorization:AzureAISearchIndexingService";
+
+        #region Resource providers
+
+        /// <summary>
+        /// The key section for the FoundationaLLM:Vectorization:ResourceProviderService:Storage app configuration settings.
+        /// </summary>
+        public const string FoundationaLLM_Vectorization_ResourceProviderService_Storage = "FoundationaLLM:Vectorization:ResourceProviderService:Storage";
+
+        /// <summary>
+        /// The key section for the FoundationaLLM:Agent:ResourceProviderService:Storage app configuration settings.
+        /// </summary>
+        public const string FoundationaLLM_Agent_ResourceProviderService_Storage = "FoundationaLLM:Agent:ResourceProviderService:Storage";
+
+        #endregion
     }
 }

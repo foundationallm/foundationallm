@@ -45,7 +45,7 @@ export default defineNuxtConfig({
 		...(buildLoadingTemplate
 			? {
 					loadingTemplate: () => buildLoadingTemplate,
-			  }
+				}
 			: {}),
 		port: 3001,
 	},

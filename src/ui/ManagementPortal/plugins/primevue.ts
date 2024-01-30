@@ -11,6 +11,8 @@ import Divider from 'primevue/divider';
 import Dropdown from 'primevue/dropdown';
 import Avatar from 'primevue/avatar';
 import RadioButton from 'primevue/radiobutton';
+import ToggleButton from 'primevue/togglebutton';
+
 import { defineNuxtPlugin } from '#app';
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -25,6 +27,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 	nuxtApp.vueApp.component('Dropdown', Dropdown);
 	nuxtApp.vueApp.component('Avatar', Avatar);
 	nuxtApp.vueApp.component('RadioButton', RadioButton);
+	nuxtApp.vueApp.component('ToggleButton', ToggleButton);
 
 	nuxtApp.vueApp.use(ToastService);
 	nuxtApp.vueApp.directive('tooltip', Tooltip);

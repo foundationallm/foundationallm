@@ -20,6 +20,7 @@ using FoundationaLLM.Vectorization.Services.VectorizationStates;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
+using FoundationaLLM.Common.Models.Configuration.Instance;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +59,8 @@ builder.Services.AddCors(policyBuilder =>
 });
 
 // Add configurations to the container
+builder.Services.AddOptions<InstanceSettings>()
+                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Instance));
 
 builder.Services.AddOptions<VectorizationWorkerSettings>()
     .Bind(builder.Configuration.GetSection(AppConfigurationKeys.FoundationaLLM_Vectorization_VectorizationWorker));

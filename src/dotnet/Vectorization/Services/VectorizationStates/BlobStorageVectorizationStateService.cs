@@ -77,6 +77,7 @@ namespace FoundationaLLM.Vectorization.Services.VectorizationStates
                         BLOB_STORAGE_CONTAINER_NAME,
                         artifactPath,
                         artifact.Content!,
+                        default,
                         default);
                     artifact.CanonicalId = artifactPath;
                 }
@@ -86,6 +87,7 @@ namespace FoundationaLLM.Vectorization.Services.VectorizationStates
                 BLOB_STORAGE_CONTAINER_NAME,
                 $"{persistenceIdentifier}.json",
                 content,
+                default,
                 default);
         }
     }

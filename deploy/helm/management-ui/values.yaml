@@ -28,6 +28,7 @@ ingress:
 env:
   configmap: 
     - name: AZURE_CLIENT_ID
+    - name: NUXT_BASE_URL
   secret:
     - name: NUXT_APP_CONFIG_ENDPOINT
   values:

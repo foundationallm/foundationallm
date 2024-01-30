@@ -7,6 +7,7 @@ import { AppConfigurationClient } from '@azure/app-configuration';
 
 const allowedKeys = [
 	'FoundationaLLM:APIs:ManagementAPI:APIUrl',
+	'FoundationaLLM:Instance:Id',
 	
 	'FoundationaLLM:Management:Entra:ClientId',
 	'FoundationaLLM:Management:Entra:Instance',

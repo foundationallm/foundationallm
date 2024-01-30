@@ -40,6 +40,13 @@ namespace FoundationaLLM.Common.Interfaces
         IList<T> GetResources<T>(string resourcePath) where T : class;
 
         /// <summary>
+        /// Gets the resources based on the logical path of the resource type.
+        /// </summary>
+        /// <param name="resourcePath">The logical path of the resource type.</param>
+        /// <returns>The serialized form of resources corresponding to the specified logical path.</returns>
+        Task<string> GetResourcesAsync(string resourcePath);
+
+        /// <summary>
         /// Gets a resource based on its logical path.
         /// </summary>
         /// <typeparam name="T">The type of the resource.</typeparam>
@@ -80,6 +87,14 @@ namespace FoundationaLLM.Common.Interfaces
         void UpsertResource<T>(string resourcePath, T resource) where T : class;
 
         /// <summary>
+        /// Creates or updates a resource based on its logical path.
+        /// </summary>
+        /// <param name="resourcePath">The logical path of the resource.</param>
+        /// <param name="serializedResource">The serialized instance of the resource being created or updated.</param>
+        /// <returns></returns>
+        Task UpsertResourceAsync(string resourcePath, string serializedResource);
+
+        /// <summary>
         /// Deletes a resource based on its logical path.
         /// </summary>
         /// <typeparam name="T">The type of the resource.</typeparam>
@@ -93,5 +108,12 @@ namespace FoundationaLLM.Common.Interfaces
         /// <typeparam name="T">The type of the resource.</typeparam>
         /// <param name="resourcePath">The logical path of the resource.</param>
         void DeleteResource<T>(string resourcePath) where T : class;
+
+        /// <summary>
+        /// Deletes a resource based on its logical path.
+        /// </summary>
+        /// <param name="resourcePath">The logical path of the resource.</param>
+        /// <returns></returns>
+        Task DeleteResourceAsync(string resourcePath);
     }
 }

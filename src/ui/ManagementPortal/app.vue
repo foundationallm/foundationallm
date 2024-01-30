@@ -94,8 +94,32 @@ main {
 	margin-left: 4px;
 }
 
+.mr-1 {
+	margin-right: 4px;
+}
+
+.mt-2 {
+	margin-top: 8px;
+}
+
 .w-100 {
 	width: 100%;
+}
+
+.h-100 {
+	height: 100%;
+}
+
+.d-flex {
+	display: flex;
+}
+
+.align-center {
+	align-items: center;
+}
+
+.justify-content-end {
+	justify-content: end;
 }
 
 .justify-self-end {
