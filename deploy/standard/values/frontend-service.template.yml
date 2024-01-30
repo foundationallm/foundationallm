@@ -18,7 +18,7 @@ azureWorkloadIdentity:
   vectorizationApiClientId: {{vectorizationApiMiClientId}}
   vectorizationJobClientId: {{vectorizationJobMiClientId}}
   tenantId: {{tenantId}}
-baseUrl: https://{{serviceHostname}}{{servicePath}}
+baseUrl: {{servicePath}}
 
 ingress:
   enabled: true

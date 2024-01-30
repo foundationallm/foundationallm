@@ -156,7 +156,7 @@ $tokens.chatEntraClientId = $entraClientIds.chat
 $tokens.coreEntraClientId = $entraClientIds.core
 $tokens.managementApiEntraClientId = $entraClientIds.managementapi
 $tokens.managementEntraClientId = $entraClientIds.managementUi
-$tokens.vectorizationEntraClientId = $entraClientIds.vectorizationapi
+$tokens.vectorizationApiEntraClientId = $entraClientIds.vectorizationapi
 $tokens.cognitiveSearchEndpointUri = $cogSearchUri
 
 $tokens.coreApiHostname = $ingress.apiIngress.coreapi.host

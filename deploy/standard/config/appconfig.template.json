@@ -18,6 +18,18 @@
     "value": "foundationallm-storage-connectionstring"
   },
   {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Agent:ResourceProviderService:Storage:AuthenticationType",
+    "value": "ConnectionString"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Agent:ResourceProviderService:Storage:ConnectionString",
+    "value": "foundationallm-storage-connectionstring"
+  },
+  {
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:AgentFactoryAPI:APIKey",
@@ -72,6 +84,12 @@
     "value": "foundationallm-app-insights-connection-string"
   },
   {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:APIs:CoreAPI:BypassGatekeeper",
+    "value": "false"
+  },
+  {
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:DataSourceHubAPI:APIKey",
@@ -106,6 +124,18 @@
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:GatekeeperAPI:AppInsightsConnectionString",
     "value": "foundationallm-app-insights-connection-string"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:APIs:GatekeeperAPI:Configuration:EnableAzureContentSafety",
+    "value": "true"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:APIs:GatekeeperAPI:Configuration:EnableMicrosoftPresidio",
+    "value": "true"
   },
   {
     "keyVault": false,
@@ -154,6 +184,18 @@
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:ManagementAPI:APIUrl",
     "value": "https://{{managementApiHostname}}/management"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:APIs:ManagementAPI:AppInsightsConnectionString",
+    "value": "foundationallm-app-insights-connection-string"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Prompt:ResourceProviderService:Storage:AuthenticationType",
+    "value": "ConnectionString"
   },
   {
     "keyVault": true,
@@ -374,6 +416,12 @@
   {
     "keyVault": false,
     "featureFlag": false,
+    "key": "FoundationaLLM:Branding:AccentTextColor",
+    "value": "#fff"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
     "key": "FoundationaLLM:Branding:AllowAgentSelection",
     "value": "default, anomaly, hai, movies, sdzwa, weather, weather-sec"
   },
@@ -446,6 +494,30 @@
   {
     "keyVault": false,
     "featureFlag": false,
+    "key": "FoundationaLLM:Branding:PrimaryButtonBackgroundColor",
+    "value": "#5472d4"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Branding:PrimaryButtonTextColor",
+    "value": "#fff"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Branding:SecondaryButtonBackgroundColor",
+    "value": "#70829a"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Branding:SecondaryButtonTextColor",
+    "value": "#fff"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
     "key": "FoundationaLLM:Chat:Entra:CallbackPath",
     "value": "/signin-oidc"
   },
@@ -471,7 +543,7 @@
     "keyVault": false,
     "featureFlag": false,
     "key": "FoundationaLLM:Chat:Entra:Scopes",
-    "value": "api://{{coreEntraClientId}}/Data.Read"
+    "value": "api://FoundationaLLM-Auth/Data.Read"
   },
   {
     "keyVault": false,
@@ -711,7 +783,7 @@
     "keyVault": false,
     "featureFlag": false,
     "key": "FoundationaLLM:Management:Entra:Scopes",
-    "value": "api://{{managementEntraClientId}}/Data.Manage"
+    "value": "api://FoundationaLLM-Auth/Data.Manage"
   },
   {
     "keyVault": false,
@@ -758,6 +830,24 @@
   {
     "keyVault": false,
     "featureFlag": false,
+    "key": "FoundationaLLM:OpenAI:API:Endpoint",
+    "value": "{{openAiEndpointUri}}"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:OpenAI:API:Key",
+    "value": "foundationallm-azureopenai-api-key"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:OpenAI:API:Temperature",
+    "value": "0"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
     "key": "FoundationaLLM:PromptHub:PromptMetadata:StorageContainer",
     "value": "prompts"
   },
@@ -770,8 +860,98 @@
   {
     "keyVault": false,
     "featureFlag": false,
-    "key": "FoundationaLLM:Vectorization:VectorizationWorker",
-    "value": "{\"RequestManagers\": [{\"RequestSourceName\": \"extract\",\"MaxHandlerInstances\": 1},{\"RequestSourceName\": \"partition\",\"MaxHandlerInstances\": 1},{\"RequestSourceName\": \"embed\",\"MaxHandlerInstances\": 1},{\"RequestSourceName\": \"index\",\"MaxHandlerInstances\": 1}],\"RequestSources\": [{\"Name\": \"extract\",\"ConnectionConfigurationName\": \"Extract:ConnectionString\",\"VisibilityTimeoutSeconds\": 120},{\"Name\": \"partition\",\"ConnectionConfigurationName\": \"Partition:ConnectionString\",\"VisibilityTimeoutSeconds\": 120},{\"Name\": \"embed\",\"ConnectionConfigurationName\": \"Embed:ConnectionString\",\"VisibilityTimeoutSeconds\": 120},{\"Name\": \"index\",\"ConnectionConfigurationName\": \"Index:ConnectionString\",\"VisibilityTimeoutSeconds\": 120}],\"QueuingEngine\": \"AzureStorageQueue\"}"
+    "key": "FoundationaLLM:Refinement",
+    "value": ""
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:SemanticKernelAPI:OpenAI:Key",
+    "value": "foundationallm-azureopenai-api-key"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:SemanticKernelAPI:OpenAI.ChatCompletionPromptName",
+    "value": "RetailAssistant.Default"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:SemanticKernelAPI:OpenAI.CompletionsDeployment",
+    "value": "completions"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:SemanticKernelAPI:OpenAI.CompletionsDeploymentMaxTokens",
+    "value": "8096"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:SemanticKernelAPI:OpenAI.EmbeddingsDeployment",
+    "value": "embeddings"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:SemanticKernelAPI:OpenAI.EmbeddingsDeploymentMaxTokens",
+    "value": "8191"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:SemanticKernelAPI:OpenAI.Endpoint",
+    "value": "{{openAiEndpointUri}}"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.CompletionsMaxTokens",
+    "value": "300"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.CompletionsMinTokens",
+    "value": "50"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.MemoryMaxTokens",
+    "value": "3000"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.MemoryMinTokens",
+    "value": "1500"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.MessagesMaxToken",
+    "value": "3000"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.MessagesMinTokens",
+    "value": "100"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.SystemMaxTokens",
+    "value": "1500"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:SemanticKernelAPI:OpenAI.ShortSummaryPromptName",
+    "value": "Summarizer.TwoWords"
   },
   {
     "keyVault": true,
@@ -844,6 +1024,12 @@
     "featureFlag": false,
     "key": "FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:Endpoint",
     "value": "{{openAiEndpointUri}}"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Vectorization:VectorizationWorker",
+    "value": "{\\\"RequestManagers\\\": [{\\\"RequestSourceName\\\": \\\"extract\\\",\\\"MaxHandlerInstances\\\": 1},{\\\"RequestSourceName\\\": \\\"partition\\\",\\\"MaxHandlerInstances\\\": 1},{\\\"RequestSourceName\\\": \\\"embed\\\",\\\"MaxHandlerInstances\\\": 1},{\\\"RequestSourceName\\\": \\\"index\\\",\\\"MaxHandlerInstances\\\": 1}],\\\"RequestSources\\\": [{\\\"Name\\\": \\\"extract\\\",\\\"ConnectionConfigurationName\\\": \\\"Extract:ConnectionString\\\",\\\"VisibilityTimeoutSeconds\\\": 120},{\\\"Name\\\": \\\"partition\\\",\\\"ConnectionConfigurationName\\\": \\\"Partition:ConnectionString\\\",\\\"VisibilityTimeoutSeconds\\\": 120},{\\\"Name\\\": \\\"embed\\\",\\\"ConnectionConfigurationName\\\": \\\"Embed:ConnectionString\\\",\\\"VisibilityTimeoutSeconds\\\": 120},{\\\"Name\\\": \\\"index\\\",\\\"ConnectionConfigurationName\\\": \\\"Index:ConnectionString\\\",\\\"VisibilityTimeoutSeconds\\\": 120}],\\\"QueuingEngine\\\": \\\"AzureStorageQueue\\\"}"
   },
   {
     "keyVault": true,
