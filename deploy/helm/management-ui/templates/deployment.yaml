@@ -67,7 +67,7 @@ spec:
               protocol: TCP
           readinessProbe:
             httpGet:
-              path: /status
+              path: {{ .Values.baseUrl }}/status
               port: 3000
             periodSeconds: 3
             timeoutSeconds: 1

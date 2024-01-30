@@ -200,6 +200,12 @@
   {
     "keyVault": true,
     "featureFlag": false,
+    "key": "FoundationaLLM:Prompt:ResourceProviderService:Storage:ConnectionString",
+    "value": "foundationallm-storage-connectionstring"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
     "key": "FoundationaLLM:APIs:PromptHubAPI:APIKey",
     "value": "foundationallm-apis-prompt-hub-api-apikey"
   },
@@ -759,7 +765,7 @@
     "keyVault": false,
     "featureFlag": false,
     "key": "FoundationaLLM:Management:Entra:CallbackPath",
-    "value": "/signin-oidc"
+    "value": "/management/signin-oidc"
   },
   {
     "keyVault": false,
@@ -1048,6 +1054,12 @@
     "featureFlag": false,
     "key": "FoundationaLLM:Vectorization:AzureAISearchIndexingService:Endpoint",
     "value": "{{cognitiveSearchEndpointUri}}"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Vectorization:AzureAISearchIndexingService:QueryAPIKey",
+    "value": "foundationallm-cognitivesearch-key"
   },
   {
     "keyVault": false,
