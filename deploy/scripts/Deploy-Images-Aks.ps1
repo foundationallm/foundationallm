@@ -1,9 +1,12 @@
 #! /usr/bin/pwsh
 
 Param(
+    # Mandatory
+    [parameter(Mandatory = $true)][string]$aksName,
+    [parameter(Mandatory = $true)][string]$resourceGroup,
+
+    # Optional
     [parameter(Mandatory = $false)][string]$name = "foundationallm",
-    [parameter(Mandatory = $false)][string]$aksName,
-    [parameter(Mandatory = $false)][string]$resourceGroup,
     [parameter(Mandatory = $false)][string]$tag = "latest",
     [parameter(Mandatory = $false)][string]$charts = "*",
     [parameter(Mandatory = $false)][string]$valuesFile = "",
@@ -14,8 +17,13 @@ Param(
     [parameter(Mandatory = $false)][bool]$autoscale = $false
 )
 
+Set-StrictMode -Version 3.0
+$ErrorActionPreference = "Stop"
+
 function validate {
     $valid = $true
+
+    Invoke-Expression "helm version"
 
     if ([string]::IsNullOrEmpty($aksName)) {
         Write-Host "No AKS name. Use -aksName to specify name" -ForegroundColor Red
@@ -87,6 +95,11 @@ if ($tlsEnv -ne "custom" -and [String]::IsNullOrEmpty($tlsHost)) {
 
     if (-not $aksHost) {
         $aksHost = $(az aks show -n $aksName -g $resourceGroup --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName -o json | ConvertFrom-Json)
+    }
+
+    if (-not $aksHost) {
+        Write-Host "Could not find the AKS host. Please check if the AKS is properly configured." -ForegroundColor Red
+        exit 1
     }
 
     Write-Host "aksHost is $aksHost" -ForegroundColor Yellow
@@ -199,7 +212,12 @@ if ($charts.Contains("chat-ui") -or $charts.Contains("*")) {
     Invoke-Expression "$command"
 }
 
-
+if ($charts.Contains("management-ui") -or $charts.Contains("*")) {
+    Write-Host "Webapp chart - management" -ForegroundColor Yellow
+    $command = "helm upgrade --install $name-management oci://ghcr.io/solliancenet/foundationallm/helm/management-ui -f ../values/managementui-values.yml"
+    $command = createHelmCommand $command
+    Invoke-Expression "$command"
+}
 
 # Write-Host " --------------------------------------------------------"
 # Write-Host "Entering holding pattern to wait for proper backend API initialization"
