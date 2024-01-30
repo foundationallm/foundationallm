@@ -164,7 +164,6 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
         }
       }
     }
-    //DPS:  CPU count hit errors with subscription limitation for VCPUs in AKS.  Revist later
     agentPoolProfiles: [
       {
         count: 1
