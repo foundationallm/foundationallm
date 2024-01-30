@@ -36,13 +36,13 @@ param timestamp string = utcNow()
 param vnetId string
 
 param capacity object = {
-  completions: 1
-  embeddings: 1
+  completions: 10
+  embeddings: 10
 }
 
 /** Locals **/
 @description('KeyVault resource suffix')
-var kvResourceSuffix = '${project}-${environmentName}-${location}-ops' 
+var kvResourceSuffix = '${project}-${environmentName}-${location}-ops'
 
 @description('Resource Suffix used in naming resources.')
 var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
