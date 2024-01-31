@@ -1,0 +1,14 @@
+# APIM/OpenAI
+{{apimPrivateIp}} {{apimFqdn}}
+
+# App Configuration
+{{appConfigPrivateIp}} {{appConfigFqdn}}
+
+# Cognitive Search
+{{cognitiveSearchPrivateIp}} {{cognitiveSearchFqdn}}
+
+# Content Safety
+{{contentSafetyPrivateIp}} {{contentSafetyFqdn}}
+
+# Cosmos
+{{cosmosPrivateIp}} {{cosmosFqdn}}
