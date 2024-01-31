@@ -8,6 +8,7 @@ Param(
     [parameter(Mandatory = $false)][bool]$init = $true
 )
 
+Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable)
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 

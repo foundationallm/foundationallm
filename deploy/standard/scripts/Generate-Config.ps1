@@ -7,7 +7,8 @@ Param (
     [parameter(Mandatory = $true)][string]$resourceSuffix,
     [parameter(Mandatory = $true)][object]$ingress
 )
-    
+
+Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable)
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
@@ -107,6 +108,9 @@ $services = @{
 
 ### Getting Resources
 $tokens = @{}
+# Getting Vectorization Config
+
+$vectorizationConfig = $(Get-Content -Raw -Path "../config/vectorization.json" | ConvertFrom-Json | ConvertTo-Json -Compress).Replace('"',  '\"')
 
 $appConfigInstances = @(az appconfig show -n "appconfig-$resourceSuffix-ops" -g $($resourceGroups.ops) -o json | ConvertFrom-Json)
 if ($appConfigInstances.Length -lt 1) {
@@ -147,6 +151,8 @@ $cogSearch = $(az search service list -g $($resourceGroups.vec) --query "[].{nam
 $cogSearch = EnsureAndReturnFirstItem $cogSearch "Cognitive Search"
 $cogSearchUri = "http://$($cogSearch.name).search.windows.net"
 
+
+
 # Setting tokens
 $tokens.instanceId = $instanceId
 
@@ -180,6 +186,7 @@ $tokens.promptHubApiMiClientId = $services["prompthubapi"].miClientId
 $tokens.semanticKernelApiMiClientId = $services["semantickernelapi"].miClientId
 $tokens.vectorizationApiMiClientId = $services["vectorizationapi"].miClientId
 $tokens.vectorizationJobMiClientId = $services["vectorizationjob"].miClientId
+$tokens.vectorizationConfig = $vectorizationConfig
 
 $tokens.tenantId = $tenantId
 $tokens.appConfigEndpoint = $appConfigEndpoint

@@ -1,3 +1,5 @@
+#!/usr/bin/env pwsh
+
 Param (
     [parameter(Mandatory = $true)][string]$resourceGroup,
     [parameter(Mandatory = $true)][string]$location,
@@ -46,6 +48,7 @@ for ( $idx = 0; $idx -lt $config.count; $idx++ )
             --yes
     }
 
+    # Avoid rate limiting :( (This limits to 20 requests per second according to CoPilot but I think it would be 5.  What do I know?)
     Start-Sleep -Milliseconds 200
 }
 
