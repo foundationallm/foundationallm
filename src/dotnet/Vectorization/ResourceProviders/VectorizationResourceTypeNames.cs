@@ -19,7 +19,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         /// <summary>
         /// Text partitioning profiles.
         /// </summary>
-        public const string TextPartitioningProfiles = "textpartitionprofiles";
+        public const string TextPartitioningProfiles = "textpartitioningprofiles";
 
         /// <summary>
         /// Text embedding profiles.

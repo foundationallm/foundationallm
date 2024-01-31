@@ -155,7 +155,7 @@ Default structure for the `vectorization-content-source-profiles.json` file:
 
 ```json
 {
-    "ContentSourceProfiles": [
+    "Profiles": [
         {
             "Name": "DefaultAzureDataLake",
             "Type": "AzureDataLake",
@@ -184,7 +184,7 @@ Default structure for the `vectorization-text-partitioning-profiles.json` file:
 
 ```json
 {
-    "TextPartitioningProfiles": [
+    "Profiles": [
         {
             "Name": "DefaultTokenTextPartition",
             "ObjectId": "/instances/<instance_id>/providers/FoundationaLLM.Vectorization/textpartitioningprofiles/DefaultTokenTextPartition",
@@ -212,7 +212,7 @@ Default structure for the `vectorization-text-embedding-profiles.json` file:
 
 ```json
 {
-    "TextEmbeddingProfiles": [
+    "Profiles": [
         {
             "Name": "AzureOpenAI_Embedding",
             "ObjectId": "/instances/<instance_id>/providers/FoundationaLLM.Vectorization/textembeddingprofiles/AzureOpenAI_Embedding",
@@ -242,7 +242,7 @@ Default structure for the `vectorization-indexing-profiles.json` file:
 
 ```json
 {
-    "IndexingProfiles": [
+    "Profiles": [
         {
             "Name": "AzureAISearch_Default_001",
             "ObjectId": "/instances/<instance_id>/providers/FoundationaLLM.Vectorization/indexingprofiles/AzureAISearch_Default_001",
