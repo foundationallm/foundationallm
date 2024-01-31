@@ -56,14 +56,14 @@ Write-Host "Configuration file used is $valuesFile" -ForegroundColor Yellow
 
 if ($charts.Contains("chat-ui") -or  $charts.Contains("*")) {
     Write-Host "Webapp chart - web" -ForegroundColor Yellow
-    $command = "helm upgrade --install $name-web oci://ghcr.io/solliancenet/foundationallm/helm/chat-ui -f ../values/chatui-values.yml"
+    $command = "helm upgrade --install $name-web oci://ghcr.io/solliancenet/foundationallm/helm/chat-ui --values ../values/chatui-values.yml"
     $command = createHelmCommand $command
     Invoke-Expression "$command"
 }
 
 if ($charts.Contains("management-ui") -or  $charts.Contains("*")) {
     Write-Host "Webapp chart - management" -ForegroundColor Yellow
-    $command = "helm upgrade --install $name-management oci://ghcr.io/solliancenet/foundationallm/helm/management-ui -f ../values/managementui-values.yml"
+    $command = "helm upgrade --install $name-management oci://ghcr.io/solliancenet/foundationallm/helm/management-ui --values ../values/managementui-values.yml"
     $command = createHelmCommand $command
     Invoke-Expression "$command"
 }
