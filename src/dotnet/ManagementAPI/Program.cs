@@ -1,11 +1,5 @@
 using Asp.Versioning;
 using Azure.Identity;
-using Microsoft.ApplicationInsights.AspNetCore.Extensions;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Options;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Net.Http;
-using FoundationaLLM.Agent.ResourceProviders;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
@@ -21,11 +15,12 @@ using FoundationaLLM.Management.Interfaces;
 using FoundationaLLM.Management.Models.Configuration;
 using FoundationaLLM.Management.Services;
 using FoundationaLLM.Management.Services.APIServices;
-using FoundationaLLM.Prompt.ResourceProviders;
-using FoundationaLLM.Vectorization.ResourceProviders;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 using Polly;
-using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace FoundationaLLM.Management.API
 {
@@ -98,93 +93,9 @@ namespace FoundationaLLM.Management.API
             // Resource providers
             //----------------------------
 
-            #region Vectorization resource provider
-
-            builder.Services.AddOptions<BlobStorageServiceSettings>(
-                DependencyInjectionKeys.FoundationaLLM_Vectorization_ResourceProviderService)
-                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Vectorization_ResourceProviderService_Storage));
-
-            builder.Services.AddSingleton<IStorageService, BlobStorageService>( sp =>
-            {
-                var settings = sp.GetRequiredService<IOptionsMonitor<BlobStorageServiceSettings>>()
-                    .Get(DependencyInjectionKeys.FoundationaLLM_Vectorization_ResourceProviderService);
-                var logger = sp.GetRequiredService<ILogger<BlobStorageService>>();
-
-                return new BlobStorageService(
-                    Options.Create<BlobStorageServiceSettings>(settings),
-                    logger)
-                {
-                    InstanceName = DependencyInjectionKeys.FoundationaLLM_Vectorization_ResourceProviderService
-                };
-            });
-
-            // Register the resource provider services (cannot use Keyed singletons due to the Microsoft Identity package being incompatible):
-            builder.Services.AddSingleton<IResourceProviderService, VectorizationResourceProviderService>(sp =>
-                new VectorizationResourceProviderService(
-                    sp.GetRequiredService<IOptions<InstanceSettings>>(),
-                    sp.GetRequiredService<IEnumerable<IStorageService>>()
-                        .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_Vectorization_ResourceProviderService),
-                    sp.GetRequiredService<ILogger<VectorizationResourceProviderService>>()));
-
-            #endregion
-
-            #region Agent resource provider
-
-            builder.Services.AddOptions<BlobStorageServiceSettings>(
-                DependencyInjectionKeys.FoundationaLLM_Agent_ResourceProviderService)
-                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Agent_ResourceProviderService_Storage));
-
-            builder.Services.AddSingleton<IStorageService, BlobStorageService>(sp =>
-            {
-                var settings = sp.GetRequiredService<IOptionsMonitor<BlobStorageServiceSettings>>()
-                    .Get(DependencyInjectionKeys.FoundationaLLM_Agent_ResourceProviderService);
-                var logger = sp.GetRequiredService<ILogger<BlobStorageService>>();
-
-                return new BlobStorageService(
-                    Options.Create<BlobStorageServiceSettings>(settings),
-                    logger)
-                {
-                    InstanceName = DependencyInjectionKeys.FoundationaLLM_Agent_ResourceProviderService
-                };
-            });
-
-            builder.Services.AddSingleton<IResourceProviderService, AgentResourceProviderService>(sp =>
-                new AgentResourceProviderService(
-                    sp.GetRequiredService<IOptions<InstanceSettings>>(),
-                    sp.GetRequiredService<IEnumerable<IStorageService>>()
-                        .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_Agent_ResourceProviderService),
-                    sp.GetRequiredService<ILogger<AgentResourceProviderService>>()));
-
-            #endregion
-
-            #region Prompt resource provider
-
-            builder.Services.AddOptions<BlobStorageServiceSettings>(
-                    DependencyInjectionKeys.FoundationaLLM_Prompt_ResourceProviderService)
-                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Prompt_ResourceProviderService_Storage));
-
-            builder.Services.AddSingleton<IStorageService, BlobStorageService>(sp =>
-            {
-                var settings = sp.GetRequiredService<IOptionsMonitor<BlobStorageServiceSettings>>()
-                    .Get(DependencyInjectionKeys.FoundationaLLM_Prompt_ResourceProviderService);
-                var logger = sp.GetRequiredService<ILogger<BlobStorageService>>();
-
-                return new BlobStorageService(
-                    Options.Create<BlobStorageServiceSettings>(settings),
-                    logger)
-                {
-                    InstanceName = DependencyInjectionKeys.FoundationaLLM_Prompt_ResourceProviderService
-                };
-            });
-
-            builder.Services.AddSingleton<IResourceProviderService, PromptResourceProviderService>(sp =>
-                new PromptResourceProviderService(
-                    sp.GetRequiredService<IOptions<InstanceSettings>>(),
-                    sp.GetRequiredService<IEnumerable<IStorageService>>()
-                        .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_Prompt_ResourceProviderService),
-                    sp.GetRequiredService<ILogger<PromptResourceProviderService>>()));
-
-            #endregion
+            builder.Services.AddVectorizationResourceProvider(builder.Configuration);
+            builder.Services.AddAgentResourceProvider(builder.Configuration);
+            builder.Services.AddPromptResourceProvider(builder.Configuration);
 
             // Activate all resource providers (give them a chance to initialize).
             builder.Services.ActivateSingleton<IEnumerable<IResourceProviderService>>();

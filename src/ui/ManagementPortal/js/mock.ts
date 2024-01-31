@@ -3,6 +3,7 @@ import type { AgentIndex } from './types';
 export const mockGetAgentIndexesResponse: AgentIndex[] = [
 	{
 		Name: 'AzureAISearch_Test_001',
+		ObjectId: '47893247',
 		Description: 'Azure AI Search index for vectorization testing.',
 		Indexer: 'AzureAISearchIndexer',
 		Settings: {
@@ -16,6 +17,7 @@ export const mockGetAgentIndexesResponse: AgentIndex[] = [
 	},
 	{
 		Name: 'sotu-index',
+		ObjectId: '25637942',
 		Description: 'Azure AI Search index for the State of the Union agent.',
 		Indexer: 'AzureAISearchIndexer',
 		Settings: {
@@ -36,6 +38,7 @@ export const mockGetAgentIndexesResponse: AgentIndex[] = [
 export const mockGetAgentDataSourcesResponse: AgentIndex[] = [
 	{
 		Name: 'AzureBlob_DataSource_1',
+		ObjectId: '90871234981',
 		Container: {
 			Name: 'documents',
 			Formats: [
@@ -55,6 +58,7 @@ export const mockGetAgentDataSourcesResponse: AgentIndex[] = [
 	},
 	{
 		Name: 'AzureBlob_DataSource_2',
+		ObjectId: '8931729038',
 		Container: {
 			Name: 'census_data',
 			Formats: [

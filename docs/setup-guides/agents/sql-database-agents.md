@@ -18,7 +18,9 @@ Backend configuration includes adding database password values into Azure Key Va
 A new secret must be added to Key Vault:
 
 - **Name**: `foundationallm-langchain-sqldatabase-{database-name}-password`, where `{database-name}` is the name of your database
-- **Value**: The password for the target PostgreSQL database.
+- **Value**: The password for the target SQL database.
+
+    ![Adding an Azure Key Vault reference with the SQL DB password.](./media/add-kv-reference.png "Azure Key Vault Reference")
 
 ### Add setting to App Configuration
 
@@ -26,6 +28,14 @@ A new key vault reference app configuration value must be added to Azure App Con
 
 - **Key**: `FoundationaLLM:LangChain:SQLDatabase:{DatabaseName}:Password`, where `{DatabaseName}` is the name of the target database.
 - **Secret**: The key vault reference should should point to the key vault secret created above.
+
+To add a Key Vault Reference, navigate to your deployment's App Configuration resource (`-appconfig`). Below **Operations**, select **Configuration explorer**, and create a new **Key Vault reference**.
+
+![Creating a new Key Vault Reference in Azure App Configuration.](./media/create-new-kv-reference.png "New Key-Vault Reference")
+
+Select your deployment's Key Vault, the secret you created previously, and the **Latest version** of that secret.
+
+![Populating the new App Configuration key with a Key Vault reference.](./media/populate-kv-reference.png "Populated Key-Vault Reference")
 
 ## Blob storage files
 

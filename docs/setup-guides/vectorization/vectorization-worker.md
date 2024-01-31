@@ -12,8 +12,10 @@ The following table describes the Azure artifacts required for the vectorization
 | `partition` | Azure storage queue used for the partition vectorization pipeline. Can be created on the storage account used for the other queues. |
 | `vectorization-state` | Azure storage container used for the vectorization state service. Can be created on the storage account used for the other queues. |
 | `resource-provider`| Azure storage container used for the internal states of the FoundationaLLM resource providers. |
-| `resource-provider/FoundationaLLM.Vectorization/vectorization-content-sources.json` | Azure storage blob used for the content sources managed by the `FoundationaLLM.Vectorization` resource provider. For more details, see [default vectorization content sources](#default-vectorization-content-sources). |
-| `resource-provider/FoundationaLLM.Vectorization/vectorization-text-partition-profiles.json` | Azure storage blob used for the text partitioning profiles managed by the `FoundationaLLM.Vectorization` resource provider. For more details, see [default vectorization text partitioning profiles](#default-vectorization-text-partitioning-profiles). |
+| `resource-provider/FoundationaLLM.Vectorization/vectorization-content-source-profiles.json` | Azure storage blob used for the content sources managed by the `FoundationaLLM.Vectorization` resource provider. For more details, see [default vectorization content source profiles](#default-vectorization-content-source-profiles).
+| `resource-provider/FoundationaLLM.Vectorization/vectorization-text-partition-profiles.json` | Azure storage blob used for the text partitioning profiles managed by the `FoundationaLLM.Vectorization` resource provider. For more details, see [default vectorization text partitioning profiles](#default-vectorization-text-partitioning-profiles).
+| `resource-provider/FoundationaLLM.Vectorization/vectorization-text-embedding-profiles.json` | Azure storage blob used for the text embedding profiles managed by the `FoundationaLLM.Vectorization` resource provider. For more details, see [default vectorization text embedding profiles](#default-vectorization-text-embedding-profiles).
+| `resource-provider/FoundationaLLM.Vectorization/vectorization-indexing-profiles.json` | Azure storage blob used for the indexing profiles managed by the `FoundationaLLM.Vectorization` resource provider. For more details, see [default vectorization indexing profiles](#default-vectorization-indexing-profiles).
 
 The following table describes the environment variables required for the vectorization pipelines.
 
@@ -37,6 +39,13 @@ The following table describes the required App Configuration parameters for the 
 | `FoundationaLLM:Vectorization:StateService:Storage:ConnectionString` | Key Vault secret name: `foundationallm-vectorization-state-connectionstring` | The connection string to the Azure Storage account used for the vectorization state service. |
 | `FoundationaLLM:Vectorization:ResourceProviderService:Storage:AuthenticationType` | | The authentication type used to connect to the underlying storage. Can be one of `AzureIdentity`, `AccountKey`, or `ConnectionString`. |
 | `FoundationaLLM:Vectorization:ResourceProviderService:Storage:ConnectionString` | Key Vault secret name: `foundationallm-vectorization-resourceprovider-storage-connectionstring` | The connection string to the Azure Storage account used for the vectorization state service. |
+| `FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:APIKey` | Key Vault secret name: `foundationallm-vectorization-semantickerneltextembedding-openai-apikey` | The API key used to connect to the Azure OpenAI service.
+| `FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:AuthenticationType` | | The authentication type used to connect to the Azure OpenAI service. Can be one of `AzureIdentity` or `APIKey`.
+| `FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:DeploymentName` | | The name of the Azure OpenAI model deployment. The default value is `embeddings`.
+| `FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:Endpoint` | | The endpoint of the Azure OpenAI service.
+| `FoundationaLLM:Vectorization:AzureAISearchIndexingService:APIKey` | Key Vault secret name: `foundationallm-vectorization-azureaisearch-apikey` | The API key used to connect to the Azure OpenAI service.
+| `FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType` | | The authentication type used to connect to the Azure OpenAI service. Can be one of `AzureIdentity` or `APIKey`.
+| `FoundationaLLM:Vectorization:AzureAISearchIndexingService:Endpoint` | | The endpoint of the Azure OpenAI service.
 
 > [!NOTE]
 > Refer to the [App Configuration values](../../app-configuration-values.md) page for more information on how to set these and other configuration values.
@@ -56,58 +65,67 @@ Default settings for the vectorization worker:
 
 ```json
 {
- "RequestManagers": [
-  {
-   "RequestSourceName": "extract",
-   "MaxHandlerInstances": 1
-  },
-  {
-   "RequestSourceName": "partition",
-   "MaxHandlerInstances": 1
-  },
-  {
-   "RequestSourceName": "embed",
-   "MaxHandlerInstances": 1
-  },
-  {
-   "RequestSourceName": "index",
-   "MaxHandlerInstances": 1
-  }
- ],
- "RequestSources": [
-  {
-   "Name": "extract",
-   "ConnectionConfigurationName": "Extract:ConnectionString",
-   "VisibilityTimeoutSeconds": 120
-  },
-  {
-   "Name": "partition",
-   "ConnectionConfigurationName": "Partition:ConnectionString",
-   "VisibilityTimeoutSeconds": 120
-  },
-  {
-   "Name": "embed",
-   "ConnectionConfigurationName": "Embed:ConnectionString",
-   "VisibilityTimeoutSeconds": 120
-  },
-  {
-   "Name": "index",
-   "ConnectionConfigurationName": "Index:ConnectionString",
-   "VisibilityTimeoutSeconds": 120
-  }
- ],
- "QueuingEngine": "AzureStorageQueue"
+    "RequestManagers": [
+        {
+            "RequestSourceName": "extract",
+            "MaxHandlerInstances": 1
+        },
+        {
+            "RequestSourceName": "partition",
+            "MaxHandlerInstances": 1
+        },
+        {
+            "RequestSourceName": "embed",
+            "MaxHandlerInstances": 1
+        },
+        {
+            "RequestSourceName": "index",
+            "MaxHandlerInstances": 1
+        }
+    ],
+    "RequestSources": [
+        {
+            "Name": "extract",
+            "ConnectionConfigurationName": "Extract:ConnectionString",
+            "VisibilityTimeoutSeconds": 120
+        },
+        {
+            "Name": "partition",
+            "ConnectionConfigurationName": "Partition:ConnectionString",
+            "VisibilityTimeoutSeconds": 120
+        },
+        {
+            "Name": "embed",
+            "ConnectionConfigurationName": "Embed:ConnectionString",
+            "VisibilityTimeoutSeconds": 120
+        },
+        {
+            "Name": "index",
+            "ConnectionConfigurationName": "Index:ConnectionString",
+            "VisibilityTimeoutSeconds": 120
+        }
+    ],
+    "QueuingEngine": "AzureStorageQueue"
 }
 ```
 
-### Default vectorization content sources
+### Default vectorization content source profiles
 
-Default structure for the `vectorization-content-sources.json` file:
+Default structure for the `vectorization-content-source-profiles.json` file:
 
 ```json
 {
- "ContentSources": [
- ]
+    "ContentSourceProfiles": [
+        {
+            "Name": "SDZWAJournals",
+            "Type": "AzureDataLake",
+            "Settings": {},
+            "ConfigurationReferences": {
+                "AuthenticationType": "FoundationaLLM:Vectorization:ContentSources:SDZWAJournals:AuthenticationType",
+                "ConnectionString": "FoundationaLLM:Vectorization:ContentSources:SDZWAJournals:ConnectionString"
+            }
+        }
+    ]
 }
 ```
 
@@ -117,18 +135,63 @@ Default structure for the `vectorization-text-partition-profiles.json` file:
 
 ```json
 {
- "TextPartitioningProfiles": [
-  {
-   "Name": "DefaultTokenTextPartition",
-   "TextSplitter": "TokenTextSplitter",
-   "TextSplitterSettings": {
-    "Tokenizer": "MicrosoftBPETokenizer",
-    "TokenizerEncoder": "cl100k_base",
-    "ChunkSizeTokens": "2000",
-    "OverlapSizeTokens": "200"
-   }
-  }
- ]
+    "TextPartitioningProfiles": [
+        {
+            "Name": "DefaultTokenTextPartition",
+            "TextSplitter": "TokenTextSplitter",
+            "TextSplitterSettings": {
+                "Tokenizer": "MicrosoftBPETokenizer",
+                "TokenizerEncoder": "cl100k_base",
+                "ChunkSizeTokens": "2000",
+                "OverlapSizeTokens": "200"
+            }
+        }
+    ]
+}
+```
+
+### Default vectorization text embedding profiles
+
+Default structure for the `vectorization-text-embedding-profiles.json` file:
+
+```json
+{
+    "TextEmbeddingProfiles": [
+        {
+            "Name": "AzureOpenAI_Embedding",
+            "TextEmbedding": "SemanticKernelTextEmbedding",
+            "Settings": {},
+            "ConfigurationReferences": {
+                "APIKey": "FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:APIKey",
+                "AuthenticationType": "FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:AuthenticationType",
+                "DeploymentName": "FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:DeploymentName",
+                "Endpoint": "FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:Endpoint"
+            }
+        }
+    ]
+}
+```
+
+### Default vectorization indexing profiles
+
+Default structure for the `vectorization-indexing-profiles.json` file:
+
+```json
+{
+    "IndexingProfiles": [
+        {
+            "Name": "AzureAISearch_Test_001",
+            "Indexer": "AzureAISearchIndexer",
+            "Settings": {
+                "IndexName": "fllm-test-001"
+            },
+            "ConfigurationReferences": {
+                "APIKey": "FoundationaLLM:Vectorization:AzureAISearchIndexingService:APIKey",
+                "AuthenticationType": "FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType",
+                "Endpoint": "FoundationaLLM:Vectorization:AzureAISearchIndexingService:Endpoint"
+            }
+        }
+    ]
 }
 ```
 
@@ -140,6 +203,7 @@ Sample structure of a vectorization request:
 {
     "id": "d4669c9c-e330-450a-a41c-a4d6649abdef",
     "content_identifier": {
+        "content_source_profile_name": "SDZWAJournals",
         "multipart_id": [
             "https://fllmaks14sa.blob.core.windows.net",
             "vectorization-input",
@@ -147,12 +211,11 @@ Sample structure of a vectorization request:
         ],
         "canonical_id": "sdzwa/journals/SDZWA-Journal-January-2024"
     },
-    "steps":[
+    "processing_type": "Asynchronous",
+    "steps": [
         {
             "id": "extract",
-            "parameters": {
-                "content_source_name": "SDZWAJournals"
-            }
+            "parameters": {}
         },
         {
             "id": "partition",
@@ -163,18 +226,17 @@ Sample structure of a vectorization request:
         {
             "id": "embed",
             "parameters": {
-                "embedding_profile_name": "AzureOpenAI_Embedding"
+                "text_embedding_profile_name": "AzureOpenAI_Embedding"
             }
         },
         {
             "id": "index",
             "parameters": {
-                "index_name": "AzureAISearch_Test"
+                "indexing_profile_name": "AzureAISearch_Test_001"
             }
         }
     ],
-    "completed_steps": [
-    ],
+    "completed_steps": [],
     "remaining_steps": [
         "extract",
         "partition",
@@ -183,3 +245,5 @@ Sample structure of a vectorization request:
     ]
 }
 ```
+
+The `processing_type` property can be one of `Asynchronous` or `Synchronous`. The `Asynchronous` value indicates that the vectorization request is processed asynchronously via the Vectorization workers. The `Synchronous` value indicates that the vectorization request is processed synchronously via the Vectorization API.
