@@ -4,7 +4,8 @@ Param(
     [parameter(Mandatory = $false)][bool]$stepDeployCerts = $false,
     [parameter(Mandatory = $false)][bool]$stepDeployImages = $false,
     [parameter(Mandatory = $false)][bool]$stepUploadSystemPrompts = $false,
-    [parameter(Mandatory = $false)][bool]$stepLoginAzure = $false
+    [parameter(Mandatory = $false)][bool]$stepLoginAzure = $false,
+    [parameter(Mandatory = $false)][bool]$init = $true
 )
 
 Set-StrictMode -Version 3.0
@@ -12,15 +13,17 @@ $ErrorActionPreference = "Stop"
 
 Push-Location $($MyInvocation.InvocationName | Split-Path)
 
-# Update the extension to make sure you have the latest version installed
-az extension add --name aks-preview
-az extension update --name aks-preview
+if ($init) {
+    # Update the extension to make sure you have the latest version installed
+    az extension add --name aks-preview
+    az extension update --name aks-preview
 
-az extension add --name  application-insights
-az extension update --name  application-insights
+    az extension add --name  application-insights
+    az extension update --name  application-insights
 
-az extension add --name storage-preview
-az extension update --name storage-preview
+    az extension add --name storage-preview
+    az extension update --name storage-preview
+}
 
 if ($stepLoginAzure) {
     # Write-Host "Login in your account" -ForegroundColor Yellow

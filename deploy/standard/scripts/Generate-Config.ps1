@@ -7,7 +7,7 @@ Param (
     [parameter(Mandatory = $true)][string]$resourceSuffix,
     [parameter(Mandatory = $true)][object]$ingress
 )
-
+    
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
@@ -39,67 +39,67 @@ function PopulateTemplate($tokens, $template, $output) {
 $svcResourceSuffix = "$project-$environment-$location-svc"
 
 $services = @{
-    agentfactoryapi            = @{ miName = "mi-agent-factory-api-$svcResourceSuffix"          
+    agentfactoryapi            = @{ miName = "mi-agent-factory-api-$svcResourceSuffix"
                                     miConfigName = "agentFactoryApiMiClientId"
                                     ingressEnabled = $false
                                                                                                 }
-    agenthubapi                = @{ miName = "mi-agent-hub-api-$svcResourceSuffix"              
+    agenthubapi                = @{ miName = "mi-agent-hub-api-$svcResourceSuffix"
                                     miConfigName = "agentHubApiMiClientId"
                                     ingressEnabled = $false
                                                                                                 }
-    chatui                     = @{ miName = "mi-chat-ui-$svcResourceSuffix"                    
+    chatui                     = @{ miName = "mi-chat-ui-$svcResourceSuffix"
                                     miConfigName = "chatUiMiClientId"
                                     ingressEnabled = $true
                                     hostname = "www.internal.foundationallm.ai"
                                                                                                 }
-    coreapi                    = @{ miName = "mi-core-api-$svcResourceSuffix"                   
+    coreapi                    = @{ miName = "mi-core-api-$svcResourceSuffix"
                                     miConfigName = "coreApiMiClientId"
                                     ingressEnabled = $true
                                     hostname = "api.internal.foundationallm.ai"
                                                                                                 }
-    corejob                    = @{ miName = "mi-core-job-$svcResourceSuffix"                   
+    corejob                    = @{ miName = "mi-core-job-$svcResourceSuffix"
                                     miConfigName = "coreJobMiClientId"
                                     ingressEnabled = $false
                                                                                                 }
-    datasourcehubapi           = @{ miName = "mi-data-source-hub-api-$svcResourceSuffix"        
+    datasourcehubapi           = @{ miName = "mi-data-source-hub-api-$svcResourceSuffix"
                                     miConfigName = "dataSourceHubApiMiClientId"
                                     ingressEnabled = $false
                                                                                                 }
-    gatekeeperapi              = @{ miName = "mi-gatekeeper-api-$svcResourceSuffix"             
+    gatekeeperapi              = @{ miName = "mi-gatekeeper-api-$svcResourceSuffix"
                                     miConfigName = "gatekeeperApiMiClientId"
                                     ingressEnabled = $false
                                                                                                 }
-    gatekeeperintegrationapi   = @{ miName = "mi-gatekeeper-integration-api-$svcResourceSuffix" 
+    gatekeeperintegrationapi   = @{ miName = "mi-gatekeeper-integration-api-$svcResourceSuffix"
                                     miConfigName = "gatekeeperIntegrationApiMiClientId"
                                     ingressEnabled = $false
                                                                                                 }
-    managementapi              = @{ miName = "mi-management-api-$svcResourceSuffix"             
+    managementapi              = @{ miName = "mi-management-api-$svcResourceSuffix"
                                     miConfigName = "managementApiMiClientId"
                                     ingressEnabled = $true
                                     hostname = "management-api.internal.foundationallm.ai"
                                                                                                 }
-    managementui               = @{ miName = "mi-management-ui-$svcResourceSuffix"              
+    managementui               = @{ miName = "mi-management-ui-$svcResourceSuffix"
                                     miConfigName = "managementUiMiClientId"
                                     ingressEnabled = $true
                                     hostname = "management.internal.foundationallm.ai"
                                                                                                 }
-    langchainapi               = @{ miName = "mi-langchain-api-$svcResourceSuffix"              
+    langchainapi               = @{ miName = "mi-langchain-api-$svcResourceSuffix"
                                     miConfigName = "langChainApiMiClientId"
                                     ingressEnabled = $false
                                                                                                 }
-    prompthubapi               = @{ miName = "mi-prompt-hub-api-$svcResourceSuffix"             
+    prompthubapi               = @{ miName = "mi-prompt-hub-api-$svcResourceSuffix"
                                     miConfigName = "promptHubApiMiClientId"
                                     ingressEnabled = $false
                                                                                                 }
-    semantickernelapi          = @{ miName = "mi-semantic-kernel-api-$svcResourceSuffix"        
+    semantickernelapi          = @{ miName = "mi-semantic-kernel-api-$svcResourceSuffix"
                                     miConfigName = "semanticKernelApiMiClientId"
                                     ingressEnabled = $false
                                                                                                 }
-    vectorizationapi           = @{ miName = "mi-vectorization-api-$svcResourceSuffix"          
+    vectorizationapi           = @{ miName = "mi-vectorization-api-$svcResourceSuffix"
                                     miConfigName = "vectorizationApiMiClientId"
                                     ingressEnabled = $false
                                                                                                 }
-    vectorizationjob           = @{ miName = "mi-vectorization-job-$svcResourceSuffix"          
+    vectorizationjob           = @{ miName = "mi-vectorization-job-$svcResourceSuffix"
                                     miConfigName = "vectorizationJobMiClientId"
                                     ingressEnabled = $false
                                                                                                 }
@@ -143,7 +143,7 @@ $apim = $(az apim list -g $($resourceGroups.oai) --query "[].{uri: gatewayUrl}" 
 $apim = EnsureAndReturnFirstItem $apim "OpenAI Endpoint (APIM)"
 
 ## Getting Cognitive search endpoint
-$cogSearch = $(az search service list -g $($resourceGroups.vec) --query "[].{name: name}" -o json | ConvertFrom-Json) 
+$cogSearch = $(az search service list -g $($resourceGroups.vec) --query "[].{name: name}" -o json | ConvertFrom-Json)
 $cogSearch = EnsureAndReturnFirstItem $cogSearch "Cognitive Search"
 $cogSearchUri = "http://$($cogSearch.name).search.windows.net"
 
