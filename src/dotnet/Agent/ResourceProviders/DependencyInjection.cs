@@ -11,6 +11,9 @@ using Microsoft.Extensions.Options;
 
 namespace FoundationaLLM
 {
+    /// <summary>
+    /// Agent Resource Provider service implementation of resource provider dependency injection extensions.
+    /// </summary>
     public static partial class DependencyInjection
     {
         /// <summary>

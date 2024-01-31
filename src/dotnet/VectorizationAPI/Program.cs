@@ -171,6 +171,45 @@ builder.Services.AddSwaggerGen(
 
         // Integrate xml comments
         options.IncludeXmlComments(filePath);
+
+        options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Id = "azure_auth",
+                                    Type = ReferenceType.SecurityScheme
+                                }
+                            },
+                            new[] {"user_impersonation"}
+                        }
+                    });
+
+        options.AddSecurityDefinition("azure_auth", new OpenApiSecurityScheme
+        {
+            In = ParameterLocation.Header,
+            Description = "Azure Active Directory Oauth2 Flow",
+            Name = "azure_auth",
+            Type = SecuritySchemeType.OAuth2,
+            Flows = new OpenApiOAuthFlows
+            {
+                Implicit = new OpenApiOAuthFlow
+                {
+                    AuthorizationUrl = new Uri("https://login.microsoftonline.com/common/oauth2/authorize"),
+                    Scopes = new Dictionary<string, string>
+                                {
+                                    {
+                                        "user_impersonation",
+                                        "impersonate your user account"
+                                    }
+                                }
+                }
+            },
+            BearerFormat = "JWT",
+            Scheme = "bearer"
+        });
     })
     .AddSwaggerGenNewtonsoftSupport();
 

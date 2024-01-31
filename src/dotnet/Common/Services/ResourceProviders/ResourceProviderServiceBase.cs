@@ -80,7 +80,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         }
 
         /// <inheritdoc/>
-        public async Task Initialize()
+        private async Task Initialize()
         {
             try
             {

@@ -35,6 +35,7 @@ builder.Configuration.AddAzureAppConfiguration(options =>
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Vectorization);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIs_VectorizationWorker);
 });
+
 if (builder.Environment.IsDevelopment())
     builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
 

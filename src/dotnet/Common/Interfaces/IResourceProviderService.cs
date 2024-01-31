@@ -18,12 +18,6 @@ namespace FoundationaLLM.Common.Interfaces
         bool IsInitialized { get; }
 
         /// <summary>
-        /// Initializes the resource provider.
-        /// </summary>
-        /// <returns></returns>
-        Task Initialize();
-
-        /// <summary>
         /// Gets the resources based on the logical path of the resource type.
         /// </summary>
         /// <typeparam name="T">The type of the resource.</typeparam>

@@ -9,6 +9,7 @@ The main concept of the Management API is the resource provider. A resource prov
 ## Resource Provider Structure
 
 The **resource-provider** container in the main storage account that was deployed on your behalf in your subscription contains the following structure:
+
 ![](../../../media/RS-Provider-1.png)
 
 ## Agent References

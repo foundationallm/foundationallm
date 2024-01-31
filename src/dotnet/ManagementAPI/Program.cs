@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 using Polly;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace FoundationaLLM.Management.API
@@ -52,6 +54,7 @@ namespace FoundationaLLM.Management.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Agent);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Prompt);
             });
+
             if (builder.Environment.IsDevelopment())
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
 
@@ -151,6 +154,45 @@ namespace FoundationaLLM.Management.API
 
                     // Integrate xml comments
                     options.IncludeXmlComments(filePath);
+
+                    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Id = "azure_auth",
+                                    Type = ReferenceType.SecurityScheme
+                                }
+                            },
+                            new[] {"user_impersonation"}
+                        }
+                    });                    
+
+                    options.AddSecurityDefinition("azure_auth", new OpenApiSecurityScheme
+                    {
+                        In = ParameterLocation.Header,
+                        Description = "Azure Active Directory Oauth2 Flow",
+                        Name = "azure_auth",
+                        Type = SecuritySchemeType.OAuth2,
+                        Flows = new OpenApiOAuthFlows
+                        {
+                            Implicit = new OpenApiOAuthFlow
+                            {
+                                AuthorizationUrl = new Uri("https://login.microsoftonline.com/common/oauth2/authorize"),
+                                Scopes = new Dictionary<string, string>
+                                {
+                                    {
+                                        "user_impersonation",
+                                        "impersonate your user account"
+                                    }
+                                }
+                            }
+                        },
+                        BearerFormat = "JWT",
+                        Scheme = "bearer"
+                    });
                 })
                 .AddSwaggerGenNewtonsoftSupport();
 
@@ -171,7 +213,7 @@ namespace FoundationaLLM.Management.API
                     => await Results.Problem().ExecuteAsync(context)));
 
             // Configure the HTTP request pipeline.
-            app.UseSwagger();
+            app.UseSwagger(p => p.SerializeAsV2 = true);
             app.UseSwaggerUI(
                 options =>
                 {
@@ -184,6 +226,8 @@ namespace FoundationaLLM.Management.API
                         var name = description.GroupName.ToUpperInvariant();
                         options.SwaggerEndpoint(url, name);
                     }
+
+                    options.OAuthAdditionalQueryStringParams(new Dictionary<string, string>() { { "resource", builder.Configuration[AppConfigurationKeys.FoundationaLLM_Management_Entra_ClientId] } });
                 });
 
             app.UseHttpsRedirection();
