@@ -1,6 +1,37 @@
-# Vectorization Worker
+# Configuring vectorization
 
-## Configuration
+This section provides details on how to configure the vectorization API and workers in FoundationaLLM.
+
+> [!NOTE]
+> These configurations should already be in place if you deployed FoundationaLLM (FLLM) using the recommended deployment scripts.
+> The detailes presented here are provided for cases in which you need to troubleshoot or customize the configuration.
+
+## Configuration for Vectorization API
+
+The following table describes the Azure artifacts required for the vectorization pipelines.
+
+| Artifact name | Description |
+| --- | --- |
+| `vectorization-input` | Azure storage container used by default to store documents to be picked up by the vectorization pipeline. Must be created on a Data Lake storage account (with the hierarchical namespace enabled). |
+
+The following table describes the environment variables required for the vectorization pipelines.
+
+Environment variable | Description
+--- | ---
+`FoundationaLLM:AppConfig:ConnectionString` | Connection string to the Azure App Configuration instance.
+
+The following table describes the required configuration parameters for the vectorization pipelines.
+
+| App Configuration Key | Default Value | Description |
+| --- | --- | --- |
+| `FoundationaLLM:APIs:VectorizationAPI:APIUrl` | | The URL of the vectorization API. |
+| `FoundationaLLM:APIs:VectorizationAPI:APIKey` | Key Vault secret name: `foundationallm-apis-vectorizationapi-apikey` | The API key of the vectorization API. |
+| `FoundationaLLM:APIs:VectorizationAPI:AppInsightsConnectionString` | Key Vault secret name: `foundationallm-app-insights-connection-string` | The connection string to the Application Insights instance used by the vectorization API. |
+
+> [!NOTE]
+> Refer to the [App Configuration values](../../deployment/app-configuration-values.md) page for more information on how to set these and other configuration values.
+
+## Configuration for Vectorization workers
 
 The following table describes the Azure artifacts required for the vectorization pipelines.
 
@@ -13,7 +44,7 @@ The following table describes the Azure artifacts required for the vectorization
 | `vectorization-state` | Azure storage container used for the vectorization state service. Can be created on the storage account used for the other queues. |
 | `resource-provider`| Azure storage container used for the internal states of the FoundationaLLM resource providers. |
 | `resource-provider/FoundationaLLM.Vectorization/vectorization-content-source-profiles.json` | Azure storage blob used for the content sources managed by the `FoundationaLLM.Vectorization` resource provider. For more details, see [default vectorization content source profiles](#default-vectorization-content-source-profiles).
-| `resource-provider/FoundationaLLM.Vectorization/vectorization-text-partition-profiles.json` | Azure storage blob used for the text partitioning profiles managed by the `FoundationaLLM.Vectorization` resource provider. For more details, see [default vectorization text partitioning profiles](#default-vectorization-text-partitioning-profiles).
+| `resource-provider/FoundationaLLM.Vectorization/vectorization-text-partitioning-profiles.json` | Azure storage blob used for the text partitioning profiles managed by the `FoundationaLLM.Vectorization` resource provider. For more details, see [default vectorization text partitioning profiles](#default-vectorization-text-partitioning-profiles).
 | `resource-provider/FoundationaLLM.Vectorization/vectorization-text-embedding-profiles.json` | Azure storage blob used for the text embedding profiles managed by the `FoundationaLLM.Vectorization` resource provider. For more details, see [default vectorization text embedding profiles](#default-vectorization-text-embedding-profiles).
 | `resource-provider/FoundationaLLM.Vectorization/vectorization-indexing-profiles.json` | Azure storage blob used for the indexing profiles managed by the `FoundationaLLM.Vectorization` resource provider. For more details, see [default vectorization indexing profiles](#default-vectorization-indexing-profiles).
 
@@ -54,14 +85,14 @@ The following table describes the external content used by the vectorization wor
 
 | Uri | Description |
 | --- | --- |
-| `https://openaipublic.blob.core.windows.net` | The public Azure Blob Storage account used to download the OpenAI BPE ranking files. |
+| `https://openaipublic.blob.core.windows.net/encodings/cl100k_base.tiktoken` | The public Azure Blob Storage account used to download the OpenAI BPE ranking files. |
 
 > [!NOTE]
 > The vectorization worker must be able to open HTTPS connections to the external content listed above.
 
 ### Default vectorization worker settings
 
-Default settings for the vectorization worker:
+The default settings for the vectorization worker are stored in the `FoundationaLLM:Vectorization:VectorizationWorker` App Configuration key. The default structure for this key is:
 
 ```json
 {
@@ -87,27 +118,36 @@ Default settings for the vectorization worker:
         {
             "Name": "extract",
             "ConnectionConfigurationName": "Extract:ConnectionString",
-            "VisibilityTimeoutSeconds": 120
+            "VisibilityTimeoutSeconds": 600
         },
         {
             "Name": "partition",
             "ConnectionConfigurationName": "Partition:ConnectionString",
-            "VisibilityTimeoutSeconds": 120
+            "VisibilityTimeoutSeconds": 600
         },
         {
             "Name": "embed",
             "ConnectionConfigurationName": "Embed:ConnectionString",
-            "VisibilityTimeoutSeconds": 120
+            "VisibilityTimeoutSeconds": 600
         },
         {
             "Name": "index",
             "ConnectionConfigurationName": "Index:ConnectionString",
-            "VisibilityTimeoutSeconds": 120
+            "VisibilityTimeoutSeconds": 600
         }
     ],
     "QueuingEngine": "AzureStorageQueue"
 }
 ```
+
+The following table provides details about the configuration parameters:
+
+| Parameter | Description |
+| --- | --- |
+| `RequestManagers` | The list of request managers used by the vectorization worker. Each request manager is responsible for managing the execution of vectorization pipelines for a specific vectorization step. The configuration must include all request managers. |
+| `RequestManagers.MaxHandlerInstances` | The maximum number of request handlers that process requests for the specified request source. By default, the value is 1. You can change the value to increase the processing capacity of each vectorization worker instance. The value applies to all istances of the vectorization worker. NOTE: It is important to align the value of this setting with the level of compute and memory resources allocated to the individual vectorization worker instances. |
+| `RequestSources` | The list of request sources used by the vectorization worker. Each request source is responsible for managing the requests for a specific vectorization step. The configuration must include all request sources. |
+| `RequestSources.VisibilityTimeoutSeconds` | In the case of queue-based request sources (the default for the vectorization worker), specifies the time in seconds until a dequeued vectorization step request must be executed. During this timeout, the message will not be visible to other handler instances within the same worker or from other worker instances. If the handler fails to process the vectorization step request successfully and remove it from the queue within the specified timeout, the message will become visibile again. The default value is 600 seconds and should not be changed.|
 
 ### Default vectorization content source profiles
 
@@ -117,29 +157,39 @@ Default structure for the `vectorization-content-source-profiles.json` file:
 {
     "ContentSourceProfiles": [
         {
-            "Name": "SDZWAJournals",
+            "Name": "DefaultAzureDataLake",
             "Type": "AzureDataLake",
+            "ObjectId": "/instances/<instance_id>/providers/FoundationaLLM.Vectorization/contentsourceprofiles/DefaultAzureDataLake",
             "Settings": {},
             "ConfigurationReferences": {
-                "AuthenticationType": "FoundationaLLM:Vectorization:ContentSources:SDZWAJournals:AuthenticationType",
-                "ConnectionString": "FoundationaLLM:Vectorization:ContentSources:SDZWAJournals:ConnectionString"
+                "AuthenticationType": "FoundationaLLM:Vectorization:ContentSources:DefaultAzureDataLake:AuthenticationType",
+                "ConnectionString": "FoundationaLLM:Vectorization:ContentSources:DefaultAzureDataLake:ConnectionString"
             }
         }
     ]
 }
 ```
 
+By default, FLLM includes one content source profile named `DefaultAzureDataLake`. You can add content source profiles to this file to configure the content sources used by the vectorization pipelines. For more details, see [Managing vectorization profiles](vectorization-profiles.md).
+
+Currently, the following content source types are supported:
+
+- `AzureDataLake` - uses an Azure Data Lake storage account as the content source (see [`AzureDataLakeContentSource`](./vectorization-profiles.md#azuredatalake)).
+- `SharePointOnline` - uses a SharePoint Online site as the content source (see [`SharePointOnlineContentSource`](./vectorization-profiles.md#sharepointonline)).
+- `AzureSQLDatabase` - uses an Azure SQL database as the content source (see [`AzureSQLDatabaseContentSource`](./vectorization-profiles.md#azuresqldatabase)).
+
 ### Default vectorization text partitioning profiles
 
-Default structure for the `vectorization-text-partition-profiles.json` file:
+Default structure for the `vectorization-text-partitioning-profiles.json` file:
 
 ```json
 {
     "TextPartitioningProfiles": [
         {
             "Name": "DefaultTokenTextPartition",
+            "ObjectId": "/instances/<instance_id>/providers/FoundationaLLM.Vectorization/textpartitioningprofiles/DefaultTokenTextPartition",
             "TextSplitter": "TokenTextSplitter",
-            "TextSplitterSettings": {
+            "Settings": {
                 "Tokenizer": "MicrosoftBPETokenizer",
                 "TokenizerEncoder": "cl100k_base",
                 "ChunkSizeTokens": "2000",
@@ -150,6 +200,12 @@ Default structure for the `vectorization-text-partition-profiles.json` file:
 }
 ```
 
+By default, FLLM includes one text partitioning profile named `DefaultTokenTextPartition` which uses the `TokenTextSplitter` text splitter. You can add text partitioning profiles to this file to configure the text partitioning used by the vectorization pipelines. For more details, see [Managing vectorization profiles](vectorization-profiles.md).
+
+Currently, the following text splitters are supported:
+
+- `TokenTextSplitter` - splits the text into chunks based on the number of tokens (see [`TextTokenSplitter`](./vectorization-profiles.md#texttokensplitter)).
+
 ### Default vectorization text embedding profiles
 
 Default structure for the `vectorization-text-embedding-profiles.json` file:
@@ -159,6 +215,7 @@ Default structure for the `vectorization-text-embedding-profiles.json` file:
     "TextEmbeddingProfiles": [
         {
             "Name": "AzureOpenAI_Embedding",
+            "ObjectId": "/instances/<instance_id>/providers/FoundationaLLM.Vectorization/textembeddingprofiles/AzureOpenAI_Embedding",
             "TextEmbedding": "SemanticKernelTextEmbedding",
             "Settings": {},
             "ConfigurationReferences": {
@@ -172,6 +229,13 @@ Default structure for the `vectorization-text-embedding-profiles.json` file:
 }
 ```
 
+By default, FLLM includes one text embedding profile named `AzureOpenAI_Embedding` which uses the `SemanticKernelTextEmbedding` text embedder. You can add text embedding profiles to this file to configure the text embedding used by the vectorization pipelines. For more details, see [Managing vectorization profiles](vectorization-profiles.md).
+
+Currently, the following text embedders are supported:
+
+- `SemanticKernelTextEmbedding` - embeds the text using Semantic Kernel to call into the default FLLM Azure OpenAI embedding model (see [`SemanticKernelTextEmbedding`](./vectorization-profiles.md#semantickerneltextembedding)).
+
+
 ### Default vectorization indexing profiles
 
 Default structure for the `vectorization-indexing-profiles.json` file:
@@ -180,10 +244,11 @@ Default structure for the `vectorization-indexing-profiles.json` file:
 {
     "IndexingProfiles": [
         {
-            "Name": "AzureAISearch_Test_001",
+            "Name": "AzureAISearch_Default_001",
+            "ObjectId": "/instances/<instance_id>/providers/FoundationaLLM.Vectorization/indexingprofiles/AzureAISearch_Default_001",
             "Indexer": "AzureAISearchIndexer",
             "Settings": {
-                "IndexName": "fllm-test-001"
+                "IndexName": "fllm-default-001"
             },
             "ConfigurationReferences": {
                 "APIKey": "FoundationaLLM:Vectorization:AzureAISearchIndexingService:APIKey",
@@ -195,55 +260,8 @@ Default structure for the `vectorization-indexing-profiles.json` file:
 }
 ```
 
-## Vectorization request
+By default, FLLM includes one indexing profile named `AzureAISearch_Default_001` which uses the `AzureAISearchIndexer` indexer. You can add indexing profiles to this file to configure the indexing used by the vectorization pipelines. For more details, see [Managing vectorization profiles](vectorization-profiles.md).
 
-Sample structure of a vectorization request:
+Currently, the following indexers are supported:
 
-```json
-{
-    "id": "d4669c9c-e330-450a-a41c-a4d6649abdef",
-    "content_identifier": {
-        "content_source_profile_name": "SDZWAJournals",
-        "multipart_id": [
-            "https://fllmaks14sa.blob.core.windows.net",
-            "vectorization-input",
-            "SDZWA-Journal-January-2024.pdf"
-        ],
-        "canonical_id": "sdzwa/journals/SDZWA-Journal-January-2024"
-    },
-    "processing_type": "Asynchronous",
-    "steps": [
-        {
-            "id": "extract",
-            "parameters": {}
-        },
-        {
-            "id": "partition",
-            "parameters": {
-                "text_partition_profile_name": "DefaultTokenTextPartition"
-            }
-        },
-        {
-            "id": "embed",
-            "parameters": {
-                "text_embedding_profile_name": "AzureOpenAI_Embedding"
-            }
-        },
-        {
-            "id": "index",
-            "parameters": {
-                "indexing_profile_name": "AzureAISearch_Test_001"
-            }
-        }
-    ],
-    "completed_steps": [],
-    "remaining_steps": [
-        "extract",
-        "partition",
-        "embed",
-        "index"
-    ]
-}
-```
-
-The `processing_type` property can be one of `Asynchronous` or `Synchronous`. The `Asynchronous` value indicates that the vectorization request is processed asynchronously via the Vectorization workers. The `Synchronous` value indicates that the vectorization request is processed synchronously via the Vectorization API.
+- `AzureAISearchIndexer` - indexes the vectors into an Azure AI Search index (see [`AzureAISearchIndexer`](./vectorization-profiles.md#azureaisearchindexer)).

@@ -2,7 +2,7 @@
 	<div class="sidebar">
 		<!-- Sidebar section header -->
 		<div class="sidebar__header">
-			<img v-if="$appConfigStore.logoUrl" :src="$filters.enforceLeadingSlash($appConfigStore.logoUrl)" />
+			<img v-if="$appConfigStore.logoUrl" :src="$filters.publicDirectory($appConfigStore.logoUrl)" />
 			<span v-else>{{ $appConfigStore.logoText }}</span>
 		</div>
 

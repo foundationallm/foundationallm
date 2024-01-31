@@ -58,12 +58,16 @@ items:
   - name: Vectorization
     href: setup-guides/vectorization/index.md
     items:
-    - name: Vectorization
-      href: setup-guides/vectorization/index.md
-    - name: Vectorization API
-      href: setup-guides/vectorization/vectorization-api.md
-    - name: Vectorization Worker
-      href: setup-guides/vectorization/vectorization-worker.md
+    - name: Vectorization concepts
+      href: setup-guides/vectorization/vectorization-concepts.md
+    - name: Configuring vectorization
+      href: setup-guides/vectorization/vectorization-configuration.md
+    - name: Managing vectorization profiles
+      href: setup-guides/vectorization/vectorization-profiles.md
+    - name: Triggering vectorization
+      href: setup-guides/vectorization/vectorization-triggering.md
+    - name: Monitoring and troubleshooting
+      href: setup-guides/vectorization/vectorization-monitoring-troubleshooting.md
 - name: Operations
   href: operations/index.md
   items:
