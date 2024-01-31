@@ -28,6 +28,7 @@ ingress:
 env:
   configmap: 
     - name: AZURE_CLIENT_ID
+    - name: BASE_URL
   secret:
     - name: FoundationaLLM__AppConfig__ConnectionString
   values:
