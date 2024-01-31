@@ -789,7 +789,7 @@
     "keyVault": false,
     "featureFlag": false,
     "key": "FoundationaLLM:Management:Entra:Scopes",
-    "value": "api://FoundationaLLM-Auth/Data.Manage"
+    "value": "api://FoundationaLLM-Management-Auth/Data.Manage"
   },
   {
     "keyVault": false,
