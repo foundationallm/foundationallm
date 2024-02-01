@@ -29,11 +29,29 @@ function EnsureSuccess($message) {
 }
 
 function GetPrivateIPMapping($privateEndpointId) {
-    $networkInterfaceId = $(az network private-endpoint show --id $privateEndpointId --query '{networkInterfaceId:networkInterfaces[0].id}' --output tsv)
+    $networkInterface = $(
+        az network private-endpoint show `
+            --id $privateEndpointId `
+            --query '{networkInterfaceId:networkInterfaces[0].id, groupId:privateLinkServiceConnections[0].groupIds[0]}' `
+            --output json | `
+            ConvertFrom-Json
+    )
     EnsureSuccess "Error getting private endpoint network interface id!"
-    $privateIpMapping = $(az network nic show --ids $networkInterfaceId --query '{privateIPAddress:ipConfigurations[0].privateIPAddress,fqdn:ipConfigurations[0].privateLinkConnectionProperties.fqdns[0]}' --output json | ConvertFrom-Json)
+
+    $privateIpMapping = $(
+        az network nic show `
+            --ids $networkInterface.networkInterfaceId `
+            --query '{privateIPAddress:ipConfigurations[0].privateIPAddress,fqdn:ipConfigurations[0].privateLinkConnectionProperties.fqdns[0]}' `
+            --output json | `
+            ConvertFrom-Json
+    )
     EnsureSuccess "Error getting private endpoint network interface info!"
-    return $privateIpMapping
+
+    return @{
+        privateIPAddress = $privateIpMapping.privateIPAddress
+        fqdn             = $privateIpMapping.fqdn
+        groupId          = $networkInterface.groupId
+    }
 }
 
 function PopulateTemplate($tokens, $template, $output) {
@@ -225,6 +243,59 @@ Write-Host "Cognitive Search Service: $($cogSearch.name)" -ForegroundColor Blue
 $cogSearchUri = "http://$($cogSearch.name).search.windows.net"
 $cogSearchPrivateIpMapping = GetPrivateIPMapping $cogSearch.privateEndpointId
 
+Write-Host "Getting OpenAI Accounts"
+$openAiAccounts = $(
+    az cognitiveservices account list `
+        --resource-group $($resourceGroups.oai) `
+        --query "[?kind=='OpenAI'].{name:name, uri: properties.endpoint, privateEndpointId:properties.privateEndpointConnections[0].properties.privateEndpoint.id}" `
+        --output json | `
+        ConvertFrom-Json
+)
+Write-Host "Found $($openAiAccounts.Length) OpenAI Accounts" -ForegroundColor Yellow
+for ($i = 0; $i -lt $openAiAccounts.Length; $i++) {
+    $account = $openAiAccounts[$i]
+    $accountPrivateIpMapping = GetPrivateIPMapping $account.privateEndpointId
+
+    Write-Host "OpenAI Account $($i): $($account.name)" -ForegroundColor Blue
+
+    $tokens.Add("openAiAccountFqdn$($i)", $accountPrivateIpMapping.fqdn)
+    $tokens.Add("openAiAccountPrivateIp$($i)", $accountPrivateIpMapping.privateIPAddress)
+}
+
+Write-Host "Getting OPS Storage Account"
+$storageAccountOps = $(
+    az storage account list `
+        --resource-group $($resourceGroups.ops) `
+        --query "[?kind=='StorageV2'].{name:name, privateEndpointIds:privateEndpointConnections[].privateEndpoint.id}" `
+        --output json | `
+        ConvertFrom-Json
+)
+
+$storageAccountOps = EnsureAndReturnFirstItem $storageAccountOps "Storage Account"
+Write-Host "Storage Account: $($storageAccountOps.name)" -ForegroundColor Blue
+$storageAccountOpsPrivateIpMapping = @{}
+foreach ($privateEndpointId in $storageAccountOps.privateEndpointIds) {
+    $privateIpMapping = GetPrivateIPMapping $privateEndpointId
+    $storageAccountOpsPrivateIpMapping.Add($privateIpMapping.groupId, $privateIpMapping)
+}
+
+Write-Host "Getting ADLS Storage Account"
+$storageAccountAdls = $(
+    az storage account list `
+        --resource-group $($resourceGroups.storage) `
+        --query "[?kind=='StorageV2'].{name:name, privateEndpointIds:privateEndpointConnections[].privateEndpoint.id}" `
+        --output json | `
+        ConvertFrom-Json
+)
+
+$storageAccountAdls = EnsureAndReturnFirstItem $storageAccountAdls "Storage Account"
+Write-Host "Storage Account: $($storageAccountAdls.name)" -ForegroundColor Blue
+$storageAccountAdlsPrivateIpMapping = @{}
+foreach ($privateEndpointId in $storageAccountAdls.privateEndpointIds) {
+    $privateIpMapping = GetPrivateIPMapping $privateEndpointId
+    $storageAccountAdlsPrivateIpMapping.Add($privateIpMapping.groupId, $privateIpMapping)
+}
+
 ## Getting managed identities
 foreach ($service in $services.GetEnumerator()) {
     $mi = $(
@@ -269,6 +340,28 @@ $tokens.cognitiveSearchPrivateIp = $cogSearchPrivateIpMapping.privateIPAddress
 $tokens.cosmosEndpoint = $docdb.documentEndpoint
 $tokens.cosmosFqdn = $docdbPrivateIpMapping.fqdn
 $tokens.cosmosPrivateIp = $docdbPrivateIpMapping.privateIPAddress
+
+$tokens.storageAccountOpsBlobFqdn = $storageAccountOpsPrivateIpMapping.blob.fqdn
+$tokens.storageAccountOpsBlobPrivateIp = $storageAccountOpsPrivateIpMapping.blob.privateIPAddress
+$tokens.storageAccountOpsDfsFqdn = $storageAccountOpsPrivateIpMapping.dfs.fqdn
+$tokens.storageAccountOpsDfsPrivateIp = $storageAccountOpsPrivateIpMapping.dfs.privateIPAddress
+$tokens.storageAccountOpsFileFqdn = $storageAccountOpsPrivateIpMapping.file.fqdn
+$tokens.storageAccountOpsFilePrivateIp = $storageAccountOpsPrivateIpMapping.file.privateIPAddress
+$tokens.storageAccountOpsQueueFqdn = $storageAccountOpsPrivateIpMapping.queue.fqdn
+$tokens.storageAccountOpsQueuePrivateIp = $storageAccountOpsPrivateIpMapping.queue.privateIPAddress
+$tokens.storageAccountOpsTableFqdn = $storageAccountOpsPrivateIpMapping.table.fqdn
+$tokens.storageAccountOpsTablePrivateIp = $storageAccountOpsPrivateIpMapping.table.privateIPAddress
+
+$tokens.storageAccountAdlsBlobFqdn = $storageAccountAdlsPrivateIpMapping.blob.fqdn
+$tokens.storageAccountAdlsBlobPrivateIp = $storageAccountAdlsPrivateIpMapping.blob.privateIPAddress
+$tokens.storageAccountAdlsDfsFqdn = $storageAccountAdlsPrivateIpMapping.dfs.fqdn
+$tokens.storageAccountAdlsDfsPrivateIp = $storageAccountAdlsPrivateIpMapping.dfs.privateIPAddress
+$tokens.storageAccountAdlsFileFqdn = $storageAccountAdlsPrivateIpMapping.file.fqdn
+$tokens.storageAccountAdlsFilePrivateIp = $storageAccountAdlsPrivateIpMapping.file.privateIPAddress
+$tokens.storageAccountAdlsQueueFqdn = $storageAccountAdlsPrivateIpMapping.queue.fqdn
+$tokens.storageAccountAdlsQueuePrivateIp = $storageAccountAdlsPrivateIpMapping.queue.privateIPAddress
+$tokens.storageAccountAdlsTableFqdn = $storageAccountAdlsPrivateIpMapping.table.fqdn
+$tokens.storageAccountAdlsTablePrivateIp = $storageAccountAdlsPrivateIpMapping.table.privateIPAddress
 
 $tokens.agentFactoryApiMiClientId = $services["agentfactoryapi"].miClientId
 $tokens.agentHubApiMiClientId = $services["agenthubapi"].miClientId

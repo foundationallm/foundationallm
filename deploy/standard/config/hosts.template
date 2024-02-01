@@ -1,5 +1,7 @@
 # APIM/OpenAI
 {{apimPrivateIp}} {{apimFqdn}}
+{{openAiAccountPrivateIp0}} {{openAiAccountFqdn0}}
+{{openAiAccountPrivateIp1}} {{openAiAccountFqdn1}}
 
 # App Configuration
 {{appConfigPrivateIp}} {{appConfigFqdn}}
@@ -12,3 +14,17 @@
 
 # Cosmos
 {{cosmosPrivateIp}} {{cosmosFqdn}}
+
+# Storage Account - OPS
+{{storageAccountOpsBlobPrivateIp}} {{storageAccountOpsBlobFqdn}}
+{{storageAccountOpsDfsPrivateIp}} {{storageAccountOpsDfsFqdn}}
+{{storageAccountOpsFilePrivateIp}} {{storageAccountOpsFileFqdn}}
+{{storageAccountOpsQueuePrivateIp}} {{storageAccountOpsQueueFqdn}}
+{{storageAccountOpsTablePrivateIp}} {{storageAccountOpsTableFqdn}}
+
+# Storage Account - ADLS
+{{storageAccountAdlsBlobPrivateIp}} {{storageAccountAdlsBlobFqdn}}
+{{storageAccountAdlsDfsPrivateIp}} {{storageAccountAdlsDfsFqdn}}
+{{storageAccountAdlsFilePrivateIp}} {{storageAccountAdlsFileFqdn}}
+{{storageAccountAdlsQueuePrivateIp}} {{storageAccountAdlsQueueFqdn}}
+{{storageAccountAdlsTablePrivateIp}} {{storageAccountAdlsTableFqdn}}
