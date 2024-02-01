@@ -262,6 +262,43 @@ for ($i = 0; $i -lt $openAiAccounts.Length; $i++) {
     $tokens.Add("openAiAccountPrivateIp$($i)", $accountPrivateIpMapping.privateIPAddress)
 }
 
+Write-Host "Getting OpenAI Key Vault"
+$openAiKeyVault = $(
+    az keyvault list `
+        --resource-group $($resourceGroups.oai) `
+        --query "[].{name:name, privateEndpointId:properties.privateEndpointConnections[0].privateEndpoint.id}" `
+        --output json | `
+        ConvertFrom-Json
+)
+$openAiKeyVault = EnsureAndReturnFirstItem $openAiKeyVault "OpenAI Key Vault"
+Write-Host "OpenAI Key Vault: $($openAiKeyVault.name)" -ForegroundColor Blue
+$openAiKeyVaultPrivateIpMapping = GetPrivateIPMapping $openAiKeyVault.privateEndpointId
+
+Write-Host "Getting OPS Key Vault"
+$opsKeyVault = $(
+    az keyvault list `
+        --resource-group $($resourceGroups.ops) `
+        --query "[].{name:name, privateEndpointId:properties.privateEndpointConnections[0].privateEndpoint.id}" `
+        --output json | `
+        ConvertFrom-Json
+)
+$opsKeyVault = EnsureAndReturnFirstItem $opsKeyVault "OPS Key Vault"
+Write-Host "OPS Key Vault: $($opsKeyVault.name)" -ForegroundColor Blue
+$opsKeyVaultPrivateIpMapping = GetPrivateIPMapping $opsKeyVault.privateEndpointId
+
+Write-Host "Geting AMPLS"
+# az monitor private-link-scope list --resource-group "EBTICP-D-NA24-AIOps-RGRP" --query "[].{name:name, privateEndpointId:privateEndpointConnections[0].privateEndpoint.id}"
+$ampls = $(
+    az monitor private-link-scope list `
+        --resource-group $($resourceGroups.ops) `
+        --query "[].{name:name, privateEndpointId:privateEndpointConnections[0].privateEndpoint.id}" `
+        --output json | `
+        ConvertFrom-Json
+)
+$ampls = EnsureAndReturnFirstItem $ampls "AMPLS"
+Write-Host "AMPLS: $($ampls.name)" -ForegroundColor Blue
+$amplsPrivateIpMapping = GetPrivateIPMapping $ampls.privateEndpointId
+
 Write-Host "Getting OPS Storage Account"
 $storageAccountOps = $(
     az storage account list `
@@ -340,6 +377,15 @@ $tokens.cognitiveSearchPrivateIp = $cogSearchPrivateIpMapping.privateIPAddress
 $tokens.cosmosEndpoint = $docdb.documentEndpoint
 $tokens.cosmosFqdn = $docdbPrivateIpMapping.fqdn
 $tokens.cosmosPrivateIp = $docdbPrivateIpMapping.privateIPAddress
+
+$tokens.openAiKeyVaultFqdn = $openAiKeyVaultPrivateIpMapping.fqdn
+$tokens.openAiKeyVaultPrivateIp = $openAiKeyVaultPrivateIpMapping.privateIPAddress
+
+$tokens.opsKeyVaultFqdn = $opsKeyVaultPrivateIpMapping.fqdn
+$tokens.opsKeyVaultPrivateIp = $opsKeyVaultPrivateIpMapping.privateIPAddress
+
+$tokens.amplsFqdn = $amplsPrivateIpMapping.fqdn
+$tokens.amplsPrivateIp = $amplsPrivateIpMapping.privateIPAddress
 
 $tokens.storageAccountOpsBlobFqdn = $storageAccountOpsPrivateIpMapping.blob.fqdn
 $tokens.storageAccountOpsBlobPrivateIp = $storageAccountOpsPrivateIpMapping.blob.privateIPAddress

@@ -28,3 +28,12 @@
 {{storageAccountAdlsFilePrivateIp}} {{storageAccountAdlsFileFqdn}}
 {{storageAccountAdlsQueuePrivateIp}} {{storageAccountAdlsQueueFqdn}}
 {{storageAccountAdlsTablePrivateIp}} {{storageAccountAdlsTableFqdn}}
+
+# OpenAI Key Vault
+{{openAiKeyVaultPrivateIp}} {{openAiKeyVaultFqdn}}
+
+# Ops Key Vault
+{{opsKeyVaultPrivateIp}} {{opsKeyVaultFqdn}}
+
+# Azure Monitor Private Link Scope
+{{amplsPrivateIp}} {{amplsFqdn}}
