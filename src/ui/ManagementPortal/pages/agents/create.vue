@@ -42,7 +42,7 @@
 			</div>
 
 			<!-- Analytics agent-->
-			<div class="step">
+			<div class="step step--disabled">
 				<div class="step-container cursor-pointer" @click="handleAgentTypeSelect('analytics')">
 					<div class="step-container__edit__inner">
 						<div class="step__radio">
@@ -65,7 +65,7 @@
 				<template v-if="selectedDataSource">
 					<div class="step-container__header">{{ selectedDataSource.Type }}</div>
 					<div>
-						<span class="step-option__header">Storage account name:</span>
+						<span class="step-option__header">Name:</span>
 						<span>{{ selectedDataSource.Name }}</span>
 					</div>
 					<!-- <div>
@@ -73,43 +73,47 @@
 						<span>{{ selectedDataSource.Container.Name }}</span>
 					</div> -->
 					
-					<div>
+					<!-- <div>
 						<span class="step-option__header">Data Format(s):</span>
 						<span v-for="format in selectedDataSource.Formats" :key="format" class="mr-1">
 							{{ format }}
 						</span>
-					</div>
+					</div> -->
 				</template>
 				<template v-else>Please select a data source.</template>
 
 				<template #edit>
 					<div class="step-container__edit__header">Please select a data source.</div>
-					<div
-						v-for="dataSource in dataSources"
-						:key="dataSource.Name"
-						class="step-container__edit__option"
-						:class="{
-							'step-container__edit__option--selected':
-								dataSource.Name === selectedDataSource?.Name,
-						}"
-						@click.stop="handleDataSourceSelected(dataSource)"
-					>
-						<div class="step-container__header">{{ dataSource.Type }}</div>
+					
+					<div v-for="(group, type) in groupedDataSources" :key="type">
 
-						<div>
-							<span class="step-option__header">Storage account name:</span>
-							<span>{{ dataSource.Name }}</span>
-						</div>
-						<!-- <div>
-							<span class="step-option__header">Container name:</span>
-							<span>{{ dataSource.Container.Name }}</span>
-						</div> -->
-						
-						<div>
-							<span class="step-option__header">Data Format(s):</span>
-							<span v-for="format in dataSource.Formats" :key="format" class="mr-1">
-								{{ format }}
-							</span>
+						<div class="step-container__edit__group-header">{{ type }}</div>
+
+						<div
+							v-for="dataSource in group"
+							:key="dataSource.Name"
+							class="step-container__edit__option"
+							:class="{
+								'step-container__edit__option--selected':
+									dataSource.Name === selectedDataSource?.Name,
+							}"
+							@click.stop="handleDataSourceSelected(dataSource)"
+						>
+							<div>
+								<span class="step-option__header">Name:</span>
+								<span>{{ dataSource.Name }}</span>
+							</div>
+							<!-- <div>
+								<span class="step-option__header">Container name:</span>
+								<span>{{ dataSource.Container.Name }}</span>
+							</div> -->
+							
+							<!-- <div>
+								<span class="step-option__header">Data Format(s):</span>
+								<span v-for="format in dataSource.Formats" :key="format" class="mr-1">
+									{{ format }}
+								</span>
+							</div> -->
 						</div>
 					</div>
 				</template>
@@ -257,6 +261,11 @@
 					</span>
 				</div>
 
+				<div>
+					<span class="step-option__header">Max Messages:</span>
+					<span>{{ conversationMaxMessages }}</span>
+				</div>
+
 				<template #edit>
 					<div class="step-container__header">Conversation History</div>
 
@@ -271,6 +280,11 @@
 								offIcon="pi pi-times-circle"
 							/>
 						</span>
+					</div>
+
+					<div>
+						<span class="step-option__header">Max Messages:</span>
+						<InputText v-model="conversationMaxMessages" type="number" class="mt-2" />
 					</div>
 				</template>
 			</CreateAgentStepItem>
@@ -394,23 +408,23 @@ export default {
 
 			// editProcessing: false as boolean,
 			chunkSize: 2000,
-			overlapSize: 0,
+			overlapSize: 100,
 
 			// editTrigger: false as boolean,
-			triggerFrequency: { label: 'Auto', value: null },
+			triggerFrequency: { label: 'Manual', value: 1 },
 			triggerFrequencyOptions: [
-				{
-					label: 'Auto',
-					value: null,
-				},
 				{
 					label: 'Manual',
 					value: 1,
 				},
-				{
-					label: 'Scheduled',
-					value: 2,
-				},
+				// {
+				// 	label: 'Auto',
+				// 	value: null,
+				// },
+				// {
+				// 	label: 'Scheduled',
+				// 	value: 2,
+				// },
 			],
 			triggerFrequencyScheduled: null,
 			triggerFrequencyScheduledOptions: [
@@ -438,6 +452,7 @@ export default {
 
 			// editConversationHistory: false as boolean,
 			conversationHistory: false as boolean,
+			conversationMaxMessages: 5 as number,
 
 			// editGatekeeper: false as boolean,
 			gatekeeperEnabled: false as boolean,
@@ -468,17 +483,39 @@ export default {
 		};
 	},
 
+	computed: {
+		groupedDataSources() {
+			const grouped = {};
+			this.dataSources.forEach(dataSource => {
+				if (!grouped[dataSource.Type]) {
+					grouped[dataSource.Type] = [];
+				}
+
+				grouped[dataSource.Type].push(dataSource);
+			});
+			
+			return grouped;
+		}
+	},
+
 	async created() {
 		this.loading = true;
 
 		// Uncomment to remove mock loading screen
 		// api.mockLoadTime = 0;
 
-		this.loadingStatusText = 'Retrieving indexes...';
-		this.indexSources = await api.getAgentIndexes();
+		try {
+			this.loadingStatusText = 'Retrieving indexes...';
+			this.indexSources = await api.getAgentIndexes();
 
-		this.loadingStatusText = 'Retrieving data sources...';
-		this.dataSources = await api.getAgentDataSources();
+			this.loadingStatusText = 'Retrieving data sources...';
+			this.dataSources = await api.getAgentDataSources();
+		} catch(error) {
+			this.$toast.add({
+				severity: 'error',
+				detail: error?.response?._data || error,
+			});
+		}
 
 		this.loading = false;
 	},
@@ -626,6 +663,11 @@ export default {
 	flex-direction: column;
 }
 
+.step--disabled {
+	pointer-events: none;
+	opacity: 0.5;
+}
+
 .step-container {
 	// padding: 16px;
 	border: 2px solid #e1e1e1;
@@ -721,6 +763,12 @@ $editStepPadding: 16px;
 
 .step-container__edit__header {
 	padding: $editStepPadding;
+}
+
+.step-container__edit__group-header {
+	font-weight: bold;
+	padding: $editStepPadding;
+	padding-bottom: 0px;
 }
 
 .step-container__edit__option {

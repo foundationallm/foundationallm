@@ -26,10 +26,17 @@ items:
     href: development/index.md
   - name: Configure local development environment
     href: development/development-local.md
-  - name: Directly calling the APIs
-    href: development/directly-calling-apis.md
   - name: FoundationaLLM DevOps rules and guidelines
     href: development/development-approach.md
+  - name: Directly calling APIs
+    href: development/calling-apis/index.md
+    items:
+    - name: Directly calling APIs
+      href: development/calling-apis/index.md
+    - name: Calling the Core API
+      href: development/calling-apis/directly-calling-core-api.md
+    - name: Calling the Management API
+      href: development/calling-apis/directly-calling-management-api.md
   - name: Contributing
     href: development/contributing/index.md
     items:
@@ -53,8 +60,10 @@ items:
     items:
     - name: Agents
       href: setup-guides/agents/index.md
-    - name: SQL database agent setup procedures
-      href: setup-guides/agents/sql-database-agents.md
+    - name: Knowledge management agents
+      href: setup-guides/agents/knowledge-management-agent.md
+    - name: Prompt resources
+      href: setup-guides/agents/prompt-resource.md
   - name: Exposed APIs
     href: setup-guides/exposed-apis/index.md
     items:
@@ -67,7 +76,7 @@ items:
     - name: Resource management
       href: setup-guides/exposed-apis/resource-management/resource-management.md
     - name: Management UI
-      href: setup-guides/exposed-apis/management-api/management-api.md
+      href: setup-guides/exposed-apis/management-ui/management-ui.md
   - name: Vectorization
     href: setup-guides/vectorization/index.md
     items:

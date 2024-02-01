@@ -1,6 +1,7 @@
 import { defineNuxtPlugin } from '#app';
 import { useAppConfigStore } from '@/stores/appConfigStore';
 import { useAuthStore } from '@/stores/authStore';
+import { useAppStore } from '@/stores/appStore';
 import { setAuthConfig } from '@/js/auth';
 import api from '@/js/api';
 
@@ -20,4 +21,7 @@ export default defineNuxtPlugin(async (nuxtApp: any) => {
 
 	const authStore = useAuthStore(nuxtApp.$pinia);
 	nuxtApp.provide('authStore', authStore);
+
+	const appStore = useAppStore(nuxtApp.$pinia);
+	nuxtApp.provide('appStore', authStore);
 });

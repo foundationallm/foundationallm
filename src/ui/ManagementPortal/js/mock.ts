@@ -39,6 +39,7 @@ export const mockGetAgentDataSourcesResponse: AgentIndex[] = [
 	{
 		Name: 'AzureBlob_DataSource_1',
 		ObjectId: '90871234981',
+		Type: 'AzureDataLake',
 		Container: {
 			Name: 'documents',
 			Formats: [
@@ -59,6 +60,7 @@ export const mockGetAgentDataSourcesResponse: AgentIndex[] = [
 	{
 		Name: 'AzureBlob_DataSource_2',
 		ObjectId: '8931729038',
+		Type: 'SharePointOnline',
 		Container: {
 			Name: 'census_data',
 			Formats: [
@@ -82,4 +84,15 @@ export const mockGetAgentDataSourcesResponse: AgentIndex[] = [
 			Endpoint: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:Endpoint',
 		},
 	},
+	{
+		Name: 'AzureBlob_DataSource_3',
+		ObjectId: '12873989',
+		Type: 'AzureDataLake',
+		Container: {
+			Name: 'data',
+			Formats: [
+				'txt',
+			],
+		},
+	}
 ];
