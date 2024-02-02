@@ -28,6 +28,17 @@ function EnsureSuccess($message) {
     }
 }
 
+function GetAksPrivateIPMapping($aksInstance, $peInstances, $nicInstances) {
+    $peInstance = $peInstances | Where-Object { $_.aksId -eq $aksInstance.aksId }
+    $nicInstance = $nicInstances | Where-Object { $_.peId -eq $peInstance.peId }
+
+    return @{
+        privateIPAddress = $nicInstance.privateIpAddress
+        fqdn             = $aksInstance.privateFqdn
+        groupId          = $peInstance.groupId
+    }
+}
+
 function GetPrivateIPMapping($privateEndpointId) {
     $networkInterface = $(
         az network private-endpoint show `
@@ -331,6 +342,36 @@ $storageAccountAdlsPrivateIpMapping = @{}
 foreach ($privateEndpointId in $storageAccountAdls.privateEndpointIds) {
     $privateIpMapping = GetPrivateIPMapping $privateEndpointId
     $storageAccountAdlsPrivateIpMapping.Add($privateIpMapping.groupId, $privateIpMapping)
+}
+
+Write-Host "Getting AKS Instances, Private Endpoints and NICs"
+$aksInstances = $(
+    az aks list `
+        --resource-group $resourceGroups.app `
+        --query "[].{aksName:name,privateFqdn:privateFqdn,aksId:id}" | `
+        ConvertFrom-Json
+)
+$peInstances = $(
+    az network private-endpoint list `
+        --resource-group $resourceGroups.app `
+        --query "[].{groupId:privateLinkServiceConnections[0].groupIds[0],peName:name,aksId:privateLinkServiceConnections[0].privateLinkServiceId,nicId:networkInterfaces[0].id,peId:id}" | `
+        ConvertFrom-Json
+)
+
+$nicInstances = $(
+    az network nic list `
+        --resource-group $resourceGroups.app `
+        --query "[].{nicId:id, nicName:name, privateIpAddress:ipConfigurations[0].privateIPAddress,peId:privateEndpoint.id}" | `
+        ConvertFrom-Json
+)
+
+Write-Host "Found $($aksInstances.Length) AKS Instances" -ForegroundColor Yellow
+for ($i = 0; $i -lt $aksInstances.Length; $i++) {
+    $aksInstance = $aksInstances[$i]
+    Write-Host "AKS Instance $($i): $($aksInstance.aksName)" -ForegroundColor Blue
+    $privateIpMapping = GetAksPrivateIPMapping $aksInstance $peInstances $nicInstances
+    $tokens.Add("aksFqdn$($i)", $aksInstance.privateFqdn)
+    $tokens.Add("aksPrivateIp$($i)", $privateIpMapping.privateIPAddress)
 }
 
 ## Getting managed identities

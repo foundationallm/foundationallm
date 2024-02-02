@@ -37,3 +37,7 @@
 
 # Azure Monitor Private Link Scope
 {{amplsPrivateIp}} {{amplsFqdn}}
+
+# AKS
+{{aksPrivateIp0}} {{aksFqdn0}}
+{{aksPrivateIp1}} {{aksFqdn1}}
