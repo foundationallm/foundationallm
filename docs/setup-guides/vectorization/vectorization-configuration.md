@@ -220,6 +220,7 @@ Default structure for the `vectorization-text-embedding-profiles.json` file:
             "Settings": {},
             "ConfigurationReferences": {
                 "APIKey": "FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:APIKey",
+                "APIVersion": "FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:APVersion",
                 "AuthenticationType": "FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:AuthenticationType",
                 "DeploymentName": "FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:DeploymentName",
                 "Endpoint": "FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:Endpoint"
@@ -248,10 +249,15 @@ Default structure for the `vectorization-indexing-profiles.json` file:
             "ObjectId": "/instances/<instance_id>/providers/FoundationaLLM.Vectorization/indexingprofiles/AzureAISearch_Default_001",
             "Indexer": "AzureAISearchIndexer",
             "Settings": {
-                "IndexName": "fllm-default-001"
+                "IndexName": "fllm-default-001",
+                "TopN": "3",
+                "Filters": "",
+                "EmbeddingFieldName": "Embedding",
+                "TextFieldName": "Text"
             },
             "ConfigurationReferences": {
                 "APIKey": "FoundationaLLM:Vectorization:AzureAISearchIndexingService:APIKey",
+                "QueryAPIKey": "FoundationaLLM:Vectorization:AzureAISearchIndexingService:QueryAPIKey",
                 "AuthenticationType": "FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType",
                 "Endpoint": "FoundationaLLM:Vectorization:AzureAISearchIndexingService:Endpoint"
             }

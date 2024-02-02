@@ -117,10 +117,17 @@ namespace FoundationaLLM.Agent.ResourceProviders
             }
             else
             {
-                if (!_agentReferences.TryGetValue(instance.ResourceId, out var agentReference))
-                    throw new ResourceProviderException($"Could not locate the {instance.ResourceId} agent resource.");
-
+                var agentReference = new AgentReference
+                {
+                    Name = instance.ResourceId,
+                    Type = AgentTypes.KnowledgeManagement,
+                    Filename = $"/{_name}/{instance.ResourceId}.json"
+                };
                 var agent = await LoadAgent(agentReference);
+
+                if (!_agentReferences.ContainsKey(agentReference.Name))
+                    _agentReferences[agentReference.Name] = agentReference;
+                
                 return JsonConvert.SerializeObject(agent, agentReference.AgentType, _serializerSettings);
             }
         }
