@@ -1,11 +1,12 @@
 using Asp.Versioning;
 using Azure.Identity;
+using FoundationaLLM;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.OpenAPI;
-using FoundationaLLM.Common.Services.Tokenizers;
 using FoundationaLLM.Common.Services;
+using FoundationaLLM.Common.Services.Tokenizers;
 using FoundationaLLM.Common.Settings;
 using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
 using FoundationaLLM.SemanticKernel.Core.Services;
@@ -19,8 +20,6 @@ using FoundationaLLM.Vectorization.Services.Text;
 using FoundationaLLM.Vectorization.Services.VectorizationStates;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Primitives;
-using FoundationaLLM.Common.Models.Configuration.Instance;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,6 +34,7 @@ builder.Configuration.AddAzureAppConfiguration(options =>
     {
         options.SetCredential(new DefaultAzureCredential());
     });
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Vectorization);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIs_VectorizationAPI);
 });
@@ -60,8 +60,7 @@ builder.Services.AddCors(policyBuilder =>
 });
 
 // Add configurations to the container
-builder.Services.AddOptions<InstanceSettings>()
-                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Instance));
+builder.Services.AddInstanceProperties(builder.Configuration);
 
 builder.Services.AddOptions<VectorizationWorkerSettings>()
     .Bind(builder.Configuration.GetSection(AppConfigurationKeys.FoundationaLLM_Vectorization_VectorizationWorker));

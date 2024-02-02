@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Services.ResourceProviders;
+using FoundationaLLM.Vectorization.Models;
 using FoundationaLLM.Vectorization.Models.Resources;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -46,6 +47,10 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> _resourceTypes => new()
         {
+            {
+                VectorizationResourceTypeNames.VectorizationRequests,
+                new ResourceTypeDescriptor(VectorizationResourceTypeNames.VectorizationRequests)
+            },
             {
                 VectorizationResourceTypeNames.ContentSourceProfiles,
                 new ResourceTypeDescriptor(VectorizationResourceTypeNames.ContentSourceProfiles)
@@ -217,6 +222,30 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                     JsonSerializer.Serialize(ProfileStore<T>.FromDictionary(profileStore)),
                     default,
                     default);
+        }
+
+        #endregion
+
+        /// <inheritdoc/>
+        protected override async Task UpsertResourceAsync<T>(List<ResourceTypeInstance> instances, T resource)
+        {
+            switch (instances[0].ResourceType)
+            {
+                case VectorizationResourceTypeNames.VectorizationRequests:
+                    await UpdateVectorizationRequest(instances, resource as VectorizationRequest ??
+                        throw new ResourceProviderException($"The type {typeof(T)} was not VectorizationRequest."));
+                    break;
+                default:
+                    throw new ResourceProviderException($"The resource type {instances[0].ResourceType} is not supported by the {_name} resource manager.");
+            }
+        }
+
+        #region Helpers for UpsertResourceAsync<T>
+
+        private async Task UpdateVectorizationRequest(List<ResourceTypeInstance> instances, VectorizationRequest request)
+        {
+            request.ObjectId = GetObjectId(instances);
+            await Task.CompletedTask;
         }
 
         #endregion

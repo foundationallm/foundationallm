@@ -12,6 +12,11 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
     public static class VectorizationResourceTypeNames
     {
         /// <summary>
+        /// Vectorization requests.
+        /// </summary>
+        public const string VectorizationRequests = "vectorizationrequests";
+
+        /// <summary>
         /// Vectorization content sources.
         /// </summary>
         public const string ContentSourceProfiles = "contentsourceprofiles";

@@ -11,12 +11,16 @@ using Microsoft.Extensions.Options;
 
 namespace FoundationaLLM
 {
+    /// <summary>
+    /// Provides extension methods used to configure dependency injection.
+    /// </summary>
     public static partial class DependencyInjection
     {
         /// <summary>
         /// Register the handler as a hosted service, passing the step name to the handler ctor
         /// </summary>
-        /// <param name="services">Application builder service collection</param>
+        /// <param name="services">Application builder service collection.</param>
+        /// <param name="configuration">The <see cref="IConfigurationManager"/> providing access to configuration.</param>
         public static void AddVectorizationResourceProvider(this IServiceCollection services, IConfigurationManager configuration)
         {
             services.AddOptions<BlobStorageServiceSettings>(
