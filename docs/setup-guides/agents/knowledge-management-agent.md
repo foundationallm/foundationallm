@@ -1,6 +1,6 @@
 # Knowledge management agent
 
-The FoundationaLLM(FLLM) knowledge management agent supports two use cases: internal context and retrieval augmented generation (RAG).
+The FoundationaLLM (FLLM) knowledge management agent supports two use cases: internal context and retrieval augmented generation (RAG).
 
 ## Internal Context
 
@@ -20,7 +20,7 @@ The knowledge management agent configuration may reference the following resourc
 
 - [Vectorization indexing profile](../vectorization/vectorization-profiles.md#indexing-profiles): The indexing profile contains the configuration of the service hosting the index that is to be searched.
 
-- [Prompt](prompt-resource.md): The system prompt of the agent, describes the persona of the agent.
+- [Prompt](prompt-resource.md): The system prompt of the agent, describing the persona of the agent.
 
 >**Note**: The knowledge management agent implementation currently supports the [`AzureAISearchIndexer`](../vectorization/vectorization-profiles.html#azureaisearchindexer) indexing profile.
 
@@ -66,7 +66,7 @@ where:
 
 - `<name>` is the name of the agent.
 - `<instance_id>` is the instance ID of the deployment.
-- `<description>` is the description of the agent, ensure this description details the purpose of the agent.
+- `<description>` is the description of the agent. Ensure that this description details the purpose of the agent.
 - `<indexing_profile_resource_objectid>` is the object ID of the indexing profile resource.
 - `<text_embedding_profile_resource_objectid>` is the object ID of the text embedding profile resource.
 - `<prompt_resource_objectid>` is the object ID of the prompt resource.
@@ -121,7 +121,7 @@ BODY
 <agent_configuration>
 ```
 
-where `<agent_configuration>` is the agent configuration structure described above.
+where `<agent_configuration>` is the JSON agent configuration structure described above.
 
 ### Delete
 
@@ -133,4 +133,4 @@ HTTP DELETE {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Agent/
 
 Once configured, the knowledge management agent can be validated using an API call to the [Core API](../exposed-apis/core-api.md) or via the [User Portal](../quickstart.md).
 
->**Note**: When validating through the user portal, ensure the `FoundationaLLM-AllowAgentHint` feature is enabled in the app configuration service. Also, the name of the agent needs to be added to the comma-delimited list of agents located in the app configuration setting named `FoundationaLLM:Branding:AllowAgentSelection` for it to display in the agent selection dropdown in the user portal. Once configuration has been modified, restart the Core API and User Portal services [(ACA)](../../deployment/authentication/core-authentication-setup-entra.md#restart-core-api-and-chat-ui-applications-in-an-aca-deployment)[(AKS)](../../deployment/authentication/core-authentication-setup-entra.md#restart-core-api-and-chat-ui-applications-in-an-aks-deployment).
+>**Note**: When validating through the user portal, ensure the `FoundationaLLM-AllowAgentHint` feature is enabled in the app configuration service. Also, the name of the agent needs to be added to the comma-delimited list of agents located in the app configuration setting named `FoundationaLLM:Branding:AllowAgentSelection` for it to display in the agent selection dropdown in the user portal. Once configuration has been modified, restart the Core API and User Portal services [(ACA)](../../deployment/authentication/core-authentication-setup-entra.md#restart-core-api-and-chat-ui-applications-in-an-aca-deployment) [(AKS)](../../deployment/authentication/core-authentication-setup-entra.md#restart-core-api-and-chat-ui-applications-in-an-aks-deployment).
