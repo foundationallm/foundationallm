@@ -19,6 +19,11 @@
 				<div class="mb-2">No special characters or spaces, lowercase letters with dashes and underscores only.</div>
 				<InputText v-model="agentName" placeholder="Enter agent name" type="text" class="w-100" @input="handleNameInput" />
 			</div>
+			<div class="span-2">
+				<div class="step-header mb-2">Description:</div>
+				<div class="mb-2">Provide a description to help others understand the agent's purpose.</div>
+				<InputText v-model="agentDescription" placeholder="Enter agent description" type="text" class="w-100" />
+			</div>
 
 			<!-- Type -->
 			<div class="step-section-header span-2">Type</div>
@@ -387,31 +392,46 @@ import type { CreateAgentRequest, AgentIndex } from '@/js/types';
 
 const defaultSystemPrompt: string = 'You are an analytic agent named Khalil that helps people find information about FoundationaLLM. Provide concise answers that are polite and professional.';
 
+const defaultFormValues = {
+	agentName: '',
+	agentDescription: '',
+	agentType: 'knowledge-management' as CreateAgentRequest['type'],
+
+	editDataSource: false as boolean,
+	selectedDataSource: null as null | Object,
+
+	editIndexSource: false as boolean,
+	selectedIndexSource: null as null | AgentIndex,
+
+	chunkSize: 2000,
+	overlapSize: 100,
+
+	triggerFrequency: { label: 'Manual', value: 1 },
+	triggerFrequencyScheduled: null,
+
+	conversationHistory: false as boolean,
+	conversationMaxMessages: 5 as number,
+
+	gatekeeperEnabled: false as boolean,
+	gatekeeperContentSafety: { label: 'None', value: null },
+	gatekeeperDataProtection: { label: 'None', value: null },
+
+	systemPrompt: defaultSystemPrompt as string,
+};
+
 export default {
 	name: 'CreateAgent',
 
 	data() {
 		return {
+			...defaultFormValues,
+
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
 
-			agentName: '',
-			agentType: 'knowledge-management' as CreateAgentRequest['type'],
-
-			editDataSource: false as boolean,
 			dataSources: [],
-			selectedDataSource: null as null | Object,
-
-			editIndexSource: false as boolean,
 			indexSources: [] as AgentIndex[],
-			selectedIndexSource: null as null | AgentIndex,
 
-			// editProcessing: false as boolean,
-			chunkSize: 2000,
-			overlapSize: 100,
-
-			// editTrigger: false as boolean,
-			triggerFrequency: { label: 'Manual', value: 1 },
 			triggerFrequencyOptions: [
 				{
 					label: 'Manual',
@@ -426,7 +446,7 @@ export default {
 				// 	value: 2,
 				// },
 			],
-			triggerFrequencyScheduled: null,
+			
 			triggerFrequencyScheduledOptions: [
 				{
 					label: 'Never',
@@ -450,13 +470,6 @@ export default {
 				},
 			],
 
-			// editConversationHistory: false as boolean,
-			conversationHistory: false as boolean,
-			conversationMaxMessages: 5 as number,
-
-			// editGatekeeper: false as boolean,
-			gatekeeperEnabled: false as boolean,
-			gatekeeperContentSafety: { label: 'None', value: null },
 			gatekeeperContentSafetyOptions: [
 				{
 					label: 'None',
@@ -464,10 +477,10 @@ export default {
 				},
 				{
 					label: 'Azure Content Safety',
-					value: 1,
+					value: "ContentSafety"
 				},
 			],
-			gatekeeperDataProtection: { label: 'None', value: null },
+
 			gatekeeperDataProtectionOptions: [
 				{
 					label: 'None',
@@ -475,11 +488,9 @@ export default {
 				},
 				{
 					label: 'Microsoft Presidio',
-					value: 1,
+					value: "Presidio"
 				},
 			],
-
-			systemPrompt: defaultSystemPrompt as string,
 		};
 	},
 
@@ -521,6 +532,12 @@ export default {
 	},
 
 	methods: {
+		resetForm() {
+			for (const key in defaultFormValues) {
+				this[key] = defaultFormValues[key];
+			}
+		},
+
 		handleNameInput(event) {
 			let element = event.target;
 
@@ -554,13 +571,13 @@ export default {
 				errors.push('Please give the agent a name.');
 			}
 
-			if (!this.selectedDataSource) {
-				errors.push('Please select a data source.');
-			}
+			// if (!this.selectedDataSource) {
+			// 	errors.push('Please select a data source.');
+			// }
 
-			if (!this.selectedIndexSource) {
-				errors.push('Please select an index source.');
-			}
+			// if (!this.selectedIndexSource) {
+			// 	errors.push('Please select an index source.');
+			// }
 
 			if (errors.length > 0) {
 				this.$toast.add({
@@ -578,6 +595,7 @@ export default {
 			try {
 				await api.createAgent({
 					name: this.agentName,
+					description: this.agentDescription,
 					type: this.agentType,
 
 					embedding_profile: this.selectedDataSource?.ObjectId,
@@ -589,29 +607,36 @@ export default {
 
 					conversation_history: {
 						enabled: this.conversationHistory,
-						// max_history: number,
+						max_history: this.conversationMaxMessages,
 					},
 
 					gatekeeper: {
 						use_system_setting: this.gatekeeperEnabled,
-						options: {
-							content_safety: this.gatekeeperContentSafety,
-							data_protection: this.gatekeeperDataProtection,
-						},
+						options: [
+							this.gatekeeperContentSafety.value,
+							this.gatekeeperDataProtection.value,
+						].filter(option => option !== null),
 					},
 
 					prompt: this.systemPrompt,
 				});
 			} catch(error) {
-				this.$toast.add({
+				this.loading = false;
+				return this.$toast.add({
 					severity: 'error',
 					detail: 'There was an error creating the agent. Please check the settings and try again.',
 					life: 5000,
 				});
 			}
 
+			this.$toast.add({
+				severity: 'success',
+				detail: `Agent "${this.agentName}" was succesfully created!`,
+			});
+
 			this.loading = false;
-			// Route to created agent's page
+
+			this.resetForm();
 		},
 	},
 };
