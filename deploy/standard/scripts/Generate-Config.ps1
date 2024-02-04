@@ -67,10 +67,10 @@ function GetPrivateIPMapping($privateEndpointId) {
 
 function PopulateTemplate($tokens, $template, $output) {
     Push-Location $($MyInvocation.InvocationName | Split-Path)
-    $templatePath = $(./Join-Path-Recursively -pathParts $template.Split(","))
-    $outputFilePath = $(./Join-Path-Recursively -pathParts $output.Split(","))
+    $templatePath = $(../../common/scripts/Join-Path-Recursively -pathParts $template.Split(","))
+    $outputFilePath = $(../../common/scripts/Join-Path-Recursively -pathParts $output.Split(","))
     Write-Host "Generating $outputFilePath file..." -ForegroundColor Yellow
-    & ./Token-Replace.ps1 -inputFile $templatePath -outputFile $outputFilePath -tokens $tokens
+    & ../../common/scripts/Token-Replace.ps1 -inputFile $templatePath -outputFile $outputFilePath -tokens $tokens
     Pop-Location
 }
 

@@ -31,7 +31,7 @@ if ($stepLoginAzure) {
     az login
 }
 
-$manifest = $(Get-Content -Raw -Path ./Deployment-Manifest.json | ConvertFrom-Json)
+$manifest = $(Get-Content -Raw -Path ../Deployment-Manifest.json | ConvertFrom-Json)
 
 $instanceId = $manifest.instanceId
 $ingress = $manifest.ingress

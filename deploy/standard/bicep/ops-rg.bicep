@@ -24,11 +24,12 @@ param timestamp string = utcNow()
 param vnetId string
 
 /** Locals **/
-@description('The Resource Name')
-var formattedKvName = toLower('${kvServiceType}-${kvResourceSuffix}')
+@description('Formatted untruncated resource name')
+var kvFormattedName = toLower('${kvServiceType}-${substring(kvResourceSuffix, 0, length(kvResourceSuffix) - 4)}')
 
 @description('The Resource Name')
-var kvName = substring(formattedKvName,0,min([length(formattedKvName),24]))
+var kvTruncatedName = substring(kvFormattedName,0,min([length(kvFormattedName),20]))
+var kvName = '${kvTruncatedName}-${substring(kvResourceSuffix, length(kvResourceSuffix) - 3, 3)}'
 
 @description('KeyVault resource suffix')
 var kvResourceSuffix = resourceSuffix
@@ -154,18 +155,18 @@ module containerRegistry 'modules/containerRegistry.bicep' = {
   }
 }
 
-@description('Azure Managed Grafana')
-module grafana 'modules/grafana.bicep' = {
-  name: 'grafana-${timestamp}'
-  params: {
-    azureMonitorWorkspaceResourceId: monitorWorkspace.outputs.id
-    location: location
-    privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'grafana')
-    resourceSuffix: resourceSuffix
-    subnetId: '${vnetId}/subnets/ops'
-    tags: tags
-  }
-}
+// @description('Azure Managed Grafana')
+// module grafana 'modules/grafana.bicep' = {
+//   name: 'grafana-${timestamp}'
+//   params: {
+//     azureMonitorWorkspaceResourceId: monitorWorkspace.outputs.id
+//     location: location
+//     privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'grafana')
+//     resourceSuffix: resourceSuffix
+//     subnetId: '${vnetId}/subnets/ops'
+//     tags: tags
+//   }
+// }
 
 @description('Key Vault')
 module keyVault 'modules/keyVault.bicep' = {
@@ -247,6 +248,7 @@ module csvFileSecret 'modules/kvSecret.bicep' = {
     secretValue: 'FIXME'
     tags: tags
   }
+  dependsOn: [ keyVault ]
 }
 
 @description('Placeholder configuration setting for Test DB Password')
@@ -258,4 +260,5 @@ module dbPasswdSecret 'modules/kvSecret.bicep' = {
     secretValue: 'FIXME'
     tags: tags
   }
+  dependsOn: [ keyVault ]
 }

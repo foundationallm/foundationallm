@@ -6,8 +6,6 @@ param cidrVnet string = '10.220.128.0/21'
 
 param createVpnGateway bool = false
 
-param vnetName string = 'vnet-${environmentName}-${location}-net'
-
 @description('Resource Suffix used in naming resources.') // TODO Make this consistent on next new deploy
 var resourceSuffix = '${environmentName}-${location}-${workload}-${project}'
 
@@ -16,7 +14,7 @@ var workload = 'net'
 
 output vnetId string = main.id
 
-var name = vnetName
+var name = 'vnet-${environmentName}-${location}-net'
 var cidrAppGateway = cidrSubnet(cidrVnet, 24, 0) // 10.220.128.0/24
 var cidrFllmBackend = cidrSubnet(cidrVnet, 24, 1) // 10.220.129.0/24
 var cidrFllmFrontend = cidrSubnet(cidrVnet, 24, 2) // 10.220.130.0/24

@@ -1,0 +1,119 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "environmentName": {
+        "value": "${AZURE_ENV_NAME}"
+      },
+      "location": {
+        "value": "${AZURE_LOCATION}"
+      },
+      "servicesExist": {
+        "value": {
+          "core-api": "${CORE_API_SERVICE_EXISTS=false}"
+        }
+      },
+      "serviceDefinition": {
+        "value": {
+          "settings": []
+        }
+      },
+      "services": {
+        "value": [
+          {
+            "name": "agent-factory-api",
+            "useEndpoint": false,
+            "hasIngress": true,
+            "appConfigEnvironmentVarName": "FoundationaLLM__AppConfig__ConnectionString"
+          },
+          {
+            "name": "agent-hub-api",
+            "useEndpoint": true,
+            "hasIngress": true,
+            "appConfigEnvironmentVarName": "foundationallm-app-configuration-uri"
+          },
+          {
+            "name": "chat-ui",
+            "useEndpoint": true,
+            "hasIngress": true,
+            "appConfigEnvironmentVarName": "NUXT_APP_CONFIG_ENDPOINT"
+          },
+          {
+            "name": "core-api",
+            "useEndpoint": false,
+            "hasIngress": true,
+            "appConfigEnvironmentVarName": "FoundationaLLM__AppConfig__ConnectionString"
+          },
+          {
+            "name": "core-job",
+            "useEndpoint": false,
+            "hasIngress": false,
+            "appConfigEnvironmentVarName": "FoundationaLLM__AppConfig__ConnectionString"
+          },
+          {
+            "name": "data-source-hub-api",
+            "useEndpoint": true,
+            "hasIngress": true,
+            "appConfigEnvironmentVarName": "foundationallm-app-configuration-uri"
+          },
+          {
+            "name": "gatekeeper-api",
+            "useEndpoint": false,
+            "hasIngress": true,
+            "appConfigEnvironmentVarName": "FoundationaLLM__AppConfig__ConnectionString"
+          },
+          {
+            "name": "gatekeeper-integration-api",
+            "useEndpoint": true,
+            "hasIngress": true,
+            "appConfigEnvironmentVarName": "foundationallm-app-configuration-uri"
+          },
+          {
+            "name": "langchain-api",
+            "useEndpoint": true,
+            "hasIngress": true,
+            "appConfigEnvironmentVarName": "foundationallm-app-configuration-uri"
+          },
+          {
+            "name": "management-api",
+            "useEndpoint": false,
+            "hasIngress": true,
+            "appConfigEnvironmentVarName": "FoundationaLLM__AppConfig__ConnectionString"
+          },
+          {
+            "name": "management-ui",
+            "useEndpoint": true,
+            "hasIngress": true,
+            "appConfigEnvironmentVarName": "NUXT_APP_CONFIG_ENDPOINT"
+          },
+          {
+            "name": "prompt-hub-api",
+            "useEndpoint": true,
+            "hasIngress": true,
+            "appConfigEnvironmentVarName": "foundationallm-app-configuration-uri"
+          },
+          {
+            "name": "semantic-kernel-api",
+            "useEndpoint": false,
+            "hasIngress": true,
+            "appConfigEnvironmentVarName": "FoundationaLLM__AppConfig__ConnectionString"
+          },
+          {
+            "name": "vectorization-api",
+            "useEndpoint": false,
+            "hasIngress": true,
+            "appConfigEnvironmentVarName": "FoundationaLLM__AppConfig__ConnectionString"
+          },
+          {
+            "name": "vectorization-job",
+            "useEndpoint": false,
+            "hasIngress": false,
+            "appConfigEnvironmentVarName": "FoundationaLLM__AppConfig__ConnectionString"
+          }
+        ]
+      },
+      "principalId": {
+        "value": "${AZURE_PRINCIPAL_ID}"
+      }
+    }
+}

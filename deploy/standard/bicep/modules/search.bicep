@@ -56,11 +56,13 @@ var alerts = [
   }
 ]
 
-@description('The Resource Name')
-var formattedKvName = toLower('${kvServiceType}-${kvResourceSuffix}')
+@description('Formatted untruncated resource name')
+var kvFormattedName = toLower('${kvServiceType}-${substring(kvResourceSuffix, 0, length(kvResourceSuffix) - 4)}')
 
 @description('The Resource Name')
-var kvName = substring(formattedKvName,0,min([length(formattedKvName),24]))
+var kvTruncatedName = substring(kvFormattedName,0,min([length(kvFormattedName),20]))
+var kvName = '${kvTruncatedName}-${substring(kvResourceSuffix, length(kvResourceSuffix) - 3, 3)}'
+
 
 @description('The Resource Service Type token')
 var kvServiceType = 'kv'

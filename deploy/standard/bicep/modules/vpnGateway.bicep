@@ -93,7 +93,7 @@ resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2021-02-01' = {
 resource publicIp 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
   name: pipName
   location: location
-  zones: ['1','2','3']
+  zones: ['1','2','3'] // TODO: Programmatically determine availability zones for a region and apply them here.
   sku: {
     name: 'Standard'
   }

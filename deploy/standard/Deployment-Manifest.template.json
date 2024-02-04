@@ -1,0 +1,65 @@
+{
+  "instanceId": "",
+  "environment": "",
+  "location": "",
+  "project": "",
+  "subscription": "",
+  "k8sNamespace": "",
+  "adminObjectId": "",
+  "createVpnGateway": true,
+  "ingress": {
+    "apiIngress": {
+      "coreapi": {
+        "host": "",
+        "path": "",
+        "pathType": "",
+        "sslCert": ""
+      },
+      "managementapi": {
+        "host": "",
+        "path": "",
+        "pathType": "",
+        "sslCert": ""
+      },
+      "vectorizationapi": {
+        "host": "",
+        "path": "",
+        "pathType": "",
+        "sslCert": ""
+      }  
+    },
+    "frontendIngress": {
+      "chatui": {
+        "host": "",
+        "path": "",
+        "pathType": "",
+        "sslCert": ""
+      },
+      "managementui": {
+        "host": "",
+        "path": "",
+        "pathType": "",
+        "sslCert": ""
+      }
+    }
+  },
+  "entraClientIds": {
+    "chat": "",
+    "core": "",
+    "managementapi": "",
+    "managementui": "",
+    "vectorizationapi": ""
+  },
+  "resourceGroups": {
+    "dns": "",
+    "jbx": "",
+    "agw": "",
+    "app": "",
+    "ops": "",
+    "net": "",
+    "vec": "",
+    "oai": "",
+    "data": "",
+    "storage": ""
+  }
+}

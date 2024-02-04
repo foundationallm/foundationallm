@@ -1,8 +1,0 @@
-About Solliance:
-Solliance was founded in 1998 to give lone wolf, technical experts a pack to run with. 
-There are over 300 experts in Solliance.
-The experts are located all over the world, across 18 countries.
-Solliance has more than 29 Microsoft MVP's.
-Our MVP's have award categories that include Artificial Intelligence, Quantum Computing, Azure cloud, Developer Tools and Security.
-The leadership of Solliance includes Zoiner Tejada (CEO) , Michele Leroux Bustamante (President), Brian Noyes (CTO) and Jenny Madsen (COO).
-Solliance has nine practices, each representing specialist experts.

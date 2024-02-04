@@ -73,17 +73,17 @@ resource main 'Microsoft.ContainerRegistry/registries@2023-08-01-preview' = {
   }
 }
 
-resource agentPool 'Microsoft.ContainerRegistry/registries/agentPools@2019-06-01-preview' = {
-  parent: main
-  name: 'default'
-  location: location
-  properties: {
-    count: 2
-    os: 'Linux'
-    tier: 'S1'
-    virtualNetworkSubnetResourceId: agentPoolSubnetId
-  }
-}
+// resource agentPool 'Microsoft.ContainerRegistry/registries/agentPools@2019-06-01-preview' = {
+//   parent: main
+//   name: 'default'
+//   location: location
+//   properties: {
+//     count: 2
+//     os: 'Linux'
+//     tier: 'S1'
+//     virtualNetworkSubnetResourceId: agentPoolSubnetId
+//   }
+// }
 
 @description('Diagnostic settings for App Configuration')
 resource diagnostics 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = {

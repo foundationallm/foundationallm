@@ -41,11 +41,12 @@ param timestamp string = utcNow()
 param useOidc bool = false
 
 /** Locals **/
-@description('The Resource Name')
-var formattedKvName = toLower('${kvServiceType}-${opsResourceSuffix}')
+@description('Formatted untruncated resource name')
+var kvFormattedName = toLower('${kvServiceType}-${substring(opsResourceSuffix, 0, length(opsResourceSuffix) - 4)}')
 
 @description('The Resource Name')
-var kvName = substring(formattedKvName, 0, min([ length(formattedKvName), 24 ]))
+var kvTruncatedName = substring(kvFormattedName,0,min([length(kvFormattedName),20]))
+var kvName = '${kvTruncatedName}-${substring(opsResourceSuffix, length(opsResourceSuffix) - 3, 3)}'
 
 @description('The Resource Service Type token')
 var kvServiceType = 'kv'

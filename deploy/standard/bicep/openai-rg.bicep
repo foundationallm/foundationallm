@@ -100,6 +100,7 @@ module contentSafety 'modules/contentSaftey.bicep' = {
     subnetId: '${vnetId}/subnets/FLLMOpenAI'
     tags: tags
   }
+  dependsOn: [ keyVault ]
 }
 
 @description('Key Vault')
@@ -133,4 +134,5 @@ module openai './modules/openai.bicep' = [for x in range(0, instanceCount): {
     tags: tags
     keyVaultName: keyVault.outputs.name
   }
+  dependsOn: [ keyVault ]
 }]

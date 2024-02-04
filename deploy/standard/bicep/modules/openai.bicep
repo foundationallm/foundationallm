@@ -104,11 +104,12 @@ var logs = [ 'Trace', 'RequestResponse', 'Audit' ]
 @description('The Resource Name')
 var name = '${serviceType}-${resourceSuffix}'
 
-@description('The Resource Name')
-var opsFormattedKvName = toLower('${kvServiceType}-${opsKvResourceSuffix}')
+@description('Formatted untruncated resource name')
+var opsFormattedKvName = toLower('${kvServiceType}-${substring(opsKvResourceSuffix, 0, length(opsKvResourceSuffix) - 4)}')
 
 @description('The Resource Name')
-var opsKvName = substring(opsFormattedKvName,0,min([length(opsFormattedKvName),24]))
+var kvTruncatedName = substring(opsFormattedKvName,0,min([length(opsFormattedKvName),20]))
+var opsKvName = '${kvTruncatedName}-${substring(opsKvResourceSuffix, length(opsKvResourceSuffix) - 3, 3)}'
 
 // See: https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles
 @description('Role Definition Ids')

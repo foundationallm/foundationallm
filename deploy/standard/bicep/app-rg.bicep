@@ -63,6 +63,9 @@ param storageResourceGroupName string
 @description('Timestamp used in naming nested deployments.')
 param timestamp string = utcNow()
 
+@description('Vectorization API OIDC Client Secret')
+param vectorizationApiClientSecret string
+
 @description('Virtual Network ID, used to find the subnet IDs.')
 param vnetId string
 
@@ -91,12 +94,12 @@ var backendServices = {
   'langchain-api': { displayName: 'LangChainAPI' }
   'prompt-hub-api': { displayName: 'PromptHubAPI' }
   'semantic-kernel-api': { displayName: 'SemanticKernelAPI' }
-  'vectorization-api': { displayName: 'VectorizationAPI' }
   'vectorization-job': { displayName: 'VectorizationWorker' }
 }
 
 var chatUiService = { 'chat-ui': { displayName: 'Chat' } }
 var coreApiService = { 'core-api': { displayName: 'CoreAPI' } }
+var vectorizationApiService = { 'vectorization-api': { displayName: 'VectorizationAPI' } }
 
 var managementUiService = { 'management-ui': { displayName: 'ManagementUI' } }
 var managementApiService = { 'management-api': { displayName: 'ManagementAPI' } }
@@ -151,7 +154,6 @@ module aksFrontend 'modules/aks.bicep' = {
 module backendServiceResources 'modules/service.bicep' = [for service in items(backendServices): {
     name: 'beSvc-${service.key}'
     params: {
-      displayName: service.value.displayName
       location: location
       namespace: k8sNamespace
       oidcIssuerUrl: aksBackend.outputs.oidcIssuerUrl
@@ -169,7 +171,6 @@ module chatUiServiceResources 'modules/service.bicep' = [for service in items(ch
     name: 'feSvc-${service.key}'
     params: {
       clientSecret: chatUiClientSecret
-      displayName: service.value.displayName
       location: location
       namespace: k8sNamespace
       oidcIssuerUrl: aksFrontend.outputs.oidcIssuerUrl
@@ -188,7 +189,6 @@ module managementUiServiceResources 'modules/service.bicep' = [for service in it
     name: 'feSvc-${service.key}'
     params: {
       clientSecret: managementUiClientSecret
-      displayName: service.value.displayName
       location: location
       namespace: k8sNamespace
       oidcIssuerUrl: aksFrontend.outputs.oidcIssuerUrl
@@ -207,7 +207,6 @@ module coreApiServiceResources 'modules/service.bicep' = [for service in items(c
     name: 'feSvc-${service.key}'
     params: {
       clientSecret: coreApiClientSecret
-      displayName: service.value.displayName
       location: location
       namespace: k8sNamespace
       oidcIssuerUrl: aksBackend.outputs.oidcIssuerUrl
@@ -226,7 +225,6 @@ module managementApiServiceResources 'modules/service.bicep' = [for service in i
     name: 'feSvc-${service.key}'
     params: {
       clientSecret: managementApiClientSecret
-      displayName: service.value.displayName
       location: location
       namespace: k8sNamespace
       oidcIssuerUrl: aksBackend.outputs.oidcIssuerUrl
@@ -239,5 +237,23 @@ module managementApiServiceResources 'modules/service.bicep' = [for service in i
       useOidc: true
     }
   }
+]
+
+module vectorizationApiServiceResources 'modules/service.bicep' = [for service in items(vectorizationApiService): {
+  name: 'feSvc-${service.key}'
+  params: {
+    clientSecret: vectorizationApiClientSecret
+    location: location
+    namespace: k8sNamespace
+    oidcIssuerUrl: aksBackend.outputs.oidcIssuerUrl
+    opsResourceGroupName: opsResourceGroupName
+    opsResourceSuffix: opsResourceSuffix
+    resourceSuffix: resourceSuffix
+    serviceName: service.key
+    storageResourceGroupName: storageResourceGroupName
+    tags: tags
+    useOidc: true
+  }
+}
 ]
 

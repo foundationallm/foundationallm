@@ -3,7 +3,7 @@
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
-$manifest = $(Get-Content ../scripts/Deployment-Manifest.json | ConvertFrom-Json)
+$manifest = $(Get-Content ../Deployment-Manifest.json | ConvertFrom-Json)
 
 $administratorObjectId = $manifest.adminObjectId
 $environment = $manifest.environment
@@ -11,10 +11,11 @@ $location = $manifest.location
 $project = $manifest.project
 $regenerateScripts = $false
 $script:chatUiClientSecret="CHAT-CLIENT-SECRET"
-$script:coreApiClientSecret="CORE-CLIENT-SECRET"
+$script:coreApiClientSecret="CORE-API-CLIENT-SECRET"
 $script:k8sNamespace=$manifest.k8sNamespace
-$script:managementApiClientSecret="MGMT-CLIENT-SECRET"
+$script:managementApiClientSecret="MGMT-API-CLIENT-SECRET"
 $script:managementUiClientSecret="MGMT-CLIENT-SECRET"
+$script:vectorizationApiClientSecret="VEC-API-CLIENT-SECRET"
 $skipAgw = $false
 $skipAgw = $false
 $skipApp = $false
@@ -32,7 +33,6 @@ $skipStorage = $false
 $skipVec = $false
 $subscription = $manifest.subscription
 $timestamp = [int](Get-Date -UFormat %s -Millisecond 0)
-$vnetName = $manifest.vnetName
 
 properties {
     $actionGroupId = ""
@@ -121,6 +121,7 @@ task App -depends Agw, ResourceGroups, Ops, Networking, DNS {
                                     privateDnsZones=$privateDnsZones `
                                     project=$project `
                                     storageResourceGroupName=$($resourceGroups.storage) `
+                                    vectorizationApiClientSecret=$script:vectorizationApiClientSecret `
                                     vnetId=$script:vnetId
 
     if ($LASTEXITCODE -ne 0) {
@@ -171,10 +172,6 @@ task Networking -depends ResourceGroups {
 
     Write-Host -ForegroundColor Blue "Ensure networking resources exist"
 
-    if ($vnetName -eq $null) {
-        $vnetName = "vnet-${environment}-${location}-net"
-    }
-
     az deployment group create `
         --name $deployments["net"] `
         --parameters `
@@ -182,7 +179,6 @@ task Networking -depends ResourceGroups {
             location=$location `
             project=$project `
             createVpnGateway=$createVpnGateway `
-            vnetName=$vnetName `
         --resource-group $resourceGroups.net `
         --template-file ./networking-rg.bicep
 
@@ -258,7 +254,9 @@ task Ops -depends ResourceGroups, Networking, DNS {
 
     Write-Host -ForegroundColor Blue "Ensure ops resources exist"
 
-    $opsZones = $($script:privateDnsZones | ConvertTo-Json -Compress)
+    $dnsZoneTypes = @("monitor", "configuration_stores", "registry", "vault", "blob", "dfs", "file", "queue", "table")
+    $opsDnsZones = ($script:privateDnsZones | ConvertFrom-Json).where({ $dnsZoneTypes -Contains $_.key })
+    $privateDnsZones = $($opsDnsZones | ConvertTo-Json -Compress) | ConvertTo-Json
 
     az deployment group create `
         --name $deployments["ops"] `
@@ -268,7 +266,7 @@ task Ops -depends ResourceGroups, Networking, DNS {
             administratorObjectId=$administratorObjectId `
             environmentName=$environment `
             location=$location `
-            privateDnsZones=$opsZones `
+            privateDnsZones=$privateDnsZones `
             project=$project `
             vnetId=$script:vnetId
 

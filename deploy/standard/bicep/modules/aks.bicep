@@ -347,7 +347,7 @@ module netRoleAssignment 'utility/roleAssignments.bicep' = {
 
 @description('Resource for configuring the Key Vault metric alerts.')
 module metricAlerts 'utility/metricAlerts.bicep' = {
-  name: 'alert-${main.name}-${timestamp}'
+  name: 'a-${main.name}-${timestamp}'
   params: {
     actionGroupId: actionGroupId
     alerts: alerts
@@ -376,7 +376,7 @@ module privateEndpoint 'utility/privateEndpoint.bicep' = {
 }
 
 module agwAgicRoleAssignment 'utility/roleAssignments.bicep' = {
-  name: 'agwagicra-${resourceSuffix}-${timestamp}'
+  name: 'agicra-${resourceSuffix}-${timestamp}'
   scope: resourceGroup(agwResourceGroupName)
   params: {
     principalId: main.properties.addonProfiles.ingressApplicationGateway.identity.objectId
@@ -387,7 +387,7 @@ module agwAgicRoleAssignment 'utility/roleAssignments.bicep' = {
 }
 
 module subnetRoleAssignment 'utility/roleAssignments.bicep' = {
-  name: 'subnetra-${resourceSuffix}-${timestamp}'
+  name: 'sra-${resourceSuffix}-${timestamp}'
   scope: resourceGroup(networkingResourceGroupName)
   params: {
     principalId: main.properties.addonProfiles.ingressApplicationGateway.identity.objectId

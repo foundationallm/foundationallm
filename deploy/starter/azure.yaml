@@ -1,0 +1,97 @@
+name: FoundationaLLM ACA Starter
+metadata:
+  template: azd-foundationallm-aca:0.0.1
+services:
+  agent-factory-api:
+    project: ../../src/dotnet/AgentFactoryAPI
+    host: containerapp
+    language: dotnet
+    docker:
+      context: ../../
+      path: Dockerfile
+  agent-hub-api:
+    project: ../../src/python/AgentHubAPI
+    language: python
+    docker:
+      context: ../
+      path: Dockerfile
+  chat-ui:
+    project: ../../src/UI/UserPortal
+    host: containerapp
+    language: nodejs
+    docker:
+      context: ./
+      path: Dockerfile
+  core-api:
+    project: ../../src/dotnet/CoreAPI
+    host: containerapp
+    language: dotnet
+    docker:
+      context: ../../
+      path: Dockerfile
+  core-job:
+    project: ../../src/dotnet/CoreWorker
+    host: containerapp
+    language: dotnet
+    docker:
+      context: ../../
+      path: Dockerfile
+  data-source-hub-api:
+    project: ../../src/python/DataSourceHubAPI
+    language: python
+    docker:
+      context: ../
+      path: Dockerfile
+  gatekeeper-api:
+    project: ../../src/dotnet/GatekeeperAPI
+    host: containerapp
+    language: dotnet
+    docker:
+      context: ../../
+      path: Dockerfile
+  gatekeeper-integration-api:
+    project: ../../src/python/GatekeeperIntegrationAPI
+    language: python
+    docker:
+      context: ../
+      path: Dockerfile
+  langchain-api:
+    project: ../../src/python/LangChainAPI
+    language: python
+    docker:
+      context: ../
+      path: Dockerfile
+  management-api:
+    project: ../../src/dotnet/ManagementAPI
+    host: containerapp
+    language: dotnet
+    docker:
+      context: ../../
+      path: Dockerfile
+  management-ui:
+    project: ../../src/ui/ManagementPortal
+    host: containerapp
+    language: nodejs
+    docker:
+      context: ./
+      path: Dockerfile
+  prompt-hub-api:
+    project: ../../src/python/PromptHubAPI
+    language: python
+    docker:
+      context: ../
+      path: Dockerfile
+  vectorization-api:
+    project: ../../src/dotnet/VectorizationAPI
+    host: containerapp
+    language: dotnet
+    docker:
+      context: ../../
+      path: Dockerfile
+  vectorization-job:
+    project: ../../src/dotnet/VectorizationWorker
+    host: containerapp
+    language: dotnet
+    docker:
+      context: ../../
+      path: Dockerfile

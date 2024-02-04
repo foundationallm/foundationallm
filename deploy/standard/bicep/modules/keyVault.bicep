@@ -74,10 +74,11 @@ var alerts = [
 var logs = [ 'AuditEvent', 'AzurePolicyEvaluationDetails' ]
 
 @description('Formatted untruncated resource name')
-var formattedName = toLower('${serviceType}-${resourceSuffix}')
+var formattedName = toLower('${serviceType}-${substring(resourceSuffix, 0, length(resourceSuffix) - 4)}')
 
 @description('The Resource Name')
-var name = substring(formattedName,0,min([length(formattedName),24]))
+var truncatedName = substring(formattedName,0,min([length(formattedName),20]))
+var name = '${truncatedName}-${substring(resourceSuffix, length(resourceSuffix) - 3, 3)}'
 
 @description('The Resource Service Type token')
 var serviceType = 'kv'
