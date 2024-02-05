@@ -38,7 +38,7 @@ Param(
 
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
-Set-PSDebug -Trace 1 # Echo every command (0 to disable, 1 to enable, 2 to enable verbose)
+Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable, 2 to enable verbose)
 
 $hosts = @{
     "${subdomainPrefix}api"               = @("coreapi", "managementapi", "vectorizationapi")
@@ -63,9 +63,9 @@ foreach ($directory in $directories.GetEnumerator()) {
 
 foreach ($hostName in $hosts.GetEnumerator()) {
     $domain = "$($hostName.Key).${baseDomain}"
-    $fullChain = Join-Path $directories["config"], "live", "${domain}" -ChildPath "fullchain.pem"
-    $pfx = Join-Path $directories["certs"] -ChildPath "${domain}.pfx"
-    $privKey = Join-Path $directories["config"], "live", "${domain}" -ChildPath "privkey.pem"
+    $fullChain = Join-Path $directories["config"] "live" "${domain}" "fullchain.pem"
+    $pfx = Join-Path $directories["certs"] "${domain}.pfx"
+    $privKey = Join-Path $directories["config"] "live" "${domain}" "privkey.pem"
 
     # Generate certificate using letsencrypt
     & certbot certonly `
