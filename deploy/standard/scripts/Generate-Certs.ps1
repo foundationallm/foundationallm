@@ -13,6 +13,9 @@
 .PARAMETER keyVaultName
     The name of the Azure Key Vault where the certificates will be imported.
 
+.PARAMETER subdomainPrefix
+    The prefix to be added to the subdomains.
+
 .NOTES
     - This script requires Certbot and OpenSSL to be installed on the system.
     - The script assumes that the Azure CLI is installed on the system.
@@ -21,17 +24,21 @@
     - Certbot DNS Azure GitHub repository: https://github.com/terrycain/certbot-dns-azure
 
 .EXAMPLE
-    .\certbot.ps1 -baseDomain "example.com" -keyVaultName "mykeyvault"
+    .\Generate-Certs.ps1 -baseDomain "example.com" -keyVaultName "mykeyvault"
+
+.EXAMPLE
+    .\Generate-Certs.ps1 -baseDomain "example.com" -keyVaultName "mykeyvault" -subdomainPrefix "dev-"
 #>
 
 Param(
     [parameter(Mandatory = $true)][string]$baseDomain,
-    [parameter(Mandatory = $true)][string]$keyVaultName,
+    [parameter(Mandatory = $false)][string]$keyVaultName="",
     [parameter(Mandatory = $false)][string]$subdomainPrefix=""
 )
 
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
+Set-PSDebug -Trace 1 # Echo every command (0 to disable, 1 to enable, 2 to enable verbose)
 
 $hosts = @{
     "${subdomainPrefix}api"               = @("coreapi", "managementapi", "vectorizationapi")
@@ -71,7 +78,7 @@ foreach ($hostName in $hosts.GetEnumerator()) {
         -d $domain
 
     if ($LASTEXITCODE -ne 0) {
-        Write-Error("Failed to generate certificate for ${domain}"
+        Write-Error "Failed to generate certificate for ${domain}"
         exit 1
     }
 
@@ -102,6 +109,10 @@ foreach ($hostName in $hosts.GetEnumerator()) {
     }
 
     # Import certificate into Azure Key Vault
+    if ($keyVaultName -eq "") {
+        continue
+    }
+
     $keyVaultAliases = $hostName.Value
     if ($null -eq $keyVaultAliases) {
         $keyVaultAliases = @($($domain -replace '\.', '-'))
