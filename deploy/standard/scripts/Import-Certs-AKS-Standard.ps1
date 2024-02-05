@@ -18,7 +18,7 @@ function Import-Certs {
 
 		az network application-gateway ssl-cert create `
 			--gateway-name  $appGatewayName `
-			--key-vault-secret-id "https://${keyVaultName}.vault.azure.net/secrets/${cert})" `
+			--key-vault-secret-id "https://${keyVaultName}.vault.azure.net/secrets/${cert}" `
 			--name $cert `
 			--resource-group $resourceGroupAg `
 			--no-wait

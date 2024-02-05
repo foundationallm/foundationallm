@@ -16,7 +16,7 @@ Push-Location $($MyInvocation.InvocationName | Split-Path)
 
 az aks get-credentials -n $backendAksName -g $resourceGroup
 
-& ./Deploy-Backend-Images-Aks.ps1 -name $name -aksName $backendAksName -resourceGroup $resourceGroup -namespace $namespace
+& ./Deploy-Backend-Images-Aks.ps1 -name $name -aksName $backendAksName -resourceGroup $resourceGroup -namespace $namespace -charts $charts
 
 Pop-Location
 
@@ -24,6 +24,6 @@ Push-Location $($MyInvocation.InvocationName | Split-Path)
 
 az aks get-credentials -n $frontendAksName -g $resourceGroup
 
-& ./Deploy-Frontend-Images-Aks.ps1 -name $name -aksName $frontendAksName -resourceGroup $resourceGroup -namespace $namespace
+& ./Deploy-Frontend-Images-Aks.ps1 -name $name -aksName $frontendAksName -resourceGroup $resourceGroup -namespace $namespace -charts $charts
 
 Pop-Location
