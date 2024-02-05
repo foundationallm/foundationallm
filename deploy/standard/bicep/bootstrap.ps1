@@ -5,7 +5,7 @@ $PSAKE_VERSION = "4.9.0"
 
 try {
     $url = "https://github.com/psake/psake/archive/refs/tags/v${PSAKE_VERSION}.zip"
-    $outputPath = "./psake.zip"
+    $outputPath = "./tools/psake.zip"
     Invoke-WebRequest -Uri $url -OutFile $outputPath
     Expand-Archive -Path $outputPath -DestinationPath ./tools
     Push-Location -Path ./tools/psake-${PSAKE_VERSION}/src
