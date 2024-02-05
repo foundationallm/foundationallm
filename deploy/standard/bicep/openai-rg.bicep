@@ -90,7 +90,7 @@ module apim 'modules/apim.bicep' = {
       keys: openai[x].outputs.keys
     }]
   }
-  dependsOn: [openai]
+  dependsOn: [ openai ]
 }
 
 @description('Content Safety')
@@ -115,6 +115,7 @@ module keyVault 'modules/keyVault.bicep' = {
   params: {
     actionGroupId: actionGroupId
     administratorObjectId: administratorObjectId
+    allowAzureServices: false
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     privateDnsZones: filter(dnsZones.outputs.ids, (zone) => zone.key == 'vault')
