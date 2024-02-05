@@ -11,11 +11,11 @@ param location string
 @description('Log Analytics Workspace Id to use for diagnostics')
 param logAnalyticsWorkspaceId string
 
+@description('DNS Resource Group name')
+param dnsResourceGroupName string
+
 @description('OPS Resource Group name')
 param opsResourceGroupName string
-
-@description('Private DNS Zones for private endpoint')
-param privateDnsZones array
 
 @description('Project Name, used in naming resources.')
 param project string
@@ -28,7 +28,7 @@ param vnetId string
 
 /** Locals **/
 @description('KeyVault resource suffix')
-var kvResourceSuffix = '${project}-${environmentName}-${location}-ops' 
+var kvResourceSuffix = '${project}-${environmentName}-${location}-ops'
 
 @description('Resource Suffix used in naming resources.')
 var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
@@ -46,11 +46,20 @@ var workload = 'storage'
 
 @description('Private DNS Zones for Storage Accounts')
 var zonesStorage = filter(
-  privateDnsZones,
+  dnsZones.outputs.ids,
   (zone) => contains([ 'blob', 'dfs', 'file', 'queue', 'table', 'web' ], zone.key)
 )
 
 /** Nested Modules **/
+@description('Read DNS Zones')
+module dnsZones 'modules/utility/dnsZoneData.bicep' = {
+  name: 'dnsZones-${timestamp}'
+  scope: resourceGroup(dnsResourceGroupName)
+  params: {
+    location: location
+  }
+}
+
 @description('Cosmos DB Account')
 module cosmosdb 'modules/cosmosdb.bicep' = {
   name: 'cosmosdb-${timestamp}'
@@ -60,7 +69,7 @@ module cosmosdb 'modules/cosmosdb.bicep' = {
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     opsResourceGroupName: opsResourceGroupName
-    privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'cosmosdb')
+    privateDnsZones: filter(dnsZones.outputs.ids, (zone) => zone.key == 'cosmosdb')
     resourceSuffix: resourceSuffix
     subnetId: '${vnetId}/subnets/FLLMStorage'
     tags: tags

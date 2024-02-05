@@ -5,14 +5,14 @@ param administratorObjectId string
 @description('Administrator principal type.')
 param administratorPrincipalType string = 'Group'
 
+@description('DNS Resource Group Name')
+param dnsResourceGroupName string
+
 @description('The environment name token used in naming resources.')
 param environmentName string
 
 @description('Location used for all resources.')
 param location string
-
-@description('Private DNS Zones for Private Link Endpoints')
-param privateDnsZones array
 
 @description('Project Name, used in naming resources.')
 param project string
@@ -53,19 +53,19 @@ var workload = 'ops'
 
 @description('Private DNS Zones for Azure Monitor Private Link Scope')
 var zonesAmpls = filter(
-  privateDnsZones,
+  dnsZones.outputs.ids,
   (zone) => contains([ 'monitor', 'blob', 'ods', 'oms', 'agentsvc' ], zone.key)
 )
 
 @description('Private DNS Zones for Container Registry')
 var zonesRegistry = filter(
-  privateDnsZones,
+  dnsZones.outputs.ids,
   (zone) => contains([ 'cr', 'cr_region' ], zone.key)
 )
 
 @description('Private DNS Zones for Storage Accounts')
 var zonesStorage = filter(
-  privateDnsZones,
+  dnsZones.outputs.ids,
   (zone) => contains([ 'blob', 'dfs', 'file', 'queue', 'table', 'web' ], zone.key)
 )
 
@@ -85,6 +85,15 @@ resource uaiAppConfig 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-
 }
 
 /** Modules **/
+@description('Read DNS Zones')
+module dnsZones 'modules/utility/dnsZoneData.bicep' = {
+  name: 'dnsZones-${timestamp}'
+  scope: resourceGroup(dnsResourceGroupName)
+  params: {
+    location: location
+  }
+}
+
 @description('Azure Monitor Action Group')
 module actionGroup 'modules/actionGroup.bicep' = {
   name: 'actionGroup-${timestamp}'
@@ -118,7 +127,7 @@ module appConfig 'modules/appConfig.bicep' = {
     actionGroupId: actionGroup.outputs.id
     location: location
     logAnalyticWorkspaceId: logAnalytics.outputs.id
-    privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'configuration_stores')
+    privateDnsZones: filter(dnsZones.outputs.ids, (zone) => zone.key == 'configuration_stores')
     resourceSuffix: resourceSuffix
     subnetId: '${vnetId}/subnets/ops'
     tags: tags
@@ -178,7 +187,7 @@ module keyVault 'modules/keyVault.bicep' = {
     allowAzureServices: false
     location: location
     logAnalyticWorkspaceId: logAnalytics.outputs.id
-    privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'vault')
+    privateDnsZones: filter(dnsZones.outputs.ids, (zone) => zone.key == 'vault')
     resourceSuffix: resourceSuffix
     subnetId: '${vnetId}/subnets/ops'
     tags: tags
@@ -207,7 +216,7 @@ module monitorWorkspace 'modules/monitorWorksapce.bicep' = {
   name: 'monitorWorkspace-${timestamp}'
   params: {
     location: location
-    privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'prometheusMetrics')
+    privateDnsZones: filter(dnsZones.outputs.ids, (zone) => zone.key == 'prometheusMetrics')
     resourceSuffix: resourceSuffix
     subnetId: '${vnetId}/subnets/ops'
     tags: tags

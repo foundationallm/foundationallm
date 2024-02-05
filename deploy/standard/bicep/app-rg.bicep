@@ -8,9 +8,6 @@ param administratorObjectId string
 @description('Application Gateway resource group name')
 param agwResourceGroupName string
 
-@description('Application Gateways')
-param applicationGateways array
-
 @description('Chat UI OIDC Client Secret')
 @secure()
 param chatUiClientSecret string
@@ -51,9 +48,6 @@ param networkingResourceGroupName string
 @description('OPS Resource Group name')
 param opsResourceGroupName string
 
-@description('Private DNS Zones for private endpoint')
-param privateDnsZones array
-
 @description('Project Name, used in naming resources.')
 param project string
 
@@ -64,6 +58,7 @@ param storageResourceGroupName string
 param timestamp string = utcNow()
 
 @description('Vectorization API OIDC Client Secret')
+@secure()
 param vectorizationApiClientSecret string
 
 @description('Virtual Network ID, used to find the subnet IDs.')
@@ -71,7 +66,7 @@ param vnetId string
 
 /** Locals **/
 @description('KeyVault resource suffix')
-var opsResourceSuffix = '${project}-${environmentName}-${location}-ops' 
+var opsResourceSuffix = '${project}-${environmentName}-${location}-ops'
 
 @description('Resource Suffix used in naming resources.')
 var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
@@ -110,19 +105,38 @@ var workload = 'svc'
 /** Outputs **/
 
 /** Nested Modules **/
+module agws 'modules/utility/agwData.bicep' = {
+  name: 'agws-${timestamp}'
+  scope: resourceGroup(agwResourceGroupName)
+  params: {
+    location: location
+    environmentName: environmentName
+    project: project
+  }
+}
+
+@description('Read DNS Zones')
+module dnsZones 'modules/utility/dnsZoneData.bicep' = {
+  name: 'dnsZones-${timestamp}'
+  scope: resourceGroup(dnsResourceGroupName)
+  params: {
+    location: location
+  }
+}
+
 module aksBackend 'modules/aks.bicep' = {
   name: 'aksBackend-${timestamp}'
   params: {
     actionGroupId: actionGroupId
     admnistratorObjectIds: [ administratorObjectId ]
-    agw: first(filter(applicationGateways, (agw) => agw.key == 'api'))
+    agw: first(filter(agws.outputs.applicationGateways, (agw) => agw.key == 'api'))
     agwResourceGroupName: agwResourceGroupName
     dnsResourceGroupName: dnsResourceGroupName
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     logAnalyticWorkspaceResourceId: logAnalyticsWorkspaceResourceId
     networkingResourceGroupName: networkingResourceGroupName
-    privateDnsZones: filter(privateDnsZones, (zone) => contains([ 'aks' ], zone.key))
+    privateDnsZones: filter(dnsZones.outputs.ids, (zone) => contains([ 'aks' ], zone.key))
     resourceSuffix: '${resourceSuffix}-backend'
     subnetId: '${vnetId}/subnets/FLLMBackend'
     subnetIdPrivateEndpoint: '${vnetId}/subnets/FLLMServices'
@@ -135,14 +149,14 @@ module aksFrontend 'modules/aks.bicep' = {
   params: {
     actionGroupId: actionGroupId
     admnistratorObjectIds: [ administratorObjectId ]
-    agw: first(filter(applicationGateways, (agw) => agw.key == 'www'))
+    agw: first(filter(agws.outputs.applicationGateways, (agw) => agw.key == 'www'))
     agwResourceGroupName: agwResourceGroupName
     dnsResourceGroupName: dnsResourceGroupName
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     logAnalyticWorkspaceResourceId: logAnalyticsWorkspaceResourceId
     networkingResourceGroupName: networkingResourceGroupName
-    privateDnsZones: filter(privateDnsZones, (zone) => contains([ 'aks' ], zone.key))
+    privateDnsZones: filter(dnsZones.outputs.ids, (zone) => contains([ 'aks' ], zone.key))
     resourceSuffix: '${resourceSuffix}-frontend'
     subnetId: '${vnetId}/subnets/FLLMFrontend'
     subnetIdPrivateEndpoint: '${vnetId}/subnets/FLLMServices'
@@ -256,4 +270,3 @@ module vectorizationApiServiceResources 'modules/service.bicep' = [for service i
   }
 }
 ]
-

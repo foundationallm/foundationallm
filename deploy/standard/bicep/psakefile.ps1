@@ -36,9 +36,7 @@ $timestamp = [int](Get-Date -UFormat %s -Millisecond 0)
 
 properties {
     $actionGroupId = ""
-    $applicationGateways = @{}
     $logAnalyticsWorkspaceId = ""
-    $privateDnsZones = @{}
     $vnetId = ""
 }
 
@@ -77,14 +75,6 @@ task Agw -depends ResourceGroups, Ops, Networking {
     if ($LASTEXITCODE -ne 0) {
         throw "The agw deployment failed."
     }
-
-    $script:applicationGateways = $(
-        az deployment group show `
-            --name $deployments["agw"] `
-            --output json `
-            --query properties.outputs.applicationGateways.value `
-            --resource-group $resourceGroups.agw | ConvertFrom-Json
-    ) | ConvertTo-Json -Compress
 }
 
 task App -depends Agw, ResourceGroups, Ops, Networking, DNS {
@@ -94,10 +84,6 @@ task App -depends Agw, ResourceGroups, Ops, Networking, DNS {
     }
 
     Write-Host -ForegroundColor Blue "Ensure app resources exist"
-    $dnsZoneTypes = @("aks")
-    $aksDnsZones = ($script:privateDnsZones | ConvertFrom-Json).where({ $dnsZoneTypes -Contains $_.key })
-    $privateDnsZones = $("[$($aksDnsZones | ConvertTo-Json -Compress)]") | ConvertTo-Json
-    $appGateways = $($script:applicationGateways | ConvertTo-Json -Compress)
 
     az deployment group create --name  $deployments["app"] `
                         --resource-group $resourceGroups.app `
@@ -105,7 +91,6 @@ task App -depends Agw, ResourceGroups, Ops, Networking, DNS {
                         --parameters actionGroupId=$script:actionGroupId `
                                     administratorObjectId=$administratorObjectId `
                                     agwResourceGroupName=$($resourceGroups.agw) `
-                                    applicationGateways="$appGateways" `
                                     chatUiClientSecret=$script:chatUiClientSecret `
                                     coreApiClientSecret=$script:coreApiClientSecret `
                                     dnsResourceGroupName=$($resourceGroups.dns) `
@@ -118,7 +103,6 @@ task App -depends Agw, ResourceGroups, Ops, Networking, DNS {
                                     managementApiClientSecret=$script:managementApiClientSecret `
                                     networkingResourceGroupName=$($resourceGroups.net) `
                                     opsResourceGroupName=$($resourceGroups.ops) `
-                                    privateDnsZones=$privateDnsZones `
                                     project=$project `
                                     storageResourceGroupName=$($resourceGroups.storage) `
                                     vectorizationApiClientSecret=$script:vectorizationApiClientSecret `
@@ -149,18 +133,6 @@ task DNS -depends ResourceGroups, Networking {
 
     if ($LASTEXITCODE -ne 0) {
         throw "The DNS deployment failed."
-    }
-
-    $script:privateDnsZones = $(
-        az deployment group show `
-            --name $deployments["dns"] `
-            --output json `
-            --query properties.outputs.ids.value `
-            --resource-group $resourceGroups.dns | ConvertFrom-Json
-    ) | ConvertTo-Json -Compress
-
-    if ($LASTEXITCODE -ne 0) {
-        throw "The private DNS zone IDs could not be retrieved."
     }
 }
 
@@ -205,26 +177,6 @@ task OpenAI -depends ResourceGroups, Ops, Networking, DNS {
         return;
     }
 
-    Write-Host -ForegroundColor Blue "Checking deployment prerequisites..."
-    if ( $script:logAnalyticsWorkspaceId -eq "") {
-        Write-Host -ForegroundColor Yellow "Log Analytics Workspace not found.  Attempting to locate it..."
-        $script:logAnalyticsWorkspaceId = $(
-            az monitor log-analytics workspace show `
-                --resource-group $resourceGroups.ops `
-                --workspace-name "la-${project}-${environment}-${location}-ops" `
-                --query id `
-                --output tsv
-        )
-    }
-    else {
-        # psake remembers this in-between invocations 🤯
-        Write-Host -ForegroundColor Blue "Log Analytics Workspace found: ${script:logAnalyticsWorkspaceId}."
-    }
-
-    $dnsZoneTypes = @("cognitiveservices","gateway_developer","gateway_management","gateway_portal","gateway_public","gateway_scm","openai","vault")
-    $openAiDnsZones = ($script:privateDnsZones | ConvertFrom-Json).where({ $dnsZoneTypes -Contains $_.key })
-    $privateDnsZones = $($openAiDnsZones | ConvertTo-Json -Compress) | ConvertTo-Json
-
     Write-Host -ForegroundColor Blue "Ensure OpenAI accounts exist"
 
     az deployment group create --name $deployments.oai `
@@ -237,7 +189,6 @@ task OpenAI -depends ResourceGroups, Ops, Networking, DNS {
                         location=$location `
                         logAnalyticsWorkspaceId=$script:logAnalyticsWorkspaceId `
                         opsResourceGroupName=$($resourceGroups.ops) `
-                        privateDnsZones=$privateDnsZones `
                         project=$project `
                         vnetId=$script:vnetId
 
@@ -254,19 +205,15 @@ task Ops -depends ResourceGroups, Networking, DNS {
 
     Write-Host -ForegroundColor Blue "Ensure ops resources exist"
 
-    $dnsZoneTypes = @("monitor", "configuration_stores", "registry", "vault", "blob", "dfs", "file", "queue", "table")
-    $opsDnsZones = ($script:privateDnsZones | ConvertFrom-Json).where({ $dnsZoneTypes -Contains $_.key })
-    $privateDnsZones = $($opsDnsZones | ConvertTo-Json -Compress) | ConvertTo-Json
-
     az deployment group create `
         --name $deployments["ops"] `
         --resource-group $resourceGroups.ops `
         --template-file ./ops-rg.bicep `
         --parameters `
             administratorObjectId=$administratorObjectId `
+            dnsResourceGroupName=$($resourceGroups.dns) `
             environmentName=$environment `
             location=$location `
-            privateDnsZones=$privateDnsZones `
             project=$project `
             vnetId=$script:vnetId
 
@@ -329,9 +276,6 @@ task Storage -depends ResourceGroups, Ops, Networking, DNS {
     }
 
     Write-Host -ForegroundColor Blue "Ensure Storage resources exist"
-    $dnsZoneTypes = @("blob","cosmosdb","dfs","file","queue","table","web")
-    $storageDnsZones = ($script:privateDnsZones | ConvertFrom-Json).where({ $dnsZoneTypes -Contains $_.key })
-    $privateDnsZones = $($storageDnsZones | ConvertTo-Json -Compress) | ConvertTo-Json
 
     az deployment group create `
         --name $deployments["storage"] `
@@ -342,8 +286,8 @@ task Storage -depends ResourceGroups, Ops, Networking, DNS {
             environmentName=$environment `
             location=$location `
             logAnalyticsWorkspaceId=$script:logAnalyticsWorkspaceId `
+            dnsResourceGroupName=$($resourceGroups.dns) `
             opsResourceGroupName=$($resourceGroups.ops) `
-            privateDnsZones=$privateDnsZones `
             project=$project `
             vnetId=$script:vnetId
 
@@ -359,9 +303,6 @@ task Vec -depends ResourceGroups, Ops, Networking, DNS {
     }
 
     Write-Host -ForegroundColor Blue "Ensure vec resources exist"
-    $dnsZoneTypes = @("search")
-    $vecDnsZones = ($script:privateDnsZones | ConvertFrom-Json).where({ $dnsZoneTypes -Contains $_.key })
-    $privateDnsZones = $("[$($vecDnsZones | ConvertTo-Json -Compress)]") | ConvertTo-Json
 
     az deployment group create `
         --name $deployments.vec `
@@ -369,11 +310,11 @@ task Vec -depends ResourceGroups, Ops, Networking, DNS {
         --template-file ./vec-rg.bicep `
         --parameters `
             actionGroupId=$script:actionGroupId `
+            dnsZoneResourceGroupName=$($resourceGroups.dns) `
             environmentName=$environment `
             location=$location `
             logAnalyticsWorkspaceId=$script:logAnalyticsWorkspaceId `
             opsResourceGroupName=$($resourceGroups.ops) `
-            privateDnsZones=$privateDnsZones `
             project=$project `
             vnetId=$script:vnetId
 

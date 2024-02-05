@@ -11,11 +11,11 @@ param location string
 @description('Log Analytics Workspace Id to use for diagnostics')
 param logAnalyticsWorkspaceId string
 
+@description('DNS Resource Group name')
+param dnsResourceGroupName string
+
 @description('OPS Resource Group name')
 param opsResourceGroupName string
-
-@description('Private DNS Zones for private endpoint')
-param privateDnsZones array
 
 @description('Project Name, used in naming resources.')
 param project string
@@ -28,7 +28,7 @@ param vnetId string
 
 /** Locals **/
 @description('KeyVault resource suffix')
-var kvResourceSuffix = '${project}-${environmentName}-${location}-ops' 
+var kvResourceSuffix = '${project}-${environmentName}-${location}-ops'
 
 @description('Resource Suffix used in naming resources.')
 var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
@@ -45,6 +45,15 @@ var tags = {
 var workload = 'storage'
 
 /** Nested Modules **/
+@description('Read DNS Zones')
+module dnsZones 'modules/utility/dnsZoneData.bicep' = {
+  name: 'dnsZones-${timestamp}'
+  scope: resourceGroup(dnsResourceGroupName)
+  params: {
+    location: location
+  }
+}
+
 module search 'modules/search.bicep' = {
   name: 'search-${timestamp}'
   params: {
@@ -56,6 +65,6 @@ module search 'modules/search.bicep' = {
     resourceSuffix: resourceSuffix
     tags: tags
     subnetId: '${vnetId}/subnets/Vectorization'
-    privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'search')
+    privateDnsZones: filter(dnsZones.outputs.ids, (zone) => zone.key == 'search')
   }
 }

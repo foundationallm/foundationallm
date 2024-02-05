@@ -23,9 +23,6 @@ param logAnalyticsWorkspaceId string
 @description('OPS Resource Group name')
 param opsResourceGroupName string
 
-@description('Private DNS Zones for private endpoint')
-param privateDnsZones array
-
 @description('Project Name, used in naming resources.')
 param project string
 
@@ -60,11 +57,20 @@ var workload = 'oai'
 
 @description('Private DNS Zones for Azure API Management')
 var zonesApim = filter(
-  privateDnsZones,
+  dnsZones.outputs.ids,
   (zone) => contains([ 'gateway_developer', 'gateway_management', 'gateway_portal', 'gateway_public', 'gateway_scm' ], zone.key)
 )
 
 /** Nested Modules **/
+@description('Read DNS Zones')
+module dnsZones 'modules/utility/dnsZoneData.bicep' = {
+  name: 'dnsZones-${timestamp}'
+  scope: resourceGroup(dnsResourceGroupName)
+  params: {
+    location: location
+  }
+}
+
 @description('API Management')
 module apim 'modules/apim.bicep' = {
   name: 'apim-${timestamp}'
@@ -95,7 +101,7 @@ module contentSafety 'modules/contentSaftey.bicep' = {
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     opsResourceGroupName: opsResourceGroupName
-    privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'cognitiveservices')
+    privateDnsZones: filter(dnsZones.outputs.ids, (zone) => zone.key == 'cognitiveservices')
     resourceSuffix: resourceSuffix
     subnetId: '${vnetId}/subnets/FLLMOpenAI'
     tags: tags
@@ -111,7 +117,7 @@ module keyVault 'modules/keyVault.bicep' = {
     administratorObjectId: administratorObjectId
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
-    privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'vault')
+    privateDnsZones: filter(dnsZones.outputs.ids, (zone) => zone.key == 'vault')
     resourceSuffix: resourceSuffix
     subnetId: '${vnetId}/subnets/FLLMOpenAI'
     tags: tags
@@ -128,7 +134,7 @@ module openai './modules/openai.bicep' = [for x in range(0, instanceCount): {
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     opsKvResourceSuffix: kvResourceSuffix
     opsResourceGroupName: opsResourceGroupName
-    privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'openai')
+    privateDnsZones: filter(dnsZones.outputs.ids, (zone) => zone.key == 'openai')
     resourceSuffix: '${resourceSuffix}-${x}'
     subnetId: '${vnetId}/subnets/FLLMOpenAI'
     tags: tags
