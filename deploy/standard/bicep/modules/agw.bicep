@@ -239,6 +239,7 @@ resource main 'Microsoft.Network/applicationGateways@2023-05-01' = {
     sku: {
       name: 'WAF_v2'
       tier: 'WAF_v2'
+      family: 'Generation_2'
     }
 
     sslPolicy: {
