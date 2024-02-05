@@ -1,8 +1,14 @@
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
+$PSAKE_VERSION = "4.9.0"
+
 try {
-    Push-Location -Path ./tools/psake-4.9.0/src
+    $url = "https://github.com/psake/psake/archive/refs/tags/v${PSAKE_VERSION}.zip"
+    $outputPath = "./psake.zip"
+    Invoke-WebRequest -Uri $url -OutFile $outputPath
+    Expand-Archive -Path $outputPath -DestinationPath ./tools
+    Push-Location -Path ./tools/psake-${PSAKE_VERSION}/src
     Import-Module -Name ./psake.psm1 -Scope Global -Force
 }
 catch {
