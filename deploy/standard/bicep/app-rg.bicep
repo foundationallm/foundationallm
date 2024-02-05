@@ -136,6 +136,7 @@ module aksBackend 'modules/aks.bicep' = {
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     logAnalyticWorkspaceResourceId: logAnalyticsWorkspaceResourceId
     networkingResourceGroupName: networkingResourceGroupName
+    opsResourceGroupName: opsResourceGroupName
     privateDnsZones: filter(dnsZones.outputs.ids, (zone) => contains([ 'aks' ], zone.key))
     resourceSuffix: '${resourceSuffix}-backend'
     subnetId: '${vnetId}/subnets/FLLMBackend'

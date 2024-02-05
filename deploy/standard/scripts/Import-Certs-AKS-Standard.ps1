@@ -65,7 +65,7 @@ $appGatewayName = $appGatewayNameApi
 $certs =
 'coreapi',
 'managementapi',
-'vectormanagementapi'
+'vectorizationapi'
 
 Import-Certs
 

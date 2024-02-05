@@ -211,7 +211,7 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
       privateDNSZone: filter(privateDnsZones, (privateDnsZone) => privateDnsZone.key == 'aks')[0].id
     }
 
-    autoUpgradeProfile: {upgradeChannel: 'stable'}
+    autoUpgradeProfile: { upgradeChannel: 'stable' }
 
     azureMonitorProfile: {
       metrics: {
@@ -323,7 +323,7 @@ module agwClusterRoleAssignment 'utility/roleAssignments.bicep' = {
   }
 }
 
-module dnsRoleAssignment 'utility/roleAssignments.bicep' = [for zone in privateDnsZones: {
+module dnsRoleAssignment 'utility/roleAssignments.bicep' = {
   name: 'dnsra-${resourceSuffix}-${timestamp}'
   scope: resourceGroup(dnsResourceGroupName)
   params: {
@@ -332,7 +332,7 @@ module dnsRoleAssignment 'utility/roleAssignments.bicep' = [for zone in privateD
       'Private DNS Zone Contributor': 'b12aa53e-6015-4669-85d0-8515ebb3ae7f'
     }
   }
-}]
+}
 
 module netRoleAssignment 'utility/roleAssignments.bicep' = {
   name: 'netra-${resourceSuffix}-${timestamp}'
@@ -396,3 +396,4 @@ module subnetRoleAssignment 'utility/roleAssignments.bicep' = {
     }
   }
 }
+
