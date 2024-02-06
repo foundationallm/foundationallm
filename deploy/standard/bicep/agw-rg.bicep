@@ -24,6 +24,9 @@ param timestamp string = utcNow()
 @description('Virtual Network ID, used to find the subnet IDs.')
 param vnetId string
 
+@description('Virtual network name')
+param vnetName string
+
 /** Locals **/
 @description('The Application Gateway IDs')
 var applicationGateways = [ 'www', 'api' ]
@@ -57,14 +60,25 @@ resource uaiAgw 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = 
   tags: tags
 }
 
+resource vnet 'Microsoft.Network/virtualNetworks@2023-06-01' existing = {
+  scope: resourceGroup(networkingResourceGroupName)
+  name: vnetName
+}
+
+resource subnet 'Microsoft.Network/virtualNetworks/subnets@2023-06-01' existing = {
+  parent: vnet
+  name: 'FLLMServices'
+}
+
 /** Nested Modules **/
-module agw 'modules/agw.bicep' = [for i in applicationGateways: {
-  name: 'agw-${i}-${timestamp}'
+module agw 'modules/agw.bicep' = [for (agw, i) in applicationGateways: {
+  name: 'agw-${agw}-${timestamp}'
   params: {
     actionGroupId: actionGroupId
+    backendIP: cidrHost(subnet.properties.addressPrefix, 10 + i)
     location: location
     logAnalyticsWorkspaceId: logAnalyticsWorkspaceId
-    resourceSuffix: '${i}-${resourceSuffix}'
+    resourceSuffix: '${agw}-${resourceSuffix}'
     subnetId: '${vnetId}/subnets/AppGateway'
     tags: tags
     uaiId: uaiAgw.id

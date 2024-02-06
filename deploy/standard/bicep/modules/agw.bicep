@@ -2,6 +2,9 @@
 @description('Action Group Id for alerts')
 param actionGroupId string
 
+@description('Backend IP')
+param backendIP string
+
 @description('Location for all resources')
 param location string
 
@@ -135,7 +138,11 @@ resource main 'Microsoft.Network/applicationGateways@2023-06-01' = {
       {
         name: 'default'
         properties: {
-          backendAddresses: []
+          backendAddresses: [ 
+            { 
+              ipAddress: backendIP 
+            } 
+          ]
         }
       }
     ]

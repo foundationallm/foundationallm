@@ -61,8 +61,8 @@ param timestamp string = utcNow()
 @secure()
 param vectorizationApiClientSecret string
 
-@description('Virtual Network ID, used to find the subnet IDs.')
-param vnetId string
+@description('Virtual network name.')
+param vnetName string
 
 /** Locals **/
 @description('KeyVault resource suffix')
@@ -124,6 +124,16 @@ module dnsZones 'modules/utility/dnsZoneData.bicep' = {
   }
 }
 
+resource vnet 'Microsoft.Network/virtualNetworks@2023-06-01' existing = {
+  scope: resourceGroup(networkingResourceGroupName)
+  name: vnetName
+}
+
+resource subnet 'Microsoft.Network/virtualNetworks/subnets@2023-06-01' existing = {
+  parent: vnet
+  name: 'FLLMServices'
+}
+
 module aksBackend 'modules/aks.bicep' = {
   name: 'aksBackend-${timestamp}'
   params: {
@@ -132,14 +142,15 @@ module aksBackend 'modules/aks.bicep' = {
     agw: first(filter(agws.outputs.applicationGateways, (agw) => agw.key == 'api'))
     agwResourceGroupName: agwResourceGroupName
     dnsResourceGroupName: dnsResourceGroupName
+    ingressPrivateIP: cidrHost(subnet.properties.addressPrefix, 11)
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     logAnalyticWorkspaceResourceId: logAnalyticsWorkspaceResourceId
     networkingResourceGroupName: networkingResourceGroupName
     privateDnsZones: filter(dnsZones.outputs.ids, (zone) => contains([ 'aks' ], zone.key))
     resourceSuffix: '${resourceSuffix}-backend'
-    subnetId: '${vnetId}/subnets/FLLMBackend'
-    subnetIdPrivateEndpoint: '${vnetId}/subnets/FLLMServices'
+    subnetId: '${vnet.id}/subnets/FLLMBackend'
+    subnetIdPrivateEndpoint: '${vnet.id}/subnets/FLLMServices'
     tags: tags
   }
 }
@@ -152,14 +163,15 @@ module aksFrontend 'modules/aks.bicep' = {
     agw: first(filter(agws.outputs.applicationGateways, (agw) => agw.key == 'www'))
     agwResourceGroupName: agwResourceGroupName
     dnsResourceGroupName: dnsResourceGroupName
+    ingressPrivateIP: cidrHost(subnet.properties.addressPrefix, 10)
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     logAnalyticWorkspaceResourceId: logAnalyticsWorkspaceResourceId
     networkingResourceGroupName: networkingResourceGroupName
     privateDnsZones: filter(dnsZones.outputs.ids, (zone) => contains([ 'aks' ], zone.key))
     resourceSuffix: '${resourceSuffix}-frontend'
-    subnetId: '${vnetId}/subnets/FLLMFrontend'
-    subnetIdPrivateEndpoint: '${vnetId}/subnets/FLLMServices'
+    subnetId: '${vnet.id}/subnets/FLLMFrontend'
+    subnetIdPrivateEndpoint: '${vnet.id}/subnets/FLLMServices'
     tags: tags
   }
 }

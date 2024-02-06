@@ -28,7 +28,4 @@ ingress:
     path: {{servicePath}}
     pathType: {{servicePathType}}
   annotations:
-    appgw.ingress.kubernetes.io/appgw-ssl-certificate: {{serviceAgwSslCert}}
-    appgw.ingress.kubernetes.io/backend-path-prefix: /
-    appgw.ingress.kubernetes.io/request-timeout: '600'
-    kubernetes.io/ingress.class: azure/application-gateway
+    kubernetes.io/ingress.class: internal-ingress-nginx

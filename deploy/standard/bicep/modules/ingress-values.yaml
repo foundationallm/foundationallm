@@ -1,0 +1,23 @@
+controller:
+  replicaCount: 2
+  nodeSelector:
+    kubernetes.io/os: linux
+  admissionWebhooks:
+    patch:
+      nodeSelector:
+        kubernetes.io/os: linux
+      image:
+        digest: ""
+  ingressClass: internal-ingress-nginx
+  class: internal-nginx
+  service:
+    public: false
+    annotations:
+      service.beta.kubernetes.io/azure-load-balancer-internal: true
+      service.beta.kubernetes.io/azure-load-balancer-internal-subnet: 'FLLMServices'
+defaultBackend:
+  nodeSelector:
+    kubernetes.io/os: linux
+
+# Frontend AKS - helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx -f ./ingress-values.yaml --set controller.service.loadBalancerIP=10.220.131.75 
+# Backend AKS  - helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx -f ./ingress-values.yaml --set controller.service.loadBalancerIP=10.220.131.76

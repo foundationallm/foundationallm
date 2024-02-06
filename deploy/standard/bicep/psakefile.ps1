@@ -70,7 +70,8 @@ task Agw -depends ResourceGroups, Ops, Networking {
             networkingResourceGroupName="$($resourceGroups.net)" `
             opsResourceGroupName="$($resourceGroups.ops)" `
             project=$project `
-            vnetId=$script:vnetId
+            vnetId=$script:vnetId `
+            vnetName="vnet-stg-eastus2-net"
 
     if ($LASTEXITCODE -ne 0) {
         throw "The agw deployment failed."
@@ -106,7 +107,7 @@ task App -depends Agw, ResourceGroups, Ops, Networking, DNS {
                                     project=$project `
                                     storageResourceGroupName=$($resourceGroups.storage) `
                                     vectorizationApiClientSecret=$script:vectorizationApiClientSecret `
-                                    vnetId=$script:vnetId
+                                    vnetName="vnet-stg-eastus2-net"
 
     if ($LASTEXITCODE -ne 0) {
         throw "The app deployment failed."

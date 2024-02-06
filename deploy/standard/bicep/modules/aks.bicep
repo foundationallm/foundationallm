@@ -31,6 +31,9 @@ param networkingResourceGroupName string
 @description('Private DNS Zones for private endpoint')
 param privateDnsZones array
 
+@description('Ingress private IP')
+param ingressPrivateIP string
+
 @description('Resource suffix for all resources')
 param resourceSuffix string
 
@@ -147,13 +150,6 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
       azurepolicy: {
         config: { version: 'v2' }
         enabled: true
-      }
-
-      ingressApplicationGateway: {
-        enabled: true
-        config: {
-          applicationGatewayId: agw.id
-        }
       }
 
       omsagent: {
@@ -375,25 +371,38 @@ module privateEndpoint 'utility/privateEndpoint.bicep' = {
   }
 }
 
-module agwAgicRoleAssignment 'utility/roleAssignments.bicep' = {
-  name: 'agicra-${resourceSuffix}-${timestamp}'
-  scope: resourceGroup(agwResourceGroupName)
-  params: {
-    principalId: main.properties.addonProfiles.ingressApplicationGateway.identity.objectId
-    roleDefinitionIds: {
-      Contributor: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
-    }
-  }
-}
+// TODO: These don't work, implement in a script/hook
+// var contributor='b24988ac-6180-42a0-ab88-20f7382dd24c'
+// var rbacWriter='a7ffa36f-339b-4b5c-8bdf-e2c188b2c0eb'
 
-module subnetRoleAssignment 'utility/roleAssignments.bicep' = {
-  name: 'sra-${resourceSuffix}-${timestamp}'
-  scope: resourceGroup(networkingResourceGroupName)
-  params: {
-    principalId: main.properties.addonProfiles.ingressApplicationGateway.identity.objectId
-    roleDefinitionIds: {
-      'Network Contributor': '4d97b98b-1d4f-4787-a291-c67834d212e7'
-    }
-  }
-}
+// module nginxNamespace 'br/public:deployment-scripts/aks-run-command:2.0.2' = {
+//   name: 'nginxNs-${name}'
+//   params: {
+//     aksName: main.name
+//     location: location
+//     rbacRolesNeeded: [
+//       contributor
+//       rbacWriter
+//     ]
+//     commands: [
+//       'kubectl create namespace ingress-nginx'
+//     ]
+//   }
+// }
 
+// module nginx 'br/public:deployment-scripts/aks-run-command:2.0.2' = {
+//   name: 'nginx-${name}'
+//   params: {
+//     aksName: main.name
+//     location: location
+//     rbacRolesNeeded: [
+//       contributor
+//       rbacWriter
+//     ]
+//     commands: [
+//       'helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx; helm repo update'
+//       'helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx -f ./ingress-values.yaml --set controller.service.loadBalancerIP=${ingressPrivateIP}'
+//     ]
+//   }
+//   dependsOn: [ nginxNamespace ]
+// }
