@@ -1,0 +1,375 @@
+{
+  "FoundationaLLM:APIs:AgentFactoryAPI:APIKey": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-apis-agentfactoryapi-apikey"
+  },
+  "FoundationaLLM:APIs:AgentFactoryAPI:APIUrl": "https://fllmaca14agentfactoryca.icyisland-4eb575dd.eastus.azurecontainerapps.io",
+  "FoundationaLLM:APIs:AgentFactoryAPI:AppInsightsConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-app-insights-connection-string"
+  },
+  "FoundationaLLM:APIs:AgentFactoryAPI:ForceHttpsRedirection": "false",
+  "FoundationaLLM:APIs:AgentHubAPI:APIKey": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-apis-agenthubapi-apikey"
+  },
+  "FoundationaLLM:APIs:AgentHubAPI:APIUrl": "https://fllmaca14agenthubca.icyisland-4eb575dd.eastus.azurecontainerapps.io",
+  "FoundationaLLM:APIs:AgentHubAPI:AppInsightsConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-app-insights-connection-string"
+  },
+  "FoundationaLLM:APIs:CoreAPI:APIUrl": "https://fllmaca14coreca.icyisland-4eb575dd.eastus.azurecontainerapps.io",
+  "FoundationaLLM:APIs:CoreAPI:AppInsightsConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-app-insights-connection-string"
+  },
+  "FoundationaLLM:APIs:CoreAPI:BypassGatekeeper": "false",
+  "FoundationaLLM:APIs:DataSourceHubAPI:APIKey": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-apis-datasourcehubapi-apikey"
+  },
+  "FoundationaLLM:APIs:DataSourceHubAPI:APIUrl": "https://fllmaca14datasourcehubca.icyisland-4eb575dd.eastus.azurecontainerapps.io",
+  "FoundationaLLM:APIs:DataSourceHubAPI:AppInsightsConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-app-insights-connection-string"
+  },
+  "FoundationaLLM:APIs:GatekeeperAPI:APIKey": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-apis-gatekeeperapi-apikey"
+  },
+  "FoundationaLLM:APIs:GatekeeperAPI:APIUrl": "https://fllmaca14gatekeeperca.icyisland-4eb575dd.eastus.azurecontainerapps.io",
+  "FoundationaLLM:APIs:GatekeeperAPI:AppInsightsConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-app-insights-connection-string"
+  },
+  "FoundationaLLM:APIs:GatekeeperAPI:Configuration:EnableAzureContentSafety": "true",
+  "FoundationaLLM:APIs:GatekeeperAPI:Configuration:EnableMicrosoftPresidio": "true",
+  "FoundationaLLM:APIs:GatekeeperAPI:ForceHttpsRedirection": "false",
+  "FoundationaLLM:APIs:GatekeeperIntegrationAPI:APIKey": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-apis-gatekeeperintegrationapi-apikey"
+  },
+  "FoundationaLLM:APIs:GatekeeperIntegrationAPI:APIUrl": "https://fllmaca14gatekeeperintca.icyisland-4eb575dd.eastus.azurecontainerapps.io",
+  "FoundationaLLM:APIs:GatekeeperIntegrationAPI:AppInsightsConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-app-insights-connection-string"
+  },
+  "FoundationaLLM:APIs:LangChainAPI:APIKey": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-apis-langchainapi-apikey"
+  },
+  "FoundationaLLM:APIs:LangChainAPI:APIUrl": "https://fllmaca14langchainca.icyisland-4eb575dd.eastus.azurecontainerapps.io",
+  "FoundationaLLM:APIs:LangChainAPI:AppInsightsConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-app-insights-connection-string"
+  },
+  "FoundationaLLM:APIs:ManagementAPI:APIUrl": "https://fllmaca14managementca.icyisland-4eb575dd.eastus.azurecontainerapps.io",
+  "FoundationaLLM:APIs:ManagementAPI:AppInsightsConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-app-insights-connection-string"
+  },
+  "FoundationaLLM:APIs:PromptHubAPI:APIKey": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-apis-prompthubapi-apikey"
+  },
+  "FoundationaLLM:APIs:PromptHubAPI:APIUrl": "https://fllmaca14prompthubca.icyisland-4eb575dd.eastus.azurecontainerapps.io",
+  "FoundationaLLM:APIs:PromptHubAPI:AppInsightsConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-app-insights-connection-string"
+  },
+  "FoundationaLLM:APIs:SemanticKernelAPI:APIKey": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-apis-semantickernelapi-apikey"
+  },
+  "FoundationaLLM:APIs:SemanticKernelAPI:APIUrl": "https://fllmaca14semantickernelca.icyisland-4eb575dd.eastus.azurecontainerapps.io",
+  "FoundationaLLM:APIs:SemanticKernelAPI:AppInsightsConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-app-insights-connection-string"
+  },
+  "FoundationaLLM:APIs:SemanticKernelAPI:ForceHttpsRedirection": "false",
+  "FoundationaLLM:APIs:VectorizationAPI:APIKey": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-apis-vectorizationapi-apikey"
+  },
+  "FoundationaLLM:APIs:VectorizationAPI:APIUrl": "https://fllmaca14vectorizationca.icyisland-4eb575dd.eastus.azurecontainerapps.io",
+  "FoundationaLLM:APIs:VectorizationAPI:AppInsightsConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-app-insights-connection-string"
+  },
+  "FoundationaLLM:APIs:VectorizationAPI:ForceHttpsRedirection": "false",
+  "FoundationaLLM:APIs:VectorizationWorker:APIKey": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-apis-vectorizationapi-apikey"
+  },
+  "FoundationaLLM:APIs:VectorizationWorker:APIUrl": "https://fllmaca14vectorizationca.icyisland-4eb575dd.eastus.azurecontainerapps.io",
+  "FoundationaLLM:APIs:VectorizationWorker:AppInsightsConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-app-insights-connection-string"
+  },
+  "FoundationaLLM:Agent:ResourceProviderService:Storage:AuthenticationType": "ConnectionString",
+  "FoundationaLLM:Agent:ResourceProviderService:Storage:ConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-agenthub-storagemanager-blobstorage-connectionstring"
+  },
+  "FoundationaLLM:AgentHub:AgentMetadata:StorageContainer": "agents",
+  "FoundationaLLM:AgentHub:StorageManager:BlobStorage:ConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-agenthub-storagemanager-blobstorage-connectionstring"
+  },
+  "FoundationaLLM:AppInsights:ConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-app-insights-connection-string"
+  },
+  "FoundationaLLM:AzureContentSafety:APIKey": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-azurecontentsafety-apikey"
+  },
+  "FoundationaLLM:AzureContentSafety:APIUrl": "https://fllmaca14-contentsafety.cognitiveservices.azure.com/",
+  "FoundationaLLM:AzureContentSafety:HateSeverity": "2",
+  "FoundationaLLM:AzureContentSafety:SelfHarmSeverity": "2",
+  "FoundationaLLM:AzureContentSafety:SexualSeverity": "2",
+  "FoundationaLLM:AzureContentSafety:ViolenceSeverity": "2",
+  "FoundationaLLM:AzureOpenAI:API:Completions:DeploymentName": "completions",
+  "FoundationaLLM:AzureOpenAI:API:Completions:MaxTokens": "8096",
+  "FoundationaLLM:AzureOpenAI:API:Completions:ModelName": "gpt-35-turbo",
+  "FoundationaLLM:AzureOpenAI:API:Completions:ModelVersion": "0301",
+  "FoundationaLLM:AzureOpenAI:API:Completions:Temperature": "0",
+  "FoundationaLLM:AzureOpenAI:API:Embeddings:DeploymentName": "embeddings",
+  "FoundationaLLM:AzureOpenAI:API:Embeddings:MaxTokens": "8191",
+  "FoundationaLLM:AzureOpenAI:API:Embeddings:ModelName": "text-embedding-ada-002",
+  "FoundationaLLM:AzureOpenAI:API:Embeddings:Temperature": "0",
+  "FoundationaLLM:AzureOpenAI:API:Endpoint": "https://fllmaca14-openai.openai.azure.com/",
+  "FoundationaLLM:AzureOpenAI:API:Key": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-azureopenai-api-key"
+  },
+  "FoundationaLLM:AzureOpenAI:API:Version": "2023-05-15",
+  "FoundationaLLM:BlobStorageMemorySource:BlobStorageConnection": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-blobstoragememorysource-blobstorageconnection"
+  },
+  "FoundationaLLM:BlobStorageMemorySource:BlobStorageContainer": "memory-source",
+  "FoundationaLLM:BlobStorageMemorySource:ConfigFilePath": "BlobMemorySourceConfig.json",
+  "FoundationaLLM:Branding:AccentColor": "#fff",
+  "FoundationaLLM:Branding:AccentTextColor": "#000",
+  "FoundationaLLM:Branding:AllowAgentSelection": "default, anomaly, hai, movies, sdzwa, weather, weather-sec",
+  "FoundationaLLM:Branding:BackgroundColor": "#fff",
+  "FoundationaLLM:Branding:CompanyName": "FoundationaLLM",
+  "FoundationaLLM:Branding:FavIconUrl": "favicon.ico",
+  "FoundationaLLM:Branding:KioskMode": "false",
+  "FoundationaLLM:Branding:LogoText": "",
+  "FoundationaLLM:Branding:LogoUrl": "foundationallm-logo-white.svg",
+  "FoundationaLLM:Branding:PageTitle": "FoundationaLLM Chat Copilot",
+  "FoundationaLLM:Branding:PrimaryButtonBackgroundColor": "#5472d4",
+  "FoundationaLLM:Branding:PrimaryButtonTextColor": "#fff",
+  "FoundationaLLM:Branding:PrimaryColor": "#131833",
+  "FoundationaLLM:Branding:PrimaryTextColor": "#fff",
+  "FoundationaLLM:Branding:SecondaryButtonBackgroundColor": "#70829a",
+  "FoundationaLLM:Branding:SecondaryButtonTextColor": "#fff",
+  "FoundationaLLM:Branding:SecondaryColor": "#334581",
+  "FoundationaLLM:Branding:SecondaryTextColor": "#fff",
+  "FoundationaLLM:Chat:Entra:CallbackPath": "/signin-oidc",
+  "FoundationaLLM:Chat:Entra:ClientId": "0b08d115-b517-4d7f-b883-a1665191d14d",
+  "FoundationaLLM:Chat:Entra:ClientSecret": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-chat-entra-clientsecret"
+  },
+  "FoundationaLLM:Chat:Entra:Instance": "https://login.microsoftonline.com/",
+  "FoundationaLLM:Chat:Entra:Scopes": "api://FoundationaLLM-Auth/Data.Read",
+  "FoundationaLLM:Chat:Entra:TenantId": "d280491c-b27a-41bf-9623-21b60cf430b3",
+  "FoundationaLLM:CognitiveSearch:EndPoint": "https://fllmaca14-cog-search.search.windows.net",
+  "FoundationaLLM:CognitiveSearch:IndexName": "vector-index",
+  "FoundationaLLM:CognitiveSearch:Key": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-cognitivesearch-key"
+  },
+  "FoundationaLLM:CognitiveSearch:MaxVectorSearchResults": "10",
+  "FoundationaLLM:CognitiveSearchMemorySource:BlobStorageConnection": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-cognitivesearchmemorysource-blobstorageconnection"
+  },
+  "FoundationaLLM:CognitiveSearchMemorySource:BlobStorageContainer": "memory-source",
+  "FoundationaLLM:CognitiveSearchMemorySource:ConfigFilePath": "ACSMemorySourceConfig.json",
+  "FoundationaLLM:CognitiveSearchMemorySource:EndPoint": "https://fllmaca14-cog-search.search.windows.net",
+  "FoundationaLLM:CognitiveSearchMemorySource:IndexName": "vector-index",
+  "FoundationaLLM:CognitiveSearchMemorySource:Key": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-cognitivesearchmemorysource-key"
+  },
+  "FoundationaLLM:CoreAPI:Entra:CallbackPath": "/signin-oidc",
+  "FoundationaLLM:CoreAPI:Entra:ClientId": "b7bfdfd8-fd88-4bec-a6db-7fd1ecac40db",
+  "FoundationaLLM:CoreAPI:Entra:ClientSecret": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-coreapi-entra-clientsecret"
+  },
+  "FoundationaLLM:CoreAPI:Entra:Instance": "https://login.microsoftonline.com/",
+  "FoundationaLLM:CoreAPI:Entra:Scopes": "Data.Read",
+  "FoundationaLLM:CoreAPI:Entra:TenantId": "d280491c-b27a-41bf-9623-21b60cf430b3",
+  "FoundationaLLM:CoreWorker:AppInsightsConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-app-insights-connection-string"
+  },
+  "FoundationaLLM:CosmosDB:ChangeFeedLeaseContainer": "leases",
+  "FoundationaLLM:CosmosDB:Containers": "Sessions, UserSessions, UserProfiles",
+  "FoundationaLLM:CosmosDB:Database": "database",
+  "FoundationaLLM:CosmosDB:Endpoint": "https://fllmaca14-cosmos-nosql.documents.azure.com:443/",
+  "FoundationaLLM:CosmosDB:Key": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-cosmosdb-key"
+  },
+  "FoundationaLLM:CosmosDB:MonitoredContainers": "Sessions",
+  "FoundationaLLM:DataSourceHub:DataSourceMetadata:StorageContainer": "data-sources",
+  "FoundationaLLM:DataSourceHub:StorageManager:BlobStorage:ConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-datasourcehub-storagemanager-blobstorage-connectionstring"
+  },
+  "FoundationaLLM:DataSources:AboutFoundationaLLM:BlobStorage:ConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-blobstoragememorysource-blobstorageconnection"
+  },
+  "FoundationaLLM:DurableSystemPrompt:BlobStorageConnection": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-durablesystemprompt-blobstorageconnection"
+  },
+  "FoundationaLLM:DurableSystemPrompt:BlobStorageContainer": "prompts",
+  "FoundationaLLM:Instance:Id": "29ca44ca-a443-409c-9d8d-ec309b640a89",
+  "FoundationaLLM:Jaeger:APIUrl": "",
+  "FoundationaLLM:LangChain:CSVFile:URL": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-langchain-csvfile-url"
+  },
+  "FoundationaLLM:LangChain:SQLDatabase:MovieDB:Password": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-langchain-sqldb-moviedb-database-password"
+  },
+  "FoundationaLLM:LangChain:SQLDatabase:TestDB:Password": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-langchain-sqldatabase-testdb-password"
+  },
+  "FoundationaLLM:LangChain:Summary:MaxTokens": "4097",
+  "FoundationaLLM:LangChain:Summary:ModelName": "gpt-35-turbo",
+  "FoundationaLLM:LangChainAPI:Key": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-langchainapi-key"
+  },
+  "FoundationaLLM:Management:Entra:CallbackPath": "/signin-oidc",
+  "FoundationaLLM:Management:Entra:ClientId": "aa5cba99-e753-4d91-b2f8-85a6b650d022",
+  "FoundationaLLM:Management:Entra:ClientSecret": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-management-entra-clientsecret"
+  },
+  "FoundationaLLM:Management:Entra:Instance": "https://login.microsoftonline.com/",
+  "FoundationaLLM:Management:Entra:Scopes": "api://FoundationaLLM-Management-Auth/Data.Manage",
+  "FoundationaLLM:Management:Entra:TenantId": "d280491c-b27a-41bf-9623-21b60cf430b3",
+  "FoundationaLLM:ManagementAPI:Entra:CallbackPath": "/signin-oidc",
+  "FoundationaLLM:ManagementAPI:Entra:ClientId": "dc4b7d98-e404-4044-8040-4c7a5551e862",
+  "FoundationaLLM:ManagementAPI:Entra:ClientSecret": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-managementapi-entra-clientsecret"
+  },
+  "FoundationaLLM:ManagementAPI:Entra:Instance": "https://login.microsoftonline.com/",
+  "FoundationaLLM:ManagementAPI:Entra:Scopes": "Data.Manage",
+  "FoundationaLLM:ManagementAPI:Entra:TenantId": "d280491c-b27a-41bf-9623-21b60cf430b3",
+  "FoundationaLLM:OpenAI:API:Endpoint": "https://fllmaca14-openai.openai.azure.com/",
+  "FoundationaLLM:OpenAI:API:Key": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-openai-api-key"
+  },
+  "FoundationaLLM:OpenAI:API:Temperature": "0",
+  "FoundationaLLM:Prompt:ResourceProviderService:Storage:AuthenticationType": "ConnectionString",
+  "FoundationaLLM:Prompt:ResourceProviderService:Storage:ConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-agenthub-storagemanager-blobstorage-connectionstring"
+  },
+  "FoundationaLLM:PromptHub:PromptMetadata:StorageContainer": "prompts",
+  "FoundationaLLM:PromptHub:StorageManager:BlobStorage:ConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-prompthub-storagemanager-blobstorage-connectionstring"
+  },
+  "FoundationaLLM:Refinement": "",
+  "FoundationaLLM:SemanticKernelAPI:OpenAI.ChatCompletionPromptName": "RetailAssistant.Default",
+  "FoundationaLLM:SemanticKernelAPI:OpenAI.CompletionsDeployment": "completions",
+  "FoundationaLLM:SemanticKernelAPI:OpenAI.CompletionsDeploymentMaxTokens": "8096",
+  "FoundationaLLM:SemanticKernelAPI:OpenAI.EmbeddingsDeployment": "embeddings",
+  "FoundationaLLM:SemanticKernelAPI:OpenAI.EmbeddingsDeploymentMaxTokens": "8191",
+  "FoundationaLLM:SemanticKernelAPI:OpenAI.Endpoint": "https://fllmaca14-openai.openai.azure.com/",
+  "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.CompletionsMaxTokens": "300",
+  "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.CompletionsMinTokens": "50",
+  "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.MemoryMaxTokens": "3000",
+  "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.MemoryMinTokens": "1500",
+  "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.MessagesMaxTokens": "3000",
+  "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.MessagesMinTokens": "100",
+  "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.SystemMaxTokens": "1500",
+  "FoundationaLLM:SemanticKernelAPI:OpenAI.ShortSummaryPromptName": "Summarizer.TwoWords",
+  "FoundationaLLM:SemanticKernelAPI:OpenAI:Key": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-azureopenai-api-key"
+  },
+  "FoundationaLLM:Tracing:UseJaeger": "0",
+  "FoundationaLLM:Vectorization:AzureAISearchIndexingService:APIKey": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-cognitivesearch-key"
+  },
+  "FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType": "APIKey",
+  "FoundationaLLM:Vectorization:AzureAISearchIndexingService:Endpoint": "https://fllmaca14-cog-search.search.windows.net",
+  "FoundationaLLM:Vectorization:AzureAISearchIndexingService:QueryAPIKey": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-cognitivesearch-key"
+  },
+  "FoundationaLLM:Vectorization:ContentSources:SDZWAJournals:AuthenticationType": "ConnectionString",
+  "FoundationaLLM:Vectorization:ContentSources:SDZWAJournals:ConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-agenthub-storagemanager-blobstorage-connectionstring"
+  },
+  "FoundationaLLM:Vectorization:Queues:Embed:ConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-agenthub-storagemanager-blobstorage-connectionstring"
+  },
+  "FoundationaLLM:Vectorization:Queues:Extract:ConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-agenthub-storagemanager-blobstorage-connectionstring"
+  },
+  "FoundationaLLM:Vectorization:Queues:Index:ConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-agenthub-storagemanager-blobstorage-connectionstring"
+  },
+  "FoundationaLLM:Vectorization:Queues:Partition:ConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-agenthub-storagemanager-blobstorage-connectionstring"
+  },
+  "FoundationaLLM:Vectorization:ResourceProviderService:Storage:AuthenticationType": "ConnectionString",
+  "FoundationaLLM:Vectorization:ResourceProviderService:Storage:ConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-agenthub-storagemanager-blobstorage-connectionstring"
+  },
+  "FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:APIKey": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-openai-api-key"
+  },
+  "FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:APIVersion": "2023-05-15",
+  "FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:AuthenticationType": "APIKey",
+  "FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:DeploymentName": "embeddings",
+  "FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:Endpoint": "https://fllmaca14-openai.openai.azure.com/",
+  "FoundationaLLM:Vectorization:StateService:Storage:AuthenticationType": "ConnectionString",
+  "FoundationaLLM:Vectorization:StateService:Storage:ConnectionString": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-agenthub-storagemanager-blobstorage-connectionstring"
+  },
+  "FoundationaLLM:Vectorization:VectorizationWorker": {
+    "QueuingEngine": "AzureStorageQueue",
+    "RequestManagers": [
+      {
+        "RequestSourceName": "extract",
+        "MaxHandlerInstances": 1
+      },
+      {
+        "RequestSourceName": "partition",
+        "MaxHandlerInstances": 1
+      },
+      {
+        "RequestSourceName": "embed",
+        "MaxHandlerInstances": 1
+      },
+      {
+        "RequestSourceName": "index",
+        "MaxHandlerInstances": 1
+      }
+    ],
+    "RequestSources": [
+      {
+        "Name": "extract",
+        "ConnectionConfigurationName": "Extract:ConnectionString",
+        "VisibilityTimeoutSeconds": 120
+      },
+      {
+        "Name": "partition",
+        "ConnectionConfigurationName": "Partition:ConnectionString",
+        "VisibilityTimeoutSeconds": 120
+      },
+      {
+        "Name": "embed",
+        "ConnectionConfigurationName": "Embed:ConnectionString",
+        "VisibilityTimeoutSeconds": 120
+      },
+      {
+        "Name": "index",
+        "ConnectionConfigurationName": "Index:ConnectionString",
+        "VisibilityTimeoutSeconds": 120
+      }
+    ]
+  },
+  "FoundationaLLM:Vectorization:WorkerSettings": {
+    "RequestManagers": [
+      {
+        "RequestSourceName": "extract",
+        "MaxHandlerInstances": 1
+      },
+      {
+        "RequestSourceName": "partition",
+        "MaxHandlerInstances": 1
+      },
+      {
+        "RequestSourceName": "embed",
+        "MaxHandlerInstances": 1
+      },
+      {
+        "RequestSourceName": "index",
+        "MaxHandlerInstances": 1
+      }
+    ],
+    "QueuingEngine": "None"
+  },
+  "FoundationaLLM:VectorizationAPI:Entra:CallbackPath": "/signin-oidc",
+  "FoundationaLLM:VectorizationAPI:Entra:ClientId": "8802901d-d5fe-408e-8e1e-5c045fe5ab49",
+  "FoundationaLLM:VectorizationAPI:Entra:ClientSecret": {
+    "uri": "https://${AZURE_KEY_VAULT_NAME}.vault.azure.net/secrets/foundationallm-vectorizationapi-entra-clientsecret"
+  },
+  "FoundationaLLM:VectorizationAPI:Entra:Instance": "https://login.microsoftonline.com/",
+  "FoundationaLLM:VectorizationAPI:Entra:Scopes": "Data.Manage",
+  "FoundationaLLM:VectorizationAPI:Entra:TenantId": "d280491c-b27a-41bf-9623-21b60cf430b3",
+  "FeatureManagement": {
+    "FoundationaLLM-AllowAgentHint": true
+  }
+}
