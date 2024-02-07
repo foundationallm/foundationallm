@@ -61,7 +61,7 @@ jobs:
     - name: Fetching the Latest Release Tag number
       id: releaseVersion
       run: |
-        GIT_RELEASE=$((${{ github.ref_name }}) |  cut -d'/' -f 3)
+        GIT_RELEASE=$(echo ${{ github.ref_name }} |  cut -d'/' -f 3)
         echo "GIT_RELEASE=$GIT_RELEASE" >> $GITHUB_ENV
         echo "release_tag: Latest Tag is : $GIT_RELEASE"
         echo "release_tag=$GIT_RELEASE" >> $GITHUB_OUTPUT
