@@ -26,10 +26,10 @@ jobs:
     - name: Fetching the Latest Release Tag number
       id: releaseVersion
       run: |
-        release_json=$(curl https://api.github.com/repos/${{ github.repository }}/releases)
-        release_tag=$(echo "$release_json" | jq -r '.[0].tag_name')
-        echo "release_tag: Latest Tag is : $release_tag"
-        echo "release_tag=$release_tag" >> $GITHUB_OUTPUT
+        GIT_RELEASE=$(${{ github.head_ref || github.ref_name }} |  cut -d'/' -f 3)
+        echo "GIT_RELEASE=$GIT_RELEASE" >> $GITHUB_ENV
+        echo "release_tag: Latest Tag is : $GIT_RELEASE"
+        echo "release_tag=$GIT_RELEASE" >> $GITHUB_OUTPUT
 
     - name: Checkout code
       uses: actions/checkout@v2
@@ -50,9 +50,7 @@ jobs:
         tags: |
           type=raw,latest
           type=raw,release
-          type=pep440,pattern={{version}},value=${{ steps.releaseVersion.outputs.release_tag }}
-          type=pep440,pattern={{major}}.{{minor}},value=${{ steps.releaseVersion.outputs.release_tag }}
-          type=pep440,pattern={{major}},value=${{ steps.releaseVersion.outputs.release_tag }}
+          type=raw,${{ steps.releaseVersion.outputs.release_tag }}
           type=sha,format=long
 
     - name: Build and push Docker images
