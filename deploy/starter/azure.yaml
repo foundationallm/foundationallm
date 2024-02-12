@@ -11,105 +11,105 @@ hooks:
     run: azd-hooks/postprovision.sh
 services:
     agent-factory-api:
-        project: ..\..\src\dotnet\AgentFactoryAPI
+        project: ../../src/dotnet/AgentFactoryAPI
         host: containerapp
         language: dotnet
         docker:
-            context: ..\..\
+            context: ../../
             path: Dockerfile
     agent-hub-api:
-        project: ..\..\src\python\AgentHubAPI
+        project: ../../src/python/AgentHubAPI
         host: containerapp
         language: python
         docker:
-            context: ..\
+            context: ../
             path: Dockerfile
     core-api:
-        project: ..\..\src\dotnet\CoreAPI
+        project: ../../src/dotnet/CoreAPI
         host: containerapp
         language: dotnet
         docker:
-            context: ..\..\
+            context: ../../
             path: Dockerfile
     core-job:
-        project: ..\..\src\dotnet\CoreWorker
+        project: ../../src/dotnet/CoreWorker
         host: containerapp
         language: dotnet
         docker:
-            context: ..\..\
+            context: ../../
             path: Dockerfile
     data-source-hub-api:
-        project: ..\..\src\python\DataSourceHubAPI
+        project: ../../src/python/DataSourceHubAPI
         host: containerapp
         language: python
         docker:
-            context: ..\
+            context: ../
             path: Dockerfile
     gatekeeper-api:
-        project: ..\..\src\dotnet\GatekeeperAPI
+        project: ../../src/dotnet/GatekeeperAPI
         host: containerapp
         language: dotnet
         docker:
-            context: ..\..\
+            context: ../../
             path: Dockerfile
     gatekeeper-integration-api:
-        project: ..\..\src\python\GatekeeperIntegrationAPI
+        project: ../../src/python/GatekeeperIntegrationAPI
         host: containerapp
         language: python
         docker:
-            context: ..\
+            context: ../
             path: Dockerfile
     langchain-api:
-        project: ..\..\src\python\LangChainAPI
+        project: ../../src/python/LangChainAPI
         host: containerapp
         language: python
         docker:
-            context: ..\
+            context: ../
             path: Dockerfile
     management-api:
-        project: ..\..\src\dotnet\ManagementAPI
+        project: ../../src/dotnet/ManagementAPI
         host: containerapp
         language: dotnet
         docker:
-            context: ..\..\
+            context: ../../
             path: Dockerfile
     management-ui:
-        project: ..\..\src\UI\ManagementPortal
+        project: ../../src/UI/ManagementPortal
         host: containerapp
         language: ts
         docker:
             path: Dockerfile
     prompt-hub-api:
-        project: ..\..\src\python\PromptHubAPI
+        project: ../../src/python/PromptHubAPI
         host: containerapp
         language: python
         docker:
-            context: ..\
+            context: ../
             path: Dockerfile
     semantic-kernel-api:
-        project: ..\..\src\dotnet\SemanticKernelAPI
+        project: ../../src/dotnet/SemanticKernelAPI
         host: containerapp
         language: dotnet
         docker:
-            context: ..\..\
+            context: ../../
             path: Dockerfile
     chat-ui:
-        project: ..\..\src\UI\UserPortal
+        project: ../../src/UI/UserPortal
         host: containerapp
         language: js
         docker:
             path: Dockerfile
     vectorization-api:
-        project: ..\..\src\dotnet\VectorizationAPI
+        project: ../../src/dotnet/VectorizationAPI
         host: containerapp
         language: dotnet
         docker:
-            context: ..\..\
+            context: ../../
             path: Dockerfile
     vectorization-job:
-        project: ..\..\src\dotnet\VectorizationWorker
+        project: ../../src/dotnet/VectorizationWorker
         host: containerapp
         language: dotnet
         docker:
-            context: ..\..\
+            context: ../../
             path: Dockerfile

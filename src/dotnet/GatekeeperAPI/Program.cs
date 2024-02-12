@@ -167,11 +167,7 @@ namespace FoundationaLLM.Gatekeeper.API
                     }
                 });
 
-            _ = bool.TryParse(builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_GatekeeperAPI_ForceHttpsRedirection], out var forceHttpsRedirection);
-            if (forceHttpsRedirection)
-            {
-                app.UseHttpsRedirection();
-            }
+            app.UseHttpsRedirection();
             app.UseAuthorization();
 
             app.MapControllers();
