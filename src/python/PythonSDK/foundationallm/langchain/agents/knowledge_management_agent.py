@@ -46,14 +46,17 @@ class KnowledgeManagementAgent(AgentBase):
         self.llm = llm.get_completion_model(completion_request.agent.language_model)
         self.internal_context = True
         self.agent_prompt = ""
-        if completion_request.agent.indexing_profile is not None:
+        if completion_request.agent.indexing_profiles is not None:
             self.internal_context = False
-            retriever_factory = RetrieverFactory(
-                            indexing_profile_resource_id = completion_request.agent.indexing_profile,
+            self.retrievers = []
+            for indexing_profile in completion_request.agent.indexing_profiles:
+                retriever_factory = RetrieverFactory(
+                            indexing_profile_resource_id = indexing_profile,
                             embedding_profile_resource_id= completion_request.agent.embedding_profile,
                             config = config,
                             resource_provider = resource_provider)
-            self.retriever = retriever_factory.get_retriever()
+                self.retrievers.append(retriever_factory.get_retriever())
+            self.retriever = next((r for r in self.retrievers), None)
             self.agent_prompt = resource_provider.get_resource(completion_request.agent.prompt)["prefix"]
 
         #default conversation history

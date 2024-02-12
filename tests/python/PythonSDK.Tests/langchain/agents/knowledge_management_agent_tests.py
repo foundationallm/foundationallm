@@ -61,7 +61,7 @@ def test_azure_ai_search_service_completion_request():
                 temperature=0,
                 use_chat=True
             ),
-            indexing_profile="/instances/11111111-1111-1111-1111-111111111111/providers/FoundationaLLM.Vectorization/indexingprofiles/sotu-index",
+            indexing_profiles=["/instances/11111111-1111-1111-1111-111111111111/providers/FoundationaLLM.Vectorization/indexingprofiles/sotu-index"],
             embedding_profile="/instances/11111111-1111-1111-1111-111111111111/providers/FoundationaLLM.Vectorization/textembeddingprofiles/AzureOpenAI_Embedding",
             prompt="/instances/11111111-1111-1111-1111-111111111111/providers/FoundationaLLM.Prompt/prompts/sotu",
             sessions_enabled=True,
