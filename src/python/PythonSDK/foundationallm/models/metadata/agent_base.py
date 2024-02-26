@@ -12,10 +12,10 @@ from .gatekeeper import Gatekeeper
 
 class AgentBase(MetadataBase):
     """ Agent Base metadata model."""
-    prompt: Optional[str] = None
-    language_model: Optional[LanguageModel] = None
+    prompt_object_id: Optional[str] = None
+    language_model: Optional[LanguageModel] = LanguageModel()
     sessions_enabled: Optional[bool] = False
-    conversation_history: Optional[ConversationHistory] = None
-    gatekeeper: Optional[Gatekeeper] = None
+    conversation_history: Optional[ConversationHistory] = ConversationHistory()
+    gatekeeper: Optional[Gatekeeper] = Gatekeeper()
     orchestrator: Optional[str] = "LangChain" # used only for agent hub
     

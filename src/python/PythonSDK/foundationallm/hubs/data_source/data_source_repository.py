@@ -9,7 +9,6 @@ from foundationallm.hubs.data_source import (
 from .data_sources.sql import SQLDataSourceMetadata
 from .data_sources.blob_storage import BlobStorageDataSourceMetadata
 from .data_sources.search_service import SearchServiceDataSourceMetadata
-from .data_sources.csv import CSVDataSourceMetadata
 from .data_sources.cxo import CXODataSourceMetadata
 
 class DataSourceRepository(Repository):
@@ -58,10 +57,7 @@ class DataSourceRepository(Repository):
                             UnderlyingImplementation.SEARCH_SERVICE:
                     configs.append(SearchServiceDataSourceMetadata.model_validate_json(
                                     mgr.read_file_content(config_file)))
-                elif common_datasource_metadata.underlying_implementation == \
-                            UnderlyingImplementation.CSV:
-                    configs.append(CSVDataSourceMetadata.model_validate_json(
-                                    mgr.read_file_content(config_file)))
+                
             # if a datasource is not deserializable, skip it
             # pylint: disable=bare-except
             except Exception as e:

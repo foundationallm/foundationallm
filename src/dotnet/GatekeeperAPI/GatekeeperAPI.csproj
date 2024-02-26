@@ -24,6 +24,7 @@
   <ItemGroup>
 	  <PackageReference Include="Asp.Versioning.Http" Version="7.1.0" />
 	  <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="7.1.0" />
+	  <PackageReference Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.1.0" />
 	  <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
 	  <PackageReference Include="Microsoft.ApplicationInsights.Profiler.AspNetCore" Version="2.5.3" />
 	  <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.0" />

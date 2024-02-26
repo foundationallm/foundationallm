@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Models.Chat;
+using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.SemanticKernel.Core.Interfaces;
 using FoundationaLLM.SemanticKernel.Core.Models.ConfigurationOptions;
 using FoundationaLLM.SemanticKernel.Core.Services;
@@ -31,18 +32,20 @@ namespace FoundationaLLM.SemanticKernel.Tests.Services
         public async Task GetCompletion_ShouldReturnACompletionForAPrompt()
         {
             // Arrange
-            var userPrompt = "This is a prompt.";
+            var completionRequest = new LLMCompletionRequest()
+            {
+                UserPrompt = "This is a prompt."
+            };
             var promptName = "prompt";
-
             var expectedCompletion = "This is a completion.";
 
             _systemPromptService.GetPrompt(promptName).Returns(expectedCompletion);
 
             // Act
-            var actualCompletion = await _testedService.GetCompletion(userPrompt, new List<MessageHistoryItem>());
+            var actualCompletion = await _testedService.GetCompletion(completionRequest);
 
             // Assert
-            Assert.Equal(expectedCompletion, actualCompletion);
+            Assert.Equal(expectedCompletion, actualCompletion.Completion);
         }
 
         #endregion

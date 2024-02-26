@@ -1,7 +1,8 @@
 ﻿using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Cache;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using System.Text.Json;
+
 
 namespace FoundationaLLM.Common.Services.API
 {
@@ -45,7 +46,7 @@ namespace FoundationaLLM.Common.Services.API
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<APICacheRefreshResult>(responseContent);
+                var result = JsonSerializer.Deserialize<APICacheRefreshResult>(responseContent);
                 if (result != null)
                 {
                     result.Success = true;

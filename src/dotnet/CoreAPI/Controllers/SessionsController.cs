@@ -20,7 +20,6 @@ namespace FoundationaLLM.Core.API.Controllers
     /// <see cref="SessionsController"/> type name.</param>
     [Authorize]
     [Authorize(Policy = "RequiredScope")]
-    [ApiVersion(1.0)]
     [ApiController]
     [Route("[controller]")]
     public class SessionsController(ICoreService coreService,

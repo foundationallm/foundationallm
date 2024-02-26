@@ -2,9 +2,9 @@
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
-using FoundationaLLM.Common.Models.Metadata;
 using Microsoft.Extensions.Options;
+using FoundationaLLM.Common.Models.Agents;
+using System.Text.Json;
 
 namespace FoundationaLLM.Common.Middleware
 {
@@ -49,14 +49,14 @@ namespace FoundationaLLM.Common.Middleware
                 var serializedIdentity = context.Request.Headers[Constants.HttpHeaders.UserIdentity].ToString();
                 if (!string.IsNullOrWhiteSpace(serializedIdentity))
                 {
-                    callContext.CurrentUserIdentity = JsonConvert.DeserializeObject<UnifiedUserIdentity>(serializedIdentity)!;
+                    callContext.CurrentUserIdentity = JsonSerializer.Deserialize<UnifiedUserIdentity>(serializedIdentity)!;
                 }
             }
 
             var agentHint = context.Request.Headers[Constants.HttpHeaders.AgentHint].FirstOrDefault();
             if (!string.IsNullOrWhiteSpace(agentHint))
             {
-                callContext.AgentHint = JsonConvert.DeserializeObject<Agent>(agentHint);
+                callContext.AgentHint = JsonSerializer.Deserialize<AgentHint>(agentHint);
             }
 
             callContext.InstanceId = context.Request.RouteValues["instanceId"] as string;

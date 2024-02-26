@@ -1,6 +1,6 @@
-using System.Net;
 using Asp.Versioning;
 using Azure.Identity;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Extensions;
@@ -16,9 +16,10 @@ using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Gatekeeper.Core.Interfaces;
 using FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions;
 using FoundationaLLM.Gatekeeper.Core.Services;
-using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.Extensions.Http.Resilience;
 using Microsoft.Extensions.Options;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Polly;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -42,7 +43,7 @@ namespace FoundationaLLM.Gatekeeper.API
             builder.Configuration.AddEnvironmentVariables();
             builder.Configuration.AddAzureAppConfiguration(options =>
             {
-                options.Connect(builder.Configuration[AppConfigurationKeys.FoundationaLLM_AppConfig_ConnectionString]);
+                options.Connect(builder.Configuration[EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString]);
                 options.ConfigureKeyVault(options =>
                 {
                     options.SetCredential(new DefaultAzureCredential());
@@ -55,16 +56,25 @@ namespace FoundationaLLM.Gatekeeper.API
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
 
             // Add services to the container.
-            builder.Services.AddApplicationInsightsTelemetry(new ApplicationInsightsServiceOptions
+            // Add the OpenTelemetry telemetry service and send telemetry data to Azure Monitor.
+            builder.Services.AddOpenTelemetry().UseAzureMonitor(options =>
             {
-                ConnectionString = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_GatekeeperAPI_AppInsightsConnectionString],
-                DeveloperMode = builder.Environment.IsDevelopment()
+                options.ConnectionString = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_GatekeeperAPI_AppInsightsConnectionString];
             });
-            //builder.Services.AddServiceProfiler();
-            builder.Services.AddControllers().AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.ContractResolver = Common.Settings.CommonJsonSerializerSettings.GetJsonSerializerSettings().ContractResolver;
-            });
+            
+            // Create a dictionary of resource attributes.
+            var resourceAttributes = new Dictionary<string, object> {
+                { "service.name", "GatekeeperAPI" },
+                { "service.namespace", "FoundationaLLM" },
+                { "service.instance.id", Guid.NewGuid().ToString() }
+            };
+
+            // Configure the OpenTelemetry tracer provider to add the resource attributes to all traces.
+            builder.Services.ConfigureOpenTelemetryTracerProvider((sp, builder) =>
+                builder.ConfigureResource(resourceBuilder =>
+                    resourceBuilder.AddAttributes(resourceAttributes)));
+
+            builder.Services.AddControllers();
 
             // Add API Key Authorization
             builder.Services.AddHttpContextAccessor();
@@ -104,15 +114,10 @@ namespace FoundationaLLM.Gatekeeper.API
                     // "api-supported-versions" and "api-deprecated-versions"
                     options.ReportApiVersions = true;
                     options.AssumeDefaultVersionWhenUnspecified = true;
-                    options.DefaultApiVersion = new ApiVersion(1, 0);
+                    options.DefaultApiVersion = new ApiVersion(new DateOnly(2024, 2, 16));
                 })
                 .AddMvc()
-                .AddApiExplorer(options =>
-                {
-                    // add the versioned api explorer, which also adds IApiVersionDescriptionProvider service
-                    // note: the specified format code will format the version as "'v'major[.minor][-status]"
-                    options.GroupNameFormat = "'v'VVV";
-                });
+                .AddApiExplorer();
 
             // Add services to the container.
             builder.Services.AddAuthorization();

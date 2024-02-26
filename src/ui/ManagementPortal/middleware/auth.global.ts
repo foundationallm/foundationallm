@@ -17,12 +17,12 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 			createTokenRefreshTimer();
 
 			if (to.name === 'auth/login') {
-	    	return navigateTo({ path: '/' });
+				return navigateTo({ path: '/' });
 			}
 		}
 
 		if (!isAuthenticated && to.name !== 'auth/login') {
-	    return navigateTo({ name: 'auth/login' });
-	  }	
+			return navigateTo({ name: 'auth/login' });
+		}
 	}
 });

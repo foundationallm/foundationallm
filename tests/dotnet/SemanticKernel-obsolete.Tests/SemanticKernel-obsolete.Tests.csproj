@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\dotnet\SemanticKernel-obsolete\SemanticKernel-obsolete.csproj" />
     <ProjectReference Include="..\..\..\src\dotnet\SemanticKernelAPI\SemanticKernelAPI.csproj" />
     <ProjectReference Include="..\..\..\src\dotnet\SemanticKernel\SemanticKernel.csproj" />
     <ProjectReference Include="..\TestUtils\TestUtils.csproj" />

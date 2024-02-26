@@ -47,6 +47,7 @@ namespace FoundationaLLM
                     sp.GetRequiredService<IEnumerable<IStorageService>>()
                         .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_ResourceProvider_Prompt),
                     sp.GetRequiredService<IEventService>(),
+                    sp.GetRequiredService<IResourceValidatorFactory>(),
                     sp.GetRequiredService<ILogger<PromptResourceProviderService>>()));
         }
     }

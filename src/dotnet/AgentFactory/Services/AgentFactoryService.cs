@@ -1,6 +1,7 @@
-﻿using FoundationaLLM.AgentFactory.Core.Agents;
-using FoundationaLLM.AgentFactory.Core.Interfaces;
+﻿using FoundationaLLM.AgentFactory.Core.Interfaces;
+using FoundationaLLM.AgentFactory.Core.Orchestration;
 using FoundationaLLM.AgentFactory.Interfaces;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Orchestration;
 using Microsoft.Extensions.Logging;
@@ -83,9 +84,8 @@ public class AgentFactoryService : IAgentFactoryService
     {
         try
         {
-            var agent = await AgentBuilder.Build(
-                completionRequest.UserPrompt ?? string.Empty,
-                completionRequest.SessionId ?? string.Empty,
+            var orchestration = await OrchestrationBuilder.Build(
+                completionRequest,
                 _cacheService,
                 _callContext,
                 _resourceProviderServices,
@@ -95,49 +95,21 @@ public class AgentFactoryService : IAgentFactoryService
                 _dataSourceHubAPIService,
                 _loggerFactory);
 
-            return await agent.GetCompletion(completionRequest);
+            return orchestration == null
+                ? throw new OrchestrationException($"The orchestration builder was not able to create an orchestration for agent [{_callContext.AgentHint?.Name ?? string.Empty }].")
+                : await orchestration.GetCompletion(completionRequest);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error retrieving completion from the orchestration service for {completionRequest.UserPrompt}.");
+            _logger.LogError(ex, "Error retrieving completion from the orchestration service for {UserPrompt}.",
+                completionRequest.UserPrompt);
             return new CompletionResponse
             {
                 Completion = "A problem on my side prevented me from responding.",
                 UserPrompt = completionRequest.UserPrompt ?? string.Empty,
                 PromptTokens = 0,
                 CompletionTokens = 0,
-                UserPromptEmbedding = [0]
-            };
-        }
-    }
-
-    /// <summary>
-    /// Retrieve a summarization for the passed in prompt from the orchestration service.
-    /// </summary>
-    public async Task<SummaryResponse> GetSummary(SummaryRequest summaryRequest)
-    {
-        try
-        {
-            var agent = await AgentBuilder.Build(
-                summaryRequest.UserPrompt ?? string.Empty,
-                summaryRequest.SessionId ?? string.Empty,
-                _cacheService,
-                _callContext,
-                _resourceProviderServices,
-                _agentHubAPIService,
-                _orchestrationServices,
-                _promptHubAPIService,
-                _dataSourceHubAPIService,
-                _loggerFactory);
-
-            return await agent.GetSummary(summaryRequest);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Error retrieving summarization for {summaryRequest.UserPrompt}.");
-            return new SummaryResponse
-            {
-                Summary = "[No Summary]"
+                UserPromptEmbedding = [0f]
             };
         }
     }

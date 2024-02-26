@@ -1,9 +1,26 @@
+"""
+Class: ResourceProvider
+Description:
+    Responsible for retrieving resources.
+    Supporting:
+        - FoundationaLLM.Prompt
+        - FoundationaLLM.Vectorization.indexingprofiles
+        - FoundationaLLM.Vectorization.textembeddingprofiles
+"""
 import re
 import json
 from foundationallm.config import Configuration
 from foundationallm.storage import BlobStorageManager
+from foundationallm.models.resource_providers.prompts import Prompt
+from foundationallm.models.resource_providers.vectorization import (
+    AzureAISearchIndexingProfile,
+    AzureOpenAIEmbeddingProfile
+)
 
 class ResourceProvider:
+    """
+    Responsible for read-only access to resource metadata.
+    """
     def __init__(
             self,
             config: Configuration
@@ -15,13 +32,49 @@ class ResourceProvider:
             container_name="resource-provider"
         )
 
-    def get_resource(self, resource_id:str):
+    def get_resource(self, object_id:str):
         """
-        Retrieves the resource with the given id.
+        Factory method that returns the concrete object of the resource
+        with the given object id.
+
+        If a concrete object is not found, the method returns a dictionary
+        of the resource configuration (or None if the resource is not found).
+        """
+        obj_dict = self.get_resource_as_dict(object_id)
+
+        if obj_dict is not None:
+            tokens = object_id.split("/")
+            # the last token is resource
+            resource = tokens[-1]
+            # the second to last token is resource type
+            resource_type = tokens[-2]
+            # the third to last token is the resource provider type
+            provider_type = tokens[-3]
+
+            # match case on resource type
+            match provider_type:
+                case "FoundationaLLM.Prompt":
+                    prompt_resource = Prompt(**obj_dict)
+                    return prompt_resource
+                case "FoundationaLLM.Vectorization":                
+                    if resource_type == "indexingprofiles":
+                        if obj_dict["indexer"]=="AzureAISearchIndexer":
+                            indexing_resource = AzureAISearchIndexingProfile(**obj_dict)
+                            return indexing_resource
+                    elif resource_type == "textembeddingprofiles":
+                        if obj_dict["text_embedding"]=="SemanticKernelTextEmbedding":
+                            embedding_resource = AzureOpenAIEmbeddingProfile(**obj_dict)
+                            return embedding_resource
+
+        return obj_dict
+    
+    def get_resource_as_dict(self, object_id:str):
+        """
+        Retrieves the resource with the given object id.
 
         Parameters
         ----------
-        resource_id : str
+        object_id : str
             The id of the resource to retrieve.
 
         Returns
@@ -29,7 +82,7 @@ class ResourceProvider:
         Any
             The resource with the given id.
         """
-        tokens = resource_id.split("/")
+        tokens = object_id.split("/")
         # the last token is resource
         resource = tokens[-1]
         # the second to last token is resource type
@@ -58,15 +111,15 @@ class ResourceProvider:
                     file_content = self.blob_storage_manager.read_file_content(full_path)
                     if file_content is not None:
                         decoded_content = file_content.decode("utf-8")
-                        profiles = json.loads(decoded_content)["Profiles"]
-                        filtered = next(filter(lambda profile: profile["Name"] == resource, profiles), None)
+                        profiles = json.loads(decoded_content).get("Profiles", [])
+                        filtered = next(filter(lambda profile: profile.get("name","") == resource, profiles), None)
                         if filtered is not None:
                             filtered = self.__translate_keys(filtered)
                             return filtered
         return None
 
     def __pascal_to_snake(self, name):  
-        # Convert PascalCase or CamelCase to snake_case  
+        # Convert PascalCase or camelCase to snake_case  
         s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)  
         return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()  
   

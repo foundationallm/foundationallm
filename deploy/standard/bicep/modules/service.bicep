@@ -95,6 +95,19 @@ module opsRoleAssignments 'utility/roleAssignments.bicep' = {
   }
 }
 
+@description('OPS Role assignments for microservice managed identity')
+module appRoleAssignments 'utility/roleAssignments.bicep' = {
+  name: 'appIAM-${serviceName}-${timestamp}'
+  scope: resourceGroup()
+  params: {
+    principalId: managedIdentity.properties.principalId
+    roleDefinitionIds: {
+      'EventGrid Contributor': '1e241071-0855-49ea-94dc-649edcd759de'
+    }
+  }
+}
+
+
 @description('Storage Role assignments for microservice managed identity')
 module storageRoleAssignments 'utility/roleAssignments.bicep' = {
   name: 'storageIAM-${serviceName}-${timestamp}'

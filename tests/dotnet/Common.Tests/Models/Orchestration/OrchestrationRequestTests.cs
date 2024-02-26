@@ -1,26 +1,26 @@
 ﻿using FoundationaLLM.Common.Models.Orchestration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FoundationaLLM.Common.Tests.Models.Orchestration
 {
     public class OrchestrationRequestTests
     {
         [Fact]
-        public void OrchestrationRequest_UserPrompt_SetCorrectly()
+        public void OrchestrationRequest_Properties_Test()
         {
             // Arrange
-            var orchestrationRequest = new OrchestrationRequest();
-            var testUserPrompt = "User_Prompt";
+            string expectedSessionId = "12345";
+            string expectedUserPrompt = "Test user prompt";
 
             // Act
-            orchestrationRequest.UserPrompt = testUserPrompt;
+            var orchestrationRequest = new OrchestrationRequest
+            {
+                SessionId = expectedSessionId,
+                UserPrompt = expectedUserPrompt
+            };
 
             // Assert
-            Assert.Equal(testUserPrompt, orchestrationRequest.UserPrompt);
+            Assert.Equal(expectedSessionId, orchestrationRequest.SessionId);
+            Assert.Equal(expectedUserPrompt, orchestrationRequest.UserPrompt);
         }
     }
 }

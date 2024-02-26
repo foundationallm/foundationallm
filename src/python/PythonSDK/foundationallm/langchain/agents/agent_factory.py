@@ -13,6 +13,7 @@ from foundationallm.langchain.agents import (
     GenericResolverAgent,
     CXOAgent,
     SearchServiceAgent,
+    InternalContextAgent,
     KnowledgeManagementAgent
 )
 
@@ -89,7 +90,14 @@ class AgentFactory:
                 return KnowledgeManagementAgent(
                     self.completion_request,
                     llm=self.llm,
-                    config=self.config,                                            
+                    config=self.config,
+                    resource_provider=self.resource_provider
+                )
+            case 'internal-context':
+                return InternalContextAgent(
+                    self.completion_request,
+                    llm=self.llm,
+                    config=self.config,
                     resource_provider=self.resource_provider
                 )
             case _:

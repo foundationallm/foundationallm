@@ -1,38 +1,29 @@
 <template>
 	<div>
 		<h2 class="page-header">Public Agents</h2>
-		
-		<!-- Create agent -->
-		<div class="steps">
-			<div class="step">
-				<div class="page-subheader">View your publicly accessible agents.</div>
-			</div>
-			<div class="step justify-self-end">
-				<Button
-					class="primary-button"
-					label="+ New Agent"
-					severity="primary"
-					@click="handleCreateAgent"
-				/>
-			</div>
-		</div>
+		<div class="page-subheader">View your publicly accessible agents.</div>
+
 		<div :class="{ 'grid--loading': loading }">
-				<!-- Loading overlay -->
-				<template v-if="loading">
-					<div class="grid__loading-overlay">
-						<LoadingGrid />
-						<div>{{ loadingStatusText }}</div>
-					</div>
-				</template>
-		<DataTable :value="agents" stripedRows scrollable tableStyle="max-width: 100%" size="small">
-			<Column field="name" header="Name" sortable style="min-width: 200px" :pt="{ headerCell: { style: { backgroundColor: '#000', color: '#fff'} }, sortIcon: { style: { color: '#fff'} } }"></Column>
-			<Column field="type" header="Type" sortable style="min-width: 200px" :pt="{ headerCell: { style: { backgroundColor: '#000', color: '#fff'} }, sortIcon: { style: { color: '#fff'} } }"></Column>
-			<Column header="Edit" headerStyle="width:6rem" style="text-align: center" :pt="{ headerCell: { style: { backgroundColor: '#000', color: '#fff'} }, headerContent: { style: { justifyContent: 'center' } } }">
-				<template #body="slotProps">
-					<NuxtLink :to="'/agents/edit/' + slotProps.data.name" class="table__button"><i class="pi pi-cog" style="font-size: 1.5rem"></i></NuxtLink>
-				</template>
-			</Column>
-		</DataTable>
+			<!-- Loading overlay -->
+			<template v-if="loading">
+				<div class="grid__loading-overlay">
+					<LoadingGrid />
+					<div>{{ loadingStatusText }}</div>
+				</div>
+			</template>
+
+			<!-- Table -->
+			<DataTable :value="agents" stripedRows scrollable tableStyle="max-width: 100%" size="small">
+				<Column field="name" header="Name" sortable style="min-width: 200px" :pt="{ headerCell: { style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' } }, sortIcon: { style: { color: 'var(--primary-text)' } } }"></Column>
+				<Column field="type" header="Type" sortable style="min-width: 200px" :pt="{ headerCell: { style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' } }, sortIcon: { style: { color: 'var(--primary-text)' } } }"></Column>
+				<Column header="Edit" headerStyle="width:6rem" style="text-align: center" :pt="{ headerCell: { style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' } }, headerContent: { style: { justifyContent: 'center' } } }">
+					<template #body="{ data }">
+						<NuxtLink :to="'/agents/edit/' + data.name" class="table__button">
+							<i class="pi pi-cog" style="font-size: 1.5rem"></i>
+						</NuxtLink>
+					</template>
+				</Column>
+			</DataTable>
 		</div>
 	</div>
 </template>
@@ -64,12 +55,6 @@ export default {
 		}
 		this.loading = false;
 	},
-
-	methods: {
-		handleCreateAgent() {
-			this.$router.push('/agents/create');
-		}
-	}
 };
 </script>
 

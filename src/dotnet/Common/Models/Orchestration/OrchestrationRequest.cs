@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Orchestration
 {
@@ -10,13 +10,13 @@ namespace FoundationaLLM.Common.Models.Orchestration
         /// <summary>
         /// The session ID.
         /// </summary>
-        [JsonProperty("session_id")]
+        [JsonPropertyName("session_id")]
         public string? SessionId { get; set; }
         
         /// <summary>
         /// Represent the input or user prompt.
         /// </summary>
-        [JsonProperty("user_prompt")]
-        public string? UserPrompt { get; set; }
+        [JsonPropertyName("user_prompt")]
+        public required string UserPrompt { get; set; }
     }
 }

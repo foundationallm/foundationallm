@@ -9,6 +9,12 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Models\Messages\**" />
+    <EmbeddedResource Remove="Models\Messages\**" />
+    <None Remove="Models\Messages\**" />
+  </ItemGroup>
+
 	<ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" />
@@ -19,10 +25,6 @@
     <ProjectReference Include="..\Agent\Agent.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\Prompt\Prompt.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\Messages\" />
   </ItemGroup>
   
 </Project>

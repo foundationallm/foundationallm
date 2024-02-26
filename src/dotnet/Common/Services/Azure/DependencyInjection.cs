@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace FoundationaLLM.Common.Services.Azure
 {
@@ -12,7 +13,8 @@ namespace FoundationaLLM.Common.Services.Azure
         /// Register the dependencies required to support Azure Event Grid events.
         /// </summary>
         /// <param name="services">Application builder service collection.</param>
-        public static void AddAzureResourceManager(this IServiceCollection services) =>
+        public static void AddAzureResourceManager(
+            this IServiceCollection services) =>
             services.AddSingleton<IAzureResourceManagerService, AzureResourceManagerService>();
     }
 }

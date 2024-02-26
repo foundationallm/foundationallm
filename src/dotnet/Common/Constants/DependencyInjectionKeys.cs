@@ -63,6 +63,11 @@ namespace FoundationaLLM.Common.Constants
         /// </summary>
         public const string FoundationaLLM_ResourceProvider_Vectorization = "FoundationaLLM:ResourceProvider:Vectorization";
 
+        /// <summary>
+        /// The dependency injection key for the FoundationaLLM.Configuration resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProvider_Configuration = "FoundationaLLM:ResourceProvider:Configuration";
+
         #endregion
     }
 }

@@ -1,6 +1,9 @@
-﻿using FoundationaLLM.Agent.ResourceProviders;
+﻿using FluentValidation;
+using FoundationaLLM.Agent.ResourceProviders;
+using FoundationaLLM.Agent.Validation.Metadata;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Agents;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.Storage;
 using FoundationaLLM.Common.Services.Storage;
@@ -41,13 +44,19 @@ namespace FoundationaLLM
                 };
             });
 
+            // Register validators.
+            services.AddSingleton<IValidator<AgentBase>, AgentBaseValidator>();
+            services.AddSingleton<IValidator<KnowledgeManagementAgent>, KnowledgeManagementAgentValidator>();
+
             services.AddSingleton<IResourceProviderService, AgentResourceProviderService>(sp =>
                 new AgentResourceProviderService(
                     sp.GetRequiredService<IOptions<InstanceSettings>>(),
                     sp.GetRequiredService<IEnumerable<IStorageService>>()
                         .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_ResourceProvider_Agent),
                     sp.GetRequiredService<IEventService>(),
+                    sp.GetRequiredService<IResourceValidatorFactory>(),
                     sp.GetRequiredService<ILoggerFactory>()));
+            services.ActivateSingleton<IResourceProviderService>();
         }
     }
 }

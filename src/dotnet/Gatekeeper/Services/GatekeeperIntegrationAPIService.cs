@@ -2,8 +2,8 @@
 using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Gatekeeper.Core.Interfaces;
 using FoundationaLLM.Gatekeeper.Core.Models.Integration;
-using Newtonsoft.Json;
 using System.Text;
+using System.Text.Json;
 
 namespace FoundationaLLM.Gatekeeper.Core.Services
 {
@@ -13,7 +13,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
     public class GatekeeperIntegrationAPIService : IGatekeeperIntegrationAPIService
     {
         private readonly IHttpClientFactoryService _httpClientFactoryService;
-        readonly JsonSerializerSettings _jsonSerializerSettings;
+        readonly JsonSerializerOptions _jsonSerializerOptions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GatekeeperIntegrationAPIService"/> class.
@@ -24,7 +24,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         public GatekeeperIntegrationAPIService(IHttpClientFactoryService httpClientFactoryService)
         {
             _httpClientFactoryService = httpClientFactoryService;
-            _jsonSerializerSettings = CommonJsonSerializerSettings.GetJsonSerializerSettings();
+            _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
         }
 
         /// <inheritdoc/>
@@ -32,14 +32,14 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         {
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperIntegrationAPI);
 
-            var content = JsonConvert.SerializeObject(new AnalyzeRequest() { Content = text, Anonymize = false, Language = "en" });
+            var content = JsonSerializer.Serialize(new AnalyzeRequest() { Content = text, Anonymize = false, Language = "en" });
 
             var responseMessage = await client.PostAsync("analyze", new StringContent(content, Encoding.UTF8, "application/json"));
 
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var analysisResults = JsonConvert.DeserializeObject<AnalyzeResponse>(responseContent);
+                var analysisResults = JsonSerializer.Deserialize<AnalyzeResponse>(responseContent);
 
                 return analysisResults!.Results;
             }
@@ -52,14 +52,14 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         {
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperIntegrationAPI);
 
-            var content = JsonConvert.SerializeObject(new AnalyzeRequest() { Content = text, Anonymize = true, Language = "en" });
+            var content = JsonSerializer.Serialize(new AnalyzeRequest() { Content = text, Anonymize = true, Language = "en" });
 
             var responseMessage = await client.PostAsync("analyze", new StringContent(content, Encoding.UTF8, "application/json"));
 
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var analysisResults = JsonConvert.DeserializeObject<AnonymizeResponse>(responseContent);
+                var analysisResults = JsonSerializer.Deserialize<AnonymizeResponse>(responseContent);
 
                 return analysisResults!.Content;
             }

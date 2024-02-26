@@ -2,11 +2,12 @@
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FoundationaLLM.Common.Services
@@ -54,14 +55,14 @@ namespace FoundationaLLM.Common.Services
             // Optionally add the user identity header.
             if (_callContext.CurrentUserIdentity != null)
             {
-                var serializedIdentity = JsonConvert.SerializeObject(_callContext.CurrentUserIdentity);
+                var serializedIdentity = JsonSerializer.Serialize(_callContext.CurrentUserIdentity);
                 httpClient.DefaultRequestHeaders.Add(Constants.HttpHeaders.UserIdentity, serializedIdentity);
             }
 
             // Add the agent hint header if present.
             if (_callContext.AgentHint != null)
             {
-                var serializedAgentHint = JsonConvert.SerializeObject(_callContext.AgentHint);
+                var serializedAgentHint = JsonSerializer.Serialize(_callContext.AgentHint);
                 httpClient.DefaultRequestHeaders.Add(Constants.HttpHeaders.AgentHint, serializedAgentHint);
             }
 

@@ -155,6 +155,28 @@ module dashboard './shared/dashboard-web.bicep' = {
   scope: rg
 }
 
+module eventgrid './shared/eventgrid.bicep' = {
+  name: 'eventgrid'
+  params: {
+    name: '${abbrs.eventGridDomains}${resourceToken}'
+    location: location
+    tags: tags
+    keyvaultName: keyVault.outputs.name
+    topics: [
+      {
+        name: 'storage'
+      }
+      {
+        name: 'vectorization'
+      }
+      {
+        name: 'configuration'
+      }
+    ]
+  }
+  scope: rg
+}
+
 module keyVault './shared/keyvault.bicep' = {
   name: 'keyvault'
   params: {
@@ -277,6 +299,60 @@ module storage './shared/storage.bicep' = {
   dependsOn: [ keyVault ]
 }
 
+module configTopic 'shared/config-system-topic.bicep' = {
+  name: 'configTopic'
+  params: {
+    name: '${abbrs.eventGridDomainsTopics}config${resourceToken}'
+    location: location
+    tags: tags
+    appConfigAccountName: appConfig.outputs.name
+  }
+  scope: rg
+}
+
+module storageTopic 'shared/storage-system-topic.bicep' = {
+  name: 'storageTopic'
+  params: {
+    name: '${abbrs.eventGridDomainsTopics}storage${resourceToken}'
+    location: location
+    tags: tags
+    storageAccountName: storage.outputs.name
+  }
+  scope: rg
+}
+
+module storageSub 'shared/system-topic-subscription.bicep' = {
+  name: 'storageSub'
+  params: {
+    name: 'resource-provider'
+    eventGridName: eventgrid.outputs.name
+    topicName: storageTopic.outputs.name
+    destinationTopicName: 'storage'
+    filterPrefix: '/blobServices/default/containers/resource-provider/blobs'
+    includedEventTypes: [
+      'Microsoft.Storage.BlobCreated'
+      'Microsoft.Storage.BlobDeleted'
+    ]
+  }
+  scope: rg
+  dependsOn: [ eventgrid, storageTopic ]
+}
+
+module configSub 'shared/system-topic-subscription.bicep' = {
+  name: 'configSub'
+  params: {
+    name: 'app-config'
+    eventGridName: eventgrid.outputs.name
+    topicName: configTopic.outputs.name
+    destinationTopicName: 'configuration'
+    includedEventTypes: [
+      'Microsoft.AppConfiguration.KeyValueModified'
+    ]
+  }
+  scope: rg
+  dependsOn: [ eventgrid, configTopic ]
+}
+
 module appsEnv './shared/apps-env.bicep' = {
   name: 'apps-env'
   params: {
@@ -289,7 +365,7 @@ module appsEnv './shared/apps-env.bicep' = {
   scope: rg
 }
 
-@batchSize(1)
+@batchSize(3)
 module acaServices './app/acaService.bicep' = [ for service in services: {
     name: service.name
     params: {
@@ -297,6 +373,7 @@ module acaServices './app/acaService.bicep' = [ for service in services: {
       location: location
       tags: tags
       appConfigName: appConfig.outputs.name
+      eventgridName: eventgrid.outputs.name
       identityName: '${abbrs.managedIdentityUserAssignedIdentities}${service.name}-${resourceToken}'
       keyvaultName: keyVault.outputs.name
       applicationInsightsName: monitoring.outputs.applicationInsightsName
@@ -305,6 +382,7 @@ module acaServices './app/acaService.bicep' = [ for service in services: {
       exists: servicesExist['${service.name}'] == 'true'
       appDefinition: serviceDefinition
       hasIngress: service.hasIngress
+      imageName: service.image
       envSettings: service.useEndpoint ? [
         {
           name: service.appConfigEnvironmentVarName
@@ -318,6 +396,7 @@ module acaServices './app/acaService.bicep' = [ for service in services: {
           secretRef: 'appconfig-connection-string'
         }
       ]
+      apiKeySecretName: service.apiKeySecretName
       serviceName: service.name
     }
     scope: rg
@@ -330,6 +409,8 @@ output AZURE_COGNITIVE_SEARCH_ENDPOINT string = cogSearch.outputs.endpoint
 output AZURE_CONTAINER_REGISTRY_ENDPOINT string = registry.outputs.loginServer
 output AZURE_CONTENT_SAFETY_ENDPOINT string = contentSafety.outputs.endpoint
 output AZURE_COSMOS_DB_ENDPOINT string = cosmosDb.outputs.endpoint
+output AZURE_EVENT_GRID_ENDPOINT string = eventgrid.outputs.endpoint
+output AZURE_EVENT_GRID_ID string = eventgrid.outputs.id
 output AZURE_KEY_VAULT_NAME string = keyVault.outputs.name
 output AZURE_KEY_VAULT_ENDPOINT string = keyVault.outputs.endpoint
 output AZURE_OPENAI_ENDPOINT string = openAi.outputs.endpoint

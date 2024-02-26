@@ -1,27 +1,28 @@
 using Asp.Versioning;
 using Azure.Identity;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.Models.Context;
-using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Common.Services.Security;
 using FoundationaLLM.Common.Settings;
-using FoundationaLLM.Core.API.Workers;
+using FoundationaLLM.Common.Validation;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Services;
-using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace FoundationaLLM.Core.API
@@ -43,7 +44,7 @@ namespace FoundationaLLM.Core.API
             builder.Configuration.AddEnvironmentVariables();
             builder.Configuration.AddAzureAppConfiguration(options =>
             {
-                options.Connect(builder.Configuration[AppConfigurationKeys.FoundationaLLM_AppConfig_ConnectionString]);
+                options.Connect(builder.Configuration[EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString]);
                 options.ConfigureKeyVault(options =>
                 {
                     options.SetCredential(new DefaultAzureCredential());
@@ -86,6 +87,7 @@ namespace FoundationaLLM.Core.API
                 AppConfigurationKeySections.FoundationaLLM_Events_AzureEventGridEventService_Profiles_CoreAPI);
 
             // Add resource providers
+            builder.Services.AddSingleton<IResourceValidatorFactory, ResourceValidatorFactory>();
             builder.Services.AddAgentResourceProvider(builder.Configuration);
 
             // Activate all resource providers (give them a chance to initialize).
@@ -102,22 +104,29 @@ namespace FoundationaLLM.Core.API
             builder.Services.AddScoped<ICallContext, CallContext>();
             builder.Services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
 
-
-            builder.Services.AddHostedService<EventsWorker>();
-
             // Register the authentication services
             RegisterAuthConfiguration(builder);
 
-            builder.Services.AddApplicationInsightsTelemetry(new ApplicationInsightsServiceOptions
+            // Add the OpenTelemetry telemetry service and send telemetry data to Azure Monitor.
+            builder.Services.AddOpenTelemetry().UseAzureMonitor(options =>
             {
-                ConnectionString = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_CoreAPI_AppInsightsConnectionString],
-                DeveloperMode = builder.Environment.IsDevelopment()
+                options.ConnectionString = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_CoreAPI_AppInsightsConnectionString];
             });
-            //builder.Services.AddServiceProfiler();
-            builder.Services.AddControllers().AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.ContractResolver = Common.Settings.CommonJsonSerializerSettings.GetJsonSerializerSettings().ContractResolver;
-            });
+            
+            // Create a dictionary of resource attributes.
+            var resourceAttributes = new Dictionary<string, object> {
+                { "service.name", "CoreAPI" },
+                { "service.namespace", "FoundationaLLM" },
+                { "service.instance.id", Guid.NewGuid().ToString() }
+            };
+
+            // Configure the OpenTelemetry tracer provider to add the resource attributes to all traces.
+            builder.Services.ConfigureOpenTelemetryTracerProvider((sp, builder) =>
+                builder.ConfigureResource(resourceBuilder =>
+                    resourceBuilder.AddAttributes(resourceAttributes)));
+
+            builder.Services.AddControllers();
+
             builder.Services.AddProblemDetails();
             builder.Services
                 .AddApiVersioning(options =>
@@ -126,15 +135,10 @@ namespace FoundationaLLM.Core.API
                     // "api-supported-versions" and "api-deprecated-versions"
                     options.ReportApiVersions = true;
                     options.AssumeDefaultVersionWhenUnspecified = true;
-                    options.DefaultApiVersion = new ApiVersion(1, 0);
+                    options.DefaultApiVersion = new ApiVersion(new DateOnly(2024, 2, 16));
                 })
                 .AddMvc()
-                .AddApiExplorer(options =>
-                {
-                    // add the versioned api explorer, which also adds IApiVersionDescriptionProvider service
-                    // note: the specified format code will format the version as "'v'major[.minor][-status]"
-                    options.GroupNameFormat = "'v'VVV";
-                });
+                .AddApiExplorer();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

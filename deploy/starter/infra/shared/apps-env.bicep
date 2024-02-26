@@ -5,7 +5,7 @@ param tags object = {}
 param logAnalyticsWorkspaceName string
 param applicationInsightsName string = ''
 
-resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2022-10-01' = {
+resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-08-01-preview' = {
   name: name
   location: location
   tags: tags
@@ -18,6 +18,14 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2022-10-01'
       }
     }
     daprAIConnectionString: applicationInsights.properties.ConnectionString
+    workloadProfiles: [
+      {
+        maximumCount: 10
+        minimumCount: 1
+        workloadProfileType: 'D4'
+        name: 'Warm'
+      }
+    ]
   }
 }
 

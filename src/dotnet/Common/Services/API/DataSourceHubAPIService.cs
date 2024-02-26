@@ -1,40 +1,32 @@
 ﻿using System.Text;
+using System.Text.Json;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.API;
-using FoundationaLLM.Common.Models.Messages;
+using FoundationaLLM.Common.Models.Hubs;
+using FoundationaLLM.Common.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 
 namespace FoundationaLLM.Common.Services.API;
 
 /// <summary>
 /// Class for the Data Source Hub API Service
 /// </summary>
-public class DataSourceHubAPIService : APIServiceBase, IDataSourceHubAPIService
+/// <remarks>
+/// Constructor of the DataSource Hub API Service
+/// </remarks>
+/// <param name="options"></param>
+/// <param name="logger"></param>
+/// <param name="httpClientFactoryService"></param>
+public class DataSourceHubAPIService(
+        IOptions<DataSourceHubSettings> options,
+        ILogger<DataSourceHubAPIService> logger,
+        IHttpClientFactoryService httpClientFactoryService) : APIServiceBase(Common.Constants.HttpClients.DataSourceHubAPI, httpClientFactoryService, logger), IDataSourceHubAPIService
 {
-    readonly DataSourceHubSettings _settings;
-    readonly ILogger<DataSourceHubAPIService> _logger;
-    private readonly IHttpClientFactoryService _httpClientFactoryService;
-    readonly JsonSerializerSettings _jsonSerializerSettings;
-
-    /// <summary>
-    /// Constructor of the DataSource Hub API Service
-    /// </summary>
-    /// <param name="options"></param>
-    /// <param name="logger"></param>
-    /// <param name="httpClientFactoryService"></param>
-    public DataSourceHubAPIService(
-            IOptions<DataSourceHubSettings> options,
-            ILogger<DataSourceHubAPIService> logger,
-            IHttpClientFactoryService httpClientFactoryService) :
-        base(Common.Constants.HttpClients.DataSourceHubAPI, httpClientFactoryService, logger)
-    {
-        _settings = options.Value;
-        _logger = logger;
-        _httpClientFactoryService = httpClientFactoryService;
-        _jsonSerializerSettings = Common.Settings.CommonJsonSerializerSettings.GetJsonSerializerSettings();
-    }
+    readonly DataSourceHubSettings _settings = options.Value;
+    readonly ILogger<DataSourceHubAPIService> _logger = logger;
+    private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
+    readonly JsonSerializerOptions _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
 
 
     /// <summary>
@@ -52,7 +44,7 @@ public class DataSourceHubAPIService : APIServiceBase, IDataSourceHubAPIService
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<string>(responseContent)!;
+                return JsonSerializer.Deserialize<string>(responseContent)!;
             }
         }
         catch (Exception ex)
@@ -79,13 +71,13 @@ public class DataSourceHubAPIService : APIServiceBase, IDataSourceHubAPIService
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.DataSourceHubAPI);
             
             var responseMessage = await client.PostAsync("resolve", new StringContent(
-                    JsonConvert.SerializeObject(request, _jsonSerializerSettings),
+                    JsonSerializer.Serialize(request, _jsonSerializerOptions),
                     Encoding.UTF8, "application/json"));
 
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var response = JsonConvert.DeserializeObject<DataSourceHubResponse>(responseContent, _jsonSerializerSettings);
+                var response = JsonSerializer.Deserialize<DataSourceHubResponse>(responseContent, _jsonSerializerOptions);
                 
                 return response!;
             }

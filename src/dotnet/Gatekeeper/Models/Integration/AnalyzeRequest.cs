@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Gatekeeper.Core.Models.Integration
 {
@@ -10,19 +10,19 @@ namespace FoundationaLLM.Gatekeeper.Core.Models.Integration
         /// <summary>
         /// The text to be analyzed.
         /// </summary>
-        [JsonProperty("content")]
+        [JsonPropertyName("content")]
         public required string Content { get; set; }
 
         /// <summary>
         /// A flag used to tell if PII found by analysis should be anonymized.
         /// </summary>
-        [JsonProperty("anonymize")]
+        [JsonPropertyName("anonymize")]
         public required bool Anonymize {  get; set; }
 
         /// <summary>
         /// The language used to detect PII.
         /// </summary>
-        [JsonProperty("language")]
+        [JsonPropertyName("language")]
         public string? Language {  get; set; }
     }
 }

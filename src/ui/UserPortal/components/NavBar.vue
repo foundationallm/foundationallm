@@ -114,13 +114,16 @@ export default {
 	},
 
 	async created() {
-		await this.appStore.getAgents();
 
-		this.agentOptions = this.appStore.agents.map((agent) => ({
-			label: agent.name,
-			private: agent.private,
-			value: agent,
-		}));
+		if (this.appConfigStore.allowAgentHint) {
+			await this.appStore.getAgents();
+
+			this.agentOptions = this.appStore.agents.map((agent) => ({
+				label: agent.name,
+				private: agent.private,
+				value: agent,
+			}));
+		}
 
 		const publicAgentOptions = this.agentOptions.filter((agent) => !agent.private);
 		const privateAgentOptions = this.agentOptions.filter((agent) => agent.private);

@@ -1,28 +1,16 @@
-﻿using FoundationaLLM.Agent.Models.Metadata;
-using FoundationaLLM.Common.Constants;
+﻿using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Exceptions;
-using Newtonsoft.Json;
+using FoundationaLLM.Common.Models.Agents;
+using FoundationaLLM.Common.Models.ResourceProvider;
+using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Agent.Models.Resources
 {
     /// <summary>
     /// Provides details about an agent.
     /// </summary>
-    public class AgentReference
+    public class AgentReference : ResourceReference
     {
-        /// <summary>
-        /// The name of the agent.
-        /// </summary>
-        public required string Name { get; set; }
-        /// <summary>
-        /// The filename of the agent.
-        /// </summary>
-        public required string Filename { get; set; }
-        /// <summary>
-        /// The type of the agent.
-        /// </summary>
-        public required string Type { get; set; }
-
         /// <summary>
         /// The object type of the agent.
         /// </summary>
@@ -32,6 +20,7 @@ namespace FoundationaLLM.Agent.Models.Resources
             {
                 AgentTypes.Basic => typeof(AgentBase),
                 AgentTypes.KnowledgeManagement => typeof(KnowledgeManagementAgent),
+                AgentTypes.InternalContext => typeof(InternalContextAgent),
                 _ => throw new ResourceProviderException($"The agent type {Type} is not supported.")
             };
     }

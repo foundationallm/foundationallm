@@ -5,6 +5,7 @@ Param (
     [parameter(Mandatory = $true)][object]$entraClientIds,
     [parameter(Mandatory = $true)][object]$resourceGroups,
     [parameter(Mandatory = $true)][string]$resourceSuffix,
+    [parameter(Mandatory = $true)][string]$subscriptionId,
     [parameter(Mandatory = $true)][object]$ingress
 )
 
@@ -28,48 +29,11 @@ function EnsureSuccess($message) {
     }
 }
 
-function GetAksPrivateIPMapping($aksInstance, $peInstances, $nicInstances) {
-    $peInstance = $peInstances | Where-Object { $_.aksId -eq $aksInstance.aksId }
-    $nicInstance = $nicInstances | Where-Object { $_.peId -eq $peInstance.peId }
-
-    return @{
-        privateIPAddress = $nicInstance.privateIpAddress
-        fqdn             = $aksInstance.privateFqdn
-        groupId          = $peInstance.groupId
-    }
-}
-
-function GetPrivateIPMapping($privateEndpointId) {
-    $networkInterface = $(
-        az network private-endpoint show `
-            --id $privateEndpointId `
-            --query '{networkInterfaceId:networkInterfaces[0].id, groupId:privateLinkServiceConnections[0].groupIds[0]}' `
-            --output json | `
-            ConvertFrom-Json
-    )
-    EnsureSuccess "Error getting private endpoint network interface id!"
-
-    $privateIpMapping = $(
-        az network nic show `
-            --ids $networkInterface.networkInterfaceId `
-            --query '{privateIPAddress:ipConfigurations[0].privateIPAddress,fqdn:ipConfigurations[0].privateLinkConnectionProperties.fqdns[0]}' `
-            --output json | `
-            ConvertFrom-Json
-    )
-    EnsureSuccess "Error getting private endpoint network interface info!"
-
-    return @{
-        privateIPAddress = $privateIpMapping.privateIPAddress
-        fqdn             = $privateIpMapping.fqdn
-        groupId          = $networkInterface.groupId
-    }
-}
-
 function PopulateTemplate($tokens, $template, $output) {
     Push-Location $($MyInvocation.InvocationName | Split-Path)
     $templatePath = $(../../common/scripts/Join-Path-Recursively -pathParts $template.Split(","))
     $outputFilePath = $(../../common/scripts/Join-Path-Recursively -pathParts $output.Split(","))
-    Write-Host "Generating $outputFilePath file..." -ForegroundColor Yellow
+    Write-Host "Generating $outputFilePath file..." -ForegroundColor Blue
     & ../../common/scripts/Token-Replace.ps1 -inputFile $templatePath -outputFile $outputFilePath -tokens $tokens
     Pop-Location
 }
@@ -161,13 +125,17 @@ $services = @{
 ### Getting Resources
 $tokens = @{}
 
+$tokens.subscriptionId = $subscriptionId
+$tokens.storageResourceGroup = $resourceGroups.storage
+$tokens.opsResourceGroup = $resourceGroups.ops
+
 $tenantId = $(az account show --query homeTenantId --output tsv)
 
 # Getting Vectorization Config
 $vectorizationConfig = $(
     Get-Content -Raw -Path "../config/vectorization.json" | `
         ConvertFrom-Json | `
-        ConvertTo-Json -Compress
+        ConvertTo-Json -Compress -Depth 50
 ).Replace('"', '\"')
 
 $appConfigInstances = @(
@@ -194,6 +162,7 @@ $appConfigProperties = $(
         ConvertFrom-Json
 )
 
+$appConfigName = $appConfigProperties.name
 $appConfigEndpoint = $appConfigProperties.endpoint
 $appConfigConnectionString = $(
     az appconfig credential list `
@@ -204,8 +173,6 @@ $appConfigConnectionString = $(
         ConvertFrom-Json
 ).connectionString
 
-$appConfigPrivateIpMapping = GetPrivateIPMapping $appConfigProperties.privateEndpointId
-
 ## Getting CosmosDb info
 $docdb = $(
     az cosmosdb list `
@@ -215,7 +182,6 @@ $docdb = $(
         ConvertFrom-Json
 )
 $docdb = EnsureAndReturnFirstItem $docdb "CosmosDB (Document Db)"
-$docdbPrivateIpMapping = GetPrivateIPMapping $docdb.privateEndpointId
 Write-Host "Document Db Account: $($docdb.name)" -ForegroundColor Blue
 
 ## Getting Content Safety endpoint
@@ -227,7 +193,6 @@ $contentSafety = $(
         ConvertFrom-Json
 )
 $contentSafety = EnsureAndReturnFirstItem $contentSafety "Content Safety"
-$contentSafetyPrivateIpMapping = GetPrivateIPMapping $contentSafety.privateEndpointId
 Write-Host "Content Safety Account: $($contentSafety.name)" -ForegroundColor Blue
 
 ## Getting OpenAI endpoint
@@ -252,80 +217,7 @@ $cogSearch = $(
 $cogSearch = EnsureAndReturnFirstItem $cogSearch "Cognitive Search"
 Write-Host "Cognitive Search Service: $($cogSearch.name)" -ForegroundColor Blue
 $cogSearchUri = "https://$($cogSearch.name).search.windows.net"
-$cogSearchPrivateIpMapping = GetPrivateIPMapping $cogSearch.privateEndpointId
-
-Write-Host "Getting OpenAI Accounts"
-$openAiAccounts = $(
-    az cognitiveservices account list `
-        --resource-group $($resourceGroups.oai) `
-        --query "[?kind=='OpenAI'].{name:name, uri: properties.endpoint, privateEndpointId:properties.privateEndpointConnections[0].properties.privateEndpoint.id}" `
-        --output json | `
-        ConvertFrom-Json
-)
-Write-Host "Found $($openAiAccounts.Length) OpenAI Accounts" -ForegroundColor Yellow
-for ($i = 0; $i -lt $openAiAccounts.Length; $i++) {
-    $account = $openAiAccounts[$i]
-    $accountPrivateIpMapping = GetPrivateIPMapping $account.privateEndpointId
-
-    Write-Host "OpenAI Account $($i): $($account.name)" -ForegroundColor Blue
-
-    $tokens.Add("openAiAccountFqdn$($i)", $accountPrivateIpMapping.fqdn)
-    $tokens.Add("openAiAccountPrivateIp$($i)", $accountPrivateIpMapping.privateIPAddress)
-}
-
-Write-Host "Getting OpenAI Key Vault"
-$openAiKeyVault = $(
-    az keyvault list `
-        --resource-group $($resourceGroups.oai) `
-        --query "[].{name:name, privateEndpointId:properties.privateEndpointConnections[0].privateEndpoint.id}" `
-        --output json | `
-        ConvertFrom-Json
-)
-$openAiKeyVault = EnsureAndReturnFirstItem $openAiKeyVault "OpenAI Key Vault"
-Write-Host "OpenAI Key Vault: $($openAiKeyVault.name)" -ForegroundColor Blue
-$openAiKeyVaultPrivateIpMapping = GetPrivateIPMapping $openAiKeyVault.privateEndpointId
-
-Write-Host "Getting OPS Key Vault"
-$opsKeyVault = $(
-    az keyvault list `
-        --resource-group $($resourceGroups.ops) `
-        --query "[].{name:name, privateEndpointId:properties.privateEndpointConnections[0].privateEndpoint.id}" `
-        --output json | `
-        ConvertFrom-Json
-)
-$opsKeyVault = EnsureAndReturnFirstItem $opsKeyVault "OPS Key Vault"
-Write-Host "OPS Key Vault: $($opsKeyVault.name)" -ForegroundColor Blue
-$opsKeyVaultPrivateIpMapping = GetPrivateIPMapping $opsKeyVault.privateEndpointId
-
-Write-Host "Geting AMPLS"
-# az monitor private-link-scope list --resource-group "EBTICP-D-NA24-AIOps-RGRP" --query "[].{name:name, privateEndpointId:privateEndpointConnections[0].privateEndpoint.id}"
-$ampls = $(
-    az monitor private-link-scope list `
-        --resource-group $($resourceGroups.ops) `
-        --query "[].{name:name, privateEndpointId:privateEndpointConnections[0].privateEndpoint.id}" `
-        --output json | `
-        ConvertFrom-Json
-)
-$ampls = EnsureAndReturnFirstItem $ampls "AMPLS"
-Write-Host "AMPLS: $($ampls.name)" -ForegroundColor Blue
-$amplsPrivateIpMapping = GetPrivateIPMapping $ampls.privateEndpointId
-
-Write-Host "Getting OPS Storage Account"
-$storageAccountOps = $(
-    az storage account list `
-        --resource-group $($resourceGroups.ops) `
-        --query "[?kind=='StorageV2'].{name:name, privateEndpointIds:privateEndpointConnections[].privateEndpoint.id}" `
-        --output json | `
-        ConvertFrom-Json
-)
-
-$storageAccountOps = EnsureAndReturnFirstItem $storageAccountOps "Storage Account"
-Write-Host "Storage Account: $($storageAccountOps.name)" -ForegroundColor Blue
-$storageAccountOpsPrivateIpMapping = @{}
-foreach ($privateEndpointId in $storageAccountOps.privateEndpointIds) {
-    $privateIpMapping = GetPrivateIPMapping $privateEndpointId
-    $storageAccountOpsPrivateIpMapping.Add($privateIpMapping.groupId, $privateIpMapping)
-}
+$tokens.cognitiveSearchEndpointUri = $cogSearchUri
 
 Write-Host "Getting ADLS Storage Account"
 $storageAccountAdls = $(
@@ -337,45 +229,6 @@ $storageAccountAdls = $(
 )
 
 $storageAccountAdls = EnsureAndReturnFirstItem $storageAccountAdls "Storage Account"
-Write-Host "Storage Account: $($storageAccountAdls.name)" -ForegroundColor Blue
-$storageAccountAdlsPrivateIpMapping = @{}
-foreach ($privateEndpointId in $storageAccountAdls.privateEndpointIds) {
-    $privateIpMapping = GetPrivateIPMapping $privateEndpointId
-    $storageAccountAdlsPrivateIpMapping.Add($privateIpMapping.groupId, $privateIpMapping)
-}
-
-Write-Host "Getting AKS Instances, Private Endpoints and NICs"
-$aksInstances = $(
-    az aks list `
-        --resource-group $resourceGroups.app `
-        --query "[].{aksName:name,privateFqdn:privateFqdn,aksId:id}" `
-        --output json | `
-        ConvertFrom-Json
-)
-$peInstances = $(
-    az network private-endpoint list `
-        --resource-group $resourceGroups.app `
-        --query "[].{groupId:privateLinkServiceConnections[0].groupIds[0],peName:name,aksId:privateLinkServiceConnections[0].privateLinkServiceId,nicId:networkInterfaces[0].id,peId:id}" `
-        --output json | `
-        ConvertFrom-Json
-)
-
-$nicInstances = $(
-    az network nic list `
-        --resource-group $resourceGroups.app `
-        --query "[].{nicId:id, nicName:name, privateIpAddress:ipConfigurations[0].privateIPAddress,peId:privateEndpoint.id}" `
-        --output json | `
-        ConvertFrom-Json
-)
-
-Write-Host "Found $($aksInstances.Length) AKS Instances" -ForegroundColor Yellow
-for ($i = 0; $i -lt $aksInstances.Length; $i++) {
-    $aksInstance = $aksInstances[$i]
-    Write-Host "AKS Instance $($i): $($aksInstance.aksName)" -ForegroundColor Blue
-    $privateIpMapping = GetAksPrivateIPMapping $aksInstance $peInstances $nicInstances
-    $tokens.Add("aksFqdn$($i)", $aksInstance.privateFqdn)
-    $tokens.Add("aksPrivateIp$($i)", $privateIpMapping.privateIPAddress)
-}
 
 ## Getting managed identities
 foreach ($service in $services.GetEnumerator()) {
@@ -407,51 +260,12 @@ $tokens.managementApiHostname = $ingress.apiIngress.managementapi.host
 $tokens.vectorizationApiHostname = $ingress.apiIngress.vectorizationapi.host
 
 $tokens.contentSafetyEndpointUri = $contentSafety.uri
-$tokens.contentSafetyFqdn = $contentSafetyPrivateIpMapping.fqdn
-$tokens.contentSafetyPrivateIp = $contentSafetyPrivateIpMapping.privateIPAddress
 
 $tokens.openAiEndpointUri = $apim.uri
-$tokens.apimFqdn = $apim.fqdn
-$tokens.apimPrivateIp = $apim.privateIPAddress
 
-$tokens.cognitiveSearchEndpointUri = $cogSearchUri
-$tokens.cognitiveSearchFqdn = $cogSearchPrivateIpMapping.fqdn
-$tokens.cognitiveSearchPrivateIp = $cogSearchPrivateIpMapping.privateIPAddress
 
 $tokens.cosmosEndpoint = $docdb.documentEndpoint
-$tokens.cosmosFqdn = $docdbPrivateIpMapping.fqdn
-$tokens.cosmosPrivateIp = $docdbPrivateIpMapping.privateIPAddress
-
-$tokens.openAiKeyVaultFqdn = $openAiKeyVaultPrivateIpMapping.fqdn
-$tokens.openAiKeyVaultPrivateIp = $openAiKeyVaultPrivateIpMapping.privateIPAddress
-
-$tokens.opsKeyVaultFqdn = $opsKeyVaultPrivateIpMapping.fqdn
-$tokens.opsKeyVaultPrivateIp = $opsKeyVaultPrivateIpMapping.privateIPAddress
-
-$tokens.amplsFqdn = $amplsPrivateIpMapping.fqdn
-$tokens.amplsPrivateIp = $amplsPrivateIpMapping.privateIPAddress
-
-$tokens.storageAccountOpsBlobFqdn = $storageAccountOpsPrivateIpMapping.blob.fqdn
-$tokens.storageAccountOpsBlobPrivateIp = $storageAccountOpsPrivateIpMapping.blob.privateIPAddress
-$tokens.storageAccountOpsDfsFqdn = $storageAccountOpsPrivateIpMapping.dfs.fqdn
-$tokens.storageAccountOpsDfsPrivateIp = $storageAccountOpsPrivateIpMapping.dfs.privateIPAddress
-$tokens.storageAccountOpsFileFqdn = $storageAccountOpsPrivateIpMapping.file.fqdn
-$tokens.storageAccountOpsFilePrivateIp = $storageAccountOpsPrivateIpMapping.file.privateIPAddress
-$tokens.storageAccountOpsQueueFqdn = $storageAccountOpsPrivateIpMapping.queue.fqdn
-$tokens.storageAccountOpsQueuePrivateIp = $storageAccountOpsPrivateIpMapping.queue.privateIPAddress
-$tokens.storageAccountOpsTableFqdn = $storageAccountOpsPrivateIpMapping.table.fqdn
-$tokens.storageAccountOpsTablePrivateIp = $storageAccountOpsPrivateIpMapping.table.privateIPAddress
-
-$tokens.storageAccountAdlsBlobFqdn = $storageAccountAdlsPrivateIpMapping.blob.fqdn
-$tokens.storageAccountAdlsBlobPrivateIp = $storageAccountAdlsPrivateIpMapping.blob.privateIPAddress
-$tokens.storageAccountAdlsDfsFqdn = $storageAccountAdlsPrivateIpMapping.dfs.fqdn
-$tokens.storageAccountAdlsDfsPrivateIp = $storageAccountAdlsPrivateIpMapping.dfs.privateIPAddress
-$tokens.storageAccountAdlsFileFqdn = $storageAccountAdlsPrivateIpMapping.file.fqdn
-$tokens.storageAccountAdlsFilePrivateIp = $storageAccountAdlsPrivateIpMapping.file.privateIPAddress
-$tokens.storageAccountAdlsQueueFqdn = $storageAccountAdlsPrivateIpMapping.queue.fqdn
-$tokens.storageAccountAdlsQueuePrivateIp = $storageAccountAdlsPrivateIpMapping.queue.privateIPAddress
-$tokens.storageAccountAdlsTableFqdn = $storageAccountAdlsPrivateIpMapping.table.fqdn
-$tokens.storageAccountAdlsTablePrivateIp = $storageAccountAdlsPrivateIpMapping.table.privateIPAddress
+$tokens.storageAccountAdlsName = $storageAccountAdls.name
 
 $tokens.agentFactoryApiMiClientId = $services["agentfactoryapi"].miClientId
 $tokens.agentHubApiMiClientId = $services["agenthubapi"].miClientId
@@ -471,10 +285,9 @@ $tokens.vectorizationJobMiClientId = $services["vectorizationjob"].miClientId
 $tokens.vectorizationConfig = $vectorizationConfig
 
 $tokens.tenantId = $tenantId
+$tokens.appConfigName = $appConfigName
 $tokens.appConfigEndpoint = $appConfigEndpoint
 $tokens.appConfigConnectionString = $appConfigConnectionString
-$tokens.appConfigFqdn = $appConfigPrivateIpMapping.fqdn
-$tokens.appConfigPrivateIp = $appConfigPrivateIpMapping.privateIPAddress
 
 ## Showing Values that will be used
 Write-Host "===========================================================" -ForegroundColor Yellow
@@ -482,8 +295,42 @@ Write-Host "appconfig.json file will be generated with values:"
 Write-Host ($tokens | ConvertTo-Json) -ForegroundColor Yellow
 Write-Host "===========================================================" -ForegroundColor Yellow
 
+PopulateTemplate $tokens "..,config,agent-factory-api-event-profile.template.json" "..,config,agent-factory-api-event-profile.json"
+$tokens.agentFactoryApiEventGridProfile = $(
+    Get-Content -Raw -Path "../config/agent-factory-api-event-profile.json" | `
+        ConvertFrom-Json | `
+        ConvertTo-Json -Compress -Depth 50
+).Replace('"', '\"')
+
+PopulateTemplate $tokens "..,config,core-api-event-profile.template.json" "..,config,core-api-event-profile.json"
+$tokens.coreApiEventGridProfile = $(
+    Get-Content -Raw -Path "../config/core-api-event-profile.json" | `
+        ConvertFrom-Json | `
+        ConvertTo-Json -Compress -Depth 50
+).Replace('"', '\"')
+
+$tokens.managementApiEventGridProfile = $(
+    Get-Content -Raw -Path "../config/management-api-event-profile.json" | `
+        ConvertFrom-Json | `
+        ConvertTo-Json -Compress -Depth 50
+).Replace('"', '\"')
+
+PopulateTemplate $tokens "..,config,vectorization-api-event-profile.template.json" "..,config,vectorization-api-event-profile.json"
+$tokens.vectorizationApiEventGridProfile = $(
+    Get-Content -Raw -Path "../config/vectorization-api-event-profile.json" | `
+        ConvertFrom-Json | `
+        ConvertTo-Json -Compress -Depth 50
+).Replace('"', '\"')
+
+PopulateTemplate $tokens "..,config,vectorization-worker-event-profile.template.json" "..,config,vectorization-worker-event-profile.json"
+$tokens.vectorizationWorkerEventGridProfile = $(
+    Get-Content -Raw -Path "../config/vectorization-worker-event-profile.json" | `
+        ConvertFrom-Json | `
+        ConvertTo-Json -Compress -Depth 50
+).Replace('"', '\"')
+
+
 PopulateTemplate $tokens "..,config,appconfig.template.json" "..,config,appconfig.json"
-PopulateTemplate $tokens "..,config,hosts.template" "..,config,hosts"
 PopulateTemplate $tokens "..,values,internal-service.template.yml" "..,values,microservice-values.yml"
 
 $($ingress.apiIngress).PSObject.Properties | ForEach-Object {

@@ -9,6 +9,7 @@ from fastapi.security import APIKeyHeader
 from foundationallm.config import Configuration
 
 __config: Configuration = None
+API_NAME = 'AgentHubAPI'
 
 def get_config(action: str = None) -> Configuration:
     """
@@ -44,7 +45,7 @@ def validate_api_key_header(x_api_key: str = Depends(APIKeyHeader(name='X-API-Ke
         Returns True of the X-API-Key value from the request header matches the expected value.
         Otherwise, returns False.
     """
-    result = x_api_key == get_config().get_value('FoundationaLLM:APIs:AgentHubAPI:APIKey')
+    result = x_api_key == get_config().get_value(f'FoundationaLLM:APIs:{API_NAME}:APIKey')
 
     if not result:
         logging.error('Invalid API key. You must provide a valid API key in the X-API-KEY header.')

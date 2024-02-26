@@ -19,7 +19,6 @@ namespace FoundationaLLM.Management.API.Controllers
     /// configuration and state of downstream services.</param>
     [Authorize]
     [Authorize(Policy = "RequiredScope")]
-    [ApiVersion(1.0)]
     [ApiController]
     [Consumes("application/json")]
     [Produces("application/json")]

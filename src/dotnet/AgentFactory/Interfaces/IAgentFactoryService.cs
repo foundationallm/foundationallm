@@ -16,9 +16,4 @@ public interface IAgentFactoryService
     /// Retrieve a completion from the configured orchestration service.
     /// </summary>
     Task<CompletionResponse> GetCompletion(CompletionRequest completionRequest);
-
-    /// <summary>
-    /// Retrieve a summarization for the passed in prompt from the orchestration service.
-    /// </summary>
-    Task<SummaryResponse> GetSummary(SummaryRequest content);
 }

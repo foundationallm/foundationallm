@@ -8,7 +8,7 @@ The Management UI enables FLLM administrators to configure agents without direct
     
     ![FLLM Create New Agent tab.](../media/fllm-management-interface.png "Create New Agent")
 
-2. Set the agent type: **Knowledge Management** or **Analytics**.
+2. Set the agent type: **Knowledge Management** or **Analytics**. FoundationaLLM currently only supports Knowledge Management agents.
 
     ![Create New Agent select Agent Type.](../media/agent-type-selection.png "Agent Type")
 
@@ -16,19 +16,19 @@ The Management UI enables FLLM administrators to configure agents without direct
 
     ![Agent Knowledge Source four-tile view.](../media/agent-knowledge-source.png "Agent Knowledge Source")
 
-     - Expand the dropdown arrow next to the upper left box. Select the entry with the correct **Storage account name**, artifacts **Container name**, and file **Data Format(s)**. Then, select **Done**.
+     - Expand the dropdown arrow next to the upper left box. Select the correct Content Source Profile.
 
         ![Agent Blob Storage Data Sources.](../media/agent-data-source-dropdown.png "Blob Storage Data Sources")
 
-     - Expand the dropdown arrow next to the upper right box to open the Azure AI Search index dropdown. The vectorized content will be populated in the selected index. Select **Done**.
+     - Expand the dropdown arrow next to the upper right box to open the Indexing Profile dropdown. Select the correct Indexing Profile.
 
         ![Agent Knowledge Source Index Selection.](../media/aisearch-index-dropdown.png "Index Selection")
      
-     - Expand the dropdown arrow next to the lower left box. Set the **Chunk size** and **Overlap size** settings for vectorization. Select **Done**.
+     - Expand the dropdown arrow next to the lower left box. Set the **Chunk size** and **Overlap size** settings for text partitioning. Select **Done**.
 
         ![Agent Splitting & Chunking Configuration.](../media/set-splitting-and-chunking.png "Splitting & Chunking")
 
-     - Expand the dropdown arrow next to the lower right box. Set the trigger **Frequency** and select **Done**.
+     - Expand the dropdown arrow next to the lower right box. Set the trigger **Frequency**; FoundationaLLM currently only supports Manual triggers.
 
         ![Agent Vectorization Trigger Frequency.](../media/vectorization-trigger.png "Vectorization Trigger Frequency")
 
@@ -51,4 +51,6 @@ The Management UI enables FLLM administrators to configure agents without direct
 
     ![Set Agent Prompt.](../media/set-system-prompt.png "Agent Prompt")
 
-6. After setting the desired agent configuration, select **Create Agent** at the bottom right-hand corner of the page. You will be able to edit the agent configuration after creation.
+6. After setting the desired agent configuration, select **Create Agent** at the bottom right-hand corner of the page. You will be able to edit the agent configuration after creation from the **Public Agents** page.
+
+    ![Edit a newly-created agent in the Management UI.](../media/edit-agent-page.png "Edit agent")

@@ -13,7 +13,6 @@ namespace FoundationaLLM.Vectorization.API.Controllers
     /// Constructor for the vectorization request controller.
     /// </remarks>
     /// <param name="vectorizationService"></param>
-    [ApiVersion(1.0)]
     [ApiController]
     [APIKeyAuthentication]
     [Route("[controller]")]

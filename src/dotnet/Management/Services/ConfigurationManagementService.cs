@@ -41,7 +41,7 @@ namespace FoundationaLLM.Management.Services
             try
             {
                 var allowAgentSelectionSetting = await _configurationClient
-                    .GetConfigurationSettingAsync(FeatureFlagConfigurationSetting.KeyPrefix + AppConfigurationKeys.FoundationaLLM_AllowAgentHint_FeatureFlag);
+                    .GetConfigurationSettingAsync(FeatureFlagConfigurationSetting.KeyPrefix + AppConfigurationFeatureFlags.FoundationaLLM_AllowAgentHint);
                 if (allowAgentSelectionSetting.HasValue && allowAgentSelectionSetting.Value is FeatureFlagConfigurationSetting featureFlag)
                 {
                     allowAgentSelection = featureFlag.IsEnabled;
@@ -61,7 +61,7 @@ namespace FoundationaLLM.Management.Services
             try
             {
                 var allowAgentSelectionSetting = new FeatureFlagConfigurationSetting(
-                    AppConfigurationKeys.FoundationaLLM_AllowAgentHint_FeatureFlag, isEnabled: allowAgentSelection);
+                    AppConfigurationFeatureFlags.FoundationaLLM_AllowAgentHint, isEnabled: allowAgentSelection);
                 await _configurationClient.SetConfigurationSettingAsync(allowAgentSelectionSetting);
                 // TODO: Restart the Core API and Agent API services to apply the new feature flag.
             }

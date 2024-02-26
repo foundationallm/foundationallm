@@ -64,18 +64,8 @@ Follow the steps below to deploy the solution to your Azure subscription.
      ```powershell
      ./bootstrap.ps1
      ```
-
-4. **Edit psakefile.ps1 with your deployment details:**
-
-   - Edit the following variables in the `psakefile.ps1` file:
-     ```powershell
-     $aksAdmnistratorObjectId = <Entra object id for the user or group to set as the AKS cluster administrator>
-     $environment = <your prefered environment name like demo, dev, prod>
-     $location = <Azure region to deploy to>
-     $project = <your prefered tag to add to all resource names>
-     $subscription = <your subscription id>
-     ```
-5. **Execute the deployment:**
+     
+4. **Execute the deployment:**
    - Execute the following command to deploy the solution:
      ```powershell
      Invoke-psake
@@ -95,16 +85,16 @@ Follow the instructions in the [Authentication setup document](https://docs.foun
 
 ### Deployment-Manifest.json Reference
 
-| Property | Description | Default Value |
-------------------------------------------
-| environment | Target deployment environment | `stg` |
-| location | Target deployment region in Azure | `EastUS2` |
-| project | Project identifier associated with this deployment | `fllm01` |
-| subscriptoin | Target deployment subscription in Azure | N/A |
-| k8sNamespace | Target Kubernetes namespace for deployed services in AKS clusters | `default` |
-| adminObjectId | Object Id of the Azure AD User or Group to grant appropriate rights to administer the deployment | N/A |
-| createVpnGateway | Flag to enable/disable creation of a VPN Gateway for private network access | `true` |
-| publicEndpoints | Flag to enable/disable exposing service endpoints on the public Internet | `true` |
-| createApimUdr | Flag to enable/disable creating UDR rule to support APIM deployment in a peered VNET environment | `false` |
-| vnetName | Desired VNET name for deployment. | N/A |
-| vnetCidr | Desired VNET CIDR Address range. | `10.220.128.0/21` |
+| Property         | Description                                                                                      | Default Value     |
+| ---------------- | ------------------------------------------------------------------------------------------------ | ----------------- |
+| environment      | Target deployment environment                                                                    | `stg`             |
+| location         | Target deployment region in Azure                                                                | `EastUS2`         |
+| project          | Project identifier associated with this deployment                                               | `fllm01`          |
+| subscriptoin     | Target deployment subscription in Azure                                                          | N/A               |
+| k8sNamespace     | Target Kubernetes namespace for deployed services in AKS clusters                                | `default`         |
+| adminObjectId    | Object Id of the Azure AD User or Group to grant appropriate rights to administer the deployment | N/A               |
+| createVpnGateway | Flag to enable/disable creation of a VPN Gateway for private network access                      | `true`            |
+| publicEndpoints  | Flag to enable/disable exposing service endpoints on the public Internet                         | `true`            |
+| createApimUdr    | Flag to enable/disable creating UDR rule to support APIM deployment in a peered VNET environment | `false`           |
+| vnetName         | Desired VNET name for deployment.                                                                | N/A               |
+| vnetCidr         | Desired VNET CIDR Address range.                                                                 | `10.220.128.0/21` |

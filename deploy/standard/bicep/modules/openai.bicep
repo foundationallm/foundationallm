@@ -4,8 +4,8 @@ param actionGroupId string
 
 @description('Model deployment capacity')
 param capacity object = {
-  completions: 1
-  embeddings: 1
+  completions: 60
+  embeddings: 60
 }
 
 @description('Key Vault Name for secrets')
@@ -74,7 +74,7 @@ var deploymentConfig = [
     model: {
       format: 'OpenAI'
       name: 'gpt-35-turbo'
-      version: '0613'  
+      version: '0613'
     }
   }
   {

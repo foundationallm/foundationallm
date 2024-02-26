@@ -46,29 +46,27 @@ class KnowledgeManagementAgent(AgentBase):
         self.llm = llm.get_completion_model(completion_request.agent.language_model)
         self.internal_context = True
         self.agent_prompt = ""
-        if completion_request.agent.indexing_profiles is not None:
-            self.internal_context = False
+        if completion_request.agent.indexing_profile_object_ids is not None:
             self.retrievers = []
-            for indexing_profile in completion_request.agent.indexing_profiles:
+            for indexing_profile in completion_request.agent.indexing_profile_object_ids:
                 retriever_factory = RetrieverFactory(
-                            indexing_profile_resource_id = indexing_profile,
-                            embedding_profile_resource_id= completion_request.agent.embedding_profile,
-                            config = config,
-                            resource_provider = resource_provider)
+                                indexing_profile_resource_id = indexing_profile,
+                                embedding_profile_resource_id= completion_request.agent.embedding_profile,
+                                config = config,
+                                resource_provider = resource_provider)
                 self.retrievers.append(retriever_factory.get_retriever())
-            self.retriever = next((r for r in self.retrievers), None)
-            self.agent_prompt = resource_provider.get_resource(completion_request.agent.prompt)["prefix"]
+                        
+            self.retriever = next((r for r in self.retrievers, None)
+            self.agent_prompt = resource_provider.get_resource(completion_request.agent.prompt_object_id).prefix
 
         #default conversation history
         self.message_history_enabled = False
         self.message_history_count = 5
         
         conversation_history: ConversationHistory = completion_request.agent.conversation_history
-        if conversation_history is not None:
-            self.message_history_enabled = conversation_history.enabled
-            self.message_history_count = conversation_history.max_history
-        
-        self.message_history = completion_request.message_history
+        self.message_history_enabled = conversation_history.enabled
+        self.message_history_count = conversation_history.max_history        
+        self.message_history = completion_request.message_history        
         self.full_prompt = ""
 
     def __format_docs(self, docs:List[Document]) -> str:
@@ -111,22 +109,16 @@ class KnowledgeManagementAgent(AgentBase):
             generated full prompt with context
             and token utilization and execution cost details.
         """
-        with get_openai_callback() as cb:            
-            # default to internal context
-            prompt_builder = "{context}"
-            first_chain_link = { "context": RunnablePassthrough() }
-            # if querying vector store, override
-            if self.internal_context == False:
-                prompt_builder = self.agent_prompt
-                if self.message_history_enabled == True:
-                    prompt_builder = prompt_builder + build_message_history(self.message_history, self.message_history_count)
-                prompt_builder = prompt_builder + "\n\nQuestion: {question}\n\nContext: {context}\n\nAnswer:"
-                first_chain_link = { "context": self.retriever | self.__format_docs, "question": RunnablePassthrough()}        
+        with get_openai_callback() as cb:  
+            prompt_builder = self.agent_prompt
+            if self.message_history_enabled == True:
+                prompt_builder = prompt_builder + build_message_history(self.message_history, self.message_history_count)
+            prompt_builder = prompt_builder + "\n\nQuestion: {question}\n\nContext: {context}\n\nAnswer:"            
             prompt_template = PromptTemplate.from_template(prompt_builder)
 
             # Compose LCEL chain
             chain = (
-                first_chain_link
+                { "context": self.retriever | self.__format_docs, "question": RunnablePassthrough() }
                 | prompt_template
                 | RunnableLambda(self.__record_full_prompt)
                 | self.llm

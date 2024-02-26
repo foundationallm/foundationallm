@@ -1,9 +1,13 @@
-﻿using FoundationaLLM.Common.Interfaces;
+﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Chat;
 using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.Core.Interfaces;
+using FoundationaLLM.Core.Models;
+using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -21,9 +25,28 @@ namespace FoundationaLLM.Core.Tests.Services
         private readonly ICallContext _callContext = Substitute.For<ICallContext>();
         private readonly ILogger<CoreService> _logger = Substitute.For<ILogger<CoreService>>();
         private readonly IOptions<ClientBrandingConfiguration> _brandingConfig = Substitute.For<IOptions<ClientBrandingConfiguration>>();
+        private readonly IEnumerable<IDownstreamAPIService> _downstreamAPIServices;
+        private IOptions<CoreServiceSettings> _options;
 
         public CoreServiceTests()
         {
+            var gatekeeperAPIDownstream = Substitute.For<IDownstreamAPIService>();
+            gatekeeperAPIDownstream.APIName.Returns(HttpClients.GatekeeperAPI);
+
+            var agentFactoryAPIDownstream = Substitute.For<IDownstreamAPIService>();
+            agentFactoryAPIDownstream.APIName.Returns(HttpClients.AgentFactoryAPI);
+
+            _downstreamAPIServices = new List<IDownstreamAPIService>
+            {
+                gatekeeperAPIDownstream,
+                agentFactoryAPIDownstream
+            };
+
+            _options = Options.Create(new CoreServiceSettings {
+                BypassGatekeeper =  true, 
+                SessionSummarization = ChatSessionNameSummarizationType.LLM
+            });
+
             _brandingConfig.Value.Returns(new ClientBrandingConfiguration());
             _callContext.CurrentUserIdentity.Returns(new UnifiedUserIdentity
             {
@@ -31,7 +54,7 @@ namespace FoundationaLLM.Core.Tests.Services
                 UPN = "test@foundationallm.ai",
                 Username = "test@foundationallm.ai"
             });
-            _testedService = new CoreService(_cosmosDbService, _gatekeeperAPIService, _logger, _brandingConfig, _callContext);
+            _testedService = new CoreService(_cosmosDbService, _downstreamAPIServices, _logger, _brandingConfig, _options, _callContext);
         }
 
         #region GetAllChatSessionsAsync
@@ -58,17 +81,18 @@ namespace FoundationaLLM.Core.Tests.Services
         public async Task GetChatSessionMessagesAsync_ShouldReturnAllChatSessionMessages()
         {
             // Arrange
-            var sessionId = Guid.NewGuid().ToString();
-            var upn = "test@founationallm.ai";
-            var message = new Message(sessionId, "sender", 0, "text", null, null, upn);
+            string sessionId = Guid.NewGuid().ToString();
+            var message = new Message(sessionId, "sender", 0, "text", null, null, "test_upn");
             var expectedMessages = new List<Message>() { message };
-            _cosmosDbService.GetSessionMessagesAsync(sessionId, upn).Returns(expectedMessages);
+
+            _cosmosDbService.GetSessionMessagesAsync(sessionId, Arg.Any<string>())
+                .Returns(expectedMessages);
 
             // Act
-            var actualMessages = await _testedService.GetChatSessionMessagesAsync(sessionId);
+            var messages = await _testedService.GetChatSessionMessagesAsync(sessionId);
 
             // Assert
-            Assert.Equivalent(expectedMessages, actualMessages);
+            Assert.Equal(expectedMessages, messages);
         }
 
         [Fact]
@@ -93,14 +117,23 @@ namespace FoundationaLLM.Core.Tests.Services
         public async Task CreateNewChatSessionAsync_ShouldReturnANewChatSession()
         {
             // Arrange
-            var expectedSession = new Session();
-            _cosmosDbService.InsertSessionAsync(expectedSession).Returns(expectedSession);
+            var currentUserUPN = "testuser@example.com";
+            var sessionType = "Test_type";
+            var newSession = new Session { Type = sessionType, UPN = currentUserUPN };
+
+            // Set up mock returns
+            _callContext.CurrentUserIdentity.Returns(new UnifiedUserIdentity { UPN = currentUserUPN });
+
+            _cosmosDbService.InsertSessionAsync(Arg.Any<Session>())
+                .Returns(Task.FromResult(newSession));
 
             // Act
-            var actualSession = await _testedService.CreateNewChatSessionAsync();
+            var resultSession = await _testedService.CreateNewChatSessionAsync();
 
             // Assert
-            Assert.Equivalent(expectedSession, actualSession);
+            Assert.NotNull(resultSession);
+            Assert.Equal(sessionType, resultSession.Type);
+            Assert.Equal(currentUserUPN, resultSession.UPN);
         }
 
         #endregion
@@ -212,10 +245,9 @@ namespace FoundationaLLM.Core.Tests.Services
             _cosmosDbService.GetSessionMessagesAsync(sessionId, upn).Returns(expectedMessages);
 
             var completionResponse = new CompletionResponse() { Completion = "Completion" };
-            _gatekeeperAPIService.GetCompletion(Arg.Any<CompletionRequest>()).Returns(completionResponse);
+            _downstreamAPIServices.Last().GetCompletion(Arg.Any<CompletionRequest>()).Returns(completionResponse);
 
             _cosmosDbService.GetSessionAsync(sessionId).Returns(new Session());
-
             _cosmosDbService.UpsertSessionBatchAsync().Returns(Task.CompletedTask);
 
             // Act
@@ -278,7 +310,7 @@ namespace FoundationaLLM.Core.Tests.Services
             // Arrange
             var sessionId = Guid.NewGuid().ToString();
             var prompt = "Prompt";
-            var summary = "Summary";
+            var summary = "[No Summary]";
             var summaryRequest = new SummaryRequest
             {
                 SessionId = sessionId,
@@ -385,20 +417,6 @@ namespace FoundationaLLM.Core.Tests.Services
             await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
                 await _testedService.RateMessageAsync(id, null!, rating);
-            });
-        }
-
-        [Fact]
-        public async Task RateMessageAsync_ShouldThrowExceptionWhenRatingIsNull()
-        {
-            // Arrange
-            var id = Guid.NewGuid().ToString();
-            var sessionId = Guid.NewGuid().ToString();
-
-            // Assert
-            await Assert.ThrowsAsync<ArgumentNullException>(async () =>
-            {
-                await _testedService.RateMessageAsync(id, sessionId, null);
             });
         }
 

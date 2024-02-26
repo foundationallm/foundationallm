@@ -1,5 +1,6 @@
-﻿using FoundationaLLM.Common.Models.Metadata;
-using Newtonsoft.Json;
+﻿using FoundationaLLM.Common.Models.Agents;
+using System.Text.Json.Serialization;
+
 
 namespace FoundationaLLM.Common.Models.Configuration.Users
 {
@@ -8,27 +9,27 @@ namespace FoundationaLLM.Common.Models.Configuration.Users
     /// </summary>
     /// <param name="UPN">The user's account user principal name.</param>
     /// <param name="PrivateAgents">Private agents assigned to the user.</param>
-    public record UserProfile(string UPN, IEnumerable<Agent>? PrivateAgents)
+    public record UserProfile(string UPN, IEnumerable<AgentHint>? PrivateAgents)
     {
         /// <summary>
         /// The unique identifier.
         /// </summary>
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; } = UPN;
         /// <summary>
         /// The document type.
         /// </summary>
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; } = nameof(UserProfile);
         /// <summary>
         /// The user principal name.
         /// </summary>
-        [JsonProperty("upn")]
+        [JsonPropertyName("upn")]
         public string UPN { get; set; } = UPN;
         /// <summary>
         /// Names of private agents assigned to the user.
         /// </summary>
-        [JsonProperty("privateAgents")]
-        public IEnumerable<Agent>? PrivateAgents { get; set; } = PrivateAgents;
+        [JsonPropertyName("privateAgents")]
+        public IEnumerable<AgentHint>? PrivateAgents { get; set; } = PrivateAgents;
     }
 }

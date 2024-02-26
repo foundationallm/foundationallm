@@ -77,11 +77,15 @@ namespace FoundationaLLM.Common.Services.Storage
 
             try
             {
-                blobLease = await blobLeaseClient.AcquireAsyncWithWait(TimeSpan.FromSeconds(60), cancellationToken: cancellationToken);
-                if (blobLease == null)
+                if (await blobClient.ExistsAsync(cancellationToken).ConfigureAwait(false))
                 {
-                    _logger.LogError("Could not get a lease for the blob {FilePath} from container {ContainerName}. Reason: unkown.", filePath, containerName);
-                    throw new StorageException($"Could not get a lease for the blob {filePath} from container {containerName}. Reason: unknown.");
+                    // We only need to get a lease for already existing blobs that are being updated.
+                    blobLease = await blobLeaseClient.AcquireAsyncWithWait(TimeSpan.FromSeconds(60), cancellationToken: cancellationToken);
+                    if (blobLease == null)
+                    {
+                        _logger.LogError("Could not get a lease for the blob {FilePath} from container {ContainerName}. Reason: unkown.", filePath, containerName);
+                        throw new StorageException($"Could not get a lease for the blob {filePath} from container {containerName}. Reason: unknown.");
+                    }
                 }
 
                 fileContent.Seek(0, SeekOrigin.Begin);
@@ -94,10 +98,12 @@ namespace FoundationaLLM.Common.Services.Storage
                             ? "application/json"
                             : contentType
                     },
-                    Conditions = new BlobRequestConditions()
-                    {
-                        LeaseId = blobLease!.LeaseId
-                    }
+                    Conditions = (blobLease != null)
+                    ? new BlobRequestConditions()
+                        {
+                            LeaseId = blobLease!.LeaseId
+                        }
+                    : default
                 };
 
                 await blobClient.UploadAsync(fileContent, options, cancellationToken).ConfigureAwait(false);

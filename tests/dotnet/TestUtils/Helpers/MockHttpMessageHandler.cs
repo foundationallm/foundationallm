@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using System.Net;
+﻿using System.Net;
+using System.Text.Json;
 
 namespace FoundationaLLM.TestUtils.Helpers
 {
@@ -17,7 +17,7 @@ namespace FoundationaLLM.TestUtils.Helpers
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var response = new HttpResponseMessage(_statusCode);
-            response.Content = new StringContent(JsonConvert.SerializeObject(_content));
+            response.Content = new StringContent(JsonSerializer.Serialize(_content));
             return await Task.FromResult(response);
         }
     }

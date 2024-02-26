@@ -5,6 +5,12 @@ param name string
 param sku string = 'S0'
 param tags object = {}
 
+var secretNames = [
+  'openai-apikey'
+  'foundationallm-azureopenai-api-key'
+  'foundationallm-openai-api-key'
+  'foundationallm-semantickernelapi-openai-key'
+]
 
 resource openAi 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
   name: name
@@ -43,16 +49,18 @@ resource keyvault 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
   name: keyvaultName
 }
 
-resource apiKeySecret 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = {
-  name: 'openai-apikey'
-  parent: keyvault
-  tags: tags
-  properties: {
-    value: openAi.listKeys().key1
+resource apiKeySecret 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = [
+  for secretName in secretNames: {
+    name: secretName
+    parent: keyvault
+    tags: tags
+    properties: {
+      value: openAi.listKeys().key1
+    }
   }
-}
+]
 
 output endpoint string = openAi.properties.endpoint
-output keySecretName string = apiKeySecret.name
-output keySecretRef string = apiKeySecret.properties.secretUri
+output keySecretName string = apiKeySecret[0].name
+output keySecretRef string = apiKeySecret[0].properties.secretUri
 output name string = openAi.name

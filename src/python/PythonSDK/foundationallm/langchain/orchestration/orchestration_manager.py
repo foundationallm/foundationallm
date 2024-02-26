@@ -4,7 +4,12 @@ from foundationallm.config import Configuration, Context
 from foundationallm.langchain.language_models import LanguageModelFactory
 from foundationallm.langchain.agents import AgentFactory, AgentBase
 from foundationallm.models.language_models import LanguageModel
-from foundationallm.models.orchestration import CompletionRequestBase, KnowledgeManagementCompletionRequest, CompletionResponse
+from foundationallm.models.orchestration import (
+    CompletionRequestBase,
+    KnowledgeManagementCompletionRequest,
+    InternalContextCompletionRequest,
+    CompletionResponse
+)
 from foundationallm.resources import ResourceProvider
 
 class OrchestrationManager:
@@ -27,7 +32,8 @@ class OrchestrationManager:
         """
         self.completion_request = completion_request
         self.config = configuration        
-        if type(completion_request)==KnowledgeManagementCompletionRequest:            
+        if type(completion_request)==KnowledgeManagementCompletionRequest or \
+            type(completion_request)==InternalContextCompletionRequest:
             self.llm = self.__get_llm(language_model=completion_request.agent.language_model)
         else:
             self.llm = self.__get_llm(language_model=completion_request.language_model)

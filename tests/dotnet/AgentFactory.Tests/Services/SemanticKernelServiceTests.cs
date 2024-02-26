@@ -1,10 +1,8 @@
-﻿using FoundationaLLM.AgentFactory.Core.Models.Orchestration;
-using FoundationaLLM.AgentFactory.Models.ConfigurationOptions;
+﻿using FoundationaLLM.AgentFactory.Models.ConfigurationOptions;
 using FoundationaLLM.AgentFactory.Services;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Chat;
+using FoundationaLLM.Common.Models.Agents;
 using FoundationaLLM.Common.Models.Orchestration;
-
 namespace FoundationaLLM.AgentFactory.Tests.Services
 {
     public class SemanticKernelServiceTests
@@ -23,32 +21,15 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
         public async Task GetCompletion_Success_ReturnsCompletionResponse()
         {
             // Arrange
-            var userPrompt = "TestUserPrompt";
-            var messageHistory = new List<MessageHistoryItem>();
-
-            var request = new LLMOrchestrationCompletionRequest
+            var request = new KnowledgeManagementCompletionRequest
             {
-                SessionId = "TestSessionId",
-                UserPrompt = userPrompt,
-                MessageHistory = messageHistory,
-                Agent = null,
-                LanguageModel = null
+                Agent = new KnowledgeManagementAgent() { Name = "Test_name", ObjectId = "Test_id", Type = "Test_type"}
             };
+            var responseContent = System.Text.Json.JsonSerializer.Serialize(new LLMCompletionResponse { Completion = "Completion response" });
+            var responseMessage = new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(responseContent) };
 
-            var response = new HttpResponseMessage
-            {
-                Content = new StringContent(JsonConvert.SerializeObject(new CompletionResponse
-                {
-                    Completion = "TestCompletion",
-                    UserPrompt = userPrompt,
-                    PromptTokens = 40,
-                    CompletionTokens = 100,
-                    UserPromptEmbedding = new float[] { 0 }
-                }), Encoding.UTF8, "application/json"),
-                StatusCode = HttpStatusCode.OK
-            };
 
-            var httpClient = new HttpClient(new FakeMessageHandler(response))
+            var httpClient = new HttpClient(new FakeMessageHandler(responseMessage))
             {
                 BaseAddress = new Uri("http://nsubstitute.io")
             };
@@ -59,41 +40,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal("TestCompletion", result.Completion);
-            Assert.Equal(userPrompt, result.UserPrompt);
-        }
-
-        [Fact]
-        public async Task GetSummary_Success_ReturnsSummary()
-        {
-            // Arrange
-            var request = new LLMOrchestrationRequest
-            {
-                SessionId = "TestSessionId",
-                UserPrompt = "TestUserPrompt"
-            };
-
-            var response = new HttpResponseMessage
-            {
-                Content = new StringContent(JsonConvert.SerializeObject(new SummaryResponse
-                {
-                    Summary = "TestSummary"
-                }), Encoding.UTF8, "application/json"),
-                StatusCode = HttpStatusCode.OK
-            };
-
-            var httpClient = new HttpClient(new FakeMessageHandler(response))
-            {
-                BaseAddress = new Uri("http://nsubstitute.io")
-            };
-            httpClientFactoryService.CreateClient(Common.Constants.HttpClients.SemanticKernelAPI).Returns(httpClient);
-
-            // Act
-            var result = await semanticKernelService.GetSummary(request);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal("TestSummary", result);
+            Assert.Equal("Completion response", result.Completion);
         }
     }
 }

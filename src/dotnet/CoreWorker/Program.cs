@@ -1,9 +1,9 @@
 using Azure.Identity;
-using FoundationaLLM.Core.Models.Configuration;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Core.Interfaces;
+using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Services;
 using FoundationaLLM.Core.Worker;
-using FoundationaLLM.Common.Constants;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -12,7 +12,7 @@ builder.Configuration.AddJsonFile("appsettings.json", false, true);
 builder.Configuration.AddEnvironmentVariables();
 builder.Configuration.AddAzureAppConfiguration(options =>
 {
-    options.Connect(builder.Configuration[AppConfigurationKeys.FoundationaLLM_AppConfig_ConnectionString]);
+    options.Connect(builder.Configuration[EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString]);
 
     options.ConfigureKeyVault(options =>
     {

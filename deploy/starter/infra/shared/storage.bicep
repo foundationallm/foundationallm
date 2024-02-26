@@ -6,6 +6,22 @@ param location string = resourceGroup().location
 param name string
 param tags object = {}
 
+var secretNames = [
+  'storage-connection'
+  'foundationallm-agent-resourceprovider-storage-connectionstring'
+  'foundationallm-agenthub-storagemanager-blobstorage-connectionstring'
+  'foundationallm-blobstoragememorysource-blobstorageconnection'
+  'foundationallm-cognitivesearchmemorysource-blobstorageconnection'
+  'foundationallm-configuration-resourceprovider-storage-connectionstring'
+  'foundationallm-datasourcehub-storagemanager-blobstorage-connectionstring'
+  'foundationallm-durablesystemprompt-blobstorageconnection'
+  'foundationallm-prompt-resourceprovider-storage-connectionstring'
+  'foundationallm-prompthub-storagemanager-blobstorage-connectionstring'
+  'foundationallm-vectorization-queues-connectionstring'
+  'foundationallm-vectorization-state-connectionstring'
+  'foundationallm-vectorization-resourceprovider-storage-connectionstring'
+]
+
 resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: name
   location: location
@@ -69,15 +85,17 @@ resource keyvault 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
   name: keyvaultName
 }
 
-resource storageConnectionString 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = {
-  name: 'storage-connection'
-  parent: keyvault
-  tags: tags
-  properties: {
-    value: 'DefaultEndpointsProtocol=https;AccountName=${name};AccountKey=${storage.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
+resource storageConnectionString 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = [
+  for secretName in secretNames: {
+    name: secretName
+    parent: keyvault
+    tags: tags
+    properties: {
+      value: 'DefaultEndpointsProtocol=https;AccountName=${name};AccountKey=${storage.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
+    }
   }
-}
+]
 
-output connectionSecretName string = storageConnectionString.name
-output connectionSecretRef string = storageConnectionString.properties.secretUri
+output connectionSecretName string = storageConnectionString[0].name
+output connectionSecretRef string = storageConnectionString[0].properties.secretUri
 output name string = storage.name

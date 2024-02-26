@@ -17,15 +17,22 @@ namespace Gatekeeper.Tests.Services
         private readonly IDownstreamAPIService _agentFactoryAPIService = Substitute.For<IDownstreamAPIService>();
         private readonly IRefinementService _refinementService = Substitute.For<IRefinementService>();
         private readonly IGatekeeperIntegrationAPIService _gatekeeperIntegrationAPIService = Substitute.For<IGatekeeperIntegrationAPIService>();
-        private readonly IOptions<GatekeeperServiceSettings> _gatekeeperServiceSettings = Substitute.For<IOptions<GatekeeperServiceSettings>>();
+        private IOptions<GatekeeperServiceSettings> _gatekeeperServiceSettings;
 
         public GatekeeperServiceTests()
         {
+            _gatekeeperServiceSettings = Options.Create(new GatekeeperServiceSettings
+            {
+                EnableAzureContentSafety = true,
+                EnableMicrosoftPresidio = true
+            });
+
             _testedService = new GatekeeperService(
                 _agentFactoryAPIService,
                 _contentSafetyService,
                 _gatekeeperIntegrationAPIService,
                 _gatekeeperServiceSettings);
+
         }
 
         [Fact]

@@ -3,23 +3,22 @@ Main entry-point for the FoundationaLLM AgentHubAPI.
 Runs web server exposing the API.
 """
 from fastapi import FastAPI
-from app.dependencies import get_config
+from app.dependencies import API_NAME, get_config
 from app.routers import (
     list_agents,
     manage,
     resolve,
     status
 )
-#from azure.monitor.opentelemetry import configure_azure_monitor
+from foundationallm.telemetry import Telemetry
 
-# configure_azure_monitor(
-#     connection_string=
-#       config.get_value('FoundationaLLM:APIs:AgentHubAPI:AppInsightsConnectionString'),
-#     disable_offline_storage=True
-# )
+# Open a connection to the app configuration
+config = get_config()
+# Start collecting telemetry
+Telemetry.configure_monitoring(config, f'FoundationaLLM:APIs:{API_NAME}:AppInsightsConnectionString')
 
 app = FastAPI(
-    title='FoundationaLLM AgentHubAPI',
+    title=f'FoundationaLLM {API_NAME}',
     summary='API for retrieving Agent metadata',
     description="""The FoundationaLLM AgentHubAPI is a wrapper around AgentHub
         functionality contained in the foundationallm Python SDK.""",
@@ -36,7 +35,7 @@ app = FastAPI(
         'name': 'FoundationaLLM Software License',
         'url': 'https://www.foundationallm.ai/license',
     },
-    config=get_config()
+    config=config
 )
 
 app.include_router(list_agents.router)
@@ -54,4 +53,4 @@ async def root():
     str
         Returns a JSON object containing a message and value.
     """
-    return { 'message': 'FoundationaLLM AgentHubAPI' }
+    return { 'message': f'FoundationaLLM {API_NAME}' }

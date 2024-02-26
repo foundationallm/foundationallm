@@ -8,7 +8,6 @@ namespace FoundationaLLM.Vectorization.Worker.Controllers
     /// <summary>
     /// Methods for managing vectorization requests.
     /// </summary>
-    [ApiVersion(1.0)]
     [ApiController]
     [APIKeyAuthentication]
     [Route("[controller]")]

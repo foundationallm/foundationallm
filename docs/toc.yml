@@ -66,6 +66,8 @@ items:
       href: setup-guides/agents/index.md
     - name: Knowledge management agents
       href: setup-guides/agents/knowledge-management-agent.md
+    - name: Internal context agents
+      href: setup-guides/agents/internal-context-agent.md
     - name: Prompt resources
       href: setup-guides/agents/prompt-resource.md
   - name: Exposed APIs
@@ -79,8 +81,8 @@ items:
       href: setup-guides/exposed-apis/management-api.md  
     - name: Resource management
       href: setup-guides/exposed-apis/resource-management/resource-management.md
-    - name: Management UI
-      href: setup-guides/exposed-apis/management-ui/management-ui.md
+  - name: Management UI
+    href: setup-guides/management-ui/management-ui.md
   - name: Vectorization
     href: setup-guides/vectorization/index.md
     items:

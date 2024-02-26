@@ -1,16 +1,10 @@
 ﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Agents;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Services;
-using Newtonsoft.Json;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FoundationaLLM.Common.Models.Metadata;
-using NSubstitute.Core;
+using System.Text.Json;
 
 namespace FoundationaLLM.Common.Tests.Services
 {
@@ -39,7 +33,7 @@ namespace FoundationaLLM.Common.Tests.Services
                 Username = "TestUsername",
                 Name = "TestName"
             };
-            var agentHint = new Agent
+            var agentHint = new AgentHint
             {
                 Name = "TestAgentHint",
                 Private = false
@@ -71,8 +65,8 @@ namespace FoundationaLLM.Common.Tests.Services
             Assert.NotNull(result);
             Assert.Equal(httpClient.Timeout, TimeSpan.FromSeconds(600));
             Assert.Equal(result.DefaultRequestHeaders.GetValues(Constants.HttpHeaders.APIKey), new[] { apiKey });
-            Assert.Equal(result.DefaultRequestHeaders.GetValues(Constants.HttpHeaders.UserIdentity), new[] { JsonConvert.SerializeObject(userContext) });
-            Assert.Equal(result.DefaultRequestHeaders.GetValues(Constants.HttpHeaders.AgentHint), new[] { JsonConvert.SerializeObject(agentHint) });
+            Assert.Equal(result.DefaultRequestHeaders.GetValues(Constants.HttpHeaders.UserIdentity), new[] { JsonSerializer.Serialize(userContext) });
+            Assert.Equal(result.DefaultRequestHeaders.GetValues(Constants.HttpHeaders.AgentHint), new[] { JsonSerializer.Serialize(agentHint) });
         }
     }
 }

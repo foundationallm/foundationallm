@@ -1,40 +1,32 @@
 ﻿using System.Text;
+using System.Text.Json;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.API;
-using FoundationaLLM.Common.Models.Messages;
+using FoundationaLLM.Common.Models.Hubs;
+using FoundationaLLM.Common.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 
 namespace FoundationaLLM.Common.Services.API;
 
 /// <summary>
 /// Class for the PromptHub API Service
 /// </summary>
-public class PromptHubAPIService : APIServiceBase, IPromptHubAPIService
+/// <remarks>
+/// Constructor for the PromptHub API Service
+/// </remarks>
+/// <param name="options"></param>
+/// <param name="logger"></param>
+/// <param name="httpClientFactoryService"></param>
+public class PromptHubAPIService(
+        IOptions<PromptHubSettings> options,
+        ILogger<PromptHubAPIService> logger,
+        IHttpClientFactoryService httpClientFactoryService) : APIServiceBase(Common.Constants.HttpClients.PromptHubAPI, httpClientFactoryService, logger), IPromptHubAPIService
 {
-    readonly PromptHubSettings _settings;
-    readonly ILogger<PromptHubAPIService> _logger;
-    private readonly IHttpClientFactoryService _httpClientFactoryService;
-    readonly JsonSerializerSettings _jsonSerializerSettings;
-
-    /// <summary>
-    /// Constructor for the PromptHub API Service
-    /// </summary>
-    /// <param name="options"></param>
-    /// <param name="logger"></param>
-    /// <param name="httpClientFactoryService"></param>
-    public PromptHubAPIService(
-            IOptions<PromptHubSettings> options,
-            ILogger<PromptHubAPIService> logger,
-            IHttpClientFactoryService httpClientFactoryService) :
-        base(Common.Constants.HttpClients.PromptHubAPI, httpClientFactoryService, logger)
-    {
-        _settings = options.Value;
-        _logger = logger;
-        _httpClientFactoryService = httpClientFactoryService;
-        _jsonSerializerSettings = Common.Settings.CommonJsonSerializerSettings.GetJsonSerializerSettings();
-    }
+    readonly PromptHubSettings _settings = options.Value;
+    readonly ILogger<PromptHubAPIService> _logger = logger;
+    private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
+    readonly JsonSerializerOptions _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
 
 
     /// <summary>
@@ -52,7 +44,7 @@ public class PromptHubAPIService : APIServiceBase, IPromptHubAPIService
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<string>(responseContent)!;
+                return JsonSerializer.Deserialize<string>(responseContent)!;
             }
         }
         catch (Exception ex)
@@ -73,7 +65,7 @@ public class PromptHubAPIService : APIServiceBase, IPromptHubAPIService
             var request = new PromptHubRequest { PromptContainer = promptContainer, PromptName = promptName, SessionId = sessionId };
             
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.PromptHubAPI);
-            var body = JsonConvert.SerializeObject(request, _jsonSerializerSettings);
+            var body = JsonSerializer.Serialize(request, _jsonSerializerOptions);
             var responseMessage = await client.PostAsync("resolve", new StringContent(
                     body,
                     Encoding.UTF8, "application/json"));
@@ -81,7 +73,7 @@ public class PromptHubAPIService : APIServiceBase, IPromptHubAPIService
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var response = JsonConvert.DeserializeObject<PromptHubResponse>(responseContent, _jsonSerializerSettings);
+                var response = JsonSerializer.Deserialize<PromptHubResponse>(responseContent, _jsonSerializerOptions);
                 return response!;
             }
         }

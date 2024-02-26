@@ -1,6 +1,4 @@
-﻿using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Exceptions;
-using FoundationaLLM.Common.Models.ResourceProvider;
+﻿using FoundationaLLM.Common.Models.ResourceProvider;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Vectorization.Models.Resources
@@ -8,26 +6,29 @@ namespace FoundationaLLM.Vectorization.Models.Resources
     /// <summary>
     /// Basic properties for vectorization profiles.
     /// </summary>
-    public class VectorizationProfileBase
+    [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
+    [JsonDerivedType(typeof(ContentSourceProfile), "content-source-profile")]
+    [JsonDerivedType(typeof(TextPartitioningProfile), "text-partitioning-profile")]
+    [JsonDerivedType(typeof(TextEmbeddingProfile), "text-embedding-profile")]
+    [JsonDerivedType(typeof(IndexingProfile), "indexing-profile")]
+    public class VectorizationProfileBase : ResourceBase
     {
         /// <summary>
-        /// The name of the vectorization profile
+        /// The type of the vectorization profile.
         /// </summary>
-        public required string Name { get; set; }
-
-        /// <summary>
-        /// The unique identifier of the object.
-        /// </summary>
-        public string? ObjectId { get; set; }
+        [JsonIgnore]
+        public override string? Type { get; set; }
 
         /// <summary>
         /// The configuration associated with the vectorization profile.
         /// </summary>
+        [JsonPropertyName("settings")]
         public Dictionary<string, string>? Settings { get; set; } = [];
 
         /// <summary>
-        /// Configuration references associated with the vectorizatio profile.
+        /// Configuration references associated with the vectorization profile.
         /// </summary>
+        [JsonPropertyName("configuration_references")]
         public Dictionary<string, string>? ConfigurationReferences { get; set; } = [];
     }
 }

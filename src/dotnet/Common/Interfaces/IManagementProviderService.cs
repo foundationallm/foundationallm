@@ -16,7 +16,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// </summary>
         /// <param name="resourcePath">The resource path.</param>
         /// <returns>The serialized form of the result of handling the request.</returns>
-        Task<string> HandleGetAsync(string resourcePath);
+        Task<object> HandleGetAsync(string resourcePath);
 
         /// <summary>
         /// Handles a HTTP POST request for a specified resource path.
@@ -24,7 +24,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="resourcePath">The resource path.</param>
         /// <param name="requestPayload">The request payload.</param>
         /// <returns>The serialized form of the result of handling the request.</returns>
-        Task<string> HandlePostAsync(string resourcePath, string requestPayload);
+        Task<object> HandlePostAsync(string resourcePath, string requestPayload);
 
         /// <summary>
         /// Handles a HTTP DELETE request for a specified resource path.

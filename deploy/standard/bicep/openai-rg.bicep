@@ -33,8 +33,8 @@ param timestamp string = utcNow()
 param vnetId string
 
 param capacity object = {
-  completions: 10
-  embeddings: 10
+  completions: 60
+  embeddings: 60
 }
 
 /** Locals **/

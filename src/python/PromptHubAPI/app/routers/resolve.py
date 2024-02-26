@@ -5,8 +5,12 @@ from typing import Optional
 from fastapi import APIRouter, Depends, Header, Request
 from foundationallm.config import Context
 from foundationallm.models import AgentHint
+from foundationallm.telemetry import Telemetry
 from foundationallm.hubs.prompt import PromptHubRequest, PromptHubResponse, PromptHub
 from app.dependencies import handle_exception, validate_api_key_header
+
+logger = Telemetry.get_logger(__name__)
+tracer = Telemetry.get_tracer(__name__)
 
 router = APIRouter(
     prefix='/resolve',
@@ -41,11 +45,13 @@ async def resolve(
     PromptHubResponse
         Object containing the metadata for the resolved prompt.
     """
-    try:
-        context = Context(user_identity=x_user_identity)
-        if x_agent_hint is not None and len(x_agent_hint.strip()) > 0:
-            agent_hint = AgentHint.model_validate_json(x_agent_hint)
-            return PromptHub(config=request.app.extra['config']).resolve(request=prompt_request, user_context=context, hint=agent_hint)
-        return PromptHub(config=request.app.extra['config']).resolve(prompt_request, user_context=context)
-    except Exception as e:
-        handle_exception(e)
+    with tracer.start_as_current_span('resolve') as span:
+        try:
+            context = Context(user_identity=x_user_identity)
+            if x_agent_hint is not None and len(x_agent_hint.strip()) > 0:
+                agent_hint = AgentHint.model_validate_json(x_agent_hint)
+                return PromptHub(config=request.app.extra['config']).resolve(request=prompt_request, user_context=context, hint=agent_hint)
+            return PromptHub(config=request.app.extra['config']).resolve(prompt_request, user_context=context)
+        except Exception as e:
+            Telemetry.record_exception(span, e)
+            handle_exception(e)

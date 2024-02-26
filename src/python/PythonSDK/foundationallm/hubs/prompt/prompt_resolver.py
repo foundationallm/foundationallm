@@ -18,6 +18,13 @@ class PromptResolver(Resolver):
                 path_prefix = f"user-profiles/{user_upn}/"
                 # override the container prefix for private agent lookup
                 self.repository.container_prefix = path_prefix
+
+        if request.prompt_container is None:
+            if hint is None:                        
+                request.prompt_container = "default"
+            else:
+                request.prompt_container = hint.name
+
         response = PromptHubResponse(prompt=
                                  self.repository.get_metadata_by_name(
                                      request.prompt_container + '.' + request.prompt_name)

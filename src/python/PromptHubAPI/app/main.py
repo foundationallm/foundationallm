@@ -3,22 +3,21 @@ Main entry-point for the FoundationaLLM PromptHubAPI.
 Runs web server exposing the API.
 """
 from fastapi import FastAPI
-from app.dependencies import get_config
+from app.dependencies import API_NAME, get_config
 from app.routers import (
     manage,
     resolve,
     status
 )
-#from azure.monitor.opentelemetry import configure_azure_monitor
+from foundationallm.telemetry import Telemetry
 
-# configure_azure_monitor(
-#     connection_string=
-#       config.get_value('FoundationaLLM:APIs:PromptHubAPI:AppInsightsConnectionString'),
-#     disable_offline_storage=True
-# )
+# Open a connection to the app configuration
+config = get_config()
+# Start collecting telemetry
+Telemetry.configure_monitoring(config, f'FoundationaLLM:APIs:{API_NAME}:AppInsightsConnectionString')
 
 app = FastAPI(
-    title='FoundationaLLM PromptHubAPI',
+    title=f'FoundationaLLM {API_NAME}',
     summary='API for retrieving Prompt metadata',
     description="""The FoundationaLLM PromptHubAPI is a wrapper around PromptHub
                 functionality contained in the foundationallm.core Python SDK.""",
@@ -52,4 +51,4 @@ async def root():
     str
         Returns a JSON object containing a message and value.
     """
-    return { 'message': 'FoundationaLLM PromptHubAPI' }
+    return { 'message': f'FoundationaLLM {API_NAME}' }

@@ -3,7 +3,7 @@ Main entry-point for the FoundationaLLM DataSourceHubAPI.
 Runs web server exposing the API.
 """
 from fastapi import FastAPI
-from app.dependencies import get_config
+from app.dependencies import API_NAME, get_config
 from app.routers import (
     analyze,
     manage,
@@ -11,7 +11,7 @@ from app.routers import (
 )
 
 app = FastAPI(
-    title='FoundationaLLM GatekeeperIntegrationAPI',
+    title=f'FoundationaLLM {API_NAME}',
     summary='API for extending the FoundationaLLM GatekeeperAPI',
     description="""The FoundationaLLM GatekeeperIntegrationAPI is a service used to extend the
             FoundationaLLM GatekeeperAPI with extra capabilities""",
@@ -45,4 +45,4 @@ async def root():
     str
         Returns a JSON object containing a message and value.
     """
-    return { 'message': 'FoundationaLLM GatekeeperIntegrationAPI' }
+    return { 'message': f'FoundationaLLM {API_NAME}' }

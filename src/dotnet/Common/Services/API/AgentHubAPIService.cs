@@ -1,42 +1,34 @@
 ﻿using System.Text;
+using System.Text.Json;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Agents;
 using FoundationaLLM.Common.Models.Configuration.API;
-using FoundationaLLM.Common.Models.Messages;
+using FoundationaLLM.Common.Models.Hubs;
+using FoundationaLLM.Common.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 
 namespace FoundationaLLM.Common.Services.API;
 
 /// <summary>
 /// Class for the Agent Hub API Service.
 /// </summary>
-public class AgentHubAPIService : APIServiceBase, IAgentHubAPIService
+/// <remarks>
+/// Constructor for the Agent Hub API Service
+/// </remarks>
+/// <param name="options"></param>
+/// <param name="logger"></param>
+/// <param name="httpClientFactoryService"></param>
+public class AgentHubAPIService(
+        IOptions<AgentHubSettings> options,
+        ILogger<AgentHubAPIService> logger,
+        IHttpClientFactoryService httpClientFactoryService) : APIServiceBase(HttpClients.AgentHubAPI, httpClientFactoryService, logger), IAgentHubAPIService
 {
-    readonly AgentHubSettings _settings;
-    readonly ILogger<AgentHubAPIService> _logger;
-    private readonly IHttpClientFactoryService _httpClientFactoryService;
-    readonly JsonSerializerSettings _jsonSerializerSettings;
-
-
-    /// <summary>
-    /// Constructor for the Agent Hub API Service
-    /// </summary>
-    /// <param name="options"></param>
-    /// <param name="logger"></param>
-    /// <param name="httpClientFactoryService"></param>
-    public AgentHubAPIService(
-            IOptions<AgentHubSettings> options,
-            ILogger<AgentHubAPIService> logger,
-            IHttpClientFactoryService httpClientFactoryService) :
-        base(HttpClients.AgentHubAPI, httpClientFactoryService, logger)
-    {
-        _settings = options.Value;
-        _logger = logger;
-        _httpClientFactoryService = httpClientFactoryService;
-        _jsonSerializerSettings = Common.Settings.CommonJsonSerializerSettings.GetJsonSerializerSettings();
-    }
+    readonly AgentHubSettings _settings = options.Value;
+    readonly ILogger<AgentHubAPIService> _logger = logger;
+    private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
+    readonly JsonSerializerOptions _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
 
     /// <summary>
     /// Gets the status of the Agent Hub API
@@ -53,7 +45,7 @@ public class AgentHubAPIService : APIServiceBase, IAgentHubAPIService
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<string>(responseContent)!;
+                return JsonSerializer.Deserialize<string>(responseContent)!;
             }
         }
         catch (Exception ex)
@@ -77,20 +69,20 @@ public class AgentHubAPIService : APIServiceBase, IAgentHubAPIService
 
             if (!string.IsNullOrWhiteSpace(agentHintOverride))
             {
-                var agentHint = JsonConvert.SerializeObject(
-                    new FoundationaLLM.Common.Models.Metadata.Agent { Name = agentHintOverride },
-                    _jsonSerializerSettings);
+                var agentHint = JsonSerializer.Serialize(
+                    new AgentHint { Name = agentHintOverride },
+                    _jsonSerializerOptions);
                 client.DefaultRequestHeaders.Add(HttpHeaders.AgentHint, agentHint);
             }
                         
             var responseMessage = await client.PostAsync("resolve", new StringContent(
-                    JsonConvert.SerializeObject(request, _jsonSerializerSettings),
+                    JsonSerializer.Serialize(request, _jsonSerializerOptions),
                     Encoding.UTF8, "application/json"));
 
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var response = JsonConvert.DeserializeObject<AgentHubResponse>(responseContent, _jsonSerializerSettings);
+                var response = JsonSerializer.Deserialize<AgentHubResponse>(responseContent, _jsonSerializerOptions);
                 return response!;
             }
         }
@@ -115,7 +107,7 @@ public class AgentHubAPIService : APIServiceBase, IAgentHubAPIService
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var response = JsonConvert.DeserializeObject<List<AgentMetadata>>(responseContent, _jsonSerializerSettings);
+                var response = JsonSerializer.Deserialize<List<AgentMetadata>>(responseContent, _jsonSerializerOptions);
                 return response!;
             }
 

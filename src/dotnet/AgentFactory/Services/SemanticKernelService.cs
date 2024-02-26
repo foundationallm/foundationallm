@@ -1,43 +1,33 @@
 ﻿using FoundationaLLM.AgentFactory.Interfaces;
 using FoundationaLLM.AgentFactory.Models.ConfigurationOptions;
-using FoundationaLLM.Common.Models.Chat;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System.Text;
-using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.AgentFactory.Core.Models.Orchestration;
+using System.Text.Json;
 
 namespace FoundationaLLM.AgentFactory.Services
 {
     /// <summary>
     /// The FoundationaLLM Semantic Kernal Service
     /// </summary>
-    public class SemanticKernelService : ISemanticKernelService
+    /// <remarks>
+    /// Constructor for the Semantic Kernal Service
+    /// </remarks>
+    /// <param name="options"></param>
+    /// <param name="logger"></param>
+    /// <param name="httpClientFactoryService"></param>
+    public class SemanticKernelService(
+        IOptions<SemanticKernelServiceSettings> options,
+        ILogger<SemanticKernelService> logger,
+        IHttpClientFactoryService httpClientFactoryService) : ISemanticKernelService
     {
-        readonly SemanticKernelServiceSettings _settings;
-        readonly ILogger<SemanticKernelService> _logger;
-        private readonly IHttpClientFactoryService _httpClientFactoryService;
-        readonly JsonSerializerSettings _jsonSerializerSettings;
-
-        /// <summary>
-        /// Constructor for the Semantic Kernal Service
-        /// </summary>
-        /// <param name="options"></param>
-        /// <param name="logger"></param>
-        /// <param name="httpClientFactoryService"></param>
-        public SemanticKernelService(
-            IOptions<SemanticKernelServiceSettings> options,
-            ILogger<SemanticKernelService> logger,
-            IHttpClientFactoryService httpClientFactoryService)
-        {
-            _settings = options.Value;
-            _logger = logger;
-            _httpClientFactoryService = httpClientFactoryService;
-            _jsonSerializerSettings = CommonJsonSerializerSettings.GetJsonSerializerSettings();
-        }
+        readonly SemanticKernelServiceSettings _settings = options.Value;
+        readonly ILogger<SemanticKernelService> _logger = logger;
+        private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
+        readonly JsonSerializerOptions _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
 
         /// <summary>
         /// Checks the Semantic Service returns a call to signal it is initialized and ready for requests.
@@ -49,99 +39,61 @@ namespace FoundationaLLM.AgentFactory.Services
         /// </summary>
         /// <param name="request">Request object populated from the hub APIs including agent, prompt, data source, and model information.</param>
         /// <returns>Returns a completion response from the orchestration engine.</returns>
-        public async Task<LLMOrchestrationCompletionResponse> GetCompletion(LLMOrchestrationCompletionRequest request)
+        public async Task<LLMCompletionResponse> GetCompletion(LLMCompletionRequest request)
         {
+            var promptTemplate = string.Empty;
+
+            string? agentName;
+            switch (request)
+            {
+                case KnowledgeManagementCompletionRequest kmcr:
+                    agentName = kmcr.Agent.Name;
+                    break;
+                case LegacyCompletionRequest lcr:
+                    agentName = lcr.Agent?.Name;
+                    promptTemplate = lcr.Agent?.PromptPrefix;
+                    break;
+                default:
+                    throw new Exception($"LLM orchestration completion request of type {request.GetType()} is not supported.");
+            }
+
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.SemanticKernelAPI);
 
-            var completionRequest = new CompletionRequest
-            {
-                SessionId = request.SessionId ?? string.Empty,
-                UserPrompt = request.UserPrompt ?? string.Empty,
-                MessageHistory = request.MessageHistory
-            };
-
+            var body = JsonSerializer.Serialize(request, _jsonSerializerOptions);
             var responseMessage = await client.PostAsync("orchestration/completion",
                 new StringContent(
-                    JsonConvert.SerializeObject(completionRequest, _jsonSerializerSettings),
+                    body,
                     Encoding.UTF8, "application/json"));
+            var responseContent = await responseMessage.Content.ReadAsStringAsync();
 
             if (responseMessage.IsSuccessStatusCode)
             {
-                var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var completionResponse = JsonConvert.DeserializeObject<CompletionResponse>(responseContent)!;
-                return new LLMOrchestrationCompletionResponse
+                var completionResponse = JsonSerializer.Deserialize<LLMCompletionResponse>(responseContent);
+
+                return new LLMCompletionResponse
                 {
                     Completion = completionResponse!.Completion,
                     UserPrompt = completionResponse.UserPrompt,
-                    PromptTemplate = request.Agent?.PromptPrefix,
-                    AgentName = request.Agent?.Name,
+                    FullPrompt = completionResponse.FullPrompt,
+                    PromptTemplate = promptTemplate,
+                    AgentName = agentName,
                     PromptTokens = completionResponse.PromptTokens,
                     CompletionTokens = completionResponse.CompletionTokens
                 };
             }
-            
-            return new LLMOrchestrationCompletionResponse
+
+            _logger.LogWarning("The LangChain orchestration service returned status code {StatusCode}: {ResponseContent}",
+                responseMessage.StatusCode, responseContent);
+
+            return new LLMCompletionResponse
             {
                 Completion = "A problem on my side prevented me from responding.",
                 UserPrompt = request.UserPrompt,
-                PromptTemplate = request.Agent?.PromptPrefix,
-                AgentName = request.Agent?.Name,
+                PromptTemplate = promptTemplate,
+                AgentName = agentName,
                 PromptTokens = 0,
                 CompletionTokens = 0
             };
-        }
-
-        /// <summary>
-        /// Gets a summary from the Semantic Kernel service.
-        /// </summary>
-        /// <param name="orchestrationRequest">The orchestration request that includes the text to summarize.</param>
-        /// <returns>Returns a summary of the input text.</returns>
-        public async Task<string> GetSummary(LLMOrchestrationRequest orchestrationRequest)
-        {
-            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.SemanticKernelAPI);
-
-            var responseMessage = await client.PostAsync("orchestration/summary",
-                new StringContent(
-                    JsonConvert.SerializeObject(new SummaryRequest
-                    {
-                        SessionId = orchestrationRequest.SessionId,
-                        UserPrompt = orchestrationRequest.UserPrompt
-                    }, _jsonSerializerSettings),
-                    Encoding.UTF8, "application/json"));
-
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var summaryResponse = JsonConvert.DeserializeObject<SummaryResponse>(responseContent);
-
-                return summaryResponse!.Summary!;
-            }
-            else
-                return "A problem on my side prevented me from responding.";
-        }
-
-        /// <summary>
-        /// Adds an item to memory
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="itemName"></param>
-        /// <param name="vectorizer"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public Task AddMemory(object item, string itemName, Action<object, float[]> vectorizer)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Removes an item from memory
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public Task RemoveMemory(object item)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -156,7 +108,5 @@ namespace FoundationaLLM.AgentFactory.Services
 
             return responseMessage.Content.ToString() == "ready";
         }
-
-        public Task<LLMOrchestrationCompletionResponse> GetCompletion(string agentName, string serializedRequest) => throw new NotImplementedException();
     }
 }

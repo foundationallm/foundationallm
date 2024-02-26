@@ -378,4 +378,9 @@ log
 **/certbot/*
 **/certbot.ini
 **/Deployment-Manifest.json
+**/Deployment-Manifest.*.json
 .azure
+**/agent-factory-api-event-profile.json
+**/core-api-event-profile.json
+**/vectorization-api-event-profile.json
+**/vectorization-worker-event-profile.json

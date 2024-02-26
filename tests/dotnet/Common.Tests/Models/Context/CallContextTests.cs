@@ -1,6 +1,6 @@
-﻿using FoundationaLLM.Common.Models.Authentication;
+﻿using FoundationaLLM.Common.Models.Agents;
+using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Context;
-using FoundationaLLM.Common.Models.Metadata;
 using NSubstitute;
 
 namespace FoundationaLLM.Common.Tests.Models.Context
@@ -12,7 +12,7 @@ namespace FoundationaLLM.Common.Tests.Models.Context
         {
             // Arrange
             var callContext = new CallContext();
-            var agentHint = new Agent
+            var agentHint = new AgentHint
             {
                 Name = "TestAgentHint",
                 Private = false

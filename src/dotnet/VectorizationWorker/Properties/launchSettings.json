@@ -3,12 +3,10 @@
     "VectorizationWorker": {
       "commandName": "Project",
       "environmentVariables": {
-        "DOTNET_ENVIRONMENT": "Development"
+        "DOTNET_ENVIRONMENT": "Development",
+        "HOSTNAME": "VectorizationWorker"
       },
       "dotnetRunMessages": true
-    },
-    "Docker": {
-      "commandName": "Docker"
     }
   }
 }

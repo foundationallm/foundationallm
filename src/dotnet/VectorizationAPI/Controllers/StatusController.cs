@@ -6,7 +6,6 @@ namespace FoundationaLLM.Vectorization.API.Controllers
     /// <summary>
     /// Provides methods for checking the status of the service.
     /// </summary>
-    [ApiVersion(1.0)]
     [ApiController]
     [Route("[controller]")]
     public class StatusController : ControllerBase

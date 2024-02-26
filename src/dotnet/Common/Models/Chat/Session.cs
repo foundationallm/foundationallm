@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Chat;
 
@@ -52,7 +52,7 @@ public record Session
         SessionId = Id;
         TokensUsed = 0;
         Name = "New Chat";
-        Messages = new List<Message>();
+        Messages = [];
         UPN = string.Empty;
     }
 

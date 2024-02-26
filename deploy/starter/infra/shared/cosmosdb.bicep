@@ -5,6 +5,11 @@ param location string = resourceGroup().location
 param name string
 param tags object = {}
 
+var secretNames = [
+  'cosmos-key'
+  'foundationallm-cosmosdb-key'
+]
+
 resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
   name: name
   location: location
@@ -65,16 +70,18 @@ resource keyvault 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
   name: keyvaultName
 }
 
-resource cosmosKey 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = {
-  name: 'cosmos-key'
-  parent: keyvault
-  tags: tags
-  properties: {
-    value: cosmosDb.listKeys().primaryMasterKey
+resource cosmosKey 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = [
+  for secretName in secretNames: {
+    name: secretName
+    parent: keyvault
+    tags: tags
+    properties: {
+      value: cosmosDb.listKeys().primaryMasterKey
+    }
   }
-}
+]
 
 output endpoint string = cosmosDb.properties.documentEndpoint
-output keySecretName string = cosmosKey.name
-output keySecretRef string = cosmosKey.properties.secretUri
+output keySecretName string = cosmosKey[0].name
+output keySecretRef string = cosmosKey[0].properties.secretUri
 output name string = cosmosDb.name

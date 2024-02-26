@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
-using Newtonsoft.Json;
+
 
 namespace FoundationaLLM.Core.API.Controllers
 {
@@ -26,7 +26,6 @@ namespace FoundationaLLM.Core.API.Controllers
     /// <see cref="OrchestrationController"/> type name.</param>
     [Authorize]
     [Authorize(Policy = "RequiredScope")]
-    [ApiVersion(1.0)]
     [ApiController]
     [Route("[controller]")]
     public class OrchestrationController(

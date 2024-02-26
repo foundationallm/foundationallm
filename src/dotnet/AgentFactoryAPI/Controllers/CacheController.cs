@@ -9,7 +9,6 @@ namespace FoundationaLLM.AgentFactory.API.Controllers
     /// Provides methods for managing the agents artifacts cache.
     /// </summary>
     /// <param name="cacheService">The <see cref="ICacheService"/> cache holding the agents artifacts.</param>
-    [ApiVersion(1.0)]
     [ApiController]
     [Route("[controller]")]
     public class CacheController(

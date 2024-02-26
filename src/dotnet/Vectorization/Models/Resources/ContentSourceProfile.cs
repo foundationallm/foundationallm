@@ -10,7 +10,8 @@ namespace FoundationaLLM.Vectorization.Models.Resources
         /// <summary>
         /// The type of the content source.
         /// </summary>
+        [JsonPropertyName("content_source")]
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        public required ContentSourceType Type { get; set; }
+        public required ContentSourceType ContentSource { get; set; }
     }
 }

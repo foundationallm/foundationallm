@@ -17,7 +17,11 @@
 			<div class="span-2">
 				<div class="step-header mb-2">Agent name:</div>
 				<div class="mb-2">No special characters or spaces, lowercase letters with dashes and underscores only.</div>
-				<InputText v-model="agentName" placeholder="Enter agent name" type="text" class="w-100" @input="handleNameInput" />
+				<div class="input-wrapper">
+					<InputText v-model="agentName" placeholder="Enter agent name" type="text" class="w-100" @input="handleNameInput" :disabled="editAgent" />
+					<span v-if="nameValidationStatus === 'valid'" class="icon valid" title="Name is available">✔️</span>
+        			<span v-else-if="nameValidationStatus === 'invalid'" class="icon invalid" :title="validationMessage">❌</span>
+				</div>
 			</div>
 			<div class="span-2">
 				<div class="step-header mb-2">Description:</div>
@@ -68,10 +72,10 @@
 			<!-- Data source -->
 			<CreateAgentStepItem v-model="editDataSource">
 				<template v-if="selectedDataSource">
-					<div class="step-container__header">{{ selectedDataSource.Type }}</div>
+					<div class="step-container__header">{{ selectedDataSource.content_source }}</div>
 					<div>
 						<span class="step-option__header">Name:</span>
-						<span>{{ selectedDataSource.Name }}</span>
+						<span>{{ selectedDataSource.name }}</span>
 					</div>
 					<!-- <div>
 						<span class="step-option__header">Container name:</span>
@@ -96,17 +100,17 @@
 
 						<div
 							v-for="dataSource in group"
-							:key="dataSource.Name"
+							:key="dataSource.name"
 							class="step-container__edit__option"
 							:class="{
 								'step-container__edit__option--selected':
-									dataSource.Name === selectedDataSource?.Name,
+									dataSource.name === selectedDataSource?.name,
 							}"
 							@click.stop="handleDataSourceSelected(dataSource)"
 						>
 							<div>
 								<span class="step-option__header">Name:</span>
-								<span>{{ dataSource.Name }}</span>
+								<span>{{ dataSource.name }}</span>
 							</div>
 							<!-- <div>
 								<span class="step-option__header">Container name:</span>
@@ -127,14 +131,14 @@
 			<!-- Index source -->
 			<CreateAgentStepItem v-model="editIndexSource">
 				<template v-if="selectedIndexSource">
-					<div class="step-container__header">{{ selectedIndexSource.Name }}</div>
+					<div class="step-container__header">{{ selectedIndexSource.name }}</div>
 					<div>
 						<span class="step-option__header">URL:</span>
-						<span>{{ selectedIndexSource.ConfigurationReferences.Endpoint }}</span>
+						<span>{{ selectedIndexSource.configuration_references.Endpoint }}</span>
 					</div>
 					<div>
 						<span class="step-option__header">Index Name:</span>
-						<span>{{ selectedIndexSource.Settings.IndexName }}</span>
+						<span>{{ selectedIndexSource.settings.IndexName }}</span>
 					</div>
 				</template>
 				<template v-else>Please select an index source.</template>
@@ -143,22 +147,22 @@
 					<div class="step-container__edit__header">Please select an index source.</div>
 					<div
 						v-for="indexSource in indexSources"
-						:key="indexSource.Name"
+						:key="indexSource.name"
 						class="step-container__edit__option"
 						:class="{
 							'step-container__edit__option--selected':
-								indexSource.Name === selectedIndexSource?.Name,
+								indexSource.name === selectedIndexSource?.name,
 						}"
 						@click.stop="handleIndexSourceSelected(indexSource)"
 					>
-						<div class="step-container__header">{{ indexSource.Name }}</div>
+						<div class="step-container__header">{{ indexSource.name }}</div>
 						<div>
 							<span class="step-option__header">URL:</span>
-							<span>{{ indexSource.ConfigurationReferences.Endpoint }}</span>
+							<span>{{ indexSource.configuration_references.Endpoint }}</span>
 						</div>
 						<div>
 							<span class="step-option__header">Index Name:</span>
-							<span>{{ indexSource.Settings.IndexName }}</span>
+							<span>{{ indexSource.settings.IndexName }}</span>
 						</div>
 					</div>
 				</template>
@@ -376,21 +380,20 @@
 			</div>
 
 			<div class="button-container column-2 justify-self-end">
+				<!-- Create agent -->
 				<Button
-					class="secondary-button"
-					style="margin-right: 20px;"
+					:label="editAgent ? 'Save Changes' : 'Create Agent'"
+					severity="primary"
+					@click="handleCreateAgent"
+				/>
+
+				<!-- Cancel -->
+				<Button
+					v-if="editAgent"
+					style="margin-left: 16px;"
 					label="Cancel"
 					severity="secondary"
 					@click="handleCancel"
-				/>
-
-				<!-- Create agent -->
-				<Button
-					class="primary-button"
-					style="width: 200px"
-					:label="editAgent ? 'Update Agent' : 'Create Agent'"
-					severity="primary"
-					@click="handleCreateAgent"
 				/>
 			</div>
 		</div>
@@ -399,24 +402,29 @@
 
 <script lang="ts">
 import type { PropType } from 'vue';
+import { debounce } from 'lodash';
 import api from '@/js/api';
-import type { CreateAgentRequest, AgentIndex } from '@/js/types';
+import type { Agent, AgentIndex, AgentDataSource, CreateAgentRequest, AgentCheckNameResponse } from '@/js/types';
 
 const defaultSystemPrompt: string = 'You are an analytic agent named Khalil that helps people find information about FoundationaLLM. Provide concise answers that are polite and professional.';
 
 const defaultFormValues = {
 	agentName: '',
 	agentDescription: '',
+	object_id: '',
+	text_partitioning_profile_object_id: '',
+	text_embedding_profile_object_id: '',
+	prompt_object_id: '',
 	agentType: 'knowledge-management' as CreateAgentRequest['type'],
 
 	editDataSource: false as boolean,
-	selectedDataSource: null as null | Object,
+	selectedDataSource: null as null | AgentDataSource,
 
 	editIndexSource: false as boolean,
 	selectedIndexSource: null as null | AgentIndex,
 
-	chunkSize: 2000,
-	overlapSize: 100,
+	chunkSize: 500,
+	overlapSize: 50,
 
 	triggerFrequency: { label: 'Manual', value: 1 },
 	triggerFrequencyScheduled: null,
@@ -429,6 +437,7 @@ const defaultFormValues = {
 	gatekeeperDataProtection: { label: 'None', value: null },
 
 	systemPrompt: defaultSystemPrompt as string,
+	orchestrator: 'LangChain' as string,
 };
 
 export default {
@@ -449,7 +458,10 @@ export default {
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
 
-			dataSources: [],
+			nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
+			validationMessage: '' as string,
+
+			dataSources: [] as AgentDataSource[],
 			indexSources: [] as AgentIndex[],
 
 			triggerFrequencyOptions: [
@@ -497,7 +509,7 @@ export default {
 				},
 				{
 					label: 'Azure Content Safety',
-					value: "ContentSafety"
+					value: 'ContentSafety',
 				},
 			],
 
@@ -508,7 +520,7 @@ export default {
 				},
 				{
 					label: 'Microsoft Presidio',
-					value: "Presidio"
+					value: 'Presidio',
 				},
 			],
 		};
@@ -517,12 +529,12 @@ export default {
 	computed: {
 		groupedDataSources() {
 			const grouped = {};
-			this.dataSources.forEach(dataSource => {
-				if (!grouped[dataSource.Type]) {
-					grouped[dataSource.Type] = [];
+			this.dataSources.forEach((dataSource) => {
+				if (!grouped[dataSource.content_source]) {
+					grouped[dataSource.content_source] = [];
 				}
 
-				grouped[dataSource.Type].push(dataSource);
+				grouped[dataSource.content_source].push(dataSource);
 			});
 
 			return grouped;
@@ -540,7 +552,7 @@ export default {
 
 			this.loadingStatusText = 'Retrieving data sources...';
 			this.dataSources = await api.getAgentDataSources();
-		} catch(error) {
+		} catch (error) {
 			this.$toast.add({
 				severity: 'error',
 				detail: error?.response?._data || error,
@@ -550,29 +562,45 @@ export default {
 		if (this.editAgent) {
 			this.loadingStatusText = `Retrieving agent "${this.editAgent}"...`;
 			const agent = await api.getAgent(this.editAgent);
+			this.loadingStatusText = `Retrieving text partitioning profile...`;
+			const textPartitioningProfile = await api.getTextPartitioningProfile(agent.text_partitioning_profile_object_id);
+			if (textPartitioningProfile) {
+				this.chunkSize = Number(textPartitioningProfile.settings.ChunkSizeTokens);
+				this.overlapSize = Number(textPartitioningProfile.settings.OverlapSizeTokens);
+			}
+			this.loadingStatusText = `Retrieving prompt...`;
+			const prompt = await api.getPrompt(agent.prompt_object_id);
+			if (prompt) {
+				this.systemPrompt = prompt.prefix;
+			}
 			this.loadingStatusText = `Mapping agent values to form...`;
 			this.mapAgentToForm(agent);
 		}
 
 		this.loading = false;
+
+		this.debouncedCheckName = debounce(this.checkName, 500);
 	},
 
 	methods: {
-		mapAgentToForm(agent) {
+		mapAgentToForm(agent: Agent) {
 			this.agentName = agent.name || this.agentName;
 			this.agentDescription = agent.description || this.agentDescription;
 			this.agentType = agent.type || this.agentType;
+			this.object_id = agent.object_id || this.object_id;
+			this.orchestrator = agent.orchestrator || this.orchestrator;
+			this.text_embedding_profile_object_id = agent.text_embedding_profile_object_id || this.text_embedding_profile_object_id;
 
 			this.selectedIndexSource =
-				this.indexSources.find((indexSource) => indexSource.ObjectId === agent.indexing_profile) ||
+				this.indexSources.find((indexSource) => indexSource.object_id === agent.indexing_profile_object_id) ||
 				null;
 
 			this.selectedDataSource =
-				this.dataSources.find((dataSource) => dataSource.ObjectId === agent.embedding_profile) ||
+				this.dataSources.find((dataSource) => dataSource.object_id === agent.content_source_profile_object_id) ||
 				null;
 
 			this.conversationHistory = agent.conversation_history?.enabled || this.conversationHistory;
-			this.conversationMaxMessages = agent.conversation_history?.max_history || his.conversationMaxMessages;
+			this.conversationMaxMessages = agent.conversation_history?.max_history || this.conversationMaxMessages;
 
 			this.gatekeeperEnabled = Boolean(agent.gatekeeper?.use_system_setting);
 
@@ -585,8 +613,31 @@ export default {
 				this.gatekeeperDataProtectionOptions.find((localOption) =>
 					agent.gatekeeper.options.find((option) => option === localOption.value),
 				) || this.gatekeeperDataProtection;
+		},
 
-			this.systemPrompt = agent.prompt || '';
+		async checkName() {
+			try {
+				const response = await api.checkAgentName(this.agentName, this.agentType);
+				
+				// Handle response based on the status
+				if(response.status === "Allowed") {
+					// Name is available
+					this.nameValidationStatus = 'valid';
+      				this.validationMessage = null;
+				} else if(response.status === "Denied") {
+					// Name is taken
+					this.nameValidationStatus = 'invalid';
+      				this.validationMessage = response.message;
+					// this.$toast.add({
+					// 	severity: 'warn',
+					// 	detail: `Agent name "${this.agentName}" is already taken for the selected ${response.type} agent type. Please choose another name.`,
+					// });
+				}
+			} catch(error) {
+				console.error("Error checking agent name: ", error);
+				this.nameValidationStatus = 'invalid';
+    			this.validationMessage = 'Error checking the agent name. Please try again.';
+			}
 		},
 
 		resetForm() {
@@ -603,28 +654,33 @@ export default {
 		},
 
 		handleNameInput(event) {
-			let element = event.target;
+			const element = event.target;
 
-			// Remove spaces
+			// Remove spaces.
 			let sanitizedValue = element.value.replace(/\s/g, '');
 
-			// Remove any characters that are not lowercase letters, digits, dashes, or underscores
+			// Remove any characters that are not lowercase letters, digits, dashes, or underscores.
 			sanitizedValue = sanitizedValue.replace(/[^a-z0-9-_]/g, '');
 
 			element.value = sanitizedValue;
 			this.agentName = sanitizedValue;
+
+			// Check if the name is available if we are creating a new agent.
+			if (!this.editAgent) {
+				this.debouncedCheckName();
+			}
 		},
 
-		handleAgentTypeSelect(type: AgentType) {
+		handleAgentTypeSelect(type: Agent['type']) {
 			this.agentType = type;
 		},
 
-		handleDataSourceSelected(dataSource) {
+		handleDataSourceSelected(dataSource: AgentDataSource) {
 			this.selectedDataSource = dataSource;
 			this.editDataSource = false;
 		},
 
-		handleIndexSourceSelected(indexSource) {
+		handleIndexSourceSelected(indexSource: AgentIndex) {
 			this.selectedIndexSource = indexSource;
 			this.editIndexSource = false;
 		},
@@ -633,6 +689,17 @@ export default {
 			const errors = [];
 			if (!this.agentName) {
 				errors.push('Please give the agent a name.');
+			}
+			if (this.nameValidationStatus === 'invalid') {
+				errors.push(this.validationMessage);
+			}
+
+			if (this.text_embedding_profile_object_id === '') {
+				const textEmbeddingProfiles = await api.getTextEmbeddingProfiles();
+				if (textEmbeddingProfiles.length === 0) {
+					errors.push('No vectorization text embedding profiles found.');
+				}
+				this.text_embedding_profile_object_id = textEmbeddingProfiles[0].object_id;
 			}
 
 			// if (!this.selectedDataSource) {
@@ -656,32 +723,77 @@ export default {
 			this.loading = true;
 			this.loadingStatusText = 'Creating agent...';
 
-			const agentRequest = {
+			const promptRequest = {
+				type: 'multipart',
 				name: this.agentName,
-				description: this.agentDescription,
-				type: this.agentType,
+				description: `System prompt for the ${this.agentName} agent`,
+				prefix: this.systemPrompt,
+				suffix: '',
+			};
 
-				embedding_profile: this.selectedDataSource?.ObjectId,
-				indexing_profile: this.selectedIndexSource?.ObjectId,
-
-				conversation_history: {
-					enabled: this.conversationHistory,
-					max_history: this.conversationMaxMessages,
-				},
-
-				gatekeeper: {
-					use_system_setting: this.gatekeeperEnabled,
-					options: [
-						this.gatekeeperContentSafety.value,
-						this.gatekeeperDataProtection.value,
-					].filter(option => option !== null),
-				},
-
-				prompt: this.systemPrompt,
+			const tokenTextPartitionRequest = {
+				text_splitter: "TokenTextSplitter",
+				name: this.agentName,
+				settings: {
+					Tokenizer: "MicrosoftBPETokenizer",
+					TokenizerEncoder: "cl100k_base",
+					ChunkSizeTokens: this.chunkSize.toString(),
+					OverlapSizeTokens: this.overlapSize.toString()
+				}
 			};
 
 			let successMessage = null;
 			try {
+				// Handle Prompt creation/update.
+				const promptResponse = await api.createOrUpdatePrompt(this.agentName, promptRequest);
+				const promptObjectId = promptResponse.objectId;
+
+				// Handle TextPartitioningProfile creation/update.
+				const tokenTextPartitionResponse = await api.createOrUpdateTextPartitioningProfile(this.agentName, tokenTextPartitionRequest);
+				const textPartitioningProfileObjectId = tokenTextPartitionResponse.objectId;
+				
+				const agentRequest: CreateAgentRequest = {
+					type: this.agentType,
+					name: this.agentName,
+					description: this.agentDescription,
+					object_id: this.object_id,
+
+					text_embedding_profile_object_id: this.text_embedding_profile_object_id,
+					indexing_profile_object_id: this.selectedIndexSource?.object_id ?? '',
+					text_partitioning_profile_object_id: textPartitioningProfileObjectId,
+					content_source_profile_object_id: this.selectedDataSource?.object_id ?? '',
+
+					conversation_history: {
+						enabled: this.conversationHistory,
+						max_history: Number(this.conversationMaxMessages),
+					},
+
+					gatekeeper: {
+						use_system_setting: this.gatekeeperEnabled,
+						options: [
+							this.gatekeeperContentSafety.value as unknown as string,
+							this.gatekeeperDataProtection.value as unknown as string,
+						].filter(option => option !== null),
+					},
+
+					language_model: {
+						type: 'openai',
+						provider: 'microsoft',
+						temperature: 0,
+						use_chat: true,
+						api_endpoint: 'FoundationaLLM:AzureOpenAI:API:Endpoint',
+						api_key: 'FoundationaLLM:AzureOpenAI:API:Key',
+						api_version: 'FoundationaLLM:AzureOpenAI:API:Version',
+						version: 'FoundationaLLM:AzureOpenAI:API:Completions:ModelVersion',
+						deployment: 'FoundationaLLM:AzureOpenAI:API:Completions:DeploymentName',
+					},
+
+					sessions_enabled: true,
+
+					prompt_object_id: promptObjectId,
+					orchestrator: this.orchestrator,
+				};
+
 				if (this.editAgent) {
 					await api.updateAgent(this.editAgent, agentRequest);
 					successMessage = `Agent "${this.agentName}" was succesfully updated!`;
@@ -899,5 +1011,30 @@ $editStepPadding: 16px;
 	background-color: var(--primary-button-bg)!important;
 	border-color: var(--primary-button-bg)!important;
 	color: var(--primary-button-text)!important;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+input {
+  width: 100%;
+  padding-right: 30px;
+}
+
+.icon {
+  position: absolute;
+  right: 10px;
+  cursor: default;
+}
+
+.valid {
+  color: green;
+}
+
+.invalid {
+  color: red;
 }
 </style>

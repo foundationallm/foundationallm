@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Gatekeeper.Core.Models.Integration
 {
@@ -10,13 +10,13 @@ namespace FoundationaLLM.Gatekeeper.Core.Models.Integration
         /// <summary>
         /// The text that was analyzed.
         /// </summary>
-        [JsonProperty("content")]
+        [JsonPropertyName("content")]
         public required string Content { get; set; }
 
         /// <summary>
         /// A list of anonymized PII (personally identifiable information) entities identified in the analyzed text.
         /// </summary>
-        [JsonProperty("results")]
+        [JsonPropertyName("results")]
         public required List<PIIResultAnonymized> Results { get; set; }
     }
 }

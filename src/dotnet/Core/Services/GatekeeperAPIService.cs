@@ -1,14 +1,9 @@
 ﻿using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Orchestration;
-using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Core.Interfaces;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace FoundationaLLM.Core.Services
 {
@@ -18,7 +13,7 @@ namespace FoundationaLLM.Core.Services
     public class GatekeeperAPIService : IGatekeeperAPIService
     {
         private readonly IHttpClientFactoryService _httpClientFactoryService;
-        readonly JsonSerializerSettings _jsonSerializerSettings;
+        readonly JsonSerializerOptions _jsonSerializerOptions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GatekeeperAPIService"/> class.
@@ -29,7 +24,7 @@ namespace FoundationaLLM.Core.Services
         public GatekeeperAPIService(IHttpClientFactoryService httpClientFactoryService)
         {
             _httpClientFactoryService = httpClientFactoryService;
-            _jsonSerializerSettings = CommonJsonSerializerSettings.GetJsonSerializerSettings();
+            _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
         }
 
         /// <inheritdoc/>
@@ -42,7 +37,7 @@ namespace FoundationaLLM.Core.Services
                        
             var responseMessage = await client.PostAsync("orchestration/completion",
             new StringContent(
-                    JsonConvert.SerializeObject(completionRequest, _jsonSerializerSettings),
+                    JsonSerializer.Serialize(completionRequest, _jsonSerializerOptions),
                     Encoding.UTF8, "application/json"));
 
             var defaultCompletionResponse = new CompletionResponse
@@ -57,7 +52,7 @@ namespace FoundationaLLM.Core.Services
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var completionResponse = JsonConvert.DeserializeObject<CompletionResponse>(responseContent);
+                var completionResponse = JsonSerializer.Deserialize<CompletionResponse>(responseContent);
 
                 return completionResponse ?? defaultCompletionResponse;
             }
@@ -75,13 +70,13 @@ namespace FoundationaLLM.Core.Services
 
             var responseMessage = await client.PostAsync("orchestration/summary",
                 new StringContent(
-                    JsonConvert.SerializeObject(summaryRequest, _jsonSerializerSettings),
+                    JsonSerializer.Serialize(summaryRequest, _jsonSerializerOptions),
                     Encoding.UTF8, "application/json"));
 
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var summarizeResponse = JsonConvert.DeserializeObject<SummaryResponse>(responseContent);
+                var summarizeResponse = JsonSerializer.Deserialize<SummaryResponse>(responseContent);
 
                 return summarizeResponse?.Summary ?? string.Empty;
             }

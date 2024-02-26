@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Orchestration
 {
@@ -10,7 +10,7 @@ namespace FoundationaLLM.Common.Models.Orchestration
         /// <summary>
         /// Represent the input or user prompt.
         /// </summary>
-        [JsonProperty("user_prompt")]
+        [JsonPropertyName("user_prompt")]
         public string? UserPrompt { get; set; }
     }
 }

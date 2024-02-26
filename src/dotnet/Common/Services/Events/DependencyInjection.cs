@@ -29,6 +29,8 @@ namespace FoundationaLLM
                 .Bind(configuration.GetSection(eventGridProfileSection));
 
             services.AddSingleton<IEventService, AzureEventGridEventService>();
+
+            services.AddHostedService<EventsWorker>();
         }
     }
 }

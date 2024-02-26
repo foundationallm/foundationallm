@@ -2,32 +2,32 @@ import type { AgentIndex } from './types';
 
 export const mockGetAgentIndexesResponse: AgentIndex[] = [
 	{
-		Name: 'AzureAISearch_Test_001',
-		ObjectId: '47893247',
-		Description: 'Azure AI Search index for vectorization testing.',
-		Indexer: 'AzureAISearchIndexer',
-		Settings: {
+		name: 'AzureAISearch_Test_001',
+		object_id: '47893247',
+		description: 'Azure AI Search index for vectorization testing.',
+		indexer: 'AzureAISearchIndexer',
+		settings: {
 			IndexName: 'fllm-test-001',
 		},
-		ConfigurationReferences: {
+		configuration_references: {
 			APIKey: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:APIKey',
 			AuthenticationType: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType',
 			Endpoint: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:Endpoint',
 		},
 	},
 	{
-		Name: 'sotu-index',
-		ObjectId: '25637942',
-		Description: 'Azure AI Search index for the State of the Union agent.',
-		Indexer: 'AzureAISearchIndexer',
-		Settings: {
+		name: 'sotu-index',
+		object_id: '25637942',
+		description: 'Azure AI Search index for the State of the Union agent.',
+		indexer: 'AzureAISearchIndexer',
+		settings: {
 			IndexName: 'sotu',
 			TopN: '3',
 			Filters: '[]',
 			EmbeddingFieldName: 'Embedding',
 			TextFieldName: 'Text',
 		},
-		ConfigurationReferences: {
+		configuration_references: {
 			APIKey: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:APIKey',
 			AuthenticationType: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType',
 			Endpoint: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:Endpoint',
@@ -37,8 +37,8 @@ export const mockGetAgentIndexesResponse: AgentIndex[] = [
 
 export const mockGetAgentDataSourcesResponse: AgentIndex[] = [
 	{
-		Name: 'AzureBlob_DataSource_1',
-		ObjectId: '90871234981',
+		name: 'AzureBlob_DataSource_1',
+		object_id: '90871234981',
 		Type: 'AzureDataLake',
 		Container: {
 			Name: 'documents',
@@ -46,20 +46,20 @@ export const mockGetAgentDataSourcesResponse: AgentIndex[] = [
 				'pdf',
 			],
 		},
-		Description: 'Azure AI Search index for vectorization testing.',
-		Indexer: 'AzureAISearchIndexer',
-		Settings: {
+		description: 'Azure AI Search index for vectorization testing.',
+		indexer: 'AzureAISearchIndexer',
+		settings: {
 			IndexName: 'fllm-test-001',
 		},
-		ConfigurationReferences: {
+		configuration_references: {
 			APIKey: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:APIKey',
 			AuthenticationType: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType',
 			Endpoint: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:Endpoint',
 		},
 	},
 	{
-		Name: 'AzureBlob_DataSource_2',
-		ObjectId: '8931729038',
+		name: 'AzureBlob_DataSource_2',
+		object_id: '8931729038',
 		Type: 'SharePointOnline',
 		Container: {
 			Name: 'census_data',
@@ -69,24 +69,24 @@ export const mockGetAgentDataSourcesResponse: AgentIndex[] = [
 				'doc',
 			],
 		},
-		Description: 'Azure AI Search index for the State of the Union agent.',
-		Indexer: 'AzureAISearchIndexer',
-		Settings: {
+		description: 'Azure AI Search index for the State of the Union agent.',
+		indexer: 'AzureAISearchIndexer',
+		settings: {
 			IndexName: 'sotu',
 			TopN: '3',
 			Filters: '[]',
 			EmbeddingFieldName: 'Embedding',
 			TextFieldName: 'Text',
 		},
-		ConfigurationReferences: {
+		configuration_references: {
 			APIKey: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:APIKey',
 			AuthenticationType: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType',
 			Endpoint: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:Endpoint',
 		},
 	},
 	{
-		Name: 'AzureBlob_DataSource_3',
-		ObjectId: '12873989',
+		name: 'AzureBlob_DataSource_3',
+		object_id: '12873989',
 		Type: 'AzureDataLake',
 		Container: {
 			Name: 'data',

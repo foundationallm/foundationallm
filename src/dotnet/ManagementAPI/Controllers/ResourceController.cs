@@ -1,9 +1,9 @@
-﻿using Asp.Versioning;
-using FoundationaLLM.Common.Exceptions;
+﻿using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.ResourceProvider;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace FoundationaLLM.Management.API.Controllers
 {
@@ -14,7 +14,6 @@ namespace FoundationaLLM.Management.API.Controllers
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
     [Authorize]
     [Authorize(Policy = "RequiredScope")]
-    [ApiVersion(1.0)]
     [ApiController]
     [Consumes("application/json")]
     [Produces("application/json")]
@@ -61,8 +60,8 @@ namespace FoundationaLLM.Management.API.Controllers
                 resourcePath,
                 async (resourceProviderService) =>
                 {
-                    var objectId = await resourceProviderService.HandlePostAsync(resourcePath, serializedResource.ToString()!);
-                    return new OkObjectResult(new ResourceProviderUpsertResult { ObjectId = objectId });
+                    var result = await resourceProviderService.HandlePostAsync(resourcePath, serializedResource.ToString()!);
+                    return new OkObjectResult(result);
                 });
 
         /// <summary>
@@ -95,7 +94,7 @@ namespace FoundationaLLM.Management.API.Controllers
             catch (ResourceProviderException ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                return StatusCode(ex.StatusCode, ex.Message);
             }
             catch (Exception ex)
             {

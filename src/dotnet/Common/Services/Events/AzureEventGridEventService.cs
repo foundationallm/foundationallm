@@ -29,6 +29,14 @@ namespace FoundationaLLM.Common.Services.Events
             {
                 EventSetEventNamespaces.FoundationaLLM_ResourceProvider_Agent,
                 null
+            },
+            {
+                EventSetEventNamespaces.FoundationaLLM_ResourceProvider_Vectorization,
+                null
+            },
+            {
+                EventSetEventNamespaces.FoundationaLLM_ResourceProvider_Configuration,
+                null
             }
         };
 
@@ -85,6 +93,12 @@ namespace FoundationaLLM.Common.Services.Events
             if (_eventGridClient == null)
             {
                 _logger.LogCritical("The Azure Event Grid events service is not properly initialized and will not execute.");
+                return;
+            }
+
+            if (_profile.Topics.Count == 0)
+            {
+                _logger.LogInformation("The Azure Event Grid event service stopped running because it is not configured to listen to any events.");
                 return;
             }
 
@@ -232,9 +246,9 @@ namespace FoundationaLLM.Common.Services.Events
                     .Select(ed => ed.Event)
                     .Where(e =>
                         e.Type == eventTypeProfile.EventType
-                        && e.Source == eventSet.Source
+                        && string.Equals(e.Source, eventSet.Source, StringComparison.OrdinalIgnoreCase)
                         && !string.IsNullOrWhiteSpace(e.Subject)
-                        && e.Subject.StartsWith(eventSet.SubjectPrefix))
+                        && (string.IsNullOrWhiteSpace(eventSet.SubjectPrefix) || e.Subject.StartsWith(eventSet.SubjectPrefix)))
                     .ToList();
 
                 if (events.Count > 0

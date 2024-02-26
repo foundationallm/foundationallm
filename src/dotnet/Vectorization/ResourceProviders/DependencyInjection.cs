@@ -1,9 +1,12 @@
-﻿using FoundationaLLM.Common.Constants;
+﻿using FluentValidation;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.Storage;
 using FoundationaLLM.Common.Services.Storage;
+using FoundationaLLM.Vectorization.Models.Resources;
 using FoundationaLLM.Vectorization.ResourceProviders;
+using FoundationaLLM.Vectorization.Validation.Resources;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -17,7 +20,7 @@ namespace FoundationaLLM
     public static partial class DependencyInjection
     {
         /// <summary>
-        /// Register the handler as a hosted service, passing the step name to the handler ctor
+        /// Register the handler as a hosted service, passing the step name to the handler ctor.
         /// </summary>
         /// <param name="services">Application builder service collection.</param>
         /// <param name="configuration">The <see cref="IConfigurationManager"/> providing access to configuration.</param>
@@ -41,6 +44,12 @@ namespace FoundationaLLM
                 };
             });
 
+            // Register validators.
+            services.AddSingleton<IValidator<ContentSourceProfile>, ContentSourceProfileValidator>();
+            services.AddSingleton<IValidator<TextPartitioningProfile>, TextPartitioningProfileValidator>();
+            services.AddSingleton<IValidator<TextEmbeddingProfile>, TextEmbeddingProfileValidator>();
+            services.AddSingleton<IValidator<IndexingProfile>, IndexingProfileValidator>();
+
             // Register the resource provider services (cannot use Keyed singletons due to the Microsoft Identity package being incompatible):
             services.AddSingleton<IResourceProviderService, VectorizationResourceProviderService>(sp =>
                 new VectorizationResourceProviderService(
@@ -48,7 +57,10 @@ namespace FoundationaLLM
                     sp.GetRequiredService<IEnumerable<IStorageService>>()
                         .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_ResourceProvider_Vectorization),
                     sp.GetRequiredService<IEventService>(),
+                    sp.GetRequiredService<IResourceValidatorFactory>(),
                     sp.GetRequiredService<ILogger<VectorizationResourceProviderService>>()));
+
+            services.ActivateSingleton<IResourceProviderService>();
         }
     }
 }

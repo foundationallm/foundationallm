@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Metadata
 {
@@ -10,19 +10,19 @@ namespace FoundationaLLM.Common.Models.Metadata
         /// <summary>
         /// Name property.
         /// </summary>
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string? Name { get; set; }
 
         /// <summary>
         /// Type property.
         /// </summary>
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string? Type { get; set; }
 
         /// <summary>
         /// Description property.
         /// </summary>
-        [JsonProperty("description")]
+        [JsonPropertyName("description")]
         public string? Description { get; set; }
     }
 }

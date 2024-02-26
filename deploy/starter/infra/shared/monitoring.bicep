@@ -4,6 +4,11 @@ param location string = resourceGroup().location
 param logAnalyticsName string
 param tags object = {}
 
+var secretNames = [
+  'appinsights-connection'
+  'foundationallm-app-insights-connection-string'
+]
+
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2021-12-01-preview' = {
   name: logAnalyticsName
   location: location
@@ -34,17 +39,19 @@ resource keyvault 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
   name: keyvaultName
 }
 
-resource connectionSecretRef 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = {
-  name: 'appinsights-connection'
-  parent: keyvault
-  tags: tags
-  properties: {
-    value: applicationInsights.properties.ConnectionString
+resource connectionSecretRef 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = [
+  for secretName in secretNames: {
+    name: secretName
+    parent: keyvault
+    tags: tags
+    properties: {
+      value: applicationInsights.properties.ConnectionString
+    }
   }
-}
+]
 
 output applicationInsightsName string = applicationInsights.name
-output applicationInsightsConnectionSecretName string = connectionSecretRef.name
-output applicationInsightsConnectionSecretRef string = connectionSecretRef.properties.secretUri
+output applicationInsightsConnectionSecretName string = connectionSecretRef[0].name
+output applicationInsightsConnectionSecretRef string = connectionSecretRef[0].properties.secretUri
 output logAnalyticsWorkspaceId string = logAnalytics.id
 output logAnalyticsWorkspaceName string = logAnalytics.name

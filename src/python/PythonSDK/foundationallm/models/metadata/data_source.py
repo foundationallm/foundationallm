@@ -1,6 +1,5 @@
 from pydantic import Field
 from typing import Optional, Union, Annotated
-from foundationallm.langchain.data_sources.csv import CSVConfiguration
 from foundationallm.langchain.data_sources.sql import SQLDatabaseConfiguration
 from foundationallm.langchain.data_sources.blob import BlobStorageConfiguration
 from foundationallm.langchain.data_sources.cxo import CXOConfiguration
@@ -9,7 +8,6 @@ from .metadata_base import MetadataBase
 
 TypedConfiguration = Annotated[
     Union[
-        CSVConfiguration,
         SQLDatabaseConfiguration,
         BlobStorageConfiguration,
         SearchServiceConfiguration,

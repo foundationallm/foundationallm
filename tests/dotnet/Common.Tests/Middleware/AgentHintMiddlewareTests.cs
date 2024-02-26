@@ -2,7 +2,7 @@
 using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Authentication;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
+
 using NSubstitute;
 using System;
 using System.Collections.Generic;
@@ -10,9 +10,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using FoundationaLLM.Common.Models.Metadata;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using Microsoft.Extensions.Options;
+using FoundationaLLM.Common.Models.Agents;
+using System.Text.Json;
 
 namespace FoundationaLLM.Common.Tests.Middleware
 {
@@ -53,7 +54,7 @@ namespace FoundationaLLM.Common.Tests.Middleware
             var instanceSettings = Options.Create<InstanceSettings>(Substitute.For<InstanceSettings>());
             var middleware = new CallContextMiddleware(next: _ => Task.FromResult(0));
             var userIdentity = new UnifiedUserIdentity { Username = "testuser@example.com", UPN = "testuser@example.com", Name = "testuser" };
-            context.Request.Headers[Constants.HttpHeaders.UserIdentity] = JsonConvert.SerializeObject(userIdentity);
+            context.Request.Headers[Constants.HttpHeaders.UserIdentity] = JsonSerializer.Serialize(userIdentity);
 
             // Act
             await middleware.InvokeAsync(context, claimsProviderService, callContext, instanceSettings);
@@ -71,18 +72,18 @@ namespace FoundationaLLM.Common.Tests.Middleware
             var callContext = Substitute.For<ICallContext>();
             var instanceSettings = Options.Create<InstanceSettings>(Substitute.For<InstanceSettings>());
             var middleware = new CallContextMiddleware(next: _ => Task.FromResult(0));
-            var agentHint = new Agent
+            var agentHint = new AgentHint
             {
                 Name = "test-agent-hint",
                 Private = false
             };
-            context.Request.Headers[Constants.HttpHeaders.AgentHint] = JsonConvert.SerializeObject(agentHint);
+            context.Request.Headers[Constants.HttpHeaders.AgentHint] = JsonSerializer.Serialize(agentHint);
 
             // Act
             await middleware.InvokeAsync(context, claimsProviderService, callContext, instanceSettings);
 
             // Assert
-            callContext.Received(1).AgentHint = Arg.Is<Agent>(x => x.Name == agentHint.Name && x.Private == agentHint.Private);
+            callContext.Received(1).AgentHint = Arg.Is<AgentHint>(x => x.Name == agentHint.Name && x.Private == agentHint.Private);
         }
     }
 }

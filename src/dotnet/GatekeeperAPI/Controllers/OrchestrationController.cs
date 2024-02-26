@@ -14,7 +14,6 @@ namespace FoundationaLLM.Gatekeeper.API.Controllers
     /// Constructor for the Gatekeeper API orchestration controller.
     /// </remarks>
     /// <param name="gatekeeperService"></param>
-    [ApiVersion(1.0)]
     [ApiController]
     [APIKeyAuthentication]
     [Route("[controller]")]

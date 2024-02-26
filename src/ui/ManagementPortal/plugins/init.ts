@@ -10,7 +10,13 @@ export default defineNuxtPlugin(async (nuxtApp: any) => {
 	const appConfigStore = useAppConfigStore(nuxtApp.$pinia);
 	await appConfigStore.getConfigVariables();
 
-	api.setApiUrl(appConfigStore.apiUrl);
+	const config = useRuntimeConfig();
+
+	// Use LOCAL_API_URL from the .env file if it's set, otherwise use the Azure App Configuration value.
+	const localApiUrl = config.public.LOCAL_API_URL;
+	const apiUrl = localApiUrl || appConfigStore.apiUrl;
+
+	api.setApiUrl(apiUrl);
 	api.setInstanceId(appConfigStore.instanceId);
 
 	// Set the auth configuration for MSAL from the dynamic azure config.

@@ -1,8 +1,8 @@
 ﻿using System.Text;
+using System.Text.Json;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Settings;
-using Newtonsoft.Json;
 
 namespace FoundationaLLM.Common.Services.API
 {
@@ -17,7 +17,7 @@ namespace FoundationaLLM.Common.Services.API
     {
         private readonly string _downstreamHttpClientName = downstreamHttpClientName;
         private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
-        private readonly JsonSerializerSettings _jsonSerializerSettings = CommonJsonSerializerSettings.GetJsonSerializerSettings();
+        private readonly JsonSerializerOptions _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
 
         /// <summary>
         /// <inheritdoc/>
@@ -33,20 +33,20 @@ namespace FoundationaLLM.Common.Services.API
                 UserPrompt = completionRequest.UserPrompt ?? string.Empty,
                 PromptTokens = 0,
                 CompletionTokens = 0,
-                UserPromptEmbedding = new float[] { 0 }
+                UserPromptEmbedding = [ 0f ]
             };
 
             var client = _httpClientFactoryService.CreateClient(_downstreamHttpClientName);
 
             var responseMessage = await client.PostAsync("orchestration/completion",
             new StringContent(
-                    JsonConvert.SerializeObject(completionRequest, _jsonSerializerSettings),
+                    JsonSerializer.Serialize(completionRequest, _jsonSerializerOptions),
                     Encoding.UTF8, "application/json"));
 
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var completionResponse = JsonConvert.DeserializeObject<CompletionResponse>(responseContent);
+                var completionResponse = JsonSerializer.Deserialize<CompletionResponse>(responseContent);
 
                 return completionResponse ?? fallback;
             }
@@ -66,13 +66,13 @@ namespace FoundationaLLM.Common.Services.API
 
             var responseMessage = await client.PostAsync("orchestration/summary",
             new StringContent(
-                    JsonConvert.SerializeObject(summaryRequest, _jsonSerializerSettings),
+                    JsonSerializer.Serialize(summaryRequest, _jsonSerializerOptions),
                     Encoding.UTF8, "application/json"));
 
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var summarizeResponse = JsonConvert.DeserializeObject<SummaryResponse>(responseContent);
+                var summarizeResponse = JsonSerializer.Deserialize<SummaryResponse>(responseContent);
 
                 return summarizeResponse ?? fallback;
             }

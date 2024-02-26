@@ -1,8 +1,8 @@
-﻿using FoundationaLLM.AgentFactory.Core.Models.Orchestration;
-using FoundationaLLM.AgentFactory.Core.Models.Orchestration.Metadata;
-using FoundationaLLM.AgentFactory.Models.ConfigurationOptions;
+﻿using FoundationaLLM.AgentFactory.Models.ConfigurationOptions;
 using FoundationaLLM.AgentFactory.Services;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Metadata;
+using FoundationaLLM.Common.Models.Orchestration;
 
 namespace FoundationaLLM.AgentFactory.Tests.Services
 {
@@ -22,10 +22,10 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
         public async Task GetCompletion_Success_ReturnsCompletionResponse()
         {
             // Arrange
-            var request = new LLMOrchestrationCompletionRequest
+            var request = new LegacyCompletionRequest
             {
                 UserPrompt = "TestUserPrompt",
-                Agent = new Agent
+                Agent = new LegacyAgentMetadata
                 {
                     Name = "summarizer",
                     Type = "summary",
@@ -60,49 +60,6 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal("TestUserPrompt", result.UserPrompt);
-        }
-
-        [Fact]
-        public async Task GetSummary_Success_ReturnsSummary()
-        {
-            // Arrange
-            var userPrompt = new LLMOrchestrationCompletionResponse
-            {
-                Completion = "TestCompletion",
-                CompletionTokens = 100,
-                PromptTokens = 40,
-                TotalCost = 10,
-                TotalTokens = 10,
-                UserPrompt = "TestUserPrompt"
-            };
-
-            var request = new LLMOrchestrationRequest
-            {
-                SessionId = "TestSessionId",
-                UserPrompt = "TestUserPrompt"
-            };
-
-            var userPromptSerialized = JsonConvert.SerializeObject(userPrompt);
-
-            var response = new HttpResponseMessage
-            {
-                Content = new StringContent(userPromptSerialized, Encoding.UTF8, "application/json"),
-                StatusCode = HttpStatusCode.OK
-            };
-
-            var httpClient = new HttpClient(new FakeMessageHandler(response))
-            {
-                BaseAddress = new Uri("http://nsubstitute.io")
-            };
-            _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.LangChainAPI).Returns(httpClient);
-
-            // Act
-            var result = await _langChainService.GetSummary(request);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(userPrompt.Completion, result);
         }
     }
 }

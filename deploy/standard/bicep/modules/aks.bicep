@@ -1,3 +1,54 @@
+/**
+ * Module for deploying an AKS cluster.
+ *
+ * Inputs:
+ * - actionGroupId: Action Group Id for alerts
+ * - admnistratorObjectIds: The Managed Identity for the AKS Cluster
+ * - agw: Application Gateway Details
+ * - agwResourceGroupName: Application Gateway resource group name
+ * - dnsResourceGroupName: DNS resource group name
+ * - location: Location for all resources
+ * - logAnalyticWorkspaceId: Log Analytic Workspace Id to use for diagnostics
+ * - logAnalyticWorkspaceResourceId: Log Analytic Workspace Resource Id to use for diagnostics
+ * - networkingResourceGroupName: Networking resource group name
+ * - privateDnsZones: Private DNS Zones for private endpoint
+ * - resourceSuffix: Resource suffix for all resources
+ * - subnetId: Subnet Id for private endpoint
+ * - subnetIdPrivateEndpoint: Subnet Id for private endpoint
+ * - tags: Tags for all resources
+ * - timestamp: Timestamp for nested deployments
+ *
+ * Locals:
+ * - alerts: Metric alerts for the resource
+ * - logs: The Resource logs to enable
+ * - name: The Resource Name
+ * - serviceType: The Resource Service Type token
+ *
+ * Outputs:
+ * - oidcIssuerUrl: AKS OIDC Issuer URL
+ *
+ * Resources:
+ * - main: The AKS Cluster
+ * - diagnostics: Diagnostic settings for the resource
+ * - uai: The Managed Identity for the AKS Cluster
+ * - agwClusterRoleAssignment: Role assignment for Application Gateway
+ * - dnsRoleAssignment: Role assignment for DNS
+ * - netRoleAssignment: Role assignment for networking
+ * - metricAlerts: Resource for configuring the Key Vault metric alerts
+ * - privateEndpoint: Private endpoint for App Configuration
+ * - agwAgicRoleAssignment: Role assignment for Application Gateway Ingress Controller
+ * - subnetRoleAssignment: Role assignment for subnet
+ *
+ * Nested Modules:
+ * - agwClusterRoleAssignment: Role assignment for Application Gateway
+ * - dnsRoleAssignment: Role assignment for DNS
+ * - netRoleAssignment: Role assignment for networking
+ * - metricAlerts: Resource for configuring the Key Vault metric alerts
+ * - privateEndpoint: Private endpoint for App Configuration
+ * - agwAgicRoleAssignment: Role assignment for Application Gateway Ingress Controller
+ * - subnetRoleAssignment: Role assignment for subnet
+ */
+
 /** Inputs **/
 @description('Action Group Id for alerts')
 param actionGroupId string
@@ -14,9 +65,6 @@ param agwResourceGroupName string
 @description('DNS resource group name')
 param dnsResourceGroupName string
 
-@description('The Kubernetes Version')
-param kubernetesVersion string = '1.26.6'
-
 @description('Location for all resources')
 param location string
 
@@ -26,6 +74,7 @@ param logAnalyticWorkspaceId string
 @description('Log Analytic Workspace Resource Id to use for diagnostics')
 param logAnalyticWorkspaceResourceId string
 
+@description('Networking resource group name')
 param networkingResourceGroupName string
 
 @description('Private DNS Zones for private endpoint')
@@ -46,8 +95,14 @@ param tags object
 @description('Timestamp for nested deployments')
 param timestamp string = utcNow()
 
+/** Outputs **/
+@description('AKS OIDC Issuer URL')
+output oidcIssuerUrl string = main.properties.oidcIssuerProfile.issuerURL
+
 /** Locals **/
-@description('Metric alerts for the resource.')
+var name = '${serviceType}-${resourceSuffix}'
+var serviceType = 'aks'
+
 var alerts = [
   {
     description: 'Node CPU utilization greater than 95% for 1 hour'
@@ -73,7 +128,6 @@ var alerts = [
   }
 ]
 
-@description('The Resource logs to enable')
 var logs = [
   'cloud-controller-manager'
   'cluster-autoscaler'
@@ -88,18 +142,7 @@ var logs = [
   'kube-scheduler'
 ]
 
-@description('The Resource Name')
-var name = '${serviceType}-${resourceSuffix}'
-
-@description('The Resource Service Type token')
-var serviceType = 'aks'
-
-/** Outputs **/
-@description('AKS OIDC Issuer URL')
-output oidcIssuerUrl string = main.properties.oidcIssuerProfile.issuerURL
-
 /** Resources **/
-@description('The AKS Cluster')
 resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = {
   name: name
   location: location
@@ -123,7 +166,6 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
   properties: {
     enableRBAC: true
     fqdnSubdomain: name
-    kubernetesVersion: kubernetesVersion
     nodeResourceGroup: 'mrg-${name}'
     disableLocalAccounts: true
     workloadAutoScalerProfile: {}
@@ -285,7 +327,6 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
   }
 }
 
-@description('Diagnostic settings for the resource')
 resource diagnostics 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = {
   scope: main
   name: 'diag-${serviceType}'
@@ -304,7 +345,6 @@ resource diagnostics 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' 
   }
 }
 
-@description('The Managed Identity for the AKS Cluster')
 resource uai 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   location: location
   name: 'uai-${name}'
@@ -396,4 +436,3 @@ module subnetRoleAssignment 'utility/roleAssignments.bicep' = {
     }
   }
 }
-

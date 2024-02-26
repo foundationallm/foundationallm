@@ -3,6 +3,7 @@ param location string = resourceGroup().location
 param tags object = {}
 
 param appConfigName string
+param eventgridName string
 param identityName string
 param keyvaultName string
 param containerRegistryName string
@@ -14,7 +15,14 @@ param appDefinition object
 param hasIngress bool = false
 param envSettings array = []
 param secretSettings array = []
+param apiKeySecretName string
 param serviceName string
+param imageName string
+
+var secretNames = [
+  '${serviceName}-apikey'
+  apiKeySecretName
+]
 
 var formattedAppName = replace(name, '-', '')
 var truncatedAppName = substring(formattedAppName, 0, min(length(formattedAppName), 32))
@@ -103,11 +111,26 @@ resource secretsAccessPolicy 'Microsoft.KeyVault/vaults/accessPolicies@2023-07-0
   }
 }
 
+resource eventgrid 'Microsoft.EventGrid/namespaces@2023-12-15-preview' existing = {
+  name: eventgridName
+}
+
+resource eventGridContributorRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: eventgrid
+  name: guid(subscription().id, resourceGroup().id, identity.id, 'eventGridContributorRole')
+  properties: {
+    roleDefinitionId: subscriptionResourceId(
+      'Microsoft.Authorization/roleDefinitions', '1e241071-0855-49ea-94dc-649edcd759de')
+      principalType: 'ServicePrincipal'
+      principalId: identity.properties.principalId
+  }
+}
+
 module fetchLatestImage '../modules/fetch-container-image.bicep' = {
   name: '${name}-fetch-image'
   params: {
     exists: exists
-    name: name
+    name: imageName
   }
 }
 
@@ -145,7 +168,7 @@ resource app 'Microsoft.App/containerApps@2023-04-01-preview' = {
     template: {
       containers: [
         {
-          image: fetchLatestImage.outputs.?containers[?0].?image ?? 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
+          image: fetchLatestImage.outputs.?containers[?0].?image ?? imageName
           name: 'main'
           env: union([
             {
@@ -181,17 +204,20 @@ resource app 'Microsoft.App/containerApps@2023-04-01-preview' = {
         maxReplicas: 10
       }
     }
+    workloadProfileName: 'Warm'
   }
 }
 
-resource apiKey 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = {
-  name: '${serviceName}-apikey'
-  parent: keyvault
-  tags: tags
-  properties: {
-    value: uniqueString(subscription().id, resourceGroup().id, app.id, serviceName)
+resource apiKey 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = [
+  for secretName in secretNames: {
+    name: secretName
+    parent: keyvault
+    tags: tags
+    properties: {
+      value: uniqueString(subscription().id, resourceGroup().id, app.id, serviceName)
+    }
   }
-}
+]
 
 output defaultDomain string = containerAppsEnvironment.properties.defaultDomain
 output name string = app.name

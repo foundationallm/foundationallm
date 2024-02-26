@@ -19,7 +19,7 @@ namespace FoundationaLLM.Vectorization.Models
 
         /// <summary>
         /// The unique identifier of the vectorization request.
-        /// The responsibility to create this identifier belongs to the FoundationaLLM.Vectorization resource manager.
+        /// The responsibility to create this identifier belongs to the FoundationaLLM.Vectorization resource provider.
         /// Subsequent vectorization requests referring to the same content will have different unique identifiers.
         /// </summary>
         [JsonPropertyOrder(0)]

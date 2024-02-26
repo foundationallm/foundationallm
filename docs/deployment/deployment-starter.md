@@ -9,11 +9,16 @@ Foundationa**LLM** deploys into your own Azure Subscription. By default it will 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0).
 - Docker Desktop.
 - Azure CLI ([v2.51.0 or greater](https://docs.microsoft.com/cli/azure/install-azure-cli)).
-- Azure Developer CLI ([v1.5.1 or greater](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd))
-- Helm ([v3.11.1 or greater](https://helm.sh/docs/intro/install/)).
+- Azure Developer CLI ([v1.6.1 or greater](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd))
+- Powershell 7 ([7.4.1 or greater](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.4))
+    > Note: Powershell 7 is required for `pwsh` to work in the AZD hooks as an alias to `powershell`
 - Visual Studio 2022 (only needed if you plan to run/debug the solution locally).
 - Minimum quota of 65 CPUs across all VM family types. Start here to [Manage VM Quotas](https://learn.microsoft.com/azure/quotas/per-vm-quota-requests).
-- Two App Registrations created in the Entra ID tenant (Azure Active Directory).
+- Four App Registrations created in the Entra ID tenant (Azure Active Directory). Follow the instructions in the [Authentication setup document](authentication/index.md) to configure authentication for the solution. 
+    - Chat Client App Registration
+    - Core API App Registration
+    - Management Client App Registration
+    - Management API App Registration
 - User with the following role assignments:
     - Owner on the target subscription;
     - Owner on the two app registrations.
@@ -28,6 +33,7 @@ Follow the steps below to deploy the solution to your Azure subscription. You wi
 
     ```cmd
     git clone https://github.com/solliancenet/foundationallm.git
+    git checkout release/0.4.0
     ```
 
 1. Open a PowerShell instance and run the following script to provision the infrastructure and deploy the API and frontend. This will provision all of the required infrastructure, deploy the API and web app services, and import data into Cosmos DB.
@@ -37,6 +43,9 @@ Follow the steps below to deploy the solution to your Azure subscription. You wi
     ```pwsh
     cd foundationallm
     cd deploy/starter
+
+    az login            # Log into Azure CLI
+    azd auth login      # Log into Azure Developer CLI
 
     azd env             # Set your target Subscription and Location
 

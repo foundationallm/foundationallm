@@ -3,22 +3,21 @@ Main entry-point for the FoundationaLLM LangChainAPI.
 Runs web server exposing the API.
 """
 from fastapi import FastAPI
-from app.dependencies import get_config
+from app.dependencies import API_NAME, get_config
 from app.routers import (
     manage,
     orchestration,
     status
 )
-#from azure.monitor.opentelemetry import configure_azure_monitor
+from foundationallm.telemetry import Telemetry
 
-# configure_azure_monitor(
-#     connection_string=
-#       config.get_value('FoundationaLLM:APIs:LangChainAPI:AppInsightsConnectionString'),
-#     disable_offline_storage=True
-# )
+# Open a connection to the app configuration
+config = get_config()
+# Start collecting telemetry
+Telemetry.configure_monitoring(config, f'FoundationaLLM:APIs:{API_NAME}:AppInsightsConnectionString')
 
 app = FastAPI(
-    title='FoundationaLLM LangChainAPI',
+    title=f'FoundationaLLM {API_NAME}',
     summary='API for interacting with large language models using the LangChain orchestrator.',
     description="""The FoundationaLLM LangChainAPI is a wrapper around LangChain functionality
                 contained in the foundationallm.core Python SDK.""",
@@ -35,7 +34,7 @@ app = FastAPI(
         'name': 'FoundationaLLM Software License',
         'url': 'https://www.foundationallm.ai/license',
     },
-    config=get_config()
+    config=config
 )
 
 app.include_router(manage.router)
@@ -52,4 +51,4 @@ async def root():
     str
         Returns a JSON object containing a message and value.
     """
-    return { 'message': 'FoundationaLLM LangChainAPI' }
+    return { 'message': f'FoundationaLLM {API_NAME}' }

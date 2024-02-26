@@ -9,28 +9,20 @@ namespace FoundationaLLM.AgentFactory.API.Controllers
     /// <summary>
     /// OrchestrationController class
     /// </summary>
-    [ApiVersion(1.0)]
+    /// <remarks>
+    /// Constructor for the Agent Factory orchestration controller
+    /// </remarks>
+    /// <param name="agentFactoryService"></param>
+    /// <param name="logger"></param>
     [ApiController]
     [APIKeyAuthentication]
     [Route("[controller]")]
-    public class OrchestrationController : ControllerBase
+    public class OrchestrationController(
+        IAgentFactoryService agentFactoryService,
+        ILogger<OrchestrationController> logger) : ControllerBase
     {
-        private readonly IAgentFactoryService _agentFactoryService;
-        private readonly ILogger<OrchestrationController> _logger;
-
-
-        /// <summary>
-        /// Constructor for the Agent Factory orchestration controller
-        /// </summary>
-        /// <param name="agentFactoryService"></param>
-        /// <param name="logger"></param>
-        public OrchestrationController(
-            IAgentFactoryService agentFactoryService,
-            ILogger<OrchestrationController> logger)
-        {
-            _agentFactoryService = agentFactoryService;
-            _logger = logger;
-        }
+        private readonly IAgentFactoryService _agentFactoryService = agentFactoryService;
+        private readonly ILogger<OrchestrationController> _logger = logger;
 
         /// <summary>
         /// Retrieves a completion from an orchestration service
@@ -38,14 +30,7 @@ namespace FoundationaLLM.AgentFactory.API.Controllers
         /// <param name="completionRequest"></param>
         /// <returns></returns>
         [HttpPost("completion")]
-        public async Task<CompletionResponse> GetCompletion([FromBody] CompletionRequest completionRequest) => await _agentFactoryService.GetCompletion(completionRequest);
-
-        /// <summary>
-        /// Gets a summary from the Agent Factory
-        /// </summary>
-        /// <param name="content"></param>
-        /// <returns></returns>
-        [HttpPost("summary")]
-        public async Task<SummaryResponse> GetSummary([FromBody] SummaryRequest content) => await _agentFactoryService.GetSummary(content);
+        public async Task<CompletionResponse> GetCompletion([FromBody] CompletionRequest completionRequest) =>
+            await _agentFactoryService.GetCompletion(completionRequest);
     }
 }

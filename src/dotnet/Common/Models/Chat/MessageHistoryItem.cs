@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Chat
 {
@@ -10,12 +10,12 @@ namespace FoundationaLLM.Common.Models.Chat
         /// <summary>
         /// The sender of the message (e.g. "Agent", "User").
         /// </summary>
-        [JsonProperty("sender")]
+        [JsonPropertyName("sender")]
         public string Sender { get; set; }
         /// <summary>
         /// The message text.
         /// </summary>
-        [JsonProperty("text")]
+        [JsonPropertyName("text")]
         public string Text { get; set; }
 
         /// <summary>

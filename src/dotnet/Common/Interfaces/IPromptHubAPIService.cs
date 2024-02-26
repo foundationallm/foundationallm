@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Models.Messages;
+﻿using FoundationaLLM.Common.Models.Hubs;
 
 namespace FoundationaLLM.Common.Interfaces;
 

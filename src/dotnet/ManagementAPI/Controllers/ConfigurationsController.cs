@@ -19,7 +19,6 @@ namespace FoundationaLLM.Management.API.Controllers
     /// provides methods for managing configurations for FoundationaLLM.</param>
     [Authorize]
     [Authorize(Policy = "RequiredScope")]
-    [ApiVersion(1.0)]
     [ApiController]
     [Consumes("application/json")]
     [Produces("application/json")]
