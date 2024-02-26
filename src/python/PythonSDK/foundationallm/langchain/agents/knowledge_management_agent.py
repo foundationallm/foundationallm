@@ -50,13 +50,13 @@ class KnowledgeManagementAgent(AgentBase):
             self.retrievers = []
             for indexing_profile in completion_request.agent.indexing_profile_object_ids:
                 retriever_factory = RetrieverFactory(
-                                indexing_profile_resource_id = indexing_profile,
-                                embedding_profile_resource_id= completion_request.agent.embedding_profile,
+                                indexing_profile_object_id = indexing_profile,
+                                text_embedding_profile_object_id= completion_request.agent.text_embedding_profile_object_id,
                                 config = config,
                                 resource_provider = resource_provider)
                 self.retrievers.append(retriever_factory.get_retriever())
                         
-            self.retriever = next((r for r in self.retrievers, None)
+            self.retriever = next((r for r in self.retrievers), None)
             self.agent_prompt = resource_provider.get_resource(completion_request.agent.prompt_object_id).prefix
 
         #default conversation history
