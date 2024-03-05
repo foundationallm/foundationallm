@@ -12,4 +12,4 @@ class LanguageModel(BaseModel):
     api_key: Optional[str] = "FoundationaLLM:AzureOpenAI:API:Key"
     api_version: Optional[str] = "FoundationaLLM:AzureOpenAI:API:Version"
     version: Optional[str] = "FoundationaLLM:AzureOpenAI:API:Completions:ModelVersion"
-    deployment: Optional[str] = "FoundationaLLM:AzureOpenAI:API:Completions:DeploymentName"
+    deployment: Optional[str] = None #"FoundationaLLM:AzureOpenAI:API:Completions:DeploymentName"

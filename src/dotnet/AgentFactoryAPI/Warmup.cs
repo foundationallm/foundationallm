@@ -76,7 +76,7 @@ namespace FoundationaLLM.AgentFactory.API
                     new CacheKey(agent.Name!, "agent"),
                     async () =>
                     {
-                        var resolvedAgent = await _agentHubAPIService!.ResolveRequest(string.Empty, string.Empty, agent.Name);
+                        var resolvedAgent = await _agentHubAPIService!.ResolveRequest(string.Empty, string.Empty);
                         
                         if (resolvedAgent is {Agent: not null})
                             resolvedAgents.Add(resolvedAgent.Agent);

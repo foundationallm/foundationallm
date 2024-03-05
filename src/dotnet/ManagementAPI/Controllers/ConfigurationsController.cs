@@ -1,9 +1,6 @@
-﻿using Asp.Versioning;
-using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Models.Cache;
+﻿using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Management.Interfaces;
-using FoundationaLLM.Management.Models.Configuration.Agents;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,28 +38,5 @@ namespace FoundationaLLM.Management.API.Controllers
         [HttpPut("branding", Name = "UpdateBrandingConfigurations")]
         public async Task UpdateBrandingConfigurations([FromBody] ClientBrandingConfiguration brandingConfiguration) =>
             await configurationManagementService.SetBrandingConfiguration(brandingConfiguration);
-
-        /// <summary>
-        /// Returns the configuration for global agent hints and feature setting.
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("agentHints", Name = "GetAgentHints")]
-        public async Task<AgentHints> GetAgentHints()
-        {
-            var agentHintsEnabled = await configurationManagementService.GetAllowAgentSelectionAsync();
-            return new AgentHints
-            {
-                Enabled = agentHintsEnabled
-            };
-        }
-
-        /// <summary>
-        /// Updates the configuration for global agent hints and feature setting.
-        /// </summary>
-        /// <param name="agentHints"></param>
-        /// <returns></returns>
-        [HttpPut("agentHints", Name = "UpdateAgentHints")]
-        public async Task UpdateAgentHints([FromBody] AgentHints agentHints) =>
-            await configurationManagementService.SetAllowAgentSelectionAsync(agentHints.Enabled);
     }
 }

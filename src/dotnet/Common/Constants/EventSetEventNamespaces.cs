@@ -25,5 +25,10 @@ namespace FoundationaLLM.Common.Constants
         /// The namespace name for events concerning the FoundationaLLM.Configuration resource provider.
         /// </summary>
         public const string FoundationaLLM_ResourceProvider_Configuration = "ResourceProvider.FoundationaLLM.Configuration";
+
+        /// <summary>
+        /// The namespace name for events concerning the FoundationaLLM.DataSource resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProvider_DataSource = "ResourceProvider.FoundationaLLM.DataSource";
     }
 }

@@ -1,8 +1,8 @@
-﻿using FoundationaLLM.AgentFactory.Core.Interfaces;
-using FoundationaLLM.AgentFactory.Core.Services;
+﻿using FoundationaLLM.AgentFactory.Core.Services;
 using FoundationaLLM.AgentFactory.Interfaces;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Orchestration;
+using Microsoft.Extensions.Configuration;
 
 namespace FoundationaLLM.AgentFactory.Tests.Services
 {
@@ -25,7 +25,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
         private ICacheService _cacheService = Substitute.For<ICacheService>();
         private ICallContext _callContext = Substitute.For<ICallContext>();
         private ILoggerFactory _loggerFactory =  Substitute.For<ILoggerFactory>();
-
+        private IConfiguration _configuration = Substitute.For<IConfiguration>();
 
 
         public AgentFactoryServiceTests()
@@ -35,6 +35,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
                 _orchestrationServices,
                 _cacheService,
                 _callContext,
+                _configuration,
                 _agentHubAPIService,
                 _promptHubAPIService,
                 _dataSourceHubAPIService,

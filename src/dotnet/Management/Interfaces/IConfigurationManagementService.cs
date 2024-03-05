@@ -8,19 +8,6 @@ namespace FoundationaLLM.Management.Interfaces
     public interface IConfigurationManagementService
     {
         /// <summary>
-        /// Retrieves the allow agent selection feature flag value from app configuration.
-        /// </summary>
-        /// <returns></returns>
-        Task<bool> GetAllowAgentSelectionAsync();
-
-        /// <summary>
-        /// Sets the allow agent selection feature flag value in app configuration.
-        /// </summary>
-        /// <param name="allowAgentSelection">Indicates whether to enable or disable the feature flag.</param>
-        /// <returns></returns>
-        Task SetAllowAgentSelectionAsync(bool allowAgentSelection);
-
-        /// <summary>
         /// Retrieves the branding configuration from app configuration.
         /// </summary>
         /// <returns></returns>

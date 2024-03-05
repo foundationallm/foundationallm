@@ -8,24 +8,6 @@ namespace FoundationaLLM.Common.Tests.Models.Context
     public class CallContextTests
     {
         [Fact]
-        public void TestAgentHint()
-        {
-            // Arrange
-            var callContext = new CallContext();
-            var agentHint = new AgentHint
-            {
-                Name = "TestAgentHint",
-                Private = false
-            };
-
-            // Act
-            callContext.AgentHint = agentHint;
-
-            // Assert
-            Assert.Equal(agentHint, callContext.AgentHint);
-        }
-
-        [Fact]
         public void TestCurrentUserIdentityWithNSubstitute()
         {
             // Arrange
@@ -42,16 +24,6 @@ namespace FoundationaLLM.Common.Tests.Models.Context
             Assert.Equal("TestName", callContext.CurrentUserIdentity.Name);
             Assert.Equal("TestUsername", callContext.CurrentUserIdentity.Username);
             Assert.Equal("TestUPN", callContext.CurrentUserIdentity.UPN);
-        }
-
-        [Fact]
-        public void TestDefaultAgentHint()
-        {
-            // Arrange
-            var callContext = new CallContext();
-
-            // Assert
-            Assert.Null(callContext.AgentHint);
         }
 
         [Fact]

@@ -27,9 +27,11 @@ class PromptRepository(Repository):
 
         Raises ValueError when the prompt is not found.
         """
-        mgr = PromptHubStorageManager(prefix=self.container_prefix, config=self.config)
+        mgr = PromptHubStorageManager(config=self.config)
         prompt_prefix = mgr.read_file_content(name.replace('.', '/') + '.txt')
         prompt_suffix = mgr.read_file_content(name.replace('.', '/') + '_suffix.txt') or None
+        
         if prompt_prefix is None and prompt_suffix is None:
             raise ValueError(f"Prompt '{name}' not found.")
+    
         return PromptMetadata(name=name, prompt_prefix=prompt_prefix, prompt_suffix=prompt_suffix)

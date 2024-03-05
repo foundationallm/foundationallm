@@ -1,4 +1,6 @@
 ﻿using Asp.Versioning;
+using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Models.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +23,13 @@ namespace FoundationaLLM.Management.API.Controllers
         [AllowAnonymous]
         [HttpGet(Name = "GetServiceStatus")]
         public IActionResult GetServiceStatus() =>
-            Ok("ManagementAPI - ready");
+            new OkObjectResult(new ServiceStatusInfo
+            {
+                Name = ServiceNames.ManagementAPI,
+                Instance = Environment.GetEnvironmentVariable(EnvironmentVariables.Hostname),
+                Version = Environment.GetEnvironmentVariable(EnvironmentVariables.FoundationaLLM_Version),
+                Status = ServiceStatuses.Ready
+            });
 
         /// <summary>
         /// Returns OK if the requester is authenticated and allowed to execute

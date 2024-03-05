@@ -11,12 +11,7 @@ def data_source_repository(test_config):
 
 
 class DataSourceRepositoryTests:
-    def test_anomaly_data_source_deserializes_properly(self, data_source_repository):
-        ds = data_source_repository.get_metadata_by_name("anomaly-ds")
+    def test_sql_data_source_deserializes_properly(self, data_source_repository):
+        ds = data_source_repository.get_metadata_by_name("weather-ds")
         print(ds)
-        assert ds.name == "anomaly-ds"
-
-    def test_blob_data_source_has_data_description(self, data_source_repository):
-        ds = data_source_repository.get_metadata_by_name("hai-ds")
-        print(ds)
-        assert ds.data_description == "Survey data"
+        assert ds.name == "weather-ds"

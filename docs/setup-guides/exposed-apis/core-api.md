@@ -1,10 +1,10 @@
 # Core API
 
-The Core API serves as the entry point for user requests to FLLM's underlying engine. While clients primarily interact with the Core API through the Chat UI, the Core API exposes some convenient interfaces for developers.
+The Core API serves as the entry point for user requests to FoundationaLLM's underlying engine. While clients primarily interact with the Core API through the Chat UI, the Core API exposes some convenient interfaces for developers.
 
-## Session-less Completion
+## Sessionless Completion
 
-The session-less completion endpoint enables users to query agents without first creating a chat session.
+The sessionless completion endpoint enables users to query agents without first creating a chat session.
 
 **Endpoint:** `[DEPLOYMENT URL]/core/orchestration/completion?api-version=1.0`
 
@@ -13,15 +13,26 @@ The session-less completion endpoint enables users to query agents without first
 **Sample Request:**
 
 ```json
-{"user_prompt": "What are your capabilities?"}
+{
+    "user_prompt": "What are your capabilities?",
+    "settings": {
+        "agent_name": "internal-context",
+        "model_settings": {
+            "temperature": 0.4,
+            "deployment_name": "completions"
+        }
+    }
+}
 ```
+
+> [!NOTE]
+> The `settings` object is optional and can be used to specify the agent name and model settings. If the `settings` object is not provided, the Core API will use the default agent and its model settings.
 
 **Payload Headers:**
 
 | Header | Value | Details |
 | ------ | ----- | ------- |
 | `Authorization` | `Bearer [ENTRA ID BEARER TOKEN]` | Valid token from Entra ID |
-| `X-AGENT-HINT` | `{"name": "[AGENT NAME]", "private": [true/false]}` | JSON document specifying the desired agent to handle the completion request |
 | `Content-Type` | `application/json` | |
 
 **Sample Response:**

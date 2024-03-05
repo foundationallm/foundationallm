@@ -2,8 +2,7 @@
 Class: AzureAISearchServiceRetriever
 Description: LangChain retriever for Azure AI Search.
 """
-from typing import List, Optional
-
+from typing import List, Optional, Union
 from langchain_openai import OpenAIEmbeddings#, AzureOpenAIEmbeddings
 from langchain_core.callbacks import (
     AsyncCallbackManagerForRetrieverRun,
@@ -11,10 +10,10 @@ from langchain_core.callbacks import (
 )
 from langchain_core.documents import Document
 from langchain_core.retrievers import BaseRetriever
-
 from azure.search.documents import SearchClient
 from azure.search.documents.models import VectorizedQuery
 from azure.core.credentials import AzureKeyCredential
+from azure.identity import DefaultAzureCredential
 
 class AzureAISearchServiceRetriever(BaseRetriever):
     """
@@ -48,7 +47,7 @@ class AzureAISearchServiceRetriever(BaseRetriever):
     embedding_field_name: Optional[str] = "Embedding"
     text_field_name: Optional[str] = "Text"
     filters: Optional[str] = None
-    credential: AzureKeyCredential
+    credential: Union[AzureKeyCredential, DefaultAzureCredential] = None
     embedding_model: OpenAIEmbeddings
 
     class Config:
@@ -68,10 +67,11 @@ class AzureAISearchServiceRetriever(BaseRetriever):
         """
         Performs a synchronous hybrid search on Azure AI Search index        
         """        
-        search_client = SearchClient(self.endpoint, self.index_name, self.credential)
+        search_client = SearchClient(self.endpoint, self.index_name, self.credential)        
         vector_query = VectorizedQuery(vector=self.__get_embeddings(query),
                                         k_nearest_neighbors=3,
                                         fields=self.embedding_field_name)
+
         results = search_client.search(
             search_text=query,
             filter=self.filters,
@@ -79,11 +79,13 @@ class AzureAISearchServiceRetriever(BaseRetriever):
             top=self.top_n,
             select=[self.text_field_name]
         )
+
         results_list = [
             Document(                
                 page_content=result[self.text_field_name]
             ) for result in results
         ]
+        
         return results_list
 
     async def _aget_relevant_documents(

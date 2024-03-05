@@ -1,4 +1,5 @@
 ﻿using Azure.Identity;
+using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.TextEmbedding;
@@ -76,7 +77,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Services
         private Kernel CreateKernelFromIdentity(string deploymentName, string endpoint)
         {
             var builder = Kernel.CreateBuilder();
-            builder.AddAzureOpenAITextEmbeddingGeneration(deploymentName, endpoint, new DefaultAzureCredential());
+            builder.AddAzureOpenAITextEmbeddingGeneration(deploymentName, endpoint, DefaultAuthentication.GetAzureCredential());
             return builder.Build();
         }
 

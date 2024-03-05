@@ -1,17 +1,30 @@
+/*
+  This Bicep file deploys an Azure Cognitive Services OpenAI resource and its associated deployments.
+  It takes the following inputs:
+    - deployments: An array of deployment objects containing information about the OpenAI deployments.
+    - keyvaultName: The name of the Azure Key Vault where secrets will be stored.
+    - location: The Azure region where the resource will be deployed. Defaults to the resource group's location.
+    - name: The name of the OpenAI resource.
+    - sku: The SKU (pricing tier) of the OpenAI resource. Defaults to 'S0'.
+    - tags: Optional tags to be applied to the resource.
+
+  The file defines the following resources:
+    - openAi: The Azure Cognitive Services OpenAI resource.
+    - openAiDeployments: The deployments associated with the OpenAI resource.
+
+  The file also defines the following outputs:
+    - endpoint: The endpoint URL of the OpenAI resource.
+    - name: The name of the OpenAI resource.
+*/
+
+/********** Inputs **********/
 param deployments array
-param keyvaultName string
 param location string = resourceGroup().location
 param name string
 param sku string = 'S0'
 param tags object = {}
 
-var secretNames = [
-  'openai-apikey'
-  'foundationallm-azureopenai-api-key'
-  'foundationallm-openai-api-key'
-  'foundationallm-semantickernelapi-openai-key'
-]
-
+/********** Resources **********/
 resource openAi 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
   name: name
   location: location
@@ -45,22 +58,8 @@ resource openAiDeployments 'Microsoft.CognitiveServices/accounts/deployments@202
   }
 ]
 
-resource keyvault 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
-  name: keyvaultName
-}
+/********** Nested Deployments **********/
 
-resource apiKeySecret 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = [
-  for secretName in secretNames: {
-    name: secretName
-    parent: keyvault
-    tags: tags
-    properties: {
-      value: openAi.listKeys().key1
-    }
-  }
-]
-
+/********** Outputs **********/
 output endpoint string = openAi.properties.endpoint
-output keySecretName string = apiKeySecret[0].name
-output keySecretRef string = apiKeySecret[0].properties.secretUri
 output name string = openAi.name

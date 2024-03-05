@@ -35,43 +35,6 @@ namespace FoundationaLLM.Management.Services
         }
 
         /// <inheritdoc/>
-        public async Task<bool> GetAllowAgentSelectionAsync()
-        {
-            var allowAgentSelection = false;
-            try
-            {
-                var allowAgentSelectionSetting = await _configurationClient
-                    .GetConfigurationSettingAsync(FeatureFlagConfigurationSetting.KeyPrefix + AppConfigurationFeatureFlags.FoundationaLLM_AllowAgentHint);
-                if (allowAgentSelectionSetting.HasValue && allowAgentSelectionSetting.Value is FeatureFlagConfigurationSetting featureFlag)
-                {
-                    allowAgentSelection = featureFlag.IsEnabled;
-                }
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Error getting allow agent selection feature flag from app configuration.");
-            }
-
-            return allowAgentSelection;
-        }
-
-        /// <inheritdoc/>
-        public async Task SetAllowAgentSelectionAsync(bool allowAgentSelection)
-        {
-            try
-            {
-                var allowAgentSelectionSetting = new FeatureFlagConfigurationSetting(
-                    AppConfigurationFeatureFlags.FoundationaLLM_AllowAgentHint, isEnabled: allowAgentSelection);
-                await _configurationClient.SetConfigurationSettingAsync(allowAgentSelectionSetting);
-                // TODO: Restart the Core API and Agent API services to apply the new feature flag.
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Error setting allow agent selection feature flag in app configuration.");
-            }
-        }
-
-        /// <inheritdoc/>
         public async Task<ClientBrandingConfiguration> GetBrandingConfigurationAsync()
         {
             var brandingConfiguration = new ClientBrandingConfiguration();

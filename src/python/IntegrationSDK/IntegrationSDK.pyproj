@@ -30,6 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="foundationallm\integration\config\configuration.py" />
+    <Compile Include="foundationallm\integration\config\environment_variables.py" />
     <Compile Include="foundationallm\integration\config\__init__.py" />
     <Compile Include="foundationallm\integration\models\analyze_request.py" />
     <Compile Include="foundationallm\integration\models\analyze_response.py" />

@@ -19,11 +19,5 @@ namespace FoundationaLLM.Common.Constants
         /// User identity header used by APIs to pass user identity information.
         /// </summary>
         public const string UserIdentity = "X-USER-IDENTITY";
-        /// <summary>
-        /// When the FoundationaLLM-AllowAgentHint feature flag is enabled, this header
-        /// can be used by the client to pass an agent hint to the API. Used mainly for
-        /// demo purposes.
-        /// </summary>
-        public const string AgentHint = "X-AGENT-HINT";
     }
 }

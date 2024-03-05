@@ -96,10 +96,10 @@ export type TextEmbeddingProfile = {
 };
 
 export type AgentCheckNameResponse = {
-    type: string;
-    name: string;
-    status: string;
-    message: string;
+	type: string;
+	name: string;
+	status: string;
+	message: string;
 };
 
 export type AgentGatekeeper = {};

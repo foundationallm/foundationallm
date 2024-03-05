@@ -140,7 +140,7 @@ output keys array = [for (k, i) in keyNames: {
 }]
 
 @description('The OpenAI API Key Secret URI (Currently just a placeholder).')
-output openAiKeySecretUri string = apiKeySecret.outputs.secretUri
+output openAiKeySecretUri string = apiKeySecret[0].outputs.secretUri
 
 /** Resources **/
 resource main 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' = {
@@ -255,14 +255,23 @@ module privateEndpoint 'utility/privateEndpoint.bicep' = {
   }
 }
 
+var secretNames = [
+  'foundationallm-openai-api-key'
+  'foundationallm-semantickernelapi-openai-key'
+  'foundationallm-azureopenai-api-key'
+  'foundationallm-apis-vectorizationworker-apikey' // This isn't even used, but ManagementAPI is checking for it, so needed a placeholder.
+]
+
 @description('OpenAI API Key OPS KeyVault Secret (Currently unused but added as a placeholder).')
-module apiKeySecret 'kvSecret.bicep' = {
-  name: 'oaiApiKey-${timestamp}'
-  scope: resourceGroup(opsResourceGroupName)
-  params: {
-    kvName: opsKvName
-    secretName: 'foundationallm-azureopenai-api-key'
-    secretValue: 'HAOpenAIKey'
-    tags: tags
+module apiKeySecret 'kvSecret.bicep' = [
+  for (secretName, i) in secretNames: {
+    name: 'oaiApiKey-${i}'
+    scope: resourceGroup(opsResourceGroupName)
+    params: {
+      kvName: opsKvName
+      secretName: secretName
+      secretValue: 'HAOpenAIKey'
+      tags: tags
+    }
   }
-}
+]

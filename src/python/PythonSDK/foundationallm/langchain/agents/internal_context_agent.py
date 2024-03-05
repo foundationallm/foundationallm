@@ -15,7 +15,6 @@ from foundationallm.config import Configuration
 from foundationallm.langchain.message_history import build_message_history
 from foundationallm.langchain.agents.agent_base import AgentBase
 from foundationallm.langchain.retrievers import RetrieverFactory
-from foundationallm.models.metadata import ConversationHistory
 from foundationallm.models.orchestration import InternalContextCompletionRequest, CompletionResponse
 from foundationallm.resources import ResourceProvider
 
@@ -31,7 +30,7 @@ class InternalContextAgent(AgentBase):
             resource_provider: ResourceProvider):
         """
         Initializes an internal context agent.
-        Internal context agents pass through the user prompt to the language model
+        Internal context agents pass through the user prompt to the language model.
 
         Parameters
         ----------
@@ -46,20 +45,16 @@ class InternalContextAgent(AgentBase):
             Resource provider for retrieving embedding and indexing profiles.        
         """       
         self.llm = llm.get_completion_model(completion_request.agent.language_model)
-        self.internal_context = True
-        self.agent_prompt = ""
-        
-        #default conversation history
-        self.message_history_enabled = False
-        self.message_history_count = 5
-        
-        conversation_history: ConversationHistory = completion_request.agent.conversation_history
-        if conversation_history is not None:
-            self.message_history_enabled = conversation_history.enabled
-            self.message_history_count = conversation_history.max_history
+
+        self.agent_prompt = None
+        prompt_resource = resource_provider.get_resource(completion_request.agent.prompt_object_id)
+        if prompt_resource is not None and prompt_resource.prefix is not None:
+            self.agent_prompt = prompt_resource.prefix
+                
+        self.conversation_history = completion_request.agent.conversation_history
         
         self.message_history = completion_request.message_history
-        self.full_prompt = ""          
+        self.full_prompt = ""
     
     def __record_full_prompt(self, prompt: str) -> str:
         """
@@ -95,30 +90,38 @@ class InternalContextAgent(AgentBase):
             generated full prompt with context
             and token utilization and execution cost details.
         """
-        with get_openai_callback() as cb:            
-            # The prompt is the context
-            prompt_builder = "{context}"
-            if self.message_history_enabled == True:
-                prompt_builder = build_message_history(self.message_history, self.message_history_count) \
-                    + "\n\n" + prompt_builder
+        with get_openai_callback() as cb:
+            try:
+                prompt_builder = ''
                 
-            prompt_template = PromptTemplate.from_template(prompt_builder)
+                if self.agent_prompt is not None or self.agent_prompt != '':
+                    prompt_builder = f'{self.agent_prompt}\n\n'
 
-            # Compose LCEL chain
-            chain = (
-                { "context": RunnablePassthrough() }
-                | prompt_template
-                | RunnableLambda(self.__record_full_prompt)
-                | self.llm
-                | StrOutputParser()
-            )
+                if self.conversation_history.enabled:
+                    prompt_builder += build_message_history(self.message_history, self.conversation_history.max_history)
+                
+                # The prompt is the context
+                prompt_builder += '{context}'
+                
+                prompt_template = PromptTemplate.from_template(prompt_builder)
 
-            return CompletionResponse(
-                completion = chain.invoke(prompt),
-                user_prompt = prompt,
-                full_prompt = self.full_prompt.text,
-                completion_tokens = cb.completion_tokens,
-                prompt_tokens = cb.prompt_tokens,
-                total_tokens = cb.total_tokens,
-                total_cost = cb.total_cost
-            )
+                # Compose LCEL chain
+                chain = (
+                    { "context": RunnablePassthrough() }
+                    | prompt_template
+                    | RunnableLambda(self.__record_full_prompt)
+                    | self.llm
+                    | StrOutputParser()
+                )
+
+                return CompletionResponse(
+                    completion = chain.invoke(prompt),
+                    user_prompt = prompt,
+                    full_prompt = self.full_prompt.text,
+                    completion_tokens = cb.completion_tokens,
+                    prompt_tokens = cb.prompt_tokens,
+                    total_tokens = cb.total_tokens,
+                    total_cost = cb.total_cost
+                )
+            except Exception as e:
+                raise e

@@ -23,7 +23,7 @@
 			<span>Data Catalog</span>
 		</div>
 
-		<div class="sidebar__item">Data Sources</div>
+		<NuxtLink to="/data-sources" class="sidebar__item">Data Sources</NuxtLink>
 		<div class="sidebar__item">Vector Stores</div>
 
 		<!-- Quotas -->

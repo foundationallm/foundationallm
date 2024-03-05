@@ -1243,6 +1243,38 @@ namespace FoundationaLLM.Configuration.Catalog
         ];
 
         /// <summary>
+        /// The Data Source resource provider configuration entries for the solution.
+        /// </summary>
+        public static readonly List<AppConfigurationEntry> DataSource =
+        [
+            new(
+                key: Common.Constants.AppConfigurationKeys
+                    .FoundationaLLM_DataSource_ResourceProviderService_Storage_AuthenticationType,
+                minimumVersion: "0.5.0",
+                defaultValue: "",
+                description:
+                "The authentication type used to connect to the underlying storage. Can be one of `AzureIdentity`, `AccountKey`, or `ConnectionString`.",
+                keyVaultSecretName: "",
+                contentType: "text/plain",
+                sampleObject: null
+            ),
+
+            new(
+                key: Common.Constants.AppConfigurationKeys
+                    .FoundationaLLM_DataSource_ResourceProviderService_Storage_ConnectionString,
+                minimumVersion: "0.5.0",
+                defaultValue:
+                "Key Vault secret name: `foundationallm-datasource-resourceprovider-storage-connectionstring`",
+                description:
+                "The connection string to the Azure Storage account used for the data source resource provider.",
+                keyVaultSecretName: Common.Constants.KeyVaultSecretNames
+                    .FoundationaLLM_DataSource_ResourceProvider_Storage_ConnectionString,
+                contentType: "text/plain",
+                sampleObject: null
+            )
+        ];
+
+        /// <summary>
         /// The Data Source Hub configuration entries for the solution.
         /// </summary>
         public static readonly List<AppConfigurationEntry> DataSourceHub =

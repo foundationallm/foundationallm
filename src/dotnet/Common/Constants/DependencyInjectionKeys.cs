@@ -68,6 +68,11 @@ namespace FoundationaLLM.Common.Constants
         /// </summary>
         public const string FoundationaLLM_ResourceProvider_Configuration = "FoundationaLLM:ResourceProvider:Configuration";
 
+        /// <summary>
+        /// The dependency injection key for the FoundationaLLM.DataSource resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProvider_DataSource = "FoundationaLLM:ResourceProvider:DataSource";
+
         #endregion
     }
 }

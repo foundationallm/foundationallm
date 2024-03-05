@@ -31,6 +31,7 @@ def test_completion_request():
            description= "Useful for when you need to answer questions about survey data.",
            data_description = "Survey data",
            configuration=BlobStorageConfiguration(
+              configuration_type="blob_storage",
               connection_string_secret="FoundationaLLM:BlobStorageMemorySource:BlobStorageConnection",
               container="hai-source",
               files = ["surveydata.csv"]

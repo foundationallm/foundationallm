@@ -119,10 +119,6 @@ The Postman collection you imported contains a number of API endpoints that you 
 
     ![The Save button is highlighted.](media/postman-save-button.png)
 
-#### The `agentHint` variable
-
-The `agentHint` variable is used to specify the agent hint header value (`X-AGENT-HINT`) that will be used when calling the Core API completion endpoint. The agent hint value is used to determine which agent will be used to perform the completion. For example, if you have an agent named `policy` that you want to use to perform the completion, then you would set the `agentHint` variable to `{"name": "policy", "private": false}`.
-
 ### Set up the Postman authentication token
 
 There are two ways to obtain the authentication token that you will use to authenticate your API calls:

@@ -27,9 +27,6 @@ class ListAgentsTests:
     This is an integration test class and expects the following environment variable to be set:
         foundationallm-app-configuration-uri
         
-    These tests also expect the following feature flag to be set and enabled:
-        FoundationaLLM-AllowAgentHint
-        
     This test class also expects a valid Azure credential (DefaultAzureCredential) session.
     """
     def test_invalid_api_key_should_return_401(self, client):

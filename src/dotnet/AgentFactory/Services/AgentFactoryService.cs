@@ -4,6 +4,7 @@ using FoundationaLLM.AgentFactory.Interfaces;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Orchestration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace FoundationaLLM.AgentFactory.Core.Services;
@@ -16,6 +17,7 @@ public class AgentFactoryService : IAgentFactoryService
     private readonly IEnumerable<ILLMOrchestrationService> _orchestrationServices;
     private readonly ICacheService _cacheService;
     private readonly ICallContext _callContext;
+    private readonly IConfiguration _configuration;
     private readonly IAgentHubAPIService _agentHubAPIService;
     private readonly IPromptHubAPIService _promptHubAPIService;
     private readonly IDataSourceHubAPIService _dataSourceHubAPIService;
@@ -32,6 +34,7 @@ public class AgentFactoryService : IAgentFactoryService
     /// <param name="orchestrationServices"></param>
     /// <param name="cacheService">The <see cref="ICacheService"/> used to cache agent-related artifacts.</param>
     /// <param name="callContext">The call context of the request being handled.</param>
+    /// <param name="configuration">The <see cref="IConfiguration"/> used to retrieve app settings from configuration.</param>
     /// <param name="agentHubService"></param>    
     /// <param name="promptHubService"></param>    
     /// <param name="dataSourceHubService"></param>    
@@ -41,6 +44,7 @@ public class AgentFactoryService : IAgentFactoryService
         IEnumerable<ILLMOrchestrationService> orchestrationServices,
         ICacheService cacheService,
         ICallContext callContext,
+        IConfiguration configuration,
         IAgentHubAPIService agentHubService,
         IPromptHubAPIService promptHubService,
         IDataSourceHubAPIService dataSourceHubService,
@@ -52,6 +56,7 @@ public class AgentFactoryService : IAgentFactoryService
         _orchestrationServices = orchestrationServices;
         _cacheService = cacheService;
         _callContext = callContext;
+        _configuration = configuration;
         _agentHubAPIService = agentHubService;
         _promptHubAPIService = promptHubService;
         _dataSourceHubAPIService = dataSourceHubService;
@@ -88,6 +93,7 @@ public class AgentFactoryService : IAgentFactoryService
                 completionRequest,
                 _cacheService,
                 _callContext,
+                _configuration,
                 _resourceProviderServices,
                 _agentHubAPIService,
                 _orchestrationServices,
@@ -96,7 +102,7 @@ public class AgentFactoryService : IAgentFactoryService
                 _loggerFactory);
 
             return orchestration == null
-                ? throw new OrchestrationException($"The orchestration builder was not able to create an orchestration for agent [{_callContext.AgentHint?.Name ?? string.Empty }].")
+                ? throw new OrchestrationException($"The orchestration builder was not able to create an orchestration for agent [{completionRequest.Settings?.AgentName ?? string.Empty }].")
                 : await orchestration.GetCompletion(completionRequest);
         }
         catch (Exception ex)

@@ -53,12 +53,6 @@ namespace FoundationaLLM.Common.Middleware
                 }
             }
 
-            var agentHint = context.Request.Headers[Constants.HttpHeaders.AgentHint].FirstOrDefault();
-            if (!string.IsNullOrWhiteSpace(agentHint))
-            {
-                callContext.AgentHint = JsonSerializer.Deserialize<AgentHint>(agentHint);
-            }
-
             callContext.InstanceId = context.Request.RouteValues["instanceId"] as string;
             if (!string.IsNullOrWhiteSpace(callContext.InstanceId) && callContext.InstanceId != instanceSettings.Value.Id)
             {

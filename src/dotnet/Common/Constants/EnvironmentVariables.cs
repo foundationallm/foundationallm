@@ -12,6 +12,11 @@ namespace FoundationaLLM.Common.Constants
     public static class EnvironmentVariables
     {
         /// <summary>
+        /// The client id of the user assigned managed identity.
+        /// </summary>
+        public const string AzureClientId = "AZURE_CLIENT_ID";
+
+        /// <summary>
         /// The Azure Container App or Azure Kubernetes Service hostname.
         /// </summary>
         public const string Hostname = "HOSTNAME";

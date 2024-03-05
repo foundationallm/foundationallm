@@ -1,6 +1,7 @@
 ﻿using Azure;
 using Azure.Identity;
 using Azure.Messaging.EventGrid.Namespaces;
+using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
@@ -36,6 +37,10 @@ namespace FoundationaLLM.Common.Services.Events
             },
             {
                 EventSetEventNamespaces.FoundationaLLM_ResourceProvider_Configuration,
+                null
+            },
+            {
+                EventSetEventNamespaces.FoundationaLLM_ResourceProvider_DataSource,
                 null
             }
         };
@@ -331,7 +336,7 @@ namespace FoundationaLLM.Common.Services.Events
             try
             {
                 ValidateEndpoint(_settings.Endpoint);
-                client = new EventGridClient(new Uri(_settings.Endpoint!), new DefaultAzureCredential());
+                client = new EventGridClient(new Uri(_settings.Endpoint!), DefaultAuthentication.GetAzureCredential());
             }
             catch (Exception ex)
             {

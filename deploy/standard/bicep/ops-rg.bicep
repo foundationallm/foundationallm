@@ -235,21 +235,6 @@ module uaiAppConfigRoleAssignments 'modules/utility/roleAssignments.bicep' = {
   }
 }
 
-@description('Storage Account')
-module storage 'modules/storageAccount.bicep' = {
-  name: 'storage-${timestamp}'
-  params: {
-    actionGroupId: actionGroup.outputs.id
-    location: location
-    logAnalyticWorkspaceId: logAnalytics.outputs.id
-    privateDnsZones: zonesStorage
-    resourceSuffix: resourceSuffix
-    subnetId: '${vnetId}/subnets/ops'
-    tags: tags
-  }
-  dependsOn: [ keyVault ]
-}
-
 @description('Placeholder configuration setting for CSV file')
 module csvFileSecret 'modules/kvSecret.bicep' = {
   name: 'csvFileSecret-${timestamp}'

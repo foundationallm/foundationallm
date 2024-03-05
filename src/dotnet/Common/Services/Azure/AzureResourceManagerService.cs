@@ -17,14 +17,11 @@ namespace FoundationaLLM.Common.Services.Azure
     /// <summary>
     /// Provides services to interact with the Azure Resource Manager (ARM) infrastructure.
     /// </summary>
-    /// <param name="environment">The <see cref="IHostEnvironment"/> providing details about the environment.</param>
     /// <param name="logger">The logger used for logging.</param>
     public class AzureResourceManagerService(
-        IHostEnvironment environment,
         ILogger<AzureResourceManagerService> logger) : IAzureResourceManagerService
     {
-        private readonly ArmClient _armClient = new(DefaultAuthentication.GetAzureCredential(
-            environment.IsDevelopment()));
+        private readonly ArmClient _armClient = new(DefaultAuthentication.GetAzureCredential());
         private readonly ILogger<AzureResourceManagerService> _logger = logger;
 
         /// <inheritdoc/>

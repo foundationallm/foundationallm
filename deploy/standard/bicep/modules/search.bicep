@@ -82,7 +82,7 @@ var name = substring(formattedName,0,min([length(formattedName),60]))
 var serviceType = 'search'
 
 /** Outputs **/
-output searchKeySecretUri string = cogSearchKey.outputs.secretUri
+output searchKeySecretUri string = cogSearchKey[0].outputs.secretUri
 
 /** Resources **/
 @description('The Azure AI Search resource.')
@@ -166,14 +166,21 @@ module privateEndpoint 'utility/privateEndpoint.bicep' = {
   }
 }
 
+var secretNames = [
+  'foundationallm-cognitivesearchmemorysource-key'
+  'foundationallm-cognitivesearch-key'
+]
+
 @description('Cognitive Search key KeyVault Secret.')
-module cogSearchKey 'kvSecret.bicep' = {
-  name: 'cogSearchKey-${timestamp}'
-  scope: resourceGroup(opsResourceGroupName)
-  params: {
-    kvName: kvName
-    secretName: 'foundationallm-cognitivesearch-key'
-    secretValue: main.listAdminKeys().primaryKey
-    tags: tags
+module cogSearchKey 'kvSecret.bicep' = [
+  for (secretName, i) in secretNames: {
+    name: 'cogSearchKey-${i}'
+    scope: resourceGroup(opsResourceGroupName)
+    params: {
+      kvName: kvName
+      secretName: secretName
+      secretValue: main.listAdminKeys().primaryKey
+      tags: tags
+    }
   }
-}
+]

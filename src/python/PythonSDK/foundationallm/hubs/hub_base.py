@@ -9,8 +9,8 @@ class HubBase(ABC):
     def __init__(self, resolver: Resolver):
         self.resolver = resolver
 
-    def resolve(self, request, user_context:Context=None, hint:str=None):
-        return self.resolver.resolve(request, user_context, hint)
+    def resolve(self, request, user_context:Context=None):
+        return self.resolver.resolve(request, user_context)
 
     def list(self):
         """

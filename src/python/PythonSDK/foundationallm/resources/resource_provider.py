@@ -40,33 +40,35 @@ class ResourceProvider:
         If a concrete object is not found, the method returns a dictionary
         of the resource configuration (or None if the resource is not found).
         """
-        obj_dict = self.get_resource_as_dict(object_id)
+        if object_id is not None and object_id != '':
+            obj_dict = self.get_resource_as_dict(object_id)
+        
+            if obj_dict is not None:
+                tokens = object_id.split("/")
+                # the last token is resource
+                resource = tokens[-1]
+                # the second to last token is resource type
+                resource_type = tokens[-2]
+                # the third to last token is the resource provider type
+                provider_type = tokens[-3]
 
-        if obj_dict is not None:
-            tokens = object_id.split("/")
-            # the last token is resource
-            resource = tokens[-1]
-            # the second to last token is resource type
-            resource_type = tokens[-2]
-            # the third to last token is the resource provider type
-            provider_type = tokens[-3]
+                # match case on resource type
+                match provider_type:
+                    case "FoundationaLLM.Prompt":
+                        prompt_resource = Prompt(**obj_dict)
+                        return prompt_resource
+                    case "FoundationaLLM.Vectorization":                
+                        if resource_type == "indexingprofiles":
+                            if obj_dict["indexer"]=="AzureAISearchIndexer":
+                                indexing_resource = AzureAISearchIndexingProfile(**obj_dict)
+                                return indexing_resource
+                        elif resource_type == "textembeddingprofiles":
+                            if obj_dict["text_embedding"]=="SemanticKernelTextEmbedding":
+                                embedding_resource = AzureOpenAIEmbeddingProfile(**obj_dict)
+                                return embedding_resource
 
-            # match case on resource type
-            match provider_type:
-                case "FoundationaLLM.Prompt":
-                    prompt_resource = Prompt(**obj_dict)
-                    return prompt_resource
-                case "FoundationaLLM.Vectorization":                
-                    if resource_type == "indexingprofiles":
-                        if obj_dict["indexer"]=="AzureAISearchIndexer":
-                            indexing_resource = AzureAISearchIndexingProfile(**obj_dict)
-                            return indexing_resource
-                    elif resource_type == "textembeddingprofiles":
-                        if obj_dict["text_embedding"]=="SemanticKernelTextEmbedding":
-                            embedding_resource = AzureOpenAIEmbeddingProfile(**obj_dict)
-                            return embedding_resource
-
-        return obj_dict
+            return obj_dict
+        return None
     
     def get_resource_as_dict(self, object_id:str):
         """
@@ -82,6 +84,9 @@ class ResourceProvider:
         Any
             The resource with the given id.
         """
+        if object_id is None or object_id == '':
+            return None
+        
         tokens = object_id.split("/")
         # the last token is resource
         resource = tokens[-1]

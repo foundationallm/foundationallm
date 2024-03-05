@@ -41,7 +41,7 @@
 
 			<!-- Right side content -->
 			<div class="navbar__content__right">
-				<template v-if="currentSession && appConfigStore.allowAgentHint">
+				<template v-if="currentSession">
 					<span class="header__dropdown">
 						<img alt="Select an agent" class="avatar" v-tooltip.bottom="'Select an agent'" src="~/assets/FLLM-Agent-Light.svg">
 						<Dropdown
@@ -74,6 +74,9 @@ interface AgentDropdownOption {
 	value: any;
 	disabled?: boolean;
 	private?: boolean;
+	type: string;
+	object_id: string;
+	description: string;
 }
 
 interface AgentDropdownOptionsGroup {
@@ -115,15 +118,16 @@ export default {
 
 	async created() {
 
-		if (this.appConfigStore.allowAgentHint) {
-			await this.appStore.getAgents();
+		await this.appStore.getAgents();
 
-			this.agentOptions = this.appStore.agents.map((agent) => ({
-				label: agent.name,
-				private: agent.private,
-				value: agent,
-			}));
-		}
+		this.agentOptions = this.appStore.agents.map((agent) => ({
+			label: agent.name,
+			type: agent.type,
+			object_id: agent.object_id,
+			description: agent.description,
+			private: false,
+			value: agent,
+		}));
 
 		const publicAgentOptions = this.agentOptions.filter((agent) => !agent.private);
 		const privateAgentOptions = this.agentOptions.filter((agent) => agent.private);

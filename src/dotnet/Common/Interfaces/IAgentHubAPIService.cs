@@ -12,12 +12,8 @@ public interface IAgentHubAPIService : IHubAPIService, ICacheControlAPIService
     /// </summary>
     /// <param name="userPrompt">The user prompt to resolve.</param>
     /// <param name="sessionId">The session ID.</param>
-    /// <param name="agentHintOverride">Override the agent hint passed in the header.
-    /// This is useful when warming the cache since the agent hint will not exist within
-    /// a request context.</param>
     /// <returns></returns>
-    Task<AgentHubResponse> ResolveRequest(string userPrompt, string sessionId,
-        string? agentHintOverride = null);
+    Task<AgentHubResponse> ResolveRequest(string userPrompt, string sessionId);
 
     /// <summary>
     /// Gets the list with all the agent names and descriptions.

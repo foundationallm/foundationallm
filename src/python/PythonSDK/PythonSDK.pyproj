@@ -23,6 +23,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="foundationallm\config\context.py" />
+    <Compile Include="foundationallm\config\environment_variables.py" />
     <Compile Include="foundationallm\config\user_identity.py" />
     <Compile Include="foundationallm\hubs\data_source\data_sources\cxo\cxo_data_source_metadata.py" />
     <Compile Include="foundationallm\hubs\data_source\data_sources\cxo\__init__.py" />
@@ -38,7 +39,6 @@
     <Compile Include="foundationallm\langchain\retrievers\search_service_filter_retriever.py" />
     <Compile Include="foundationallm\langchain\retrievers\azure_ai_search_service_retriever.py" />
     <Compile Include="foundationallm\langchain\retrievers\__init__.py" />
-    <Compile Include="foundationallm\models\agent_hint.py" />
     <Compile Include="foundationallm\langchain\language_models\openai\openai_model.py" />
     <Compile Include="foundationallm\models\language_models\embedding_model.py" />
     <Compile Include="foundationallm\models\language_models\__init__.py" />

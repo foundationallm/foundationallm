@@ -18,5 +18,11 @@ namespace FoundationaLLM.Common.Models.Orchestration
         /// </summary>
         [JsonPropertyName("user_prompt")]
         public required string UserPrompt { get; set; }
+
+        /// <summary>
+        /// Settings for the orchestration request.
+        /// </summary>
+        [JsonPropertyName("settings")]
+        public OrchestrationSettings? Settings { get; set; }
     }
 }

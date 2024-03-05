@@ -10,6 +10,7 @@ namespace FoundationaLLM.Prompt.Models.Metadata
     [JsonDerivedType(typeof(MultipartPrompt), "multipart")]
     public class PromptBase : ResourceBase
     {
+        /// <inheritdoc/>
         [JsonIgnore]
         public override string? Type { get; set; }
     }

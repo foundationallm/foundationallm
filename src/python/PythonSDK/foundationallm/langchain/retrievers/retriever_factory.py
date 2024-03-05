@@ -1,4 +1,5 @@
 from azure.core.credentials import AzureKeyCredential
+from azure.identity import DefaultAzureCredential
 from langchain_core.retrievers import BaseRetriever
 from foundationallm.config import Configuration
 from foundationallm.langchain.language_models.openai import OpenAIModel
@@ -53,6 +54,17 @@ class RetrieverFactory:
         #vector_store_type = self.indexing_profile["indexer"]        
         #match vector_store_type:
         #    case "AzureAISearchIndexer":
+        
+        credential_type = self.config.get_value(self.indexing_profile.configuration_references.authentication_type)
+        credential = None
+        if credential_type == "AzureIdentity":            
+            credential = DefaultAzureCredential()
+        else:
+            credential = AzureKeyCredential(
+                self.config.get_value(
+                    self.indexing_profile.configuration_references.query_api_key
+                )
+            )
 
         retriever = AzureAISearchServiceRetriever( 
             endpoint = self.config.get_value(self.indexing_profile.configuration_references.endpoint),
@@ -61,11 +73,7 @@ class RetrieverFactory:
             embedding_field_name = self.indexing_profile.settings.embedding_field_name,
             text_field_name = self.indexing_profile.settings.text_field_name,
             filters = self.indexing_profile.settings.filters,
-            credential = AzureKeyCredential(
-                self.config.get_value(
-                    self.indexing_profile.configuration_references.query_api_key
-                )
-            ),
+            credential = credential,            
             embedding_model = embedding_model
         )
         return retriever

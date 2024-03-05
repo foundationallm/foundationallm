@@ -6,7 +6,7 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "HOSTNAME": "VectorizationAPI"
+        "HOSTNAME": "localhost"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5144"
@@ -17,7 +17,7 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "HOSTNAME": "VectorizationAPI"
+        "HOSTNAME": "localhost"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7047;http://localhost:5144"
@@ -28,7 +28,7 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "HOSTNAME": "VectorizationAPI"
+        "HOSTNAME": "localhost"
       }
     },
     "Docker": {
@@ -38,7 +38,7 @@
       "environmentVariables": {
         "ASPNETCORE_HTTPS_PORTS": "8081",
         "ASPNETCORE_HTTP_PORTS": "8080",
-        "HOSTNAME": "VectorizationAPI"
+        "HOSTNAME": "localhost"
       },
       "publishAllPorts": true,
       "useSSL": true
@@ -49,8 +49,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:39338",
-      "sslPort": 44354
+      "applicationUrl": "http://localhost:53508/",
+      "sslPort": 44389
     }
   }
 }

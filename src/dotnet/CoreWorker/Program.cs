@@ -1,4 +1,5 @@
 using Azure.Identity;
+using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
@@ -6,6 +7,8 @@ using FoundationaLLM.Core.Services;
 using FoundationaLLM.Core.Worker;
 
 var builder = Host.CreateApplicationBuilder(args);
+
+DefaultAuthentication.Production = builder.Environment.IsProduction();
 
 builder.Configuration.Sources.Clear();
 builder.Configuration.AddJsonFile("appsettings.json", false, true);
@@ -16,7 +19,7 @@ builder.Configuration.AddAzureAppConfiguration(options =>
 
     options.ConfigureKeyVault(options =>
     {
-        options.SetCredential(new DefaultAzureCredential());
+        options.SetCredential(DefaultAuthentication.GetAzureCredential());
     });
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_CoreWorker);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_CosmosDB);

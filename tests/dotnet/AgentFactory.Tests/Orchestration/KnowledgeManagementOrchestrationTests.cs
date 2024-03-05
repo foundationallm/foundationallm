@@ -15,7 +15,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Orchestration
         private ILLMOrchestrationService _orchestrationService = Substitute.For<ILLMOrchestrationService>();
         private IPromptHubAPIService _promptHubService = Substitute.For<IPromptHubAPIService>();
         private IDataSourceHubAPIService _dataSourceHubService = Substitute.For<IDataSourceHubAPIService>();
-        private ILogger<LegacyOrchestration> _logger = Substitute.For<ILogger<LegacyOrchestration>>();
+        private ILogger<OrchestrationBase> _logger = Substitute.For<ILogger<OrchestrationBase>>();
 
         public KnowledgeManagementOrchestrationTests()
         {

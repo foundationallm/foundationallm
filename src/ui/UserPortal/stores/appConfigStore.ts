@@ -9,8 +9,6 @@ export const useAppConfigStore = defineStore('appConfig', {
 
 		// Layout: These settings impact the structural layout of the chat interface.
 		isKioskMode: false,
-		allowAgentHint: false,
-		agents: [],
 
 		// Style: These settings impact the visual style of the chat interface.
 		pageTitle: null,
@@ -43,8 +41,6 @@ export const useAppConfigStore = defineStore('appConfig', {
 			const [
 				apiUrl,
 				isKioskMode,
-				allowAgentHint,
-				agents,
 				pageTitle,
 				logoUrl,
 				logoText,
@@ -66,11 +62,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				authCallbackPath,
 			] = await Promise.all([
 				api.getConfigValue('FoundationaLLM:APIs:CoreAPI:APIUrl'),
-				
-				api.getConfigValue('FoundationaLLM:Branding:KioskMode'),
-				api.getConfigValue('.appconfig.featureflag/FoundationaLLM-AllowAgentHint'),
-				api.getConfigValue('FoundationaLLM:Branding:AllowAgentSelection'),
-				
+				api.getConfigValue('FoundationaLLM:Branding:KioskMode'),				
 				api.getConfigValue('FoundationaLLM:Branding:PageTitle'),
 				api.getConfigValue('FoundationaLLM:Branding:LogoUrl'),
 				api.getConfigValue('FoundationaLLM:Branding:LogoText'),
@@ -84,8 +76,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				api.getConfigValue('FoundationaLLM:Branding:PrimaryButtonBackgroundColor'),
 				api.getConfigValue('FoundationaLLM:Branding:PrimaryButtonTextColor'),
 				api.getConfigValue('FoundationaLLM:Branding:SecondaryButtonBackgroundColor'),
-				api.getConfigValue('FoundationaLLM:Branding:SecondaryButtonTextColor'),
-				
+				api.getConfigValue('FoundationaLLM:Branding:SecondaryButtonTextColor'),				
 				api.getConfigValue('FoundationaLLM:Chat:Entra:ClientId'),
 				api.getConfigValue('FoundationaLLM:Chat:Entra:Instance'),
 				api.getConfigValue('FoundationaLLM:Chat:Entra:TenantId'),
@@ -96,8 +87,6 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.apiUrl = apiUrl;
 
 			this.isKioskMode = JSON.parse(isKioskMode.toLowerCase());
-			this.allowAgentHint = JSON.parse(allowAgentHint.toLowerCase())?.enabled;
-			this.agents = agents.split(', ');
 
 			this.pageTitle = pageTitle;
 			this.logoUrl = logoUrl;

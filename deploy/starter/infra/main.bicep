@@ -2,25 +2,30 @@ targetScope = 'subscription'
 
 param appRegistrations array
 
-@minLength(1)
-@maxLength(64)
+param createDate string = utcNow('u')
+
+@maxLength(32)
 @description('Name of the environment that can be used as part of naming resource convention')
 param environmentName string
 
-@minLength(1)
+param instanceId string = guid(subscription().id, location, environmentName)
+
 @description('Primary location for all resources')
 param location string
 
-param servicesExist object
-@secure()
-param serviceDefinition object
-param services array
+param existingOpenAiInstance object
 
 @description('Id of the user or app to assign application roles')
 param principalId string
 
-param instanceId string = guid(subscription().id, location, environmentName)
+@secure()
+param serviceDefinition object
 
+param services array
+
+param servicesExist object
+
+/********** Locals **********/
 var clientSecrets = [
   {
     name: 'foundationallm-apis-chat-ui-entra-clientsecret'
@@ -52,24 +57,47 @@ var clientSecrets = [
   }
 ]
 
+var deployOpenAi = empty(existingOpenAiInstance.name)
+var azureOpenAiEndpoint = deployOpenAi ? openAi.outputs.endpoint : customerOpenAi.properties.endpoint
+var azureOpenAi = deployOpenAi ? openAiInstance : existingOpenAiInstance
+var openAiInstance = {
+  name: openAi.outputs.name
+  resourceGroup: rg.name
+  subscriptionId: subscription().subscriptionId
+}
+
 // Tags that should be applied to all resources.
-// 
+//
 // Note that 'azd-service-name' tags should be applied separately to service host resources.
 // Example usage:
 //   tags: union(tags, { 'azd-service-name': <service name in azure.yaml> })
 var tags = {
   'azd-env-name': environmentName
+  'compute-type': 'container-app'
+  'create-date': createDate
 }
 
 var abbrs = loadJsonContent('./abbreviations.json')
 var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
 
+/********** Resources **********/
 resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: 'rg-${environmentName}'
   location: location
   tags: tags
 }
 
+resource customerOpenAiResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' existing = if (!deployOpenAi) {
+  scope: subscription(existingOpenAiInstance.subscriptionId)
+  name: existingOpenAiInstance.resourceGroup
+}
+
+resource customerOpenAi 'Microsoft.CognitiveServices/accounts@2023-05-01' existing = if (!deployOpenAi) {
+  name: existingOpenAiInstance.name
+  scope: customerOpenAiResourceGroup
+}
+
+/********** Nested Modules **********/
 module appConfig './shared/app-config.bicep' = {
   name: 'app-config'
   params: {
@@ -93,7 +121,7 @@ module contentSafety './shared/content-safety.bicep' = {
     tags: tags
   }
   scope: rg
-  dependsOn: [ keyVault, openAi ]
+  dependsOn: [ keyVault ]
 }
 
 module cosmosDb './shared/cosmosdb.bicep' = {
@@ -134,14 +162,12 @@ module cosmosDb './shared/cosmosdb.bicep' = {
 module cogSearch './shared/search.bicep' = {
   name: 'cogsearch'
   params: {
-    keyvaultName: keyVault.outputs.name
     location: location
     name: '${abbrs.searchSearchServices}${resourceToken}'
     sku: 'basic'
     tags: tags
   }
   scope: rg
-  dependsOn: [ keyVault ]
 }
 
 module dashboard './shared/dashboard-web.bicep' = {
@@ -202,9 +228,17 @@ module monitoring './shared/monitoring.bicep' = {
   dependsOn: [ keyVault ]
 }
 
-module openAi './shared/openai.bicep' = {
+module openAi './shared/openai.bicep' = if (deployOpenAi) {
+  dependsOn: [ keyVault ]
   name: 'openai'
+  scope: rg
+
   params: {
+    location: location
+    name: '${abbrs.openAiAccounts}${resourceToken}'
+    sku: 'S0'
+    tags: tags
+
     deployments: [
       {
         name: 'completions'
@@ -229,14 +263,18 @@ module openAi './shared/openai.bicep' = {
         }
       }
     ]
+  }
+}
+
+module openAiSecrets './shared/openai-secrets.bicep' = {
+  name: 'openaiSecrets'
+  scope: rg
+
+  params: {
     keyvaultName: keyVault.outputs.name
-    location: location
-    name: '${abbrs.openAiAccounts}${resourceToken}'
-    sku: 'S0'
+    openAiInstance: azureOpenAi
     tags: tags
   }
-  scope: rg
-  dependsOn: [ keyVault ]
 }
 
 module registry './shared/registry.bicep' = {
@@ -366,43 +404,43 @@ module appsEnv './shared/apps-env.bicep' = {
 }
 
 @batchSize(3)
-module acaServices './app/acaService.bicep' = [ for service in services: {
-    name: service.name
-    params: {
-      name: '${abbrs.appContainerApps}${service.name}${resourceToken}'
-      location: location
-      tags: tags
-      appConfigName: appConfig.outputs.name
-      eventgridName: eventgrid.outputs.name
-      identityName: '${abbrs.managedIdentityUserAssignedIdentities}${service.name}-${resourceToken}'
-      keyvaultName: keyVault.outputs.name
-      applicationInsightsName: monitoring.outputs.applicationInsightsName
-      containerAppsEnvironmentName: appsEnv.outputs.name
-      containerRegistryName: registry.outputs.name
-      exists: servicesExist['${service.name}'] == 'true'
-      appDefinition: serviceDefinition
-      hasIngress: service.hasIngress
-      imageName: service.image
-      envSettings: service.useEndpoint ? [
-        {
-          name: service.appConfigEnvironmentVarName
-          value: appConfig.outputs.endpoint
-        }
-      ] : []
-      secretSettings: service.useEndpoint ? [] : [
-        {
-          name: service.appConfigEnvironmentVarName
-          value: appConfig.outputs.connectionStringSecretRef
-          secretRef: 'appconfig-connection-string'
-        }
-      ]
-      apiKeySecretName: service.apiKeySecretName
-      serviceName: service.name
-    }
-    scope: rg
-    dependsOn: [ appConfig, cogSearch, contentSafety, cosmosDb, keyVault, monitoring, openAi, storage ]
+module acaServices './app/acaService.bicep' = [for service in services: {
+  name: service.name
+  params: {
+    name: '${abbrs.appContainerApps}${service.name}${resourceToken}'
+    location: location
+    tags: tags
+    appConfigName: appConfig.outputs.name
+    eventgridName: eventgrid.outputs.name
+    cogsearchName: cogSearch.outputs.name
+    identityName: '${abbrs.managedIdentityUserAssignedIdentities}${service.name}-${resourceToken}'
+    keyvaultName: keyVault.outputs.name
+    applicationInsightsName: monitoring.outputs.applicationInsightsName
+    containerAppsEnvironmentName: appsEnv.outputs.name
+    containerRegistryName: registry.outputs.name
+    exists: servicesExist['${service.name}'] == 'true'
+    appDefinition: serviceDefinition
+    hasIngress: service.hasIngress
+    imageName: service.image
+    envSettings: service.useEndpoint ? [
+      {
+        name: service.appConfigEnvironmentVarName
+        value: appConfig.outputs.endpoint
+      }
+    ] : []
+    secretSettings: service.useEndpoint ? [] : [
+      {
+        name: service.appConfigEnvironmentVarName
+        value: appConfig.outputs.connectionStringSecretRef
+        secretRef: 'appconfig-connection-string'
+      }
+    ]
+    apiKeySecretName: service.apiKeySecretName
+    serviceName: service.name
   }
-]
+  scope: rg
+  dependsOn: [ appConfig, cogSearch, contentSafety, cosmosDb, keyVault, monitoring, storage ]
+}]
 
 output AZURE_APP_CONFIG_NAME string = appConfig.outputs.name
 output AZURE_COGNITIVE_SEARCH_ENDPOINT string = cogSearch.outputs.endpoint
@@ -413,7 +451,7 @@ output AZURE_EVENT_GRID_ENDPOINT string = eventgrid.outputs.endpoint
 output AZURE_EVENT_GRID_ID string = eventgrid.outputs.id
 output AZURE_KEY_VAULT_NAME string = keyVault.outputs.name
 output AZURE_KEY_VAULT_ENDPOINT string = keyVault.outputs.endpoint
-output AZURE_OPENAI_ENDPOINT string = openAi.outputs.endpoint
+output AZURE_OPENAI_ENDPOINT string = azureOpenAiEndpoint
 output AZURE_STORAGE_ACCOUNT_NAME string = storage.outputs.name
 
 var appRegNames = [for appRegistration in appRegistrations: appRegistration.name]

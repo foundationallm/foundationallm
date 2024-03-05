@@ -121,12 +121,13 @@ module storageRoleAssignments 'utility/roleAssignments.bicep' = {
 }
 
 @description('API Key for microservice (only created if not using Entra)')
-module apiKeySecret 'kvSecret.bicep' = if (!useOidc) {
+// module apiKeySecret 'kvSecret.bicep' = if (!useOidc) {
+module apiKeySecret 'kvSecret.bicep' = {
   name: 'apiKey-${serviceName}-${timestamp}'
   scope: resourceGroup(opsResourceGroupName)
   params: {
     kvName: kvName
-    secretName: 'foundationallm-apis-${serviceName}-apikey'
+    secretName: 'foundationallm-apis-${replace(serviceName,'-','')}-apikey'
     secretValue: useOidc ? '' : apiKey
     tags: tags
   }

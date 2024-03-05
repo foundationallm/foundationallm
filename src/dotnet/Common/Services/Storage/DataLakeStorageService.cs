@@ -2,6 +2,7 @@
 using Azure.Identity;
 using Azure.Storage;
 using Azure.Storage.Files.DataLake;
+using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Storage;
@@ -112,6 +113,6 @@ namespace FoundationaLLM.Common.Services.Storage
         protected override void CreateClientFromIdentity(string accountName) =>
             _dataLakeClient = new DataLakeServiceClient(
                 new Uri($"https://{accountName}.dfs.core.windows.net"),
-                new DefaultAzureCredential());
+                DefaultAuthentication.GetAzureCredential());
     }
 }

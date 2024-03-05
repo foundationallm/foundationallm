@@ -13,6 +13,7 @@ using System.Security.Cryptography.X509Certificates;
 using System;
 using PnP.Core.Model.SharePoint;
 using FoundationaLLM.Common.Models.TextEmbedding;
+using FoundationaLLM.Common.Authentication;
 
 namespace FoundationaLLM.Vectorization.Services.ContentSources
 {
@@ -90,11 +91,11 @@ namespace FoundationaLLM.Vectorization.Services.ContentSources
         {
             ValidateSettings();
 
-            var certificateClient = new CertificateClient(new Uri(_settings.KeyVaultURL!), new DefaultAzureCredential());
+            var certificateClient = new CertificateClient(new Uri(_settings.KeyVaultURL!), DefaultAuthentication.GetAzureCredential());
             var certificateWithPolicy = await certificateClient.GetCertificateAsync(_settings.CertificateName);
             var certificateIdentifier = new KeyVaultSecretIdentifier(certificateWithPolicy.Value.SecretId);
 
-            var secretClient = new SecretClient(new Uri(_settings.KeyVaultURL!), new DefaultAzureCredential());
+            var secretClient = new SecretClient(new Uri(_settings.KeyVaultURL!), DefaultAuthentication.GetAzureCredential());
             var secret = await secretClient.GetSecretAsync(certificateIdentifier.Name, certificateIdentifier.Version);
             var secretBytes = Convert.FromBase64String(secret.Value.Value);
 

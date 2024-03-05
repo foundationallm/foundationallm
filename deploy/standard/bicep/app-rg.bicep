@@ -71,6 +71,8 @@ var opsResourceSuffix = '${project}-${environmentName}-${location}-ops'
 @description('Storage resource suffix')
 var storageResourceSuffix = '${project}-${environmentName}-${location}-storage'
 
+var oidcDefault = false
+
 @description('Resource Suffix used in naming resources.')
 var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
 
@@ -346,7 +348,7 @@ module vectorizationApiServiceResources 'modules/service.bicep' = [for service i
     serviceName: service.key
     storageResourceGroupName: storageResourceGroupName
     tags: tags
-    useOidc: true
+    useOidc: false
   }
 }
 ]

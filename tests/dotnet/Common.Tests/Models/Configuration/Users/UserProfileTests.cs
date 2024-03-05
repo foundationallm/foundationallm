@@ -10,20 +10,14 @@ namespace FoundationaLLM.Common.Tests.Models.Configuration.Users
         {
             // Arrange
             string expectedUPN = "testuser@example.com";
-            var expectedPrivateAgents = new List<AgentHint>
-        {
-            new AgentHint { Name = "Agent1", Private = true },
-            new AgentHint { Name = "Agent2", Private = true }
-        };
-
+            
             // Act
-            var userProfile = new UserProfile(expectedUPN, expectedPrivateAgents);
+            var userProfile = new UserProfile(expectedUPN);
 
             // Assert
             Assert.Equal(expectedUPN, userProfile.UPN);
             Assert.Equal(expectedUPN, userProfile.Id);
             Assert.Equal(nameof(UserProfile), userProfile.Type);
-            Assert.Equal(expectedPrivateAgents, userProfile.PrivateAgents);
         }
     }
 }

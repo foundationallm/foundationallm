@@ -33,11 +33,6 @@ namespace FoundationaLLM.Common.Tests.Services
                 Username = "TestUsername",
                 Name = "TestName"
             };
-            var agentHint = new AgentHint
-            {
-                Name = "TestAgentHint",
-                Private = false
-            };
 
             _apiSettings.DownstreamAPIs.Returns(new System.Collections.Generic.Dictionary<string, DownstreamAPIKeySettings>
             {
@@ -51,7 +46,6 @@ namespace FoundationaLLM.Common.Tests.Services
             });
 
             _callContext.CurrentUserIdentity.Returns(userContext);
-            _callContext.AgentHint.Returns(agentHint);
 
             var httpClient = new HttpClient();
             _httpClientFactory.CreateClient(clientName).Returns(httpClient);
@@ -66,7 +60,6 @@ namespace FoundationaLLM.Common.Tests.Services
             Assert.Equal(httpClient.Timeout, TimeSpan.FromSeconds(600));
             Assert.Equal(result.DefaultRequestHeaders.GetValues(Constants.HttpHeaders.APIKey), new[] { apiKey });
             Assert.Equal(result.DefaultRequestHeaders.GetValues(Constants.HttpHeaders.UserIdentity), new[] { JsonSerializer.Serialize(userContext) });
-            Assert.Equal(result.DefaultRequestHeaders.GetValues(Constants.HttpHeaders.AgentHint), new[] { JsonSerializer.Serialize(agentHint) });
         }
     }
 }

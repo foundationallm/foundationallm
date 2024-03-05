@@ -58,22 +58,13 @@ public class AgentHubAPIService(
     }
 
     /// <inheritdoc/>
-    public async Task<AgentHubResponse> ResolveRequest(string userPrompt, string sessionId,
-        string? agentHintOverride = null)
+    public async Task<AgentHubResponse> ResolveRequest(string userPrompt, string sessionId)
     {
         try
         {
             var request = new AgentHubRequest { UserPrompt = userPrompt, SessionId = sessionId };
 
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.AgentHubAPI);
-
-            if (!string.IsNullOrWhiteSpace(agentHintOverride))
-            {
-                var agentHint = JsonSerializer.Serialize(
-                    new AgentHint { Name = agentHintOverride },
-                    _jsonSerializerOptions);
-                client.DefaultRequestHeaders.Add(HttpHeaders.AgentHint, agentHint);
-            }
                         
             var responseMessage = await client.PostAsync("resolve", new StringContent(
                     JsonSerializer.Serialize(request, _jsonSerializerOptions),

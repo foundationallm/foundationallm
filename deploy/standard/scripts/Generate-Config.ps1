@@ -138,6 +138,17 @@ $vectorizationConfig = $(
         ConvertTo-Json -Compress -Depth 50
 ).Replace('"', '\"')
 
+## Getting OpenAI endpoint
+$apim = $(
+    az apim list `
+        --resource-group $($resourceGroups.oai) `
+        --query "[].{name:name, uri: gatewayUrl, privateIPAddress:privateIpAddresses[0], fqdn:hostnameConfigurations[0].hostName}" `
+        --output json | `
+        ConvertFrom-Json
+)
+$apim = EnsureAndReturnFirstItem $apim "OpenAI Endpoint (APIM)"
+Write-Host "OpenAI Frontend Endpoint: $($apim.name)" -ForegroundColor Blue
+
 $appConfigInstances = @(
     az appconfig show `
         --name "appconfig-$resourceSuffix-ops" `
@@ -162,7 +173,7 @@ $appConfigProperties = $(
         ConvertFrom-Json
 )
 
-$appConfigName = $appConfigProperties.name
+$appConfigName = $appConfig
 $appConfigEndpoint = $appConfigProperties.endpoint
 $appConfigConnectionString = $(
     az appconfig credential list `
@@ -172,39 +183,6 @@ $appConfigConnectionString = $(
         --output json | `
         ConvertFrom-Json
 ).connectionString
-
-## Getting CosmosDb info
-$docdb = $(
-    az cosmosdb list `
-        --resource-group $($resourceGroups.storage) `
-        --query "[?kind=='GlobalDocumentDB'].{name: name, kind:kind, documentEndpoint:documentEndpoint, privateEndpointId:privateEndpointConnections[0].privateEndpoint.id}" `
-        --output json | `
-        ConvertFrom-Json
-)
-$docdb = EnsureAndReturnFirstItem $docdb "CosmosDB (Document Db)"
-Write-Host "Document Db Account: $($docdb.name)" -ForegroundColor Blue
-
-## Getting Content Safety endpoint
-$contentSafety = $(
-    az cognitiveservices account list `
-        --resource-group $($resourceGroups.oai) `
-        --query "[?kind=='ContentSafety'].{name:name, uri: properties.endpoint, privateEndpointId:properties.privateEndpointConnections[0].properties.privateEndpoint.id}" `
-        --output json | `
-        ConvertFrom-Json
-)
-$contentSafety = EnsureAndReturnFirstItem $contentSafety "Content Safety"
-Write-Host "Content Safety Account: $($contentSafety.name)" -ForegroundColor Blue
-
-## Getting OpenAI endpoint
-$apim = $(
-    az apim list `
-        --resource-group $($resourceGroups.oai) `
-        --query "[].{name:name, uri: gatewayUrl, privateIPAddress:privateIpAddresses[0], fqdn:hostnameConfigurations[0].hostName}" `
-        --output json | `
-        ConvertFrom-Json
-)
-$apim = EnsureAndReturnFirstItem $apim "OpenAI Endpoint (APIM)"
-Write-Host "OpenAI Frontend Endpoint: $($apim.name)" -ForegroundColor Blue
 
 ## Getting Cognitive search endpoint
 $cogSearch = $(
@@ -217,6 +195,47 @@ $cogSearch = $(
 $cogSearch = EnsureAndReturnFirstItem $cogSearch "Cognitive Search"
 Write-Host "Cognitive Search Service: $($cogSearch.name)" -ForegroundColor Blue
 $cogSearchUri = "https://$($cogSearch.name).search.windows.net"
+
+## Getting Content Safety endpoint
+$contentSafety = $(
+    az cognitiveservices account list `
+        --resource-group $($resourceGroups.oai) `
+        --query "[?kind=='ContentSafety'].{name:name, uri: properties.endpoint, privateEndpointId:properties.privateEndpointConnections[0].properties.privateEndpoint.id}" `
+        --output json | `
+        ConvertFrom-Json
+)
+$contentSafety = EnsureAndReturnFirstItem $contentSafety "Content Safety"
+Write-Host "Content Safety Account: $($contentSafety.name)" -ForegroundColor Blue
+
+## Getting CosmosDb info
+$docdb = $(
+    az cosmosdb list `
+        --resource-group $($resourceGroups.storage) `
+        --query "[?kind=='GlobalDocumentDB'].{name: name, kind:kind, documentEndpoint:documentEndpoint, privateEndpointId:privateEndpointConnections[0].privateEndpoint.id}" `
+        --output json | `
+        ConvertFrom-Json
+)
+$docdb = EnsureAndReturnFirstItem $docdb "CosmosDB (Document Db)"
+Write-Host "Document Db Account: $($docdb.name)" -ForegroundColor Blue
+
+$eventGridNamespace = $(
+    az eventgrid namespace list `
+        --resource-group $($resourceGroups.app) `
+        --output json | `
+        ConvertFrom-Json
+)
+
+$eventGridNamespace = EnsureAndReturnFirstItem $eventGridNamespace "Event Grid"
+
+$keyvault = $(
+    az keyvault list `
+        --resource-group $($resourceGroups.ops) `
+        --output json | `
+        ConvertFrom-Json
+)
+
+$keyvault = EnsureAndReturnFirstItem $keyvault "Key Vault"
+
 $tokens.cognitiveSearchEndpointUri = $cogSearchUri
 
 Write-Host "Getting ADLS Storage Account"
@@ -263,6 +282,10 @@ $tokens.contentSafetyEndpointUri = $contentSafety.uri
 
 $tokens.openAiEndpointUri = $apim.uri
 
+$tokens.eventGridNamespaceEndpoint = "https://$($eventGridNamespace.topicsConfiguration.hostname)/"
+
+$tokens.eventGridNamespaceId = $eventGridNamespace.id
+$tokens.keyvaultUri = $keyvault.properties.vaultUri
 
 $tokens.cosmosEndpoint = $docdb.documentEndpoint
 $tokens.storageAccountAdlsName = $storageAccountAdls.name

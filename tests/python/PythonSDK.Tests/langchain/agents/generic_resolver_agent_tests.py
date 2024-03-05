@@ -28,6 +28,7 @@ def test_completion_request():
             type="blob-storage",
             description="Information about FoundationaLLM demos.",
             configuration=BlobStorageConfiguration(
+                configuration_type="blob_storage",
                 connection_string_secret="FoundationaLLM:BlobStorageMemorySource:BlobStorageConnection",
                 container="demos-source",
                 files = ["demos.json"]

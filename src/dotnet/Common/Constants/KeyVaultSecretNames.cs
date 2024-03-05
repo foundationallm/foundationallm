@@ -163,5 +163,10 @@ namespace FoundationaLLM.Common.Constants
         /// The API key for the Azure Event Grid service.
         /// </summary>
         public const string FoundationaLLM_Events_AzureEventGrid_APIKey = "foundationallm-events-azureeventgrid-apikey";
+        /// <summary>
+        /// The foundationallm-datasource-resourceprovider-storage-connectionstring Key Vault secret name.
+        /// The connection string to the Azure Storage account used for the data source resource provider.
+        /// </summary>
+        public const string FoundationaLLM_DataSource_ResourceProvider_Storage_ConnectionString = "foundationallm-datasource-resourceprovider-storage-connectionstring";
     }
 }

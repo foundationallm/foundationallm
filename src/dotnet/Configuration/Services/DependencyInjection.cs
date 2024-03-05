@@ -33,8 +33,7 @@ namespace FoundationaLLM
             {
                 var keyVaultUri = builder.Configuration[AppConfigurationKeys.FoundationaLLM_Configuration_KeyVaultURI];
                 clientBuilder.AddSecretClient(new Uri(keyVaultUri!))
-                    .WithCredential(DefaultAuthentication.GetAzureCredential(
-                        builder.Environment.IsDevelopment()));
+                    .WithCredential(DefaultAuthentication.GetAzureCredential());
                 clientBuilder.AddConfigurationClient(
                     builder.Configuration[EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString]);
             });

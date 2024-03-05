@@ -62,28 +62,5 @@ namespace FoundationaLLM.Common.Tests.Middleware
             // Assert
             callContext.Received(1).CurrentUserIdentity = Arg.Is<UnifiedUserIdentity>(x => x.Username == userIdentity.Username && x.UPN == userIdentity.UPN && x.Name == userIdentity.Name);
         }
-
-        [Fact]
-        public async Task InvokeAsync_WithAgentHint_ShouldSetAgentHint()
-        {
-            // Arrange
-            var context = new DefaultHttpContext();
-            var claimsProviderService = Substitute.For<IUserClaimsProviderService>();
-            var callContext = Substitute.For<ICallContext>();
-            var instanceSettings = Options.Create<InstanceSettings>(Substitute.For<InstanceSettings>());
-            var middleware = new CallContextMiddleware(next: _ => Task.FromResult(0));
-            var agentHint = new AgentHint
-            {
-                Name = "test-agent-hint",
-                Private = false
-            };
-            context.Request.Headers[Constants.HttpHeaders.AgentHint] = JsonSerializer.Serialize(agentHint);
-
-            // Act
-            await middleware.InvokeAsync(context, claimsProviderService, callContext, instanceSettings);
-
-            // Assert
-            callContext.Received(1).AgentHint = Arg.Is<AgentHint>(x => x.Name == agentHint.Name && x.Private == agentHint.Private);
-        }
     }
 }

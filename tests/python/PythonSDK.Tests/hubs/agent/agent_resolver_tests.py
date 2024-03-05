@@ -76,13 +76,13 @@ class AgentResolverTests:
             agent_hub_request = AgentHubRequest(user_prompt="Tell me about FoundationaLLM?")
             agent_hub_response = agent_resolver.resolve(request=agent_hub_request,hint=AgentHint(name="test-only", private=False))
             assert agent_hub_response.agent.language_model is not None
-            assert agent_hub_response.agent.language_model.api_endpoint == "test_endpoint_config_setting_name"
-            assert agent_hub_response.agent.language_model.api_version == "test_endpoint_api_version_setting_name"
-            assert agent_hub_response.agent.language_model.api_key == "test_endpoint_api_key_setting_name"
-            assert agent_hub_response.agent.language_model.version == "test_model_version_setting_name"
-            assert agent_hub_response.agent.language_model.deployment == "test_model_deployment_setting_name"
+            assert agent_hub_response.agent.language_model.api_endpoint == "FoundationaLLM:AzureOpenAI:API:Endpoint"
+            assert agent_hub_response.agent.language_model.api_version == "FoundationaLLM:AzureOpenAI:API:Version"
+            assert agent_hub_response.agent.language_model.api_key == "FoundationaLLM:AzureOpenAI:API:Key"
+            assert agent_hub_response.agent.language_model.version == "FoundationaLLM:AzureOpenAI:API:Completions:ModelVersion"
+            assert agent_hub_response.agent.language_model.deployment == "FoundationaLLM:AzureOpenAI:API:Completions:DeploymentName"
             assert agent_hub_response.agent.embedding_model is not None
-            assert agent_hub_response.agent.embedding_model.api_endpoint == "test_endpoint_config_setting_name"
-            assert agent_hub_response.agent.embedding_model.api_version == "test_endpoint_api_version_setting_name"
-            assert agent_hub_response.agent.embedding_model.api_key == "test_endpoint_api_key_setting_name"
+            assert agent_hub_response.agent.embedding_model.api_endpoint == "FoundationaLLM:AzureOpenAI:API:Endpoint"
+            assert agent_hub_response.agent.embedding_model.api_version == "FoundationaLLM:AzureOpenAI:API:Version"
+            assert agent_hub_response.agent.embedding_model.api_key == "FoundationaLLM:AzureOpenAI:API:Key"
             

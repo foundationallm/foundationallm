@@ -1,13 +1,6 @@
 {
   "items": [
     {
-      "key": ".appconfig.featureflag/FoundationaLLM-AllowAgentHint",
-      "value": "{\"id\": \"FoundationaLLM-AllowAgentHint\", \"description\": \"\", \"enabled\": false, \"conditions\": {\"client_filters\": []}}",
-      "label": null,
-      "content_type": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
-      "tags": {}
-    },
-    {
       "key": "FoundationaLLM:APIs:AgentFactoryAPI:APIKey",
       "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/agent-factory-api-apikey\"}",
       "label": null,
@@ -478,14 +471,7 @@
     },
     {
       "key": "FoundationaLLM:Branding:AccentTextColor",
-      "value": "#fff",
-      "label": null,
-      "content_type": "",
-      "tags": {}
-    },
-    {
-      "key": "FoundationaLLM:Branding:AllowAgentSelection",
-      "value": "default, anomaly, hai, movies, sdzwa, weather, weather-sec",
+      "value": "#131833",
       "label": null,
       "content_type": "",
       "tags": {}
@@ -836,6 +822,20 @@
     {
       "key": "FoundationaLLM:DataSources:AboutFoundationaLLM:BlobStorage:ConnectionString",
       "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/storage-connection\"}",
+      "label": null,
+      "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+      "tags": {}
+    },
+    {
+      "key": "FoundationaLLM:DataSource:ResourceProviderService:Storage:AuthenticationType",
+      "value": "ConnectionString",
+      "label": null,
+      "content_type": "",
+      "tags": {}
+    },
+    {
+      "key": "FoundationaLLM:DataSource:ResourceProviderService:Storage:ConnectionString",
+      "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-datasource-resourceprovider-storage-connectionstring\"}",
       "label": null,
       "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
       "tags": {}

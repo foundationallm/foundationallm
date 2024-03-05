@@ -1,12 +1,6 @@
 [
   {
     "keyVault": false,
-    "featureFlag": true,
-    "key": ".appconfig.featureflag/FoundationaLLM-AllowAgentHint",
-    "value": "FoundationaLLM-AllowAgentHint"
-  },
-  {
-    "keyVault": false,
     "featureFlag": false,
     "key": "FoundationaLLM:AgentHub:AgentMetadata:StorageContainer",
     "value": "agents"
@@ -33,7 +27,7 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:AgentFactoryAPI:APIKey",
-    "value": "foundationallm-apis-agent-factory-api-apikey"
+    "value": "foundationallm-apis-agentfactoryapi-apikey"
   },
   {
     "keyVault": false,
@@ -57,7 +51,7 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:AgentHubAPI:APIKey",
-    "value": "foundationallm-apis-agent-hub-api-apikey"
+    "value": "foundationallm-apis-agenthubapi-apikey"
   },
   {
     "keyVault": false,
@@ -93,7 +87,7 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:DataSourceHubAPI:APIKey",
-    "value": "foundationallm-apis-data-source-hub-api-apikey"
+    "value": "foundationallm-apis-datasourcehubapi-apikey"
   },
   {
     "keyVault": false,
@@ -111,7 +105,7 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:GatekeeperAPI:APIKey",
-    "value": "foundationallm-apis-gatekeeper-api-apikey"
+    "value": "foundationallm-apis-gatekeeperapi-apikey"
   },
   {
     "keyVault": false,
@@ -147,7 +141,7 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:GatekeeperIntegrationAPI:APIKey",
-    "value": "foundationallm-apis-gatekeeper-integration-api-apikey"
+    "value": "foundationallm-apis-gatekeeperintegrationapi-apikey"
   },
   {
     "keyVault": false,
@@ -165,7 +159,7 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:LangChainAPI:APIKey",
-    "value": "foundationallm-apis-langchain-api-apikey"
+    "value": "foundationallm-apis-langchainapi-apikey"
   },
   {
     "keyVault": false,
@@ -207,7 +201,7 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:PromptHubAPI:APIKey",
-    "value": "foundationallm-apis-prompt-hub-api-apikey"
+    "value": "foundationallm-apis-prompthubapi-apikey"
   },
   {
     "keyVault": false,
@@ -225,7 +219,7 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:SemanticKernelAPI:APIKey",
-    "value": "foundationallm-apis-semantic-kernel-api-apikey"
+    "value": "foundationallm-apis-semantickernelapi-apikey"
   },
   {
     "keyVault": false,
@@ -249,7 +243,7 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:VectorizationAPI:APIKey",
-    "value": "foundationallm-apis-vectorization-api-apikey"
+    "value": "foundationallm-apis-vectorizationapi-apikey"
   },
   {
     "keyVault": false,
@@ -273,7 +267,7 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:APIs:VectorizationWorker:APIKey",
-    "value": "foundationallm-apis-vectorization-job-apikey"
+    "value": "foundationallm-apis-vectorizationjob-apikey"
   },
   {
     "keyVault": false,
@@ -424,12 +418,6 @@
     "featureFlag": false,
     "key": "FoundationaLLM:Branding:AccentTextColor",
     "value": "#fff"
-  },
-  {
-    "keyVault": false,
-    "featureFlag": false,
-    "key": "FoundationaLLM:Branding:AllowAgentSelection",
-    "value": "default, anomaly, hai, movies, sdzwa, weather, weather-sec"
   },
   {
     "keyVault": false,
@@ -620,12 +608,6 @@
   {
     "keyVault": false,
     "featureFlag": false,
-    "key": "FoundationaLLM:Configuration:KeyVaultURI",
-    "value": "https://{{opsKeyVaultFqdn}}"
-  },
-  {
-    "keyVault": false,
-    "featureFlag": false,
     "key": "FoundationaLLM:CoreAPI:Entra:CallbackPath",
     "value": "/signin-oidc"
   },
@@ -700,6 +682,18 @@
     "featureFlag": false,
     "key": "FoundationaLLM:CosmosDB:MonitoredContainers",
     "value": "Sessions"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:DataSource:ResourceProviderService:Storage:AuthenticationType",
+    "value": "ConnectionString"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:DataSource:ResourceProviderService:Storage:ConnectionString",
+    "value": "foundationallm-datasource-resourceprovider-storage-connectionstring"
   },
   {
     "keyVault": false,
@@ -801,6 +795,24 @@
     "value": "{{instanceId}}"
   },
   {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Configuration:KeyVaultURI",
+    "value": "{{keyvaultUri}}"
+  },
+  {
+    "keyVault": false,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Configuration:ResourceProviderService:Storage:AuthenticationType",
+    "value": "ConnectionString"
+  },
+  {
+    "keyVault": true,
+    "featureFlag": false,
+    "key": "FoundationaLLM:Configuration:ResourceProviderService:Storage:ConnectionString",
+    "value": "foundationallm-configuration-resourceprovider-storage-connectionstring"
+  },
+  {
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:LangChain:CSVFile:URL",
@@ -828,7 +840,7 @@
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:LangChainAPI:Key",
-    "value": "foundationallm-apis-langchain-api-apikey"
+    "value": "foundationallm-apis-langchainapi-apikey"
   },
   {
     "keyVault": false,
@@ -933,12 +945,6 @@
     "value": "foundationallm-storage-connectionstring"
   },
   {
-    "keyVault": false,
-    "featureFlag": false,
-    "key": "FoundationaLLM:Refinement",
-    "value": ""
-  },
-  {
     "keyVault": true,
     "featureFlag": false,
     "key": "FoundationaLLM:SemanticKernelAPI:OpenAI:Key",
@@ -1007,7 +1013,7 @@
   {
     "keyVault": false,
     "featureFlag": false,
-    "key": "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.MessagesMaxToken",
+    "key": "FoundationaLLM:SemanticKernelAPI:OpenAI.PromptOptimization.MessagesMaxTokens",
     "value": "3000"
   },
   {

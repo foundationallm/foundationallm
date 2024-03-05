@@ -21,7 +21,6 @@ namespace FoundationaLLM.Common.Interfaces
         /// The headers added to the request are:
         /// - X-API-KEY: The API key for the target API.
         /// - X-USER-IDENTITY: The user identity information for the current user.
-        /// - X-AGENT-HINT: The agent hint provided in an incoming HTTP request, if any.
         /// </summary>
         /// <param name="clientName">The named <see cref="HttpClient"/> client configuration.</param>
         /// <returns></returns>

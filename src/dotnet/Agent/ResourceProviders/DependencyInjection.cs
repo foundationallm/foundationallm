@@ -15,12 +15,12 @@ using Microsoft.Extensions.Options;
 namespace FoundationaLLM
 {
     /// <summary>
-    /// Agent Resource Provider service implementation of resource provider dependency injection extensions.
+    /// Agent resource provider service implementation of resource provider dependency injection extensions.
     /// </summary>
     public static partial class DependencyInjection
     {
         /// <summary>
-        /// Register the handler as a hosted service, passing the step name to the handler ctor
+        /// Add the Agent resource provider and its related services the the dependency injection container.
         /// </summary>
         /// <param name="services">Application builder service collection</param>
         /// <param name="configuration">The <see cref="IConfigurationManager"/> providing configuration services.</param>

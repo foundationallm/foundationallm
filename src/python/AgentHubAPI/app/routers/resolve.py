@@ -5,7 +5,6 @@ from typing import Optional
 from fastapi import APIRouter, Depends, Header, Request
 from foundationallm.config import Context
 from foundationallm.hubs.agent import AgentHub, AgentHubRequest, AgentHubResponse
-from foundationallm.models import AgentHint
 from foundationallm.telemetry import Telemetry
 from app.dependencies import handle_exception, validate_api_key_header
 
@@ -24,8 +23,7 @@ router = APIRouter(
 async def resolve(
     agent_request: AgentHubRequest,
     request : Request,
-    x_user_identity: Optional[str] = Header(None),
-    x_agent_hint: str = Header(None)) -> AgentHubResponse:
+    x_user_identity: Optional[str] = Header(None)) -> AgentHubResponse:
 
     """
     Resolves the best agent to use for the specified user prompt.
@@ -38,8 +36,6 @@ async def resolve(
         The underlying HTTP request.
     x_user_identity : str
         The optional X-USER-IDENTITY header value.
-    x_agent_hint : str
-        The optional X-AGENT-HINT header value.
     
     Returns
     -------
@@ -48,11 +44,10 @@ async def resolve(
     """
     with tracer.start_as_current_span('resolve') as span:
         try:
-            context = Context(user_identity=x_user_identity)
-            if x_agent_hint is not None and len(x_agent_hint.strip()) > 0:
-                agent_hint = AgentHint.model_validate_json(x_agent_hint)
-                return AgentHub(config=request.app.extra['config']).resolve(request=agent_request, user_context=context, hint=agent_hint)
-            return AgentHub(config=request.app.extra['config']).resolve(request=agent_request, user_context=context)
+            return AgentHub(config = request.app.extra['config']).resolve(
+                request = agent_request,
+                user_context = Context(user_identity=x_user_identity)
+            )
         except Exception as e:
             Telemetry.record_exception(span, e)
             handle_exception(e)

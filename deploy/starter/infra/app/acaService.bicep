@@ -4,6 +4,7 @@ param tags object = {}
 
 param appConfigName string
 param eventgridName string
+param cogsearchName string
 param identityName string
 param keyvaultName string
 param containerRegistryName string
@@ -218,6 +219,22 @@ resource apiKey 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = [
     }
   }
 ]
+
+resource search 'Microsoft.Search/searchServices@2022-09-01' existing = {
+  name: cogsearchName
+}
+
+resource searchIndexDataReaderRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: search
+  name: guid(subscription().id, resourceGroup().id, identity.id, 'searchIndexDataReaderRole')
+  properties: {
+    roleDefinitionId: subscriptionResourceId(
+      'Microsoft.Authorization/roleDefinitions', '1407120a-92aa-4202-b7e9-c0e197c71c8f')
+    principalType: 'ServicePrincipal'
+    principalId: identity.properties.principalId
+  }
+}
+
 
 output defaultDomain string = containerAppsEnvironment.properties.defaultDomain
 output name string = app.name

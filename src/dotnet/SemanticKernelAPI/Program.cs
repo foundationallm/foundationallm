@@ -30,6 +30,8 @@ namespace FoundationaLLM.SemanticKernel.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            DefaultAuthentication.Production = builder.Environment.IsProduction();
+
             builder.Configuration.Sources.Clear();
             builder.Configuration.AddJsonFile("appsettings.json", false, true);
             builder.Configuration.AddEnvironmentVariables();
@@ -38,7 +40,7 @@ namespace FoundationaLLM.SemanticKernel.API
                 options.Connect(builder.Configuration[EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString]);
                 options.ConfigureKeyVault(options =>
                 {
-                    options.SetCredential(new DefaultAzureCredential());
+                    options.SetCredential(DefaultAuthentication.GetAzureCredential());
                 });
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIs);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_DurableSystemPrompt);

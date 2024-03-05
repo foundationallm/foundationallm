@@ -312,6 +312,16 @@ var subnets = [
           access: 'Allow'
           destinationAddressPrefix: 'VirtualNetwork'
           destinationPortRange: '*'
+          name: 'allow-backend-aks'
+          priority: 256
+          protocol: '*'
+          sourcePortRange: '*'
+          sourceAddressPrefixes: [ '172.16.0.0/24' ]
+        }
+        {
+          access: 'Allow'
+          destinationAddressPrefix: 'VirtualNetwork'
+          destinationPortRange: '*'
           name: 'allow-vpn'
           priority: 512
           protocol: '*'

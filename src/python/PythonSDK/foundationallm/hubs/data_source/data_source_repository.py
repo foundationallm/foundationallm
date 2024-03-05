@@ -16,19 +16,24 @@ class DataSourceRepository(Repository):
 
     def get_metadata_values(self, pattern:List[str]=None) -> List[DataSourceMetadata]:
         """
-        Returns a list of DataSourceMetadata objects, optionally filtered by a pattern.
-        Background:
-            Agents may have allowed datasources defined.
-            In storage, they are stored as JSON files with the naming pattern
-            of datasourcename.json.
+        Retrieves a list of DataSourceMetadata objects, optionally filtered by a pattern.
+        Agents may have multiple datasources defined. In blob storage storage, they are
+        stored as JSON files with the naming pattern of datasourcename.json.
 
-        Args:
-        pattern (List[str]): The pattern defines the specific data sources to return (by name),
-                                if empty or None, return all data sources.
+        Parameters
+        ----------
+        pattern : List[str])
+            The pattern defines the specific data sources to return (by name).
+            If empty or None, return all data sources.
 
+        Returns
+        -------
+        List[DataSourceMetadata]
+            A list of DataSourceMetadata objects, optionally filtered by a pattern.
         """
-        mgr = DataSourceHubStorageManager(prefix=self.container_prefix, config=self.config)
+        mgr = DataSourceHubStorageManager(config=self.config)
         config_files = []
+        
         if pattern is None or len(pattern)== 0:
             config_files = mgr.list_blobs()
         else:
@@ -67,15 +72,24 @@ class DataSourceRepository(Repository):
 
     def get_metadata_by_name(self, name: str) -> DataSourceMetadata:
         """
-        Returns a DataSourceMetadata object by its name.
-        Args:
-            name:str is the name of the data source as well as the name of the configuration file.
+        Retrieves a DataSourceMetadata object by its name.
+
+        Parameters
+        ----------
+        name : str
+            The name of the data source as well as the name of the configuration file.
+
+        Returns
+        -------
+        DataSourceMetadata
+            A DataSourceMetadata object by name.
         """
-        mgr = DataSourceHubStorageManager(prefix=self.container_prefix, config=self.config)
+        mgr = DataSourceHubStorageManager(config=self.config)
         config_file = name + ".json"
         common_datasource_metadata = DataSourceMetadata.model_validate_json(
                         mgr.read_file_content(config_file))
         config = None
+        
         if common_datasource_metadata.underlying_implementation == \
                     UnderlyingImplementation.SQL:
             config = SQLDataSourceMetadata.model_validate_json(

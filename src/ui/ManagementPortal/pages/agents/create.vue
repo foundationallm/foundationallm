@@ -20,7 +20,7 @@
 				<div class="input-wrapper">
 					<InputText v-model="agentName" placeholder="Enter agent name" type="text" class="w-100" @input="handleNameInput" :disabled="editAgent" />
 					<span v-if="nameValidationStatus === 'valid'" class="icon valid" title="Name is available">✔️</span>
-        			<span v-else-if="nameValidationStatus === 'invalid'" class="icon invalid" :title="validationMessage">❌</span>
+							<span v-else-if="nameValidationStatus === 'invalid'" class="icon invalid" :title="validationMessage">❌</span>
 				</div>
 			</div>
 			<div class="span-2">
@@ -578,11 +578,13 @@ export default {
 		}
 
 		this.loading = false;
-
-		this.debouncedCheckName = debounce(this.checkName, 500);
 	},
 
 	methods: {
+		debouncedCheckName() {
+			return debounce(this.checkName, 500);
+		},
+
 		mapAgentToForm(agent: Agent) {
 			this.agentName = agent.name || this.agentName;
 			this.agentDescription = agent.description || this.agentDescription;
@@ -618,25 +620,25 @@ export default {
 		async checkName() {
 			try {
 				const response = await api.checkAgentName(this.agentName, this.agentType);
-				
+
 				// Handle response based on the status
-				if(response.status === "Allowed") {
+				if (response.status === 'Allowed') {
 					// Name is available
 					this.nameValidationStatus = 'valid';
-      				this.validationMessage = null;
-				} else if(response.status === "Denied") {
+					this.validationMessage = null;
+				} else if (response.status === 'Denied') {
 					// Name is taken
 					this.nameValidationStatus = 'invalid';
-      				this.validationMessage = response.message;
+					this.validationMessage = response.message;
 					// this.$toast.add({
 					// 	severity: 'warn',
 					// 	detail: `Agent name "${this.agentName}" is already taken for the selected ${response.type} agent type. Please choose another name.`,
 					// });
 				}
-			} catch(error) {
+			} catch (error) {
 				console.error("Error checking agent name: ", error);
 				this.nameValidationStatus = 'invalid';
-    			this.validationMessage = 'Error checking the agent name. Please try again.';
+				this.validationMessage = 'Error checking the agent name. Please try again.';
 			}
 		},
 
@@ -751,7 +753,7 @@ export default {
 				// Handle TextPartitioningProfile creation/update.
 				const tokenTextPartitionResponse = await api.createOrUpdateTextPartitioningProfile(this.agentName, tokenTextPartitionRequest);
 				const textPartitioningProfileObjectId = tokenTextPartitionResponse.objectId;
-				
+
 				const agentRequest: CreateAgentRequest = {
 					type: this.agentType,
 					name: this.agentName,
@@ -802,7 +804,7 @@ export default {
 					successMessage = `Agent "${this.agentName}" was succesfully created!`;
 					this.resetForm();
 				}
-			} catch(error) {
+			} catch (error) {
 				this.loading = false;
 				return this.$toast.add({
 					severity: 'error',
@@ -1014,27 +1016,27 @@ $editStepPadding: 16px;
 }
 
 .input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
+	position: relative;
+	display: flex;
+	align-items: center;
 }
 
 input {
-  width: 100%;
-  padding-right: 30px;
+	width: 100%;
+	padding-right: 30px;
 }
 
 .icon {
-  position: absolute;
-  right: 10px;
-  cursor: default;
+	position: absolute;
+	right: 10px;
+	cursor: default;
 }
 
 .valid {
-  color: green;
+	color: green;
 }
 
 .invalid {
-  color: red;
+	color: red;
 }
 </style>

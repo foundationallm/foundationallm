@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using FoundationaLLM.Common.Interfaces;
 using Microsoft.Identity.Web;
+using FoundationaLLM.Common.Models.Orchestration;
 
 namespace FoundationaLLM.Core.API.Controllers
 {
@@ -93,8 +94,8 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <param name="sessionId">The id of the session for which to get a completion.</param>
         /// <param name="userPrompt">The prompt to send to the orchestration service.</param>
         [HttpPost("{sessionId}/completion", Name = "GetChatCompletion")]
-        public async Task<Completion> GetChatCompletion(string sessionId, [FromBody] string userPrompt) =>
-            await _coreService.GetChatCompletionAsync(sessionId, userPrompt);
+        public async Task<Completion> GetChatCompletion(string sessionId, [FromBody] OrchestrationRequest orchestrationRequest) =>
+            await _coreService.GetChatCompletionAsync(orchestrationRequest);
 
         /// <summary>
         /// Generate a name for a chat message, based on the passed in prompt.

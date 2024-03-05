@@ -4,7 +4,7 @@
       "commandName": "Project",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development",
-        "HOSTNAME": "CoreWorker"
+        "HOSTNAME": "localhost"
       },
       "dotnetRunMessages": true
     },

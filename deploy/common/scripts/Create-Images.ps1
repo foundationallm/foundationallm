@@ -1,5 +1,21 @@
 #! /usr/bin/pwsh
 
+<#
+.SYNOPSIS
+	Script to run FLLM workflows for creating images.
+
+.DESCRIPTION
+	This script runs a series of FLLM workflows for creating images. It iterates through a list of workflows and executes each one using the GitHub CLI (gh). If any workflow fails, an error is thrown and the script exits with a non-zero exit code.
+
+.PARAMETER branch
+	Specifies the branch to run the workflows from. The default value is "main".
+
+.EXAMPLE
+	.\Create-Images.ps1 -branch "develop"
+	Runs the FLLM workflows from the "develop" branch.
+
+#>
+
 Param(
 	# Optional parameters
 	[parameter(Mandatory = $false)][string]$branch = "main"
@@ -8,7 +24,7 @@ Param(
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
-$workflows = 
+$workflows =
 'agent-factory-api-release.yml',
 'agent-hub-api-release.yml',
 'chat-ui-release.yml',
@@ -28,7 +44,7 @@ $workflows =
 Write-Host "Running FLLM Workflows from the ${branch} branch."
 
 foreach ($workflow in $workflows) {
-	
+
 	Write-Host "Running workflow ${workflow}"
 	gh workflow run $workflow --ref $branch
 

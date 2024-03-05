@@ -1,4 +1,5 @@
 ﻿using Azure.Identity;
+using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.TextEmbedding;
@@ -77,7 +78,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Services
         /// <param name="endpoint">The endpoint of the Azure AI Search deployment.</param>
         /// <returns>The <see cref="Kernel"/> instance.</returns>
         private AzureAISearchMemoryStore CreateMemoryStoreFromIdentity(string endpoint) =>
-            new(endpoint, new DefaultAzureCredential());
+            new(endpoint, DefaultAuthentication.GetAzureCredential());
 
         private void ValidateEndpoint(string? value)
         {

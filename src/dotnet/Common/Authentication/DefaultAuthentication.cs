@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using Azure.Identity;
+using FoundationaLLM.Common.Constants;
 
 namespace FoundationaLLM.Common.Authentication
 {
@@ -9,21 +10,16 @@ namespace FoundationaLLM.Common.Authentication
     public static class DefaultAuthentication
     {
         /// <summary>
+        /// Indicates whether the environment we run in is production or not.
+        /// </summary>
+        public static bool Production {  get; set; }
+
+        /// <summary>
         /// The default Azure credential to use for authentication.
         /// </summary>
-        public static TokenCredential GetAzureCredential(bool development = false) => new DefaultAzureCredential(new DefaultAzureCredentialOptions
-        {
-            ExcludeAzureDeveloperCliCredential = true,
-            ExcludeAzurePowerShellCredential = true,
-            ExcludeEnvironmentCredential = true,
-            ExcludeInteractiveBrowserCredential = true,
-            ExcludeSharedTokenCacheCredential = true,
-            ExcludeVisualStudioCodeCredential = true,
-            ExcludeVisualStudioCredential = true,
-            ExcludeWorkloadIdentityCredential = true,
-
-            ExcludeAzureCliCredential = !development,
-            ExcludeManagedIdentityCredential = development
-        });
+        public static TokenCredential GetAzureCredential() =>
+            Production
+            ? new ManagedIdentityCredential(Environment.GetEnvironmentVariable(EnvironmentVariables.AzureClientId))
+            : new AzureCliCredential();
     }
 }

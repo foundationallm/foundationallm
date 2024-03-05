@@ -4,7 +4,7 @@ items:
   items:
   - name: Deployment options
     href: deployment/index.md
-  - name: Deployment - Starter
+  - name: Deployment - Quick Start
     href: deployment/deployment-starter.md
   - name: Azure App Configuration values
     href: deployment/app-configuration-values.md
@@ -41,6 +41,8 @@ items:
       href: development/calling-apis/directly-calling-management-api.md
     - name: Calling the Vectorization APIs
       href: development/calling-apis/directly-calling-vectorization-api.md
+    - name: Local API Access for Standard Deployments
+      href: development/calling-apis/standard-deployment-local-api-access.md
   - name: Contributing
     href: development/contributing/index.md
     items:

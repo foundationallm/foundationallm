@@ -43,6 +43,8 @@ namespace FoundationaLLM.AgentFactory.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            DefaultAuthentication.Production = builder.Environment.IsProduction();
+
             builder.Configuration.Sources.Clear();
             builder.Configuration.AddJsonFile("appsettings.json", false, true);
             builder.Configuration.AddEnvironmentVariables();
@@ -51,11 +53,12 @@ namespace FoundationaLLM.AgentFactory.API
                 options.Connect(builder.Configuration[EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString]);
                 options.ConfigureKeyVault(options =>
                 {
-                    options.SetCredential(new DefaultAzureCredential());
+                    options.SetCredential(DefaultAuthentication.GetAzureCredential());
                 });
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIs);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_AgentFactory);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Agent);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_AzureOpenAI);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Events);
             });
             if (builder.Environment.IsDevelopment())

@@ -9,6 +9,7 @@ using Azure.Search.Documents.Indexes;
 using Azure.Search.Documents.Indexes.Models;
 using SemanticKernel.Tests.Models;
 using FoundationaLLM.Common.Models.TextEmbedding;
+using FoundationaLLM.Common.Authentication;
 
 namespace FoundationaLLM.SemanticKernel.Tests.Services
 {
@@ -23,7 +24,7 @@ namespace FoundationaLLM.SemanticKernel.Tests.Services
             var endpoint = Environment.GetEnvironmentVariable("AzureAISearchIndexingServiceTestsSearchEndpoint") ?? "";
             _searchIndexClient = new SearchIndexClient(
                 new Uri(endpoint),
-                new DefaultAzureCredential()
+                DefaultAuthentication.GetAzureCredential()
             );
             _indexingService = new AzureAISearchIndexingService(
                 Options.Create(

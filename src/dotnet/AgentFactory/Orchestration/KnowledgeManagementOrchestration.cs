@@ -26,12 +26,12 @@ namespace FoundationaLLM.AgentFactory.Core.Orchestration
         ILLMOrchestrationService orchestrationService,
         IPromptHubAPIService promptHubService,
         IDataSourceHubAPIService dataSourceHubService,
-        ILogger<LegacyOrchestration> logger) : OrchestrationBase(null, orchestrationService, promptHubService, dataSourceHubService)
+        ILogger<OrchestrationBase> logger) : OrchestrationBase(null, orchestrationService, promptHubService, dataSourceHubService)
     {
         private readonly KnowledgeManagementCompletionRequest _completionRequestTemplate = null!;
         private readonly ICacheService _cacheService = cacheService;
         private readonly ICallContext _callContext = callContext;
-        private readonly ILogger<LegacyOrchestration> _logger = logger;
+        private readonly ILogger<OrchestrationBase> _logger = logger;
         private readonly KnowledgeManagementAgent _agent = agent;
 
         /// <inheritdoc/>

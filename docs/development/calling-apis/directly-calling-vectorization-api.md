@@ -40,7 +40,7 @@ You will now see the **FoundationaLLM.Vectorization.API** collection in your Pos
 
 ### Set up the Postman environment variables
 
-The Postman collection you imported contains a number of API endpoints that you can use to test the Vectorization API. However, before you can use these endpoints, you need to set up a Postman environment variables within your collection that contains the Vectorization API URL, agent hint value, and other variables. We will set up your authentication token in the next section.
+The Postman collection you imported contains a number of API endpoints that you can use to test the Vectorization API. However, before you can use these endpoints, you need to set up a Postman environment variables within your collection that contains the Vectorization API URL, API key, and other variables. We will set up your authentication token in the next section.
 
 1. Select the **FoundationaLLM.Vectorization.API** collection in the left-hand menu.
 

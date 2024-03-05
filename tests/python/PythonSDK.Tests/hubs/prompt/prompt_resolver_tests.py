@@ -47,7 +47,7 @@ class PromptResolverTests:
     def test_agent_hint_flag_enabled_then_return_private_prompt(self, prompt_resolver, user_context):
         with patch.object(Configuration, 'get_feature_flag', return_value=True) as mock_method:
             prompt_hub_request = PromptHubRequest(agent_name="tictactoe")
-            prompt_hub_response = prompt_resolver.resolve(request=prompt_hub_request,user_context=user_context, hint=AgentHint(name="doesnt_matter", private=True))
+            prompt_hub_response = prompt_resolver.resolve(request=prompt_hub_request,user_context=user_context, hint=AgentHint(name="tictactoe", private=True))
             print(prompt_hub_response)
             assert prompt_hub_response.prompt.name == "tictactoe.default"
     
@@ -55,6 +55,6 @@ class PromptResolverTests:
         with patch.object(Configuration, 'get_feature_flag', return_value=False) as mock_method:
             prompt_hub_request = PromptHubRequest(agent_name="tictactoe")
             with pytest.raises(ValueError) as e:
-                prompt_hub_response = prompt_resolver.resolve(request=prompt_hub_request,user_context=user_context, hint=AgentHint(name="doesnt_matter", private=True))                
+                prompt_hub_response = prompt_resolver.resolve(request=prompt_hub_request,user_context=user_context, hint=AgentHint(name="tictactoe", private=True))                
             assert str(e.value) == "Prompt 'tictactoe.default' not found."
       

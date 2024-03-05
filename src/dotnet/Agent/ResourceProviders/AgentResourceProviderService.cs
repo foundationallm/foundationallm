@@ -131,7 +131,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             {
                 if (!_agentReferences.TryGetValue(instance.ResourceId, out var agentReference)
                     || agentReference.Deleted)
-                    new ResourceProviderException($"Could not locate the {instance.ResourceId} agent resource.",
+                    throw new ResourceProviderException($"Could not locate the {instance.ResourceId} agent resource.",
                         StatusCodes.Status404NotFound);
 
                 var agent = await LoadAgent(agentReference!);

@@ -1,4 +1,6 @@
 ﻿using Asp.Versioning;
+using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Models.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoundationaLLM.AgentFactory.API.Controllers
@@ -15,7 +17,13 @@ namespace FoundationaLLM.AgentFactory.API.Controllers
         /// </summary>
         [HttpGet(Name = "GetServiceStatus")]
         public IActionResult Get() =>
-            Ok("AgentFactoryAPI - ready");
+            new OkObjectResult(new ServiceStatusInfo
+            {
+                Name = ServiceNames.AgentFactoryAPI,
+                Instance = Environment.GetEnvironmentVariable(EnvironmentVariables.Hostname),
+                Version = Environment.GetEnvironmentVariable(EnvironmentVariables.FoundationaLLM_Version),
+                Status = ServiceStatuses.Ready
+            });
 
         /// <summary>
         /// Returns the allowed HTTP methods for the Agent Factory API service.

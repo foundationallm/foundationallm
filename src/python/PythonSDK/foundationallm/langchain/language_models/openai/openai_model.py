@@ -39,17 +39,13 @@ class OpenAIModel(LanguageModelBase):
         """
         use_chat = language_model.use_chat
 
-        # if language_model.provider == LanguageModelProvider.MICROSOFT:        
-        #     openai_api_type = AzureOpenAIAPIType.AZURE
-        # else:        
-        #     openai_api_type = None
-
         openai_base_url = self.config.get_value(language_model.api_endpoint)
         openai_api_key = self.config.get_value(language_model.api_key)
         openai_api_version = self.config.get_value(language_model.api_version)
-        azure_deployment_name = self.config.get_value(language_model.deployment)
-        
-        temperature = language_model.temperature or 0
+
+        # Overridable values
+        azure_deployment_name = language_model.deployment
+        temperature = language_model.temperature or 0.0
 
         if language_model.provider == LanguageModelProvider.MICROSOFT:        
             if use_chat:

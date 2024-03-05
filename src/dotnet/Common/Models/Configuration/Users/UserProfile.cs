@@ -8,8 +8,7 @@ namespace FoundationaLLM.Common.Models.Configuration.Users
     /// The user profile object persisted in long-term storage.
     /// </summary>
     /// <param name="UPN">The user's account user principal name.</param>
-    /// <param name="PrivateAgents">Private agents assigned to the user.</param>
-    public record UserProfile(string UPN, IEnumerable<AgentHint>? PrivateAgents)
+    public record UserProfile(string UPN)
     {
         /// <summary>
         /// The unique identifier.
@@ -26,10 +25,5 @@ namespace FoundationaLLM.Common.Models.Configuration.Users
         /// </summary>
         [JsonPropertyName("upn")]
         public string UPN { get; set; } = UPN;
-        /// <summary>
-        /// Names of private agents assigned to the user.
-        /// </summary>
-        [JsonPropertyName("privateAgents")]
-        public IEnumerable<AgentHint>? PrivateAgents { get; set; } = PrivateAgents;
     }
 }

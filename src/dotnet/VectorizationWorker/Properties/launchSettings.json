@@ -4,7 +4,7 @@
       "commandName": "Project",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development",
-        "HOSTNAME": "VectorizationWorker"
+        "HOSTNAME": "localhost"
       },
       "dotnetRunMessages": true
     }

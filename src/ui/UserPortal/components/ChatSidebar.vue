@@ -31,7 +31,7 @@
 			>
 				<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
 					<!-- Chat name -->
-					<span class="chat__name">{{ session.name }}</span>
+					<span class="chat__name" v-tooltip="{ value: session.name }">{{ session.name }}</span>
 
 					<!-- Chat icons -->
 					<span v-if="currentSession?.id === session.id" class="chat__icons">
@@ -40,6 +40,7 @@
 							icon="pi pi-pencil"
 							size="small"
 							severity="secondary"
+							v-tooltip="'Rename chat session'"
 							text
 							@click.stop="openRenameModal(session)"
 						/>
@@ -49,6 +50,7 @@
 							icon="pi pi-trash"
 							size="small"
 							severity="danger"
+							v-tooltip="'Delete chat session'"
 							text
 							@click.stop="sessionToDelete = session"
 						/>
@@ -116,6 +118,7 @@ import type { Session } from '@/js/types';
 import { useAppConfigStore } from '@/stores/appConfigStore';
 import { useAppStore } from '@/stores/appStore';
 import { getMsalInstance } from '@/js/auth';
+import Tooltip from 'primevue/tooltip';
 declare const process: any;
 
 export default {
@@ -212,6 +215,7 @@ export default {
 	height: 100%;
 	display: flex;
 	flex-direction: column;
+	flex: 1;
 	background-color: var(--primary-color);
 	z-index: 3;
 }

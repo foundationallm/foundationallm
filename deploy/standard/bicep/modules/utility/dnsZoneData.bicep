@@ -15,6 +15,7 @@ var privateDnsZone = {
   cr: 'privatelink.azurecr.io'
   cr_region: '${location}.privatelink.azurecr.io'
   dfs: 'privatelink.dfs.${environment().suffixes.storage}'
+  eventgrid: 'privatelink.eventgrid.azure.net'
   file: 'privatelink.file.${environment().suffixes.storage}'
   gateway: 'privatelink.azure-api.net'
   gateway_developer: 'developer.azure-api.net'

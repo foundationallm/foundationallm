@@ -15,16 +15,8 @@ class ConfigurationTests:
     This is an integration test class and expects the following environment variable to be set:
         foundationallm-app-configuration-uri
         
-    These tests also expect the following feature flag to be set and enabled:
-        FoundationaLLM-AllowAgentHint
-        
     This test class also expects a valid Azure credential (DefaultAzureCredential) session.
     """
-    
-    def test_configuration_includes_feature_flags(self, test_config):
-        actual = test_config.get_feature_flag("FoundationaLLM-AllowAgentHint")       
-        assert actual == True
-        
 
     def test_config_setting_change(self):        
         app_config_uri = os.environ['foundationallm-app-configuration-uri']

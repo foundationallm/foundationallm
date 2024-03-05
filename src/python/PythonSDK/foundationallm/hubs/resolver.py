@@ -5,12 +5,13 @@ for all hub metadata resolvers: Agent, Data Source,and Prompt.
 from abc import ABC, abstractmethod
 from typing import List
 from foundationallm.config import Configuration, Context
-from foundationallm.models import AgentHint
 from .metadata import Metadata
 from .repository import Repository
 
 class Resolver(ABC):
-    """The Resolver class is responsible for resolving a request to a list of metadata value."""
+    """
+    The Resolver class is responsible for resolving a request to a list of metadata value.
+    """
 
     def __init__(self, repository: Repository, config:Configuration=None):
         self.repository = repository
@@ -19,7 +20,7 @@ class Resolver(ABC):
     def list(self) -> List:
         """
         Returns a lightweight list (containing of name and description)
-            of all configured metadata items.
+        of all configured metadata items.
         """
         all_values = self.repository.get_metadata_values()
         light_weight_list = [{"name":x.name, "description": x.description}
@@ -27,10 +28,8 @@ class Resolver(ABC):
         return light_weight_list
 
     @abstractmethod
-    def resolve(self, request, user_context:Context=None,
-                hint:AgentHint=None) -> List[Metadata]:
+    def resolve(self, request, user_context:Context=None) -> List[Metadata]:
         """
-        Resolves a list of metadata items based on the incoming request
-        and the optional hint.
+        Resolves a list of metadata items based on the incoming request.
         """
         raise NotImplementedError

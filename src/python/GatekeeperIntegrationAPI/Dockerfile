@@ -1,6 +1,7 @@
 FROM python:3.11-bookworm
 ARG FOUNDATIONALLM_VERSION
 ENV FOUNDATIONALLM_VERSION=${FOUNDATIONALLM_VERSION:-0.0.0}
+ENV APPLICATIONINSIGHTS_STATSBEAT_DISABLED_ALL=true
 
 RUN apt-get update \
         && apt-get install -y curl apt-transport-https gnupg2 \

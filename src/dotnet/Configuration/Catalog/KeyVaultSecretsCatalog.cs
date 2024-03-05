@@ -260,6 +260,12 @@ namespace FoundationaLLM.Configuration.Catalog
                 description:
                 "The API key for the Azure Event Grid service."
             ),
+            new(
+                secretName: Common.Constants.KeyVaultSecretNames
+                    .FoundationaLLM_DataSource_ResourceProvider_Storage_ConnectionString,
+                minimumVersion: "0.5.0",
+                description: "The connection string to the Azure Storage account used for the data source resource provider."
+            ),
         ];
 
         /// <summary>

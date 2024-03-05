@@ -6,6 +6,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Agents;
 using FoundationaLLM.Common.Models.Hubs;
 using FoundationaLLM.Common.Models.Orchestration;
+using Microsoft.Extensions.Configuration;
 using System.Reflection;
 
 namespace FoundationaLLM.AgentFactory.Tests.Orchestration
@@ -22,6 +23,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Orchestration
         private readonly IEnumerable<ILLMOrchestrationService> _orchestrationServices;
         private readonly IPromptHubAPIService _promptHubAPIService = Substitute.For<IPromptHubAPIService>();
         private readonly IDataSourceHubAPIService _dataSourceHubAPIService = Substitute.For<IDataSourceHubAPIService>();
+        private readonly IConfiguration _configuration = Substitute.For<IConfiguration>();
         private ILoggerFactory _loggerFactory = Substitute.For<ILoggerFactory>();
 
         public OrchestrationBuilderTests()
@@ -37,14 +39,19 @@ namespace FoundationaLLM.AgentFactory.Tests.Orchestration
         public async Task Build_AgentHintNotNull_KnowledgeManagementAgent()
         {
             // Arrange
-            var completionRequest = new CompletionRequest() { UserPrompt = "Test_Userprompt"};
-            var agentHint = new AgentHint { Name = "knowledge-management", Private = false };
-            _callContext.AgentHint.Returns(agentHint);
+            var completionRequest = new CompletionRequest()
+            {
+                UserPrompt = "Test_Userprompt",
+                Settings = new OrchestrationSettings
+                {
+                    AgentName = "knowledge-management"
+                }
+            };
 
             var agentResourceProvider = Substitute.For<IResourceProviderService>();
             var knowledgeManagementAgent = new KnowledgeManagementAgent() { Name = "knowledge-management", ObjectId = "Test_objectid", Type = AgentTypes.KnowledgeManagement };
             var agentList = new List<AgentBase> { knowledgeManagementAgent };
-            agentResourceProvider.HandleGetAsync($"/{AgentResourceTypeNames.Agents}/{_callContext.AgentHint!.Name}").Returns(agentList);
+            agentResourceProvider.HandleGetAsync($"/{AgentResourceTypeNames.Agents}/{completionRequest.Settings.AgentName}").Returns(agentList);
 
             _resourceProviderServices.Add(ResourceProviderNames.FoundationaLLM_Agent, agentResourceProvider);
 
@@ -53,6 +60,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Orchestration
                 completionRequest,
                 _cacheService,
                 _callContext,
+                _configuration,
                 _resourceProviderServices,
                 _agentHubAPIService,
                 _orchestrationServices,
@@ -82,6 +90,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Orchestration
                 new CompletionRequest() { UserPrompt = userPrompt },
                 _cacheService,
                 _callContext,
+                _configuration,
                 _resourceProviderServices,
                 _agentHubAPIService,
                 _orchestrationServices,
