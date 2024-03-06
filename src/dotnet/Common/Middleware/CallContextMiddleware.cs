@@ -31,17 +31,25 @@ namespace FoundationaLLM.Common.Middleware
         /// <param name="callContext">Stores context information extracted from the current HTTP request. This information
         /// is primarily used to inject HTTP headers into downstream HTTP calls.</param>
         /// <param name="instanceSettings">Contains the FoundationaLLM instance configuration settings.</param>
+        /// <param name="graphService">The service for interacting with Microsoft Graph API.</param>
         /// <returns></returns>
         public async Task InvokeAsync(
             HttpContext context,
             IUserClaimsProviderService claimsProviderService,
             ICallContext callContext,
-            IOptions<InstanceSettings> instanceSettings)
+            IOptions<InstanceSettings> instanceSettings,
+            IGraphService graphService)
         {
             if (context.User is { Identity.IsAuthenticated: true })
             {
                 // Extract from ClaimsPrincipal if available:
                 callContext.CurrentUserIdentity = claimsProviderService.GetUserIdentity(context.User);
+
+                // Get group memberships for current user
+                if(callContext.CurrentUserIdentity != null)
+                {
+                    callContext.CurrentUserIdentity.GroupIds = graphService.GetMemberships(callContext.CurrentUserIdentity.UPN!).Result;
+                }
             }
             else
             {

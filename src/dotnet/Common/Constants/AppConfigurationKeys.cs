@@ -412,6 +412,18 @@ namespace FoundationaLLM.Common.Constants
         /// </summary>
         public const string FoundationaLLM_CoreAPI_Entra_TenantId = "FoundationaLLM:CoreAPI:Entra:TenantId";
         /// <summary>
+        /// The key for the FoundationaLLM:GraphAPI:TenantId app configuration setting.
+        /// </summary>
+        public const string FoundationaLLM_GraphAPI_TenantId = "FoundationaLLM:GraphAPI:TenantId";
+        /// <summary>
+        /// The key for the FoundationaLLM:GraphAPI:ClientId app configuration setting.
+        /// </summary>
+        public const string FoundationaLLM_GraphAPI_ClientId = "FoundationaLLM:GraphAPI:ClientId";
+        /// <summary>
+        /// The key for the FoundationaLLM:GraphAPI:ClientSecret app configuration setting.
+        /// </summary>
+        public const string FoundationaLLM_GraphAPI_ClientSecret = "FoundationaLLM:GraphAPI:ClientSecret";
+        /// <summary>
         /// The key for the FoundationaLLM:CoreWorker:AppInsightsConnectionString app configuration setting.
         /// This is a Key Vault reference.
         /// </summary>
@@ -803,6 +815,7 @@ namespace FoundationaLLM.Common.Constants
         /// The key filter for the FoundationaLLM:DataSource:* app configuration settings.
         /// </summary>
         public const string FoundationaLLM_DataSource = "FoundationaLLM:DataSource:*";
+        /// <summary>
         /// The key filter for the FoundationaLLM:AzureOpenAI:* app configuration settings.
         /// </summary>
         public const string FoundationaLLM_AzureOpenAI = "FoundationaLLM:AzureOpenAI:*";
@@ -885,7 +898,10 @@ namespace FoundationaLLM.Common.Constants
         /// The key section for the FoundationaLLM:BlobStorageMemorySource app configuration settings.
         /// </summary>
         public const string FoundationaLLM_BlobStorageMemorySource = "FoundationaLLM:BlobStorageMemorySource";
-
+        /// <summary>
+        /// The key section for the FoundationaLLM:GraphAPI app configuration settings.
+        /// </summary>
+        public const string FoundationaLLM_GraphAPI = "FoundationaLLM:GraphAPI";
         /// <summary>
         /// The key section for the FoundationaLLM:Vectorization:Steps app configuration settings.
         /// </summary>

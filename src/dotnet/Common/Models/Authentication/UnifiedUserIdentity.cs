@@ -23,5 +23,10 @@ namespace FoundationaLLM.Common.Models.Authentication
         /// </summary>
         [JsonPropertyName("upn")]
         public string? UPN { get; set; }
+        /// <summary>
+        /// The membership group ids of the user.
+        /// </summary>
+        [JsonPropertyName("group_ids")]
+        public List<string>? GroupIds { get; set; }
     }
 }

@@ -25,6 +25,7 @@ namespace FoundationaLLM.Common.Tests.Middleware
             // Arrange
             var context = new DefaultHttpContext();
             var claimsProviderService = Substitute.For<IUserClaimsProviderService>();
+            var graphService = Substitute.For<IGraphService>();
             var callContext = Substitute.For<ICallContext>();
             var instanceSettings = Options.Create<InstanceSettings>(Substitute.For<InstanceSettings>());
             var middleware = new CallContextMiddleware(next: _ => Task.FromResult(0));
@@ -37,7 +38,7 @@ namespace FoundationaLLM.Common.Tests.Middleware
             }, "mock"));
 
             // Act
-            await middleware.InvokeAsync(context, claimsProviderService, callContext, instanceSettings);
+            await middleware.InvokeAsync(context, claimsProviderService, callContext, instanceSettings, graphService);
 
             // Assert
             claimsProviderService.Received(1).GetUserIdentity(context.User);
@@ -50,6 +51,7 @@ namespace FoundationaLLM.Common.Tests.Middleware
             // Arrange
             var context = new DefaultHttpContext();
             var claimsProviderService = Substitute.For<IUserClaimsProviderService>();
+            var graphService = Substitute.For<IGraphService>();
             var callContext = Substitute.For<ICallContext>();
             var instanceSettings = Options.Create<InstanceSettings>(Substitute.For<InstanceSettings>());
             var middleware = new CallContextMiddleware(next: _ => Task.FromResult(0));
@@ -57,7 +59,7 @@ namespace FoundationaLLM.Common.Tests.Middleware
             context.Request.Headers[Constants.HttpHeaders.UserIdentity] = JsonSerializer.Serialize(userIdentity);
 
             // Act
-            await middleware.InvokeAsync(context, claimsProviderService, callContext, instanceSettings);
+            await middleware.InvokeAsync(context, claimsProviderService, callContext, instanceSettings, graphService);
 
             // Assert
             callContext.Received(1).CurrentUserIdentity = Arg.Is<UnifiedUserIdentity>(x => x.Username == userIdentity.Username && x.UPN == userIdentity.UPN && x.Name == userIdentity.Name);

@@ -6,11 +6,13 @@ using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Branding;
+using FoundationaLLM.Common.Models.Configuration.Graph;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.Common.Services.Azure;
+using FoundationaLLM.Common.Services.Graph;
 using FoundationaLLM.Common.Services.Security;
 using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Common.Validation;
@@ -323,6 +325,10 @@ namespace FoundationaLLM.Core.API
 
             //builder.Services.AddScoped<IAuthenticatedHttpClientFactory, EntraAuthenticatedHttpClientFactory>();
             builder.Services.AddScoped<IUserClaimsProviderService, EntraUserClaimsProviderService>();
+
+            builder.Services.AddOptions<GraphServiceSettings>()
+               .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_GraphAPI));
+            builder.Services.AddSingleton<IGraphService, GraphService>();
 
             // Configure the scope used by the API controllers:
             var requiredScope = builder.Configuration[AppConfigurationKeys.FoundationaLLM_CoreAPI_Entra_Scopes] ?? "";
