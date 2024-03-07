@@ -2,9 +2,11 @@
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Configuration.Graph;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.Storage;
 using FoundationaLLM.Common.Services;
+using FoundationaLLM.Common.Services.Graph;
 using FoundationaLLM.Common.Services.Storage;
 using FoundationaLLM.Configuration.Interfaces;
 using FoundationaLLM.Configuration.Services;
@@ -46,10 +48,13 @@ namespace FoundationaLLM
             builder.Services.AddSingleton<IConfigurationHealthChecks, ConfigurationHealthChecks>();
             builder.Services.AddHostedService<ConfigurationHealthCheckService>();
 
+            builder.Services.AddOptions<GraphServiceSettings>()
+               .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_GraphAPI));
             builder.Services.AddOptions<BlobStorageServiceSettings>(
                 DependencyInjectionKeys.FoundationaLLM_ResourceProvider_Configuration)
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Configuration_ResourceProviderService_Storage));
 
+            builder.Services.AddSingleton<IGraphService, GraphService>();
             builder.Services.AddSingleton<IStorageService, BlobStorageService>(sp =>
             {
                 var settings = sp.GetRequiredService<IOptionsMonitor<BlobStorageServiceSettings>>()
