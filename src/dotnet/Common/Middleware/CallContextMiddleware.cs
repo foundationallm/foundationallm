@@ -48,7 +48,7 @@ namespace FoundationaLLM.Common.Middleware
                 // Get group memberships for current user
                 if(callContext.CurrentUserIdentity != null)
                 {
-                    callContext.CurrentUserIdentity.GroupIds = graphService.GetMemberships(callContext.CurrentUserIdentity.UPN!).Result;
+                    callContext.CurrentUserIdentity.GroupIds = await graphService.GetMemberships(callContext.CurrentUserIdentity.UPN!);
                 }
             }
             else
