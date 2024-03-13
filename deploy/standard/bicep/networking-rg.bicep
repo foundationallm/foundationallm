@@ -21,6 +21,7 @@ var cidrFllmFrontend = cidrSubnet(cidrVnet, 24, 2) // 10.220.130.0/24
 var cidrFllmOpenAi = cidrSubnet(cidrVnet, 26, 12) // 10.220.131.0/26
 var cidrFllmOps = cidrSubnet(cidrVnet, 26, 15) // 10.220.131.192/26
 var cidrFllmVec = cidrSubnet(cidrVnet, 26, 16) // 10.220.132.0/26
+var cidrFllmAuth = cidrSubnet(cidrVnet, 26, 17) // 10.220.132.64/26
 var cidrVpnGateway = cidrSubnet(cidrVnet, 24, 5) // 10.220.133.0/24
 var cidrNetSvc = cidrSubnet(cidrVnet, 24, 6) // 10.220.134.0/24
 
@@ -513,6 +514,73 @@ var subnets = [
           destinationAddressPrefix: '*'
           destinationPortRange: '*'
           direction: 'Outbound'
+          name: 'deny-all-outbound'
+          priority: 4096
+          protocol: '*'
+          sourceAddressPrefix: '*'
+          sourcePortRange: '*'
+        }
+      ]
+    }
+    serviceEndpoints: [
+      {
+        service: 'Microsoft.KeyVault'
+        locations: [ '*' ]
+      }
+    ]
+  }
+  {
+    name: 'FLLMAuth'
+    addressPrefix: cidrFllmAuth
+    rules: {
+      inbound: [
+        {
+          access: 'Allow'
+          destinationAddressPrefix: 'VirtualNetwork'
+          destinationPortRange: '*'
+          name: 'allow-ops' // TODO: If we end up using a separate subnet for jumpboxes, this will need to change
+          priority: 128
+          protocol: '*'
+          sourcePortRange: '*'
+          sourceAddressPrefixes: [ cidrFllmOps ]
+        }
+        {
+          access: 'Allow'
+          destinationAddressPrefix: 'VirtualNetwork'
+          destinationPortRange: '*'
+          name: 'allow-vpn'
+          priority: 512
+          protocol: '*'
+          sourcePortRange: '*'
+          sourceAddressPrefixes: [ '172.16.0.0/24' ]
+        }
+        {
+          access: 'Allow'
+          destinationAddressPrefix: 'VirtualNetwork'
+          destinationPortRange: '*'
+          direction: 'Inbound'
+          name: 'allow-aks-inbound'
+          priority: 256
+          protocol: '*'
+          sourceAddressPrefixes: [ cidrFllmBackend ]
+          sourcePortRange: '*'
+        }
+        {
+          access: 'Deny'
+          destinationAddressPrefix: '*'
+          destinationPortRange: '*'
+          name: 'deny-all-inbound'
+          priority: 4096
+          protocol: '*'
+          sourceAddressPrefix: '*'
+          sourcePortRange: '*'
+        }
+      ]
+      outbound: [
+        {
+          access: 'Deny'
+          destinationAddressPrefix: '*'
+          destinationPortRange: '*'
           name: 'deny-all-outbound'
           priority: 4096
           protocol: '*'
