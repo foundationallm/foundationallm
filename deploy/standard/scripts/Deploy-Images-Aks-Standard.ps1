@@ -55,7 +55,7 @@ Param(
     [parameter(Mandatory = $false)][string]$frontendHostname = "www.internal.foundationallm.ai",
     [parameter(Mandatory = $false)][string]$backendHostname = "api.internal.foundationallm.ai",
     [parameter(Mandatory = $false)][bool]$autoscale = $false,
-    [parameter(Mandatory = $false)][string]$version = "0.4.1"
+    [parameter(Mandatory = $false)][string]$version = "0.5.0"
 )
 
 Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable, 2 to enable verbose)
