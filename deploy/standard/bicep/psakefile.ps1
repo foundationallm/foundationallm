@@ -42,7 +42,7 @@ $resourceGroups.PSObject.Properties | ForEach-Object {
     $deployments.Add($_.Name, "$($_.Value)-${timestamp}")
 }
 
-task default -depends Agw, Storage, App, DNS, Networking, OpenAI, Ops, ResourceGroups, Vec
+task default -depends Auth, Agw, Storage, App, DNS, Networking, OpenAI, Ops, ResourceGroups, Vec
 
 task Clean {
     Write-Host -ForegroundColor Blue "Deleting all resource groups..."
@@ -129,6 +129,33 @@ task App -depends Agw, ResourceGroups, Ops, Networking, DNS {
 
     if ($LASTEXITCODE -ne 0) {
         throw "The app deployment failed."
+    }
+}
+
+task Auth -depends App, ResourceGroups, Networking, DNS {
+    if ($skipAuth -eq $true) {
+        Write-Host -ForegroundColor Yellow "Skipping Auth creation."
+        return;
+    }
+
+    Write-Host -ForegroundColor Blue "Ensure Auth resources exist"
+
+    az deployment group create --name  $deployments["auth"] `
+                        --resource-group $resourceGroups.auth `
+                        --template-file ./app-rg.bicep `
+                        --parameters actionGroupId=$script:actionGroupId `
+                                    administratorObjectId=$administratorObjectId `
+                                    appResourceGroupName=$($resourceGroups.app) `
+                                    dnsResourceGroupName=$($resourceGroups.dns) `
+                                    environmentName=$environment `
+                                    k8sNamespace=$script:k8sNamespace `
+                                    location=$location `
+                                    logAnalyticsWorkspaceId=$script:logAnalyticsWorkspaceId `
+                                    project=$project `
+                                    vnetId=$script:vnetId
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "The auth deployment failed."
     }
 }
 
