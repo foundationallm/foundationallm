@@ -80,6 +80,15 @@ function PopulateTemplate {
 
 $svcResourceSuffix = "${resourceSuffix}-svc"
 $tokens = @{}
+
+$authServices = @{
+    authorizationapi              = @{
+        miName         = "mi-authorization-api-$svcResourceSuffix"
+        miConfigName   = "authorizationApiMiClientId"
+        ingressEnabled = $false
+    }
+}
+
 $services = @{
     agentfactoryapi          = @{
         miName         = "mi-agent-factory-api-$svcResourceSuffix"
@@ -161,6 +170,15 @@ $services = @{
         ingressEnabled = $false
     }
 }
+
+$tokens.deployTime = $((Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
+$tokens.contributorRoleAssignmentGuid = $(New-Guid).Guid
+$tokens.userAccessAdminRoleAssignmentGuid = $(New-Guid).Guid
+$tokens.subscriptionId = $subscriptionId
+$tokens.storageResourceGroup = $resourceGroups.storage
+$tokens.opsResourceGroup = $resourceGroups.ops
+
+$tokens.adminGroupObjectId = $adminGroupObjectId
 
 $tokens.chatEntraClientId = $entraClientIds.chat
 $tokens.coreApiHostname = $ingress.apiIngress.coreapi.host
@@ -277,8 +295,22 @@ foreach ($service in $services.GetEnumerator()) {
 
     $service.Value.miClientId = $miClientId
 }
+
+foreach ($service in $authServices.GetEnumerator()) {
+    $miClientId = Invoke-AndRequireSuccess "Get $($service.Key) managed identity" {
+        az identity show `
+            --resource-group $($resourceGroups.auth) `
+            --name $($service.Value.miName) `
+            --query "clientId" `
+            --output tsv
+    }
+
+    $service.Value.miClientId = $miClientId
+}
+
 $tokens.agentFactoryApiMiClientId = $services["agentfactoryapi"].miClientId
 $tokens.agentHubApiMiClientId = $services["agenthubapi"].miClientId
+$tokens.authorizationApiMiClientId = $authServices["authorizationapi"].miClientId
 $tokens.chatUiMiClientId = $services["chatui"].miClientId
 $tokens.coreApiMiClientId = $services["coreapi"].miClientId
 $tokens.coreJobMiClientId = $services["corejob"].miClientId
@@ -341,5 +373,7 @@ $($ingress.frontendIngress).PSObject.Properties | ForEach-Object {
     $tokens.serviceAgwSslCert = $_.Value.sslCert
     PopulateTemplate $tokens "..,values,frontend-service.template.yml" "..,values,$($_.Name)-values.yml"
 }
+
+PopulateTemplate $tokens "..,data,role-assignments,DefaultRoleAssignments.template.json" "..,data,role-assignments,DefaultRoleAssignments.json"
 
 exit 0

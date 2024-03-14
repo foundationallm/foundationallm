@@ -7,6 +7,14 @@ param administratorObjectId string
 
 @description('APP Resource Group Name')
 param appResourceGroupName string
+param opsResourceGroupName string
+
+param authAppRegistrationInstance string
+param authAppRegistrationTenantId string
+param authAppRegistrationClientId string
+param authClientSecret string
+param authAppRegistrationScopes string
+param instanceId string
 
 @description('DNS Resource Group Name')
 param dnsResourceGroupName string
@@ -36,10 +44,39 @@ param vnetId string
 @description('Resource Suffix used in naming resources.')
 var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
 
+@description('Resource Suffix used in naming resources.')
+var opsResourceSuffix = '${project}-${environmentName}-${location}-ops'
 
 var services = {
   'authorization-api': { displayName: 'AuthorizationAPI'}
 }
+
+var authSecrets = [
+  {
+    name: 'foundationallm-authorizationapi-entra-instance'
+    value: authAppRegistrationInstance
+  }
+  {
+    name: 'foundationallm-authorizationapi-entra-tenantid'
+    value: authAppRegistrationTenantId
+  }
+  {
+    name: 'foundationallm-authorizationapi-entra-clientid'
+    value: authAppRegistrationClientId
+  }
+  {
+    name: 'foundationallm-authorizationapi-entra-clientsecret'
+    value: authClientSecret
+  }
+  {
+    name: 'foundationallm-authorizationapi-entra-scopes'
+    value: authAppRegistrationScopes
+  }
+  {
+    name: 'foundationallm-authorizationapi-instanceids'
+    value: instanceId
+  }
+]
 
 @description('Tags for all resources')
 var tags = {
@@ -59,6 +96,14 @@ module dnsZones 'modules/utility/dnsZoneData.bicep' = {
   scope: resourceGroup(dnsResourceGroupName)
   params: {
     location: location
+  }
+}
+
+module appInsightsData 'modules/utility/appInsightsData.bicep' = {
+  name: 'appInsights-${timestamp}'
+  scope: resourceGroup(opsResourceGroupName)
+  params: {
+    resourceSuffix: opsResourceSuffix
   }
 }
 
@@ -97,6 +142,38 @@ module authKeyvault 'modules/keyVault.bicep' = {
     privateDnsZones: filter(dnsZones.outputs.ids, (zone) => zone.key == 'vault')
     resourceSuffix: resourceSuffix
     subnetId: '${vnetId}/subnets/FLLMAuth'
+    tags: tags
+  }
+}
+
+module authKvSecret 'modules/kvSecret.bicep' = [
+  for (secret, i) in authSecrets: {
+    name: 'authSecret${i}-${timestamp}'
+    params: {
+      kvName: authKeyvault.outputs.name
+      secretName: secret.name
+      secretValue: secret.value
+      tags: tags
+    }
+  }
+]
+
+module appInsightsSecret 'modules/kvSecret.bicep' = {
+  name: 'appInsightsSecret-${timestamp}'
+  params: {
+    kvName: authKeyvault.outputs.name
+    secretName: 'foundationallm-authorizationapi-appinsights-connectionstring'
+    secretValue: appInsightsData.outputs.appInsightsConnectionString
+    tags: tags
+  }
+}
+
+module authStoreSecret 'modules/kvSecret.bicep' = {
+  name: 'authStoreSecret-${timestamp}'
+  params: {
+    kvName: authKeyvault.outputs.name
+    secretName: 'foundationallm-authorizationapi-storage-accountname'
+    secretValue: authStore.outputs.name
     tags: tags
   }
 }

@@ -1,43 +1,55 @@
 {
-    "QueuingEngine": "AzureStorageQueue",
     "RequestManagers": [
         {
             "RequestSourceName": "extract",
-            "MaxHandlerInstances": 1
+            "MaxHandlerInstances": 1,
+            "QueueProcessingPace": 5,
+            "QueuePollingInterval": 60,
+            "QueueMaxNumberOfRetries": 5
         },
         {
             "RequestSourceName": "partition",
-            "MaxHandlerInstances": 1
+            "MaxHandlerInstances": 1,
+            "QueueProcessingPace": 5,
+            "QueuePollingInterval": 60,
+            "QueueMaxNumberOfRetries": 5
         },
         {
             "RequestSourceName": "embed",
-            "MaxHandlerInstances": 1
+            "MaxHandlerInstances": 1,
+            "QueueProcessingPace": 5,
+            "QueuePollingInterval": 60,
+            "QueueMaxNumberOfRetries": 5
         },
         {
             "RequestSourceName": "index",
-            "MaxHandlerInstances": 1
+            "MaxHandlerInstances": 1,
+            "QueueProcessingPace": 5,
+            "QueuePollingInterval": 60,
+            "QueueMaxNumberOfRetries": 5
         }
     ],
     "RequestSources": [
         {
             "Name": "extract",
             "ConnectionConfigurationName": "Extract:ConnectionString",
-            "VisibilityTimeoutSeconds": 120
+            "VisibilityTimeoutSeconds": 600
         },
         {
             "Name": "partition",
             "ConnectionConfigurationName": "Partition:ConnectionString",
-            "VisibilityTimeoutSeconds": 120
+            "VisibilityTimeoutSeconds": 600
         },
         {
             "Name": "embed",
             "ConnectionConfigurationName": "Embed:ConnectionString",
-            "VisibilityTimeoutSeconds": 120
+            "VisibilityTimeoutSeconds": 600
         },
         {
             "Name": "index",
             "ConnectionConfigurationName": "Index:ConnectionString",
-            "VisibilityTimeoutSeconds": 120
+            "VisibilityTimeoutSeconds": 600
         }
-    ]
+    ],
+    "QueuingEngine": "AzureStorageQueue"
 }

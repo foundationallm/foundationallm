@@ -81,6 +81,11 @@ try {
     }
 
     Invoke-AndRequireSuccess "Uploading System Prompts" {
+        ./Upload-AuthStoreData.ps1 `
+            -resourceGroup $resourceGroup["auth"]
+    }
+
+    Invoke-AndRequireSuccess "Uploading System Prompts" {
         ./UploadSystemPrompts.ps1 `
             -resourceGroup $resourceGroup["storage"] `
             -location $manifest.location

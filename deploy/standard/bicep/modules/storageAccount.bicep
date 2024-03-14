@@ -83,6 +83,8 @@ var name = substring(formattedName,0,min([length(formattedName),24]))
 var serviceType = isDataLake ? 'adls' : 'sa'
 
 /** Outputs **/
+output name string = main.name
+
 @description('Storage Account Connection String KeyVault Secret Uri.')
 output storageConnectionStringSecretUri string = storageConnectionString[0].outputs.secretUri
 

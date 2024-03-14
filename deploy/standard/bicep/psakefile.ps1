@@ -142,11 +142,18 @@ task Auth -depends App, ResourceGroups, Networking, DNS {
 
     az deployment group create --name  $deployments["auth"] `
                         --resource-group $resourceGroups.auth `
-                        --template-file ./app-rg.bicep `
+                        --template-file ./auth-rg.bicep `
                         --parameters actionGroupId=$script:actionGroupId `
                                     administratorObjectId=$administratorObjectId `
                                     appResourceGroupName=$($resourceGroups.app) `
                                     dnsResourceGroupName=$($resourceGroups.dns) `
+                                    opsResourceGroupName=$($resourceGroups.ops) `
+                                    authAppRegistrationInstance=$($manifest.entraInstances.authorization) `
+                                    authAppRegistrationTenantId=$($manifest.tenantId) `
+                                    authAppRegistrationClientId=$($manifest.entraClientIds.authorization) `
+                                    authClientSecret=$($manifest.entraClientSecrets.authorization) `
+                                    authAppRegistrationScopes=$($manifest.entraClientScopes.authorization) `
+                                    instanceId=$($manifest.instanceId) `
                                     environmentName=$environment `
                                     k8sNamespace=$script:k8sNamespace `
                                     location=$location `

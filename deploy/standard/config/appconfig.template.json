@@ -71,7 +71,7 @@
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:APIs:AgentHubAPI:APIScope",
+        "key": "FoundationaLLM:APIs:AuthorizationAPI:APIScope",
         "value": "{{authorizationApiScope}}",
         "label": null,
         "content_type": "",
