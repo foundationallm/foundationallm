@@ -94,6 +94,15 @@ if ($charts.Contains("agent-hub-api") -or  $charts.Contains("*")) {
     }
 }
 
+if ($charts.Contains("authorization-api") -or  $charts.Contains("*")) {
+    Write-Host "API chart - authorization-api" -ForegroundColor Yellow
+    $command = "helm upgrade --version $version --install $name-authorization-api oci://ghcr.io/solliancenet/foundationallm/helm/authorization-api -f ../values/microservice-values.yml"
+    $command = createHelmCommand $command
+    Invoke-AndRequireSuccess "Deploying authorization-api" {
+        Invoke-Expression "$command"
+    }
+}
+
 if ($charts.Contains("core-api") -or  $charts.Contains("*")) {
     Write-Host "API chart - core-api" -ForegroundColor Yellow
     $command = "helm upgrade --version $version --install $name-core-api oci://ghcr.io/solliancenet/foundationallm/helm/core-api -f ../values/coreapi-values.yml"
