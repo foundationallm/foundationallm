@@ -80,7 +80,7 @@ try {
             -subscription $manifest.subscription
     }
 
-    Invoke-AndRequireSuccess "Uploading System Prompts" {
+    Invoke-AndRequireSuccess "Uploading Auth Store Data" {
         ./Upload-AuthStoreData.ps1 `
             -resourceGroup $resourceGroup["auth"]
     }
