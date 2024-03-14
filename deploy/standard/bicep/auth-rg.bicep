@@ -12,6 +12,7 @@ param opsResourceGroupName string
 param authAppRegistrationInstance string
 param authAppRegistrationTenantId string
 param authAppRegistrationClientId string
+@secure()
 param authClientSecret string
 param authAppRegistrationScopes string
 param instanceId string
