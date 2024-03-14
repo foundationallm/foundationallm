@@ -89,7 +89,7 @@ var tags = {
 @description('Workload Token used in naming resources.')
 var workload = 'svc'
 
-/** Outputs **/
+/** Nested Modules **/
 @description('Read DNS Zones')
 module dnsZones 'modules/utility/dnsZoneData.bicep' = {
   name: 'dnsZones-${timestamp}'
