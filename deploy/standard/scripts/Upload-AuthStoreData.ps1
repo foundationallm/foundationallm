@@ -27,26 +27,17 @@ function Invoke-AndRequireSuccess {
     return $result
 }
 
-Write-Host "Getting ADLS Authorization Storage Account"
-$authStorageAccountAdls = $(
+$storageAccountAdls = Invoke-AndRequireSuccess "Get ADLS Auth Storage Account" {
     az storage account list `
         --resource-group $resourceGroup `
-        --query "[?kind=='StorageV2'].{name:name, privateEndpointIds:privateEndpointConnections[].privateEndpoint.id}" `
-        --output json | `
-        ConvertFrom-Json
-)
-
-$storageAccountAdlsName = Invoke-AndRequireSuccess "Get ADLS Auth Storage Account" {
-    az storage account list `
-        --resource-group $resourceGroup `
-        --query "[?kind=='StorageV2'].name" `
-        --output json | ConvertFrom-Json | [0]
+        --query "[?kind=='StorageV2'].{name:name} | [0]" `
+        --output json | ConvertFrom-Json
 }
 
 Invoke-AndRequireSuccess "Uploading Default Role Assignments to Authorization Store" {
     az storage azcopy blob upload `
         -c role-assignments `
-        --account-name $storageAccountAdlsName `
+        --account-name $storageAccountAdls.name `
         -s "../data/role-assignments/DefaultRoleAssignments.json" `
         --recursive `
         --only-show-errors `
