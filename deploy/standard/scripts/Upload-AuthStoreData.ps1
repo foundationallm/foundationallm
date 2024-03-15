@@ -32,7 +32,6 @@ $storageAccountAdls = Invoke-AndRequireSuccess "Get ADLS Auth Storage Account" {
         --resource-group $resourceGroup `
         --query "[?kind=='StorageV2'].name | [0]" `
         --output tsv
-
 }
 
 Invoke-AndRequireSuccess "Uploading Default Role Assignments to Authorization Store" {
