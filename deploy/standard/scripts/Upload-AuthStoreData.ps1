@@ -31,7 +31,6 @@ $storageAccountAdls = Invoke-AndRequireSuccess "Get ADLS Auth Storage Account" {
     az storage account list `
         --resource-group $resourceGroup `
         --query "[?kind=='StorageV2'].name | [0]" `
-
         --output tsv
 
 }
@@ -39,7 +38,7 @@ $storageAccountAdls = Invoke-AndRequireSuccess "Get ADLS Auth Storage Account" {
 Invoke-AndRequireSuccess "Uploading Default Role Assignments to Authorization Store" {
     az storage azcopy blob upload `
         -c role-assignments `
-        --account-name $storageAccountAdls.name `
+        --account-name $storageAccountAdls `
         -s "../data/role-assignments/DefaultRoleAssignments.json" `
         --recursive `
         --only-show-errors `
