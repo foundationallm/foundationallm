@@ -30,7 +30,8 @@ function Invoke-AndRequireSuccess {
 $storageAccountAdls = Invoke-AndRequireSuccess "Get ADLS Auth Storage Account" {
     az storage account list `
         --resource-group $resourceGroup `
-        --query "[?kind=='StorageV2'].{name:name} | [0]" `
+        --query "[?kind=='StorageV2'].name | [0]" `
+
         --output json | ConvertFrom-Json
 }
 
