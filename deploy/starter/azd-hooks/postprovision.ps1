@@ -61,17 +61,17 @@ $env:FOUNDATIONALLM_MANAGEMENT_API_EVENT_GRID_PROFILE = Get-Content ./config/man
 $env:VECTORIZATION_WORKER_CONFIG = Get-Content ./config/vectorization.json
 
 $envConfiguraitons = @{
-    "agent-factory-api-event-profile" = @{
+    "agent-factory-api-event-profile"    = @{
         template     = './config/agent-factory-api-event-profile.template.json'
         render       = './config/agent-factory-api-event-profile.json'
         variableName = 'FOUNDATIONALLM_AGENT_FACTORY_API_EVENT_GRID_PROFILE'
     }
-    "core-api-event-profile" = @{
+    "core-api-event-profile"             = @{
         template     = './config/core-api-event-profile.template.json'
         render       = './config/core-api-event-profile.json'
         variableName = 'FOUNDATIONALLM_CORE_API_EVENT_GRID_PROFILE'
     }
-    "vectorization-api-event-profile" = @{
+    "vectorization-api-event-profile"    = @{
         template     = './config/vectorization-api-event-profile.template.json'
         render       = './config/vectorization-api-event-profile.json'
         variableName = 'FOUNDATIONALLM_VECTORIZATION_API_EVENT_GRID_PROFILE'
@@ -86,8 +86,7 @@ $envConfiguraitons = @{
 foreach ($envConfiguraiton in $envConfiguraitons.GetEnumerator()) {
     Write-Host "Formatting $($envConfiguraiton.Key) environment variables" -ForegroundColor Blue
     $template = Resolve-Path $envConfiguraiton.Value.template
-    $render = Resolve-Path $envConfiguraiton.Value.render
-
+    $render = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($envConfiguraiton.Value.render)
     Format-EnvironmentVariables -template $template -render $render
 
     $name = $envConfiguraiton.Value.variableName
@@ -117,7 +116,7 @@ $configurations = @{
 foreach ($configuration in $configurations.GetEnumerator()) {
     Write-Host "Formatting $($configuration.Key) environment variables" -ForegroundColor Blue
     $template = Resolve-Path $configuration.Value.template
-    $render = Resolve-Path $configuration.Value.render
+    $render = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($configuration.Value.render)
     Format-EnvironmentVariables -template $template -render $render
 }
 
