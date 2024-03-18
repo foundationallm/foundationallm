@@ -29,6 +29,6 @@
         /// <summary>
         /// They key for the FoundationaLLM:Configuration:KeyVaultURI environment variable.
         /// </summary>
-        public const string FoundationaLLM_AuthorizationAPI_KeyVaultURI = "FoundationaLLM:AuthorizationAPI:KeyVaultURI";
+        public const string FoundationaLLM_AuthorizationAPI_KeyVaultURI = "FoundationaLLM_AuthorizationAPI_KeyVaultURI";
     }
 }
