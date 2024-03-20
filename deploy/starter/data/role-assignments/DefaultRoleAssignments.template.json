@@ -28,6 +28,48 @@
       "updated_on": "${env:DEPLOY_TIME}",
       "created_by": "SYSTEM",
       "updated_by": "SYSTEM"
+    },
+    {
+      "name": "${env:GUID03}",
+      "type": "FoundationaLLM.Authorization/roleAssignments",
+      "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/${env:GUID03}",
+      "description": "Role assignment reader for the Management API managed identity.",
+      "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+      "principal_id": "${env:SERVICE_MANAGEMENT_API_MI_OBJECT_ID}",
+      "principal_type": "User",
+      "scope": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}",
+      "created_on": "${env:DEPLOY_TIME}",
+      "updated_on": "${env:DEPLOY_TIME}",
+      "created_by": "SYSTEM",
+      "updated_by": "SYSTEM"
+    },
+    {
+      "name": "${env:GUID04}",
+      "type": "FoundationaLLM.Authorization/roleAssignments",
+      "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/${env:GUID04}",
+      "description": "Role assignment reader for the Core API managed identity.",
+      "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+      "principal_id": "${envSERVICE_CORE_API_MI_OBJECT_ID}",
+      "principal_type": "User",
+      "scope": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}",
+      "created_on": "${env:DEPLOY_TIME}",
+      "updated_on": "${env:DEPLOY_TIME}",
+      "created_by": "SYSTEM",
+      "updated_by": "SYSTEM"
+    },
+    {
+      "name": "${env:GUID05}",
+      "type": "FoundationaLLM.Authorization/roleAssignments",
+      "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/${env:GUID05}",
+      "description": "Role assignment reader for the Vectorization API managed identity.",
+      "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+      "principal_id": "${env:SERVICE_VECTORIZATION_API_MI_OBJECT_ID}",
+      "principal_type": "User",
+      "scope": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}",
+      "created_on": "${env:DEPLOY_TIME}",
+      "updated_on": "${env:DEPLOY_TIME}",
+      "created_by": "SYSTEM",
+      "updated_by": "SYSTEM"
     }
   ]
 }

@@ -174,6 +174,9 @@ $services = @{
 $tokens.deployTime = $((Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
 $tokens.contributorRoleAssignmentGuid = $(New-Guid).Guid
 $tokens.userAccessAdminRoleAssignmentGuid = $(New-Guid).Guid
+$tokens.managementApiRoleAssignmentGuid = $(New-Guid).Guid
+$tokens.coreApiRoleAssignmentGuid = $(New-Guid).Guid
+$tokens.vectorizationApiRoleAssignmentGuid = $(New-Guid).Guid
 $tokens.subscriptionId = $subscriptionId
 $tokens.storageResourceGroup = $resourceGroups.storage
 $tokens.opsResourceGroup = $resourceGroups.ops
@@ -293,7 +296,16 @@ foreach ($service in $services.GetEnumerator()) {
             --output tsv
     }
 
+    $miObjectId = Invoke-AndRequireSuccess "Get $($service.Key) managed identity object ID" {
+        az identity show `
+            --resource-group $($resourceGroups.app) `
+            --name $($service.Value.miName) `
+            --query "principalId" `
+            --output tsv
+    }
+
     $service.Value.miClientId = $miClientId
+    $service.Value.miObjectId = $miObjectId
 }
 
 foreach ($service in $authServices.GetEnumerator()) {
@@ -313,16 +325,19 @@ $tokens.agentHubApiMiClientId = $services["agenthubapi"].miClientId
 $tokens.authorizationApiMiClientId = $authServices["authorizationapi"].miClientId
 $tokens.chatUiMiClientId = $services["chatui"].miClientId
 $tokens.coreApiMiClientId = $services["coreapi"].miClientId
+$tokens.coreApiMiObjectId = $services["coreapi"].miObjectId
 $tokens.coreJobMiClientId = $services["corejob"].miClientId
 $tokens.dataSourceHubApiMiClientId = $services["datasourcehubapi"].miClientId
 $tokens.gatekeeperApiMiClientId = $services["gatekeeperapi"].miClientId
 $tokens.gatekeeperIntegrationApiMiClientId = $services["gatekeeperintegrationapi"].miClientId
 $tokens.langChainApiMiClientId = $services["langchainapi"].miClientId
 $tokens.managementApiMiClientId = $services["managementapi"].miClientId
+$tokens.managementApiMiObjectId = $services["managementapi"].miObjectId
 $tokens.managementUiMiClientId = $services["managementui"].miClientId
 $tokens.promptHubApiMiClientId = $services["prompthubapi"].miClientId
 $tokens.semanticKernelApiMiClientId = $services["semantickernelapi"].miClientId
 $tokens.vectorizationApiMiClientId = $services["vectorizationapi"].miClientId
+$tokens.vectorizationApiMiObjectId = $services["vectorizationapi"].miObjectId
 $tokens.vectorizationJobMiClientId = $services["vectorizationjob"].miClientId
 
 $eventGridProfiles = @{}

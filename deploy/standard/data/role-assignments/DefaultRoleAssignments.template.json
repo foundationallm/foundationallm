@@ -28,6 +28,48 @@
       "updated_on": "{{deployTime}}",
       "created_by": "SYSTEM",
       "updated_by": "SYSTEM"
+    },
+    {
+      "name": "{{managementApiRoleAssignmentGuid}}",
+      "type": "FoundationaLLM.Authorization/roleAssignments",
+      "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/{{managementApiRoleAssignmentGuid}}",
+      "description": "Role assignment reader for the Management API managed identity.",
+      "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+      "principal_id": "{{managementApiMiObjectId}}",
+      "principal_type": "User",
+      "scope": "/instances/{{instanceId}}",
+      "created_on": "{{deployTime}}",
+      "updated_on": "{{deployTime}}",
+      "created_by": "SYSTEM",
+      "updated_by": "SYSTEM"
+    },
+    {
+      "name": "{{coreApiRoleAssignmentGuid}}",
+      "type": "FoundationaLLM.Authorization/roleAssignments",
+      "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/{{coreApiRoleAssignmentGuid}}",
+      "description": "Role assignment reader for the Core API managed identity.",
+      "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+      "principal_id": "{{coreApiMiObjectId}}",
+      "principal_type": "User",
+      "scope": "/instances/{{instanceId}}",
+      "created_on": "{{deployTime}}",
+      "updated_on": "{{deployTime}}",
+      "created_by": "SYSTEM",
+      "updated_by": "SYSTEM"
+    },
+    {
+      "name": "{{vectorizationApiRoleAssignmentGuid}}",
+      "type": "FoundationaLLM.Authorization/roleAssignments",
+      "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/{{vectorizationApiRoleAssignmentGuid}}",
+      "description": "Role assignment reader for the Vectorization API managed identity.",
+      "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+      "principal_id": "{{vectorizationApiMiObjectId}}",
+      "principal_type": "User",
+      "scope": "/instances/{{instanceId}}",
+      "created_on": "{{deployTime}}",
+      "updated_on": "{{deployTime}}",
+      "created_by": "SYSTEM",
+      "updated_by": "SYSTEM"
     }
   ]
 }
