@@ -49,7 +49,7 @@
       "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/${env:GUID04}",
       "description": "Role assignment reader for the Core API managed identity.",
       "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
-      "principal_id": "${envSERVICE_CORE_API_MI_OBJECT_ID}",
+      "principal_id": "${env:SERVICE_CORE_API_MI_OBJECT_ID}",
       "principal_type": "User",
       "scope": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}",
       "created_on": "${env:DEPLOY_TIME}",
