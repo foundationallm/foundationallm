@@ -1,9 +1,10 @@
 /** Inputs **/
 param environmentName string
 param location string
+param networkResourceGroupName string
 param project string
 param timestamp string = utcNow()
-param vnetId string
+param vnetName string
 
 @description('Workload Token used in naming resources.')
 var workload = 'net'
@@ -15,9 +16,7 @@ var resolverName = 'dns-${resourceSuffix}'
 /** Locals **/
 @description('Private DNS Zones to create.')
 var privateDnsZone = {
-  // grafana: 'privatelink.grafana.azure.com'
-  // prometheusMetrics: 'privatelink.${location}.prometheus.monitor.azure.com'
-  agentsvc :'privatelink.agentsvc.azure-automation.net'
+  agentsvc: 'privatelink.agentsvc.azure-automation.net'
   aks: 'privatelink.${location}.azmk8s.io'
   blob: 'privatelink.blob.${environment().suffixes.storage}'
   cognitiveservices: 'privatelink.cognitiveservices.azure.com'
@@ -35,8 +34,8 @@ var privateDnsZone = {
   gateway_public: 'azure-api.net'
   gateway_scm: 'scm.azure-api.net'
   monitor: 'privatelink.monitor.azure.com'
-  ods :'privatelink.ods.opinsights.azure.com'
-  oms :'privatelink.oms.opinsights.azure.com'
+  ods: 'privatelink.ods.opinsights.azure.com'
+  oms: 'privatelink.oms.opinsights.azure.com'
   openai: 'privatelink.openai.azure.com'
   queue: 'privatelink.queue.${environment().suffixes.storage}'
   search: 'privatelink.search.windows.net'
@@ -47,38 +46,14 @@ var privateDnsZone = {
 }
 
 /** Outputs **/
-@description('Private DNS Zones to use in other modules.')
-output ids array = [for (zone, i) in items(privateDnsZone): {
-  id: dns[i].outputs.id
-  key: dns[i].outputs.key
-  name: dns[i].outputs.name
-}]
 
-/** Nested Modules **/
-@description('Create the specified private DNS zones.')
-module dns './modules/dns.bicep' = [for zone in items(privateDnsZone): {
-  name: '${zone.value}-${timestamp}'
-  params: {
-    key: zone.key
-    vnetId: vnetId
-    zone: zone.value
-
-    tags: {
-      Environment: environmentName
-      IaC: 'Bicep'
-      Project: project
-      Purpose: 'Networking'
-    }
-  }
-}]
-
-
+/** Resources **/
 resource resolver 'Microsoft.Network/dnsResolvers@2022-07-01' = {
   name: resolverName
   location: location
   properties: {
     virtualNetwork: {
-      id: vnetId
+      id: resourceId(networkResourceGroupName, 'Microsoft.Network/virtualNetworks', vnetName)
     }
   }
 }
@@ -92,9 +67,27 @@ resource inboundEndpoint 'Microsoft.Network/dnsResolvers/inboundEndpoints@2022-0
       {
         privateIpAllocationMethod: 'Dynamic'
         subnet: {
-          id: '${vnetId}/subnets/FLLMNetSvc'
+          id: resourceId(networkResourceGroupName, 'Microsoft.Network/virtualNetworks/subnets', vnetName, 'FLLMNetSvc')
         }
       }
     ]
   }
 }
+
+/** Nested Modules **/
+@description('Create the specified private DNS zones.')
+module dns './modules/dns.bicep' = [for zone in items(privateDnsZone): {
+  name: '${zone.value}-${timestamp}'
+  params: {
+    key: zone.key
+    vnetId: resourceId(networkResourceGroupName, 'Microsoft.Network/virtualNetworks', vnetName)
+    zone: zone.value
+
+    tags: {
+      Environment: environmentName
+      IaC: 'Bicep'
+      Project: project
+      Purpose: 'Networking'
+    }
+  }
+}]

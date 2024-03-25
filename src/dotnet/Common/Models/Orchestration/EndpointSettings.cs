@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Constants;
+﻿using FoundationaLLM.Common.Constants.Agents;
 
 namespace FoundationaLLM.Common.Models.Orchestration
 {

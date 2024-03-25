@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Instance;
@@ -94,13 +95,6 @@ namespace FoundationaLLM.SemanticKernel.API
                         options.AddAPIKeyAuth();
                     })
                 .AddSwaggerGenNewtonsoftSupport();
-
-            //builder.Services.AddOptions<SemanticKernelServiceSettings>()
-            //    .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_SemanticKernelAPI));
-            //builder.Services.AddSingleton<ISemanticKernelService, SemanticKernelService>();
-
-            builder.Services.AddScoped<IKnowledgeManagementAgentPlugin, KnowledgeManagementAgentPlugin>();
-            builder.Services.AddScoped<ILegacyAgentPlugin, LegacyAgentPlugin>();
 
             // Simple, static system prompt service
             //builder.Services.AddSingleton<ISystemPromptService, InMemorySystemPromptService>();

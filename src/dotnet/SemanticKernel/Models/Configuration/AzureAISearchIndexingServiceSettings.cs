@@ -19,11 +19,6 @@ namespace FoundationaLLM.SemanticKernel.Core.Models.Configuration
         public required string Endpoint { get; set; }
 
         /// <summary>
-        /// The API key used to connect to the Azure AI Search endpoint. Valid only if AuthenticationType is APIKey.
-        /// </summary>
-        public string? APIKey { get; set; }
-
-        /// <summary>
         /// The <see cref="AuthenticationType"/> indicating which authentication mechanism to use.
         /// </summary>
         [JsonConverter(typeof(JsonStringEnumConverter))]

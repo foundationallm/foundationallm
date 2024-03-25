@@ -44,12 +44,6 @@ var tags = {
 @description('Workload Token used in naming resources.')
 var workload = 'storage'
 
-@description('Private DNS Zones for Storage Accounts')
-var zonesStorage = filter(
-  dnsZones.outputs.ids,
-  (zone) => contains([ 'blob', 'dfs', 'file', 'queue', 'table', 'web' ], zone.key)
-)
-
 /** Nested Modules **/
 @description('Read DNS Zones')
 module dnsZones 'modules/utility/dnsZoneData.bicep' = {
@@ -81,15 +75,15 @@ module storage 'modules/storageAccount.bicep' = {
   name: 'storage-${timestamp}'
   params: {
     actionGroupId: actionGroupId
-    containers: ['agents','data-sources','foundationallm-source','prompts','resource-provider','vectorization-state']
+    containers: [ 'agents', 'data-sources', 'foundationallm-source', 'prompts', 'resource-provider', 'vectorization-state' ]
     enableHns: true
     isDataLake: true
     kvResourceSuffix: kvResourceSuffix
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     opsResourceGroupName: opsResourceGroupName
-    privateDnsZones: zonesStorage
-    queues: ['embed','extract','index','partition']
+    privateDnsZones: dnsZones.outputs.idsStorage
+    queues: [ 'embed', 'extract', 'index', 'partition' ]
     resourceSuffix: resourceSuffix
     subnetId: '${vnetId}/subnets/FLLMStorage'
     tags: tags

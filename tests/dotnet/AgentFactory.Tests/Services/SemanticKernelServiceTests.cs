@@ -21,7 +21,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
         public async Task GetCompletion_Success_ReturnsCompletionResponse()
         {
             // Arrange
-            var request = new KnowledgeManagementCompletionRequest
+            var request = new LLMCompletionRequest
             {
                 Agent = new KnowledgeManagementAgent() { Name = "Test_name", ObjectId = "Test_id", Type = "Test_type"}
             };

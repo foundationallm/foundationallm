@@ -106,7 +106,7 @@
             "useEndpoint": false,
             "hasIngress": true,
             "image": "ghcr.io/solliancenet/foundationallm/agent-factory-api:0.4.0",
-            "appConfigEnvironmentVarName": "FoundationaLLM__AppConfig__ConnectionString",
+            "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
             "apiKeySecretName": "foundationallm-apis-agentfactoryapi-apikey"
           },
           {
@@ -130,7 +130,7 @@
             "useEndpoint": false,
             "hasIngress": true,
             "image": "ghcr.io/solliancenet/foundationallm/core-api:0.4.0",
-            "appConfigEnvironmentVarName": "FoundationaLLM__AppConfig__ConnectionString",
+            "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
             "apiKeySecretName": "foundationallm-apis-coreapi-apikey"
           },
           {
@@ -138,7 +138,7 @@
             "useEndpoint": false,
             "hasIngress": false,
             "image": "ghcr.io/solliancenet/foundationallm/core-job:0.4.0",
-            "appConfigEnvironmentVarName": "FoundationaLLM__AppConfig__ConnectionString",
+            "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
             "apiKeySecretName": "foundationallm-apis-corejob-apikey"
           },
           {
@@ -154,7 +154,7 @@
             "useEndpoint": false,
             "hasIngress": true,
             "image": "ghcr.io/solliancenet/foundationallm/gatekeeper-api:0.4.0",
-            "appConfigEnvironmentVarName": "FoundationaLLM__AppConfig__ConnectionString",
+            "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
             "apiKeySecretName": "foundationallm-apis-gatekeeperapi-apikey"
           },
           {
@@ -178,7 +178,7 @@
             "useEndpoint": false,
             "hasIngress": true,
             "image": "ghcr.io/solliancenet/foundationallm/management-api:0.4.0",
-            "appConfigEnvironmentVarName": "FoundationaLLM__AppConfig__ConnectionString",
+            "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
             "apiKeySecretName": "foundationallm-apis-managementapi-apikey"
           },
           {
@@ -202,7 +202,7 @@
             "useEndpoint": false,
             "hasIngress": true,
             "image": "ghcr.io/solliancenet/foundationallm/semantic-kernel-api:0.4.0",
-            "appConfigEnvironmentVarName": "FoundationaLLM__AppConfig__ConnectionString",
+            "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
             "apiKeySecretName": "foundationallm-apis-semantickernelapi-apikey"
           },
           {
@@ -210,7 +210,7 @@
             "useEndpoint": false,
             "hasIngress": true,
             "image": "ghcr.io/solliancenet/foundationallm/vectorization-api:0.4.0",
-            "appConfigEnvironmentVarName": "FoundationaLLM__AppConfig__ConnectionString",
+            "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
             "apiKeySecretName": "foundationallm-apis-vectorizationapi-apikey"
           },
           {
@@ -218,7 +218,7 @@
             "useEndpoint": false,
             "hasIngress": false,
             "image": "ghcr.io/solliancenet/foundationallm/vectorization-job:0.4.0",
-            "appConfigEnvironmentVarName": "FoundationaLLM__AppConfig__ConnectionString",
+            "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
             "apiKeySecretName": "foundationallm-apis-vectorizationworker-apikey"
           }
         ]

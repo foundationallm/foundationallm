@@ -3,9 +3,13 @@ using FoundationaLLM.Common.Models.Authorization;
 
 namespace FoundationaLLM.Vectorization.Services
 {
+    /// <summary>
+    /// Implements an authorization service that bypasses the Authorization API and allows all access by default.
+    /// </summary>
     public class NullAuthorizationService : IAuthorizationService
     {
-        public async Task<ActionAuthorizationResult> ProcessAuthorizationRequest(ActionAuthorizationRequest authorizationRequest)
+        /// <inheritdoc/>
+        public async Task<ActionAuthorizationResult> ProcessAuthorizationRequest(string instanceId, ActionAuthorizationRequest authorizationRequest)
         {
             await Task.CompletedTask;
             return new ActionAuthorizationResult

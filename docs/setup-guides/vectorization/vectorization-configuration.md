@@ -18,7 +18,7 @@ The following table describes the environment variables required for the vectori
 
 Environment variable | Description
 --- | ---
-`FoundationaLLM:AppConfig:ConnectionString` | Connection string to the Azure App Configuration instance.
+`FoundationaLLM_AppConfig_ConnectionString` | Connection string to the Azure App Configuration instance.
 
 The following table describes the required configuration parameters for the vectorization pipelines.
 
@@ -52,7 +52,7 @@ The following table describes the environment variables required for the vectori
 
 | Environment variable | Description |
 | --- | --- |
-| `FoundationaLLM:AppConfig:ConnectionString` | Connection string to the Azure App Configuration instance. |
+| `FoundationaLLM_AppConfig_ConnectionString` | Connection string to the Azure App Configuration instance. |
 
 The following table describes the required App Configuration parameters for the vectorization pipelines.
 

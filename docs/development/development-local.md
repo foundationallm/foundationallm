@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - Environment variables:
-  - Create an environment variable for the Application Configuration Service connection string named `FoundationaLLM:AppConfig:ConnectionString`. This is used by the .NET projects.
+  - Create an environment variable for the Application Configuration Service connection string named `FoundationaLLM_AppConfig_ConnectionString`. This is used by the .NET projects.
   - Create an environment variable for the Application Configuration Service URI named `foundationallm-app-configuration-uri`. This is used by the Python projects.
   - Create an environment variable named `FOUNDATIONALLM_VERSION` and set it to the version of the FoundationaLLM deployment you are working with. This is used by the .NET projects to validate your environment configuration based on the version.
 
@@ -37,7 +37,7 @@ The `UserPortal` project is a Vue.js (Nuxt) project. To configure it to run loca
 
 1. Open the `/src/ui/UserPortal` folder in Visual Studio Code.
 2. Copy the `.env.example` file in the root directory to a new file named `.env` and update the values:
-   1. The `APP_CONFIG_ENDPOINT` value should be the Connection String for the Azure App Configuration service. This should be the same value as the `FoundationaLLM:AppConfig:ConnectionString` environment variable.
+   1. The `APP_CONFIG_ENDPOINT` value should be the Connection String for the Azure App Configuration service. This should be the same value as the `FoundationaLLM_AppConfig_ConnectionString` environment variable.
    2. The `LOCAL_API_URL` should be the URL of the local Core API service (https://localhost:63279). **Important:** Only set this value if you wish to debug the entire solution locally and bypass the App Config service value for the CORE API URL. If you do not wish to debug the entire solution locally, leave this value empty or comment it out.
 
 ### Management Portal
@@ -46,7 +46,7 @@ The `ManagementPortal` project is a Vue.js (Nuxt) project. To configure it to ru
 
 1. Open the `/src/ui/ManagementPortal` folder in Visual Studio Code.
 2. Copy the `.env.example` file in the root directory to a new file named `.env` and update the values:
-   1. The `APP_CONFIG_ENDPOINT` value should be the Connection String for the Azure App Configuration service. This should be the same value as the `FoundationaLLM:AppConfig:ConnectionString` environment variable.
+   1. The `APP_CONFIG_ENDPOINT` value should be the Connection String for the Azure App Configuration service. This should be the same value as the `FoundationaLLM_AppConfig_ConnectionString` environment variable.
    2. The `LOCAL_API_URL` should be the URL of the local Management API service (https://localhost:63267). **Important:** Only set this value if you wish to debug the entire solution locally and bypass the App Config service value for the MANAGEMENT API URL. If you do not wish to debug the entire solution locally, leave this value empty or comment it out.
 
 ## .NET projects

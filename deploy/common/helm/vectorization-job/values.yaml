@@ -23,10 +23,10 @@ tolerations: []
 affinity: {}
 
 env:
-  configmap: 
+  configmap:
     - name: AZURE_CLIENT_ID
   secret:
-    - name: FoundationaLLM__AppConfig__ConnectionString
+    - name: FoundationaLLM_AppConfig_ConnectionString
   values:
     - name: ASPNETCORE_ENVIRONMENT
       value: Production

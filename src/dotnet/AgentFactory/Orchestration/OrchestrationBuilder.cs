@@ -2,6 +2,7 @@
 using FoundationaLLM.AgentFactory.Core.Interfaces;
 using FoundationaLLM.AgentFactory.Interfaces;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Agents;
@@ -20,7 +21,6 @@ namespace FoundationaLLM.AgentFactory.Core.Orchestration
         /// Builds the orchestration based on the user prompt, the session id, and the call context.
         /// </summary>
         /// <param name="completionRequest">The <see cref="CompletionRequest"/> containing details about the completion request.</param>
-        /// <param name="cacheService">The <see cref="ICacheService"/> used to cache agent-related artifacts.</param>
         /// <param name="callContext">The call context of the request being handled.</param>
         /// <param name="configuration">The <see cref="IConfiguration"/> used to retrieve app settings from configuration.</param>
         /// <param name="resourceProviderServices">A dictionary of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
@@ -33,7 +33,6 @@ namespace FoundationaLLM.AgentFactory.Core.Orchestration
         /// <exception cref="ArgumentException"></exception>
         public static async Task<OrchestrationBase?> Build(
             CompletionRequest completionRequest,
-            ICacheService cacheService,
             ICallContext callContext,
             IConfiguration configuration,
             Dictionary<string, IResourceProviderService> resourceProviderServices,

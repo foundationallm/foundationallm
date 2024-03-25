@@ -64,12 +64,7 @@ class RetrieverFactory:
         credential = None
         if credential_type == "AzureIdentity":            
             credential = DefaultAzureCredential()
-        else:
-            credential = AzureKeyCredential(
-                self.config.get_value(
-                    self.indexing_profile.configuration_references.query_api_key
-                )
-            )
+        # NOTE: Support for all other authentication types has been removed.
 
         # defaults for agent parameters
         top_n = self.indexing_profile.settings.top_n

@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Models.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +20,7 @@ namespace FoundationaLLM.SemanticKernel.API.Controllers
         public IActionResult Get() => new OkObjectResult(new ServiceStatusInfo
         {
             Name = ServiceNames.SemanticKernelAPI,
-            Instance = Environment.GetEnvironmentVariable(EnvironmentVariables.Hostname),
+            Instance = ValidatedEnvironment.MachineName,
             Version = Environment.GetEnvironmentVariable(EnvironmentVariables.FoundationaLLM_Version),
             Status = ServiceStatuses.Ready
         });

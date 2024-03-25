@@ -58,11 +58,11 @@ class ResourceProvider:
                         prompt_resource = Prompt(**obj_dict)
                         return prompt_resource
                     case "FoundationaLLM.Vectorization":                
-                        if resource_type == "indexingprofiles":
+                        if resource_type == "indexingProfiles":
                             if obj_dict["indexer"]=="AzureAISearchIndexer":
                                 indexing_resource = AzureAISearchIndexingProfile(**obj_dict)
                                 return indexing_resource
-                        elif resource_type == "textembeddingprofiles":
+                        elif resource_type == "textEmbeddingProfiles":
                             if obj_dict["text_embedding"]=="SemanticKernelTextEmbedding":
                                 embedding_resource = AzureOpenAIEmbeddingProfile(**obj_dict)
                                 return embedding_resource
@@ -106,10 +106,10 @@ class ResourceProvider:
                 
             case "FoundationaLLM.Vectorization":
                 full_path = None
-                if resource_type == "indexingprofiles":
+                if resource_type == "indexingProfiles":
                     full_path = f"{provider_type}/vectorization-indexing-profiles.json"
 
-                elif resource_type == "textembeddingprofiles":
+                elif resource_type == "textEmbeddingProfiles":
                     full_path = f"{provider_type}/vectorization-text-embedding-profiles.json"
 
                 if full_path is not None:

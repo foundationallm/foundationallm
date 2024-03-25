@@ -34,8 +34,9 @@ namespace FoundationaLLM.DataSource.Validation
             RuleFor(x => x)
                 .Must(ds =>
                     ValidConfigurationReference(ds, "AccountName")
+                    || ValidConfigurationReference(ds, "APIKey")
                     || ValidConfigurationReference(ds, "ConnectionString"))
-                .WithMessage("The configuration references must contain a valid value for either AccountName or ConnectionString.");
+                .WithMessage("The configuration references must contain a valid value for AccountName, APIKey, or ConnectionString.");
         }
 
         

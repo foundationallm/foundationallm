@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Constants;
+﻿using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Configuration.Interfaces;
 using Microsoft.Extensions.Configuration;

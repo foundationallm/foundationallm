@@ -28,6 +28,48 @@
       "updated_on": "DEPLOY_TIME",
       "created_by": "SYSTEM",
       "updated_by": "SYSTEM"
+    },
+    {
+      "name": "GUID03",
+      "type": "FoundationaLLM.Authorization/roleAssignments",
+      "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/GUID03",
+      "description": "Role assignment reader for the Management API managed identity.",
+      "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+      "principal_id": "MANAGEMENT_API_MANAGED_IDENTITY",
+      "principal_type": "User",
+      "scope": "/instances/FOUNDATIONALLM_INSTANCEID",
+      "created_on": "DEPLOY_TIME",
+      "updated_on": "DEPLOY_TIME",
+      "created_by": "SYSTEM",
+      "updated_by": "SYSTEM"
+    },
+    {
+      "name": "GUID04",
+      "type": "FoundationaLLM.Authorization/roleAssignments",
+      "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/GUID04",
+      "description": "Role assignment reader for the Core API managed identity.",
+      "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+      "principal_id": "CORE_API_MANAGED_IDENTITY",
+      "principal_type": "User",
+      "scope": "/instances/FOUNDATIONALLM_INSTANCEID",
+      "created_on": "DEPLOY_TIME",
+      "updated_on": "DEPLOY_TIME",
+      "created_by": "SYSTEM",
+      "updated_by": "SYSTEM"
+    },
+    {
+      "name": "GUID05",
+      "type": "FoundationaLLM.Authorization/roleAssignments",
+      "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/GUID05",
+      "description": "Role assignment reader for the Vectorization API managed identity.",
+      "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+      "principal_id": "VECTORIZATION_API_MANAGED_IDENTITY",
+      "principal_type": "User",
+      "scope": "/instances/FOUNDATIONALLM_INSTANCEID",
+      "created_on": "DEPLOY_TIME",
+      "updated_on": "DEPLOY_TIME",
+      "created_by": "SYSTEM",
+      "updated_by": "SYSTEM"
     }
   ]
 }

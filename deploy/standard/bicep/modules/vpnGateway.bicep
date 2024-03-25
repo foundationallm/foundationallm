@@ -5,8 +5,8 @@ param location string
 @description('Resource suffix for all resources')
 param resourceSuffix string
 
-@description('Virtual Network ID, used to find the subnet IDs.')
-param vnetId string
+@description('The subnet ID.')
+param subnetId string
 
 @description('Name for the new gateway')
 var name = '${serviceType}-${resourceSuffix}'
@@ -56,7 +56,7 @@ resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2021-02-01' = {
         properties: {
           privateIPAllocationMethod: 'Dynamic'
           subnet: {
-            id: '${vnetId}/subnets/GatewaySubnet'
+            id: subnetId
           }
           publicIPAddress: {
             id: publicIp.id
@@ -101,4 +101,3 @@ resource publicIp 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
     publicIPAllocationMethod: 'Static'
   }
 }
-

@@ -38,7 +38,7 @@ namespace FoundationaLLM.AgentFactory.Core.Orchestration
         public override async Task<CompletionResponse> GetCompletion(CompletionRequest completionRequest)
         {
             var result = await _orchestrationService.GetCompletion(
-                new KnowledgeManagementCompletionRequest
+                new LLMCompletionRequest
                 {
                     UserPrompt = completionRequest.UserPrompt!,
                     Agent = _agent,

@@ -6,6 +6,11 @@
     public interface IAzureKeyVaultService
     {
         /// <summary>
+        /// Gets the URI of the Key Vault.
+        /// </summary>
+        string KeyVaultUri { get; }
+
+        /// <summary>
         /// Gets the value of a secret from Key Vault.
         /// </summary>
         /// <param name="secretName">The name of the secret whose value you wish to retrieve.</param>

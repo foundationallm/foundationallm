@@ -2,9 +2,6 @@
 @description('Action Group Id for alerts')
 param actionGroupId string
 
-@description('DNS resource group name')
-param dnsResourceGroupName string
-
 @description('KeyVault resource suffix for all resources')
 param kvResourceSuffix string = resourceSuffix
 
@@ -13,11 +10,6 @@ param location string = resourceGroup().location
 
 @description('Log Analytic Workspace Id to use for diagnostics')
 param logAnalyticWorkspaceId string
-
-@description('Log Analytic Workspace Resource Id to use for diagnostics')
-param logAnalyticWorkspaceResourceId string
-
-param networkingResourceGroupName string
 
 @description('OPS Resource Group name.')
 param opsResourceGroupName string = resourceGroup().name
@@ -41,30 +33,7 @@ param topics array = []
 
 /** Locals **/
 @description('Metric alerts for the resource.')
-var alerts = [
-  // {
-  //   description: 'Node CPU utilization greater than 95% for 1 hour'
-  //   evaluationFrequency: 'PT5M'
-  //   metricName: 'node_cpu_usage_percentage'
-  //   name: 'node-cpu'
-  //   operator: 'GreaterThan'
-  //   severity: 3
-  //   threshold: 95
-  //   timeAggregation: 'Average'
-  //   windowSize: 'PT5M'
-  // }
-  // {
-  //   description: 'Node memory utilization greater than 95% for 1 hour'
-  //   evaluationFrequency: 'PT5M'
-  //   metricName: 'node_memory_working_set_percentage'
-  //   name: 'node-memory'
-  //   operator: 'GreaterThan'
-  //   severity: 3
-  //   threshold: 100
-  //   timeAggregation: 'Average'
-  //   windowSize: 'PT5M'
-  // }
-]
+var alerts = []
 
 @description('Formatted untruncated resource name')
 var kvFormattedName = toLower('${kvServiceType}-${substring(kvResourceSuffix, 0, length(kvResourceSuffix) - 4)}')
@@ -77,17 +46,7 @@ var kvName = '${kvTruncatedName}-${substring(kvResourceSuffix, length(kvResource
 var kvServiceType = 'kv'
 
 @description('The Resource logs to enable')
-var logs = [
-  // 'CassandraRequests'
-  // 'ControlPlaneRequests'
-  // 'DataPlaneRequests'
-  // 'GremlinRequests'
-  // 'MongoRequests'
-  // 'PartitionKeyRUConsumption'
-  // 'PartitionKeyStatistics'
-  // 'QueryRuntimeStatistics'
-  // 'TableApiRequests'
-]
+var logs = []
 
 @description('The Resource Name')
 var name = '${serviceType}-${resourceSuffix}'

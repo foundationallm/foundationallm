@@ -41,22 +41,6 @@ namespace FoundationaLLM.AgentFactory.Services
         /// <returns>Returns a completion response from the orchestration engine.</returns>
         public async Task<LLMCompletionResponse> GetCompletion(LLMCompletionRequest request)
         {
-            var promptTemplate = string.Empty;
-
-            string? agentName;
-            switch (request)
-            {
-                case KnowledgeManagementCompletionRequest kmcr:
-                    agentName = kmcr.Agent.Name;
-                    break;
-                case LegacyCompletionRequest lcr:
-                    agentName = lcr.Agent?.Name;
-                    promptTemplate = lcr.Agent?.PromptPrefix;
-                    break;
-                default:
-                    throw new Exception($"LLM orchestration completion request of type {request.GetType()} is not supported.");
-            }
-
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.SemanticKernelAPI);
 
             var body = JsonSerializer.Serialize(request, _jsonSerializerOptions);
@@ -75,8 +59,8 @@ namespace FoundationaLLM.AgentFactory.Services
                     Completion = completionResponse!.Completion,
                     UserPrompt = completionResponse.UserPrompt,
                     FullPrompt = completionResponse.FullPrompt,
-                    PromptTemplate = promptTemplate,
-                    AgentName = agentName,
+                    PromptTemplate = string.Empty,
+                    AgentName = request.Agent.Name,
                     PromptTokens = completionResponse.PromptTokens,
                     CompletionTokens = completionResponse.CompletionTokens
                 };
@@ -89,8 +73,8 @@ namespace FoundationaLLM.AgentFactory.Services
             {
                 Completion = "A problem on my side prevented me from responding.",
                 UserPrompt = request.UserPrompt,
-                PromptTemplate = promptTemplate,
-                AgentName = agentName,
+                PromptTemplate = string.Empty,
+                AgentName = request.Agent.Name,
                 PromptTokens = 0,
                 CompletionTokens = 0
             };

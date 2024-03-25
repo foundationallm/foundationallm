@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Agents;
 
 
 namespace FoundationaLLM.Common.Models.Metadata

@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Constants;
+﻿using FoundationaLLM.Common.Constants.Agents;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Orchestration.Direct

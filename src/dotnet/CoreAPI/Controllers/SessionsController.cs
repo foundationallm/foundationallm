@@ -19,8 +19,7 @@ namespace FoundationaLLM.Core.API.Controllers
     /// sessions and messages, and for getting completions from the orchestrator.</param>
     /// <param name="logger">The logging interface used to log under the
     /// <see cref="SessionsController"/> type name.</param>
-    [Authorize]
-    [Authorize(Policy = "RequiredScope")]
+    [Authorize(Policy = "DefaultPolicy")]
     [ApiController]
     [Route("[controller]")]
     public class SessionsController(ICoreService coreService,

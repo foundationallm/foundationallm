@@ -1,9 +1,13 @@
 <template>
 	<div>
 		<!-- Header -->
-		<h2 class="page-header">{{ editDataSource ? 'Edit Data Source' : 'Create Data Source' }}</h2>
+		<h2 class="page-header">{{ editId ? 'Edit Data Source' : 'Create Data Source' }}</h2>
 		<div class="page-subheader">
-			{{ editDataSource ? 'Edit your data source settings below.' : 'Complete the settings below to configure the data source.' }}
+			{{
+				editId
+					? 'Edit your data source settings below.'
+					: 'Complete the settings below to configure the data source.'
+			}}
 		</div>
 
 		<!-- Steps -->
@@ -21,7 +25,26 @@
 			<div class="span-2">
 				<div class="mb-2">Data source name:</div>
 				<div class="input-wrapper">
-					<InputText v-model="sourceName" placeholder="Enter data source name" type="text" class="w-100" @input="handleNameInput" :disabled="editDataSource" />
+					<InputText
+						v-model="dataSource.name"
+						placeholder="Enter data source name"
+						type="text"
+						class="w-100"
+						:disabled="editId"
+						@input="handleNameInput"
+					/>
+					<span v-if="nameValidationStatus === 'valid'" class="icon valid" title="Name is available">✔️</span>
+					<span v-else-if="nameValidationStatus === 'invalid'" class="icon invalid" :title="validationMessage">❌</span>
+				</div>
+
+				<div class="mb-2 mt-2">Data description:</div>
+				<div class="input-wrapper">
+					<InputText
+						v-model="dataSource.description"
+						placeholder="Enter a description for this data source"
+						type="text"
+						class="w-100"
+					/>
 				</div>
 			</div>
 
@@ -29,46 +52,167 @@
 			<div class="step-header span-2">What is the type of the data source?</div>
 			<div class="span-2">
 				<Dropdown
-					v-model="sourceType"
+					v-model="dataSource.type"
 					:options="sourceTypeOptions"
 					option-label="label"
+					option-value="value"
 					placeholder="--Select--"
 					class="dropdown--agent"
 				/>
 			</div>
 
 			<!-- Connection details -->
-			<div class="step-header span-2">What are the connection details?</div>
-			<div class="span-2">
-				<div class="mb-2">Authentication type:</div>
-				<Dropdown
-					v-model="authenticationType"
-					:options="authenticationTypeOptions"
-					option-label="label"
-					placeholder="--Select--"
-					class="dropdown--agent"
-				/>
-			</div>
+			<!-- Show this section only if a source type is selected -->
+			<div v-if="dataSource.type" class="span-2">
+				<div class="step-header mb-2">What are the connection details?</div>
 
-			<!-- Connection string -->
-			<div class="span-2">
-				<div class="mb-2">Connection string:</div>
-				<Textarea v-model="connectionString" class="w-100" auto-resize rows="5" type="text" />
+				<!-- Azure data lake -->
+				<div v-if="isAzureDataLakeDataSource(dataSource)">
+					<div class="mb-2">Authentication type:</div>
+					<Dropdown
+						v-model="dataSource.resolved_configuration_references.AuthenticationType"
+						:options="authenticationTypeOptions"
+						option-label="label"
+						option-value="value"
+						placeholder="--Select--"
+						class="dropdown--agent"
+					/>
+
+					<!-- Connection string -->
+					<div
+						v-if="dataSource.resolved_configuration_references.AuthenticationType === 'ConnectionString'"
+						class="span-2"
+					>
+						<div class="mb-2 mt-2">Connection string:</div>
+						<div class="flex-container">
+							<Textarea
+								:model-value="showSecret[`${dataSource.type}_ConnectionString`] ? dataSource.resolved_configuration_references.ConnectionString : '••••••••••••••••••••••••••••••••••••••••••••••••••'"
+								@update:model-value="val => dataSource.resolved_configuration_references.ConnectionString = val"
+								class="w-100"
+								auto-resize
+								rows="5"
+								type="text"
+								:disabled="!showSecret[`${dataSource.type}_ConnectionString`] && dataSource.resolved_configuration_references.ConnectionString"
+							/>
+							<Button :icon="showSecret[`${dataSource.type}_ConnectionString`] ? 'pi pi-eye' : 'pi pi-eye-slash'"
+								@click="toggleSecretVisibility('ConnectionString')" class="p-button-text"
+								:label="showSecret[`${dataSource.type}_ConnectionString`] ? 'Hide' : 'Show'"></Button>
+						</div>
+					</div>
+
+					<!-- API Key -->
+					<div
+						v-if="dataSource.resolved_configuration_references.AuthenticationType === 'AccountKey'"
+						class="span-2"
+					>
+						<div class="mb-2 mt-2">API Key:</div>
+						<div class="flex-container">
+							<InputText
+								:model-value="showSecret[`${dataSource.type}_APIKey`] ? dataSource.resolved_configuration_references.APIKey : '••••••••••••••••••••••••••••••••••••••••••••••••••'"
+								@update:model-value="val => dataSource.resolved_configuration_references.APIKey = val"
+								class="w-100"
+								type="text"
+								:disabled="!showSecret[`${dataSource.type}_APIKey`] && dataSource.resolved_configuration_references.APIKey"
+							/>
+							<Button :icon="showSecret[`${dataSource.type}_APIKey`] ? 'pi pi-eye' : 'pi pi-eye-slash'"
+								@click="toggleSecretVisibility('APIKey')" class="p-button-text"
+								:label="showSecret[`${dataSource.type}_APIKey`] ? 'Hide' : 'Show'"></Button>
+						</div>
+						<div class="mb-2 mt-2">Endpoint:</div>
+						<InputText
+							v-model="dataSource.resolved_configuration_references.Endpoint"
+							class="w-100"
+							type="text"
+						/>
+					</div>
+
+					<div class="mb-2 mt-2">Folder(s):</div>
+					<InputText v-model="foldersString" class="w-100" type="text" />
+
+				</div>
+
+				<!-- Azure SQL database -->
+				<div v-if="isAzureSQLDatabaseDataSource(dataSource)">
+					<!-- Connection string -->
+					<div class="span-2">
+						<div class="mb-2">Connection string:</div>
+						<div class="flex-container">
+							<Textarea
+								:model-value="showSecret[`${dataSource.type}_ConnectionString`] ? dataSource.resolved_configuration_references.ConnectionString : '••••••••••••••••••••••••••••••••••••••••••••••••••'"
+								@update:model-value="val => dataSource.resolved_configuration_references.ConnectionString = val"
+								class="w-100"
+								auto-resize
+								rows="5"
+								type="text"
+								:disabled="!showSecret[`${dataSource.type}_ConnectionString`] && dataSource.resolved_configuration_references.ConnectionString"
+							/>
+							<Button :icon="showSecret[`${dataSource.type}_ConnectionString`] ? 'pi pi-eye' : 'pi pi-eye-slash'"
+								@click="toggleSecretVisibility('ConnectionString')" class="p-button-text"
+								:label="showSecret[`${dataSource.type}_ConnectionString`] ? 'Hide' : 'Show'"></Button>
+						</div>
+
+						<template v-if="dataSource.tables">
+							<div class="mb-2 mt-2">Table Name(s):</div>
+							<InputText v-model="tablesString" class="w-100" type="text" />
+						</template>
+					</div>
+				</div>
+
+				<!-- Sharepoint online -->
+				<div v-if="isSharePointOnlineSiteDataSource(dataSource)">
+					<div class="span-2">
+						<div class="mb-2">App ID (Client ID):</div>
+						<InputText
+							v-model="dataSource.resolved_configuration_references.ClientId"
+							class="w-100"
+							type="text"
+						/>
+
+						<div class="mb-2 mt-2">Tenant ID:</div>
+						<InputText
+							v-model="dataSource.resolved_configuration_references.TenantId"
+							class="w-100"
+							type="text"
+						/>
+
+						<div class="mb-2 mt-2">Certificate Name:</div>
+						<InputText
+							v-model="dataSource.resolved_configuration_references.CertificateName"
+							class="w-100"
+							type="text"
+						/>
+
+						<div class="mb-2 mt-2">Key Vault URL:</div>
+						<InputText
+							v-model="dataSource.resolved_configuration_references.KeyVaultURL"
+							class="w-100"
+							type="text"
+						/>
+
+						<div class="mb-2 mt-2">Site URL:</div>
+						<InputText v-model="dataSource.site_url" class="w-100" type="text" />
+
+						<template v-if="dataSource.document_libraries">
+							<div class="mb-2 mt-2">Document Library(s):</div>
+							<InputText v-model="documentLibrariesString" class="w-100" type="text" />
+						</template>
+					</div>
+				</div>
 			</div>
 
 			<!-- Buttons -->
 			<div class="button-container column-2 justify-self-end">
 				<!-- Create data source -->
 				<Button
-					:label="editDataSource ? 'Save Changes' : 'Create Data Source'"
+					:label="editId ? 'Save Changes' : 'Create Data Source'"
 					severity="primary"
 					@click="handleCreateDataSource"
 				/>
 
 				<!-- Cancel -->
 				<Button
-					v-if="editDataSource"
-					style="margin-left: 16px;"
+					v-if="editId"
+					style="margin-left: 16px"
 					label="Cancel"
 					severity="secondary"
 					@click="handleCancel"
@@ -80,20 +224,30 @@
 
 <script lang="ts">
 import type { PropType } from 'vue';
+import { debounce } from 'lodash';
 import api from '@/js/api';
-
-const defaultFormValues = {
-	sourceName: '',
-	sourceType: null,
-	authenticationType: 1,
-	connectionString: '',
-};
+import type {
+	DataSource,
+	ConfigurationReferenceMetadata
+	// AzureDataLakeDataSource,
+	// SharePointOnlineSiteDataSource,
+	// AzureSQLDatabaseDataSource,
+} from '@/js/types';
+import {
+	isAzureDataLakeDataSource,
+	isAzureSQLDatabaseDataSource,
+	isSharePointOnlineSiteDataSource,
+	convertDataSourceToAzureDataLake,
+	convertDataSourceToSharePointOnlineSite,
+	convertDataSourceToAzureSQLDatabase,
+	convertToDataSource
+} from '@/js/types';
 
 export default {
 	name: 'CreateDataSource',
 
 	props: {
-		editDataSource: {
+		editId: {
 			type: [Boolean, String] as PropType<false | string>,
 			required: false,
 			default: false,
@@ -102,63 +256,185 @@ export default {
 
 	data() {
 		return {
-			...defaultFormValues,
-
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
+			
+			nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
+			validationMessage: '' as string,
+			
+			foldersString: '',
+			documentLibrariesString: '',
+			tablesString: '',
+
+			showSecret: {}, // Object to track visibility state of secrets.
+
+			// Create a default Azure Data Lake data source.
+			
+			dataSource: {
+				type: 'azure-data-lake',
+				name: '',
+				object_id: '',
+				description: '',
+				resolved_configuration_references: {
+					AuthenticationType: '',
+					ConnectionString: '',
+					APIKey: '',
+					Endpoint: '',
+				},
+				configuration_references: {
+					AuthenticationType: '',
+					ConnectionString: '',
+					APIKey: '',
+					Endpoint: '',
+				},
+				configuration_reference_metadata: {} as { [key: string]: ConfigurationReferenceMetadata },
+			} as null | DataSource,
 
 			sourceTypeOptions: [
 				{
-					label: 'Blob Storage',
-					value: 1,
+					label: 'OneLake',
+					value: 'onelake'
 				},
 				{
-					label: 'SQL Server / SQL Database',
-					value: 2,
+					label: 'Azure Data Lake',
+					value: 'azure-data-lake',
+				},
+				{
+					label: 'Azure SQL Database',
+					value: 'azure-sql-database',
 				},
 				{
 					label: 'SharePoint List',
-					value: 3,
+					value: 'sharepoint-online-site',
 				},
 			],
 
 			authenticationTypeOptions: [
 				{
 					label: 'Connection String',
-					value: 1,
+					value: 'ConnectionString',
 				},
+				{
+					label: 'Account Key',
+					value: 'AccountKey',
+				},
+				// {
+				// 	label: 'Azure Identity',
+				// 	value: 'AzureIdentity',
+				// },
 			],
 		};
 	},
 
+	watch: {
+		'dataSource.type'() {
+			this.dataSource = convertToDataSource(this.dataSource);
+			this.initializeShowSecret();
+		},
+	},
 
 	async created() {
 		this.loading = true;
 
-		if (this.editDataSource) {
-			this.loadingStatusText = `Retrieving data source "${this.editDataSource}"...`;
-			const dataSource = await api.getDataSource(this.editDataSource);
-			this.loadingStatusText = `Mapping data source values to form...`;
-			this.mapDataSourceToForm(dataSource[0]);
+		if (this.editId) {
+			this.loadingStatusText = `Retrieving data source "${this.editId}"...`;
+			const dataSource = await api.getDataSource(this.editId);
+			this.dataSource = dataSource;
+
+			if (this.dataSource.folders) {
+				this.foldersString = this.dataSource.folders.join(', ');
+			}
+			if (this.dataSource.document_libraries) {
+				this.documentLibrariesString = this.dataSource.document_libraries.join(', ');
+			}
+			if (this.dataSource.tables) {
+				this.tablesString = this.dataSource.tables.join(', ');
+			}
 		}
+		else {
+			// Create a new DataSource object of type Azure Data Lake.
+			const newDataSource: DataSource = {
+				type: 'azure-data-lake',
+				name: '',
+				object_id: '',
+				description: '',
+				resolved_configuration_references: {
+					AuthenticationType: '',
+					ConnectionString: '',
+					APIKey: '',
+					Endpoint: '',
+				},
+				configuration_references: {
+					AuthenticationType: '',
+					ConnectionString: '',
+					APIKey: '',
+					Endpoint: '',
+				},
+				configuration_reference_metadata: {} as { [key: string]: ConfigurationReferenceMetadata },
+			};
+			this.dataSource = convertToDataSource(newDataSource);
+		}
+
+		this.initializeShowSecret();
+
+		this.debouncedCheckName = debounce(this.checkName, 500);
 
 		this.loading = false;
 	},
 
 	methods: {
-		mapDataSourceToForm(dataSource: any) {
-			console.log(dataSource);
-			this.sourceName = dataSource.name;
-			this.sourceType = dataSource.type;
-			this.connectionString = dataSource.configuration_references?.ConnectionString;
-		},
+		isAzureDataLakeDataSource,
+		isSharePointOnlineSiteDataSource,
+		isAzureSQLDatabaseDataSource,
+		convertToDataSource,
 
-		resetForm() {
-			for (const key in defaultFormValues) {
-				this[key] = defaultFormValues[key];
+		initializeShowSecret() {
+			const uniqueIdentifier = this.dataSource.type; // Or any other unique property
+			for (const key in this.dataSource.configuration_references) {
+				const uniqueKey = `${uniqueIdentifier}_${key}`;
+
+				// Determine the initial visibility based on whether a resolved value exists.
+				// If a resolved value exists and is not an empty string, it defaults to being hidden (false).
+				// If no resolved value exists (undefined or empty string), the field should be shown to allow input (true).
+				const resolvedValue = this.dataSource.resolved_configuration_references[key];
+				this.showSecret[uniqueKey] = !resolvedValue;
 			}
 		},
 
+		async checkName() {
+			try {
+				const response = await api.checkDataSourceName(this.dataSource.name, this.dataSource.type);
+
+				// Handle response based on the status
+				if (response.status === 'Allowed') {
+					// Name is available
+					this.nameValidationStatus = 'valid';
+					this.validationMessage = null;
+				} else if (response.status === 'Denied') {
+					// Name is taken
+					this.nameValidationStatus = 'invalid';
+					this.validationMessage = response.message;
+				}
+			} catch (error) {
+				console.error("Error checking agent name: ", error);
+				this.nameValidationStatus = 'invalid';
+				this.validationMessage = 'Error checking the agent name. Please try again.';
+			}
+		},
+		
+		toggleSecretVisibility(key) {
+			const uniqueKey = `${this.dataSource.type}_${key}`;
+			// Directly toggle the visibility.
+			if (this.showSecret[uniqueKey] === undefined) {
+				this.showSecret[uniqueKey] = !this.dataSource.resolved_configuration_references[key];
+			} else {
+				this.showSecret[uniqueKey] = !this.showSecret[uniqueKey];
+			}
+			if (this.showSecret[uniqueKey] && !this.dataSource.resolved_configuration_references[key]) {
+				this.showSecret[uniqueKey] = true;
+			}
+		},
+		
 		handleCancel() {
 			if (!confirm('Are you sure you want to cancel?')) {
 				return;
@@ -168,65 +444,57 @@ export default {
 		},
 
 		handleNameInput(event) {
-			const element = event.target;
-
-			// Remove spaces.
-			let sanitizedValue = element.value.replace(/\s/g, '');
-
-			// Remove any characters that are not lowercase letters, digits, dashes, or underscores.
-			sanitizedValue = sanitizedValue.replace(/[^a-z0-9-_]/g, '');
-
-			element.value = sanitizedValue;
+			const sanitizedValue = this.$filters.sanitizeNameInput(event);
+			this.dataSource.name = sanitizedValue;
 			this.sourceName = sanitizedValue;
+
+			// Check if the name is available if we are creating a new data source.
+			if (!this.editId) {
+				this.debouncedCheckName();
+			}
 		},
 
 		async handleCreateDataSource() {
-			const errors = [];
-			if (!this.sourceName) {
+			const errors: string[] = [];
+			if (!this.dataSource.name) {
 				errors.push('Please give the data source a name.');
 			}
 
-			if (!this.connectionString) {
-				errors.push('Please specify a connection string.');
+			if (!this.dataSource.type) {
+				errors.push('Please specify a data source type.');
+			}
+			
+			this.dataSource = convertToDataSource(this.dataSource);
+
+			// Convert string representations of array fields back to arrays.
+			if (isAzureDataLakeDataSource(this.dataSource)) {
+				this.dataSource.folders = this.foldersString.split(',').map(s => s.trim());
+			} else if (isSharePointOnlineSiteDataSource(this.dataSource)) {
+				this.dataSource.document_libraries = this.documentLibrariesString.split(',').map(s => s.trim());
+			} else if (isAzureSQLDatabaseDataSource(this.dataSource)) {
+				this.dataSource.tables = this.tablesString.split(',').map(s => s.trim());
 			}
 
 			if (errors.length > 0) {
 				this.$toast.add({
 					severity: 'error',
 					detail: errors.join('\n'),
-					life: 5000,
 				});
 
 				return;
 			}
 
 			this.loading = true;
-			this.loadingStatusText = 'Creating data source...';
-
-			let successMessage = null;
+			let successMessage = null as null | string;
 			try {
-				const dataSourceRequest: DataSourceRequest = {
-					name: this.sourceName,
-					configuration_references: {
-						AuthenticationType: this.authenticationType,
-						ConnectionString: this.connectionString,
-					},
-				};
-
-				if (this.editDataSource) {
-					await api.updateDataSource(this.editDataSource, dataSourceRequest);
-					successMessage = `Data source "${this.sourceName}" was succesfully updated!`;
-				} else {
-					await api.createDataSource(dataSourceRequest);
-					successMessage = `Data source "${this.sourceName}" was succesfully created!`;
-					this.resetForm();
-				}
+				this.loadingStatusText = 'Saving data source...';
+				await api.upsertDataSource(this.dataSource);
+				successMessage = `Data source "${this.dataSource.name}" was successfully saved.`;
 			} catch (error) {
 				this.loading = false;
 				return this.$toast.add({
 					severity: 'error',
 					detail: error?.response?._data || error,
-					life: 5000,
 				});
 			}
 
@@ -237,7 +505,7 @@ export default {
 
 			this.loading = false;
 
-			if (!this.editDataSource) {
+			if (!this.editId) {
 				this.$router.push('/data-sources');
 			}
 		},
@@ -455,5 +723,18 @@ input {
 
 .invalid {
 	color: red;
+}
+
+.flex-container {
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+}
+
+.flex-item {
+  flex-grow: 1; /* Allow the textarea to grow and fill the space */
+}
+
+.flex-item-button {
+  margin-left: 8px; /* Add some space between the textarea and the button */
 }
 </style>

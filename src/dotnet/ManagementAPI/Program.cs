@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Branding;
@@ -11,10 +12,7 @@ using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Common.Validation;
-using FoundationaLLM.Management.Interfaces;
 using FoundationaLLM.Management.Models.Configuration;
-using FoundationaLLM.Management.Services;
-using FoundationaLLM.Management.Services.APIServices;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Polly;
@@ -83,12 +81,9 @@ namespace FoundationaLLM.Management.API
                 builder.Configuration,
                 AppConfigurationKeySections.FoundationaLLM_Events_AzureEventGridEventService_Profiles_ManagementAPI);
 
-            builder.Services.AddScoped<IAgentFactoryAPIService, AgentFactoryAPIService>();
             builder.Services.AddScoped<IAgentHubAPIService, AgentHubAPIService>();
             builder.Services.AddScoped<IDataSourceHubAPIService, DataSourceHubAPIService>();
             builder.Services.AddScoped<IPromptHubAPIService, PromptHubAPIService>();
-            builder.Services.AddScoped<IConfigurationManagementService, ConfigurationManagementService>();
-            builder.Services.AddScoped<ICacheManagementService, CacheManagementService>();
 
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             builder.Services.AddScoped<ICallContext, CallContext>();

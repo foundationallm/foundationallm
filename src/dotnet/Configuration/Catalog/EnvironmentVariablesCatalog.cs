@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Models.Configuration.Environment;
 
 namespace FoundationaLLM.Configuration.Catalog
@@ -10,8 +11,6 @@ namespace FoundationaLLM.Configuration.Catalog
     {
         private static readonly List<EnvironmentVariableEntry> GenericEntries =
             [
-                new EnvironmentVariableEntry(EnvironmentVariables.Hostname,
-                    "The Azure Container App or Azure Kubernetes Service hostname."),
                 new EnvironmentVariableEntry(EnvironmentVariables.FoundationaLLM_Version,
                     "The build version of the container. This is also used for the app version used to validate the minimum version of the app required to use certain configuration entries."),
             ];

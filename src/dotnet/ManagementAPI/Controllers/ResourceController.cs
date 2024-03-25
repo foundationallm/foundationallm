@@ -10,8 +10,7 @@ namespace FoundationaLLM.Management.API.Controllers
     /// </summary>
     /// <param name="resourceProviderServices">The list of <see cref="IResourceProviderService"/> resource providers.</param>
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
-    [Authorize]
-    [Authorize(Policy = "RequiredScope")]
+    [Authorize(Policy = "DefaultPolicy")]
     [ApiController]
     [Consumes("application/json")]
     [Produces("application/json")]

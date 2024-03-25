@@ -172,13 +172,7 @@ FoundationaLLM uses Azure App Configuration to store configuration values, Key V
 | `FoundationaLLM:Events:AzureEventGridEventService:Profiles:VectorizationAPI` | | FLLM eventing infrastructure configuration for the Vectorization API. |
 | `FoundationaLLM:Events:AzureEventGridEventService:Profiles:VectorizationWorker` | | FLLM eventing infrastructure configuration for the Vectorization Worker. |
 | `FoundationaLLM:Configuration:ResourceProviderService:Storage:AuthenticationType` | | The authentication type used to connect to the underlying storage. Can be one of `AzureIdentity`, `AccountKey`, or `ConnectionString`. |
-| `FoundationaLLM:Configuration:ResourceProviderService:Storage:ConnectionString` | Key Vault secret name: `foundationallm-configuration-resourceprovider-storage-connectionstring` | This is a Key Vault reference. |
-| `FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType` | `APIKey` | |
-| `FoundationaLLM:Vectorization:AzureAISearchIndexingService:APIKey` | Key Vault secret name: `search-key` | This is a Key Vault reference. |
 | `FoundationaLLM:Vectorization:AzureAISearchIndexingService:Endpoint` | | Azure AI Search service endpoint. |
-| `FoundationaLLM:Vectorization:AzureAISearchIndexingService:QueryAPIKey` | Key Vault secret name: `search-key` | This is a Key Vault reference. |
-| `FoundationaLLM:Vectorization:ContentSources:DefaultAzureDataLake:AuthenticationType` | `ConnectionString` | This is a Key Vault reference. |
-| `FoundationaLLM:Vectorization:ContentSources:DefaultAzureDataLake:ConnectionString` | Key Vault secret name: `search-key` | This is a Key Vault reference. |
 | `FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:APIVersion` | `2023-05-15` | |
 | `FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:DeploymentName` | `embeddings` | |
 | `FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:Endpoint` | Enter the URL to the service. | |

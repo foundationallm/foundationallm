@@ -32,7 +32,6 @@ public class AgentFactoryService : IAgentFactoryService
     /// </summary>
     /// <param name="resourceProviderServices">A list of <see cref="IResourceProviderService"/> resource providers.</param>
     /// <param name="orchestrationServices"></param>
-    /// <param name="cacheService">The <see cref="ICacheService"/> used to cache agent-related artifacts.</param>
     /// <param name="callContext">The call context of the request being handled.</param>
     /// <param name="configuration">The <see cref="IConfiguration"/> used to retrieve app settings from configuration.</param>
     /// <param name="agentHubService"></param>    
@@ -42,7 +41,6 @@ public class AgentFactoryService : IAgentFactoryService
     public AgentFactoryService(
         IEnumerable<IResourceProviderService> resourceProviderServices,
         IEnumerable<ILLMOrchestrationService> orchestrationServices,
-        ICacheService cacheService,
         ICallContext callContext,
         IConfiguration configuration,
         IAgentHubAPIService agentHubService,
@@ -54,7 +52,6 @@ public class AgentFactoryService : IAgentFactoryService
                 rps => rps.Name);
 
         _orchestrationServices = orchestrationServices;
-        _cacheService = cacheService;
         _callContext = callContext;
         _configuration = configuration;
         _agentHubAPIService = agentHubService;
@@ -91,7 +88,6 @@ public class AgentFactoryService : IAgentFactoryService
         {
             var orchestration = await OrchestrationBuilder.Build(
                 completionRequest,
-                _cacheService,
                 _callContext,
                 _configuration,
                 _resourceProviderServices,

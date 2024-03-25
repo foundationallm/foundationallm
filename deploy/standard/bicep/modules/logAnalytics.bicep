@@ -3,6 +3,8 @@ param ampls object
 param environmentName string
 param location string
 param project string
+
+@minLength(1)
 param resourceSuffix string
 
 var name = 'la-${resourceSuffix}'

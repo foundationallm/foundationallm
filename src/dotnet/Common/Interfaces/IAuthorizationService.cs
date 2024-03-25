@@ -10,8 +10,11 @@ namespace FoundationaLLM.Common.Interfaces
         /// <summary>
         /// Processes an action authorization request.
         /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance id.</param>
         /// <param name="authorizationRequest">The <see cref="ActionAuthorizationRequest"/> to process.</param>
         /// <returns>An <see cref="ActionAuthorizationResult"/> containing the result of the processing.</returns>
-        Task<ActionAuthorizationResult> ProcessAuthorizationRequest(ActionAuthorizationRequest authorizationRequest);
+        Task<ActionAuthorizationResult> ProcessAuthorizationRequest(
+            string instanceId,
+            ActionAuthorizationRequest authorizationRequest);
     }
 }

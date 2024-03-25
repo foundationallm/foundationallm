@@ -16,7 +16,6 @@ namespace FoundationaLLM.AgentFactory.Tests.Orchestration
         private string userPrompt = "TestPrompt";
         private readonly IAgentHubAPIService _agentHubAPIService = Substitute.For<IAgentHubAPIService>();
         private readonly ILangChainService _langChainService = Substitute.For<ILangChainService>();
-        private readonly ICacheService _cacheService = Substitute.For<ICacheService>();
         private readonly ICallContext _callContext = Substitute.For<ICallContext>();
         private Dictionary<string, IResourceProviderService> _resourceProviderServices = new Dictionary<string, IResourceProviderService>();
         private readonly ISemanticKernelService _semanticKernelService = Substitute.For<ISemanticKernelService>();
@@ -55,7 +54,6 @@ namespace FoundationaLLM.AgentFactory.Tests.Orchestration
             // Act
             var result = await OrchestrationBuilder.Build(
                 completionRequest,
-                _cacheService,
                 _callContext,
                 _configuration,
                 _resourceProviderServices,
@@ -85,7 +83,6 @@ namespace FoundationaLLM.AgentFactory.Tests.Orchestration
             Assert.ThrowsAsync<ArgumentException>(async () =>
                 await OrchestrationBuilder.Build(
                 new CompletionRequest() { UserPrompt = userPrompt },
-                _cacheService,
                 _callContext,
                 _configuration,
                 _resourceProviderServices,

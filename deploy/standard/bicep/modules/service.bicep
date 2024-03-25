@@ -54,6 +54,8 @@ var kvServiceType = 'kv'
 /** Outputs **/
 @description('Service Managed Identity Client Id.')
 output serviceClientId string = managedIdentity.properties.clientId
+output servicePrincipalId string = managedIdentity.properties.principalId
+output serviceMiName string = managedIdentity.name
 
 @description('Service Api Key Secret KeyVault Uri.')
 #disable-next-line outputs-should-not-contain-secrets
@@ -116,6 +118,8 @@ module storageRoleAssignments 'utility/roleAssignments.bicep' = {
     principalId: managedIdentity.properties.principalId
     roleDefinitionIds: {
       Contributor: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      'Storage Blob Data Contributor': 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
+      'Storage Queue Data Contributor': '974c5e8b-45b9-4653-ba55-5f855dd0fb88'
     }
   }
 }

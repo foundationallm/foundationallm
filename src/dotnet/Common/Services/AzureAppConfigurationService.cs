@@ -1,5 +1,6 @@
 ﻿using Azure.Data.AppConfiguration;
 using Microsoft.Extensions.Logging;
+using System.Net;
 
 namespace FoundationaLLM.Common.Services
 {
@@ -23,10 +24,34 @@ namespace FoundationaLLM.Common.Services
         }
 
         /// <inheritdoc/>
-        public async Task SetConfigurationSettingAsync(string key, string value)
+        public async Task<List<(string Key, string? Value, string ContentType)>> GetConfigurationSettingsAsync(string keyFilter)
         {
-            var setting = new ConfigurationSetting(key, value);
-            await _configurationClient.SetConfigurationSettingAsync(setting);
+            var settings = _configurationClient.GetConfigurationSettingsAsync(new SettingSelector
+            {
+                KeyFilter = keyFilter,
+                Fields = SettingFields.Key | SettingFields.Value | SettingFields.ContentType
+            });
+
+            var settingList = new List<(string Key, string? Value, string ContentType)>();
+            await foreach (var setting in settings)
+            {
+                settingList.Add((setting.Key, setting.Value, setting.ContentType));
+            }
+            return settingList;
+        }
+
+        /// <inheritdoc/>
+        public async Task SetConfigurationSettingAsync(string key, string value, string contentType)
+        {
+            var setting = new ConfigurationSetting(key, value)
+            {
+                ContentType = contentType
+            };
+            var response = await _configurationClient.SetConfigurationSettingAsync(setting);
+
+            var rawResponse = response.GetRawResponse();
+            if (rawResponse.Status != (int)HttpStatusCode.OK)
+                throw new Exception($"Failed to set app configuration setting ({key}).");
         }
 
         /// <inheritdoc/>

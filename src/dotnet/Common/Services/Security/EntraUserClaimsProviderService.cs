@@ -1,12 +1,7 @@
 ﻿using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using Microsoft.Identity.Web;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FoundationaLLM.Common.Services.Security
 {
@@ -37,10 +32,8 @@ namespace FoundationaLLM.Common.Services.Security
         /// </summary>
         /// <param name="userPrincipal">The claims principal object that contains the authenticated identity.</param>
         /// <returns></returns>
-        private string ResolveUsername(ClaimsPrincipal? userPrincipal)
-        {
+        private string ResolveUsername(ClaimsPrincipal? userPrincipal) =>
             // Depending on which Microsoft Entra ID license the user has, the username may be extracted from the Identity.Name value or the preferred_username claim.
-            return (!string.IsNullOrWhiteSpace(userPrincipal?.Identity?.Name) ? userPrincipal.Identity.Name : userPrincipal?.FindFirstValue(ClaimConstants.PreferredUserName)) ?? string.Empty;
-        }
+            (!string.IsNullOrWhiteSpace(userPrincipal?.Identity?.Name) ? userPrincipal.Identity.Name : userPrincipal?.FindFirstValue(ClaimConstants.PreferredUserName)) ?? string.Empty;
     }
 }

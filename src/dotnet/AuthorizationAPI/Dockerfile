@@ -18,11 +18,17 @@ RUN dotnet build "dotnet/Common/Common.csproj" -c Release -o /app/build
 RUN dotnet restore "dotnet/Agent/Agent.csproj"
 RUN dotnet build "dotnet/Agent/Agent.csproj" -c Release -o /app/build
 
-RUN dotnet restore "dotnet/AgentFactory/AgentFactory.csproj"
-RUN dotnet build "dotnet/AgentFactory/AgentFactory.csproj" -c Release -o /app/build
-
 RUN dotnet restore "dotnet/Prompt/Prompt.csproj"
 RUN dotnet build "dotnet/Prompt/Prompt.csproj" -c Release -o /app/build
+
+RUN dotnet restore "dotnet/Configuration/Configuration.csproj"
+RUN dotnet build "dotnet/Configuration/Configuration.csproj" -c Release -o /app/build
+
+RUN dotnet restore "dotnet/DataSource/DataSource.csproj"
+RUN dotnet build "dotnet/DataSource/DataSource.csproj" -c Release -o /app/build
+
+RUN dotnet restore "dotnet/Vectorization/Vectorization.csproj"
+RUN dotnet build "dotnet/Vectorization/Vectorization.csproj" -c Release -o /app/build
 
 RUN dotnet restore "dotnet/Authorization/Authorization.csproj"
 RUN dotnet build "dotnet/Authorization/Authorization.csproj" -c Release -o /app/build
@@ -33,8 +39,10 @@ RUN dotnet build "dotnet/AuthorizationAPI/AuthorizationAPI.csproj" -c Release -o
 FROM build AS publish
 RUN dotnet publish "dotnet/Common/Common.csproj" -c Release -o /app/publish /p:UseAppHost=false
 RUN dotnet publish "dotnet/Agent/Agent.csproj" -c Release -o /app/publish /p:UseAppHost=false
-RUN dotnet publish "dotnet/AgentFactory/AgentFactory.csproj" -c Release -o /app/publish /p:UseAppHost=false
 RUN dotnet publish "dotnet/Prompt/Prompt.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "dotnet/Configuration/Configuration.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "dotnet/DataSource/DataSource.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "dotnet/Vectorization/Vectorization.csproj" -c Release -o /app/publish /p:UseAppHost=false
 RUN dotnet publish "dotnet/Authorization/Authorization.csproj" -c Release -o /app/publish /p:UseAppHost=false
 RUN dotnet publish "dotnet/AuthorizationAPI/AuthorizationAPI.csproj" -c Release -o /app/publish /p:UseAppHost=false
 

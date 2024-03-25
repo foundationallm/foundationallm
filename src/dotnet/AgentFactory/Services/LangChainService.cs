@@ -48,20 +48,6 @@ namespace FoundationaLLM.AgentFactory.Services
         /// <returns>Returns a completion response from the orchestration engine.</returns>
         public async Task<LLMCompletionResponse> GetCompletion(LLMCompletionRequest request)
         {
-            var promptTemplate = request switch
-            {
-                LegacyCompletionRequest lcr => lcr.Agent?.PromptPrefix,
-                _ => string.Empty,
-            };
-
-            var agentName = request switch
-            {
-                KnowledgeManagementCompletionRequest kmcr => kmcr.Agent.Name,
-                InternalContextCompletionRequest icr => icr.Agent.Name,
-                LegacyCompletionRequest lcr => lcr.Agent?.Name,
-                _ => string.Empty,
-            };
-
             var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.LangChainAPI);
 
             var body = JsonSerializer.Serialize(request, _jsonSerializerOptions);
@@ -80,8 +66,8 @@ namespace FoundationaLLM.AgentFactory.Services
                     Completion = completionResponse!.Completion,
                     UserPrompt = completionResponse.UserPrompt,
                     FullPrompt = completionResponse.FullPrompt,
-                    PromptTemplate = promptTemplate,
-                    AgentName = agentName,
+                    PromptTemplate = string.Empty,
+                    AgentName = request.Agent.Name,
                     PromptTokens = completionResponse.PromptTokens,
                     CompletionTokens = completionResponse.CompletionTokens
                 };
@@ -94,8 +80,8 @@ namespace FoundationaLLM.AgentFactory.Services
             {
                 Completion = "A problem on my side prevented me from responding.",
                 UserPrompt = request.UserPrompt,
-                PromptTemplate = promptTemplate,
-                AgentName = agentName,
+                PromptTemplate = string.Empty,
+                AgentName = request.Agent.Name,
                 PromptTokens = 0,
                 CompletionTokens = 0
             };

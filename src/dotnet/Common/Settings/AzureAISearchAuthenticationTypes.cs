@@ -19,11 +19,6 @@ namespace FoundationaLLM.Common.Settings
         /// <summary>
         /// Azure managed identity authentication type.
         /// </summary>
-        AzureIdentity,
-
-        /// <summary>
-        /// API key authentication type.
-        /// </summary>
-        APIKey
+        AzureIdentity
     }
 }

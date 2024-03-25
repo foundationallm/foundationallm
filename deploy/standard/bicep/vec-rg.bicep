@@ -14,9 +14,6 @@ param logAnalyticsWorkspaceId string
 @description('DNS Resource Group name')
 param dnsResourceGroupName string
 
-@description('OPS Resource Group name')
-param opsResourceGroupName string
-
 @description('Project Name, used in naming resources.')
 param project string
 
@@ -27,9 +24,6 @@ param timestamp string = utcNow()
 param vnetId string
 
 /** Locals **/
-@description('KeyVault resource suffix')
-var kvResourceSuffix = '${project}-${environmentName}-${location}-ops'
-
 @description('Resource Suffix used in naming resources.')
 var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
 
@@ -58,10 +52,8 @@ module search 'modules/search.bicep' = {
   name: 'search-${timestamp}'
   params: {
     actionGroupId: actionGroupId
-    kvResourceSuffix: kvResourceSuffix
     location: location
     logAnalyticsWorkspaceId: logAnalyticsWorkspaceId
-    opsResourceGroupName: opsResourceGroupName
     resourceSuffix: resourceSuffix
     tags: tags
     subnetId: '${vnetId}/subnets/Vectorization'

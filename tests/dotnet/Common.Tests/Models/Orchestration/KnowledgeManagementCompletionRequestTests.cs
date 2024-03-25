@@ -9,7 +9,7 @@ namespace FoundationaLLM.Common.Tests.Models.Orchestration
         public void KnowledgeManagementCompletionRequest_Agent_Property_Test()
         {
             // Arrange
-            var request = new KnowledgeManagementCompletionRequest() 
+            var request = new LLMCompletionRequest() 
                 { Agent = new KnowledgeManagementAgent() { Name = "Test_agent", ObjectId = "Test_objectid", Type = AgentTypes.KnowledgeManagement } };
 
             var agent = new KnowledgeManagementAgent() { Name = "Test_agent", ObjectId = "Test_objectid", Type = AgentTypes.KnowledgeManagement };

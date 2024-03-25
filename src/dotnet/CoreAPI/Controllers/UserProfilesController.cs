@@ -24,8 +24,7 @@ namespace FoundationaLLM.Core.API.Controllers
     /// Constructor for the UserProfiles Controller.
     /// </remarks>
     /// <param name="userProfileService">The Core service provides methods for managing the user profile.</param>
-    [Authorize]
-    [Authorize(Policy = "RequiredScope")]
+    [Authorize(Policy = "DefaultPolicy")]
     [ApiController]
     [Route("[controller]")]
     public class UserProfilesController(

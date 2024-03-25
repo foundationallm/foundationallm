@@ -20,7 +20,7 @@
 				<div class="input-wrapper">
 					<InputText v-model="agentName" placeholder="Enter agent name" type="text" class="w-100" @input="handleNameInput" :disabled="editAgent" />
 					<span v-if="nameValidationStatus === 'valid'" class="icon valid" title="Name is available">✔️</span>
-							<span v-else-if="nameValidationStatus === 'invalid'" class="icon invalid" :title="validationMessage">❌</span>
+					<span v-else-if="nameValidationStatus === 'invalid'" class="icon invalid" :title="validationMessage">❌</span>
 				</div>
 			</div>
 			<div class="span-2">
@@ -72,7 +72,7 @@
 			<!-- Data source -->
 			<CreateAgentStepItem v-model="editDataSource">
 				<template v-if="selectedDataSource">
-					<div class="step-container__header">{{ selectedDataSource.content_source }}</div>
+					<div class="step-container__header">{{ selectedDataSource.type }}</div>
 					<div>
 						<span class="step-option__header">Name:</span>
 						<span>{{ selectedDataSource.name }}</span>
@@ -370,6 +370,19 @@
 				</template>
 			</CreateAgentStepItem>
 
+			<!-- Orchestrator -->
+			<div class="step-header span-2">Which orchestrator should the agent use?</div>
+			<div class="span-2">
+				<Dropdown
+					v-model="orchestrator"
+					:options="orchestratorOptions"
+					option-label="label"
+					option-value="value"
+					placeholder="--Select--"
+					class="dropdown--agent"
+				/>
+			</div>
+
 			<!-- System prompt -->
 			<div class="step-section-header span-2">System Prompt</div>
 
@@ -404,9 +417,16 @@
 import type { PropType } from 'vue';
 import { debounce } from 'lodash';
 import api from '@/js/api';
-import type { Agent, AgentIndex, AgentDataSource, CreateAgentRequest, AgentCheckNameResponse } from '@/js/types';
+import type {
+	Agent,
+	AgentIndex,
+	AgentDataSource,
+	CreateAgentRequest,
+	// AgentCheckNameResponse,
+} from '@/js/types';
 
-const defaultSystemPrompt: string = 'You are an analytic agent named Khalil that helps people find information about FoundationaLLM. Provide concise answers that are polite and professional.';
+const defaultSystemPrompt: string =
+	'You are an analytic agent named Khalil that helps people find information about FoundationaLLM. Provide concise answers that are polite and professional.';
 
 const defaultFormValues = {
 	agentName: '',
@@ -464,6 +484,13 @@ export default {
 			dataSources: [] as AgentDataSource[],
 			indexSources: [] as AgentIndex[],
 
+			orchestratorOptions: [
+				{
+					label: 'LangChain',
+					value: 'LangChain',
+				},
+			],
+			
 			triggerFrequencyOptions: [
 				{
 					label: 'Manual',
@@ -530,11 +557,11 @@ export default {
 		groupedDataSources() {
 			const grouped = {};
 			this.dataSources.forEach((dataSource) => {
-				if (!grouped[dataSource.content_source]) {
-					grouped[dataSource.content_source] = [];
+				if (!grouped[dataSource.type]) {
+					grouped[dataSource.type] = [];
 				}
 
-				grouped[dataSource.content_source].push(dataSource);
+				grouped[dataSource.type].push(dataSource);
 			});
 
 			return grouped;
@@ -577,20 +604,18 @@ export default {
 			this.mapAgentToForm(agent);
 		}
 
+		this.debouncedCheckName = debounce(this.checkName, 500);
+
 		this.loading = false;
 	},
 
 	methods: {
-		debouncedCheckName() {
-			return debounce(this.checkName, 500);
-		},
-
 		mapAgentToForm(agent: Agent) {
 			this.agentName = agent.name || this.agentName;
 			this.agentDescription = agent.description || this.agentDescription;
 			this.agentType = agent.type || this.agentType;
 			this.object_id = agent.object_id || this.object_id;
-			this.orchestrator = agent.orchestrator || this.orchestrator;
+			this.orchestrator = agent.orchestration_settings?.orchestrator || this.orchestrator;
 			this.text_embedding_profile_object_id = agent.text_embedding_profile_object_id || this.text_embedding_profile_object_id;
 
 			this.selectedIndexSource =
@@ -656,15 +681,7 @@ export default {
 		},
 
 		handleNameInput(event) {
-			const element = event.target;
-
-			// Remove spaces.
-			let sanitizedValue = element.value.replace(/\s/g, '');
-
-			// Remove any characters that are not lowercase letters, digits, dashes, or underscores.
-			sanitizedValue = sanitizedValue.replace(/[^a-z0-9-_]/g, '');
-
-			element.value = sanitizedValue;
+			const sanitizedValue = this.$filters.sanitizeNameInput(event);
 			this.agentName = sanitizedValue;
 
 			// Check if the name is available if we are creating a new agent.
@@ -793,15 +810,25 @@ export default {
 					sessions_enabled: true,
 
 					prompt_object_id: promptObjectId,
-					orchestrator: this.orchestrator,
+					orchestration_settings: {
+						orchestrator: this.orchestrator,
+						endpoint_configuration: {
+							endpoint: 'FoundationaLLM:AzureOpenAI:API:Endpoint',
+							api_key: 'FoundationaLLM:AzureOpenAI:API:Key'
+						},
+						model_parameters: {
+							temperature: 0,
+							deployment_name: 'FoundationaLLM:AzureOpenAI:API:Completions:DeploymentName',
+						},
+					},
 				};
 
 				if (this.editAgent) {
 					await api.updateAgent(this.editAgent, agentRequest);
-					successMessage = `Agent "${this.agentName}" was succesfully updated!`;
+					successMessage = `Agent "${this.agentName}" was successfully updated!`;
 				} else {
 					await api.createAgent(agentRequest);
-					successMessage = `Agent "${this.agentName}" was succesfully created!`;
+					successMessage = `Agent "${this.agentName}" was successfully created!`;
 					this.resetForm();
 				}
 			} catch (error) {

@@ -7,7 +7,6 @@
   "k8sNamespace": "",
   "adminObjectId": "",
   "createVpnGateway": true,
-  "tenantId": "",
   "ingress": {
     "apiIngress": {
       "coreapi": {
@@ -27,7 +26,7 @@
         "path": "",
         "pathType": "",
         "sslCert": ""
-      }  
+      }
     },
     "frontendIngress": {
       "chatui": {
@@ -44,9 +43,6 @@
       }
     }
   },
-  "entraInstances": {
-    "authorization": ""
-  },
   "entraClientIds": {
     "chat": "",
     "core": "",
@@ -54,18 +50,17 @@
     "managementui": "",
     "vectorizationapi": ""
   },
-  "entraClientSecrets": {
-    "authorization": ""
-  },
-  "entraClientScopes": {
-    "authorization": ""
+  "entraScopes": {
+    "chat": "",
+    "core": "",
+    "managementapi": "",
+    "managementui": "",
+    "vectorizationapi": ""
   },
   "resourceGroups": {
     "dns": "",
     "jbx": "",
-    "agw": "",
     "app": "",
-    "auth": "",
     "ops": "",
     "net": "",
     "vec": "",

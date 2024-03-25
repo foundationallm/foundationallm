@@ -1,0 +1,35 @@
+apiVersion: secrets-store.csi.x-k8s.io/v1
+kind: SecretProviderClass
+metadata:
+  name: foundationallm-certificates
+spec:
+  provider: azure
+  secretObjects:
+    - secretName: managementui-tls
+      type: kubernetes.io/tls
+      data:
+        - objectName: managementui
+          key: tls.key
+        - objectName: managementui
+          key: tls.crt
+    - secretName: chatui-tls
+      type: kubernetes.io/tls
+      data:
+        - objectName: chatui
+          key: tls.key
+        - objectName: chatui
+          key: tls.crt
+  parameters:
+    keyvaultName: "{{keyVaultName}}"
+    tenantId: "{{tenantId}}"
+    usePodIdentity: "false"
+    useVMManagedIdentity: "true"
+    userAssignedIdentityID: "{{aksFrontendCsiIdentityClientId}}"
+    objects:  |
+      array:
+        - |
+          objectName: managementui
+          objectType: secret
+        - |
+          objectName: chatui
+          objectType: secret

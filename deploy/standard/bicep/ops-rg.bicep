@@ -57,18 +57,6 @@ var zonesAmpls = filter(
   (zone) => contains([ 'monitor', 'blob', 'ods', 'oms', 'agentsvc' ], zone.key)
 )
 
-@description('Private DNS Zones for Container Registry')
-var zonesRegistry = filter(
-  dnsZones.outputs.ids,
-  (zone) => contains([ 'cr', 'cr_region' ], zone.key)
-)
-
-@description('Private DNS Zones for Storage Accounts')
-var zonesStorage = filter(
-  dnsZones.outputs.ids,
-  (zone) => contains([ 'blob', 'dfs', 'file', 'queue', 'table', 'web' ], zone.key)
-)
-
 /** Outputs **/
 @description('Azure Monitor Action Group')
 output actionGroupId string = actionGroup.outputs.id
@@ -151,33 +139,6 @@ module applicationInights 'modules/applicationInsights.bicep' = {
   dependsOn: [ keyVault ]
 }
 
-@description('Azure Container Registry')
-module containerRegistry 'modules/containerRegistry.bicep' = {
-  name: 'containerRegistry-${timestamp}'
-  params: {
-    agentPoolSubnetId: '${vnetId}/subnets/ops'
-    location: location
-    logAnalyticWorkspaceId: logAnalytics.outputs.id
-    privateDnsZones: zonesRegistry
-    resourceSuffix: resourceSuffix
-    subnetId: '${vnetId}/subnets/ops'
-    tags: tags
-  }
-}
-
-// @description('Azure Managed Grafana')
-// module grafana 'modules/grafana.bicep' = {
-//   name: 'grafana-${timestamp}'
-//   params: {
-//     azureMonitorWorkspaceResourceId: monitorWorkspace.outputs.id
-//     location: location
-//     privateDnsZones: filter(privateDnsZones, (zone) => zone.key == 'grafana')
-//     resourceSuffix: resourceSuffix
-//     subnetId: '${vnetId}/subnets/ops'
-//     tags: tags
-//   }
-// }
-
 @description('Key Vault')
 module keyVault 'modules/keyVault.bicep' = {
   name: 'keyVault-${timestamp}'
@@ -209,18 +170,6 @@ module logAnalytics 'modules/logAnalytics.bicep' = {
       id: ampls.outputs.id
       name: ampls.outputs.name
     }
-  }
-}
-
-@description('Azure Monitor Workspace')
-module monitorWorkspace 'modules/monitorWorksapce.bicep' = {
-  name: 'monitorWorkspace-${timestamp}'
-  params: {
-    location: location
-    privateDnsZones: filter(dnsZones.outputs.ids, (zone) => zone.key == 'prometheusMetrics')
-    resourceSuffix: resourceSuffix
-    subnetId: '${vnetId}/subnets/ops'
-    tags: tags
   }
 }
 

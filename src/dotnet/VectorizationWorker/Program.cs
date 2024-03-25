@@ -2,6 +2,7 @@ using Asp.Versioning;
 using FoundationaLLM;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Storage;
 using FoundationaLLM.Common.OpenAPI;
@@ -13,6 +14,7 @@ using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
 using FoundationaLLM.SemanticKernel.Core.Services;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Models.Configuration;
+using FoundationaLLM.Vectorization.Services;
 using FoundationaLLM.Vectorization.Services.ContentSources;
 using FoundationaLLM.Vectorization.Services.Text;
 using FoundationaLLM.Vectorization.Services.VectorizationStates;
@@ -42,6 +44,10 @@ builder.Configuration.AddAzureAppConfiguration(options =>
 
 if (builder.Environment.IsDevelopment())
     builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
+
+// NOTE: This is required while the service uses API key authentication.
+// Once the service is moved over to Entra ID authentication, this must be replaced with the proper implementation.
+builder.Services.AddSingleton<IAuthorizationService, NullAuthorizationService>();
 
 // Add the Configuration resource provider
 builder.AddConfigurationResourceProvider();

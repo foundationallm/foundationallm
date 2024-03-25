@@ -1,5 +1,6 @@
 ﻿using Azure.AI.OpenAI;
-using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Agents;
+using FoundationaLLM.Common.Models.Agents;
 using FoundationaLLM.Common.Models.Metadata;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.SemanticKernel.Core.Interfaces;
@@ -10,7 +11,7 @@ using Microsoft.SemanticKernel.ChatCompletion;
 
 namespace FoundationaLLM.SemanticKernel.Core.Plugins
 {
-    public class KnowledgeManagementAgentPlugin : IKnowledgeManagementAgentPlugin
+    public class KnowledgeManagementAgentPlugin
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
@@ -24,7 +25,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Plugins
         }
 
         /// <inheritdoc/>
-        public async Task<LLMCompletionResponse> GetCompletion(KnowledgeManagementCompletionRequest request)
+        public async Task<LLMCompletionResponse> GetCompletion(LLMCompletionRequest request)
         {
             var kernel = CreateKernel(request.Agent.LanguageModel!);
 
@@ -33,7 +34,9 @@ namespace FoundationaLLM.SemanticKernel.Core.Plugins
             var internalContext = true;
             var messageHistoryEnabled = false;
 
-            if (request.Agent.IndexingProfileObjectId != null && request.Agent.TextEmbeddingProfileObjectId != null)
+            var kmAgent = request.Agent as KnowledgeManagementAgent;
+
+            if (kmAgent.IndexingProfileObjectId != null && kmAgent.TextEmbeddingProfileObjectId != null)
             {
                 internalContext = false;
             }

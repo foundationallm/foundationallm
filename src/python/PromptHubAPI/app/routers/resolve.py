@@ -1,4 +1,4 @@
-AgentHi8"""
+"""
 The API endpoint for returning the appropriate agent prompt for the specified user prompt.
 """
 from typing import Optional

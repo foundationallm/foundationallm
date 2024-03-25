@@ -9,6 +9,6 @@ metadata:
     chart: {{ template "authorization-api.chart" .}}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-data: 
+data:
   AZURE_CLIENT_ID: {{ .Values.azureWorkloadIdentity.authorizationApiClientId }}
-  FoundationaLLM__AuthorizationAPI__KeyVaultUri: {{ .Values.authKeyvaultUri }}
+  FoundationaLLM_AuthorizationAPI_KeyVaultURI: {{ .Values.authKeyvaultUri }}

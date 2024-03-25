@@ -19,8 +19,7 @@ namespace FoundationaLLM.Core.API.Controllers
     /// <remarks>
     /// Constructor for the Orchestration Controller.
     /// </remarks>
-    [Authorize]
-    [Authorize(Policy = "RequiredScope")]
+    [Authorize(Policy = "DefaultPolicy")]
     [ApiController]
     [Route("[controller]")]
     public class OrchestrationController : ControllerBase

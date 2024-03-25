@@ -1,6 +1,6 @@
 ﻿using Azure.Core;
 using Azure.Storage.Blobs;
-using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Services;
 using FoundationaLLM.Vectorization.Interfaces;

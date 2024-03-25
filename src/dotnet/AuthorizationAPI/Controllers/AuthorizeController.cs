@@ -9,10 +9,9 @@ namespace AuthorizationAPI.Controllers
     /// Provides methods for processing authorization requests.
     /// </summary>
     /// <param name="authorizationCore">The <see cref="IAuthorizationCore"/> service used to process authorization requests.</param>
-    [Authorize]
-    [Authorize(Policy = "RequiredScope")]
+    [Authorize(Policy = "RequiredClaims")]
     [ApiController]
-    [Route("authorize")]
+    [Route($"instances/{{instanceId}}/authorize")]
     [Consumes("application/json")]
     [Produces("application/json")]
     public class AuthorizeController(
@@ -21,8 +20,8 @@ namespace AuthorizationAPI.Controllers
         private readonly IAuthorizationCore _authorizationCore = authorizationCore;
 
         [HttpPost(Name = "ProcessAuthorizationRequest")]
-        public IActionResult ProcessAuthorizationRequest([FromBody] ActionAuthorizationRequest request) =>
+        public IActionResult ProcessAuthorizationRequest(string instanceId, [FromBody] ActionAuthorizationRequest request) =>
             new OkObjectResult(
-                _authorizationCore.ProcessAuthorizationRequest(request));
+                _authorizationCore.ProcessAuthorizationRequest(instanceId, request));
     }
 }

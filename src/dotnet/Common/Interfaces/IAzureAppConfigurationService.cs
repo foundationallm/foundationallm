@@ -13,12 +13,20 @@
         Task<string?> GetConfigurationSettingAsync(string key);
 
         /// <summary>
+        /// Gets the values of configuration settings from Azure App Configuration.
+        /// </summary>
+        /// <param name="keyFilter">The key name filter used to select the settings keys for which values are retrieved.</param>
+        /// <returns></returns>
+        Task<List<(string Key, string? Value, string ContentType)>> GetConfigurationSettingsAsync(string keyFilter);
+
+        /// <summary>
         /// Sets the value of a configuration setting in Azure App Configuration.
         /// </summary>
         /// <param name="key">The App Configuration setting key.</param>
         /// <param name="value">The value to set.</param>
+        /// <param name="contentType">The content type of the value.</param>
         /// <returns></returns>
-        Task SetConfigurationSettingAsync(string key, string value);
+        Task SetConfigurationSettingAsync(string key, string value, string contentType);
 
         /// <summary>
         /// Gets the value of a feature flag from Azure App Configuration.

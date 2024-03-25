@@ -1,1 +1,5 @@
-DefaultRoleAssignments.json
+# Ignore everything
+*
+# Except these files
+!.gitignore
+!**.template.*

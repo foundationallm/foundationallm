@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Models.ResourceProvider;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Configuration.Services;
 using FoundationaLLM.DataSource.ResourceProviders;
 using FoundationaLLM.Prompt.ResourceProviders;
 using FoundationaLLM.Vectorization.ResourceProviders;
@@ -77,6 +78,7 @@ namespace FoundationaLLM.Authorization.Utils
                 ResourceProviderNames.FoundationaLLM_DataSource => DataSourceResourceProviderMetadata.AllowedResourceTypes,
                 ResourceProviderNames.FoundationaLLM_Prompt => PromptResourceProviderMetadata.AllowedResourceTypes,
                 ResourceProviderNames.FoundationaLLM_Vectorization => VectorizationResourceProviderMetadata.AllowedResourceTypes,
+                ResourceProviderNames.FoundationaLLM_Configuration => ConfigurationResourceProviderMetadata.AllowedResourceTypes,
                 _ => []
             };
     }

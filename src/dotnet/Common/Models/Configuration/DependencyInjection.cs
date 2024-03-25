@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Constants;
+﻿using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

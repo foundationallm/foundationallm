@@ -9,7 +9,7 @@ namespace FoundationaLLM.Common.Tests.Models.Orchestration
         public void InternalContextCompletionRequest_Agent_Property_Test()
         {
             // Arrange
-            var request = new InternalContextCompletionRequest() 
+            var request = new LLMCompletionRequest() 
                 { Agent = new InternalContextAgent() { Name = "Test_agent", ObjectId = "Test_objectid", Type = AgentTypes.InternalContext} };
 
             var agent = new InternalContextAgent() { Name = "Test_agent", ObjectId = "Test_objectid", Type = AgentTypes.InternalContext };

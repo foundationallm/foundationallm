@@ -30,13 +30,15 @@ namespace FoundationaLLM.Authorization.Services
         }
 
         /// <inheritdoc/>
-        public async Task<ActionAuthorizationResult> ProcessAuthorizationRequest(ActionAuthorizationRequest authorizationRequest)
+        public async Task<ActionAuthorizationResult> ProcessAuthorizationRequest(
+            string instanceId,
+            ActionAuthorizationRequest authorizationRequest)
         {
             try
             {
                 var httpClient = await CreateHttpClient();
                 var response = await httpClient.PostAsync(
-                    "/authorize",
+                    $"/instances/{instanceId}/authorize",
                     JsonContent.Create(authorizationRequest));
 
                 if (response.IsSuccessStatusCode)

@@ -174,7 +174,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         {
             if (!_isInitialized)
                 throw new ResourceProviderException($"The resource provider {_name} is not initialized.");
-            var parsedResourcePath = new ResourcePath(
+             var parsedResourcePath = new ResourcePath(
                 resourcePath,
                 _allowedResourceProviders,
                 _allowedResourceTypes,
@@ -340,13 +340,15 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     || userIdentity.UserId == null)
                     throw new Exception("The provided user identity information cannot be used for authorization.");
 
-                var result = await _authorizationService.ProcessAuthorizationRequest(new ActionAuthorizationRequest
-                {
-                    Action = $"{_name}/{resourcePath.MainResourceType}/{actionType}",
-                    ResourcePath = resourcePath.GetObjectId(_instanceSettings.Id, _name),
-                    PrincipalId = userIdentity.UserId,
-                    SecurityGroupIds = userIdentity.GroupIds
-                });
+                var result = await _authorizationService.ProcessAuthorizationRequest(
+                    _instanceSettings.Id,
+                    new ActionAuthorizationRequest
+                        {
+                            Action = $"{_name}/{resourcePath.MainResourceType}/{actionType}",
+                            ResourcePath = resourcePath.GetObjectId(_instanceSettings.Id, _name),
+                            PrincipalId = userIdentity.UserId,
+                            SecurityGroupIds = userIdentity.GroupIds
+                        });
 
                 if (!result.Authorized)
                     throw new AuthorizationException("Access is not authorized.");
@@ -355,7 +357,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             {
                 _logger.LogWarning("The {ActionType} access to the resource path {ResourcePath} was not authorized for user {UserName}.",
                     actionType, resourcePath.GetObjectId(_instanceSettings.Id, _name), userIdentity!.Username);
-                new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
             }
             catch (Exception ex)
             {

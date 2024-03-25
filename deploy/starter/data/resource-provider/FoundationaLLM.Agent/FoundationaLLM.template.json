@@ -1,8 +1,8 @@
 {
-  "type": "internal-context",
   "name": "FoundationaLLM",
   "object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.Agent/agents/FoundationaLLM",
   "description": "Useful for answering questions about FoundationaLLM.",
+  "deleted": false,
   "language_model": {
     "type": "openai",
     "provider": "microsoft",

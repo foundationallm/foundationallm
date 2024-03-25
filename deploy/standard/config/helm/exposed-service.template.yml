@@ -1,0 +1,26 @@
+appConfig:
+  uri: {{appConfigEndpoint}}
+  connectionString: {{appConfigConnectionString}}
+azureWorkloadIdentity:
+  agentFactoryApiClientId: {{agentFactoryApiMiClientId}}
+  agentHubApiClientId: {{agentHubApiMiClientId}}
+  chatUiClientId: {{chatUiMiClientId}}
+  coreApiClientId: {{coreApiMiClientId}}
+  coreJobClientId: {{coreJobMiClientId}}
+  dataSourceHubApiClientId: {{dataSourceHubApiMiClientId}}
+  gatekeeperApiClientId: {{gatekeeperApiMiClientId}}
+  gatekeeperIntegrationApiMiClientId: {{gatekeeperIntegrationApiMiClientId}}
+  langChainApiClientId: {{langChainApiMiClientId}}
+  managementApiClientId: {{managementApiMiClientId}}
+  managementUiClientId: {{managementUiMiClientId}}
+  promptHubApiClientId: {{promptHubApiMiClientId}}
+  semanticKernelApiClientId: {{semanticKernelApiMiClientId}}
+  vectorizationApiClientId: {{vectorizationApiMiClientId}}
+  vectorizationJobClientId: {{vectorizationJobMiClientId}}
+  tenantId: {{tenantId}}
+apihost: {{serviceHostname}}
+authKeyvaultUri: {{authKeyvaultUri}}
+baseUrl: {{serviceBaseUrl}}
+
+ingress:
+  enabled: false

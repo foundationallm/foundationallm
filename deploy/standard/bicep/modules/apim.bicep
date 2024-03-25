@@ -111,18 +111,6 @@ var policyTemplate = '''
 </policies>
 '''
 
-// See: https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles
-@description('Role Definition Ids')
-var roleDefinitionIds = {
-  'Key Vault Secrets User': '4633458b-17de-408a-b874-0445c86b69e6'
-}
-
-@description('Role Assignments to create')
-var roleAssignmentsToCreate = [for roleDefinitionId in items(roleDefinitionIds): {
-  name: guid(main.id, resourceGroup().id, roleDefinitionId.value)
-  roleDefinitionId: roleDefinitionId.value
-}]
-
 @description('The Resource Service Type token')
 var serviceType = 'apim'
 
@@ -313,17 +301,6 @@ resource pip 'Microsoft.Network/publicIPAddresses@2023-05-01' = {
   }
 }
 
-@description('Role Assignments')
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for roleAssignmentToCreate in roleAssignmentsToCreate: {
-  name: roleAssignmentToCreate.name
-  scope: resourceGroup()
-  properties: {
-    principalId: main.identity.principalId
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleAssignmentToCreate.roleDefinitionId)
-    principalType: 'ServicePrincipal'
-  }
-}]
-
 @description('Service Diagnostics')
 resource serviceDiagnostics 'Microsoft.ApiManagement/service/diagnostics@2023-03-01-preview' = {
   name: 'azuremonitor'
@@ -366,15 +343,19 @@ resource serviceDiagnostics 'Microsoft.ApiManagement/service/diagnostics@2023-03
   }
 }
 
-// @description('Service Diagnostics Logger')
-// resource serviceDiagnosticsLogger 'Microsoft.ApiManagement/service/diagnostics/loggers@2022-08-01' = {
-//   parent: serviceDiagnostics
-//   name: 'azuremonitor'
-// }
-
 //** Nested Modules **//
+module roleAssignment 'utility/roleAssignments.bicep' = {
+  name: 'ra-${resourceSuffix}-${timestamp}'
+  params: {
+    principalId: main.identity.principalId
+    roleDefinitionIds: {
+      'Key Vault Secrets User': '4633458b-17de-408a-b874-0445c86b69e6'
+    }
+  }
+}
+
 module backend 'apimBackend.bicep' = [for (account, i) in cognitiveAccounts: {
-  dependsOn: [ roleAssignment ]
+  dependsOn: [ roleAssignment, dnsRecord, metricAlerts, serviceDiagnostics, pip, portalConfigs, loggerAzureMonitor, diagnostics, api ] // Introduce delay to allow role assignment to propogate
   name: 'backend-${account.name}-${timestamp}'
   params: {
     account: account

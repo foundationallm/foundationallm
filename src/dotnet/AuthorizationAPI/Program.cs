@@ -1,6 +1,8 @@
 using FoundationaLLM;
+using FoundationaLLM.Authorization.Middleware;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Validation;
 
@@ -35,7 +37,10 @@ builder.AddAuthenticationConfiguration(
     KeyVaultSecretNames.FoundationaLLM_AuthorizationAPI_Entra_Instance,
     KeyVaultSecretNames.FoundationaLLM_AuthorizationAPI_Entra_TenantId,
     KeyVaultSecretNames.FoundationaLLM_AuthorizationAPI_Entra_ClientId,
-    KeyVaultSecretNames.FoundationaLLM_AuthorizationAPI_Entra_Scopes);
+    null,
+    policyName: "RequiredClaims",
+    requireScopes: false,
+    allowACLAuthorization: true);
 
 // Add OpenTelemetry.
 builder.AddOpenTelemetry(
@@ -52,15 +57,17 @@ var app = builder.Build();
 // Set the CORS policy before other middleware.
 app.UseCors(CorsPolicyNames.AllowAllOrigins);
 
-app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Register the middleware to authorize the processing of authorization requests.
+app.UseMiddleware<AuthorizationAPIMiddleware>();
 
 app.UseExceptionHandler(exceptionHandlerApp
     => exceptionHandlerApp.Run(async context
         => await Results.Problem().ExecuteAsync(context)));
 
+app.UseHttpsRedirection();
 app.MapControllers();
 
 app.Run();

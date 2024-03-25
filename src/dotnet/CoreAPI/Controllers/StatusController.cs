@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Models.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +10,7 @@ namespace FoundationaLLM.Core.API.Controllers
     /// <summary>
     /// Provides methods for checking the status of the service.
     /// </summary>
-    [Authorize]
-    [Authorize(Policy = "RequiredScope")]
+    [Authorize(Policy = "DefaultPolicy")]
     [ApiController]
     [Route("[controller]")]
     public class StatusController : ControllerBase
@@ -24,7 +24,7 @@ namespace FoundationaLLM.Core.API.Controllers
             new OkObjectResult(new ServiceStatusInfo
             {
                 Name = ServiceNames.CoreAPI,
-                Instance = Environment.GetEnvironmentVariable(EnvironmentVariables.Hostname),
+                Instance = ValidatedEnvironment.MachineName,
                 Version = Environment.GetEnvironmentVariable(EnvironmentVariables.FoundationaLLM_Version),
                 Status = ServiceStatuses.Ready
             });

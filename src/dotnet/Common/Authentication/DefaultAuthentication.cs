@@ -1,6 +1,6 @@
 ﻿using Azure.Core;
 using Azure.Identity;
-using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Configuration;
 
 namespace FoundationaLLM.Common.Authentication
 {

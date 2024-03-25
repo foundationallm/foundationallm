@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Constants;
+﻿using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Models.Metadata;
 
 namespace FoundationaLLM.Common.Tests.Models.Metadata

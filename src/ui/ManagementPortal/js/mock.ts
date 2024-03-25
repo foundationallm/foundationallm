@@ -1,4 +1,4 @@
-import type { AgentIndex } from './types';
+import type { AgentIndex, AzureDataLakeDataSource } from './types';
 
 export const mockGetAgentIndexesResponse: AgentIndex[] = [
 	{
@@ -96,3 +96,29 @@ export const mockGetAgentDataSourcesResponse: AgentIndex[] = [
 		},
 	}
 ];
+
+export const mockAzureDataLakeDataSource1: AzureDataLakeDataSource = {
+	type: 'azure-data-lake',
+	name: 'mock-azure-data-lakehouse-source-1',
+	object_id: 'FHIERKHFKJER-FBREHBFJKER-FGIHREFKVJLK',
+	description: 'A mock azure data lake data source with a ConnectionString.',
+	configuration_references: {
+		AuthenticationType: 'ConnectionString',
+		ConnectionString: 'connection-string',
+		APIKey: '',
+		Endpoint: '',
+	},
+};
+
+export const mockAzureDataLakeDataSource2: AzureDataLakeDataSource = {
+	type: 'azure-data-lake',
+	name: 'mock-azure-data-lakehouse-source-2',
+	object_id: 'FULHFILERF-FERHJLKFER-BFEIRUFBLKHER',
+	description: 'A mock azure data lake data source with an AccountKey.',
+	configuration_references: {
+		AuthenticationType: 'AccountKey',
+		ConnectionString: '',
+		APIKey: 'this-is-not-a-real-key',
+		Endpoint: 'https://solliance.com',
+	},
+};

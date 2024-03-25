@@ -149,14 +149,6 @@ module authKeyvault './shared/keyvault.bicep' = {
         value: authAppRegistration.clientId
       }
       {
-        name: 'foundationallm-authorizationapi-entra-clientsecret'
-        value: authClientSecret
-      }
-      {
-        name: 'foundationallm-authorizationapi-entra-scopes'
-        value: authAppRegistration.scopes
-      }
-      {
         name: 'foundationallm-authorizationapi-storage-accountname'
         value: authStore.outputs.name
       }
@@ -238,6 +230,43 @@ module cogSearch './shared/search.bicep' = {
   }
   scope: rg
 }
+
+var searchReaderRoleTargets = [
+  'langchain-api'
+  'semantic-kernel-api'
+]
+
+var searchWriterRoleTargets = [
+  'vectorization-api'
+  'vectorization-job'
+]
+
+module searchReaderRoles './shared/roleAssignments.bicep' = [
+  for target in searchReaderRoleTargets: {
+    scope: rg
+    name: '${target}-search-reader-role'
+    params: {
+      principalId: acaServices[indexOf(serviceNames, target)].outputs.miPrincipalId
+      roleDefinitionIds: {
+        'Search Index Data Reader': '1407120a-92aa-4202-b7e9-c0e197c71c8f'
+      }
+    }
+  }
+]
+
+module searchWriterRoles './shared/roleAssignments.bicep' = [
+  for target in searchWriterRoleTargets: {
+    scope: rg
+    name: '${target}-search-contrib-role'
+    params: {
+      principalId: acaServices[indexOf(serviceNames, target)].outputs.miPrincipalId
+      roleDefinitionIds: {
+        'Search Service Contributor': '7ca78c08-252a-4471-8644-bb5ff32d4ba0'
+        'Search Index Data Contributor': '8ebe5a00-799e-43f5-93ac-243d3dce84a7'
+      }
+    }
+  }
+]
 
 module dashboard './shared/dashboard-web.bicep' = {
   name: 'dashboard'
@@ -480,7 +509,7 @@ module authAcaService './app/authAcaService.bicep' = {
     imageName: authService.image
     envSettings: [
       {
-        name: 'FoundationaLLM__AuthorizationAPI__KeyVaultUri'
+        name: 'FoundationaLLM_AuthorizationAPI_KeyVaultURI'
         value: authKeyvault.outputs.endpoint
       }
     ]
@@ -499,11 +528,11 @@ module acaServices './app/acaService.bicep' = [for service in services: {
     tags: tags
     appConfigName: appConfig.outputs.name
     eventgridName: eventgrid.outputs.name
-    cogsearchName: cogSearch.outputs.name
     identityName: '${abbrs.managedIdentityUserAssignedIdentities}${service.name}-${resourceToken}'
     keyvaultName: keyVault.outputs.name
     applicationInsightsName: monitoring.outputs.applicationInsightsName
     containerAppsEnvironmentName: appsEnv.outputs.name
+    storageAccountName: storage.outputs.name
     exists: servicesExist['${service.name}'] == 'true'
     appDefinition: serviceDefinition
     hasIngress: service.hasIngress
@@ -528,6 +557,25 @@ module acaServices './app/acaService.bicep' = [for service in services: {
   dependsOn: [ appConfig, cogSearch, contentSafety, cosmosDb, keyVault, monitoring, storage ]
 }]
 
+var cosmosRoleTargets = [
+  'core-api'
+  'core-job'
+]
+
+module cosmosRoles './shared/sqlRoleAssignments.bicep' = [
+  for target in cosmosRoleTargets: {
+    scope: rg
+    name: '${target}-cosmos-role'
+    params: {
+      accountName: cosmosDb.outputs.name
+      principalId: acaServices[indexOf(serviceNames, target)].outputs.miPrincipalId
+      roleDefinitionIds: {
+        'Cosmos DB Built-in Data Contributor': '00000000-0000-0000-0000-000000000002'
+      }
+    }
+  }
+]
+
 output AZURE_APP_CONFIG_NAME string = appConfig.outputs.name
 output AZURE_AUTHORIZATION_STORAGE_ACCOUNT_NAME string = authStore.outputs.name
 output AZURE_COGNITIVE_SEARCH_ENDPOINT string = cogSearch.outputs.endpoint
@@ -542,7 +590,7 @@ output AZURE_STORAGE_ACCOUNT_NAME string = storage.outputs.name
 
 var appRegNames = [for appRegistration in appRegistrations: appRegistration.name]
 
-output ENTRA_AUTH_API_SCOPE string = authAppRegistration.scopes
+output ENTRA_AUTH_API_SCOPES string = authAppRegistration.scopes
 
 output ENTRA_CHAT_UI_CLIENT_ID string = appRegistrations[indexOf(appRegNames, 'chat-ui')].clientId
 output ENTRA_CHAT_UI_SCOPES string = appRegistrations[indexOf(appRegNames, 'chat-ui')].scopes
@@ -586,6 +634,7 @@ output SERVICE_SEMANTIC_KERNEL_API_ENDPOINT_URL string = acaServices[indexOf(ser
 output SERVICE_VECTORIZATION_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'vectorization-api')].outputs.uri
 output SERVICE_VECTORIZATION_JOB_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'vectorization-job')].outputs.uri
 
+output SERVICE_AGENT_FACTORY_API_MI_OBJECT_ID string = acaServices[indexOf(serviceNames, 'agent-factory-api')].outputs.miPrincipalId
 output SERVICE_CORE_API_MI_OBJECT_ID string = acaServices[indexOf(serviceNames, 'core-api')].outputs.miPrincipalId
 output SERVICE_MANAGEMENT_API_MI_OBJECT_ID string = acaServices[indexOf(serviceNames, 'management-api')].outputs.miPrincipalId
 output SERVICE_VECTORIZATION_API_MI_OBJECT_ID string = acaServices[indexOf(serviceNames, 'vectorization-api')].outputs.miPrincipalId

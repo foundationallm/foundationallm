@@ -1,0 +1,22 @@
+controller:
+  extraVolumes:
+      - name: secrets-store-inline
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: "foundationallm-certificates"
+  extraVolumeMounts:
+      - name: secrets-store-inline
+        mountPath: "/mnt/secrets-store"
+        readOnly: true
+  kind: 'DaemonSet'
+  service:
+    annotations:
+      "service.beta.kubernetes.io/azure-load-balancer-internal": "true"
+      "service.beta.kubernetes.io/azure-load-balancer-ipv4": {{privateIpIngressBackend}}
+    enableHttp: true
+    externalTrafficPolicy: Local
+    loadBalancerIP: {{privateIpIngressBackend}}
+    ports:
+      https: 443

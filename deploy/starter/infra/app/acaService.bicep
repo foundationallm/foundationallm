@@ -4,9 +4,9 @@ param tags object = {}
 
 param appConfigName string
 param eventgridName string
-param cogsearchName string
 param identityName string
 param keyvaultName string
+param storageAccountName string
 param containerAppsEnvironmentName string
 param applicationInsightsName string
 param exists bool
@@ -111,6 +111,34 @@ resource eventGridContributorRole 'Microsoft.Authorization/roleAssignments@2022-
   }
 }
 
+resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' existing = {
+  name: storageAccountName
+}
+
+resource blobContribRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: storageAccount
+  name: guid(subscription().id, resourceGroup().id, identity.id, storageAccount.id, 'Storage Blob Data Contributor')
+  properties: {
+    roleDefinitionId: subscriptionResourceId(
+      'Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+    )
+    principalType: 'ServicePrincipal'
+    principalId: identity.properties.principalId
+  }
+}
+
+resource queueContribRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: storageAccount
+  name: guid(subscription().id, resourceGroup().id, identity.id, storageAccount.id, 'Storage Queue Data Contributor')
+  properties: {
+    roleDefinitionId: subscriptionResourceId(
+      'Microsoft.Authorization/roleDefinitions', '974c5e8b-45b9-4653-ba55-5f855dd0fb88'
+    )
+    principalType: 'ServicePrincipal'
+    principalId: identity.properties.principalId
+  }
+}
+
 module fetchLatestImage '../modules/fetch-container-image.bicep' = {
   name: '${name}-fetch-image'
   params: {
@@ -197,22 +225,6 @@ resource apiKey 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = [
     }
   }
 ]
-
-resource search 'Microsoft.Search/searchServices@2022-09-01' existing = {
-  name: cogsearchName
-}
-
-resource searchIndexDataReaderRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  scope: search
-  name: guid(subscription().id, resourceGroup().id, identity.id, 'searchIndexDataReaderRole')
-  properties: {
-    roleDefinitionId: subscriptionResourceId(
-      'Microsoft.Authorization/roleDefinitions', '1407120a-92aa-4202-b7e9-c0e197c71c8f')
-    principalType: 'ServicePrincipal'
-    principalId: identity.properties.principalId
-  }
-}
-
 
 output defaultDomain string = containerAppsEnvironment.properties.defaultDomain
 output name string = app.name

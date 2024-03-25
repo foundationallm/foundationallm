@@ -3,6 +3,7 @@ using FluentValidation;
 using FoundationaLLM.Agent.Constants;
 using FoundationaLLM.Agent.Models.Resources;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Agents;

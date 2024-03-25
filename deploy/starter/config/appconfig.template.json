@@ -58,7 +58,7 @@
     },
     {
       "key": "FoundationaLLM:APIs:AuthorizationAPI:APIScope",
-      "value": "${env:ENTRA_AUTH_API_SCOPE}",
+      "value": "${env:ENTRA_AUTH_API_SCOPES}",
       "label": null,
       "content_type": "",
       "tags": {}
@@ -1135,15 +1135,8 @@
       "tags": {}
     },
     {
-      "key": "FoundationaLLM:Vectorization:AzureAISearchIndexingService:APIKey",
-      "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/search-key\"}",
-      "label": null,
-      "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-      "tags": {}
-    },
-    {
       "key": "FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType",
-      "value": "APIKey",
+      "value": "AzureIdentity",
       "label": null,
       "content_type": "",
       "tags": {}
@@ -1153,13 +1146,6 @@
       "value": "${env:AZURE_COGNITIVE_SEARCH_ENDPOINT}",
       "label": null,
       "content_type": "",
-      "tags": {}
-    },
-    {
-      "key": "FoundationaLLM:Vectorization:AzureAISearchIndexingService:QueryAPIKey",
-      "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/search-key\"}",
-      "label": null,
-      "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
       "tags": {}
     },
     {

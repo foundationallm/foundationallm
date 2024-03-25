@@ -126,7 +126,7 @@ The structure of a text partitioning profile is the following:
 {
     "type": "text-partitioning-profile",
     "name": "<name>",
-    "object_id": "/instances/[INSTANCE ID]/providers/FoundationaLLM.Vectorization/textpartitioningprofiles/<name>",
+    "object_id": "/instances/[INSTANCE ID]/providers/FoundationaLLM.Vectorization/textPartitioningProfiles/<name>",
     "description": "<description>",
     "deleted": false,
     "text_splitter": "<text_splitter>",
@@ -174,13 +174,13 @@ This section describes how to manage text partitioning profiles using the Manage
 **Retrieve**
 
 ```
-HTTP GET {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Vectorization/textpartitioningprofiles
+HTTP GET {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Vectorization/textPartitioningProfiles
 ```
 
 **Create or update**
 
 ```
-HTTP POST {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Vectorization/textpartitioningprofiles/<name>
+HTTP POST {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Vectorization/textPartitioningProfiles/<name>
 Content-Type: application/json
 
 BODY
@@ -192,7 +192,7 @@ where `<text partitioning profile>` is a JSON object with the structure describe
 **Delete**
 
 ```
-HTTP DELETE {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Vectorization/textpartitioningprofiles/<name>
+HTTP DELETE {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Vectorization/textPartitioningProfiles/<name>
 ```
 
 > [!NOTE]

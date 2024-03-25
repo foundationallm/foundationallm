@@ -26,9 +26,9 @@ ingress:
   enabled: false
 
 env:
-  configmap: 
+  configmap:
     - name: AZURE_CLIENT_ID
-    - name: FoundationaLLM__AuthorizationAPI__KeyVaultUri
+    - name: FoundationaLLM_AuthorizationAPI_KeyVaultURI
   secret: {}
   values:
     - name: ASPNETCORE_ENVIRONMENT

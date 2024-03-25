@@ -21,43 +21,10 @@ param timestamp string = utcNow()
 
 /** Locals **/
 @description('Metric alerts for the resource.')
-var alerts = [
-  // {
-  //   description: 'Node CPU utilization greater than 95% for 1 hour'
-  //   evaluationFrequency: 'PT5M'
-  //   metricName: 'node_cpu_usage_percentage'
-  //   name: 'node-cpu'
-  //   operator: 'GreaterThan'
-  //   severity: 3
-  //   threshold: 95
-  //   timeAggregation: 'Average'
-  //   windowSize: 'PT5M'
-  // }
-  // {
-  //   description: 'Node memory utilization greater than 95% for 1 hour'
-  //   evaluationFrequency: 'PT5M'
-  //   metricName: 'node_memory_working_set_percentage'
-  //   name: 'node-memory'
-  //   operator: 'GreaterThan'
-  //   severity: 3
-  //   threshold: 100
-  //   timeAggregation: 'Average'
-  //   windowSize: 'PT5M'
-  // }
-]
+var alerts = []
 
 @description('The Resource logs to enable')
-var logs = [
-  // 'CassandraRequests'
-  // 'ControlPlaneRequests'
-  // 'DataPlaneRequests'
-  // 'GremlinRequests'
-  // 'MongoRequests'
-  // 'PartitionKeyRUConsumption'
-  // 'PartitionKeyStatistics'
-  // 'QueryRuntimeStatistics'
-  // 'TableApiRequests'
-]
+var logs = []
 
 @description('The Resource Name')
 var name = '${serviceType}-${resourceSuffix}'

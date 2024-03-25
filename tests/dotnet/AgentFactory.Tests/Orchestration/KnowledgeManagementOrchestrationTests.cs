@@ -33,7 +33,7 @@ namespace FoundationaLLM.AgentFactory.Tests.Orchestration
             // Arrange
             var completionRequest = new CompletionRequest() { UserPrompt = "Test_userprompt"};
             var orchestrationResult = new LLMCompletionResponse { Completion = "Completion" };
-            _orchestrationService.GetCompletion(Arg.Any<KnowledgeManagementCompletionRequest>())
+            _orchestrationService.GetCompletion(Arg.Any<LLMCompletionRequest>())
                 .Returns(Task.FromResult(orchestrationResult));
 
             // Act

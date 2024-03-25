@@ -13,6 +13,7 @@ var resourceSuffix = '${environmentName}-${location}-${workload}-${project}'
 var workload = 'net'
 
 output vnetId string = main.id
+output vnetName string = main.name
 
 var name = 'vnet-${environmentName}-${location}-net'
 var cidrAppGateway = cidrSubnet(cidrVnet, 24, 0) // 10.220.128.0/24
@@ -163,7 +164,7 @@ var subnets = [
         }
       }
     ]
-  }  
+  }
   {
     name: 'FLLMOpenAI'
     addressPrefix: cidrFllmOpenAi
@@ -179,7 +180,7 @@ var subnets = [
           sourcePortRange: '*'
           sourceAddressPrefixes: [ '172.16.0.0/24' ]
         }
-          {
+        {
           access: 'Allow'
           destinationAddressPrefix: 'VirtualNetwork'
           destinationPortRange: '3443'
@@ -647,6 +648,6 @@ module vpn 'modules/vpnGateway.bicep' = if (createVpnGateway) {
   params: {
     location: location
     resourceSuffix: resourceSuffix
-    vnetId: main.id
+    subnetId: '${main.id}/subnets/GatewaySubnet'
   }
 }

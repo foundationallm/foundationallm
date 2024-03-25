@@ -28,9 +28,9 @@
 			<!-- Table -->
 			<DataTable :value="dataSources" stripedRows scrollable tableStyle="max-width: 100%" size="small">
 				<template #empty>
-          No data sources found. Please use the menu on the left to create a new data source.</template
+					No data sources found. Please use the menu on the left to create a new data source.</template
 				>
-    		<template #loading>Loading data sources. Please wait.</template>
+				<template #loading>Loading data sources. Please wait.</template>
 
 				<!-- Name -->
 				<Column field="name" header="Name" sortable style="min-width: 200px" :pt="{ headerCell: { style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' } }, sortIcon: { style: { color: 'var(--primary-text)' } } }"></Column>

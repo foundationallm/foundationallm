@@ -1,5 +1,4 @@
-﻿using Asp.Versioning;
-using FoundationaLLM.Common.Authentication;
+﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.SemanticKernel.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -9,38 +8,22 @@ namespace FoundationaLLM.SemanticKernel.API.Controllers
     /// <summary>
     /// Wrapper for the Semantic Kernel service.
     /// </summary>
+    /// <param name="semanticKernelService">The Semantic Kernel service handling requests.</param>
     [ApiController]
     [APIKeyAuthentication]
     [Route("[controller]")]
-    public class OrchestrationController : ControllerBase
+    public class OrchestrationController(
+        ISemanticKernelService semanticKernelService) : ControllerBase
     {
-        private readonly IKnowledgeManagementAgentPlugin _knowledgeManagementAgentPlugin;
-        private readonly ILegacyAgentPlugin _legacyAgentPlugin;
-
-        /// <summary>
-        /// Constructor for the Semantic Kernel API orchestration controller.
-        /// </summary>
-        /// <param name="knowledgeManagementAgentPlugin"></param>
-        /// <param name="legacyAgentPlugin"></param>
-        public OrchestrationController(
-            IKnowledgeManagementAgentPlugin knowledgeManagementAgentPlugin,
-            ILegacyAgentPlugin legacyAgentPlugin)
-        {
-            _knowledgeManagementAgentPlugin = knowledgeManagementAgentPlugin;
-            _legacyAgentPlugin = legacyAgentPlugin;
-        }
+        private readonly ISemanticKernelService _semanticKernelService = semanticKernelService;
 
         /// <summary>
         /// Gets a completion from the Semantic Kernel service.
         /// </summary>
-        /// <param name="request">The completion request containing the user prompt and message history.</param>
-        /// <returns>The completion response.</returns>
+        /// <param name="request">The <see cref="LLMCompletionRequest"/> completion request.</param>
+        /// <returns>A <see cref="LLMCompletionResponse"/> containing the response to the completion request.</returns>
         [HttpPost("completion")]
-        public async Task<LLMCompletionResponse> GetCompletion([FromBody] LLMCompletionRequest request) => request switch
-        {
-            KnowledgeManagementCompletionRequest kmcr => await _knowledgeManagementAgentPlugin.GetCompletion(kmcr),
-            LegacyCompletionRequest lcr => await _legacyAgentPlugin.GetCompletion(lcr),
-            _ => throw new Exception($"LLM orchestration completion request of type {request.GetType()} is not supported."),
-        };
+        public async Task<LLMCompletionResponse> GetCompletion([FromBody] LLMCompletionRequest request) =>
+            await _semanticKernelService.GetCompletion(request);
     }
 }

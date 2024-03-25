@@ -22,7 +22,6 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
         {
             Substitute.For<IResourceProviderService>()
         };
-        private ICacheService _cacheService = Substitute.For<ICacheService>();
         private ICallContext _callContext = Substitute.For<ICallContext>();
         private ILoggerFactory _loggerFactory =  Substitute.For<ILoggerFactory>();
         private IConfiguration _configuration = Substitute.For<IConfiguration>();
@@ -33,7 +32,6 @@ namespace FoundationaLLM.AgentFactory.Tests.Services
             _agentFactoryService = new AgentFactoryService(
                 _resourceProviderServices,
                 _orchestrationServices,
-                _cacheService,
                 _callContext,
                 _configuration,
                 _agentHubAPIService,

@@ -11,7 +11,7 @@ using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Embeddings;
 using System.ComponentModel;
 
-#pragma warning disable SKEXP0001, SKEXP0011
+#pragma warning disable SKEXP0001, SKEXP0010
 
 namespace FoundationaLLM.SemanticKernel.Core.Services
 {

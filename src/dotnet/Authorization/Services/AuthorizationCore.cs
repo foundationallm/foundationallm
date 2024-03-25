@@ -1,10 +1,14 @@
 ﻿using FluentValidation;
+using FoundationaLLM.Authorization.Constants;
 using FoundationaLLM.Authorization.Interfaces;
 using FoundationaLLM.Authorization.Models;
 using FoundationaLLM.Authorization.Models.Configuration;
+using FoundationaLLM.Authorization.ResourceProviders;
 using FoundationaLLM.Authorization.Utils;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authorization;
+using FoundationaLLM.Common.Models.ResourceProvider;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Collections.Concurrent;
@@ -113,10 +117,13 @@ namespace FoundationaLLM.Authorization.Services
         }
 
         /// <inheritdoc/>
-        public ActionAuthorizationResult ProcessAuthorizationRequest(ActionAuthorizationRequest authorizationRequest)
+        public ActionAuthorizationResult ProcessAuthorizationRequest(string instanceId, ActionAuthorizationRequest authorizationRequest)
         {
             try
             {
+                _logger.LogDebug("Authorization request: {AuthorizationRequest}",
+                    JsonSerializer.Serialize(authorizationRequest));
+
                 if (!_initialized)
                 {
                     _logger.LogError("The authorization core is not initialized.");
@@ -129,39 +136,17 @@ namespace FoundationaLLM.Authorization.Services
                 var resourcePath = ResourcePathUtils.ParseForAuthorizationRequestResourcePath(
                     authorizationRequest.ResourcePath, _settings.InstanceIds);
 
-                // Combine the principal id and security group ids into one list.
-                var objectIds = new List<string> { authorizationRequest.PrincipalId };
-                if (authorizationRequest.SecurityGroupIds != null)
-                    objectIds.AddRange(authorizationRequest.SecurityGroupIds);
-
-                // Get cache associated with the instance id.
-                if (_roleAssignmentCaches.TryGetValue(resourcePath.InstanceId!, out var roleAssignmentCache))
+                if (string.IsNullOrWhiteSpace(resourcePath.InstanceId)
+                    || resourcePath.InstanceId.ToLower().CompareTo(instanceId.ToLower()) != 0)
                 {
-                    foreach (var objectId in objectIds)
-                    {
-                        // Retrieve all role assignments associated with the id.
-                        var roleAssignments = roleAssignmentCache.GetRoleAssignments(objectId);
-                        foreach (var roleAssignment in roleAssignments)
-                        {
-                            // Retrieve the role definition object
-                            if (RoleDefinitions.All.TryGetValue(roleAssignment.RoleDefinitionId, out var roleDefinition))
-                            {
-                                // Check if the scope of the role assignment includes the resource.
-                                // Check if the actions of the role definition include the requested action.
-                                if (resourcePath.IncludesResourcePath(roleAssignment.ScopeResourcePath!)
-                                    && roleAssignment.AllowedActions.Contains(authorizationRequest.Action))
-                                {
-                                    return new ActionAuthorizationResult{ Authorized = true };
-                                }
-                            }
-                            else
-                                _logger.LogWarning("The role assignment {RoleAssignmentName} references the role definition {RoleDefinitionId} which is invalid.",
-                                    roleAssignment.Name, roleAssignment.RoleDefinitionId);
-                        }
-                    }
+                    _logger.LogError("The instance id from the controller route and the instance id from the authorization request do not match.");
+                    return new ActionAuthorizationResult { Authorized = false };
                 }
 
-                return new ActionAuthorizationResult { Authorized = false };
+                return new ActionAuthorizationResult
+                {
+                    Authorized = ActionAllowed(resourcePath, authorizationRequest)
+                };
             }
             catch (Exception ex)
             {
@@ -170,6 +155,65 @@ namespace FoundationaLLM.Authorization.Services
                 _logger.LogError(ex, "The authorization core failed to process the authorization request.");
                 return new ActionAuthorizationResult { Authorized = false };
             }
+        }
+
+        public bool AllowAuthorizationRequestsProcessing(string instanceId, string securityPrincipalId)
+        {
+            var resourcePath = $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleAssignments}";
+            _ = ResourcePath.TryParse(
+                resourcePath,
+                [ ResourceProviderNames.FoundationaLLM_Authorization ],
+                AuthorizationResourceProviderMetadata.AllowedResourceTypes,
+                false,
+                out ResourcePath? parsedResourcePath);
+            return ActionAllowed(parsedResourcePath!, new ActionAuthorizationRequest
+            {
+                Action = AuthorizableActionNames.FoundationaLLM_Authorization_RoleAssignments_Read,
+                PrincipalId = securityPrincipalId,
+                ResourcePath = resourcePath
+            });
+        }
+
+        private bool ActionAllowed(ResourcePath resourcePath, ActionAuthorizationRequest authorizationRequest)
+        {
+            // Get cache associated with the instance id.
+            if (_roleAssignmentCaches.TryGetValue(resourcePath.InstanceId!, out var roleAssignmentCache))
+            {
+                // Combine the principal id and security group ids into one list.
+                var objectIds = new List<string> { authorizationRequest.PrincipalId };
+                if (authorizationRequest.SecurityGroupIds != null)
+                    objectIds.AddRange(authorizationRequest.SecurityGroupIds);
+
+                foreach (var objectId in objectIds)
+                {
+                    // Retrieve all role assignments associated with the id.
+                    var roleAssignments = roleAssignmentCache.GetRoleAssignments(objectId);
+                    foreach (var roleAssignment in roleAssignments)
+                    {
+                        // Retrieve the role definition object
+                        if (RoleDefinitions.All.TryGetValue(roleAssignment.RoleDefinitionId, out var roleDefinition))
+                        {
+                            // Check if the scope of the role assignment includes the resource.
+                            // Check if the actions of the role definition include the requested action.
+                            if (resourcePath.IncludesResourcePath(roleAssignment.ScopeResourcePath!)
+                                && roleAssignment.AllowedActions.Contains(authorizationRequest.Action))
+                            {
+                                return true;
+                            }
+                        }
+                        else
+                            _logger.LogWarning("The role assignment {RoleAssignmentName} references the role definition {RoleDefinitionId} which is invalid.",
+                                roleAssignment.Name, roleAssignment.RoleDefinitionId);
+                    }
+                }
+            }
+
+            _logger.LogWarning("The action {ActionName} is not allowed on the resource {ResourcePath} for the principal {PrincipalId}.",
+                authorizationRequest.Action,
+                resourcePath,
+                authorizationRequest.PrincipalId);
+
+            return false;
         }
     }
 }

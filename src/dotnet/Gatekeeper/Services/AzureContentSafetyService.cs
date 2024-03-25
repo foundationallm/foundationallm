@@ -1,5 +1,6 @@
 ﻿using Azure;
 using Azure.AI.ContentSafety;
+using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Gatekeeper.Core.Interfaces;
 using FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions;
 using FoundationaLLM.Gatekeeper.Core.Models.ContentSafety;
@@ -29,7 +30,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
             _settings = options.Value;
             _logger = logger;
 
-            _client = new ContentSafetyClient(new Uri(_settings.APIUrl), new AzureKeyCredential(_settings.APIKey));
+            _client = new ContentSafetyClient(new Uri(_settings.APIUrl), DefaultAuthentication.GetAzureCredential());
         }
 
         /// <summary>
@@ -56,28 +57,28 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
             var safe = true;
             var reason = "The prompt text did not pass the content safety filter. Reason:";
 
-            var hateSeverity = response.Value.HateResult?.Severity ?? 0;
+            var hateSeverity = response.Value.CategoriesAnalysis.FirstOrDefault(a => a.Category == TextCategory.Hate)?.Severity ?? 0;
             if (hateSeverity > _settings.HateSeverity)
             {
                 reason += $" hate";
                 safe = false;
             }
 
-            var violenceSeverity = response.Value.ViolenceResult?.Severity ?? 0;
+            var violenceSeverity = response.Value.CategoriesAnalysis.FirstOrDefault(a => a.Category == TextCategory.Violence)?.Severity ?? 0;
             if (violenceSeverity > _settings.ViolenceSeverity)
             {
                 reason += $" violence";
                 safe = false;
             }
 
-            var selfHarmSeverity = response.Value.SelfHarmResult?.Severity ?? 0;
+            var selfHarmSeverity = response.Value.CategoriesAnalysis.FirstOrDefault(a => a.Category == TextCategory.SelfHarm)?.Severity ?? 0;
             if (selfHarmSeverity > _settings.SelfHarmSeverity)
             {
                 reason += $" self-harm";
                 safe = false;
             }
 
-            var sexualSeverity = response.Value.SexualResult?.Severity ?? 0;
+            var sexualSeverity = response.Value.CategoriesAnalysis.FirstOrDefault(a => a.Category == TextCategory.Sexual)?.Severity ?? 0;
             if (sexualSeverity > _settings.SexualSeverity)
             {
                 reason += $" sexual";

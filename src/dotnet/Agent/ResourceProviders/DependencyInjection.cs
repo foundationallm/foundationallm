@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using FoundationaLLM.Agent.ResourceProviders;
 using FoundationaLLM.Agent.Validation.Metadata;
-using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Agents;
 using FoundationaLLM.Common.Models.Configuration.Instance;
