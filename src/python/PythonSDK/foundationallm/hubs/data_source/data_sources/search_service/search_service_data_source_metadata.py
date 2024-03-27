@@ -8,7 +8,7 @@ from .search_service_authentication_metadata import SearchServiceAuthenticationM
 
 class SearchServiceDataSourceMetadata(DataSourceMetadata):
     """
-    Represents search service data source that details authentication, connnection,
+    Represents search service data source that details authentication, connection,
     and details on the content contained within
     """
     index_name: str

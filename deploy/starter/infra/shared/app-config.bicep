@@ -23,7 +23,7 @@ resource keyvault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
 }
 
 resource connectionStringSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
-  name: 'appconfig-connnection-string'
+  name: 'appconfig-connection-string'
   parent: keyvault
   tags: tags
   properties: {
