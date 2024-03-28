@@ -569,8 +569,8 @@ module acaServices './app/acaService.bicep' = [
         : [
             {
               name: service.appConfigEnvironmentVarName
-              value: appConfig.outputs.connectionStringSecret[service.name].uri
-              secretRef: appConfig.outputs.connectionStringSecret[service.name].name
+              value: filter(appConfig.outputs.connectionStringSecret, item => item.name == service.name)[0].uri
+              secretRef: 'appconfig-connection-string'
             }
           ]
     }
