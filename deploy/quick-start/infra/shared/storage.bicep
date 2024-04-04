@@ -1,25 +1,9 @@
 param containers array = []
 param files array = []
 param queues array = []
-param keyvaultName string
 param location string = resourceGroup().location
 param name string
 param tags object = {}
-
-var secretNames = [
-  'storage-connection'
-  'foundationallm-agent-resourceprovider-storage-connectionstring'
-  'foundationallm-agenthub-storagemanager-blobstorage-connectionstring'
-  'foundationallm-blobstoragememorysource-blobstorageconnection'
-  'foundationallm-configuration-resourceprovider-storage-connectionstring'
-  'foundationallm-datasource-resourceprovider-storage-connectionstring'
-  'foundationallm-datasourcehub-storagemanager-blobstorage-connectionstring'
-  'foundationallm-prompt-resourceprovider-storage-connectionstring'
-  'foundationallm-prompthub-storagemanager-blobstorage-connectionstring'
-  'foundationallm-vectorization-queues-connectionstring'
-  'foundationallm-vectorization-state-connectionstring'
-  'foundationallm-vectorization-resourceprovider-storage-connectionstring'
-]
 
 resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: name
@@ -102,21 +86,4 @@ for file in files: {
 }
 ]
 
-resource keyvault 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
-  name: keyvaultName
-}
-
-resource storageConnectionString 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = [
-for secretName in secretNames: {
-  name: secretName
-  parent: keyvault
-  tags: tags
-  properties: {
-    value: 'DefaultEndpointsProtocol=https;AccountName=${name};AccountKey=${storage.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
-  }
-}
-]
-
-output connectionSecretName string = storageConnectionString[0].name
-output connectionSecretRef string = storageConnectionString[0].properties.secretUri
 output name string = storage.name
