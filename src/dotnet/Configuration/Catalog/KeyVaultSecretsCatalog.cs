@@ -50,12 +50,6 @@ namespace FoundationaLLM.Configuration.Catalog
                 description: ""
             ),
             new(
-                secretName: KeyVaultSecretNames
-                    .FoundationaLLM_Prompt_ResourceProvider_Storage_ConnectionString,
-                minimumVersion: "0.3.0",
-                description: "The connection string to the Azure Storage account used for the prompt resource provider."
-            ),
-            new(
                 secretName: KeyVaultSecretNames.FoundationaLLM_APIs_PromptHubAPI_APIKey,
                 minimumVersion: "0.3.0",
                 description: ""
