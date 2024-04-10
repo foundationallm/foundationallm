@@ -10,8 +10,10 @@ using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.API;
+using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Common.Services.Security;
 using FoundationaLLM.Common.Settings;
+using FoundationaLLM.Common.Validation;
 using FoundationaLLM.Gatekeeper.Core.Interfaces;
 using FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions;
 using FoundationaLLM.Gatekeeper.Core.Services;
@@ -50,6 +52,8 @@ namespace FoundationaLLM.Gatekeeper.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIs);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Refinement);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_AzureContentSafety);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Agent);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Events);
             });
             if (builder.Environment.IsDevelopment())
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
@@ -72,6 +76,21 @@ namespace FoundationaLLM.Gatekeeper.API
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIs_GatekeeperAPI));
             builder.Services.AddOptions<InstanceSettings>()
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Instance));
+
+            // Add Azure ARM services.
+            builder.Services.AddAzureResourceManager();
+
+            // Add event services.
+            builder.Services.AddAzureEventGridEvents(
+                builder.Configuration,
+                AppConfigurationKeySections.FoundationaLLM_Events_AzureEventGridEventService_Profiles_AgentFactoryAPI);
+
+            // Add resource providers
+            builder.Services.AddSingleton<IResourceValidatorFactory, ResourceValidatorFactory>();
+            builder.AddAgentResourceProvider();
+
+            // Activate all resource providers (give them a chance to initialize).
+            builder.Services.ActivateSingleton<IEnumerable<IResourceProviderService>>();
 
             // Register the downstream services and HTTP clients.
             RegisterDownstreamServices(builder);
