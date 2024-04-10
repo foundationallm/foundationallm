@@ -1,4 +1,5 @@
 using Azure.Search.Documents.Indexes;
+using FoundationaLLM.Common.Models.Orchestration;
 
 namespace FoundationaLLM.Common.Models.Chat;
 
@@ -71,10 +72,16 @@ public record Message
     public string? CompletionPromptId { get; set; }
 
     /// <summary>
+    /// The sources associated with the completion prompt.
+    /// </summary>
+    public Citation[]? Citations { get; set; }
+
+    /// <summary>
     /// Constructor for Message.
     /// </summary>
     public Message(string sessionId, string sender, int? tokens, string text,
-        float[]? vector, bool? rating, string upn, string? senderDisplayName = null)
+        float[]? vector, bool? rating, string upn, string? senderDisplayName = null,
+        Citation[]? citations = null)
     {
         Id = Guid.NewGuid().ToString();
         Type = nameof(Message);
@@ -87,5 +94,6 @@ public record Message
         Rating = rating;
         Vector = vector;
         UPN = upn;
+        Citations = citations;
     }
 }

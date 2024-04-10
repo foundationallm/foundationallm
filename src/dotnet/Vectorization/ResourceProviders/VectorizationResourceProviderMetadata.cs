@@ -50,23 +50,6 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                 }
             },
             {
-                VectorizationResourceTypeNames.ContentSourceProfiles,
-                new ResourceTypeDescriptor(
-                    VectorizationResourceTypeNames.ContentSourceProfiles)
-                {
-                    AllowedTypes = [
-                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ContentSourceProfile)]),
-                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, [], [typeof(ContentSourceProfile)], [typeof(ResourceProviderUpsertResult)]),
-                        new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, [], [], []),
-                    ],
-                    Actions = [
-                            new ResourceTypeAction(VectorizationResourceProviderActions.CheckName, false, true, [
-                                new ResourceTypeAllowedTypes(HttpMethod.Post.Method, [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)])
-                            ])
-                        ]
-                }
-            },
-            {
                 VectorizationResourceTypeNames.TextPartitioningProfiles,
                 new ResourceTypeDescriptor(
                     VectorizationResourceTypeNames.TextPartitioningProfiles)

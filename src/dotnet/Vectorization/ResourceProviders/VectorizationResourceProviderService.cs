@@ -57,24 +57,20 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
             VectorizationResourceProviderMetadata.AllowedResourceTypes;
 
-        private ConcurrentDictionary<string, VectorizationProfileBase> _contentSourceProfiles = [];
         private ConcurrentDictionary<string, VectorizationProfileBase> _textPartitioningProfiles = [];
         private ConcurrentDictionary<string, VectorizationProfileBase> _textEmbeddingProfiles = [];
         private ConcurrentDictionary<string, VectorizationProfileBase> _indexingProfiles = [];
         private ConcurrentDictionary<string, VectorizationPipeline> _pipelines = [];
 
-        private string _defaultContentSourceProfileName = string.Empty;
         private string _defaultTextPartitioningProfileName = string.Empty;
         private string _defaultTextEmbeddingProfileName = string.Empty;
         private string _defaultIndexingProfileName = string.Empty;
 
-        private const string CONTENT_SOURCE_PROFILES_FILE_NAME = "vectorization-content-source-profiles.json";
         private const string TEXT_PARTITIONING_PROFILES_FILE_NAME = "vectorization-text-partitioning-profiles.json";
         private const string TEXT_EMBEDDING_PROFILES_FILE_NAME = "vectorization-text-embedding-profiles.json";
         private const string INDEXING_PROFILES_FILE_NAME = "vectorization-indexing-profiles.json";
         private const string PIPELINES_FILE_NAME = "vectorization-pipelines.json";
 
-        private const string CONTENT_SOURCE_PROFILES_FILE_PATH = $"/{ResourceProviderNames.FoundationaLLM_Vectorization}/{CONTENT_SOURCE_PROFILES_FILE_NAME}";
         private const string TEXT_PARTITIONING_PROFILES_FILE_PATH = $"/{ResourceProviderNames.FoundationaLLM_Vectorization}/{TEXT_PARTITIONING_PROFILES_FILE_NAME}";
         private const string TEXT_EMBEDDING_PROFILES_FILE_PATH = $"/{ResourceProviderNames.FoundationaLLM_Vectorization}/{TEXT_EMBEDDING_PROFILES_FILE_NAME}";
         private const string INDEXING_PROFILES_FILE_PATH = $"/{ResourceProviderNames.FoundationaLLM_Vectorization}/{INDEXING_PROFILES_FILE_NAME}";
@@ -90,8 +86,6 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         {
             _logger.LogInformation("Starting to initialize the {ResourceProvider} resource provider...", _name);
 
-            _defaultContentSourceProfileName =
-                await LoadResourceStore<ContentSourceProfile, VectorizationProfileBase>(CONTENT_SOURCE_PROFILES_FILE_PATH, _contentSourceProfiles);
             _defaultTextPartitioningProfileName =
                 await LoadResourceStore<TextPartitioningProfile, VectorizationProfileBase>(TEXT_PARTITIONING_PROFILES_FILE_PATH, _textPartitioningProfiles);
             _defaultTextEmbeddingProfileName =
@@ -137,8 +131,6 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
             resourcePath.ResourceTypeInstances[0].ResourceType switch
             {
-                VectorizationResourceTypeNames.ContentSourceProfiles =>
-                    LoadResources<ContentSourceProfile, VectorizationProfileBase>(resourcePath.ResourceTypeInstances[0], _contentSourceProfiles),
                 VectorizationResourceTypeNames.TextPartitioningProfiles =>
                     LoadResources<TextPartitioningProfile, VectorizationProfileBase>(resourcePath.ResourceTypeInstances[0], _textPartitioningProfiles),
                 VectorizationResourceTypeNames.TextEmbeddingProfiles =>
@@ -182,8 +174,6 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string serializedResource, UnifiedUserIdentity userIdentity) =>
             resourcePath.ResourceTypeInstances[0].ResourceType switch
             {
-                VectorizationResourceTypeNames.ContentSourceProfiles =>
-                    await UpdateResource<ContentSourceProfile, VectorizationProfileBase>(resourcePath, serializedResource, _contentSourceProfiles, CONTENT_SOURCE_PROFILES_FILE_PATH),
                 VectorizationResourceTypeNames.TextPartitioningProfiles =>
                     await UpdateResource<TextPartitioningProfile, VectorizationProfileBase>(resourcePath, serializedResource, _textPartitioningProfiles, TEXT_PARTITIONING_PROFILES_FILE_PATH),
                 VectorizationResourceTypeNames.TextEmbeddingProfiles =>
@@ -250,12 +240,6 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         protected override async Task<object> ExecuteActionAsync(ResourcePath resourcePath, string serializedAction, UnifiedUserIdentity userIdentity) =>
             resourcePath.ResourceTypeInstances.Last().ResourceType switch
             {
-                VectorizationResourceTypeNames.ContentSourceProfiles => resourcePath.ResourceTypeInstances.Last().Action switch
-                {
-                    VectorizationResourceProviderActions.CheckName => CheckProfileName<ContentSourceProfile>(serializedAction, _contentSourceProfiles),
-                    _ => throw new ResourceProviderException($"The action {resourcePath.ResourceTypeInstances.Last().Action} is not supported by the {_name} resource provider.",
-                        StatusCodes.Status400BadRequest)
-                },
                 VectorizationResourceTypeNames.IndexingProfiles => resourcePath.ResourceTypeInstances.Last().Action switch
                 {
                     VectorizationResourceProviderActions.CheckName => CheckProfileName<IndexingProfile>(serializedAction, _indexingProfiles),
@@ -375,9 +359,6 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         {
             switch (resourcePath.ResourceTypeInstances.Last().ResourceType)
             {
-                case VectorizationResourceTypeNames.ContentSourceProfiles:
-                    await DeleteResource<ContentSourceProfile, VectorizationProfileBase>(resourcePath, _contentSourceProfiles, CONTENT_SOURCE_PROFILES_FILE_PATH);
-                    break;
                 case VectorizationResourceTypeNames.TextPartitioningProfiles:
                     await DeleteResource<TextPartitioningProfile, VectorizationProfileBase>(resourcePath, _textPartitioningProfiles, TEXT_PARTITIONING_PROFILES_FILE_PATH);
                     break;
@@ -427,7 +408,6 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         protected override T GetResourceInternal<T>(ResourcePath resourcePath) where T : class =>
             resourcePath.ResourceTypeInstances[0].ResourceType switch
             {
-                VectorizationResourceTypeNames.ContentSourceProfiles => GetContentSourceProfile<T>(resourcePath),
                 VectorizationResourceTypeNames.TextPartitioningProfiles => GetTextPartitioningProfile<T>(resourcePath),
                 VectorizationResourceTypeNames.TextEmbeddingProfiles => GetTextEmbeddingProfile<T>(resourcePath),
                 VectorizationResourceTypeNames.IndexingProfiles => GetIndexingProfile<T>(resourcePath),
@@ -436,19 +416,6 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             };
 
         #region Helpers for GetResourceInternal<T>
-
-        private T GetContentSourceProfile<T>(ResourcePath resourcePath) where T : class
-        {
-            if (resourcePath.ResourceTypeInstances.Count != 1)
-                throw new ResourceProviderException($"Invalid resource path");
-
-            if (typeof(T) != typeof(ContentSourceProfile))
-                throw new ResourceProviderException($"The type of requested resource ({typeof(T)}) does not match the resource type specified in the path ({resourcePath.ResourceTypeInstances[0].ResourceType}).");
-
-            _contentSourceProfiles.TryGetValue(resourcePath.ResourceTypeInstances[0].ResourceId!, out var contentSource);
-            return contentSource as T
-                ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceType} was not found.");
-        }
 
         private T GetTextPartitioningProfile<T>(ResourcePath resourcePath) where T : class
         {
@@ -551,9 +518,6 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
 
             switch (fileName)
             {
-                case CONTENT_SOURCE_PROFILES_FILE_NAME:
-                    _defaultContentSourceProfileName = await LoadResourceStore<ContentSourceProfile, VectorizationProfileBase>(CONTENT_SOURCE_PROFILES_FILE_PATH, _contentSourceProfiles);
-                    break;
                 case TEXT_PARTITIONING_PROFILES_FILE_NAME:
                     _defaultTextPartitioningProfileName = await LoadResourceStore<TextPartitioningProfile, VectorizationProfileBase>(TEXT_PARTITIONING_PROFILES_FILE_PATH, _textPartitioningProfiles);
                     break;

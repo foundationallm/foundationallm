@@ -15,9 +15,7 @@ const buildLoadingTemplate = (() => {
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	devtools: { enabled: true },
-	modules: [
-		'@pinia/nuxt',
-	],
+	modules: ['@pinia/nuxt', '@nuxtjs/eslint-module'],
 	components: true,
 	app: {
 		head: {
@@ -43,11 +41,7 @@ export default defineNuxtConfig({
 		transpile: ['primevue'],
 	},
 	devServer: {
-		...(buildLoadingTemplate
-			? {
-					loadingTemplate: () => buildLoadingTemplate,
-			  }
-			: {}),
+		...(buildLoadingTemplate ? { loadingTemplate: () => buildLoadingTemplate } : {}),
 	},
 	runtimeConfig: {
 		APP_CONFIG_ENDPOINT: process.env.APP_CONFIG_ENDPOINT,

@@ -7,13 +7,6 @@
 	</div>
 </template>
 
-<script setup lang="ts">
-definePageMeta({
-	name: 'auth/login',
-	path: '/signin-oidc'
-});
-</script>
-
 <script lang="ts">
 import { mapStores } from 'pinia';
 import { useAppConfigStore } from '@/stores/appConfigStore';
@@ -36,6 +29,13 @@ export default {
 		},
 	},
 };
+</script>
+
+<script setup lang="ts">
+definePageMeta({
+	name: 'auth/login',
+	path: '/signin-oidc',
+});
 </script>
 
 <style lang="scss" scoped>

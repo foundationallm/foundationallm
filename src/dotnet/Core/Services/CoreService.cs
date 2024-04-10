@@ -128,7 +128,7 @@ public partial class CoreService(
             // Add the user's UPN to the messages.
             var upn = _callContext.CurrentUserIdentity?.UPN ?? throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when adding prompt and completion messages.");
             var promptMessage = new Message(orchestrationRequest.SessionId, nameof(Participants.User), result.PromptTokens, orchestrationRequest.UserPrompt, result.UserPromptEmbedding, null, upn, _callContext.CurrentUserIdentity?.Name);
-            var completionMessage = new Message(orchestrationRequest.SessionId, nameof(Participants.Assistant), result.CompletionTokens, result.Completion, null, null, upn, result.AgentName);
+            var completionMessage = new Message(orchestrationRequest.SessionId, nameof(Participants.Assistant), result.CompletionTokens, result.Completion, null, null, upn, result.AgentName, result.Citations);
             var completionPromptText =
                 $"User prompt: {result.UserPrompt}{Environment.NewLine}Agent: {result.AgentName}{Environment.NewLine}Prompt template: {(!string.IsNullOrWhiteSpace(result.FullPrompt) ? result.FullPrompt : result.PromptTemplate)}";
             var completionPrompt = new CompletionPrompt(orchestrationRequest.SessionId, completionMessage.Id, completionPromptText);

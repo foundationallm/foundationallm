@@ -280,14 +280,3 @@ module privateEndpoint 'utility/privateEndpoint.bicep' = {
   }
 }
 
-@description('CosmosDB Access Key KeyVault Secret.')
-module cosmosDbKey 'kvSecret.bicep' = {
-  name: 'cosmosKey-${timestamp}'
-  scope: resourceGroup(opsResourceGroupName)
-  params: {
-    kvName: kvName
-    secretName: 'foundationallm-cosmosdb-key'
-    secretValue: main.listKeys().primaryMasterKey
-    tags: tags
-  }
-}

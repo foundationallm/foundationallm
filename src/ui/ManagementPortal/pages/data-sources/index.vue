@@ -1,15 +1,15 @@
 <template>
 	<div>
-		<div style="display: flex;">
+		<div style="display: flex">
 			<div style="flex: 1">
 				<h2 class="page-header">Data Sources</h2>
 				<div class="page-subheader">The following data sources are available.</div>
 			</div>
 
-			<div style="display: flex; align-items: center;">
+			<div style="display: flex; align-items: center">
 				<NuxtLink to="/data-sources/create">
 					<Button>
-						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px;"></i>
+						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
 						Create Data Source
 					</Button>
 				</NuxtLink>
@@ -26,20 +26,59 @@
 			</template>
 
 			<!-- Table -->
-			<DataTable :value="dataSources" stripedRows scrollable tableStyle="max-width: 100%" size="small">
+			<DataTable
+				:value="dataSources"
+				striped-rows
+				scrollable
+				table-style="max-width: 100%"
+				size="small"
+			>
 				<template #empty>
-					No data sources found. Please use the menu on the left to create a new data source.</template
+					No data sources found. Please use the menu on the left to create a new data
+					source.</template
 				>
 				<template #loading>Loading data sources. Please wait.</template>
 
 				<!-- Name -->
-				<Column field="name" header="Name" sortable style="min-width: 200px" :pt="{ headerCell: { style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' } }, sortIcon: { style: { color: 'var(--primary-text)' } } }"></Column>
+				<Column
+					field="name"
+					header="Name"
+					sortable
+					style="min-width: 200px"
+					:pt="{
+						headerCell: {
+							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+						},
+						sortIcon: { style: { color: 'var(--primary-text)' } },
+					}"
+				></Column>
 
 				<!-- Type -->
-				<Column field="type" header="Source Type" sortable style="min-width: 200px" :pt="{ headerCell: { style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' } }, sortIcon: { style: { color: 'var(--primary-text)' } } }"></Column>
+				<Column
+					field="type"
+					header="Source Type"
+					sortable
+					style="min-width: 200px"
+					:pt="{
+						headerCell: {
+							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+						},
+						sortIcon: { style: { color: 'var(--primary-text)' } },
+					}"
+				></Column>
 
 				<!-- Edit -->
-				<Column header="Edit" headerStyle="width:6rem" style="text-align: center" :pt="{ headerCell: { style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' } }, headerContent: { style: { justifyContent: 'center' } } }">
+				<Column
+					header="Edit"
+					header-style="width:6rem"
+					style="text-align: center"
+					:pt="{
+						headerCell: {
+							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+						},
+						headerContent: { style: { justifyContent: 'center' } },
+					}"
+				>
 					<template #body="{ data }">
 						<NuxtLink :to="'/data-sources/edit/' + data.name" class="table__button">
 							<Button link>
@@ -50,10 +89,20 @@
 				</Column>
 
 				<!-- Delete -->
-				<Column header="Delete" headerStyle="width:6rem" style="text-align: center" :pt="{ headerCell: { style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' } }, headerContent: { style: { justifyContent: 'center' } } }">
+				<Column
+					header="Delete"
+					header-style="width:6rem"
+					style="text-align: center"
+					:pt="{
+						headerCell: {
+							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+						},
+						headerContent: { style: { justifyContent: 'center' } },
+					}"
+				>
 					<template #body="{ data }">
 						<Button link @click="dataSourceToDelete = data">
-							<i class="pi pi-trash" style="font-size: 1.2rem; color: var(--red-400);"></i>
+							<i class="pi pi-trash" style="font-size: 1.2rem; color: var(--red-400)"></i>
 						</Button>
 					</template>
 				</Column>

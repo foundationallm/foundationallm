@@ -56,7 +56,6 @@ function getMsalConfig() {
 							return;
 						case LogLevel.Warning:
 							console.warn(message);
-							return;
 					}
 				},
 				logLevel: LogLevel.Verbose,

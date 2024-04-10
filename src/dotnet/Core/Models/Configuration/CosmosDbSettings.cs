@@ -1,12 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FoundationaLLM.Core.Models.Configuration
+﻿namespace FoundationaLLM.Core.Models.Configuration
 {
     /// <summary>
     /// Stores the Azure Cosmos DB settings from the app configuration.
@@ -17,10 +9,6 @@ namespace FoundationaLLM.Core.Models.Configuration
         /// The Azure Cosmos DB endpoint URL.
         /// </summary>
         public required string Endpoint { get; init; }
-        /// <summary>
-        /// The Azure Cosmos DB key.
-        /// </summary>
-        public required string Key { get; init; }
         /// <summary>
         /// The name of the Azure Cosmos DB database.
         /// </summary>

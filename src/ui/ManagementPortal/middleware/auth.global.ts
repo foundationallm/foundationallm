@@ -1,7 +1,7 @@
 import { getMsalInstance, createTokenRefreshTimer } from '@/js/auth';
 import { useAuthStore } from '@/stores/authStore';
 
-export default defineNuxtRouteMiddleware(async (to, from) => {
+export default defineNuxtRouteMiddleware(async (to /* , from */) => {
 	if (process.server) return;
 
 	if (to.name !== 'status') {

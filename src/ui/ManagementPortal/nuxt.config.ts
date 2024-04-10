@@ -16,7 +16,7 @@ const buildLoadingTemplate = (() => {
 export default defineNuxtConfig({
 	ssr: false,
 	devtools: { enabled: true },
-	modules: ['@pinia/nuxt'],
+	modules: ['@pinia/nuxt', '@nuxtjs/eslint-module'],
 	components: true,
 	app: {
 		head: {
@@ -25,7 +25,10 @@ export default defineNuxtConfig({
 				{
 					rel: 'icon',
 					type: 'image/x-icon',
-					href: process.env.NUXT_APP_BASE_URL !== undefined ? process.env.NUXT_APP_BASE_URL : '' + (process.env.BRANDING_FAV_ICON_URL ?? 'favicon.ico'),
+					href:
+						process.env.NUXT_APP_BASE_URL !== undefined
+							? process.env.NUXT_APP_BASE_URL
+							: '' + (process.env.BRANDING_FAV_ICON_URL ?? 'favicon.ico'),
 				},
 			],
 		},
@@ -43,11 +46,7 @@ export default defineNuxtConfig({
 		transpile: ['primevue'],
 	},
 	devServer: {
-		...(buildLoadingTemplate
-			? {
-					loadingTemplate: () => buildLoadingTemplate,
-				}
-			: {}),
+		...(buildLoadingTemplate ? { loadingTemplate: () => buildLoadingTemplate } : {}),
 		port: 3001,
 	},
 	runtimeConfig: {

@@ -70,11 +70,6 @@ namespace FoundationaLLM.Configuration.Catalog
                 description: ""
             ),
             new(
-                secretName: KeyVaultSecretNames.FoundationaLLM_CosmosDB_Key,
-                minimumVersion: "0.3.0",
-                description: ""
-            ),
-            new(
                 secretName: KeyVaultSecretNames.FoundationaLLM_OpenAI_Api_Key,
                 minimumVersion: "0.3.0",
                 description: ""

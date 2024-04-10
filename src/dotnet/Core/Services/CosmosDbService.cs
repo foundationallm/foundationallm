@@ -10,6 +10,7 @@ using System.Diagnostics;
 using FoundationaLLM.Common.Models.Configuration.Users;
 using Polly;
 using Polly.Retry;
+using Azure.Identity;
 
 namespace FoundationaLLM.Core.Services
 {
@@ -45,7 +46,6 @@ namespace FoundationaLLM.Core.Services
         {
             _settings = settings.Value;
             ArgumentException.ThrowIfNullOrEmpty(_settings.Endpoint);
-            ArgumentException.ThrowIfNullOrEmpty(_settings.Key);
             ArgumentException.ThrowIfNullOrEmpty(_settings.Database);
             ArgumentException.ThrowIfNullOrEmpty(_settings.Containers);
 
@@ -80,7 +80,7 @@ namespace FoundationaLLM.Core.Services
             {
                 PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
             };
-            var client = new CosmosClientBuilder(_settings.Endpoint, _settings.Key)
+            var client = new CosmosClientBuilder(_settings.Endpoint, new DefaultAzureCredential())
                 .WithSerializerOptions(options)
                 .WithConnectionModeGateway()
                 .Build();
@@ -128,7 +128,7 @@ namespace FoundationaLLM.Core.Services
 
             var response = _userSessions.GetItemQueryIterator<Session>(query);
 
-            List<Session> output = new();
+            List<Session> output = [];
             while (response.HasMoreResults)
             {
                 var results = await response.ReadNextAsync(cancellationToken);

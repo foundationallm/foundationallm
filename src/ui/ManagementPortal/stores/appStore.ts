@@ -5,11 +5,7 @@ export const useAppStore = defineStore('app', {
 		openCreateAgentItemId: null,
 	}),
 
-	getters: {
-		
-	},
+	getters: {},
 
-	actions: {
-		
-	},
+	actions: {},
 });

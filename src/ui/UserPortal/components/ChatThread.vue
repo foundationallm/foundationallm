@@ -150,7 +150,8 @@ export default {
 	border-radius: 6px;
 }
 
-.alert-header, .alert-header > i {
+.alert-header,
+.alert-header > i {
 	display: flex;
 	align-items: center;
 	font-size: 1.5rem;

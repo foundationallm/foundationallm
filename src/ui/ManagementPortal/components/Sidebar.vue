@@ -2,7 +2,10 @@
 	<div class="sidebar">
 		<!-- Sidebar section header -->
 		<div class="sidebar__header">
-			<img v-if="$appConfigStore.logoUrl" :src="$filters.publicDirectory($appConfigStore.logoUrl)" />
+			<img
+				v-if="$appConfigStore.logoUrl"
+				:src="$filters.publicDirectory($appConfigStore.logoUrl)"
+			/>
 			<span v-else>{{ $appConfigStore.logoText }}</span>
 		</div>
 
@@ -154,7 +157,8 @@ a {
 	transition: all 0.1s ease-in-out;
 	font-size: 0.8725rem;
 
-	&.router-link-active, &:hover {
+	&.router-link-active,
+	&:hover {
 		background-color: rgba(217, 217, 217, 0.05);
 	}
 }

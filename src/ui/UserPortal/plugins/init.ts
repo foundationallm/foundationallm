@@ -6,8 +6,8 @@ import { setAuthConfig } from '@/js/auth';
 export default defineNuxtPlugin(async (nuxtApp: any) => {
 	// Load config variables server-side to ensure they are passed to the client via the store.
 	// if (process.server) {
-		const appConfigStore = useAppConfigStore(nuxtApp.$pinia);
-		await appConfigStore.getConfigVariables();
+	const appConfigStore = useAppConfigStore(nuxtApp.$pinia);
+	await appConfigStore.getConfigVariables();
 	// }
 
 	// Set the api url to use from the dynamic azure config.

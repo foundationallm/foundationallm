@@ -6,7 +6,7 @@
 		</Head>
 
 		<NuxtLayout>
-			<NuxtPage  />
+			<NuxtPage />
 		</NuxtLayout>
 
 		<Toast position="top-center" />
@@ -135,4 +135,3 @@ main {
 	cursor: pointer;
 }
 </style>
-

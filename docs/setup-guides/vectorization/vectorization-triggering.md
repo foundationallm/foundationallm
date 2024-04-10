@@ -90,9 +90,9 @@ The following table describes the meaning of the multipart strings for the `Azur
 | 1 | The name of the database schema. |
 | 2 | The name of the table. |
 | 3 | The name of the column that stores file content. |
-| 4 | The name of the column that stores file identifiers (file names). |
-| 5 | The file identifier (file name). |
-
+| 4 | The name of the column that stores file row identifier. |
+| 5 | The value of the row identifier. |
+| 5 | The file file name. |
 
 ### Known neutral URLs
 

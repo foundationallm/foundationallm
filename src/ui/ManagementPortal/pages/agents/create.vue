@@ -2,7 +2,11 @@
 	<div>
 		<h2 class="page-header">{{ editAgent ? 'Edit Agent' : 'Create New Agent' }}</h2>
 		<div class="page-subheader">
-			{{ editAgent ? 'Edit your agent settings below.' : 'Complete the settings below to create and deploy your new agent.' }}
+			{{
+				editAgent
+					? 'Edit your agent settings below.'
+					: 'Complete the settings below to create and deploy your new agent.'
+			}}
 		</div>
 
 		<div class="steps" :class="{ 'steps--loading': loading }">
@@ -16,17 +20,43 @@
 
 			<div class="span-2">
 				<div class="step-header mb-2">Agent name:</div>
-				<div class="mb-2">No special characters or spaces, lowercase letters with dashes and underscores only.</div>
+				<div class="mb-2">
+					No special characters or spaces, lowercase letters with dashes and underscores only.
+				</div>
 				<div class="input-wrapper">
-					<InputText v-model="agentName" placeholder="Enter agent name" type="text" class="w-100" @input="handleNameInput" :disabled="editAgent" />
-					<span v-if="nameValidationStatus === 'valid'" class="icon valid" title="Name is available">✔️</span>
-					<span v-else-if="nameValidationStatus === 'invalid'" class="icon invalid" :title="validationMessage">❌</span>
+					<InputText
+						v-model="agentName"
+						:disabled="editAgent"
+						placeholder="Enter agent name"
+						type="text"
+						class="w-100"
+						@input="handleNameInput"
+					/>
+					<span
+						v-if="nameValidationStatus === 'valid'"
+						class="icon valid"
+						title="Name is available"
+					>
+						✔️
+					</span>
+					<span
+						v-else-if="nameValidationStatus === 'invalid'"
+						class="icon invalid"
+						:title="validationMessage"
+					>
+						❌
+					</span>
 				</div>
 			</div>
 			<div class="span-2">
 				<div class="step-header mb-2">Description:</div>
 				<div class="mb-2">Provide a description to help others understand the agent's purpose.</div>
-				<InputText v-model="agentDescription" placeholder="Enter agent description" type="text" class="w-100" />
+				<InputText
+					v-model="agentDescription"
+					placeholder="Enter agent description"
+					type="text"
+					class="w-100"
+				/>
 			</div>
 
 			<!-- Type -->
@@ -73,10 +103,10 @@
 					<span>
 						<ToggleButton
 							v-model="dedicated_pipeline"
-							onLabel="Yes"
-							onIcon="pi pi-check-circle"
-							offLabel="No"
-							offIcon="pi pi-times-circle"
+							on-label="Yes"
+							on-icon="pi pi-check-circle"
+							off-label="No"
+							off-icon="pi pi-times-circle"
 						/>
 					</span>
 				</div>
@@ -119,7 +149,6 @@
 						<div class="step-container__edit__header">Please select a data source.</div>
 
 						<div v-for="(group, type) in groupedDataSources" :key="type">
-
 							<div class="step-container__edit__group-header">{{ type }}</div>
 
 							<div
@@ -134,7 +163,7 @@
 							>
 								<div>
 									<div v-if="dataSource.object_id !== ''">
-										<span  class="step-option__header">Name:</span>
+										<span class="step-option__header">Name:</span>
 									</div>
 									<span>{{ dataSource.name }}</span>
 								</div>
@@ -326,10 +355,10 @@
 						<span>
 							<ToggleButton
 								v-model="conversationHistory"
-								onLabel="Yes"
-								onIcon="pi pi-check-circle"
-								offLabel="No"
-								offIcon="pi pi-times-circle"
+								on-label="Yes"
+								on-icon="pi pi-check-circle"
+								off-label="No"
+								off-icon="pi pi-times-circle"
 							/>
 						</span>
 					</div>
@@ -380,10 +409,10 @@
 						<span>
 							<ToggleButton
 								v-model="gatekeeperEnabled"
-								onLabel="Yes"
-								onIcon="pi pi-check-circle"
-								offLabel="No"
-								offIcon="pi pi-times-circle"
+								on-label="Yes"
+								on-icon="pi pi-check-circle"
+								off-label="No"
+								off-icon="pi pi-times-circle"
 							/>
 						</span>
 					</div>
@@ -435,7 +464,8 @@
 				<Textarea
 					v-model="systemPrompt"
 					class="w-100"
-					auto-resize rows="5"
+					auto-resize
+					rows="5"
 					type="text"
 					placeholder="You are an analytic agent named Khalil that helps people find information about FoundationaLLM. Provide concise answers that are polite and professional."
 				/>
@@ -452,7 +482,7 @@
 				<!-- Cancel -->
 				<Button
 					v-if="editAgent"
-					style="margin-left: 16px;"
+					style="margin-left: 16px"
 					label="Cancel"
 					severity="secondary"
 					@click="handleCancel"
@@ -540,10 +570,16 @@ export default {
 					value: 'LangChain',
 				},
 			],
-			
+
 			triggerFrequencyOptions: ['Event', 'Manual'],
 
-			triggerFrequencyScheduledOptions: ['Never', 'Every 30 minutes', 'Hourly', 'Every 12 hours', 'Daily'],
+			triggerFrequencyScheduledOptions: [
+				'Never',
+				'Every 30 minutes',
+				'Hourly',
+				'Every 12 hours',
+				'Daily',
+			],
 
 			gatekeeperContentSafetyOptions: [
 				{
@@ -581,7 +617,7 @@ export default {
 			});
 
 			return grouped;
-		}
+		},
 	},
 
 	async created() {
@@ -607,7 +643,9 @@ export default {
 			const agent = await api.getAgent(this.editAgent);
 			if (agent.vectorization && agent.vectorization.text_partitioning_profile_object_id) {
 				this.loadingStatusText = `Retrieving text partitioning profile...`;
-				const textPartitioningProfile = await api.getTextPartitioningProfile(agent.vectorization.text_partitioning_profile_object_id);
+				const textPartitioningProfile = await api.getTextPartitioningProfile(
+					agent.vectorization.text_partitioning_profile_object_id,
+				);
 				if (textPartitioningProfile) {
 					this.chunkSize = Number(textPartitioningProfile.settings.ChunkSizeTokens);
 					this.overlapSize = Number(textPartitioningProfile.settings.OverlapSizeTokens);
@@ -639,21 +677,28 @@ export default {
 			if (agent.vectorization) {
 				this.dedicated_pipeline = agent.vectorization.dedicated_pipeline;
 			}
-			this.text_embedding_profile_object_id = agent.vectorization?.text_embedding_profile_object_id || this.text_embedding_profile_object_id;
+			this.text_embedding_profile_object_id =
+				agent.vectorization?.text_embedding_profile_object_id ||
+				this.text_embedding_profile_object_id;
 
 			this.triggerFrequency = agent.vectorization?.trigger_type || this.triggerFrequency;
-			this.triggerFrequencyScheduled = agent.vectorization?.trigger_cron_schedule || this.triggerFrequencyScheduled;
+			this.triggerFrequencyScheduled =
+				agent.vectorization?.trigger_cron_schedule || this.triggerFrequencyScheduled;
 
 			this.selectedIndexSource =
-				this.indexSources.find((indexSource) => indexSource.object_id === agent.vectorization?.indexing_profile_object_id) ||
-				null;
+				this.indexSources.find(
+					(indexSource) =>
+						indexSource.object_id === agent.vectorization?.indexing_profile_object_id,
+				) || null;
 
 			this.selectedDataSource =
-				this.dataSources.find((dataSource) => dataSource.object_id === agent.vectorization?.data_source_object_id) ||
-				null;
+				this.dataSources.find(
+					(dataSource) => dataSource.object_id === agent.vectorization?.data_source_object_id,
+				) || null;
 
 			this.conversationHistory = agent.conversation_history?.enabled || this.conversationHistory;
-			this.conversationMaxMessages = agent.conversation_history?.max_history || this.conversationMaxMessages;
+			this.conversationMaxMessages =
+				agent.conversation_history?.max_history || this.conversationMaxMessages;
 
 			this.gatekeeperEnabled = Boolean(agent.gatekeeper?.use_system_setting);
 
@@ -687,7 +732,7 @@ export default {
 					// });
 				}
 			} catch (error) {
-				console.error("Error checking agent name: ", error);
+				console.error('Error checking agent name: ', error);
 				this.nameValidationStatus = 'invalid';
 				this.validationMessage = 'Error checking the agent name. Please try again.';
 			}
@@ -743,8 +788,7 @@ export default {
 				const textEmbeddingProfiles = await api.getTextEmbeddingProfiles();
 				if (textEmbeddingProfiles.length === 0) {
 					errors.push('No vectorization text embedding profiles found.');
-				}
-				else {
+				} else {
 					this.text_embedding_profile_object_id = textEmbeddingProfiles[0].object_id;
 				}
 			}
@@ -779,14 +823,14 @@ export default {
 			};
 
 			const tokenTextPartitionRequest = {
-				text_splitter: "TokenTextSplitter",
+				text_splitter: 'TokenTextSplitter',
 				name: this.agentName,
 				settings: {
-					Tokenizer: "MicrosoftBPETokenizer",
-					TokenizerEncoder: "cl100k_base",
+					Tokenizer: 'MicrosoftBPETokenizer',
+					TokenizerEncoder: 'cl100k_base',
 					ChunkSizeTokens: this.chunkSize.toString(),
-					OverlapSizeTokens: this.overlapSize.toString()
-				}
+					OverlapSizeTokens: this.overlapSize.toString(),
+				},
 			};
 
 			let successMessage = null;
@@ -799,24 +843,27 @@ export default {
 				}
 
 				// Handle TextPartitioningProfile creation/update.
-				const tokenTextPartitionResponse = await api.createOrUpdateTextPartitioningProfile(this.agentName, tokenTextPartitionRequest);
+				const tokenTextPartitionResponse = await api.createOrUpdateTextPartitioningProfile(
+					this.agentName,
+					tokenTextPartitionRequest,
+				);
 				const textPartitioningProfileObjectId = tokenTextPartitionResponse.objectId;
 
 				// Select the default data source, if any.
-				let data_source_object_id = this.selectedDataSource?.object_id ?? '';
-				if (data_source_object_id === '') {
+				let dataSourceObjectId = this.selectedDataSource?.object_id ?? '';
+				if (dataSourceObjectId === '') {
 					const defaultDataSource = await api.getDefaultDataSource();
 					if (defaultDataSource !== null) {
-						data_source_object_id = defaultDataSource.object_id;
+						dataSourceObjectId = defaultDataSource.object_id;
 					}
 				}
 
 				// Select the default indexing profile, if any.
-				let indexing_profile_object_id = this.selectedIndexSource?.object_id ?? '';
-				if (indexing_profile_object_id === '') {
+				let indexingProfileObjectId = this.selectedIndexSource?.object_id ?? '';
+				if (indexingProfileObjectId === '') {
 					const defaultAgentIndex = await api.getDefaultAgentIndex();
 					if (defaultAgentIndex !== null) {
-						indexing_profile_object_id = defaultAgentIndex.object_id;
+						indexingProfileObjectId = defaultAgentIndex.object_id;
 					}
 				}
 
@@ -829,9 +876,9 @@ export default {
 					vectorization: {
 						dedicated_pipeline: this.dedicated_pipeline,
 						text_embedding_profile_object_id: this.text_embedding_profile_object_id,
-						indexing_profile_object_id: indexing_profile_object_id,
+						indexing_profile_object_id: indexingProfileObjectId,
 						text_partitioning_profile_object_id: textPartitioningProfileObjectId,
-						data_source_object_id: data_source_object_id,
+						data_source_object_id: dataSourceObjectId,
 						vectorization_data_pipeline_object_id: this.vectorization_data_pipeline_object_id,
 						trigger_type: this.triggerFrequency,
 						trigger_cron_schedule: '',
@@ -847,7 +894,7 @@ export default {
 						options: [
 							this.gatekeeperContentSafety.value as unknown as string,
 							this.gatekeeperDataProtection.value as unknown as string,
-						].filter(option => option !== null),
+						].filter((option) => option !== null),
 					},
 
 					language_model: {
@@ -869,7 +916,7 @@ export default {
 						orchestrator: this.orchestrator,
 						endpoint_configuration: {
 							endpoint: 'FoundationaLLM:AzureOpenAI:API:Endpoint',
-							api_key: 'FoundationaLLM:AzureOpenAI:API:Key'
+							api_key: 'FoundationaLLM:AzureOpenAI:API:Key',
 						},
 						model_parameters: {
 							temperature: 0,
@@ -1092,9 +1139,9 @@ $editStepPadding: 16px;
 }
 
 .primary-button {
-	background-color: var(--primary-button-bg)!important;
-	border-color: var(--primary-button-bg)!important;
-	color: var(--primary-button-text)!important;
+	background-color: var(--primary-button-bg) !important;
+	border-color: var(--primary-button-bg) !important;
+	color: var(--primary-button-text) !important;
 }
 
 .input-wrapper {

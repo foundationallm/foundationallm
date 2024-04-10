@@ -43,14 +43,19 @@
 			<div class="navbar__content__right">
 				<template v-if="currentSession">
 					<span class="header__dropdown">
-						<img alt="Select an agent" class="avatar" v-tooltip.bottom="'Select an agent'" src="~/assets/FLLM-Agent-Light.svg">
+						<img
+							v-tooltip.bottom="'Select an agent'"
+							alt="Select an agent"
+							class="avatar"
+							src="~/assets/FLLM-Agent-Light.svg"
+						/>
 						<Dropdown
 							v-model="agentSelection"
 							class="dropdown--agent"
 							:options="agentOptionsGroup"
 							option-group-label="label"
 							option-group-children="items"
-							optionDisabled="disabled"
+							option-disabled="disabled"
 							option-label="label"
 							placeholder="--Select--"
 							@change="handleAgentChange"
@@ -117,7 +122,6 @@ export default {
 	},
 
 	async created() {
-
 		await this.appStore.getAgents();
 
 		this.agentOptions = this.appStore.agents.map((agent) => ({
@@ -225,7 +229,7 @@ export default {
 	justify-content: space-between;
 	align-items: center;
 	padding: 24px;
-	border-bottom: 1px solid #EAEAEA;
+	border-bottom: 1px solid #eaeaea;
 	background-color: var(--accent-color);
 }
 
@@ -253,9 +257,9 @@ export default {
 }
 
 .secondary-button {
-	background-color: var(--secondary-button-bg)!important;
-	border-color: var(--secondary-button-bg)!important;
-	color: var(--secondary-button-text)!important;
+	background-color: var(--secondary-button-bg) !important;
+	border-color: var(--secondary-button-bg) !important;
+	color: var(--secondary-button-text) !important;
 }
 
 .header__dropdown {

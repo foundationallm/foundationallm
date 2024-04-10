@@ -2,7 +2,10 @@
 	<div class="chat-sidebar">
 		<!-- Sidebar section header -->
 		<div class="chat-sidebar__section-header--mobile">
-			<img v-if="appConfigStore.logoUrl !== ''" :src="$filters.enforceLeadingSlash(appConfigStore.logoUrl)" />
+			<img
+				v-if="appConfigStore.logoUrl !== ''"
+				:src="$filters.enforceLeadingSlash(appConfigStore.logoUrl)"
+			/>
 			<span v-else>{{ appConfigStore.logoText }}</span>
 			<Button
 				:icon="appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
@@ -31,26 +34,26 @@
 			>
 				<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
 					<!-- Chat name -->
-					<span class="chat__name" v-tooltip="{ value: session.name }">{{ session.name }}</span>
+					<span v-tooltip="{ value: session.name }" class="chat__name">{{ session.name }}</span>
 
 					<!-- Chat icons -->
 					<span v-if="currentSession?.id === session.id" class="chat__icons">
 						<!-- Rename session -->
 						<Button
+							v-tooltip="'Rename chat session'"
 							icon="pi pi-pencil"
 							size="small"
 							severity="secondary"
-							v-tooltip="'Rename chat session'"
 							text
 							@click.stop="openRenameModal(session)"
 						/>
 
 						<!-- Delete session -->
 						<Button
+							v-tooltip="'Delete chat session'"
 							icon="pi pi-trash"
 							size="small"
 							severity="danger"
-							v-tooltip="'Delete chat session'"
 							text
 							@click.stop="sessionToDelete = session"
 						/>
@@ -118,7 +121,6 @@ import type { Session } from '@/js/types';
 import { useAppConfigStore } from '@/stores/appConfigStore';
 import { useAppStore } from '@/stores/appStore';
 import { getMsalInstance } from '@/js/auth';
-import Tooltip from 'primevue/tooltip';
 declare const process: any;
 
 export default {
@@ -340,9 +342,9 @@ export default {
 }
 
 .secondary-button {
-	background-color: var(--secondary-button-bg)!important;
-	border-color: var(--secondary-button-bg)!important;
-	color: var(--secondary-button-text)!important;
+	background-color: var(--secondary-button-bg) !important;
+	border-color: var(--secondary-button-bg) !important;
+	color: var(--secondary-button-text) !important;
 }
 
 .chat-sidebar__username {

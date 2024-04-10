@@ -14,7 +14,7 @@ const filters = {
 		} else {
 			return path;
 		}
-	}
+	},
 };
 
 export default defineNuxtPlugin((nuxtApp) => {

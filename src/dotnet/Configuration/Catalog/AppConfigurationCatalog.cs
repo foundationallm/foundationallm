@@ -1121,16 +1121,6 @@ namespace FoundationaLLM.Configuration.Catalog
             ),
 
             new(
-                key: AppConfigurationKeys.FoundationaLLM_CosmosDB_Key,
-                minimumVersion: "0.3.0",
-                defaultValue: "Key Vault secret name: `foundationallm-cosmosdb-key`",
-                description: "This is a Key Vault reference.",
-                keyVaultSecretName: KeyVaultSecretNames.FoundationaLLM_CosmosDB_Key,
-                contentType: "text/plain",
-                sampleObject: null
-            ),
-
-            new(
                 key: AppConfigurationKeys.FoundationaLLM_CosmosDB_MonitoredContainers,
                 minimumVersion: "0.3.0",
                 defaultValue: "Sessions",

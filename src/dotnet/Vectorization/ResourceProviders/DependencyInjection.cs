@@ -46,7 +46,6 @@ namespace FoundationaLLM
             });
 
             // Register validators.
-            builder.Services.AddSingleton<IValidator<ContentSourceProfile>, ContentSourceProfileValidator>();
             builder.Services.AddSingleton<IValidator<TextPartitioningProfile>, TextPartitioningProfileValidator>();
             builder.Services.AddSingleton<IValidator<TextEmbeddingProfile>, TextEmbeddingProfileValidator>();
             builder.Services.AddSingleton<IValidator<IndexingProfile>, IndexingProfileValidator>();

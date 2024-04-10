@@ -4,7 +4,11 @@
 			<div class="message__header">
 				<!-- Sender -->
 				<span class="header__sender">
-					<img v-if="message.sender !== 'User'" class="avatar" src="~/assets/FLLM-Agent-Light.svg">
+					<img
+						v-if="message.sender !== 'User'"
+						class="avatar"
+						src="~/assets/FLLM-Agent-Light.svg"
+					/>
 					<span>{{ getDisplayName() }}</span>
 				</span>
 
@@ -34,7 +38,7 @@
 				<span v-else>{{ displayText }}</span>
 			</div>
 
-			<div class="message__footer" v-if="message.sender !== 'User'">
+			<div v-if="message.sender !== 'User'" class="message__footer">
 				<span class="ratings">
 					<!-- Like -->
 					<span>
@@ -200,7 +204,7 @@ export default {
 	flex-direction: row-reverse;
 	.message {
 		background-color: var(--primary-color);
-		color: var(--primary-text)
+		color: var(--primary-text);
 	}
 }
 
@@ -307,7 +311,6 @@ export default {
 	.prompt-dialog {
 		width: 90vw;
 	}
-
 }
 
 @media only screen and (max-width: 545px) {

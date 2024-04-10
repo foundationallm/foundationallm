@@ -2,8 +2,9 @@
 Class: AzureAISearchServiceRetriever
 Description: LangChain retriever for Azure AI Search.
 """
-from typing import List, Optional, Union
-from langchain_openai import OpenAIEmbeddings#, AzureOpenAIEmbeddings
+import json
+from typing import List, Optional, Union, Tuple
+from langchain_openai import OpenAIEmbeddings
 from langchain_core.callbacks import (
     AsyncCallbackManagerForRetrieverRun,
     CallbackManagerForRetrieverRun,
@@ -14,8 +15,10 @@ from azure.search.documents import SearchClient
 from azure.search.documents.models import VectorizedQuery
 from azure.core.credentials import AzureKeyCredential
 from azure.identity import DefaultAzureCredential
+from foundationallm.models.orchestration import Citation
+from .citation_retrieval_base import CitationRetrievalBase
 
-class AzureAISearchServiceRetriever(BaseRetriever):
+class AzureAISearchServiceRetriever(BaseRetriever, CitationRetrievalBase):
     """
     LangChain retriever for Azure AI Search.
     Properties:
@@ -24,6 +27,8 @@ class AzureAISearchServiceRetriever(BaseRetriever):
         top_n : int -> number of results to return from vector search
         embedding_field_name: str -> name of the field containing the embedding vector
         text_field_name: str -> name of the field containing the raw text
+        id_field_name: str -> name of the field containing the document unique identifier in the index
+        metadata_field_name -> str -> name of the field containing the JSON metadata as a string
         filters: str -> Azure AI Search filter expression
         credential: AzureKeyCredential -> Azure AI Search credential
         embedding_model: OpenAIEmbeddings -> OpenAIEmbeddings model
@@ -46,13 +51,12 @@ class AzureAISearchServiceRetriever(BaseRetriever):
     top_n : int
     embedding_field_name: Optional[str] = "Embedding"
     text_field_name: Optional[str] = "Text"
+    id_field_name: Optional[str] = "Id"
+    metadata_field_name: Optional[str] = "AdditionalMetadata"
     filters: Optional[str] = None
     credential: Union[AzureKeyCredential, DefaultAzureCredential] = None
     embedding_model: OpenAIEmbeddings
-
-    class Config:
-        """Configuration for this pydantic object."""        
-        arbitrary_types_allowed = True
+    search_results: Optional[Tuple[str, Document]] = [] # Tuple of document id and document
 
     def __get_embeddings(self, text: str) -> List[float]:
         """
@@ -77,16 +81,17 @@ class AzureAISearchServiceRetriever(BaseRetriever):
             filter=self.filters,
             vector_queries=[vector_query],
             top=self.top_n,
-            select=[self.text_field_name]
+            select=[self.id_field_name, self.text_field_name, self.metadata_field_name]
         )
-
-        results_list = [
-            Document(                
-                page_content=result[self.text_field_name]
-            ) for result in results
-        ]
-        
-        return results_list
+        self.search_results.clear()
+        for result in results:
+            metadata = json.loads(result[self.metadata_field_name]) if self.metadata_field_name in result else {}
+            document = Document(
+                    page_content=result[self.text_field_name],
+                    metadata=metadata                                        
+            )
+            self.search_results.append((result[self.id_field_name], document))
+        return [doc for _, doc in self.search_results]
 
     async def _aget_relevant_documents(
         self, query: str, *, run_manager: AsyncCallbackManagerForRetrieverRun
@@ -96,3 +101,22 @@ class AzureAISearchServiceRetriever(BaseRetriever):
         NOTE: This functionality is not currently supported in the underlying Azure SDK.
         """
         raise Exception(f"Asynchronous search not supported.")
+
+    def get_document_citations(self) -> List[Citation]:
+        """
+        Gets sources from the documents retrieved from the retriever.
+  
+        Returns:
+            List of citations from the retrieved documents.
+        """
+        citations = []
+        added_ids = set()  # Avoid duplicates
+        for result_id, result in self.search_results:  # Unpack the tuple
+            metadata = result.metadata
+            if metadata is not None and 'multipart_id' in metadata and metadata['multipart_id']:
+                if result_id not in added_ids:          
+                    title = metadata['multipart_id'][-1]
+                    filepath = '/'.join(metadata['multipart_id'])
+                    citations.append(Citation(id=result_id, title=title, filepath=filepath))
+                    added_ids.add(result_id)
+        return citations

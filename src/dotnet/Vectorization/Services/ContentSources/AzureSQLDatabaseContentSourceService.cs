@@ -31,12 +31,13 @@ namespace FoundationaLLM.Vectorization.Services.ContentSources
         /// contentId[0] = the schema.
         /// contentId[1] = the table.
         /// contentId[2] = the column containing the contents of the files.
-        /// contentId[3] = the column containing the file names.
-        /// contentId[4] = the name of the file.
+        /// contentId[3] = the column name of the unique identifier for the row of the file.
+        /// contentId[4] = the value of the unique identifier of the file.
+        /// contentId[5] = the file name.
         /// </remarks>
         public async Task<string> ExtractTextAsync(ContentIdentifier contentId, CancellationToken cancellationToken)
         {
-            contentId.ValidateMultipartId(5);
+            contentId.ValidateMultipartId(6);
 
             var binaryContent = await GetBinaryContent(
                 contentId[0],
@@ -80,7 +81,7 @@ namespace FoundationaLLM.Vectorization.Services.ContentSources
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error extracting content from the file identified by {FileName}.", identifierValue);
+                _logger.LogError(ex, "Error extracting content from the file identified by {identifierValue}.", identifierValue);
                 throw new VectorizationException($"Error extracting content from file identified by {identifierValue}.", ex);
             }
         }

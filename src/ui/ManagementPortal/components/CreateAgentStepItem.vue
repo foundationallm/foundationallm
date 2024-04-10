@@ -2,25 +2,17 @@
 	<div class="step">
 		<div class="step-container">
 			<!-- Editing view -->
-			<div
-				v-if="isOpen"
-				class="step-container__edit"
-			>
+			<div v-if="isOpen" class="step-container__edit">
 				<div class="step-container__edit__inner">
-
 					<slot name="edit" />
 
 					<div class="d-flex justify-content-end">
-						<Button
-							class="primary-button mt-2"
-							label="Done"
-							@click="handleClose"
-						/>
+						<Button class="primary-button mt-2" label="Done" @click="handleClose" />
 					</div>
 				</div>
 
 				<div class="step-container__edit__arrow" @click="handleClose">
-					<span class="pi pi-arrow-down" style="font-size: 1rem;"></span>
+					<span class="pi pi-arrow-down" style="font-size: 1rem"></span>
 				</div>
 			</div>
 
@@ -31,7 +23,7 @@
 				</div>
 
 				<div class="step-container__view__arrow">
-					<span class="pi pi-arrow-down" style="font-size: 1rem;"></span>
+					<span class="pi pi-arrow-down" style="font-size: 1rem"></span>
 				</div>
 			</div>
 		</div>
@@ -42,7 +34,13 @@
 export default {
 	name: 'CreateAgentStepItem',
 
-	props: ['modelValue'],
+	props: {
+		modelValue: {
+			type: Boolean,
+			required: false,
+			default: false,
+		},
+	},
 
 	emits: ['update:modelValue'],
 
@@ -55,8 +53,8 @@ export default {
 
 	computed: {
 		isOpen() {
-			return this.editing && (this.$appStore.createAgentOpenItemId === this.id);
-		}
+			return this.editing && this.$appStore.createAgentOpenItemId === this.id;
+		},
 	},
 
 	watch: {
@@ -66,7 +64,7 @@ export default {
 
 		modelValue() {
 			this.modelValue ? this.handleOpen() : this.handleClose();
-		}
+		},
 	},
 
 	methods: {
@@ -85,7 +83,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-
-</style>
-
+<style lang="scss" scoped></style>

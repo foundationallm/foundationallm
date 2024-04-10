@@ -722,13 +722,6 @@
       "tags": {}
     },
     {
-      "key": "FoundationaLLM:CosmosDB:Key",
-      "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/cosmos-key\"}",
-      "label": null,
-      "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-      "tags": {}
-    },
-    {
       "key": "FoundationaLLM:CosmosDB:MonitoredContainers",
       "value": "Sessions",
       "label": null,

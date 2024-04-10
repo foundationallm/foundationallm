@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-
 import type {
 	Agent,
 	DataSource,
@@ -13,22 +11,11 @@ import type {
 	TextPartitioningProfile,
 	TextEmbeddingProfile,
 	CreatePromptRequest,
-	CreateTextPartitioningProfileRequest
+	CreateTextPartitioningProfileRequest,
 } from './types';
-import {
-	isAzureDataLakeDataSource,
-	isSharePointOnlineSiteDataSource,
-	isAzureSQLDatabaseDataSource,
-	convertDataSourceToAzureDataLake,
-	convertDataSourceToSharePointOnlineSite,
-	convertDataSourceToAzureSQLDatabase,
-	convertToDataSource,
-	convertToAppConfigKeyVault,
-	convertToAppConfig
-} from '@/js/types';
+import { convertToDataSource, convertToAppConfigKeyVault, convertToAppConfig } from '@/js/types';
 // import { mockAzureDataLakeDataSource1 } from './mock';
 import { getMsalInstance } from '@/js/auth';
-
 
 async function wait(milliseconds: number = 1000): Promise<void> {
 	return await new Promise<void>((resolve) => setTimeout(() => resolve(), milliseconds));
@@ -48,7 +35,7 @@ export default {
 		this.instanceId = instanceId;
 	},
 
-  bearerToken: null,
+	bearerToken: null,
 	async getBearerToken() {
 		if (this.bearerToken) return this.bearerToken;
 
@@ -70,7 +57,7 @@ export default {
 		// }
 
 		const bearerToken = await this.getBearerToken();
-		options.headers['Authorization'] = `Bearer ${bearerToken}`;
+		options.headers.Authorization = `Bearer ${bearerToken}`;
 
 		return await $fetch(`${this.apiUrl}${url}`, options);
 	},
@@ -78,8 +65,8 @@ export default {
 	async getConfigValue(key: string) {
 		return await $fetch(`/api/config/`, {
 			params: {
-				key
-			}
+				key,
+			},
 		});
 	},
 
@@ -87,24 +74,30 @@ export default {
 	async checkDataSourceName(name: string, type: string): Promise<CheckNameResponse> {
 		const payload = {
 			name,
-			type: type,
+			type,
 		};
 
-		return await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.DataSource/dataSources/checkname?api-version=${this.apiVersion}`, {
-			method: 'POST',
-			body: payload,
-		});
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.DataSource/dataSources/checkname?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: payload,
+			},
+		);
 	},
 
 	async getDefaultDataSource(): Promise<DataSource | null> {
 		const payload: FilterRequest = {
-			default: true
+			default: true,
 		};
 
-		const data = await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.DataSource/dataSources/filter?api-version=${this.apiVersion}`, {
-			method: 'POST',
-			body: payload,
-		});
+		const data = await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.DataSource/dataSources/filter?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: payload,
+			},
+		);
 
 		if (data && data.length > 0) {
 			return data[0] as DataSource;
@@ -112,14 +105,16 @@ export default {
 			return null;
 		}
 	},
-	
+
 	async getAgentDataSources(addDefaultOption: boolean = false): Promise<DataSource[]> {
-		const data = await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.DataSource/dataSources?api-version=${this.apiVersion}`) as DataSource[];
+		const data = (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.DataSource/dataSources?api-version=${this.apiVersion}`,
+		)) as DataSource[];
 		if (addDefaultOption) {
 			const defaultDataSource: DataSource = {
-				name: "Select default data source",
-				type: "DEFAULT",
-				object_id: "",
+				name: 'Select default data source',
+				type: 'DEFAULT',
+				object_id: '',
 				resolved_configuration_references: {},
 				configuration_references: {},
 			};
@@ -129,7 +124,9 @@ export default {
 	},
 
 	async getDataSource(dataSourceId: string): Promise<DataSource> {
-		const data = await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.DataSource/dataSources/${dataSourceId}?api-version=${this.apiVersion}`);
+		const data = await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.DataSource/dataSources/${dataSourceId}?api-version=${this.apiVersion}`,
+		);
 		let dataSource = data[0] as DataSource;
 		dataSource.resolved_configuration_references = {};
 		// Retrieve all the app config values for the data source.
@@ -140,16 +137,22 @@ export default {
 		if (appConfigs) {
 			for (const appConfig of appConfigs) {
 				const propertyName = appConfig.name.split(':').pop();
-				dataSource.resolved_configuration_references[propertyName as string] = String(appConfig.value);
+				dataSource.resolved_configuration_references[propertyName as string] = String(
+					appConfig.value,
+				);
 			}
-		}
-		else {
-			for (const [configName, configValue] of Object.entries(dataSource.configuration_references)) {
-				const resolvedValue = await this.getAppConfig(dataSource.configuration_references[configName as keyof typeof dataSource.configuration_references]);
+		} else {
+			for (const [configName /* configValue */] of Object.entries(
+				dataSource.configuration_references,
+			)) {
+				const resolvedValue = await this.getAppConfig(
+					dataSource.configuration_references[
+						configName as keyof typeof dataSource.configuration_references
+					],
+				);
 				if (resolvedValue) {
 					dataSource.resolved_configuration_references[configName] = String(resolvedValue.value);
-				}
-				else {
+				} else {
 					dataSource.resolved_configuration_references[configName] = '';
 				}
 			}
@@ -160,16 +163,19 @@ export default {
 
 	async upsertDataSource(request): Promise<any> {
 		const dataSource = convertToDataSource(request);
-		for (const [propertyName, propertyValue] of Object.entries(dataSource.resolved_configuration_references || {})) {
+		for (const [propertyName, propertyValue] of Object.entries(
+			dataSource.resolved_configuration_references || {},
+		)) {
 			if (!propertyValue) {
 				continue;
 			}
 
 			const appConfigKey = `FoundationaLLM:DataSources:${dataSource.name}:${propertyName}`;
-			const keyVaultSecretName = `foundationallm-datasources-${dataSource.name}-${propertyName}`.toLowerCase();
+			const keyVaultSecretName =
+				`foundationallm-datasources-${dataSource.name}-${propertyName}`.toLowerCase();
 			const metadata = dataSource.configuration_reference_metadata?.[propertyName];
 
-			let keyVaultUri = await this.getAppConfig('FoundationaLLM:Configuration:KeyVaultURI');
+			const keyVaultUri = await this.getAppConfig('FoundationaLLM:Configuration:KeyVaultURI');
 
 			let appConfig: AppConfigUnion = {
 				name: appConfigKey,
@@ -188,61 +194,77 @@ export default {
 			} else {
 				appConfig = convertToAppConfig(appConfig);
 			}
-	
+
 			await this.upsertAppConfig(appConfig);
-	
+
 			dataSource.configuration_references[propertyName] = appConfigKey;
 		}
 
 		// Remove any any configuration_references whose values are null or empty strings.
-		for (const [propertyName, propertyValue] of Object.entries(dataSource.configuration_references)) {
+		for (const [propertyName, propertyValue] of Object.entries(
+			dataSource.configuration_references,
+		)) {
 			if (!propertyValue) {
 				delete dataSource.configuration_references[propertyName];
 			}
 		}
-	
-		return await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.DataSource/dataSources/${dataSource.name}?api-version=${this.apiVersion}`, {
-			method: 'POST',
-			body: JSON.stringify(dataSource),
-			headers: {
-				'Content-Type': 'application/json',
+
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.DataSource/dataSources/${dataSource.name}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: JSON.stringify(dataSource),
+				headers: {
+					'Content-Type': 'application/json',
+				},
 			},
-		});
+		);
 	},
-	
 
 	async deleteDataSource(dataSourceId: string): Promise<any> {
-		return await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.DataSource/dataSources/${dataSourceId}?api-version=${this.apiVersion}`, {
-			method: 'DELETE',
-		});
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.DataSource/dataSources/${dataSourceId}?api-version=${this.apiVersion}`,
+			{
+				method: 'DELETE',
+			},
+		);
 	},
 
 	// App Configuration
 	async getAppConfig(key: string): Promise<AppConfigUnion> {
 		// await wait(this.mockLoadTime);
-    	// return mockAzureDataLakeDataSource1;
-		const data = await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/appConfigurations/${key}?api-version=${this.apiVersion}`);
+		// return mockAzureDataLakeDataSource1;
+		const data = await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/appConfigurations/${key}?api-version=${this.apiVersion}`,
+		);
 		return data[0] as AppConfigUnion;
 	},
 
 	async getAppConfigs(filter?: string): Promise<AppConfigUnion[]> {
-		return await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/appConfigurations/${filter}?api-version=${this.apiVersion}`);
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/appConfigurations/${filter}?api-version=${this.apiVersion}`,
+		);
 	},
 
 	async upsertAppConfig(request): Promise<any> {
-		return await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/appConfigurations/${request.key}?api-version=${this.apiVersion}`, {
-			method: 'POST',
-			body: request,
-		});
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/appConfigurations/${request.key}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: request,
+			},
+		);
 	},
 
 	// Indexes
 	async getAgentIndexes(addDefaultOption: boolean = false): Promise<AgentIndex[]> {
-		const data = await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/indexingProfiles?api-version=${this.apiVersion}`);
+		const data = await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/indexingProfiles?api-version=${this.apiVersion}`,
+		);
 		if (addDefaultOption) {
 			const defaultAgentIndex: AgentIndex = {
-				name: "Select default index source",
-				object_id: "",
+				name: 'Select default index source',
+				object_id: '',
 				settings: {},
 				configuration_references: {},
 			};
@@ -253,13 +275,16 @@ export default {
 
 	async getDefaultAgentIndex(): Promise<AgentIndex | null> {
 		const payload: FilterRequest = {
-			default: true
+			default: true,
 		};
 
-		const data = await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/indexingProfiles/filter?api-version=${this.apiVersion}`, {
-			method: 'POST',
-			body: payload,
-		});
+		const data = await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/indexingProfiles/filter?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: payload,
+			},
+		);
 
 		if (data && data.length > 0) {
 			return data[0] as AgentIndex;
@@ -270,7 +295,9 @@ export default {
 
 	// Text embedding profiles
 	async getTextEmbeddingProfiles(): Promise<TextEmbeddingProfile[]> {
-		return await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/textEmbeddingProfiles?api-version=${this.apiVersion}`);
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/textEmbeddingProfiles?api-version=${this.apiVersion}`,
+		);
 	},
 
 	// Agents
@@ -280,39 +307,55 @@ export default {
 			type: agentType,
 		};
 
-		return await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/checkname?api-version=${this.apiVersion}`, {
-			method: 'POST',
-			body: payload,
-		});
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/checkname?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: payload,
+			},
+		);
 	},
 
 	async getAgents(): Promise<Agent[]> {
-		return await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents?api-version=${this.apiVersion}`);
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents?api-version=${this.apiVersion}`,
+		);
 	},
 
 	async getAgent(agentId: string): Promise<any> {
-		const data = await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentId}?api-version=${this.apiVersion}`);
+		const data = await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentId}?api-version=${this.apiVersion}`,
+		);
 		return data[0];
 	},
 
 	async updateAgent(agentId: string, request: CreateAgentRequest): Promise<any> {
-		return await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentId}?api-version=${this.apiVersion}`, {
-			method: 'POST',
-			body: request,
-		});
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentId}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: request,
+			},
+		);
 	},
 
 	async createAgent(request: CreateAgentRequest): Promise<any> {
-		return await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${request.name}?api-version=${this.apiVersion}`, {
-			method: 'POST',
-			body: request,
-		});
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${request.name}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: request,
+			},
+		);
 	},
 
 	async deleteAgent(agentId: string): Promise<any> {
-		return await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentId}?api-version=${this.apiVersion}`, {
-			method: 'DELETE',
-		});
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentId}?api-version=${this.apiVersion}`,
+			{
+				method: 'DELETE',
+			},
+		);
 	},
 
 	async getAgentGatekeepers(): Promise<AgentGatekeeper[]> {
@@ -327,10 +370,13 @@ export default {
 	},
 
 	async createOrUpdatePrompt(agentId: string, request: CreatePromptRequest): Promise<any> {
-		return await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${agentId}?api-version=${this.apiVersion}`, {
-			method: 'POST',
-			body: request,
-		});
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${agentId}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: request,
+			},
+		);
 	},
 
 	async getTextPartitioningProfile(profileId: string): Promise<TextPartitioningProfile> {
@@ -338,10 +384,16 @@ export default {
 		return data[0];
 	},
 
-	async createOrUpdateTextPartitioningProfile(agentId: string, request: CreateTextPartitioningProfileRequest): Promise<any> {
-		return await this.fetch(`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/textPartitioningProfiles/${agentId}?api-version=${this.apiVersion}`, {
-			method: 'POST',
-			body: request,
-		});
+	async createOrUpdateTextPartitioningProfile(
+		agentId: string,
+		request: CreateTextPartitioningProfileRequest,
+	): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/textPartitioningProfiles/${agentId}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: request,
+			},
+		);
 	},
-}
+};

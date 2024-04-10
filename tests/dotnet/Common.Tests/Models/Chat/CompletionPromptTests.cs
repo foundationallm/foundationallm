@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Models.Chat;
+using FoundationaLLM.Common.Models.Orchestration;
 
 namespace FoundationaLLM.Common.Tests.Models.Chat
 {
@@ -53,9 +54,9 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
             Assert.Equal(expectedPrompt, completionPrompt.Prompt);
         }
 
-        public CompletionPrompt CreateCompletionPrompt(string sessionId, string messageId, string prompt)
+        public CompletionPrompt CreateCompletionPrompt(string sessionId, string messageId, string prompt, Citation[]? citations = null)
         {
-            return new CompletionPrompt(sessionId, messageId, prompt);
+            return new CompletionPrompt(sessionId, messageId, prompt, citations);
         }
     }
 }

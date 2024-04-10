@@ -16,11 +16,6 @@
         public const string VectorizationRequests = "vectorizationRequests";
 
         /// <summary>
-        /// Vectorization content sources.
-        /// </summary>
-        public const string ContentSourceProfiles = "contentSourceProfiles";
-
-        /// <summary>
         /// Text partitioning profiles.
         /// </summary>
         public const string TextPartitioningProfiles = "textPartitioningProfiles";

@@ -64,6 +64,7 @@ namespace FoundationaLLM.AgentFactory.Services
                 return new LLMCompletionResponse
                 {
                     Completion = completionResponse!.Completion,
+                    Citations = completionResponse.Citations,
                     UserPrompt = completionResponse.UserPrompt,
                     FullPrompt = completionResponse.FullPrompt,
                     PromptTemplate = string.Empty,

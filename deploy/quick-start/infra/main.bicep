@@ -213,7 +213,6 @@ module cosmosDb './shared/cosmosdb.bicep' = {
       }
     ]
     databaseName: 'database'
-    keyvaultName: keyVault.outputs.name
     location: location
     name: '${abbrs.documentDBDatabaseAccounts}${resourceToken}'
     tags: tags

@@ -1,6 +1,4 @@
-/* eslint-disable prettier/prettier */
-import type { Message, Session, CompletionPrompt, Agent,
-	OrchestrationRequest, OrchestrationSettings } from '@/js/types';
+import type { Message, Session, CompletionPrompt, Agent, OrchestrationRequest } from '@/js/types';
 import { getMsalInstance } from '@/js/auth';
 
 export default {
@@ -38,8 +36,8 @@ export default {
 	async getConfigValue(key: string) {
 		return await $fetch(`/api/config/`, {
 			params: {
-				key
-			}
+				key,
+			},
 		});
 	},
 
@@ -58,7 +56,7 @@ export default {
 		// }
 
 		const bearerToken = await this.getBearerToken();
-		options.headers['Authorization'] = `Bearer ${bearerToken}`;
+		options.headers.Authorization = `Bearer ${bearerToken}`;
 
 		return await $fetch(`${this.apiUrl}${url}`, options);
 	},
@@ -68,7 +66,7 @@ export default {
 	 * @returns {Promise<Array<Session>>} A promise that resolves to an array of sessions.
 	 */
 	async getSessions() {
-		return await this.fetch(`/sessions`) as Array<Session>;
+		return (await this.fetch(`/sessions`)) as Array<Session>;
 	},
 
 	/**
@@ -76,7 +74,7 @@ export default {
 	 * @returns {Promise<Session>} A promise that resolves to the created session.
 	 */
 	async addSession() {
-		return await this.fetch(`/sessions`, { method: 'POST' }) as Session;
+		return (await this.fetch(`/sessions`, { method: 'POST' })) as Session;
 	},
 
 	/**
@@ -86,26 +84,26 @@ export default {
 	 * @returns The renamed session.
 	 */
 	async renameSession(sessionId: string, newChatSessionName: string) {
-		return await this.fetch(`/sessions/${sessionId}/rename`, {
+		return (await this.fetch(`/sessions/${sessionId}/rename`, {
 			method: 'POST',
 			params: {
-				newChatSessionName
-			}
-		}) as Session;
+				newChatSessionName,
+			},
+		})) as Session;
 	},
 
 	/**
 	 * Summarizes the session name.
-	 * 
+	 *
 	 * @param sessionId - The ID of the session.
 	 * @param text - The text to be summarized.
 	 * @returns The summarized text.
 	 */
 	async summarizeSessionName(sessionId: string, text: string) {
-		return await this.fetch(`/sessions/${sessionId}/summarize-name`, {
+		return (await this.fetch(`/sessions/${sessionId}/summarize-name`, {
 			method: 'POST',
 			body: JSON.stringify(text),
-		}) as { text: string };
+		})) as { text: string };
 	},
 
 	/**
@@ -114,7 +112,7 @@ export default {
 	 * @returns A promise that resolves to the deleted session.
 	 */
 	async deleteSession(sessionId: string) {
-		return await this.fetch(`/sessions/${sessionId}`, { method: 'DELETE' }) as Session;
+		return (await this.fetch(`/sessions/${sessionId}`, { method: 'DELETE' })) as Session;
 	},
 
 	/**
@@ -123,7 +121,7 @@ export default {
 	 * @returns An array of messages.
 	 */
 	async getMessages(sessionId: string) {
-		return await this.fetch(`/sessions/${sessionId}/messages`) as Array<Message>;
+		return (await this.fetch(`/sessions/${sessionId}/messages`)) as Array<Message>;
 	},
 
 	/**
@@ -133,7 +131,9 @@ export default {
 	 * @returns The completion prompt.
 	 */
 	async getPrompt(sessionId: string, promptId: string) {
-		return await this.fetch(`/sessions/${sessionId}/completionprompts/${promptId}`) as CompletionPrompt;
+		return (await this.fetch(
+			`/sessions/${sessionId}/completionprompts/${promptId}`,
+		)) as CompletionPrompt;
 	},
 
 	/**
@@ -144,15 +144,14 @@ export default {
 	 */
 	async rateMessage(message: Message, rating: Message['rating']) {
 		const params: {
-			rating?: Message['rating']
+			rating?: Message['rating'];
 		} = {};
 		if (rating !== null) params.rating = rating;
 
-		return await this.fetch(`/sessions/${message.sessionId}/message/${message.id}/rate`, {
-				method: 'POST',
-				params
-			},
-		) as Message;
+		return (await this.fetch(`/sessions/${message.sessionId}/message/${message.id}/rate`, {
+			method: 'POST',
+			params,
+		})) as Message;
 	},
 
 	/**
@@ -167,12 +166,12 @@ export default {
 			session_id: sessionId,
 			user_prompt: text,
 			agent_name: agent.name,
-			settings: null
+			settings: null,
 		};
-		return await this.fetch(`/sessions/${sessionId}/completion`, {
+		return (await this.fetch(`/sessions/${sessionId}/completion`, {
 			method: 'POST',
-			body: orchestrationRequest
-		}) as string;
+			body: orchestrationRequest,
+		})) as string;
 	},
 
 	/**
@@ -180,6 +179,6 @@ export default {
 	 * @returns {Promise<Agent[]>} A promise that resolves to an array of Agent objects.
 	 */
 	async getAllowedAgents() {
-		return await this.fetch('/orchestration/agents') as Agent[];
+		return (await this.fetch('/orchestration/agents')) as Agent[];
 	},
 };

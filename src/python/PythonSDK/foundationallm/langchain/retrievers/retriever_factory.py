@@ -83,6 +83,8 @@ class RetrieverFactory:
             top_n = top_n,
             embedding_field_name = self.indexing_profile.settings.embedding_field_name,
             text_field_name = self.indexing_profile.settings.text_field_name,
+            id_field_name = self.indexing_profile.settings.id_field_name,
+            metadata_field_name = self.indexing_profile.settings.metadata_field_name,
             filters = filters,
             credential = credential,            
             embedding_model = embedding_model

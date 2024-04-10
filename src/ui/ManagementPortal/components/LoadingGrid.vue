@@ -79,7 +79,8 @@ export default {
 	animation-delay: -1.6s;
 }
 @keyframes lds-grid {
-	0%, 100% {
+	0%,
+	100% {
 		opacity: 1;
 	}
 	50% {
@@ -87,4 +88,3 @@ export default {
 	}
 }
 </style>
-

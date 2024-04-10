@@ -7,6 +7,7 @@ module.exports = {
 	parser: 'vue-eslint-parser',
 	parserOptions: {
 		parser: '@typescript-eslint/parser',
+		warnOnUnsupportedTypeScriptVersion: false,
 	},
 	extends: ['@nuxtjs/eslint-config-typescript', 'plugin:prettier/recommended'],
 	plugins: [],
@@ -16,5 +17,6 @@ module.exports = {
 		'vue/script-indent': ['error', 'tab'],
 		'vue/singleline-html-element-content-newline': 0,
 		'vue/component-name-in-template-casing': ['error', 'PascalCase'],
+		'no-console': 'off',
 	},
 };

@@ -62,7 +62,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				authCallbackPath,
 			] = await Promise.all([
 				api.getConfigValue('FoundationaLLM:APIs:CoreAPI:APIUrl'),
-				api.getConfigValue('FoundationaLLM:Branding:KioskMode'),				
+				api.getConfigValue('FoundationaLLM:Branding:KioskMode'),
 				api.getConfigValue('FoundationaLLM:Branding:PageTitle'),
 				api.getConfigValue('FoundationaLLM:Branding:LogoUrl'),
 				api.getConfigValue('FoundationaLLM:Branding:LogoText'),
@@ -76,7 +76,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				api.getConfigValue('FoundationaLLM:Branding:PrimaryButtonBackgroundColor'),
 				api.getConfigValue('FoundationaLLM:Branding:PrimaryButtonTextColor'),
 				api.getConfigValue('FoundationaLLM:Branding:SecondaryButtonBackgroundColor'),
-				api.getConfigValue('FoundationaLLM:Branding:SecondaryButtonTextColor'),				
+				api.getConfigValue('FoundationaLLM:Branding:SecondaryButtonTextColor'),
 				api.getConfigValue('FoundationaLLM:Chat:Entra:ClientId'),
 				api.getConfigValue('FoundationaLLM:Chat:Entra:Instance'),
 				api.getConfigValue('FoundationaLLM:Chat:Entra:TenantId'),

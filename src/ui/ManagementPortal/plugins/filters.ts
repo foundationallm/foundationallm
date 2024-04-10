@@ -1,7 +1,7 @@
 const filters = {
 	/**
 	 * Appends the base URL to the given path if it is not an absolute URL.
-	 * 
+	 *
 	 * @param path - The path to be processed.
 	 * @returns The processed path with the base URL appended if necessary.
 	 */
@@ -13,10 +13,10 @@ const filters = {
 		}
 		return config.app.baseURL + path;
 	},
-	
+
 	/**
 	 * Sanitizes the input value by removing whitespace and special characters.
-	 * 
+	 *
 	 * @param event - The event object containing the input value.
 	 * @returns The sanitized value.
 	 */
@@ -30,7 +30,7 @@ const filters = {
 		}
 		event.target.value = sanitizedValue;
 		return sanitizedValue;
-	  }
+	},
 };
 
 export default defineNuxtPlugin((nuxtApp) => {

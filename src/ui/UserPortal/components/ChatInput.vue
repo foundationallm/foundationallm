@@ -56,9 +56,9 @@ export default {
 }
 
 .primary-button {
-	background-color: var(--primary-button-bg)!important;
-	border-color: var(--primary-button-bg)!important;
-	color: var(--primary-button-text)!important;
+	background-color: var(--primary-button-bg) !important;
+	border-color: var(--primary-button-bg) !important;
+	color: var(--primary-button-text) !important;
 }
 
 .pre-input {

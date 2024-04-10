@@ -9,7 +9,6 @@ namespace FoundationaLLM.Core.Tests.Models.Configuration
         {
             // Arrange
             string expectedEndpoint = "endpoint";
-            string expectedKey = "key"; 
             string expectedDatabase = "database";
             string expectedContainers = "containers";
             string expectedMonitoredContainers = "monitoredContainers";
@@ -18,18 +17,16 @@ namespace FoundationaLLM.Core.Tests.Models.Configuration
 
             // Act
             var cosmosDbSettings = CreateCosmosDbSettings(
-                expectedEndpoint, 
-                expectedKey, 
-                expectedDatabase, 
+                expectedEndpoint,
+                expectedDatabase,
                 expectedContainers,
                 expectedMonitoredContainers,
-                expectedChangeFeedLeaseContainer, 
+                expectedChangeFeedLeaseContainer,
                 expectedEnableTracing
             );
 
             // Assert
             Assert.Equal(expectedEndpoint, cosmosDbSettings.Endpoint);
-            Assert.Equal(expectedKey, cosmosDbSettings.Key);
             Assert.Equal(expectedDatabase, cosmosDbSettings.Database);
             Assert.Equal(expectedContainers, cosmosDbSettings.Containers);
             Assert.Equal(expectedMonitoredContainers, cosmosDbSettings.MonitoredContainers);
@@ -37,13 +34,12 @@ namespace FoundationaLLM.Core.Tests.Models.Configuration
             Assert.Equal(expectedEnableTracing, cosmosDbSettings.EnableTracing);
         }
 
-        private static CosmosDbSettings CreateCosmosDbSettings(string endpoint, string key, string database, string containers, 
+        private static CosmosDbSettings CreateCosmosDbSettings(string endpoint, string database, string containers, 
             string monitoredContainers, string changeFeedLeaseContainer, bool enableTracing)
         {
             return new CosmosDbSettings() 
             {
                 Endpoint = endpoint,
-                Key = key,
                 Database = database,
                 Containers = containers,
                 MonitoredContainers = monitoredContainers,

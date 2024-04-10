@@ -50,6 +50,7 @@ namespace FoundationaLLM.AgentFactory.Core.Orchestration
             {
                 Completion = result.Completion!,
                 UserPrompt = completionRequest.UserPrompt!,
+                Citations = result.Citations,
                 FullPrompt = result.FullPrompt,
                 PromptTemplate = result.PromptTemplate,
                 AgentName = result.AgentName,

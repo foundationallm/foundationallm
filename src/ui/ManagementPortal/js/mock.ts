@@ -11,7 +11,8 @@ export const mockGetAgentIndexesResponse: AgentIndex[] = [
 		},
 		configuration_references: {
 			APIKey: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:APIKey',
-			AuthenticationType: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType',
+			AuthenticationType:
+				'FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType',
 			Endpoint: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:Endpoint',
 		},
 	},
@@ -29,7 +30,8 @@ export const mockGetAgentIndexesResponse: AgentIndex[] = [
 		},
 		configuration_references: {
 			APIKey: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:APIKey',
-			AuthenticationType: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType',
+			AuthenticationType:
+				'FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType',
 			Endpoint: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:Endpoint',
 		},
 	},
@@ -42,9 +44,7 @@ export const mockGetAgentDataSourcesResponse: AgentIndex[] = [
 		Type: 'AzureDataLake',
 		Container: {
 			Name: 'documents',
-			Formats: [
-				'pdf',
-			],
+			Formats: ['pdf'],
 		},
 		description: 'Azure AI Search index for vectorization testing.',
 		indexer: 'AzureAISearchIndexer',
@@ -53,7 +53,8 @@ export const mockGetAgentDataSourcesResponse: AgentIndex[] = [
 		},
 		configuration_references: {
 			APIKey: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:APIKey',
-			AuthenticationType: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType',
+			AuthenticationType:
+				'FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType',
 			Endpoint: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:Endpoint',
 		},
 	},
@@ -63,11 +64,7 @@ export const mockGetAgentDataSourcesResponse: AgentIndex[] = [
 		Type: 'SharePointOnline',
 		Container: {
 			Name: 'census_data',
-			Formats: [
-				'pdf',
-				'txt',
-				'doc',
-			],
+			Formats: ['pdf', 'txt', 'doc'],
 		},
 		description: 'Azure AI Search index for the State of the Union agent.',
 		indexer: 'AzureAISearchIndexer',
@@ -80,7 +77,8 @@ export const mockGetAgentDataSourcesResponse: AgentIndex[] = [
 		},
 		configuration_references: {
 			APIKey: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:APIKey',
-			AuthenticationType: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType',
+			AuthenticationType:
+				'FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType',
 			Endpoint: 'FoundationaLLM:Vectorization:AzureAISearchIndexingService:Endpoint',
 		},
 	},
@@ -90,11 +88,9 @@ export const mockGetAgentDataSourcesResponse: AgentIndex[] = [
 		Type: 'AzureDataLake',
 		Container: {
 			Name: 'data',
-			Formats: [
-				'txt',
-			],
+			Formats: ['txt'],
 		},
-	}
+	},
 ];
 
 export const mockAzureDataLakeDataSource1: AzureDataLakeDataSource = {

@@ -113,7 +113,7 @@ export const useAppStore = defineStore('app', {
 		},
 
 		getSessionAgent(session: Session) {
-			var selectedAgent = this.selectedAgents.get(session.id);
+			let selectedAgent = this.selectedAgents.get(session.id);
 			if (!selectedAgent) {
 				if (this.lastSelectedAgent) {
 					// Default to the last selected agent to make the selection "sticky" across sessions.
@@ -221,6 +221,6 @@ export const useAppStore = defineStore('app', {
 		async getAgents() {
 			this.agents = await api.getAllowedAgents();
 			return this.agents;
-		}
+		},
 	},
 });

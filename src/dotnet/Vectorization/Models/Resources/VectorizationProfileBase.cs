@@ -7,7 +7,6 @@ namespace FoundationaLLM.Vectorization.Models.Resources
     /// Basic properties for vectorization profiles.
     /// </summary>
     [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
-    [JsonDerivedType(typeof(ContentSourceProfile), "content-source-profile")]
     [JsonDerivedType(typeof(TextPartitioningProfile), "text-partitioning-profile")]
     [JsonDerivedType(typeof(TextEmbeddingProfile), "text-embedding-profile")]
     [JsonDerivedType(typeof(IndexingProfile), "indexing-profile")]

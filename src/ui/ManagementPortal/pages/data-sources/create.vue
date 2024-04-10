@@ -33,8 +33,20 @@
 						:disabled="editId"
 						@input="handleNameInput"
 					/>
-					<span v-if="nameValidationStatus === 'valid'" class="icon valid" title="Name is available">✔️</span>
-					<span v-else-if="nameValidationStatus === 'invalid'" class="icon invalid" :title="validationMessage">❌</span>
+					<span
+						v-if="nameValidationStatus === 'valid'"
+						class="icon valid"
+						title="Name is available"
+					>
+						✔️
+					</span>
+					<span
+						v-else-if="nameValidationStatus === 'invalid'"
+						class="icon invalid"
+						:title="validationMessage"
+					>
+						❌
+					</span>
 				</div>
 
 				<div class="mb-2 mt-2">Data description:</div>
@@ -80,23 +92,41 @@
 
 					<!-- Connection string -->
 					<div
-						v-if="dataSource.resolved_configuration_references.AuthenticationType === 'ConnectionString'"
+						v-if="
+							dataSource.resolved_configuration_references.AuthenticationType === 'ConnectionString'
+						"
 						class="span-2"
 					>
 						<div class="mb-2 mt-2">Connection string:</div>
 						<div class="flex-container">
 							<Textarea
-								:model-value="showSecret[`${dataSource.type}_ConnectionString`] ? dataSource.resolved_configuration_references.ConnectionString : '••••••••••••••••••••••••••••••••••••••••••••••••••'"
-								@update:model-value="val => dataSource.resolved_configuration_references.ConnectionString = val"
+								v-if="showSecret[`${dataSource.type}_ConnectionString`]"
+								:model-value="dataSource.resolved_configuration_references.ConnectionString"
 								class="w-100"
 								auto-resize
 								rows="5"
 								type="text"
-								:disabled="!showSecret[`${dataSource.type}_ConnectionString`] && dataSource.resolved_configuration_references.ConnectionString"
+								@update:model-value="handleConnectionStringUpdate"
 							/>
-							<Button :icon="showSecret[`${dataSource.type}_ConnectionString`] ? 'pi pi-eye' : 'pi pi-eye-slash'"
-								@click="toggleSecretVisibility('ConnectionString')" class="p-button-text"
-								:label="showSecret[`${dataSource.type}_ConnectionString`] ? 'Hide' : 'Show'"></Button>
+							<Textarea
+								v-else
+								model-value="••••••••••••••••••••••••••••••••••••••••••••••••••"
+								:disabled="dataSource.resolved_configuration_references.ConnectionString"
+								class="w-100"
+								auto-resize
+								rows="5"
+								type="text"
+							/>
+							<Button
+								:icon="
+									showSecret[`${dataSource.type}_ConnectionString`]
+										? 'pi pi-eye'
+										: 'pi pi-eye-slash'
+								"
+								:label="showSecret[`${dataSource.type}_ConnectionString`] ? 'Hide' : 'Show'"
+								class="p-button-text"
+								@click="toggleSecretVisibility('ConnectionString')"
+							></Button>
 						</div>
 					</div>
 
@@ -108,15 +138,25 @@
 						<div class="mb-2 mt-2">API Key:</div>
 						<div class="flex-container">
 							<InputText
-								:model-value="showSecret[`${dataSource.type}_APIKey`] ? dataSource.resolved_configuration_references.APIKey : '••••••••••••••••••••••••••••••••••••••••••••••••••'"
-								@update:model-value="val => dataSource.resolved_configuration_references.APIKey = val"
+								v-if="showSecret[`${dataSource.type}_APIKey`]"
+								:model-value="dataSource.resolved_configuration_references.APIKey"
 								class="w-100"
 								type="text"
-								:disabled="!showSecret[`${dataSource.type}_APIKey`] && dataSource.resolved_configuration_references.APIKey"
+								@update:model-value="handleAPIKeyUpdate"
 							/>
-							<Button :icon="showSecret[`${dataSource.type}_APIKey`] ? 'pi pi-eye' : 'pi pi-eye-slash'"
-								@click="toggleSecretVisibility('APIKey')" class="p-button-text"
-								:label="showSecret[`${dataSource.type}_APIKey`] ? 'Hide' : 'Show'"></Button>
+							<InputText
+								v-else
+								model-value="••••••••••••••••••••••••••••••••••••••••••••••••••"
+								:disabled="dataSource.resolved_configuration_references.APIKey"
+								class="w-100"
+								type="text"
+							/>
+							<Button
+								:icon="showSecret[`${dataSource.type}_APIKey`] ? 'pi pi-eye' : 'pi pi-eye-slash'"
+								:label="showSecret[`${dataSource.type}_APIKey`] ? 'Hide' : 'Show'"
+								class="p-button-text"
+								@click="toggleSecretVisibility('APIKey')"
+							></Button>
 						</div>
 						<div class="mb-2 mt-2">Endpoint:</div>
 						<InputText
@@ -128,7 +168,6 @@
 
 					<div class="mb-2 mt-2">Folder(s):</div>
 					<InputText v-model="foldersString" class="w-100" type="text" />
-
 				</div>
 
 				<!-- Azure SQL database -->
@@ -138,17 +177,33 @@
 						<div class="mb-2">Connection string:</div>
 						<div class="flex-container">
 							<Textarea
-								:model-value="showSecret[`${dataSource.type}_ConnectionString`] ? dataSource.resolved_configuration_references.ConnectionString : '••••••••••••••••••••••••••••••••••••••••••••••••••'"
-								@update:model-value="val => dataSource.resolved_configuration_references.ConnectionString = val"
+								v-if="showSecret[`${dataSource.type}_ConnectionString`]"
+								:model-value="dataSource.resolved_configuration_references.ConnectionString"
 								class="w-100"
 								auto-resize
 								rows="5"
 								type="text"
-								:disabled="!showSecret[`${dataSource.type}_ConnectionString`] && dataSource.resolved_configuration_references.ConnectionString"
+								@update:model-value="handleConnectionStringUpdate"
 							/>
-							<Button :icon="showSecret[`${dataSource.type}_ConnectionString`] ? 'pi pi-eye' : 'pi pi-eye-slash'"
-								@click="toggleSecretVisibility('ConnectionString')" class="p-button-text"
-								:label="showSecret[`${dataSource.type}_ConnectionString`] ? 'Hide' : 'Show'"></Button>
+							<Textarea
+								v-else
+								model-value="••••••••••••••••••••••••••••••••••••••••••••••••••"
+								:disabled="dataSource.resolved_configuration_references.ConnectionString"
+								class="w-100"
+								auto-resize
+								rows="5"
+								type="text"
+							/>
+							<Button
+								:icon="
+									showSecret[`${dataSource.type}_ConnectionString`]
+										? 'pi pi-eye'
+										: 'pi pi-eye-slash'
+								"
+								:label="showSecret[`${dataSource.type}_ConnectionString`] ? 'Hide' : 'Show'"
+								class="p-button-text"
+								@click="toggleSecretVisibility('ConnectionString')"
+							></Button>
 						</div>
 
 						<template v-if="dataSource.tables">
@@ -228,7 +283,7 @@ import { debounce } from 'lodash';
 import api from '@/js/api';
 import type {
 	DataSource,
-	ConfigurationReferenceMetadata
+	ConfigurationReferenceMetadata,
 	// AzureDataLakeDataSource,
 	// SharePointOnlineSiteDataSource,
 	// AzureSQLDatabaseDataSource,
@@ -237,10 +292,7 @@ import {
 	isAzureDataLakeDataSource,
 	isAzureSQLDatabaseDataSource,
 	isSharePointOnlineSiteDataSource,
-	convertDataSourceToAzureDataLake,
-	convertDataSourceToSharePointOnlineSite,
-	convertDataSourceToAzureSQLDatabase,
-	convertToDataSource
+	convertToDataSource,
 } from '@/js/types';
 
 export default {
@@ -258,10 +310,10 @@ export default {
 		return {
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
-			
+
 			nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
 			validationMessage: '' as string,
-			
+
 			foldersString: '',
 			documentLibrariesString: '',
 			tablesString: '',
@@ -269,7 +321,7 @@ export default {
 			showSecret: {}, // Object to track visibility state of secrets.
 
 			// Create a default Azure Data Lake data source.
-			
+
 			dataSource: {
 				type: 'azure-data-lake',
 				name: '',
@@ -293,7 +345,7 @@ export default {
 			sourceTypeOptions: [
 				{
 					label: 'OneLake',
-					value: 'onelake'
+					value: 'onelake',
 				},
 				{
 					label: 'Azure Data Lake',
@@ -350,8 +402,7 @@ export default {
 			if (this.dataSource.tables) {
 				this.tablesString = this.dataSource.tables.join(', ');
 			}
-		}
-		else {
+		} else {
 			// Create a new DataSource object of type Azure Data Lake.
 			const newDataSource: DataSource = {
 				type: 'azure-data-lake',
@@ -401,6 +452,14 @@ export default {
 			}
 		},
 
+		handleConnectionStringUpdate(value) {
+			this.dataSource.resolved_configuration_references.ConnectionString = value;
+		},
+
+		handleAPIKeyUpdate(value) {
+			this.dataSource.resolved_configuration_references.APIKey = value;
+		},
+
 		async checkName() {
 			try {
 				const response = await api.checkDataSourceName(this.dataSource.name, this.dataSource.type);
@@ -416,12 +475,12 @@ export default {
 					this.validationMessage = response.message;
 				}
 			} catch (error) {
-				console.error("Error checking agent name: ", error);
+				console.error('Error checking agent name: ', error);
 				this.nameValidationStatus = 'invalid';
 				this.validationMessage = 'Error checking the agent name. Please try again.';
 			}
 		},
-		
+
 		toggleSecretVisibility(key) {
 			const uniqueKey = `${this.dataSource.type}_${key}`;
 			// Directly toggle the visibility.
@@ -434,7 +493,7 @@ export default {
 				this.showSecret[uniqueKey] = true;
 			}
 		},
-		
+
 		handleCancel() {
 			if (!confirm('Are you sure you want to cancel?')) {
 				return;
@@ -463,16 +522,18 @@ export default {
 			if (!this.dataSource.type) {
 				errors.push('Please specify a data source type.');
 			}
-			
+
 			this.dataSource = convertToDataSource(this.dataSource);
 
 			// Convert string representations of array fields back to arrays.
 			if (isAzureDataLakeDataSource(this.dataSource)) {
-				this.dataSource.folders = this.foldersString.split(',').map(s => s.trim());
+				this.dataSource.folders = this.foldersString.split(',').map((s) => s.trim());
 			} else if (isSharePointOnlineSiteDataSource(this.dataSource)) {
-				this.dataSource.document_libraries = this.documentLibrariesString.split(',').map(s => s.trim());
+				this.dataSource.document_libraries = this.documentLibrariesString
+					.split(',')
+					.map((s) => s.trim());
 			} else if (isAzureSQLDatabaseDataSource(this.dataSource)) {
-				this.dataSource.tables = this.tablesString.split(',').map(s => s.trim());
+				this.dataSource.tables = this.tablesString.split(',').map((s) => s.trim());
 			}
 
 			if (errors.length > 0) {
@@ -695,9 +756,9 @@ $editStepPadding: 16px;
 }
 
 .primary-button {
-	background-color: var(--primary-button-bg)!important;
-	border-color: var(--primary-button-bg)!important;
-	color: var(--primary-button-text)!important;
+	background-color: var(--primary-button-bg) !important;
+	border-color: var(--primary-button-bg) !important;
+	color: var(--primary-button-text) !important;
 }
 
 .input-wrapper {
@@ -726,15 +787,15 @@ input {
 }
 
 .flex-container {
-  display: flex;
-  align-items: center; /* Align items vertically in the center */
+	display: flex;
+	align-items: center; /* Align items vertically in the center */
 }
 
 .flex-item {
-  flex-grow: 1; /* Allow the textarea to grow and fill the space */
+	flex-grow: 1; /* Allow the textarea to grow and fill the space */
 }
 
 .flex-item-button {
-  margin-left: 8px; /* Add some space between the textarea and the button */
+	margin-left: 8px; /* Add some space between the textarea and the button */
 }
 </style>

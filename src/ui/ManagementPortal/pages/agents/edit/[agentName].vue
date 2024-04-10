@@ -1,5 +1,5 @@
 <template>
-	<CreateAgent :editAgent="$route.params.agentName" />
+	<CreateAgent :edit-agent="$route.params.agentName" />
 </template>
 
 <script lang="ts">

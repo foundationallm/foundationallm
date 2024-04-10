@@ -29,5 +29,5 @@ export default defineNuxtPlugin(async (nuxtApp: any) => {
 	nuxtApp.provide('authStore', authStore);
 
 	const appStore = useAppStore(nuxtApp.$pinia);
-	nuxtApp.provide('appStore', authStore);
+	nuxtApp.provide('appStore', appStore);
 });
