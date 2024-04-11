@@ -17,7 +17,6 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
     /// <param name="contentSafetyService">The user prompt Content Safety service.</param>
     /// <param name="gatekeeperIntegrationAPIService">The Gatekeeper Integration API client.</param>
     /// <param name="gatekeeperServiceSettings">The configuration options for the Gatekeeper service.</param>
-    /// <param name="logger">The logger used for logging.</param>
     public class GatekeeperService(
         IDownstreamAPIService agentFactoryAPIService,
         IContentSafetyService contentSafetyService,

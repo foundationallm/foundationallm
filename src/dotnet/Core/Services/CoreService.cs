@@ -29,6 +29,7 @@ namespace FoundationaLLM.Core.Services;
 /// settings retrieved by the injected <see cref="IOptions{TOptions}"/>.</param>
 /// <param name="settings">The <see cref="CoreServiceSettings"/> settings for the service.</param>
 /// <param name="callContext">Contains contextual data for the calling service.</param>
+/// <param name="resourceProviderServices">A dictionary of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
 public partial class CoreService(
     ICosmosDbService cosmosDbService,
     IEnumerable<IDownstreamAPIService> downstreamAPIServices,
@@ -223,7 +224,7 @@ public partial class CoreService(
             ? _agentFactoryAPIService
             : _gatekeeperAPIService;
 
-    private async Task<string[]?> GetGatekeeperOptions(string agentName)
+    private async Task<string[]?> GetGatekeeperOptions(string? agentName)
     {
         if (!_resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Agent, out var agentResourceProvider))
             throw new ResourceProviderException($"The resource provider {ResourceProviderNames.FoundationaLLM_Agent} was not loaded.");
