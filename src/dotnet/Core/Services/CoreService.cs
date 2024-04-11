@@ -158,9 +158,6 @@ public partial class CoreService(
     /// </summary>
     public async Task<Completion> GetCompletionAsync(CompletionRequest directCompletionRequest)
     {
-
-        _settings.BypassGatekeeper = false;
-
         try
         {
             if (!_settings.BypassGatekeeper)
