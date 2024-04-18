@@ -44,7 +44,7 @@ param vnetId string
 /** Locals **/
 @description('Resource Suffix used in naming resources.')
 var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
-var resourceToken = toLower(uniqueString(resourceGroup().id , project, environmentName, location, workload))
+var resourceToken = toLower(uniqueString(resourceGroup().id, project, environmentName, location, workload))
 
 @description('Resource Suffix used in naming resources.')
 var opsResourceSuffix = '${project}-${environmentName}-${location}-ops'

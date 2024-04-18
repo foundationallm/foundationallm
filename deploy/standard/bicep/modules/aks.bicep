@@ -362,30 +362,6 @@ module dnsRoleAssignment 'utility/roleAssignments.bicep' = {
   }
 }
 
-// module helmIngressNginx 'utility/aksRunHelm.bicep' = {
-//   name: 'helmIngressNginx-${resourceSuffix}-${timestamp}'
-//   params: {
-//     aksName: main.name
-//     helmApp: 'ingress-nginx/ingress-nginx'
-//     helmAppName: 'gateway'
-//     helmAppParams: '--namespace gateway-system --create-namespace'
-//     helmRepo: 'ingress-nginx'
-//     helmRepoURL: 'https://kubernetes.github.io/ingress-nginx'
-//     location: location
-//     uaiId: uaiDeploymentid
-//     helmAppSettings: {
-//       'controller.kind': 'DaemonSet'
-//       'controller.service.annotations."service\\.beta\\.kubernetes\\.io/azure-load-balancer-internal"': 'true'
-//       'controller.service.annotations."service\\.beta\\.kubernetes\\.io/azure-load-balancer-ipv4"': privateIpIngress
-//       'controller.service.enableHttp': 'true'
-//       'controller.service.externalTrafficPolicy': 'Local'
-//       'controller.service.loadBalancerIP': privateIpIngress
-//       'controller.service.ports.https': '443'
-//       // 'controller.extraArgs.default-ssl-certificate': '${kubernetes_secret.tls.metadata.0.namespace}/${kubernetes_secret.tls.metadata.0.name}'
-//     }
-//   }
-// }
-
 module netRoleAssignment 'utility/roleAssignments.bicep' = {
   name: 'netra-${resourceSuffix}-${timestamp}'
   scope: resourceGroup(networkingResourceGroupName)

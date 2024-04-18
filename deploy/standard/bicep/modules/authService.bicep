@@ -37,7 +37,7 @@ resource federatedIdentityCredential 'Microsoft.ManagedIdentity/userAssignedIden
   name: serviceName
   parent: managedIdentity
   properties: {
-    audiences: [ 'api://AzureADTokenExchange' ]
+    audiences: ['api://AzureADTokenExchange']
     issuer: oidcIssuerUrl
     subject: 'system:serviceaccount:${namespace}:${serviceName}'
   }
@@ -49,9 +49,10 @@ module authRoleAssignments 'utility/roleAssignments.bicep' = {
   scope: resourceGroup()
   params: {
     principalId: managedIdentity.properties.principalId
-    roleDefinitionIds: {
-      Contributor: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
-      'Key Vault Secrets User': '4633458b-17de-408a-b874-0445c86b69e6'
-    }
+    roleDefinitionNames: [
+      'Contributor'
+      'Key Vault Secrets User'
+      'Storage Blob Data Contributor'
+    ]
   }
 }

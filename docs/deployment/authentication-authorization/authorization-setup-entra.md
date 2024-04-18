@@ -63,6 +63,16 @@ To enable Microsoft Entra ID authorization to the FoundationaLLM platform, you n
 
 3. Select **Save** at the top of the page to save the changes.
 
+#### Configure Authentication Flows
+
+1. Navigate to the **Authentication** tab. Select **Add a platform**. On the **Configure platforms** pane, select **Web**.
+
+    ![Create a new Web application platform.](media/web-platform-selection.png)
+
+2. Enter `http://localhost` under **Redirect URIs**. Then, below **Implicit grant and hybrid flows**, select both **Access tokens** and **ID tokens**. Finally, select **Configure**.
+
+    ![Select "Access Tokens" and "ID Tokens".](media/set-grant-and-hybrid-flows.png)
+
 ### Update App Configuration settings
 
 1. Sign in to the [Azure portal](https://portal.azure.com/) as at least a Contributor.

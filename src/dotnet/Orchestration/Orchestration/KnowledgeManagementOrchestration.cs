@@ -42,6 +42,14 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     Settings = completionRequest.Settings
                 });
 
+            if (result.Citations != null)
+            {
+                result.Citations = result.Citations
+                    .GroupBy(c => c.Filepath)
+                    .Select(g => g.First())
+                    .ToArray();
+            }
+
             return new CompletionResponse
             {
                 Completion = result.Completion!,

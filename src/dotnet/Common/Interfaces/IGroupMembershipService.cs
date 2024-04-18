@@ -8,8 +8,8 @@
         /// <summary>
         /// Retrieves the group identifiers list of the groups where the specified user principal is a member.
         /// </summary>
-        /// <param name="userPrincipalName">The user principal name (UPN) for which group membership is retrieved.</param>
+        /// <param name="userIdentifier">The user identifier for which group membership is retrieved. Can be either an object id or a user principal name (UPN).</param>
         /// <returns></returns>
-        Task<List<string>> GetGroupsForPrincipal(string userPrincipalName);
+        Task<List<string>> GetGroupsForPrincipal(string userIdentifier);
     }
 }

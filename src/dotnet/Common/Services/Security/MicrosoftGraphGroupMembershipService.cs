@@ -14,10 +14,10 @@ namespace FoundationaLLM.Common.Services.Security
             DefaultAuthentication.GetAzureCredential());
 
         /// <inheritdoc/>
-        public async Task<List<string>> GetGroupsForPrincipal(string userPrincipalName)
+        public async Task<List<string>> GetGroupsForPrincipal(string userIdentifier)
         {
             var groupMembership = new List<Microsoft.Graph.Models.Group>();
-            var groups = await _graphClient.Users[userPrincipalName].TransitiveMemberOf.GraphGroup.GetAsync(requestConfiguration =>
+            var groups = await _graphClient.Users[userIdentifier].TransitiveMemberOf.GraphGroup.GetAsync(requestConfiguration =>
             {
                 requestConfiguration.QueryParameters.Top = 500;
             }).ConfigureAwait(false);
@@ -32,7 +32,7 @@ namespace FoundationaLLM.Common.Services.Security
                 // Invoke paging if required.
                 if (!string.IsNullOrEmpty(groups.OdataNextLink))
                 {
-                    groups = await _graphClient.Users[userPrincipalName].TransitiveMemberOf.GraphGroup
+                    groups = await _graphClient.Users[userIdentifier].TransitiveMemberOf.GraphGroup
                         .WithUrl(groups.OdataNextLink)
                         .GetAsync();
                 }

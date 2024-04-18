@@ -47,7 +47,7 @@ namespace FoundationaLLM.Common.Middleware
                 if (callContext.CurrentUserIdentity != null)
                 {
                     callContext.CurrentUserIdentity.GroupIds = await groupMembershipService.GetGroupsForPrincipal(
-                        callContext.CurrentUserIdentity.UPN!);
+                        callContext.CurrentUserIdentity.UserId!);
                 }
             }
             else
