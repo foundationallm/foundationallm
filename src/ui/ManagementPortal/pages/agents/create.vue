@@ -455,7 +455,7 @@
 				/>
 			</div>
 
-			<div class="step-header span-2">What are the orchestrator connection details?</div>
+			<!-- <div class="step-header span-2">What are the orchestrator connection details?</div>
 			<div
 				v-if="
 					['LangChain', 'AzureOpenAIDirect', 'AzureAIDirect'].includes(
@@ -475,7 +475,7 @@
 
 				<div class="mb-2 mt-2">Version:</div>
 				<InputText
-					v-model="orchestration_settings.endpoint_configuration.version"
+					v-model="orchestration_settings.endpoint_configuration.api_version"
 					class="w-100"
 					type="text"
 				/>
@@ -500,7 +500,7 @@
 					class="w-100"
 					type="number"
 				/>
-			</div>
+			</div> -->
 
 			<!-- System prompt -->
 			<div class="step-section-header span-2">System Prompt</div>
@@ -591,7 +591,7 @@ const getDefaultFormValues = () => {
 			endpoint_configuration: {
 				endpoint: '' as string,
 				api_key: '' as string,
-				version: '' as string,
+				api_version: '' as string,
 				operation_type: 'chat' as string,
 			} as object,
 			model_parameters: {
@@ -604,7 +604,7 @@ const getDefaultFormValues = () => {
 		// 	endpoint_configuration: {
 		// 		endpoint: '' as string,
 		// 		api_key: '' as string,
-		// 		version: '' as string,
+		// 		api_version: '' as string,
 		// 		operation_type: 'chat' as string,
 		// 	} as object,
 		// },
@@ -647,6 +647,10 @@ export default {
 				{
 					label: 'AzureAIDirect',
 					value: 'AzureAIDirect',
+				},
+				{
+					label: 'SemanticKernel',
+					value: 'SemanticKernel',
 				},
 			],
 
@@ -761,9 +765,9 @@ export default {
 			this.orchestration_settings.endpoint_configuration.api_key =
 				agent.orchestration_settings?.endpoint_configuration.api_key ||
 				this.orchestration_settings.endpoint_configuration.api_key;
-			this.orchestration_settings.endpoint_configuration.version =
-				agent.orchestration_settings?.endpoint_configuration.version ||
-				this.orchestration_settings.endpoint_configuration.version;
+			this.orchestration_settings.endpoint_configuration.api_version =
+				agent.orchestration_settings?.endpoint_configuration.api_version ||
+				this.orchestration_settings.endpoint_configuration.api_version;
 			this.orchestration_settings.endpoint_configuration.operation_type =
 				agent.orchestration_settings?.endpoint_configuration.operation_type ||
 				this.orchestration_settings.endpoint_configuration.operation_type;
