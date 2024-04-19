@@ -147,88 +147,57 @@ Invoke-AndRequireSuccess "Loading AppConfig Values" {
         --output none
 }
 
+if ($IsWindows) {
+    $os = "windows"
+} elseif ($IsMac) {
+    $os = "mac"
+}
+
+$AZCOPY_VERSION = "10.24.0"
+
+Push-Location ./tools/azcopy_${os}_amd64_${AZCOPY_VERSION}
+
 Invoke-AndRequireSuccess "Uploading Agents" {
-    az storage azcopy blob upload `
-        -c agents `
-        --account-name $env:AZURE_STORAGE_ACCOUNT_NAME `
-        -s "../common/data/agents/*" `
-        --recursive `
-        --only-show-errors `
-        --auth-mode key `
-        --output none
+    ./azcopy.exe cp `
+        ../../../common/data/agents/* `
+        https://$env:AZURE_STORAGE_ACCOUNT_NAME.blob.core.windows.net/agents/ `
+        --recursive=True
 }
 
 Invoke-AndRequireSuccess "Uploading Data Sources" {
-    az storage azcopy blob upload `
-        -c data-sources `
-        --account-name $env:AZURE_STORAGE_ACCOUNT_NAME `
-        -s "../common/data/data-sources/*" `
-        --recursive `
-        --only-show-errors `
-        --auth-mode key `
-        --output none
+    ./azcopy.exe cp `
+        ../../../common/data/data-sources/* `
+        https://$env:AZURE_STORAGE_ACCOUNT_NAME.blob.core.windows.net/data-sources/ `
+        --recursive=True
 }
 
 Invoke-AndRequireSuccess "Uploading Foundationallm Source" {
-    az storage azcopy blob upload `
-        -c foundationallm-source `
-        --account-name $env:AZURE_STORAGE_ACCOUNT_NAME `
-        -s "../common/data/foundationallm-source/*" `
-        --recursive `
-        --only-show-errors `
-        --auth-mode key `
-        --output none
+    ./azcopy.exe cp `
+        ../../../common/data/foundationallm-source/* `
+        https://$env:AZURE_STORAGE_ACCOUNT_NAME.blob.core.windows.net/foundationallm-source/ `
+        --recursive=True
 }
 
 Invoke-AndRequireSuccess "Uploading Prompts" {
-    az storage azcopy blob upload `
-        -c prompts `
-        --account-name $env:AZURE_STORAGE_ACCOUNT_NAME `
-        -s "../common/data/prompts/*" `
-        --recursive `
-        --only-show-errors `
-        --auth-mode key `
-        --output none
+    ./azcopy.exe cp `
+        ../../../common/data/prompts/* `
+        https://$env:AZURE_STORAGE_ACCOUNT_NAME.blob.core.windows.net/prompts/ `
+        --recursive=True
 }
 
 Invoke-AndRequireSuccess "Uploading Resource Providers" {
-    az storage azcopy blob upload `
-        -c resource-provider `
-        --account-name $env:AZURE_STORAGE_ACCOUNT_NAME `
-        -s "../common/data/resource-provider/*" `
-        --recursive `
-        --only-show-errors `
-        --auth-mode key `
-        --output none
+    ./azcopy.exe cp `
+        ../../../common/data/resource-provider/* `
+        https://$env:AZURE_STORAGE_ACCOUNT_NAME.blob.core.windows.net/resource-provider/ `
+        --exclude-pattern .git* `
+        --recursive=True
 }
 
 Invoke-AndRequireSuccess "Uploading Default Role Assignments to Authorization Store" {
-    az storage azcopy blob upload `
-        -c role-assignments `
-        --account-name $env:AZURE_AUTHORIZATION_STORAGE_ACCOUNT_NAME `
-        -s "./data/role-assignments/${env:FOUNDATIONALLM_INSTANCE_ID}.json" `
-        --recursive `
-        --only-show-errors `
-        --auth-mode key `
-        --output none
+    ./azcopy.exe cp `
+        ../.././data/role-assignments/$($env:FOUNDATIONALLM_INSTANCE_ID).json `
+        https://$env:AZURE_AUTHORIZATION_STORAGE_ACCOUNT_NAME.blob.core.windows.net/role-assignments/ `
+        --recursive=True
 }
 
-Invoke-AndRequireSuccess "Restarting Authorization API" {
-    # Grab suffix
-    $suffix = ($env:AZURE_KEY_VAULT_NAME).Substring(3)
-    $authApiContainerName = "caauthapi$suffix"
-    $resourceGroup = "rg-$env:AZURE_ENV_NAME"
-    $revision = $(
-        az containerapp show `
-            --name  $authApiContainerName `
-            --resource-group $resourceGroup `
-            --subscription $env:AZURE_SUBSCRIPTION_ID `
-            --query "properties.latestRevisionName" `
-            -o tsv
-    )
-    az containerapp revision restart `
-        --revision $revision `
-        --name $authApiContainerName `
-        --resource-group $resourceGroup `
-        --subscription $env:AZURE_SUBSCRIPTION_ID
-}
+Pop-Location

@@ -45,7 +45,27 @@ Follow the steps below to deploy the solution to your Azure subscription.
     git checkout release/0.4.0
     ```
 
-3. Run the following commands to set the appropriate application registration settings for OIDC authentication.
+3. Run the following commands to log into the Azure and Azure Developer CLIs:
+
+    ```azurecli
+    az login            # Log into Azure CLI
+    azd auth login      # Log into Azure Developer CLI
+
+    ./scripts/bootstrap.ps1     # Bootstrap environment dependencies (AzCopy)
+                                # This will prompt you for an AzCopy login to Azure
+
+    # Set your target Subscription and Location
+    azd env new --location <Supported Azure Region> --subscription <Azure Subscription ID>
+    ```
+
+4. Set up an `azd` environment targeting your Azure subscription and desired deployment region:
+
+    ```azurecli
+    # Set your target Subscription and Location
+    azd env new --location <Supported Azure Region> --subscription <Azure Subscription ID>
+    ```
+
+5. Run the following commands to set the appropriate application registration settings for OIDC authentication.
 
     ```text
     cd foundationallm/deploy/quick-start
