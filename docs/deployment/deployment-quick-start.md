@@ -55,6 +55,9 @@ If you are upgrading from a previous version, like `0.4.0` please refer to the c
     az login            # Log into Azure CLI
     azd auth login      # Log into Azure Developer CLI
 
+    ./scripts/bootstrap.ps1     # Bootstrap environment dependencies (AzCopy)
+                                # This will prompt you for an AzCopy login to Azure
+
     # Set your target Subscription and Location
     azd env new --location <Supported Azure Region> --subscription <Azure Subscription ID>
     ```
