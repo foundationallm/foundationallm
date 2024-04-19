@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Settings;
+﻿using FoundationaLLM.Common.Models.Vectorization;
+using FoundationaLLM.Common.Settings;
 using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
 using FoundationaLLM.SemanticKernel.Core.Services;
 using Microsoft.Extensions.Logging;
@@ -27,16 +28,17 @@ namespace SemanticKernel.Tests.Services
         [Fact]
         public async void TestGetEmbedding()
         {
-            var embeddingResult = await _semanticKernelTextEmbeddingService.GetEmbeddingAsync("Some Test Text");
-            Assert.True(embeddingResult.Embedding.Length > 0);
+            var embeddingResult = await _semanticKernelTextEmbeddingService.GetEmbeddingsAsync(
+                [new TextChunk { Position = 1, Content = "Some Test Text" }]);
+            Assert.True(embeddingResult.TextChunks.Count > 0);
             Assert.IsType<int>(embeddingResult.TokenCount);
         }
 
         [Fact]
         public async void TestGetEmbeddings()
         {
-            var embeddingResult = await _semanticKernelTextEmbeddingService.GetEmbeddingsAsync(new List<string> { "Some Test Text" });
-            Assert.True(embeddingResult.Embeddings.Count > 0);
+            var embeddingResult = await _semanticKernelTextEmbeddingService.GetEmbeddingsAsync([new TextChunk { Position = 1, Content = "Some Test Text" }]);
+            Assert.True(embeddingResult.TextChunks.Count > 0);
             Assert.IsType<int>(embeddingResult.TokenCount);
         }
     }

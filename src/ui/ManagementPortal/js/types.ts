@@ -21,6 +21,8 @@ export type Agent = {
 		endpoint_configuration: {
 			endpoint: string;
 			api_key: string;
+			api_version: string;
+			operation_type: string;
 		};
 		model_parameters: {
 			temperature: number;
@@ -265,6 +267,8 @@ export type CreateAgentRequest = {
 		endpoint_configuration: {
 			endpoint: string;
 			api_key: string;
+			api_version: string;
+			operation_type: string;
 		};
 		model_parameters: {
 			temperature: number;

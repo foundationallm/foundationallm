@@ -4,8 +4,10 @@ using FoundationaLLM.Common.Models.Agents;
 using FoundationaLLM.Common.Models.Metadata;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.SemanticKernel.Core.Interfaces;
+using Microsoft.AspNetCore.Server.Kestrel;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 
@@ -27,7 +29,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Plugins
         /// <inheritdoc/>
         public async Task<LLMCompletionResponse> GetCompletion(LLMCompletionRequest request)
         {
-            var kernel = CreateKernel(request.Agent.LanguageModel!);
+            var kernel = CreateKernel(request.Agent.OrchestrationSettings!, request.Settings!);
 
             ChatHistory history = [];
 
@@ -36,7 +38,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Plugins
 
             var kmAgent = request.Agent as KnowledgeManagementAgent;
 
-            if (kmAgent.Vectorization.IndexingProfileObjectId != null && kmAgent.Vectorization.TextEmbeddingProfileObjectId != null)
+            if (kmAgent?.Vectorization.IndexingProfileObjectId != null && kmAgent.Vectorization.TextEmbeddingProfileObjectId != null)
             {
                 internalContext = false;
             }
@@ -66,7 +68,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Plugins
             if (messageHistoryEnabled)
                 history.AddUserMessage(request.UserPrompt!);
 
-            var modelVersion = _configuration.GetValue<string>(request.Agent.LanguageModel!.Version!);
+            var modelVersion = request.Agent.OrchestrationSettings!.ModelParameters?.GetValueOrDefault(ModelParameterKeys.Version)?.ToString();
 
             var chatCompletionService = kernel.GetRequiredService<IChatCompletionService>();
             var result = await chatCompletionService.GetChatMessageContentAsync(promptBuilder, new PromptExecutionSettings() { ModelId = modelVersion });
@@ -89,24 +91,40 @@ namespace FoundationaLLM.SemanticKernel.Core.Plugins
             };
         }
 
-        private Kernel CreateKernel(LanguageModel llm)
+        private Kernel CreateKernel(OrchestrationSettings agentSettings, OrchestrationSettings overrideSettings)
         {
-            var deploymentName = _configuration.GetValue<string>(llm.Deployment!);
-            var endpoint = _configuration.GetValue<string>(llm.ApiEndpoint!);
-            var apiKey = _configuration.GetValue<string>(llm.ApiKey!);
+            var deploymentName = agentSettings.ModelParameters!.GetValueOrDefault(ModelParameterKeys.DeploymentName)?.ToString();
+            if (deploymentName.IsNullOrEmpty())
+                throw new ArgumentException("A valid deployment name is required to be set in the agent's OrchestrationSettings.ModelParameters.");
+
+            if (!agentSettings.EndpointConfiguration!.TryGetValue(EndpointConfigurationKeys.Endpoint, out var endpointKeyName))
+                throw new Exception("An endpoint value must be passed in via an Azure App Config key name.");
+
+            var endpoint = _configuration.GetValue<string>(endpointKeyName?.ToString()!);
+
+            if (!agentSettings.EndpointConfiguration.TryGetValue(EndpointConfigurationKeys.APIKey, out var apiKeyKeyName))
+                throw new Exception("An API key value must be passed in via an Azure App Config key name.");
+
+            var apiKey = _configuration.GetValue<string>(apiKeyKeyName?.ToString()!);
+
+            agentSettings.EndpointConfiguration.TryGetValue(EndpointConfigurationKeys.Provider, out var providerKeyName);
+            var provider = _configuration.GetValue<string>(providerKeyName?.ToString() ?? LanguageModelProviders.MICROSOFT);
+
+            agentSettings.EndpointConfiguration.TryGetValue(EndpointConfigurationKeys.OperationType, out var operationTypeKeyName);
+            var operationType = _configuration.GetValue<string>(operationTypeKeyName?.ToString() ?? OperationTypes.Chat);
 
             var builder = Kernel.CreateBuilder();
 
-            if (llm.Provider == LanguageModelProviders.MICROSOFT)
+            if (provider == LanguageModelProviders.MICROSOFT)
             {
-                if (llm.UseChat)
+                if (operationType == OperationTypes.Chat)
                     builder.AddAzureOpenAIChatCompletion(deploymentName!, endpoint!, apiKey!);
                 else
                     builder.AddAzureOpenAITextGeneration(deploymentName!, endpoint!, apiKey!);
             }
             else
             {
-                if (llm.UseChat)
+                if (operationType == OperationTypes.Chat)
                     builder.AddOpenAIChatCompletion(deploymentName!, endpoint!, apiKey!);
                 else
                     builder.AddOpenAITextGeneration(deploymentName!, endpoint!, apiKey!);

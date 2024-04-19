@@ -10,7 +10,6 @@ using FoundationaLLM.Common.Models.Agents;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
-using FoundationaLLM.Common.Models.ResourceProvider;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Common.Services.ResourceProviders;

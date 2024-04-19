@@ -1,16 +1,16 @@
-﻿using Azure.Core;
-using Azure;
-using Azure.Identity;
+﻿using Azure;
+using Azure.Core;
 using Azure.ResourceManager;
-using Azure.ResourceManager.EventGrid.Models;
+using Azure.ResourceManager.CognitiveServices;
 using Azure.ResourceManager.EventGrid;
-using FoundationaLLM.Common.Interfaces;
-using Microsoft.Extensions.Logging;
-using System.Runtime;
-using System.Xml;
-using System.Threading;
+using Azure.ResourceManager.EventGrid.Models;
 using FoundationaLLM.Common.Authentication;
-using Microsoft.Extensions.Hosting;
+using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Azure;
+using Microsoft.Extensions.Azure;
+using Microsoft.Extensions.Logging;
+using System.Collections.Immutable;
+using System.Xml;
 
 namespace FoundationaLLM.Common.Services.Azure
 {
@@ -74,6 +74,45 @@ namespace FoundationaLLM.Common.Services.Azure
             var eventSubscriptionResource = _armClient.GetNamespaceTopicEventSubscriptionResource(eventSubscriptionId);
 
             await eventSubscriptionResource.DeleteAsync(WaitUntil.Completed, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public async Task<AzureOpenAIAccount> GetOpenAIAccountProperties(string openAIAccountResourceId)
+        {
+            var openAIAccount = _armClient.GetCognitiveServicesAccountResource(
+                ResourceIdentifier.Parse(openAIAccountResourceId));
+
+            var openAIAccountResource = await openAIAccount.GetAsync();
+            var result = new AzureOpenAIAccount
+            {
+                Name = openAIAccountResource.Value.Data.Name,
+                Endpoint = openAIAccountResource.Value.Data.Properties.Endpoint
+            };
+
+            var deployments = openAIAccount.GetCognitiveServicesAccountDeployments();
+
+            foreach (var deployment in deployments)
+            {
+                var deploymentResource = await deployment.GetAsync();
+                var deploymentData = deploymentResource.Value.Data;
+                var tokenThrottlingRule = deploymentData.Properties.RateLimits.SingleOrDefault(rl => rl.Key == "token");
+                var requestThrottlingRule = deploymentData.Properties.RateLimits.SingleOrDefault(rl => rl.Key == "request");
+
+                result.Deployments.Add(new AzureOpenAIAccountDeployment
+                {
+                    AccountEndpoint = result.Endpoint,
+                    Name = deploymentData.Name,
+                    ModelName = deploymentData.Properties.Model.Name,
+                    ModelVersion = deploymentData.Properties.Model.Version,
+                    RequestRateLimit = (int) (requestThrottlingRule?.Count ?? 0),
+                    RequestRateRenewalPeriod = (int) (requestThrottlingRule?.RenewalPeriod ?? 0),
+                    TokenRateLimit = (int) (tokenThrottlingRule?.Count ?? 0),
+                    TokenRateRenewalPeriod = (int) (tokenThrottlingRule?.RenewalPeriod ?? 0),
+                    Capabilities = deploymentData.Properties.Capabilities.ToImmutableDictionary()
+                });
+            }
+
+            return result;
         }
     }
 }

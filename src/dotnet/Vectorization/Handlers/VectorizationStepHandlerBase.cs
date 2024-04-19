@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Vectorization.Exceptions;
+﻿using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Models;
 using Microsoft.Extensions.Configuration;
@@ -98,7 +99,7 @@ namespace FoundationaLLM.Vectorization.Handlers
             }
             finally
             {
-                state.AddRequestIfMissing(request);
+                state.UpdateRequest(request);
 
                 state.LogHandlerEnd(this, request.Id!, _messageId);
                 _logger.LogInformation("Finished handler [{HandlerId}] for request {RequestId} (message id {MessageId}).", _stepId, request.Id, _messageId);

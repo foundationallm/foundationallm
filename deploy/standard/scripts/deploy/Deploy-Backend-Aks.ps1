@@ -49,7 +49,7 @@ Invoke-AndRequireSuccess "Create ${serviceNamespace} namespace" {
 }
 
 $chartNames = @{
-    "agent-factory-api"          = "../config/helm/microservice-values.yml"
+    "orchestration-api"          = "../config/helm/microservice-values.yml"
     "agent-hub-api"              = "../config/helm/microservice-values.yml"
     "core-api"                   = "../config/helm/coreapi-values.yml"
     "core-job"                   = "../config/helm/microservice-values.yml"

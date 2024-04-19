@@ -58,10 +58,8 @@ var zonesAmpls = filter(
 )
 
 /** Outputs **/
-@description('Azure Monitor Action Group')
 output actionGroupId string = actionGroup.outputs.id
-
-@description('Log Analytics Workspace')
+output keyVaultName string = keyVault.outputs.name
 output logAnalyticsWorkspaceId string = logAnalytics.outputs.id
 
 /** Resources **/

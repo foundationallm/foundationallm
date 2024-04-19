@@ -44,12 +44,13 @@ param vnetId string
 /** Locals **/
 @description('Resource Suffix used in naming resources.')
 var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
+var resourceToken = toLower(uniqueString(resourceGroup().id, project, environmentName, location, workload))
 
 @description('Resource Suffix used in naming resources.')
 var opsResourceSuffix = '${project}-${environmentName}-${location}-ops'
 
 var services = {
-  'authorization-api': { displayName: 'AuthorizationAPI'}
+  'authorization-api': { displayName: 'AuthorizationAPI' }
 }
 
 var authSecrets = [
@@ -117,17 +118,18 @@ module authStore 'modules/storageAccount.bicep' = {
   name: 'auth-store-${timestamp}'
   params: {
     actionGroupId: actionGroupId
+    enableHns: true
+    isDataLake: true
+    keyVaultName: authKeyvault.outputs.name
+    location: location
+    logAnalyticWorkspaceId: logAnalyticsWorkspaceId
+    privateDnsZones: filter(dnsZones.outputs.ids, (zone) => contains(['blob', 'dfs'], zone.key))
+    resourceSuffix: resourceToken
+    subnetId: '${vnetId}/subnets/FLLMAuth'
+    tags: tags
     containers: [
       'role-assignments'
     ]
-    enableHns: true
-    isDataLake: true
-    location: location
-    logAnalyticWorkspaceId: logAnalyticsWorkspaceId
-    privateDnsZones: filter(dnsZones.outputs.ids, (zone) => contains(['blob','dfs'], zone.key))
-    resourceSuffix: resourceSuffix
-    subnetId: '${vnetId}/subnets/FLLMAuth'
-    tags: tags
   }
 }
 
@@ -180,7 +182,8 @@ module authStoreSecret 'modules/kvSecret.bicep' = {
 }
 
 @batchSize(3)
-module serviceResources 'modules/authService.bicep' = [for service in items(services): {
+module serviceResources 'modules/authService.bicep' = [
+  for service in items(services): {
     name: 'beSvc-${service.key}-${timestamp}'
     params: {
       resourceSuffix: resourceSuffix
@@ -192,4 +195,3 @@ module serviceResources 'modules/authService.bicep' = [for service in items(serv
     }
   }
 ]
-

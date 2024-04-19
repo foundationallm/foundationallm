@@ -39,7 +39,7 @@ public partial class CoreService(
 {
     private readonly ICosmosDbService _cosmosDbService = cosmosDbService;
     private readonly IDownstreamAPIService _gatekeeperAPIService = downstreamAPIServices.Single(das => das.APIName == HttpClients.GatekeeperAPI);
-    private readonly IDownstreamAPIService _agentFactoryAPIService = downstreamAPIServices.Single(das => das.APIName == HttpClients.AgentFactoryAPI);
+    private readonly IDownstreamAPIService _orchestrationAPIService = downstreamAPIServices.Single(das => das.APIName == HttpClients.OrchestrationAPI);
     private readonly ILogger<CoreService> _logger = logger;
     private readonly ICallContext _callContext = callContext;
     private readonly string _sessionType = brandingSettings.Value.KioskMode ? SessionTypes.KioskSession : SessionTypes.Session;
@@ -219,7 +219,7 @@ public partial class CoreService(
 
     private IDownstreamAPIService GetDownstreamAPIService() =>
         _settings.BypassGatekeeper
-            ? _agentFactoryAPIService
+            ? _orchestrationAPIService
             : _gatekeeperAPIService;
 
     /// <summary>

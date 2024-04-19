@@ -1,13 +1,13 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "agent-factory-api.fullname" . -}}
+{{- $fullName := include "orchestration-api.fullname" . -}}
 
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    app: {{ template "agent-factory-api.name" . }}
-    chart: {{ template "agent-factory-api.chart" . }}
+    app: {{ template "orchestration-api.name" . }}
+    chart: {{ template "orchestration-api.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 {{- with .Values.ingress.annotations }}
@@ -30,7 +30,7 @@ spec:
     - host: {{ . }}
       http:
         paths:
-          - path: /agent-factory(/|$)(.*)
+          - path: /orchestration(/|$)(.*)
             pathType: Prefix
             backend:
               service:

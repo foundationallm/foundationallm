@@ -256,17 +256,17 @@ namespace FoundationaLLM.Core.API
                             CommonHttpRetryStrategyOptions.GetCommonHttpRetryStrategyOptions();
                         });
 
-            var agentFactoryAPISettings = new DownstreamAPIKeySettings
+            var orchestrationAPISettings = new DownstreamAPIKeySettings
             {
-                APIUrl = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_AgentFactoryAPI_APIUrl]!,
-                APIKey = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_AgentFactoryAPI_APIKey]!
+                APIUrl = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_OrchestrationAPI_APIUrl]!,
+                APIKey = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_OrchestrationAPI_APIKey]!
             };
 
-            downstreamAPISettings.DownstreamAPIs[HttpClients.AgentFactoryAPI] = agentFactoryAPISettings;
+            downstreamAPISettings.DownstreamAPIs[HttpClients.OrchestrationAPI] = orchestrationAPISettings;
 
             builder.Services
-                    .AddHttpClient(HttpClients.AgentFactoryAPI,
-                        client => { client.BaseAddress = new Uri(agentFactoryAPISettings.APIUrl); })
+                    .AddHttpClient(HttpClients.OrchestrationAPI,
+                        client => { client.BaseAddress = new Uri(orchestrationAPISettings.APIUrl); })
                     .AddResilienceHandler(
                         "DownstreamPipeline",
                         static strategyBuilder =>
@@ -279,7 +279,7 @@ namespace FoundationaLLM.Core.API
             builder.Services.AddScoped<IDownstreamAPIService, DownstreamAPIService>((serviceProvider)
                 => new DownstreamAPIService(HttpClients.GatekeeperAPI, serviceProvider.GetService<IHttpClientFactoryService>()!));
             builder.Services.AddScoped<IDownstreamAPIService, DownstreamAPIService>((serviceProvider)
-                => new DownstreamAPIService(HttpClients.AgentFactoryAPI, serviceProvider.GetService<IHttpClientFactoryService>()!));
+                => new DownstreamAPIService(HttpClients.OrchestrationAPI, serviceProvider.GetService<IHttpClientFactoryService>()!));
         }
     }
 }

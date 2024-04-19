@@ -41,18 +41,22 @@ namespace FoundationaLLM.SemanticKernel.Core.Services
         }
 
         /// <inheritdoc/>
-        public async Task<(Embedding Embedding, int TokenCount)> GetEmbeddingAsync(string text)
+        public async Task<TextEmbeddingResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string modelName = "text-embedding-ada-002")
         {
-            var embedding = await _textEmbeddingService.GenerateEmbeddingAsync(text);
-            return new(new(embedding), 0);
+            var embeddings = await _textEmbeddingService.GenerateEmbeddingsAsync(textChunks.Select(tc => tc.Content!).ToList());
+            return new TextEmbeddingResult
+            {
+                InProgress = false,
+                TextChunks = textChunks.Select(tc =>
+                {
+                    tc.Embedding = new Embedding(embeddings[tc.Position - 1]);
+                    return tc;
+                }).ToList()
+            };
         }
 
         /// <inheritdoc/>
-        public async Task<(IList<Embedding> Embeddings, int TokenCount)> GetEmbeddingsAsync(IList<string> texts)
-        {
-            var embeddings = await _textEmbeddingService.GenerateEmbeddingsAsync(texts);
-            return new(embeddings.Select(e => new Embedding(e)).ToList(), 0);
-        }
+        public Task<TextEmbeddingResult> GetEmbeddingsAsync(string operationId) => throw new NotImplementedException();
 
         /// <summary>
         /// Creates a <see cref="Kernel"/> instance using the deployment name, endpoint, and API key.

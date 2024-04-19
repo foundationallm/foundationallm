@@ -8,7 +8,7 @@ using FoundationaLLM.Authorization.Utils;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authorization;
-using FoundationaLLM.Common.Models.ResourceProvider;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Collections.Concurrent;

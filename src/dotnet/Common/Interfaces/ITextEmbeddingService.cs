@@ -8,17 +8,19 @@ namespace FoundationaLLM.Common.Interfaces
     public interface ITextEmbeddingService
     {
         /// <summary>
-        /// Creates the vector embedding for a specified text.
+        /// Initializes the text embedding operation.
+        /// Depending on the implementation, this can be an atomic operation or a long-running one.
         /// </summary>
-        /// <param name="text">The text which needs to be embedded.</param>
-        /// <returns>Response containing the vector embedding and the amount of tokens used.</returns>
-        Task<(Embedding Embedding, int TokenCount)> GetEmbeddingAsync(string text);
+        /// <param name="textChunks">The list of text chunks which need to be embedded.</param>
+        /// <param name="modelName"> The name of the model to use for embedding.</param>
+        /// <returns>A <see cref="TextEmbeddingResult"/> object containing the result of the text embedding operation.</returns>
+        Task<TextEmbeddingResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string modelName = "text-embedding-ada-002");
 
         /// <summary>
-        /// Creates the vector embeddings for a specified list of texts.
+        /// Retrieves the result of a long-running text embedding operation.
         /// </summary>
-        /// <param name="texts">The list of texts which need to be embedded.</param>
-        /// <returns>Response containing the list of vector embeddings and the amount of tokens used.</returns>
-        Task<(IList<Embedding> Embeddings, int TokenCount)> GetEmbeddingsAsync(IList<string> texts);
+        /// <param name="operationId">The unique identifier of the long-running operation.</param>
+        /// <returns>A <see cref="TextEmbeddingResult"/> object containing the result of the text embedding operation.</returns>
+        Task<TextEmbeddingResult> GetEmbeddingsAsync(string operationId);
     }
 }

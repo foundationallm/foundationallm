@@ -7,8 +7,6 @@ from fastapi import APIRouter, Depends, Header, Request, Body
 from foundationallm.config import Context
 from foundationallm.models.orchestration import (
     CompletionRequestBase,
-    CompletionRequest,
-    InternalContextCompletionRequest,
     KnowledgeManagementCompletionRequest,
     CompletionResponse
 )
@@ -30,21 +28,15 @@ router = APIRouter(
 
 # temporary to support legacy agents alongside the knowledge-management and internal context agent
 async def resolve_completion_request(request_body: dict = Body(...)) -> CompletionRequestBase:   
-    agent_type = request_body.get("$type", None)
-    if agent_type is None:
-        agent_type = request_body.get("agent", {}).get("type", None)    
+    agent_type = request_body.get("agent", {}).get("type", None)    
     
     match agent_type:
-        case "knowledge-management":
-            kma = KnowledgeManagementCompletionRequest(**request_body)
-            kma.agent.type = "knowledge-management"
-            return kma
-        case "internal-context":
-            ica = InternalContextCompletionRequest(**request_body)
-            ica.agent.type = "internal-context"
-            return ica
+        case "knowledge-management" | "internal-context":
+            request = KnowledgeManagementCompletionRequest(**request_body)
+            request.agent.type = "knowledge-management"
+            return request
         case _:
-            return CompletionRequest(**request_body)
+            raise ValueError(f"Unsupported agent type: {agent_type}")
 
 @router.post('/completion')
 async def get_completion(
@@ -56,7 +48,7 @@ async def get_completion(
     
     Parameters
     ----------
-    completion_request : CompletionRequest
+    completion_request : CompletionRequestBase
         The request object containing the metadata required to build a LangChain agent
         and generate a completion.
     request : Request
@@ -78,6 +70,6 @@ async def get_completion(
                 configuration=request.app.extra['config'],
                 context=Context(user_identity=x_user_identity)
             )
-            return orchestration_manager.run(completion_request.user_prompt)
+            return orchestration_manager.invoke(completion_request.user_prompt)
         except Exception as e:
             handle_exception(e)

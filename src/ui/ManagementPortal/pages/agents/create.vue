@@ -446,7 +446,7 @@
 			<div class="step-header span-2">Which orchestrator should the agent use?</div>
 			<div class="span-2">
 				<Dropdown
-					v-model="orchestrator"
+					v-model="orchestration_settings.orchestrator"
 					:options="orchestratorOptions"
 					option-label="label"
 					option-value="value"
@@ -454,6 +454,53 @@
 					class="dropdown--agent"
 				/>
 			</div>
+
+			<!-- <div class="step-header span-2">What are the orchestrator connection details?</div>
+			<div
+				v-if="
+					['LangChain', 'AzureOpenAIDirect', 'AzureAIDirect'].includes(
+						orchestration_settings.orchestrator,
+					)
+				"
+			>
+				<div class="mb-2 mt-2">API Key:</div>
+				<SecretKeyInput v-model="orchestration_settings.endpoint_configuration.api_key" />
+
+				<div class="mb-2 mt-2">Endpoint:</div>
+				<InputText
+					v-model="orchestration_settings.endpoint_configuration.endpoint"
+					class="w-100"
+					type="text"
+				/>
+
+				<div class="mb-2 mt-2">Version:</div>
+				<InputText
+					v-model="orchestration_settings.endpoint_configuration.api_version"
+					class="w-100"
+					type="text"
+				/>
+
+				<div class="mb-2 mt-2">Operation Type:</div>
+				<InputText
+					v-model="orchestration_settings.endpoint_configuration.operation_type"
+					class="w-100"
+					type="text"
+				/>
+
+				<div class="mb-2 mt-2">Model deployment name</div>
+				<InputText
+					v-model="orchestration_settings.model_parameters.deployment_name"
+					class="w-100"
+					type="text"
+				/>
+
+				<div class="mb-2 mt-2">Model temperature</div>
+				<InputText
+					v-model="orchestration_settings.model_parameters.temperature"
+					class="w-100"
+					type="number"
+				/>
+			</div> -->
 
 			<!-- System prompt -->
 			<div class="step-section-header span-2">System Prompt</div>
@@ -506,38 +553,62 @@ import type {
 
 const defaultSystemPrompt: string = '';
 
-const defaultFormValues = {
-	agentName: '',
-	agentDescription: '',
-	object_id: '',
-	text_partitioning_profile_object_id: '',
-	text_embedding_profile_object_id: '',
-	vectorization_data_pipeline_object_id: '',
-	prompt_object_id: '',
-	dedicated_pipeline: true,
-	agentType: 'knowledge-management' as CreateAgentRequest['type'],
+const getDefaultFormValues = () => {
+	return {
+		agentName: '',
+		agentDescription: '',
+		object_id: '',
+		text_partitioning_profile_object_id: '',
+		text_embedding_profile_object_id: '',
+		vectorization_data_pipeline_object_id: '',
+		prompt_object_id: '',
+		dedicated_pipeline: true,
+		agentType: 'knowledge-management' as CreateAgentRequest['type'],
 
-	editDataSource: false as boolean,
-	selectedDataSource: null as null | AgentDataSource,
+		editDataSource: false as boolean,
+		selectedDataSource: null as null | AgentDataSource,
 
-	editIndexSource: false as boolean,
-	selectedIndexSource: null as null | AgentIndex,
+		editIndexSource: false as boolean,
+		selectedIndexSource: null as null | AgentIndex,
 
-	chunkSize: 500,
-	overlapSize: 50,
+		chunkSize: 500,
+		overlapSize: 50,
 
-	triggerFrequency: 'Event' as string,
-	triggerFrequencyScheduled: '' as string,
+		triggerFrequency: 'Event' as string,
+		triggerFrequencyScheduled: '' as string,
 
-	conversationHistory: false as boolean,
-	conversationMaxMessages: 5 as number,
+		conversationHistory: false as boolean,
+		conversationMaxMessages: 5 as number,
 
-	gatekeeperEnabled: false as boolean,
-	gatekeeperContentSafety: { label: 'None', value: null },
-	gatekeeperDataProtection: { label: 'None', value: null },
+		gatekeeperEnabled: false as boolean,
+		gatekeeperContentSafety: { label: 'None', value: null },
+		gatekeeperDataProtection: { label: 'None', value: null },
 
-	systemPrompt: defaultSystemPrompt as string,
-	orchestrator: 'LangChain' as string,
+		systemPrompt: defaultSystemPrompt as string,
+
+		orchestration_settings: {
+			orchestrator: 'LangChain' as string,
+			endpoint_configuration: {
+				endpoint: '' as string,
+				api_key: '' as string,
+				api_version: '' as string,
+				operation_type: 'chat' as string,
+			} as object,
+			model_parameters: {
+				deployment_name: '' as string,
+				temperature: 0 as number,
+			} as object,
+		},
+
+		// resolved_orchestration_settings: {
+		// 	endpoint_configuration: {
+		// 		endpoint: '' as string,
+		// 		api_key: '' as string,
+		// 		api_version: '' as string,
+		// 		operation_type: 'chat' as string,
+		// 	} as object,
+		// },
+	};
 };
 
 export default {
@@ -553,7 +624,7 @@ export default {
 
 	data() {
 		return {
-			...defaultFormValues,
+			...getDefaultFormValues(),
 
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
@@ -568,6 +639,18 @@ export default {
 				{
 					label: 'LangChain',
 					value: 'LangChain',
+				},
+				{
+					label: 'AzureOpenAIDirect',
+					value: 'AzureOpenAIDirect',
+				},
+				{
+					label: 'AzureAIDirect',
+					value: 'AzureAIDirect',
+				},
+				{
+					label: 'SemanticKernel',
+					value: 'SemanticKernel',
 				},
 			],
 
@@ -673,7 +756,31 @@ export default {
 			this.agentDescription = agent.description || this.agentDescription;
 			this.agentType = agent.type || this.agentType;
 			this.object_id = agent.object_id || this.object_id;
-			this.orchestrator = agent.orchestration_settings?.orchestrator || this.orchestrator;
+
+			this.orchestration_settings.orchestrator =
+				agent.orchestration_settings?.orchestrator || this.orchestration_settings.orchestrator;
+			this.orchestration_settings.endpoint_configuration.endpoint =
+				agent.orchestration_settings?.endpoint_configuration.endpoint ||
+				this.orchestration_settings.endpoint_configuration.endpoint;
+			this.orchestration_settings.endpoint_configuration.api_key =
+				agent.orchestration_settings?.endpoint_configuration.api_key ||
+				this.orchestration_settings.endpoint_configuration.api_key;
+			this.orchestration_settings.endpoint_configuration.api_version =
+				agent.orchestration_settings?.endpoint_configuration.api_version ||
+				this.orchestration_settings.endpoint_configuration.api_version;
+			this.orchestration_settings.endpoint_configuration.operation_type =
+				agent.orchestration_settings?.endpoint_configuration.operation_type ||
+				this.orchestration_settings.endpoint_configuration.operation_type;
+
+			this.orchestration_settings.model_parameters.deployment_name =
+				agent.orchestration_settings?.model_parameters.deployment_name ||
+				this.orchestration_settings.model_parameters.deployment_name;
+			this.orchestration_settings.model_parameters.temperature =
+				agent.orchestration_settings?.model_parameters.temperature ||
+				this.orchestration_settings.model_parameters.temperature;
+
+			// this.resolved_orchestration_settings = agent.resolved_orchestration_settings || this.resolved_orchestration_settings;
+
 			if (agent.vectorization) {
 				this.dedicated_pipeline = agent.vectorization.dedicated_pipeline;
 			}
@@ -739,6 +846,7 @@ export default {
 		},
 
 		resetForm() {
+			const defaultFormValues = getDefaultFormValues();
 			for (const key in defaultFormValues) {
 				this[key] = defaultFormValues[key];
 			}
@@ -912,24 +1020,14 @@ export default {
 					sessions_enabled: true,
 
 					prompt_object_id: promptObjectId,
-					orchestration_settings: {
-						orchestrator: this.orchestrator,
-						endpoint_configuration: {
-							endpoint: 'FoundationaLLM:AzureOpenAI:API:Endpoint',
-							api_key: 'FoundationaLLM:AzureOpenAI:API:Key',
-						},
-						model_parameters: {
-							temperature: 0,
-							deployment_name: 'FoundationaLLM:AzureOpenAI:API:Completions:DeploymentName',
-						},
-					},
+					orchestration_settings: this.orchestration_settings,
 				};
 
 				if (this.editAgent) {
-					await api.updateAgent(this.editAgent, agentRequest);
+					await api.upsertAgent(this.editAgent, agentRequest);
 					successMessage = `Agent "${this.agentName}" was successfully updated!`;
 				} else {
-					await api.createAgent(agentRequest);
+					await api.upsertAgent(agentRequest.name, agentRequest);
 					successMessage = `Agent "${this.agentName}" was successfully created!`;
 					this.resetForm();
 				}

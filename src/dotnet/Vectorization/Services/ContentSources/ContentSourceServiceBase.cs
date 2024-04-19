@@ -1,7 +1,7 @@
 ﻿using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Vectorization.DataFormats.Office;
 using FoundationaLLM.Vectorization.DataFormats.PDF;
-using FoundationaLLM.Vectorization.Exceptions;
+using FoundationaLLM.Common.Exceptions;
 
 namespace FoundationaLLM.Vectorization.Services.ContentSources
 {

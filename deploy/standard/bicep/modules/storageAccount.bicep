@@ -12,7 +12,7 @@ param enableHns bool = false
 param isDataLake bool = false
 
 @description('KeyVault resource suffix for all resources')
-param kvResourceSuffix string = resourceSuffix
+param keyVaultName string
 
 @description('Location for all resources')
 param location string
@@ -56,16 +56,6 @@ var alerts = [
     windowSize: 'PT5M'
   }
 ]
-
-@description('Formatted untruncated resource name')
-var kvFormattedName = toLower('${kvServiceType}-${substring(kvResourceSuffix, 0, length(kvResourceSuffix) - 4)}')
-
-@description('The Resource Name')
-var kvTruncatedName = substring(kvFormattedName,0,min([length(kvFormattedName),20]))
-var kvName = '${kvTruncatedName}-${substring(kvResourceSuffix, length(kvResourceSuffix) - 3, 3)}'
-
-@description('The Resource Service Type token')
-var kvServiceType = 'kv'
 
 @description('The Resource logs to enable')
 var logs = {
@@ -334,7 +324,7 @@ module storageConnectionString 'kvSecret.bicep' = [
     name: 'storageConn-${i}'
     scope: resourceGroup(opsResourceGroupName)
     params: {
-      kvName: kvName
+      kvName: keyVaultName
       secretName: secretName
       secretValue: 'DefaultEndpointsProtocol=https;AccountName=${main.name};AccountKey=${main.listKeys().keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
       tags: tags

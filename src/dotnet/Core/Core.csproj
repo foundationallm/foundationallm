@@ -11,12 +11,12 @@
   
 	<ItemGroup>
 		<PackageReference Include="Azure.AI.OpenAI" Version="1.0.0-beta.6" />
-		<PackageReference Include="Azure.Search.Documents" Version="11.5.0-alpha.20230531.1" />
+		<PackageReference Include="Azure.Search.Documents" Version="11.5.1" />
 		<PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
-		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.37.0" />
+		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.39.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-		<PackageReference Include="Polly.Core" Version="8.2.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+		<PackageReference Include="Polly.Core" Version="8.3.1" />
 	</ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,7 @@
 #! /usr/bin/pwsh
 
 Param (
+    [parameter(Mandatory = $true)][object]$adminGroupObjectId,
     [parameter(Mandatory = $true)][object]$entraClientIds,
     [parameter(Mandatory = $true)][object]$entraScopes,
     [parameter(Mandatory = $true)][object]$ingress,
@@ -123,9 +124,9 @@ $authServices = @{
 }
 
 $services = @{
-    agentfactoryapi          = @{
-        miName         = "mi-agent-factory-api-$svcResourceSuffix"
-        miConfigName   = "agentFactoryApiMiClientId"
+    orchestrationapi          = @{
+        miName         = "mi-orchestration-api-$svcResourceSuffix"
+        miConfigName   = "orchestrationApiMiClientId"
         ingressEnabled = $false
     }
     agenthubapi              = @{
@@ -210,6 +211,7 @@ $tokens.userAccessAdminRoleAssignmentGuid = $(New-Guid).Guid
 $tokens.managementApiRoleAssignmentGuid = $(New-Guid).Guid
 $tokens.coreApiRoleAssignmentGuid = $(New-Guid).Guid
 $tokens.vectorizationApiRoleAssignmentGuid = $(New-Guid).Guid
+$tokens.agentFactoryApiRoleAssignmentGuid = $(New-Guid).Guid
 $tokens.subscriptionId = $subscriptionId
 $tokens.storageResourceGroup = $resourceGroups.storage
 $tokens.opsResourceGroup = $resourceGroups.ops
@@ -335,6 +337,15 @@ $keyVault = Invoke-AndRequireSuccess "Get Key Vault URI" {
 $tokens.keyVaultName = $keyVault.name
 $tokens.keyvaultUri = $keyvault.uri
 
+$authKeyvault = Invoke-AndRequireSuccess "Get Auth Key Vault URI" {
+    az keyvault list `
+        --resource-group $($resourceGroups.auth) `
+        --query "[0].{uri:properties.vaultUri,name:name}"
+        --output json | `
+        ConvertFrom-Json
+}
+$tokens.authKvUri = $authKeyvault.uri
+
 $vnetName = Invoke-AndRequireSuccess "Get VNet Name" {
     az network vnet list `
         --output tsv `
@@ -404,7 +415,8 @@ foreach ($service in $authServices.GetEnumerator()) {
     $service.Value.miClientId = $miClientId
 }
 
-$tokens.agentFactoryApiMiClientId = $services["agentfactoryapi"].miClientId
+$tokens.orchestrationApiMiClientId = $services["orchestrationapi"].miClientId
+$tokens.orchestrationApiMiObjectId = $services["orchestrationapi"].miObjectId
 $tokens.agentHubApiMiClientId = $services["agenthubapi"].miClientId
 $tokens.authorizationApiMiClientId = $authServices["authorizationapi"].miClientId
 $tokens.chatUiMiClientId = $services["chatui"].miClientId
@@ -426,7 +438,7 @@ $tokens.vectorizationJobMiClientId = $services["vectorizationjob"].miClientId
 
 $eventGridProfiles = @{}
 $eventGridProfileNames = @(
-    "agent-factory-api-event-profile"
+    "orchestration-api-event-profile"
     "core-api-event-profile"
     "vectorization-api-event-profile"
     "vectorization-worker-event-profile"
@@ -446,7 +458,7 @@ foreach ($profileName in $eventGridProfileNames) {
     ).Replace('"', '\"')
 }
 
-$tokens.agentFactoryApiEventGridProfile = $eventGridProfiles["agent-factory-api-event-profile"]
+$tokens.orchestrationApiEventGridProfile = $eventGridProfiles["orchestration-api-event-profile"]
 $tokens.coreApiEventGridProfile = $eventGridProfiles["core-api-event-profile"]
 $tokens.vectorizationApiEventGridProfile = $eventGridProfiles["vectorization-api-event-profile"]
 $tokens.vectorizationWorkerEventGridProfile = $eventGridProfiles["vectorization-worker-event-profile"]
@@ -462,7 +474,7 @@ PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,Foundat
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Prompt,FoundationaLLM.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Prompt,FoundationaLLM.json"
 
 $($ingress.apiIngress).PSObject.Properties | ForEach-Object {
-    $tokens.authKeyvaultUri = "PLACEHOLDER"
+    $tokens.authKeyvaultUri = $authKeyvault.uri
     $tokens.serviceBaseUrl = $_.Value.path
     $tokens.serviceHostname = $_.Value.host
     $tokens.serviceName = $_.Value.serviceName
@@ -486,6 +498,6 @@ $($ingress.frontendIngress).PSObject.Properties | ForEach-Object {
     PopulateTemplate $tokens "..,config,helm,service-ingress.template.yml" "..,config,helm,$($_.Name)-ingress.yml"
 }
 
-PopulateTemplate $tokens "..,data,role-assignments,DefaultRoleAssignments.template.json" "..,data,role-assignments,DefaultRoleAssignments.json"
+PopulateTemplate $tokens "..,data,role-assignments,DefaultRoleAssignments.template.json" "..,data,role-assignments,$($instanceId).json"
 
 exit 0

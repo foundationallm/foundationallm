@@ -110,7 +110,7 @@ output keys array = [for (k, i) in keyNames: {
 output openAiKeySecretUri string = apiKeySecret[0].outputs.secretUri
 
 /** Resources **/
-resource main 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' = {
+resource main 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
   kind: 'OpenAI'
   location: location
   name: name
@@ -135,7 +135,7 @@ resource main 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' = {
 }
 
 @batchSize(1)
-resource deployment 'Microsoft.CognitiveServices/accounts/deployments@2023-10-01-preview' = [for config in deployments: {
+resource deployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01' = [for config in deployments: {
   name: config.name
   parent: main
 

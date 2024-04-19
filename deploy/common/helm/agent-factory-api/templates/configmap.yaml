@@ -1,13 +1,13 @@
-{{- $name := include "agent-factory-api.fullname" . -}}
+{{- $name := include "orchestration-api.fullname" . -}}
 
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: "cfg-{{ $name }}"
   labels:
-    app: {{ template "agent-factory-api.name" . }}
-    chart: {{ template "agent-factory-api.chart" .}}
+    app: {{ template "orchestration-api.name" . }}
+    chart: {{ template "orchestration-api.chart" .}}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data: 
-  AZURE_CLIENT_ID: {{ .Values.azureWorkloadIdentity.agentFactoryApiClientId }}
+  AZURE_CLIENT_ID: {{ .Values.azureWorkloadIdentity.orchestrationApiClientId }}

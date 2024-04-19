@@ -14,7 +14,7 @@ namespace Gatekeeper.Tests.Services
         private readonly GatekeeperService _testedService;
 
         private readonly IContentSafetyService _contentSafetyService = Substitute.For<IContentSafetyService>();
-        private readonly IDownstreamAPIService _agentFactoryAPIService = Substitute.For<IDownstreamAPIService>();
+        private readonly IDownstreamAPIService _orchestrationAPIService = Substitute.For<IDownstreamAPIService>();
         private readonly IRefinementService _refinementService = Substitute.For<IRefinementService>();
         private readonly IGatekeeperIntegrationAPIService _gatekeeperIntegrationAPIService = Substitute.For<IGatekeeperIntegrationAPIService>();
         private IOptions<GatekeeperServiceSettings> _gatekeeperServiceSettings;
@@ -28,7 +28,7 @@ namespace Gatekeeper.Tests.Services
             });
 
             _testedService = new GatekeeperService(
-                _agentFactoryAPIService,
+                _orchestrationAPIService,
                 _contentSafetyService,
                 _gatekeeperIntegrationAPIService,
                 _gatekeeperServiceSettings);
@@ -36,7 +36,7 @@ namespace Gatekeeper.Tests.Services
         }
 
         [Fact]
-        public async Task GetCompletion_CallsAgentFactoryAPIServiceWithCompletionRequest()
+        public async Task GetCompletion_CallsOrchestrationAPIServiceWithCompletionRequest()
         {
             // Arrange
             var completionRequest = new CompletionRequest
@@ -48,7 +48,7 @@ namespace Gatekeeper.Tests.Services
 
             var safeContentResult = new AnalyzeTextFilterResult { Safe = true, Reason = string.Empty };
             _contentSafetyService.AnalyzeText(completionRequest.UserPrompt).Returns(safeContentResult);
-            _agentFactoryAPIService.GetCompletion(completionRequest).Returns(expectedResult);
+            _orchestrationAPIService.GetCompletion(completionRequest).Returns(expectedResult);
 
             // Act
             var actualResult = await _testedService.GetCompletion(completionRequest);
@@ -58,7 +58,7 @@ namespace Gatekeeper.Tests.Services
         }
 
         [Fact]
-        public async Task GetSummary_CallsAgentFactoryAPIServiceWithSummaryRequest()
+        public async Task GetSummary_CallsOrchestrationAPIServiceWithSummaryRequest()
         {
             // Arrange
             var summaryRequest = new SummaryRequest
@@ -71,7 +71,7 @@ namespace Gatekeeper.Tests.Services
             var safeContentResult = new AnalyzeTextFilterResult { Safe = true, Reason = string.Empty };
 
             _contentSafetyService.AnalyzeText(summaryRequest.UserPrompt).Returns(safeContentResult);
-            _agentFactoryAPIService.GetSummary(summaryRequest).Returns(expectedResult);
+            _orchestrationAPIService.GetSummary(summaryRequest).Returns(expectedResult);
 
             // Act
             var actualResult = await _testedService.GetSummary(summaryRequest);

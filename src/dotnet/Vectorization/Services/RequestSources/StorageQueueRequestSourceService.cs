@@ -1,4 +1,5 @@
 ﻿using Azure.Storage.Queues;
+using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Models;
 using FoundationaLLM.Vectorization.Models.Configuration;
@@ -85,6 +86,13 @@ namespace FoundationaLLM.Vectorization.Services.RequestSources
         {
             var serializedMessage = JsonSerializer.Serialize(request);
             await _queueClient.SendMessageAsync(serializedMessage).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task UpdateRequest(string messageId, string popReceipt, VectorizationRequest request)
+        {
+            var serializedMessage = JsonSerializer.Serialize(request);
+            await _queueClient.UpdateMessageAsync(messageId, popReceipt, serializedMessage);
         }
     }
 }

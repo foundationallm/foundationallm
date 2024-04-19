@@ -1,13 +1,14 @@
 ﻿using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Vectorization;
-using FoundationaLLM.Vectorization.Exceptions;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
+using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 
 namespace FoundationaLLM.Vectorization.Handlers
 {
@@ -42,39 +43,81 @@ namespace FoundationaLLM.Vectorization.Handlers
             IConfigurationSection? stepConfiguration,
             CancellationToken cancellationToken)
         {
-            await _stateService.LoadArtifacts(state, VectorizationArtifactType.TextPartition);
-
-            var textPartitioningArtifacts = state.Artifacts.Where(a => a.Type == VectorizationArtifactType.TextPartition).ToList();
-
-            if (textPartitioningArtifacts == null
-                || textPartitioningArtifacts.Count == 0)
-            {
-                state.Log(this, request.Id!, _messageId, "The text partition artifacts were not found.");
-                return false;
-            }
-
             var serviceFactory = _serviceProvider.GetService<IVectorizationServiceFactory<ITextEmbeddingService>>()
                 ?? throw new VectorizationException($"Could not retrieve the text embedding service factory instance.");
             var textEmbedding = serviceFactory.GetService(_parameters["text_embedding_profile_name"]);
 
-            var embeddingResult = await textEmbedding.GetEmbeddingsAsync(
-                textPartitioningArtifacts.Select(tpa => tpa.Content!).ToList());
+            var embeddingResult = default(TextEmbeddingResult);
 
-            var position = 0;
-            var serializerOptions = new JsonSerializerOptions
+            if (request.RunningOperations.TryGetValue(_stepId, out var runningOperation))
             {
-                Converters =
-                {
-                    new Embedding.JsonConverter()
-                }
-            };
+                // We have an ongoing operation, so we need to attempt to retrieve the emebdding results
 
-            foreach (var embedding in embeddingResult.Embeddings)
+                embeddingResult = await textEmbedding.GetEmbeddingsAsync(runningOperation.OperationId);
+
+                runningOperation.LastResponseTime = DateTime.UtcNow;
+                runningOperation.PollingCount++;
+
+                if (embeddingResult.InProgress)
+                {
+                    // The operation is still in progress
+                    return false;
+                }
+                else
+                {
+                    // The operation completed
+                    runningOperation.Complete = true;
+                }
+            }
+            else
+            {
+                // We don't have an ongoing operation, so we need to start the embedding operation
+
+                await _stateService.LoadArtifacts(state, VectorizationArtifactType.TextPartition);
+
+                var textPartitioningArtifacts = state.Artifacts.Where(a => a.Type == VectorizationArtifactType.TextPartition).ToList();
+
+                if (textPartitioningArtifacts == null
+                    || textPartitioningArtifacts.Count == 0)
+                {
+                    state.Log(this, request.Id!, _messageId, "The text partition artifacts were not found.");
+                    return false;
+                }
+
+                embeddingResult = await textEmbedding.GetEmbeddingsAsync(
+                    textPartitioningArtifacts.Select(tpa => new TextChunk
+                    {
+                        Position = tpa.Position,
+                        Content = tpa.Content!,
+                        TokensCount = tpa.Size
+                    }).ToList());
+
+                if (embeddingResult.InProgress)
+                {
+                    var now = DateTime.UtcNow;
+
+                    // The operation is a long-running operation, so we need to persist the operation id and
+                    // wait for the next opportunity to attempt to retrieve the operation results.
+                    request.RunningOperations[_stepId] = new VectorizationLongRunningOperation
+                    {
+                        OperationId = embeddingResult.OperationId!,
+                        FirstResponseTime = now,
+                        LastResponseTime = now,
+                        Complete = false,
+                        PollingCount = 0
+                    };
+                    return false;
+                }
+            }
+
+            var serializerOptions = new JsonSerializerOptions { Converters = { new Embedding.JsonConverter() } };
+            foreach (var textChunk in embeddingResult!.TextChunks)
                 state.AddOrReplaceArtifact(new VectorizationArtifact
                 {
                     Type = VectorizationArtifactType.TextEmbeddingVector,
-                    Position = ++position,
-                    Content = JsonSerializer.Serialize(embedding, serializerOptions)
+                    Position = textChunk.Position,
+                    Content = JsonSerializer.Serialize(textChunk.Embedding!, serializerOptions),
+                    Size = textChunk.Embedding!.Value.Length
                 });
 
             return true;

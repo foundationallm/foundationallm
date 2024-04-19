@@ -1,6 +1,6 @@
 ﻿using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Models.Agents;
-using FoundationaLLM.Common.Models.ResourceProvider;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Agent.Models.Resources
@@ -19,7 +19,7 @@ namespace FoundationaLLM.Agent.Models.Resources
             {
                 AgentTypes.Basic => typeof(AgentBase),
                 AgentTypes.KnowledgeManagement => typeof(KnowledgeManagementAgent),
-                AgentTypes.InternalContext => typeof(InternalContextAgent),
+                AgentTypes.InternalContext => typeof(KnowledgeManagementAgent), // Temporary until InternalContextAgent is completely removed.
                 _ => throw new ResourceProviderException($"The agent type {Type} is not supported.")
             };
     }

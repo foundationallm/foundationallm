@@ -115,7 +115,7 @@ class AzureAISearchServiceRetriever(BaseRetriever, CitationRetrievalBase):
             metadata = result.metadata
             if metadata is not None and 'multipart_id' in metadata and metadata['multipart_id']:
                 if result_id not in added_ids:          
-                    title = metadata['multipart_id'][-1]
+                    title = (metadata['multipart_id'][-1]).split('/')[-1]
                     filepath = '/'.join(metadata['multipart_id'])
                     citations.append(Citation(id=result_id, title=title, filepath=filepath))
                     added_ids.add(result_id)

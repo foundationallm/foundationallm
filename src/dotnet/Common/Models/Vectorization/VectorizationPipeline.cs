@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Models.ResourceProvider;
+﻿using FoundationaLLM.Common.Models.ResourceProviders;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Vectorization
@@ -52,5 +52,11 @@ namespace FoundationaLLM.Common.Models.Vectorization
         /// </summary>
         [JsonPropertyName("trigger_cron_schedule")]
         public string? TriggerCronSchedule { get; set; }
+
+        /// <summary>
+        /// Set default property values.
+        /// </summary>
+        public VectorizationPipeline() =>
+            Type = "vectorization-pipeline";
     }
 }

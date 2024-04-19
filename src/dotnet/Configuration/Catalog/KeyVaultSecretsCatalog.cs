@@ -15,7 +15,19 @@ namespace FoundationaLLM.Configuration.Catalog
         public static readonly List<KeyVaultSecretEntry> GenericEntries =
         [
             new(
-                secretName: KeyVaultSecretNames.FoundationaLLM_APIs_AgentFactoryAPI_APIKey,
+                secretName: KeyVaultSecretNames
+                    .FoundationaLLM_AgentHub_StorageManager_BlobStorage_ConnectionString,
+                minimumVersion: "0.3.0",
+                description: ""
+            ),
+            new(
+                secretName: KeyVaultSecretNames
+                    .FoundationaLLM_Agent_ResourceProvider_Storage_ConnectionString,
+                minimumVersion: "0.3.0",
+                description: "The connection string to the Azure Storage account used for the agent resource provider."
+            ),
+            new(
+                secretName: KeyVaultSecretNames.FoundationaLLM_APIs_OrchestrationAPI_APIKey,
                 minimumVersion: "0.3.0",
                 description: ""
             ),
@@ -95,6 +107,17 @@ namespace FoundationaLLM.Configuration.Catalog
                 description:
                 "The API key for the Azure Event Grid service."
             ),
+            new(
+                secretName: KeyVaultSecretNames
+                    .FoundationaLLM_DataSource_ResourceProvider_Storage_ConnectionString,
+                minimumVersion: "0.5.0",
+                description: "The connection string to the Azure Storage account used for the data source resource provider."
+            ),
+            new (
+                secretName: KeyVaultSecretNames.FoundationaLLM_APIs_GatewayAPI_APIKey,
+                minimumVersion: "0.6.0",
+                description: "The API key of the Gateway API"
+            )
         ];
 
         /// <summary>

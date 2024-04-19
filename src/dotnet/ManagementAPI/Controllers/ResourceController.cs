@@ -8,6 +8,7 @@ namespace FoundationaLLM.Management.API.Controllers
     /// <summary>
     /// Provides methods to manage resources.
     /// </summary>
+    /// <param name="callContext">The call context containing user identity details.</param>
     /// <param name="resourceProviderServices">The list of <see cref="IResourceProviderService"/> resource providers.</param>
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
     [Authorize(Policy = "DefaultPolicy")]

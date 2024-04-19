@@ -65,9 +65,9 @@ $env:FOUNDATIONALLM_MANAGEMENT_API_EVENT_GRID_PROFILE = Get-Content ./config/man
 $env:VECTORIZATION_WORKER_CONFIG = Get-Content ./config/vectorization.json
 
 $envConfiguraitons = @{
-    "agent-factory-api-event-profile"    = @{
-        template     = './config/agent-factory-api-event-profile.template.json'
-        render       = './config/agent-factory-api-event-profile.json'
+    "orchestration-api-event-profile"    = @{
+        template     = './config/orchestration-api-event-profile.template.json'
+        render       = './config/orchestration-api-event-profile.json'
         variableName = 'FOUNDATIONALLM_AGENT_FACTORY_API_EVENT_GRID_PROFILE'
     }
     "core-api-event-profile"             = @{

@@ -10,7 +10,7 @@ The FLLM architecture contains layers of APIs that are used to perform different
 sequenceDiagram
     actor U as Caller
     participant C as CoreAPI
-    participant A as AgentFactoryAPI
+    participant A as OrchestrationAPI
     participant O as OrchestrationWrapperAPI
 
     U->>C: Calls Orchestration endpoint
@@ -25,15 +25,15 @@ sequenceDiagram
 ```
 
 > [!NOTE]
-> The AgentFactoryAPI contains a caching layer for the full agent metadata, including the agent, its datasource(s), and prompts. This caching layer is used to improve performance by reducing the number of calls to the underlying hubs. The AgentFactoryAPI also includes endpoints to clear the cache across different categories. In the more detailed diagram below, you can see that the AgentFactoryAPI calls the AgentHubAPI, PromptHubAPI, and DataSourceHubAPI to retrieve the agent metadata.
+> The OrchestrationAPI contains a caching layer for the full agent metadata, including the agent, its datasource(s), and prompts. This caching layer is used to improve performance by reducing the number of calls to the underlying hubs. The OrchestrationAPI also includes endpoints to clear the cache across different categories. In the more detailed diagram below, you can see that the OrchestrationAPI calls the AgentHubAPI, PromptHubAPI, and DataSourceHubAPI to retrieve the agent metadata.
 
 When we look a level deeper, we see that there are several interactions between the APIs that occur during the call chain. The following diagram shows a more detailed flow of the API architecture:
 
 ```mermaid
 graph TD;
     A[CoreAPI] -->|1. User Request| B[GatekeeperAPI] -->|Gatekeeper Extensions| BB[GatekeeperIntegrationAPI]
-    A -...->|"1a. User Request (Bypass Gatekeeper)"| C[AgentFactoryAPI]
-    B ---->|2. Processed Request| C[AgentFactoryAPI]
+    A -...->|"1a. User Request (Bypass Gatekeeper)"| C[OrchestrationAPI]
+    B ---->|2. Processed Request| C[OrchestrationAPI]
     C -->|3. Request| E[(AgentHubAPI)]
     C --->|4. Instantiate Agent| D[[Agent]]
     D -->|Request| F[(PromptHubAPI)]
@@ -51,7 +51,7 @@ graph TD;
 ```
 
 > [!NOTE]
-> Notice that there is an alternate path that bypasses the Gatekeeper API. This path is used when the `FoundationaLLM:APIs:CoreAPI:BypassGatekeeper` configuration value is set to `true`. By default, the Core API does not bypass the Gatekeeper API. Beware that bypassing the Gatekeeper means that you bypass content protection and filtering in favor of improved performance. Make sure you understand the risks before setting this value to `true`.
+> Notice that there is an alternate path that bypasses the Gatekeeper API. This path is used when the `FoundationaLLM:APIs:CoreAPI:BypassGatekeeper` configuration value is set to `true`. By default, the Core API bypasses the Gatekeeper API. To override this behavior and enable the Gatekeeper API, set this value to true. Bypassing the Gatekeeper means that you bypass content protection and filtering in favor of improved performance.
 
 ## Postman collection
 

@@ -70,6 +70,20 @@
       "updated_on": "{{deployTime}}",
       "created_by": "SYSTEM",
       "updated_by": "SYSTEM"
+    },
+    {
+      "name": "{{agentFactoryApiRoleAssignmentGuid}}",
+      "type": "FoundationaLLM.Authorization/roleAssignments",
+      "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/{{agentFactoryApiRoleAssignmentGuid}}",
+      "description": "Role assignment reader for the Agent Factory API managed identity.",
+      "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+      "principal_id": "{{agentFactoryApiMiObjectId}}",
+      "principal_type": "User",
+      "scope": "/instances/{{instanceId}}",
+      "created_on": "{{deployTime}}",
+      "updated_on": "{{deployTime}}",
+      "created_by": "SYSTEM",
+      "updated_by": "SYSTEM"
     }
   ]
 }

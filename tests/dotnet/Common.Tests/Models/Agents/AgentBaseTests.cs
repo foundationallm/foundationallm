@@ -21,7 +21,7 @@ namespace FoundationaLLM.Common.Tests.Models.Agents
             _agentBase.Type = AgentTypes.InternalContext;
 
             // Assert
-            Assert.Equal(typeof(InternalContextAgent), _agentBase.AgentType);
+            Assert.Equal(typeof(KnowledgeManagementAgent), _agentBase.AgentType);
         }
 
         [Fact]

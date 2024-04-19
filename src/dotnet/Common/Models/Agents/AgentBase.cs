@@ -1,7 +1,7 @@
 ﻿using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Models.Metadata;
 using FoundationaLLM.Common.Models.Orchestration;
-using FoundationaLLM.Common.Models.ResourceProvider;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Agents
@@ -18,11 +18,6 @@ namespace FoundationaLLM.Common.Models.Agents
         [JsonIgnore]
         public override string? Type { get; set; }
 
-        /// <summary>
-        /// The agent's language model configuration.
-        /// </summary>
-        [JsonPropertyName("language_model")]
-        public LanguageModel? LanguageModel { get; set; }
         /// <summary>
         /// Indicates whether sessions are enabled for the agent.
         /// </summary>
@@ -58,7 +53,7 @@ namespace FoundationaLLM.Common.Models.Agents
             Type switch
             {
                 AgentTypes.KnowledgeManagement => typeof(KnowledgeManagementAgent),
-                AgentTypes.InternalContext => typeof(InternalContextAgent),
+                AgentTypes.InternalContext => typeof(KnowledgeManagementAgent), // Temporary until InternalContextAgent is completeyl removed.
                 _ => throw new ResourceProviderException($"The agent type {Type} is not supported.")
             };
     }

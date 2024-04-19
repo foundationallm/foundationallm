@@ -12,7 +12,7 @@ jobs:
   build:
     strategy:
       matrix:
-        service: [AgentFactoryAPI, CoreAPI, CoreWorker, GatekeeperAPI, SemanticKernelAPI]
+        service: [OrchestrationAPI, CoreAPI, CoreWorker, GatekeeperAPI, SemanticKernelAPI]
 
     runs-on: ubuntu-latest
 

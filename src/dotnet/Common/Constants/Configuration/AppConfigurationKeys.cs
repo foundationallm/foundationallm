@@ -40,19 +40,19 @@
         /// </summary>
         public const string FoundationaLLM_Agent_ResourceProviderService_Storage_ConnectionString = "FoundationaLLM:Agent:ResourceProviderService:Storage:ConnectionString";
         /// <summary>
-        /// The key for the FoundationaLLM:APIs:AgentFactoryAPI:APIKey app configuration setting.
+        /// The key for the FoundationaLLM:APIs:OrchestrationAPI:APIKey app configuration setting.
         /// This is a Key Vault reference.
         /// </summary>
-        public const string FoundationaLLM_APIs_AgentFactoryAPI_APIKey = "FoundationaLLM:APIs:AgentFactoryAPI:APIKey";
+        public const string FoundationaLLM_APIs_OrchestrationAPI_APIKey = "FoundationaLLM:APIs:OrchestrationAPI:APIKey";
         /// <summary>
-        /// The key for the FoundationaLLM:APIs:AgentFactoryAPI:APIUrl app configuration setting.
+        /// The key for the FoundationaLLM:APIs:OrchestrationAPI:APIUrl app configuration setting.
         /// </summary>
-        public const string FoundationaLLM_APIs_AgentFactoryAPI_APIUrl = "FoundationaLLM:APIs:AgentFactoryAPI:APIUrl";
+        public const string FoundationaLLM_APIs_OrchestrationAPI_APIUrl = "FoundationaLLM:APIs:OrchestrationAPI:APIUrl";
         /// <summary>
-        /// The key for the FoundationaLLM:APIs:AgentFactoryAPI:AppInsightsConnectionString app configuration setting.
+        /// The key for the FoundationaLLM:APIs:OrchestrationAPI:AppInsightsConnectionString app configuration setting.
         /// This is a Key Vault reference.
         /// </summary>
-        public const string FoundationaLLM_APIs_AgentFactoryAPI_AppInsightsConnectionString = "FoundationaLLM:APIs:AgentFactoryAPI:AppInsightsConnectionString";
+        public const string FoundationaLLM_APIs_OrchestrationAPI_AppInsightsConnectionString = "FoundationaLLM:APIs:OrchestrationAPI:AppInsightsConnectionString";
         /// <summary>
         /// The key for the FoundationaLLM:APIs:AgentHubAPI:APIKey app configuration setting.
         /// This is a Key Vault reference.
@@ -120,6 +120,21 @@
         /// The connection string to the Application Insights instance used by the vectorization worker API.
         /// </summary>
         public const string FoundationaLLM_APIs_VectorizationWorker_AppInsightsConnectionString = "FoundationaLLM:APIs:VectorizationWorker:AppInsightsConnectionString";
+        /// <summary>
+        /// The key for the FoundationaLLM:APIs:GatewayAPI:APIUrl app configuration setting.
+        /// The URL of the gateway API.
+        /// </summary>
+        public const string FoundationaLLM_APIs_GatewayAPI_APIUrl = "FoundationaLLM:APIs:GatewayAPI:APIUrl";
+        /// <summary>
+        /// The key for the FoundationaLLM:APIs:GatewayAPI:APIKey app configuration setting.
+        /// The API key of the gateway API.
+        /// </summary>
+        public const string FoundationaLLM_APIs_GatewayAPI_APIKey = "FoundationaLLM:APIs:GatewayAPI:APIKey";
+        /// <summary>
+        /// The key for the FoundationaLLM:APIs:GatewayAPI:AppInsightsConnectionString app configuration setting.
+        /// The connection string to the Application Insights instance used by the gateway API.
+        /// </summary>
+        public const string FoundationaLLM_APIs_GatewayAPI_AppInsightsConnectionString = "FoundationaLLM:APIs:GatewayAPI:AppInsightsConnectionString";
         /// <summary>
         /// The key for the FoundationaLLM:DataSource:ResourceProviderService:Storage:AuthenticationType app configuration setting.
         /// The authentication type used to connect to the underlying storage. Can be one of `AzureIdentity`, `AccountKey`, or `ConnectionString`.
@@ -717,9 +732,9 @@
         /// </summary>
         public const string FoundationaLLM_Events_AzureEventGridEventService_Profiles_CoreAPI = "FoundationaLLM:Events:AzureEventGridEventService:Profiles:CoreAPI";
         /// <summary>
-        /// The key for the FoundationaLLM:Events:AzureEventGridEventService:Profiles:AgentFactoryAPI app configuration setting.
+        /// The key for the FoundationaLLM:Events:AzureEventGridEventService:Profiles:OrchestrationAPI app configuration setting.
         /// </summary>
-        public const string FoundationaLLM_Events_AzureEventGridEventService_Profiles_AgentFactoryAPI = "FoundationaLLM:Events:AzureEventGridEventService:Profiles:AgentFactoryAPI";
+        public const string FoundationaLLM_Events_AzureEventGridEventService_Profiles_OrchestrationAPI = "FoundationaLLM:Events:AzureEventGridEventService:Profiles:OrchestrationAPI";
         /// <summary>
         /// The key for the FoundationaLLM:Events:AzureEventGridEventService:Profiles:ManagementAPI app configuration setting.
         /// </summary>
@@ -764,6 +779,10 @@
         /// </summary>
         public const string FoundationaLLM_APIs_VectorizationWorker = "FoundationaLLM:APIs:VectorizationWorker:*";
         /// <summary>
+        /// The key filter for the FoundationaLLM:APIs:GatewayAPI:* app configuration settings.
+        /// </summary>
+        public const string FoundationaLLM_APIs_GatewayAPI = "FoundationaLLM:APIs:GatewayAPI:*";
+        /// <summary>
         /// The key filter for the FoundationaLLM:CosmosDB:* app configuration settings.
         /// </summary>
         public const string FoundationaLLM_CosmosDB = "FoundationaLLM:CosmosDB:*";
@@ -776,9 +795,9 @@
         /// </summary>
         public const string FoundationaLLM_ManagementAPI_Entra = "FoundationaLLM:ManagementAPI:Entra:*";
         /// <summary>
-        /// The key filter for the FoundationaLLM:AgentFactory:* app configuration settings.
+        /// The key filter for the FoundationaLLM:Orchestration:* app configuration settings.
         /// </summary>
-        public const string FoundationaLLM_AgentFactory = "FoundationaLLM:AgentFactory:*";
+        public const string FoundationaLLM_Orchestration = "FoundationaLLM:Orchestration:*";
         /// <summary>
         /// The key filter for the FoundationaLLM:CoreWorker:* app configuration settings.
         /// </summary>
@@ -824,6 +843,10 @@
         /// The key filter for the FoundationaLLM:AzureAI:* app configuration settings.
         /// </summary>
         public const string FoundationaLLM_AzureAI = "FoundationaLLM:AzureAI:*";
+        /// <summary>
+        /// The key filter for the FoundationaLLM:Gateway:* app configuration settings.
+        /// </summary>
+        public const string FoundationaLLM_Gateway = "FoundationaLLM:Gateway:*";
     }
 
     /// <summary>
@@ -848,9 +871,9 @@
         /// </summary>
         public const string FoundationaLLM_APIs_CoreAPI = "FoundationaLLM:APIs:CoreAPI";
         /// <summary>
-        /// The key section for the FoundationaLLM:APIs:AgentFactoryAPI app configuration settings.
+        /// The key section for the FoundationaLLM:APIs:OrchestrationAPI app configuration settings.
         /// </summary>
-        public const string FoundationaLLM_APIs_AgentFactoryAPI = "FoundationaLLM:APIs:AgentFactoryAPI";
+        public const string FoundationaLLM_APIs_OrchestrationAPI = "FoundationaLLM:APIs:OrchestrationAPI";
         /// <summary>
         /// The key section for the FoundationaLLM:APIs:SemanticKernelAPI app configuration settings.
         /// </summary>
@@ -864,7 +887,7 @@
         /// </summary>
         public const string FoundationaLLM_APIs_AgentHubAPI = "FoundationaLLM:APIs:AgentHubAPI";
         /// <summary>
-        /// The key section for the FoundationaLLM:APIs:AgentFactoryAPI app configuration settings.
+        /// The key section for the FoundationaLLM:APIs:OrchestrationAPI app configuration settings.
         /// </summary>
         public const string FoundationaLLM_APIs_PromptHubAPI = "FoundationaLLM:APIs:PromptHubAPI";
         /// <summary>
@@ -888,9 +911,13 @@
         /// </summary>
         public const string FoundationaLLM_APIs_AuthorizationAPI = "FoundationaLLM:APIs:AuthorizationAPI";
         /// <summary>
-        /// The key section for the FoundationaLLM:AgentFactory app configuration settings.
+        /// The key section for the FoundationaLLM:APIs:GatewayAPI app configuration settings.
         /// </summary>
-        public const string FoundationaLLM_AgentFactory = "FoundationaLLM:AgentFactory";
+        public const string FoundationaLLM_APIs_GatewayAPI = "FoundationaLLM:APIs:GatewayAPI";
+        /// <summary>
+        /// The key section for the FoundationaLLM:Orchestration app configuration settings.
+        /// </summary>
+        public const string FoundationaLLM_Orchestration = "FoundationaLLM:Orchestration";
         /// <summary>
         /// The key section for the FoundationaLLM:SemanticKernelAPI app configuration settings.
         /// </summary>
@@ -936,6 +963,11 @@
         /// </summary>
         public const string FoundationaLLM_Vectorization_AzureAISearchIndexingService = "FoundationaLLM:Vectorization:AzureAISearchIndexingService";
 
+        /// <summary>
+        /// The key section for the FoundationaLLM:Gateway app configuration settings.
+        /// </summary>
+        public const string FoundationaLLM_Gateway = "FoundationaLLM:Gateway";
+
         #region Resource providers
 
         /// <summary>
@@ -978,9 +1010,14 @@
         public const string FoundationaLLM_Events_AzureEventGridEventService_Profiles_CoreAPI = "FoundationaLLM:Events:AzureEventGridEventService:Profiles:CoreAPI";
 
         /// <summary>
-        /// The key section for the FoundationaLLM:Events:AzureEventGridEventService:Profiles:AgentFactoryAPI app configuration settings.
+        /// The key section for the FoundationaLLM:Events:AzureEventGridEventService:Profiles:OrchestrationAPI app configuration settings.
         /// </summary>
-        public const string FoundationaLLM_Events_AzureEventGridEventService_Profiles_AgentFactoryAPI = "FoundationaLLM:Events:AzureEventGridEventService:Profiles:AgentFactoryAPI";
+        public const string FoundationaLLM_Events_AzureEventGridEventService_Profiles_OrchestrationAPI = "FoundationaLLM:Events:AzureEventGridEventService:Profiles:OrchestrationAPI";
+
+        /// <summary>
+        /// The key section for the FoundationaLLM:Events:AzureEventGridEventService:Profiles:SemanticKernelAPI app configuration settings.
+        /// </summary>
+        public const string FoundationaLLM_Events_AzureEventGridEventService_Profiles_SemanticKernelAPI = "FoundationaLLM:Events:AzureEventGridEventService:Profiles:SemanticKernelAPI";
 
         /// <summary>
         /// The key section for the FoundationaLLM:Events:AzureEventGridEventService:Profiles:ManagementAPI app configuration settings.

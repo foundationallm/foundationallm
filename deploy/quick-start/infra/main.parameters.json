@@ -71,7 +71,7 @@
       },
       "servicesExist": {
         "value": {
-          "agent-factory-api": "${SERVICE_AGENTFACTORYAPI_RESOURCE_EXISTS=false}",
+          "orchestration-api": "${SERVICE_ORCHESTRATIONAPI_RESOURCE_EXISTS=false}",
           "agent-hub-api": "${SERVICE_AGENTHUBAPI_RESOURCE_EXISTS=false}",
           "chat-ui": "${SERVICE_CHATUI_RESOURCE_EXISTS=false}",
           "core-api": "${SERVICE_COREAPI_RESOURCE_EXISTS=false}",
@@ -102,12 +102,12 @@
       "services": {
         "value": [
           {
-            "name": "agent-factory-api",
+            "name": "orchestration-api",
             "useEndpoint": false,
             "hasIngress": true,
-            "image": "ghcr.io/solliancenet/foundationallm/agent-factory-api:0.5.0",
+            "image": "ghcr.io/solliancenet/foundationallm/orchestration-api:0.5.0",
             "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
-            "apiKeySecretName": "foundationallm-apis-agentfactoryapi-apikey"
+            "apiKeySecretName": "foundationallm-apis-orchestrationapi-apikey"
           },
           {
             "name": "agent-hub-api",

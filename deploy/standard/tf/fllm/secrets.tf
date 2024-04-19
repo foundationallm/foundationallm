@@ -1,6 +1,6 @@
 locals {
   api_keys = {
-    "agentfactoryapi"   = {}
+    "orchestrationapi"   = {}
     "agenthubapi"       = {}
     "datasourcehubapi"  = {}
     "gatekeeperapi"     = {}

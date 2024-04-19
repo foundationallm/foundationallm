@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using FoundationaLLM.DataSource.Models;
+using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
 
 namespace FoundationaLLM.DataSource.Validation
 {

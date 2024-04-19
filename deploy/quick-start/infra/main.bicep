@@ -635,8 +635,8 @@ output FOUNDATIONALLM_INSTANCE_ID string = instanceId
 var serviceNames = [for service in services: service.name]
 
 output RESOURCE_GROUP_NAME_DEFAULT string = rg.name
-output SERVICE_AGENT_FACTORY_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'agent-factory-api')].outputs.uri
-output SERVICE_AGENT_FACTORY_API_MI_OBJECT_ID string = acaServices[indexOf(serviceNames, 'agent-factory-api')].outputs.miPrincipalId
+output SERVICE_AGENT_FACTORY_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'orchestration-api')].outputs.uri
+output SERVICE_AGENT_FACTORY_API_MI_OBJECT_ID string = acaServices[indexOf(serviceNames, 'orchestration-api')].outputs.miPrincipalId
 output SERVICE_AGENT_HUB_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'agent-hub-api')].outputs.uri
 output SERVICE_AUTH_API_ENDPOINT_URL string = authAcaService.outputs.uri
 output SERVICE_CHAT_UI_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'chat-ui')].outputs.uri

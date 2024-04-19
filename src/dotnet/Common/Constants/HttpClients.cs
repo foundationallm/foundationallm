@@ -21,7 +21,7 @@ public static class HttpClients
     /// <summary>
     /// Named client with matching configuration for the Agent Factory API.
     /// </summary>
-    public const string AgentFactoryAPI = "AgentFactoryAPI";
+    public const string OrchestrationAPI = "OrchestrationAPI";
     /// <summary>
     /// Named client with matching configuration for the LangChain API.
     /// </summary>

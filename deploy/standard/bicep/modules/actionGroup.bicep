@@ -6,10 +6,6 @@ var name = 'ag-${resourceSuffix}'
 
 output id string = main.id
 
-/*
-  Resource representing an Azure Monitor Action Group.
-  This resource is used to define an action group that can be used for alert notifications.
-*/
 resource main 'microsoft.insights/actionGroups@2023-01-01' = {
   location: 'Global'
   name: name

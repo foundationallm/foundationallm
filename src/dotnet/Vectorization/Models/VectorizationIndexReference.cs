@@ -11,7 +11,7 @@ namespace FoundationaLLM.Vectorization.Models
         /// The unique identifier of the index entry reference.
         /// </summary>
         [JsonPropertyOrder(1)]
-        [JsonPropertyName("type")]
+        [JsonPropertyName("index_entry_id")]
         public required string IndexEntryId { get; set; }
 
         /// <summary>

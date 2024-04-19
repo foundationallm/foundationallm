@@ -1,11 +1,12 @@
 ﻿using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Vectorization.Exceptions;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 
 namespace FoundationaLLM.Vectorization.Handlers
 {
@@ -57,16 +58,14 @@ namespace FoundationaLLM.Vectorization.Handlers
 
             var splitResult = textSplitter.SplitPlainText(extractedTextArtifact.Content!);
 
-            var position = 0;
-            foreach (var textChunk in splitResult.TextChunks)
+            foreach (var textChunk in splitResult)
                 state.AddOrReplaceArtifact(new VectorizationArtifact
                 {
                     Type = VectorizationArtifactType.TextPartition,
-                    Position = ++position,
-                    Content = textChunk
+                    Position = textChunk.Position,
+                    Content = textChunk.Content,
+                    Size = textChunk.TokensCount
                 });
-            if (!string.IsNullOrWhiteSpace(splitResult.Message))
-                state.Log(this, request.Id!, _messageId, splitResult.Message);
 
             return true;
         }

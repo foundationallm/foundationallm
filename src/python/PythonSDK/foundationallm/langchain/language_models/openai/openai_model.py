@@ -5,9 +5,7 @@ from langchain_openai import AzureOpenAI, OpenAI, AzureChatOpenAI, ChatOpenAI, A
 from foundationallm.config import Configuration
 from foundationallm.langchain.language_models import LanguageModelBase
 from foundationallm.models.language_models import (
-    AzureOpenAIAPIType,
     EmbeddingModel,
-    LanguageModel,
     LanguageModelProvider
 )
 
@@ -28,58 +26,58 @@ class OpenAIModel(LanguageModelBase):
         """
         self.config = config
 
-    def get_completion_model(self, language_model: LanguageModel) -> BaseLanguageModel:
-        """
-        Returns an OpenAI completion model.
+    # def get_completion_model(self, language_model: LanguageModel) -> BaseLanguageModel:
+    #     """
+    #     Returns an OpenAI completion model.
         
-        Returns
-        -------
-        BaseLanguageModel
-            Returns an OpenAI completion model.
-        """
-        use_chat = language_model.use_chat
+    #     Returns
+    #     -------
+    #     BaseLanguageModel
+    #         Returns an OpenAI completion model.
+    #     """
+    #     use_chat = language_model.use_chat
 
-        openai_base_url = self.config.get_value(language_model.api_endpoint)
-        openai_api_key = self.config.get_value(language_model.api_key)
-        openai_api_version = self.config.get_value(language_model.api_version)
+    #     openai_base_url = self.config.get_value(language_model.api_endpoint)
+    #     openai_api_key = self.config.get_value(language_model.api_key)
+    #     openai_api_version = self.config.get_value(language_model.api_version)
 
-        # Overridable values
-        azure_deployment_name = language_model.deployment
-        temperature = language_model.temperature or 0.0
+    #     # Overridable values
+    #     azure_deployment_name = language_model.deployment
+    #     temperature = language_model.temperature or 0.0
 
-        if language_model.provider == LanguageModelProvider.MICROSOFT:        
-            if use_chat:
-                return AzureChatOpenAI(
-                    api_key = openai_api_key,
-                    api_version = openai_api_version,
-                    azure_deployment = azure_deployment_name,
-                    azure_endpoint = openai_base_url,
-                    #max_tokens = self.config.get_value(f'{config_value_base_name}:Completions:MaxTokens'),
-                    model_version = self.config.get_value(language_model.version),
-                    temperature = temperature
-                )
-            else:
-                return AzureOpenAI(
-                    api_key = openai_api_key,
-                    api_version = openai_api_version,
-                    azure_deployment = azure_deployment_name,
-                    azure_endpoint = openai_base_url,
-                    #max_tokens = self.config.get_value(f'{config_value_base_name}:Completions:MaxTokens'),
-                    temperature = temperature
-                )
-        else:
-            if use_chat:
-                return ChatOpenAI(
-                    base_url = openai_base_url,
-                    api_key = openai_api_key,
-                    temperature = temperature
-                )
-            else:
-                return OpenAI(
-                    base_url = openai_base_url,
-                    api_key = openai_api_key,
-                    temperature = temperature
-                )
+    #     if language_model.provider == LanguageModelProvider.MICROSOFT:        
+    #         if use_chat:
+    #             return AzureChatOpenAI(
+    #                 api_key = openai_api_key,
+    #                 api_version = openai_api_version,
+    #                 azure_deployment = azure_deployment_name,
+    #                 azure_endpoint = openai_base_url,
+    #                 #max_tokens = self.config.get_value(f'{config_value_base_name}:Completions:MaxTokens'),
+    #                 model_version = self.config.get_value(language_model.version),
+    #                 temperature = temperature
+    #             )
+    #         else:
+    #             return AzureOpenAI(
+    #                 api_key = openai_api_key,
+    #                 api_version = openai_api_version,
+    #                 azure_deployment = azure_deployment_name,
+    #                 azure_endpoint = openai_base_url,
+    #                 #max_tokens = self.config.get_value(f'{config_value_base_name}:Completions:MaxTokens'),
+    #                 temperature = temperature
+    #             )
+    #     else:
+    #         if use_chat:
+    #             return ChatOpenAI(
+    #                 base_url = openai_base_url,
+    #                 api_key = openai_api_key,
+    #                 temperature = temperature
+    #             )
+    #         else:
+    #             return OpenAI(
+    #                 base_url = openai_base_url,
+    #                 api_key = openai_api_key,
+    #                 temperature = temperature
+    #             )
 
     def get_embedding_model(self, embedding_model: EmbeddingModel) -> Embeddings:
         """

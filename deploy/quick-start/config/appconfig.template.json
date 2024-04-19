@@ -1,28 +1,28 @@
 {
   "items": [
     {
-      "key": "FoundationaLLM:APIs:AgentFactoryAPI:APIKey",
-      "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/agent-factory-api-apikey\"}",
+      "key": "FoundationaLLM:APIs:OrchestrationAPI:APIKey",
+      "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/orchestration-api-apikey\"}",
       "label": null,
       "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
       "tags": {}
     },
     {
-      "key": "FoundationaLLM:APIs:AgentFactoryAPI:APIUrl",
+      "key": "FoundationaLLM:APIs:OrchestrationAPI:APIUrl",
       "value": "${env:SERVICE_AGENT_FACTORY_API_ENDPOINT_URL}",
       "label": null,
       "content_type": "",
       "tags": {}
     },
     {
-      "key": "FoundationaLLM:APIs:AgentFactoryAPI:AppInsightsConnectionString",
+      "key": "FoundationaLLM:APIs:OrchestrationAPI:AppInsightsConnectionString",
       "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/appinsights-connection\"}",
       "label": null,
       "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
       "tags": {}
     },
     {
-      "key": "FoundationaLLM:APIs:AgentFactoryAPI:ForceHttpsRedirection",
+      "key": "FoundationaLLM:APIs:OrchestrationAPI:ForceHttpsRedirection",
       "value": "false",
       "label": null,
       "content_type": "",
@@ -79,7 +79,7 @@
     },
     {
       "key": "FoundationaLLM:APIs:CoreAPI:BypassGatekeeper",
-      "value": "false",
+      "value": "true",
       "label": null,
       "content_type": "",
       "tags": {}
@@ -778,7 +778,7 @@
       "tags": {}
     },
     {
-      "key": "FoundationaLLM:Events:AzureEventGridEventService:Profiles:AgentFactoryAPI",
+      "key": "FoundationaLLM:Events:AzureEventGridEventService:Profiles:OrchestrationAPI",
       "value": "${env:FOUNDATIONALLM_AGENT_FACTORY_API_EVENT_GRID_PROFILE}",
       "label": null,
       "content_type": "application/json",

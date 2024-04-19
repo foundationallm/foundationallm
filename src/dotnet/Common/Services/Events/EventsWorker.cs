@@ -30,14 +30,14 @@ namespace FoundationaLLM.Common.Services.Events
                 _logger.LogError(ex, "The event service was not able to start. In Core API, this is not considered to be a critical error.");
             }
 
-            _logger.LogInformation("The events worker is preparing to start the event service.");
+            _logger.LogInformation("The events worker is preparing to execute the event service.");
             await _eventService.ExecuteAsync(stoppingToken);
         }
 
         /// <inheritdoc/>
         public override async Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("The events worker is stopping up the event service.");
+            _logger.LogInformation("The events worker is stopping the event service.");
             await _eventService.StopAsync(cancellationToken);
         }
     }

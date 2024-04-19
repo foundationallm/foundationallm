@@ -15,4 +15,4 @@ Select the links in the table above to learn more about each deployment choice.
 
 ### Authentication setup
 
-Follow the instructions in the [Authentication setup document](authentication/index.md) to configure authentication for the solution.
+Follow the instructions in the [Authentication setup document](authentication-authorization/index.md) to configure authentication for the solution.

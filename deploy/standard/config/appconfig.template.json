@@ -29,28 +29,28 @@
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:APIs:AgentFactoryAPI:APIKey",
-        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apis-agentfactoryapi-apikey\"}",
+        "key": "FoundationaLLM:APIs:OrchestrationAPI:APIKey",
+        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apis-orchestrationapi-apikey\"}",
         "label": null,
         "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:APIs:AgentFactoryAPI:APIUrl",
-        "value": "http://agent-factory-api/agentfactory",
+        "key": "FoundationaLLM:APIs:OrchestrationAPI:APIUrl",
+        "value": "http://orchestration-api/orchestration",
         "label": null,
         "content_type": "",
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:APIs:AgentFactoryAPI:AppInsightsConnectionString",
+        "key": "FoundationaLLM:APIs:OrchestrationAPI:AppInsightsConnectionString",
         "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-app-insights-connection-string\"}",
         "label": null,
         "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:APIs:AgentFactoryAPI:ForceHttpsRedirection",
+        "key": "FoundationaLLM:APIs:OrchestrationAPI:ForceHttpsRedirection",
         "value": "false",
         "label": null,
         "content_type": "",
@@ -107,7 +107,7 @@
       },
       {
         "key": "FoundationaLLM:APIs:CoreAPI:BypassGatekeeper",
-        "value": "false",
+        "value": "true",
         "label": null,
         "content_type": "",
         "tags": {}
@@ -820,8 +820,8 @@
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:Events:AzureEventGridEventService:Profiles:AgentFactoryAPI",
-        "value": "{{agentFactoryApiEventGridProfile}}",
+        "key": "FoundationaLLM:Events:AzureEventGridEventService:Profiles:OrchestrationAPI",
+        "value": "{{orchestrationApiEventGridProfile}}",
         "label": null,
         "content_type": "application/json",
         "tags": {}

@@ -3,7 +3,7 @@
     "Topics": [
         {
             "Name": "storage",
-            "SubscriptionPrefix": "storage-agent-factory",
+            "SubscriptionPrefix": "storage-orchestration",
             "EventTypeProfiles": [
                 {
                     "EventType": "Microsoft.Storage.BlobCreated",

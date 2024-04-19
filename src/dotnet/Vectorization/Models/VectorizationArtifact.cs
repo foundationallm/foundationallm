@@ -32,6 +32,14 @@ namespace FoundationaLLM.Vectorization.Models
         public int Position { get; set; }
 
         /// <summary>
+        /// The size of the vectorization artifact.
+        /// The unit of measure is determined by the artifact type.
+        /// </summary>
+        [JsonPropertyOrder(4)]
+        [JsonPropertyName("size")]
+        public int Size { get; set; }
+
+        /// <summary>
         /// The content of the artifact.
         /// </summary>
         [JsonIgnore]

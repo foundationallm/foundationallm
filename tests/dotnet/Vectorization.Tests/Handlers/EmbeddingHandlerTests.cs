@@ -1,11 +1,11 @@
 ﻿using FakeItEasy;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.ResourceProvider;
+using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Vectorization.Handlers;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Models;
-using FoundationaLLM.Vectorization.Models.Resources;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -18,14 +18,15 @@ namespace Vectorization.Tests.Handlers
         {
             ITextEmbeddingService mockTextEmbeddingService = A.Fake<ITextEmbeddingService>();
 
-            A.CallTo(() => mockTextEmbeddingService.GetEmbeddingsAsync(A<IList<string>>._))
-                .Returns((
-                    Embeddings: new List<Embedding> {
-                        new Embedding(new float[5]),
-                        new Embedding(new float[5])
-                    },
-                    TokenCount: 10
-                ));
+            A.CallTo(() => mockTextEmbeddingService.GetEmbeddingsAsync(A<IList<TextChunk>>._, string.Empty))
+                .Returns(new TextEmbeddingResult
+                {
+                    TextChunks = [
+                        new TextChunk { Position = 1, Embedding = new Embedding(new float[5]) },
+                        new TextChunk { Position = 2, Embedding = new Embedding(new float[5]) }
+                    ],
+                    TokenCount = 10
+                });
 
             return mockTextEmbeddingService;
         }

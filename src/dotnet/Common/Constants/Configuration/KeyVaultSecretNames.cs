@@ -12,9 +12,18 @@ namespace FoundationaLLM.Common.Constants.Configuration
     public static class KeyVaultSecretNames
     {
         /// <summary>
-        /// The foundationallm-apis-agentfactoryapi-apikey Key Vault secret name.
+        /// The foundationallm-agenthub-storagemanager-blobstorage-connectionstring Key Vault secret name.
         /// </summary>
-        public const string FoundationaLLM_APIs_AgentFactoryAPI_APIKey = "foundationallm-apis-agentfactoryapi-apikey";
+        public const string FoundationaLLM_AgentHub_StorageManager_BlobStorage_ConnectionString = "foundationallm-agenthub-storagemanager-blobstorage-connectionstring";
+        /// <summary>
+        /// The foundationallm-agent-resourceprovider-storage-connectionstring Key Vault secret name.
+        /// The connection string to the Azure Storage account used for the agent resource provider.
+        /// </summary>
+        public const string FoundationaLLM_Agent_ResourceProvider_Storage_ConnectionString = "foundationallm-agent-resourceprovider-storage-connectionstring";
+        /// <summary>
+        /// The foundationallm-apis-orchestrationapi-apikey Key Vault secret name.
+        /// </summary>
+        public const string FoundationaLLM_APIs_OrchestrationAPI_APIKey = "foundationallm-apis-orchestrationapi-apikey";
         /// <summary>
         /// The foundationallm-app-insights-connection-string Key Vault secret name.
         /// </summary>
@@ -102,6 +111,16 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// The API key for the Azure Event Grid service.
         /// </summary>
         public const string FoundationaLLM_Events_AzureEventGrid_APIKey = "foundationallm-events-azureeventgrid-apikey";
+        /// <summary>
+        /// The foundationallm-datasource-resourceprovider-storage-connectionstring Key Vault secret name.
+        /// The connection string to the Azure Storage account used for the data source resource provider.
+        /// </summary>
+        public const string FoundationaLLM_DataSource_ResourceProvider_Storage_ConnectionString = "foundationallm-datasource-resourceprovider-storage-connectionstring";
+        /// <summary>
+        /// The foundationallm-apis-gatewayapi-apikey Key Vault secret name.
+        /// The API key of the Gateway API.
+        /// </summary>
+        public const string FoundationaLLM_APIs_GatewayAPI_APIKey = "foundationallm-apis-gatewayapi-apikey";
 
         #region Authorization API
 

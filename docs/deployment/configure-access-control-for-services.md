@@ -26,8 +26,8 @@ Use the steps below to grant access to the App Configuration service:
 
 1. Sign in to the [Azure portal](https://portal.azure.com/) as at least a Contributor.
 2. Navigate to the resource group where the solution is deployed.
-    > [!NOTE]
-    > If you performed an Azure Container Apps (ACA) or Azure Kubernetes Service (AKS) deployment, you will see an extra Resource Group that starts with `ME_` or `MC_` in addition to the Resource Group defined during the deployment. You will need to navigate to the Resource Group that **does not start with** `ME_` or `MC_` to access the App Configuration resource.
+> [!NOTE]
+> If you performed an Azure Container Apps (ACA) or Azure Kubernetes Service (AKS) deployment, you will see an extra Resource Group that starts with `ME_` or `MC_` in addition to the Resource Group defined during the deployment. You will need to navigate to the Resource Group that **does not start with** `ME_` or `MC_` to access the App Configuration resource.
 3. Select the **App Configuration** resource. The name should end with `-appconfig`.
 4. Select **Access Control (IAM)** in the left-hand menu.
 
@@ -66,8 +66,8 @@ Use the steps below to grant access to the Key Vault service:
 
 1. Sign in to the [Azure portal](https://portal.azure.com/) as at least a Contributor.
 2. Navigate to the resource group where the solution is deployed.
-    > [!NOTE]
-    > If you performed an Azure Container Apps (ACA) or Azure Kubernetes Service (AKS) deployment, you will see an extra Resource Group that starts with `ME_` or `MC_` in addition to the Resource Group defined during the deployment. You will need to navigate to the Resource Group that **does not start with** `ME_` or `MC_` to access the App Configuration resource.
+> [!NOTE]
+> If you performed an Azure Container Apps (ACA) or Azure Kubernetes Service (AKS) deployment, you will see an extra Resource Group that starts with `ME_` or `MC_` in addition to the Resource Group defined during the deployment. You will need to navigate to the Resource Group that **does not start with** `ME_` or `MC_` to access the App Configuration resource.
 3. Select the **Key Vault** resource. The name should end with `-kv`.
 4. Select **Access Control (IAM)** in the left-hand menu.
 

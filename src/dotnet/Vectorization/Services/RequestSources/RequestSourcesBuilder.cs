@@ -1,5 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Vectorization.Exceptions;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Models;
 using FoundationaLLM.Vectorization.Models.Configuration;

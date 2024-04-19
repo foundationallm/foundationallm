@@ -1,27 +1,27 @@
-{{- $name := include "agent-factory-api.fullname" . -}}
+{{- $name := include "orchestration-api.fullname" . -}}
 {{- $cfgname := printf "%s-%s" "cfg" $name -}}
 {{- $secretName := printf "%s-%s" "secret" $name -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "agent-factory-api.fullname" . }}
+  name: {{ template "orchestration-api.fullname" . }}
   labels:
-    app: {{ template "agent-factory-api.name" . }}
-    chart: {{ template "agent-factory-api.chart" . }}
+    app: {{ template "orchestration-api.name" . }}
+    chart: {{ template "orchestration-api.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "agent-factory-api.name" . }}
+      app: {{ template "orchestration-api.name" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       annotations:
         rollme: {{ randAlphaNum 5 | quote }}
       labels:
-        app: {{ template "agent-factory-api.name" . }}
+        app: {{ template "orchestration-api.name" . }}
         release: {{ .Release.Name }}
         azure.workload.identity/use: "true"
     spec:

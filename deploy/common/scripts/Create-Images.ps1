@@ -25,7 +25,7 @@ Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
 $workflows =
-'agent-factory-api-release.yml',
+'orchestration-api-release.yml',
 'agent-hub-api-release.yml',
 'authorization-api-release.yml',
 'chat-ui-release.yml',

@@ -164,5 +164,6 @@ foreach ($endpoint in $hosts.GetEnumerator()) {
     $hostFile += "$($endpoint.Value)  $($endpoint.Key)"
 }
 
-Write-Host "Writing hosts file" -ForegroundColor Green
-$hostFile | Sort-Object | Out-File -FilePath "../config/hosts" -Encoding ascii -Force
+$hostFilePath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath("../config/hosts")
+Write-Host "Writing hosts file to ${hostFilePath}" -ForegroundColor Green
+$hostFile | Sort-Object | Out-File -FilePath $hostFilePath -Encoding ascii -Force

@@ -39,6 +39,18 @@
 			</div>
 
 			<div v-if="message.sender !== 'User'" class="message__footer">
+				<div v-if="message.citations?.length" class="citations">
+					<span><b>Citations: </b></span>
+					<span
+						v-for="citation in message.citations"
+						:key="citation.id"
+						v-tooltip.top="{ value: citation.filepath, showDelay: 500, hideDelay: 300 }"
+						class="citation"
+					>
+						<i class="pi pi-file"></i>
+						{{ citation.title.split('/').pop() }}
+					</span>
+				</div>
 				<span class="ratings">
 					<!-- Like -->
 					<span>
@@ -236,6 +248,7 @@ export default {
 	margin-top: 8px;
 	display: flex;
 	justify-content: space-between;
+	flex-wrap: wrap;
 }
 
 .header__sender {
@@ -261,6 +274,23 @@ export default {
 
 .token-chip--in {
 	background-color: var(--primary-color);
+}
+
+.citations {
+	flex-basis: 100%;
+	padding: 8px 12px;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.citation {
+	background-color: var(--primary-color);
+	color: var(--primary-text);
+	margin: 4px;
+	padding: 4px 8px;
+	cursor: pointer;
+	white-space: nowrap;
 }
 
 .ratings {

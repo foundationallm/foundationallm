@@ -9,6 +9,6 @@ jobs:
     name: Release Docker Image
     uses: ./.github/workflows/release-docker-image.yml
     with:
-      image: agent-factory-api
+      image: orchestration-api
       context: ./src
-      dockerfile: ./src/dotnet/AgentFactoryAPI/Dockerfile
+      dockerfile: ./src/dotnet/OrchestrationAPI/Dockerfile

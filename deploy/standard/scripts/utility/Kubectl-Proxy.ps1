@@ -4,7 +4,7 @@ Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
 $services = @{
-    "foundationallm-agent-factory-api" = 5000
+    "foundationallm-orchestration-api" = 5000
     "foundationallm-gatekeeper-api" = 5001
     "foundationallm-agent-hub-api" = 5002
     "foundationallm-core-api" = 5003

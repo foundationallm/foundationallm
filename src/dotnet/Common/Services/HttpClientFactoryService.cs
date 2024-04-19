@@ -1,14 +1,7 @@
 ﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
-using Microsoft.Extensions.Options;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace FoundationaLLM.Common.Services
 {

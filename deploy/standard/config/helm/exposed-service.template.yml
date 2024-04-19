@@ -2,7 +2,7 @@ appConfig:
   uri: {{appConfigEndpoint}}
   connectionString: {{appConfigConnectionString}}
 azureWorkloadIdentity:
-  agentFactoryApiClientId: {{agentFactoryApiMiClientId}}
+  orchestrationApiClientId: {{orchestrationApiMiClientId}}
   agentHubApiClientId: {{agentHubApiMiClientId}}
   chatUiClientId: {{chatUiMiClientId}}
   coreApiClientId: {{coreApiMiClientId}}

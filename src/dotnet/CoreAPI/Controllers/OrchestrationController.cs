@@ -3,7 +3,7 @@ using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Agents;
 using FoundationaLLM.Common.Models.Orchestration;
-using FoundationaLLM.Common.Models.ResourceProvider;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +36,7 @@ namespace FoundationaLLM.Core.API.Controllers
         /// </remarks>
         /// <param name="coreService">The Core service provides methods for getting
         /// completions from the orchestrator.</param>
+        /// <param name="callContext">The call context for the request.</param>
         /// <param name="resourceProviderServices">The list of <see cref="IResourceProviderService"/> resource provider services.</param>
         /// <param name="logger">The logging interface used to log under the
         /// <see cref="OrchestrationController"/> type name.</param>

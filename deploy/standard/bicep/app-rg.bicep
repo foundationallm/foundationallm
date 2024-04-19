@@ -78,7 +78,7 @@ var tags = {
 }
 
 var backendServices = {
-  'agent-factory-api': { displayName: 'AgentFactoryAPI' }
+  'orchestration-api': { displayName: 'OrchestrationAPI' }
   'agent-hub-api': { displayName: 'AgentHubAPI' }
   'core-job': { displayName: 'CoreWorker' }
   'data-source-hub-api': { displayName: 'DataSourceHubAPI' }
