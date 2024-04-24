@@ -1737,19 +1737,6 @@ namespace FoundationaLLM.Configuration.Catalog
 
             new(
                 key: AppConfigurationKeys
-                    .FoundationaLLM_Vectorization_StateService_Storage_ConnectionString,
-                minimumVersion: "0.3.0",
-                defaultValue: "Key Vault secret name: `foundationallm-vectorization-state-connectionstring`",
-                description:
-                "The connection string to the Azure Storage account used for the vectorization state service.",
-                keyVaultSecretName: KeyVaultSecretNames
-                    .FoundationaLLM_Vectorization_State_ConnectionString,
-                contentType: "text/plain",
-                sampleObject: null
-            ),
-
-            new(
-                key: AppConfigurationKeys
                     .FoundationaLLM_Vectorization_ResourceProviderService_Storage_AuthenticationType,
                 minimumVersion: "0.3.0",
                 defaultValue: "",

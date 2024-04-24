@@ -670,11 +670,6 @@
         /// </summary>
         public const string FoundationaLLM_Vectorization_StateService_Storage_AuthenticationType = "FoundationaLLM:Vectorization:StateService:Storage:AuthenticationType";
         /// <summary>
-        /// The key for the FoundationaLLM:Vectorization:StateService:Storage:ConnectionString app configuration setting.
-        /// The connection string to the Azure Storage account used for the vectorization state service.
-        /// </summary>
-        public const string FoundationaLLM_Vectorization_StateService_Storage_ConnectionString = "FoundationaLLM:Vectorization:StateService:Storage:ConnectionString";
-        /// <summary>
         /// The key for the FoundationaLLM:Vectorization:ResourceProviderService:Storage:AuthenticationType app configuration setting.
         /// The authentication type used to connect to the underlying storage. Can be one of `AzureIdentity`, `AccountKey`, or `ConnectionString`.
         /// </summary>
