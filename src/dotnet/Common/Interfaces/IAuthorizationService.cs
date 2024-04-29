@@ -16,5 +16,13 @@ namespace FoundationaLLM.Common.Interfaces
         Task<ActionAuthorizationResult> ProcessAuthorizationRequest(
             string instanceId,
             ActionAuthorizationRequest authorizationRequest);
+
+        /// <summary>
+        /// Processes a role assignment request.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="roleAssignmentRequest">The role assignment request.</param>
+        /// <returns></returns>
+        Task<RoleAssignmentResult> ProcessRoleAssignmentRequest(string instanceId, RoleAssignmentRequest roleAssignmentRequest);
     }
 }

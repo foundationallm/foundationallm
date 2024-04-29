@@ -1,104 +1,128 @@
 [
-  {
-    "type": "FoundationaLLM.Authorization/roleDefinitions",
-    "name": "17ca4b59-3aee-497d-b43b-95dd7d916f99",
-    "object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/17ca4b59-3aee-497d-b43b-95dd7d916f99",
-    "display_name": "Role Based Access Control Administrator",
-    "description": "Manage access to FoundationaLLM resources by assigning roles using FoundationaLLM RBAC.",
-    "assignable_scopes": [
-      "/"
-    ],
-    "permissions": [
-      {
-        "actions": [
-          "FoundationaLLM.Authorization/roleAssignments/read",
-          "FoundationaLLM.Authorization/roleAssignments/write",
-          "FoundationaLLM.Authorization/roleAssignments/delete"
-        ],
-        "not_actions": [],
-        "data_actions": [],
-        "not_data_actions": []
-      }
-    ],
-    "created_on": "2024-03-07T00:00:00.0000000Z",
-    "updated_on": "2024-03-07T00:00:00.0000000Z",
-    "created_by": null,
-    "updated_by": null
-  },
-  {
-    "type": "FoundationaLLM.Authorization/roleDefinitions",
-    "name": "00a53e72-f66e-4c03-8f81-7e885fd2eb35",
-    "object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
-    "display_name": "Reader",
-    "description": "View all resources without the possiblity of making any changes.",
-    "assignable_scopes": [
-      "/"
-    ],
-    "permissions": [
-      {
-        "actions": [
-          "*/read"
-        ],
-        "not_actions": [],
-        "data_actions": [],
-        "not_data_actions": []
-      }
-    ],
-    "created_on": "2024-03-07T00:00:00.0000000Z",
-    "updated_on": "2024-03-07T00:00:00.0000000Z",
-    "created_by": null,
-    "updated_by": null
-  },
-  {
-    "type": "FoundationaLLM.Authorization/roleDefinitions",
-    "name": "a9f0020f-6e3a-49bf-8d1d-35fd53058edf",
-    "object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/a9f0020f-6e3a-49bf-8d1d-35fd53058edf",
-    "display_name": "Contributor",
-    "description": "Full access to manage all resources without the possiblity of assigning roles in FoundationaLLM RBAC.",
-    "assignable_scopes": [
-      "/"
-    ],
-    "permissions": [
-      {
-        "actions": [
-          "*"
-        ],
-        "not_actions": [
-          "FoundationaLLM.Authorization/*/write",
-          "FoundationaLLM.Authorization/*/delete"
-        ],
-        "data_actions": [],
-        "not_data_actions": []
-      }
-    ],
-    "created_on": "2024-03-07T00:00:00.0000000Z",
-    "updated_on": "2024-03-07T00:00:00.0000000Z",
-    "created_by": null,
-    "updated_by": null
-  },
-  {
-    "type": "FoundationaLLM.Authorization/roleDefinitions",
-    "name": "fb8e0fd0-f7e2-4957-89d6-19f44f7d6618",
-    "object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/fb8e0fd0-f7e2-4957-89d6-19f44f7d6618",
-    "display_name": "User Access Administrator",
-    "description": "Manage access to FoundationaLLM resources.",
-    "assignable_scopes": [
-      "/"
-    ],
-    "permissions": [
-      {
-        "actions": [
-          "*/read",
-          "FoundationaLLM.Authorization/*"
-        ],
-        "not_actions": [],
-        "data_actions": [],
-        "not_data_actions": []
-      }
-    ],
-    "created_on": "2024-03-07T00:00:00.0000000Z",
-    "updated_on": "2024-03-07T00:00:00.0000000Z",
-    "created_by": null,
-    "updated_by": null
-  }
+	{
+		"type": "FoundationaLLM.Authorization/roleDefinitions",
+		"name": "17ca4b59-3aee-497d-b43b-95dd7d916f99",
+		"object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/17ca4b59-3aee-497d-b43b-95dd7d916f99",
+		"display_name": "Role Based Access Control Administrator",
+		"description": "Manage access to FoundationaLLM resources by assigning roles using FoundationaLLM RBAC.",
+		"assignable_scopes": [
+			"/"
+		],
+		"permissions": [
+			{
+				"actions": [
+					"FoundationaLLM.Authorization/roleAssignments/read",
+					"FoundationaLLM.Authorization/roleAssignments/write",
+					"FoundationaLLM.Authorization/roleAssignments/delete"
+				],
+				"not_actions": [],
+				"data_actions": [],
+				"not_data_actions": []
+			}
+		],
+		"created_on": "2024-03-07T00:00:00.0000000Z",
+		"updated_on": "2024-03-07T00:00:00.0000000Z",
+		"created_by": null,
+		"updated_by": null
+	},
+	{
+		"type": "FoundationaLLM.Authorization/roleDefinitions",
+		"name": "00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+		"object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+		"display_name": "Reader",
+		"description": "View all resources without the possiblity of making any changes.",
+		"assignable_scopes": [
+			"/"
+		],
+		"permissions": [
+			{
+				"actions": [
+					"*/read"
+				],
+				"not_actions": [],
+				"data_actions": [],
+				"not_data_actions": []
+			}
+		],
+		"created_on": "2024-03-07T00:00:00.0000000Z",
+		"updated_on": "2024-03-07T00:00:00.0000000Z",
+		"created_by": null,
+		"updated_by": null
+	},
+	{
+		"type": "FoundationaLLM.Authorization/roleDefinitions",
+		"name": "a9f0020f-6e3a-49bf-8d1d-35fd53058edf",
+		"object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/a9f0020f-6e3a-49bf-8d1d-35fd53058edf",
+		"display_name": "Contributor",
+		"description": "Full access to manage all resources without the possiblity of assigning roles in FoundationaLLM RBAC.",
+		"assignable_scopes": [
+			"/"
+		],
+		"permissions": [
+			{
+				"actions": [
+					"*"
+				],
+				"not_actions": [
+					"FoundationaLLM.Authorization/*/write",
+					"FoundationaLLM.Authorization/*/delete"
+				],
+				"data_actions": [],
+				"not_data_actions": []
+			}
+		],
+		"created_on": "2024-03-07T00:00:00.0000000Z",
+		"updated_on": "2024-03-07T00:00:00.0000000Z",
+		"created_by": null,
+		"updated_by": null
+	},
+	{
+		"type": "FoundationaLLM.Authorization/roleDefinitions",
+		"name": "fb8e0fd0-f7e2-4957-89d6-19f44f7d6618",
+		"object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/fb8e0fd0-f7e2-4957-89d6-19f44f7d6618",
+		"display_name": "User Access Administrator",
+		"description": "Manage access to FoundationaLLM resources.",
+		"assignable_scopes": [
+			"/"
+		],
+		"permissions": [
+			{
+				"actions": [
+					"*/read",
+					"FoundationaLLM.Authorization/*"
+				],
+				"not_actions": [],
+				"data_actions": [],
+				"not_data_actions": []
+			}
+		],
+		"created_on": "2024-03-07T00:00:00.0000000Z",
+		"updated_on": "2024-03-07T00:00:00.0000000Z",
+		"created_by": null,
+		"updated_by": null
+	},
+	{
+		"type": "FoundationaLLM.Authorization/roleDefinitions",
+		"name": "1301f8d4-3bea-4880-945f-315dbd2ddb46",
+		"object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/1301f8d4-3bea-4880-945f-315dbd2ddb46",
+		"display_name": "Owner",
+		"description": "Full access to manage all resources, including the ability to assign roles in FoundationaLLM RBAC.",
+		"assignable_scopes": [
+			"/"
+		],
+		"permissions": [
+			{
+				"actions": [
+					"*"
+				],
+				"not_actions": [],
+				"data_actions": [],
+				"not_data_actions": []
+			}
+		],
+		"created_on": "2024-03-07T00:00:00.0000000Z",
+		"updated_on": "2024-03-07T00:00:00.0000000Z",
+		"created_by": null,
+		"updated_by": null
+	}
 ]

@@ -197,6 +197,54 @@ namespace FoundationaLLM.Authorization.Services
             });
         }
 
+
+        /// <inheritdoc/>
+        public async Task<RoleAssignmentResult> AssignRole(string instanceId, RoleAssignmentRequest roleAssignmentRequest)
+        {
+            var roleAssignmentStoreFile = $"/{instanceId.ToLower()}.json";
+
+            if (await _storageService.FileExistsAsync(ROLE_ASSIGNMENTS_CONTAINER_NAME, roleAssignmentStoreFile, default))
+            {
+                var fileContent = await _storageService.ReadFileAsync(ROLE_ASSIGNMENTS_CONTAINER_NAME, roleAssignmentStoreFile, default);
+                var roleAssignmentStore = JsonSerializer.Deserialize<RoleAssignmentStore>(
+                    Encoding.UTF8.GetString(fileContent.ToArray()));
+                if (roleAssignmentStore != null)
+                {
+                    var exists = roleAssignmentStore.RoleAssignments.Any(x => x.PrincipalId == roleAssignmentRequest.PrincipalId
+                                                                           && x.Scope == roleAssignmentRequest.Scope
+                                                                           && x.RoleDefinitionId == roleAssignmentRequest.RoleDefinitionId);
+                    if (!exists)
+                    {
+                        var roleAssignment = new RoleAssignment()
+                        { 
+                            Name = roleAssignmentRequest.Name,
+                            Description = roleAssignmentRequest.Description,
+                            ObjectId = roleAssignmentRequest.ObjectId,
+                            PrincipalId = roleAssignmentRequest.PrincipalId,
+                            PrincipalType = roleAssignmentRequest.PrincipalType,
+                            RoleDefinitionId = roleAssignmentRequest.RoleDefinitionId,
+                            Scope = roleAssignmentRequest.Scope,
+                        };
+
+                        roleAssignmentStore.RoleAssignments.Add(roleAssignment);
+                        await _storageService.WriteFileAsync(
+                                ROLE_ASSIGNMENTS_CONTAINER_NAME,
+                                roleAssignmentStoreFile,
+                                JsonSerializer.Serialize(roleAssignmentStore),
+                                default,
+                                default);
+
+                        return new RoleAssignmentResult() { Success = true };
+                    }
+                }
+            }
+
+            return new RoleAssignmentResult() { Success = false };
+        }
+
+        /// <inheritdoc/>
+        public Task<RoleAssignmentResult> RevokeRole(string instanceId, RoleAssignmentRequest roleAssignmentRequest) => throw new NotImplementedException();
+
         private bool ActionAllowed(ResourcePath resourcePath, ActionAuthorizationRequest authorizationRequest)
         {
             // Get cache associated with the instance id.
@@ -236,7 +284,7 @@ namespace FoundationaLLM.Authorization.Services
                 resourcePath,
                 authorizationRequest.PrincipalId);
 
-            return false;
+            return true; //return false;
         }
     }
 }

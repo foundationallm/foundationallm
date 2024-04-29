@@ -59,6 +59,36 @@ namespace FoundationaLLM.Authorization.Services
             }
         }
 
+        public async Task<RoleAssignmentResult> ProcessRoleAssignmentRequest(string instanceId, RoleAssignmentRequest roleAssignmentRequest)
+        {
+            try
+            {
+                var httpClient = await CreateHttpClient();
+                var response = await httpClient.PostAsync(
+                    $"/instances/{instanceId}/security/roles/assign",
+                    JsonContent.Create(roleAssignmentRequest));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var result = JsonSerializer.Deserialize<RoleAssignmentResult>(responseContent);
+
+                    if (result == null)
+                        return new RoleAssignmentResult() { Success = false };
+
+                    return result;
+                }
+
+                _logger.LogError("The call to the Authorization API returned an error: {StatusCode} - {ReasonPhrase}.", response.StatusCode, response.ReasonPhrase);
+                return new RoleAssignmentResult() { Success = false };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "There was an error calling the Authorization API");
+                return new RoleAssignmentResult() { Success = false };
+            }
+        }
+
         private async Task<HttpClient> CreateHttpClient()
         {
             var httpClient = _httpClientFactory.CreateClient();

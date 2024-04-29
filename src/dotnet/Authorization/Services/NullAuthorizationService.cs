@@ -16,5 +16,14 @@ namespace FoundationaLLM.Authorization.Services
             await Task.CompletedTask;
             return new ActionAuthorizationResult { AuthorizationResults = results };
         }
+
+        public async Task<RoleAssignmentResult> ProcessRoleAssignmentRequest(string instanceId, RoleAssignmentRequest roleAssignmentRequest)
+        {
+            await Task.CompletedTask;
+            return new RoleAssignmentResult
+            {
+                Success = true
+            };
+        }
     }
 }

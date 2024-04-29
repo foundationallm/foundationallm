@@ -22,5 +22,21 @@ namespace FoundationaLLM.Authorization.Interfaces
         /// <param name="securityPrincipalId">The id of the security principal whose authorization is checked.</param>
         /// <returns>True if the security principal is allowed to process authorization requests.</returns>
         bool AllowAuthorizationRequestsProcessing(string instanceId, string securityPrincipalId);
+
+        /// <summary>
+        /// Assigns a role to an Entra ID user or group.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="roleAssignmentRequest">The role assignment request.</param>
+        /// <returns></returns>
+        Task<RoleAssignmentResult> AssignRole(string instanceId, RoleAssignmentRequest roleAssignmentRequest);
+
+        /// <summary>
+        /// Revokes a role from an Entra ID user or group.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="roleAssignmentRequest">The role assignment request.</param>
+        /// <returns></returns>
+        Task<RoleAssignmentResult> RevokeRole(string instanceId, RoleAssignmentRequest roleAssignmentRequest);
     }
 }
