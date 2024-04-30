@@ -2,6 +2,7 @@
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authorization;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
@@ -59,6 +60,7 @@ namespace FoundationaLLM.Authorization.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<RoleAssignmentResult> ProcessRoleAssignmentRequest(string instanceId, RoleAssignmentRequest roleAssignmentRequest)
         {
             try
@@ -86,6 +88,32 @@ namespace FoundationaLLM.Authorization.Services
             {
                 _logger.LogError(ex, "There was an error calling the Authorization API");
                 return new RoleAssignmentResult() { Success = false };
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<ResourceProviderGetResult> ProcessGetRolesWithActions(string instanceId, GetRolesWithActionsRequest request)
+        {
+            try
+            {
+                var httpClient = await CreateHttpClient();
+                var response = await httpClient.PostAsync(
+                    $"/instances/{instanceId}/security/roles/actions",
+                    JsonContent.Create(request));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    return JsonSerializer.Deserialize<ResourceProviderGetResult>(responseContent)!;
+                }
+
+                _logger.LogError("The call to the Authorization API returned an error: {StatusCode} - {ReasonPhrase}.", response.StatusCode, response.ReasonPhrase);
+                return new ResourceProviderGetResult() { Roles = [], Actions = [] };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "There was an error calling the Authorization API");
+                return new ResourceProviderGetResult() { Roles = [], Actions = [] };
             }
         }
 

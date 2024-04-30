@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authorization;
+using FoundationaLLM.Common.Models.ResourceProviders;
 
 namespace FoundationaLLM.Authorization.Services
 {
@@ -20,10 +21,13 @@ namespace FoundationaLLM.Authorization.Services
         public async Task<RoleAssignmentResult> ProcessRoleAssignmentRequest(string instanceId, RoleAssignmentRequest roleAssignmentRequest)
         {
             await Task.CompletedTask;
-            return new RoleAssignmentResult
-            {
-                Success = true
-            };
+            return new RoleAssignmentResult { Success = true };
+        }
+
+        public async Task<ResourceProviderGetResult> ProcessGetRolesWithActions(string instanceId, GetRolesWithActionsRequest request)
+        {
+            await Task.CompletedTask;
+            return new ResourceProviderGetResult() { Roles = [], Actions = [] };
         }
     }
 }

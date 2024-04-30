@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Models.Authorization;
+using FoundationaLLM.Common.Models.ResourceProviders;
 
 namespace FoundationaLLM.Authorization.Interfaces
 {
@@ -38,5 +39,13 @@ namespace FoundationaLLM.Authorization.Interfaces
         /// <param name="roleAssignmentRequest">The role assignment request.</param>
         /// <returns></returns>
         Task<RoleAssignmentResult> RevokeRole(string instanceId, RoleAssignmentRequest roleAssignmentRequest);
+
+        /// <summary>
+        /// Returns a list of role names and a list of allowed actions for the specified scope.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="request">The get roles with actions request.</param>
+        /// <returns>The get roles and actions result.</returns>
+        ResourceProviderGetResult ProcessGetRolesWithActions(string instanceId, GetRolesWithActionsRequest request);
     }
 }

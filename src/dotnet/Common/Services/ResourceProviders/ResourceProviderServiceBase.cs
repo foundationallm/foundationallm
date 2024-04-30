@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Exceptions;
+﻿using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
@@ -206,7 +207,35 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             if (parsedResourcePath.ResourceTypeInstances.Last().Action != null)
                 return await ExecuteActionAsync(parsedResourcePath, serializedResource, userIdentity);
             else
-                return await UpsertResourceAsync(parsedResourcePath, serializedResource, userIdentity);
+            {
+                var resource = await UpsertResourceAsync(parsedResourcePath, serializedResource, userIdentity);
+
+                var resourceObjectId = (resource as ResourceProviderUpsertResult)?.ObjectId;
+
+                var roleAssignmentName = Guid.NewGuid().ToString();
+                var roleAssignmentDescription = $"Owner role for {userIdentity.Name}";
+
+                if (Name != ResourceProviderNames.FoundationaLLM_Authorization)
+                {
+                    var roleAssignmentResult = await _authorizationService.ProcessRoleAssignmentRequest(
+                        _instanceSettings.Id,
+                        new RoleAssignmentRequest()
+                        {
+                            Name = roleAssignmentName,
+                            Description = roleAssignmentDescription,
+                            ObjectId = $"/instances/{_instanceSettings.Id}/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/roleAssignments/{roleAssignmentName}",
+                            PrincipalId = userIdentity.UserId!,
+                            PrincipalType = "User",
+                            RoleDefinitionId = $"/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/roleDefinitions/1301f8d4-3bea-4880-945f-315dbd2ddb46", // TODO: get the Owner role definition ID
+                            Scope = $"/instances/{_instanceSettings.Id}/{resourceObjectId}"
+                        });
+
+                    if (!roleAssignmentResult.Success)
+                        _logger.LogError("The {RoleAssignment} could not be assigned.", roleAssignmentDescription);
+                }
+
+                return resource;
+            }
         }
 
         /// <inheritdoc/>

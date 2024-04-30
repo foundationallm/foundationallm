@@ -41,7 +41,7 @@ namespace FoundationaLLM.Authorization.Interfaces
 
         /// <summary>
         /// Returns a list of all role assignments for the specified scope.
-        /// </summary
+        /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="scope">The role assignment scope.</param>
         /// <returns>A list of role assignments.</returns>

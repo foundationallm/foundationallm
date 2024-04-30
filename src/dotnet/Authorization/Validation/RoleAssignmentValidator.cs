@@ -16,7 +16,8 @@ namespace FoundationaLLM.Authorization.Validation
         public RoleAssignmentValidator()
         {
             RuleLevelCascadeMode = CascadeMode.Stop;
-            Include(new ResourceBaseValidator());
+
+            //Include(new ResourceBaseValidator());
 
             RuleFor(x => x.RoleDefinitionId)
                 .NotNull()

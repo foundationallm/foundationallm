@@ -227,6 +227,10 @@ namespace FoundationaLLM.Authorization.Services
                         };
 
                         roleAssignmentStore.RoleAssignments.Add(roleAssignment);
+                        _roleAssignmentStores.AddOrUpdate(instanceId, roleAssignmentStore, (k, v) => roleAssignmentStore);
+                        roleAssignmentStore.EnrichRoleAssignments();
+                        _roleAssignmentCaches.AddOrUpdate(instanceId, new RoleAssignmentCache(_roleAssignmentStores[instanceId]), (k, v) => v);
+
                         await _storageService.WriteFileAsync(
                                 ROLE_ASSIGNMENTS_CONTAINER_NAME,
                                 roleAssignmentStoreFile,
@@ -244,6 +248,36 @@ namespace FoundationaLLM.Authorization.Services
 
         /// <inheritdoc/>
         public Task<RoleAssignmentResult> RevokeRole(string instanceId, RoleAssignmentRequest roleAssignmentRequest) => throw new NotImplementedException();
+
+        /// <inheritdoc/>
+        public ResourceProviderGetResult ProcessGetRolesWithActions(string instanceId, GetRolesWithActionsRequest request)
+        {
+            var result = new ResourceProviderGetResult() { Roles = [], Actions = [] };
+
+            try
+            {
+                ResourcePath.TryParseResourceProvider(request.Scope, out string? resourceProdiver);
+                var requestScope = ResourcePathUtils.ParseForAuthorizationRequestResourcePath(request.Scope, _settings.InstanceIds);
+
+                if (string.IsNullOrWhiteSpace(requestScope.InstanceId) || requestScope.InstanceId.ToLower().CompareTo(instanceId.ToLower()) != 0)
+                    return result;
+
+                var roleAssignments = _roleAssignmentStores[instanceId].RoleAssignments.Where(x => x.PrincipalId == request.PrincipalId || request.SecurityGroupIds.Contains(x.PrincipalId)).ToList();
+                foreach (var ra in roleAssignments)
+                {
+                    if (request.Scope.Contains(ra.Scope))
+                    {
+                        result.Actions.AddRange(ra.AllowedActions.Where(x => x.Contains(resourceProdiver!)).ToList());
+                        result.Roles.Add(ra.RoleDefinition!.DisplayName!);
+                    }
+                }
+
+                result.Actions = result.Actions.Distinct().ToList();
+            }
+            catch { }
+
+            return result;
+        }
 
         private bool ActionAllowed(ResourcePath resourcePath, ActionAuthorizationRequest authorizationRequest)
         {
