@@ -59,7 +59,7 @@ export type Agent = {
 export type Prompt = {
 	type: string;
 	name: string;
-	object_id: string;
+	object_id?: string;
 	description: string;
 	prefix: string;
 	suffix: string;
@@ -188,7 +188,7 @@ export type AgentIndex = {
 export type TextPartitioningProfile = {
 	text_splitter: string;
 	name: string;
-	object_id: string;
+	object_id?: string;
 	settings: {
 		Tokenizer: string;
 		TokenizerEncoder: string;
@@ -305,7 +305,7 @@ export type CreateAgentRequest = {
 export type CreatePromptRequest = {
 	type: 'basic' | 'multipart';
 	name: string;
-	object_id: string;
+	object_id?: string;
 	description: string;
 	prefix: string;
 	suffix: string;
@@ -314,7 +314,7 @@ export type CreatePromptRequest = {
 export type CreateTextPartitioningProfileRequest = {
 	text_splitter: string;
 	name: string;
-	object_id: string;
+	object_id?: string;
 	settings: {
 		Tokenizer: string;
 		TokenizerEncoder: string;
