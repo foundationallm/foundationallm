@@ -376,48 +376,48 @@ export default {
 		// Deep copy the agent object to prevent modifiying its references
 		const agent = JSON.parse(JSON.stringify(agentData));
 
-		const orchestratorTypeToKeyMap = {
-			LangChain: 'AzureOpenAI',
-			AzureOpenAIDirect: 'AzureOpenAI',
-			AzureAIDirect: 'AzureAI',
-		};
+		// const orchestratorTypeToKeyMap = {
+		// 	LangChain: 'LangChain',
+		// 	AzureOpenAIDirect: 'AzureOpenAI',
+		// 	AzureAIDirect: 'AzureAI',
+		// };
 
-		const orchestratorTypeKey = orchestratorTypeToKeyMap[agent.orchestration_settings.orchestrator];
-		const keyVaultUri = await this.getAppConfig('FoundationaLLM:Configuration:KeyVaultURI');
+		// const orchestratorTypeKey = orchestratorTypeToKeyMap[agent.orchestration_settings.orchestrator];
+		// const keyVaultUri = await this.getAppConfig('FoundationaLLM:Configuration:KeyVaultURI');
 
-		for (const [propertyName, propertyValue] of Object.entries(
-			agent.orchestration_settings.endpoint_configuration,
-		)) {
-			if (!propertyValue) {
-				continue;
-			}
+		// for (const [propertyName, propertyValue] of Object.entries(
+		// 	agent.orchestration_settings.endpoint_configuration,
+		// )) {
+		// 	if (!propertyValue) {
+		// 		continue;
+		// 	}
 
-			const appConfigKey = `FoundationaLLM:${orchestratorTypeKey}:${agent.name}:API:${propertyName}`;
-			let appConfig: AppConfigUnion = {
-				name: appConfigKey,
-				display_name: appConfigKey,
-				description: '',
-				key: appConfigKey,
-				value: propertyValue,
-			};
+		// 	const appConfigKey = `FoundationaLLM:${orchestratorTypeKey}:${agent.name}:API:${propertyName}`;
+		// 	let appConfig: AppConfigUnion = {
+		// 		name: appConfigKey,
+		// 		display_name: appConfigKey,
+		// 		description: '',
+		// 		key: appConfigKey,
+		// 		value: propertyValue,
+		// 	};
 
-			const keyVaultSecretName =
-				`foundationallm-agents-${agent.name}-${propertyName}`.toLowerCase();
-			const metadata = agent.orchestration_settings_metadata?.[propertyName];
+		// 	const keyVaultSecretName =
+		// 		`foundationallm-agents-${agent.name}-${propertyName}`.toLowerCase();
+		// 	const metadata = agent.orchestration_settings_metadata?.[propertyName];
 
-			if (metadata && metadata.isKeyVaultBacked) {
-				appConfig = convertToAppConfigKeyVault({
-					...appConfig,
-					key_vault_uri: keyVaultUri.value,
-					key_vault_secret_name: keyVaultSecretName,
-				});
-			} else {
-				appConfig = convertToAppConfig(appConfig);
-			}
+		// 	if (metadata && metadata.isKeyVaultBacked) {
+		// 		appConfig = convertToAppConfigKeyVault({
+		// 			...appConfig,
+		// 			key_vault_uri: keyVaultUri.value,
+		// 			key_vault_secret_name: keyVaultSecretName,
+		// 		});
+		// 	} else {
+		// 		appConfig = convertToAppConfig(appConfig);
+		// 	}
 
-			await this.upsertAppConfig(appConfig);
-			agent.orchestration_settings.endpoint_configuration[propertyName] = appConfigKey;
-		}
+		// 	await this.upsertAppConfig(appConfig);
+		// 	agent.orchestration_settings.endpoint_configuration[propertyName] = appConfigKey;
+		// }
 
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentId}?api-version=${this.apiVersion}`,
