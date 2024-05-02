@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Constants.ResourceProviders;
+﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
@@ -223,10 +224,10 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                         {
                             Name = roleAssignmentName,
                             Description = roleAssignmentDescription,
-                            ObjectId = $"/instances/{_instanceSettings.Id}/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/roleAssignments/{roleAssignmentName}",
+                            ObjectId = $"/instances/{_instanceSettings.Id}/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleAssignments}/{roleAssignmentName}",
                             PrincipalId = userIdentity.UserId!,
-                            PrincipalType = "User",
-                            RoleDefinitionId = $"/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/roleDefinitions/1301f8d4-3bea-4880-945f-315dbd2ddb46", // TODO: get the Owner role definition ID
+                            PrincipalType = PrincipalTypes.User,
+                            RoleDefinitionId = $"/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleDefinitions}/1301f8d4-3bea-4880-945f-315dbd2ddb46", // TODO: get the Owner role definition ID
                             Scope = $"/instances/{_instanceSettings.Id}/{resourceObjectId}"
                         });
 
