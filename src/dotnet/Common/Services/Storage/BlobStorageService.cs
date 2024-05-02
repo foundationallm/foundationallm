@@ -114,14 +114,14 @@ namespace FoundationaLLM.Common.Services.Storage
                 if (ex.Status == (int)HttpStatusCode.Conflict
                         && ex.ErrorCode == "LeaseAlreadyPresent")
                 {
-                    _logger.LogError("Could not get a lease for the blob {FilePath} from container {ContainerName}. " +
+                    _logger.LogError(ex, "Could not get a lease for the blob {FilePath} from container {ContainerName}. " +
                         "Reason: an existing lease is preventing acquiring a new lease.",
                         filePath, containerName);
                     throw new StorageException($"Could not get a lease for the blob {filePath} from container {containerName}. " +
-                        "Reason: an existing lease is preventing acquiring a new lease.");
+                        "Reason: an existing lease is preventing acquiring a new lease.", ex);
                 }
 
-                throw new StorageException($"Could not get a lease for the blob {filePath} from container {containerName}. Reason: unknown.");
+                throw new StorageException($"Could not get a lease for the blob {filePath} from container {containerName}. Reason: unknown.", ex);
             }
             finally
             {
@@ -169,7 +169,7 @@ namespace FoundationaLLM.Common.Services.Storage
         /// <inheritdoc/>
         protected override void CreateClientFromIdentity(string accountName) =>
             _blobServiceClient = new BlobServiceClient(
-                new Uri($"https://{accountName}.dfs.core.windows.net"),
+                new Uri($"https://{accountName}.blob.core.windows.net"),
                 DefaultAuthentication.GetAzureCredential());
     }
 }

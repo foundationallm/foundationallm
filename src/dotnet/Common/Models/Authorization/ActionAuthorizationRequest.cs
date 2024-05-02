@@ -14,10 +14,10 @@ namespace FoundationaLLM.Common.Models.Authorization
         public required string Action { get; set; }
 
         /// <summary>
-        /// The resource for which authorization is requested.
+        /// The list of resources for which authorization is requested.
         /// </summary>
-        [JsonPropertyName("resource")]
-        public required string ResourcePath { get; set; }
+        [JsonPropertyName("resources")]
+        public required List<string> ResourcePaths { get; set; }
 
         /// <summary>
         /// The id of the security principal requesting authorization.

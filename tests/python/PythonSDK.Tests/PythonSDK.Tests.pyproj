@@ -25,11 +25,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="config\configuration_tests.py" />
-    <Compile Include="hubs\agent\agent_resolver_tests.py" />
-    <Compile Include="hubs\agent\agent_hub_tests.py" />
-    <Compile Include="hubs\data_source\data_source_repository_tests.py" />
-    <Compile Include="hubs\data_source\data_source_resolver_tests.py" />
-    <Compile Include="hubs\prompt\prompt_resolver_tests.py" />
     <Compile Include="langchain\agents\internal_context_agent_tests.py" />
     <Compile Include="langchain\agents\knowledge_management_agent_tests.py" />
     <Compile Include="langchain\agents\search_service_agent_tests.py" />
@@ -54,10 +49,6 @@
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="hubs\" />
-    <Folder Include="hubs\agent\" />
-    <Folder Include="hubs\data_source\" />
-    <Folder Include="hubs\prompt\" />
     <Folder Include="langchain\" />
     <Folder Include="langchain\message_history\" />
     <Folder Include="config\" />

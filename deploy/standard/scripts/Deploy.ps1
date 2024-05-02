@@ -39,8 +39,15 @@ try {
     $manifest.resourceGroups.PSObject.Properties | ForEach-Object { $resourceGroup[$_.Name] = $_.Value }
     $resourceSuffix = "$($manifest.project)-$($manifest.environment)-$($manifest.location)"
 
+    # Get frontend and backend hostnames
+    $frontEndHosts = @()
+    $manifest.ingress.frontendIngress.PSObject.Properties | ForEach-Object { $frontEndHosts += $_.Value.host }
+    $backendHosts = @()
+    $manifest.ingress.apiIngress.PSObject.Properties | ForEach-Object { $backendHosts += $_.Value.host }
+
     Invoke-AndRequireSuccess "Generate Configuration" {
         ./deploy/Generate-Config.ps1 `
+            -adminGroupObjectId $manifest.adminObjectId `
             -entraClientIds $manifest.entraClientIds `
             -entraScopes $manifest.entraScopes `
             -instanceId $manifest.instanceId `
@@ -71,8 +78,9 @@ try {
     }
 
     Invoke-AndRequireSuccess "Uploading Auth Store Data" {
-        ./Upload-AuthStoreData.ps1 `
-            -resourceGroup $resourceGroup["auth"]
+        ./deploy/Upload-AuthStoreData.ps1 `
+            -resourceGroup $resourceGroup["auth"] `
+            -instanceId $manifest.instanceId
     }
 
     Invoke-AndRequireSuccess "Uploading System Prompts" {
@@ -93,9 +101,10 @@ try {
     Invoke-AndRequireSuccess "Deploy Backend" {
         ./deploy/Deploy-Backend-Aks.ps1 `
             -aksName $backendAks `
+            -ingressNginxValues $ingressNginxValuesBackend `
             -resourceGroup $resourceGroup.app `
             -secretProviderClassManifest $secretProviderClassManifestBackend `
-            -ingressNginxValues $ingressNginxValuesBackend
+            -serviceNamespaceName $manifest.k8sNamespace
     }
 
     $frontendAks = Invoke-AndRequireSuccess "Get Frontend AKS" {
@@ -110,24 +119,29 @@ try {
     Invoke-AndRequireSuccess "Deploy Frontend" {
         ./deploy/Deploy-Frontend-Aks.ps1 `
             -aksName $frontendAks `
+            -ingressNginxValues $ingressNginxValuesFrontend `
             -resourceGroup $resourceGroup.app `
             -secretProviderClassManifest $secretProviderClassManifestFrontend `
-            -ingressNginxValues $ingressNginxValuesFrontend
+            -serviceNamespaceName $manifest.k8sNamespace
+    }
+
+    $clusters = @(
+        @{
+            cluster = $frontendAks
+            hosts   = $frontEndHosts
+        }
+        @{
+            cluster = $backendAks
+            hosts   = $backendHosts
+        }
+    )
+    Invoke-AndRequireSuccess "Generate AKS Ingress Host Entires" {
+        ./deploy/Generate-Ingress-Hosts.ps1 `
+            -resourceGroup $resourceGroup.app `
+            -clusters $clusters
     }
 }
 finally {
     Pop-Location
     Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable)
 }
-
-
-
-
-
-
-
-
-# # Write-Host "===========================================================" -ForegroundColor Yellow
-# # Write-Host "The frontend is hosted at https://$webappHostname" -ForegroundColor Yellow
-# # Write-Host "The Core API is hosted at $coreApiUri" -ForegroundColor Yellow
-# # Write-Host "===========================================================" -ForegroundColor Yellow

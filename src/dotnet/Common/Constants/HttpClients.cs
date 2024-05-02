@@ -19,9 +19,9 @@ public static class HttpClients
     /// </summary>
     public const string GatekeeperIntegrationAPI = "GatekeeperIntegrationAPI";
     /// <summary>
-    /// Named client with matching configuration for the Agent Factory API.
+    /// Named client with matching configuration for the Orchestration API.
     /// </summary>
-    public const string AgentFactoryAPI = "AgentFactoryAPI";
+    public const string OrchestrationAPI = "OrchestrationAPI";
     /// <summary>
     /// Named client with matching configuration for the LangChain API.
     /// </summary>

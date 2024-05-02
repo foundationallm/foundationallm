@@ -5,9 +5,7 @@ Runs web server exposing the API.
 from fastapi import FastAPI
 from app.dependencies import API_NAME, get_config
 from app.routers import (
-    list_agents,
     manage,
-    resolve,
     status
 )
 from foundationallm.telemetry import Telemetry
@@ -38,9 +36,7 @@ app = FastAPI(
     config=config
 )
 
-app.include_router(list_agents.router)
 app.include_router(manage.router)
-app.include_router(resolve.router)
 app.include_router(status.router)
 
 @app.get('/')

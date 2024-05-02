@@ -102,53 +102,6 @@ resource main 'Microsoft.OperationalInsights/workspaces@2021-12-01-preview' = {
   }
 }
 
-/*
-  Resource representing a data collection rule for VM Insights.
-*/
-resource dcr 'Microsoft.Insights/dataCollectionRules@2022-06-01' = {
-  name: 'MSVMI-${name}'
-  location: location
-  tags: tags
-
-  properties: {
-    description: 'Data collection rule for VM Insights.'
-
-    dataSources: {
-      extensions: [ {
-          extensionName: 'DependencyAgent'
-          inputDataSources: []
-          name: 'DependencyAgentDataSource'
-          streams: [ 'Microsoft-ServiceMap' ]
-        } ]
-
-      performanceCounters: [ {
-          counterSpecifiers: [ '\\VmInsights\\DetailedMetrics' ]
-          name: 'VMInsightsPerfCounters'
-          samplingFrequencyInSeconds: 60
-          streams: [ 'Microsoft-InsightsMetrics' ]
-        } ]
-    }
-
-    dataFlows: [
-      {
-        destinations: [ 'VMInsightsPerf-Logs-Dest' ]
-        streams: [ 'Microsoft-InsightsMetrics' ]
-      }
-      {
-        destinations: [ 'VMInsightsPerf-Logs-Dest' ]
-        streams: [ 'Microsoft-ServiceMap' ]
-      }
-    ]
-
-    destinations: {
-      logAnalytics: [ {
-          workspaceResourceId: main.id
-          name: 'VMInsightsPerf-Logs-Dest'
-        } ]
-    }
-  }
-}
-
 /**
  * Resource for configuring diagnostic settings for Log Analytics workspace.
  */

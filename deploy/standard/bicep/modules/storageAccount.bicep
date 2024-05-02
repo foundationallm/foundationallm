@@ -11,17 +11,11 @@ param enableHns bool = false
 @description('Flag specifying if this is a datalake storage account')
 param isDataLake bool = false
 
-@description('KeyVault resource suffix for all resources')
-param kvResourceSuffix string = resourceSuffix
-
 @description('Location for all resources')
 param location string
 
 @description('Log Analytic Workspace Id to use for diagnostics')
 param logAnalyticWorkspaceId string
-
-@description('OPS Resource Group name.')
-param opsResourceGroupName string = resourceGroup().name
 
 @description('Private DNS Zones for private endpoint')
 param privateDnsZones array
@@ -57,16 +51,6 @@ var alerts = [
   }
 ]
 
-@description('Formatted untruncated resource name')
-var kvFormattedName = toLower('${kvServiceType}-${substring(kvResourceSuffix, 0, length(kvResourceSuffix) - 4)}')
-
-@description('The Resource Name')
-var kvTruncatedName = substring(kvFormattedName,0,min([length(kvFormattedName),20]))
-var kvName = '${kvTruncatedName}-${substring(kvResourceSuffix, length(kvResourceSuffix) - 3, 3)}'
-
-@description('The Resource Service Type token')
-var kvServiceType = 'kv'
-
 @description('The Resource logs to enable')
 var logs = {
   blobServices: [ 'StorageRead', 'StorageWrite', 'StorageDelete' ]
@@ -84,9 +68,6 @@ var serviceType = isDataLake ? 'adls' : 'sa'
 
 /** Outputs **/
 output name string = main.name
-
-@description('Storage Account Connection String KeyVault Secret Uri.')
-output storageConnectionStringSecretUri string = storageConnectionString[0].outputs.secretUri
 
 /** Resources **/
 @description('The Storage Account')
@@ -108,7 +89,7 @@ resource main 'Microsoft.Storage/storageAccounts@2023-01-01' = {
     accessTier: 'Hot'
     allowBlobPublicAccess: false
     allowCrossTenantReplication: true
-    allowSharedKeyAccess: true
+    allowSharedKeyAccess: false
     defaultToOAuthAuthentication: true
     isHnsEnabled: enableHns
     isNfsV3Enabled: false
@@ -308,36 +289,3 @@ module privateEndpoint 'utility/privateEndpoint.bicep' = [for zone in privateDns
     }
   }
 }]
-
-var secretNames = [
-  'foundationallm-prompt-resourceprovider-storage-connectionstring'
-  'foundationallm-blobstoragememorysource-blobstorageconnection'
-  'foundationallm-datasource-resourceprovider-storage-connectionstring'
-  'foundationallm-datasourcehub-storagemanager-blobstorage-connectionstring'
-  'foundationallm-datasourcehub-storagemanager-blobstorage-connectionstring'
-  'foundationallm-prompthub-storagemanager-blobstorage-connectionstring'
-  'foundationallm-vectorization-queues-connectionstring'
-  'foundationallm-vectorization-queues-connectionstring'
-  'foundationallm-vectorization-queues-connectionstring'
-  'foundationallm-vectorization-queues-connectionstring'
-  'foundationallm-vectorization-state-connectionstring'
-  'foundationallm-vectorization-resourceprovider-storage-connectionstring'
-  'foundationallm-storage-connectionstring'
-  'foundationallm-agent-resourceprovider-storage-connectionstring'
-  'foundationallm-agenthub-storagemanager-blobstorage-connectionstring'
-  'foundationallm-configuration-resourceprovider-storage-connectionstring'
-]
-
-@description('Storage Connection String KeyVault Secret.')
-module storageConnectionString 'kvSecret.bicep' = [
-  for (secretName, i) in secretNames: {
-    name: 'storageConn-${i}'
-    scope: resourceGroup(opsResourceGroupName)
-    params: {
-      kvName: kvName
-      secretName: secretName
-      secretValue: 'DefaultEndpointsProtocol=https;AccountName=${main.name};AccountKey=${main.listKeys().keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
-      tags: tags
-    }
-  }
-]

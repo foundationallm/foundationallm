@@ -75,11 +75,17 @@ export async function createTokenRefreshTimer() {
 			const currentTime = Date.now();
 			const timeUntilExpiration = tokenExpirationTime - currentTime;
 
+			if (timeUntilExpiration <= 0) {
+				console.log(`Access token expired ${timeUntilExpiration / 1000} seconds ago.`);
+				return;
+			}
+
 			clearTimeout(tokenExpirationTimer);
 
 			tokenExpirationTimer = setTimeout(() => {
 				refreshToken(account);
 			}, timeUntilExpiration);
+
 			console.log(`Set access token timer refresh in ${timeUntilExpiration / 1000} seconds.`);
 		}
 	}

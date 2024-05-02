@@ -15,6 +15,16 @@ Foundationa**LLM** deploys a secure, comprehensive and highly configurable copil
 
 ![FoundationaLLM Overview](media/foundationallm-highlevel-architecture.png)
 
+![LLM and ChatGPT Misconception](./media/FLLM-Misconception.png)
+
+### Reality
+What it really takes to create a secure, well governed, scalable and extensible enterprise copilot solution:
+
+![FoundationaLLM Reality](./media/FLLM-Complete-Picture.png)
+
+#### Where does FoundationaLLM stack against the other copilot solutions?
+![FoundationaLLM Positioning](./media/FLLM-Positioning.png)
+
 ## What do WE mean by "copilot"
 
 It's a rapidly evolving AI world out there, so let's level set on what we mean when we say **copilot** as this is concept core to Foundationa**LLM**.
@@ -37,11 +47,18 @@ The core problems to deliver enterprise copilots are:
 - The top AI risks (inaccuracy, cybersecurity, compliance, explainability, privacy) are not being mitigated.
 - Delivery of a copilot solution is time consuming, expensive and frustrating.
 
+## Where can Foundationa**LLM** fill the need?
+![Areas where FoundationaLLM can help organizations](./media/FLLM-Needs.png)
+
+## Documentation
+
+Get up to speed with Foundationa**LLM** by reading the [documentation](https://docs.foundationallm.ai). This includes deployment instructions, quickstarts, architecture, and API references.
+
 ## Getting Started
 
 FoundationalLLM provides a simple command line driven approach to getting your first deployment up and running. Basically, it's two commands. After that, you can customize the solution, run it locally on your machine and update the deployment with your customizations.
 
-Follow the [Quick Start Deployment instructions](deployment/deployment-quick-start.md) to get Foundationa**LLM** deployed in your Azure subscription.
+Follow the [Starter Deployment instructions](./deployment/deployment-starter.md) to get Foundationa**LLM** deployed in your Azure subscription.
 
 If you want to run the solution locally, follow the [Local Development instructions](development/development-local.md).
 

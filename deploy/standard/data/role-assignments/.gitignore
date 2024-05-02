@@ -1,1 +1,4 @@
-DefaultRoleAssignments.json
+# Ignore Everything
+*
+# Except templates
+!*.template.json

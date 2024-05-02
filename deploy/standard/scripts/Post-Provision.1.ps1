@@ -1,9 +1,6 @@
 #! /usr/bin/pwsh
 
 Param(
-    [parameter(Mandatory = $false)][bool]$stepDeployCerts = $false,
-    [parameter(Mandatory = $false)][bool]$stepDeployImages = $false,
-    [parameter(Mandatory = $false)][bool]$init = $true,
     [parameter(Mandatory = $false)][string]$manifestName = "Deployment-Manifest.json"
 )
 
@@ -25,7 +22,7 @@ try {
     $manifest.resourceGroups.PSObject.Properties | ForEach-Object { $resourceGroup[$_.Name] = $_.Value }
 
     Invoke-AndRequireSuccess "Generate Host File" {
-        ./Generate-Hosts.ps1 `
+        ./post-provision/Generate-Hosts.ps1 `
             -resourceGroup $resourceGroup `
             -subscription $manifest.subscription
     }

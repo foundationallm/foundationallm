@@ -31,6 +31,7 @@
 		"@azure/app-configuration": "^1.6.0-alpha.20240403.1",
 		"@azure/msal-browser": "^3.2.0",
 		"@pinia/nuxt": "^0.5.1",
+		"@vue-js-cron/light": "^4.0.1",
 		"javascript-time-ago": "^2.5.9",
 		"lodash": "^4.17.21",
 		"pinia": "^2.1.7",

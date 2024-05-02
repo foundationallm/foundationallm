@@ -1,6 +1,7 @@
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Text;
+using FoundationaLLM.Common.Models.Vectorization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -14,16 +15,16 @@ namespace FoundationaLLM.Common.Services.TextSplitters
     /// <param name="options">The <see cref="IOptions{TOptions}"/> providing the settings for the service.</param>
     /// <param name="logger">The logger used for logging.</param>
     public class TokenTextSplitterService(
-    ITokenizerService tokenizerService,
-    IOptions<TokenTextSplitterServiceSettings> options,
-    ILogger<TokenTextSplitterService> logger) : ITextSplitterService
+        ITokenizerService tokenizerService,
+        IOptions<TokenTextSplitterServiceSettings> options,
+        ILogger<TokenTextSplitterService> logger) : ITextSplitterService
     {
         private readonly ITokenizerService _tokenizerService = tokenizerService;
         private readonly TokenTextSplitterServiceSettings _settings = options.Value;
         private readonly ILogger<TokenTextSplitterService> _logger = logger;
 
         /// <inheritdoc/>
-        public (List<string> TextChunks, string Message) SplitPlainText(string text)
+        public List<TextChunk> SplitPlainText(string text)
         {
             var tokens = _tokenizerService.Encode(text, _settings.TokenizerEncoder);
 
@@ -34,16 +35,27 @@ namespace FoundationaLLM.Common.Services.TextSplitters
                 var chunksCount = (int)Math.Ceiling((1f * tokens!.Count - _settings.OverlapSizeTokens) / (_settings.ChunkSizeTokens - _settings.OverlapSizeTokens));
 
                 if (chunksCount <= 1)
-                    return (new List<string> { text }, $"The number of text chunks is {chunksCount}. The size of the last chunk is {tokens.Count} tokens.");
+                    return new List<TextChunk> { new()
+                    {
+                        Position = 1,
+                        Content = text,
+                        TokensCount = tokens.Count
+                    } };
 
                 var chunks = Enumerable.Range(0, chunksCount - 1)
-                    .Select(i => tokens.Skip(i * (_settings.ChunkSizeTokens - _settings.OverlapSizeTokens)).Take(_settings.ChunkSizeTokens).ToArray())
-                    .Select(t => _tokenizerService.Decode(t, _settings.TokenizerEncoder))
+                    .Select(i => new
+                        {
+                            Position = i + 1,
+                            Tokens = tokens.Skip(i * (_settings.ChunkSizeTokens - _settings.OverlapSizeTokens)).Take(_settings.ChunkSizeTokens).ToArray()
+                        })
+                    .Select(x => new TextChunk {
+                        Position = x.Position,
+                        Content = _tokenizerService.Decode(x.Tokens, _settings.TokenizerEncoder),
+                        TokensCount = x.Tokens.Length })
                     .ToList();
 
                 var lastChunkStart = (chunksCount - 1) * (_settings.ChunkSizeTokens - _settings.OverlapSizeTokens);
                 var lastChunkSize = tokens.Count - lastChunkStart + 1;
-                var resultMessage = string.Empty;
 
                 if (lastChunkSize < 2 * _settings.OverlapSizeTokens)
                 {
@@ -57,9 +69,11 @@ namespace FoundationaLLM.Common.Services.TextSplitters
                             .ToArray(),
                         _settings.TokenizerEncoder);
                     chunks.RemoveAt(chunks.Count - 1);
-                    chunks.Add(newLastChunk);
-
-                    resultMessage = $"The number of text chunks is {chunks.Count}. The size of the last chunk is {newLastChunkSize} tokens.";
+                    chunks.Add(new TextChunk {
+                        Position = chunks.Count + 1,
+                        Content = newLastChunk,
+                        TokensCount = newLastChunkSize
+                    });
                 }
                 else
                 {
@@ -69,12 +83,14 @@ namespace FoundationaLLM.Common.Services.TextSplitters
                             .Take(lastChunkSize)
                             .ToArray(),
                         _settings.TokenizerEncoder);
-                    chunks.Add(lastChunk);
-
-                    resultMessage = $"The number of text chunks is {chunks.Count}. The size of the last chunk is {lastChunkSize} tokens.";
+                    chunks.Add(new TextChunk {
+                        Position = chunks.Count + 1,
+                        Content = lastChunk,
+                        TokensCount = lastChunkSize
+                    });
                 }
 
-                return new(chunks, resultMessage);
+                return chunks;
             }
             else
                 throw new TextProcessingException("The tokenizer service failed to split the text into tokens.");

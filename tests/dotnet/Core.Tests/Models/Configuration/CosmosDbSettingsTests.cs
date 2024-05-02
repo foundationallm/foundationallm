@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Core.Models.Configuration;
+﻿using FoundationaLLM.Common.Models.Configuration.CosmosDB;
+using FoundationaLLM.Core.Models.Configuration;
 
 namespace FoundationaLLM.Core.Tests.Models.Configuration
 {

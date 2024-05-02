@@ -1,10 +1,11 @@
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Storage;
-using FoundationaLLM.Common.Models.ResourceProvider;
+using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
 using FoundationaLLM.DataSource.Models;
-using FoundationaLLM.Vectorization.Exceptions;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Models.Configuration;
 using Microsoft.Extensions.Configuration;
@@ -53,7 +54,7 @@ namespace FoundationaLLM.Vectorization.Services.ContentSources
                         DataSourceTypes.AzureDataLake => (CreateAzureDataLakeContentSourceService(dataSource.Name), dataSource),
                         DataSourceTypes.SharePointOnlineSite => (CreateSharePointOnlineContentSourceService(dataSource.Name), dataSource),
                         DataSourceTypes.AzureSQLDatabase => (CreateAzureSQLDatabaseContentSourceService(dataSource.Name), dataSource),
-                        // DataSourceTypes.Web => (CreateWebPageDataSourceService(dataSource.Name), dataSource),
+                        DataSourceTypes.WebSite => (CreatePageContentSourceService(dataSource.Name), dataSource),
                         _ => throw new VectorizationException($"The data source type {dataSource.Type} is not supported."),
                     };
         }
@@ -95,7 +96,7 @@ namespace FoundationaLLM.Vectorization.Services.ContentSources
                 _loggerFactory);
         }
 
-        private WebPageContentSourceService CreateWebPageContentSourceService(string serviceName)
-            => new WebPageContentSourceService(_loggerFactory);
+        private WebContentSourceService CreatePageContentSourceService(string serviceName)
+            => new WebContentSourceService(_loggerFactory);
     }
 }

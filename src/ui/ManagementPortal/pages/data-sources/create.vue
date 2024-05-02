@@ -98,36 +98,10 @@
 						class="span-2"
 					>
 						<div class="mb-2 mt-2">Connection string:</div>
-						<div class="flex-container">
-							<Textarea
-								v-if="showSecret[`${dataSource.type}_ConnectionString`]"
-								:model-value="dataSource.resolved_configuration_references.ConnectionString"
-								class="w-100"
-								auto-resize
-								rows="5"
-								type="text"
-								@update:model-value="handleConnectionStringUpdate"
-							/>
-							<Textarea
-								v-else
-								model-value="••••••••••••••••••••••••••••••••••••••••••••••••••"
-								:disabled="dataSource.resolved_configuration_references.ConnectionString"
-								class="w-100"
-								auto-resize
-								rows="5"
-								type="text"
-							/>
-							<Button
-								:icon="
-									showSecret[`${dataSource.type}_ConnectionString`]
-										? 'pi pi-eye'
-										: 'pi pi-eye-slash'
-								"
-								:label="showSecret[`${dataSource.type}_ConnectionString`] ? 'Hide' : 'Show'"
-								class="p-button-text"
-								@click="toggleSecretVisibility('ConnectionString')"
-							></Button>
-						</div>
+						<SecretKeyInput
+							v-model="dataSource.resolved_configuration_references.ConnectionString"
+							textarea
+						/>
 					</div>
 
 					<!-- API Key -->
@@ -136,28 +110,8 @@
 						class="span-2"
 					>
 						<div class="mb-2 mt-2">API Key:</div>
-						<div class="flex-container">
-							<InputText
-								v-if="showSecret[`${dataSource.type}_APIKey`]"
-								:model-value="dataSource.resolved_configuration_references.APIKey"
-								class="w-100"
-								type="text"
-								@update:model-value="handleAPIKeyUpdate"
-							/>
-							<InputText
-								v-else
-								model-value="••••••••••••••••••••••••••••••••••••••••••••••••••"
-								:disabled="dataSource.resolved_configuration_references.APIKey"
-								class="w-100"
-								type="text"
-							/>
-							<Button
-								:icon="showSecret[`${dataSource.type}_APIKey`] ? 'pi pi-eye' : 'pi pi-eye-slash'"
-								:label="showSecret[`${dataSource.type}_APIKey`] ? 'Hide' : 'Show'"
-								class="p-button-text"
-								@click="toggleSecretVisibility('APIKey')"
-							></Button>
-						</div>
+						<SecretKeyInput v-model="dataSource.resolved_configuration_references.APIKey" />
+
 						<div class="mb-2 mt-2">Endpoint:</div>
 						<InputText
 							v-model="dataSource.resolved_configuration_references.Endpoint"
@@ -166,8 +120,84 @@
 						/>
 					</div>
 
+					<!-- API Key -->
+					<div
+						v-if="
+							dataSource.resolved_configuration_references.AuthenticationType === 'AzureIdentity'
+						"
+						class="span-2"
+					>
+						<div class="mb-2 mt-2">Account name:</div>
+						<InputText
+							v-model="dataSource.resolved_configuration_references.AccountName"
+							class="w-100"
+							type="text"
+						/>
+					</div>
+
 					<div class="mb-2 mt-2">Folder(s):</div>
-					<InputText v-model="foldersString" class="w-100" type="text" />
+					<Chips v-model="folders" class="w-100" separator="," />
+				</div>
+
+				<!-- OneLake -->
+				<div v-if="isOneLakeDataSource(dataSource)">
+					<div class="mb-2">Authentication type:</div>
+					<Dropdown
+						v-model="dataSource.resolved_configuration_references.AuthenticationType"
+						:options="authenticationTypeOptions"
+						option-label="label"
+						option-value="value"
+						placeholder="--Select--"
+						class="dropdown--agent"
+					/>
+
+					<!-- Connection string -->
+					<div
+						v-if="
+							dataSource.resolved_configuration_references.AuthenticationType === 'ConnectionString'
+						"
+						class="span-2"
+					>
+						<div class="mb-2 mt-2">Connection string:</div>
+						<SecretKeyInput
+							v-model="dataSource.resolved_configuration_references.ConnectionString"
+							textarea
+						/>
+					</div>
+
+					<!-- API Key -->
+					<div
+						v-if="dataSource.resolved_configuration_references.AuthenticationType === 'AccountKey'"
+						class="span-2"
+					>
+						<div class="mb-2 mt-2">API Key:</div>
+						<SecretKeyInput v-model="dataSource.resolved_configuration_references.APIKey" />
+
+						<div class="mb-2 mt-2">Endpoint:</div>
+						<InputText
+							v-model="dataSource.resolved_configuration_references.Endpoint"
+							class="w-100"
+							type="text"
+						/>
+					</div>
+
+					<!-- API Key -->
+					<div
+						v-if="
+							dataSource.resolved_configuration_references.AuthenticationType === 'AzureIdentity'
+						"
+						class="span-2"
+					>
+						<div class="mb-2 mt-2">Account name:</div>
+						<InputText
+							v-model="dataSource.resolved_configuration_references.AccountName"
+							class="w-100"
+							type="text"
+						/>
+					</div>
+
+					<div class="mb-2 mt-2">Workspace(s):</div>
+					<Chips v-model="workspaces" class="w-100" separator="," />
 				</div>
 
 				<!-- Azure SQL database -->
@@ -175,40 +205,14 @@
 					<!-- Connection string -->
 					<div class="span-2">
 						<div class="mb-2">Connection string:</div>
-						<div class="flex-container">
-							<Textarea
-								v-if="showSecret[`${dataSource.type}_ConnectionString`]"
-								:model-value="dataSource.resolved_configuration_references.ConnectionString"
-								class="w-100"
-								auto-resize
-								rows="5"
-								type="text"
-								@update:model-value="handleConnectionStringUpdate"
-							/>
-							<Textarea
-								v-else
-								model-value="••••••••••••••••••••••••••••••••••••••••••••••••••"
-								:disabled="dataSource.resolved_configuration_references.ConnectionString"
-								class="w-100"
-								auto-resize
-								rows="5"
-								type="text"
-							/>
-							<Button
-								:icon="
-									showSecret[`${dataSource.type}_ConnectionString`]
-										? 'pi pi-eye'
-										: 'pi pi-eye-slash'
-								"
-								:label="showSecret[`${dataSource.type}_ConnectionString`] ? 'Hide' : 'Show'"
-								class="p-button-text"
-								@click="toggleSecretVisibility('ConnectionString')"
-							></Button>
-						</div>
+						<SecretKeyInput
+							v-model="dataSource.resolved_configuration_references.ConnectionString"
+							textarea
+						/>
 
 						<template v-if="dataSource.tables">
 							<div class="mb-2 mt-2">Table Name(s):</div>
-							<InputText v-model="tablesString" class="w-100" type="text" />
+							<Chips v-model="tables" class="w-100" separator="," />
 						</template>
 					</div>
 				</div>
@@ -249,7 +253,7 @@
 
 						<template v-if="dataSource.document_libraries">
 							<div class="mb-2 mt-2">Document Library(s):</div>
-							<InputText v-model="documentLibrariesString" class="w-100" type="text" />
+							<Chips v-model="documentLibraries" class="w-100" separator="," />
 						</template>
 					</div>
 				</div>
@@ -290,6 +294,7 @@ import type {
 } from '@/js/types';
 import {
 	isAzureDataLakeDataSource,
+	isOneLakeDataSource,
 	isAzureSQLDatabaseDataSource,
 	isSharePointOnlineSiteDataSource,
 	convertToDataSource,
@@ -312,16 +317,14 @@ export default {
 			loadingStatusText: 'Retrieving data...' as string,
 
 			nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
-			validationMessage: '' as string,
+			validationMessage: null as string | null,
 
-			foldersString: '',
-			documentLibrariesString: '',
-			tablesString: '',
-
-			showSecret: {}, // Object to track visibility state of secrets.
+			folders: [] as string[],
+			workspaces: [] as string[],
+			documentLibraries: [] as string[],
+			tables: [] as string[],
 
 			// Create a default Azure Data Lake data source.
-
 			dataSource: {
 				type: 'azure-data-lake',
 				name: '',
@@ -332,12 +335,14 @@ export default {
 					ConnectionString: '',
 					APIKey: '',
 					Endpoint: '',
+					AccountName: '',
 				},
 				configuration_references: {
 					AuthenticationType: '',
 					ConnectionString: '',
 					APIKey: '',
 					Endpoint: '',
+					AccountName: '',
 				},
 				configuration_reference_metadata: {} as { [key: string]: ConfigurationReferenceMetadata },
 			} as null | DataSource,
@@ -370,10 +375,10 @@ export default {
 					label: 'Account Key',
 					value: 'AccountKey',
 				},
-				// {
-				// 	label: 'Azure Identity',
-				// 	value: 'AzureIdentity',
-				// },
+				{
+					label: 'Azure Identity',
+					value: 'AzureIdentity',
+				},
 			],
 		};
 	},
@@ -381,7 +386,6 @@ export default {
 	watch: {
 		'dataSource.type'() {
 			this.dataSource = convertToDataSource(this.dataSource);
-			this.initializeShowSecret();
 		},
 	},
 
@@ -394,13 +398,16 @@ export default {
 			this.dataSource = dataSource;
 
 			if (this.dataSource.folders) {
-				this.foldersString = this.dataSource.folders.join(', ');
+				this.folders = this.dataSource.folders;
+			}
+			if (this.dataSource.workspaces) {
+				this.workspaces = this.dataSource.workspaces;
 			}
 			if (this.dataSource.document_libraries) {
-				this.documentLibrariesString = this.dataSource.document_libraries.join(', ');
+				this.documentLibraries = this.dataSource.document_libraries;
 			}
 			if (this.dataSource.tables) {
-				this.tablesString = this.dataSource.tables.join(', ');
+				this.tables = this.dataSource.tables;
 			}
 		} else {
 			// Create a new DataSource object of type Azure Data Lake.
@@ -414,19 +421,19 @@ export default {
 					ConnectionString: '',
 					APIKey: '',
 					Endpoint: '',
+					AccountName: '',
 				},
 				configuration_references: {
 					AuthenticationType: '',
 					ConnectionString: '',
 					APIKey: '',
 					Endpoint: '',
+					AccountName: '',
 				},
 				configuration_reference_metadata: {} as { [key: string]: ConfigurationReferenceMetadata },
 			};
 			this.dataSource = convertToDataSource(newDataSource);
 		}
-
-		this.initializeShowSecret();
 
 		this.debouncedCheckName = debounce(this.checkName, 500);
 
@@ -435,30 +442,10 @@ export default {
 
 	methods: {
 		isAzureDataLakeDataSource,
+		isOneLakeDataSource,
 		isSharePointOnlineSiteDataSource,
 		isAzureSQLDatabaseDataSource,
 		convertToDataSource,
-
-		initializeShowSecret() {
-			const uniqueIdentifier = this.dataSource.type; // Or any other unique property
-			for (const key in this.dataSource.configuration_references) {
-				const uniqueKey = `${uniqueIdentifier}_${key}`;
-
-				// Determine the initial visibility based on whether a resolved value exists.
-				// If a resolved value exists and is not an empty string, it defaults to being hidden (false).
-				// If no resolved value exists (undefined or empty string), the field should be shown to allow input (true).
-				const resolvedValue = this.dataSource.resolved_configuration_references[key];
-				this.showSecret[uniqueKey] = !resolvedValue;
-			}
-		},
-
-		handleConnectionStringUpdate(value) {
-			this.dataSource.resolved_configuration_references.ConnectionString = value;
-		},
-
-		handleAPIKeyUpdate(value) {
-			this.dataSource.resolved_configuration_references.APIKey = value;
-		},
 
 		async checkName() {
 			try {
@@ -478,19 +465,6 @@ export default {
 				console.error('Error checking agent name: ', error);
 				this.nameValidationStatus = 'invalid';
 				this.validationMessage = 'Error checking the agent name. Please try again.';
-			}
-		},
-
-		toggleSecretVisibility(key) {
-			const uniqueKey = `${this.dataSource.type}_${key}`;
-			// Directly toggle the visibility.
-			if (this.showSecret[uniqueKey] === undefined) {
-				this.showSecret[uniqueKey] = !this.dataSource.resolved_configuration_references[key];
-			} else {
-				this.showSecret[uniqueKey] = !this.showSecret[uniqueKey];
-			}
-			if (this.showSecret[uniqueKey] && !this.dataSource.resolved_configuration_references[key]) {
-				this.showSecret[uniqueKey] = true;
 			}
 		},
 
@@ -527,13 +501,13 @@ export default {
 
 			// Convert string representations of array fields back to arrays.
 			if (isAzureDataLakeDataSource(this.dataSource)) {
-				this.dataSource.folders = this.foldersString.split(',').map((s) => s.trim());
+				this.dataSource.folders = this.folders;
+			} else if (isOneLakeDataSource(this.dataSource)) {
+				this.dataSource.workspaces = this.workspaces;
 			} else if (isSharePointOnlineSiteDataSource(this.dataSource)) {
-				this.dataSource.document_libraries = this.documentLibrariesString
-					.split(',')
-					.map((s) => s.trim());
+				this.dataSource.document_libraries = this.documentLibraries;
 			} else if (isAzureSQLDatabaseDataSource(this.dataSource)) {
-				this.dataSource.tables = this.tablesString.split(',').map((s) => s.trim());
+				this.dataSource.tables = this.tables;
 			}
 
 			if (errors.length > 0) {
@@ -797,5 +771,16 @@ input {
 
 .flex-item-button {
 	margin-left: 8px; /* Add some space between the textarea and the button */
+}
+
+.p-chips {
+	ul {
+		width: 100%;
+		li {
+			input {
+				width: 100%!important;
+			}
+		}
+	}
 }
 </style>

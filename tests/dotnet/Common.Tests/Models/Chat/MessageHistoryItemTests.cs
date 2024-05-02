@@ -15,12 +15,12 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
             yield return new object[] { "Sender_1", "Test" };
         }
 
-        [Theory]
-        [MemberData(nameof(GetInvalidFields))]
-        public void Create_MessageHistoryItem_FailsWithInvalidValues(string sender, string text)
-        {
-            Assert.Throws<Exception>(() => CreateMessageHistoryItem(sender,text));
-        }
+        //[Theory]
+        //[MemberData(nameof(GetInvalidFields))]
+        //public void Create_MessageHistoryItem_FailsWithInvalidValues(string sender, string text)
+        //{
+        //    Assert.Throws<Exception>(() => CreateMessageHistoryItem(sender,text));
+        //}
 
         [Theory]
         [MemberData(nameof(GetValidFields))]

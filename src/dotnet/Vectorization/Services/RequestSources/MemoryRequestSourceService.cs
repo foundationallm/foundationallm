@@ -6,6 +6,7 @@ using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using FoundationaLLM.Vectorization.Models.Configuration;
+using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 
 namespace FoundationaLLM.Vectorization.Services.RequestSources
 {
@@ -54,6 +55,13 @@ namespace FoundationaLLM.Vectorization.Services.RequestSources
         public Task SubmitRequest(VectorizationRequest request)
         {
             _requests.Enqueue(request);
+            return Task.CompletedTask;
+        }
+
+        /// <inheritdoc/>
+        public Task UpdateRequest(string requestId, string popReceipt, VectorizationRequest request)
+        {
+            _requests.Single(r => r.Id == request.Id).ErrorCount = request.ErrorCount;
             return Task.CompletedTask;
         }
     }

@@ -1,11 +1,11 @@
 ﻿using FakeItEasy;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.ResourceProvider;
+using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Vectorization.Handlers;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Models;
-using FoundationaLLM.Vectorization.Models.Resources;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -14,9 +14,14 @@ namespace Vectorization.Tests.Handlers
 {
     internal class Partition : ITextSplitterService
     {
-        public (List<string> TextChunks, string Message) SplitPlainText(string text)
+        public List<TextChunk> SplitPlainText(string text)
         {
-            return (TextChunks: text.Split("\n").ToList(), Message: "Successfully split input document.");
+            var position = 1;
+            return text.Split("\n").Select(t => new TextChunk
+            {
+                Position = position++,
+                Content = t.Trim(),
+            }).ToList();
         }
     }
 

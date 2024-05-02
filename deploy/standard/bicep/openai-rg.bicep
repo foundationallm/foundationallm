@@ -12,7 +12,7 @@ param dnsResourceGroupName string
 param environmentName string
 
 @description('Number of OpenAI instances to deploy.')
-param instanceCount int = 2
+param instanceCount int = 1
 
 @description('Location used for all resources.')
 param location string
@@ -171,28 +171,6 @@ module dnsZones 'modules/utility/dnsZoneData.bicep' = {
   params: {
     location: location
   }
-}
-
-@description('API Management')
-module apim 'modules/apim.bicep' = {
-  name: 'apim-${timestamp}'
-  params: {
-    actionGroupId: actionGroupId
-    dnsResourceGroupName: dnsResourceGroupName
-    location: location
-    logAnalyticWorkspaceId: logAnalyticsWorkspaceId
-    privateDnsZones: dnsZones.outputs.idsApim
-    resourceSuffix: resourceSuffix
-    subnetId: '${vnetId}/subnets/FLLMOpenAI'
-    tags: tags
-
-    cognitiveAccounts: [for x in range(0, instanceCount): {
-      name: openai[x].outputs.name
-      endpoint: openai[x].outputs.endpoint
-      keys: openai[x].outputs.keys
-    }]
-  }
-  dependsOn: [ openai ]
 }
 
 @description('Content Safety')

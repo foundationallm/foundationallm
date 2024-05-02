@@ -1,12 +1,7 @@
-﻿using FoundationaLLM.Agent.ResourceProviders;
-using FoundationaLLM.Common.Constants.ResourceProviders;
+﻿using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
-using FoundationaLLM.Common.Models.ResourceProvider;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Configuration.Services;
-using FoundationaLLM.DataSource.ResourceProviders;
-using FoundationaLLM.Prompt.ResourceProviders;
-using FoundationaLLM.Vectorization.ResourceProviders;
 using System.Collections.Immutable;
 
 namespace FoundationaLLM.Authorization.Utils

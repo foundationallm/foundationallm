@@ -1,15 +1,16 @@
-﻿using Azure.Identity;
-using FoundationaLLM.Common.Authentication;
+﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Common.Settings;
 using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Http.Resilience;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Embeddings;
-using System.ComponentModel;
+using System.Net;
 
 #pragma warning disable SKEXP0001, SKEXP0010
 
@@ -21,7 +22,8 @@ namespace FoundationaLLM.SemanticKernel.Core.Services
     public class SemanticKernelTextEmbeddingService : ITextEmbeddingService
     {
         private readonly SemanticKernelTextEmbeddingServiceSettings _settings;
-        private readonly ILogger _logger;
+        private readonly ILoggerFactory _loggerFactory;
+        private readonly ILogger<SemanticKernelTextEmbeddingService> _logger;
         private readonly Kernel _kernel;
         private readonly ITextEmbeddingGenerationService _textEmbeddingService;
 
@@ -29,55 +31,82 @@ namespace FoundationaLLM.SemanticKernel.Core.Services
         /// Creates a new <see cref="SemanticKernelTextEmbeddingService"/> instance.
         /// </summary>
         /// <param name="options">The <see cref="IOptions{TOptions}"/> providing configuration settings.</param>
-        /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
+        /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used to create loggers for logging.</param>
         public SemanticKernelTextEmbeddingService(
             IOptions<SemanticKernelTextEmbeddingServiceSettings> options,
-            ILogger<SemanticKernelTextEmbeddingService> logger)
+            ILoggerFactory loggerFactory)
         {
             _settings = options.Value;
-            _logger = logger;
+            _loggerFactory = loggerFactory;
+            _logger = _loggerFactory.CreateLogger<SemanticKernelTextEmbeddingService>();
             _kernel = CreateKernel();
             _textEmbeddingService = _kernel.GetRequiredService<ITextEmbeddingGenerationService>();
         }
 
         /// <inheritdoc/>
-        public async Task<(Embedding Embedding, int TokenCount)> GetEmbeddingAsync(string text)
+        public async Task<TextEmbeddingResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string modelName = "text-embedding-ada-002")
         {
-            var embedding = await _textEmbeddingService.GenerateEmbeddingAsync(text);
-            return new(new(embedding), 0);
+            try
+            {
+                var embeddings = await _textEmbeddingService.GenerateEmbeddingsAsync(textChunks.Select(tc => tc.Content!).ToList());
+                return new TextEmbeddingResult
+                {
+                    InProgress = false,
+                    TextChunks = Enumerable.Range(0, embeddings.Count).Select(i =>
+                    {
+                        var textChunk = textChunks[i];
+                        textChunk.Embedding = new Embedding(embeddings[i]);
+                        return textChunk;
+                    }).ToList()
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while generating embeddings.");
+                return new TextEmbeddingResult
+                {
+                    InProgress = false,
+                    Failed = true,
+                    ErrorMessage = ex.Message
+                };
+            }
         }
 
         /// <inheritdoc/>
-        public async Task<(IList<Embedding> Embeddings, int TokenCount)> GetEmbeddingsAsync(IList<string> texts)
-        {
-            var embeddings = await _textEmbeddingService.GenerateEmbeddingsAsync(texts);
-            return new(embeddings.Select(e => new Embedding(e)).ToList(), 0);
-        }
+        public Task<TextEmbeddingResult> GetEmbeddingsAsync(string operationId) => throw new NotImplementedException();
 
-        /// <summary>
-        /// Creates a <see cref="Kernel"/> instance using the deployment name, endpoint, and API key.
-        /// </summary>
-        /// <param name="deploymentName">The name of the Azure Open AI deployment.</param>
-        /// <param name="endpoint">The endpoint of the Azure Open AI deployment.</param>
-        /// <param name="apiKey">The API key used to connect to the Azure Open AI deployment.</param>
-        /// <returns>The <see cref="Kernel"/> instance.</returns>
-        private Kernel CreateKernelFromAPIKey(string deploymentName, string endpoint, string apiKey)
+        private Kernel CreateKernel()
         {
-            var builder = Kernel.CreateBuilder();
-            builder.AddAzureOpenAITextEmbeddingGeneration(deploymentName, endpoint, apiKey);
-            return builder.Build();
-        }
+            ValidateDeploymentName(_settings.DeploymentName);
+            ValidateEndpoint(_settings.Endpoint);
 
-        /// <summary>
-        /// Creates a <see cref="Kernel"/> instance using the deployment name, endpoint, and the Azure identity.
-        /// </summary>
-        /// <param name="deploymentName">The name of the Azure Open AI deployment.</param>
-        /// <param name="endpoint">The endpoint of the Azure Open AI deployment.</param>
-        /// <returns>The <see cref="Kernel"/> instance.</returns>
-        private Kernel CreateKernelFromIdentity(string deploymentName, string endpoint)
-        {
             var builder = Kernel.CreateBuilder();
-            builder.AddAzureOpenAITextEmbeddingGeneration(deploymentName, endpoint, DefaultAuthentication.GetAzureCredential());
+            if (_settings.AuthenticationType == AzureOpenAIAuthenticationTypes.AzureIdentity)
+            {
+                builder.AddAzureOpenAITextEmbeddingGeneration(
+                    _settings.DeploymentName,
+                    _settings.Endpoint,
+                    DefaultAuthentication.GetAzureCredential());
+            }
+            else
+            {
+                ValidateAPIKey(_settings.APIKey);
+                builder.AddAzureOpenAITextEmbeddingGeneration(
+                    _settings.DeploymentName,
+                    _settings.Endpoint,
+                    _settings.APIKey!);
+            }
+
+            builder.Services.AddSingleton<ILoggerFactory>(_loggerFactory);
+            builder.Services.ConfigureHttpClientDefaults(c =>
+            {
+                // Use a standard resiliency policy configured to retry on 429 (too many requests).
+                c.AddStandardResilienceHandler().Configure(o =>
+                {
+                    o.Retry.ShouldHandle = args => ValueTask.FromResult(args.Outcome.Result?.StatusCode is HttpStatusCode.TooManyRequests);
+                });
+            });
+
             return builder.Build();
         }
 
@@ -104,24 +133,6 @@ namespace FoundationaLLM.SemanticKernel.Core.Services
             {
                 _logger.LogCritical("The Azure Open AI API key is invalid.");
                 throw new ConfigurationValueException("The Azure Open AI API key is invalid.");
-            }
-        }
-
-        private Kernel CreateKernel()
-        {
-            switch (_settings.AuthenticationType)
-            {
-                case AzureOpenAIAuthenticationTypes.APIKey:
-                    ValidateDeploymentName(_settings.DeploymentName);
-                    ValidateEndpoint(_settings.Endpoint);
-                    ValidateAPIKey(_settings.APIKey);
-                    return CreateKernelFromAPIKey(_settings.DeploymentName, _settings.Endpoint, _settings.APIKey!);
-                case AzureOpenAIAuthenticationTypes.AzureIdentity:
-                    ValidateDeploymentName(_settings.DeploymentName);
-                    ValidateEndpoint(_settings.Endpoint);
-                    return CreateKernelFromIdentity(_settings.DeploymentName, _settings.Endpoint);
-                default:
-                    throw new InvalidEnumArgumentException($"The authentication type {_settings.AuthenticationType} is not supported.");
             }
         }
     }

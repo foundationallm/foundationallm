@@ -2,13 +2,14 @@ from io import BytesIO
 import fnmatch
 from azure.storage.blob import BlobServiceClient
 from foundationallm.storage import StorageManagerBase
+from azure.identity import DefaultAzureCredential
 
 class BlobStorageManager(StorageManagerBase):
     """
     The BlobStorageManager class is responsible for managing files in Azure Blob Storage.
     """
 
-    def __init__(self, blob_connection_string=None, container_name=None):
+    def __init__(self, blob_connection_string=None, container_name=None, account_name=None, authentication_type='ConnectionString'):
         """
         Initialize a blob storage manager.
 
@@ -19,18 +20,20 @@ class BlobStorageManager(StorageManagerBase):
         container_name : str
             The name of the container is blob storage from which blobs should be retrieved.
         """
-        if blob_connection_string is None or blob_connection_string == '':
-            raise ValueError(
-                'The blob_connection_string parameter must be set to a valid connection string.'
-            )
+        if authentication_type == 'AzureIdentity':
+            if account_name is None or account_name == '':
+                raise ValueError('The account_name parameter must be set to a valid account name.')
+            credential = DefaultAzureCredential(exclude_environment_credential=True)
+            blob_service_client = BlobServiceClient(account_url=f"https://{account_name}.blob.core.windows.net", credential=credential)
+        else:
+            if blob_connection_string is None or blob_connection_string == '':
+                raise ValueError('The blob_connection_string parameter must be set to a valid connection string.')
+            blob_service_client = BlobServiceClient.from_connection_string(blob_connection_string)
+            
         if container_name is None or container_name == '':
             raise ValueError('The container_name parameter must be set to a valid container.')
-
-        self.blob_connection_string = blob_connection_string
-        self.container_name = container_name
-        self.blob_service_client = \
-                    BlobServiceClient.from_connection_string(self.blob_connection_string)
-        self.blob_container_client = self.blob_service_client.get_container_client(container_name)
+ 
+        self.blob_container_client = blob_service_client.get_container_client(container_name)
 
     def __get_full_path(self, path) -> str:
         """

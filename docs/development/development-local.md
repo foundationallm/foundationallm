@@ -29,6 +29,16 @@
     - Run nvm list (to see the versions of NPM/node.js available)
     - Run nvm use latest (to use the latest available version)
 
+### Setup RBAC permissions when running locally
+
+When you run the solution locally, you will need to set role-based access control (RBAC) permissions on the Azure Cosmos DB account. You can do this by running the following command in the Azure Cloud Shell or Azure CLI:
+
+Assign yourself to the "Cosmos DB Built-in Data Contributor" role:
+
+```bash
+az cosmosdb sql role assignment create --account-name YOUR_COSMOS_DB_ACCOUNT_NAME --resource-group YOUR_RESOURCE_GROUP_NAME --scope "/" --principal-id YOUR_AZURE_AD_PRINCIPAL_ID --role-definition-id 00000000-0000-0000-0000-000000000002
+```
+
 ## UI
 
 ### User Portal
@@ -85,7 +95,7 @@ The `ManagementPortal` project is a Vue.js (Nuxt) project. To configure it to ru
         "APIUrl": "<...>" // Default local value: https://localhost:7180/
       },
       ,
-      "AgentFactoryAPI": {
+      "OrchestrationAPI": {
         "APIUrl": "<...>" // Default local value: "https://localhost:7324/"
       }
     }
@@ -165,7 +175,7 @@ The `CoreWorker` project is a .NET worker service that acts as the Cosmos DB cha
 {
   "FoundationaLLM": {
     "APIs": {
-      "AgentFactoryAPI": {
+      "OrchestrationAPI": {
         "APIUrl": "<...>"  // Default local value: https://localhost:7324/
       },
       "GatekeeperIntegrationAPI": {
@@ -176,9 +186,9 @@ The `CoreWorker` project is a .NET worker service that acts as the Cosmos DB cha
 }
 ```
 
-### Agent Factory API
+### Orchestration API
 
-#### Agent Factory API app settings
+#### Orchestration API app settings
 
 > Make sure the contents of the `appsettings.json` file has this structure and similar values:
 
@@ -375,7 +385,7 @@ The backend components consist of the .NET projects and the Python projects. The
 
 10. Select the `Multiple startup projects` option, then set the `Action` for the following projects to `Start`. Click **OK**.
   
-      - AgentFactoryAPI
+      - OrchestrationAPI
       - AgentHubAPI
       - CoreAPI
       - DataSourceHubAPI

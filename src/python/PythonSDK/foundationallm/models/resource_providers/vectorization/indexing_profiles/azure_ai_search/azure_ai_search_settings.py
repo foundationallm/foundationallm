@@ -14,3 +14,5 @@ class AzureAISearchSettings(SettingsBase):
     filters: Optional[str] = ""
     embedding_field_name: Optional[str] = "Embedding"
     text_field_name: Optional[str] = "Text"
+    metadata_field_name: Optional[str] = "AdditionalMetadata"
+    id_field_name: Optional[str] = "Id"

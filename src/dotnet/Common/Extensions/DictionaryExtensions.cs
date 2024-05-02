@@ -43,7 +43,7 @@ namespace FoundationaLLM.Common.Extensions
                 // Handling enums:
                 if (targetType.IsEnum)
                 {
-                    return Enum.Parse(targetType, value.ToString());
+                    return Enum.Parse(targetType, value.ToString()!);
                 }
 
                 // Handling IConvertible types:

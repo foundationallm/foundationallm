@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
+using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
 using FoundationaLLM.Common.Validation.ResourceProvider;
-using FoundationaLLM.DataSource.Models;
 
 namespace FoundationaLLM.DataSource.Validation
 {

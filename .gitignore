@@ -13,6 +13,8 @@ local.settings.json
 *.userosscache
 *.sln.docstates
 
+testsettings.json
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
@@ -380,9 +382,13 @@ log
 **/Deployment-Manifest.json
 **/Deployment-Manifest.*.json
 .azure
-**/agent-factory-api-event-profile.json
+**/orchestration-api-event-profile.json
 **/core-api-event-profile.json
 **/vectorization-api-event-profile.json
 **/vectorization-worker-event-profile.json
 deploy/quick-start/.env
 **/management-api-event-profile.json
+**/testsettings.json
+
+# SonarCube
+.sonarqube/

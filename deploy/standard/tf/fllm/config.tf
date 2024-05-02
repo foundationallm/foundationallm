@@ -1,7 +1,7 @@
 locals {
   config_key_kv = {
-    "FoundationaLLM:APIs:AgentFactoryAPI:APIUrl" = {
-      value = "http://foundationallm-agent-factory-api/agentfactory"
+    "FoundationaLLM:APIs:OrchestrationAPI:APIUrl" = {
+      value = "http://foundationallm-orchestration-api/orchestration"
     }
     "FoundationaLLM:APIs:AgentHubAPI:APIUrl" = {
       value = "http://foundationallm-agent-hub-api/agenthub"
@@ -24,7 +24,7 @@ locals {
     "FoundationaLLM:APIs:SemanticKernelAPI:APIUrl" = {
       value = "http://foundationallm-semantic-kernel-api/semantickernel"
     }
-    "FoundationaLLM:APIs:AgentFactoryAPI:ForceHttpsRedirection" = {
+    "FoundationaLLM:APIs:OrchestrationAPI:ForceHttpsRedirection" = {
       value = "false"
     }
     "FoundationaLLM:APIs:GatekeeperAPI:ForceHttpsRedirection" = {
@@ -248,11 +248,11 @@ locals {
     "FoundationaLLM:APIs:GatekeeperAPI:AppInsightsConnectionString" = {
       vault_key_reference = azurerm_key_vault_secret.ai_connection_string.versionless_id
     }
-    "FoundationaLLM:APIs:AgentFactoryAPI:AppInsightsConnectionString" = {
+    "FoundationaLLM:APIs:OrchestrationAPI:AppInsightsConnectionString" = {
       vault_key_reference = azurerm_key_vault_secret.ai_connection_string.versionless_id
     }
-    "FoundationaLLM:APIs:AgentFactoryAPI:APIKey" = {
-      vault_key_reference = azurerm_key_vault_secret.api_key["agentfactoryapi"].versionless_id
+    "FoundationaLLM:APIs:OrchestrationAPI:APIKey" = {
+      vault_key_reference = azurerm_key_vault_secret.api_key["orchestrationapi"].versionless_id
     }
     "FoundationaLLM:APIs:AgentHubAPI:APIKey" = {
       vault_key_reference = azurerm_key_vault_secret.api_key["agenthubapi"].versionless_id

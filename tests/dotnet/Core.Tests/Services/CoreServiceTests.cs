@@ -11,6 +11,8 @@ using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+//using Microsoft.Graph.Models.CallRecords;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 
@@ -33,13 +35,13 @@ namespace FoundationaLLM.Core.Tests.Services
             var gatekeeperAPIDownstream = Substitute.For<IDownstreamAPIService>();
             gatekeeperAPIDownstream.APIName.Returns(HttpClients.GatekeeperAPI);
 
-            var agentFactoryAPIDownstream = Substitute.For<IDownstreamAPIService>();
-            agentFactoryAPIDownstream.APIName.Returns(HttpClients.AgentFactoryAPI);
+            var orchestrationAPIDownstream = Substitute.For<IDownstreamAPIService>();
+            orchestrationAPIDownstream.APIName.Returns(HttpClients.OrchestrationAPI);
 
             _downstreamAPIServices = new List<IDownstreamAPIService>
             {
                 gatekeeperAPIDownstream,
-                agentFactoryAPIDownstream
+                orchestrationAPIDownstream
             };
 
             _options = Options.Create(new CoreServiceSettings {
@@ -238,6 +240,7 @@ namespace FoundationaLLM.Core.Tests.Services
             // Arrange
             var sessionId = Guid.NewGuid().ToString();
             var userPrompt = "Prompt";
+            var orchestrationRequest = new OrchestrationRequest { SessionId = sessionId, UserPrompt = userPrompt };
             var upn = "test@foundationallm.ai";
             var expectedCompletion = new Completion() { Text = "Completion" };
 
@@ -251,7 +254,7 @@ namespace FoundationaLLM.Core.Tests.Services
             _cosmosDbService.UpsertSessionBatchAsync().Returns(Task.CompletedTask);
 
             // Act
-            var actualCompletion = await _testedService.GetChatCompletionAsync(sessionId, userPrompt);
+            var actualCompletion = await _testedService.GetChatCompletionAsync(orchestrationRequest);
 
             // Assert
             Assert.Equal(expectedCompletion.Text, actualCompletion.Text);
@@ -261,12 +264,12 @@ namespace FoundationaLLM.Core.Tests.Services
         public async Task GetChatCompletionAsync_ShouldReturnAnErrorMessageWhenSessionIdIsNull()
         {
             // Arrange
-            var sessionId = Guid.NewGuid().ToString();
             var userPrompt = "Prompt";
+            var orchestrationRequest = new OrchestrationRequest { UserPrompt = userPrompt };
             var expectedCompletion = new Completion { Text = "Could not generate a completion due to an internal error." };
 
             // Act
-            var actualCompletion = await _testedService.GetChatCompletionAsync(null, userPrompt);
+            var actualCompletion = await _testedService.GetChatCompletionAsync(orchestrationRequest);
 
             // Assert
             Assert.Equal(expectedCompletion.Text, actualCompletion.Text);
@@ -279,9 +282,10 @@ namespace FoundationaLLM.Core.Tests.Services
         {
             // Arrange
             var sessionId = Guid.NewGuid().ToString();
+            var orchestrationRequest = new OrchestrationRequest { SessionId = sessionId, UserPrompt = null! };
 
             // Act
-            var exception = await Record.ExceptionAsync(async () => await _testedService.GetChatCompletionAsync(sessionId, null!));
+            var exception = await Record.ExceptionAsync(async () => await _testedService.GetChatCompletionAsync(orchestrationRequest));
 
             // Assert
             Assert.Null(exception);
@@ -292,9 +296,10 @@ namespace FoundationaLLM.Core.Tests.Services
         {
             // Arrange
             var userPrompt = "Prompt";
+            var orchestrationRequest = new OrchestrationRequest { UserPrompt = userPrompt };
 
             // Act
-            var exception = await Record.ExceptionAsync(async () => await _testedService.GetChatCompletionAsync(null, userPrompt));
+            var exception = await Record.ExceptionAsync(async () => await _testedService.GetChatCompletionAsync(orchestrationRequest));
 
             // Assert
             Assert.Null(exception);

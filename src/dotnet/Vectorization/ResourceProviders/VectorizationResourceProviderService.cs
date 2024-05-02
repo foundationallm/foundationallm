@@ -7,11 +7,10 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
-using FoundationaLLM.Common.Models.ResourceProvider;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Common.Services.ResourceProviders;
-using FoundationaLLM.Vectorization.Models;
 using FoundationaLLM.Vectorization.Models.Resources;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -57,10 +56,10 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
             VectorizationResourceProviderMetadata.AllowedResourceTypes;
 
-        private ConcurrentDictionary<string, VectorizationProfileBase> _textPartitioningProfiles = [];
-        private ConcurrentDictionary<string, VectorizationProfileBase> _textEmbeddingProfiles = [];
-        private ConcurrentDictionary<string, VectorizationProfileBase> _indexingProfiles = [];
-        private ConcurrentDictionary<string, VectorizationPipeline> _pipelines = [];
+        private readonly ConcurrentDictionary<string, VectorizationProfileBase> _textPartitioningProfiles = [];
+        private readonly ConcurrentDictionary<string, VectorizationProfileBase> _textEmbeddingProfiles = [];
+        private readonly ConcurrentDictionary<string, VectorizationProfileBase> _indexingProfiles = [];
+        private readonly ConcurrentDictionary<string, VectorizationPipeline> _pipelines = [];
 
         private string _defaultTextPartitioningProfileName = string.Empty;
         private string _defaultTextEmbeddingProfileName = string.Empty;

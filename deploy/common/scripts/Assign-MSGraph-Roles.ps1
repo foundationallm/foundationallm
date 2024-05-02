@@ -1,3 +1,22 @@
+<#
+.SYNOPSIS
+Assigns Microsoft Graph roles to a principal.
+
+.DESCRIPTION
+This script assigns Microsoft Graph roles to a principal identified by the principalId parameter. It retrieves the Microsoft Graph ID and role IDs from Azure Active Directory (AD) and then assigns the roles to the principal using the Microsoft Graph API.
+
+.PARAMETER principalId
+The ID of the principal to assign the Microsoft Graph roles to.
+
+.EXAMPLE
+Assign-MSGraph-Roles.ps1 -principalId "12345678-1234-1234-1234-1234567890ab"
+Assigns Microsoft Graph roles to the principal with the ID "12345678-1234-1234-1234-1234567890ab".
+
+.NOTES
+Author: Sai Machiraju
+Date: March 2024
+#>
+
 Param(
     [parameter(Mandatory=$true)][string]$principalId
 )

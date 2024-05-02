@@ -130,14 +130,14 @@ namespace FoundationaLLM.Common.Services.Storage
                 if (ex.Status == (int)HttpStatusCode.Conflict
                         && ex.ErrorCode == "LeaseAlreadyPresent")
                 {
-                    _logger.LogError("Could not get a lease for the file {FilePath} from container {ContainerName}. " +
+                    _logger.LogError(ex, "Could not get a lease for the file {FilePath} from container {ContainerName}. " +
                         "Reason: an existing lease is preventing acquiring a new lease.",
                         filePath, containerName);
                     throw new StorageException($"Could not get a lease for the file {filePath} from container {containerName}. " +
-                        "Reason: an existing lease is preventing acquiring a new lease.");
+                        "Reason: an existing lease is preventing acquiring a new lease.", ex);
                 }
 
-                throw new StorageException($"Could not get a lease for the file {filePath} from container {containerName}. Reason: unknown.");
+                throw new StorageException($"Could not get a lease for the file {filePath} from container {containerName}. Reason: unknown.", ex);
             }
             finally
             {
@@ -199,7 +199,7 @@ namespace FoundationaLLM.Common.Services.Storage
             // ref: https://learn.microsoft.com/en-us/fabric/onelake/onelake-access-api#uri-syntax
             if (accountName.ToLower().Equals(StorageNames.OneLake_Storage_Account))
             {
-                return new Uri($"https://{accountName}.dfs.fabric.microsoft.com");
+                return new Uri($"https://{StorageNames.OneLake_Storage_Account}.dfs.fabric.microsoft.com");
             }
             return new Uri($"https://{accountName}.dfs.core.windows.net");
         }

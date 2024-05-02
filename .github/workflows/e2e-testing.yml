@@ -1,0 +1,77 @@
+name: End to End Testing
+
+on:
+  workflow_dispatch:
+    inputs: {}
+
+jobs:
+  generate_matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.result }}
+    steps:
+    - name: Set Service Matrix
+      uses: actions/github-script@v6
+      id: set-matrix
+      with:
+        result-encoding: string
+        script: |
+          import data from './tests/config/service-matrix.json' assert { type: 'json' };
+          console.log(data);
+          return data;
+
+  helm_build:
+    name: Package Helm Charts
+    if: ${{ contains(github.base_ref, 'release/') || contains(github.base_ref, 'poc/') }}
+    uses: ./.github/workflows/build-helm-chart.yml
+    strategy:
+      matrix:
+        include:
+        - chart: langchain-api
+    with:
+      chart: langchain-api
+      registry: cropeastus2svinternal.azurecr.io
+
+  docker_build:
+    name: Build Docker Images
+    if: ${{ contains(github.base_ref, 'release/') || contains(github.base_ref, 'poc/') }}
+    uses: ./.github/workflows/build-docker-image.yml
+    with:
+      image: langchain-api
+      context: ./src/python
+      dockerfile: Dockerfile
+      registry: cropeastus2svinternal.azurecr.io
+
+  deploy_quickstart:
+    name: Deploy Quick Start
+    if: ${{ contains(github.base_ref, 'release/') || contains(github.base_ref, 'poc/') }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Running AZD Deployment
+      id: azd-up
+      run: |
+        echo "Deploying FLLM Here"
+
+  run_e2e_tests:
+    name: Run End to End Tests
+    if: ${{ contains(github.base_ref, 'release/') || contains(github.base_ref, 'poc/') }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+        - test: SomeTestName
+    steps:
+    - name: Running End to End Tests
+      id: e2e-test-exec
+      run: |
+        echo "Running End to End Tests Here"
+
+  teardown_quickstart:
+    name: Tear Down Quick Start
+    if: ${{ contains(github.base_ref, 'release/') || contains(github.base_ref, 'poc/') }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Tearing Down AZD Deployment
+      id: azd-down
+      run: |
+        echo "Tearing down FLLM Here"

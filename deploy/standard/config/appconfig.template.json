@@ -8,13 +8,6 @@
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:AgentHub:StorageManager:BlobStorage:ConnectionString",
-        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-storage-connectionstring\"}",
-        "label": null,
-        "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-        "tags": {}
-      },
-      {
         "key": "FoundationaLLM:Agent:ResourceProviderService:Storage:AccountName",
         "value": "{{storageAccountAdlsName}}",
         "label": null,
@@ -29,28 +22,28 @@
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:APIs:AgentFactoryAPI:APIKey",
-        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apis-agentfactoryapi-apikey\"}",
+        "key": "FoundationaLLM:APIs:OrchestrationAPI:APIKey",
+        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apis-orchestrationapi-apikey\"}",
         "label": null,
         "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:APIs:AgentFactoryAPI:APIUrl",
-        "value": "http://agent-factory-api/agentfactory",
+        "key": "FoundationaLLM:APIs:OrchestrationAPI:APIUrl",
+        "value": "http://orchestration-api/orchestration",
         "label": null,
         "content_type": "",
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:APIs:AgentFactoryAPI:AppInsightsConnectionString",
+        "key": "FoundationaLLM:APIs:OrchestrationAPI:AppInsightsConnectionString",
         "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-app-insights-connection-string\"}",
         "label": null,
         "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:APIs:AgentFactoryAPI:ForceHttpsRedirection",
+        "key": "FoundationaLLM:APIs:OrchestrationAPI:ForceHttpsRedirection",
         "value": "false",
         "label": null,
         "content_type": "",
@@ -107,7 +100,7 @@
       },
       {
         "key": "FoundationaLLM:APIs:CoreAPI:BypassGatekeeper",
-        "value": "false",
+        "value": "true",
         "label": null,
         "content_type": "",
         "tags": {}
@@ -470,13 +463,6 @@
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:BlobStorageMemorySource:BlobStorageConnection",
-        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-storage-connectionstring\"}",
-        "label": null,
-        "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-        "tags": {}
-      },
-      {
         "key": "FoundationaLLM:BlobStorageMemorySource:BlobStorageContainer",
         "value": "memory-source",
         "label": null,
@@ -750,13 +736,6 @@
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:CosmosDB:Key",
-        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-cosmosdb-key\"}",
-        "label": null,
-        "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-        "tags": {}
-      },
-      {
         "key": "FoundationaLLM:CosmosDB:MonitoredContainers",
         "value": "Sessions",
         "label": null,
@@ -768,20 +747,6 @@
         "value": "data-sources",
         "label": null,
         "content_type": "",
-        "tags": {}
-      },
-      {
-        "key": "FoundationaLLM:DataSourceHub:StorageManager:BlobStorage:ConnectionString",
-        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-storage-connectionstring\"}",
-        "label": null,
-        "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-        "tags": {}
-      },
-      {
-        "key": "FoundationaLLM:DataSources:AboutFoundationaLLM:BlobStorage:ConnectionString",
-        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-storage-connectionstring\"}",
-        "label": null,
-        "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
         "tags": {}
       },
       {
@@ -827,8 +792,8 @@
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:Events:AzureEventGridEventService:Profiles:AgentFactoryAPI",
-        "value": "{{agentFactoryApiEventGridProfile}}",
+        "key": "FoundationaLLM:Events:AzureEventGridEventService:Profiles:OrchestrationAPI",
+        "value": "{{orchestrationApiEventGridProfile}}",
         "label": null,
         "content_type": "application/json",
         "tags": {}
@@ -1016,13 +981,6 @@
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:PromptHub:StorageManager:BlobStorage:ConnectionString",
-        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-storage-connectionstring\"}",
-        "label": null,
-        "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-        "tags": {}
-      },
-      {
         "key": "FoundationaLLM:SemanticKernelAPI:OpenAI.ChatCompletionPromptName",
         "value": "RetailAssistant.Default",
         "label": null,
@@ -1142,31 +1100,31 @@
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:Vectorization:Queues:Embed:ConnectionString",
-        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-storage-connectionstring\"}",
+        "key": "FoundationaLLM:Vectorization:Queues:Embed:AccountName",
+        "value": "{{accountName}}",
         "label": null,
-        "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+        "content_type": "",
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:Vectorization:Queues:Extract:ConnectionString",
-        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-storage-connectionstring\"}",
+        "key": "FoundationaLLM:Vectorization:Queues:Extract:AccountName",
+        "value": "{{accountName}}",
         "label": null,
-        "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+        "content_type": "",
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:Vectorization:Queues:Index:ConnectionString",
-        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-storage-connectionstring\"}",
+        "key": "FoundationaLLM:Vectorization:Queues:Index:AccountName",
+        "value": "{{accountName}}",
         "label": null,
-        "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+        "content_type": "",
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:Vectorization:Queues:Partition:ConnectionString",
-        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-storage-connectionstring\"}",
+        "key": "FoundationaLLM:Vectorization:Queues:Partition:AccountName",
+        "value": "{{accountName}}",
         "label": null,
-        "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+        "content_type": "",
         "tags": {}
       },
       {

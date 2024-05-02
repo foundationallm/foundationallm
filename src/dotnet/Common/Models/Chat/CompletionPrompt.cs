@@ -1,4 +1,6 @@
-﻿namespace FoundationaLLM.Common.Models.Chat
+﻿using FoundationaLLM.Common.Models.Orchestration;
+
+namespace FoundationaLLM.Common.Models.Chat
 {
     /// <summary>
     /// The completion prompt object.
@@ -31,15 +33,21 @@
         public bool Deleted { get; set; }
 
         /// <summary>
+        /// The sources used in the creation of the completion response.
+        /// </summary>
+        public Citation[]? Citations { get; set; }
+
+        /// <summary>
         /// Constructor for Completion Prompt.
         /// </summary>
-        public CompletionPrompt(string sessionId, string messageId, string prompt)
+        public CompletionPrompt(string sessionId, string messageId, string prompt, Citation[]? citations = null)
         {
             Id = Guid.NewGuid().ToString();
             Type = nameof(CompletionPrompt);
             SessionId = sessionId;
             MessageId = messageId;
             Prompt = prompt;
+            Citations = citations;
         }
     }
 }

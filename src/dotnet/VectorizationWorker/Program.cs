@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using FoundationaLLM;
+using FoundationaLLM.Authorization.Services;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
@@ -14,7 +15,6 @@ using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
 using FoundationaLLM.SemanticKernel.Core.Services;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Models.Configuration;
-using FoundationaLLM.Vectorization.Services;
 using FoundationaLLM.Vectorization.Services.ContentSources;
 using FoundationaLLM.Vectorization.Services.Text;
 using FoundationaLLM.Vectorization.Services.VectorizationStates;
@@ -38,6 +38,7 @@ builder.Configuration.AddAzureAppConfiguration(options =>
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Vectorization);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIs_VectorizationWorker);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIs_GatewayAPI);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Events);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_DataSource);
@@ -129,9 +130,11 @@ builder.Services.AddSingleton<IVectorizationServiceFactory<IIndexingService>, In
 builder.Services.AddKeyedSingleton<ITokenizerService, MicrosoftBPETokenizerService>(TokenizerServiceNames.MICROSOFT_BPE_TOKENIZER);
 builder.Services.ActivateKeyedSingleton<ITokenizerService>(TokenizerServiceNames.MICROSOFT_BPE_TOKENIZER);
 
-// Text embedding
-builder.Services.AddKeyedSingleton<ITextEmbeddingService, SemanticKernelTextEmbeddingService>(
-    DependencyInjectionKeys.FoundationaLLM_Vectorization_SemanticKernelTextEmbeddingService);
+// Gateway text embedding
+builder.Services.AddKeyedScoped<ITextEmbeddingService, GatewayTextEmbeddingService>(
+    DependencyInjectionKeys.FoundationaLLM_Vectorization_GatewayTextEmbeddingService);
+builder.AddGatewayService();
+builder.Services.AddHttpClient();
 
 // Indexing
 builder.Services.AddKeyedSingleton<IIndexingService, AzureAISearchIndexingService>(

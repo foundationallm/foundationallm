@@ -3,13 +3,15 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.DataSource.Models;
-using FoundationaLLM.Vectorization.Exceptions;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Vectorization.Handlers;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
+using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
 
 namespace FoundationaLLM.Vectorization.Services
 {
@@ -42,6 +44,7 @@ namespace FoundationaLLM.Vectorization.Services
         private readonly IServiceProvider _serviceProvider = serviceProvider;
         private readonly ILoggerFactory _loggerFactory = loggerFactory;
         private readonly ILogger<VectorizationService> _logger = loggerFactory.CreateLogger<VectorizationService>();
+        private readonly string[] _httpProtocols = ["http", "https"];
 
         /// <inheritdoc/>
         public async Task<VectorizationResult> ProcessRequest(VectorizationRequest vectorizationRequest)
@@ -128,15 +131,12 @@ namespace FoundationaLLM.Vectorization.Services
                         .Contains(fileNameExtension.ToLower()))
                         throw new VectorizationException($"The file extension {fileNameExtension} is not supported.");
                     break;
-                // Needs to be brought into the data source provider
-                /*
-                case DataSourceType.Web:
+                case DataSourceTypes.WebSite:
                     // Validate the protocol passed in is http or https
                     string protocol = vectorizationRequest.ContentIdentifier[0];
-                    if (!new[] { "http", "https" }.Contains(protocol.ToLower()))
+                    if (!_httpProtocols.Contains(protocol.ToLower()))
                         throw new VectorizationException($"The protocol {protocol} is not supported.");
                     break;
-                */
                 default:
                     throw new VectorizationException($"The data source type {dataSource.Type} is not supported.");
 

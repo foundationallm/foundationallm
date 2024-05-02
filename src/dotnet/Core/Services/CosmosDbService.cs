@@ -11,6 +11,8 @@ using FoundationaLLM.Common.Models.Configuration.Users;
 using Polly;
 using Polly.Retry;
 using Azure.Identity;
+using FoundationaLLM.Common.Models.Configuration.CosmosDB;
+using FoundationaLLM.Common.Authentication;
 
 namespace FoundationaLLM.Core.Services
 {
@@ -42,6 +44,7 @@ namespace FoundationaLLM.Core.Services
         /// are null or empty.</exception>
         public CosmosDbService(
             IOptions<CosmosDbSettings> settings,
+            CosmosClient client,
             ILogger<CosmosDbService> logger)
         {
             _settings = settings.Value;
@@ -75,15 +78,6 @@ namespace FoundationaLLM.Core.Services
                     return default;
                 }
             }).Build();
-
-            CosmosSerializationOptions options = new()
-            {
-                PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
-            };
-            var client = new CosmosClientBuilder(_settings.Endpoint, new DefaultAzureCredential())
-                .WithSerializerOptions(options)
-                .WithConnectionModeGateway()
-                .Build();
 
             var database = client?.GetDatabase(_settings.Database);
 

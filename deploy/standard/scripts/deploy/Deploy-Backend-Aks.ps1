@@ -7,7 +7,7 @@ Param(
     [parameter(Mandatory = $false)][string]$resourceGroup,
     [parameter(Mandatory = $false)][string]$secretProviderClassManifest,
     [parameter(Mandatory = $false)][string]$serviceNamespace = "fllm",
-    [parameter(Mandatory = $false)][string]$version = "0.4.1"
+    [parameter(Mandatory = $false)][string]$version = "0.5.1"
 )
 
 Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable, 2 to enable verbose)
@@ -49,8 +49,8 @@ Invoke-AndRequireSuccess "Create ${serviceNamespace} namespace" {
 }
 
 $chartNames = @{
-    "agent-factory-api"          = "../config/helm/microservice-values.yml"
     "agent-hub-api"              = "../config/helm/microservice-values.yml"
+    "authorization-api"          = "../config/helm/microservice-values.yml"
     "core-api"                   = "../config/helm/coreapi-values.yml"
     "core-job"                   = "../config/helm/microservice-values.yml"
     "data-source-hub-api"        = "../config/helm/microservice-values.yml"
@@ -58,6 +58,7 @@ $chartNames = @{
     "gatekeeper-integration-api" = "../config/helm/microservice-values.yml"
     "langchain-api"              = "../config/helm/microservice-values.yml"
     "management-api"             = "../config/helm/managementapi-values.yml"
+    "orchestration-api"          = "../config/helm/microservice-values.yml"
     "prompt-hub-api"             = "../config/helm/microservice-values.yml"
     "semantic-kernel-api"        = "../config/helm/microservice-values.yml"
     "vectorization-api"          = "../config/helm/vectorizationapi-values.yml"

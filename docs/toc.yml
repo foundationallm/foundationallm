@@ -12,15 +12,21 @@ items:
     href: deployment/deployment-configuration.md
   - name: Configure access control for services
     href: deployment/configure-access-control-for-services.md
-  - name: Authentication setup
-    href: deployment/authentication/index.md
+  - name: Soft Deletes
+    href: deployment/soft-delete.md
+  - name: Changes in 0.5.0
+    href: deployment/changes-050.md
+  - name: Changes in 0.6.0
+    href: deployment/changes-060.md
+  - name: Authentication and Authorization setup
+    href: deployment/authentication-authorization/index.md
     items:
     - name: Core Authentication
-      href: deployment/authentication/core-authentication-setup-entra.md
+      href: deployment/authentication-authorization/core-authentication-setup-entra.md
     - name: Management Authentication
-      href: deployment/authentication/management-authentication-setup-entra.md
-    - name: Vectorization Authentication
-      href: deployment/authentication/vectorization-authentication-setup-entra.md
+      href: deployment/authentication-authorization/management-authentication-setup-entra.md
+    - name: Authorization
+      href: deployment/authentication-authorization/authorization-setup-entra.md
 - name: Development
   href: development/index.md
   items:

@@ -8,9 +8,15 @@ namespace FoundationaLLM.Common.Models.Authorization
     public class ActionAuthorizationResult
     {
         /// <summary>
-        /// Indicates whether the action is authorized or not.
+        /// Indicates whether the action is authorized or not for each resource path.
         /// </summary>
-        [JsonPropertyName("authorized")]
-        public required bool Authorized { get; set; }
+        [JsonPropertyName("authorization_results")]
+        public required Dictionary<string, bool> AuthorizationResults { get; set; }
+
+        /// <summary>
+        /// Contains a list of invalid resource paths, for which authorization could not be completed.
+        /// </summary>
+        [JsonPropertyName("invalid_resources")]
+        public List<string>? InvalidResourcePaths { get; set; }
     }
 }

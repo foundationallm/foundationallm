@@ -1,6 +1,6 @@
 locals {
   api_keys = {
-    "agentfactoryapi"   = {}
+    "orchestrationapi"   = {}
     "agenthubapi"       = {}
     "datasourcehubapi"  = {}
     "gatekeeperapi"     = {}
@@ -30,12 +30,6 @@ resource "azurerm_key_vault_secret" "api_key" {
   name         = "foundationallm-apis-${each.key}-apikey"
   key_vault_id = data.azurerm_key_vault.keyvault_ops.id
   value        = random_string.api_key[each.key].result
-}
-
-resource "azurerm_key_vault_secret" "storage_connection_string" {
-  name         = "foundationallm-storage-connectionstring"
-  key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-  value        = module.storage.primary_connection_string
 }
 
 resource "azurerm_key_vault_secret" "content_safety_apikey" {
@@ -102,12 +96,6 @@ resource "azurerm_key_vault_secret" "client_entra_clientsecret" {
   lifecycle {
     ignore_changes = [value] // TODO: gross
   }
-}
-
-resource "azurerm_key_vault_secret" "cosmosdb_key" {
-  name         = "foundationallm-cosmosdb-key"
-  key_vault_id = data.azurerm_key_vault.keyvault_ops.id
-  value        = module.cosmosdb.key
 }
 
 resource "azurerm_key_vault_secret" "langchain_csvfile_url" {

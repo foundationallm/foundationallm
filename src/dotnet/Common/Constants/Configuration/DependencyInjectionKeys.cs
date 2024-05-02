@@ -26,6 +26,11 @@
         public const string FoundationaLLM_Vectorization_SemanticKernelTextEmbeddingService = "FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService";
 
         /// <summary>
+        /// The dependency injection key for the Gateway text embedding service.
+        /// </summary>
+        public const string FoundationaLLM_Vectorization_GatewayTextEmbeddingService = "FoundationaLLM:Vectorization:GatewayTextEmbeddingService";
+
+        /// <summary>
         /// The dependency injection key for the Azure AI Search indexing service.
         /// </summary>
         public const string FoundationaLLM_Vectorization_AzureAISearchIndexingService = "FoundationaLLM:Vectorization:AzureAISearchIndexingService";

@@ -9,6 +9,7 @@ using Microsoft.Azure.Cosmos.Fluent;
 using Polly;
 using Polly.Retry;
 using Azure.Identity;
+using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 
 namespace FoundationaLLM.Core.Services
 {

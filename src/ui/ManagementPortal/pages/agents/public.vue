@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h2 class="page-header">Public Agents</h2>
+		<h2 class="page-header">All Agents</h2>
 		<div class="page-subheader">View your publicly accessible agents.</div>
 
 		<div :class="{ 'grid--loading': loading }">

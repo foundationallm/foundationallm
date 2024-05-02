@@ -15,12 +15,6 @@ var privateDnsZone = {
   dfs: 'privatelink.dfs.${environment().suffixes.storage}'
   eventgrid: 'privatelink.eventgrid.azure.net'
   file: 'privatelink.file.${environment().suffixes.storage}'
-  gateway: 'privatelink.azure-api.net'
-  gateway_developer: 'developer.azure-api.net'
-  gateway_management: 'management.azure-api.net'
-  gateway_portal: 'portal.azure-api.net'
-  gateway_public: 'azure-api.net'
-  gateway_scm: 'scm.azure-api.net'
   monitor: 'privatelink.monitor.azure.com'
   ods: 'privatelink.ods.opinsights.azure.com'
   oms: 'privatelink.oms.opinsights.azure.com'
@@ -42,11 +36,6 @@ var zoneIds = [for (zone, i) in items(privateDnsZone): {
 /** Outputs **/
 @description('Private DNS Zones to use in other modules.')
 output ids array = zoneIds
-
-output idsApim array = filter(
-  zoneIds,
-  (zone) => contains([ 'gateway_developer', 'gateway_management', 'gateway_portal', 'gateway_public', 'gateway_scm' ], zone.key)
-)
 
 @description('Private DNS Zones for Storage Accounts')
 output idsStorage array = filter(

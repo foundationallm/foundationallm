@@ -3,7 +3,7 @@ from langchain_community.utilities.sql_database import SQLDatabase
 from foundationallm.config import Configuration
 from foundationallm.langchain.data_sources.sql import SQLDatabaseConfiguration
 from foundationallm.langchain.data_sources.sql import MariaDB, MicrosoftSQLServer, MySQL, PostgreSQL
-from foundationallm.hubs.data_source.data_sources.sql import SQLDatabaseDialect
+from .sql_database_dialects import SQLDatabaseDialect
 
 class SQLDatabaseFactory():
     """
@@ -11,7 +11,7 @@ class SQLDatabaseFactory():
     """
     def __init__(self, sql_db_config: SQLDatabaseConfiguration, config: Configuration):
         """
-        Initializes an AgentFactory for selecting which agent to use for completion.
+        Initializes an sql database factory.
 
         Parameters
         ----------

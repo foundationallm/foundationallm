@@ -16,8 +16,8 @@
 		</div>
 
 		<NuxtLink to="/agents/create" class="sidebar__item">Create New Agent</NuxtLink>
-		<NuxtLink to="/agents/public" class="sidebar__item">Public Agents</NuxtLink>
-		<NuxtLink to="/agents/private" class="sidebar__item">Private Agents</NuxtLink>
+		<NuxtLink to="/agents/public" class="sidebar__item">All Agents</NuxtLink>
+		<NuxtLink to="/agents/private" class="sidebar__item">My Agents</NuxtLink>
 		<div class="sidebar__item">Performance</div>
 
 		<!-- Data Catalog -->
@@ -54,17 +54,17 @@
 		<div class="sidebar__item">Identity & Access Management (IAM)</div>
 
 		<!-- Logged in user -->
-		<div v-if="$authStore.accounts[0]?.name" class="sidebar__account">
+		<div v-if="$authStore.currentAccount?.name" class="sidebar__account">
 			<Avatar icon="pi pi-user" class="sidebar__avatar" size="large" />
 			<div>
-				<span class="sidebar__username">{{ $authStore.accounts[0].name }}</span>
+				<span class="sidebar__username">{{ $authStore.currentAccount?.name }}</span>
 				<Button
 					class="sidebar__sign-out-button secondary-button"
 					icon="pi pi-sign-out"
 					label="Sign Out"
 					severity="secondary"
 					size="small"
-					@click="handleLogout()"
+					@click="$authStore.logout()"
 				/>
 			</div>
 		</div>
@@ -72,24 +72,8 @@
 </template>
 
 <script lang="ts">
-import { getMsalInstance } from '@/js/auth';
-
 export default {
 	name: 'Sidebar',
-
-	methods: {
-		async handleLogout() {
-			const msalInstance = await getMsalInstance();
-			const accountFilter = {
-				username: this.$authStore.accounts[0].username,
-			};
-			const logoutRequest = {
-				account: msalInstance.getAccount(accountFilter),
-			};
-			await msalInstance.logoutRedirect(logoutRequest);
-			this.$router.push({ path: '/login' });
-		},
-	},
 };
 </script>
 

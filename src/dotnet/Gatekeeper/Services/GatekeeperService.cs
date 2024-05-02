@@ -13,18 +13,21 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
     /// <remarks>
     /// Constructor for the Gatekeeper service.
     /// </remarks>
-    /// <param name="agentFactoryAPIService">The Agent Factory API client.</param>
+    /// <param name="orchestrationAPIService">The Orchestration API client.</param>
     /// <param name="contentSafetyService">The user prompt Content Safety service.</param>
+    /// <param name="lakeraGuardService">The Lakera Guard service.</param>
     /// <param name="gatekeeperIntegrationAPIService">The Gatekeeper Integration API client.</param>
     /// <param name="gatekeeperServiceSettings">The configuration options for the Gatekeeper service.</param>
     public class GatekeeperService(
-        IDownstreamAPIService agentFactoryAPIService,
+        IDownstreamAPIService orchestrationAPIService,
         IContentSafetyService contentSafetyService,
+        ILakeraGuardService lakeraGuardService,
         IGatekeeperIntegrationAPIService gatekeeperIntegrationAPIService,
         IOptions<GatekeeperServiceSettings> gatekeeperServiceSettings) : IGatekeeperService
     {
-        private readonly IDownstreamAPIService _agentFactoryAPIService = agentFactoryAPIService;
+        private readonly IDownstreamAPIService _orchestrationAPIService = orchestrationAPIService;
         private readonly IContentSafetyService _contentSafetyService = contentSafetyService;
+        private readonly ILakeraGuardService _lakeraGuardService = lakeraGuardService;
         private readonly IGatekeeperIntegrationAPIService _gatekeeperIntegrationAPIService = gatekeeperIntegrationAPIService;
         private readonly GatekeeperServiceSettings _gatekeeperServiceSettings = gatekeeperServiceSettings.Value;
 
@@ -38,10 +41,19 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
             //TODO: Call the Refinement Service with the userPrompt
             //await _refinementService.RefineUserPrompt(completionRequest.Prompt);
 
+
             if (completionRequest.GatekeeperOptions != null && completionRequest.GatekeeperOptions.Length > 0)
             {
                 _gatekeeperServiceSettings.EnableAzureContentSafety = completionRequest.GatekeeperOptions.Any(x => x == GatekeeperOptionNames.AzureContentSafety);
                 _gatekeeperServiceSettings.EnableMicrosoftPresidio = completionRequest.GatekeeperOptions.Any(x => x == GatekeeperOptionNames.MicrosoftPresidio);
+            }
+            
+            if (_gatekeeperServiceSettings.EnableLakeraGuard)
+            {
+                var promptinjectionResult = await _lakeraGuardService.DetectPromptInjection(completionRequest.UserPrompt!);
+
+                if (!string.IsNullOrWhiteSpace(promptinjectionResult))
+                    return new CompletionResponse() { Completion = promptinjectionResult };
             }
 
             if (_gatekeeperServiceSettings.EnableAzureContentSafety)
@@ -52,7 +64,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
                     return new CompletionResponse() { Completion = contentSafetyResult.Reason };
             }
 
-            var completionResponse = await _agentFactoryAPIService.GetCompletion(completionRequest);
+            var completionResponse = await _orchestrationAPIService.GetCompletion(completionRequest);
 
             if (_gatekeeperServiceSettings.EnableMicrosoftPresidio)
                 completionResponse.Completion = await _gatekeeperIntegrationAPIService.AnonymizeText(completionResponse.Completion);
@@ -70,6 +82,14 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
             //TODO: Call the Refinement Service with the userPrompt
             //await _refinementService.RefineUserPrompt(summaryRequest.Prompt);
 
+            if (_gatekeeperServiceSettings.EnableLakeraGuard)
+            {
+                var promptinjectionResult = await _lakeraGuardService.DetectPromptInjection(summaryRequest.UserPrompt!);
+
+                if (!string.IsNullOrWhiteSpace(promptinjectionResult))
+                    return new SummaryResponse() { Summary = promptinjectionResult };
+            }
+
             if (_gatekeeperServiceSettings.EnableAzureContentSafety)
             {
                 var contentSafetyResult = await _contentSafetyService.AnalyzeText(summaryRequest.UserPrompt!);
@@ -78,7 +98,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
                     return new SummaryResponse() { Summary = contentSafetyResult.Reason };
             }
 
-            var summaryResponse = await _agentFactoryAPIService.GetSummary(summaryRequest);
+            var summaryResponse = await _orchestrationAPIService.GetSummary(summaryRequest);
 
             if (_gatekeeperServiceSettings.EnableMicrosoftPresidio)
                 summaryResponse.Summary = await _gatekeeperIntegrationAPIService.AnonymizeText(summaryResponse.Summary!);

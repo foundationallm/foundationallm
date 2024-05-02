@@ -8,8 +8,8 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
-using FoundationaLLM.Common.Models.ResourceProvider;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using FoundationaLLM.DataSource.Models;
 using Microsoft.AspNetCore.Http;
@@ -60,7 +60,7 @@ namespace FoundationaLLM.DataSource.ResourceProviders
         private string _defaultDataSourceName = string.Empty;
 
         private const string DATA_SOURCE_REFERENCES_FILE_NAME = "_data-source-references.json";
-        private const string DATA_SOURCE_REFERENCES_FILE_PATH = $"/{ResourceProviderNames.FoundationaLLM_DataSource}/_data-source-references.json";
+        private const string DATA_SOURCE_REFERENCES_FILE_PATH = $"/{ResourceProviderNames.FoundationaLLM_DataSource}/{DATA_SOURCE_REFERENCES_FILE_NAME}";
 
         /// <inheritdoc/>
         protected override string _name => ResourceProviderNames.FoundationaLLM_DataSource;

@@ -1,0 +1,44 @@
+name: Helm Chart Build and Push
+
+on:
+  workflow_call:
+    inputs:
+      registry:
+        type: string
+        default: ghcr.io
+      chart:
+        type: string
+        required: true
+
+jobs:
+  helm_build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    - name: Fetching the Latest Release Tag number
+      id: releaseVersion
+      run: |
+        GIT_RELEASE=$(echo ${{ github.ref_name }} |  cut -d'/' -f 2)
+        echo "GIT_RELEASE=$GIT_RELEASE" >> $GITHUB_ENV
+        echo "release_tag: Latest Tag is : $GIT_RELEASE"
+        echo "release_tag=$GIT_RELEASE" >> $GITHUB_OUTPUT
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Log in to the Container registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ inputs.registry }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Helm Chart Update, Package, and Push
+      run: |
+        cd ./deploy/common/helm/${{ inputs.chart }}
+        sed -i "s/version\: 0\.0\.0/version\: ${{ steps.releaseVersion.outputs.release_tag }}/" Chart.yaml
+        sed -i "s/tag\: latest/tag\: ${{ steps.releaseVersion.outputs.release_tag }}/" values.yaml
+        helm package . --app-version ${{ steps.releaseVersion.outputs.release_tag }}
+        helm push ${{ inputs.chart }}-${{ steps.releaseVersion.outputs.release_tag }}.tgz oci://${{ inputs.registry }}/${{ github.repository }}/helm

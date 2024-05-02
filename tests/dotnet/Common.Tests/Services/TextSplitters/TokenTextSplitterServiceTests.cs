@@ -33,9 +33,9 @@ namespace FoundationaLLM.Common.Tests.Services.TextSplitters
 
             // Initially, there should be [(7 - 4) / (5 - 4)] = 3 chunks
             // However, the last two chunks should be merged
-            Assert.Equal(2, splitTextResult.TextChunks.Count());
-            Assert.Equal(5, splitTextResult.TextChunks[0].Split(" ").Count(word => !string.IsNullOrWhiteSpace(word)));
-            Assert.Equal(6, splitTextResult.TextChunks[1].Split(" ").Count(word => !string.IsNullOrWhiteSpace(word)));
+            Assert.Equal(2, splitTextResult.Count);
+            Assert.Equal(5, splitTextResult[0].Content!.Split(" ").Count(word => !string.IsNullOrWhiteSpace(word)));
+            Assert.Equal(6, splitTextResult[1].Content!.Split(" ").Count(word => !string.IsNullOrWhiteSpace(word)));
 
             // Do not merge the last two chunks with this test case
             options = Options.Create(new TokenTextSplitterServiceSettings("", TikTokenizerEncoders.CL100K_BASE, 3, 2));
@@ -47,11 +47,11 @@ namespace FoundationaLLM.Common.Tests.Services.TextSplitters
                     .CreateLogger<TokenTextSplitterService>()
             );
             splitTextResult = tokenTextSplitterService.SplitPlainText("Some Word or Phrase With Seven Tokens");
-            Assert.Equal(5, splitTextResult.TextChunks.Count());
+            Assert.Equal(5, splitTextResult.Count);
             // Excluding whitespace, there should be three words in each output chunk
             Assert.Equal(
                 -1,
-                splitTextResult.TextChunks.FindIndex(chunk => chunk.Split(" ").Count(word => !string.IsNullOrWhiteSpace(word)) != 3)
+                splitTextResult.FindIndex(chunk => chunk.Content!.Split(" ").Count(word => !string.IsNullOrWhiteSpace(word)) != 3)
             );
         }
     }

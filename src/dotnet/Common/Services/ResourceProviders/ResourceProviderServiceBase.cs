@@ -5,7 +5,6 @@ using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Events;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
-using FoundationaLLM.Common.Models.ResourceProvider;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Services.Events;
 using Microsoft.AspNetCore.Http;
@@ -349,17 +348,18 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     || userIdentity.UserId == null)
                     throw new Exception("The provided user identity information cannot be used for authorization.");
 
+                var rp = resourcePath.GetObjectId(_instanceSettings.Id, _name);
                 var result = await _authorizationService.ProcessAuthorizationRequest(
                     _instanceSettings.Id,
                     new ActionAuthorizationRequest
                         {
                             Action = $"{_name}/{resourcePath.MainResourceType}/{actionType}",
-                            ResourcePath = resourcePath.GetObjectId(_instanceSettings.Id, _name),
+                            ResourcePaths = [rp],
                             PrincipalId = userIdentity.UserId,
                             SecurityGroupIds = userIdentity.GroupIds
                         });
 
-                if (!result.Authorized)
+                if (!result.AuthorizationResults[rp])
                     throw new AuthorizationException("Access is not authorized.");
             }
             catch (AuthorizationException)

@@ -57,7 +57,7 @@ namespace FoundationaLLM.Common.Models.Agents
 
         /// <summary>
         /// The schedule of the trigger in Cron format.
-        /// This propoerty is valid only when TriggerType = Schedule.
+        /// This property is valid only when TriggerType = Schedule.
         /// </summary>
         [JsonPropertyName("trigger_cron_schedule")]
         public string? TriggerCronSchedule { get; set; }

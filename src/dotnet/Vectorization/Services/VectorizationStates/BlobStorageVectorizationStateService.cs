@@ -1,14 +1,14 @@
-﻿using Azure.Core;
-using Azure.Storage.Blobs;
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
 using FoundationaLLM.Common.Constants.Configuration;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Services;
+using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
+using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Models;
-using FoundationaLLM.Vectorization.Models.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Parquet.Serialization;
 using System.Text;
 using System.Text.Json;
 
@@ -53,13 +53,42 @@ namespace FoundationaLLM.Vectorization.Services.VectorizationStates
         /// <inheritdoc/>
         public async Task LoadArtifacts(VectorizationState state, VectorizationArtifactType artifactType)
         {
-            foreach (var artifact in state.Artifacts.Where(a => a.Type == artifactType))
-                if (!string.IsNullOrWhiteSpace(artifact.CanonicalId))
-                    artifact.Content = Encoding.UTF8.GetString(
-                        await _storageService.ReadFileAsync(
+            if (state.LoadedArtifactTypes.Contains(artifactType))
+                // This artifact type has already been loaded.
+                return;
+
+            var persistenceIdentifier = GetPersistenceIdentifier(state.ContentIdentifier);
+
+            switch (artifactType)
+            {
+                case VectorizationArtifactType.ExtractedText:
+
+                    var extractedTextArtifact = state.Artifacts.SingleOrDefault(a => a.Type == VectorizationArtifactType.ExtractedText);
+                    if (extractedTextArtifact != null)
+                        extractedTextArtifact.Content = Encoding.UTF8.GetString(
+                            await _storageService.ReadFileAsync(
                             BLOB_STORAGE_CONTAINER_NAME,
-                            artifact.CanonicalId,
-                            default));
+                                $"{extractedTextArtifact.CanonicalId}.txt",
+                                default));
+
+                    state.LoadedArtifactTypes.Add(VectorizationArtifactType.ExtractedText);
+                    break;
+
+                case VectorizationArtifactType.TextPartition:
+                case VectorizationArtifactType.TextEmbeddingVector:
+
+                    await AlignItems(state, persistenceIdentifier);
+
+                    state.LoadedArtifactTypes.AddRange(
+                        [
+                            VectorizationArtifactType.TextPartition,
+                            VectorizationArtifactType.TextEmbeddingVector
+                        ]);
+                    break;
+
+                default:
+                    throw new VectorizationException($"The vectorization artifact type {artifactType} is not supported.");
+            }
         }
 
         /// <inheritdoc/>
@@ -67,20 +96,37 @@ namespace FoundationaLLM.Vectorization.Services.VectorizationStates
         {
             var persistenceIdentifier = GetPersistenceIdentifier(state.ContentIdentifier);
 
-            foreach (var artifact in state.Artifacts)
-                if (artifact.IsDirty)
-                {
-                    var artifactPath =
-                        $"{persistenceIdentifier}_{artifact.Type.ToString().ToLower()}_{artifact.Position:D6}.txt";
+            // ExtractedText is persisted as a text file
+            var extractedTextArtifact = state.Artifacts.SingleOrDefault(a => a.Type == VectorizationArtifactType.ExtractedText);
+            if (extractedTextArtifact != null && extractedTextArtifact.IsDirty)
+            {
+                extractedTextArtifact.CanonicalId =
+                        $"{persistenceIdentifier}_{extractedTextArtifact.Type.ToString().ToLower()}";
 
-                    await _storageService.WriteFileAsync(
-                        BLOB_STORAGE_CONTAINER_NAME,
-                        artifactPath,
-                        artifact.Content!,
-                        default,
-                        default);
-                    artifact.CanonicalId = artifactPath;
-                }
+                await _storageService.WriteFileAsync(
+                    BLOB_STORAGE_CONTAINER_NAME,
+                    $"{extractedTextArtifact.CanonicalId}.txt",
+                    extractedTextArtifact.Content!,
+                    default,
+                    default);
+            }
+
+            // TextPartition and TextEmbeddingVector are stored together in a Parquet file.
+
+            // Recalculate relevant properties for dirty TextPartition and TextEmbeddingVector artifacts.
+            foreach (var artifact in state.Artifacts.Where(a =>
+                a.IsDirty
+                && (a.Type == VectorizationArtifactType.TextPartition || a.Type == VectorizationArtifactType.TextEmbeddingVector)))
+            {
+                artifact.ContentHash = string.IsNullOrWhiteSpace(artifact.Content)
+                    ? null
+                    : HashText(artifact.Content);
+                artifact.CanonicalId =
+                        $"{persistenceIdentifier}_{artifact.Type.ToString().ToLower()}_{artifact.Position:D6}";
+            }
+
+            // Persist TextPartition and TextEmbeddingVector artifacts in Parquet file.
+            await SaveTextPartitionsAndEmbeddings(state, persistenceIdentifier);
 
             var content = JsonSerializer.Serialize(state);
             await _storageService.WriteFileAsync(
@@ -89,6 +135,122 @@ namespace FoundationaLLM.Vectorization.Services.VectorizationStates
                 content,
                 default,
                 default);
+        }
+
+        private async Task SaveTextPartitionsAndEmbeddings(VectorizationState state, string persistenceIdentifier)
+        {
+            if (!state.Artifacts.Any(a =>
+                a.IsDirty
+                && (a.Type == VectorizationArtifactType.TextPartition || a.Type == VectorizationArtifactType.TextEmbeddingVector)))
+                // No relevant artifacts have changed so there is nothing to update in the Parquet file
+                return;
+
+            // Align in-memory artifacts with persisted ones
+            await AlignItems(state, persistenceIdentifier);
+
+            // Only consider non-empty text partitions.
+            var textPartitions = state.Artifacts
+                .Where(a =>
+                    a.Type == VectorizationArtifactType.TextPartition
+                    && !string.IsNullOrEmpty(a.Content))
+                .OrderBy(a => a.Position)
+                .ToList();
+            if (textPartitions.Count == 0)
+                // If there are no text partitions then there is nothing to save.
+                return;
+
+            var serializerOptions = new JsonSerializerOptions { Converters = { new Embedding.JsonConverter() } };
+
+            // Align text embeddings with partition and set defaults for embeddings that are not present.
+            var items =
+                from tp in textPartitions
+                from te in state.Artifacts
+                    .Where(a =>
+                        a.Type == VectorizationArtifactType.TextEmbeddingVector
+                        && a.Position == tp.Position)
+                    .DefaultIfEmpty()
+                select new VectorizationStateItem
+                {
+                    Position = tp.Position,
+                    TextPartitionContent = tp.Content!,
+                    TextPartitionHash = tp.ContentHash,
+                    TextPartitionSize = tp.Size,
+                    TextEmbeddingVectorSize = te?.Size ?? 0,
+                    TextEmbeddingVector = (te == null || string.IsNullOrWhiteSpace(te.Content))
+                        ? null
+                        : JsonSerializer.Deserialize<Embedding>(te.Content, serializerOptions).Vector.ToArray().ToList(),
+                    TextEmbeddingVectorHash = te?.ContentHash
+                };
+
+            await SaveItems(items.ToList(), persistenceIdentifier);
+        }
+
+        private async Task SaveItems(List<VectorizationStateItem> items, string persistenceIdentifier)
+        {
+            var serializedParquet = new MemoryStream();
+            await ParquetSerializer.SerializeAsync(
+                items,
+                serializedParquet,
+                new ParquetSerializerOptions() { CompressionMethod = Parquet.CompressionMethod.Snappy });
+
+            await _storageService.WriteFileAsync(
+                BLOB_STORAGE_CONTAINER_NAME,
+                $"{persistenceIdentifier}.snappy.parquet",
+                serializedParquet,
+                "application/vnd.apache.parquet",
+                default);
+        }
+
+        private async Task<Dictionary<int, VectorizationStateItem>> LoadItems(string persistenceIdentifier)
+        {
+            var filePath = $"{persistenceIdentifier}.snappy.parquet";
+
+            if (!await _storageService.FileExistsAsync(
+                BLOB_STORAGE_CONTAINER_NAME,
+                filePath,
+                default))
+                return [];
+
+            // Load data from the associated Parquet file
+            var binaryContent = await _storageService.ReadFileAsync(
+                BLOB_STORAGE_CONTAINER_NAME,
+                filePath,
+                default);
+            return
+                (await ParquetSerializer
+                        .DeserializeAsync<VectorizationStateItem>(binaryContent.ToStream()))
+                        .ToDictionary(x => x.Position, x => x);
+        }
+
+        private async Task AlignItems(VectorizationState state,  string persistenceIdentifier)
+        {
+            // Load data from the associated Parquet file
+            var items = await LoadItems(persistenceIdentifier);
+
+            // Update TextPartition artifacts
+            foreach (var textPartitionArtifact in state.Artifacts
+                .Where(a => a.Type == VectorizationArtifactType.TextPartition && !a.IsDirty))
+                if (items.TryGetValue(textPartitionArtifact.Position, out var item))
+                {
+                    textPartitionArtifact.Content = item.TextPartitionContent;
+                    textPartitionArtifact.ContentHash = item.TextPartitionHash;
+                    textPartitionArtifact.Size = item.TextPartitionSize;
+                }
+
+            var serializerOptions = new JsonSerializerOptions { Converters = { new Embedding.JsonConverter() } };
+
+            foreach (var textEmbeddingArtifact in state.Artifacts
+                .Where(a => a.Type == VectorizationArtifactType.TextEmbeddingVector && !a.IsDirty))
+                if (items.TryGetValue(textEmbeddingArtifact.Position, out var item))
+                {
+                    textEmbeddingArtifact.Content = item.TextEmbeddingVector == null
+                        ? null
+                        : JsonSerializer.Serialize(
+                            new Embedding([.. item.TextEmbeddingVector]),
+                            serializerOptions);
+                    textEmbeddingArtifact.ContentHash = item.TextEmbeddingVectorHash;
+                    textEmbeddingArtifact.Size = item.TextEmbeddingVectorSize;
+                }
         }
     }
 }

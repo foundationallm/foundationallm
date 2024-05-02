@@ -1,21 +1,20 @@
-﻿using System.Collections.Concurrent;
-using System.Text;
-using System.Text.Json;
-using FoundationaLLM.Common.Constants.Configuration;
+﻿using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Configuration.Instance;
-using FoundationaLLM.Common.Models.ResourceProvider;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Services.ResourceProviders;
-using FoundationaLLM.Prompt.Models.Metadata;
 using FoundationaLLM.Prompt.Models.Resources;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Collections.Concurrent;
+using System.Text;
+using System.Text.Json;
 
 namespace FoundationaLLM.Prompt.ResourceProviders
 {
@@ -131,7 +130,7 @@ namespace FoundationaLLM.Prompt.ResourceProviders
                 return JsonSerializer.Deserialize(
                     Encoding.UTF8.GetString(fileContent.ToArray()),
                     promptReference.PromptType,
-                    _serializerSettings) as Models.Metadata.MultipartPrompt
+                    _serializerSettings) as MultipartPrompt
                     ?? throw new ResourceProviderException($"Failed to load the prompt {promptReference.Name}.");
             }
 

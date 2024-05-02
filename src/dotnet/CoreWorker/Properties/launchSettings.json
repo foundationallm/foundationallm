@@ -7,9 +7,6 @@
         "HOSTNAME": "localhost"
       },
       "dotnetRunMessages": true
-    },
-    "Docker": {
-      "commandName": "Docker"
     }
   }
 }

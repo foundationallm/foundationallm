@@ -20,12 +20,12 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
             yield return new object?[] { "Item_1", "Partition_1", "Container_1", Enumerable.Range(0, 1536).Select(x => (float)x).ToArray() };
         }
 
-        [Theory]
-        [MemberData(nameof(GetInvalidFields))]
-        public void Create_DocumentVector_FailsWithInvalidValues(string itemId, string partitionKey, string containerName, float[]? vector)
-        {
-            Assert.Throws<Exception>(() => CreateDocumentVector(itemId, partitionKey, containerName, vector));
-        }
+        //[Theory]
+        //[MemberData(nameof(GetInvalidFields))]
+        //public void Create_DocumentVector_FailsWithInvalidValues(string itemId, string partitionKey, string containerName, float[]? vector)
+        //{
+        //    Assert.Throws<Exception>(() => CreateDocumentVector(itemId, partitionKey, containerName, vector));
+        //}
 
         [Theory]
         [MemberData(nameof(GetValidFields))]

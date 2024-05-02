@@ -47,9 +47,9 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PromptHubAPI", "python\Prom
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AgentHubAPI", "python\AgentHubAPI\AgentHubAPI.pyproj", "{865A944E-76C4-4DA9-B367-6D1CAB66ABCC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgentFactoryAPI", "dotnet\AgentFactoryAPI\AgentFactoryAPI.csproj", "{87CBD379-8F88-4C45-B7B1-595B5BAE734D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrchestrationAPI", "dotnet\OrchestrationAPI\OrchestrationAPI.csproj", "{87CBD379-8F88-4C45-B7B1-595B5BAE734D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgentFactory", "dotnet\AgentFactory\AgentFactory.csproj", "{59C6DEDC-F60D-4EB9-A2E5-793EC42F3895}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orchestration", "dotnet\Orchestration\Orchestration.csproj", "{59C6DEDC-F60D-4EB9-A2E5-793EC42F3895}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestUtils", "..\tests\dotnet\TestUtils\TestUtils.csproj", "{7F7CA6E9-F1F0-403D-B72D-2AC134F64CDE}"
 EndProject
@@ -81,7 +81,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent", "dotnet\Agent\Agent
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Prompt", "dotnet\Prompt\Prompt.csproj", "{E04B4AA1-2C79-4153-87A0-2BAC1256E4DE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgentFactory.Tests", "..\tests\dotnet\AgentFactory.Tests\AgentFactory.Tests.csproj", "{D2257807-4A0A-4324-A10B-D160550C9E1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orchestration.Tests", "..\tests\dotnet\Orchestration.Tests\Orchestration.Tests.csproj", "{D2257807-4A0A-4324-A10B-D160550C9E1E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vectorization.Tests", "..\tests\dotnet\Vectorization.Tests\Vectorization.Tests.csproj", "{7DD70AFD-69C4-4C82-9B67-5EE4A671D741}"
 EndProject
@@ -91,9 +91,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Configuration", "dotnet\Con
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataSource", "dotnet\DataSource\DataSource.csproj", "{9E243B01-0DA5-4E7B-9539-7E5BF87106EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authorization", "dotnet\Authorization\Authorization.csproj", "{10D4F412-0F01-485F-957E-9EA8F16AED10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authorization", "dotnet\Authorization\Authorization.csproj", "{10D4F412-0F01-485F-957E-9EA8F16AED10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationAPI", "dotnet\AuthorizationAPI\AuthorizationAPI.csproj", "{63D7285C-0C40-49E9-BB4D-8AD2E0A29E62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizationAPI", "dotnet\AuthorizationAPI\AuthorizationAPI.csproj", "{63D7285C-0C40-49E9-BB4D-8AD2E0A29E62}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gateway", "dotnet\Gateway\Gateway.csproj", "{35833700-B5EF-4211-91C7-E12A03DE3B82}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatewayAPI", "dotnet\GatewayAPI\GatewayAPI.csproj", "{2A51F9EB-BFCB-4285-A6FC-80CCA46228FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Examples", "..\tests\dotnet\Core.Examples\Core.Examples.csproj", "{6230C568-E97B-4959-8ECE-33D97D1BBD4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -236,6 +241,18 @@ Global
 		{63D7285C-0C40-49E9-BB4D-8AD2E0A29E62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63D7285C-0C40-49E9-BB4D-8AD2E0A29E62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63D7285C-0C40-49E9-BB4D-8AD2E0A29E62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6230C568-E97B-4959-8ECE-33D97D1BBD4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6230C568-E97B-4959-8ECE-33D97D1BBD4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6230C568-E97B-4959-8ECE-33D97D1BBD4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6230C568-E97B-4959-8ECE-33D97D1BBD4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35833700-B5EF-4211-91C7-E12A03DE3B82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35833700-B5EF-4211-91C7-E12A03DE3B82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35833700-B5EF-4211-91C7-E12A03DE3B82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35833700-B5EF-4211-91C7-E12A03DE3B82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A51F9EB-BFCB-4285-A6FC-80CCA46228FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A51F9EB-BFCB-4285-A6FC-80CCA46228FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A51F9EB-BFCB-4285-A6FC-80CCA46228FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A51F9EB-BFCB-4285-A6FC-80CCA46228FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -281,6 +298,9 @@ Global
 		{9E243B01-0DA5-4E7B-9539-7E5BF87106EE} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
 		{10D4F412-0F01-485F-957E-9EA8F16AED10} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
 		{63D7285C-0C40-49E9-BB4D-8AD2E0A29E62} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
+		{35833700-B5EF-4211-91C7-E12A03DE3B82} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
+		{2A51F9EB-BFCB-4285-A6FC-80CCA46228FB} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
+		{6230C568-E97B-4959-8ECE-33D97D1BBD4C} = {28E0E967-A94D-4820-8A61-0B71D3B2780F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF5DE858-4B85-4EE8-8A6D-46E8E4FBA078}

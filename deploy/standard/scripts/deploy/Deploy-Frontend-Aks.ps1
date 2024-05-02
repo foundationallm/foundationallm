@@ -7,7 +7,7 @@ Param(
     [parameter(Mandatory = $false)][string]$resourceGroup,
     [parameter(Mandatory = $false)][string]$secretProviderClassManifest,
     [parameter(Mandatory = $false)][string]$serviceNamespace = "fllm",
-    [parameter(Mandatory = $false)][string]$version = "0.4.1"
+    [parameter(Mandatory = $false)][string]$version = "0.5.1"
 )
 
 Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable, 2 to enable verbose)

@@ -32,22 +32,22 @@
     "RequestSources": [
         {
             "Name": "extract",
-            "ConnectionConfigurationName": "Extract:ConnectionString",
+            "AccountName": "{{accountName}}",
             "VisibilityTimeoutSeconds": 600
         },
         {
             "Name": "partition",
-            "ConnectionConfigurationName": "Partition:ConnectionString",
+            "AccountName": "{{accountName}}",
             "VisibilityTimeoutSeconds": 600
         },
         {
             "Name": "embed",
-            "ConnectionConfigurationName": "Embed:ConnectionString",
+            "AccountName": "{{accountName}}",
             "VisibilityTimeoutSeconds": 600
         },
         {
             "Name": "index",
-            "ConnectionConfigurationName": "Index:ConnectionString",
+            "AccountName": "{{accountName}}",
             "VisibilityTimeoutSeconds": 600
         }
     ],

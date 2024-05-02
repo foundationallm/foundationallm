@@ -1,5 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Vectorization.Exceptions;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Models;
 using FoundationaLLM.Vectorization.Models.Configuration;
@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -122,12 +123,15 @@ namespace FoundationaLLM.Vectorization.Services.RequestSources
                 || !_queuesConfiguration.GetChildren().Any())
                 throw new VectorizationException("The queues configuration is empty.");
 
+            var textInfo = new CultureInfo("en-US").TextInfo;
+
             foreach (var rs in _settings!)
             {
-                var connectionString = _queuesConfiguration[rs.ConnectionConfigurationName];
-                if (string.IsNullOrWhiteSpace(connectionString))
-                    throw new VectorizationException($"The configuration setting [{rs.ConnectionConfigurationName}] was not found.");
-                rs.ConnectionString = connectionString;
+                var configName = $"{textInfo.ToTitleCase(rs.Name)}:AccountName";
+                var accountName = _queuesConfiguration[configName];
+                if (string.IsNullOrWhiteSpace(accountName))
+                    throw new VectorizationException($"The configuration setting [{configName}] was not found.");
+                rs.AccountName = accountName;
             }
         }
 

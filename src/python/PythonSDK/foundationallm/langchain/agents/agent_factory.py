@@ -1,19 +1,9 @@
-from calendar import c
-from langchain_core.language_models import BaseLanguageModel
+#from langchain_core.language_models import BaseLanguageModel
 from foundationallm.config import Configuration, Context
 from foundationallm.models.orchestration import CompletionRequestBase
 from foundationallm.resources import ResourceProvider
-from foundationallm.langchain.agents import AgentBase
 from foundationallm.langchain.agents import (
-    AnomalyDetectionAgent,
-    CSVAgent,
-    SqlDbAgent,
-    SummaryAgent,
-    BlobStorageAgent,
-    GenericResolverAgent,
-    CXOAgent,
-    SearchServiceAgent,
-    InternalContextAgent,
+    AgentBase,
     KnowledgeManagementAgent
 )
 
@@ -25,13 +15,12 @@ class AgentFactory:
     def __init__(
             self,
             completion_request: CompletionRequestBase,
-            llm: BaseLanguageModel,
             config: Configuration,
             context: Context,
             resource_provider: ResourceProvider=None
         ):
         """
-        Initializes an AgentFactory for selecting which agent to use for completion.
+        Initializes an Orchestration for selecting which agent to use for completion.
 
         Parameters
         ----------
@@ -42,63 +31,29 @@ class AgentFactory:
             Application configuration class for retrieving configuration settings.
         """
         self.completion_request = completion_request
-        self.agent = completion_request.agent
-        self.llm = llm
         self.config = config
         self.context = context
-        if resource_provider is None:
-            resource_provider = ResourceProvider(config=config)
-        self.resource_provider = resource_provider
+        self.resource_provider = resource_provider or ResourceProvider(config=config)
 
     def get_agent(self) -> AgentBase:
         """
-        Retrieves the best agent for responding to the user prompt.
+        Retrieves an agent of the the requested type.
         
         Returns
         -------
         AgentBase
-            Returns the best agent for responding to the user prompt.
-            The default agent will be returned in cases where the other
-            available agents are not suited to respond to the user prompt.
+            Returns an agent of the requested type.
         """
-        match self.agent.type:
-            case 'anomaly':
-                return AnomalyDetectionAgent(self.completion_request,
-                                             llm=self.llm, config=self.config)
-            case 'csv':
-                return CSVAgent(self.completion_request, llm=self.llm,
-                                config=self.config)
-            case 'sql':
-                return SqlDbAgent(self.completion_request, llm=self.llm,
-                                  config=self.config, context=self.context)
-            case 'summary':
-                return SummaryAgent(self.completion_request, llm=self.llm,
-                                    config=self.config)
-            case 'blob-storage':
-                return BlobStorageAgent(self.completion_request, llm=self.llm,
-                                        config=self.config)
-            case 'generic-resolver':
-                return GenericResolverAgent(self.completion_request, llm=self.llm,
-                                            config=self.config)
-            case 'search-service':
-                return SearchServiceAgent(self.completion_request, llm=self.llm,
-                                           config=self.config)
-            case 'cxo':
-                return CXOAgent(self.completion_request,
-                                             llm=self.llm, config=self.config)
-            case 'knowledge-management':
+        agent = self.completion_request.agent
+        if agent is None:
+            raise ValueError("Agent not constructed. Cannot access an object of 'NoneType'.")
+        
+        match agent.type:
+            case 'knowledge-management' | 'internal-context':
                 return KnowledgeManagementAgent(
                     self.completion_request,
-                    llm=self.llm,
-                    config=self.config,
-                    resource_provider=self.resource_provider
-                )
-            case 'internal-context':
-                return InternalContextAgent(
-                    self.completion_request,
-                    llm=self.llm,
                     config=self.config,
                     resource_provider=self.resource_provider
                 )
             case _:
-                raise ValueError(f'No agent found for the specified agent type: {self.agent.type}.')
+                raise ValueError(f'No agent found for the specified agent type: {agent.type}.')

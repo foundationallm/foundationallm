@@ -15,14 +15,14 @@ Name | Default | Type | Area | Used by | Description
 `foundationallm-core-api-gatekeeper-api-url` |  | Environment variable | Core API |  | The URL of the Gatekeeper API used by the Core API.
 `foundationallm-gatekeeper-api-keyvault-name` |  | Environment variable | Gatekeeper API | | The name of the Azure Key Vault used by the Gatekeeper API.
 `foundationallm-gatekeeper-api-key` |  | Key Vault secret| Gatekeeper API |  | The first Gatekeeper API key.
-`foundationallm-gatekeeper-api-agentfactory-api-url` |  | Environment variable | Gatekeeper API |  | The URL of the Agent Factory API used by the Gatekeeper API.
-`foundationallm-agentfactory-api-keyvault-name` |  | Environment variable | Agent Factory API |  | The name of the Azure Key Vault used by the Agent Factory API.
-`foundationallm-agentfactory-api-key` |  | Key Vault secret| Agent Factory API |  | The first Agent Factory API key.
-`foundationallm-agentfactory-api-agenthub-api-url` |  | Environment variable | Agent Factory API |  | The URL of the Agent Hub API used by the Agent Factory API.
-`foundationallm-agentfactory-api-prompthub-api-url` |  | Environment variable | Agent Factory API |  | The URL of the Prompt Hub API used by the Agent Factory API.
-`foundationallm-agentfactory-api-datasourcehub-api-url` |  | Environment variable | Agent Factory API |  | The URL of the Data Source Hub API used by the Agent Factory API.
-`foundationallm-agentfactory-api-langchain-api-url` |  | Environment variable | Agent Factory API |  | The URL of the LangChain API used by the Agent Factory API.
-`foundationallm-agentfactory-api-semantickernel-api-url` |  | Environment variable | Agent Factory API |  | The URL of the Semantic Kernel API used by the Agent Factory API.
+`foundationallm-gatekeeper-api-orchestration-api-url` |  | Environment variable | Gatekeeper API |  | The URL of the Orchestration API used by the Gatekeeper API.
+`foundationallm-orchestration-api-keyvault-name` |  | Environment variable | Orchestration API |  | The name of the Azure Key Vault used by the Orchestration API.
+`foundationallm-orchestration-api-key` |  | Key Vault secret| Orchestration API |  | The first Orchestration API key.
+`foundationallm-orchestration-api-agenthub-api-url` |  | Environment variable | Orchestration API |  | The URL of the Agent Hub API used by the Orchestration API.
+`foundationallm-orchestration-api-prompthub-api-url` |  | Environment variable | Orchestration API |  | The URL of the Prompt Hub API used by the Orchestration API.
+`foundationallm-orchestration-api-datasourcehub-api-url` |  | Environment variable | Orchestration API |  | The URL of the Data Source Hub API used by the Orchestration API.
+`foundationallm-orchestration-api-langchain-api-url` |  | Environment variable | Orchestration API |  | The URL of the LangChain API used by the Orchestration API.
+`foundationallm-orchestration-api-semantickernel-api-url` |  | Environment variable | Orchestration API |  | The URL of the Semantic Kernel API used by the Orchestration API.
 `foundationallm-agenthub-api-key` |  | Key Vault secret| Agent Hub API | `APIKeyValidator` (SDK) | The Agent Hub API key.
 `foundationallm-prompthub-api-key` |  | Key Vault secret| Prompt Hub API | `APIKeyValidator` (SDK) | The Prompt Hub API key.
 `foundationallm-datasourcehub-api-key` |  | Key Vault secret| Data Source Hub API | `APIKeyValidator` (SDK) | The Data Source Hub API key.
@@ -40,7 +40,6 @@ Name | Default | Type | Area | Used by | Description
 `foundationallm-langchain-summary-max-tokens` | `4097` | Environment variable | LangChain API | `SummaryAgent` (SDK) | The maximum number of input tokens used by the LangChain summary agent.
 `foundationallm-keyvault-name` | | Environment variable | LangChain API, PythonSDK |`AgentHub`(SDK), `DataSourceHub`(SDK),`PromptHub`(SDK) | | The name of the Azure Key Vault used by the FoundationaLLM platform.
 `foundationallm-configuration-allow-environment-variables` |  | Environment variable | PythonSDK | `Configuration`(SDK) | When True checks environment first then key vault, otherwise checks App config (not yet implemented) then key vault 
-`foundationallm-storage-connection-string` | | Key Vault secret | PythonSDK | `PromptHubStorageManager`(SDK), `DataSourceHubStorageManager`(SDK), `AgentHubStorageManager`(SDK) | The connection string of the Azure Blob Storage account used by the FoundationaLLM platform.
 `foundationallm-prompt-metadata-storage-container` | | Environment variable | PythonSDK | `PromptHubStorageManager`(SDK) | The name of the Azure Blob Storage container where prompt metadata is stored.
 `foundationallm-datasource-metadata-storage-container` | | Environment variable | PythonSDK | `DataSourceHubStorageManager`(SDK) | The name of the Azure Blob Storage container where data source metadata is stored.
 `foundationallm-agent-metadata-storage-container` | | Environment variable | PythonSDK | `AgentHubStorageManager`(SDK) | The name of the Azure Blob Storage container where agent metadata is stored.

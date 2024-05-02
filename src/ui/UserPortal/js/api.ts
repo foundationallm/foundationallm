@@ -1,13 +1,16 @@
 import type { Message, Session, CompletionPrompt, Agent, OrchestrationRequest } from '@/js/types';
-import { getMsalInstance } from '@/js/auth';
 
 export default {
 	apiUrl: null as string | null,
-	bearerToken: null as string | null,
 
 	setApiUrl(url: string) {
 		// Set the api url and remove a trailing slash if there is one.
 		this.apiUrl = url.replace(/\/$/, '');
+	},
+
+	instanceId: null as string | null,
+	setInstanceId(instanceId: string) {
+		this.instanceId = instanceId;
 	},
 
 	/**
@@ -16,15 +19,12 @@ export default {
 	 * Otherwise, it will acquire a new bearer token using the MSAL instance.
 	 * @returns The bearer token.
 	 */
+	bearerToken: null as string | null,
 	async getBearerToken() {
 		if (this.bearerToken) return this.bearerToken;
 
-		const msalInstance = await getMsalInstance();
-		const accounts = msalInstance.getAllAccounts();
-		const account = accounts[0];
-		const bearerToken = await msalInstance.acquireTokenSilent({ account });
-
-		this.bearerToken = bearerToken.accessToken;
+		const token = await useNuxtApp().$authStore.getToken();
+		this.bearerToken = token.accessToken;
 		return this.bearerToken;
 	},
 

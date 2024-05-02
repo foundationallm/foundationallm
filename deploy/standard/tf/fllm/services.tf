@@ -1,6 +1,6 @@
 locals {
   services = {
-    "agent-factory-api" = {
+    "orchestration-api" = {
       issuer = module.aks_backend.oidcIssuerUrl
     }
     "agent-hub-api" = {

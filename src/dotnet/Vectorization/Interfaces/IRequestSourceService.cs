@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Vectorization.Models;
+﻿using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
+using FoundationaLLM.Vectorization.Models;
 using System.Threading.Tasks;
 
 namespace FoundationaLLM.Vectorization.Interfaces
@@ -44,5 +45,14 @@ namespace FoundationaLLM.Vectorization.Interfaces
         /// <param name="request">The <see cref="VectorizationRequest"/> item describing the vectorization request.</param>
         /// <returns></returns>
         Task SubmitRequest(VectorizationRequest request);
+
+        /// <summary>
+        /// Updates and existing vectorization request.
+        /// </summary>
+        /// <param name="messageId">The identifier of the existing item in the request source.</param>
+        /// <param name="popReceipt">This value is required to update the request.</param>
+        /// <param name="request">The <see cref="VectorizationRequest"/> to update.</param>
+        /// <returns></returns>
+        Task UpdateRequest(string messageId, string popReceipt, VectorizationRequest request);
     }
 }

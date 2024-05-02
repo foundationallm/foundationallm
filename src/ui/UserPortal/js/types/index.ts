@@ -1,3 +1,9 @@
+export interface Citation {
+	id: string;
+	title: string;
+	filepath: string;
+}
+
 export interface Message {
 	id: string;
 	type: string;
@@ -10,6 +16,7 @@ export interface Message {
 	rating: boolean | null;
 	vector: Array<Number>;
 	completionPromptId: string | null;
+	citations: Array<Citation>;
 }
 
 export interface Session {

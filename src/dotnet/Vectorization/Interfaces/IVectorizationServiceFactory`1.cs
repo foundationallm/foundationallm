@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Models.ResourceProvider;
+﻿using FoundationaLLM.Common.Models.ResourceProviders;
 
 namespace FoundationaLLM.Vectorization.Interfaces
 {

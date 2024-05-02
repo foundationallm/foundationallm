@@ -1,2 +1,0 @@
-from .search_service_authentication_metadata import SearchServiceAuthenticationMetadata
-from .search_service_data_source_metadata import SearchServiceDataSourceMetadata

@@ -135,10 +135,6 @@ module authKeyvault './shared/keyvault.bicep' = {
     principalId: principalId
     secrets: [
       {
-        name: 'foundationallm-authorizationapi-appinsights-connectionstring'
-        value: monitoring.outputs.applicationInsightsConnectionString
-      }
-      {
         name: 'foundationallm-authorizationapi-entra-instance'
         value: authAppRegistration.instance
       }
@@ -213,7 +209,6 @@ module cosmosDb './shared/cosmosdb.bicep' = {
       }
     ]
     databaseName: 'database'
-    keyvaultName: keyVault.outputs.name
     location: location
     name: '${abbrs.documentDBDatabaseAccounts}${resourceToken}'
     tags: tags
@@ -419,7 +414,6 @@ module storage './shared/storage.bicep' = {
         name: 'index'
       }
     ]
-    keyvaultName: keyVault.outputs.name
     location: location
     name: '${abbrs.storageStorageAccounts}${resourceToken}'
     tags: tags
@@ -550,9 +544,9 @@ module acaServices './app/acaService.bicep' = [
       imageName: service.image
       keyvaultName: keyVault.outputs.name
       location: location
-      name: '${abbrs.appContainerApps}${service.name}${resourceToken}'
+      name: '${abbrs.appContainerApps}${service.name}'
+      resourceToken: resourceToken
       serviceName: service.name
-      storageAccountName: storage.outputs.name
       tags: tags
 
       envSettings: service.useEndpoint
@@ -637,8 +631,8 @@ output FOUNDATIONALLM_INSTANCE_ID string = instanceId
 var serviceNames = [for service in services: service.name]
 
 output RESOURCE_GROUP_NAME_DEFAULT string = rg.name
-output SERVICE_AGENT_FACTORY_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'agent-factory-api')].outputs.uri
-output SERVICE_AGENT_FACTORY_API_MI_OBJECT_ID string = acaServices[indexOf(serviceNames, 'agent-factory-api')].outputs.miPrincipalId
+output SERVICE_ORCHESTRATION_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'orchestration-api')].outputs.uri
+output SERVICE_ORCHESTRATION_API_MI_OBJECT_ID string = acaServices[indexOf(serviceNames, 'orchestration-api')].outputs.miPrincipalId
 output SERVICE_AGENT_HUB_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'agent-hub-api')].outputs.uri
 output SERVICE_AUTH_API_ENDPOINT_URL string = authAcaService.outputs.uri
 output SERVICE_CHAT_UI_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'chat-ui')].outputs.uri
@@ -647,10 +641,10 @@ output SERVICE_CORE_API_MI_OBJECT_ID string = acaServices[indexOf(serviceNames, 
 output SERVICE_CORE_JOB_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'core-job')].outputs.uri
 output SERVICE_DATA_SOURCE_HUB_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'data-source-hub-api')].outputs.uri
 output SERVICE_GATEKEEPER_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'gatekeeper-api')].outputs.uri
-output SERVICE_GATEKEEPER_INTEGRATION_API_ENDPOINT_URL string = acaServices[indexOf(
-  serviceNames,
-  'gatekeeper-integration-api'
-)].outputs.uri
+// output SERVICE_GATEKEEPER_INTEGRATION_API_ENDPOINT_URL string = acaServices[indexOf(
+//   serviceNames,
+//   'gatekeeper-integration-api'
+// )].outputs.uri
 output SERVICE_LANGCHAIN_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'langchain-api')].outputs.uri
 output SERVICE_MANAGEMENT_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'management-api')].outputs.uri
 output SERVICE_MANAGEMENT_API_MI_OBJECT_ID string = acaServices[indexOf(serviceNames, 'management-api')].outputs.miPrincipalId

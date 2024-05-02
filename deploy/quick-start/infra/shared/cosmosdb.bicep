@@ -1,14 +1,8 @@
 param containers array
 param databaseName string
-param keyvaultName string
 param location string = resourceGroup().location
 param name string
 param tags object = {}
-
-var secretNames = [
-  'cosmos-key'
-  'foundationallm-cosmosdb-key'
-]
 
 resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
   name: name
@@ -19,6 +13,7 @@ resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
       defaultConsistencyLevel: 'Session'
     }
     databaseAccountOfferType: 'Standard'
+    disableLocalAuth: true
     locations: [
       {
         failoverPriority: 0
@@ -66,22 +61,5 @@ resource cosmosContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/con
   }
 ]
 
-resource keyvault 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
-  name: keyvaultName
-}
-
-resource cosmosKey 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = [
-  for secretName in secretNames: {
-    name: secretName
-    parent: keyvault
-    tags: tags
-    properties: {
-      value: cosmosDb.listKeys().primaryMasterKey
-    }
-  }
-]
-
 output endpoint string = cosmosDb.properties.documentEndpoint
-output keySecretName string = cosmosKey[0].name
-output keySecretRef string = cosmosKey[0].properties.secretUri
 output name string = cosmosDb.name

@@ -14,6 +14,7 @@ const buildLoadingTemplate = (() => {
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+	ssr: false,
 	devtools: { enabled: true },
 	modules: ['@pinia/nuxt', '@nuxtjs/eslint-module'],
 	components: true,
@@ -42,6 +43,7 @@ export default defineNuxtConfig({
 	},
 	devServer: {
 		...(buildLoadingTemplate ? { loadingTemplate: () => buildLoadingTemplate } : {}),
+		port: 3000,
 	},
 	runtimeConfig: {
 		APP_CONFIG_ENDPOINT: process.env.APP_CONFIG_ENDPOINT,

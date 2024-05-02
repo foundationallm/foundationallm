@@ -21,7 +21,7 @@ try {
     $manifest = $(Get-Content -Raw -Path ../${manifestName} | ConvertFrom-Json)
 
     Invoke-AndRequireSuccess "Generate Certificates" {
-        ./Get-LetsEncryptCertificates.ps1 `
+        ./pre-provision/Get-LetsEncryptCertificates.ps1 `
             -baseDomain $manifest.baseDomain `
             -email $manifest.letsEncryptEmail `
             -subdomainPrefix $manifest.project

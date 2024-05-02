@@ -25,12 +25,45 @@ class ResourceProvider:
             self,
             config: Configuration
             ):
-        self.blob_storage_manager = BlobStorageManager(
-            blob_connection_string=config.get_value(
-                "FoundationaLLM:Vectorization:ResourceProviderService:Storage:ConnectionString"
-            ), 
-            container_name="resource-provider"
-        )
+        authentication_type = 'AzureIdentity'
+        try:
+            authentication_type = config.get_value(
+                "FoundationaLLM:Vectorization:ResourceProviderService:Storage:AuthenticationType"
+            )
+        except:
+            # Default to AzureIdentity for authentication
+            authentication_type = 'AzureIdentity'
+
+        if authentication_type == 'AzureIdentity':
+            account_name = None
+            try:
+                account_name = config.get_value(
+                    "FoundationaLLM:Vectorization:ResourceProviderService:Storage:AccountName"
+                )
+            except:
+                raise ValueError('The authentication type is set to AzureIdentity. Therefore, the FoundationaLLM:Vectorization:ResourceProviderService:Storage:AccountName app configuration setting must be set to a valid account name.')
+
+            self.blob_storage_manager = BlobStorageManager(
+                account_name=account_name,
+                container_name="resource-provider",
+                authentication_type='AzureIdentity'
+            )
+        elif authentication_type == 'ConnectionString':
+            blob_connection_string = None
+            try:
+                blob_connection_string = config.get_value(
+                    "FoundationaLLM:Vectorization:ResourceProviderService:Storage:ConnectionString"
+                )
+            except:
+                raise ValueError('The authentication type is set to ConnectionString. Therefore, the FoundationaLLM:Vectorization:ResourceProviderService:Storage:ConnectionString app configuration setting must be set to a valid connection string.')
+
+            self.blob_storage_manager = BlobStorageManager(
+                blob_connection_string=blob_connection_string, 
+                container_name="resource-provider",
+                authentication_type='ConnectionString'
+            )
+        else:
+            raise ValueError(f'The authentication type {authentication_type} is not supported.')
 
     def get_resource(self, object_id:str):
         """

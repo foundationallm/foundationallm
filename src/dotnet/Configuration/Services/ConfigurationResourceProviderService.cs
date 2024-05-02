@@ -8,17 +8,15 @@ using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Configuration.AppConfiguration;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
-using FoundationaLLM.Common.Models.ResourceProvider;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.ResourceProviders;
-using FoundationaLLM.Configuration.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Identity.Client;
 using System.Text.Json;
 
 namespace FoundationaLLM.Configuration.Services

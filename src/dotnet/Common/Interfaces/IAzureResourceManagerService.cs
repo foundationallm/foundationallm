@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FoundationaLLM.Common.Models.Azure;
 
 namespace FoundationaLLM.Common.Interfaces
 {
@@ -38,5 +34,12 @@ namespace FoundationaLLM.Common.Interfaces
             string topicName,
             string topicSubscriptionName,
             CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Retrieves the properties of an Azure OpenAI account.
+        /// </summary>
+        /// <param name="openAIAccountResourceId">The Azure resource identifier of the Azure OpenAI account.</param>
+        /// <returns>An <see cref="AzureOpenAIAccount"/> object with the properties of the account, including model deployments.</returns>
+        Task<AzureOpenAIAccount> GetOpenAIAccountProperties(string openAIAccountResourceId);
     }
 }

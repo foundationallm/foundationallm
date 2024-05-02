@@ -14,6 +14,12 @@ public class CompletionResponse
     public string Completion { get; set; }
 
     /// <summary>
+    /// The citations used in building the completion response.
+    /// </summary>
+    [JsonPropertyName("citations")]
+    public Citation[]? Citations { get; set; }
+
+    /// <summary>
     /// The user prompt the language model responded to.
     /// </summary>
     [JsonPropertyName("user_prompt")]

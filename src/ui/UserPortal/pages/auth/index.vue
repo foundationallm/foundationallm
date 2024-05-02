@@ -1,41 +1,33 @@
 <template>
 	<div class="login-page">
 		<div class="login-container">
-			<img :src="appConfigStore.logoUrl" class="logo" />
+			<img :src="$appConfigStore.logoUrl" class="login__logo" />
 			<Button icon="pi pi-microsoft" label="Sign in" size="large" @click="signIn"></Button>
+			<div v-if="$route.query.message" class="login__message">{{ $route.query.message }}</div>
 		</div>
 	</div>
 </template>
-
-<script lang="ts">
-import { mapStores } from 'pinia';
-import { useAppConfigStore } from '@/stores/appConfigStore';
-import { useAuthStore } from '@/stores/authStore';
-
-export default {
-	name: 'Login',
-
-	computed: {
-		...mapStores(useAppConfigStore),
-		...mapStores(useAuthStore),
-	},
-
-	methods: {
-		async signIn() {
-			const response = await this.authStore.login();
-			if (response.account) {
-				this.$router.push({ path: '/', query: this.$nuxt._route.query });
-			}
-		},
-	},
-};
-</script>
 
 <script setup lang="ts">
 definePageMeta({
 	name: 'auth/login',
 	path: '/signin-oidc',
 });
+</script>
+
+<script lang="ts">
+export default {
+	name: 'Login',
+
+	methods: {
+		async signIn() {
+			await this.$authStore.login();
+			if (this.$authStore.isAuthenticated) {
+				this.$router.push({ path: '/', query: this.$nuxt._route.query });
+			}
+		},
+	},
+};
 </script>
 
 <style lang="scss" scoped>
@@ -60,9 +52,16 @@ definePageMeta({
 	backdrop-filter: blur(300px);
 }
 
-.logo {
+.login__logo {
 	width: 300px;
 	height: auto;
 	margin-bottom: 48px;
+}
+
+.login__message {
+	margin-top: 16px;
+	padding: 16px;
+	color: var(--primary-text);
+	font-size: 1rem;
 }
 </style>

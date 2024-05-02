@@ -11,6 +11,11 @@
         public const string Basic = "basic";
 
         /// <summary>
+        /// Fabric OneLake data source.
+        /// </summary>
+        public const string OneLake = "onelake";
+
+        /// <summary>
         /// Azure Data Lake data source.
         /// </summary>
         public const string AzureDataLake = "azure-data-lake";
@@ -24,5 +29,10 @@
         /// SharePoint Online Site data source.
         /// </summary>
         public const string SharePointOnlineSite = "sharepoint-online-site";
+
+        /// <summary>
+        /// Web Site data source.
+        /// </summary>
+        public const string WebSite = "web-site";
     }
 }

@@ -1,0 +1,14 @@
+name: Orchestration API Release
+
+on:
+  workflow_dispatch:
+    inputs: {}
+
+jobs:
+  release_docker_image:
+    name: Release Docker Image
+    uses: ./.github/workflows/release-docker-image.yml
+    with:
+      image: orchestration-api
+      context: ./src
+      dockerfile: ./src/dotnet/OrchestrationAPI/Dockerfile

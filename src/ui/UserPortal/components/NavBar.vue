@@ -2,16 +2,16 @@
 	<div class="navbar">
 		<!-- Sidebar header -->
 		<div class="navbar__header">
-			<img v-if="appConfigStore.logoUrl !== ''" :src="appConfigStore.logoUrl" />
-			<span v-else>{{ appConfigStore.logoText }}</span>
+			<img v-if="$appConfigStore.logoUrl !== ''" :src="$appConfigStore.logoUrl" />
+			<span v-else>{{ $appConfigStore.logoText }}</span>
 
-			<template v-if="!appConfigStore.isKioskMode">
+			<template v-if="!$appConfigStore.isKioskMode">
 				<Button
-					:icon="appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
+					:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
 					size="small"
 					severity="secondary"
 					class="secondary-button"
-					@click="appStore.toggleSidebar"
+					@click="$appStore.toggleSidebar"
 				/>
 			</template>
 		</div>
@@ -23,7 +23,7 @@
 					<template v-if="currentSession">
 						<span>{{ currentSession.name }}</span>
 						<Button
-							v-if="!appConfigStore.isKioskMode"
+							v-if="!$appConfigStore.isKioskMode"
 							v-tooltip.bottom="'Copy link to chat session'"
 							class="button--share"
 							icon="pi pi-copy"
@@ -41,6 +41,7 @@
 
 			<!-- Right side content -->
 			<div class="navbar__content__right">
+				<!-- <template v-if="currentSession && $appConfigStore.allowAgentHint"> -->
 				<template v-if="currentSession">
 					<span class="header__dropdown">
 						<img
@@ -68,11 +69,7 @@
 </template>
 
 <script lang="ts">
-import { mapStores } from 'pinia';
 import type { Session } from '@/js/types';
-import { useAppConfigStore } from '@/stores/appConfigStore';
-import { useAppStore } from '@/stores/appStore';
-import { useAuthStore } from '@/stores/authStore';
 
 interface AgentDropdownOption {
 	label: string;
@@ -101,12 +98,8 @@ export default {
 	},
 
 	computed: {
-		...mapStores(useAppConfigStore),
-		...mapStores(useAppStore),
-		...mapStores(useAuthStore),
-
 		currentSession() {
-			return this.appStore.currentSession;
+			return this.$appStore.currentSession;
 		},
 	},
 
@@ -116,15 +109,15 @@ export default {
 
 			this.agentSelection =
 				this.agentOptions.find(
-					(agent) => agent.value === this.appStore.getSessionAgent(newSession),
+					(agent) => agent.value === this.$appStore.getSessionAgent(newSession),
 				) || null;
 		},
 	},
 
 	async created() {
-		await this.appStore.getAgents();
+		await this.$appStore.getAgents();
 
-		this.agentOptions = this.appStore.agents.map((agent) => ({
+		this.agentOptions = this.$appStore.agents.map((agent) => ({
 			label: agent.name,
 			type: agent.type,
 			object_id: agent.object_id,
@@ -143,12 +136,12 @@ export default {
 		});
 
 		this.agentOptionsGroup.push({
-			label: 'Public',
+			label: 'All Agents',
 			items: publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions,
 		});
 
 		this.agentOptionsGroup.push({
-			label: 'Private',
+			label: 'My Agents',
 			items: privateAgentOptions.length > 0 ? privateAgentOptions : noAgentOptions,
 		});
 	},
@@ -166,7 +159,7 @@ export default {
 		},
 
 		handleAgentChange() {
-			this.appStore.setSessionAgent(this.currentSession, this.agentSelection!.value);
+			this.$appStore.setSessionAgent(this.currentSession, this.agentSelection!.value);
 			const message = this.agentSelection!.value
 				? `Agent changed to ${this.agentSelection!.label}`
 				: `Cleared agent hint selection`;
@@ -179,7 +172,7 @@ export default {
 		},
 
 		async handleLogout() {
-			await this.authStore.logout();
+			await this.$authStore.logout();
 		},
 	},
 };

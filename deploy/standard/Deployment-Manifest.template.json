@@ -1,30 +1,57 @@
 {
-  "instanceId": "",
+  "adminObjectId": "",
+  "baseDomain": "",
+  "createVpnGateway": true,
+  "entraClientIds": {
+    "authorization": "",
+    "chat": "",
+    "core": "",
+    "managementapi": "",
+    "managementui": "",
+    "vectorizationapi": ""
+  },
+  "entraClientSecrets": {
+    "authorization": ""
+  },
+  "entraInstances": {
+    "authorization": "https://login.microsoftonline.com/"
+  },
+  "entraScopes": {
+    "authorization": "",
+    "chat": "",
+    "core": "",
+    "managementapi": "",
+    "managementui": "",
+    "vectorizationapi": ""
+  },
   "environment": "",
+  "instanceId": "",
+  "k8sNamespace": "fllm",
   "location": "",
+  "letsEncryptEmail": "",
   "project": "",
   "subscription": "",
-  "k8sNamespace": "",
-  "adminObjectId": "",
-  "createVpnGateway": true,
   "ingress": {
     "apiIngress": {
       "coreapi": {
         "host": "",
         "path": "",
         "pathType": "",
+        "serviceName": "",
         "sslCert": ""
       },
       "managementapi": {
         "host": "",
         "path": "",
         "pathType": "",
+        "serviceName": "",
         "sslCert": ""
       },
       "vectorizationapi": {
         "host": "",
         "path": "",
         "pathType": "",
+        "serviceName": "",
         "sslCert": ""
       }
     },
@@ -33,39 +60,27 @@
         "host": "",
         "path": "",
         "pathType": "",
+        "serviceName": "",
         "sslCert": ""
       },
       "managementui": {
         "host": "",
         "path": "",
         "pathType": "",
+        "serviceName": "",
         "sslCert": ""
       }
     }
   },
-  "entraClientIds": {
-    "chat": "",
-    "core": "",
-    "managementapi": "",
-    "managementui": "",
-    "vectorizationapi": ""
-  },
-  "entraScopes": {
-    "chat": "",
-    "core": "",
-    "managementapi": "",
-    "managementui": "",
-    "vectorizationapi": ""
-  },
   "resourceGroups": {
+    "app": "",
+    "data": "",
     "dns": "",
     "jbx": "",
-    "app": "",
-    "ops": "",
     "net": "",
-    "vec": "",
     "oai": "",
-    "data": "",
-    "storage": ""
+    "ops": "",
+    "storage": "",
+    "vec": ""
   }
 }

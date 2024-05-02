@@ -14,6 +14,12 @@ namespace FoundationaLLM.Common.Models.Orchestration
         public string? Completion { get; set; }
 
         /// <summary>
+        /// The citations used in building the completion response.
+        /// </summary>
+        [JsonPropertyName("citations")]
+        public Citation[]? Citations { get; set; }
+
+        /// <summary>
         /// The prompt received from the user.
         /// </summary>
         [JsonPropertyName("user_prompt")]

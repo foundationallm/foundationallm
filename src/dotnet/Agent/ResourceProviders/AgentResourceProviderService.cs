@@ -10,7 +10,6 @@ using FoundationaLLM.Common.Models.Agents;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
-using FoundationaLLM.Common.Models.ResourceProvider;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Common.Services.ResourceProviders;
@@ -210,7 +209,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
                             TextPartitioningProfileObjectId = kmAgent.Vectorization.TextPartitioningProfileObjectId!,
                             TextEmbeddingProfileObjectId = kmAgent.Vectorization.TextEmbeddingProfileObjectId!,
                             IndexingProfileObjectId = kmAgent.Vectorization.IndexingProfileObjectId!,
-                            TriggerType = (VectorizationPipelineTriggerType) kmAgent.Vectorization.TriggerType!
+                            TriggerType = (VectorizationPipelineTriggerType) kmAgent.Vectorization.TriggerType!,
+                            TriggerCronSchedule = kmAgent.Vectorization.TriggerCronSchedule
                         }),
                         userIdentity);
 

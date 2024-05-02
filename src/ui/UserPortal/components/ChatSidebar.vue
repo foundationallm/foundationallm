@@ -3,16 +3,16 @@
 		<!-- Sidebar section header -->
 		<div class="chat-sidebar__section-header--mobile">
 			<img
-				v-if="appConfigStore.logoUrl !== ''"
-				:src="$filters.enforceLeadingSlash(appConfigStore.logoUrl)"
+				v-if="$appConfigStore.logoUrl !== ''"
+				:src="$filters.enforceLeadingSlash($appConfigStore.logoUrl)"
 			/>
-			<span v-else>{{ appConfigStore.logoText }}</span>
+			<span v-else>{{ $appConfigStore.logoText }}</span>
 			<Button
-				:icon="appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
+				:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
 				size="small"
 				severity="secondary"
 				class="secondary-button"
-				@click="appStore.toggleSidebar"
+				@click="$appStore.toggleSidebar"
 			/>
 		</div>
 		<div class="chat-sidebar__section-header">
@@ -63,17 +63,17 @@
 		</div>
 
 		<!-- Logged in user -->
-		<div v-if="accountName" class="chat-sidebar__account">
+		<div v-if="$authStore.currentAccount?.name" class="chat-sidebar__account">
 			<Avatar icon="pi pi-user" class="chat-sidebar__avatar" size="large" />
 			<div>
-				<span class="chat-sidebar__username">{{ accountName }}</span>
+				<span class="chat-sidebar__username">{{ $authStore.currentAccount?.name }}</span>
 				<Button
 					class="chat-sidebar__sign-out secondary-button"
 					icon="pi pi-sign-out"
 					label="Sign Out"
 					severity="secondary"
 					size="small"
-					@click="signOut()"
+					@click="$authStore.logout()"
 				/>
 			</div>
 		</div>
@@ -116,11 +116,7 @@
 </template>
 
 <script lang="ts">
-import { mapStores } from 'pinia';
 import type { Session } from '@/js/types';
-import { useAppConfigStore } from '@/stores/appConfigStore';
-import { useAppStore } from '@/stores/appStore';
-import { getMsalInstance } from '@/js/auth';
 declare const process: any;
 
 export default {
@@ -131,37 +127,26 @@ export default {
 			sessionToRename: null as Session | null,
 			newSessionName: '' as string,
 			sessionToDelete: null as Session | null,
-			accountName: '' as string,
-			userName: '' as string,
 		};
 	},
 
 	computed: {
-		...mapStores(useAppConfigStore),
-		...mapStores(useAppStore),
-
 		sessions() {
-			return this.appStore.sessions;
+			return this.$appStore.sessions;
 		},
 
 		currentSession() {
-			return this.appStore.currentSession;
+			return this.$appStore.currentSession;
 		},
 	},
 
 	async created() {
 		if (window.screen.width < 950) {
-			this.appStore.isSidebarClosed = true;
+			this.$appStore.isSidebarClosed = true;
 		}
 
 		if (process.client) {
-			await this.appStore.init(this.$nuxt._route.query.chat);
-			const msalInstance = await getMsalInstance();
-			const accounts = await msalInstance.getAllAccounts();
-			if (accounts.length > 0) {
-				this.accountName = accounts[0].name;
-				this.userName = accounts[0].username;
-			}
+			await this.$appStore.init(this.$nuxt._route.query.chat);
 		}
 	},
 
@@ -177,34 +162,22 @@ export default {
 		},
 
 		handleSessionSelected(session: Session) {
-			this.appStore.changeSession(session);
+			this.$appStore.changeSession(session);
 		},
 
 		async handleAddSession() {
-			const newSession = await this.appStore.addSession();
+			const newSession = await this.$appStore.addSession();
 			this.handleSessionSelected(newSession);
 		},
 
 		handleRenameSession() {
-			this.appStore.renameSession(this.sessionToRename!, this.newSessionName);
+			this.$appStore.renameSession(this.sessionToRename!, this.newSessionName);
 			this.sessionToRename = null;
 		},
 
 		async handleDeleteSession() {
-			await this.appStore.deleteSession(this.sessionToDelete!);
+			await this.$appStore.deleteSession(this.sessionToDelete!);
 			this.sessionToDelete = null;
-		},
-
-		async signOut() {
-			const msalInstance = await getMsalInstance();
-			const accountFilter = {
-				username: this.userName,
-			};
-			const logoutRequest = {
-				account: msalInstance.getAccount(accountFilter),
-			};
-			await msalInstance.logoutRedirect(logoutRequest);
-			this.$router.push({ path: '/login' });
 		},
 	},
 };

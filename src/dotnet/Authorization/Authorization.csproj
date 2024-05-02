@@ -13,12 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Agent\Agent.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\Configuration\Configuration.csproj" />
-    <ProjectReference Include="..\DataSource\DataSource.csproj" />
-    <ProjectReference Include="..\Prompt\Prompt.csproj" />
-    <ProjectReference Include="..\Vectorization\Vectorization.csproj" />
   </ItemGroup>
 
   <ItemGroup>

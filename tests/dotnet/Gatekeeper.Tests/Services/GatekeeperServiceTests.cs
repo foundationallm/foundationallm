@@ -14,7 +14,8 @@ namespace Gatekeeper.Tests.Services
         private readonly GatekeeperService _testedService;
 
         private readonly IContentSafetyService _contentSafetyService = Substitute.For<IContentSafetyService>();
-        private readonly IDownstreamAPIService _agentFactoryAPIService = Substitute.For<IDownstreamAPIService>();
+        private readonly ILakeraGuardService _lakeraGuardService = Substitute.For<ILakeraGuardService>();
+        private readonly IDownstreamAPIService _orchestrationAPIService = Substitute.For<IDownstreamAPIService>();
         private readonly IRefinementService _refinementService = Substitute.For<IRefinementService>();
         private readonly IGatekeeperIntegrationAPIService _gatekeeperIntegrationAPIService = Substitute.For<IGatekeeperIntegrationAPIService>();
         private IOptions<GatekeeperServiceSettings> _gatekeeperServiceSettings;
@@ -24,19 +25,20 @@ namespace Gatekeeper.Tests.Services
             _gatekeeperServiceSettings = Options.Create(new GatekeeperServiceSettings
             {
                 EnableAzureContentSafety = true,
-                EnableMicrosoftPresidio = true
+                EnableMicrosoftPresidio = true,
+                EnableLakeraGuard = true,
             });
 
             _testedService = new GatekeeperService(
-                _agentFactoryAPIService,
+                _orchestrationAPIService,
                 _contentSafetyService,
+                _lakeraGuardService,
                 _gatekeeperIntegrationAPIService,
                 _gatekeeperServiceSettings);
-
         }
 
         [Fact]
-        public async Task GetCompletion_CallsAgentFactoryAPIServiceWithCompletionRequest()
+        public async Task GetCompletion_CallsOrchestrationAPIServiceWithCompletionRequest()
         {
             // Arrange
             var completionRequest = new CompletionRequest
@@ -44,11 +46,11 @@ namespace Gatekeeper.Tests.Services
                 UserPrompt = "Safe content."
             };
 
-            var expectedResult = new CompletionResponse { Completion = "Completion from Agent Factory API Service." };
+            var expectedResult = new CompletionResponse { Completion = "Completion from Orchestration API Service." };
 
             var safeContentResult = new AnalyzeTextFilterResult { Safe = true, Reason = string.Empty };
             _contentSafetyService.AnalyzeText(completionRequest.UserPrompt).Returns(safeContentResult);
-            _agentFactoryAPIService.GetCompletion(completionRequest).Returns(expectedResult);
+            _orchestrationAPIService.GetCompletion(completionRequest).Returns(expectedResult);
 
             // Act
             var actualResult = await _testedService.GetCompletion(completionRequest);
@@ -58,7 +60,7 @@ namespace Gatekeeper.Tests.Services
         }
 
         [Fact]
-        public async Task GetSummary_CallsAgentFactoryAPIServiceWithSummaryRequest()
+        public async Task GetSummary_CallsOrchestrationAPIServiceWithSummaryRequest()
         {
             // Arrange
             var summaryRequest = new SummaryRequest
@@ -66,12 +68,12 @@ namespace Gatekeeper.Tests.Services
                 UserPrompt = "Safe content for summary."
             };
 
-            var expectedResult = new SummaryResponse { Summary = "Summary from Agent Factory API Service." };
+            var expectedResult = new SummaryResponse { Summary = "Summary from Orchestration API Service." };
 
             var safeContentResult = new AnalyzeTextFilterResult { Safe = true, Reason = string.Empty };
 
             _contentSafetyService.AnalyzeText(summaryRequest.UserPrompt).Returns(safeContentResult);
-            _agentFactoryAPIService.GetSummary(summaryRequest).Returns(expectedResult);
+            _orchestrationAPIService.GetSummary(summaryRequest).Returns(expectedResult);
 
             // Act
             var actualResult = await _testedService.GetSummary(summaryRequest);

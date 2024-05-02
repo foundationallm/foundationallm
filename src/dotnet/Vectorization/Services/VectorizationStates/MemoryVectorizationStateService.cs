@@ -1,4 +1,4 @@
-﻿using Azure.Core;
+﻿using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Models;
 

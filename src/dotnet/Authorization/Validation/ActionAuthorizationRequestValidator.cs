@@ -37,7 +37,7 @@ namespace FoundationaLLM.Authorization.Validation
                 .Must(x => Guid.TryParse(x, out _))
                 .WithMessage("The security group identifier must be a valid GUID.");
 
-            RuleFor(x => x.ResourcePath)
+            RuleForEach(x => x.ResourcePaths)
                 .NotNull()
                 .NotEmpty()
                 .WithMessage("The resource path must be a valid string.");
