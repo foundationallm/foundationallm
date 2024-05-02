@@ -38,14 +38,11 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <returns>The completion response.</returns>
         public async Task<CompletionResponse> GetCompletion(CompletionRequest completionRequest)
         {
-            //TODO: Call the Refinement Service with the userPrompt
-            //await _refinementService.RefineUserPrompt(completionRequest.Prompt);
-
-
             if (completionRequest.GatekeeperOptions != null && completionRequest.GatekeeperOptions.Length > 0)
             {
                 _gatekeeperServiceSettings.EnableAzureContentSafety = completionRequest.GatekeeperOptions.Any(x => x == GatekeeperOptionNames.AzureContentSafety);
                 _gatekeeperServiceSettings.EnableMicrosoftPresidio = completionRequest.GatekeeperOptions.Any(x => x == GatekeeperOptionNames.MicrosoftPresidio);
+                _gatekeeperServiceSettings.EnableLakeraGuard = completionRequest.GatekeeperOptions.Any(x => x == GatekeeperOptionNames.LakeraGuard);
             }
             
             if (_gatekeeperServiceSettings.EnableLakeraGuard)
@@ -79,9 +76,6 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <returns>The summary response.</returns>
         public async Task<SummaryResponse> GetSummary(SummaryRequest summaryRequest)
         {
-            //TODO: Call the Refinement Service with the userPrompt
-            //await _refinementService.RefineUserPrompt(summaryRequest.Prompt);
-
             if (_gatekeeperServiceSettings.EnableLakeraGuard)
             {
                 var promptinjectionResult = await _lakeraGuardService.DetectPromptInjection(summaryRequest.UserPrompt!);

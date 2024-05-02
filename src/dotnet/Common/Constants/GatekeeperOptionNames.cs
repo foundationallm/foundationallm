@@ -13,5 +13,9 @@
         /// The name of the Azure Content Safety option.
         /// </summary>
         public const string AzureContentSafety = "ContentSafety";
+        /// <summary>
+        /// The name of the LAkera Guard option.
+        /// </summary>
+        public const string LakeraGuard = "LakeraGuard";
     }
 }
