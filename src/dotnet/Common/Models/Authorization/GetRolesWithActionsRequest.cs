@@ -2,6 +2,9 @@
 
 namespace FoundationaLLM.Common.Models.Authorization
 {
+    /// <summary>
+    /// Represents a request to fetch the roles and allowed actions for a resource scope.
+    /// </summary>
     public class GetRolesWithActionsRequest
     {
         /// <summary>
