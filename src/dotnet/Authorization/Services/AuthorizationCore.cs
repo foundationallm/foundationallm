@@ -318,7 +318,7 @@ namespace FoundationaLLM.Authorization.Services
                 resourcePath,
                 authorizationRequest.PrincipalId);
 
-            return true; //return false;
+            return false;
         }
     }
 }
