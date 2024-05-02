@@ -256,11 +256,14 @@ namespace FoundationaLLM.Authorization.Services
 
             try
             {
-                ResourcePath.TryParseResourceProvider(request.Scope, out string? resourceProdiver);
+                _ = ResourcePath.TryParseResourceProvider(request.Scope, out string? resourceProdiver);
                 var requestScope = ResourcePathUtils.ParseForAuthorizationRequestResourcePath(request.Scope, _settings.InstanceIds);
 
                 if (string.IsNullOrWhiteSpace(requestScope.InstanceId) || requestScope.InstanceId.ToLower().CompareTo(instanceId.ToLower()) != 0)
+                {
+                    _logger.LogError("The instance id from the controller route and the instance id from the authorization request do not match.");
                     return result;
+                }
 
                 var roleAssignments = _roleAssignmentStores[instanceId].RoleAssignments.Where(x => x.PrincipalId == request.PrincipalId || request.SecurityGroupIds.Contains(x.PrincipalId)).ToList();
                 foreach (var ra in roleAssignments)
@@ -272,9 +275,13 @@ namespace FoundationaLLM.Authorization.Services
                     }
                 }
 
+                // Duplicated actions might exist when a pricipal has multiple roles with overlapping permissions.
                 result.Actions = result.Actions.Distinct().ToList();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "There was an issue while processing the get roles with actions request for {Scope}.", request.Scope);
+            }
 
             return result;
         }
