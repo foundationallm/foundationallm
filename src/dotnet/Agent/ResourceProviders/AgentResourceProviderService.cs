@@ -139,12 +139,19 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     SecurityGroupIds = userIdentity.GroupIds
                 });
 
-            var results = agents.Select(agent => new AgentResourceProviderGetResult()
+            var results = new List<AgentResourceProviderGetResult>();
+            foreach (var agent in agents)
             {
-                Agent = agent,
-                Actions = rolesWithActions[agent.ObjectId!].Actions,
-                Roles = rolesWithActions[agent.ObjectId!].Roles
-            }).ToList();
+                if (rolesWithActions[agent.ObjectId!].Actions.Contains($"{Name}/{AgentResourceTypeNames.Agents}/read"))
+                {
+                    results.Add(new AgentResourceProviderGetResult()
+                    {
+                        Agent = agent,
+                        Actions = rolesWithActions[agent.ObjectId!].Actions,
+                        Roles = rolesWithActions[agent.ObjectId!].Roles
+                    });
+                }
+            }
 
             return results;
         }
