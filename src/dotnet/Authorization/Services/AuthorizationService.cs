@@ -35,7 +35,7 @@ namespace FoundationaLLM.Authorization.Services
             string instanceId,
             ActionAuthorizationRequest authorizationRequest)
         {
-            var authorizationResults = authorizationRequest.ResourcePaths.Distinct().ToDictionary(rp => rp, auth => false);
+            var defaultResults = authorizationRequest.ResourcePaths.Distinct().ToDictionary(rp => rp, auth => false);
 
             try
             {
@@ -51,12 +51,12 @@ namespace FoundationaLLM.Authorization.Services
                 }
 
                 _logger.LogError("The call to the Authorization API returned an error: {StatusCode} - {ReasonPhrase}.", response.StatusCode, response.ReasonPhrase);
-                return new ActionAuthorizationResult { AuthorizationResults = authorizationResults };
+                return new ActionAuthorizationResult { AuthorizationResults = defaultResults };
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "There was an error calling the Authorization API");
-                return new ActionAuthorizationResult { AuthorizationResults = authorizationResults };
+                return new ActionAuthorizationResult { AuthorizationResults = defaultResults };
             }
         }
 
@@ -92,8 +92,10 @@ namespace FoundationaLLM.Authorization.Services
         }
 
         /// <inheritdoc/>
-        public async Task<ResourceProviderGetResult> ProcessGetRolesWithActions(string instanceId, GetRolesWithActionsRequest request)
+        public async Task<Dictionary<string, ResourceProviderGetResult>> ProcessGetRolesWithActions(string instanceId, GetRolesWithActionsRequest request)
         {
+            var defaultResults = request.Scopes.Distinct().ToDictionary(scp => scp, res => new ResourceProviderGetResult() { Actions = [], Roles = [] });
+
             try
             {
                 var httpClient = await CreateHttpClient();
@@ -104,16 +106,16 @@ namespace FoundationaLLM.Authorization.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<ResourceProviderGetResult>(responseContent)!;
+                    return JsonSerializer.Deserialize<Dictionary<string, ResourceProviderGetResult>>(responseContent)!;
                 }
 
                 _logger.LogError("The call to the Authorization API returned an error: {StatusCode} - {ReasonPhrase}.", response.StatusCode, response.ReasonPhrase);
-                return new ResourceProviderGetResult() { Roles = [], Actions = [] };
+                return defaultResults;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "There was an error calling the Authorization API");
-                return new ResourceProviderGetResult() { Roles = [], Actions = [] };
+                return defaultResults;
             }
         }
 

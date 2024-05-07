@@ -109,15 +109,14 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
         private async Task<List<AgentResourceProviderGetResult>> LoadAgents(ResourceTypeInstance instance, UnifiedUserIdentity userIdentity)
         {
+            var agents = new List<AgentBase>();
+
             if (instance.ResourceId == null)
             {
-                return
-                [
-                    .. (await Task.WhenAll(
-                        _agentReferences.Values
-                            .Where(ar => !ar.Deleted)
-                            .Select(ar => LoadAgent(ar, userIdentity))))
-                ];
+                agents = (await Task.WhenAll(_agentReferences.Values
+                                    .Where(ar => !ar.Deleted)
+                                    .Select(ar => LoadAgent(ar, userIdentity))))
+                                    .ToList();
             }
             else
             {
@@ -128,11 +127,29 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
                 var agent = await LoadAgent(agentReference!, userIdentity);
 
-                return [agent];
+                agents.Add(agent);
             }
+
+            var rolesWithActions = await _authorizationService.ProcessGetRolesWithActions(
+                _instanceSettings.Id,
+                new GetRolesWithActionsRequest()
+                {
+                    Scopes = agents.Select(x => x.ObjectId!).ToList(),
+                    PrincipalId = userIdentity.UserId!,
+                    SecurityGroupIds = userIdentity.GroupIds
+                });
+
+            var results = agents.Select(agent => new AgentResourceProviderGetResult()
+            {
+                Agent = agent,
+                Actions = rolesWithActions[agent.ObjectId!].Actions,
+                Roles = rolesWithActions[agent.ObjectId!].Roles
+            }).ToList();
+
+            return results;
         }
 
-        private async Task<AgentResourceProviderGetResult> LoadAgent(AgentReference agentReference, UnifiedUserIdentity userIdentity)
+        private async Task<AgentBase> LoadAgent(AgentReference agentReference, UnifiedUserIdentity userIdentity)
         {
             // agentReference is null for legacy agents
             if (agentReference != null)
@@ -148,21 +165,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         ?? throw new ResourceProviderException($"Failed to load the agent {agentReference.Name}.",
                             StatusCodes.Status400BadRequest);
 
-                    var result = await _authorizationService.ProcessGetRolesWithActions(
-                        _instanceSettings.Id,
-                        new GetRolesWithActionsRequest()
-                        {
-                            Scope = agent.ObjectId!,
-                            PrincipalId = userIdentity.UserId!,
-                            SecurityGroupIds = userIdentity.GroupIds
-                        });
-
-                    return new AgentResourceProviderGetResult()
-                    {
-                        Agent = agent,
-                        Roles = result.Roles,
-                        Actions = result.Actions
-                    };
+                    return agent;
                 }
             }
 
@@ -398,9 +401,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 Deleted = false
             };
 
-            var getAgentResult = await LoadAgent(agentReference, null); // TODO: what identity needs to be passed here
-            agentReference.Name = getAgentResult.Agent.Name;
-            agentReference.Type = getAgentResult.Agent.Type;
+            var getAgentResult = await LoadAgent(agentReference, null);
+            agentReference.Name = getAgentResult.Name;
+            agentReference.Type = getAgentResult.Type;
 
             _agentReferences.AddOrUpdate(
                 agentReference.Name,

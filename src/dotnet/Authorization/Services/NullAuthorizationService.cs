@@ -12,10 +12,10 @@ namespace FoundationaLLM.Authorization.Services
         /// <inheritdoc/>
         public async Task<ActionAuthorizationResult> ProcessAuthorizationRequest(string instanceId, ActionAuthorizationRequest authorizationRequest)
         {
-            var results = authorizationRequest.ResourcePaths.Distinct().ToDictionary(rp => rp, auth => true);
+            var defaultResults = authorizationRequest.ResourcePaths.Distinct().ToDictionary(rp => rp, auth => true);
 
             await Task.CompletedTask;
-            return new ActionAuthorizationResult { AuthorizationResults = results };
+            return new ActionAuthorizationResult { AuthorizationResults = defaultResults };
         }
 
         public async Task<RoleAssignmentResult> ProcessRoleAssignmentRequest(string instanceId, RoleAssignmentRequest roleAssignmentRequest)
@@ -24,10 +24,12 @@ namespace FoundationaLLM.Authorization.Services
             return new RoleAssignmentResult { Success = true };
         }
 
-        public async Task<ResourceProviderGetResult> ProcessGetRolesWithActions(string instanceId, GetRolesWithActionsRequest request)
+        public async Task<Dictionary<string, ResourceProviderGetResult>> ProcessGetRolesWithActions(string instanceId, GetRolesWithActionsRequest request)
         {
+            var defaultResults = request.Scopes.Distinct().ToDictionary(scp => scp, res => new ResourceProviderGetResult() { Actions = [], Roles = [] });
+
             await Task.CompletedTask;
-            return new ResourceProviderGetResult() { Roles = [], Actions = [] };
+            return defaultResults;
         }
     }
 }

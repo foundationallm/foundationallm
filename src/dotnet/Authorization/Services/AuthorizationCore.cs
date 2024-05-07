@@ -250,37 +250,41 @@ namespace FoundationaLLM.Authorization.Services
         public Task<RoleAssignmentResult> RevokeRole(string instanceId, RoleAssignmentRequest roleAssignmentRequest) => throw new NotImplementedException();
 
         /// <inheritdoc/>
-        public ResourceProviderGetResult ProcessGetRolesWithActions(string instanceId, GetRolesWithActionsRequest request)
+        public Dictionary<string, ResourceProviderGetResult> ProcessGetRolesWithActions(string instanceId, GetRolesWithActionsRequest request)
         {
-            var result = new ResourceProviderGetResult() { Roles = [], Actions = [] };
+            var result = request.Scopes.Distinct().ToDictionary(scp => scp, res => new ResourceProviderGetResult() { Actions = [], Roles = [] });
 
-            try
+            foreach (var scope in request.Scopes)
             {
-                _ = ResourcePath.TryParseResourceProvider(request.Scope, out string? resourceProdiver);
-                var requestScope = ResourcePathUtils.ParseForAuthorizationRequestResourcePath(request.Scope, _settings.InstanceIds);
-
-                if (string.IsNullOrWhiteSpace(requestScope.InstanceId) || requestScope.InstanceId.ToLower().CompareTo(instanceId.ToLower()) != 0)
+                try
                 {
-                    _logger.LogError("The instance id from the controller route and the instance id from the authorization request do not match.");
-                    return result;
-                }
+                    _ = ResourcePath.TryParseResourceProvider(scope, out string? resourceProdiver);
+                    var requestScope = ResourcePathUtils.ParseForAuthorizationRequestResourcePath(scope, _settings.InstanceIds);
 
-                var roleAssignments = _roleAssignmentStores[instanceId].RoleAssignments.Where(x => x.PrincipalId == request.PrincipalId || request.SecurityGroupIds.Contains(x.PrincipalId)).ToList();
-                foreach (var ra in roleAssignments)
-                {
-                    if (request.Scope.Contains(ra.Scope))
+                    if (string.IsNullOrWhiteSpace(requestScope.InstanceId) || requestScope.InstanceId.ToLower().CompareTo(instanceId.ToLower()) != 0)
                     {
-                        result.Actions.AddRange(ra.AllowedActions.Where(x => x.Contains(resourceProdiver!)).ToList());
-                        result.Roles.Add(ra.RoleDefinition!.DisplayName!);
+                        _logger.LogError("The instance id from the controller route and the instance id from the authorization request do not match.");
+                    }
+                    else
+                    {
+                        var roleAssignments = _roleAssignmentStores[instanceId].RoleAssignments.Where(x => x.PrincipalId == request.PrincipalId || request.SecurityGroupIds.Contains(x.PrincipalId)).ToList();
+                        foreach (var ra in roleAssignments)
+                        {
+                            if (scope.Contains(ra.Scope))
+                            {
+                                result[scope].Actions.AddRange(ra.AllowedActions.Where(x => x.Contains(resourceProdiver!)).ToList());
+                                result[scope].Roles.Add(ra.RoleDefinition!.DisplayName!);
+                            }
+                        }
+
+                        // Duplicated actions might exist when a pricipal has multiple roles with overlapping permissions.
+                        result[scope].Actions = result[scope].Actions.Distinct().ToList();
                     }
                 }
-
-                // Duplicated actions might exist when a pricipal has multiple roles with overlapping permissions.
-                result.Actions = result.Actions.Distinct().ToList();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "There was an issue while processing the get roles with actions request for {Scope}.", request.Scope);
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "There was an issue while processing the get roles with actions request for {Scope}.", scope);
+                }
             }
 
             return result;

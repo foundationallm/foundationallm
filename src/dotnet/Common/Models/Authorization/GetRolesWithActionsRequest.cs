@@ -22,7 +22,7 @@ namespace FoundationaLLM.Common.Models.Authorization
         /// <summary>
         /// The scope of the request.
         /// </summary>
-        [JsonPropertyName("scope")]
-        public required string Scope { get; set; }
+        [JsonPropertyName("scopes")]
+        public required List<string> Scopes { get; set; }
     }
 }

@@ -32,6 +32,6 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="request">The get roles with actions request.</param>
         /// <returns>The get roles and actions result.</returns>
-        Task<ResourceProviderGetResult> ProcessGetRolesWithActions(string instanceId, GetRolesWithActionsRequest request);
+        Task<Dictionary<string, ResourceProviderGetResult>> ProcessGetRolesWithActions(string instanceId, GetRolesWithActionsRequest request);
     }
 }
