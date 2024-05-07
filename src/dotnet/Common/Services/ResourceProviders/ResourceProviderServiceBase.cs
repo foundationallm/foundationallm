@@ -211,13 +211,12 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             {
                 var resource = await UpsertResourceAsync(parsedResourcePath, serializedResource, userIdentity);
 
-                var resourceObjectId = (resource as ResourceProviderUpsertResult)?.ObjectId;
+                var upsertResult = resource as ResourceProviderUpsertResult;
 
-                var roleAssignmentName = Guid.NewGuid().ToString();
-                var roleAssignmentDescription = $"Owner role for {userIdentity.Name}";
-
-                if (Name != ResourceProviderNames.FoundationaLLM_Authorization)
+                if (upsertResult!.ResourceAlreadyExists == false && Name != ResourceProviderNames.FoundationaLLM_Authorization)
                 {
+                    var roleAssignmentName = Guid.NewGuid().ToString();
+                    var roleAssignmentDescription = $"Owner role for {userIdentity.Name}";
                     var roleAssignmentResult = await _authorizationService.ProcessRoleAssignmentRequest(
                         _instanceSettings.Id,
                         new RoleAssignmentRequest()
@@ -228,7 +227,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                             PrincipalId = userIdentity.UserId!,
                             PrincipalType = PrincipalTypes.User,
                             RoleDefinitionId = $"/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleDefinitions}/1301f8d4-3bea-4880-945f-315dbd2ddb46", // TODO: get the Owner role definition ID
-                            Scope = $"/instances/{_instanceSettings.Id}/{resourceObjectId}"
+                            Scope = $"/instances/{_instanceSettings.Id}/{upsertResult!.ObjectId}"
                         });
 
                     if (!roleAssignmentResult.Success)
