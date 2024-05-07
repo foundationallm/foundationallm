@@ -1,9 +1,9 @@
-﻿using FoundationaLLM.Common.Constants.Agents;
-using FoundationaLLM.Common.Constants.ResourceProviders;
+﻿using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Agents;
 using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -52,7 +52,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 try
                 {
                     var agents = await agentResourceProvider.HandleGetAsync($"/{AgentResourceTypeNames.Agents}/{completionRequest.AgentName}", callContext.CurrentUserIdentity);
-                    agentBase = ((List<AgentBase>)agents)[0];
+                    agentBase = ((List<AgentResourceProviderGetResult>)agents)[0].Agent;
                 }
                 catch (ResourceProviderException)
                 {

@@ -1,7 +1,6 @@
 ﻿using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Agents;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Core.Interfaces;
@@ -76,9 +75,9 @@ namespace FoundationaLLM.Core.API.Controllers
         {
             var agents = new List<ResourceBase>();
 
-            if (await _agentResourceProvider.HandleGetAsync($"/{AgentResourceTypeNames.Agents}", _callContext.CurrentUserIdentity) is List<AgentBase> globalAgentsList && globalAgentsList.Count != 0)
+            if (await _agentResourceProvider.HandleGetAsync($"/{AgentResourceTypeNames.Agents}", _callContext.CurrentUserIdentity) is List<AgentResourceProviderGetResult> globalAgentsList && globalAgentsList.Count != 0)
             {
-                agents.AddRange(globalAgentsList);
+                agents.AddRange(globalAgentsList.Select(x => x.Agent));
             }
 
             return agents;

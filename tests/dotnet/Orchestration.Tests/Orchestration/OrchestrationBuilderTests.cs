@@ -2,12 +2,13 @@
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Agents;
 using FoundationaLLM.Common.Models.Orchestration;
-using Microsoft.Extensions.Configuration;
-using System.Reflection;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using FoundationaLLM.Orchestration.Core.Orchestration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
+using System.Reflection;
 using Xunit;
 
 namespace FoundationaLLM.Orchestration.Tests.Orchestration
@@ -44,8 +45,8 @@ namespace FoundationaLLM.Orchestration.Tests.Orchestration
 
             var agentResourceProvider = Substitute.For<IResourceProviderService>();
             var knowledgeManagementAgent = new KnowledgeManagementAgent() { Name = "knowledge-management", ObjectId = "Test_objectid", Type = AgentTypes.KnowledgeManagement };
-            var agentList = new List<AgentBase> { knowledgeManagementAgent };
-            agentResourceProvider.HandleGetAsync($"/{AgentResourceTypeNames.Agents}/{completionRequest.AgentName}", _callContext?.CurrentUserIdentity!).Returns(agentList);
+            var getResult = new List<AgentResourceProviderGetResult> { new() { Agent = knowledgeManagementAgent, Actions = [], Roles = [] } };
+            agentResourceProvider.HandleGetAsync($"/{AgentResourceTypeNames.Agents}/{completionRequest.AgentName}", _callContext?.CurrentUserIdentity!).Returns(getResult);
 
             _resourceProviderServices.Add(ResourceProviderNames.FoundationaLLM_Agent, agentResourceProvider);
 
