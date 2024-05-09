@@ -147,71 +147,51 @@ Invoke-AndRequireSuccess "Loading AppConfig Values" {
         --output none
 }
 
-Invoke-AndRequireSuccess "Uploading Agents" {
-    az storage azcopy blob upload `
-        -c agents `
-        --account-name $env:AZURE_STORAGE_ACCOUNT_NAME `
-        -s "../common/data/agents/*" `
-        --recursive `
-        --only-show-errors `
-        --auth-mode key `
-        --output none
+if ($IsWindows) {
+    $os = "windows"
+}
+elseif ($IsMacOS) {
+    $os = "mac"
+}
+elseif ($IsLinux) {
+    $os = "linux"
 }
 
-Invoke-AndRequireSuccess "Uploading Data Sources" {
-    az storage azcopy blob upload `
-        -c data-sources `
-        --account-name $env:AZURE_STORAGE_ACCOUNT_NAME `
-        -s "../common/data/data-sources/*" `
-        --recursive `
-        --only-show-errors `
-        --auth-mode key `
-        --output none
+if ($env:PIPELINE_DEPLOY) {
+    Write-Host "Using agent provided AzCopy"
+} else {
+    $env:PATH="$($env:PATH);$($pwd.Path)/tools/azcopy_${os}_amd64_${AZCOPY_VERSION}"
 }
 
-Invoke-AndRequireSuccess "Uploading Foundationallm Source" {
-    az storage azcopy blob upload `
-        -c foundationallm-source `
-        --account-name $env:AZURE_STORAGE_ACCOUNT_NAME `
-        -s "../common/data/foundationallm-source/*" `
-        --recursive `
-        --only-show-errors `
-        --auth-mode key `
-        --output none
+$status = (azcopy login status)
+if (-not $status.contains("Your login session is still active")) {
+    Write-Host -ForegroundColor Blue "Please Follow the instructions below to login to Azure using AzCopy."
+    azcopy login
 }
 
-Invoke-AndRequireSuccess "Uploading Prompts" {
-    az storage azcopy blob upload `
-        -c prompts `
-        --account-name $env:AZURE_STORAGE_ACCOUNT_NAME `
-        -s "../common/data/prompts/*" `
-        --recursive `
-        --only-show-errors `
-        --auth-mode key `
-        --output none
-}
+$target = "https://$env:AZURE_STORAGE_ACCOUNT_NAME.blob.core.windows.net/resource-provider/"
 
-Invoke-AndRequireSuccess "Uploading Resource Providers" {
-    az storage azcopy blob upload `
-        -c resource-provider `
-        --account-name $env:AZURE_STORAGE_ACCOUNT_NAME `
-        -s "../common/data/resource-provider/*" `
-        --recursive `
-        --only-show-errors `
-        --auth-mode key `
-        --output none
-}
+azcopy cp '../common/data/resource-provider/*' $target --exclude-pattern .git* --recursive=True
 
-Invoke-AndRequireSuccess "Uploading Default Role Assignments to Authorization Store" {
-    az storage azcopy blob upload `
-        -c role-assignments `
-        --account-name $env:AZURE_AUTHORIZATION_STORAGE_ACCOUNT_NAME `
-        -s "./data/role-assignments/${env:FOUNDATIONALLM_INSTANCE_ID}.json" `
-        --recursive `
-        --only-show-errors `
-        --auth-mode key `
-        --output none
-}
+$target = "https://$env:AZURE_AUTHORIZATION_STORAGE_ACCOUNT_NAME.blob.core.windows.net/role-assignments/"
+
+azcopy cp ./data/role-assignments/$($env:FOUNDATIONALLM_INSTANCE_ID).json $target --recursive=True
+# try 
+# {
+#     Invoke-AndRequireSuccess "Uploading Resource Providers" {
+#         $target = "https://$env:AZURE_STORAGE_ACCOUNT_NAME.blob.core.windows.net/resource-provider/"
+
+#         azcopy cp '../common/data/resource-provider/*' $target --exclude-pattern .git* --recursive=True
+#     }
+
+#     Invoke-AndRequireSuccess "Uploading Default Role Assignments to Authorization Store" {
+#         $target = "https://$env:AZURE_AUTHORIZATION_STORAGE_ACCOUNT_NAME.blob.core.windows.net/role-assignments/"
+
+#         azcopy cp ./data/role-assignments/$($env:FOUNDATIONALLM_INSTANCE_ID).json $target --recursive=True
+#     }
+# } catch {
+#     Write-Host ($_ | ConvertTo-Json)
+# }
 
 Invoke-AndRequireSuccess "Restarting Authorization API" {
     # Grab suffix

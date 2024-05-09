@@ -1,0 +1,125 @@
+{
+    "registry": "cropseastus2svinternal.azurecr.io",
+    "service_matrix": [
+        {
+            "name": "agent-hub-api",
+            "context": "./src/python",
+            "dockerfile": "./src/python/AgentHubAPI/Dockerfile",
+            "helm_chart": "./deploy/common/helm/agent-hub-api",
+            "azd_env_key": "SERVICE_AGENTHUBAPI_IMAGE"
+        },
+        {
+            "name": "authorization-api",
+            "context": "./src",
+            "dockerfile": "./src/dotnet/AuthorizationAPI/Dockerfile",
+            "helm_chart": "./deploy/common/helm/authorization-api",
+            "azd_env_key": "SERVICE_AUTHORIZATIONAPI_IMAGE"
+        },
+        {
+            "name": "chat-ui",
+            "context": "./src/ui/UserPortal",
+            "dockerfile": "./src/ui/UserPortal/Dockerfile",
+            "helm_chart": "./deploy/common/helm/chat-ui",
+            "azd_env_key": "SERVICE_CHATUI_IMAGE"
+        },
+        {
+            "name": "core-api",
+            "context": "./src",
+            "dockerfile": "./src/dotnet/CoreAPI/Dockerfile",
+            "helm_chart": "./deploy/common/helm/core-api",
+            "azd_env_key": "SERVICE_COREAPI_IMAGE"
+        },
+        {
+            "name": "core-job",
+            "context": "./src",
+            "dockerfile": "./src/dotnet/CoreWorker/Dockerfile",
+            "helm_chart": "./deploy/common/helm/core-job",
+            "azd_env_key": "SERVICE_COREJOB_IMAGE"
+        },
+        {
+            "name": "data-source-hub-api",
+            "context": "./src/python",
+            "dockerfile": "./src/python/DataSourceHubAPI/Dockerfile",
+            "helm_chart": "./deploy/common/helm/data-source-hub-api",
+            "azd_env_key": "SERVICE_DATASOURCEHUBAPI_IMAGE"
+        },
+        {
+            "name": "gatekeeper-api",
+            "context": "./src",
+            "dockerfile": "./src/dotnet/GatekeeperAPI/Dockerfile",
+            "helm_chart": "./deploy/common/helm/gatekeeper-api", 
+            "azd_env_key": "SERVICE_GATEKEEPERAPI_IMAGE"
+        },
+        {
+            "name": "gatekeeper-integration-api",
+            "context": "./src/python",
+            "dockerfile": "./src/python/GatekeeperIntegrationAPI/Dockerfile",
+            "helm_chart": "./deploy/common/helm/gatekeeper-integration-api",
+            "azd_env_key": "SERVICE_GATEKEEPERINTEGRATIONAPI_IMAGE"
+        },
+        {
+            "name": "langchain-api",
+            "context": "./src/python",
+            "dockerfile": "./src/python/LangChainAPI/Dockerfile",
+            "helm_chart": "./deploy/common/helm/langchain-api",
+            "azd_env_key": "SERVICE_LANGCHAINAPI_IMAGE"
+        },
+        {
+            "name": "management-api",
+            "context": "./src",
+            "dockerfile": "./src/dotnet/ManagementAPI/Dockerfile",
+            "helm_chart": "./deploy/common/helm/management-api",
+            "azd_env_key": "SERVICE_MANAGEMENTAPI_IMAGE"
+        },
+        {
+            "name": "management-ui",
+            "context": "./src/ui/ManagementPortal",
+            "dockerfile": "./src/ui/ManagementPortal/Dockerfile",
+            "helm_chart": "./deploy/common/helm/management-ui",
+            "azd_env_key": "SERVICE_MANAGEMENTUI_IMAGE"
+        },
+        {
+            "name": "orchestration-api",
+            "context": "./src",
+            "dockerfile": "./src/dotnet/OrchestrationAPI/Dockerfile",
+            "helm_chart": "./deploy/common/helm/orchestration-api",
+            "azd_env_key": "SERVICE_ORCHESTRATIONAPI_IMAGE"
+        },
+        {
+            "name": "prompt-hub-api",
+            "context": "./src/python",
+            "dockerfile": "./src/python/PromptHubAPI/Dockerfile",
+            "helm_chart": "./deploy/common/helm/prompt-hub-api",
+            "azd_env_key": "SERVICE_PROMPTHUBAPI_IMAGE"
+        },
+        {
+            "name": "semantic-kernel-api",
+            "context": "./src",
+            "dockerfile": "./src/dotnet/SemanticKernelAPI/Dockerfile",
+            "helm_chart": "./deploy/common/helm/semantic-kernel-api",
+            "azd_env_key": "SERVICE_SEMANTICKERNELAPI_IMAGE"
+        },
+        {
+            "name": "vectorization-api",
+            "context": "./src",
+            "dockerfile": "./src/dotnet/VectorizationAPI/Dockerfile",
+            "helm_chart": "./deploy/common/helm/vectorization-api",
+            "azd_env_key": "SERVICE_VECTORIZATIONAPI_IMAGE"
+        },
+        {
+            "name": "vectorization-job",
+            "context": "./src",
+            "dockerfile": "./src/dotnet/VectorizationWorker/Dockerfile",
+            "helm_chart": "./deploy/common/helm/vectorization-job",
+            "azd_env_key": "SERVICE_VECTORIZATIONJOB_IMAGE"
+        }
+    ],
+    "test_matrix": [
+        {
+            "name": "0001",
+            "task_name": "Example0001_FoundationaLLMAgentInteraction.RunAsync",
+            "namespace": "FoundationaLLM.Core.Examples",
+            "target": "./tests/dotnet/Core.Examples/Core.Examples.csproj"
+        }
+    ]
+}

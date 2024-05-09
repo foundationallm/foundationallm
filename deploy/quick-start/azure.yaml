@@ -4,6 +4,11 @@ name: foundationallm
 metadata:
     template: azd-init@1.5.1
 hooks:
+  preprovision:
+    shell: pwsh
+    continueOnError: false
+    interactive: true
+    run: azd-hooks/preprovision.ps1
   postprovision:
     shell: pwsh
     continueOnError: false

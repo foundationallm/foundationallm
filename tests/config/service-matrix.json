@@ -1,8 +1,0 @@
-[
-    {
-        "name": "langchain-api",
-        "context": "./src/python",
-        "dockerfile": "./src/python/LangChainAPI/Dockerfile",
-        "helm_chart": "./deploy/common/helm/langchain-api"
-    }
-]

@@ -1,230 +1,233 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "adminGroupObjectId": {
-      "value": "${ADMIN_GROUP_OBJECT_ID}"
-    },
-    "authAppRegistration": {
-      "value": {
-        "instance": "${ENTRA_AUTH_API_INSTANCE}",
-        "clientId": "${ENTRA_AUTH_API_CLIENT_ID}",
-        "scopes": "${ENTRA_AUTH_API_SCOPES}",
-        "tenantId": "${ENTRA_AUTH_API_TENANT_ID}"
-      }
-    },
-    "authClientSecret": {
-      "value": "${ENTRA_AUTH_API_CLIENT_SECRET}"
-    },
-    "appRegistrations": {
-      "value": [
-        {
-          "name": "chat-ui",
-          "clientId": "${ENTRA_CHAT_UI_CLIENT_ID}",
-          "scopes": "${ENTRA_CHAT_UI_SCOPES}",
-          "tenantId": "${ENTRA_CHAT_UI_TENANT_ID}"
-        },
-        {
-          "name": "core-api",
-          "clientId": "${ENTRA_CORE_API_CLIENT_ID}",
-          "scopes": "${ENTRA_CORE_API_SCOPES}",
-          "tenantId": "${ENTRA_CORE_API_TENANT_ID}"
-        },
-        {
-          "name": "management-api",
-          "clientId": "${ENTRA_MANAGEMENT_API_CLIENT_ID}",
-          "scopes": "${ENTRA_MANAGEMENT_API_SCOPES}",
-          "tenantId": "${ENTRA_MANAGEMENT_API_TENANT_ID}"
-        },
-        {
-          "name": "management-ui",
-          "clientId": "${ENTRA_MANAGEMENT_UI_CLIENT_ID}",
-          "scopes": "${ENTRA_MANAGEMENT_UI_SCOPES}",
-          "tenantId": "${ENTRA_MANAGEMENT_UI_TENANT_ID}"
-        },
-        {
-          "name": "vectorization-api",
-          "clientId": "${ENTRA_VECTORIZATION_API_CLIENT_ID}",
-          "scopes": "${ENTRA_VECTORIZATION_API_SCOPES}",
-          "tenantId": "${ENTRA_VECTORIZATION_API_TENANT_ID}"
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "adminGroupObjectId": {
+        "value": "${ADMIN_GROUP_OBJECT_ID}"
+      },
+      "authAppRegistration": {
+        "value": {
+          "instance": "${ENTRA_AUTH_API_INSTANCE}",
+          "clientId": "${ENTRA_AUTH_API_CLIENT_ID}",
+          "scopes": "${ENTRA_AUTH_API_SCOPES}",
+          "tenantId": "${ENTRA_AUTH_API_TENANT_ID}"
         }
-      ]
-    },
-    "environmentName": {
-      "value": "${AZURE_ENV_NAME}"
-    },
-    "instanceId": {
-      "value": "${FOUNDATIONALLM_INSTANCE_ID}"
-    },
-    "location": {
-      "value": "${AZURE_LOCATION}"
-    },
-    "existingOpenAiInstance": {
-      "value": {
-        "name": "${OPENAI_NAME}",
-        "resourceGroup": "${OPENAI_RESOURCE_GROUP}",
-        "subscriptionId": "${OPENAI_SUBSCRIPTION_ID}"
-      }
-    },
-    "authServiceExists": {
-      "value": "${SERVICE_AUTHAPI_RESOURCE_EXISTS=false}"
-    },
-    "servicesExist": {
-      "value": {
-        "agent-factory-api": "${SERVICE_AGENTFACTORYAPI_RESOURCE_EXISTS=false}",
-        "agent-hub-api": "${SERVICE_AGENTHUBAPI_RESOURCE_EXISTS=false}",
-        "chat-ui": "${SERVICE_CHATUI_RESOURCE_EXISTS=false}",
-        "core-api": "${SERVICE_COREAPI_RESOURCE_EXISTS=false}",
-        "core-job": "${SERVICE_COREJOB_RESOURCE_EXISTS=false}",
-        "data-source-hub-api": "${SERVICE_DATASOURCEHUBAPI_RESOURCE_EXISTS=false}",
-        "gatekeeper-api": "${SERVICE_GATEKEEPERAPI_RESOURCE_EXISTS=false}",
-        "gatekeeper-integration-api": "${SERVICE_GATEKEEPERINTEGRATIONAPI_RESOURCE_EXISTS=false}",
-        "langchain-api": "${SERVICE_LANGCHAINAPI_RESOURCE_EXISTS=false}",
-        "management-api": "${SERVICE_MANAGEMENTAPI_RESOURCE_EXISTS=false}",
-        "management-ui": "${SERVICE_MANAGEMENTUI_RESOURCE_EXISTS=false}",
-        "prompt-hub-api": "${SERVICE_PROMPTHUBAPI_RESOURCE_EXISTS=false}",
-        "semantic-kernel-api": "${SERVICE_SEMANTICKERNELAPI_RESOURCE_EXISTS=false}",
-        "vectorization-api": "${SERVICE_VECTORIZATIONAPI_RESOURCE_EXISTS=false}",
-        "vectorization-job": "${SERVICE_VECTORIZATIONJOB_RESOURCE_EXISTS=false}"
-      }
-    },
-    "serviceDefinition": {
-      "value": {
-        "settings": []
-      }
-    },
-    "authService": {
-      "value": {
-        "name": "auth-api",
-        "image": "cropseastus2svinternal.azurecr.io/auth-api:release-060-ca865f3b"
-      }
-    },
-    "services": {
-      "value": [
-        {
-          "name": "agent-factory-api",
-          "useEndpoint": false,
-          "hasIngress": true,
-          "image": "cropseastus2svinternal.azurecr.io/agentfactory-api:release-060-ca865f3b",
-          "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
-          "apiKeySecretName": "foundationallm-apis-agentfactoryapi-apikey"
-        },
-        {
-          "name": "agent-hub-api",
-          "useEndpoint": true,
-          "hasIngress": true,
-          "image": "cropseastus2svinternal.azurecr.io/agenthub-api:release-060-ca865f3b",
-          "appConfigEnvironmentVarName": "foundationallm-app-configuration-uri",
-          "apiKeySecretName": "foundationallm-apis-agenthubapi-apikey"
-        },
-        {
-          "name": "chat-ui",
-          "useEndpoint": false,
-          "hasIngress": true,
-          "image": "cropseastus2svinternal.azurecr.io/chat-ui:release-060-ca865f3b",
-          "appConfigEnvironmentVarName": "NUXT_APP_CONFIG_ENDPOINT",
-          "apiKeySecretName": "foundationallm-apis-chatui-apikey"
-        },
-        {
-          "name": "core-api",
-          "useEndpoint": false,
-          "hasIngress": true,
-          "image": "cropseastus2svinternal.azurecr.io/core-api:release-060-ca865f3b",
-          "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
-          "apiKeySecretName": "foundationallm-apis-coreapi-apikey"
-        },
-        {
-          "name": "core-job",
-          "useEndpoint": false,
-          "hasIngress": false,
-          "image": "cropseastus2svinternal.azurecr.io/core-job:release-060-ca865f3b",
-          "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
-          "apiKeySecretName": "foundationallm-apis-corejob-apikey"
-        },
-        {
-          "name": "data-source-hub-api",
-          "useEndpoint": true,
-          "hasIngress": true,
-          "image": "cropseastus2svinternal.azurecr.io/datasourcehub-api:release-060-ca865f3b",
-          "appConfigEnvironmentVarName": "foundationallm-app-configuration-uri",
-          "apiKeySecretName": "foundationallm-apis-datasourcehubapi-apikey"
-        },
-        {
-          "name": "gatekeeper-api",
-          "useEndpoint": false,
-          "hasIngress": true,
-          "image": "cropseastus2svinternal.azurecr.io/gatekeeper-api:release-060-ca865f3b",
-          "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
-          "apiKeySecretName": "foundationallm-apis-gatekeeperapi-apikey"
-        },
-        {
-          "name": "gatekeeper-integration-api",
-          "useEndpoint": true,
-          "hasIngress": true,
-          "image": "cropseastus2svinternal.azurecr.io/gatekeeperintegration-api:release-060-ca865f3b",
-          "appConfigEnvironmentVarName": "foundationallm-app-configuration-uri",
-          "apiKeySecretName": "foundationallm-apis-gatekeeperintegrationapi-apikey"
-        },
-        {
-          "name": "langchain-api",
-          "useEndpoint": true,
-          "hasIngress": true,
-          "image": "cropseastus2svinternal.azurecr.io/langchain-api:release-060-ca865f3b",
-          "appConfigEnvironmentVarName": "foundationallm-app-configuration-uri",
-          "apiKeySecretName": "foundationallm-apis-langchainapi-apikey"
-        },
-        {
-          "name": "management-api",
-          "useEndpoint": false,
-          "hasIngress": true,
-          "image": "cropseastus2svinternal.azurecr.io/management-api:release-060-ca865f3b",
-          "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
-          "apiKeySecretName": "foundationallm-apis-managementapi-apikey"
-        },
-        {
-          "name": "management-ui",
-          "useEndpoint": false,
-          "hasIngress": true,
-          "image": "cropseastus2svinternal.azurecr.io/management-ui:release-060-ca865f3b",
-          "appConfigEnvironmentVarName": "NUXT_APP_CONFIG_ENDPOINT",
-          "apiKeySecretName": "foundationallm-apis-managementui-apikey"
-        },
-        {
-          "name": "prompt-hub-api",
-          "useEndpoint": true,
-          "hasIngress": true,
-          "image": "cropseastus2svinternal.azurecr.io/prompthub-api:release-060-ca865f3b",
-          "appConfigEnvironmentVarName": "foundationallm-app-configuration-uri",
-          "apiKeySecretName": "foundationallm-apis-prompthubapi-apikey"
-        },
-        {
-          "name": "semantic-kernel-api",
-          "useEndpoint": false,
-          "hasIngress": true,
-          "image": "cropseastus2svinternal.azurecr.io/semantickernel-api:release-060-ca865f3b",
-          "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
-          "apiKeySecretName": "foundationallm-apis-semantickernelapi-apikey"
-        },
-        {
-          "name": "vectorization-api",
-          "useEndpoint": false,
-          "hasIngress": true,
-          "image": "cropseastus2svinternal.azurecr.io/vectorization-api:release-060-ca865f3b",
-          "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
-          "apiKeySecretName": "foundationallm-apis-vectorizationapi-apikey"
-        },
-        {
-          "name": "vectorization-job",
-          "useEndpoint": false,
-          "hasIngress": false,
-          "image": "cropseastus2svinternal.azurecr.io/vectorization-job:release-060-ca865f3b",
-          "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
-          "apiKeySecretName": "foundationallm-apis-vectorizationworker-apikey"
+      },
+      "authClientSecret": {
+        "value": "${ENTRA_AUTH_API_CLIENT_SECRET}"
+      },
+      "appRegistrations": {
+        "value": [
+          {
+            "name": "chat-ui",
+            "clientId": "${ENTRA_CHAT_UI_CLIENT_ID}",
+            "scopes": "${ENTRA_CHAT_UI_SCOPES}",
+            "tenantId": "${ENTRA_CHAT_UI_TENANT_ID}"
+          },
+          {
+            "name": "core-api",
+            "clientId": "${ENTRA_CORE_API_CLIENT_ID}",
+            "scopes": "${ENTRA_CORE_API_SCOPES}",
+            "tenantId": "${ENTRA_CORE_API_TENANT_ID}"
+          },
+          {
+            "name": "management-api",
+            "clientId": "${ENTRA_MANAGEMENT_API_CLIENT_ID}",
+            "scopes": "${ENTRA_MANAGEMENT_API_SCOPES}",
+            "tenantId": "${ENTRA_MANAGEMENT_API_TENANT_ID}"
+          },
+          {
+            "name": "management-ui",
+            "clientId": "${ENTRA_MANAGEMENT_UI_CLIENT_ID}",
+            "scopes": "${ENTRA_MANAGEMENT_UI_SCOPES}",
+            "tenantId": "${ENTRA_MANAGEMENT_UI_TENANT_ID}"
+          },
+          {
+            "name": "vectorization-api",
+            "clientId": "${ENTRA_VECTORIZATION_API_CLIENT_ID}",
+            "scopes": "${ENTRA_VECTORIZATION_API_SCOPES}",
+            "tenantId": "${ENTRA_VECTORIZATION_API_TENANT_ID}"
+          }
+        ]
+      },
+      "environmentName": {
+        "value": "${AZURE_ENV_NAME}"
+      },
+      "instanceId": {
+        "value": "${FOUNDATIONALLM_INSTANCE_ID=''}"
+      },
+      "location": {
+        "value": "${AZURE_LOCATION}"
+      },
+      "existingOpenAiInstance": {
+        "value": {
+          "name": "${OPENAI_NAME}",
+          "resourceGroup": "${OPENAI_RESOURCE_GROUP}",
+          "subscriptionId": "${OPENAI_SUBSCRIPTION_ID}"
         }
-      ]
-    },
-    "principalId": {
-      "value": "${AZURE_PRINCIPAL_ID}"
+      },
+      "authServiceExists": {
+        "value": "${SERVICE_AUTHAPI_RESOURCE_EXISTS=false}"
+      },
+      "servicesExist": {
+        "value": {
+          "agent-hub-api": "${SERVICE_AGENTHUBAPI_RESOURCE_EXISTS=false}",
+          "chat-ui": "${SERVICE_CHATUI_RESOURCE_EXISTS=false}",
+          "core-api": "${SERVICE_COREAPI_RESOURCE_EXISTS=false}",
+          "core-job": "${SERVICE_COREJOB_RESOURCE_EXISTS=false}",
+          "data-source-hub-api": "${SERVICE_DATASOURCEHUBAPI_RESOURCE_EXISTS=false}",
+          "gatekeeper-api": "${SERVICE_GATEKEEPERAPI_RESOURCE_EXISTS=false}",
+          "gatekeeper-integration-api": "${SERVICE_GATEKEEPERINTEGRATIONAPI_RESOURCE_EXISTS=false}",
+          "langchain-api": "${SERVICE_LANGCHAINAPI_RESOURCE_EXISTS=false}",
+          "management-api": "${SERVICE_MANAGEMENTAPI_RESOURCE_EXISTS=false}",
+          "management-ui": "${SERVICE_MANAGEMENTUI_RESOURCE_EXISTS=false}",
+          "orchestration-api": "${SERVICE_ORCHESTRATIONAPI_RESOURCE_EXISTS=false}",
+          "prompt-hub-api": "${SERVICE_PROMPTHUBAPI_RESOURCE_EXISTS=false}",
+          "semantic-kernel-api": "${SERVICE_SEMANTICKERNELAPI_RESOURCE_EXISTS=false}",
+          "vectorization-api": "${SERVICE_VECTORIZATIONAPI_RESOURCE_EXISTS=false}",
+          "vectorization-job": "${SERVICE_VECTORIZATIONJOB_RESOURCE_EXISTS=false}"
+        }
+      },
+      "serviceDefinition": {
+        "value": {
+          "settings": []
+        }
+      },
+      "authService": {
+        "value": {
+          "name": "auth-api",
+          "image": "${SERVICE_AUTHORIZATIONAPI_IMAGE=ghcr.io/solliancenet/foundationallm/authorization-api:${FLLM_VERSION}}"
+        }
+      },
+      "services": {
+        "value": [
+          {
+            "name": "agent-hub-api",
+            "useEndpoint": true,
+            "hasIngress": true,
+            "image": "${SERVICE_AGENTHUBAPI_IMAGE=ghcr.io/solliancenet/foundationallm/agent-hub-api:${FLLM_VERSION}}",
+            "appConfigEnvironmentVarName": "foundationallm-app-configuration-uri",
+            "apiKeySecretName": "foundationallm-apis-agenthubapi-apikey"
+          },
+          {
+            "name": "chat-ui",
+            "useEndpoint": false,
+            "hasIngress": true,
+            "image": "${SERVICE_CHATUI_IMAGE=ghcr.io/solliancenet/foundationallm/chat-ui:${FLLM_VERSION}}",
+            "appConfigEnvironmentVarName": "NUXT_APP_CONFIG_ENDPOINT",
+            "apiKeySecretName": "foundationallm-apis-chatui-apikey"
+          },
+          {
+            "name": "core-api",
+            "useEndpoint": false,
+            "hasIngress": true,
+            "image": "${SERVICE_COREAPI_IMAGE=ghcr.io/solliancenet/foundationallm/core-api:${FLLM_VERSION}}",
+            "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
+            "apiKeySecretName": "foundationallm-apis-coreapi-apikey"
+          },
+          {
+            "name": "core-job",
+            "useEndpoint": false,
+            "hasIngress": false,
+            "image": "${SERVICE_COREJOB_IMAGE=ghcr.io/solliancenet/foundationallm/core-job:${FLLM_VERSION}}",
+            "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
+            "apiKeySecretName": "foundationallm-apis-corejob-apikey"
+          },
+          {
+            "name": "data-source-hub-api",
+            "useEndpoint": true,
+            "hasIngress": true,
+            "image": "${SERVICE_DATASOURCEHUBAPI_IMAGE=ghcr.io/solliancenet/foundationallm/data-source-hub-api:${FLLM_VERSION}}",
+            "appConfigEnvironmentVarName": "foundationallm-app-configuration-uri",
+            "apiKeySecretName": "foundationallm-apis-datasourcehubapi-apikey"
+          },
+          {
+            "name": "gatekeeper-api",
+            "useEndpoint": false,
+            "hasIngress": true,
+            "image": "${SERVICE_GATEKEEPERAPI_IMAGE=ghcr.io/solliancenet/foundationallm/gatekeeper-api:${FLLM_VERSION}}",
+            "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
+            "apiKeySecretName": "foundationallm-apis-gatekeeperapi-apikey"
+          },
+          {
+            "name": "gatekeeper-integration-api",
+            "useEndpoint": true,
+            "hasIngress": true,
+            "image": "${SERVICE_GATEKEEPERINTEGRATIONAPI_IMAGE=ghcr.io/solliancenet/foundationallm/gatekeeper-integration-api:${FLLM_VERSION}}",
+            "appConfigEnvironmentVarName": "foundationallm-app-configuration-uri",
+            "apiKeySecretName": "foundationallm-apis-gatekeeperintegrationapi-apikey"
+          },
+          {
+            "name": "langchain-api",
+            "useEndpoint": true,
+            "hasIngress": true,
+            "image": "${SERVICE_LANGCHAINAPI_IMAGE=ghcr.io/solliancenet/foundationallm/langchain-api:${FLLM_VERSION}}",
+            "appConfigEnvironmentVarName": "foundationallm-app-configuration-uri",
+            "apiKeySecretName": "foundationallm-apis-langchainapi-apikey"
+          },
+          {
+            "name": "management-api",
+            "useEndpoint": false,
+            "hasIngress": true,
+            "image": "${SERVICE_MANAGEMENTAPI_IMAGE=ghcr.io/solliancenet/foundationallm/management-api:${FLLM_VERSION}}",
+            "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
+            "apiKeySecretName": "foundationallm-apis-managementapi-apikey"
+          },
+          {
+            "name": "management-ui",
+            "useEndpoint": false,
+            "hasIngress": true,
+            "image": "${SERVICE_MANAGEMENTUI_IMAGE=ghcr.io/solliancenet/foundationallm/management-ui:${FLLM_VERSION}}",
+            "appConfigEnvironmentVarName": "NUXT_APP_CONFIG_ENDPOINT",
+            "apiKeySecretName": "foundationallm-apis-managementui-apikey"
+          },
+          {
+            "name": "orchestration-api",
+            "useEndpoint": false,
+            "hasIngress": true,
+            "image": "${SERVICE_ORCHESTRATIONAPI_IMAGE=ghcr.io/solliancenet/foundationallm/orchestration-api:${FLLM_VERSION}}",
+            "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
+            "apiKeySecretName": "foundationallm-apis-orchestrationapi-apikey"
+          },
+          {
+            "name": "prompt-hub-api",
+            "useEndpoint": true,
+            "hasIngress": true,
+            "image": "${SERVICE_PROMPTHUBAPI_IMAGE=ghcr.io/solliancenet/foundationallm/prompt-hub-api:${FLLM_VERSION}}",
+            "appConfigEnvironmentVarName": "foundationallm-app-configuration-uri",
+            "apiKeySecretName": "foundationallm-apis-prompthubapi-apikey"
+          },
+          {
+            "name": "semantic-kernel-api",
+            "useEndpoint": false,
+            "hasIngress": true,
+            "image": "${SERVICE_SEMANTICKERNELAPI_IMAGE=ghcr.io/solliancenet/foundationallm/semantic-kernel-api:${FLLM_VERSION}}",
+            "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
+            "apiKeySecretName": "foundationallm-apis-semantickernelapi-apikey"
+          },
+          {
+            "name": "vectorization-api",
+            "useEndpoint": false,
+            "hasIngress": true,
+            "image": "${SERVICE_VECTORIZATIONAPI_IMAGE=ghcr.io/solliancenet/foundationallm/vectorization-api:${FLLM_VERSION}}",
+            "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
+            "apiKeySecretName": "foundationallm-apis-vectorizationapi-apikey"
+          },
+          {
+            "name": "vectorization-job",
+            "useEndpoint": false,
+            "hasIngress": false,
+            "image": "${SERVICE_VECTORIZATIONJOB_IMAGE=ghcr.io/solliancenet/foundationallm/vectorization-job:${FLLM_VERSION}}",
+            "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
+            "apiKeySecretName": "foundationallm-apis-vectorizationworker-apikey"
+          }
+        ]
+      },
+      "principalId": {
+        "value": "${AZURE_PRINCIPAL_ID}"
+      },
+      "principalType": {
+        "value": "${AZURE_PRINCIPAL_TYPE=User}"
+      }
     }
-  }
 }

@@ -22,6 +22,8 @@ param existingOpenAiInstance object
 @description('Id of the user or app to assign application roles')
 param principalId string
 
+param principalType string = 'User'
+
 @secure()
 param serviceDefinition object
 
@@ -133,6 +135,7 @@ module authKeyvault './shared/keyvault.bicep' = {
     name: '${abbrs.keyVaultVaults}auth${resourceToken}'
     tags: tags
     principalId: principalId
+    principalType: principalType
     secrets: [
       {
         name: 'foundationallm-authorizationapi-entra-instance'
@@ -305,6 +308,7 @@ module keyVault './shared/keyvault.bicep' = {
     tags: tags
     name: '${abbrs.keyVaultVaults}${resourceToken}'
     principalId: principalId
+    principalType: principalType
     secrets: clientSecrets
   }
   scope: rg
@@ -594,6 +598,7 @@ output AZURE_APP_CONFIG_NAME string = appConfig.outputs.name
 output AZURE_AUTHORIZATION_STORAGE_ACCOUNT_NAME string = authStore.outputs.name
 output AZURE_COGNITIVE_SEARCH_ENDPOINT string = cogSearch.outputs.endpoint
 output AZURE_CONTENT_SAFETY_ENDPOINT string = contentSafety.outputs.endpoint
+output AZURE_COSMOS_DB_NAME string = cosmosDb.outputs.name
 output AZURE_COSMOS_DB_ENDPOINT string = cosmosDb.outputs.endpoint
 output AZURE_EVENT_GRID_ENDPOINT string = eventgrid.outputs.endpoint
 output AZURE_EVENT_GRID_ID string = eventgrid.outputs.id
@@ -641,10 +646,7 @@ output SERVICE_CORE_API_MI_OBJECT_ID string = acaServices[indexOf(serviceNames, 
 output SERVICE_CORE_JOB_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'core-job')].outputs.uri
 output SERVICE_DATA_SOURCE_HUB_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'data-source-hub-api')].outputs.uri
 output SERVICE_GATEKEEPER_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'gatekeeper-api')].outputs.uri
-output SERVICE_GATEKEEPER_INTEGRATION_API_ENDPOINT_URL string = acaServices[indexOf(
-  serviceNames,
-  'gatekeeper-integration-api'
-)].outputs.uri
+output SERVICE_GATEKEEPER_INTEGRATION_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'gatekeeper-integration-api')].outputs.uri
 output SERVICE_LANGCHAIN_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'langchain-api')].outputs.uri
 output SERVICE_MANAGEMENT_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'management-api')].outputs.uri
 output SERVICE_MANAGEMENT_API_MI_OBJECT_ID string = acaServices[indexOf(serviceNames, 'management-api')].outputs.miPrincipalId
