@@ -11,6 +11,8 @@ using Microsoft.Extensions.Options;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Core.Examples.Setup;
+using FoundationaLLM.Common.Models.Vectorization;
+using Microsoft.Graph.Models;
 
 namespace FoundationaLLM.Core.Examples.Services
 {
@@ -49,6 +51,12 @@ namespace FoundationaLLM.Core.Examples.Services
                     var appConfigValue = await TestConfiguration.GetAppConfigValueAsync(value.ToString()!);
                     agent.OrchestrationSettings.EndpointConfiguration[key] = appConfigValue;
                 }
+            }
+
+            bool inlineContext = ((KnowledgeManagementAgent)agent).InlineContext;
+            if (!inlineContext)
+            {
+                // TODO: Create the vectorization for the agent.
             }
 
             // Create the prompt for the agent.
