@@ -15,18 +15,6 @@ namespace FoundationaLLM.Configuration.Catalog
         public static readonly List<KeyVaultSecretEntry> GenericEntries =
         [
             new(
-                secretName: KeyVaultSecretNames
-                    .FoundationaLLM_AgentHub_StorageManager_BlobStorage_ConnectionString,
-                minimumVersion: "0.3.0",
-                description: ""
-            ),
-            new(
-                secretName: KeyVaultSecretNames
-                    .FoundationaLLM_Agent_ResourceProvider_Storage_ConnectionString,
-                minimumVersion: "0.3.0",
-                description: "The connection string to the Azure Storage account used for the agent resource provider."
-            ),
-            new(
                 secretName: KeyVaultSecretNames.FoundationaLLM_APIs_AgentFactoryAPI_APIKey,
                 minimumVersion: "0.3.0",
                 description: ""
@@ -62,12 +50,6 @@ namespace FoundationaLLM.Configuration.Catalog
                 description: ""
             ),
             new(
-                secretName: KeyVaultSecretNames
-                    .FoundationaLLM_Prompt_ResourceProvider_Storage_ConnectionString,
-                minimumVersion: "0.3.0",
-                description: "The connection string to the Azure Storage account used for the prompt resource provider."
-            ),
-            new(
                 secretName: KeyVaultSecretNames.FoundationaLLM_APIs_PromptHubAPI_APIKey,
                 minimumVersion: "0.3.0",
                 description: ""
@@ -88,31 +70,7 @@ namespace FoundationaLLM.Configuration.Catalog
                 description: ""
             ),
             new(
-                secretName: KeyVaultSecretNames
-                    .FoundationaLLM_BlobStorageMemorySource_Blobstorageconnection,
-                minimumVersion: "0.3.0",
-                description: ""
-            ),
-            new(
-                secretName: KeyVaultSecretNames
-                    .FoundationaLLM_DataSourceHub_StorageManager_BlobStorage_ConnectionString,
-                minimumVersion: "0.3.0",
-                description: ""
-            ),
-            new(
-                secretName: KeyVaultSecretNames
-                    .FoundationaLLM_DataSourceHub_StorageManager_BlobStorage_ConnectionString,
-                minimumVersion: "0.3.0",
-                description: ""
-            ),
-            new(
                 secretName: KeyVaultSecretNames.FoundationaLLM_OpenAI_Api_Key,
-                minimumVersion: "0.3.0",
-                description: ""
-            ),
-            new(
-                secretName: KeyVaultSecretNames
-                    .FoundationaLLM_PromptHub_StorageManager_BlobStorage_ConnectionString,
                 minimumVersion: "0.3.0",
                 description: ""
             ),
@@ -132,29 +90,10 @@ namespace FoundationaLLM.Configuration.Catalog
                 description: "The API key of the vectorization worker API."
             ),
             new(
-                secretName: KeyVaultSecretNames.FoundationaLLM_Vectorization_State_ConnectionString,
-                minimumVersion: "0.3.0",
-                description:
-                "The connection string to the Azure Storage account used for the vectorization state service."
-            ),
-            new(
-                secretName: KeyVaultSecretNames
-                    .FoundationaLLM_Vectorization_ResourceProvider_Storage_ConnectionString,
-                minimumVersion: "0.3.0",
-                description:
-                "The connection string to the Azure Storage account used for the vectorization state service."
-            ),
-            new(
                 secretName: KeyVaultSecretNames.FoundationaLLM_Events_AzureEventGrid_APIKey,
                 minimumVersion: "0.4.0",
                 description:
                 "The API key for the Azure Event Grid service."
-            ),
-            new(
-                secretName: KeyVaultSecretNames
-                    .FoundationaLLM_DataSource_ResourceProvider_Storage_ConnectionString,
-                minimumVersion: "0.5.0",
-                description: "The connection string to the Azure Storage account used for the data source resource provider."
             ),
         ];
 
