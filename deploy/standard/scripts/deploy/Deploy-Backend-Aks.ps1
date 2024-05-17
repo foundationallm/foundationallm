@@ -57,6 +57,7 @@ $chartNames = @{
     "data-source-hub-api"        = "../config/helm/microservice-values.yml"
     "gatekeeper-api"             = "../config/helm/microservice-values.yml"
     "gatekeeper-integration-api" = "../config/helm/microservice-values.yml"
+    "gateway-api"                = "../config/helm/microservice-values.yml"
     "langchain-api"              = "../config/helm/microservice-values.yml"
     "management-api"             = "../config/helm/managementapi-values.yml"
     "orchestration-api"          = "../config/helm/managementapi-values.yml"
@@ -64,7 +65,6 @@ $chartNames = @{
     "semantic-kernel-api"        = "../config/helm/microservice-values.yml"
     "vectorization-api"          = "../config/helm/vectorizationapi-values.yml"
     "vectorization-job"          = "../config/helm/microservice-values.yml"
-    "gateway-api"                = "../config/helm/microservice-values.yml"
 }
 $chartsToInstall = $chartNames | Where-Object { $charts.Contains("*") -or $charts.Contains($_) }
 foreach ($chart in $chartsToInstall.GetEnumerator()) {
@@ -81,7 +81,7 @@ foreach ($chart in $chartsToInstall.GetEnumerator()) {
             --set image.tag=$version
     }
 }
-# TODO: review helm settings 
+# TODO: review helm settings these are set for internal registry
 
 # **** Gateway Namespace ****
 $gatewayNamespace = "gateway-system"

@@ -116,7 +116,7 @@ $svcResourceSuffix = "${resourceSuffix}-svc"
 $tokens = @{}
 
 $authServices = @{
-    authorizationapi              = @{
+    authorizationapi = @{
         miName         = "mi-authorization-api-$svcResourceSuffix"
         miConfigName   = "authorizationApiMiClientId"
         ingressEnabled = $false
@@ -124,7 +124,7 @@ $authServices = @{
 }
 
 $services = @{
-    orchestrationapi          = @{
+    orchestrationapi         = @{
         miName         = "mi-orchestration-api-$svcResourceSuffix"
         miConfigName   = "orchestrationApiMiClientId"
         ingressEnabled = $false
@@ -166,6 +166,11 @@ $services = @{
         miConfigName   = "gatekeeperIntegrationApiMiClientId"
         ingressEnabled = $false
     }
+    gatewayapi               = @{
+        miName         = "mi-gateway-api-$svcResourceSuffix"
+        miConfigName   = "gatewayApiMiClientId"
+        ingressEnabled = $false
+    }
     langchainapi             = @{
         miName         = "mi-langchain-api-$svcResourceSuffix"
         miConfigName   = "langChainApiMiClientId"
@@ -201,11 +206,6 @@ $services = @{
     vectorizationjob         = @{
         miName         = "mi-vectorization-job-$svcResourceSuffix"
         miConfigName   = "vectorizationJobMiClientId"
-        ingressEnabled = $false
-    }
-    gatewayapi               = @{
-        miName         = "mi-gateway-api-$svcResourceSuffix"
-        miConfigName   = "gatewayApiMiClientId"
         ingressEnabled = $false
     }
 }

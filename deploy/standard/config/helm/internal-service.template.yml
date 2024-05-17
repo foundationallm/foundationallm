@@ -2,7 +2,6 @@ appConfig:
   uri: {{appConfigEndpoint}}
   connectionString: {{appConfigConnectionString}}
 azureWorkloadIdentity:
-  orchestrationApiClientId: {{orchestrationApiMiClientId}}
   agentHubApiClientId: {{agentHubApiMiClientId}}
   chatUiClientId: {{chatUiMiClientId}}
   coreApiClientId: {{coreApiMiClientId}}
@@ -10,14 +9,15 @@ azureWorkloadIdentity:
   dataSourceHubApiClientId: {{dataSourceHubApiMiClientId}}
   gatekeeperApiClientId: {{gatekeeperApiMiClientId}}
   gatekeeperIntegrationApiClientId: {{gatekeeperIntegrationApiMiClientId}}
+  gatewayApiClientId: {{gatewayApiMiClientId}}
   langChainApiClientId: {{langChainApiMiClientId}}
   managementApiClientId: {{managementApiMiClientId}}
   managementUiClientId: {{managementUiMiClientId}}
+  orchestrationApiClientId: {{orchestrationApiMiClientId}}
   promptHubApiClientId: {{promptHubApiMiClientId}}
   semanticKernelApiClientId: {{semanticKernelApiMiClientId}}
   vectorizationApiClientId: {{vectorizationApiMiClientId}}
   vectorizationJobClientId: {{vectorizationJobMiClientId}}
-  gatewayApiClientId: {{gatewayApiMiClientId}}
   tenantId: {{tenantId}}
 
 ingress:
