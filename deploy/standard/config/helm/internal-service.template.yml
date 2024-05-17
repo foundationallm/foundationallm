@@ -17,6 +17,7 @@ azureWorkloadIdentity:
   semanticKernelApiClientId: {{semanticKernelApiMiClientId}}
   vectorizationApiClientId: {{vectorizationApiMiClientId}}
   vectorizationJobClientId: {{vectorizationJobMiClientId}}
+  gatewayApiClientId: {{gatewayApiMiClientId}}
   tenantId: {{tenantId}}
 
 ingress:

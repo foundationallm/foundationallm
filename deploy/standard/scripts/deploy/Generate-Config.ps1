@@ -203,6 +203,11 @@ $services = @{
         miConfigName   = "vectorizationJobMiClientId"
         ingressEnabled = $false
     }
+    gatewayapi               = @{
+        miName         = "mi-gateway-api-$svcResourceSuffix"
+        miConfigName   = "gatewayApiMiClientId"
+        ingressEnabled = $false
+    }
 }
 
 $tokens.deployTime = $((Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ'))
@@ -435,6 +440,7 @@ $tokens.semanticKernelApiMiClientId = $services["semantickernelapi"].miClientId
 $tokens.vectorizationApiMiClientId = $services["vectorizationapi"].miClientId
 $tokens.vectorizationApiMiObjectId = $services["vectorizationapi"].miObjectId
 $tokens.vectorizationJobMiClientId = $services["vectorizationjob"].miClientId
+$tokens.gatewayApiMiClientId = $services["gatewayapi"].miClientId
 
 $eventGridProfiles = @{}
 $eventGridProfileNames = @(

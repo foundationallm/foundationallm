@@ -1238,6 +1238,27 @@
         "label": null,
         "content_type": "",
         "tags": {}
+      },
+      {
+        "key": "FoundationaLLM:APIs:GatewayAPI:APIKey",
+        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apis-gatewayapi-apikey\"}",
+        "label": null,
+        "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+        "tags": {}
+      },
+      {
+        "key": "FoundationaLLM:APIs:GatewayAPI:APIUrl",
+        "value": "http://gateway-api/gateway",
+        "label": null,
+        "content_type": "",
+        "tags": {}
+      },
+      {
+        "key": "FoundationaLLM:APIs:GatewayAPI:AppInsightsConnectionString",
+        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-app-insights-connection-string\"}",
+        "label": null,
+        "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+        "tags": {}
       }
     ]
   }
