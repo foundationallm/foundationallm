@@ -78,6 +78,7 @@ var tags = {
 }
 
 var backendServices = {
+  'gateway-api': { displayName: 'GatewayAPI' }
   'agent-hub-api': { displayName: 'AgentHubAPI' }
   'core-job': { displayName: 'CoreWorker' }
   'data-source-hub-api': { displayName: 'DataSourceHubAPI' }

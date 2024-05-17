@@ -64,6 +64,7 @@ $chartNames = @{
     "semantic-kernel-api"        = "../config/helm/microservice-values.yml"
     "vectorization-api"          = "../config/helm/vectorizationapi-values.yml"
     "vectorization-job"          = "../config/helm/microservice-values.yml"
+    "gateway-api"                = "../config/helm/microservice-values.yml"
 }
 $chartsToInstall = $chartNames | Where-Object { $charts.Contains("*") -or $charts.Contains($_) }
 foreach ($chart in $chartsToInstall.GetEnumerator()) {
