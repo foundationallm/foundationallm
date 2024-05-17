@@ -262,6 +262,14 @@ $openAiEndpointUri = Invoke-AndRequireSuccess "Get OpenAI endpoint" {
 }
 $tokens.openAiEndpointUri = $openAiEndpointUri
 
+$openAiAccountName = Invoke-AndRequireSuccess "Get OpenAI Account name" {
+    az cognitiveservices account list `
+        --output tsv `
+        --query "[?contains(kind,'OpenAI')] | [0].properties.customSubDomainName" `
+        --resource-group $($resourceGroups.oai) 
+}
+$tokens.azureOpenAiAccountName = $openAiAccountName
+
 $appConfig = Invoke-AndRequireSuccess "Get AppConfig Instance" {
     az appconfig list `
         --resource-group $($resourceGroups.ops) `

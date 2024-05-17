@@ -827,6 +827,13 @@
       "tags": {}
     },
     {
+      "key": "FoundationaLLM:Gateway:AzureOpenAIAccounts",
+      "value": "{{azureOpenAiAccountName}}",
+      "label": null,
+      "content_type": "",
+      "tags": {}
+    },
+    {
       "key": "FoundationaLLM:Instance:Id",
       "value": "{{instanceId}}",
       "label": null,
