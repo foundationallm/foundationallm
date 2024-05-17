@@ -9,6 +9,43 @@ Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable)
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
+# Check for AzCopy and login status
+# Setting configuration for AzCopy
+$AZCOPY_VERSION = "10.24.0"
+
+if ($IsWindows) {
+    $url = "https://aka.ms/downloadazcopy-v10-windows"
+    $os = "windows"
+    $ext = "zip"
+}elseif ($IsMacOS) {
+    $url = "https://aka.ms/downloadazcopy-v10-mac"
+    $os = "darwin"
+    $ext = "zip"
+}elseif ($IsLinux) {
+    $url = "https://aka.ms/downloadazcopy-v10-linux"
+    $os = "linux"
+    $ext = "tar.gz"
+}
+
+# Check if AzCopy already exists
+if (Test-Path -Path "../tools/azcopy_${os}_amd64_${AZCOPY_VERSION}") {
+    Write-Host "azcopy_${os}_amd64_${AZCOPY_VERSION} exists."
+}
+else {
+    throw "Azcopy not found. Please run the ./Bootstrap.ps1 script to download AzCopy."
+}
+
+# Check if AzCopy login session is still active
+Write-Host -ForegroundColor Blue "Checking AzCopy login status..."
+$status = & ../tools/azcopy_${os}_amd64_${AZCOPY_VERSION}/azcopy login status
+if (-not $status.contains("Your login session is still active")) {
+    Write-Host -ForegroundColor Blue "Please Follow the instructions below to login to Azure using AzCopy."
+    & ../tools/azcopy_${os}_amd64_${AZCOPY_VERSION}/azcopy login
+}
+ else {
+     Write-Host -ForegroundColor Blue "AzCopy login session is still active."
+}
+
 # Load the Invoke-AndRequireSuccess function
 . ./utility/Invoke-AndRequireSuccess.ps1
 
@@ -84,7 +121,7 @@ try {
     }
 
     Invoke-AndRequireSuccess "Uploading System Prompts" {
-        ./deploy/UploadSystemPrompts.ps1 `
+        ./deploy/Upload-SystemPrompts.ps1 `
             -resourceGroup $resourceGroup["storage"] `
             -location $manifest.location
     }
@@ -104,7 +141,7 @@ try {
             -ingressNginxValues $ingressNginxValuesBackend `
             -resourceGroup $resourceGroup.app `
             -secretProviderClassManifest $secretProviderClassManifestBackend `
-            -serviceNamespaceName $manifest.k8sNamespace
+            -serviceNamespace $manifest.k8sNamespace
     }
 
     $frontendAks = Invoke-AndRequireSuccess "Get Frontend AKS" {
@@ -122,7 +159,7 @@ try {
             -ingressNginxValues $ingressNginxValuesFrontend `
             -resourceGroup $resourceGroup.app `
             -secretProviderClassManifest $secretProviderClassManifestFrontend `
-            -serviceNamespaceName $manifest.k8sNamespace
+            -serviceNamespac $manifest.k8sNamespace
     }
 
     $clusters = @(

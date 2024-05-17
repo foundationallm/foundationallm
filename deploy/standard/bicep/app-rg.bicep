@@ -78,7 +78,6 @@ var tags = {
 }
 
 var backendServices = {
-  'orchestration-api': { displayName: 'OrchestrationAPI' }
   'agent-hub-api': { displayName: 'AgentHubAPI' }
   'core-job': { displayName: 'CoreWorker' }
   'data-source-hub-api': { displayName: 'DataSourceHubAPI' }
@@ -86,6 +85,7 @@ var backendServices = {
   'gatekeeper-integration-api': { displayName: 'GatekeeperIntegrationAPI' }
   'langchain-api': { displayName: 'LangChainAPI' }
   'prompt-hub-api': { displayName: 'PromptHubAPI' }
+  'orchestration-api': { displayName: 'OrchestrationAPI' }
   'semantic-kernel-api': { displayName: 'SemanticKernelAPI' }
   'vectorization-job': { displayName: 'VectorizationWorker' }
 }

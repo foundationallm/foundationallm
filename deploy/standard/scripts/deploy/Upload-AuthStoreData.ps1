@@ -1,4 +1,20 @@
 #! /usr/bin/pwsh
+<#
+.SYNOPSIS
+    Uploads authorization RBAC settings to Azure storage container.
+
+.DESCRIPTION
+    This script uploads authorization RBAC settings to Azure storage container.
+
+.PARAMETER resourceGroup
+    Specifies the name of the resource group where the storage account is located. This parameter is mandatory.
+
+.PARAMETER instanceId
+    Specifies the instance of the FLLM install which is found in the Deployment-Manifest.json file on this machine. This parameter is mandatory.
+
+.EXAMPLE
+    UploadAuthStoreData.ps1 -resourceGroup "myResourceGroup" -instanceId "myInstanceId" 
+#>
 
 Param (
     [parameter(Mandatory = $true)][string]$resourceGroup,
@@ -28,10 +44,6 @@ function Invoke-AndRequireSuccess {
     return $result
 }
 
-if (-not (Test-Path "../data/role-assignments/$($instanceId).json")) {
-    throw "Default role assignments json not found at ../data/role-assignments/$($instanceId).json"
-}
-
 $storageAccountAdls = Invoke-AndRequireSuccess "Get ADLS Auth Storage Account" {
     az storage account list `
         --resource-group $resourceGroup `
@@ -39,12 +51,13 @@ $storageAccountAdls = Invoke-AndRequireSuccess "Get ADLS Auth Storage Account" {
         --output tsv
 }
 
+if (-not (Test-Path "../data/role-assignments/$($instanceId).json")) {
+    throw "Default role assignments json not found at ../data/role-assignments/$($instanceId).json"
+}
+      
 Invoke-AndRequireSuccess "Uploading Default Role Assignments to Authorization Store" {
-    az storage azcopy blob upload `
-        -c role-assignments `
-        --account-name $storageAccountAdls `
-        -s "../data/role-assignments/$($instanceId).json" `
-        --recursive `
-        --only-show-errors `
-        --output none
+    $target = "https://$storageAccountAdls.blob.core.windows.net/role-assignments/"
+                
+    & ../tools/azcopy_${os}_amd64_${AZCOPY_VERSION}/azcopy cp ../data/role-assignments/$($instanceId).json $target `
+        --recursive=True
 }
