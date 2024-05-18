@@ -30,7 +30,7 @@ $msGraphRoleIds = New-Object -TypeName psobject -Property @{
     'User.Read.All'='df021288-bdef-4463-88db-98f22de89214';
 }
 
-$existingRoleData = (az rest --method GET --uri "https://graph.microsoft.com/v1.0/servicePrincipals/$($principalId)/appRoleAssignments")
+$existingRoleData = (az rest --method GET --uri "https://graph.microsoft.com/v1.0/servicePrincipals/$($principalId)/appRoleAssignments" --output json)
 
 $existingRoles = $($($existingRoleData | ConvertFrom-Json).value | Select-Object -ExpandProperty appRoleId)
 

@@ -1,0 +1,104 @@
+#!/usr/bin/pwsh
+<#
+.SYNOPSIS
+    Updates the OAuth callback URIs of the Chat UI and Management UI app registrations. This script is best 
+    used after running the ./deploy/common/scripts/entraid/Create-FllmEntraApps.ps1 script to create your FLLM EntraID apps
+    and deploying the appropriate Chat UI and Management UI infrastructure and services.
+
+.DESCRIPTION
+    This script updates the app registration OAuth callback URIs required for the Starter deployment.
+    It retrieves the endpoint URIs of the User Portal and Management Portal, constructs the callback URIs from
+    these endpoint URIs, and adds them to the Authentication configuration of the EntraID Apps required for the 
+    FLLM application. This script must be run after running azd provision in the ./deploy/quick-start folder.
+
+    For more information on seting up the FLLM EntraID apps: : https://docs.foundationallm.ai/deployment/authentication/index.html
+    
+.PARAMETERS
+Mandatory parameters:
+
+Optional parameters:
+    The names of the Chat UI and Management UI FLLM apps. If you are using the Create-FllmEntraApps.ps1 script, then the names of 
+    the apps are hardcoded and will not need to be set. If you are not using the Create-FllmEntraApps.ps1 script, then you can use 
+    the following parameters to set the names of the apps:
+    - fllmChatUiNAme: The name of the FLLM Chat UI.
+    - fllmMgmtUiName: The name of the FLLM Management UI.
+    
+.EXAMPLE
+If you have run the Create-FllmEntraApps.ps1 script, then you can run the Update-OAuthCallbackUris.ps1 script with no parameters:
+    ./Update-OAuthCallbackUris.ps1
+
+If you have not run the Create-FllmEntraApps.ps1 script, then you can run the Set-AzdEnv.ps1 script with the tenant ID and the names of the apps.
+You will need to update the app names with those you created manually in the EntraID portal.
+    ./Set-AzdEnv.ps1 -fllmChatUiNAme "FoundationaLLM" `
+                     -fllmMgmtUiName "FoundationaLLM-Management"
+
+#>
+
+Param(
+    [parameter(Mandatory = $false)][string]$fllmChatUiName = "FoundationaLLM-DEMO-Client", # FLLM Chat UI
+    [parameter(Mandatory = $false)][string]$fllmMgmtUiName = "FoundationaLLM-Management-DEMO-Client" # FLLM Management UI
+)
+Set-StrictMode -Version 3.0
+$ErrorActionPreference = "Stop"
+
+# Import azd env variables
+(azd env get-values) | foreach {
+    Write-Host $_
+    $name, $value = $_.split('=')
+    set-content env:\$name $value
+}
+
+# Set the environment values
+$fllmChatUiObjectId = (az ad app list --display-name "$fllmChatUiName" --query "[].{id:id,displayName:displayName}[?displayName=='$fllmChatUiName'].id" --output tsv) # FLLM Chat UI
+$fllmMgmtUiObjectId = (az ad app list --display-name "$fllmMgmtUiName" --query "[].{id:id,displayName:displayName}[?displayName=='$fllmMgmtUiName'].id" --output tsv) # FLLM Management UI
+
+# Update app registrations
+$uris = @{
+    "chat-ui" = @{
+        endpoint = ($env:SERVICE_CHAT_UI_ENDPOINT_URL | ConvertFrom-Json)
+        objectId = $fllmChatUiObjectId
+        query = "spa.redirectUris"
+    }
+    "management-ui" = @{
+        endpoint = ($env:SERVICE_MANAGEMENT_UI_ENDPOINT_URL | ConvertFrom-Json)
+        objectId = $fllmMgmtUiObjectId
+        query = "spa.redirectUris"
+    }
+}
+
+Write-Host ($uris | ConvertTo-Json)
+
+foreach ($uri in $uris.GetEnumerator()) {
+    $applicationUri = "https://graph.microsoft.com/v1.0/applications/" + $uri.Value.objectId
+    $redirects = @(az rest `
+        --method "get" `
+        --uri $applicationUri `
+        --headers "{'Content-Type': 'application/json'}" `
+        --query $uri.Value.query `
+        -o json | ConvertFrom-Json)
+
+    $redirect = ($uri.Value.endpoint) + "/signin-oidc"
+
+    if ($redirects -eq $null)
+    {
+        $redirects = @( $redirect )
+    } else {
+        if (-not $redirects.Contains($redirect)) {
+            $redirects += $redirect
+        }
+    }
+
+    $body = @{
+        spa = @{
+            redirectUris = $redirects
+        }
+    } | ConvertTo-Json -Compress
+
+    Set-Content -Path "$($uri.Key)`.json" $body
+
+    az rest `
+        --method "patch" `
+        --uri $applicationUri `
+        --headers "{'Content-Type': 'application/json'}" `
+        --body "@$($uri.Key)`.json"
+}
