@@ -18,12 +18,12 @@
   },
   "entraScopes": {
     "authorization": "",
+    "authorizationapi": "",
     "chat": "",
     "core": "",
     "managementapi": "",
     "managementui": "",
-    "vectorizationapi": "",
-    "authorizationapi": ""
+    "vectorizationapi": ""
   },
   "environment": "",
   "instanceId": "",
