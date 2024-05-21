@@ -53,6 +53,13 @@ namespace FoundationaLLM.Common.Models.Vectorization
         [JsonPropertyName("trigger_cron_schedule")]
         public string? TriggerCronSchedule { get; set; }
 
+
+        /// <summary>
+        /// The cost center associated with the pipeline.
+        /// </summary>
+        [JsonPropertyName("cost_center")]
+        public string? CostCenter { get; set; }
+
         /// <summary>
         /// Set default property values.
         /// </summary>

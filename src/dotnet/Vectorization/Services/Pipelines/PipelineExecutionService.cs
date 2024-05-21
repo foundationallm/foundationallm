@@ -88,7 +88,8 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                             ExecutionId = pipelineExecutionId,
                             PipelineObjectId = activePipeline.ObjectId!,
                             ExecutionStart = DateTime.UtcNow,
-                            ProcessingState = VectorizationProcessingState.InProgress
+                            ProcessingState = VectorizationProcessingState.InProgress,
+                            CostCenter = activePipeline.CostCenter
                         };
 
                         await stateService.SavePipelineState(pipelineState);
@@ -159,6 +160,7 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                             Id = Guid.NewGuid().ToString(),
                                             PipelineExecutionId = pipelineExecutionId,
                                             PipelineObjectId = activePipeline.ObjectId!,
+                                            CostCenter = activePipeline.CostCenter,
                                             ContentIdentifier = new ContentIdentifier()
                                             {
                                                 DataSourceObjectId = dataSource.ObjectId!,
@@ -254,6 +256,7 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                             Id = Guid.NewGuid().ToString(),
                                             PipelineExecutionId = pipelineExecutionId,
                                             PipelineObjectId = activePipeline.ObjectId!,
+                                            CostCenter = activePipeline.CostCenter,
                                             ContentIdentifier = new ContentIdentifier()
                                             {
                                                 DataSourceObjectId = dataSource.ObjectId!,

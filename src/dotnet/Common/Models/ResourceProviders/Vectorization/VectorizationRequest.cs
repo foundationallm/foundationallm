@@ -145,6 +145,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Vectorization
         public DateTime LastSuccessfulStepTime { get; set; } = DateTime.UtcNow;
 
         /// <summary>
+        /// The cost center associated with the vectorization request.
+        /// </summary>
+        [JsonPropertyOrder(17)]
+        [JsonPropertyName("cost_center")]
+        public string? CostCenter { get; set; }
+
+        /// <summary>
         /// Indicates whether the vectorization process is complete or not.
         /// </summary>
         [JsonIgnore]

@@ -66,5 +66,12 @@ namespace FoundationaLLM.Vectorization.Models
         [JsonPropertyName("error_messages")]
         public List<string> ErrorMessages { get; set; } = [];
 
+        /// <summary>
+        /// The cost center associated with the pipeline execution.
+        /// </summary>
+        [JsonPropertyOrder(7)]
+        [JsonPropertyName("cost_center")]
+        public string? CostCenter { get; set; }
+
     }
 }

@@ -55,6 +55,14 @@ namespace FoundationaLLM.Vectorization.Models
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public List<VectorizationLogEntry> LogEntries { get; set; } = [];
 
+
+        /// <summary>
+        /// The cost center associated with the vectorization request.
+        /// </summary>
+        [JsonPropertyOrder(21)]
+        [JsonPropertyName("cost_center")]
+        public string? CostCenter { get; set; }
+
         /// <summary>
         /// Indicates which types of artifacts have already been loaded into the state.
         /// </summary>
@@ -112,7 +120,8 @@ namespace FoundationaLLM.Vectorization.Models
             new()
             {
                 CurrentRequestId = request.Id!,
-                ContentIdentifier = request.ContentIdentifier
+                ContentIdentifier = request.ContentIdentifier,
+                CostCenter = request.CostCenter
             };
 
         /// <summary>
