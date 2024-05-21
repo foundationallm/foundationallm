@@ -47,13 +47,6 @@
         "pathType": "",
         "serviceName": "",
         "sslCert": ""
-      },
-      "vectorizationapi": {
-        "host": "",
-        "path": "",
-        "pathType": "",
-        "serviceName": "",
-        "sslCert": ""
       }
     },
     "frontendIngress": {
