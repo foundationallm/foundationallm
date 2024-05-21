@@ -389,3 +389,14 @@ module cognitiveServicesOpenAiUserGatewayRole 'modules/utility/roleAssignments.b
     }
   }
 }
+
+module cognitiveServicesOpenAiUserLangChainRole 'modules/utility/roleAssignments.bicep' = {
+  name: 'cognitiveServicesOpenAiUserLangChainRole-${timestamp}'
+  scope: resourceGroup(openAiResourceGroupName)
+  params: {
+    principalId: srBackend[indexOf(backendServiceNames, 'langchain-api')].outputs.servicePrincipalId
+    roleDefinitionIds: {
+      'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
+    }
+  }
+}
