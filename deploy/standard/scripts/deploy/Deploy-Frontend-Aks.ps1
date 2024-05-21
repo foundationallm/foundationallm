@@ -33,11 +33,9 @@ function Invoke-AndRequireSuccess {
     return $result
 }
 
-az aks get-credentials --name $aksName --resource-group $resourceGroup
-
-# Invoke-AndRequireSuccess "Retrieving credentials for AKS cluster ${aksName}" {
-#     az aks get-credentials --name $aksName --resource-group $resourceGroup
-# }
+Invoke-AndRequireSuccess "Retrieving credentials for AKS cluster ${aksName}" {
+    az aks get-credentials --name $aksName --resource-group $resourceGroup
+}
 
 # **** Service Namespace ****
 $serviceNamespaceYaml = @"
