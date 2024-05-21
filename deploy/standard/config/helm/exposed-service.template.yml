@@ -17,6 +17,7 @@ azureWorkloadIdentity:
   semanticKernelApiClientId: {{semanticKernelApiMiClientId}}
   vectorizationApiClientId: {{vectorizationApiMiClientId}}
   vectorizationJobClientId: {{vectorizationJobMiClientId}}
+  authorizationApiClientId: {{authorizationApiMiClientId}}
   tenantId: {{tenantId}}
 apihost: {{serviceHostname}}
 authKeyvaultUri: {{authKeyvaultUri}}
