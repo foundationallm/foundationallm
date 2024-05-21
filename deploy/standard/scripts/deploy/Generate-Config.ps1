@@ -240,6 +240,7 @@ $tokens.subscriptionId = $subscriptionId
 $tokens.vectorizationApiEntraClientId = $entraClientIds.vectorizationapi
 $tokens.vectorizationApiEntraScopes = $entraScopes.vectorizationapi
 $tokens.vectorizationApiHostname = $ingress.apiIngress.vectorizationapi.host
+$tokens.authorizationApiScope = $entraScopes.authorizationapi
 
 $tenantId = Invoke-AndRequireSuccess "Get Tenant ID" {
     az account show --query homeTenantId --output tsv
@@ -265,7 +266,7 @@ $tokens.openAiEndpointUri = $openAiEndpointUri
 $openAiAccountName = Invoke-AndRequireSuccess "Get OpenAI Account name" {
     az cognitiveservices account list `
         --output tsv `
-        --query "[?contains(kind,'OpenAI')] | [0].properties.customSubDomainName" `
+        --query "[?contains(kind,'OpenAI')] | [0].id" `
         --resource-group $($resourceGroups.oai) 
 }
 $tokens.azureOpenAiAccountName = $openAiAccountName

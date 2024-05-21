@@ -22,7 +22,8 @@
     "core": "",
     "managementapi": "",
     "managementui": "",
-    "vectorizationapi": ""
+    "vectorizationapi": "",
+    "authorizationapi": ""
   },
   "environment": "",
   "instanceId": "",

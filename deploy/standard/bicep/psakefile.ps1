@@ -137,6 +137,10 @@ task App -depends ResourceGroups, Ops, Networking, DNS, Configuration, Vec, Stor
             type  = "string"
             value = $script:vnetName
         }
+        openAiResourceGroupName         = @{
+            type  = "string"
+            value = $script:resourceGroups.oai
+        }
     }
 
     az deployment group create `

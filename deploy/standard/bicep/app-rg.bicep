@@ -62,6 +62,9 @@ param vectorizationApiClientSecret string
 param vectorizationResourceGroupName string
 param vnetName string
 
+@description('OpenAI Resource Group name')
+param openAiResourceGroupName string
+
 /** Locals **/
 @description('KeyVault resource suffix')
 var opsResourceSuffix = '${project}-${environmentName}-${location}-ops'
@@ -350,6 +353,39 @@ module searchIndexDataReaderWorkerRole 'modules/utility/roleAssignments.bicep' =
     roleDefinitionIds: {
       'Search Index Data Reader': '1407120a-92aa-4202-b7e9-c0e197c71c8f'
       'Search Index Data Contributor': '8ebe5a00-799e-43f5-93ac-243d3dce84a7'
+    }
+  }
+}
+
+module cognitiveServicesOpenAiUserRole 'modules/utility/roleAssignments.bicep' = {
+  name: 'cognitiveServicesOpenAiUserRole-${timestamp}'
+  scope: resourceGroup(openAiResourceGroupName)
+  params: {
+    principalId: srBackend[indexOf(backendServiceNames, 'vectorization-api')].outputs.servicePrincipalId
+    roleDefinitionIds: {
+      'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
+    }
+  }
+}
+
+module cognitiveServicesOpenAiUserWorkerRole 'modules/utility/roleAssignments.bicep' = {
+  name: 'cognitiveServicesOpenAiUserWorkerRole-${timestamp}'
+  scope: resourceGroup(openAiResourceGroupName)
+  params: {
+    principalId: srBackend[indexOf(backendServiceNames, 'vectorization-job')].outputs.servicePrincipalId
+    roleDefinitionIds: {
+      'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
+    }
+  }
+}
+
+module cognitiveServicesOpenAiUserGatewayRole 'modules/utility/roleAssignments.bicep' = {
+  name: 'cognitiveServicesOpenAiUserGatewayRole-${timestamp}'
+  scope: resourceGroup(openAiResourceGroupName)
+  params: {
+    principalId: srBackend[indexOf(backendServiceNames, 'gateway-api')].outputs.servicePrincipalId
+    roleDefinitionIds: {
+      'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
     }
   }
 }
