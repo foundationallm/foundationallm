@@ -68,7 +68,7 @@ spec:
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           securityContext:
-            readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: false
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}

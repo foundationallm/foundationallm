@@ -379,6 +379,28 @@ module cognitiveServicesOpenAiUserWorkerRole 'modules/utility/roleAssignments.bi
   }
 }
 
+module searchServiceContributorRole 'modules/utility/roleAssignments.bicep' = {
+  name: 'searchServiceContributorRole-${timestamp}'
+  scope: resourceGroup(vectorizationResourceGroupName)
+  params: {
+    principalId: srBackend[indexOf(backendServiceNames, 'vectorization-api')].outputs.servicePrincipalId
+    roleDefinitionIds: {
+      'Search Service Contributor': '7ca78c08-252a-4471-8644-bb5ff32d4ba0'
+    }
+  }
+}
+
+module searchServiceContributorWorkerRole 'modules/utility/roleAssignments.bicep' = {
+  name: 'searchServiceContributorWorkerRole-${timestamp}'
+  scope: resourceGroup(vectorizationResourceGroupName)
+  params: {
+    principalId: srBackend[indexOf(backendServiceNames, 'vectorization-job')].outputs.servicePrincipalId
+    roleDefinitionIds: {
+      'Search Service Contributor': '7ca78c08-252a-4471-8644-bb5ff32d4ba0'
+    }
+  }
+}
+
 module cognitiveServicesOpenAiUserGatewayRole 'modules/utility/roleAssignments.bicep' = {
   name: 'cognitiveServicesOpenAiUserGatewayRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
