@@ -1,5 +1,5 @@
-﻿using FoundationaLLM.Authorization.Constants;
-using FoundationaLLM.Authorization.Models;
+﻿using FoundationaLLM.Authorization.Models;
+using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
 
 namespace FoundationaLLM.Authorization.ResourceProviders

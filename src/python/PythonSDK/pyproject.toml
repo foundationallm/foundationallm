@@ -1,6 +1,6 @@
 [project]
 name = "foundationallm"
-version = "0.7.1"
+version = "0.7.9"
 authors = [
   { name="FoundationaLLM", email="dev@foundationallm.ai" },
 ]
@@ -18,4 +18,4 @@ Homepage = "https://foundationallm.ai"
 Issues = "https://github.com/solliancenet/foundationallm/issues"
 
 [tool.setuptools.packages.find]
-include = ['*config', '*models.orchestration']
+include = ['*']

@@ -10,7 +10,7 @@ class ConfigurationTests:
     ConfigurationTests is responsible for testing the application configuration functionality .
     
     This is an integration test class and expects the following environment variable to be set:
-        foundationallm-app-configuration-uri      
+        FOUNDATIONALLM_APP_CONFIGURATION_URI      
             
     This test class also expects a valid Azure credential (DefaultAzureCredential) session.
     """

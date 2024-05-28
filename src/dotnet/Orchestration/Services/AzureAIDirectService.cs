@@ -67,25 +67,22 @@ namespace FoundationaLLM.Orchestration.Core.Services
             if (!string.IsNullOrWhiteSpace(agent.PromptObjectId))
             {
                 if (!_resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Prompt, out var promptResourceProvider))
-                    throw new ResourceProviderException($"The resource provider {ResourceProviderNames.FoundationaLLM_Prompt} was not loaded.");
-
-                var resource = await promptResourceProvider.HandleGetAsync(agent.PromptObjectId, _callContext.CurrentUserIdentity);
-                if (resource is List<PromptBase> prompts)
+                    throw new ResourceProviderException($"The resource provider {ResourceProviderNames.FoundationaLLM_Prompt} was not loaded.");                                
+                 
+                var prompt = await promptResourceProvider.GetResource<PromptBase>(agent.PromptObjectId, _callContext.CurrentUserIdentity!) as MultipartPrompt;
+                                
+                // We are adding an empty assistant prompt and setting the system prompt to the user role to support
+                // some models (like Mistral) that require user/assistant prompts and not system prompts.
+                systemPrompt = new SystemCompletionMessage
                 {
-                    var prompt = prompts.FirstOrDefault() as MultipartPrompt;
-                    // We are adding an empty assistant prompt and setting the system prompt to the user role to support
-                    // some models (like Mistral) that require user/assistant prompts and not system prompts.
-                    systemPrompt = new SystemCompletionMessage
-                    {
-                        Role = InputMessageRoles.User,
-                        Content = prompt?.Prefix ?? string.Empty
-                    };
-                    assistantPrompt = new CompletionMessage
-                    {
-                        Role = InputMessageRoles.Assistant,
-                        Content = string.Empty
-                    };
-                }
+                    Role = InputMessageRoles.User,
+                    Content = prompt?.Prefix ?? string.Empty
+                };
+                assistantPrompt = new CompletionMessage
+                {
+                    Role = InputMessageRoles.Assistant,
+                    Content = string.Empty
+                };
             }
 
             var inputStrings = new List<CompletionMessage>();

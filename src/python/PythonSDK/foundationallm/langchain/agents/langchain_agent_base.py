@@ -7,7 +7,7 @@ from langchain_core.language_models import BaseLanguageModel
 from langchain_openai import AzureChatOpenAI, AzureOpenAI, ChatOpenAI, OpenAI
 from foundationallm.config.configuration import Configuration
 from foundationallm.langchain.exceptions import LangChainException
-from foundationallm.models.agents import OperationTypes
+from foundationallm.models.orchestration import OperationTypes
 from foundationallm.models.agents import AgentBase
 from foundationallm.models.authentication import AuthenticationTypes
 from foundationallm.models.language_models import LanguageModelProvider
@@ -75,61 +75,6 @@ class LangChainAgentBase():
             raise LangChainException("The prompt object is missing in the agent parameters.", 400)
 
         return prompt
-
-    def _get_indexing_profile_from_object_id(self, indexing_profile_object_id: str, agent_parameters: dict) -> AzureAISearchIndexingProfile:
-        """
-        Get the prompt from the object id.
-        """
-        indexing_profile: AzureAISearchIndexingProfile = None
-
-        if indexing_profile_object_id is None or indexing_profile_object_id == '':
-            return None
-        
-        try:
-            indexing_profile = AzureAISearchIndexingProfile(**self.__translate_keys(agent_parameters.get(indexing_profile_object_id)))
-        except Exception as e:
-            raise LangChainException(f"The indexing profile object provided in the agent parameters is invalid. {str(e)}", 400)
-        
-        if indexing_profile is None:
-            raise LangChainException("The indexing object is missing in the agent parameters.", 400)
-
-        return indexing_profile
-
-    def _get_text_embedding_profile_from_object_id(self, text_embedding_profile_object_id: str, agent_parameters: dict) -> AzureOpenAIEmbeddingProfile:
-        """
-        Get the prompt from the object id.
-        """
-        text_embedding_profile: AzureOpenAIEmbeddingProfile = None
-
-        if text_embedding_profile_object_id is None or text_embedding_profile_object_id == '':
-            return None
-        
-        try:
-            text_embedding_profile = AzureOpenAIEmbeddingProfile(**self.__translate_keys(agent_parameters.get(text_embedding_profile_object_id)))
-        except Exception as e:
-            raise LangChainException(f"The text embedding profile object provided in the agent parameters is invalid. {str(e)}", 400)
-        
-        if text_embedding_profile is None:
-            raise LangChainException("The text embedding profile object is missing in the agent parameters.", 400)
-
-        return text_embedding_profile
-
-    def __pascal_to_snake(self, name):  
-        # Convert PascalCase or camelCase to snake_case  
-        s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)  
-        return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()  
-
-    def __translate_keys(self, obj):  
-        if isinstance(obj, dict):  
-            new_dict = {}  
-            for key, value in obj.items():  
-                new_key = self.__pascal_to_snake(key)  
-                new_dict[new_key] = self.__translate_keys(value)  # Recursively apply to values  
-            return new_dict  
-        elif isinstance(obj, list):  
-            return [self.__translate_keys(item) for item in obj]  # Apply to each item in the list  
-        else:  
-            return obj  # Return the item itself if it's not a dict or list
 
     def _validate_request(self, request: CompletionRequestBase):
         """

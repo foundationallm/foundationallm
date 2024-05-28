@@ -28,6 +28,6 @@ ingress:
 env:
   configmap: 
     - name: AZURE_CLIENT_ID
-    - name: foundationallm-app-configuration-uri
+    - name: FOUNDATIONALLM_APP_CONFIGURATION_URI
   secret: {}
   values: {}

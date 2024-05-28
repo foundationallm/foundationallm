@@ -106,11 +106,16 @@ namespace FoundationaLLM.Management.API
             builder.AddDataSourceResourceProvider();
 
             // Add authentication configuration.
+            var e2ETestEnvironmentValue = Environment.GetEnvironmentVariable(EnvironmentVariables.FoundationaLLM_Environment) ?? string.Empty;
+            var isE2ETestEnvironment = e2ETestEnvironmentValue.Equals(EnvironmentTypes.E2ETest, StringComparison.CurrentCultureIgnoreCase);
             builder.AddAuthenticationConfiguration(
                 AppConfigurationKeys.FoundationaLLM_ManagementAPI_Entra_Instance,
                 AppConfigurationKeys.FoundationaLLM_ManagementAPI_Entra_TenantId,
                 AppConfigurationKeys.FoundationaLLM_ManagementAPI_Entra_ClientId,
-                AppConfigurationKeys.FoundationaLLM_ManagementAPI_Entra_Scopes);
+                AppConfigurationKeys.FoundationaLLM_ManagementAPI_Entra_Scopes,
+                requireScopes: !isE2ETestEnvironment,
+                allowACLAuthorization: isE2ETestEnvironment
+            );
 
             // Add OpenTelemetry.
             builder.AddOpenTelemetry(

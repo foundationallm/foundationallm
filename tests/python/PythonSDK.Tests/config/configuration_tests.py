@@ -13,13 +13,13 @@ class ConfigurationTests:
     ConfigurationTests is responsible for testing the application configuration functionality.
     
     This is an integration test class and expects the following environment variable to be set:
-        foundationallm-app-configuration-uri
+        FOUNDATIONALLM_APP_CONFIGURATION_URI
         
     This test class also expects a valid Azure credential (DefaultAzureCredential) session.
     """
 
     def test_config_setting_change(self):        
-        app_config_uri = os.environ['foundationallm-app-configuration-uri']
+        app_config_uri = os.environ['FOUNDATIONALLM_APP_CONFIGURATION_URI']
         client = AzureAppConfigurationClient(app_config_uri, DefaultAzureCredential())
         config_setting = client.add_configuration_setting(ConfigurationSetting(
             key='FoundationaLLM:Test:TestSetting',

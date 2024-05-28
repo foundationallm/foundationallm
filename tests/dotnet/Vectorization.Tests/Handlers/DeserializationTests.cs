@@ -305,7 +305,7 @@ namespace Vectorization.Tests.Handlers
             ";
 
             VectorizationRequest request = JsonSerializer.Deserialize<VectorizationRequest>(json);
-            Assert.Equal("c15a3ac5-b540-4466-8b9b-fc4cbf94b71c", request.Id);
+            Assert.Equal("c15a3ac5-b540-4466-8b9b-fc4cbf94b71c", request.Name);
         }
     }
 }

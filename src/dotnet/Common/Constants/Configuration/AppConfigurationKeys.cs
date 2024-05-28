@@ -179,6 +179,11 @@
         /// </summary>
         public const string FoundationaLLM_APIs_GatekeeperAPI_Configuration_EnableAzureContentSafety = "FoundationaLLM:APIs:GatekeeperAPI:Configuration:EnableAzureContentSafety";
         /// <summary>
+        /// The key for the FoundationaLLM:APIs:GatekeeperAPI:Configuration:EnableAzureContentSafetyPromptShield app configuration setting.
+        /// By default, the Gatekeeper API has Azure Content Safety Prompt Shield integration enabled. To disable this feature, set this value to false.
+        /// </summary>
+        public const string FoundationaLLM_APIs_GatekeeperAPI_Configuration_EnableAzureContentSafetyPromptShield = "FoundationaLLM:APIs:GatekeeperAPI:Configuration:EnableAzureContentSafetyPromptShield";
+        /// <summary>
         /// The key for the FoundationaLLM:APIs:GatekeeperAPI:Configuration:EnableMicrosoftPresidio app configuration setting.
         /// By default, the Gatekeeper API has Microsoft Presidio integration enabled. To disable this feature, set this value to false.
         /// </summary>
@@ -520,11 +525,6 @@
         /// The key for the FoundationaLLM:LangChain:Summary:ModelName app configuration setting.
         /// </summary>
         public const string FoundationaLLM_LangChain_Summary_ModelName = "FoundationaLLM:LangChain:Summary:ModelName";
-        /// <summary>
-        /// The key for the FoundationaLLM:LangChainAPI:Key app configuration setting.
-        /// This is a Key Vault reference.
-        /// </summary>
-        public const string FoundationaLLM_LangChainAPI_Key = "FoundationaLLM:LangChainAPI:Key";
         /// <summary>
         /// The key for the FoundationaLLM:Management:Entra:CallbackPath app configuration setting.
         /// </summary>
@@ -958,6 +958,10 @@
         /// The key section for the FoundationaLLM:LakeraGuard app configuration settings.
         /// </summary>
         public const string FoundationaLLM_LakeraGuard = "FoundationaLLM:LakeraGuard";
+        /// <summary>
+        /// The key section for the FoundationaLLM:EnkryptGuardrails app configuration settings.
+        /// </summary>
+        public const string FoundationaLLM_EnkryptGuardrails = "FoundationaLLM:EnkryptGuardrails";
         /// <summary>
         /// The key section for the FoundationaLLM:BlobStorageMemorySource app configuration settings.
         /// </summary>

@@ -11,4 +11,4 @@ metadata:
     heritage: {{ .Release.Service }}
 data: 
   AZURE_CLIENT_ID: {{ .Values.azureWorkloadIdentity.langChainApiClientId }}
-  foundationallm-app-configuration-uri: {{ .Values.appConfig.uri }}
+  FOUNDATIONALLM_APP_CONFIGURATION_URI: {{ .Values.appConfig.uri }}

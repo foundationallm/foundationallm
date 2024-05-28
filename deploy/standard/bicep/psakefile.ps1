@@ -273,10 +273,18 @@ task Clean -depends Configuration {
         }
     }
 
+    # Remove the external resource groups from the resource group collection and iterate over the remaining resource groups
+    if ($script:externalResourceGroups -ne $null) {
+        foreach ($property in $script:externalResourceGroups.GetEnumerator()) {
+            $script:resourceGroups.Remove($property.Name)
+        }
+    }
+
     while ($true) {
         Write-Host -ForegroundColor Blue "Deleting all resource groups..."
 
         $count = 0
+
         foreach ($property in $script:resourceGroups.GetEnumerator()) {
             if (-Not ($(az group list --query '[].name' -o json | ConvertFrom-Json) -Contains $property.Value)) {
                 Write-Host -ForegroundColor Blue "The resource group $($property.Value) was not found."
@@ -298,7 +306,7 @@ Check the Azure Portal for status.
 "@
         Write-Host -ForegroundColor Blue $deleteMessage
 
-        if($count -eq 0) {
+        if ($count -eq 0) {
             Write-Host -ForegroundColor Green "All resource groups have been deleted."
             break
         }
@@ -312,7 +320,6 @@ task Configuration {
     Write-Host -ForegroundColor Blue "Loading Deployment Manifest ../$($manifestName)"
     $manifest = $(Get-Content -Raw -Path ../$($manifestName) | ConvertFrom-Json)
 
-    $resourceGroups = $manifest.resourceGroups
 
     $script:administratorObjectId = $manifest.adminObjectId
     $script:chatUiClientSecret = "CHAT-CLIENT-SECRET"
@@ -328,6 +335,11 @@ task Configuration {
     $script:vectorizationApiClientSecret = "VEC-API-CLIENT-SECRET"
     $script:instanceId = $manifest.instanceId
 
+    $script:networkName = $null
+    if ($manifest.PSobject.Properties.Name -contains "networkName") {
+        $script:networkName = $manifest.networkName
+    }
+
     $script:tenantId = $(
         az account show `
             --query tenantId `
@@ -336,9 +348,20 @@ task Configuration {
 
     $script:deployments = @{}
     $script:resourceGroups = @{}
+    $resourceGroups = $manifest.resourceGroups
     foreach ($property in $resourceGroups.PSObject.Properties) {
         $script:deployments.Add($property.Name, "$($property.Value)-${timestamp}")
         $script:resourceGroups.Add($property.Name, $property.Value)
+    }
+
+    $script:externalResourceGroups = $null
+    if ($manifest.PSobject.Properties.Name -contains "externalResourceGroups") {
+        $externalResouceGroups = $manifest.externalResourceGroups
+        $script:externalResourceGroups = @{}
+        foreach ($property in $externalResouceGroups.PSObject.Properties) {
+            $script:externalResourceGroups.Add($property.Name, $property.Value)
+            $script:resourceGroups.Add($property.Name, $property.Value)
+        }
     }
 
     $script:entraClientIds = @{}
@@ -366,6 +389,13 @@ task Configuration {
 }
 
 task DNS -depends ResourceGroups, Networking, Configuration {
+
+    # Check if the external resource groups is not empty and contains an entry for DNS and skip if so
+    if ($script:externalResourceGroups -ne $null -and $script:externalResourceGroups.ContainsKey("dns")) {
+        Write-Host -ForegroundColor Yellow "Using external Private DNS resources."
+        return;
+    }
+
     if ($skipDns -eq $true) {
         Write-Host -ForegroundColor Yellow "Skipping DNS Creation."
         return;
@@ -421,7 +451,7 @@ task Networking -depends ResourceGroups, Configuration {
     Write-Host -ForegroundColor Green "Resource Group: $($script:resourceGroups.net)"
 
     $templateFile = "networking-rg.bicep"
-    $paramsFile = New-Bicepparams -templateFile $templateFile -parameters @{
+    $parameters = @{
         createVpnGateway = @{
             type  = "bool"
             value = $script:createVpnGateway
@@ -439,6 +469,15 @@ task Networking -depends ResourceGroups, Configuration {
             value = $script:project
         }
     }
+
+    if ($script:networkName -ne $null) {
+        $parameters.Add("networkName", @{
+                type  = "string"
+                value = $script:networkName
+            })
+    }
+
+    $paramsFile = New-Bicepparams -templateFile $templateFile -parameters $parameters
 
     az deployment group create `
         --name $script:deployments["net"] `

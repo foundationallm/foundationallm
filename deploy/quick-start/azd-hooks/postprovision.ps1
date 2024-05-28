@@ -139,6 +139,27 @@ foreach ($configuration in $configurations.GetEnumerator()) {
     Format-EnvironmentVariables -template $template -render $render
 }
 
+if ($env:PIPELINE_DEPLOY) {
+    $roleAssignments = (Get-Content "./data/role-assignments/${env:FOUNDATIONALLM_INSTANCE_ID}.json" | ConvertFrom-Json)
+    $spRoleAssignmentName = $(New-Guid).Guid
+    $spRoleAssignment = @{
+        type = "FoundationaLLM.Authorization/roleAssignments"
+        name = $spRoleAssignmentName
+        object_id = "/providers/FoundationaLLM.Authorization/roleAssignments/$($spRoleAssignmentName)"
+        description = "Contributor role on the FoundationaLLM instance for the test service principal."
+        role_definition_id = "/providers/FoundationaLLM.Authorization/roleDefinitions/a9f0020f-6e3a-49bf-8d1d-35fd53058edf"
+        principal_id = "${env:FLLM_E2E_SP_OBJECT_ID}"
+        principal_type = "User"
+        scope = "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}"
+        created_on = "${env:DEPLOY_TIME}"
+        updated_on = "${env:DEPLOY_TIME}"
+        created_by = "SYSTEM"
+        updated_by = "SYSTEM"
+    }
+    $roleAssignments.role_assignments += $spRoleAssignment
+    Set-Content -Path "./data/role-assignments/${env:FOUNDATIONALLM_INSTANCE_ID}.json" "$($roleAssignments | ConvertTo-Json -Compress)"
+}
+
 Invoke-AndRequireSuccess "Setting Azure Subscription" {
     az account set -s $env:AZURE_SUBSCRIPTION_ID
 }
@@ -156,18 +177,21 @@ Invoke-AndRequireSuccess "Loading AppConfig Values" {
 
 if ($IsWindows) {
     $os = "windows"
+    $separator = ";"
 }
 elseif ($IsMacOS) {
     $os = "mac"
+    $separator = ":"
 }
 elseif ($IsLinux) {
     $os = "linux"
+    $separator = ":"
 }
 
 if ($env:PIPELINE_DEPLOY) {
     Write-Host "Using agent provided AzCopy"
 } else {
-    $env:PATH="$($env:PATH);$($pwd.Path)/tools/azcopy_${os}_amd64_${AZCOPY_VERSION}"
+    $env:PATH = $env:PATH, "$($pwd.Path)/tools/azcopy_${os}_amd64_${AZCOPY_VERSION}" -join $separator
 }
 
 $status = (azcopy login status)

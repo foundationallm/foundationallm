@@ -117,11 +117,16 @@ namespace FoundationaLLM.Core.API
             builder.Services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
 
             // Add authentication configuration.
+            var e2ETestEnvironmentValue = Environment.GetEnvironmentVariable(EnvironmentVariables.FoundationaLLM_Environment) ?? string.Empty;
+            var isE2ETestEnvironment = e2ETestEnvironmentValue.Equals(EnvironmentTypes.E2ETest, StringComparison.CurrentCultureIgnoreCase);
             builder.AddAuthenticationConfiguration(
                 AppConfigurationKeys.FoundationaLLM_CoreAPI_Entra_Instance,
                 AppConfigurationKeys.FoundationaLLM_CoreAPI_Entra_TenantId,
                 AppConfigurationKeys.FoundationaLLM_CoreAPI_Entra_ClientId,
-                AppConfigurationKeys.FoundationaLLM_CoreAPI_Entra_Scopes);
+                AppConfigurationKeys.FoundationaLLM_CoreAPI_Entra_Scopes,
+                requireScopes: !isE2ETestEnvironment,
+                allowACLAuthorization: isE2ETestEnvironment
+            );
 
             // Add OpenTelemetry.
             builder.AddOpenTelemetry(
@@ -266,7 +271,10 @@ namespace FoundationaLLM.Core.API
 
             builder.Services
                     .AddHttpClient(HttpClients.GatekeeperAPI,
-                        client => { client.BaseAddress = new Uri(gatekeeperAPISettings.APIUrl); })
+                        client => {
+                            client.BaseAddress = new Uri(gatekeeperAPISettings.APIUrl);
+                            client.Timeout = TimeSpan.FromSeconds(800);
+                        })
                     .AddResilienceHandler(
                         "DownstreamPipeline",
                         static strategyBuilder =>
@@ -284,7 +292,10 @@ namespace FoundationaLLM.Core.API
 
             builder.Services
                     .AddHttpClient(HttpClients.OrchestrationAPI,
-                        client => { client.BaseAddress = new Uri(orchestrationAPISettings.APIUrl); })
+                        client => {
+                            client.BaseAddress = new Uri(orchestrationAPISettings.APIUrl);
+                            client.Timeout = TimeSpan.FromSeconds(800);
+                        })
                     .AddResilienceHandler(
                         "DownstreamPipeline",
                         static strategyBuilder =>

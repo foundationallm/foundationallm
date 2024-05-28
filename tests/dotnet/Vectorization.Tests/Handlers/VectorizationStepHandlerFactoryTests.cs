@@ -11,7 +11,7 @@ namespace Vectorization.Tests.Handlers
         [Fact]
         public void TestCreateStepHandler()
         {
-            string messageId = "Some-Message-Id";
+            string messageId = "Some-Message-Name";
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             IConfigurationSection stepsConfiguration = A.Fake<IConfigurationSection>();
             IVectorizationStateService stateService = A.Fake<IVectorizationStateService>();

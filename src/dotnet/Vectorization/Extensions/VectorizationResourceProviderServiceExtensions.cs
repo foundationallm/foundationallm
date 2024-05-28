@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Vectorization.ResourceProviders;
 
@@ -16,10 +17,10 @@ namespace FoundationaLLM.Vectorization.Extensions
         /// <returns>List of active pipelines.</returns>
         public static async Task<List<VectorizationPipeline>> GetActivePipelines(this VectorizationResourceProviderService vectorizationResourceProvider)
         {
-            var pipelinesList = await vectorizationResourceProvider.GetResourcesAsync($"/{VectorizationResourceTypeNames.VectorizationPipelines}") as List<VectorizationPipeline>;
+            var pipelinesList = await vectorizationResourceProvider.GetResourcesAsync($"/{VectorizationResourceTypeNames.VectorizationPipelines}") as List<ResourceProviderGetResult<VectorizationPipeline>>;
             if (pipelinesList == null)
-                return new List<VectorizationPipeline>();
-            return pipelinesList.Where(p => p.Active).ToList();
+                return [];
+            return pipelinesList.Where(p => p.Resource.Active).Select(p => p.Resource).ToList();
         }
 
         /// <summary>

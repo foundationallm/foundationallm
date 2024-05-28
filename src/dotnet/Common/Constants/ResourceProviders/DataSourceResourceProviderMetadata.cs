@@ -19,7 +19,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         DataSourceResourceTypeNames.DataSources)
                 {
                     AllowedTypes = [
-                            new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(DataSourceBase)]),
+                            new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<DataSourceBase>)]),
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, [], [typeof(DataSourceBase)], [typeof(ResourceProviderUpsertResult)]),
                             new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, [], [], []),
                     ],

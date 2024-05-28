@@ -19,7 +19,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         PromptResourceTypeNames.Prompts)
                 {
                     AllowedTypes = [
-                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(MultipartPrompt)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<MultipartPrompt>)]),
                         new ResourceTypeAllowedTypes(HttpMethod.Post.Method, [], [typeof(MultipartPrompt)], [typeof(ResourceProviderUpsertResult)]),
                         new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, [], [], []),
                     ],

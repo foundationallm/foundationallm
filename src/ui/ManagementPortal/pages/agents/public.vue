@@ -21,7 +21,7 @@
 
 				<!-- Name -->
 				<Column
-					field="name"
+					field="resource.name"
 					header="Name"
 					sortable
 					style="min-width: 200px"
@@ -35,7 +35,7 @@
 
 				<!-- Type -->
 				<Column
-					field="type"
+					field="resource.type"
 					header="Type"
 					sortable
 					style="min-width: 200px"
@@ -60,8 +60,8 @@
 					}"
 				>
 					<template #body="{ data }">
-						<NuxtLink :to="'/agents/edit/' + data.name" class="table__button">
-							<Button link>
+						<NuxtLink :to="'/agents/edit/' + data.resource.name" class="table__button">
+							<Button link :disabled="!data.actions.includes('FoundationaLLM.Agent/agents/write')">
 								<i class="pi pi-cog" style="font-size: 1.2rem"></i>
 							</Button>
 						</NuxtLink>
@@ -81,7 +81,7 @@
 					}"
 				>
 					<template #body="{ data }">
-						<Button link @click="agentToDelete = data">
+						<Button link @click="agentToDelete = data.resource" :disabled="!data.actions.includes('FoundationaLLM.Agent/agents/delete')">
 							<i class="pi pi-trash" style="font-size: 1.2rem; color: var(--red-400)"></i>
 						</Button>
 					</template>
@@ -102,14 +102,14 @@
 
 <script lang="ts">
 import api from '@/js/api';
-import type { Agent } from '@/js/types';
+import type { Agent, ResourceProviderGetResult } from '@/js/types';
 
 export default {
 	name: 'PublicAgents',
 
 	data() {
 		return {
-			agents: [] as Agent,
+			agents: [] as ResourceProviderGetResult<Agent>[],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
 			agentToDelete: null as Agent | null,

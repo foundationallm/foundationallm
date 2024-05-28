@@ -1,3 +1,20 @@
+export type ResourceProviderGetResult<T> = {
+	/**
+	 * Represents the result of a fetch operation.
+	 */
+	resource: T;
+
+	/**
+	 * List of authorized actions on the resource.
+	 */
+	actions: string[];
+
+	/**
+	 * List of roles on the resource.
+	 */
+	roles: string[];
+}
+
 export interface Citation {
 	id: string;
 	title: string;

@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
-from foundationallm.models.agents import OperationTypes
+
+from .operation_types import OperationTypes
 from foundationallm.models.authentication import AuthenticationTypes
 
 class EndpointSettings(BaseModel):

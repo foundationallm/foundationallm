@@ -1,38 +1,43 @@
-﻿using FoundationaLLM.Common.Authentication;
-using FoundationaLLM.Common.Interfaces;
+﻿using FoundationaLLM.Common.Interfaces;
+using Microsoft.Extensions.Logging;
 using Microsoft.Graph;
-using System.Collections.Generic;
+using Microsoft.Graph.Models;
 
 namespace FoundationaLLM.Common.Services.Security
 {
     /// <summary>
     /// Implements group membership services using the Microsoft Graph API.
     /// </summary>
-    public class MicrosoftGraphGroupMembershipService : IGroupMembershipService
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="MicrosoftGraphGroupMembershipService"/> class.
+    /// </remarks>
+    /// <param name="graphServiceClient">The GraphServiceClient to be used for API interactions.</param>
+    /// <param name="logger">The logger used for logging.</param>
+    public class MicrosoftGraphGroupMembershipService(
+        GraphServiceClient graphServiceClient,
+        ILogger<MicrosoftGraphGroupMembershipService> logger) : IGroupMembershipService
     {
-        private readonly GraphServiceClient _graphClient = new GraphServiceClient(
-            DefaultAuthentication.AzureCredential);
+        private readonly GraphServiceClient _graphServiceClient = graphServiceClient;
+        private readonly ILogger<MicrosoftGraphGroupMembershipService> _logger = logger;
 
         /// <inheritdoc/>
         public async Task<List<string>> GetGroupsForPrincipal(string userIdentifier)
         {
-            var groupMembership = new List<Microsoft.Graph.Models.Group>();
-            var groups = await _graphClient.Users[userIdentifier].TransitiveMemberOf.GraphGroup.GetAsync(requestConfiguration =>
+            var groups = await _graphServiceClient.Users[userIdentifier].TransitiveMemberOf.GraphGroup.GetAsync(requestConfiguration =>
             {
                 requestConfiguration.QueryParameters.Top = 500;
             }).ConfigureAwait(false);
 
+            var groupMembership = new List<Group>();
+
             while (groups?.Value != null)
             {
-                foreach (var group in groups.Value)
-                {
-                    groupMembership.Add(group);
-                }
+                groupMembership.AddRange(groups.Value);
 
                 // Invoke paging if required.
                 if (!string.IsNullOrEmpty(groups.OdataNextLink))
                 {
-                    groups = await _graphClient.Users[userIdentifier].TransitiveMemberOf.GraphGroup
+                    groups = await _graphServiceClient.Users[userIdentifier].TransitiveMemberOf.GraphGroup
                         .WithUrl(groups.OdataNextLink)
                         .GetAsync();
                 }

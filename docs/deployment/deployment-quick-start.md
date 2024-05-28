@@ -54,21 +54,27 @@ If you are upgrading from a previous version, like `0.5.0`, please refer to the 
     git checkout release/0.6.0
     ```
 
-3. Run the following commands to log into the Azure and Azure Developer CLIs:
+3. **For release 0.7.0+:** Run the following script to install the deployment utilities, including `AzCopy`, locally.
+
+    ```cmd
+    ./scripts/bootstrap.ps1
+    ```
+
+4. Run the following commands to log into the Azure and Azure Developer CLIs:
 
     ```azurecli
     az login            # Log into Azure CLI
     azd auth login      # Log into Azure Developer CLI
     ```
 
-4. Set up an `azd` environment targeting your Azure subscription and desired deployment region:
+5. Set up an `azd` environment targeting your Azure subscription and desired deployment region:
 
     ```azurecli
     # Set your target Subscription and Location
     azd env new --location <Supported Azure Region> --subscription <Azure Subscription ID>
     ```
 
-5. Run the following commands to set the appropriate application registration settings for OIDC authentication.
+6. Run the following commands to set the appropriate application registration settings for OIDC authentication.
 
     ```text
     azd env set ENTRA_AUTH_API_INSTANCE <Auth API Instance>

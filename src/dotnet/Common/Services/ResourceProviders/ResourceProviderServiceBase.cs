@@ -1,4 +1,7 @@
-﻿using FoundationaLLM.Common.Exceptions;
+﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
@@ -209,7 +212,34 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             if (parsedResourcePath.ResourceTypeInstances.Last().Action != null)
                 return await ExecuteActionAsync(parsedResourcePath, serializedResource, userIdentity);
             else
-                return await UpsertResourceAsync(parsedResourcePath, serializedResource, userIdentity);
+            {
+                var resource = await UpsertResourceAsync(parsedResourcePath, serializedResource, userIdentity);
+
+                var upsertResult = resource as ResourceProviderUpsertResult;
+
+                if (upsertResult!.ResourceExists == false && Name != ResourceProviderNames.FoundationaLLM_Authorization)
+                {
+                    var roleAssignmentName = Guid.NewGuid().ToString();
+                    var roleAssignmentDescription = $"Owner role for {userIdentity.Name}";
+                    var roleAssignmentResult = await _authorizationService.ProcessRoleAssignmentRequest(
+                        _instanceSettings.Id,
+                        new RoleAssignmentRequest()
+                        {
+                            Name = roleAssignmentName,
+                            Description = roleAssignmentDescription,
+                            ObjectId = $"/instances/{_instanceSettings.Id}/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleAssignments}/{roleAssignmentName}",
+                            PrincipalId = userIdentity.UserId!,
+                            PrincipalType = PrincipalTypes.User,
+                            RoleDefinitionId = $"/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleDefinitions}/{RoleDefinitionNames.Owner}",
+                            Scope = upsertResult!.ObjectId ?? throw new ResourceProviderException($"The {roleAssignmentDescription} could not be assigned. Could not set the scope for the resource.")
+                        });
+
+                    if (!roleAssignmentResult.Success)
+                        _logger.LogError("The {RoleAssignment} could not be assigned.", roleAssignmentDescription);
+                }
+
+                return resource;
+            }
         }
 
         /// <inheritdoc/>

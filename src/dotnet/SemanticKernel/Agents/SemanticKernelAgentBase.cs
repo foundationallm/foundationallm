@@ -98,7 +98,8 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
                     UserId = "SemanticKernelAPI",
                     Username = "SemanticKernelAPI"
                 });
-            return (result as List<T>)!.First();
+            var resource = (result as List<ResourceProviderGetResult<T>>)!.First().Resource;
+            return resource;
         }
 
         private void ValidateRequest()

@@ -30,6 +30,7 @@ namespace FoundationaLLM.Core.Examples.Services
 
             httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", tokenResult.Token);
+            httpClient.Timeout = TimeSpan.FromSeconds(900);
 
             return httpClient;
         }

@@ -1,5 +1,5 @@
 {
-    "registry": "cropseastus2svinternal.azurecr.io",
+    "registry": "crfllme2eops.azurecr.io",
     "service_matrix": [
         {
             "name": "agent-hub-api",
@@ -56,6 +56,13 @@
             "dockerfile": "./src/python/GatekeeperIntegrationAPI/Dockerfile",
             "helm_chart": "./deploy/common/helm/gatekeeper-integration-api",
             "azd_env_key": "SERVICE_GATEKEEPERINTEGRATIONAPI_IMAGE"
+        },
+        {
+            "name": "gateway-api",
+            "context": "./src",
+            "dockerfile": "./src/dotnet/GatewayAPI/Dockerfile",
+            "helm_chart": "./deploy/common/helm/gateway-api", 
+            "azd_env_key": "SERVICE_GATEWAYAPI_IMAGE"
         },
         {
             "name": "langchain-api",
@@ -118,6 +125,12 @@
         {
             "name": "0001",
             "task_name": "Example0001_FoundationaLLMAgentInteraction.RunAsync",
+            "namespace": "FoundationaLLM.Core.Examples",
+            "target": "./tests/dotnet/Core.Examples/Core.Examples.csproj"
+        },
+        {
+            "name": "0003",
+            "task_name": "Example0003_KnowledgeManagementInlineContextAgentWithLangChain.RunAsync",
             "namespace": "FoundationaLLM.Core.Examples",
             "target": "./tests/dotnet/Core.Examples/Core.Examples.csproj"
         }

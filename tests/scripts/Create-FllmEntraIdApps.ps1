@@ -1,5 +1,13 @@
 #! /usr/bin/pwsh
 
+Param(
+    [parameter(Mandatory = $false)][string]$authAppName="FoundationaLLM-Authorization-E2E",
+    [parameter(Mandatory = $false)][string]$coreAppName="FoundationaLLM-E2E",
+    [parameter(Mandatory = $false)][string]$coreClientAppName="FoundationaLLM-E2E-Client",
+    [parameter(Mandatory = $false)][string]$mgmtAppName="FoundationaLLM-Management-E2E",
+    [parameter(Mandatory = $false)][string]$mgmtClientAppName="FoundationaLLM-Management-E2E-Client"
+)
+
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
@@ -101,7 +109,8 @@ function New-FllmEntraIdApps {
         $appConfig.identifierUris = @($($fllmAppRegMetaData.Api.Uri))
         $appConfigUpdate = $appConfig | ConvertTo-Json -Depth 20
         Write-Host "Final Update to API App Registration $($fllmAppRegMetaData.Api.Name)"
-        az rest --method PATCH --url "https://graph.microsoft.com/v1.0/applications/$($fllmAppRegMetaData.Api.ObjectId)" --header "Content-Type=application/json" --body $appConfigUpdate
+        Set-Content -Path "$($fllmAppRegMetaData.Api.Name)`.json" $appConfigUpdate
+        az rest --method PATCH --url "https://graph.microsoft.com/v1.0/applications/$($fllmAppRegMetaData.Api.ObjectId)" --header "Content-Type=application/json" --body "@$($fllmAppRegMetaData.Api.Name)`.json"
 
         # Update the ClientApp Registration
         if ($createClientApp) {     
@@ -118,7 +127,8 @@ function New-FllmEntraIdApps {
             $appConfig.requiredResourceAccess = $apiPermissions
             $appConfigUpdate = $appConfig | ConvertTo-Json -Depth 20
             Write-Host "Final Update to ClientApp Registration $($fllmAppRegMetaData.Client.Name)"
-            az rest --method PATCH --url "https://graph.microsoft.com/v1.0/applications/$($fllmAppRegMetaData.Client.ObjectId)" --header "Content-Type=application/json" --body $appConfigUpdate
+            Set-Content -Path "$($fllmAppRegMetaData.Client.Name)`.json" $appConfigUpdate
+            az rest --method PATCH --url "https://graph.microsoft.com/v1.0/applications/$($fllmAppRegMetaData.Client.ObjectId)" --header "Content-Type=application/json" --body "@$($fllmAppRegMetaData.Client.Name)`.json"
         }
     }
     catch {
@@ -131,8 +141,8 @@ function New-FllmEntraIdApps {
 $fllmAppRegs = @{}
 # Create FoundationaLLM Core App Registrations
 $params = @{
-    fllmApi              = "FoundationaLLM-E2E"
-    fllmClient           = "FoundationaLLM-E2E-Client"
+    fllmApi              = $coreAppName
+    fllmClient           = $coreClientAppName
     fllmApiConfigPath    = "foundationalllm.json"
     fllmClientConfigPath = "foundationalllm-client.json"
     appPermissionsId     = "6da07102-bb6a-421d-a71e-dfdb6031d3d8"
@@ -143,8 +153,8 @@ $($fllmAppRegs).Core = New-FllmEntraIdApps @params
 
 # Create FoundationaLLM Management App Registrations
 $params = @{
-    fllmApi              = "FoundationaLLM-Management-E2E"
-    fllmClient           = "FoundationaLLM-Management-E2E-Client"
+    fllmApi              = $mgmtAppName
+    fllmClient           = $mgmtClientAppName
     fllmApiConfigPath    = "foundationalllm-management.json"
     fllmClientConfigPath = "foundationalllm-managementclient.json"
     appPermissionsId     = "c57f4633-0e58-455a-8ede-5de815fe6c9c"
@@ -155,7 +165,7 @@ $($fllmAppRegs).Management = New-FllmEntraIdApps @params
 
 # Create FoundationaLLM Authorization App Registration
 $params = @{
-    fllmApi           = "FoundationaLLM-Authorization-E2E"
+    fllmApi           = $authAppName
     fllmApiConfigPath = "foundationalllm-authorization.json"
     appPermissionsId  = "9e313dd4-51e4-4989-84d0-c713e38e467d"
     createClientApp   = $false

@@ -58,6 +58,7 @@ namespace FoundationaLLM.Orchestration.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Prompt);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Vectorization);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_DataSource);
             });
             if (builder.Environment.IsDevelopment())
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
@@ -127,6 +128,7 @@ namespace FoundationaLLM.Orchestration.API
             builder.AddPromptResourceProvider();
             builder.AddVectorizationResourceProvider();
             builder.AddConfigurationResourceProvider();
+            builder.AddDataSourceResourceProvider();
 
             // Register the downstream services and HTTP clients.
             RegisterDownstreamServices(builder);

@@ -1,4 +1,4 @@
-﻿namespace FoundationaLLM.Authorization.Constants
+﻿namespace FoundationaLLM.Common.Constants
 {
     /// <summary>
     /// The types of security principals.

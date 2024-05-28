@@ -38,7 +38,7 @@ namespace Vectorization.Tests.Services.RequestSources
 
             await _storageQueueRequestSourceService.SubmitRequest(
                 new VectorizationRequest {
-                    Id = "d4669c9c-e330-450a-a41c-a4d6649abdef",
+                    Name = "d4669c9c-e330-450a-a41c-a4d6649abdef",
                     ContentIdentifier = new ContentIdentifier
                     {
                         MultipartId = new List<string> {
@@ -72,7 +72,7 @@ namespace Vectorization.Tests.Services.RequestSources
             // Correct Deserialization
             Assert.Equal(
                 "d4669c9c-e330-450a-a41c-a4d6649abdef",
-                vectorizationRequestQueueMessage.Request.Id
+                vectorizationRequestQueueMessage.Request.Name
             );
 
             // Message ID & Pop Receipt must be retained for deletion

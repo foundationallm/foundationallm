@@ -33,7 +33,7 @@ namespace FoundationaLLM.Common.Models.AzureAIService
         [JsonPropertyName("inputsMapping")]
         public InputsMapping? InputsMapping { get; set; }
         /// <summary>
-        /// A name for the job, can be the run Id.
+        /// A name for the job, can be the run Name.
         /// </summary>
         [JsonPropertyName("runExpermimentName")]
         public string? RunExperimentName { get; set; }

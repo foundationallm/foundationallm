@@ -13,7 +13,7 @@ namespace FoundationaLLM.Vectorization.Validation.Resources
         /// </summary>
         public VectorizationRequestValidator()
         {
-            RuleFor(x => x.Id).NotEmpty().WithMessage("The vectorization request Id field is required.");
+            RuleFor(x => x.Name).NotEmpty().WithMessage("The vectorization request Name field is required.");
                         
             // Optionally validate ObjectId if there are specific criteria it needs to meet, such as format.
             RuleFor(x => x.ObjectId)

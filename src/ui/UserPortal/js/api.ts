@@ -1,4 +1,5 @@
-import type { Message, Session, CompletionPrompt, Agent, OrchestrationRequest } from '@/js/types';
+import type { Message, Session, CompletionPrompt, Agent,
+	OrchestrationRequest, ResourceProviderGetResult } from '@/js/types';
 
 export default {
 	apiUrl: null as string | null,
@@ -179,6 +180,8 @@ export default {
 	 * @returns {Promise<Agent[]>} A promise that resolves to an array of Agent objects.
 	 */
 	async getAllowedAgents() {
-		return (await this.fetch('/orchestration/agents')) as Agent[];
+		const agents = (await this.fetch('/orchestration/agents')) as ResourceProviderGetResult<Agent>[];
+		agents.sort((a, b) => a.resource.name.localeCompare(b.resource.name));
+		return agents;
 	},
 };

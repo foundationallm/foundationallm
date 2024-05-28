@@ -22,5 +22,11 @@ namespace FoundationaLLM.Common.Interfaces
         /// claims-based identities.</param>
         /// <returns></returns>
         UnifiedUserIdentity? GetUserIdentity(ClaimsPrincipal? userPrincipal);
+
+        /// <summary>
+        /// Inidicates whether the specified principal is a service principal or not.
+        /// </summary>
+        /// <param name="userPrincipal">The <see cref="ClaimsPrincipal"/> object providing details about the security principal.</param>
+        bool IsServicePrincipal(ClaimsPrincipal userPrincipal);
     }
 }

@@ -80,13 +80,13 @@ namespace FoundationaLLM.Gatekeeper.API
 
             builder.Services.AddTransient<IAPIKeyValidationService, APIKeyValidationService>();
 
-            builder.Services.AddOptions<RefinementServiceSettings>()
-                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Refinement));
-            builder.Services.AddScoped<IRefinementService, RefinementService>();
-
             builder.Services.AddOptions<LakeraGuardServiceSettings>()
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_LakeraGuard));
             builder.Services.AddScoped<ILakeraGuardService, LakeraGuardService>();
+
+            builder.Services.AddOptions<EnkryptGuardrailsServiceSettings>()
+                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_EnkryptGuardrails));
+            builder.Services.AddScoped<IEnkryptGuardrailsService, EnkryptGuardrailsService>();
 
             builder.Services.AddOptions<AzureContentSafetySettings>()
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_AzureContentSafety));

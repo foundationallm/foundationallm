@@ -45,11 +45,30 @@ param useOidc bool = false
 var kvFormattedName = toLower('${kvServiceType}-${substring(opsResourceSuffix, 0, length(opsResourceSuffix) - 4)}')
 
 @description('The Resource Name')
-var kvTruncatedName = substring(kvFormattedName,0,min([length(kvFormattedName),20]))
+var kvTruncatedName = substring(kvFormattedName, 0, min([length(kvFormattedName), 20]))
 var kvName = '${kvTruncatedName}-${substring(opsResourceSuffix, length(opsResourceSuffix) - 3, 3)}'
 
 @description('The Resource Service Type token')
 var kvServiceType = 'kv'
+
+var opsRoleAssignmentIds = union(commonOpsRoleAssignments, keyVaultOpsRoleAssignments, certificateOpsRoleAssignmentIds)
+var commonOpsRoleAssignments = {
+  'App Configuration Data Reader': '516239f1-63e1-4d78-a4de-a74fb236a071'
+}
+
+var keyVaultOpsRoleAssignments = contains(['management-api'], serviceName)
+  ? {
+      'Key Vault Secrets Officer': 'b86a8fe4-44ce-4948-aee5-eccb2c155cd7'
+    }
+  : {
+      'Key Vault Secrets User': '4633458b-17de-408a-b874-0445c86b69e6'
+    }
+
+var certificateOpsRoleAssignmentIds = contains(['vectorization-api', 'vectorization-job'], serviceName)
+  ? {
+      'Key Vault Certificate User': 'db79e9a7-68ee-4b58-9aeb-b90e7c24fcba'
+    }
+  : {}
 
 /** Outputs **/
 @description('Service Managed Identity Client Id.')
@@ -78,7 +97,7 @@ resource federatedIdentityCredential 'Microsoft.ManagedIdentity/userAssignedIden
   name: serviceName
   parent: managedIdentity
   properties: {
-    audiences: [ 'api://AzureADTokenExchange' ]
+    audiences: ['api://AzureADTokenExchange']
     issuer: oidcIssuerUrl
     subject: 'system:serviceaccount:${namespace}:${serviceName}'
   }
@@ -90,10 +109,7 @@ module opsRoleAssignments 'utility/roleAssignments.bicep' = {
   scope: resourceGroup(opsResourceGroupName)
   params: {
     principalId: managedIdentity.properties.principalId
-    roleDefinitionIds: {
-      'App Configuration Data Reader': '516239f1-63e1-4d78-a4de-a74fb236a071'
-      'Key Vault Secrets User': '4633458b-17de-408a-b874-0445c86b69e6'
-    }
+    roleDefinitionIds: opsRoleAssignmentIds
   }
 }
 
@@ -108,7 +124,6 @@ module appRoleAssignments 'utility/roleAssignments.bicep' = {
     }
   }
 }
-
 
 @description('Storage Role assignments for microservice managed identity')
 module storageRoleAssignments 'utility/roleAssignments.bicep' = {
@@ -125,7 +140,6 @@ module storageRoleAssignments 'utility/roleAssignments.bicep' = {
 }
 
 @description('API Key for microservice (only created if not using Entra)')
-// module apiKeySecret 'kvSecret.bicep' = if (!useOidc) {
 module apiKeySecret 'kvSecret.bicep' = {
   name: 'apiKey-${serviceName}-${timestamp}'
   scope: resourceGroup(opsResourceGroupName)

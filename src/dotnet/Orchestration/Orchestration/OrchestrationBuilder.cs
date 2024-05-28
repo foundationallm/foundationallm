@@ -5,6 +5,7 @@ using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Orchestration.Core.Interfaces;
@@ -64,7 +65,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             return null;
         }
 
-        private static async Task<AgentBase> LoadAgent(
+        private static async Task<AgentBase?> LoadAgent(
             string? agentName,
             Dictionary<string, IResourceProviderService> resourceProviderServices,
             UnifiedUserIdentity currentUserIdentity,
@@ -79,6 +80,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_Prompt} was not loaded.");
             if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Vectorization, out var vectorizationResourceProvider))
                 throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_Vectorization} was not loaded.");
+            if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_DataSource, out var dataSourceResourceProvider))
+                throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_DataSource} was not loaded.");
 
             var agentBase = await agentResourceProvider.GetResource<AgentBase>(
                 $"/{AgentResourceTypeNames.Agents}/{agentName}",
@@ -125,6 +128,16 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             currentUserIdentity);
 
                         kmAgent.OrchestrationSettings!.AgentParameters![kmAgent.Vectorization.TextEmbeddingProfileObjectId!] = textEmbeddingProfile;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(kmAgent.Vectorization.DataSourceObjectId))
+                    {
+                        var dataSource = await dataSourceResourceProvider.GetResource<DataSourceBase>(
+                            kmAgent.Vectorization.DataSourceObjectId,
+                            currentUserIdentity);
+
+                        if (dataSource == null)
+                            return null;
                     }
                 }
             }

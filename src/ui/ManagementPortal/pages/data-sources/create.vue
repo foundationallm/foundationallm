@@ -24,6 +24,9 @@
 			<div class="step-header span-2">What is the name of the data source?</div>
 			<div class="span-2">
 				<div class="mb-2">Data source name:</div>
+				<div class="mb-2">
+					No special characters or spaces, use letters and numbers with dashes and underscores only.
+				</div>
 				<div class="input-wrapper">
 					<InputText
 						v-model="dataSource.name"
@@ -135,8 +138,11 @@
 						/>
 					</div>
 
-					<div class="mb-2 mt-2">Folder(s):</div>
-					<Chips v-model="folders" class="w-100" separator="," />
+					<div class="step-header mb-2 mt-2">Folder(s):</div>
+					<div class="mb-2">
+						Press <strong>Enter</strong> or <strong>,</strong> after typing each folder name.
+					</div>
+					<Chips v-model="folders" class="w-100" separator="," v-create-chip-on-blur:folders />
 				</div>
 
 				<!-- OneLake -->
@@ -196,8 +202,11 @@
 						/>
 					</div>
 
-					<div class="mb-2 mt-2">Workspace(s):</div>
-					<Chips v-model="workspaces" class="w-100" separator="," />
+					<div class="step-header mb-2 mt-2">Workspace(s):</div>
+					<div class="mb-2">
+						Press <strong>Enter</strong> or <strong>,</strong> after typing each workspace name.
+					</div>
+					<Chips v-model="workspaces" class="w-100" separator="," v-create-chip-on-blur:workspaces />
 				</div>
 
 				<!-- Azure SQL database -->
@@ -211,8 +220,11 @@
 						/>
 
 						<template v-if="dataSource.tables">
-							<div class="mb-2 mt-2">Table Name(s):</div>
-							<Chips v-model="tables" class="w-100" separator="," />
+							<div class="step-header mb-2 mt-2">Table Name(s):</div>
+							<div class="mb-2">
+								Press <strong>Enter</strong> or <strong>,</strong> after typing each table name.
+							</div>
+							<Chips v-model="tables" class="w-100" separator="," v-create-chip-on-blur:tables />
 						</template>
 					</div>
 				</div>
@@ -252,11 +264,25 @@
 						<InputText v-model="dataSource.site_url" class="w-100" type="text" />
 
 						<template v-if="dataSource.document_libraries">
-							<div class="mb-2 mt-2">Document Library(s):</div>
-							<Chips v-model="documentLibraries" class="w-100" separator="," />
+							<div class="step-header mb-2 mt-2">Document Library(s):</div>
+							<div class="mb-2">
+								Press <strong>Enter</strong> or <strong>,</strong> after typing each document library name.
+							</div>
+							<Chips v-model="documentLibraries" class="w-100" separator="," v-create-chip-on-blur:documentLibraries />
 						</template>
 					</div>
 				</div>
+
+			</div>
+
+			<div class="step-header span-2">Would you like to assign this data source to a cost center?</div>
+			<div class="span-2">
+				<InputText
+					v-model="dataSource.cost_center"
+					placeholder="Enter cost center name"
+					type="text"
+					class="w-50"
+				/>
 			</div>
 
 			<!-- Buttons -->
@@ -328,8 +354,10 @@ export default {
 			dataSource: {
 				type: 'azure-data-lake',
 				name: '',
+				display_name: '',
 				object_id: '',
 				description: '',
+				cost_center: '',
 				resolved_configuration_references: {
 					AuthenticationType: '',
 					ConnectionString: '',
@@ -394,7 +422,8 @@ export default {
 
 		if (this.editId) {
 			this.loadingStatusText = `Retrieving data source "${this.editId}"...`;
-			const dataSource = await api.getDataSource(this.editId);
+			const dataSourceResult = await api.getDataSource(this.editId);
+			const dataSource = dataSourceResult.resource;
 			this.dataSource = dataSource;
 
 			if (this.dataSource.folders) {
@@ -414,8 +443,10 @@ export default {
 			const newDataSource: DataSource = {
 				type: 'azure-data-lake',
 				name: '',
+				display_name: '',
 				object_id: '',
 				description: '',
+				cost_center: '',
 				resolved_configuration_references: {
 					AuthenticationType: '',
 					ConnectionString: '',

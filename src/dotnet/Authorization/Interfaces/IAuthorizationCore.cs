@@ -22,5 +22,29 @@ namespace FoundationaLLM.Authorization.Interfaces
         /// <param name="securityPrincipalId">The id of the security principal whose authorization is checked.</param>
         /// <returns>True if the security principal is allowed to process authorization requests.</returns>
         bool AllowAuthorizationRequestsProcessing(string instanceId, string securityPrincipalId);
+
+        /// <summary>
+        /// Assigns a role to an Entra ID user or group.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="roleAssignmentRequest">The role assignment request.</param>
+        /// <returns>The role assignment result.</returns>
+        Task<RoleAssignmentResult> AssignRole(string instanceId, RoleAssignmentRequest roleAssignmentRequest);
+
+        /// <summary>
+        /// Revokes a role from an Entra ID user or group.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="roleAssignment">The role assignment object identifier.</param>
+        /// <returns>The role assignment result.</returns>
+        Task<RoleAssignmentResult> RevokeRole(string instanceId, string roleAssignment);
+
+        /// <summary>
+        /// Returns a list of role names and a list of allowed actions for the specified scope.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="request">The get roles with actions request.</param>
+        /// <returns>The get roles and actions result.</returns>
+        Dictionary<string, RoleAssignmentsWithactionsResult> ProcessRoleAssignmentsWithActionsRequest(string instanceId, RoleAssignmentsWithActionsRequest request);
     }
 }

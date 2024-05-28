@@ -60,6 +60,7 @@
 							option-label="label"
 							placeholder="--Select--"
 							@change="handleAgentChange"
+							:style="{ maxHeight: '300px' }"
 						/>
 					</span>
 				</template>
@@ -75,7 +76,7 @@ interface AgentDropdownOption {
 	label: string;
 	value: any;
 	disabled?: boolean;
-	private?: boolean;
+	my_agent?: boolean;
 	type: string;
 	object_id: string;
 	description: string;
@@ -118,16 +119,18 @@ export default {
 		await this.$appStore.getAgents();
 
 		this.agentOptions = this.$appStore.agents.map((agent) => ({
-			label: agent.name,
-			type: agent.type,
-			object_id: agent.object_id,
-			description: agent.description,
-			private: false,
+			label: agent.resource.name,
+			type: agent.resource.type,
+			object_id: agent.resource.object_id,
+			description: agent.resource.description,
+			my_agent: agent.roles.includes('Owner'),
 			value: agent,
 		}));
 
-		const publicAgentOptions = this.agentOptions.filter((agent) => !agent.private);
-		const privateAgentOptions = this.agentOptions.filter((agent) => agent.private);
+		// const publicAgentOptions = this.agentOptions.filter((agent) => !agent.my_agent);
+		// Show all agents in the first group, including "my agents".
+		const publicAgentOptions = this.agentOptions;
+		const privateAgentOptions = this.agentOptions.filter((agent) => agent.my_agent);
 		const noAgentOptions = [{ label: 'None', value: null, disabled: true }];
 
 		this.agentOptionsGroup.push({
@@ -287,5 +290,9 @@ export default {
 	.dropdown--agent .p-dropdown-trigger {
 		height: 40px;
 	}
+}
+
+.p-dropdown-items-wrapper {
+  max-height: 300px !important;
 }
 </style>

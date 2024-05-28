@@ -38,4 +38,32 @@
     <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="8.4.0" />
   </ItemGroup>
   
+  <ItemGroup>
+    <None Update="Constants\Authorizartion\AuthorizableActionNames.tt">
+      <LastGenOutput>AuthorizableActionNames.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Constants\Authorizartion\RoleDefinitionNames.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RoleDefinitionNames.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Update="Constants\Authorizartion\AuthorizableActionNames.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AuthorizableActionNames.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Constants\Authorizartion\RoleDefinitionNames.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RoleDefinitionNames.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  
 </Project>

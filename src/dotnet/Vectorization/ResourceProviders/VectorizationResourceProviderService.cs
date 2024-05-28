@@ -156,16 +156,15 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
 
         #region Helpers for GetResourcesAsyncInternal
 
-        private async Task<List<TBase>> LoadResources<T, TBase>(ResourceTypeInstance instance, ConcurrentDictionary<string, TBase> resourceStore)
+        private async Task<List<ResourceProviderGetResult<TBase>>> LoadResources<T, TBase>(ResourceTypeInstance instance, ConcurrentDictionary<string, TBase> resourceStore)
             where T : TBase
             where TBase: ResourceBase
         {
             if (instance.ResourceId == null)
             {
-                return
-                    [.. resourceStore.Values
-                            .Where(p => !p.Deleted)
-                    ];
+                var resources = resourceStore.Values.Where(p => !p.Deleted).ToList();
+
+                return resources.Select(resource => new ResourceProviderGetResult<TBase>() { Resource = resource, Actions = [], Roles = [] }).ToList();
             }
             else
             {
@@ -191,7 +190,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                     throw new ResourceProviderException($"Could not locate the {instance.ResourceId} vectorization resource.",
                                                StatusCodes.Status404NotFound);
 
-                return [resource];
+                return [new ResourceProviderGetResult<TBase>() { Resource = resource, Actions = [], Roles = [] }];
             }
         }
         private async Task<List<VectorizationRequest>> LoadVectorizationRequestResource(string resourceId)           
@@ -285,8 +284,8 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                 ?? throw new ResourceProviderException("The object definition is invalid.",
                     StatusCodes.Status400BadRequest);
             
-            if (resourcePath.ResourceTypeInstances[0].ResourceId != resource.Id)
-                throw new ResourceProviderException("The resource path does not match the object definition (Id mismatch).",
+            if (resourcePath.ResourceTypeInstances[0].ResourceId != resource.Name)
+                throw new ResourceProviderException("The resource path does not match the object definition (Name mismatch).",
                     StatusCodes.Status400BadRequest);
 
             var validator = _resourceValidatorFactory.GetValidator<VectorizationRequest>();
@@ -653,9 +652,13 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             if (typeof(T) != typeof(VectorizationRequest))
                 throw new ResourceProviderException($"The type of requested resource ({typeof(T)}) does not match the resource type specified in the path ({resourcePath.ResourceTypeInstances[0].ResourceType}).");
 
-            var vectorizationRequest = LoadVectorizationRequestResource(resourcePath.ResourceTypeInstances[0].ResourceId!).Result;            
-            return vectorizationRequest as T
-                ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceType} was not found.");
+            var vectorizationRequestList = (LoadVectorizationRequestResource(resourcePath.ResourceTypeInstances[0].ResourceId!).Result) as List<T>;
+            if (vectorizationRequestList is not null && vectorizationRequestList.Count == 1)
+            {
+                return vectorizationRequestList.First() as T;
+            }
+            
+            throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceType} was not found.");            
         }
 
         #endregion
@@ -695,7 +698,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                     throw new ResourceProviderException($"Validation failed: {string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage))}",
                                                StatusCodes.Status400BadRequest);
                 }                
-                request.ResourceFilePath = $"{REQUEST_RESOURCES_DIRECTORY_NAME}/{request.Id}-{DateTime.UtcNow:yyyyMMdd}.json";
+                request.ResourceFilePath = $"{REQUEST_RESOURCES_DIRECTORY_NAME}/{request.Name}-{DateTime.UtcNow:yyyyMMdd}.json";
 
                 // validate the data source at request creation time.
                 ValidateContentIdentifierWithDataSource(request);
@@ -770,8 +773,8 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             if (string.IsNullOrWhiteSpace(request.ResourceFilePath))
             {
                 // retrieve listing of requests
-                var resourceFilePaths = await GetRequestResourceFilePaths(request.Id);
-                request.ResourceFilePath = resourceFilePaths.Where(f => f.Contains(request!.Id!)).FirstOrDefault();               
+                var resourceFilePaths = await GetRequestResourceFilePaths(request.Name);
+                request.ResourceFilePath = resourceFilePaths.Where(f => f.Contains(request!.Name!)).FirstOrDefault();               
             }
         }
 

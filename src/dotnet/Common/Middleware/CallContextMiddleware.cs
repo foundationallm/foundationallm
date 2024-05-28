@@ -44,8 +44,11 @@ namespace FoundationaLLM.Common.Middleware
                 // Extract from ClaimsPrincipal if available:
                 callContext.CurrentUserIdentity = claimsProviderService.GetUserIdentity(context.User);
 
-                if (callContext.CurrentUserIdentity != null)
+                if (callContext.CurrentUserIdentity != null
+                    && !claimsProviderService.IsServicePrincipal(context.User))
                 {
+                    // We are only expanding group membership for User objects
+                    // Service Principal permissions must be assigned directly and not over group membership.
                     callContext.CurrentUserIdentity.GroupIds = await groupMembershipService.GetGroupsForPrincipal(
                         callContext.CurrentUserIdentity.UserId!);
                 }

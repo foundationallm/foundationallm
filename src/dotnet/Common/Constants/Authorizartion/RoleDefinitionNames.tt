@@ -8,37 +8,28 @@
 <#@ import namespace="System.Text.Json.Nodes" #>
 <#@ output extension=".cs" #>
 <#
-    string inputFileName = this.Host.ResolvePath($"../Data/AuthorizableActions.json");
+    string inputFileName = this.Host.ResolvePath($"../../../Authorization/Data/RoleDefinitions.json");
     string inputContent = File.ReadAllText(inputFileName);
     var jsonObjects = JsonNode.Parse(inputContent)!;
 #>
-namespace FoundationaLLM.Authorization.Constants
+namespace FoundationaLLM.Common.Constants.Authorization
 {
     /// <summary>
-    /// Provides the names of the authorizable actions managed by the FoundationaLLM.Authorization provider.
+    /// Provides the names of the role definitions managed by the FoundationaLLM.Authorization provider.
     /// </summary>
-    public static class AuthorizableActionNames
-    {<#
-    foreach (var jsonObject in jsonObjects.AsArray())
-    {#>
-
-        #region <#= jsonObject["category"] #>
-
+    public static class RoleDefinitionNames
+    {
 <#
-        foreach (var action in jsonObject["actions"].AsArray())
+        foreach (var jsonObject in jsonObjects.AsArray())
         {
 #>
         /// <summary>
-        /// <#= action["description"] #>
+        /// <#= jsonObject["description"] #>
         /// </summary>
-        public const string <#= action["field_name"] #> = "<#= action["name"] #>";
+        public const string <#= jsonObject["display_name"].ToString().Replace(" ", "_") #> = "<#= jsonObject["name"] #>";
 
 <#
         }
-#>
-        #endregion
-<#
-    }
 #>
     }
 }

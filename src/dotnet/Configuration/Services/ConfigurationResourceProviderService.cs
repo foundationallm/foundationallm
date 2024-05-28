@@ -9,7 +9,6 @@ using FoundationaLLM.Common.Models.Configuration.AppConfiguration;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.ResourceProviders;
@@ -129,10 +128,10 @@ namespace FoundationaLLM.Configuration.Services
 
         #region Helpers for GetResourcesAsyncInternal
 
-        private async Task<List<AppConfigurationKeyBase>> LoadAppConfigurationKeys(ResourceTypeInstance instance)
+        private async Task<List<ResourceProviderGetResult<AppConfigurationKeyBase>>> LoadAppConfigurationKeys(ResourceTypeInstance instance)
         {
             var keyFilter = instance.ResourceId ?? "FoundationaLLM:*";
-            var result = new List<AppConfigurationKeyBase>(); 
+            var result = new List<ResourceProviderGetResult<AppConfigurationKeyBase>>(); 
 
             var settings = await _appConfigurationService.GetConfigurationSettingsAsync(keyFilter);
             foreach (var setting in settings)
@@ -150,7 +149,7 @@ namespace FoundationaLLM.Configuration.Services
 
                 if (string.IsNullOrEmpty(setting.Value))
                 {
-                    result.Add(appConfig);
+                    result.Add(new ResourceProviderGetResult<AppConfigurationKeyBase>() { Resource = appConfig, Actions = [], Roles = [] });
                     continue;
                 }
 
@@ -162,23 +161,22 @@ namespace FoundationaLLM.Configuration.Services
                         appConfig = kvAppConfig;
                 }
 
-                result.Add(appConfig);
+                result.Add(new ResourceProviderGetResult<AppConfigurationKeyBase>() { Resource = appConfig, Actions = [], Roles = [] });
             }
 
             return result;
         }
 
-        private async Task<List<ExternalOrchestrationService>> LoadExternalOrchestrationServices(ResourceTypeInstance instance)
+        private async Task<List<ResourceProviderGetResult<ExternalOrchestrationService>>> LoadExternalOrchestrationServices(ResourceTypeInstance instance)
         {
             if (instance.ResourceId == null)
             {
-                return
-                [
-                    .. (await Task.WhenAll(
+                var externalOrchestrationServices = (await Task.WhenAll(
                         _externalOrchestrationServiceReferences.Values
                             .Where(eosr => !eosr.Deleted)
-                            .Select(eosr => LoadExternalOrchestrationService(eosr))))
-                ];
+                            .Select(eosr => LoadExternalOrchestrationService(eosr)))).ToList();
+
+                return externalOrchestrationServices.Select(service => new ResourceProviderGetResult<ExternalOrchestrationService>() { Resource = service, Actions = [], Roles = [] }).ToList();
             }
             else
             {
@@ -189,7 +187,7 @@ namespace FoundationaLLM.Configuration.Services
 
                 var externalOrchestrationService = await LoadExternalOrchestrationService(resourceReference);
 
-                return [externalOrchestrationService];
+                return [new ResourceProviderGetResult<ExternalOrchestrationService>() { Resource = externalOrchestrationService, Actions = [], Roles = [] }];
             }
         }
 

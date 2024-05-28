@@ -106,9 +106,15 @@ namespace FoundationaLLM
                     policyBuilder.RequireAuthenticatedUser();
                     if (requireScopes)
                     {
-                        var requiredScope = builder.Configuration[entraScopesConfigurationKey!] ?? "";
-                        policyBuilder.RequireClaim(ClaimConstants.Scope,
-                            requiredScope.Split(' '));
+                        var requiredScopes = builder.Configuration[entraScopesConfigurationKey]?.Split(' ');
+                        if (requiredScopes != null && requiredScopes.Length > 0)
+                        {
+                            policyBuilder.RequireClaim(ClaimConstants.Scope, requiredScopes);
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException("Scopes are required but no valid scopes are configured.");
+                        }
                     }
                 });
             });

@@ -2,11 +2,15 @@
 	<div class="sidebar">
 		<!-- Sidebar section header -->
 		<div class="sidebar__header">
-			<img
-				v-if="$appConfigStore.logoUrl"
-				:src="$filters.publicDirectory($appConfigStore.logoUrl)"
-			/>
-			<span v-else>{{ $appConfigStore.logoText }}</span>
+			<template v-if="$appConfigStore.logoUrl">
+				<NuxtLink to="/">
+					<img :src="$filters.publicDirectory($appConfigStore.logoUrl)"
+					/>
+				</NuxtLink>
+			</template>
+			<template v-else>
+				<NuxtLink to="/">{{ $appConfigStore.logoText }}</NuxtLink>
+			</template>
 		</div>
 
 		<!-- Agents -->
@@ -100,7 +104,7 @@ a {
 	padding-right: 24px;
 	padding-left: 24px;
 	padding-top: 12px;
-	display: flex;
+	/*display: flex;*/
 	align-items: center;
 	color: var(--primary-text);
 

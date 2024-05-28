@@ -73,7 +73,7 @@ namespace Vectorization.Tests.Handlers
             };
             VectorizationRequest request = new VectorizationRequest
             {
-                Id = "d4669c9c-e330-450a-a41c-a4d6649abdef",
+                Name = "d4669c9c-e330-450a-a41c-a4d6649abdef",
                 ContentIdentifier = contentIdentifier,
                 ProcessingType = VectorizationProcessingType.Synchronous,
                 Steps = new List<VectorizationStep>

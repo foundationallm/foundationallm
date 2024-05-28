@@ -3,7 +3,7 @@
 namespace FoundationaLLM.Gatekeeper.Core.Models.LakeraGuard
 {
     /// <summary>
-    /// Prompt injection endpoint result.
+    /// Prompt injection result.
     /// </summary>
     public class AnalyzePromptInjectionResult
     {
@@ -21,7 +21,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Models.LakeraGuard
     }
 
     /// <summary>
-    /// Internal prompt injection endpoint result.
+    /// Detailed prompt injection result.
     /// </summary>
     public class PromptInjectionResult
     {

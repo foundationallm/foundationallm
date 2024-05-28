@@ -29,8 +29,12 @@ namespace FoundationaLLM.Common.Extensions
 
             var result = await resourceProviderService.HandleGetAsync(
                 objectId,
-                userIdentity);
-            return (result as List<T>)!.First();
+                userIdentity) as List<ResourceProviderGetResult<T>>;
+
+            if (result == null || result.Count == 0)
+                throw new ResourceProviderException($"The resource provider {resourceProviderService.Name} is unable to retrieve the {objectId} resource.");
+
+            return result.First().Resource;
         }
 
         /// <summary>
@@ -50,14 +54,41 @@ namespace FoundationaLLM.Common.Extensions
                 throw new ResourceProviderException($"The resource provider {resourceProviderService.Name} is not initialized.");
 
             var resourceTypeDescriptor = resourceProviderService.AllowedResourceTypes.Values
-                .SingleOrDefault(rtd => rtd.TypeAllowedForHttpGet(typeof(T)))
+                .SingleOrDefault(rtd => rtd.TypeAllowedForHttpGet(typeof(ResourceProviderGetResult<T>)))
                 ?? throw new ResourceProviderException($"The resource provider {resourceProviderService.Name} does not support retrieving resources of type {typeof(T).Name}.");
 
             var result = await resourceProviderService.HandleGetAsync(
                 $"/{resourceTypeDescriptor.ResourceType}",
                 userIdentity);
 
-            return (result as List<T>)!;
+            return (result as List<ResourceProviderGetResult<T>>)!.Select(x => x.Resource).ToList();
+        }
+
+        /// <summary>
+        /// Gets a list of resources with RBAC information from the resource provider service.
+        /// </summary>
+        /// <typeparam name="T">The object type of the resources being retrieved.</typeparam>
+        /// <param name="resourceProviderService">The <see cref="IResourceProviderService"/> providing the resource provider services.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
+        /// <returns>A list of resource objects of type <typeparamref name="T"/>.</returns>
+        /// <exception cref="ResourceProviderException"></exception>
+        public static async Task<List<ResourceProviderGetResult<T>>> GetResourcesWithRBAC<T>(
+            this IResourceProviderService resourceProviderService,
+            UnifiedUserIdentity userIdentity)
+            where T : ResourceBase
+        {
+            if (!resourceProviderService.IsInitialized)
+                throw new ResourceProviderException($"The resource provider {resourceProviderService.Name} is not initialized.");
+
+            var resourceTypeDescriptor = resourceProviderService.AllowedResourceTypes.Values
+                .SingleOrDefault(rtd => rtd.TypeAllowedForHttpGet(typeof(ResourceProviderGetResult<T>)))
+                ?? throw new ResourceProviderException($"The resource provider {resourceProviderService.Name} does not support retrieving resources of type {typeof(T).Name}.");
+
+            var result = await resourceProviderService.HandleGetAsync(
+                $"/{resourceTypeDescriptor.ResourceType}",
+                userIdentity);
+
+            return (result as List<ResourceProviderGetResult<T>>)!;
         }
 
         /// <summary>

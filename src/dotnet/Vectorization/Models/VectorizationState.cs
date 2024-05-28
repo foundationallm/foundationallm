@@ -111,7 +111,7 @@ namespace FoundationaLLM.Vectorization.Models
         public static VectorizationState FromRequest(VectorizationRequest request) =>
             new()
             {
-                CurrentRequestId = request.Id!,
+                CurrentRequestId = request.Name!,
                 ContentIdentifier = request.ContentIdentifier
             };
 

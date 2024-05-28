@@ -156,9 +156,10 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                         var canonical = path.Substring(0, path.LastIndexOf('.'));
                                         var vectorizationRequest = new VectorizationRequest()
                                         {
-                                            Id = Guid.NewGuid().ToString(),
+                                            Name = Guid.NewGuid().ToString(),
                                             PipelineExecutionId = pipelineExecutionId,
                                             PipelineObjectId = activePipeline.ObjectId!,
+                                            CostCenter = activePipeline.CostCenter,
                                             ContentIdentifier = new ContentIdentifier()
                                             {
                                                 DataSourceObjectId = dataSource.ObjectId!,
@@ -251,7 +252,7 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                         var canonical = $"{dataSource.Name}/{string.Join('/', multipartId)}";
                                         var vectorizationRequest = new VectorizationRequest()
                                         {
-                                            Id = Guid.NewGuid().ToString(),
+                                            Name = Guid.NewGuid().ToString(),
                                             PipelineExecutionId = pipelineExecutionId,
                                             PipelineObjectId = activePipeline.ObjectId!,
                                             ContentIdentifier = new ContentIdentifier()
@@ -311,7 +312,7 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                             if(processResult.IsSuccess==false)
                                             {
                                                 vectorizationRequest.ProcessingState = VectorizationProcessingState.Failed;
-                                                pipelineState.ErrorMessages.Add($"Error while submitting process action on vectorization request {vectorizationRequest.Id} in pipeline {pipelineName}: {processResult.ErrorMessage!}");
+                                                pipelineState.ErrorMessages.Add($"Error while submitting process action on vectorization request {vectorizationRequest.Name} in pipeline {pipelineName}: {processResult.ErrorMessage!}");
                                             }
                                             await vectorizationRequest.UpdateVectorizationRequestResource(vectorizationResourceProvider);
                                         }

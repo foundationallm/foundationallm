@@ -10,6 +10,10 @@ from foundationallm.models.orchestration import (
     CompletionResponse
 )
 from foundationallm.models.agents import KnowledgeManagementCompletionRequest
+from foundationallm.models.resource_providers.vectorization import (
+    AzureAISearchIndexingProfile,
+    AzureOpenAIEmbeddingProfile
+)
 
 class LangChainKnowledgeManagementAgent(LangChainAgentBase):
     """
@@ -61,13 +65,13 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 # Get the vector document retriever, if it exists.
                 retriever = None
                 if request.agent.vectorization is not None:
-                    indexing_profile = self._get_indexing_profile_from_object_id(
-                        agent.vectorization.indexing_profile_object_id,
-                        agent.orchestration_settings.agent_parameters)
+                    indexing_profile = AzureAISearchIndexingProfile.from_object(
+                        agent.orchestration_settings.agent_parameters[
+                            agent.vectorization.indexing_profile_object_id])
 
-                    text_embedding_profile = self._get_text_embedding_profile_from_object_id(
-                        agent.vectorization.text_embedding_profile_object_id,
-                        agent.orchestration_settings.agent_parameters)
+                    text_embedding_profile = AzureOpenAIEmbeddingProfile.from_object(
+                        agent.orchestration_settings.agent_parameters[
+                            agent.vectorization.text_embedding_profile_object_id])
 
                     if (indexing_profile is not None) and (text_embedding_profile is not None):
                         retriever_factory = RetrieverFactory(

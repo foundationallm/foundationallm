@@ -50,13 +50,13 @@ namespace FoundationaLLM.Vectorization.Handlers
             {                
                 if(state.Artifacts.Count > 0)
                 {
-                    state.Log(this, request.Id!, _messageId, "The extracted text artifact does not contain any text");
-                    throw new VectorizationException($"The extracted text artifact did not have text content. Request id: {request.Id} canonical id: {request.ContentIdentifier.CanonicalId}");
+                    state.Log(this, request.Name!, _messageId, "The extracted text artifact does not contain any text");
+                    throw new VectorizationException($"The extracted text artifact did not have text content. Request id: {request.Name} canonical id: {request.ContentIdentifier.CanonicalId}");
                 }
                 else
                 {
-                    state.Log(this, request.Id!, _messageId, "No extracted text artifacts found.");
-                    throw new VectorizationException($"No extracted text artifacts were found for request id: {request.Id} canonical id: {request.ContentIdentifier.CanonicalId}");
+                    state.Log(this, request.Name!, _messageId, "No extracted text artifacts found.");
+                    throw new VectorizationException($"No extracted text artifacts were found for request id: {request.Name} canonical id: {request.ContentIdentifier.CanonicalId}");
                 }
             }
 

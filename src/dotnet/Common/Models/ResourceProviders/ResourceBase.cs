@@ -28,6 +28,15 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         [JsonPropertyOrder(-2)]
         public string? Description { get; set; }
 
+
+        /// <summary>
+        /// The cost center of the resource.
+        /// </summary>
+        [JsonPropertyName("cost_center")]
+        [JsonPropertyOrder(79)]
+        public string? CostCenter { get; set; }
+
+
         /// <summary>
         /// The time at which the security role definition was created.
         /// </summary>

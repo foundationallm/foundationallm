@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using FoundationaLLM.Authorization.Constants;
 using FoundationaLLM.Authorization.Models;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Validation.ResourceProvider;
 
 namespace FoundationaLLM.Authorization.Validation
@@ -16,6 +16,7 @@ namespace FoundationaLLM.Authorization.Validation
         public RoleAssignmentValidator()
         {
             RuleLevelCascadeMode = CascadeMode.Stop;
+
             Include(new ResourceBaseValidator());
 
             RuleFor(x => x.RoleDefinitionId)

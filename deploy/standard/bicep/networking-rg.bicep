@@ -1,29 +1,24 @@
+// Inputs
+param cidrVnet string = '10.220.128.0/21'
+param createVpnGateway bool = false
 param environmentName string
 param location string
+param networkName string=''
 param project string
 param timestamp string = utcNow()
-param cidrVnet string = '10.220.128.0/21'
 
-param createVpnGateway bool = false
-
-@description('Resource Suffix used in naming resources.') // TODO Make this consistent on next new deploy
-var resourceSuffix = '${environmentName}-${location}-${workload}-${project}'
-
-@description('Workload Token used in naming resources.')
-var workload = 'net'
-
-output vnetId string = main.id
-output vnetName string = main.name
-
-var name = 'vnet-${environmentName}-${location}-net'
+// Locals
+var cidrFllmAuth = cidrSubnet(cidrVnet, 26, 17) // 10.220.132.64/26
 var cidrFllmBackend = cidrSubnet(cidrVnet, 24, 1) // 10.220.129.0/24
 var cidrFllmFrontend = cidrSubnet(cidrVnet, 24, 2) // 10.220.130.0/24
 var cidrFllmOpenAi = cidrSubnet(cidrVnet, 26, 12) // 10.220.131.0/26
 var cidrFllmOps = cidrSubnet(cidrVnet, 26, 15) // 10.220.131.192/26
 var cidrFllmVec = cidrSubnet(cidrVnet, 26, 16) // 10.220.132.0/26
-var cidrFllmAuth = cidrSubnet(cidrVnet, 26, 17) // 10.220.132.64/26
-var cidrVpnGateway = cidrSubnet(cidrVnet, 24, 5) // 10.220.133.0/24
 var cidrNetSvc = cidrSubnet(cidrVnet, 24, 6) // 10.220.134.0/24
+var cidrVpnGateway = cidrSubnet(cidrVnet, 24, 5) // 10.220.133.0/24
+var name = networkName == '' ? 'vnet-${environmentName}-${location}-net' : networkName
+var resourceSuffix = '${environmentName}-${location}-${workload}-${project}'
+var workload = 'net'
 
 var subnets = [
   {
@@ -519,6 +514,11 @@ var tags = {
   Purpose: 'Networking'
 }
 
+// Outputs
+output vnetId string = main.id
+output vnetName string = main.name
+
+// Resources
 resource main 'Microsoft.Network/virtualNetworks@2023-05-01' = {
   name: name
   location: location
@@ -546,6 +546,7 @@ resource main 'Microsoft.Network/virtualNetworks@2023-05-01' = {
   }
 }
 
+// Nested Modules
 module nsg 'modules/nsg.bicep' = [for subnet in subnets: if (subnet.name != 'GatewaySubnet') {
   name: 'nsg-${subnet.name}-${timestamp}'
   params: {

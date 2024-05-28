@@ -7,25 +7,8 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Vectorization
     /// <summary>
     /// Represents a vectorization request.
     /// </summary>
-    public class VectorizationRequest
-    {
-        /// <summary>
-        /// The unique identifier of the vectorization request.
-        /// The responsibility to create this identifier belongs to the initiator of the vectorization request.
-        /// </summary>
-        [JsonPropertyOrder(-2)]
-        [JsonPropertyName("id")]
-        public string? Id { get; set; }
-
-        /// <summary>
-        /// The unique identifier of the vectorization request.
-        /// The responsibility to create this identifier belongs to the FoundationaLLM.Vectorization resource provider.
-        /// Subsequent vectorization requests referring to the same content will have different unique identifiers.
-        /// </summary>
-        [JsonPropertyOrder(0)]
-        [JsonPropertyName("object_id")]
-        public string? ObjectId { get; set; }
-
+    public class VectorizationRequest : ResourceBase
+    {       
         /// <summary>
         /// Path to the vectorization request resource file.
         /// </summary>
@@ -159,7 +142,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Vectorization
         public (string PreviousStep, string? CurrentStep) MoveToNextStep()
         {
             if (RemainingSteps.Count == 0)
-                throw new VectorizationException($"Attempting to move to the next step when no steps remain for vectorization request with id {Id}.");
+                throw new VectorizationException($"Attempting to move to the next step when no steps remain for vectorization request with id {Name}.");
 
             var previousStepName = RemainingSteps.First();
             RemainingSteps.RemoveAt(0);
@@ -188,5 +171,11 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Vectorization
         /// </summary>
         public bool Expired =>
             (DateTime.UtcNow - LastSuccessfulStepTime).TotalHours > 240;
+
+        /// <summary>
+        /// Set default property values.
+        /// </summary>
+        public VectorizationRequest() =>
+            Type = "vectorization-request";
     }
 }

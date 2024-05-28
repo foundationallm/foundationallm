@@ -11,6 +11,9 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY . .
 
+RUN dotnet restore "dotnet/Common/Common.csproj"
+RUN dotnet build "dotnet/Common/Common.csproj" -c Release -o /app/build
+
 RUN dotnet restore "dotnet/Gateway/Gateway.csproj"
 RUN dotnet build "dotnet/Gateway/Gateway.csproj" -c Release -o /app/build
 
@@ -18,6 +21,7 @@ RUN dotnet restore "dotnet/GatewayAPI/GatewayAPI.csproj"
 RUN dotnet build "dotnet/GatewayAPI/GatewayAPI.csproj" -c Release -o /app/build
 
 FROM build AS publish
+RUN dotnet publish "dotnet/Common/Common.csproj" -c Release -o /app/publish /p:UseAppHost=false
 RUN dotnet publish "dotnet/Gateway/Gateway.csproj" -c Release -o /app/publish /p:UseAppHost=false
 RUN dotnet publish "dotnet/GatewayAPI/GatewayAPI.csproj" -c Release -o /app/publish /p:UseAppHost=false
 

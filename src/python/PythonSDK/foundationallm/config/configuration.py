@@ -12,7 +12,7 @@ class Configuration():
     def __init__(self):
         """Init"""
         try:
-            app_config_uri = os.environ['foundationallm-app-configuration-uri']
+            app_config_uri = os.environ['FOUNDATIONALLM_APP_CONFIGURATION_URI']
         except Exception as e:
             raise e
 

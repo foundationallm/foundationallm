@@ -5,7 +5,6 @@ param logAnalyticsName string
 param tags object = {}
 
 var secretNames = [
-  'appinsights-connection'
   'foundationallm-app-insights-connection-string'
 ]
 

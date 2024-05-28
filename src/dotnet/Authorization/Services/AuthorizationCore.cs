@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
-using FoundationaLLM.Authorization.Constants;
 using FoundationaLLM.Authorization.Interfaces;
 using FoundationaLLM.Authorization.Models;
 using FoundationaLLM.Authorization.Models.Configuration;
 using FoundationaLLM.Authorization.ResourceProviders;
 using FoundationaLLM.Authorization.Utils;
+using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authorization;
@@ -195,6 +195,101 @@ namespace FoundationaLLM.Authorization.Services
                 PrincipalId = securityPrincipalId,
                 ResourcePaths = [resourcePath]
             });
+        }
+
+
+        /// <inheritdoc/>
+        public async Task<RoleAssignmentResult> AssignRole(string instanceId, RoleAssignmentRequest roleAssignmentRequest)
+        {
+            var roleAssignmentStoreFile = $"/{instanceId.ToLower()}.json";
+
+            if (await _storageService.FileExistsAsync(ROLE_ASSIGNMENTS_CONTAINER_NAME, roleAssignmentStoreFile, default))
+            {
+                var fileContent = await _storageService.ReadFileAsync(ROLE_ASSIGNMENTS_CONTAINER_NAME, roleAssignmentStoreFile, default);
+                var roleAssignmentStore = JsonSerializer.Deserialize<RoleAssignmentStore>(
+                    Encoding.UTF8.GetString(fileContent.ToArray()));
+                if (roleAssignmentStore != null)
+                {
+                    var exists = roleAssignmentStore.RoleAssignments.Any(x => x.PrincipalId == roleAssignmentRequest.PrincipalId
+                                                                           && x.Scope == roleAssignmentRequest.Scope
+                                                                           && x.RoleDefinitionId == roleAssignmentRequest.RoleDefinitionId);
+                    if (!exists)
+                    {
+                        var roleAssignment = new RoleAssignment()
+                        {
+                            Type = $"{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleAssignments}",
+                            Name = roleAssignmentRequest.Name,
+                            Description = roleAssignmentRequest.Description,
+                            ObjectId = roleAssignmentRequest.ObjectId,
+                            PrincipalId = roleAssignmentRequest.PrincipalId,
+                            PrincipalType = roleAssignmentRequest.PrincipalType,
+                            RoleDefinitionId = roleAssignmentRequest.RoleDefinitionId,
+                            Scope = roleAssignmentRequest.Scope,
+                        };
+
+                        roleAssignmentStore.RoleAssignments.Add(roleAssignment);
+                        _roleAssignmentStores.AddOrUpdate(instanceId, roleAssignmentStore, (k, v) => roleAssignmentStore);
+                        roleAssignmentStore.EnrichRoleAssignments();
+                        _roleAssignmentCaches[instanceId].AddOrUpdateRoleAssignment(roleAssignment);
+
+                        await _storageService.WriteFileAsync(
+                                ROLE_ASSIGNMENTS_CONTAINER_NAME,
+                                roleAssignmentStoreFile,
+                                JsonSerializer.Serialize(roleAssignmentStore),
+                                default,
+                                default);
+
+                        return new RoleAssignmentResult() { Success = true };
+                    }
+                }
+            }
+
+            return new RoleAssignmentResult() { Success = false };
+        }
+
+        /// <inheritdoc/>
+        public Task<RoleAssignmentResult> RevokeRole(string instanceId, string roleAssignment) => throw new NotImplementedException();
+
+        /// <inheritdoc/>
+        public Dictionary<string, RoleAssignmentsWithactionsResult> ProcessRoleAssignmentsWithActionsRequest(string instanceId, RoleAssignmentsWithActionsRequest request)
+        {
+            var result = request.Scopes.Distinct().ToDictionary(scp => scp, res => new RoleAssignmentsWithactionsResult() { Actions = [], Roles = [] });
+
+            foreach (var scope in request.Scopes)
+            {
+                try
+                {
+                    _ = ResourcePath.TryParseResourceProvider(scope, out string? resourceProdiver);
+                    var requestScope = ResourcePathUtils.ParseForAuthorizationRequestResourcePath(scope, _settings.InstanceIds);
+
+                    if (string.IsNullOrWhiteSpace(requestScope.InstanceId) || requestScope.InstanceId.ToLower().CompareTo(instanceId.ToLower()) != 0)
+                    {
+                        _logger.LogError("The instance id from the controller route and the instance id from the authorization request do not match.");
+                    }
+                    else
+                    {
+                        var roleAssignments = _roleAssignmentStores[instanceId].RoleAssignments.Where(x => x.PrincipalId == request.PrincipalId || request.SecurityGroupIds.Contains(x.PrincipalId)).ToList();
+                        foreach (var ra in roleAssignments)
+                        {
+                            if (scope.Contains(ra.Scope))
+                            {
+                                result[scope].Actions.AddRange(ra.AllowedActions.Where(x => x.Contains(resourceProdiver!)).ToList());
+                                result[scope].Roles.Add(ra.RoleDefinition!.DisplayName!);
+                            }
+                        }
+
+                        // Duplicated actions might exist when a pricipal has multiple roles with overlapping permissions.
+                        result[scope].Actions = result[scope].Actions.Distinct().ToList();
+                        result[scope].Roles = result[scope].Roles.Distinct().ToList();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "There was an issue while processing the get roles with actions request for {Scope}.", scope);
+                }
+            }
+
+            return result;
         }
 
         private bool ActionAllowed(ResourcePath resourcePath, ActionAuthorizationRequest authorizationRequest)

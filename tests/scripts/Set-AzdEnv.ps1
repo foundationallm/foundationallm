@@ -147,6 +147,11 @@ $values = @(
     @{
         Key = "AZURE_PRINCIPAL_TYPE"
         Value = "ServicePrincipal"
+    },
+
+    @{
+        Key = "FOUNDATIONALLM_E2E_TEST"
+        Value = $true
     }
 )
 

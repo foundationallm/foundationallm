@@ -28,6 +28,20 @@ const allowedKeys = [
 	'FoundationaLLM:Branding:PrimaryButtonTextColor',
 	'FoundationaLLM:Branding:SecondaryButtonBackgroundColor',
 	'FoundationaLLM:Branding:SecondaryButtonTextColor',
+
+	'FoundationaLLM:APIs:AgentHubAPI:APIUrl',
+	'FoundationaLLM:APIs:AuthorizationAPI:APIUrl',
+	'FoundationaLLM:APIs:CoreAPI:APIUrl',
+	'FoundationaLLM:APIs:DataSourceHubAPI:APIUrl',
+	'FoundationaLLM:APIs:GatekeeperAPI:APIUrl',
+	'FoundationaLLM:APIs:GatekeeperIntegrationAPI:APIUrl',
+	'FoundationaLLM:APIs:GatewayAPI:APIUrl',
+	'FoundationaLLM:APIs:LangChainAPI:APIUrl',
+	'FoundationaLLM:APIs:OrchestrationAPI:APIUrl',
+	'FoundationaLLM:APIs:PromptHubAPI:APIUrl',
+	'FoundationaLLM:APIs:SemanticKernelAPI:APIUrl',
+	'FoundationaLLM:APIs:VectorizationAPI:APIUrl',
+	'FoundationaLLM:APIs:VectorizationWorker:APIUrl',
 ];
 
 export default defineEventHandler(async (event) => {

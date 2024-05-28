@@ -95,7 +95,7 @@ namespace FoundationaLLM.Core.Examples
                 CompletedSteps = new List<string>(),
                 ProcessingType = VectorizationProcessingType.Synchronous,
                 ContentIdentifier = ci,
-                Id = id,
+                Name = id,
                 Steps = steps,
                 ObjectId = $"{VectorizationResourceTypeNames.VectorizationRequests}/{id}"
             };

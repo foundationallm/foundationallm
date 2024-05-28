@@ -7,6 +7,18 @@ on:
         description: AZD Environment Name
         type: string
         default: fllm-e2e-aca
+      deployOpenAi:
+        description: Deploy a new OpenAI Instance
+        type: boolean
+        default: false
+      openAiName:
+        description: Shared OpenAI Instance Name
+        type: string
+        default: fllm-01
+      openAiResourceGroup:
+        description: Shared OpenAI Resource Group
+        type: string
+        default: fllm-shared-01
       location:
         description: AZD Target Location
         type: choice
@@ -20,19 +32,41 @@ on:
       enableTeardown:
         description: Enable teardown of environment
         type: boolean
+        default: true
+      bypassAndTeardown:
+        description: Bypass Tests and Force Teardown
+        type: boolean
         default: false
+      target:
+        description: Select target tenant/subscription
+        type: choice
+        options:
+        - sandbox
+        - e2e
+        default: e2e
 
 jobs:
   generate_matrix:
+    name: Generate Configuration Matrix
+    if: ${{ (startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/')) }}
     runs-on: ubuntu-latest
     outputs:
       registry: ${{ steps.set-registry.outputs.result }}
       service_matrix: ${{ steps.set-service-matrix.outputs.result }}
       test_matrix: ${{ steps.set-test-matrix.outputs.result }}
       docker_tag: ${{ steps.docker-tag.outputs.docker_tag }}
+      unique_id: ${{ steps.set-unique-id.outputs.digest }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+
+    - name: Generate Unique ID
+      uses: pplanel/hash-calculator-action@v1.3.1
+      id: set-unique-id
+      with:
+        input: ${{ inputs.environment }}
+        method: SHA3
+        output_len: 32
 
     - name: Set Service Matrix
       uses: actions/github-script@v7
@@ -62,10 +96,10 @@ jobs:
       with:
         result-encoding: string
         script: |
-          const fs = require('fs')
-          const jsonString = fs.readFileSync('./tests/config/e2e-test-manifest.json')
-          var data = JSON.parse(jsonString)
-          return data.registry
+          var registries = new Map();
+          registries['e2e'] = 'crfllme2eops'
+          registries['sandbox'] = 'cropseastus2svinternal'
+          return registries['${{ inputs.target }}']
 
     - name: Set Git and Helm Tag
       id: docker-tag
@@ -78,7 +112,7 @@ jobs:
 
   helm_build:
     name: Package Helm Charts
-    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/')
+    if: ${{ !inputs.bypassAndTeardown && (startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/')) }}
     needs: generate_matrix
     strategy:
       fail-fast: false
@@ -87,13 +121,15 @@ jobs:
     uses: ./.github/workflows/build-helm-chart.yml
     with:
       chart: ${{ matrix.object.name }}
-      registry: ${{ needs.generate_matrix.outputs.registry }}
+      registry: ${{ needs.generate_matrix.outputs.registry }}.azurecr.io
       tag: ${{ needs.generate_matrix.outputs.docker_tag }}
+      username: e2e-token
+      target: ${{ inputs.target }}
     secrets: inherit
 
   docker_build:
     name: Build Docker Images
-    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/')
+    if: ${{ !inputs.bypassAndTeardown && (startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/')) }}
     needs: generate_matrix
     strategy:
       fail-fast: false
@@ -104,31 +140,54 @@ jobs:
       image: ${{ matrix.object.name }}
       context: ${{ matrix.object.context }}
       dockerfile: ${{ matrix.object.dockerfile }}
-      registry: ${{ needs.generate_matrix.outputs.registry }}
+      registry: ${{ needs.generate_matrix.outputs.registry }}.azurecr.io
       tag: ${{ needs.generate_matrix.outputs.docker_tag }}
+      username: e2e-token
+      target: ${{ inputs.target }}
     secrets: inherit
 
   deploy_quickstart:
     name: Deploy Quick Start
-    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/')
+    if: ${{ !inputs.bypassAndTeardown && (startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/')) }}
     runs-on: ubuntu-latest
     env:
-      AZURE_CLIENT_ID: ${{ secrets.FLLM_E2E_SP_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ secrets.FLLM_E2E_TENANT_ID }}
-      AZURE_SUBSCRIPTION_ID: ${{ secrets.FLLM_E2E_SUBSCRIPTION_ID }}
-      AZURE_CREDENTIALS: ${{ secrets.FLLM_E2E_AZURE_CREDENTIALS }}
+      AZURE_ENV_NAME: ${{ inputs.environment }}
+      AZURE_LOCATION: ${{ inputs.location }}
     needs: [generate_matrix, docker_build]
     steps:
+    - name: Sets Credentials for E2E
+      run: |
+        {
+          echo 'AZURE_CREDENTIALS<<EOF'
+          echo "$FLLM_E2E_AZURE_CREDENTIALS"
+          echo EOF
+        } >> "$GITHUB_ENV"
+      if: inputs.target == 'e2e'
+      env:
+        FLLM_E2E_AZURE_CREDENTIALS: |
+          ${{ secrets.FLLM_E2E_AZURE_CREDENTIALS }}
+    
+    - name: Sets Credentials for Sandbox
+      run: |
+        {
+          echo 'AZURE_CREDENTIALS<<EOF'
+          echo "$FLLM_SBX_AZURE_CREDENTIALS"
+          echo EOF
+        } >> "$GITHUB_ENV"
+      if: inputs.target == 'sandbox'
+      env:
+        FLLM_SBX_AZURE_CREDENTIALS: |
+          ${{ secrets.FLLM_SBX_AZURE_CREDENTIALS }}
+
     - name: Checkout code
       uses: actions/checkout@v4
 
     - name: Install azd
       uses: Azure/setup-azd@v1.0.0
       with:
-        version: '1.9.0'
+        version: '1.9.3'
 
     - name: Log in with Azure (Client Credentials)
-      if: ${{ env.AZURE_CREDENTIALS != '' }}
       run: |
         $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable;
         Write-Host "::add-mask::$($info.clientSecret)"
@@ -151,20 +210,20 @@ jobs:
           --application-id "$($info.clientId)" `
           --tenant-id "$($info.tenantId)"
       shell: pwsh
-      env:
-        AZURE_CREDENTIALS: ${{ secrets.FLLM_E2E_AZURE_CREDENTIALS }}
 
     - name: Provision App Registrations
       id: provision-app-registrations
       run: |
         Write-Host "Provision App Registrations"  
         Push-Location ./tests/scripts
-        ./Create-FllmEntraIdApps.ps1
+        ./Create-FllmEntraIdApps.ps1 `
+          -authAppName FoundationaLLM-Authorization-E2E-${{ needs.generate_matrix.outputs.unique_id }} `
+          -coreAppName FoundationaLLM-Core-E2E-${{ needs.generate_matrix.outputs.unique_id }} `
+          -coreClientAppName FoundationaLLM-Core-E2E-Client-${{ needs.generate_matrix.outputs.unique_id }} `
+          -mgmtAppName FoundationaLLM-Management-E2E-${{ needs.generate_matrix.outputs.unique_id }} `
+          -mgmtClientAppName FoundationaLLM-Management-E2E-Client-${{ needs.generate_matrix.outputs.unique_id }}
         Pop-Location
       shell: pwsh
-      env:
-        AZURE_ENV_NAME: ${{ inputs.environment }}
-        AZURE_LOCATION: ${{ inputs.location }}
 
     - name: Provision Admin Group
       id: provision-admin-group
@@ -176,13 +235,39 @@ jobs:
         Push-Location ./tests/scripts
         $spObjectId = $(az ad sp list --filter "appId eq '$($info.clientId)'" --query '[].id' --output tsv)
         Write-Host "SP Object Id: $spObjectId"
-        ./Create-FllmAdminGroup.ps1 -spObjectId $spObjectId
+        ./Create-FllmAdminGroup.ps1 `
+          -groupName FLLM-E2E-Admins-${{ needs.generate_matrix.outputs.unique_id }}
+
+        $spAssignmentExists = $(az ad group member check `
+          --group FLLM-E2E-Admins-${{ needs.generate_matrix.outputs.unique_id }} `
+          --member-id $spObjectId `
+          --output json | ConvertFrom-Json).value
+
+        if (-not $spAssignmentExists)
+        {
+          az ad group member add `
+          --group FLLM-E2E-Admins-${{ needs.generate_matrix.outputs.unique_id }} `
+          --member-id $spObjectId `
+          --output json
+        }
+
+
+        if ('${{ inputs.target }}' -eq 'sandbox') {
+          $assignmentExists = $(az ad group member check `
+            --group FLLM-E2E-Admins-${{ needs.generate_matrix.outputs.unique_id }} `
+            --member-id d3bd4e8e-d413-477d-a420-0792b0504adf `
+            --output json | ConvertFrom-Json).value
+
+          if (-not $assignmentExists)
+          {
+            az ad group member add `
+            --group FLLM-E2E-Admins-${{ needs.generate_matrix.outputs.unique_id }} `
+            --member-id d3bd4e8e-d413-477d-a420-0792b0504adf `
+            --output json
+          }
+        }
         Pop-Location
       shell: pwsh
-      env:
-        AZURE_ENV_NAME: ${{ inputs.environment }}
-        AZURE_LOCATION: ${{ inputs.location }}
-        AZURE_CREDENTIALS: ${{ secrets.FLLM_E2E_AZURE_CREDENTIALS }}
 
     - name: Update AZD Environment
       id: update-azd-environment
@@ -190,10 +275,20 @@ jobs:
         $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable;
         Write-Host "::add-mask::$($info.clientSecret)"
 
+        $spObjectId = $(az ad sp list --filter "appId eq '$($info.clientId)'" --query '[].id' --output tsv)
+
         Write-Host "Create new AZD Environment"
         Push-Location ./deploy/quick-start
         azd env new ${{ inputs.environment }}
         azd env set PIPELINE_DEPLOY "$true"
+        azd env set FLLM_E2E_SP_OBJECT_ID $spObjectId
+
+        if (${{ inputs.deployOpenAi }}) {
+          azd env set OPENAI_NAME ${{ inputs.openAiName }}
+          azd env set OPENAI_RESOURCE_GROUP ${{ inputs.openAiResourceGroup }}
+          azd env set OPENAI_SUBSCRIPTION_ID $($info.subscriptionId)
+        }
+        
         Pop-Location
 
         Write-Host "Update AZD Environment with Service Docker Image Names"
@@ -202,7 +297,7 @@ jobs:
 
         Push-Location ./deploy/quick-start
         foreach ($service in $($config.service_matrix)) {
-          $imageName = "$($config.registry)/$($service.name):${{ needs.generate_matrix.outputs.docker_tag }}"
+          $imageName = "${{ needs.generate_matrix.outputs.registry }}.azurecr.io/$($service.name):${{ needs.generate_matrix.outputs.docker_tag }}"
           Write-Host "Setting $($service.azd_env_key) to $($imageName)..."
           azd env set $($service.azd_env_key) "$($imageName)"
 
@@ -218,44 +313,50 @@ jobs:
         ../../tests/scripts/Set-AzdEnv.ps1 `
           -tenantId $($info.tenantId) `
           -principalType ServicePrincipal `
-          -instanceId 6fa496ce-d5c0-4e02-9223-06a98c9c0176
+          -instanceId 6fa496ce-d5c0-4e02-9223-06a98c9c0176 `
+          -fllmApiName FoundationaLLM-Core-E2E-${{ needs.generate_matrix.outputs.unique_id }} `
+          -fllmClientName FoundationaLLM-Core-E2E-Client-${{ needs.generate_matrix.outputs.unique_id }} `
+          -fllmMgmtApiName FoundationaLLM-Management-E2E-${{ needs.generate_matrix.outputs.unique_id }} `
+          -fllmMgmtClientName FoundationaLLM-Management-E2E-Client-${{ needs.generate_matrix.outputs.unique_id }} `
+          -fllmAuthApiName FoundationaLLM-Authorization-E2E-${{ needs.generate_matrix.outputs.unique_id }} `
+          -fllmAdminGroupName FLLM-E2E-Admins-${{ needs.generate_matrix.outputs.unique_id }}
         Pop-Location
       shell: pwsh
-      env:
-        AZURE_ENV_NAME: ${{ inputs.environment }}
-        AZURE_LOCATION: ${{ inputs.location }}
-        AZURE_CREDENTIALS: ${{ secrets.FLLM_E2E_AZURE_CREDENTIALS }}
 
     - name: Provision Infrastructure
       run: |
-        cd ./deploy/quick-start
+        $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable;
+        Write-Host "::add-mask::$($info.clientSecret)"
+
+        $env:AZURE_SUBSCRIPTION_ID=$($info.subscriptionId)
+
+        Push-Location ./deploy/quick-start
         azd provision --no-prompt
-        azd env get-values
-      env:
-        AZURE_ENV_NAME: ${{ inputs.environment }}
-        AZURE_LOCATION: ${{ inputs.location }}
-        AZURE_SUBSCRIPTION_ID: ${{ secrets.FLLM_E2E_SUBSCRIPTION_ID }}
+        Pop-Location
+      shell: pwsh
 
     - name: Deploy Application
       run: |
-        cd ./deploy/quick-start
+        $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable;
+        Write-Host "::add-mask::$($info.clientSecret)"
+
+        $env:AZURE_SUBSCRIPTION_ID=$($info.subscriptionId)
+
+        Push-Location ./deploy/quick-start
         azd deploy --no-prompt
-      env:
-        AZURE_ENV_NAME: ${{ inputs.environment }}
-        AZURE_LOCATION: ${{ inputs.location }}
-        AZURE_SUBSCRIPTION_ID: ${{ secrets.FLLM_E2E_SUBSCRIPTION_ID }}
+        Pop-Location
+      shell: pwsh
     
     - name: Update App Registration OAuth Callbacks
       id: update-app-reg-oauth
       run: |
         Write-Host "Update App Registration OAuth Callbacks"
         Push-Location ./deploy/quick-start
-        pwsh -File ../../tests/scripts/Update-OAuthCallbackUris.ps1
+        pwsh -File ../../tests/scripts/Update-OAuthCallbackUris.ps1 `
+          -fllmChatUiName FoundationaLLM-Core-E2E-Client-${{ needs.generate_matrix.outputs.unique_id }} `
+          -fllmMgmtUiName FoundationaLLM-Management-E2E-Client-${{ needs.generate_matrix.outputs.unique_id }}
         Pop-Location
       shell: pwsh
-      env:
-        AZURE_ENV_NAME: ${{ inputs.environment }}
-        AZURE_LOCATION: ${{ inputs.location }}
 
     - name: Apply MS Graph API Role Assignments
       id: apply-ms-graph-api-roles
@@ -294,32 +395,54 @@ jobs:
           --principal-id $spObjectId
         Pop-Location
       shell: pwsh
-      env:
-        AZURE_ENV_NAME: ${{ inputs.environment }}
-        AZURE_LOCATION: ${{ inputs.location }}
-        AZURE_CREDENTIALS: ${{ secrets.FLLM_E2E_AZURE_CREDENTIALS }}
 
   run_e2e_tests:
     name: Run End to End Tests
-    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/')
+    if: ${{ !inputs.bypassAndTeardown && (startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/')) }}
     continue-on-error: true
     runs-on: ubuntu-latest
+    env:
+      AZURE_ENV_NAME: ${{ inputs.environment }}
+      AZURE_LOCATION: ${{ inputs.location }}
     needs: [generate_matrix,deploy_quickstart]
     strategy:
       fail-fast: false
       matrix:
         object: ${{ fromJson(needs.generate_matrix.outputs.test_matrix) }}
     steps:
+    - name: Sets Credentials for E2E
+      run: |
+        {
+          echo 'AZURE_CREDENTIALS<<EOF'
+          echo "$FLLM_E2E_AZURE_CREDENTIALS"
+          echo EOF
+        } >> "$GITHUB_ENV"
+      if: inputs.target == 'e2e'
+      env:
+        FLLM_E2E_AZURE_CREDENTIALS: |
+          ${{ secrets.FLLM_E2E_AZURE_CREDENTIALS }}
+    
+    - name: Sets Credentials for Sandbox
+      run: |
+        {
+          echo 'AZURE_CREDENTIALS<<EOF'
+          echo "$FLLM_SBX_AZURE_CREDENTIALS"
+          echo EOF
+        } >> "$GITHUB_ENV"
+      if: inputs.target == 'sandbox'
+      env:
+        FLLM_SBX_AZURE_CREDENTIALS: |
+          ${{ secrets.FLLM_SBX_AZURE_CREDENTIALS }}
+      
     - name: Checkout code
       uses: actions/checkout@v4
 
     - name: Install azd
       uses: Azure/setup-azd@v1.0.0
       with:
-        version: '1.9.0'
+        version: '1.9.3'
 
     - name: Log in with Azure (Client Credentials)
-      if: ${{ env.AZURE_CREDENTIALS != '' }}
       run: |
         $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable;
         Write-Host "::add-mask::$($info.clientSecret)"
@@ -336,12 +459,8 @@ jobs:
           --username "$($info.clientId)" `
           --password "$($info.clientSecret)" `
           --tenant "$($info.tenantId)" `
-          --scope api://FoundationaLLM-E2E/.default
+          --scope api://FoundationaLLM-Core-E2E-${{ needs.generate_matrix.outputs.unique_id }}/.default
       shell: pwsh
-      env:
-        AZURE_CREDENTIALS: ${{ secrets.FLLM_E2E_AZURE_CREDENTIALS }}
-        AZURE_ENV_NAME: ${{ inputs.environment }}
-        AZURE_LOCATION: ${{ inputs.location }}
 
     - name: Running End to End Tests
       id: e2e-test-exec
@@ -380,27 +499,49 @@ jobs:
         echo "Running End to End Test: ${{ matrix.object.name }}"
         dotnet test --filter "FullyQualifiedName=${{ matrix.object.namespace }}.${{ matrix.object.task_name }}" ${{ matrix.object.target }}
       shell: pwsh
-      env:
-        AZURE_CREDENTIALS: ${{ secrets.FLLM_E2E_AZURE_CREDENTIALS }}
-        AZURE_ENV_NAME: ${{ inputs.environment }}
-        AZURE_LOCATION: ${{ inputs.location }}
 
   teardown_quickstart:
     name: Tear Down Quick Start
-    if: inputs.enableTeardown && (startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/'))
+    if: ${{ (cancelled() && inputs.bypassAndTeardown) || (inputs.enableTeardown && (startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/'))) }}
     runs-on: ubuntu-latest
-    needs: [deploy_quickstart,run_e2e_tests]
+    env:
+      AZURE_ENV_NAME: ${{ inputs.environment }}
+      AZURE_LOCATION: ${{ inputs.location }}
+    needs: [generate_matrix,run_e2e_tests]
     steps:
+    - name: Sets Credentials for E2E
+      run: |
+        {
+          echo 'AZURE_CREDENTIALS<<EOF'
+          echo "$FLLM_E2E_AZURE_CREDENTIALS"
+          echo EOF
+        } >> "$GITHUB_ENV"
+      if: inputs.target == 'e2e'
+      env:
+        FLLM_E2E_AZURE_CREDENTIALS: |
+          ${{ secrets.FLLM_E2E_AZURE_CREDENTIALS }}
+    
+    - name: Sets Credentials for Sandbox
+      run: |
+        {
+          echo 'AZURE_CREDENTIALS<<EOF'
+          echo "$FLLM_SBX_AZURE_CREDENTIALS"
+          echo EOF
+        } >> "$GITHUB_ENV"
+      if: inputs.target == 'sandbox'
+      env:
+        FLLM_SBX_AZURE_CREDENTIALS: |
+          ${{ secrets.FLLM_SBX_AZURE_CREDENTIALS }}
+  
     - name: Checkout code
       uses: actions/checkout@v4
 
     - name: Install azd
       uses: Azure/setup-azd@v1.0.0
       with:
-        version: '1.9.0'
+        version: '1.9.3'
 
     - name: Log in with Azure (Client Credentials)
-      if: ${{ env.AZURE_CREDENTIALS != '' }}
       run: |
         $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable;
         Write-Host "::add-mask::$($info.clientSecret)"
@@ -417,8 +558,6 @@ jobs:
           --password "$($info.clientSecret)" `
           --tenant "$($info.tenantId)"
       shell: pwsh
-      env:
-        AZURE_CREDENTIALS: ${{ secrets.FLLM_E2E_AZURE_CREDENTIALS }}
 
     - name: Tearing Down AZD Deployment
       id: azd-down
@@ -443,12 +582,17 @@ jobs:
         azd down --force --purge --no-prompt
         Pop-Location
 
+        Write-Host "Remove Admin Group"
+        az ad group delete --group FLLM-E2E-Admins-${{ needs.generate_matrix.outputs.unique_id }} --output json
+
         Write-Host "Tear down App Registrations"
         Push-Location ./tests/scripts
-        ./Remove-EntraIdApps.ps1 -interactiveMode $false
+        ./Remove-EntraIdApps.ps1 `
+          -authAppName FoundationaLLM-Authorization-E2E-${{ needs.generate_matrix.outputs.unique_id }} `
+          -coreAppName FoundationaLLM-Core-E2E-${{ needs.generate_matrix.outputs.unique_id }} `
+          -coreClientAppName FoundationaLLM-Core-E2E-Client-${{ needs.generate_matrix.outputs.unique_id }} `
+          -mgmtAppName FoundationaLLM-Management-E2E-${{ needs.generate_matrix.outputs.unique_id }} `
+          -mgmtClientAppName FoundationaLLM-Management-E2E-Client-${{ needs.generate_matrix.outputs.unique_id }} `
+          -interactiveMode $false
         Pop-Location
       shell: pwsh
-      env:
-        AZURE_CREDENTIALS: ${{ secrets.FLLM_E2E_AZURE_CREDENTIALS }}
-        AZURE_ENV_NAME: ${{ inputs.environment }}
-        AZURE_LOCATION: ${{ inputs.location }}

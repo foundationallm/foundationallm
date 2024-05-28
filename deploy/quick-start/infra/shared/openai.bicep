@@ -62,4 +62,5 @@ resource openAiDeployments 'Microsoft.CognitiveServices/accounts/deployments@202
 
 /********** Outputs **********/
 output endpoint string = openAi.properties.endpoint
+output id string = openAi.id
 output name string = openAi.name

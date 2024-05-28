@@ -1,17 +1,18 @@
-﻿using System.Text.RegularExpressions;
-using FoundationaLLM.Common.Constants;
+﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Common.Models.Chat;
-using Microsoft.Extensions.Logging;
-using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Configuration.Branding;
-using Microsoft.Extensions.Options;
+using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models;
 using FoundationaLLM.Core.Models.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System.Runtime;
-using FoundationaLLM.Common.Models.Orchestration.Direct;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System.Text.RegularExpressions;
 
 namespace FoundationaLLM.Core.Services;
 
@@ -29,13 +30,15 @@ namespace FoundationaLLM.Core.Services;
 /// settings retrieved by the injected <see cref="IOptions{TOptions}"/>.</param>
 /// <param name="settings">The <see cref="CoreServiceSettings"/> settings for the service.</param>
 /// <param name="callContext">Contains contextual data for the calling service.</param>
+/// <param name="resourceProviderServices">A dictionary of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
 public partial class CoreService(
     ICosmosDbService cosmosDbService,
     IEnumerable<IDownstreamAPIService> downstreamAPIServices,
     ILogger<CoreService> logger,
     IOptions<ClientBrandingConfiguration> brandingSettings,
     IOptions<CoreServiceSettings> settings,
-    ICallContext callContext) : ICoreService
+    ICallContext callContext,
+    IEnumerable<IResourceProviderService> resourceProviderServices) : ICoreService
 {
     private readonly ICosmosDbService _cosmosDbService = cosmosDbService;
     private readonly IDownstreamAPIService _gatekeeperAPIService = downstreamAPIServices.Single(das => das.APIName == HttpClients.GatekeeperAPI);
@@ -44,6 +47,9 @@ public partial class CoreService(
     private readonly ICallContext _callContext = callContext;
     private readonly string _sessionType = brandingSettings.Value.KioskMode ? SessionTypes.KioskSession : SessionTypes.Session;
     private readonly CoreServiceSettings _settings = settings.Value;
+    private readonly Dictionary<string, IResourceProviderService> _resourceProviderServices =
+        resourceProviderServices.ToDictionary<IResourceProviderService, string>(
+            rps => rps.Name);
 
     /// <summary>
     /// Returns list of chat session ids and names.
@@ -121,6 +127,9 @@ public partial class CoreService(
                 Settings = orchestrationRequest.Settings
             };
 
+            if (!_settings.BypassGatekeeper)
+                completionRequest.GatekeeperOptions = await GetGatekeeperOptions(completionRequest.AgentName);
+
             // Generate the completion to return to the user.
             var result = await GetDownstreamAPIService().GetCompletion(completionRequest);
 
@@ -153,14 +162,8 @@ public partial class CoreService(
     {
         try
         {
-            //var completionRequest = new CompletionRequest
-            //{
-            //    SessionId = null,
-            //    AgentName = directCompletionRequest.AgentName,
-            //    UserPrompt = directCompletionRequest.UserPrompt,
-            //    MessageHistory = null,
-            //    Settings = directCompletionRequest.Settings
-            //};
+            if (!_settings.BypassGatekeeper)
+                directCompletionRequest.GatekeeperOptions = await GetGatekeeperOptions(directCompletionRequest.AgentName);
 
             // Generate the completion to return to the user.
             var result = await GetDownstreamAPIService().GetCompletion(directCompletionRequest);
@@ -221,6 +224,25 @@ public partial class CoreService(
         _settings.BypassGatekeeper
             ? _orchestrationAPIService
             : _gatekeeperAPIService;
+
+    private async Task<string[]?> GetGatekeeperOptions(string? agentName)
+    {
+        if (!_resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Agent, out var agentResourceProvider))
+            throw new ResourceProviderException($"The resource provider {ResourceProviderNames.FoundationaLLM_Agent} was not loaded.");
+
+        var agentBase = await agentResourceProvider.GetResource<AgentBase>($"/{AgentResourceTypeNames.Agents}/{agentName}", _callContext.CurrentUserIdentity ??
+            throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving the agent settings."));
+
+        if (agentBase?.Gatekeeper?.UseSystemSetting == false)
+        {
+            if (agentBase!.Gatekeeper!.Options == null || agentBase.Gatekeeper.Options.Length == 0)
+                _settings.BypassGatekeeper = true;
+
+            return agentBase.Gatekeeper.Options;
+        }
+
+        return null;
+    }
 
     /// <summary>
     /// Add user prompt and AI assistance response to the chat session message list object and insert into the data service as a transaction.

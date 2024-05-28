@@ -21,7 +21,8 @@ public interface IAgentConversationTestService
     /// not enable this option if you wish to use pre-existing resources, such as the default FoundationaLLM agent.</param>
     /// <returns></returns>
     Task<IEnumerable<Message>> RunAgentConversationWithSession(string agentName,
-        List<string> userPrompts, string? sessionId = null, bool createAgent = false);
+        List<string> userPrompts, string? sessionId = null, bool createAgent = false, string? indexingProfileName = null,
+                string? textEmbeddingProfileName = null, string? textPartitioningProfileName = null);
 
     /// <summary>
     /// Runs a single completion with an agent using the Core API and a chat session.

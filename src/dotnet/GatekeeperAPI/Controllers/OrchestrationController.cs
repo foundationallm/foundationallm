@@ -1,6 +1,4 @@
-﻿using Asp.Versioning;
-using FoundationaLLM.Common.Authentication;
-using FoundationaLLM.Common.Interfaces;
+﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Gatekeeper.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;

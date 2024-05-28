@@ -83,7 +83,7 @@ namespace FoundationaLLM.Vectorization.Handlers
                 if (textPartitioningArtifacts == null
                     || textPartitioningArtifacts.Count == 0)
                 {
-                    state.Log(this, request.Id!, _messageId, "The text partition artifacts were not found.");
+                    state.Log(this, request.Name!, _messageId, "The text partition artifacts were not found.");
                     return false;
                 }
 

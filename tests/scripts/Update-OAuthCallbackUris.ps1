@@ -91,9 +91,10 @@ foreach ($uri in $uris.GetEnumerator()) {
         }
     } | ConvertTo-Json -Compress
 
+    Set-Content -Path "$($uri.Key)`.json" $body
     az rest `
         --method "patch" `
         --uri $applicationUri `
         --headers "{'Content-Type': 'application/json'}" `
-        --body $body
+        --body "@$($uri.Key)`.json"
 }

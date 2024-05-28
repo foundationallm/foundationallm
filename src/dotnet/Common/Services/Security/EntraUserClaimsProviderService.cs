@@ -20,12 +20,18 @@ namespace FoundationaLLM.Common.Services.Security
             }
             return new UnifiedUserIdentity
             {
-                Name = userPrincipal.FindFirstValue(ClaimConstants.Name),
+                Name = userPrincipal.FindFirstValue(ClaimConstants.Name) ?? string.Empty,
                 Username = ResolveUsername(userPrincipal),
                 UPN = ResolveUsername(userPrincipal),
                 UserId = userPrincipal.FindFirstValue(ClaimConstants.Oid) ?? userPrincipal.FindFirstValue(ClaimConstants.ObjectId)
             };
         }
+
+        /// <inheritdoc/>
+        public bool IsServicePrincipal(ClaimsPrincipal userPrincipal) =>
+            // Service Principal tokens do not have a "scp" claim
+            userPrincipal.FindFirstValue(ClaimConstants.Scp) == null &&
+            userPrincipal.FindFirstValue(ClaimConstants.Scope) == null;
 
         /// <summary>
         /// Resolves the username from the provided <see cref="ClaimsPrincipal"/> object.

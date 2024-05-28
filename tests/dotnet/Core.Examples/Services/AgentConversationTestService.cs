@@ -19,8 +19,14 @@ namespace FoundationaLLM.Core.Examples.Services
         IAzureAIService azureAIService = null) : IAgentConversationTestService
     {
         /// <inheritdoc/>
-        public async Task<IEnumerable<Message>> RunAgentConversationWithSession(string agentName,
-            List<string> userPrompts, string? sessionId = null, bool createAgent = false)
+        public async Task<IEnumerable<Message>> RunAgentConversationWithSession(
+            string agentName,
+            List<string> userPrompts, 
+            string? sessionId = null, 
+            bool createAgent = false, 
+            string? indexingProfileName = null,
+            string? textEmbeddingProfileName = null, 
+            string? textPartitioningProfileName = null)
         {
             var sessionCreated = false;
             if (string.IsNullOrWhiteSpace(sessionId))
@@ -33,7 +39,7 @@ namespace FoundationaLLM.Core.Examples.Services
             if (createAgent)
             {
                 // Create a new agent and its dependencies for the test.
-                await managementAPITestManager.CreateAgent(agentName);
+                await managementAPITestManager.CreateAgent(agentName, indexingProfileName, textEmbeddingProfileName, textPartitioningProfileName);
             }
 
             // Send user prompts and agent responses.

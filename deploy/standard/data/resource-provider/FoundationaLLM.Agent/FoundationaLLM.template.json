@@ -1,4 +1,5 @@
 {
+  "type": "knowledge-management",
   "name": "FoundationaLLM",
   "object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.Agent/agents/FoundationaLLM",
   "description": "Useful for answering questions about FoundationaLLM.",

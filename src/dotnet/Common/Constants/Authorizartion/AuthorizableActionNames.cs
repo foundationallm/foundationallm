@@ -1,4 +1,4 @@
-namespace FoundationaLLM.Authorization.Constants
+namespace FoundationaLLM.Common.Constants.Authorization
 {
     /// <summary>
     /// Provides the names of the authorizable actions managed by the FoundationaLLM.Authorization provider.

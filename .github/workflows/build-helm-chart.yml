@@ -12,7 +12,13 @@ on:
       tag:
         type: string
         required: true
-
+      username:
+        type: string
+        required: true
+      target:
+        type: string
+        required: true
+  
 jobs:
   helm_build:
     runs-on: ubuntu-latest
@@ -23,12 +29,26 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Get Container Registry Password
+      uses: actions/github-script@v7
+      id: set-registry-password
+      with:
+        result-encoding: string
+        script: |
+          var passwords = new Map()
+          passwords['e2e'] = process.env.E2E_ACR_PASSWORD
+          passwords['sandbox'] = process.env.SBX_ACR_PASSWORD
+          return passwords['${{ inputs.target }}']
+      env:
+        E2E_ACR_PASSWORD: ${{ secrets.FLLM_E2E_ACR_PASSWORD }}
+        SBX_ACR_PASSWORD: ${{ secrets.FLLM_SBX_ACR_PASSWORD }}
+    
     - name: Log in to the Container registry
       uses: docker/login-action@v3
       with:
         registry: ${{ inputs.registry }}
-        username: ${{ secrets.FLLM_ACR_USERNAME }}
-        password: ${{ secrets.FLLM_ACR_PASSWORD }}
+        username: ${{ inputs.username }}
+        password: ${{ steps.set-registry-password.outputs.result }}
 
     - name: Helm Chart Update, Package, and Push
       run: |

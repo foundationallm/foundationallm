@@ -5,6 +5,7 @@ param adminGroupObjectId string
 param authAppRegistration object
 param timestamp string = utcNow()
 param appRegistrations array
+param isE2ETest bool = false
 
 param createDate string = utcNow('u')
 
@@ -67,6 +68,7 @@ var clientSecrets = [
 
 var deployOpenAi = empty(existingOpenAiInstance.name)
 var azureOpenAiEndpoint = deployOpenAi ? openAi.outputs.endpoint : customerOpenAi.properties.endpoint
+var azureOpenAiId = deployOpenAi ? openAi.outputs.id : customerOpenAi.id
 var azureOpenAi = deployOpenAi ? openAiInstance : existingOpenAiInstance
 var openAiInstance = {
   name: openAi.outputs.name
@@ -156,6 +158,10 @@ module authKeyvault './shared/keyvault.bicep' = {
       {
         name: 'foundationallm-authorizationapi-instanceids'
         value: instanceId
+      }
+      {
+        name: 'foundationallm-authorizationapi-appinsights-connectionstring'
+        value: monitoring.outputs.applicationInsightsConnectionString
       }
     ]
   }
@@ -553,14 +559,21 @@ module acaServices './app/acaService.bicep' = [
       serviceName: service.name
       tags: tags
 
-      envSettings: service.useEndpoint
+      envSettings: union(service.useEndpoint
         ? [
             {
               name: service.appConfigEnvironmentVarName
               value: appConfig.outputs.endpoint
             }
           ]
-        : []
+        : [], isE2ETest
+        ? [
+            {
+              name: 'FOUNDATIONALLM_ENVIRONMENT'
+              value: 'E2ETest'
+            }
+          ]
+        : [])
 
       secretSettings: service.useEndpoint
         ? []
@@ -594,6 +607,18 @@ module cosmosRoles './shared/sqlRoleAssignments.bicep' = [
   }
 ]
 
+module openAiRoles './shared/roleAssignments.bicep' = {
+  scope: rg
+  name: 'gateway-api-openai-roles'
+  params: {
+    principalId: acaServices[indexOf(serviceNames, 'gateway-api')].outputs.miPrincipalId
+    roleDefinitionNames: [
+      'Cognitive Services OpenAI User'
+      'Reader'
+    ]
+  }
+}
+
 output AZURE_APP_CONFIG_NAME string = appConfig.outputs.name
 output AZURE_AUTHORIZATION_STORAGE_ACCOUNT_NAME string = authStore.outputs.name
 output AZURE_COGNITIVE_SEARCH_ENDPOINT string = cogSearch.outputs.endpoint
@@ -605,6 +630,7 @@ output AZURE_EVENT_GRID_ID string = eventgrid.outputs.id
 output AZURE_KEY_VAULT_NAME string = keyVault.outputs.name
 output AZURE_KEY_VAULT_ENDPOINT string = keyVault.outputs.endpoint
 output AZURE_OPENAI_ENDPOINT string = azureOpenAiEndpoint
+output AZURE_OPENAI_ID string = azureOpenAiId
 output AZURE_STORAGE_ACCOUNT_NAME string = storage.outputs.name
 
 var appRegNames = [for appRegistration in appRegistrations: appRegistration.name]
@@ -647,6 +673,7 @@ output SERVICE_CORE_JOB_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 
 output SERVICE_DATA_SOURCE_HUB_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'data-source-hub-api')].outputs.uri
 output SERVICE_GATEKEEPER_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'gatekeeper-api')].outputs.uri
 output SERVICE_GATEKEEPER_INTEGRATION_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'gatekeeper-integration-api')].outputs.uri
+output SERVICE_GATEWAY_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'gateway-api')].outputs.uri
 output SERVICE_LANGCHAIN_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'langchain-api')].outputs.uri
 output SERVICE_MANAGEMENT_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'management-api')].outputs.uri
 output SERVICE_MANAGEMENT_API_MI_OBJECT_ID string = acaServices[indexOf(serviceNames, 'management-api')].outputs.miPrincipalId

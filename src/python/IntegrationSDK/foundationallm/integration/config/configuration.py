@@ -33,7 +33,7 @@ class Configuration:
 
         Raises an exception if the configuration value is not found.
         """
-        app_config_uri = os.environ['foundationallm-app-configuration-uri']
+        app_config_uri = os.environ['FOUNDATIONALLM_APP_CONFIGURATION_URI']
         credential = DefaultAzureCredential(
             exclude_environment_credential=True)
         # Connect to Azure App Configuration with key filter

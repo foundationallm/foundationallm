@@ -26,5 +26,10 @@
         /// They key for the FoundationaLLM:Configuration:KeyVaultURI environment variable.
         /// </summary>
         public const string FoundationaLLM_AuthorizationAPI_KeyVaultURI = "FoundationaLLM_AuthorizationAPI_KeyVaultURI";
+
+        /// <summary>
+        /// Indicates whether the application is running in an end-to-end test environment. The string value should be either "true" or "false".
+        /// </summary>
+        public const string FoundationaLLM_Environment = "FOUNDATIONALLM_ENVIRONMENT";
     }
 }

@@ -1,17 +1,23 @@
 {
   "CompletionQualityMeasurementConfiguration": {
     "AgentPrompts": [
-      {
-        "AgentName": "FoundationaLLM",
-        "CreateAgent": false,
-        "SessionConfiguration": {
-          "Sessionless": false,
-          "CreateNewSession": true,
-          "SessionId": ""
-        },
-        "UserPrompt": "What are the top three features that FoundationaLLM provides when it comes to asking questions about private data sources?",
-        "ExpectedCompletion": "FoundationaLLM simplifies integration with enterprise data sources used by agents for in-context learning, provides fine-grain security controls over data used by agents, and offers pre/post completion filters that guard against attack."
-      }
+      //{
+      //  "AgentName": "FoundationaLLM",
+      //  "CreateAgent": false,
+      //  "SessionConfiguration": {
+      //    "Sessionless": false,
+      //    "CreateNewSession": true,
+      //    "SessionId": ""
+      //  },
+      //  "UserPrompt": "What are the top three features that FoundationaLLM provides when it comes to asking questions about private data sources?",
+      //  "ExpectedCompletion": "FoundationaLLM simplifies integration with enterprise data sources used by agents for in-context learning, provides fine-grain security controls over data used by agents, and offers pre/post completion filters that guard against attack."
+      //}
     ]
+  },
+  "SharePointVectorizationConfiguration": {
+    "HostName": "fllm.sharepoint.com",
+    "SitePath": "sites/FoundationaLLM",
+    "FolderPath": "Shared Documents/SDZWA/Journals",
+    "FileName": "SDZWA-Journal-January-2024.pdf"
   }
 }

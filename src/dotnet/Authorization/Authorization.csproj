@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Constants\AuthorizableActionNames.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AuthorizableActionNames.cs</LastGenOutput>
-    </None>
     <None Update="Models\AuthorizableActions.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AuthorizableActions.cs</LastGenOutput>
@@ -36,11 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Constants\AuthorizableActionNames.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>AuthorizableActionNames.tt</DependentUpon>
-    </Compile>
     <Compile Update="Models\AuthorizableActions.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

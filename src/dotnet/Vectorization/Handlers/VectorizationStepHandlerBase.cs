@@ -66,8 +66,8 @@ namespace FoundationaLLM.Vectorization.Handlers
             var success = true;           
             try
             {
-                state.LogHandlerStart(this, request.Id!, _messageId);
-                _logger.LogInformation("Starting handler [{HandlerId}] for request {RequestId} (message id {MessageId}).", _stepId, request.Id, _messageId);
+                state.LogHandlerStart(this, request.Name!, _messageId);
+                _logger.LogInformation("Starting handler [{HandlerId}] for request {RequestId} (message id {MessageId}).", _stepId, request.Name, _messageId);
 
                 var stepConfiguration = default(IConfigurationSection);
 
@@ -93,18 +93,18 @@ namespace FoundationaLLM.Vectorization.Handlers
             {
                 success = false;
                 //update the request execution state with the error message.
-                state.LogHandlerError(this, request.Id!, _messageId, ex);
+                state.LogHandlerError(this, request.Name!, _messageId, ex);
                 request.ErrorCount++;
                 //update the request state with the error message.
-                request.ErrorMessages.Add($"Error in executing {_stepId} step handler for request {request.Id} (message id {_messageId}): {ex.Message}.");     
-                _logger.LogError(ex, "Error in executing [{HandlerId}] step handler for request {VectorizationRequestId} (message id {MessageId}).", _stepId, request.Id, _messageId);
+                request.ErrorMessages.Add($"Error in executing {_stepId} step handler for request {request.Name} (message id {_messageId}): {ex.Message}.");     
+                _logger.LogError(ex, "Error in executing [{HandlerId}] step handler for request {VectorizationRequestId} (message id {MessageId}).", _stepId, request.Name, _messageId);
             }
             finally
             {
                 //update execution state
                 state.UpdateRequest(request);
-                state.LogHandlerEnd(this, request.Id!, _messageId);
-                _logger.LogInformation("Finished handler [{HandlerId}] for request {RequestId} (message id {MessageId}).", _stepId, request.Id, _messageId);                
+                state.LogHandlerEnd(this, request.Name!, _messageId);
+                _logger.LogInformation("Finished handler [{HandlerId}] for request {RequestId} (message id {MessageId}).", _stepId, request.Name, _messageId);                
             }
             return success;
         }
@@ -112,7 +112,7 @@ namespace FoundationaLLM.Vectorization.Handlers
         private void ValidateRequest(VectorizationRequest request)
         {
             if (request[_stepId] == null)
-                throw new VectorizationException($"The request with id {request.Id} does not contain a step with id {_stepId}.");
+                throw new VectorizationException($"The request with id {request.Name} does not contain a step with id {_stepId}.");
         }
 
         /// <summary>

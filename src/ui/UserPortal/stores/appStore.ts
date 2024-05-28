@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { useAppConfigStore } from './appConfigStore';
 import { useAuthStore } from './authStore';
-import type { Session, Message, Agent } from '@/js/types';
+import type { Session, Message, Agent, ResourceProviderGetResult } from '@/js/types';
 import api from '@/js/api';
 
 export const useAppStore = defineStore('app', {
@@ -10,9 +10,9 @@ export const useAppStore = defineStore('app', {
 		currentSession: null as Session | null,
 		currentMessages: [] as Message[],
 		isSidebarClosed: false as boolean,
-		agents: [] as Agent[],
+		agents: [] as ResourceProviderGetResult<Agent>[],
 		selectedAgents: new Map(),
-		lastSelectedAgent: null as Agent | null,
+		lastSelectedAgent: null as ResourceProviderGetResult<Agent> | null,
 	}),
 
 	getters: {},
@@ -126,7 +126,7 @@ export const useAppStore = defineStore('app', {
 			return selectedAgent;
 		},
 
-		setSessionAgent(session: Session, agent: Agent) {
+		setSessionAgent(session: Session, agent: ResourceProviderGetResult<Agent>) {
 			this.lastSelectedAgent = agent;
 			return this.selectedAgents.set(session.id, agent);
 		},
@@ -168,7 +168,7 @@ export const useAppStore = defineStore('app', {
 			await api.sendMessage(
 				this.currentSession!.id,
 				text,
-				this.getSessionAgent(this.currentSession!),
+				this.getSessionAgent(this.currentSession!).resource,
 			);
 			await this.getMessages();
 

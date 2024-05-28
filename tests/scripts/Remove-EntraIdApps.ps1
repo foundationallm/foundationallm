@@ -9,11 +9,22 @@
 #>
 
 Param(
+    [parameter(Mandatory = $false)][string]$authAppName="FoundationaLLM-Authorization-E2E",
+    [parameter(Mandatory = $false)][string]$coreAppName="FoundationaLLM-E2E",
+    [parameter(Mandatory = $false)][string]$coreClientAppName="FoundationaLLM-E2E-Client",
+    [parameter(Mandatory = $false)][string]$mgmtAppName="FoundationaLLM-Management-E2E",
+    [parameter(Mandatory = $false)][string]$mgmtClientAppName="FoundationaLLM-Management-E2E-Client",
 	[parameter(Mandatory=$false)][bool]$interactiveMode = $true
 )
 
 # Predefined list of application names to delete
-$AppNames = @("FoundationaLLM-E2E", "FoundationaLLM-Authorization-E2E", "FoundationaLLM-Management-E2E-Client", "FoundationaLLM-Management-E2E", "FoundationaLLM-E2E-Client")
+$AppNames = @(
+	$coreAppName, 
+	$authAppName, 
+	$mgmtClientAppName, 
+	$mgmtAppName, 
+	$coreClientAppName
+)
 
 # Function to filter and delete Azure AD applications based on display name
 function Delete-AppByName {

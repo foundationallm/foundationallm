@@ -1,0 +1,44 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.IO" #>
+<#@ assembly name="System.Text.Json" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ assembly name="System.Memory" #>
+<#@ import namespace="System.Text.Json" #>
+<#@ import namespace="System.Text.Json.Nodes" #>
+<#@ output extension=".cs" #>
+<#
+    string inputFileName = this.Host.ResolvePath($"../../../Authorization/Data/AuthorizableActions.json");
+    string inputContent = File.ReadAllText(inputFileName);
+    var jsonObjects = JsonNode.Parse(inputContent)!;
+#>
+namespace FoundationaLLM.Common.Constants.Authorization
+{
+    /// <summary>
+    /// Provides the names of the authorizable actions managed by the FoundationaLLM.Authorization provider.
+    /// </summary>
+    public static class AuthorizableActionNames
+    {<#
+    foreach (var jsonObject in jsonObjects.AsArray())
+    {#>
+
+        #region <#= jsonObject["category"] #>
+
+<#
+        foreach (var action in jsonObject["actions"].AsArray())
+        {
+#>
+        /// <summary>
+        /// <#= action["description"] #>
+        /// </summary>
+        public const string <#= action["field_name"] #> = "<#= action["name"] #>";
+
+<#
+        }
+#>
+        #endregion
+<#
+    }
+#>
+    }
+}

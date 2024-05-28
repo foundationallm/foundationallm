@@ -280,6 +280,18 @@ namespace FoundationaLLM.Configuration.Catalog
 
             new(
                 key: AppConfigurationKeys
+                    .FoundationaLLM_APIs_GatekeeperAPI_Configuration_EnableAzureContentSafetyPromptShield,
+                minimumVersion: "0.7.0",
+                defaultValue: "true",
+                description:
+                "By default, the Gatekeeper API has Azure Content Safety Prompt Shield integration enabled. To disable this feature, set this value to false.",
+                keyVaultSecretName: "",
+                contentType: "text/plain",
+                sampleObject: null
+            ),
+
+            new(
+                key: AppConfigurationKeys
                     .FoundationaLLM_APIs_GatekeeperAPI_Configuration_EnableMicrosoftPresidio,
                 minimumVersion: "0.3.0",
                 defaultValue: "true",
@@ -509,7 +521,7 @@ namespace FoundationaLLM.Configuration.Catalog
 
             new(
                 key: AppConfigurationKeys.FoundationaLLM_APIs_GatewayAPI_APIUrl,
-                minimumVersion: "0.6.0",
+                minimumVersion: "0.7.0",
                 defaultValue: "",
                 description: "The URL of the Gateway API.",
                 keyVaultSecretName: "",
@@ -519,7 +531,7 @@ namespace FoundationaLLM.Configuration.Catalog
 
             new(
                 key: AppConfigurationKeys.FoundationaLLM_APIs_GatewayAPI_APIKey,
-                minimumVersion: "0.6.0",
+                minimumVersion: "0.7.0",
                 defaultValue: "Key Vault secret name: `foundationallm-apis-gatewayapi-apikey`",
                 description: "The API key of the Gateway API.",
                 keyVaultSecretName: KeyVaultSecretNames.FoundationaLLM_APIs_GatewayAPI_APIKey,
@@ -530,7 +542,7 @@ namespace FoundationaLLM.Configuration.Catalog
             new(
                 key: AppConfigurationKeys
                     .FoundationaLLM_APIs_GatewayAPI_AppInsightsConnectionString,
-                minimumVersion: "0.6.0",
+                minimumVersion: "0.7.0",
                 defaultValue: "Key Vault secret name: `foundationallm-app-insights-connection-string`",
                 description:
                 "The connection string to the Application Insights instance used by the vectorization API.",
@@ -1330,26 +1342,6 @@ namespace FoundationaLLM.Configuration.Catalog
 
         #endregion
 
-        #region LangChainAPI
-
-        /// <summary>
-        /// The LangChain API configuration entries for the solution.
-        /// </summary>
-        public static readonly List<AppConfigurationEntry> LangChainAPI =
-        [
-            new(
-                key: AppConfigurationKeys.FoundationaLLM_LangChainAPI_Key,
-                minimumVersion: "0.3.0",
-                defaultValue: "Key Vault secret name: `foundationallm-apis-langchainapi-apikey`",
-                description: "This is a Key Vault reference.",
-                keyVaultSecretName: KeyVaultSecretNames.FoundationaLLM_APIs_LangChainAPI_APIKey,
-                contentType: "text/plain",
-                sampleObject: null
-            )
-        ];
-
-        #endregion
-
         #region Management
 
         /// <summary>
@@ -1828,7 +1820,6 @@ namespace FoundationaLLM.Configuration.Catalog
             allEntries.AddRange(Event);
             allEntries.AddRange(Instance);
             allEntries.AddRange(LangChain);
-            allEntries.AddRange(LangChainAPI);
             allEntries.AddRange(Management);
             allEntries.AddRange(ManagementAPI);
             allEntries.AddRange(OpenAI);

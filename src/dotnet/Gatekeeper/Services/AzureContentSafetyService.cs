@@ -6,6 +6,9 @@ using FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions;
 using FoundationaLLM.Gatekeeper.Core.Models.ContentSafety;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Text;
+using System.Text.Json;
+
 
 namespace FoundationaLLM.Gatekeeper.Core.Services
 {
@@ -14,6 +17,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
     /// </summary>
     public class AzureContentSafetyService : IContentSafetyService
     {
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly ContentSafetyClient _client;
         private readonly AzureContentSafetySettings _settings;
         private readonly ILogger _logger;
@@ -21,24 +25,22 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <summary>
         /// Constructor for the Azure Content Safety service.
         /// </summary>
+        /// <param name="httpClientFactory">The HTTP client factory.</param>
         /// <param name="options">The configuration options for the Azure Content Safety service.</param>
         /// <param name="logger">The logger for the Azure Content Safety service.</param>
         public AzureContentSafetyService(
+            IHttpClientFactory httpClientFactory,
             IOptions<AzureContentSafetySettings> options,
             ILogger<AzureContentSafetyService> logger)
         {
+            _httpClientFactory = httpClientFactory;
             _settings = options.Value;
             _logger = logger;
 
             _client = new ContentSafetyClient(new Uri(_settings.APIUrl), DefaultAuthentication.AzureCredential);
         }
 
-        /// <summary>
-        /// Checks if a text is safe or not based on pre-configured content filters.
-        /// </summary>
-        /// <param name="content">The text content that needs to be analyzed.</param>
-        /// <returns>The text analysis restult, which includes a boolean flag that represents if the content is considered safe. 
-        /// In case the content is unsafe, also returns the reason.</returns>
+        /// <inheritdoc/>
         public async Task<AnalyzeTextFilterResult> AnalyzeText(string content)
         {
             var request = new AnalyzeTextOptions(content);
@@ -86,6 +88,42 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
             }
 
             return new AnalyzeTextFilterResult() { Safe = safe, Reason = safe ? string.Empty : reason };
+        }
+
+        /// <inheritdoc/>
+        public async Task<string?> DetectPromptInjection(string content)
+        {
+            var client = CreateHttpClient();
+
+            var response = await client.PostAsync("/contentsafety/text:shieldPrompt?api-version=2024-02-15-preview",
+                new StringContent(JsonSerializer.Serialize(new
+                {
+                    userPrompt = content,
+                    documents = new List<string>()
+                }),
+                Encoding.UTF8, "application/json"));
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var results = JsonSerializer.Deserialize<PromptShieldResult>(responseContent);
+
+                if (results!.UserPromptAnalysis.AttackDetected)
+                {
+                    return "The prompt text did not pass the safety filter. Reason: Prompt injection or jailbreak detected.";
+                }
+            }
+            return null;
+        }
+
+        private HttpClient CreateHttpClient()
+        {
+            var httpClient = _httpClientFactory.CreateClient();
+
+            httpClient.BaseAddress = new Uri(_settings.APIUrl);
+            httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _settings.APIKey);
+
+            return httpClient;
         }
     }
 }

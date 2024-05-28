@@ -15,15 +15,11 @@
 #>
 
 Param(
-    [parameter(Mandatory = $false)][string]$groupName = "FLLM-E2E-Admins",
-    [parameter(Mandatory = $false)][string]$spObjectId = $null
+    [parameter(Mandatory = $false)][string]$groupName = "FLLM-E2E-Admins"
 )
 
 # Try block to handle potential errors during the execution
 try {
-    # Define the name of the Azure AD group
-    $groupName = "FLLM-E2E-Admins"
-
     # Build the command to create the Azure AD group using Azure CLI
     $createGroupCommand = "az ad group create --display-name $groupName --mail-nickname $groupName"
 
@@ -32,12 +28,6 @@ try {
 
     # If the command executes successfully, output the result
     Write-Host "Azure AD group '$groupName' created successfully."
-    Write-Output $output  # Display the details of the created group
-
-    if ($spObjectId) {
-        $addToGroupCommand = "az ad group member add --group $($output.id) --member-id $spObjectId"
-    }
-
 } 
 catch {
     # Catch block to handle and report any errors that occur during the execution

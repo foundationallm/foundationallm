@@ -36,7 +36,6 @@ var env = union(
 )
 
 var secretNames = [
-  '${serviceName}-apikey'
   apiKeySecretName
 ]
 
@@ -52,7 +51,7 @@ var secrets = union(
   secretSettings
 )
 
-var serviceRoleAssignments = concat(commonRoleAssignments, keyVaultRoleAssignments)
+var serviceRoleAssignments = concat(commonRoleAssignments, keyVaultRoleAssignments, certificateRoleAssignments)
 var commonRoleAssignments = [
   'App Configuration Data Reader'
   'Storage Blob Data Contributor'
@@ -63,6 +62,10 @@ var commonRoleAssignments = [
 var keyVaultRoleAssignments = contains(['management-api'], serviceName)
   ? ['Key Vault Secrets Officer']
   : ['Key Vault Secrets User']
+
+var certificateRoleAssignments = contains(['vectorization-api','vectorization-job'], serviceName)
+  ? ['Key Vault Certificate User']
+  : []
 
 /** Data Sources **/
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {

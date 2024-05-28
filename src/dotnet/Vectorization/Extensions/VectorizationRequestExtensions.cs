@@ -24,7 +24,7 @@ namespace FoundationaLLM.Vectorization.Extensions
             if (request.ObjectId == null)
             {               
                 //build the minimal object id for new requests
-                request.ObjectId = $"/{VectorizationResourceTypeNames.VectorizationRequests}/{request.Id}";
+                request.ObjectId = $"/{VectorizationResourceTypeNames.VectorizationRequests}/{request.Name}";
             }
             // in the case of a new request, this updates the object id with the fully qualified object id, otherwise it remains the same.
             request.ObjectId = await vectorizationResourceProvider.UpsertResourceAsync(request.ObjectId, request);                      

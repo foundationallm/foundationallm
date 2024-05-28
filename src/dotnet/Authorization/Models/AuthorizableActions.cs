@@ -1,4 +1,4 @@
-using FoundationaLLM.Authorization.Constants;
+using FoundationaLLM.Common.Constants.Authorization;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 

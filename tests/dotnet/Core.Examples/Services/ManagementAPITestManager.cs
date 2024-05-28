@@ -14,6 +14,7 @@ using System.Text.Json;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Core.Examples.Setup;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
+using FoundationaLLM.Core.Examples.Resources;
 
 namespace FoundationaLLM.Core.Examples.Services
 {
@@ -26,10 +27,10 @@ namespace FoundationaLLM.Core.Examples.Services
 
         public async Task CreateAppConfiguration(AppConfigurationKeyValue appConfigurationKeyValue)
         {
-            var coreClient = await httpClientManager.GetHttpClientAsync(HttpClients.ManagementAPI);
+            var managementClient = await httpClientManager.GetHttpClientAsync(HttpClients.ManagementAPI);
             var serializedRequest = JsonSerializer.Serialize(appConfigurationKeyValue, _jsonSerializerOptions);
 
-            var response = await coreClient.PostAsync($"instances/{instanceSettings.Value.Id}/providers/{ResourceProviderNames.FoundationaLLM_Configuration}/appConfigurations",
+            var response = await managementClient.PostAsync($"instances/{instanceSettings.Value.Id}/providers/{ResourceProviderNames.FoundationaLLM_Configuration}/appConfigurations",
                                               new StringContent(serializedRequest, Encoding.UTF8, "application/json"));
 
             if (response.IsSuccessStatusCode)
@@ -257,7 +258,8 @@ namespace FoundationaLLM.Core.Examples.Services
             if (prompt == null)
             {
                 throw new InvalidOperationException($"The prompt {promptName} was not found.");
-            }            
+            }
+            
             prompt.ObjectId = await UpsertResourceAsync(
                 instanceSettings.Value.Id,
                 ResourceProviderNames.FoundationaLLM_Prompt,
@@ -339,18 +341,19 @@ namespace FoundationaLLM.Core.Examples.Services
 
         async public Task<IndexingProfile> GetIndexingProfile(string name)
         {
-            return await GetResourcesAsync< IndexingProfile>(instanceSettings.Value.Id, ResourceProviderNames.FoundationaLLM_Vectorization, $"indexingProfiles/{name}");
+           
+            return (await GetResourcesAsync<ResourceProviderGetResult<IndexingProfile>>(instanceSettings.Value.Id, ResourceProviderNames.FoundationaLLM_Vectorization, $"indexingProfiles/{name}")).Resource;
 
         }
 
         async public Task<TextEmbeddingProfile> GetTextEmbeddingProfile(string name)
         {
-            return await GetResourcesAsync< TextEmbeddingProfile>(instanceSettings.Value.Id, ResourceProviderNames.FoundationaLLM_Vectorization, $"textEmbeddingProfiles/{name}");
+            return (await GetResourcesAsync<ResourceProviderGetResult<TextEmbeddingProfile>>(instanceSettings.Value.Id, ResourceProviderNames.FoundationaLLM_Vectorization, $"textEmbeddingProfiles/{name}")).Resource;
         }
 
         async public Task<TextPartitioningProfile> GetTextPartitioningProfile(string name)
         {
-            return await GetResourcesAsync<TextPartitioningProfile>(instanceSettings.Value.Id, ResourceProviderNames.FoundationaLLM_Vectorization, $"textPartitioningProfiles/{name}");
+            return (await GetResourcesAsync<ResourceProviderGetResult<TextPartitioningProfile>>(instanceSettings.Value.Id, ResourceProviderNames.FoundationaLLM_Vectorization, $"textPartitioningProfiles/{name}")).Resource;
         }
     }
 }

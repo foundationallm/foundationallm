@@ -27,7 +27,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         public LakeraGuardService(
             IHttpClientFactory httpClientFactory,
             IOptions<LakeraGuardServiceSettings> options,
-            ILogger<LakeraGuardServiceSettings> logger)
+            ILogger<LakeraGuardService> logger)
         {
             _httpClientFactory = httpClientFactory;
             _settings = options.Value;

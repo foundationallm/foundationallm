@@ -1,0 +1,35 @@
+# Default values for gateway-api.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+serviceAccountName: gateway-api
+image:
+  repository: ghcr.io/solliancenet/foundationallm/gateway-api
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: latest
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+ingress:
+  enabled: false
+
+env:
+  configmap:
+    - name: AZURE_CLIENT_ID
+  secret:
+    - name: FoundationaLLM_AppConfig_ConnectionString
+  values:
+    - name: ASPNETCORE_ENVIRONMENT
+      value: Production

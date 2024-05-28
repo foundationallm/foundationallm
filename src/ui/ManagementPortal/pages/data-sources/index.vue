@@ -41,7 +41,7 @@
 
 				<!-- Name -->
 				<Column
-					field="name"
+					field="resource.name"
 					header="Name"
 					sortable
 					style="min-width: 200px"
@@ -55,7 +55,7 @@
 
 				<!-- Type -->
 				<Column
-					field="type"
+					field="resource.type"
 					header="Source Type"
 					sortable
 					style="min-width: 200px"
@@ -80,7 +80,7 @@
 					}"
 				>
 					<template #body="{ data }">
-						<NuxtLink :to="'/data-sources/edit/' + data.name" class="table__button">
+						<NuxtLink :to="'/data-sources/edit/' + data.resource.name" class="table__button">
 							<Button link>
 								<i class="pi pi-cog" style="font-size: 1.2rem"></i>
 							</Button>
@@ -101,7 +101,7 @@
 					}"
 				>
 					<template #body="{ data }">
-						<Button link @click="dataSourceToDelete = data">
+						<Button link @click="dataSourceToDelete = data.resource">
 							<i class="pi pi-trash" style="font-size: 1.2rem; color: var(--red-400)"></i>
 						</Button>
 					</template>
@@ -127,17 +127,17 @@
 
 <script lang="ts">
 import api from '@/js/api';
-import type { Agent } from '@/js/types';
+import type { DataSource, ResourceProviderGetResult } from '@/js/types';
 
 export default {
-	name: 'PublicAgents',
+	name: 'PublicDataSources',
 
 	data() {
 		return {
-			dataSources: [] as Agent,
+			dataSources: [] as ResourceProviderGetResult<DataSource>[],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
-			dataSourceToDelete: null as Agent | null,
+			dataSourceToDelete: null as DataSource | null,
 		};
 	},
 
@@ -172,7 +172,7 @@ export default {
 				});
 			}
 
-			await this.getAgents();
+			await this.getAgentDataSources();
 		},
 	},
 };

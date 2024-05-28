@@ -75,13 +75,13 @@ namespace FoundationaLLM.Vectorization.Services
             await request.UpdateVectorizationRequestResource(vectorizationResourceProvider).ConfigureAwait(false);
 
 
-            _logger.LogInformation("Starting synchronous processing for request {RequestId}.", request.Id);
+            _logger.LogInformation("Starting synchronous processing for request {RequestId}.", request.Name);
 
             var state = VectorizationState.FromRequest(request);
 
             foreach (var step in request.Steps)
             {
-                _logger.LogInformation("Starting step [{Step}] for request {RequestId}.", step.Id, request.Id);
+                _logger.LogInformation("Starting step [{Step}] for request {RequestId}.", step.Id, request.Name);
 
                 var stepHandler = VectorizationStepHandlerFactory.Create(
                     step.Id,
@@ -101,10 +101,10 @@ namespace FoundationaLLM.Vectorization.Services
 
                 if (!string.IsNullOrEmpty(steps.CurrentStep))
                     _logger.LogInformation("The pipeline for request id {RequestId} was advanced from step [{PreviousStepName}] to step [{CurrentStepName}].",
-                        request.Id, steps.PreviousStep, steps.CurrentStep);
+                        request.Name, steps.PreviousStep, steps.CurrentStep);
                 else                
                     _logger.LogInformation("The pipeline for request id {RequestId} was advanced from step [{PreviousStepName}] to finalized state.",
-                       request.Id, steps.PreviousStep);                 
+                       request.Name, steps.PreviousStep);                 
                
                 // save execution state
                 await _vectorizationStateService.SaveState(state).ConfigureAwait(false);
@@ -117,7 +117,7 @@ namespace FoundationaLLM.Vectorization.Services
                 request.ExecutionEnd = DateTime.UtcNow;
                 await request.UpdateVectorizationRequestResource(vectorizationResourceProvider).ConfigureAwait(false);
 
-                _logger.LogInformation("Finished synchronous processing for request {RequestId}. All steps were processed successfully.", request.Id);
+                _logger.LogInformation("Finished synchronous processing for request {RequestId}. All steps were processed successfully.", request.Name);
                 return new VectorizationResult(request.ObjectId!, true, null);
             }
             else
@@ -129,7 +129,7 @@ namespace FoundationaLLM.Vectorization.Services
                 request.ProcessingState = VectorizationProcessingState.Failed;
                 request.ExecutionEnd = DateTime.UtcNow;
                 await request.UpdateVectorizationRequestResource(vectorizationResourceProvider).ConfigureAwait(false);
-                _logger.LogInformation("Finished synchronous processing for request {RequestId}. {ErrorMessage}", request.Id, errorMessage);
+                _logger.LogInformation("Finished synchronous processing for request {RequestId}. {ErrorMessage}", request.Name, errorMessage);
                 return new VectorizationResult(request.ObjectId!, false, errorMessage);
             }
         }

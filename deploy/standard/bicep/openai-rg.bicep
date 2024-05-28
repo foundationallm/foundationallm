@@ -1,43 +1,21 @@
 /** Inputs **/
-@description('Administrator Object Id')
-param administratorObjectId string
-
-@description('Action Group to use for alerts.')
 param actionGroupId string
-
-@description('DNS resource group name')
+param administratorObjectId string
 param dnsResourceGroupName string
-
-@description('The environment name token used in naming resources.')
 param environmentName string
-
-@description('Number of OpenAI instances to deploy.')
 param instanceCount int = 1
-
-@description('Location used for all resources.')
 param location string
-
-@description('Log Analytics Workspace Id to use for diagnostics')
 param logAnalyticsWorkspaceId string
-
-@description('OPS Resource Group name')
 param opsResourceGroupName string
-
-@description('Project Name, used in naming resources.')
 param project string
-
-@description('Timestamp used in naming nested deployments.')
 param timestamp string = utcNow()
-
-@description('Virtual Network ID, used to find the subnet IDs.')
 param vnetId string
 
 /** Locals **/
+var deployments = filter(deploymentConfigurations, (d) => contains(d.locations, location))
 var kvResourceSuffix = '${project}-${environmentName}-${location}-ops'
 var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
 var workload = 'oai'
-
-var deployments = filter(deploymentConfigurations, (d) => contains(d.locations, location))
 
 var deploymentConfigurations = [
   {
@@ -66,6 +44,28 @@ var deploymentConfigurations = [
     }
   }
   {
+    name: 'completions1106'
+    locations: [
+      'austrailiaeast'
+      'canadaeast'
+      'francecentral'
+      'southindia'
+      'swedencentral'
+      'uksouth'
+      'westus'
+    ]
+    raiPolicyName: ''
+    model: {
+      format: 'OpenAI'
+      name: 'gpt-35-turbo'
+      version: '1106'
+    }
+    sku: {
+      capacity: 60
+      name: 'Standard'
+    }
+  }
+  {
     name: 'completions4'
     locations: [
       'austrailiaeast'
@@ -83,6 +83,28 @@ var deploymentConfigurations = [
       format: 'OpenAI'
       name: 'gpt-4'
       version: '1106-Preview'
+    }
+    sku: {
+      capacity: 40
+      name: 'Standard'
+    }
+  }
+  {
+    name: 'completions4o'
+    locations: [
+      'eastus'
+      'eastus2'
+      'northcentralus'
+      'southcentralus'
+      'southindia'
+      'westus'
+      'westus3'
+    ]
+    raiPolicyName: ''
+    model: {
+      format: 'OpenAI'
+      name: 'gpt-4o'
+      version: '2024-05-13'
     }
     sku: {
       capacity: 40
