@@ -348,10 +348,18 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                 ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceType} was not found.");
         }
 
+        /// <inheritdoc/>
+        protected override T GetResourceReferenceInternal<T>(ResourcePath resourcePath)
+        {
+            _attachmentReferences.TryGetValue(resourcePath.ResourceTypeInstances[0].ResourceId!, out var attachmentReference);
+            return attachmentReference as T
+                ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceType} was not found."); ;
+        }
+
 
         #region Event handling
 
-        /// <inheritdoc/>
+            /// <inheritdoc/>
         protected override async Task HandleEvents(EventSetEventArgs e)
         {
             _logger.LogInformation("{EventsCount} events received in the {EventsNamespace} events namespace.",

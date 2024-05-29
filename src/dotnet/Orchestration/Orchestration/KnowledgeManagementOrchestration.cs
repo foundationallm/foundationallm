@@ -2,8 +2,8 @@
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
-using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -19,6 +19,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
     /// <param name="callContext">The call context of the request being handled.</param>
     /// <param name="orchestrationService"></param>
     /// <param name="logger">The logger used for logging.</param>
+    /// <param name="resourceProviderServices">The list of <see cref="IResourceProviderService"/> resource provider services.</param>
     public class KnowledgeManagementOrchestration(
         KnowledgeManagementAgent agent,
         ICallContext callContext,
@@ -41,7 +42,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     Agent = _agent,
                     MessageHistory = completionRequest.MessageHistory,
                     Settings = completionRequest.Settings,
-                    AttachmentDataLakeUrls = await GetUrlFromObjectId(completionRequest.AttachmentObjectIds)
+                    AttachmentDataLakeUrls = completionRequest.AttachmentObjectIds == null ? null : GetUrlFromObjectId(completionRequest.AttachmentObjectIds)
                 });
 
             if (result.Citations != null)
@@ -65,20 +66,18 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             };
         }
 
-        private async Task<List<string>> GetUrlFromObjectId(List<string>? attachmentObjectIds)
+        private List<string> GetUrlFromObjectId(List<string> attachmentObjectIds)
         {
-            //if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Attachment, out var attachmentResourceProvider))
-            //    throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_Attachment} was not loaded.");
+            if (!_resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Attachment, out var attachmentResourceProvider))
+                throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_Attachment} was not loaded.");
 
             List<string> result = new List<string>();
-            //foreach(var attachmentObjectId in attachmentObjectIds)
-            //{
-            //    var attachment = await attachmentResourceProvider.GetResource<Attachment>(
-            //       attachmentObjectId,
-            //       _callContext.CurrentUserIdentity);
+            foreach (var attachmentObjectId in attachmentObjectIds)
+            {
+                var resourceReference = attachmentResourceProvider.GetResourceReference<ResourceReference>(attachmentObjectId);
 
-            //    result.Add(attachmentURL);
-            //}
+                result.Add(resourceReference.Filename);
+            }
             return result;
         }
     }

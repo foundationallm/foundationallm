@@ -124,6 +124,7 @@ public class OrchestrationService : IOrchestrationService
                 SessionId = completionRequest.SessionId,
                 Settings = completionRequest.Settings,
                 MessageHistory = completionRequest.MessageHistory,
+                AttachmentObjectIds = completionRequest.AttachmentObjectIds,
                 UserPrompt = currentCompletionResponse == null
                     ? conversationStep.UserPrompt
                     : $"{currentCompletionResponse.Completion}{Environment.NewLine}{conversationStep.UserPrompt}"

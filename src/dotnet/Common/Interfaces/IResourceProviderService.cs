@@ -38,5 +38,13 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="resource">The instance of the resource being created or updated.</param>
         /// <returns>The object id of the resource.</returns>
         Task<string> UpsertResourceAsync<T>(string resourcePath, T resource) where T : class;
+
+        /// <summary>
+        /// Gets a resource reference based on its logical path.
+        /// </summary>
+        /// <typeparam name="T">The type of the resource.</typeparam>
+        /// <param name="resourcePath">The logical path of the resource.</param>
+        /// <returns>The reference of the resource corresponding to the specified logical path.</returns>
+        T GetResourceReference<T>(string resourcePath) where T : ResourceReference;
     }
 }

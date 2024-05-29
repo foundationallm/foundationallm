@@ -348,6 +348,15 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             return parsedResourcePath.GetObjectId(_instanceSettings.Id, _name);
         }
 
+        /// <inheritdoc/>
+        public T GetResourceReference<T>(string resourcePath) where T : ResourceReference
+        {
+            if (!_isInitialized)
+                throw new ResourceProviderException($"The resource provider {_name} is not initialized.");
+            var parsedResourcePath = new ResourcePath(resourcePath, _allowedResourceProviders, _allowedResourceTypes);
+            return GetResourceReferenceInternal<T>(parsedResourcePath);
+        }
+
         #region Virtuals to override in derived classes
 
         /// <summary>
@@ -369,6 +378,15 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             await Task.CompletedTask;
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// The internal implementation of GetResourceReference. Must be overridden in derived classes.
+        /// </summary>
+        /// <param name="resourcePath">A <see cref="ResourcePath"/> containing information about the resource path.</param>
+        /// <returns></returns>
+        protected virtual T GetResourceReferenceInternal<T>(ResourcePath resourcePath) where T : ResourceReference =>
+            throw new NotImplementedException();
+
 
         #endregion
 
