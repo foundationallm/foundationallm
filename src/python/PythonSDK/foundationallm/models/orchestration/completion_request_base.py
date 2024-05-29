@@ -11,4 +11,5 @@ class CompletionRequestBase(BaseModel):
     session_id: Optional[str] = None
     user_prompt: str    
     message_history: Optional[List[MessageHistoryItem]] = []
+    attachment_data_lake_urls: Optional[List[str]] = None
     settings: Optional[OrchestrationSettings] = None

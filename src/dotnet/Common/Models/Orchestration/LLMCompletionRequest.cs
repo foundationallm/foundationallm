@@ -37,5 +37,11 @@ namespace FoundationaLLM.Common.Models.Orchestration
         /// </summary>
         [JsonPropertyName("settings")]
         public OrchestrationSettings? Settings { get; set; }
+
+        /// <summary>
+        /// List of attachment data lake URLs.
+        /// </summary>
+        [JsonPropertyName("attachment_data_lake_urls")]
+        public List<string>? AttachmentDataLakeUrls { get; set; }
     }
 }
