@@ -32,9 +32,8 @@ function Invoke-AndRequireSuccess {
 
     return $result
 }
-az aks get-credentials --name $aksName --resource-group $resourceGroup
 Invoke-AndRequireSuccess "Retrieving credentials for AKS cluster ${aksName}" {
-    az aks get-credentials --name $aksName --resource-group $resourceGroup
+    az aks get-credentials --name $aksName --resource-group $resourceGroup --overwrite-existing
 }
 Write-Host "Successfully retrieved credentials for AKS cluster ${aksName}" -ForegroundColor Green
 

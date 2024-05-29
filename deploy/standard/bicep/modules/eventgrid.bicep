@@ -2,9 +2,6 @@
 @description('Action Group Id for alerts')
 param actionGroupId string
 
-@description('Event grid location.')
-param eventGridLocation string = resourceGroup().location
-
 @description('KeyVault resource suffix for all resources')
 param kvResourceSuffix string = resourceSuffix
 

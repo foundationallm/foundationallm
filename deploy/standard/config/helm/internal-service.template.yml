@@ -20,6 +20,7 @@ azureWorkloadIdentity:
   vectorizationJobClientId: {{vectorizationJobMiClientId}}
   authorizationApiClientId: {{authorizationApiMiClientId}}
   tenantId: {{tenantId}}
+authKeyvaultUri: {{authKeyvaultUri}}
 
 ingress:
   enabled: false

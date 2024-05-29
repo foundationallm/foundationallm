@@ -34,7 +34,7 @@ function Invoke-AndRequireSuccess {
 }
 
 Invoke-AndRequireSuccess "Retrieving credentials for AKS cluster ${aksName}" {
-    az aks get-credentials --name $aksName --resource-group $resourceGroup
+    az aks get-credentials --name $aksName --resource-group $resourceGroup --overwrite-existing
 }
 
 # **** Service Namespace ****

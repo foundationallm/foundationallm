@@ -239,7 +239,7 @@ $tokens.storageResourceGroup = $resourceGroups.storage
 $tokens.subscriptionId = $subscriptionId
 $tokens.vectorizationApiEntraClientId = $entraClientIds.vectorizationapi
 $tokens.vectorizationApiEntraScopes = $entraScopes.vectorizationapi
-$tokens.authorizationApiScope = $entraScopes.authorizationapi
+$tokens.authorizationApiScope = $entraScopes.authorization
 
 $tenantId = Invoke-AndRequireSuccess "Get Tenant ID" {
     az account show --query homeTenantId --output tsv
@@ -477,6 +477,7 @@ $tokens.coreApiEventGridProfile = $eventGridProfiles["core-api-event-profile"]
 $tokens.vectorizationApiEventGridProfile = $eventGridProfiles["vectorization-api-event-profile"]
 $tokens.vectorizationWorkerEventGridProfile = $eventGridProfiles["vectorization-worker-event-profile"]
 $tokens.managementApiEventGridProfile = $eventGridProfiles["management-api-event-profile"]
+$tokens.authKeyvaultUri = $authKeyvault.uri
 
 PopulateTemplate $tokens "..,config,appconfig.template.json" "..,config,appconfig.json"
 PopulateTemplate $tokens "..,config,kubernetes,spc.foundationallm-certificates.backend.template.yml" "..,config,kubernetes,spc.foundationallm-certificates.backend.yml"
@@ -488,7 +489,6 @@ PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,Foundat
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Prompt,FoundationaLLM.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Prompt,FoundationaLLM.json"
 
 $($ingress.apiIngress).PSObject.Properties | ForEach-Object {
-    $tokens.authKeyvaultUri = $authKeyvault.uri
     $tokens.serviceBaseUrl = $_.Value.path
     $tokens.serviceHostname = $_.Value.host
     $tokens.serviceName = $_.Value.serviceName
