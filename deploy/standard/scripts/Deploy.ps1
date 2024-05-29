@@ -11,7 +11,7 @@ $ErrorActionPreference = "Stop"
 
 # Check for AzCopy and login status
 # Setting configuration for AzCopy
-$AZCOPY_VERSION = "10.24.0"
+$AZCOPY_VERSION = "10.25.0"
 
 if ($IsWindows) {
     $url = "https://aka.ms/downloadazcopy-v10-windows"
@@ -114,17 +114,23 @@ try {
             --output none
     }
 
-    Invoke-AndRequireSuccess "Uploading Auth Store Data" {
-        ./deploy/Upload-AuthStoreData.ps1 `
-            -resourceGroup $resourceGroup["auth"] `
-            -instanceId $manifest.instanceId
-    }
+    ./deploy/Upload-AuthStoreData.ps1 `
+        -resourceGroup $resourceGroup["auth"] `
+        -instanceId $manifest.instanceId
+    # Invoke-AndRequireSuccess "Uploading Auth Store Data" {
+    #     ./deploy/Upload-AuthStoreData.ps1 `
+    #         -resourceGroup $resourceGroup["auth"] `
+    #         -instanceId $manifest.instanceId
+    # }
 
-    Invoke-AndRequireSuccess "Uploading System Prompts" {
-        ./deploy/Upload-SystemPrompts.ps1 `
-            -resourceGroup $resourceGroup["storage"] `
-            -location $manifest.location
-    }
+    ./deploy/Upload-SystemPrompts.ps1 `
+        -resourceGroup $resourceGroup["storage"] `
+        -location $manifest.location
+    # Invoke-AndRequireSuccess "Uploading System Prompts" {
+    #     ./deploy/Upload-SystemPrompts.ps1 `
+    #         -resourceGroup $resourceGroup["storage"] `
+    #         -location $manifest.location
+    # }
 
     $backendAks = Invoke-AndRequireSuccess "Get Backend AKS" {
         az aks list `

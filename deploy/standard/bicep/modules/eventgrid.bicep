@@ -2,6 +2,9 @@
 @description('Action Group Id for alerts')
 param actionGroupId string
 
+@description('Event grid location.')
+param eventGridLocation string = resourceGroup().location
+
 @description('KeyVault resource suffix for all resources')
 param kvResourceSuffix string = resourceSuffix
 
@@ -54,10 +57,13 @@ var name = '${serviceType}-${resourceSuffix}'
 @description('The Resource Service Type token')
 var serviceType = 'eg'
 
+var eventGridLocations = {
+  westus: 'westus3'
+}
 
 resource main 'Microsoft.EventGrid/namespaces@2023-12-15-preview' = {
   name: name
-  location: location
+  location: eventGridLocations[?location] ?? location
   sku: {
     name: 'Standard'
     capacity: 1

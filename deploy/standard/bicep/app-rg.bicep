@@ -361,7 +361,7 @@ module cognitiveServicesOpenAiUserRole 'modules/utility/roleAssignments.bicep' =
   name: 'cognitiveServicesOpenAiUserRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
   params: {
-    principalId: srBackend[indexOf(backendServiceNames, 'vectorization-api')].outputs.servicePrincipalId
+    principalId: srBackend[indexOf(vecServiceNames, 'vectorization-api')].outputs.servicePrincipalId
     roleDefinitionIds: {
       'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
     }
@@ -383,7 +383,7 @@ module searchServiceContributorRole 'modules/utility/roleAssignments.bicep' = {
   name: 'searchServiceContributorRole-${timestamp}'
   scope: resourceGroup(vectorizationResourceGroupName)
   params: {
-    principalId: srBackend[indexOf(backendServiceNames, 'vectorization-api')].outputs.servicePrincipalId
+    principalId: srBackend[indexOf(vecServiceNames, 'vectorization-api')].outputs.servicePrincipalId
     roleDefinitionIds: {
       'Search Service Contributor': '7ca78c08-252a-4471-8644-bb5ff32d4ba0'
     }

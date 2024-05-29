@@ -24,7 +24,7 @@ Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
 # AzCopy tool version to be downloaded
-$AZCOPY_VERSION = "10.24.0"
+$AZCOPY_VERSION = "10.25.0"
 
 # Determine OS and set the download URL and file extension accordingly
 if ($IsWindows) {

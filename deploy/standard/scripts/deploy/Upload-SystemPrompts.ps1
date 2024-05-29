@@ -52,10 +52,15 @@ $storageAccount = Invoke-AndRequireSuccess "Getting storage account name" {
         --output tsv
 }
 
-Invoke-AndRequireSuccess "Uploading Resource Providers" {
-    $target = "https://$storageAccount.blob.core.windows.net/resource-provider/"
+$target = "https://$storageAccount.blob.core.windows.net/resource-provider/"
             
-    & ../tools/azcopy_${os}_amd64_${AZCOPY_VERSION}/azcopy cp '../../common/data/resource-provider/*' $target `
-        --exclude-pattern .git* --recursive=True
-}
+& ../tools/azcopy_${os}_amd64_${AZCOPY_VERSION}/azcopy cp '../../common/data/resource-provider/*' $target `
+    --exclude-pattern .git* --recursive=True
+
+# Invoke-AndRequireSuccess "Uploading Resource Providers" {
+#     $target = "https://$storageAccount.blob.core.windows.net/resource-provider/"
+            
+#     & ../tools/azcopy_${os}_amd64_${AZCOPY_VERSION}/azcopy cp '../../common/data/resource-provider/*' $target `
+#         --exclude-pattern .git* --recursive=True
+# }
 

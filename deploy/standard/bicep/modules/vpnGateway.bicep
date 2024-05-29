@@ -19,10 +19,10 @@ var pipName = 'pip-${serviceType}-${resourceSuffix}'
 
 @description('The SKU of the Gateway. This must be either Standard or HighPerformance to work with OpenVPN')
 @allowed([
-  'VpnGw1AZ'
+  'VpnGw1'
   'VpnGw2AZ'
 ])
-param gatewaySku string = 'VpnGw1AZ'
+param gatewaySku string = 'VpnGw1'
 
 @description('Route based (Dynamic Gateway) or Policy based (Static Gateway)')
 @allowed([
@@ -93,7 +93,6 @@ resource vpnGateway 'Microsoft.Network/virtualNetworkGateways@2021-02-01' = {
 resource publicIp 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
   name: pipName
   location: location
-  zones: ['1','2','3'] // TODO: Programmatically determine availability zones for a region and apply them here.
   sku: {
     name: 'Standard'
   }
