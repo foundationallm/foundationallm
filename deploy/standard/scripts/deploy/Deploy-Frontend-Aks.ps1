@@ -7,6 +7,7 @@ Param(
     [parameter(Mandatory = $false)][string]$resourceGroup,
     [parameter(Mandatory = $false)][string]$secretProviderClassManifest,
     [parameter(Mandatory = $false)][string]$serviceNamespace = "fllm",
+    [parameter(Mandatory = $false)][string]$registry = "ghcr.io/solliancenet",
     [parameter(Mandatory = $false)][string]$version = "0.7.0"
 )
 
@@ -60,10 +61,10 @@ foreach ($chart in $chartsToInstall.GetEnumerator()) {
 
         helm upgrade `
             --version $version `
-            --install $releaseName oci://cropseastus2svinternal.azurecr.io/helm/$($chart.Key) `
+            --install $releaseName oci://$($registry)/helm/$($chart.Key) `
             --namespace ${serviceNamespace} `
             --values $valuesFile `
-            --set image.repository=cropseastus2svinternal.azurecr.io/helm/$($chart.Key) `
+            --set image.repository=$($registry)/$($chart.Key) `
             --set image.tag=$version
     }
 }

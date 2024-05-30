@@ -1,13 +1,6 @@
 {
     "items": [
       {
-        "key": "FoundationaLLM:AgentHub:AgentMetadata:StorageContainer",
-        "value": "agents",
-        "label": null,
-        "content_type": "",
-        "tags": {}
-      },
-      {
         "key": "FoundationaLLM:Agent:ResourceProviderService:Storage:AccountName",
         "value": "{{storageAccountAdlsName}}",
         "label": null,
@@ -22,43 +15,8 @@
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:Attachment:ResourceProviderService:Storage:AccountName",
-        "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
-        "label": null,
-        "content_type": "",
-        "tags": {}
-      },
-      {
-        "key": "FoundationaLLM:Attachment:ResourceProviderService:Storage:AuthenticationType",
-        "value": "AzureIdentity",
-        "label": null,
-        "content_type": "",
-        "tags": {}
-      },
-      {
-        "key": "FoundationaLLM:APIs:OrchestrationAPI:APIKey",
-        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apis-orchestrationapi-apikey\"}",
-        "label": null,
-        "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-        "tags": {}
-      },
-      {
-        "key": "FoundationaLLM:APIs:OrchestrationAPI:APIUrl",
-        "value": "http://orchestration-api/orchestration",
-        "label": null,
-        "content_type": "",
-        "tags": {}
-      },
-      {
-        "key": "FoundationaLLM:APIs:OrchestrationAPI:AppInsightsConnectionString",
-        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-app-insights-connection-string\"}",
-        "label": null,
-        "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-        "tags": {}
-      },
-      {
-        "key": "FoundationaLLM:APIs:OrchestrationAPI:ForceHttpsRedirection",
-        "value": "false",
+        "key": "FoundationaLLM:AgentHub:AgentMetadata:StorageContainer",
+        "value": "agents",
         "label": null,
         "content_type": "",
         "tags": {}
@@ -78,17 +36,17 @@
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:APIs:AuthorizationAPI:APIScope",
-        "value": "{{authorizationApiScope}}",
-        "label": null,
-        "content_type": "",
-        "tags": {}
-      },
-      {
         "key": "FoundationaLLM:APIs:AgentHubAPI:AppInsightsConnectionString",
         "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-app-insights-connection-string\"}",
         "label": null,
         "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+        "tags": {}
+      },
+      {
+        "key": "FoundationaLLM:APIs:AuthorizationAPI:APIScope",
+        "value": "{{authorizationApiScope}}",
+        "label": null,
+        "content_type": "",
         "tags": {}
       },
       {
@@ -267,15 +225,29 @@
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:Prompt:ResourceProviderService:Storage:AccountName",
-        "value": "{{storageAccountAdlsName}}",
+        "key": "FoundationaLLM:APIs:OrchestrationAPI:APIKey",
+        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apis-orchestrationapi-apikey\"}",
+        "label": null,
+        "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+        "tags": {}
+      },
+      {
+        "key": "FoundationaLLM:APIs:OrchestrationAPI:APIUrl",
+        "value": "http://orchestration-api/orchestration",
         "label": null,
         "content_type": "",
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:Prompt:ResourceProviderService:Storage:AuthenticationType",
-        "value": "AzureIdentity",
+        "key": "FoundationaLLM:APIs:OrchestrationAPI:AppInsightsConnectionString",
+        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-app-insights-connection-string\"}",
+        "label": null,
+        "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+        "tags": {}
+      },
+      {
+        "key": "FoundationaLLM:APIs:OrchestrationAPI:ForceHttpsRedirection",
+        "value": "false",
         "label": null,
         "content_type": "",
         "tags": {}
@@ -376,6 +348,20 @@
         "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-app-insights-connection-string\"}",
         "label": null,
         "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+        "tags": {}
+      },
+      {
+        "key": "FoundationaLLM:Attachment:ResourceProviderService:Storage:AccountName",
+        "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+        "label": null,
+        "content_type": "",
+        "tags": {}
+      },
+      {
+        "key": "FoundationaLLM:Attachment:ResourceProviderService:Storage:AuthenticationType",
+        "value": "AzureIdentity",
+        "label": null,
+        "content_type": "",
         "tags": {}
       },
       {
@@ -911,13 +897,6 @@
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:LangChainAPI:Key",
-        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apis-langchainapi-apikey\"}",
-        "label": null,
-        "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-        "tags": {}
-      },
-      {
         "key": "FoundationaLLM:Management:Entra:CallbackPath",
         "value": "/management/signin-oidc",
         "label": null,
@@ -1023,6 +1002,20 @@
         "tags": {}
       },
       {
+        "key": "FoundationaLLM:Prompt:ResourceProviderService:Storage:AccountName",
+        "value": "{{storageAccountAdlsName}}",
+        "label": null,
+        "content_type": "",
+        "tags": {}
+      },
+      {
+        "key": "FoundationaLLM:Prompt:ResourceProviderService:Storage:AuthenticationType",
+        "value": "AzureIdentity",
+        "label": null,
+        "content_type": "",
+        "tags": {}
+      },
+      {
         "key": "FoundationaLLM:PromptHub:PromptMetadata:StorageContainer",
         "value": "prompts",
         "label": null,
@@ -1030,6 +1023,13 @@
         "tags": {}
       },
       {
+        "key": "FoundationaLLM:Refinement",
+        "value": " ",
+        "label": null,
+        "content_type": "",
+        "tags": {}
+      },
+        {
         "key": "FoundationaLLM:SemanticKernelAPI:OpenAI.ChatCompletionPromptName",
         "value": "RetailAssistant.Default",
         "label": null,

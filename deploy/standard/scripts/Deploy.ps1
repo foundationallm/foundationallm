@@ -2,12 +2,15 @@
 
 Param(
     [parameter(Mandatory = $false)][bool]$init = $true,
-    [parameter(Mandatory = $false)][string]$manifestName = "Deployment-Manifest.json"
+    [parameter(Mandatory = $false)][string]$manifestName = "Deployment-Manifest.json",
+    [parameter(Mandatory = $false)][string]$authAzCLI = $true
 )
 
 Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable)
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
+
+$env:AZCOPY_AUTO_LOGIN_TYPE="AZCLI"
 
 # Check for AzCopy and login status
 # Setting configuration for AzCopy
@@ -35,16 +38,16 @@ else {
     throw "Azcopy not found. Please run the ./Bootstrap.ps1 script to download AzCopy."
 }
 
-# Check if AzCopy login session is still active
-Write-Host -ForegroundColor Blue "Checking AzCopy login status..."
-$status = & ../tools/azcopy_${os}_amd64_${AZCOPY_VERSION}/azcopy login status
-if (-not $status.contains("Your login session is still active")) {
-    Write-Host -ForegroundColor Blue "Please Follow the instructions below to login to Azure using AzCopy."
-    & ../tools/azcopy_${os}_amd64_${AZCOPY_VERSION}/azcopy login
-}
- else {
-     Write-Host -ForegroundColor Blue "AzCopy login session is still active."
-}
+# # Check if AzCopy login session is still active
+# Write-Host -ForegroundColor Blue "Checking AzCopy login status..."
+# $status = & ../tools/azcopy_${os}_amd64_${AZCOPY_VERSION}/azcopy login status
+# if (-not $status.contains("Your login session is still active")) {
+#     Write-Host -ForegroundColor Blue "Please Follow the instructions below to login to Azure using AzCopy."
+#     & ../tools/azcopy_${os}_amd64_${AZCOPY_VERSION}/azcopy login
+# }
+#  else {
+#      Write-Host -ForegroundColor Blue "AzCopy login session is still active."
+# }
 
 # Load the Invoke-AndRequireSuccess function
 . ./utility/Invoke-AndRequireSuccess.ps1
@@ -64,10 +67,12 @@ try {
             }
         }
 
-        Invoke-AndRequireSuccess "Login to Azure" {
-            az login
-            az account set --subscription $manifest.subscription
-            az account show
+        if ($authAzCLI) {
+            Invoke-AndRequireSuccess "Login to Azure" {
+                az login
+                az account set --subscription $manifest.subscription
+                az account show
+            }
         }
     }
 
@@ -147,7 +152,9 @@ try {
             -ingressNginxValues $ingressNginxValuesBackend `
             -resourceGroup $resourceGroup.app `
             -secretProviderClassManifest $secretProviderClassManifestBackend `
-            -serviceNamespace $manifest.k8sNamespace
+            -serviceNamespace $manifest.k8sNamespace `
+            -registry $manifest.registry `
+            -version $manifest.version
     }
 
     $frontendAks = Invoke-AndRequireSuccess "Get Frontend AKS" {
@@ -165,7 +172,9 @@ try {
             -ingressNginxValues $ingressNginxValuesFrontend `
             -resourceGroup $resourceGroup.app `
             -secretProviderClassManifest $secretProviderClassManifestFrontend `
-            -serviceNamespac $manifest.k8sNamespace
+            -serviceNamespac $manifest.k8sNamespace `
+            -registry $manifest.registry `
+            -version $manifest.version
     }
 
     $clusters = @(

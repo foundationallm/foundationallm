@@ -17,10 +17,10 @@
     "orchestrator": "LangChain",
     "agent_parameters": null,
     "endpoint_configuration": {
-      "endpoint": "{{openAiEndpointUri}}",
-      "api_version": "2024-02-01",
       "auth_type": "token",
-      "provider": "microsoft"
+      "provider": "microsoft",
+      "endpoint": "{{openAiEndpointUri}}",
+      "api_version": "2024-02-01"
     },
     "model_parameters": {
       "temperature": 0,
