@@ -1,46 +1,46 @@
 [
-  {
-    "category": "Authorization",
-    "actions": [
-      {
-        "name": "FoundationaLLM.Authorization/roleAssignments/read",
-        "description": "Read role assignments.",
-        "field_name": "FoundationaLLM_Authorization_RoleAssignments_Read"
-      },
-      {
-        "name": "FoundationaLLM.Authorization/roleAssignments/write",
-        "description": "Create or update role assignments.",
-        "field_name": "FoundationaLLM_Authorization_RoleAssignments_Write"
-      },
-      {
-        "name": "FoundationaLLM.Authorization/roleAssignments/delete",
-        "description": "Delete role assignments.",
-        "field_name": "FoundationaLLM_Authorization_RoleAssignments_Delete"
-      }
-    ]
-  },
-  {
-    "category": "Agent",
-    "actions": [
-      {
-        "name": "FoundationaLLM.Agent/agents/read",
-        "description": "Read agents.",
-        "field_name": "FoundationaLLM_Agent_Agents_Read"
-      },
-      {
-        "name": "FoundationaLLM.Agent/agents/write",
-        "description": "Create or update agents.",
-        "field_name": "FoundationaLLM_Agent_Agents_Write"
-      },
-      {
-        "name": "FoundationaLLM.Agent/agents/delete",
-        "description": "Delete agents.",
-        "field_name": "FoundationaLLM_Agent_Agents_Delete"
-      }
-    ]
-  },
-  {
-    "category": "Configuration",
+	{
+		"category": "Authorization",
+		"actions": [
+			{
+				"name": "FoundationaLLM.Authorization/roleAssignments/read",
+				"description": "Read role assignments.",
+				"field_name": "FoundationaLLM_Authorization_RoleAssignments_Read"
+			},
+			{
+				"name": "FoundationaLLM.Authorization/roleAssignments/write",
+				"description": "Create or update role assignments.",
+				"field_name": "FoundationaLLM_Authorization_RoleAssignments_Write"
+			},
+			{
+				"name": "FoundationaLLM.Authorization/roleAssignments/delete",
+				"description": "Delete role assignments.",
+				"field_name": "FoundationaLLM_Authorization_RoleAssignments_Delete"
+			}
+		]
+	},
+	{
+		"category": "Agent",
+		"actions": [
+			{
+				"name": "FoundationaLLM.Agent/agents/read",
+				"description": "Read agents.",
+				"field_name": "FoundationaLLM_Agent_Agents_Read"
+			},
+			{
+				"name": "FoundationaLLM.Agent/agents/write",
+				"description": "Create or update agents.",
+				"field_name": "FoundationaLLM_Agent_Agents_Write"
+			},
+			{
+				"name": "FoundationaLLM.Agent/agents/delete",
+				"description": "Delete agents.",
+				"field_name": "FoundationaLLM_Agent_Agents_Delete"
+			}
+		]
+	},
+	{
+		"category": "Configuration",
 		"actions": [
 			{
 				"name": "FoundationaLLM.Configuration/appConfigurations/read",
@@ -88,175 +88,196 @@
 				"field_name": "FoundationaLLM_Configuration_ExternalOrchestrationServices_Delete"
 			}
 		]
-  },
-  {
-    "category": "DataSource",
-    "actions": [
-      {
-        "name": "FoundationaLLM.DataSource/dataSources/read",
-        "description": "Read data sources.",
-        "field_name": "FoundationaLLM_DataSource_DataSources_Read"
-      },
-      {
-        "name": "FoundationaLLM.DataSource/dataSources/write",
-        "description": "Create or update data sources.",
-        "field_name": "FoundationaLLM_DataSource_DataSources_Write"
-      },
-      {
-        "name": "FoundationaLLM.DataSource/dataSources/delete",
-        "description": "Delete data sources.",
-        "field_name": "FoundationaLLM_DataSource_DataSources_Delete"
-      }
-    ]
-  },
-  {
-    "category": "Prompt",
-    "actions": [
-      {
-        "name": "FoundationaLLM.Prompt/prompts/read",
-        "description": "Read prompts.",
-        "field_name": "FoundationaLLM_Prompt_Prompts_Read"
-      },
-      {
-        "name": "FoundationaLLM.Prompt/prompts/write",
-        "description": "Create or update prompts.",
-        "field_name": "FoundationaLLM_Prompt_Prompts_Write"
-      },
-      {
-        "name": "FoundationaLLM.Prompt/prompts/delete",
-        "description": "Delete prompts.",
-        "field_name": "FoundationaLLM_Prompt_Prompts_Delete"
-      }
-    ]
-  },
-  {
-    "category": "Vectorization",
-    "actions": [
-      {
-        "name": "FoundationaLLM.Vectorization/vectorizationPipelines/read",
-        "description": "Read vectorization pipelines.",
-        "field_name": "FoundationaLLM_Vectorization_VectorizationPipelines_Read"
-      },
-      {
-        "name": "FoundationaLLM.Vectorization/vectorizationPipelines/write",
-        "description": "Create or update vectorization pipelines.",
-        "field_name": "FoundationaLLM_Vectorization_VectorizationPipelines_Write"
-      },
-      {
-        "name": "FoundationaLLM.Vectorization/vectorizationPipelines/delete",
-        "description": "Delete vectorization pipelines.",
-        "field_name": "FoundationaLLM_Vectorization_VectorizationPipelines_Delete"
-      },
-      {
-        "name": "FoundationaLLM.Vectorization/vectorizationRequests/read",
-        "description": "Read vectorization requests.",
-        "field_name": "FoundationaLLM_Vectorization_VectorizationRequests_Read"
-      },
-      {
-        "name": "FoundationaLLM.Vectorization/vectorizationRequests/write",
-        "description": "Create or update vectorization requests.",
-        "field_name": "FoundationaLLM_Vectorization_VectorizationRequests_Write"
-      },
-      {
-        "name": "FoundationaLLM.Vectorization/vectorizationRequests/delete",
-        "description": "Delete vectorization requests.",
-        "field_name": "FoundationaLLM_Vectorization_VectorizationRequests_Delete"
-      },
-      {
-        "name": "FoundationaLLM.Vectorization/contentSourceProfiles/read",
-        "description": "Read vectorization content source profiles.",
-        "field_name": "FoundationaLLM_Vectorization_ContentSourceProfiles_Read"
-      },
-      {
-        "name": "FoundationaLLM.Vectorization/contentSourceProfiles/write",
-        "description": "Create or update vectorization content source profiles.",
-        "field_name": "FoundationaLLM_Vectorization_ContentSourceProfiles_Write"
-      },
-      {
-        "name": "FoundationaLLM.Vectorization/contentSourceProfiles/delete",
-        "description": "Delete vectorization content source profiles.",
-        "field_name": "FoundationaLLM_Vectorization_ContentSourceProfiles_Delete"
-      },
-      {
-        "name": "FoundationaLLM.Vectorization/textPartitioningProfiles/read",
-        "description": "Read vectorization text partitioning profiles.",
-        "field_name": "FoundationaLLM_Vectorization_TextPartitioningProfiles_Read"
-      },
-      {
-        "name": "FoundationaLLM.Vectorization/textPartitioningProfiles/write",
-        "description": "Create or update vectorization text partitioning profiles.",
-        "field_name": "FoundationaLLM_Vectorization_TextPartitioningProfiles_Write"
-      },
-      {
-        "name": "FoundationaLLM.Vectorization/textPartitioningProfiles/delete",
-        "description": "Delete vectorization text partitioning profiles.",
-        "field_name": "FoundationaLLM_Vectorization_TextPartitioningProfiles_Delete"
-      },
-      {
-        "name": "FoundationaLLM.Vectorization/textEmbeddingProfiles/read",
-        "description": "Read vectorization text embedding profiles.",
-        "field_name": "FoundationaLLM_Vectorization_TextEmbeddingProfiles_Read"
-      },
-      {
-        "name": "FoundationaLLM.Vectorization/textEmbeddingProfiles/write",
-        "description": "Create or update vectorization text embedding profiles.",
-        "field_name": "FoundationaLLM_Vectorization_TextEmbeddingProfiles_Write"
-      },
-      {
-        "name": "FoundationaLLM.Vectorization/textEmbeddingProfiles/delete",
-        "description": "Delete vectorization text embedding profiles.",
-        "field_name": "FoundationaLLM_Vectorization_TextEmbeddingProfiles_Delete"
-      },
-      {
-        "name": "FoundationaLLM.Vectorization/indexingProfiles/read",
-        "description": "Read vectorization indexing profiles.",
-        "field_name": "FoundationaLLM_Vectorization_IndexingProfiles_Read"
-      },
-      {
-        "name": "FoundationaLLM.Vectorization/indexingProfiles/write",
-        "description": "Create or update vectorization indexing profiles.",
-        "field_name": "FoundationaLLM_Vectorization_IndexingProfiles_Write"
-      },
-      {
-        "name": "FoundationaLLM.Vectorization/indexingProfiles/delete",
-        "description": "Delete vectorization indexing profiles.",
-        "field_name": "FoundationaLLM_Vectorization_IndexingProfiles_Delete"
-      }
-    ]
-  },
-  {
-    "category": "Completion",
-    "actions": [
-      {
-        "name": "FoundationaLLM.Completion/chatSessions/read",
-        "description": "Read chat sessions.",
-        "field_name": "FoundationaLLM_Completion_ChatSessions_Read"
-      },
-      {
-        "name": "FoundationaLLM.Completion/chatSessions/write",
-        "description": "Create or update chat sessions.",
-        "field_name": "FoundationaLLM_Completion_ChatSessions_Write"
-      },
-      {
-        "name": "FoundationaLLM.Completion/chatSessions/delete",
-        "description": "Delete chat sessions.",
-        "field_name": "FoundationaLLM_Completion_ChatSessions_Delete"
-      },
-      {
-        "name": "FoundationaLLM.Completion/directCompletions/read",
-        "description": "Read direct completions.",
-        "field_name": "FoundationaLLM_Completion_DirectCompletions_Read"
-      },
-      {
-        "name": "FoundationaLLM.Completion/directCompletions/write",
-        "description": "Create or update direct completions.",
-        "field_name": "FoundationaLLM_Completion_DirectCompletions_Write"
-      },
-      {
-        "name": "FoundationaLLM.Completion/directCompletions/delete",
-        "description": "Delete direct completions.",
-        "field_name": "FoundationaLLM_Completion_DirectCompletions_Delete"
-      }
-    ]
-  }
+	},
+	{
+		"category": "DataSource",
+		"actions": [
+			{
+				"name": "FoundationaLLM.DataSource/dataSources/read",
+				"description": "Read data sources.",
+				"field_name": "FoundationaLLM_DataSource_DataSources_Read"
+			},
+			{
+				"name": "FoundationaLLM.DataSource/dataSources/write",
+				"description": "Create or update data sources.",
+				"field_name": "FoundationaLLM_DataSource_DataSources_Write"
+			},
+			{
+				"name": "FoundationaLLM.DataSource/dataSources/delete",
+				"description": "Delete data sources.",
+				"field_name": "FoundationaLLM_DataSource_DataSources_Delete"
+			}
+		]
+	},
+	{
+		"category": "Prompt",
+		"actions": [
+			{
+				"name": "FoundationaLLM.Prompt/prompts/read",
+				"description": "Read prompts.",
+				"field_name": "FoundationaLLM_Prompt_Prompts_Read"
+			},
+			{
+				"name": "FoundationaLLM.Prompt/prompts/write",
+				"description": "Create or update prompts.",
+				"field_name": "FoundationaLLM_Prompt_Prompts_Write"
+			},
+			{
+				"name": "FoundationaLLM.Prompt/prompts/delete",
+				"description": "Delete prompts.",
+				"field_name": "FoundationaLLM_Prompt_Prompts_Delete"
+			}
+		]
+	},
+	{
+		"category": "Vectorization",
+		"actions": [
+			{
+				"name": "FoundationaLLM.Vectorization/vectorizationPipelines/read",
+				"description": "Read vectorization pipelines.",
+				"field_name": "FoundationaLLM_Vectorization_VectorizationPipelines_Read"
+			},
+			{
+				"name": "FoundationaLLM.Vectorization/vectorizationPipelines/write",
+				"description": "Create or update vectorization pipelines.",
+				"field_name": "FoundationaLLM_Vectorization_VectorizationPipelines_Write"
+			},
+			{
+				"name": "FoundationaLLM.Vectorization/vectorizationPipelines/delete",
+				"description": "Delete vectorization pipelines.",
+				"field_name": "FoundationaLLM_Vectorization_VectorizationPipelines_Delete"
+			},
+			{
+				"name": "FoundationaLLM.Vectorization/vectorizationRequests/read",
+				"description": "Read vectorization requests.",
+				"field_name": "FoundationaLLM_Vectorization_VectorizationRequests_Read"
+			},
+			{
+				"name": "FoundationaLLM.Vectorization/vectorizationRequests/write",
+				"description": "Create or update vectorization requests.",
+				"field_name": "FoundationaLLM_Vectorization_VectorizationRequests_Write"
+			},
+			{
+				"name": "FoundationaLLM.Vectorization/vectorizationRequests/delete",
+				"description": "Delete vectorization requests.",
+				"field_name": "FoundationaLLM_Vectorization_VectorizationRequests_Delete"
+			},
+			{
+				"name": "FoundationaLLM.Vectorization/contentSourceProfiles/read",
+				"description": "Read vectorization content source profiles.",
+				"field_name": "FoundationaLLM_Vectorization_ContentSourceProfiles_Read"
+			},
+			{
+				"name": "FoundationaLLM.Vectorization/contentSourceProfiles/write",
+				"description": "Create or update vectorization content source profiles.",
+				"field_name": "FoundationaLLM_Vectorization_ContentSourceProfiles_Write"
+			},
+			{
+				"name": "FoundationaLLM.Vectorization/contentSourceProfiles/delete",
+				"description": "Delete vectorization content source profiles.",
+				"field_name": "FoundationaLLM_Vectorization_ContentSourceProfiles_Delete"
+			},
+			{
+				"name": "FoundationaLLM.Vectorization/textPartitioningProfiles/read",
+				"description": "Read vectorization text partitioning profiles.",
+				"field_name": "FoundationaLLM_Vectorization_TextPartitioningProfiles_Read"
+			},
+			{
+				"name": "FoundationaLLM.Vectorization/textPartitioningProfiles/write",
+				"description": "Create or update vectorization text partitioning profiles.",
+				"field_name": "FoundationaLLM_Vectorization_TextPartitioningProfiles_Write"
+			},
+			{
+				"name": "FoundationaLLM.Vectorization/textPartitioningProfiles/delete",
+				"description": "Delete vectorization text partitioning profiles.",
+				"field_name": "FoundationaLLM_Vectorization_TextPartitioningProfiles_Delete"
+			},
+			{
+				"name": "FoundationaLLM.Vectorization/textEmbeddingProfiles/read",
+				"description": "Read vectorization text embedding profiles.",
+				"field_name": "FoundationaLLM_Vectorization_TextEmbeddingProfiles_Read"
+			},
+			{
+				"name": "FoundationaLLM.Vectorization/textEmbeddingProfiles/write",
+				"description": "Create or update vectorization text embedding profiles.",
+				"field_name": "FoundationaLLM_Vectorization_TextEmbeddingProfiles_Write"
+			},
+			{
+				"name": "FoundationaLLM.Vectorization/textEmbeddingProfiles/delete",
+				"description": "Delete vectorization text embedding profiles.",
+				"field_name": "FoundationaLLM_Vectorization_TextEmbeddingProfiles_Delete"
+			},
+			{
+				"name": "FoundationaLLM.Vectorization/indexingProfiles/read",
+				"description": "Read vectorization indexing profiles.",
+				"field_name": "FoundationaLLM_Vectorization_IndexingProfiles_Read"
+			},
+			{
+				"name": "FoundationaLLM.Vectorization/indexingProfiles/write",
+				"description": "Create or update vectorization indexing profiles.",
+				"field_name": "FoundationaLLM_Vectorization_IndexingProfiles_Write"
+			},
+			{
+				"name": "FoundationaLLM.Vectorization/indexingProfiles/delete",
+				"description": "Delete vectorization indexing profiles.",
+				"field_name": "FoundationaLLM_Vectorization_IndexingProfiles_Delete"
+			}
+		]
+	},
+	{
+		"category": "Completion",
+		"actions": [
+			{
+				"name": "FoundationaLLM.Completion/chatSessions/read",
+				"description": "Read chat sessions.",
+				"field_name": "FoundationaLLM_Completion_ChatSessions_Read"
+			},
+			{
+				"name": "FoundationaLLM.Completion/chatSessions/write",
+				"description": "Create or update chat sessions.",
+				"field_name": "FoundationaLLM_Completion_ChatSessions_Write"
+			},
+			{
+				"name": "FoundationaLLM.Completion/chatSessions/delete",
+				"description": "Delete chat sessions.",
+				"field_name": "FoundationaLLM_Completion_ChatSessions_Delete"
+			},
+			{
+				"name": "FoundationaLLM.Completion/directCompletions/read",
+				"description": "Read direct completions.",
+				"field_name": "FoundationaLLM_Completion_DirectCompletions_Read"
+			},
+			{
+				"name": "FoundationaLLM.Completion/directCompletions/write",
+				"description": "Create or update direct completions.",
+				"field_name": "FoundationaLLM_Completion_DirectCompletions_Write"
+			},
+			{
+				"name": "FoundationaLLM.Completion/directCompletions/delete",
+				"description": "Delete direct completions.",
+				"field_name": "FoundationaLLM_Completion_DirectCompletions_Delete"
+			}
+		]
+	},
+	{
+		"category": "Attachment",
+		"actions": [
+			{
+				"name": "FoundationaLLM.Attachment/attachments/read",
+				"description": "Read attachments.",
+				"field_name": "FoundationaLLM_Attachment_Attachments_Read"
+			},
+			{
+				"name": "FoundationaLLM.Attachment/attachments/write",
+				"description": "Create or update attachments.",
+				"field_name": "FoundationaLLM_Attachment_Attachments_Write"
+			},
+			{
+				"name": "FoundationaLLM.Attachment/attachments/delete",
+				"description": "Delete attachments.",
+				"field_name": "FoundationaLLM_Attachment_Attachments_Delete"
+			}
+		]
+	}
+
 ]

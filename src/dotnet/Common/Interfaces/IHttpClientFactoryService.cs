@@ -18,5 +18,15 @@
         /// <param name="clientName">The named <see cref="HttpClient"/> client configuration.</param>
         /// <returns></returns>
         HttpClient CreateClient(string clientName);
+
+        /// <summary>
+        /// Creates a new unregistered <see cref="HttpClient"/> instance with a timeout.
+        /// </summary>
+        /// <param name="clientName">The named <see cref="HttpClient"/> client configuration.</param>
+        /// <param name="timeout">The timeout for the <see cref="HttpClient"/>.
+        /// If not specified, the default timeout in seconds is applied.
+        /// For an infinite waiting period, use <see cref="Timeout.InfiniteTimeSpan"/></param>
+        /// <returns></returns>
+        HttpClient CreateUnregisteredClient(TimeSpan? timeout = null);
     }
 }

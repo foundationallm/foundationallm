@@ -9,6 +9,7 @@ class CompletionRequestBase(BaseModel):
     """
     request_id: Optional[str] = str(uuid.uuid4())
     session_id: Optional[str] = None
-    user_prompt: str    
+    user_prompt: str
+    attachments: Optional[List[str]] = None
     message_history: Optional[List[MessageHistoryItem]] = []
     settings: Optional[OrchestrationSettings] = None

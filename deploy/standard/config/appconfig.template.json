@@ -22,6 +22,20 @@
         "tags": {}
       },
       {
+        "key": "FoundationaLLM:Attachment:ResourceProviderService:Storage:AccountName",
+        "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+        "label": null,
+        "content_type": "",
+        "tags": {}
+      },
+      {
+        "key": "FoundationaLLM:Attachment:ResourceProviderService:Storage:AuthenticationType",
+        "value": "AzureIdentity",
+        "label": null,
+        "content_type": "",
+        "tags": {}
+      },
+      {
         "key": "FoundationaLLM:APIs:OrchestrationAPI:APIKey",
         "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apis-orchestrationapi-apikey\"}",
         "label": null,

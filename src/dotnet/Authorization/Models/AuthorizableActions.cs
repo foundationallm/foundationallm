@@ -327,6 +327,27 @@ namespace FoundationaLLM.Authorization.Models
                         "Delete direct completions.",
                         "Completion")
                 },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Read,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Read,
+                        "Read attachments.",
+                        "Attachment")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Write,
+                        "Create or update attachments.",
+                        "Attachment")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Delete,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Delete,
+                        "Delete attachments.",
+                        "Attachment")
+                },
             });
 
         /// <summary>

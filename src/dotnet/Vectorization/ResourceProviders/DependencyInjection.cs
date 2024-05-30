@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Configuration.API;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.Storage;
 using FoundationaLLM.Common.Models.Context;
@@ -95,10 +96,11 @@ namespace FoundationaLLM
                 DownstreamAPIs = []
             };
 
-            var vectorizationAPISettings = new DownstreamAPIKeySettings
+            var vectorizationAPISettings = new DownstreamAPIClientConfiguration
             {
                 APIUrl = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_VectorizationAPI_APIUrl]!,
-                APIKey = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_VectorizationAPI_APIKey]!
+                APIKey = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_VectorizationAPI_APIKey]!,
+                Timeout = TimeSpan.FromMinutes(10)
             };
             downstreamAPISettings.DownstreamAPIs[HttpClients.VectorizationAPI] = vectorizationAPISettings;
             var retryOptions = CommonHttpRetryStrategyOptions.GetCommonHttpRetryStrategyOptions();

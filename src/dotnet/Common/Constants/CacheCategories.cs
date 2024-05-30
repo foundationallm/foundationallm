@@ -23,5 +23,9 @@ namespace FoundationaLLM.Common.Constants
         /// The DataSource cache category.
         /// </summary>
         public const string DataSource = "datasource";
+        /// <summary>
+        /// The Attachment cache category.
+        /// </summary>
+        public const string Attachment = "attachment";
     }
 }

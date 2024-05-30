@@ -97,6 +97,24 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     Yes, the Adventurer GPS Watch is a great choice for people seeking adventure.
 
                     "
+            },
+            new MultipartPrompt
+            {
+                Name = TestAgentNames.SemanticKernelDune,
+                Description = $"Prompt template for the {TestAgentNames.SemanticKernelDune} agent.",
+                Prefix = @"You are an intelligent assistant for the world of Dune, also known as Arrakis.
+                    You are designed to provide knowledgeable insights into everything related to Dune.
+                    You must only use information from the CONTEXT section below.
+
+                    CONTEXT:
+
+                    {{buildcontext $userPrompt}}
+
+                    USER FOCUS:
+
+                    {{$userPrompt}}
+
+                    "
             }
         ];
 

@@ -33,6 +33,11 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
         public const string FoundationaLLM_DataSource = "FoundationaLLM.DataSource";
 
         /// <summary>
+        /// The name of the FoundationaLLM.Attachment resource provider.
+        /// </summary>
+        public const string FoundationaLLM_Attachment = "FoundationaLLM.Attachment";
+
+        /// <summary>
         /// The name of the FoundationaLLM.Authorization resource provider.
         /// </summary>
         public const string FoundationaLLM_Authorization = "FoundationaLLM.Authorization";
@@ -46,6 +51,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             FoundationaLLM_Configuration,
             FoundationaLLM_Prompt,
             FoundationaLLM_DataSource,
+            FoundationaLLM_Attachment,
             FoundationaLLM_Authorization];
     }
 }

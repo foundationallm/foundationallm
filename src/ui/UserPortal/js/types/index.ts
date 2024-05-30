@@ -71,4 +71,5 @@ export interface OrchestrationRequest {
 	user_prompt: string;
 	agent_name?: string;
 	settings?: OrchestrationSettings;
+	attachments?: string[];
 }

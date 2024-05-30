@@ -12,7 +12,11 @@ RUN apt-get update \
 
 WORKDIR /code
 
-RUN apt-get update && apt-get -y install libpq-dev gcc
+RUN apt-get update && \
+    apt-get -y install libpq-dev gcc git && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 COPY ./LangChainAPI/requirements.txt /code/requirements.txt
 RUN python3 -m pip install --no-cache-dir --upgrade torch --index-url https://download.pytorch.org/whl/cpu 
 RUN python3 -m pip install --no-cache-dir --upgrade -r /code/requirements.txt

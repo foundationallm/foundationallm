@@ -2,6 +2,7 @@
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Configuration.API;
 using FoundationaLLM.Common.Models.Configuration.AzureAI;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Instance;
@@ -75,26 +76,27 @@ namespace FoundationaLLM.Core.Examples.Setup
             {
                 options.BaseUri = configuration[AppConfigurationKeys.FoundationaLLM_APIs_CoreAPI_APIUrl]!;
                 options.Scope = configuration[AppConfigurationKeys.FoundationaLLM_Chat_Entra_Scopes]!;
-                options.Timeout = TimeSpan.FromSeconds(120);
+                options.Timeout = TimeSpan.FromMinutes(40);
             });
             
             services.Configure<HttpClientOptions>(HttpClients.ManagementAPI, options =>
             {
                 options.BaseUri = configuration[AppConfigurationKeys.FoundationaLLM_APIs_ManagementAPI_APIUrl]!;
                 options.Scope = configuration[AppConfigurationKeys.FoundationaLLM_Management_Entra_Scopes]!;
-                options.Timeout = TimeSpan.FromSeconds(120);
+                options.Timeout = TimeSpan.FromMinutes(5);
             });
 
             services.Configure<HttpClientOptions>(HttpClients.VectorizationAPI, options =>
             {
                 options.BaseUri = configuration[AppConfigurationKeys.FoundationaLLM_APIs_VectorizationAPI_APIUrl]!;
-                options.Timeout = TimeSpan.FromSeconds(120);
+                options.Timeout = TimeSpan.FromMinutes(10);
             });
 
-            var vectorizationAPISettings = new DownstreamAPIKeySettings
+            var vectorizationAPISettings = new DownstreamAPIClientConfiguration
             {
                 APIUrl = configuration[AppConfigurationKeys.FoundationaLLM_APIs_VectorizationAPI_APIUrl]!,
-                APIKey = configuration[AppConfigurationKeys.FoundationaLLM_APIs_VectorizationAPI_APIKey]!
+                APIKey = configuration[AppConfigurationKeys.FoundationaLLM_APIs_VectorizationAPI_APIKey]!,
+                Timeout = TimeSpan.FromMinutes(10)
             };
             var downstreamAPISettings = new DownstreamAPISettings
             {

@@ -30,6 +30,6 @@ ENV PORT=$PORT
 
 COPY --from=build /src/.output /src/.output
 
-CMD [ "node", ".output/server/index.mjs" ]
+ENTRYPOINT [ "node", ".output/server/index.mjs" ]
 LABEL org.opencontainers.image.source=https://github.com/solliancenet/foundationallm
 LABEL ai.foundationallm.version=${FOUNDATIONALLM_VERSION:-0.0.0}

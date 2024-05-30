@@ -109,7 +109,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
         {
             var httpClient = _httpClientFactory.CreateClient();
             httpClient.BaseAddress = new Uri(_settings.APIUrl!);
-            httpClient.Timeout = TimeSpan.FromSeconds(600);
+            httpClient.Timeout = TimeSpan.FromMinutes(30);
 
             // Add the API key header.
             httpClient.DefaultRequestHeaders.Add(HttpHeaders.APIKey, _settings.APIKey);

@@ -28,9 +28,9 @@ namespace FoundationaLLM.Common.Settings
                 ShouldHandle = static args => ValueTask.FromResult(args is
                 {
                     Outcome.Result.StatusCode:
-                    HttpStatusCode.RequestTimeout or
+                    //HttpStatusCode.RequestTimeout or
                     HttpStatusCode.TooManyRequests or
-                    HttpStatusCode.GatewayTimeout or
+                    //HttpStatusCode.GatewayTimeout or
                     HttpStatusCode.BadGateway or
                     HttpStatusCode.ServiceUnavailable
                 })

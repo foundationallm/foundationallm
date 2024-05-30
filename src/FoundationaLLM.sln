@@ -99,7 +99,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gateway", "dotnet\Gateway\G
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatewayAPI", "dotnet\GatewayAPI\GatewayAPI.csproj", "{2A51F9EB-BFCB-4285-A6FC-80CCA46228FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Examples", "..\tests\dotnet\Core.Examples\Core.Examples.csproj", "{6230C568-E97B-4959-8ECE-33D97D1BBD4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Examples", "..\tests\dotnet\Core.Examples\Core.Examples.csproj", "{6230C568-E97B-4959-8ECE-33D97D1BBD4C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Attachment", "dotnet\Attachments\Attachment.csproj", "{8F66055B-3A50-4F9B-A774-7D17F2D4A523}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -254,6 +256,10 @@ Global
 		{6230C568-E97B-4959-8ECE-33D97D1BBD4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6230C568-E97B-4959-8ECE-33D97D1BBD4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6230C568-E97B-4959-8ECE-33D97D1BBD4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F66055B-3A50-4F9B-A774-7D17F2D4A523}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F66055B-3A50-4F9B-A774-7D17F2D4A523}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F66055B-3A50-4F9B-A774-7D17F2D4A523}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F66055B-3A50-4F9B-A774-7D17F2D4A523}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -302,6 +308,7 @@ Global
 		{35833700-B5EF-4211-91C7-E12A03DE3B82} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
 		{2A51F9EB-BFCB-4285-A6FC-80CCA46228FB} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
 		{6230C568-E97B-4959-8ECE-33D97D1BBD4C} = {28E0E967-A94D-4820-8A61-0B71D3B2780F}
+		{8F66055B-3A50-4F9B-A774-7D17F2D4A523} = {B6DC1190-2873-44A3-85B3-63D7BDE99231}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF5DE858-4B85-4EE8-8A6D-46E8E4FBA078}

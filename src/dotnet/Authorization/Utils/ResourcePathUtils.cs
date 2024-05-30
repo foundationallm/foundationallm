@@ -74,6 +74,7 @@ namespace FoundationaLLM.Authorization.Utils
                 ResourceProviderNames.FoundationaLLM_Prompt => PromptResourceProviderMetadata.AllowedResourceTypes,
                 ResourceProviderNames.FoundationaLLM_Vectorization => VectorizationResourceProviderMetadata.AllowedResourceTypes,
                 ResourceProviderNames.FoundationaLLM_Configuration => ConfigurationResourceProviderMetadata.AllowedResourceTypes,
+                ResourceProviderNames.FoundationaLLM_Attachment => AttachmentResourceProviderMetadata.AllowedResourceTypes,
                 _ => []
             };
     }

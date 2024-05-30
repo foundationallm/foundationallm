@@ -4,6 +4,7 @@ using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
+using FoundationaLLM.Common.Models.Configuration.API;
 using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
@@ -53,6 +54,7 @@ namespace FoundationaLLM.Management.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_DataSource);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Events);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Attachment);
             });
 
             if (builder.Environment.IsDevelopment())
@@ -104,6 +106,7 @@ namespace FoundationaLLM.Management.API
             builder.AddAgentResourceProvider();
             builder.AddPromptResourceProvider();
             builder.AddDataSourceResourceProvider();
+            builder.AddAttachmentResourceProvider();
 
             // Add authentication configuration.
             var e2ETestEnvironmentValue = Environment.GetEnvironmentVariable(EnvironmentVariables.FoundationaLLM_Environment) ?? string.Empty;
@@ -250,7 +253,7 @@ namespace FoundationaLLM.Management.API
             var retryOptions = CommonHttpRetryStrategyOptions.GetCommonHttpRetryStrategyOptions();
 
             // OrchestrationAPI:
-            var orchestrationAPISettings = new DownstreamAPIKeySettings
+            var orchestrationAPISettings = new DownstreamAPIClientConfiguration
             {
                 APIUrl = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_OrchestrationAPI_APIUrl]!,
                 APIKey = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_OrchestrationAPI_APIKey]!
@@ -268,7 +271,7 @@ namespace FoundationaLLM.Management.API
                     });
 
             // AgentHubAPI:
-            var agentHubAPISettings = new DownstreamAPIKeySettings
+            var agentHubAPISettings = new DownstreamAPIClientConfiguration
             {
                 APIUrl = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_AgentHubAPI_APIUrl]!,
                 APIKey = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_AgentHubAPI_APIKey]!
@@ -286,7 +289,7 @@ namespace FoundationaLLM.Management.API
                         });
 
             // DataSourceHubAPI:
-            var dataSourceHubAPISettings = new DownstreamAPIKeySettings
+            var dataSourceHubAPISettings = new DownstreamAPIClientConfiguration
             {
                 APIUrl = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_DataSourceHubAPI_APIUrl]!,
                 APIKey = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_DataSourceHubAPI_APIKey]!
@@ -304,7 +307,7 @@ namespace FoundationaLLM.Management.API
                     });
 
             // PromptHubAPI:
-            var promptHubAPISettings = new DownstreamAPIKeySettings
+            var promptHubAPISettings = new DownstreamAPIClientConfiguration
             {
                 APIUrl = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_PromptHubAPI_APIUrl]!,
                 APIKey = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_PromptHubAPI_APIKey]!
@@ -322,10 +325,11 @@ namespace FoundationaLLM.Management.API
                         });
 
             // LangChainAPI:
-            var langChainAPISettings = new DownstreamAPIKeySettings
+            var langChainAPISettings = new DownstreamAPIClientConfiguration
             {
                 APIUrl = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_LangChainAPI_APIUrl]!,
-                APIKey = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_LangChainAPI_APIKey]!
+                APIKey = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_LangChainAPI_APIKey]!,
+                Timeout = Timeout.InfiniteTimeSpan
             };
             downstreamAPISettings.DownstreamAPIs[HttpClients.LangChainAPI] = langChainAPISettings;
 
@@ -340,10 +344,11 @@ namespace FoundationaLLM.Management.API
                         });
 
             // SemanticKernelAPI:
-            var semanticKernelAPISettings = new DownstreamAPIKeySettings
+            var semanticKernelAPISettings = new DownstreamAPIClientConfiguration
             {
                 APIUrl = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_SemanticKernelAPI_APIUrl]!,
-                APIKey = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_SemanticKernelAPI_APIKey]!
+                APIKey = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_SemanticKernelAPI_APIKey]!,
+                Timeout = Timeout.InfiniteTimeSpan
             };
             downstreamAPISettings.DownstreamAPIs[HttpClients.SemanticKernelAPI] = semanticKernelAPISettings;
 

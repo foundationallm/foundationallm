@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Authentication;
+﻿using FoundationaLLM.Common.Models.Configuration.API;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +15,6 @@ namespace FoundationaLLM.Common.Interfaces
         /// <summary>
         /// A dictionary of downstream APIs with a base URL and API key for authentication.
         /// </summary>
-        Dictionary<string, DownstreamAPIKeySettings> DownstreamAPIs { get; }
+        Dictionary<string, DownstreamAPIClientConfiguration> DownstreamAPIs { get; }
     }
 }

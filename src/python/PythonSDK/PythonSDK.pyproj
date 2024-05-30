@@ -40,9 +40,13 @@
     <Compile Include="foundationallm\langchain\retrievers\azure_ai_search_service_retriever.py" />
     <Compile Include="foundationallm\langchain\retrievers\__init__.py" />
     <Compile Include="foundationallm\langchain\language_models\openai\openai_model.py" />
+    <Compile Include="foundationallm\langchain\tools\audio_classification_tool.py" />
     <Compile Include="foundationallm\models\agents\agent_conversation_history_settings.py" />
     <Compile Include="foundationallm\models\agents\agent_gatekeeper_settings.py" />
     <Compile Include="foundationallm\models\agents\agent_vectorization_settings.py" />
+    <Compile Include="foundationallm\models\classification\audio_prediction_request.py" />
+    <Compile Include="foundationallm\models\classification\audio_prediction_response.py" />
+    <Compile Include="foundationallm\models\classification\__init__.py" />
     <Compile Include="foundationallm\models\orchestration\operation_types.py" />
     <Compile Include="foundationallm\models\agents\__init__.py" />
     <Compile Include="foundationallm\models\authentication\authentication_types.py" />
@@ -90,6 +94,8 @@
     <Compile Include="foundationallm\models\orchestration\message_history_item.py" />
     <Compile Include="foundationallm\models\orchestration\orchestration_settings.py" />
     <Compile Include="foundationallm\models\orchestration\__init__.py" />
+    <Compile Include="foundationallm\models\resource_providers\attachments\attachment.py" />
+    <Compile Include="foundationallm\models\resource_providers\attachments\__init__.py" />
     <Compile Include="foundationallm\models\resource_providers\prompts\multipart_prompt.py" />
     <Compile Include="foundationallm\models\resource_providers\prompts\__init__.py" />
     <Compile Include="foundationallm\models\resource_providers\vectorization\configuration_references_base.py" />
@@ -146,8 +152,10 @@
     <Folder Include="foundationallm\models\agents\" />
     <Folder Include="foundationallm\models\authentication\" />
     <Folder Include="foundationallm\models\utils\" />
+    <Folder Include="foundationallm\models\classification\" />
     <Folder Include="foundationallm\models\resource_providers\" />
     <Folder Include="foundationallm\models\orchestration\" />
+    <Folder Include="foundationallm\models\resource_providers\attachments\" />
     <Folder Include="foundationallm\models\resource_providers\prompts\" />
     <Folder Include="foundationallm\models\resource_providers\vectorization\" />
     <Folder Include="foundationallm\models\resource_providers\vectorization\embedding_profiles\azure_openai\" />

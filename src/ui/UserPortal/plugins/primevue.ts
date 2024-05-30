@@ -11,6 +11,7 @@ import Tooltip from 'primevue/tooltip';
 import Divider from 'primevue/divider';
 import Dropdown from 'primevue/dropdown';
 import Avatar from 'primevue/avatar';
+import FileUpload from 'primevue/fileupload';
 
 import { defineNuxtPlugin } from '#app';
 
@@ -26,6 +27,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 	nuxtApp.vueApp.component('Divider', Divider);
 	nuxtApp.vueApp.component('Dropdown', Dropdown);
 	nuxtApp.vueApp.component('Avatar', Avatar);
+	nuxtApp.vueApp.component('FileUpload', FileUpload);
 
 	nuxtApp.vueApp.use(ToastService);
 	nuxtApp.vueApp.directive('tooltip', Tooltip);

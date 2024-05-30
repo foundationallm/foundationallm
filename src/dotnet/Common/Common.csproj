@@ -39,11 +39,11 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Update="Constants\Authorizartion\AuthorizableActionNames.tt">
+    <None Update="Constants\Authorization\AuthorizableActionNames.tt">
       <LastGenOutput>AuthorizableActionNames.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Constants\Authorizartion\RoleDefinitionNames.tt">
+    <None Update="Constants\Authorization\RoleDefinitionNames.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>RoleDefinitionNames.cs</LastGenOutput>
     </None>
@@ -54,12 +54,12 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Compile Update="Constants\Authorizartion\AuthorizableActionNames.cs">
+    <Compile Update="Constants\Authorization\AuthorizableActionNames.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AuthorizableActionNames.tt</DependentUpon>
     </Compile>
-    <Compile Update="Constants\Authorizartion\RoleDefinitionNames.cs">
+    <Compile Update="Constants\Authorization\RoleDefinitionNames.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>RoleDefinitionNames.tt</DependentUpon>

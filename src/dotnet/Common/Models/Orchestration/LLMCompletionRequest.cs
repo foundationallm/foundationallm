@@ -37,5 +37,11 @@ namespace FoundationaLLM.Common.Models.Orchestration
         /// </summary>
         [JsonPropertyName("settings")]
         public OrchestrationSettings? Settings { get; set; }
+
+        /// <summary>
+        /// The list of attachments associated with the request.
+        /// </summary>
+        [JsonPropertyName("attachments")]
+        public List<string> Attachments { get; init; } = [];
     }
 }

@@ -1,6 +1,6 @@
-﻿using FoundationaLLM.Common.Authentication;
-using FoundationaLLM.Common.Interfaces;
+﻿using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Configuration.API;
 using System.Text.Json;
 
 namespace FoundationaLLM.Common.Services
@@ -11,6 +11,7 @@ namespace FoundationaLLM.Common.Services
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ICallContext _callContext;
         private readonly IDownstreamAPISettings _apiSettings;
+        private readonly TimeSpan _defaultTimeout = TimeSpan.FromMinutes(10);
 
         /// <summary>
         /// Creates a new instance of the <see cref="HttpClientFactoryService"/> class.
@@ -35,12 +36,22 @@ namespace FoundationaLLM.Common.Services
         public HttpClient CreateClient(string clientName)
         {
             var httpClient = _httpClientFactory.CreateClient(clientName);
-            httpClient.Timeout = TimeSpan.FromSeconds(600);
+            _apiSettings.DownstreamAPIs.TryGetValue(clientName, out var settings);
+            httpClient.Timeout = _defaultTimeout;
 
-            // Add the API key header.
-            if (_apiSettings.DownstreamAPIs.TryGetValue(clientName, out var settings))
+            if (settings != null)
             {
-                httpClient.DefaultRequestHeaders.Add(Constants.HttpHeaders.APIKey, settings.APIKey);
+                // Override the default timeout if a value is provided.
+                if (settings.Timeout.HasValue)
+                {
+                    httpClient.Timeout = settings.Timeout.Value;
+                }
+
+                // Add the API key header.
+                if (!string.IsNullOrWhiteSpace(settings.APIKey))
+                {
+                    httpClient.DefaultRequestHeaders.Add(Constants.HttpHeaders.APIKey, settings.APIKey);
+                }
             }
 
             // Optionally add the user identity header.
@@ -50,6 +61,14 @@ namespace FoundationaLLM.Common.Services
                 httpClient.DefaultRequestHeaders.Add(Constants.HttpHeaders.UserIdentity, serializedIdentity);
             }
 
+            return httpClient;
+        }
+
+        /// <inheritdoc/>
+        public HttpClient CreateUnregisteredClient(TimeSpan? timeout = null)
+        {
+            var httpClient = _httpClientFactory.CreateClient();
+            httpClient.Timeout = timeout ?? _defaultTimeout;
             return httpClient;
         }
     }

@@ -18,7 +18,8 @@ from foundationallm.models.orchestration import (
     MessageHistoryItem,
     OrchestrationSettings
 )
-from foundationallm.models.resource_providers.prompts.multipart_prompt import MultipartPrompt
+from foundationallm.models.resource_providers.attachments import Attachment
+from foundationallm.models.resource_providers.prompts import MultipartPrompt
 from foundationallm.models.resource_providers.vectorization import (
     AzureAISearchIndexingProfile,
     AzureOpenAIEmbeddingProfile
@@ -75,6 +76,25 @@ class LangChainAgentBase():
             raise LangChainException("The prompt object is missing in the agent parameters.", 400)
 
         return prompt
+
+    def _get_attachment_from_object_id(self, attachment_object_id: str, agent_parameters: dict) -> Attachment:
+        """
+        Get the prompt from the object id.
+        """
+        attachment: Attachment = None
+
+        if attachment_object_id is None or attachment_object_id == '':
+            return None
+        
+        try:
+            attachment = Attachment(**agent_parameters.get(attachment_object_id))
+        except Exception as e:
+            raise LangChainException(f"The attachment object provided in the agent parameters is invalid. {str(e)}", 400)
+        
+        if attachment is None:
+            raise LangChainException("The attachment object is missing in the agent parameters.", 400)
+
+        return attachment        
 
     def _validate_request(self, request: CompletionRequestBase):
         """

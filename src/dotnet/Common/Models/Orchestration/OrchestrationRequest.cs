@@ -26,6 +26,13 @@ namespace FoundationaLLM.Common.Models.Orchestration
         public string? AgentName { get; set; }
 
         /// <summary>
+        /// One or more attachments to include with the orchestration request.
+        /// The values should be the ObjectID of the attachment(s).
+        /// </summary>
+        [JsonPropertyName("attachments")]
+        public List<string>? Attachments { get; set; }
+
+        /// <summary>
         /// A list of Gatekeeper feature names used by the orchestration request.
         /// </summary>
         [JsonPropertyName("gatekeeper_options")]

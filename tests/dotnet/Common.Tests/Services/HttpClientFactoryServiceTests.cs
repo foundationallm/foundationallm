@@ -1,6 +1,6 @@
-﻿using FoundationaLLM.Common.Authentication;
-using FoundationaLLM.Common.Interfaces;
+﻿using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Configuration.API;
 using FoundationaLLM.Common.Services;
 using NSubstitute;
 using System.Text.Json;
@@ -33,10 +33,10 @@ namespace FoundationaLLM.Common.Tests.Services
                 Name = "TestName"
             };
 
-            _apiSettings.DownstreamAPIs.Returns(new System.Collections.Generic.Dictionary<string, DownstreamAPIKeySettings>
+            _apiSettings.DownstreamAPIs.Returns(new System.Collections.Generic.Dictionary<string, DownstreamAPIClientConfiguration>
             {
                 { 
-                    clientName, new DownstreamAPIKeySettings
+                    clientName, new DownstreamAPIClientConfiguration
                     {
                         APIUrl = "TestAPIUrl",
                         APIKey = "TestAPIKey"

@@ -124,7 +124,8 @@ public partial class CoreService(
                 AgentName = orchestrationRequest.AgentName,
                 UserPrompt = orchestrationRequest.UserPrompt,
                 MessageHistory = messageHistoryList,
-                Settings = orchestrationRequest.Settings
+                Settings = orchestrationRequest.Settings,
+                Attachments = orchestrationRequest.Attachments
             };
 
             if (!_settings.BypassGatekeeper)

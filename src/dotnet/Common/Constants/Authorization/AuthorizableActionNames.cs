@@ -257,5 +257,24 @@ namespace FoundationaLLM.Common.Constants.Authorization
         public const string FoundationaLLM_Completion_DirectCompletions_Delete = "FoundationaLLM.Completion/directCompletions/delete";
 
         #endregion
+
+        #region Attachment
+
+        /// <summary>
+        /// Read attachments.
+        /// </summary>
+        public const string FoundationaLLM_Attachment_Attachments_Read = "FoundationaLLM.Attachment/attachments/read";
+
+        /// <summary>
+        /// Create or update attachments.
+        /// </summary>
+        public const string FoundationaLLM_Attachment_Attachments_Write = "FoundationaLLM.Attachment/attachments/write";
+
+        /// <summary>
+        /// Delete attachments.
+        /// </summary>
+        public const string FoundationaLLM_Attachment_Attachments_Delete = "FoundationaLLM.Attachment/attachments/delete";
+
+        #endregion
     }
 }

@@ -13,6 +13,7 @@ export const useAppStore = defineStore('app', {
 		agents: [] as ResourceProviderGetResult<Agent>[],
 		selectedAgents: new Map(),
 		lastSelectedAgent: null as ResourceProviderGetResult<Agent> | null,
+		attachments: [] as String[],
 	}),
 
 	getters: {},
@@ -169,6 +170,7 @@ export const useAppStore = defineStore('app', {
 				this.currentSession!.id,
 				text,
 				this.getSessionAgent(this.currentSession!).resource,
+				[...this.attachments.map(String)], // Convert attachments to an array of strings
 			);
 			await this.getMessages();
 
@@ -221,6 +223,18 @@ export const useAppStore = defineStore('app', {
 		async getAgents() {
 			this.agents = await api.getAllowedAgents();
 			return this.agents;
+		},
+
+		async uploadAttachment(file: FormData) {
+			try {
+				const id = await api.uploadAttachment(file);
+				// this.attachments.push(id);
+				// For now, we want to just replace the attachments with the new one.
+				this.attachments = [id as string];
+				return id;
+			} catch (error) {
+				throw error;
+			}
 		},
 	},
 });

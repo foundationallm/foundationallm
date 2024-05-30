@@ -41,5 +41,9 @@
         /// The name of the agent that is used to generate conversations about products.
         /// </summary>
         public const string ConversationGeneratorAgent = "ConversationGeneratorAgent";
+        /// <summary>
+        /// The name of the Dune semantic kernel agent.
+        /// </summary>
+        public const string SemanticKernelDune = "KMAgentWithSemanticKernelDune";
     }
 }

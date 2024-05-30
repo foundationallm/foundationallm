@@ -2,6 +2,28 @@
 	<div class="chat-input p-inputgroup">
 		<div class="input-wrapper">
 			<i class="pi pi-info-circle tooltip-component" v-tooltip="'Use Shift+Enter to add a new line'"></i>
+			<Button
+				icon="pi pi-paperclip"
+				class="file-upload-button"
+				style="height: 100%;"
+				@click="showFileUploadDialog = true"
+			/>
+			<Dialog v-model:visible="showFileUploadDialog" header="Upload File" modal>
+				<FileUpload
+					accept="audio/mpeg,audio/wav"
+					:auto="true"
+					:custom-upload="true"
+					mode="advanced"
+					@uploader="handleUpload"
+				>
+					<template #content>
+						<p class="p-m-0">
+							Use the <strong>+ Choose</strong> button to browse for a file or drag and drop a file here to upload.
+							The file will be used as an attachment for this chat as a context for the agent.
+						</p>
+					</template>
+				</FileUpload>
+			</Dialog>
 			<Mentionable
 				:keys="['@']"
 				:items="agents"
@@ -49,6 +71,7 @@
 <script lang="ts">
 import { Mentionable } from 'vue-mention';
 import 'floating-vue/dist/style.css';
+import FileUpload from 'primevue/fileupload';
 
 export default {
 	name: 'ChatInput',
@@ -74,6 +97,7 @@ export default {
 			inputRef: null as HTMLElement | null,
 			agents: [],
 			agentListOpen: false,
+			showFileUploadDialog: false,
 		};
 	},
 
@@ -129,6 +153,21 @@ export default {
 			this.$emit('send', this.text);
 			this.text = '';
 		},
+
+		async handleUpload(event: any) {
+			try {
+				const formData = new FormData();
+				formData.append("file", event.files[0]);
+
+				const objectId = await this.$appStore.uploadAttachment(formData);
+
+				console.log(`File uploaded: ObjectId: ${objectId}`);
+				this.$toast.add({ severity: 'success', summary: 'Success', detail: 'File uploaded successfully.' });
+				this.showFileUploadDialog = false;
+			} catch (error) {
+				this.$toast.add({ severity: 'error', summary: 'Error', detail: `File upload failed. ${error.message}` });
+			}
+		}
 	},
 };
 </script>
@@ -153,12 +192,14 @@ export default {
 
 .chat-input .input-wrapper {
     display: flex;
-    align-items: center;
+	align-items: stretch;
 	width: 100%;
 }
 
 .tooltip-component {
 	margin-right: 0.5rem;
+	display: flex;
+	align-items: center;
 }
 
 .mentionable {
@@ -214,6 +255,10 @@ export default {
 	flex: 0 0 10%;
 	text-align: left;
 	flex-basis: auto;
+}
+
+.file-upload-button {
+	height: 100%;
 }
 </style>
 

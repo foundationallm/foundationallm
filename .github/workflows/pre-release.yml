@@ -48,7 +48,7 @@ jobs:
         result-encoding: string
         script: |
           const fs = require('fs')
-          const jsonString = fs.readFileSync('./tests/config/e2e-test-manifest.json')
+          const jsonString = fs.readFileSync('./tests/config/sandbox-registry.json')
           var data = JSON.parse(jsonString)
           return data.registry
 
@@ -73,6 +73,8 @@ jobs:
       chart: ${{ matrix.object.name }}
       registry: ${{ needs.generate_matrix.outputs.registry }}
       tag: ${{ needs.generate_matrix.outputs.docker_tag }}
+      username: e2e-token
+      target: sandbox
     secrets: inherit
 
   docker_build:
@@ -90,4 +92,6 @@ jobs:
       dockerfile: ${{ matrix.object.dockerfile }}
       registry: ${{ needs.generate_matrix.outputs.registry }}
       tag: ${{ needs.generate_matrix.outputs.docker_tag }}
+      username: e2e-token
+      target: sandbox
     secrets: inherit

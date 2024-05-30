@@ -14,10 +14,12 @@ namespace FoundationaLLM.SemanticKernel.Core.Services
     /// <param name="resourceProviderServices">A collection of <see cref="IResourceProviderService"/> resource providers.</param>
     public class SemanticKernelService(
         ILoggerFactory loggerFactory,
-        IEnumerable<IResourceProviderService> resourceProviderServices) : ISemanticKernelService
+        IEnumerable<IResourceProviderService> resourceProviderServices,        
+        IHttpClientFactoryService httpClientFactoryService) : ISemanticKernelService
     {
         private readonly IEnumerable<IResourceProviderService> _resourceProviderServices = resourceProviderServices;
         private readonly ILoggerFactory _loggerFactory = loggerFactory;
+        private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
 
         /// <inheritdoc/>
         public async Task<LLMCompletionResponse> GetCompletion(LLMCompletionRequest request) => request.Agent switch
@@ -25,7 +27,8 @@ namespace FoundationaLLM.SemanticKernel.Core.Services
             KnowledgeManagementAgent => await (new SemanticKernelKnowledgeManagementAgent(
                 request,
                 _resourceProviderServices,
-                _loggerFactory)).GetCompletion(),
+                _loggerFactory,
+                _httpClientFactoryService)).GetCompletion(),
             _ => throw new Exception($"The agent type {request.Agent.GetType()} is not supported.")
         };
 }

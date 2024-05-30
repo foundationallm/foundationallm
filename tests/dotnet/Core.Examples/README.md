@@ -439,6 +439,38 @@ Agent conversation history:
 - Assistant: The journal mentions that the San Diego Zoo provides efficient and effective health care for its animals. The care and health decisions are based on the best available scientific data.
 ```
 
+### Example 13: Knowledge Management agent with Semantic Kernel on Dune
+
+**Purpose**: Verify that the Knowledge Management agent with Semantic Kernel can respond to user queries using Dune.
+
+**File**: [Example0013_KnowledgeManagementSemanticKernelWithLargeIndex.cs](Example0013_KnowledgeManagementSemanticKernelWithLargeIndex.cs)
+
+This example demonstrates how to use the Management API to create a Knowledge Management agent without an Inline Context and how to use the Core API to send user prompts to the agent and receive completions.
+
+#### Setup
+
+##### Azure AI Search Index
+
+This test requires an index called `fllm-dune` located in the deployment's Azure AI Search service.
+
+#### Running the example
+
+Run the example by running a test on the `Example0013_KnowledgeManagementSemanticKernelWithLargeIndex.cs` file. You can run the test using the Visual Studio Test Explorer, the command line, or by simply right-clicking anywhere on the `Example0013_KnowledgeManagementSemanticKernelWithLargeIndex.cs` file and selecting **Run Tests**.
+
+You will see an output similar to the following after the test is completed:
+
+```text
+ ============ Knowledge Management agent with SemanticKernel on Dune ============
+Send questions to the KMAgentWithSemanticKernelDune agent.
+Agent conversation history:
+- User: Who are you?
+- Assistant: I am an intelligent assistant for the world of Dune, also known as Arrakis.
+- User: Who is the enemy of Paul Atreides?
+- Assistant: The enemy of Paul Atreides is the Emperor.
+- User: Who is 'Paul-Muad'Dib' and what is his relationship to the Fremen?
+- Assistant: Paul-Muad'Dib is a character in the world of Dune. He is also known as the Mahdi or the Lisan al-Gaib. Paul is the son of Duke Leto Atreides and Lady Jessica and becomes a leader among the Fremen, a group of desert-dwelling people on the planet Arrakis, also known as Dune. The Fremen see him as their messiah and a figure of religious and political importance. They believe he possesses wisdom, strength, and the ability to create water, hide from the sun, and multiply over the land. Paul's relationship with the Fremen is one of acceptance and respect, and he becomes their leader and instructor, particularly in the ways of the desert.
+```
+
 ### Example 16: Completion quality measurements with Azure AI Studio
 
 **Purpose**: Verify that the completion quality measurements can be completed successfully with Azure AI Studio.

@@ -57,7 +57,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     (KnowledgeManagementAgent)agentBase,
                     callContext,
                     orchestrationService,
-                    loggerFactory.CreateLogger<OrchestrationBase>());
+                    loggerFactory.CreateLogger<OrchestrationBase>(),
+                    resourceProviderServices);
 
                 return kmOrchestration;
             }

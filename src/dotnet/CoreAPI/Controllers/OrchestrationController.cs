@@ -51,7 +51,7 @@ namespace FoundationaLLM.Core.API.Controllers
                 rps => rps.Name);
             if (!resourceProviderServicesDictionary.TryGetValue(ResourceProviderNames.FoundationaLLM_Agent, out var agentResourceProvider))
                 throw new ResourceProviderException($"The resource provider {ResourceProviderNames.FoundationaLLM_Agent} was not loaded.");
-            _agentResourceProvider = agentResourceProvider; ;
+            _agentResourceProvider = agentResourceProvider;
             _logger = logger;
             _callContext = callContext;
         }

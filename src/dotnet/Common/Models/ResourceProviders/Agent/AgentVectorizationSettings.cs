@@ -37,7 +37,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public string? TextEmbeddingProfileObjectId { get; set; }
 
         /// <summary>
-        /// The vectorization text partitioning profile resource path. 
+        /// The vectorization text partitioning profile resource path.
         /// </summary>
         [JsonPropertyName("text_partitioning_profile_object_id")]
         public string? TextPartitioningProfileObjectId { get; set; }

@@ -12,7 +12,7 @@
     string inputContent = File.ReadAllText(inputFileName);
     var jsonObjects = JsonNode.Parse(inputContent)!;
 #>
-using FoundationaLLM.Authorization.Constants;
+using FoundationaLLM.Common.Constants.Authorization;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
