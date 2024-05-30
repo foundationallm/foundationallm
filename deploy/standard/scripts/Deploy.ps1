@@ -172,7 +172,7 @@ try {
             -ingressNginxValues $ingressNginxValuesFrontend `
             -resourceGroup $resourceGroup.app `
             -secretProviderClassManifest $secretProviderClassManifestFrontend `
-            -serviceNamespac $manifest.k8sNamespace `
+            -serviceNamespace $manifest.k8sNamespace `
             -registry $manifest.registry `
             -version $manifest.version
     }
