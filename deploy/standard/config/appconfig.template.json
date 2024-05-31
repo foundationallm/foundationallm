@@ -408,7 +408,7 @@
       },
       {
         "key": "FoundationaLLM:AzureOpenAI:API:Completions:DeploymentName",
-        "value": "completions1106",
+        "value": "completions",
         "label": null,
         "content_type": "",
         "tags": {}
@@ -1038,7 +1038,7 @@
       },
       {
         "key": "FoundationaLLM:SemanticKernelAPI:OpenAI.CompletionsDeployment",
-        "value": "completions1106",
+        "value": "completions",
         "label": null,
         "content_type": "",
         "tags": {}
