@@ -24,7 +24,7 @@
     },
     "model_parameters": {
       "temperature": 0,
-      "deployment_name": "completions"
+      "deployment_name": "completions1106"
     }
   },
   "prompt_object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.Prompt/prompts/FoundationaLLM"
