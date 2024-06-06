@@ -115,7 +115,6 @@ Start-Sleep -Seconds 60
 $ingressNames = @{
     "core-api"          = "../config/helm/coreapi-ingress.yml"
     "management-api"    = "../config/helm/managementapi-ingress.yml"
-    "vectorization-api" = "../config/helm/vectorizationapi-ingress.yml"
 }
 foreach ($ingress in $ingressNames.GetEnumerator()) {
     Invoke-AndRequireSuccess "Deploying ingress for $($ingress.Key)" {

@@ -68,6 +68,7 @@ param openAiResourceGroupName string
 /** Locals **/
 @description('KeyVault resource suffix')
 var opsResourceSuffix = '${project}-${environmentName}-${location}-ops'
+var storageResourceSuffix = '${project}-${environmentName}-${location}-storage'
 
 @description('Resource Suffix used in naming resources.')
 var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
@@ -201,6 +202,75 @@ module eventgrid 'modules/eventgrid.bicep' = {
     topics: [ 'storage', 'vectorization', 'configuration' ]
     tags: tags
   }
+}
+
+module configTopic 'modules/config-system-topic.bicep' = {
+  name: 'configTopic-${timestamp}'
+  scope: resourceGroup(opsResourceGroupName)
+  params: {
+    actionGroupId: actionGroupId
+    location: location
+    logAnalyticWorkspaceId: logAnalyticsWorkspaceId
+    resourceSuffix: opsResourceSuffix
+    tags: tags
+  }
+}
+
+module storageTopic 'modules/storage-system-topic.bicep' = {
+  name: 'storageTopic-${timestamp}'
+  scope: resourceGroup(storageResourceGroupName)
+  params: {
+    actionGroupId: actionGroupId
+    location: location
+    logAnalyticWorkspaceId: logAnalyticsWorkspaceId
+    resourceSuffix: storageResourceSuffix
+    tags: tags
+  }
+}
+
+module storageSub 'modules/system-topic-subscription.bicep' = {
+  name: 'storageSub-${timestamp}'
+  params: {
+    name: 'foundationallm-storage'
+    appResourceGroup: resourceGroup().name
+    destinationTopicName: 'storage'
+    eventGridName: eventgrid.outputs.name
+    filterPrefix: '/blobServices/default/containers/resource-provider/blobs'
+    includedEventTypes: [
+      'Microsoft.Storage.BlobCreated'
+      'Microsoft.Storage.BlobDeleted'
+    ]
+    advancedFilters: [
+      {
+        key: 'subject'
+        operatorType: 'StringNotEndsWith'
+        values: [
+          '_agent-references.json'
+          '_data-source-references.json'
+          '_prompt-references.json'
+        ]
+      }
+    ]
+    topicName: storageTopic.outputs.name
+  }
+  scope: resourceGroup(storageResourceGroupName)
+  dependsOn: [eventgrid, storageTopic]
+}
+
+module configSub 'modules/system-topic-subscription.bicep' = {
+  name: 'configSub-${timestamp}'
+  params: {
+    name: 'app-config'
+    appResourceGroup: resourceGroup().name
+    destinationTopicName: 'configuration'
+    eventGridName: eventgrid.outputs.name
+    includedEventTypes: [
+      'Microsoft.AppConfiguration.KeyValueModified'
+    ]
+    topicName: configTopic.outputs.name
+  }
+  scope: resourceGroup(opsResourceGroupName)
+  dependsOn: [eventgrid, configTopic]
 }
 
 @batchSize(3)
