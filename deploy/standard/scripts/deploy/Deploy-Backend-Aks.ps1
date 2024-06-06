@@ -62,7 +62,7 @@ $chartNames = @{
     "orchestration-api"          = "../config/helm/managementapi-values.yml"
     "prompt-hub-api"             = "../config/helm/microservice-values.yml"
     "semantic-kernel-api"        = "../config/helm/microservice-values.yml"
-    "vectorization-api"          = "../config/helm/vectorizationapi-values.yml"
+    "vectorization-api"          = "../config/helm/microservice-values.yml"
     "vectorization-job"          = "../config/helm/microservice-values.yml"
 }
 $chartsToInstall = $chartNames | Where-Object { $charts.Contains("*") -or $charts.Contains($_) }
@@ -106,7 +106,8 @@ Invoke-AndRequireSuccess "Deploy ingress-nginx" {
     helm upgrade `
         --install gateway ingress-nginx/ingress-nginx `
         --namespace ${gatewayNamespace} `
-        --values ${ingressNginxValues}
+        --values ${ingressNginxValues} `
+        --version 4.10.0
 }
 
 Start-Sleep -Seconds 60

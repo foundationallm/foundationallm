@@ -334,25 +334,25 @@ module cosmosRoles './modules/sqlRoleAssignments.bicep' = {
 }
 
 module searchIndexDataReaderRole 'modules/utility/roleAssignments.bicep' = {
-  name: 'searchIndexDataReaderRole-${timestamp}'
+  name: 'searchIndexDataRole-${timestamp}'
   scope: resourceGroup(vectorizationResourceGroupName)
   params: {
     principalId: srVectorizationApi[indexOf(vecServiceNames, 'vectorization-api')].outputs.servicePrincipalId
     roleDefinitionIds: {
-      'Search Index Data Reader': '1407120a-92aa-4202-b7e9-c0e197c71c8f'
       'Search Index Data Contributor': '8ebe5a00-799e-43f5-93ac-243d3dce84a7'
+      'Search Service Contributor': '7ca78c08-252a-4471-8644-bb5ff32d4ba0'
     }
   }
 }
 
 module searchIndexDataReaderWorkerRole 'modules/utility/roleAssignments.bicep' = {
-  name: 'searchIndexDataReaderWorkerRole-${timestamp}'
+  name: 'searchIndexDataWorkerRole-${timestamp}'
   scope: resourceGroup(vectorizationResourceGroupName)
   params: {
     principalId: srBackend[indexOf(backendServiceNames, 'vectorization-job')].outputs.servicePrincipalId
     roleDefinitionIds: {
-      'Search Index Data Reader': '1407120a-92aa-4202-b7e9-c0e197c71c8f'
       'Search Index Data Contributor': '8ebe5a00-799e-43f5-93ac-243d3dce84a7'
+      'Search Service Contributor': '7ca78c08-252a-4471-8644-bb5ff32d4ba0'
     }
   }
 }
@@ -379,28 +379,6 @@ module cognitiveServicesOpenAiUserWorkerRole 'modules/utility/roleAssignments.bi
   }
 }
 
-module searchServiceContributorRole 'modules/utility/roleAssignments.bicep' = {
-  name: 'searchServiceContributorRole-${timestamp}'
-  scope: resourceGroup(vectorizationResourceGroupName)
-  params: {
-    principalId: srBackend[indexOf(vecServiceNames, 'vectorization-api')].outputs.servicePrincipalId
-    roleDefinitionIds: {
-      'Search Service Contributor': '7ca78c08-252a-4471-8644-bb5ff32d4ba0'
-    }
-  }
-}
-
-module searchServiceContributorWorkerRole 'modules/utility/roleAssignments.bicep' = {
-  name: 'searchServiceContributorWorkerRole-${timestamp}'
-  scope: resourceGroup(vectorizationResourceGroupName)
-  params: {
-    principalId: srBackend[indexOf(backendServiceNames, 'vectorization-job')].outputs.servicePrincipalId
-    roleDefinitionIds: {
-      'Search Service Contributor': '7ca78c08-252a-4471-8644-bb5ff32d4ba0'
-    }
-  }
-}
-
 module cognitiveServicesOpenAiUserGatewayRole 'modules/utility/roleAssignments.bicep' = {
   name: 'cognitiveServicesOpenAiUserGatewayRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
@@ -419,6 +397,39 @@ module cognitiveServicesOpenAiUserLangChainRole 'modules/utility/roleAssignments
     principalId: srBackend[indexOf(backendServiceNames, 'langchain-api')].outputs.servicePrincipalId
     roleDefinitionIds: {
       'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
+    }
+  }
+}
+
+module cognitiveServicesOpenAiUserSemanticKernelRole 'modules/utility/roleAssignments.bicep' = {
+  name: 'cognitiveServicesOpenAiUserSemKernelRole-${timestamp}'
+  scope: resourceGroup(openAiResourceGroupName)
+  params: {
+    principalId: srBackend[indexOf(backendServiceNames, 'semantic-kernel-api')].outputs.servicePrincipalId
+    roleDefinitionIds: {
+      'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
+    }
+  }
+}
+
+module searchIndexDataReaderLangchainRole 'modules/utility/roleAssignments.bicep' = {
+  name: 'searchIndexDataReaderLangchainRole-${timestamp}'
+  scope: resourceGroup(vectorizationResourceGroupName)
+  params: {
+    principalId: srBackend[indexOf(backendServiceNames, 'langchain-api')].outputs.servicePrincipalId
+    roleDefinitionIds: {
+      'Search Index Data Reader': '1407120a-92aa-4202-b7e9-c0e197c71c8f'
+    }
+  }
+}
+
+module searchIndexDataReaderSemanticKernelRole 'modules/utility/roleAssignments.bicep' = {
+  name: 'searchIndexDataReaderSemKerRole-${timestamp}'
+  scope: resourceGroup(vectorizationResourceGroupName)
+  params: {
+    principalId: srBackend[indexOf(backendServiceNames, 'semantic-kernel-api')].outputs.servicePrincipalId
+    roleDefinitionIds: {
+      'Search Index Data Reader': '1407120a-92aa-4202-b7e9-c0e197c71c8f'
     }
   }
 }

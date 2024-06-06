@@ -58,6 +58,10 @@ var eventGridLocations = {
   westus: 'westus3'
 }
 
+var eventGridAZs = {
+  canadaeast: false
+}
+
 resource main 'Microsoft.EventGrid/namespaces@2023-12-15-preview' = {
   name: name
   location: eventGridLocations[?location] ?? location
@@ -69,7 +73,7 @@ resource main 'Microsoft.EventGrid/namespaces@2023-12-15-preview' = {
     type: 'SystemAssigned'
   }
   properties: {
-    isZoneRedundant: true
+    isZoneRedundant: eventGridAZs[?location] ?? true
     publicNetworkAccess: 'Disabled'
     inboundIpRules: []
   }

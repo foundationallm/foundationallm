@@ -239,6 +239,7 @@ $tokens.storageResourceGroup = $resourceGroups.storage
 $tokens.subscriptionId = $subscriptionId
 $tokens.vectorizationApiEntraClientId = $entraClientIds.vectorizationapi
 $tokens.vectorizationApiEntraScopes = $entraScopes.vectorizationapi
+$tokens.vectorizationApiHostname = $ingress.apiIngress.vectorizationapi.host
 $tokens.authorizationApiScope = $entraScopes.authorization
 
 $tenantId = Invoke-AndRequireSuccess "Get Tenant ID" {
@@ -289,6 +290,16 @@ $appConfigCredential = Invoke-AndRequireSuccess "Get AppConfig Credential" {
         ConvertFrom-Json
 }
 $tokens.appConfigConnectionString = $appConfigCredential.connectionString
+
+$appConfigRWCredential = Invoke-AndRequireSuccess "Get AppConfig Credential" {
+    az appconfig credential list `
+        --name $appConfig.name `
+        --resource-group $($resourceGroups.ops) `
+        --query "[?name=='Primary'].{connectionString: connectionString}" `
+        --output json | `
+        ConvertFrom-Json
+}
+$tokens.appConfigRWConnectionString = $appConfigRWCredential.connectionString
 
 $cogSearchName = Invoke-AndRequireSuccess "Get Cognitive Search endpoint" {
     az search service list `
