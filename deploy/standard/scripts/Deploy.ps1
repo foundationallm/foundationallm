@@ -38,16 +38,16 @@ else {
     throw "Azcopy not found. Please run the ./Bootstrap.ps1 script to download AzCopy."
 }
 
-# # Check if AzCopy login session is still active
-# Write-Host -ForegroundColor Blue "Checking AzCopy login status..."
-# $status = & ../tools/azcopy_${os}_amd64_${AZCOPY_VERSION}/azcopy login status
-# if (-not $status.contains("Your login session is still active")) {
-#     Write-Host -ForegroundColor Blue "Please Follow the instructions below to login to Azure using AzCopy."
-#     & ../tools/azcopy_${os}_amd64_${AZCOPY_VERSION}/azcopy login
-# }
-#  else {
-#      Write-Host -ForegroundColor Blue "AzCopy login session is still active."
-# }
+# Check if AzCopy login session is still active
+Write-Host -ForegroundColor Blue "Checking AzCopy login status..."
+$status = & ../tools/azcopy_${os}_amd64_${AZCOPY_VERSION}/azcopy login status
+if (-not $status.contains("Your login session is still active")) {
+    Write-Host -ForegroundColor Blue "Please Follow the instructions below to login to Azure using AzCopy."
+    & ../tools/azcopy_${os}_amd64_${AZCOPY_VERSION}/azcopy login
+}
+ else {
+     Write-Host -ForegroundColor Blue "AzCopy login session is still active."
+}
 
 # Load the Invoke-AndRequireSuccess function
 . ./utility/Invoke-AndRequireSuccess.ps1
