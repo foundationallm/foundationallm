@@ -3,7 +3,7 @@
     "Topics": [
         {
             "Name": "storage",
-            "SubscriptionPrefix": "storage-orchestration",
+            "SubscriptionPrefix": "orch",
             "EventTypeProfiles": [
                 {
                     "EventType": "Microsoft.Storage.BlobCreated",
