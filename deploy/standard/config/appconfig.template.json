@@ -310,7 +310,7 @@
       },
       {
         "key": "FoundationaLLM:APIs:VectorizationAPI:APIUrl",
-        "value": "https://vectorization-api/vectorization",
+        "value": "http://vectorization-api/vectorization",
         "label": null,
         "content_type": "",
         "tags": {}
