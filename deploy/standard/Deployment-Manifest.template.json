@@ -31,7 +31,9 @@
   "location": "",
   "letsEncryptEmail": "",
   "project": "",
+  "registry": "ghcr.io/solliancenet/foundationallm",
   "subscription": "",
+  "version": "",
   "ingress": {
     "apiIngress": {
       "coreapi": {
