@@ -7,8 +7,7 @@
     "chat": "",
     "core": "",
     "managementapi": "",
-    "managementui": "",
-    "vectorizationapi": ""
+    "managementui": ""
   },
   "entraClientSecrets": {
     "authorization": ""
@@ -22,8 +21,7 @@
     "chat": "",
     "core": "",
     "managementapi": "",
-    "managementui": "",
-    "vectorizationapi": ""
+    "managementui": ""
   },
   "environment": "",
   "instanceId": "",
