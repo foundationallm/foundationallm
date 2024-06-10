@@ -74,7 +74,7 @@ resource main 'Microsoft.EventGrid/namespaces@2023-12-15-preview' = {
   }
   properties: {
     isZoneRedundant: eventGridAZs[?location] ?? true
-    publicNetworkAccess: 'Disabled'
+    publicNetworkAccess: 'Enabled'
     inboundIpRules: []
   }
   tags: tags
@@ -144,22 +144,22 @@ module metricAlerts 'utility/metricAlerts.bicep' = {
   }
 }
 
-@description('Private endpoint for the resource')
-module privateEndpoint 'utility/privateEndpoint.bicep' = {
-  name: 'pe-${main.name}-${timestamp}'
-  params: {
-    groupId: 'topic'
-    location: location
-    privateDnsZones: privateDnsZones
-    subnetId: subnetId
-    tags: tags
+// @description('Private endpoint for the resource')
+// module privateEndpoint 'utility/privateEndpoint.bicep' = {
+//   name: 'pe-${main.name}-${timestamp}'
+//   params: {
+//     groupId: 'topic'
+//     location: location
+//     privateDnsZones: privateDnsZones
+//     subnetId: subnetId
+//     tags: tags
 
-    service: {
-      id: main.id
-      name: main.name
-    }
-  }
-}
+//     service: {
+//       id: main.id
+//       name: main.name
+//     }
+//   }
+// }
 
 output endpoint string = 'https://${main.properties.topicsConfiguration.hostname}'
 output id string = main.id
