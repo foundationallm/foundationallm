@@ -184,5 +184,6 @@ try {
     }
 }
 finally {
+    Pop-Location
     Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable)
 }
