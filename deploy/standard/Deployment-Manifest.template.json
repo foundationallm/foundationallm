@@ -17,7 +17,6 @@
   },
   "entraScopes": {
     "authorization": "",
-    "authorizationapi": "",
     "chat": "",
     "core": "",
     "managementapi": "",
@@ -68,6 +67,7 @@
   },
   "resourceGroups": {
     "app": "",
+    "auth": "",
     "data": "",
     "dns": "",
     "jbx": "",
