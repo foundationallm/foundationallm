@@ -122,20 +122,10 @@ try {
     ./deploy/Upload-AuthStoreData.ps1 `
         -resourceGroup $resourceGroup["auth"] `
         -instanceId $manifest.instanceId
-    # Invoke-AndRequireSuccess "Uploading Auth Store Data" {
-    #     ./deploy/Upload-AuthStoreData.ps1 `
-    #         -resourceGroup $resourceGroup["auth"] `
-    #         -instanceId $manifest.instanceId
-    # }
 
     ./deploy/Upload-SystemPrompts.ps1 `
         -resourceGroup $resourceGroup["storage"] `
         -location $manifest.location
-    # Invoke-AndRequireSuccess "Uploading System Prompts" {
-    #     ./deploy/Upload-SystemPrompts.ps1 `
-    #         -resourceGroup $resourceGroup["storage"] `
-    #         -location $manifest.location
-    # }
 
     $backendAks = Invoke-AndRequireSuccess "Get Backend AKS" {
         az aks list `
@@ -194,6 +184,5 @@ try {
     }
 }
 finally {
-    Pop-Location
     Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable)
 }

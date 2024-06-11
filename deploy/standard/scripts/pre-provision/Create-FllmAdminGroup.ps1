@@ -26,6 +26,10 @@ try {
     # Execute the command to create the group
     $output = Invoke-Expression $createGroupCommand
 
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed ${message} (code: ${LASTEXITCODE})"
+    }
+    
     # If the command executes successfully, output the result
     Write-Host "Azure AD group '$groupName' created successfully."
 } 

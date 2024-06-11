@@ -237,9 +237,6 @@ $tokens.managementEntraScopes = $entraScopes.managementui
 $tokens.opsResourceGroup = $resourceGroups.ops
 $tokens.storageResourceGroup = $resourceGroups.storage
 $tokens.subscriptionId = $subscriptionId
-# $tokens.vectorizationApiEntraClientId = $entraClientIds.vectorizationapi
-# $tokens.vectorizationApiEntraScopes = $entraScopes.vectorizationapi
-# $tokens.vectorizationApiHostname = $ingress.apiIngress.vectorizationapi.host
 $tokens.authorizationApiScope = $entraScopes.authorization
 
 $tenantId = Invoke-AndRequireSuccess "Get Tenant ID" {

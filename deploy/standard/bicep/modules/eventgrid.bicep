@@ -144,23 +144,6 @@ module metricAlerts 'utility/metricAlerts.bicep' = {
   }
 }
 
-// @description('Private endpoint for the resource')
-// module privateEndpoint 'utility/privateEndpoint.bicep' = {
-//   name: 'pe-${main.name}-${timestamp}'
-//   params: {
-//     groupId: 'topic'
-//     location: location
-//     privateDnsZones: privateDnsZones
-//     subnetId: subnetId
-//     tags: tags
-
-//     service: {
-//       id: main.id
-//       name: main.name
-//     }
-//   }
-// }
-
 output endpoint string = 'https://${main.properties.topicsConfiguration.hostname}'
 output id string = main.id
 output keySecretName string = eventGridKey[0].name

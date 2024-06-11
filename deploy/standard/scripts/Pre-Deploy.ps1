@@ -18,7 +18,7 @@ param(
     [parameter(Mandatory = $false)][bool]$skipCertificates = $false,
     [parameter(Mandatory = $false)][bool]$skipEntraIdApps = $false,
     [parameter(Mandatory = $false)][bool]$skipEntraIdAdminGroup = $false,
-    [parameter(Mandatory = $false)][bool]$skipBootstrap = $false
+    [parameter(Mandatory = $false)][bool]$skipGetAzCopy = $false
 )
 
 Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable)
@@ -45,10 +45,9 @@ try {
     else {
         Write-Host "Skipping certificate generation as per the skipCertificates parameter." -ForegroundColor Yellow
     }
-    Push-Location ./pre-provision
     if (-not $skipEntraIdApps) {
         Invoke-AndRequireSuccess "Create FLLM EntraID App Registrations" {
-            ./Create-FllmEntraIdApps.ps1
+            ./pre-provision/Create-FllmEntraIdApps.ps1
         }
     }
     else {
@@ -56,19 +55,19 @@ try {
     }
     if (-not $skipEntraIdAdminGroup) {
         Invoke-AndRequireSuccess "Create FLLM Admin Group" {
-            ./Create-FllmAdminGroup.ps1
+            ./pre-provision/Create-FllmAdminGroup.ps1
         }
     }
     else {
         Write-Host "Skipping EntraID admin group creation as per the skipEntraIdAdminGroup parameter." -ForegroundColor Yellow
     }
-    if (-not $skipBootstrap) {
-        Invoke-AndRequireSuccess "Bootstrap the FoundationAllM solution" {
-            ./Bootstrap.ps1
+    if (-not $skipGetAzCopy) {
+        Invoke-AndRequireSuccess "Download AzCopy for the FoundationaLLM solution" {
+            ./pre-provision/Get-AzCopy.ps1
         }
     }
     else {
-        Write-Host "Skipping bootstrap as per the skipBootstrap parameter." -ForegroundColor Yellow
+        Write-Host "Skipping getAzCopy as per the skipGetAzCopy parameter." -ForegroundColor Yellow
     }
 }
 finally {

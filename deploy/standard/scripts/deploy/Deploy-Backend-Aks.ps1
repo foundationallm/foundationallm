@@ -80,7 +80,6 @@ foreach ($chart in $chartsToInstall.GetEnumerator()) {
             --set image.tag=$version
     }
 }
-# TODO: review helm settings these are set for internal registry
 
 # **** Gateway Namespace ****
 $gatewayNamespace = "gateway-system"
