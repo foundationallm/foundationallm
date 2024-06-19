@@ -17,5 +17,5 @@ jobs:
       notificationsEnabled: true
       enableTeardown: true
       bypassAndTeardown: false
-      target: sandbox
+      target: e2e
     secrets: inherit

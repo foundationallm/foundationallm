@@ -32,7 +32,7 @@ jobs:
       openAiName: fllm-01
       openAiResourceGroup: fllm-shared-01
       location: EastUS2
-      notificationsEnabled: true
+      notificationsEnabled: false
       enableTeardown: true
       bypassAndTeardown: false
       target: e2e
