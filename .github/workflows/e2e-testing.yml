@@ -684,22 +684,33 @@ jobs:
         with:
           payload: |
             {
-              "text": "End to End Test Failure: ${{ matrix.object.name }}",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "End to End Test ${{ matrix.object.name }} failed in branch ${{ github.head_ref || github.ref_name }}"
+                    "text": "*End to End Test Failure: ${{ matrix.object.name }}*"
                   }
                 },
                 {
-                  "type": "button",
+                  "type": "section",
                   "text": {
-                    "type": "plain_text",
-                    "text": "Download Test Results"
+                    "type": "mrkdwn",
+                    "text": "End to End Test ${{ matrix.object.name }} failed in branch `${{ github.head_ref || github.ref_name }}`"
                   }
-                  "url": "${{ steps.publish-results.outputs.artifact-url }}"
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "Download Test Results"
+                      },
+                      "url": "${{ steps.publish-results.outputs.artifact-url }}"
+                    }
+                  ]
                 }
               ]
             }
