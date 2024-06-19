@@ -320,7 +320,7 @@ jobs:
           azd env set PIPELINE_DEPLOY "$true"
           azd env set FLLM_E2E_SP_OBJECT_ID $spObjectId
 
-          if ('${{ inputs.deployOpenAi }}' -eq '1') {
+          if ('${{ inputs.deployOpenAi }}' -eq 'false') {
             azd env set OPENAI_NAME ${{ inputs.openAiName }}
             azd env set OPENAI_RESOURCE_GROUP ${{ inputs.openAiResourceGroup }}
             azd env set OPENAI_SUBSCRIPTION_ID $($info.subscriptionId)
@@ -666,6 +666,14 @@ jobs:
             ${{ matrix.object.target }}
         shell: pwsh
 
+      - name: Publish Test Results
+        if: (success() || failure())
+        id: publish-results
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.object.name }}-results
+          path: ${{ github.workspace }}/${{ matrix.object.name }}.html
+
       - name: Send Test Failure Notification
         if: (inputs.notificationsEnabled && failure())
         uses: slackapi/slack-github-action@v1.26.0
@@ -684,16 +692,17 @@ jobs:
                     "type": "mrkdwn",
                     "text": "End to End Test ${{ matrix.object.name }} failed in branch ${{ github.head_ref || github.ref_name }}"
                   }
+                },
+                {
+                  "type": "button",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Download Test Results"
+                  }
+                  "url": "${{ steps.publish-results.outputs.artifact-url }}"
                 }
               ]
             }
-
-      - name: Publish Test Results
-        if: (success() || failure())
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.object.name }}-results
-          path: ${{ github.workspace }}/${{ matrix.object.name }}.html
 
       - name: Output Job Status
         if: (success() || failure())
