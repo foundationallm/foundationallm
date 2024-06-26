@@ -587,6 +587,7 @@ jobs:
     needs: [generate_matrix, deploy_quickstart, add_test_data, build_e2e_tests]
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         object: ${{ fromJson(needs.generate_matrix.outputs.test_matrix) }}
     steps:
@@ -829,11 +830,9 @@ jobs:
             -instanceId 6fa496ce-d5c0-4e02-9223-06a98c9c0176
 
           Write-Host "Removing App Registration OAuth Callbacks"
-          Push-Location ./deploy/quick-start
           pwsh -File ../../tests/scripts/Remove-OAuthCallbackUris.ps1 `
             -fllmChatUiName FoundationaLLM-Core-Portal `
             -fllmMgmtUiName FoundationaLLM-Management-Portal
-          Pop-Location
 
           azd env refresh --no-prompt
           azd down --force --purge --no-prompt
