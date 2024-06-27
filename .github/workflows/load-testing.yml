@@ -55,7 +55,7 @@ jobs:
       test_matrix: ${{ steps.set-test-matrix.outputs.result }}
       docker_tag: ${{ steps.docker-tag.outputs.docker_tag }}
       unique_id: ${{ steps.set-unique-id.outputs.digest }}
-      qs_resources: ${{ steps.qs-resources.outputs.digest }}
+      qs_resources: ${{ steps.qs-resources.outputs.result }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
