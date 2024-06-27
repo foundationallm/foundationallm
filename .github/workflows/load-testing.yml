@@ -273,7 +273,7 @@ jobs:
           azd env set PIPELINE_DEPLOY "$true"
           azd env set FLLM_E2E_SP_OBJECT_ID $spObjectId
 
-          if (${{ inputs.deployOpenAi }}) {
+          if ('${{ inputs.deployOpenAi }}' -eq 'false') {
             azd env set OPENAI_NAME ${{ inputs.openAiName }}
             azd env set OPENAI_RESOURCE_GROUP ${{ inputs.openAiResourceGroup }}
             azd env set OPENAI_SUBSCRIPTION_ID $($info.subscriptionId)
