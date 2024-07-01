@@ -11,21 +11,23 @@ namespace FoundationaLLM.Core.Examples
     public class Example0002_KnowledgeManagementInlineContextAgentWithSemanticKernel : BaseTest, IClassFixture<TestFixture>
     {
         private readonly IAgentConversationTestService _agentConversationTestService;
+        private readonly IManagementAPITestManager _managementAPITestManager;
 
         public Example0002_KnowledgeManagementInlineContextAgentWithSemanticKernel(ITestOutputHelper output, TestFixture fixture)
             : base(output, fixture.ServiceProvider)
         {
             _agentConversationTestService = GetService<IAgentConversationTestService>();
+            _managementAPITestManager = GetService<IManagementAPITestManager>();
         }
 
         [Fact]
         public async Task RunAsync()
         {
             WriteLine("============ Knowledge Management with inline context agent using SemanticKernel ============");
-            await RunExampleAsync();
+            await RunWithCleanup();
         }
 
-        private async Task RunExampleAsync()
+        protected override async Task RunExampleAsync()
         {
             var agentName = Constants.TestAgentNames.SemanticKernelInlineContextAgentName;
             var userPrompts = new List<string>
@@ -37,8 +39,10 @@ namespace FoundationaLLM.Core.Examples
             };
 
             WriteLine($"Send Rosetta Stone questions to the {agentName} agent.");
+            
             var response = await _agentConversationTestService.RunAgentConversationWithSession(
                 agentName, userPrompts, null, true);
+            
             WriteLine($"Agent conversation history:");
             var invalidAgentResponsesFound = 0;
             foreach (var message in response)
@@ -51,6 +55,11 @@ namespace FoundationaLLM.Core.Examples
                 }
             }
             Assert.True(invalidAgentResponsesFound == 0, $"{invalidAgentResponsesFound} invalid agent responses found.");
+        }
+
+        protected override async Task Cleanup()
+        {
+            await _managementAPITestManager.DeleteAgent(Constants.TestAgentNames.SemanticKernelInlineContextAgentName);
         }
     }
 }

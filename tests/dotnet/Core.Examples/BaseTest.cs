@@ -21,6 +21,30 @@ namespace FoundationaLLM.Core.Examples
 			return ServiceProvider.GetRequiredService<T>();
 		}
 
+        protected async Task RunWithCleanup()
+        {
+            try
+            {
+                await RunExampleAsync();
+            }
+            catch (Exception)
+            {
+                await Cleanup();
+                throw;
+            }
+            await Cleanup();
+        }
+
+        protected virtual async Task RunExampleAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual async Task Cleanup()
+        {
+            throw new NotImplementedException();
+        }
+
 		/// <summary>
 		/// This method can be substituted by Console.WriteLine when used in a Console apps.
 		/// </summary>
