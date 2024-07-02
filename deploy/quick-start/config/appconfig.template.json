@@ -344,20 +344,6 @@
       "tags": {}
     },
     {
-      "key": "FoundationaLLM:APIs:VectorizationWorker:APIKey",
-      "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apis-vectorizationworker-apikey\"}",
-      "label": null,
-      "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-      "tags": {}
-    },
-    {
-      "key": "FoundationaLLM:APIs:VectorizationWorker:APIUrl",
-      "value": "WHYDOESTHISEXIST",
-      "label": null,
-      "content_type": null,
-      "tags": {}
-    },
-    {
       "key": "FoundationaLLM:APIs:VectorizationWorker:AppInsightsConnectionString",
       "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-app-insights-connection-string\"}",
       "label": null,

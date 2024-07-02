@@ -492,26 +492,6 @@ namespace FoundationaLLM.Configuration.Catalog
             ),
 
             new(
-                key: AppConfigurationKeys.FoundationaLLM_APIs_VectorizationWorker_APIUrl,
-                minimumVersion: "0.3.0",
-                defaultValue: "",
-                description: "The URL of the vectorization worker API.",
-                keyVaultSecretName: "",
-                contentType: "text/plain",
-                sampleObject: null
-            ),
-
-            new(
-                key: AppConfigurationKeys.FoundationaLLM_APIs_VectorizationWorker_APIKey,
-                minimumVersion: "0.3.0",
-                defaultValue: "Key Vault secret name: `foundationallm-apis-vectorizationworker-apikey`",
-                description: "The API key of the vectorization worker API.",
-                keyVaultSecretName: KeyVaultSecretNames.FoundationaLLM_APIs_VectorizationWorker_APIKey,
-                contentType: "text/plain",
-                sampleObject: null
-            ),
-
-            new(
                 key: AppConfigurationKeys
                     .FoundationaLLM_APIs_VectorizationWorker_AppInsightsConnectionString,
                 minimumVersion: "0.3.0",
