@@ -203,14 +203,14 @@ namespace FoundationaLLM.Configuration.Services
                     ?? throw new ResourceProviderException($"Failed to load the api endpoint {apiEndpointReference.Name}.",
                         StatusCodes.Status400BadRequest);
 
-                if (!string.IsNullOrWhiteSpace(apiEndpoint.ApiKeyConfigurationName))
+                if (!string.IsNullOrWhiteSpace(apiEndpoint.APIKeyConfigurationName))
                 {
                     var apiKeyConfigurationValue = (await LoadAppConfigurationKeys(
                         new ResourceTypeInstance(ConfigurationResourceTypeNames.AppConfigurations)
                         {
-                            ResourceId = apiEndpoint.ApiKeyConfigurationName
+                            ResourceId = apiEndpoint.APIKeyConfigurationName
                         })).First().Resource.Value!;
-                    apiEndpoint.ApiKey = apiKeyConfigurationValue;
+                    apiEndpoint.APIKey = apiKeyConfigurationValue;
                 }
 
                 return apiEndpoint;
