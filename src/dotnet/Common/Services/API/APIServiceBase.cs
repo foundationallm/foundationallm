@@ -38,7 +38,7 @@ namespace FoundationaLLM.Common.Services.API
         /// <returns></returns>
         public async Task<APICacheRefreshResult> RefreshCache(string name)
         {
-            var client = httpClientFactoryService.CreateClient(_httpClientName);
+            var client = await httpClientFactoryService.CreateClient(_httpClientName);
 
             var responseMessage = await client.PostAsync($"manage/cache/{name}/refresh",
                 null);

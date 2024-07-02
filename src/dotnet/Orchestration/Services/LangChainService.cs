@@ -41,7 +41,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
         /// <inheritdoc/>
         public async Task<ServiceStatusInfo> GetStatus()
         {
-            var client = _httpClientFactoryService.CreateClient(HttpClients.LangChainAPI);
+            var client = await _httpClientFactoryService.CreateClient(HttpClients.LangChainAPI);
             var responseMessage = await client.SendAsync(
                 new HttpRequestMessage(HttpMethod.Get, "status"));
 
@@ -59,7 +59,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
         /// <returns>Returns a completion response from the orchestration engine.</returns>
         public async Task<LLMCompletionResponse> GetCompletion(LLMCompletionRequest request)
         {
-            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.LangChainAPI);
+            var client = await _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.LangChainAPI);
 
             var body = JsonSerializer.Serialize(request, _jsonSerializerOptions);
             var responseMessage = await client.PostAsync("orchestration/completion",

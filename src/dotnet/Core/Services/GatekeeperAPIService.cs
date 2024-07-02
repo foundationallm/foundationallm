@@ -33,7 +33,7 @@ namespace FoundationaLLM.Core.Services
             // TODO: Call RefinementService to refine userPrompt
             // await _refinementService.RefineUserPrompt(completionRequest);
 
-            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperAPI);
+            var client = await _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperAPI);
                        
             var responseMessage = await client.PostAsync("orchestration/completion",
             new StringContent(
@@ -66,7 +66,7 @@ namespace FoundationaLLM.Core.Services
             // TODO: Call RefinementService to refine userPrompt
             // await _refinementService.RefineUserPrompt(content);
 
-            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperAPI);
+            var client = await _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperAPI);
 
             var responseMessage = await client.PostAsync("orchestration/summary",
                 new StringContent(

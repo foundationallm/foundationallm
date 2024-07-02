@@ -108,7 +108,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
 
             if (!string.IsNullOrWhiteSpace(endpointSettings.Endpoint) && !string.IsNullOrWhiteSpace(endpointSettings.APIKey))
             {
-                var client = _httpClientFactoryService.CreateClient(HttpClients.AzureOpenAIDirect);
+                var client = await _httpClientFactoryService.CreateClient(HttpClients.AzureOpenAIDirect);
                 if (endpointSettings.AuthenticationType == "key" && !string.IsNullOrWhiteSpace(endpointSettings.APIKey))
                 {
                     client.DefaultRequestHeaders.Add("api-key", endpointSettings.APIKey);

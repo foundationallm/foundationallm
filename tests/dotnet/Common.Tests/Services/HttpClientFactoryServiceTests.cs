@@ -9,19 +9,21 @@ namespace FoundationaLLM.Common.Tests.Services
 {
     public class HttpClientFactoryServiceTests
     {
+        private readonly IEnumerable<IResourceProviderService> _resourceProviderServices;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ICallContext _callContext;
         private readonly IDownstreamAPISettings _apiSettings;
 
         public HttpClientFactoryServiceTests()
         {
+            _resourceProviderServices = Substitute.For<IEnumerable<IResourceProviderService>>();
             _httpClientFactory = Substitute.For<IHttpClientFactory>();
             _callContext = Substitute.For<ICallContext>();
             _apiSettings = Substitute.For<IDownstreamAPISettings>();
         }
 
         [Fact]
-        public void CreateClient_WithValidClientName_ReturnsHttpClientWithHeaders()
+        public async void CreateClient_WithValidClientName_ReturnsHttpClientWithHeaders()
         {
             // Arrange
             var clientName = "TestClient";
@@ -49,10 +51,10 @@ namespace FoundationaLLM.Common.Tests.Services
             var httpClient = new HttpClient();
             _httpClientFactory.CreateClient(clientName).Returns(httpClient);
 
-            var service = new HttpClientFactoryService(_httpClientFactory, _callContext, _apiSettings);
+            var service = new HttpClientFactoryService(_resourceProviderServices, _httpClientFactory, _callContext, _apiSettings);
 
             // Act
-            var result = service.CreateClient(clientName);
+            var result = await service.CreateClient(clientName);
 
             // Assert
             Assert.NotNull(result);
