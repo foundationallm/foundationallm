@@ -4,7 +4,6 @@ using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
-using FoundationaLLM.Common.Models.Configuration.API;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -17,30 +16,23 @@ namespace FoundationaLLM.Common.Services
         private readonly Dictionary<string, IResourceProviderService> _resourceProviderServices;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ICallContext _callContext;
-        private readonly IDownstreamAPISettings _apiSettings;
         private readonly TimeSpan _defaultTimeout = TimeSpan.FromMinutes(10);
 
         /// <summary>
         /// Creates a new instance of the <see cref="HttpClientFactoryService"/> class.
         /// </summary>
         /// <param name="resourceProviderServices">A list of of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
-        /// <param name="httpClientFactory">A fully configured <see cref="IHttpClientFactory"/>
-        /// that allows access to <see cref="HttpClient"/> instances by name.</param>
-        /// <param name="callContext">Stores a <see cref="UnifiedUserIdentity"/> object resolved from
-        /// one or more services.</param>
-        /// <param name="apiSettings">A <see cref="DownstreamAPISettings"/> class that
-        /// contains the configured path to the desired API key.</param>
+        /// <param name="httpClientFactory">A fully configured <see cref="IHttpClientFactory"/>.</param>
+        /// <param name="callContext">Stores a <see cref="UnifiedUserIdentity"/> object resolved from one or more services.</param>
         /// <exception cref="ArgumentNullException"></exception>
         public HttpClientFactoryService(
             IEnumerable<IResourceProviderService> resourceProviderServices,
             IHttpClientFactory httpClientFactory,
-            ICallContext callContext,
-            IDownstreamAPISettings apiSettings)
+            ICallContext callContext)
         {
             _resourceProviderServices = resourceProviderServices.ToDictionary(rps => rps.Name);
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
             _callContext = callContext ?? throw new ArgumentNullException(nameof(callContext));
-            _apiSettings = apiSettings ?? throw new ArgumentNullException(nameof(apiSettings));
         }
 
         /// <inheritdoc/>
@@ -51,17 +43,14 @@ namespace FoundationaLLM.Common.Services
 
             var apiEndpoint = await configurationResourceProvider.GetResource<APIEndpoint>(
                 $"/{ConfigurationResourceTypeNames.APIEndpoints}/{clientName}",
-                _callContext.CurrentUserIdentity!);
+                _callContext.CurrentUserIdentity);
 
             if (apiEndpoint == null)
                 throw new Exception($"The resource provider {ResourceProviderNames.FoundationaLLM_Configuration} did not load the {clientName} endpoint settings.");
 
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = _httpClientFactory.CreateClient(clientName);
 
             // Set the default timeout.
-            httpClient.Timeout = _defaultTimeout;
-
-            // Override the default timeout if a value is provided.
             httpClient.Timeout = TimeSpan.FromSeconds(apiEndpoint.TimeoutSeconds);
 
             // Set the default URL.
