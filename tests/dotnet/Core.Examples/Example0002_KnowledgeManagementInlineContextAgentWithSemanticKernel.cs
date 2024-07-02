@@ -33,12 +33,12 @@ namespace FoundationaLLM.Core.Examples
             try
             {
                 var userPrompts = new List<string>
-            {
-                "Who are you?",
-                "What is the significance of the Rosetta Stone in the history of linguistics?",
-                "What was the Rosetta Stone's role in ancient political dynamics?",
-                "How did the decipherment of the Rosetta Stone impact the study of ancient Egypt?"
-            };
+                {
+                    "Who are you?",
+                    "What is the significance of the Rosetta Stone in the history of linguistics?",
+                    "What was the Rosetta Stone's role in ancient political dynamics?",
+                    "How did the decipherment of the Rosetta Stone impact the study of ancient Egypt?"
+                };
 
                 WriteLine($"Send Rosetta Stone questions to the {agentName} agent.");
 

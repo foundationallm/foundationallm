@@ -39,10 +39,10 @@ namespace FoundationaLLM.Core.Examples
             try
             {
                 var userPrompts = new List<string>
-            {
-                "Who is 'Paul-Muad'Dib' and what is his relationship to the Fremen?",
-                "Write a poem about Paul's ambition."
-            };
+                {
+                    "Who is 'Paul-Muad'Dib' and what is his relationship to the Fremen?",
+                    "Write a poem about Paul's ambition."
+                };
 
                 WriteLine($"Send questions to the {agentName} agent.");
 

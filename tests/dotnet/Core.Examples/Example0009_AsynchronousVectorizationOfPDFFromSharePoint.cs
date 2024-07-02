@@ -87,10 +87,10 @@ namespace FoundationaLLM.Core.Examples
                 List<VectorizationStep> steps =
                 [
                     new VectorizationStep { Id = "extract", Parameters = new Dictionary<string, string>() },
-                new VectorizationStep { Id = "partition", Parameters = new Dictionary<string, string>() { { "text_partitioning_profile_name", textPartitioningProfileName } } },
-                new VectorizationStep { Id = "embed", Parameters = new Dictionary<string, string>() { { "text_embedding_profile_name", textEmbeddingProfileName } } },
-                new VectorizationStep { Id = "index", Parameters = new Dictionary<string, string>() { { "indexing_profile_name", indexingProfileName } } },
-            ];
+                    new VectorizationStep { Id = "partition", Parameters = new Dictionary<string, string>() { { "text_partitioning_profile_name", textPartitioningProfileName } } },
+                    new VectorizationStep { Id = "embed", Parameters = new Dictionary<string, string>() { { "text_embedding_profile_name", textEmbeddingProfileName } } },
+                    new VectorizationStep { Id = "index", Parameters = new Dictionary<string, string>() { { "indexing_profile_name", indexingProfileName } } },
+                ];
                 var request = new VectorizationRequest
                 {
                     RemainingSteps = new List<string> { "extract", "partition", "embed", "index" },

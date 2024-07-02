@@ -38,11 +38,11 @@ namespace FoundationaLLM.Core.Examples
             try
             {
                 var userPrompts = new List<string>
-            {
-                "Who are you?",
-                "Who is the enemy of Paul Atreides?",
-                "What is a sand worm?"
-            };
+                {
+                    "Who are you?",
+                    "Who is the enemy of Paul Atreides?",
+                    "What is a sand worm?"
+                };
 
                 WriteLine($"Send questions to the {agentName} agent.");
 
