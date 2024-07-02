@@ -57,6 +57,7 @@
     <ProjectReference Include="..\Attachments\Attachment.csproj" />
     <ProjectReference Include="..\Authorization\Authorization.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Configuration\Configuration.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 
