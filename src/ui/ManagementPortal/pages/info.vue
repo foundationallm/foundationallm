@@ -99,12 +99,6 @@ export default {
                     description: 'The Vectorization API is used to manage vectorization requests for the Vectorization Worker service.',
 					url: this.$appConfigStore.vectorizationApiUrl,
 				},
-				{
-					name: 'vectorizationWorkerApiUrl',
-					displayName: 'Vectorization Worker API',
-                    description: 'The Vectorization Worker API provides access to the internal state of the vectorization workers.',
-					url: this.$appConfigStore.vectorizationWorkerApiUrl,
-				},
 			];
 
             try {

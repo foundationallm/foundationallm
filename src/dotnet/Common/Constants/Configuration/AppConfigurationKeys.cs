@@ -106,16 +106,6 @@
         /// </summary>
         public const string FoundationaLLM_APIs_VectorizationAPI_AppInsightsConnectionString = "FoundationaLLM:APIs:VectorizationAPI:AppInsightsConnectionString";
         /// <summary>
-        /// The key for the FoundationaLLM:APIs:VectorizationWorker:APIUrl app configuration setting.
-        /// The URL of the vectorization worker API.
-        /// </summary>
-        public const string FoundationaLLM_APIs_VectorizationWorker_APIUrl = "FoundationaLLM:APIs:VectorizationWorker:APIUrl";
-        /// <summary>
-        /// The key for the FoundationaLLM:APIs:VectorizationWorker:APIKey app configuration setting.
-        /// The API key of the vectorization worker API.
-        /// </summary>
-        public const string FoundationaLLM_APIs_VectorizationWorker_APIKey = "FoundationaLLM:APIs:VectorizationWorker:APIKey";
-        /// <summary>
         /// The key for the FoundationaLLM:APIs:VectorizationWorker:AppInsightsConnectionString app configuration setting.
         /// The connection string to the Application Insights instance used by the vectorization worker API.
         /// </summary>

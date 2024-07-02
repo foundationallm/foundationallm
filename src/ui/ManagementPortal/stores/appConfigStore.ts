@@ -15,7 +15,6 @@ export const useAppConfigStore = defineStore('appConfig', {
 		orchestrationApiUrl: null,
 		semanticKernelApiUrl: null,
 		vectorizationApiUrl: null,
-		vectorizationWorkerApiUrl: null,
 
 		instanceId: null,
 
@@ -67,7 +66,6 @@ export const useAppConfigStore = defineStore('appConfig', {
 				orchestrationApiUrl,
 				semanticKernelApiUrl,
 				vectorizationApiUrl,
-				vectorizationWorkerApiUrl,
 				instanceId,
 				logoUrl,
 				logoText,
@@ -99,7 +97,6 @@ export const useAppConfigStore = defineStore('appConfig', {
 				api.getConfigValue('FoundationaLLM:APIs:OrchestrationAPI:APIUrl'),
 				api.getConfigValue('FoundationaLLM:APIs:SemanticKernelAPI:APIUrl'),
 				api.getConfigValue('FoundationaLLM:APIs:VectorizationAPI:APIUrl'),
-				api.getConfigValue('FoundationaLLM:APIs:VectorizationWorker:APIUrl'),
 
 				api.getConfigValue('FoundationaLLM:Instance:Id'),
 
@@ -135,7 +132,6 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.orchestrationApiUrl = orchestrationApiUrl;
 			this.semanticKernelApiUrl = semanticKernelApiUrl;
 			this.vectorizationApiUrl = vectorizationApiUrl;
-			this.vectorizationWorkerApiUrl = vectorizationWorkerApiUrl;
 
 			this.instanceId = instanceId;
 
