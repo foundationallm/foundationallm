@@ -68,9 +68,9 @@ namespace FoundationaLLM.Common.Services
                 httpClient.Timeout = TimeSpan.FromSeconds(apiEndpoint.TimeoutSeconds);
 
                 // Add the API key header.
-                if (!string.IsNullOrWhiteSpace(apiEndpoint.ApiKey))
+                if (!string.IsNullOrWhiteSpace(apiEndpoint.APIKey))
                 {
-                    httpClient.DefaultRequestHeaders.Add(Constants.HttpHeaders.APIKey, apiEndpoint.ApiKey);
+                    httpClient.DefaultRequestHeaders.Add(Constants.HttpHeaders.APIKey, apiEndpoint.APIKey);
                 }
             }
 
