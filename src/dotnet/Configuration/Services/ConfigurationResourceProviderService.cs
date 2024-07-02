@@ -197,11 +197,23 @@ namespace FoundationaLLM.Configuration.Services
             if (await _storageService.FileExistsAsync(_storageContainerName, apiEndpointReference.Filename, default))
             {
                 var fileContent = await _storageService.ReadFileAsync(_storageContainerName, apiEndpointReference.Filename, default);
-                return JsonSerializer.Deserialize<APIEndpoint>(
+                var apiEndpoint = JsonSerializer.Deserialize<APIEndpoint>(
                     Encoding.UTF8.GetString(fileContent.ToArray()),
                     _serializerSettings)
                     ?? throw new ResourceProviderException($"Failed to load the api endpoint {apiEndpointReference.Name}.",
                         StatusCodes.Status400BadRequest);
+
+                if (!string.IsNullOrWhiteSpace(apiEndpoint.ApiKeyConfigurationName))
+                {
+                    var apiKeyConfigurationValue = (await LoadAppConfigurationKeys(
+                        new ResourceTypeInstance(ConfigurationResourceTypeNames.AppConfigurations)
+                        {
+                            ResourceId = apiEndpoint.ApiKeyConfigurationName
+                        })).First().Resource.Value!;
+                    apiEndpoint.ApiKey = apiKeyConfigurationValue;
+                }
+
+                return apiEndpoint;
             }
 
             throw new ResourceProviderException($"Could not locate the {apiEndpointReference.Name} api endpoint resource.",

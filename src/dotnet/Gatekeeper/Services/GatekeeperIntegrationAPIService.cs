@@ -30,7 +30,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <inheritdoc/>
         public async Task<List<PIIResult>> AnalyzeText(string text)
         {
-            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperIntegrationAPI);
+            var client = await _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperIntegrationAPI);
 
             var content = JsonSerializer.Serialize(new AnalyzeRequest() { Content = text, Anonymize = false, Language = "en" });
 
@@ -50,7 +50,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <inheritdoc/>
         public async Task<string> AnonymizeText(string text)
         {
-            var client = _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperIntegrationAPI);
+            var client = await _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperIntegrationAPI);
 
             var content = JsonSerializer.Serialize(new AnalyzeRequest() { Content = text, Anonymize = true, Language = "en" });
 
