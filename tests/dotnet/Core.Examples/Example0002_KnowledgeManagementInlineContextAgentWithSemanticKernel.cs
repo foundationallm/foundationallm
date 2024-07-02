@@ -29,9 +29,9 @@ namespace FoundationaLLM.Core.Examples
 
         private async Task RunExampleAsync()
         {
+            var agentName = Constants.TestAgentNames.SemanticKernelInlineContextAgentName;
             try
             {
-                var agentName = Constants.TestAgentNames.SemanticKernelInlineContextAgentName;
                 var userPrompts = new List<string>
             {
                 "Who are you?",
@@ -60,7 +60,7 @@ namespace FoundationaLLM.Core.Examples
             }
             finally
             {
-                await _managementAPITestManager.DeleteAgent(Constants.TestAgentNames.SemanticKernelInlineContextAgentName);
+                await _managementAPITestManager.DeleteAgent(agentName);
             }
         }
     }
