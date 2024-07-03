@@ -1,10 +1,12 @@
-﻿using FoundationaLLM.Common.Constants.ResourceProviders;
-using FoundationaLLM.Common.Exceptions;
+﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.Authentication;
+using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Configuration.API;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
+using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace FoundationaLLM.Common.Services
@@ -44,41 +46,57 @@ namespace FoundationaLLM.Common.Services
         /// <inheritdoc/>
         public async Task<HttpClient> CreateClient(string clientName)
         {
-            var httpClient = _httpClientFactory.CreateClient();
-
             if (!_resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Configuration, out var configurationResourceProvider))
-                throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_Configuration} was not loaded.");
+                throw new Exception($"The resource provider {ResourceProviderNames.FoundationaLLM_Configuration} was not loaded.");
 
             var apiEndpoint = await configurationResourceProvider.GetResource<APIEndpoint>(
                 $"/{ConfigurationResourceTypeNames.APIEndpoints}/{clientName}",
                 _callContext.CurrentUserIdentity!);
 
+            if (apiEndpoint == null)
+                throw new Exception($"The resource provider {ResourceProviderNames.FoundationaLLM_Configuration} did not load the {clientName} endpoint settings.");
+
+            var httpClient = _httpClientFactory.CreateClient();
+
+            // Set the default timeout.
             httpClient.Timeout = _defaultTimeout;
 
-            if (apiEndpoint != null)
-            {
-                // Override the default URL if a value is provided.
-                httpClient.BaseAddress = new Uri(apiEndpoint.Url);
+            // Override the default timeout if a value is provided.
+            httpClient.Timeout = TimeSpan.FromSeconds(apiEndpoint.TimeoutSeconds);
 
-                var urlException = apiEndpoint.UrlExceptions.Where(x => x.UserPrincipalName == _callContext.CurrentUserIdentity!.UPN).SingleOrDefault();
+            // Set the default URL.
+            httpClient.BaseAddress = new Uri(apiEndpoint.Url);
+
+            // Override the default URL if an exception is provided.
+            if (_callContext.CurrentUserIdentity != null)
+            {
+                var urlException = apiEndpoint.UrlExceptions.Where(x => x.UserPrincipalName == _callContext.CurrentUserIdentity.UPN).SingleOrDefault();
                 if (urlException != null)
                     httpClient.BaseAddress = new Uri(urlException.Url);
 
-                // Override the default timeout if a value is provided.
-                httpClient.Timeout = TimeSpan.FromSeconds(apiEndpoint.TimeoutSeconds);
-
-                // Add the API key header.
-                if (!string.IsNullOrWhiteSpace(apiEndpoint.APIKey))
-                {
-                    httpClient.DefaultRequestHeaders.Add(Constants.HttpHeaders.APIKey, apiEndpoint.APIKey);
-                }
-            }
-
-            // Optionally add the user identity header.
-            if (_callContext.CurrentUserIdentity != null)
-            {
+                // Add the user identity header.
                 var serializedIdentity = JsonSerializer.Serialize(_callContext.CurrentUserIdentity);
                 httpClient.DefaultRequestHeaders.Add(Constants.HttpHeaders.UserIdentity, serializedIdentity);
+            }
+
+            // Add the API key header.
+            if (apiEndpoint.AuthenticationType == AuthenticationTypes.APIKey
+                && !string.IsNullOrWhiteSpace(apiEndpoint.APIKey))
+            {
+                httpClient.DefaultRequestHeaders.Add(Constants.HttpHeaders.APIKey, apiEndpoint.APIKey);
+            }
+
+            // Add the authorization header.
+            if (apiEndpoint.AuthenticationType == AuthenticationTypes.AzureIdentity
+                && !string.IsNullOrWhiteSpace(apiEndpoint.Scope))
+            {
+                var credentials = DefaultAuthentication.AzureCredential;
+                var tokenResult = await credentials!.GetTokenAsync(
+                    new([apiEndpoint.Scope]),
+                    default);
+
+                httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", tokenResult.Token);
             }
 
             return httpClient;
