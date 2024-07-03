@@ -12,14 +12,12 @@ namespace FoundationaLLM.Common.Tests.Services
         private readonly IEnumerable<IResourceProviderService> _resourceProviderServices;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ICallContext _callContext;
-        private readonly IDownstreamAPISettings _apiSettings;
 
         public HttpClientFactoryServiceTests()
         {
             _resourceProviderServices = Substitute.For<IEnumerable<IResourceProviderService>>();
             _httpClientFactory = Substitute.For<IHttpClientFactory>();
             _callContext = Substitute.For<ICallContext>();
-            _apiSettings = Substitute.For<IDownstreamAPISettings>();
         }
 
         [Fact]
@@ -35,23 +33,12 @@ namespace FoundationaLLM.Common.Tests.Services
                 Name = "TestName"
             };
 
-            _apiSettings.DownstreamAPIs.Returns(new System.Collections.Generic.Dictionary<string, DownstreamAPIClientConfiguration>
-            {
-                { 
-                    clientName, new DownstreamAPIClientConfiguration
-                    {
-                        APIUrl = "TestAPIUrl",
-                        APIKey = "TestAPIKey"
-                    }
-                }
-            });
-
             _callContext.CurrentUserIdentity.Returns(userContext);
 
             var httpClient = new HttpClient();
             _httpClientFactory.CreateClient(clientName).Returns(httpClient);
 
-            var service = new HttpClientFactoryService(_resourceProviderServices, _httpClientFactory, _callContext, _apiSettings);
+            var service = new HttpClientFactoryService(_resourceProviderServices, _httpClientFactory, _callContext);
 
             // Act
             var result = await service.CreateClient(clientName);
