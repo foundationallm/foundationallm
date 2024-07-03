@@ -54,7 +54,7 @@ public static class HttpClients
     public const string AzureAIDirect = "AzureAIDirect";
 
     /// <summary>
-    /// Named client with matching configuration for a direct connection to Azure AI.
+    /// Named client with matching configuration for a direct connection to Azure Open AI.
     /// </summary>
     public const string AzureOpenAIDirect = "AzureOpenAIDirect";
 
@@ -67,4 +67,9 @@ public static class HttpClients
     /// Named client with matching configuration for the Management API.
     /// </summary>
     public const string ManagementAPI = "ManagementAPI";
+
+    /// <summary>
+    /// Name client with matching configuration for the Azure AI Studio API.
+    /// </summary>
+    public const string AzureAIStudioAPI = "AzureAIStudioAPI";
 }
