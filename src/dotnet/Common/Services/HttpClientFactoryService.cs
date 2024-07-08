@@ -69,10 +69,12 @@ namespace FoundationaLLM.Common.Services
             }
 
             // Add the API key header.
-            if (apiEndpoint.AuthenticationType == AuthenticationTypes.APIKey
-                && !string.IsNullOrWhiteSpace(apiEndpoint.APIKey))
+            if (apiEndpoint.AuthenticationType == AuthenticationTypes.APIKey)
             {
-                httpClient.DefaultRequestHeaders.Add(Constants.HttpHeaders.APIKey, apiEndpoint.APIKey);
+                if (string.IsNullOrWhiteSpace(apiEndpoint.APIKey))
+                    throw new Exception("Invalid API endpoint configuration: API key required for the specified authentication type.");
+
+                httpClient.DefaultRequestHeaders.Add(apiEndpoint.APIKeyHeaderName ?? Constants.HttpHeaders.APIKey, apiEndpoint.APIKey);
             }
 
             // Add the authorization header.
