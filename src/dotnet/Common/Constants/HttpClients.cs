@@ -72,4 +72,24 @@ public static class HttpClients
     /// Name client with matching configuration for the Azure AI Studio API.
     /// </summary>
     public const string AzureAIStudioAPI = "AzureAIStudioAPI";
+
+    /// <summary>
+    /// Name client with matching configuration for the Azure Content Safety.
+    /// </summary>
+    public const string AzureContentSafety = "AzureContentSafety";
+
+    /// <summary>
+    /// Name client with matching configuration for the Enkrypt Guardrails.
+    /// </summary>
+    public const string EnkryptGuardrails = "EnkryptGuardrails";
+
+    /// <summary>
+    /// Name client with matching configuration for the Lakera Guard.
+    /// </summary>
+    public const string LakeraGuard = "LakeraGuard";
+
+    /// <summary>
+    /// Name client with matching configuration for the Gateway API.
+    /// </summary>
+    public const string GatewayAPI = "GatewayAPI";
 }

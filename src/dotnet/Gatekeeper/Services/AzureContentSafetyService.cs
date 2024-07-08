@@ -1,6 +1,8 @@
 ﻿using Azure;
 using Azure.AI.ContentSafety;
 using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Gatekeeper.Core.Interfaces;
 using FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions;
 using FoundationaLLM.Gatekeeper.Core.Models.ContentSafety;
@@ -17,7 +19,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
     /// </summary>
     public class AzureContentSafetyService : IContentSafetyService
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IHttpClientFactoryService _httpClientFactoryService;
         private readonly ContentSafetyClient _client;
         private readonly AzureContentSafetySettings _settings;
         private readonly ILogger _logger;
@@ -25,15 +27,15 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <summary>
         /// Constructor for the Azure Content Safety service.
         /// </summary>
-        /// <param name="httpClientFactory">The HTTP client factory.</param>
+        /// <param name="httpClientFactoryService">The HTTP client factory service.</param>
         /// <param name="options">The configuration options for the Azure Content Safety service.</param>
         /// <param name="logger">The logger for the Azure Content Safety service.</param>
         public AzureContentSafetyService(
-            IHttpClientFactory httpClientFactory,
+            IHttpClientFactoryService httpClientFactoryService,
             IOptions<AzureContentSafetySettings> options,
             ILogger<AzureContentSafetyService> logger)
         {
-            _httpClientFactory = httpClientFactory;
+            _httpClientFactoryService = httpClientFactoryService;
             _settings = options.Value;
             _logger = logger;
 
@@ -93,7 +95,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <inheritdoc/>
         public async Task<string?> DetectPromptInjection(string content)
         {
-            var client = CreateHttpClient();
+            var client = await _httpClientFactoryService.CreateClient(HttpClients.AzureContentSafety);
 
             var response = await client.PostAsync("/contentsafety/text:shieldPrompt?api-version=2024-02-15-preview",
                 new StringContent(JsonSerializer.Serialize(new
@@ -114,16 +116,6 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
                 }
             }
             return null;
-        }
-
-        private HttpClient CreateHttpClient()
-        {
-            var httpClient = _httpClientFactory.CreateClient();
-
-            httpClient.BaseAddress = new Uri(_settings.APIUrl);
-            httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _settings.APIKey);
-
-            return httpClient;
         }
     }
 }

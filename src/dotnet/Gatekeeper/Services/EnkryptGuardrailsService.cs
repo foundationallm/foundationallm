@@ -1,4 +1,6 @@
-﻿using FoundationaLLM.Gatekeeper.Core.Interfaces;
+﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Gatekeeper.Core.Interfaces;
 using FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions;
 using FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails;
 using Microsoft.Extensions.Logging;
@@ -13,22 +15,22 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
     /// </summary>
     public class EnkryptGuardrailsService : IEnkryptGuardrailsService
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IHttpClientFactoryService _httpClientFactoryService;
         private readonly EnkryptGuardrailsServiceSettings _settings;
         private readonly ILogger _logger;
 
         /// <summary>
         /// Constructor for the Azure Content Safety service.
         /// </summary>
-        /// <param name="httpClientFactory">The HTTP client factory.</param>
+        /// <param name="httpClientFactoryService">The HTTP client factory service.</param>
         /// <param name="options">The configuration options for the Azure Content Safety service.</param>
         /// <param name="logger">The logger for the Azure Content Safety service.</param>
         public EnkryptGuardrailsService(
-            IHttpClientFactory httpClientFactory,
+            IHttpClientFactoryService httpClientFactoryService,
             IOptions<EnkryptGuardrailsServiceSettings> options,
             ILogger<EnkryptGuardrailsService> logger)
         {
-            _httpClientFactory = httpClientFactory;
+            _httpClientFactoryService = httpClientFactoryService;
             _settings = options.Value;
             _logger = logger;
         }
@@ -36,7 +38,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <inheritdoc/>
         public async Task<string?> DetectPromptInjection(string content)
         {
-            var client = CreateHttpClient();
+            var client = await _httpClientFactoryService.CreateClient(HttpClients.EnkryptGuardrails);
 
             var response = await client.PostAsync("/api/guardrails/detect",
                 new StringContent(JsonSerializer.Serialize(new
@@ -65,16 +67,6 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
             }
 
             return null;
-        }
-
-        private HttpClient CreateHttpClient()
-        {
-            var httpClient = _httpClientFactory.CreateClient();
-
-            httpClient.BaseAddress = new Uri(_settings.APIUrl);
-            httpClient.DefaultRequestHeaders.Add("api_key", _settings.APIKey);
-
-            return httpClient;
         }
     }
 }

@@ -43,7 +43,7 @@ namespace FoundationaLLM.Common.Services
 
             var apiEndpoint = await configurationResourceProvider.GetResource<APIEndpoint>(
                 $"/{ConfigurationResourceTypeNames.APIEndpoints}/{clientName}",
-                _callContext.CurrentUserIdentity!);
+                _callContext.CurrentUserIdentity);
 
             if (apiEndpoint == null)
                 throw new Exception($"The resource provider {ResourceProviderNames.FoundationaLLM_Configuration} did not load the {clientName} endpoint settings.");
