@@ -1,9 +1,9 @@
-﻿using Azure.Core;
+﻿using System.Text.Json;
+using Azure.Core;
 using FoundationaLLM.Client.Core.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Branding;
-using System.Text.Json;
 
-namespace FoundationaLLM.Client.Core.Clients.Rest
+namespace FoundationaLLM.Client.Core.Clients.RESTClients
 {
     /// <summary>
     /// Provides methods to manage calls to the Core API's Branding endpoints.

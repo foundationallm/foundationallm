@@ -1,11 +1,11 @@
-﻿using Azure.Core;
+﻿using System.Text.Json;
+using Azure.Core;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Settings;
-using System.Text.Json;
-using FoundationaLLM.Common.Constants.Authentication;
 
-namespace FoundationaLLM.Client.Core.Clients.Rest
+namespace FoundationaLLM.Client.Core.Clients.RESTClients
 {
     internal class CoreRESTClientBase(
         IHttpClientFactory httpClientFactory,

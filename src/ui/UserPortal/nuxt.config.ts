@@ -21,6 +21,9 @@ export default defineNuxtConfig({
 	app: {
 		head: {
 			title: process.env.BRANDING_PAGE_TITLE ?? 'FoundationaLLM',
+			htmlAttrs: {
+				lang: 'en',
+			},
 			link: [
 				{
 					rel: 'icon',

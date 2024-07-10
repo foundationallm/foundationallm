@@ -28,14 +28,12 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         [JsonPropertyOrder(-2)]
         public string? Description { get; set; }
 
-
         /// <summary>
         /// The cost center of the resource.
         /// </summary>
         [JsonPropertyName("cost_center")]
         [JsonPropertyOrder(-1)]
         public string? CostCenter { get; set; }
-
 
         /// <summary>
         /// The time at which the security role definition was created.
@@ -71,5 +69,12 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         [JsonPropertyName("deleted")]
         [JsonPropertyOrder(504)]
         public virtual bool Deleted { get; set; } = false;
+
+        /// <summary>
+        /// The date and time on which the resource expires and is no longer usable.
+        /// </summary>
+        [JsonPropertyName("expiration_date")]
+        [JsonPropertyOrder(505)]
+        public DateTimeOffset? ExpirationDate { get; set; }
     }
 }

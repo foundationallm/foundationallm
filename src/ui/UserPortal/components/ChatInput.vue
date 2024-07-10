@@ -10,6 +10,7 @@
 				@click="toggleFileAttachmentOverlay"
 				:badge="$appStore.attachments.length.toString() || null"
 				v-tooltip.top="'Attach files' + ($appStore.attachments.length ? ' (' + $appStore.attachments.length.toString() + ' file)' : ' (0 files)')"
+				:aria-label="'Upload file (' + $appStore.attachments.length.toString() + ' files attached)'"
 			/>
 			<OverlayPanel ref="fileAttachmentPanel">
 				<div class="attached-files-container">
@@ -35,6 +36,7 @@
 				<div class="p-d-flex p-jc-end">
 					<Button
 						label="Upload File"
+						aria-label="Upload file"
 						icon="pi pi-upload"
 						:style="{
 							backgroundColor: secondaryButtonBg,
@@ -45,7 +47,7 @@
 					/>
 				</div>
 			</OverlayPanel>
-			<Dialog v-model:visible="showFileUploadDialog" header="Upload File" modal>
+			<Dialog v-model:visible="showFileUploadDialog" header="Upload File" modal aria-label="File Upload Dialog">
 				<FileUpload
 					accept="audio/mpeg,audio/wav"
 					:auto="true"

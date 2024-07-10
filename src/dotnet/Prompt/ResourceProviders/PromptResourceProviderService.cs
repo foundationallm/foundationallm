@@ -344,7 +344,7 @@ namespace FoundationaLLM.Prompt.ResourceProviders
         private async Task DeletePrompt(List<ResourceTypeInstance> instances)
         {
             if (_promptReferences.TryGetValue(instances.Last().ResourceId!, out var promptReference)
-                || promptReference!.Deleted)
+                && !promptReference.Deleted)
             {
                 promptReference.Deleted = true;
 

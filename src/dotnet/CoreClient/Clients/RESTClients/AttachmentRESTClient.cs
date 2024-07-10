@@ -2,7 +2,7 @@
 using Azure.Core;
 using FoundationaLLM.Client.Core.Interfaces;
 
-namespace FoundationaLLM.Client.Core.Clients.Rest
+namespace FoundationaLLM.Client.Core.Clients.RESTClients
 {
     /// <summary>
     /// Provides methods to manage calls to the Core API's Attachments endpoints.

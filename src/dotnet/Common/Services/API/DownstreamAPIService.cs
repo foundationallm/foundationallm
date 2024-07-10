@@ -3,6 +3,7 @@ using System.Text.Json;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Settings;
+using Microsoft.Extensions.Logging;
 
 namespace FoundationaLLM.Common.Services.API
 {
@@ -11,13 +12,16 @@ namespace FoundationaLLM.Common.Services.API
     /// </summary>
     /// <param name="downstreamHttpClientName">The name of the downstream HTTP client.</param>
     /// <param name="httpClientFactoryService">The HTTP client factory service.</param>
+    /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
     public class DownstreamAPIService(
         string downstreamHttpClientName,
-        IHttpClientFactoryService httpClientFactoryService) : IDownstreamAPIService
+        IHttpClientFactoryService httpClientFactoryService,
+        ILogger<DownstreamAPIService> logger) : IDownstreamAPIService
     {
         private readonly string _downstreamHttpClientName = downstreamHttpClientName;
         private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
         private readonly JsonSerializerOptions _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
+        private readonly ILogger<DownstreamAPIService> _logger = logger;
 
         /// <summary>
         /// <inheritdoc/>
@@ -38,11 +42,21 @@ namespace FoundationaLLM.Common.Services.API
 
             var client = _httpClientFactoryService.CreateClient(_downstreamHttpClientName);
 
+            _logger.LogInformation(
+                "Created Http client {ClientName} with timeout {Timeout} seconds.",
+                _downstreamHttpClientName,
+                (int)client.Timeout.TotalSeconds);
+
             var serializedRequest = JsonSerializer.Serialize(completionRequest, _jsonSerializerOptions);
             var responseMessage = await client.PostAsync("orchestration/completion",
                 new StringContent(
                     serializedRequest,
                         Encoding.UTF8, "application/json"));
+
+            _logger.LogInformation(
+                "Http client {ClientName} returned a response with status code {HttpStatusCode}.",
+                _downstreamHttpClientName,
+                responseMessage.StatusCode);
 
             if (responseMessage.IsSuccessStatusCode)
             {

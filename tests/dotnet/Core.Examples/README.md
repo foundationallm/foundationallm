@@ -667,6 +667,14 @@ Property definitions:
   - `UserPrompt`: The user prompt sent to the Core API completions endpoint.
   - `ExpectedCompletion`: Used for quality measurements. The expected completion for the user prompt.
 
+#### Authentication
+
+Prior to running the test, open a command prompt and run the following command to authenticate with the Azure AI Studio deployment:
+
+```bash
+azd auth login
+```
+
 #### Running the example
 
 1. Run the example by running a test on the `Example16_CompletionQualityMeasurements.cs` file. You can run the test using the Visual Studio Test Explorer, the command line, or by simply right-clicking anywhere on the `Example16_CompletionQualityMeasurements.cs` file and selecting **Run Tests**.

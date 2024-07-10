@@ -3,7 +3,7 @@ param cidrVnet string = '10.220.128.0/21'
 param createVpnGateway bool = false
 param environmentName string
 param location string
-param networkName string=''
+param networkName string = ''
 param project string
 param timestamp string = utcNow()
 
@@ -16,6 +16,7 @@ var cidrFllmOps = cidrSubnet(cidrVnet, 26, 15) // 10.220.131.192/26
 var cidrFllmVec = cidrSubnet(cidrVnet, 26, 16) // 10.220.132.0/26
 var cidrNetSvc = cidrSubnet(cidrVnet, 24, 6) // 10.220.134.0/24
 var cidrVpnGateway = cidrSubnet(cidrVnet, 24, 5) // 10.220.133.0/24
+// TODO: Use Namer FUnction from main.bicep
 var name = networkName == '' ? 'vnet-${environmentName}-${location}-net' : networkName
 var resourceSuffix = '${environmentName}-${location}-${workload}-${project}'
 var workload = 'net'
@@ -33,13 +34,13 @@ var subnets = [
         priority: 512
         protocol: '*'
         sourcePortRange: '*'
-        sourceAddressPrefixes: [ '172.16.0.0/24' ]
+        sourceAddressPrefixes: ['172.16.0.0/24']
       }
     ]
     serviceEndpoints: [
       {
         service: 'Microsoft.KeyVault'
-        locations: [ '*' ]
+        locations: ['*']
       }
     ]
   }
@@ -55,13 +56,13 @@ var subnets = [
         priority: 512
         protocol: '*'
         sourcePortRange: '*'
-        sourceAddressPrefixes: [ '172.16.0.0/24' ]
+        sourceAddressPrefixes: ['172.16.0.0/24']
       }
     ]
     serviceEndpoints: [
       {
         service: 'Microsoft.KeyVault'
-        locations: [ '*' ]
+        locations: ['*']
       }
     ]
   }
@@ -82,7 +83,7 @@ var subnets = [
           priority: 256
           protocol: '*'
           sourcePortRange: '*'
-          sourceAddressPrefixes: [ '172.16.0.0/24' ]
+          sourceAddressPrefixes: ['172.16.0.0/24']
         }
       ]
     }
@@ -108,7 +109,7 @@ var subnets = [
           priority: 512
           protocol: '*'
           sourcePortRange: '*'
-          sourceAddressPrefixes: [ '172.16.0.0/24' ]
+          sourceAddressPrefixes: ['172.16.0.0/24']
         }
         {
           access: 'Allow'
@@ -189,27 +190,27 @@ var subnets = [
     serviceEndpoints: [
       {
         service: 'Microsoft.CognitiveServices' // TODO: Is this needed?
-        locations: [ '*' ]
+        locations: ['*']
       }
       {
         service: 'Microsoft.Storage'
-        locations: [ '*' ]
+        locations: ['*']
       }
       {
         service: 'Microsoft.Sql'
-        locations: [ '*' ]
+        locations: ['*']
       }
       {
         service: 'Microsoft.ServiceBus'
-        locations: [ '*' ]
+        locations: ['*']
       }
       {
         service: 'Microsoft.KeyVault'
-        locations: [ '*' ]
+        locations: ['*']
       }
       {
         service: 'Microsoft.EventHub'
-        locations: [ '*' ]
+        locations: ['*']
       }
     ]
   }
@@ -226,7 +227,7 @@ var subnets = [
           priority: 256
           protocol: '*'
           sourcePortRange: '*'
-          sourceAddressPrefixes: [ cidrFllmBackend ]
+          sourceAddressPrefixes: [cidrFllmBackend]
         }
         {
           access: 'Allow'
@@ -236,7 +237,7 @@ var subnets = [
           priority: 512
           protocol: '*'
           sourcePortRange: '*'
-          sourceAddressPrefixes: [ '172.16.0.0/24' ]
+          sourceAddressPrefixes: ['172.16.0.0/24']
         }
         {
           name: 'deny-all-inbound'
@@ -253,7 +254,7 @@ var subnets = [
     serviceEndpoints: [
       {
         service: 'Microsoft.KeyVault'
-        locations: [ '*' ]
+        locations: ['*']
       }
     ]
   }
@@ -270,7 +271,7 @@ var subnets = [
           priority: 128
           protocol: '*'
           sourcePortRange: '*'
-          sourceAddressPrefixes: [ cidrFllmOps ]
+          sourceAddressPrefixes: [cidrFllmOps]
         }
         {
           access: 'Allow'
@@ -280,7 +281,7 @@ var subnets = [
           priority: 512
           protocol: '*'
           sourcePortRange: '*'
-          sourceAddressPrefixes: [ '172.16.0.0/24' ]
+          sourceAddressPrefixes: ['172.16.0.0/24']
         }
         {
           access: 'Allow'
@@ -290,7 +291,7 @@ var subnets = [
           name: 'allow-aks-inbound'
           priority: 256
           protocol: '*'
-          sourceAddressPrefixes: [ cidrFllmBackend ]
+          sourceAddressPrefixes: [cidrFllmBackend]
           sourcePortRange: '*'
         }
         {
@@ -320,7 +321,7 @@ var subnets = [
     serviceEndpoints: [
       {
         service: 'Microsoft.KeyVault'
-        locations: [ '*' ]
+        locations: ['*']
       }
     ]
   }
@@ -337,7 +338,7 @@ var subnets = [
           priority: 128
           protocol: '*'
           sourcePortRange: '*'
-          sourceAddressPrefixes: [ cidrFllmOps ]
+          sourceAddressPrefixes: [cidrFllmOps]
         }
         {
           access: 'Allow'
@@ -347,7 +348,7 @@ var subnets = [
           priority: 512
           protocol: '*'
           sourcePortRange: '*'
-          sourceAddressPrefixes: [ '172.16.0.0/24' ]
+          sourceAddressPrefixes: ['172.16.0.0/24']
         }
         {
           access: 'Allow'
@@ -377,7 +378,7 @@ var subnets = [
     serviceEndpoints: [
       {
         service: 'Microsoft.KeyVault'
-        locations: [ '*' ]
+        locations: ['*']
       }
     ]
   }
@@ -394,7 +395,7 @@ var subnets = [
           priority: 512
           protocol: '*'
           sourcePortRange: '*'
-          sourceAddressPrefixes: [ '172.16.0.0/24' ]
+          sourceAddressPrefixes: ['172.16.0.0/24']
         }
         {
           access: 'Allow'
@@ -403,7 +404,7 @@ var subnets = [
           name: 'allow-aks-inbound'
           priority: 256
           protocol: '*'
-          sourceAddressPrefixes: [ cidrFllmBackend ]
+          sourceAddressPrefixes: [cidrFllmBackend]
           sourcePortRange: '*'
         }
         {
@@ -434,7 +435,7 @@ var subnets = [
     serviceEndpoints: [
       {
         service: 'Microsoft.KeyVault'
-        locations: [ '*' ]
+        locations: ['*']
       }
     ]
   }
@@ -451,7 +452,7 @@ var subnets = [
           priority: 128
           protocol: '*'
           sourcePortRange: '*'
-          sourceAddressPrefixes: [ cidrFllmOps ]
+          sourceAddressPrefixes: [cidrFllmOps]
         }
         {
           access: 'Allow'
@@ -461,7 +462,7 @@ var subnets = [
           priority: 512
           protocol: '*'
           sourcePortRange: '*'
-          sourceAddressPrefixes: [ '172.16.0.0/24' ]
+          sourceAddressPrefixes: ['172.16.0.0/24']
         }
         {
           access: 'Allow'
@@ -471,7 +472,7 @@ var subnets = [
           name: 'allow-aks-inbound'
           priority: 256
           protocol: '*'
-          sourceAddressPrefixes: [ cidrFllmBackend ]
+          sourceAddressPrefixes: [cidrFllmBackend]
           sourcePortRange: '*'
         }
         {
@@ -501,7 +502,7 @@ var subnets = [
     serviceEndpoints: [
       {
         service: 'Microsoft.KeyVault'
-        locations: [ '*' ]
+        locations: ['*']
       }
     ]
   }
@@ -527,35 +528,41 @@ resource main 'Microsoft.Network/virtualNetworks@2023-05-01' = {
   properties: {
     enableDdosProtection: false
     addressSpace: {
-      addressPrefixes: [ cidrVnet ]
+      addressPrefixes: [cidrVnet]
     }
-    subnets: [for (subnet, i) in subnets: {
-      name: subnet.name
-      properties: {
-        addressPrefix: subnet.addressPrefix
-        privateEndpointNetworkPolicies: 'Enabled'
-        privateLinkServiceNetworkPolicies: 'Enabled'
-        serviceEndpoints: subnet.?serviceEndpoints
-        delegations: subnet.?delegations
+    subnets: [
+      for (subnet, i) in subnets: {
+        name: subnet.name
+        properties: {
+          addressPrefix: subnet.addressPrefix
+          privateEndpointNetworkPolicies: 'Enabled'
+          privateLinkServiceNetworkPolicies: 'Enabled'
+          serviceEndpoints: subnet.?serviceEndpoints
+          delegations: subnet.?delegations
 
-        networkSecurityGroup: subnet.name == 'GatewaySubnet' ? null : {
-          id: nsg[i].outputs.id
+          networkSecurityGroup: subnet.name == 'GatewaySubnet'
+            ? null
+            : {
+                id: nsg[i].outputs.id
+              }
         }
       }
-    }]
+    ]
   }
 }
 
 // Nested Modules
-module nsg 'modules/nsg.bicep' = [for subnet in subnets: if (subnet.name != 'GatewaySubnet') {
-  name: 'nsg-${subnet.name}-${timestamp}'
-  params: {
-    location: location
-    resourceSuffix: '${name}-${subnet.name}'
-    rules: subnet.?rules
-    tags: tags
+module nsg 'modules/nsg.bicep' = [
+  for subnet in subnets: if (subnet.name != 'GatewaySubnet') {
+    name: 'nsg-${subnet.name}-${timestamp}'
+    params: {
+      location: location
+      resourceSuffix: '${name}-${subnet.name}'
+      rules: subnet.?rules
+      tags: tags
+    }
   }
-}]
+]
 
 module vpn 'modules/vpnGateway.bicep' = if (createVpnGateway) {
   name: 'vpnGw-${timestamp}'

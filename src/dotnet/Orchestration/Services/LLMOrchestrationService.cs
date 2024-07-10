@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Constants;
+﻿using FoundationaLLM.Common.Clients;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.API;
 using FoundationaLLM.Common.Models.Infrastructure;
@@ -66,21 +67,21 @@ namespace FoundationaLLM.Orchestration.Core.Services
         public async Task<LLMCompletionResponse> GetCompletion(LLMCompletionRequest request)
         {
             var client = CreateClient();
+            var pollingClient = new PollingHttpClient<LLMCompletionRequest, LLMCompletionResponse>(
+                client,
+                request,
+                "orchestration/completion",
+                TimeSpan.FromSeconds(10),
+                client.Timeout.Subtract(TimeSpan.FromSeconds(1)),
+                _logger);
 
-            var body = JsonSerializer.Serialize(request, _jsonSerializerOptions);
-            var responseMessage = await client.PostAsync("orchestration/completion",
-                new StringContent(
-                    body,
-                    Encoding.UTF8, "application/json"));
-            var responseContent = await responseMessage.Content.ReadAsStringAsync();
+            var completionResponse = await pollingClient.GetResponseAsync();
 
-            if (responseMessage.IsSuccessStatusCode)
+            if (completionResponse != null)
             {
-                var completionResponse = JsonSerializer.Deserialize<LLMCompletionResponse>(responseContent);
-
                 return new LLMCompletionResponse
                 {
-                    Completion = completionResponse!.Completion,
+                    Completion = completionResponse.Completion,
                     Citations = completionResponse.Citations,
                     UserPrompt = completionResponse.UserPrompt,
                     FullPrompt = completionResponse.FullPrompt,
@@ -91,8 +92,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
                 };
             }
 
-            _logger.LogWarning("The LangChain orchestration service returned status code {StatusCode}: {ResponseContent}",
-                responseMessage.StatusCode, responseContent);
+            _logger.LogWarning("The orchestration service was not able to return a response.");
 
             return new LLMCompletionResponse
             {

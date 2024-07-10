@@ -551,7 +551,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             where TBase : ResourceBase
         {
             if (resourceStore.TryGetValue(resourcePath.ResourceTypeInstances[0].ResourceId!, out var resource)
-                || resource!.Deleted)
+                && !resource.Deleted)
             {
                 resource.Deleted = true;
 

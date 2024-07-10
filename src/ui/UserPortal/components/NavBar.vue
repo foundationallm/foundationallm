@@ -2,7 +2,7 @@
 	<div class="navbar">
 		<!-- Sidebar header -->
 		<div class="navbar__header">
-			<img v-if="$appConfigStore.logoUrl !== ''" :src="$appConfigStore.logoUrl" />
+			<img v-if="$appConfigStore.logoUrl !== ''" :src="$appConfigStore.logoUrl" alt="Logo" />
 			<span v-else>{{ $appConfigStore.logoText }}</span>
 
 			<template v-if="!$appConfigStore.isKioskMode">
@@ -12,6 +12,7 @@
 					severity="secondary"
 					class="secondary-button"
 					@click="$appStore.toggleSidebar"
+					aria-label="Toggle sidebar"
 				/>
 			</template>
 		</div>
@@ -30,6 +31,7 @@
 							text
 							severity="secondary"
 							@click="handleCopySession"
+							aria-label="Copy link to chat session"
 						/>
 						<Toast position="top-center" />
 					</template>
@@ -41,7 +43,6 @@
 
 			<!-- Right side content -->
 			<div class="navbar__content__right">
-				<!-- <template v-if="currentSession && $appConfigStore.allowAgentHint"> -->
 				<template v-if="currentSession">
 					<span class="header__dropdown">
 						<img
@@ -106,12 +107,15 @@ export default {
 
 	watch: {
 		currentSession(newSession: Session, oldSession: Session) {
-			if (newSession.id === oldSession?.id) return;
-
-			this.agentSelection =
-				this.agentOptions.find(
-					(agent) => agent.value === this.$appStore.getSessionAgent(newSession),
-				) || null;
+			if (newSession.id !== oldSession?.id) {
+				this.updateAgentSelection();
+			}
+		},
+		'$appStore.selectedAgents': {
+			handler() {
+				this.updateAgentSelection();
+			},
+			deep: true,
 		},
 	},
 
@@ -127,8 +131,6 @@ export default {
 			value: agent,
 		}));
 
-		// const publicAgentOptions = this.agentOptions.filter((agent) => !agent.my_agent);
-		// Show all agents in the first group, including "my agents".
 		const publicAgentOptions = this.agentOptions;
 		const privateAgentOptions = this.agentOptions.filter((agent) => agent.my_agent);
 		const noAgentOptions = [{ label: 'None', value: null, disabled: true }];
@@ -147,6 +149,10 @@ export default {
 			label: 'My Agents',
 			items: privateAgentOptions.length > 0 ? privateAgentOptions : noAgentOptions,
 		});
+	},
+
+	mounted() {
+		this.updateAgentSelection();
 	},
 
 	methods: {
@@ -176,6 +182,11 @@ export default {
 
 		async handleLogout() {
 			await this.$authStore.logout();
+		},
+
+		updateAgentSelection() {
+			const agent = this.$appStore.getSessionAgent(this.currentSession);
+			this.agentSelection = this.agentOptions.find((option) => option.value.resource.object_id === agent.resource.object_id) || null;
 		},
 	},
 };

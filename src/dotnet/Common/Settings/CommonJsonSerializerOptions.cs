@@ -16,5 +16,17 @@ namespace FoundationaLLM.Common.Settings
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
+
+        /// <summary>
+        /// Configures the System.Text.Json JSON serializer settings.
+        /// </summary>
+        /// <param name="customizer">A function that customizes the default settings.</param>
+        /// <returns></returns>
+        public static JsonSerializerOptions GetJsonSerializerOptions(
+            Func<JsonSerializerOptions, JsonSerializerOptions> customizer)
+        {
+            var options = GetJsonSerializerOptions();
+            return customizer(options);
+        }
     }
 }
