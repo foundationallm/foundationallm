@@ -28,7 +28,7 @@ export default {
 
 	mounted() {
 		if (window.innerWidth < 950) {
-			this.appStore.toggleSidebar();
+			this.$appStore.toggleSidebar();
 		}
 	},
 

@@ -196,9 +196,7 @@ module eventgrid 'modules/eventgrid.bicep' = {
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     opsResourceGroupName: opsResourceGroupName
-    privateDnsZones: filter(dnsZones.outputs.ids, (zone) => contains([ 'eventgrid' ], zone.key))
     resourceSuffix: resourceSuffix
-    subnetId: subnets.FLLMServices.id
     topics: [ 'storage', 'vectorization', 'configuration' ]
     tags: tags
   }

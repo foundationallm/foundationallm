@@ -235,7 +235,10 @@ namespace FoundationaLLM.Gatekeeper.API
 
             builder.Services.AddSingleton<IDownstreamAPISettings>(downstreamAPISettings);
             builder.Services.AddScoped<IDownstreamAPIService, DownstreamAPIService>((serviceProvider)
-                => new DownstreamAPIService(HttpClients.OrchestrationAPI, serviceProvider.GetService<IHttpClientFactoryService>()!));
+                => new DownstreamAPIService(
+                    HttpClients.OrchestrationAPI,
+                    serviceProvider.GetService<IHttpClientFactoryService>()!,
+                    serviceProvider.GetService<ILogger<DownstreamAPIService>>()!));
         }
     }
 }

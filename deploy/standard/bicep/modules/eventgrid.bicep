@@ -14,14 +14,8 @@ param logAnalyticWorkspaceId string
 @description('OPS Resource Group name.')
 param opsResourceGroupName string = resourceGroup().name
 
-@description('Private DNS Zones for private endpoint')
-param privateDnsZones array
-
 @description('Resource suffix for all resources')
 param resourceSuffix string
-
-@description('Subnet Id for private endpoint')
-param subnetId string
 
 @description('Tags for all resources')
 param tags object

@@ -8,7 +8,7 @@ param vnetName string
 
 @description('Workload Token used in naming resources.')
 var workload = 'net'
-
+// TODO: use the namer function from main.bicep
 var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
 
 var resolverName = 'dns-${resourceSuffix}'

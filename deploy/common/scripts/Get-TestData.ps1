@@ -55,12 +55,6 @@ try {
     Invoke-CLICommand "Copy index-backup data from the storage account: ${storageAccountName}" {
         azcopy copy "https://$($storageAccountName).blob.core.windows.net/e2e/index-backup" $testDataPath --recursive
     }
-
-    $testSettingsPath = "../../../tests/dotnet/Core.Examples/testsettings.json" | Get-AbsolutePath
-    Write-Host "Writing testsettings.json data to: $testSettingsPath" -ForegroundColor Yellow
-    Invoke-CLICommand "Copy testsettings.json data from the storage account: ${storageAccountName}" {
-        azcopy copy "https://$($storageAccountName).blob.core.windows.net/e2e/testsettings.json" $testSettingsPath
-    }
 }
 catch {
     $logFile = Get-ChildItem -Path "$env:HOME/.azcopy" -Filter "*.log" | `

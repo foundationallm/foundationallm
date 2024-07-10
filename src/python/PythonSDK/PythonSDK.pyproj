@@ -40,7 +40,6 @@
     <Compile Include="foundationallm\langchain\retrievers\azure_ai_search_service_retriever.py" />
     <Compile Include="foundationallm\langchain\retrievers\__init__.py" />
     <Compile Include="foundationallm\langchain\language_models\openai\openai_model.py" />
-    <Compile Include="foundationallm\langchain\tools\audio_classification_tool.py" />
     <Compile Include="foundationallm\models\agents\agent_conversation_history_settings.py" />
     <Compile Include="foundationallm\models\agents\agent_gatekeeper_settings.py" />
     <Compile Include="foundationallm\models\agents\agent_vectorization_settings.py" />

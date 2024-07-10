@@ -11,6 +11,7 @@ namespace FoundationaLLM.Core.Examples
     public class Example0012_KnowledgeManagementAgentWithLangChain : BaseTest, IClassFixture<TestFixture>
     {
         private readonly IAgentConversationTestService _agentConversationTestService;
+        private readonly IVectorizationTestService _vectorizationTestService;
 
         private string textEmbeddingProfileName = "text_embedding_profile_generic";
         private string indexingProfileName = "indexing_profile_sdzwa";
@@ -19,6 +20,7 @@ namespace FoundationaLLM.Core.Examples
             : base(output, fixture.ServiceProvider)
         {
             _agentConversationTestService = GetService<IAgentConversationTestService>();
+            _vectorizationTestService = GetService<IVectorizationTestService>();
         }
 
         [Fact]
@@ -41,6 +43,9 @@ namespace FoundationaLLM.Core.Examples
 
             WriteLine($"Send questions to the {agentName} agent.");
 
+            await _vectorizationTestService.CreateIndexingProfile(indexingProfileName);
+            await _vectorizationTestService.CreateTextEmbeddingProfile(textEmbeddingProfileName);
+
             var response = await _agentConversationTestService.RunAgentConversationWithSession(
                 agentName, userPrompts, null, true, indexingProfileName, textEmbeddingProfileName);
 
@@ -57,6 +62,9 @@ namespace FoundationaLLM.Core.Examples
                     invalidAgentResponsesFound++;
                 }
             }
+
+            await _vectorizationTestService.DeleteIndexingProfile(indexingProfileName, false);
+            await _vectorizationTestService.DeleteTextEmbeddingProfile(textEmbeddingProfileName);
 
             Assert.True(invalidAgentResponsesFound == 0, $"{invalidAgentResponsesFound} invalid agent responses found.");
         }

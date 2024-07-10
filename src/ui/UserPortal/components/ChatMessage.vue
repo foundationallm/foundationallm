@@ -8,6 +8,7 @@
 						v-if="message.sender !== 'User'"
 						class="avatar"
 						src="~/assets/FLLM-Agent-Light.svg"
+						alt="Agent avatar"
 					/>
 					<span>{{ getDisplayName() }}</span>
 				</span>

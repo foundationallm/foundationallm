@@ -48,6 +48,10 @@ on:
           - sandbox
           - e2e
         default: e2e
+      deployAMLResources:
+        description: Deploy Azure Machine Learning resources & run tests that depend on them
+        type: boolean
+        default: false
   workflow_call:
     inputs:
       environment:
@@ -77,6 +81,9 @@ on:
       target:
         description: Select target tenant/subscription
         type: string
+      deployAMLResources:
+        description: Deploy Azure Machine Learning resources & run tests that depend on them
+        type: boolean
 
 jobs:
   generate_matrix:
@@ -248,6 +255,20 @@ jobs:
             --tenant-id "$($info.tenantId)"
         shell: pwsh
 
+      - name: Deploy Azure Machine Learning
+        if: ${{ inputs.deployAMLResources }}
+        env:
+          AZURE_ENV_NAME: ext-${{ inputs.environment }}
+          AZURE_LOCATION: ${{ inputs.location }}
+        run: |
+          $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable;
+          Push-Location ./tests/extended-test-env
+          azd env new ext-${{ inputs.environment }}
+          azd env set AZURE_SUBSCRIPTION_ID $($info.subscriptionId)
+          azd up --no-prompt
+          Pop-Location
+        shell: pwsh
+
       - name: Provision Admin Group
         id: provision-admin-group
         run: |
@@ -375,7 +396,7 @@ jobs:
         run: |
           Write-Host "Update App Registration OAuth Callbacks"
           Push-Location ./deploy/quick-start
-          pwsh -File ../../tests/scripts/Update-OAuthCallbackUris.ps1 `
+          pwsh -File ../common/scripts/Update-OAuthCallbackUris.ps1 `
             -fllmChatUiName FoundationaLLM-Core-Portal `
             -fllmMgmtUiName FoundationaLLM-Management-Portal
           Pop-Location
@@ -557,6 +578,30 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.x
+
+      - name: Sets Credentials for Source (SBX)
+        run: |
+          {
+            echo 'AZURE_CREDENTIALS<<EOF'
+            echo "$FLLM_SBX_AZURE_CREDENTIALS"
+            echo EOF
+          } >> "$GITHUB_ENV"
+        env:
+          FLLM_SBX_AZURE_CREDENTIALS: |
+            ${{ secrets.FLLM_SBX_AZURE_CREDENTIALS }}
+
+      - name: Pull Build Artifacts
+        run: |
+          $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable;
+          Push-Location ./deploy/common/scripts
+          $env:AZCOPY_SPA_CLIENT_SECRET="$($info.clientSecret)"
+          azcopy login `
+            --login-type=SPN `
+            --application-id "$($info.clientId)" `
+            --tenant-id "$($info.tenantId)"
+          ./Get-TestSettings.ps1 -storageAccountName foundationallmdata
+          Pop-Location
+        shell: pwsh
       
       - name: Build Tests
         shell: pwsh
@@ -810,6 +855,21 @@ jobs:
             --tenant "$($info.tenantId)"
         shell: pwsh
 
+      - name: Tearing Down Azure Machine Learning
+        if: ${{ inputs.deployAMLResources }}
+        env:
+          AZURE_ENV_NAME: ext-${{ inputs.environment }}
+          AZURE_LOCATION: ${{ inputs.location }}
+        run: |
+          $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable;
+          Push-Location ./tests/extended-test-env
+          azd env new ext-${{ inputs.environment }}
+          $env:AZURE_SUBSCRIPTION_ID = $($info.subscriptionId)
+          azd env refresh --no-prompt
+          azd down --force --purge --no-prompt
+          Pop-Location
+        shell: pwsh
+      
       - name: Tearing Down AZD Deployment
         id: azd-down
         run: |
@@ -829,12 +889,12 @@ jobs:
             -principalType ServicePrincipal `
             -instanceId 6fa496ce-d5c0-4e02-9223-06a98c9c0176
 
+          azd env refresh --no-prompt
           Write-Host "Removing App Registration OAuth Callbacks"
-          pwsh -File ../../tests/scripts/Remove-OAuthCallbackUris.ps1 `
+          pwsh -File ../common/scripts/Remove-OAuthCallbackUris.ps1 `
             -fllmChatUiName FoundationaLLM-Core-Portal `
             -fllmMgmtUiName FoundationaLLM-Management-Portal
 
-          azd env refresh --no-prompt
           azd down --force --purge --no-prompt
           Pop-Location
 

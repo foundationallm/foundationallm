@@ -25,6 +25,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace FoundationaLLM.Core.Examples.Setup
 {
@@ -71,10 +72,17 @@ namespace FoundationaLLM.Core.Examples.Setup
 
         }
 
-        private static void RegisterClientLibraries(IServiceCollection services, IConfiguration configuration) =>
+        private static void RegisterClientLibraries(IServiceCollection services, IConfiguration configuration)
+        {
+            var instanceId = configuration.GetValue<string>(AppConfigurationKeys.FoundationaLLM_Instance_Id);
             services.AddCoreClient(
                 configuration[AppConfigurationKeys.FoundationaLLM_APIs_CoreAPI_APIUrl]!,
                 DefaultAuthentication.AzureCredential!);
+            services.AddManagementClient(
+                configuration[AppConfigurationKeys.FoundationaLLM_APIs_ManagementAPI_APIUrl]!,
+                DefaultAuthentication.AzureCredential!,
+                instanceId);
+        }
 
         private static void RegisterHttpClients(IServiceCollection services, IConfiguration configuration)
 		{
@@ -151,7 +159,10 @@ namespace FoundationaLLM.Core.Examples.Setup
             services.AddSingleton<IDownstreamAPISettings>(downstreamAPISettings);
 
             services.AddScoped<IDownstreamAPIService, DownstreamAPIService>((serviceProvider)
-                => new DownstreamAPIService(HttpClients.VectorizationAPI, serviceProvider.GetService<IHttpClientFactoryService>()!));
+                => new DownstreamAPIService(
+                    HttpClients.VectorizationAPI,
+                    serviceProvider.GetService<IHttpClientFactoryService>()!,
+                    serviceProvider.GetService<ILogger<DownstreamAPIService>>()!));
 
             services.Configure<DownstreamAPISettings>(configuration.GetSection("DownstreamAPIs"));
         }

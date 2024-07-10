@@ -154,7 +154,6 @@ If you prefer to retrieve the configuration settings from Azure App Configuratio
     ```csharp
     var services = new ServiceCollection();
     var credential = new AzureCliCredential(); // Can use any TokenCredential implementation, such as ManagedIdentityCredential or AzureCliCredential.
-    services.AddCoreClient(configuration, scope);
 
     services.AddCoreClient(configuration[AppConfigurationKeys.FoundationaLLM_APIs_CoreAPI_APIUrl]!, credential);
     ```

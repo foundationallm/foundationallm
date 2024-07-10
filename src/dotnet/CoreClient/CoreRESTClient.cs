@@ -1,5 +1,5 @@
 ﻿using Azure.Core;
-using FoundationaLLM.Client.Core.Clients.Rest;
+using FoundationaLLM.Client.Core.Clients.RESTClients;
 using FoundationaLLM.Client.Core.Interfaces;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Models.Configuration.API;

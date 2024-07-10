@@ -62,6 +62,9 @@ namespace FoundationaLLM.Core.Examples
                 }
             }
 
+            await _vectorizationTestService.DeleteIndexingProfile(indexingProfileName, false);
+            await _vectorizationTestService.DeleteTextEmbeddingProfile(textEmbeddingProfileName);
+
             Assert.True(invalidAgentResponsesFound == 0, $"{invalidAgentResponsesFound} invalid agent responses found.");
         }
     }

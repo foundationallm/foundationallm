@@ -47,7 +47,7 @@ try {
 
     # Convert the manifest resource groups to a hashtable for easier access
     $resourceGroup = @{}
-    $manifest.resourceGroups.PSObject.Properties | ForEach-Object { $resourceGroup[$_.Name] = $_.Value }
+    $manifest.externalResourceGroups.PSObject.Properties | ForEach-Object { $resourceGroup[$_.Name] = $_.Value }
     $vnetName = "vnet-$($manifest.project)-$($manifest.environment)-$($manifest.location)-pre"
 
     # Use the Azure CLI to create the "net" resource group
