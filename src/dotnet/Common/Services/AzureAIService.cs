@@ -1,12 +1,10 @@
-﻿using FoundationaLLM.Common.Authentication;
-using FoundationaLLM.Common.Constants;
+﻿using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.AzureAIService;
 using FoundationaLLM.Common.Models.Configuration.AzureAI;
 using FoundationaLLM.Common.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -21,16 +19,19 @@ namespace FoundationaLLM.Common.Services
     /// <param name="azureAISettings"></param>
     /// <param name="logger"></param>
     /// <param name="blobStorageService"></param>
+    /// <param name="callContext"></param>
     /// <param name="httpClientFactoryService"></param>
     public class AzureAIService(
-                   IOptions<AzureAISettings> azureAISettings,
-                   ILogger<AzureAIService> logger,
-                   IStorageService blobStorageService,
-                   IHttpClientFactoryService httpClientFactoryService) : IAzureAIService
+        IOptions<AzureAISettings> azureAISettings,
+        ILogger<AzureAIService> logger,
+        IStorageService blobStorageService,
+        ICallContext callContext,
+        IHttpClientFactoryService httpClientFactoryService) : IAzureAIService
     {
         private readonly ILogger<AzureAIService> _logger = logger;
         private readonly IStorageService _blobStorageService = blobStorageService;
         private readonly AzureAISettings _settings = azureAISettings.Value;
+        private readonly ICallContext _callContext = callContext;
         private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
         private readonly JsonSerializerOptions _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
 
@@ -63,7 +64,7 @@ namespace FoundationaLLM.Common.Services
 
             try
             {
-                var httpClient = await _httpClientFactoryService.CreateClient(HttpClients.AzureAIStudioAPI);
+                var httpClient = await _httpClientFactoryService.CreateClient(HttpClients.AzureAIStudioAPI, _callContext.CurrentUserIdentity);
                 var response = await httpClient.PostAsync(
                     $"{_settings.BaseUrl}/api/{_settings.Region}/data/v1.0/subscriptions/{_settings.SubscriptionId}/resourceGroups/{_settings.ResourceGroup}/providers/Microsoft.MachineLearningServices/workspaces/{_settings.ProjectName}/dataversion/{dataSetName}/versions",
                     JsonContent.Create(req));
@@ -117,7 +118,7 @@ namespace FoundationaLLM.Common.Services
                     MaxDepth = 10
                 };
 
-                var httpClient = await _httpClientFactoryService.CreateClient(HttpClients.AzureAIStudioAPI);
+                var httpClient = await _httpClientFactoryService.CreateClient(HttpClients.AzureAIStudioAPI, _callContext.CurrentUserIdentity);
                 var response = await httpClient.PostAsync(
                     $"{_settings.BaseUrl}/api/{_settings.Region}/flow/api/subscriptions/{_settings.SubscriptionId}/resourceGroups/{_settings.ResourceGroup}/providers/Microsoft.MachineLearningServices/workspaces/{_settings.ProjectName}/BulkRuns/submit",
                     JsonContent.Create(job));
@@ -146,7 +147,7 @@ namespace FoundationaLLM.Common.Services
         {
             try
             {
-                var httpClient = await _httpClientFactoryService.CreateClient(HttpClients.AzureAIStudioAPI);
+                var httpClient = await _httpClientFactoryService.CreateClient(HttpClients.AzureAIStudioAPI, _callContext.CurrentUserIdentity);
                 var response = await httpClient.GetAsync(
                     $"{_settings.BaseUrl}/api/{_settings.Region}/history/v1.0/subscriptions/{_settings.SubscriptionId}/resourceGroups/{_settings.ResourceGroup}/providers/Microsoft.MachineLearningServices/workspaces/{_settings.ProjectName}/runs/{jobId}"
                     );
@@ -175,7 +176,7 @@ namespace FoundationaLLM.Common.Services
         {
             try
             {
-                var httpClient = await _httpClientFactoryService.CreateClient(HttpClients.AzureAIStudioAPI);
+                var httpClient = await _httpClientFactoryService.CreateClient(HttpClients.AzureAIStudioAPI, _callContext.CurrentUserIdentity);
                 var response = await httpClient.GetAsync(
                     $"{_settings.BaseUrl}/api/{_settings.Region}/flow/api/subscriptions/{_settings.SubscriptionId}/resourceGroups/{_settings.ResourceGroup}/providers/Microsoft.MachineLearningServices/workspaces/{_settings.ProjectName}/BulkRuns/{jobId}/childRuns?startIndex={startIndex}&endIndex={endIndex}"
                     );
@@ -204,7 +205,7 @@ namespace FoundationaLLM.Common.Services
         {
             try
             {
-                var httpClient = await _httpClientFactoryService.CreateClient(HttpClients.AzureAIStudioAPI);
+                var httpClient = await _httpClientFactoryService.CreateClient(HttpClients.AzureAIStudioAPI, _callContext.CurrentUserIdentity);
                 var response = await httpClient.GetAsync(
                     $"/api/{_settings.Region}/flow/api/subscriptions/{_settings.SubscriptionId}/resourceGroups/{_settings.ResourceGroup}/providers/Microsoft.MachineLearningServices/workspaces/{_settings.ProjectName}/BulkRuns/{jobId}/results"
                     );

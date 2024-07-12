@@ -1,15 +1,10 @@
-﻿using Asp.Versioning;
-using FoundationaLLM.Attachment.Models;
-using FoundationaLLM.Common.Constants.ResourceProviders;
-using FoundationaLLM.Common.Extensions;
+﻿using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing.Constraints;
-using Microsoft.Extensions.Options;
 
 namespace FoundationaLLM.Core.API.Controllers
 {
@@ -25,6 +20,12 @@ namespace FoundationaLLM.Core.API.Controllers
 #pragma warning disable IDE0052 // Remove unread private members.
         private readonly ILogger<AttachmentsController> _logger;
 
+        /// <summary>
+        /// Attachments controller constructor.
+        /// </summary>
+        /// <param name="resourceProviderServices"></param>
+        /// <param name="logger"></param>
+        /// <exception cref="ResourceProviderException"></exception>
         public AttachmentsController(
             IEnumerable<IResourceProviderService> resourceProviderServices,
             ILogger<AttachmentsController> logger)

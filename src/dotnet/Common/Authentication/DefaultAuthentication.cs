@@ -17,6 +17,7 @@ namespace FoundationaLLM.Common.Authentication
         /// Initializes the default authentication.
         /// </summary>
         /// <param name="production">Indicates whether the environment is production or not.</param>
+        /// <param name="serviceName">The service name.</param>
         public static void Initialize(bool production, string serviceName)
         {
             Production = production;

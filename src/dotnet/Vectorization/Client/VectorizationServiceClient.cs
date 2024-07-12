@@ -1,4 +1,6 @@
 ﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Models.Configuration;
@@ -15,31 +17,29 @@ namespace FoundationaLLM.Vectorization.Client
     public class VectorizationServiceClient : IVectorizationServiceClient
     {
         private readonly VectorizationServiceSettings _settings;
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IHttpClientFactoryService _httpClientFactoryService;
         private readonly ILogger<VectorizationServiceClient> _logger;
 
         /// <summary>
         /// Creates a new instance of the Vectorization API client.
         /// </summary>
-        /// <param name="httpClientFactory">The <see cref="IHttpClientFactory"/> used to create the HTTP client.</param>
+        /// <param name="httpClientFactoryService">The <see cref="IHttpClientFactoryService"/> used to create the HTTP client.</param>
         /// <param name="options">The options object containing the <see cref="VectorizationServiceSettings"/> object with the setting.</param>
         /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
         public VectorizationServiceClient(
-            IHttpClientFactory httpClientFactory,
+            IHttpClientFactoryService httpClientFactoryService,
             IOptions<VectorizationServiceSettings> options,
             ILogger<VectorizationServiceClient> logger)
         {
-            _httpClientFactory = httpClientFactory;
+            _httpClientFactoryService = httpClientFactoryService;
             _settings = options.Value;
             _logger = logger;
         }
 
         /// <inheritdoc/>
-        public async Task<VectorizationResult> ProcessRequest(VectorizationRequest vectorizationRequest)
+        public async Task<VectorizationResult> ProcessRequest(VectorizationRequest vectorizationRequest, UnifiedUserIdentity? userIdentity)
         {
-            var httpClient = _httpClientFactory.CreateClient();
-            httpClient.BaseAddress = new Uri(_settings.APIUrl);
-            httpClient.DefaultRequestHeaders.Add(HttpHeaders.APIKey, _settings.APIKey);
+            var httpClient = await _httpClientFactoryService.CreateClient(HttpClients.VectorizationAPI, userIdentity);
 
             var serializedRequest = JsonSerializer.Serialize(vectorizationRequest);
 

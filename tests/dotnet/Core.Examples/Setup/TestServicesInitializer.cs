@@ -110,7 +110,7 @@ namespace FoundationaLLM.Core.Examples.Setup
             };
 
             downstreamAPISettings.DownstreamAPIs[HttpClients.VectorizationAPI] = vectorizationAPISettings;
-            
+
             services.AddHttpClient(HttpClients.CoreAPI)
                 .ConfigureHttpClient((serviceProvider, client) =>
                 {
@@ -151,7 +151,7 @@ namespace FoundationaLLM.Core.Examples.Setup
             services.AddSingleton<IDownstreamAPISettings>(downstreamAPISettings);
 
             services.AddScoped<IDownstreamAPIService, DownstreamAPIService>((serviceProvider)
-                => new DownstreamAPIService(HttpClients.VectorizationAPI, serviceProvider.GetService<IHttpClientFactoryService>()!));
+                => new DownstreamAPIService(HttpClients.VectorizationAPI, serviceProvider.GetService<ICallContext>()!, serviceProvider.GetService<IHttpClientFactoryService>()!));
 
             services.Configure<DownstreamAPISettings>(configuration.GetSection("DownstreamAPIs"));
         }

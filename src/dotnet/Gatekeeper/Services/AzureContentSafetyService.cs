@@ -19,6 +19,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
     /// </summary>
     public class AzureContentSafetyService : IContentSafetyService
     {
+        private readonly ICallContext _callContext;
         private readonly IHttpClientFactoryService _httpClientFactoryService;
         private readonly ContentSafetyClient _client;
         private readonly AzureContentSafetySettings _settings;
@@ -27,14 +28,18 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <summary>
         /// Constructor for the Azure Content Safety service.
         /// </summary>
+        /// <param name="callContext">Stores context information extracted from the current HTTP request. This information
+        /// is primarily used to inject HTTP headers into downstream HTTP calls.</param>
         /// <param name="httpClientFactoryService">The HTTP client factory service.</param>
         /// <param name="options">The configuration options for the Azure Content Safety service.</param>
         /// <param name="logger">The logger for the Azure Content Safety service.</param>
         public AzureContentSafetyService(
+            ICallContext callContext,
             IHttpClientFactoryService httpClientFactoryService,
             IOptions<AzureContentSafetySettings> options,
             ILogger<AzureContentSafetyService> logger)
         {
+            _callContext = callContext;
             _httpClientFactoryService = httpClientFactoryService;
             _settings = options.Value;
             _logger = logger;
@@ -95,7 +100,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <inheritdoc/>
         public async Task<string?> DetectPromptInjection(string content)
         {
-            var client = await _httpClientFactoryService.CreateClient(HttpClients.AzureContentSafety);
+            var client = await _httpClientFactoryService.CreateClient(HttpClients.AzureContentSafety, _callContext.CurrentUserIdentity);
 
             var response = await client.PostAsync("/contentsafety/text:shieldPrompt?api-version=2024-02-15-preview",
                 new StringContent(JsonSerializer.Serialize(new

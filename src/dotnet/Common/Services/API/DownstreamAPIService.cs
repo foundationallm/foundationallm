@@ -1,8 +1,8 @@
-﻿using System.Text;
-using System.Text.Json;
-using FoundationaLLM.Common.Interfaces;
+﻿using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Settings;
+using System.Text;
+using System.Text.Json;
 
 namespace FoundationaLLM.Common.Services.API
 {
@@ -10,12 +10,16 @@ namespace FoundationaLLM.Common.Services.API
     /// Contains methods for interacting with the downstream API.
     /// </summary>
     /// <param name="downstreamHttpClientName">The name of the downstream HTTP client.</param>
+    /// <param name="callContext">Stores context information extracted from the current HTTP request. This information
+    /// is primarily used to inject HTTP headers into downstream HTTP calls.</param>
     /// <param name="httpClientFactoryService">The HTTP client factory service.</param>
     public class DownstreamAPIService(
         string downstreamHttpClientName,
+        ICallContext callContext,
         IHttpClientFactoryService httpClientFactoryService) : IDownstreamAPIService
     {
         private readonly string _downstreamHttpClientName = downstreamHttpClientName;
+        private readonly ICallContext _callContext = callContext;
         private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
         private readonly JsonSerializerOptions _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
 
@@ -36,7 +40,7 @@ namespace FoundationaLLM.Common.Services.API
                 UserPromptEmbedding = [ 0f ]
             };
 
-            var client = await _httpClientFactoryService.CreateClient(_downstreamHttpClientName);
+            var client = await _httpClientFactoryService.CreateClient(_downstreamHttpClientName, _callContext.CurrentUserIdentity);
 
             var serializedRequest = JsonSerializer.Serialize(completionRequest, _jsonSerializerOptions);
             var responseMessage = await client.PostAsync("orchestration/completion",
@@ -63,7 +67,7 @@ namespace FoundationaLLM.Common.Services.API
                 Summary = "[No Summary]"
             };
 
-            var client = await _httpClientFactoryService.CreateClient(_downstreamHttpClientName);
+            var client = await _httpClientFactoryService.CreateClient(_downstreamHttpClientName, _callContext.CurrentUserIdentity);
 
             var responseMessage = await client.PostAsync("orchestration/summary",
             new StringContent(

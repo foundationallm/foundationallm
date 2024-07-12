@@ -235,7 +235,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                             PrincipalType = PrincipalTypes.User,
                             RoleDefinitionId = $"/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleDefinitions}/{RoleDefinitionNames.Owner}",
                             Scope = upsertResult!.ObjectId ?? throw new ResourceProviderException($"The {roleAssignmentDescription} could not be assigned. Could not set the scope for the resource.")
-                        });
+                        },
+                        userIdentity);
 
                     if (!roleAssignmentResult.Success)
                         _logger.LogError("The {RoleAssignment} could not be assigned.", roleAssignmentDescription);
@@ -399,12 +400,13 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 var result = await _authorizationService.ProcessAuthorizationRequest(
                     _instanceSettings.Id,
                     new ActionAuthorizationRequest
-                        {
-                            Action = $"{_name}/{resourcePath.MainResourceType}/{actionType}",
-                            ResourcePaths = [rp],
-                            PrincipalId = userIdentity.UserId,
-                            SecurityGroupIds = userIdentity.GroupIds
-                        });
+                    {
+                        Action = $"{_name}/{resourcePath.MainResourceType}/{actionType}",
+                        ResourcePaths = [rp],
+                        PrincipalId = userIdentity.UserId,
+                        SecurityGroupIds = userIdentity.GroupIds
+                    },
+                    userIdentity);
 
                 if (!result.AuthorizationResults[rp])
                     throw new AuthorizationException("Access is not authorized.");

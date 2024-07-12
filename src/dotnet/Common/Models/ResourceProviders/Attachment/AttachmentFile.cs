@@ -1,5 +1,4 @@
-﻿using FoundationaLLM.Common.Constants.ResourceProviders;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.ResourceProviders.Attachment
 {
@@ -8,7 +7,11 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Attachment
     /// </summary>
     public class AttachmentFile : ResourceBase
     {
-        [JsonIgnore] public override string? Type { get; set; } = nameof(AttachmentFile);
+        /// <summary>
+        /// The type of the resource.
+        /// </summary>
+        [JsonIgnore]
+        public override string? Type { get; set; } = nameof(AttachmentFile);
 
         /// <summary>
         /// File stream of the attachment contents.

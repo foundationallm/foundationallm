@@ -15,6 +15,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
     /// </summary>
     public class EnkryptGuardrailsService : IEnkryptGuardrailsService
     {
+        private readonly ICallContext _callContext;
         private readonly IHttpClientFactoryService _httpClientFactoryService;
         private readonly EnkryptGuardrailsServiceSettings _settings;
         private readonly ILogger _logger;
@@ -22,14 +23,18 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <summary>
         /// Constructor for the Azure Content Safety service.
         /// </summary>
+        /// <param name="callContext">Stores context information extracted from the current HTTP request. This information
+        /// is primarily used to inject HTTP headers into downstream HTTP calls.</param>
         /// <param name="httpClientFactoryService">The HTTP client factory service.</param>
         /// <param name="options">The configuration options for the Azure Content Safety service.</param>
         /// <param name="logger">The logger for the Azure Content Safety service.</param>
         public EnkryptGuardrailsService(
+            ICallContext callContext,
             IHttpClientFactoryService httpClientFactoryService,
             IOptions<EnkryptGuardrailsServiceSettings> options,
             ILogger<EnkryptGuardrailsService> logger)
         {
+            _callContext = callContext;
             _httpClientFactoryService = httpClientFactoryService;
             _settings = options.Value;
             _logger = logger;
@@ -38,7 +43,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <inheritdoc/>
         public async Task<string?> DetectPromptInjection(string content)
         {
-            var client = await _httpClientFactoryService.CreateClient(HttpClients.EnkryptGuardrails);
+            var client = await _httpClientFactoryService.CreateClient(HttpClients.EnkryptGuardrails, _callContext.CurrentUserIdentity);
 
             var response = await client.PostAsync("/api/guardrails/detect",
                 new StringContent(JsonSerializer.Serialize(new

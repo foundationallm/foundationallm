@@ -1,7 +1,4 @@
-﻿using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using FoundationaLLM.Common.Constants;
+﻿using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Infrastructure;
 using FoundationaLLM.Common.Models.Orchestration;
@@ -10,6 +7,9 @@ using FoundationaLLM.Orchestration.Core.Interfaces;
 using FoundationaLLM.Orchestration.Core.Models.ConfigurationOptions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Orchestration.Core.Services
 {
@@ -20,6 +20,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
     {
         readonly LangChainServiceSettings _settings;
         readonly ILogger<LangChainService> _logger;
+        private readonly ICallContext _callContext;
         private readonly IHttpClientFactoryService _httpClientFactoryService;
         readonly JsonSerializerOptions _jsonSerializerOptions;
 
@@ -29,10 +30,12 @@ namespace FoundationaLLM.Orchestration.Core.Services
         public LangChainService(
             IOptions<LangChainServiceSettings> options,
             ILogger<LangChainService> logger,
+            ICallContext callContext,
             IHttpClientFactoryService httpClientFactoryService) 
         {
             _settings = options.Value;
             _logger = logger;
+            _callContext = callContext;
             _httpClientFactoryService = httpClientFactoryService;
             _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
             _jsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
@@ -41,7 +44,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
         /// <inheritdoc/>
         public async Task<ServiceStatusInfo> GetStatus()
         {
-            var client = await _httpClientFactoryService.CreateClient(HttpClients.LangChainAPI);
+            var client = await _httpClientFactoryService.CreateClient(HttpClients.LangChainAPI, _callContext.CurrentUserIdentity);
             var responseMessage = await client.SendAsync(
                 new HttpRequestMessage(HttpMethod.Get, "status"));
 
@@ -59,7 +62,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
         /// <returns>Returns a completion response from the orchestration engine.</returns>
         public async Task<LLMCompletionResponse> GetCompletion(LLMCompletionRequest request)
         {
-            var client = await _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.LangChainAPI);
+            var client = await _httpClientFactoryService.CreateClient(HttpClients.LangChainAPI, _callContext.CurrentUserIdentity);
 
             var body = JsonSerializer.Serialize(request, _jsonSerializerOptions);
             var responseMessage = await client.PostAsync("orchestration/completion",

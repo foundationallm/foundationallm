@@ -11,10 +11,13 @@ namespace FoundationaLLM.Common.Services.API
     /// </summary>
     /// <param name="httpClientName">The name of the HttpClient associated
     /// with the Hub API service that implements this base class.</param>
+    /// <param name="callContext">Stores context information extracted from the current HTTP request. This information
+    /// is primarily used to inject HTTP headers into downstream HTTP calls.</param>
     /// <param name="httpClientFactoryService">The HTTP client factory service.</param>
     /// <param name="logger">The logging interface.</param>
     public class APIServiceBase(
         string httpClientName,
+        ICallContext callContext,
         IHttpClientFactoryService httpClientFactoryService,
         ILogger logger) : ICacheControlAPIService
     {
@@ -24,6 +27,8 @@ namespace FoundationaLLM.Common.Services.API
         /// so the methods in this class can access it.
         /// </summary>
         private readonly string _httpClientName = httpClientName;
+
+        private readonly ICallContext _callContext = callContext;
         
         /// <summary>
         /// Refreshes the configuration cache.
@@ -38,7 +43,7 @@ namespace FoundationaLLM.Common.Services.API
         /// <returns></returns>
         public async Task<APICacheRefreshResult> RefreshCache(string name)
         {
-            var client = await httpClientFactoryService.CreateClient(_httpClientName);
+            var client = await httpClientFactoryService.CreateClient(_httpClientName, _callContext.CurrentUserIdentity);
 
             var responseMessage = await client.PostAsync($"manage/cache/{name}/refresh",
                 null);

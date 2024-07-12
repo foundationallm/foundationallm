@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
+﻿using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 
 namespace FoundationaLLM.Vectorization.Interfaces
 {
@@ -11,7 +12,8 @@ namespace FoundationaLLM.Vectorization.Interfaces
         /// Processes an incoming vectorization request.
         /// </summary>
         /// <param name="vectorizationRequest">The <see cref="VectorizationRequest"/> object containing the details of the vectorization request.</param>
+        /// <param name="userIdentity">The user identity.</param>
         /// <returns>The result of the request including the resource object id, success or failure plus any error messages.</returns>
-        Task<VectorizationResult> ProcessRequest(VectorizationRequest vectorizationRequest);
+        Task<VectorizationResult> ProcessRequest(VectorizationRequest vectorizationRequest, UnifiedUserIdentity? userIdentity);
     }
 }

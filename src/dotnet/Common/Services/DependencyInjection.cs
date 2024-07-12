@@ -140,5 +140,15 @@ namespace FoundationaLLM
             builder.Logging.AddFilter("Azure.Security.KeyVault.Secrets", LogLevel.Warning);
             builder.Services.AddSingleton<IAzureKeyVaultService, AzureKeyVaultService>();
         }
+
+        /// <summary>
+        /// Register the <see cref="HttpClientFactoryService"/> with the dependency injection container.
+        /// </summary>
+        /// <param name="builder"></param>
+        public static void AddHttpClientFactoryService(this IHostApplicationBuilder builder)
+        {
+            builder.Services.AddHttpClient();
+            builder.Services.AddSingleton<IHttpClientFactoryService, HttpClientFactoryService>();
+        }
     }
 }

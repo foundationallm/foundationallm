@@ -1,7 +1,4 @@
-﻿using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using FoundationaLLM.Common.Constants;
+﻿using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Infrastructure;
 using FoundationaLLM.Common.Models.Orchestration;
@@ -10,6 +7,8 @@ using FoundationaLLM.Orchestration.Core.Interfaces;
 using FoundationaLLM.Orchestration.Core.Models.ConfigurationOptions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Text;
+using System.Text.Json;
 
 namespace FoundationaLLM.Orchestration.Core.Services
 {
@@ -21,21 +20,24 @@ namespace FoundationaLLM.Orchestration.Core.Services
     /// </remarks>
     /// <param name="options"></param>
     /// <param name="logger"></param>
+    /// <param name="callContext"></param>
     /// <param name="httpClientFactoryService"></param>
     public class SemanticKernelService(
         IOptions<SemanticKernelServiceSettings> options,
         ILogger<SemanticKernelService> logger,
+        ICallContext callContext,
         IHttpClientFactoryService httpClientFactoryService) : ISemanticKernelService
     {
         readonly SemanticKernelServiceSettings _settings = options.Value;
         readonly ILogger<SemanticKernelService> _logger = logger;
+        private readonly ICallContext _callContext = callContext;
         private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
         readonly JsonSerializerOptions _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
 
         /// <inheritdoc/>
         public async Task<ServiceStatusInfo> GetStatus()
         {
-            var client = await _httpClientFactoryService.CreateClient(HttpClients.SemanticKernelAPI);
+            var client = await _httpClientFactoryService.CreateClient(HttpClients.SemanticKernelAPI, _callContext.CurrentUserIdentity);
             var responseMessage = await client.SendAsync(
                 new HttpRequestMessage(HttpMethod.Get, "status"));
 
@@ -53,7 +55,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
         /// <returns>Returns a completion response from the orchestration engine.</returns>
         public async Task<LLMCompletionResponse> GetCompletion(LLMCompletionRequest request)
         {
-            var client = await _httpClientFactoryService.CreateClient(HttpClients.SemanticKernelAPI);
+            var client = await _httpClientFactoryService.CreateClient(HttpClients.SemanticKernelAPI, _callContext.CurrentUserIdentity);
 
             var body = JsonSerializer.Serialize(request, _jsonSerializerOptions);
             var responseMessage = await client.PostAsync("orchestration/completion",

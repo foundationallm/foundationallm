@@ -1,12 +1,11 @@
-﻿using FoundationaLLM.Common.Interfaces;
+﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Chat;
 using FoundationaLLM.Common.Models.Orchestration;
-using FoundationaLLM.Gatekeeper.Core.Services;
+using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.TestUtils.Helpers;
 using NSubstitute;
 using System.Net;
-using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Services.API;
 
 namespace Gatekeeper.Tests.Services
 {
@@ -14,11 +13,13 @@ namespace Gatekeeper.Tests.Services
     {
         private readonly DownstreamAPIService _testedService;
 
+        private readonly ICallContext _callContext = Substitute.For<ICallContext>();
         private readonly IHttpClientFactoryService _httpClientFactoryService = Substitute.For<IHttpClientFactoryService>();
         
         public OrchestrationAPIServiceTests()
         {
-            _testedService = new DownstreamAPIService(HttpClients.AgentHubAPI, 
+            _testedService = new DownstreamAPIService(HttpClients.AgentHubAPI,
+                _callContext,
                 _httpClientFactoryService);
         }
 
@@ -35,7 +36,7 @@ namespace Gatekeeper.Tests.Services
             {
                 BaseAddress = new Uri("http://nsubstitute.io")
             };
-            _httpClientFactoryService.CreateClient(Arg.Any<string>()).Returns(httpClient);
+            _httpClientFactoryService.CreateClient(Arg.Any<string>(), _callContext.CurrentUserIdentity).Returns(httpClient);
 
             // Act
             var completionResponse = await _testedService.GetCompletion(completionRequest);
@@ -58,7 +59,7 @@ namespace Gatekeeper.Tests.Services
             {
                 BaseAddress = new Uri("http://nsubstitute.io")
             };
-            _httpClientFactoryService.CreateClient(Arg.Any<string>()).Returns(httpClient);
+            _httpClientFactoryService.CreateClient(Arg.Any<string>(), _callContext.CurrentUserIdentity).Returns(httpClient);
 
             // Act
             var completionResponse = await _testedService.GetCompletion(completionRequest);
@@ -81,7 +82,7 @@ namespace Gatekeeper.Tests.Services
             {
                 BaseAddress = new Uri("http://nsubstitute.io")
             };
-            _httpClientFactoryService.CreateClient(Arg.Any<string>()).Returns(httpClient);
+            _httpClientFactoryService.CreateClient(Arg.Any<string>(), _callContext.CurrentUserIdentity).Returns(httpClient);
 
             // Act
             var summaryResponse = await _testedService.GetSummary(summaryRequest);
@@ -104,7 +105,7 @@ namespace Gatekeeper.Tests.Services
             {
                 BaseAddress = new Uri("http://nsubstitute.io")
             };
-            _httpClientFactoryService.CreateClient(Arg.Any<string>()).Returns(httpClient);
+            _httpClientFactoryService.CreateClient(Arg.Any<string>(), _callContext.CurrentUserIdentity).Returns(httpClient);
 
             // Act
             var summaryResponse = await _testedService.GetSummary(summaryRequest);

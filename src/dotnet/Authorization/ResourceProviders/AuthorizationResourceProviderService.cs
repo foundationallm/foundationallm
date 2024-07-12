@@ -123,7 +123,8 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                     RoleDefinitionId = roleAssignment.RoleDefinitionId,
                     Scope = roleAssignment.Scope,
                     CreatedBy = userIdentity.UPN
-                });
+                },
+                userIdentity);
 
             if (roleAssignmentResult.Success)
                 return new ResourceProviderUpsertResult
@@ -142,7 +143,10 @@ namespace FoundationaLLM.Authorization.ResourceProviders
             switch (resourcePath.ResourceTypeInstances.Last().ResourceType)
             {
                 case AuthorizationResourceTypeNames.RoleAssignments:
-                    await _authorizationService.RevokeRoleAssignment(_instanceSettings.Id, resourcePath.ResourceTypeInstances.Last().ResourceId!);
+                    await _authorizationService.RevokeRoleAssignment(
+                        _instanceSettings.Id,
+                        resourcePath.ResourceTypeInstances.Last().ResourceId!,
+                        userIdentity);
                     break;
                 default:
                     throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances.Last().ResourceType} is not supported by the {_name} resource provider.",
@@ -176,7 +180,8 @@ namespace FoundationaLLM.Authorization.ResourceProviders
             else
             {
                 var roleAssignments = new List<RoleAssignment>();
-                var roleAssignmentObjects = await _authorizationService.GetRoleAssignments(_instanceSettings.Id, queryParameters);
+                var roleAssignmentObjects = await _authorizationService.GetRoleAssignments(
+                    _instanceSettings.Id, queryParameters, userIdentity);
 
                 foreach (var obj in roleAssignmentObjects)
                 {

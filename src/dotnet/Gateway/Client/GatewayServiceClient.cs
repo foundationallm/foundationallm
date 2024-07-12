@@ -16,20 +16,25 @@ namespace FoundationaLLM.Gateway.Client
     public class GatewayServiceClient : IGatewayServiceClient
     {
         private readonly GatewayServiceSettings _settings;
+        private readonly ICallContext _callContext;
         private readonly IHttpClientFactoryService _httpClientFactoryService;
         private readonly ILogger<GatewayServiceClient> _logger;
 
         /// <summary>
         /// Creates a new instance of the Gateway API service.
         /// </summary>
+        /// <param name="callContext">Stores context information extracted from the current HTTP request. This information
+        /// is primarily used to inject HTTP headers into downstream HTTP calls.</param>
         /// <param name="httpClientFactoryService">The <see cref="IHttpClientFactoryService"/> used to create the HTTP client.</param>
         /// <param name="options">The options object containing the <see cref="GatewayServiceSettings"/> object with the setting.</param>
         /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
         public GatewayServiceClient(
+            ICallContext callContext,
             IHttpClientFactoryService httpClientFactoryService,
             IOptions<GatewayServiceSettings> options,
             ILogger<GatewayServiceClient> logger)
         {
+            _callContext = callContext;
             _httpClientFactoryService = httpClientFactoryService;
             _settings = options.Value;
             _logger = logger;
@@ -43,7 +48,7 @@ namespace FoundationaLLM.Gateway.Client
                 OperationId = null
             };
 
-            var client = await _httpClientFactoryService.CreateClient(HttpClients.GatewayAPI);
+            var client = await _httpClientFactoryService.CreateClient(HttpClients.GatewayAPI, _callContext.CurrentUserIdentity);
             var response = await client.GetAsync($"embeddings?operationId={operationId}");
 
             if (response.IsSuccessStatusCode)
@@ -65,7 +70,7 @@ namespace FoundationaLLM.Gateway.Client
                 OperationId = null
             };
 
-            var client = await _httpClientFactoryService.CreateClient(HttpClients.GatewayAPI);
+            var client = await _httpClientFactoryService.CreateClient(HttpClients.GatewayAPI, _callContext.CurrentUserIdentity);
             var serializedRequest = JsonSerializer.Serialize(embeddingRequest);
             var response = await client.PostAsync("embeddings",
                 new StringContent(

@@ -1,6 +1,4 @@
-﻿using System.Text;
-using System.Text.Json;
-using FoundationaLLM.Common.Constants;
+﻿using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
@@ -14,6 +12,8 @@ using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Text;
+using System.Text.Json;
 
 namespace FoundationaLLM.Orchestration.Core.Services
 {
@@ -22,18 +22,20 @@ namespace FoundationaLLM.Orchestration.Core.Services
     /// </summary>
     /// <param name="logger">The logger used for logging.</param>
     /// <param name="configuration">The <see cref="IConfiguration"/> used to retrieve app settings from configuration.</param>
+    /// <param name="callContext">Stores context information extracted from the current HTTP request. This information
+    /// is primarily used to inject HTTP headers into downstream HTTP calls.</param>
     /// <param name="httpClientFactoryService">The HTTP client factory service.</param>
     /// <param name="resourceProviderServices">A dictionary of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
     public class AzureOpenAIDirectService(
-        ICallContext callContext,
         ILogger<AzureOpenAIDirectService> logger,
         IConfiguration configuration,
+        ICallContext callContext,
         IHttpClientFactoryService httpClientFactoryService,
         IEnumerable<IResourceProviderService> resourceProviderServices) : IAzureOpenAIDirectService
     {
-        private readonly ICallContext _callContext = callContext;
         private readonly ILogger<AzureOpenAIDirectService> _logger = logger;
         private readonly IConfiguration _configuration = configuration;
+        private readonly ICallContext _callContext = callContext;
         private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
         private readonly JsonSerializerOptions _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
         private readonly Dictionary<string, IResourceProviderService> _resourceProviderServices = resourceProviderServices.ToDictionary(
@@ -108,7 +110,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
 
             if (!string.IsNullOrWhiteSpace(endpointSettings.Endpoint) && !string.IsNullOrWhiteSpace(endpointSettings.APIKey))
             {
-                var client = await _httpClientFactoryService.CreateClient(HttpClients.AzureOpenAIDirect);
+                var client = await _httpClientFactoryService.CreateClient(HttpClients.AzureOpenAIDirect, _callContext.CurrentUserIdentity);
                 if (endpointSettings.AuthenticationType == "key" && !string.IsNullOrWhiteSpace(endpointSettings.APIKey))
                 {
                     client.DefaultRequestHeaders.Add("api-key", endpointSettings.APIKey);

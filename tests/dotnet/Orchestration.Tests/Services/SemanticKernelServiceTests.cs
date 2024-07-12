@@ -15,12 +15,13 @@ namespace FoundationaLLM.Orchestration.Tests.Services
     {
         private readonly IOptions<SemanticKernelServiceSettings> options = Substitute.For<IOptions<SemanticKernelServiceSettings>>();
         private readonly ILogger<SemanticKernelService> logger = Substitute.For<ILogger<SemanticKernelService>>();
+        private readonly ICallContext callContext = Substitute.For<ICallContext>();
         private readonly IHttpClientFactoryService httpClientFactoryService = Substitute.For<IHttpClientFactoryService>();
         private readonly SemanticKernelService semanticKernelService;
 
         public SemanticKernelServiceTests()
         {
-            semanticKernelService = new SemanticKernelService(options, logger, httpClientFactoryService);
+            semanticKernelService = new SemanticKernelService(options, logger, callContext, httpClientFactoryService);
         }
 
         [Fact]
@@ -39,7 +40,7 @@ namespace FoundationaLLM.Orchestration.Tests.Services
             {
                 BaseAddress = new Uri("http://nsubstitute.io")
             };
-            httpClientFactoryService.CreateClient(Common.Constants.HttpClients.SemanticKernelAPI).Returns(httpClient);
+            httpClientFactoryService.CreateClient(Common.Constants.HttpClients.SemanticKernelAPI, callContext.CurrentUserIdentity).Returns(httpClient);
 
             // Act
             var result = await semanticKernelService.GetCompletion(request);

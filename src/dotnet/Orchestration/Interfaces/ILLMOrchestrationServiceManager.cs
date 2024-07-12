@@ -19,7 +19,7 @@ namespace FoundationaLLM.Orchestration.Core.Interfaces
         /// </summary>
         /// <param name="serviceName">The name of the <see cref="ILLMOrchestrationService"/> to be retrieved.</param>
         /// <param name="serviceProvider">The <see cref="IServiceProvider"/> provding dependency injection services for the current scope.</param>
-        /// <param name="callContext">The <see cref="ICallContext"/> call context of the request being handled.</param></param>
+        /// <param name="callContext">The <see cref="ICallContext"/> call context of the request being handled.</param>
         /// <returns></returns>
         ILLMOrchestrationService GetService(string serviceName, IServiceProvider serviceProvider, ICallContext callContext);
     }

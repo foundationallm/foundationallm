@@ -1,5 +1,6 @@
 ﻿using Azure;
 using Azure.AI.ContentSafety;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions;
 using FoundationaLLM.Gatekeeper.Core.Models.ContentSafety;
 using FoundationaLLM.Gatekeeper.Core.Services;
@@ -23,12 +24,14 @@ namespace Gatekeeper.Tests.Services
         private ContentSafetyClient _client;
         private AzureContentSafetyService _service;
 
+        private readonly ICallContext _callContext = Substitute.For<ICallContext>();
+        private readonly IHttpClientFactoryService _httpClientFactoryService = Substitute.For<IHttpClientFactoryService>();
 
         public AzureContentSafetyServiceTests()
         {
-            _testedService = new AzureContentSafetyService(null, _settings, _logger);
+            _testedService = new AzureContentSafetyService(_callContext, _httpClientFactoryService, _settings, _logger);
             _client = Substitute.ForPartsOf<ContentSafetyClient>(new Uri(_settings.Value.APIUrl), new AzureKeyCredential(_settings.Value.APIKey));
-            _service = new AzureContentSafetyService(null, _settings, _logger);
+            _service = new AzureContentSafetyService(_callContext, _httpClientFactoryService, _settings, _logger);
         }
 
         [Fact]

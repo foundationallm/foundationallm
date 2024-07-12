@@ -15,7 +15,6 @@ namespace FoundationaLLM.Common.Services
     {
         private readonly Dictionary<string, IResourceProviderService> _resourceProviderServices;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ICallContext _callContext;
         private readonly TimeSpan _defaultTimeout = TimeSpan.FromMinutes(10);
 
         /// <summary>
@@ -23,27 +22,24 @@ namespace FoundationaLLM.Common.Services
         /// </summary>
         /// <param name="resourceProviderServices">A list of of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
         /// <param name="httpClientFactory">A fully configured <see cref="IHttpClientFactory"/>.</param>
-        /// <param name="callContext">Stores a <see cref="UnifiedUserIdentity"/> object resolved from one or more services.</param>
         /// <exception cref="ArgumentNullException"></exception>
         public HttpClientFactoryService(
             IEnumerable<IResourceProviderService> resourceProviderServices,
-            IHttpClientFactory httpClientFactory,
-            ICallContext callContext)
+            IHttpClientFactory httpClientFactory)
         {
             _resourceProviderServices = resourceProviderServices.ToDictionary(rps => rps.Name);
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-            _callContext = callContext ?? throw new ArgumentNullException(nameof(callContext));
         }
 
         /// <inheritdoc/>
-        public async Task<HttpClient> CreateClient(string clientName)
+        public async Task<HttpClient> CreateClient(string clientName, UnifiedUserIdentity? userIdentity)
         {
             if (!_resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Configuration, out var configurationResourceProvider))
                 throw new Exception($"The resource provider {ResourceProviderNames.FoundationaLLM_Configuration} was not loaded.");
 
             var apiEndpoint = await configurationResourceProvider.GetResource<APIEndpoint>(
                 $"/{ConfigurationResourceTypeNames.APIEndpoints}/{clientName}",
-                _callContext.CurrentUserIdentity);
+                userIdentity);
 
             if (apiEndpoint == null)
                 throw new Exception($"The resource provider {ResourceProviderNames.FoundationaLLM_Configuration} did not load the {clientName} endpoint settings.");
@@ -57,14 +53,14 @@ namespace FoundationaLLM.Common.Services
             httpClient.BaseAddress = new Uri(apiEndpoint.Url);
 
             // Override the default URL if an exception is provided.
-            if (_callContext.CurrentUserIdentity != null)
+            if (userIdentity != null)
             {
-                var urlException = apiEndpoint.UrlExceptions.Where(x => x.UserPrincipalName == _callContext.CurrentUserIdentity.UPN).SingleOrDefault();
+                var urlException = apiEndpoint.UrlExceptions.Where(x => x.UserPrincipalName == userIdentity.UPN).SingleOrDefault();
                 if (urlException != null)
                     httpClient.BaseAddress = new Uri(urlException.Url);
 
                 // Add the user identity header.
-                var serializedIdentity = JsonSerializer.Serialize(_callContext.CurrentUserIdentity);
+                var serializedIdentity = JsonSerializer.Serialize(userIdentity);
                 httpClient.DefaultRequestHeaders.Add(Constants.HttpHeaders.UserIdentity, serializedIdentity);
             }
 

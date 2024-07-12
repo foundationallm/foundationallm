@@ -8,12 +8,10 @@ using FoundationaLLM.Common.Models.Configuration.API;
 using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
-using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Common.Validation;
 using FoundationaLLM.Management.Models.Configuration;
-using FoundationaLLM.Vectorization.Client;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Models.Configuration;
 using FoundationaLLM.Vectorization.Services.RequestProcessors;
@@ -32,7 +30,7 @@ namespace FoundationaLLM.Management.API
         /// <summary>
         /// Management API service configuration.
         /// </summary>
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -59,7 +57,7 @@ namespace FoundationaLLM.Management.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_DataSource); //resource provider settings                
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Events);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Attachment);                
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Attachment);
             });
 
             if (builder.Environment.IsDevelopment())
@@ -93,8 +91,7 @@ namespace FoundationaLLM.Management.API
 
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             builder.Services.AddScoped<ICallContext, CallContext>();
-            builder.Services.AddHttpClient();
-            builder.Services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
+            builder.AddHttpClientFactoryService();
 
             // Add event services.
             builder.Services.AddAzureEventGridEvents(
@@ -112,7 +109,7 @@ namespace FoundationaLLM.Management.API
             //----------------------------
             builder.AddAuthorizationResourceProvider();
             builder.AddConfigurationResourceProvider();
-            builder.AddVectorizationResourceProvider();            
+            builder.AddVectorizationResourceProvider();
             builder.AddAgentResourceProvider();
             builder.AddPromptResourceProvider();
             builder.AddDataSourceResourceProvider();
@@ -180,7 +177,7 @@ namespace FoundationaLLM.Management.API
                             },
                             new[] {"user_impersonation"}
                         }
-                    });                    
+                    });
 
                     options.AddSecurityDefinition("azure_auth", new OpenApiSecurityScheme
                     {

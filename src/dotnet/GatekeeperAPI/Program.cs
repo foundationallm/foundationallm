@@ -9,7 +9,6 @@ using FoundationaLLM.Common.Models.Configuration.API;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
-using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.Common.Services.Security;
 using FoundationaLLM.Common.Settings;
@@ -77,8 +76,9 @@ namespace FoundationaLLM.Gatekeeper.API
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Instance));
 
             // Register the downstream services and HTTP clients.
+            builder.AddHttpClientFactoryService();
             RegisterDownstreamServices(builder);
-
+            
             builder.Services.AddTransient<IAPIKeyValidationService, APIKeyValidationService>();
 
             builder.Services.AddOptions<LakeraGuardServiceSettings>()
@@ -96,7 +96,6 @@ namespace FoundationaLLM.Gatekeeper.API
 
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             builder.Services.AddScoped<ICallContext, CallContext>();
-            builder.Services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
             builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
 
             builder.Services.AddOptions<GatekeeperServiceSettings>()
@@ -235,7 +234,7 @@ namespace FoundationaLLM.Gatekeeper.API
 
             builder.Services.AddSingleton<IDownstreamAPISettings>(downstreamAPISettings);
             builder.Services.AddScoped<IDownstreamAPIService, DownstreamAPIService>((serviceProvider)
-                => new DownstreamAPIService(HttpClients.OrchestrationAPI, serviceProvider.GetService<IHttpClientFactoryService>()!));
+                => new DownstreamAPIService(HttpClients.OrchestrationAPI, serviceProvider.GetService<ICallContext>()!, serviceProvider.GetService<IHttpClientFactoryService>()!));
         }
     }
 }

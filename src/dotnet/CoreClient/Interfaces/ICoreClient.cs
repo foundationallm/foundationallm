@@ -1,8 +1,8 @@
-﻿using System.Net.Http.Headers;
-using FoundationaLLM.Common.Models.Chat;
+﻿using FoundationaLLM.Common.Models.Chat;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using System.Net.Http.Headers;
 
 namespace FoundationaLLM.Client.Core.Interfaces
 {
@@ -38,7 +38,7 @@ namespace FoundationaLLM.Client.Core.Interfaces
         /// You must ensure that the orchestration request contains a SessionID, AgentName, and
         /// UserPrompt.
         /// </summary>
-        /// <param name="completionRequestest">The orchestration request that contains the
+        /// <param name="completionRequest">The orchestration request that contains the
         /// SessionID, AgentName, and UserPrompt at a minimum.</param>
         /// <returns>A completion from the designated FoundationaLLM agent.</returns>
         Task<Completion> GetCompletionWithSessionAsync(CompletionRequest completionRequest);
@@ -84,9 +84,6 @@ namespace FoundationaLLM.Client.Core.Interfaces
         /// <param name="sessionId">The ID of an existing session. If null or empty, a new session
         /// is created first.</param>
         /// <param name="sessionName">Renames the new chat session if not null or empty.</param>
-        /// <param name="userPrompt">The user prompt to send to the agent.</param>
-        /// <param name="agentName">The name of the FoundationaLLM agent that will handle the
-        /// completion request.</param>
         /// <returns>A completion from the designated FoundationaLLM agent.</returns>
         /// <returns>A completion from the designated FoundationaLLM agent.</returns>
         Task<Completion> AttachFileAndAskQuestionAsync(Stream fileStream, string fileName, string contentType,
@@ -96,7 +93,6 @@ namespace FoundationaLLM.Client.Core.Interfaces
         /// Returns the chat messages related to an existing session.
         /// </summary>
         /// <param name="sessionId"></param>
-        /// <param name="token">The authentication token to send with the request.</param>
         /// <returns></returns>
         Task<IEnumerable<Message>> GetChatSessionMessagesAsync(string sessionId);
 

@@ -1,6 +1,5 @@
 ﻿using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
-using FoundationaLLM.Common.Models.Configuration.API;
 using FoundationaLLM.Common.Services;
 using NSubstitute;
 using System.Text.Json;
@@ -11,13 +10,11 @@ namespace FoundationaLLM.Common.Tests.Services
     {
         private readonly IEnumerable<IResourceProviderService> _resourceProviderServices;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ICallContext _callContext;
 
         public HttpClientFactoryServiceTests()
         {
             _resourceProviderServices = Substitute.For<IEnumerable<IResourceProviderService>>();
             _httpClientFactory = Substitute.For<IHttpClientFactory>();
-            _callContext = Substitute.For<ICallContext>();
         }
 
         [Fact]
@@ -33,15 +30,13 @@ namespace FoundationaLLM.Common.Tests.Services
                 Name = "TestName"
             };
 
-            _callContext.CurrentUserIdentity.Returns(userContext);
-
             var httpClient = new HttpClient();
             _httpClientFactory.CreateClient(clientName).Returns(httpClient);
 
-            var service = new HttpClientFactoryService(_resourceProviderServices, _httpClientFactory, _callContext);
+            var service = new HttpClientFactoryService(_resourceProviderServices, _httpClientFactory);
 
             // Act
-            var result = await service.CreateClient(clientName);
+            var result = await service.CreateClient(clientName, userContext);
 
             // Assert
             Assert.NotNull(result);

@@ -16,6 +16,9 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.DataSource
         [JsonPropertyName("site_urls")]
         public List<string> SiteUrls { get; set; } = [];
 
+        /// <summary>
+        /// Initializes a web site data source.
+        /// </summary>
         public WebSiteDataSource() =>
             Type = DataSourceTypes.WebSite;
     }

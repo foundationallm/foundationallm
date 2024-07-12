@@ -2,6 +2,7 @@
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Vectorization.Extensions;
 using FoundationaLLM.Vectorization.Handlers;
@@ -40,7 +41,7 @@ namespace FoundationaLLM.Vectorization.Services.VectorizationServices
         private readonly ILogger<AsynchronousVectorizationService> _logger = loggerFactory.CreateLogger<AsynchronousVectorizationService>();
 
         ///<inheritdoc/>
-        public async Task<VectorizationResult> ProcessRequest(VectorizationRequest vectorizationRequest)
+        public async Task<VectorizationResult> ProcessRequest(VectorizationRequest vectorizationRequest, UnifiedUserIdentity? userIdentity)
         {
             var vectorizationResourceProvider = GetVectorizationResourceProvider();
             vectorizationRequest.ProcessingState = VectorizationProcessingState.InProgress;

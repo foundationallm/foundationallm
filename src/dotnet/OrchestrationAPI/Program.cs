@@ -109,7 +109,6 @@ namespace FoundationaLLM.Orchestration.API
             builder.AddOrchestrationService();
 
             builder.Services.AddScoped<ICallContext, CallContext>();
-            builder.Services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
             builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
 
             builder.Services.AddSingleton<ICacheService, MemoryCacheService>();
@@ -134,6 +133,7 @@ namespace FoundationaLLM.Orchestration.API
             builder.AddAttachmentResourceProvider();
 
             // Register the downstream services and HTTP clients.
+            builder.AddHttpClientFactoryService();
             RegisterDownstreamServices(builder);
 
             builder.Services

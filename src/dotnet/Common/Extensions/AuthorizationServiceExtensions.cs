@@ -35,7 +35,8 @@ namespace FoundationaLLM.Common.Extensions
                     Scopes = resources.Select(x => x.ObjectId!).ToList(),
                     PrincipalId = userIdentity.UserId!,
                     SecurityGroupIds = userIdentity.GroupIds
-                });
+                },
+                userIdentity);
 
             var results = new List<ResourceProviderGetResult<T>>();
 

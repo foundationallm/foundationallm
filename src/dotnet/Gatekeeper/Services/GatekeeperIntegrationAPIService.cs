@@ -12,17 +12,23 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
     /// </summary>
     public class GatekeeperIntegrationAPIService : IGatekeeperIntegrationAPIService
     {
+        private readonly ICallContext _callContext;
         private readonly IHttpClientFactoryService _httpClientFactoryService;
         readonly JsonSerializerOptions _jsonSerializerOptions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GatekeeperIntegrationAPIService"/> class.
         /// </summary>
+        /// <param name="callContext">Stores context information extracted from the current HTTP request. This information
+        /// is primarily used to inject HTTP headers into downstream HTTP calls.</param>
         /// <param name="httpClientFactoryService">The <see cref="IHttpClientFactoryService"/>
         /// used to retrieve an <see cref="HttpClient"/> instance that contains required
         /// headers for Gatekeeper Integration API requests.</param>
-        public GatekeeperIntegrationAPIService(IHttpClientFactoryService httpClientFactoryService)
+        public GatekeeperIntegrationAPIService(
+            ICallContext callContext,
+            IHttpClientFactoryService httpClientFactoryService)
         {
+            _callContext = callContext;
             _httpClientFactoryService = httpClientFactoryService;
             _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
         }
@@ -30,7 +36,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <inheritdoc/>
         public async Task<List<PIIResult>> AnalyzeText(string text)
         {
-            var client = await _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperIntegrationAPI);
+            var client = await _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperIntegrationAPI, _callContext.CurrentUserIdentity);
 
             var content = JsonSerializer.Serialize(new AnalyzeRequest() { Content = text, Anonymize = false, Language = "en" });
 
@@ -50,7 +56,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         /// <inheritdoc/>
         public async Task<string> AnonymizeText(string text)
         {
-            var client = await _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperIntegrationAPI);
+            var client = await _httpClientFactoryService.CreateClient(Common.Constants.HttpClients.GatekeeperIntegrationAPI, _callContext.CurrentUserIdentity);
 
             var content = JsonSerializer.Serialize(new AnalyzeRequest() { Content = text, Anonymize = true, Language = "en" });
 

@@ -1,4 +1,6 @@
-﻿namespace FoundationaLLM.Common.Interfaces
+﻿using FoundationaLLM.Common.Models.Authentication;
+
+namespace FoundationaLLM.Common.Interfaces
 {
     /// <summary>
     /// Service that provides a common interface for creating <see cref="HttpClient"/>
@@ -16,8 +18,9 @@
         /// - X-USER-IDENTITY: The user identity information for the current user.
         /// </summary>
         /// <param name="clientName">The named <see cref="HttpClient"/> client configuration.</param>
+        /// <param name="userIdentity">Optional user identity.</param>
         /// <returns></returns>
-        Task<HttpClient> CreateClient(string clientName);
+        Task<HttpClient> CreateClient(string clientName, UnifiedUserIdentity? userIdentity);
 
         /// <summary>
         /// Creates a new unregistered <see cref="HttpClient"/> instance with a timeout.

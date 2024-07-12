@@ -5,14 +5,18 @@ using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Common.Services.Tokenizers;
 using FoundationaLLM.Common.Validation;
 using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
+using FoundationaLLM.SemanticKernel.Core.Services.Indexing;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Models.Configuration;
+using FoundationaLLM.Vectorization.Serializers;
 using FoundationaLLM.Vectorization.Services.ContentSources;
+using FoundationaLLM.Vectorization.Services.RequestProcessors;
 using FoundationaLLM.Vectorization.Services.RequestSources;
 using FoundationaLLM.Vectorization.Services.Text;
 using FoundationaLLM.Vectorization.Services.VectorizationServices;
@@ -23,9 +27,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text.Json;
-using FoundationaLLM.Vectorization.Serializers;
-using FoundationaLLM.SemanticKernel.Core.Services.Indexing;
-using FoundationaLLM.Vectorization.Services.RequestProcessors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -151,7 +152,9 @@ builder.Services.ActivateKeyedSingleton<ITokenizerService>(TokenizerServiceNames
 builder.Services.AddKeyedScoped<ITextEmbeddingService, GatewayTextEmbeddingService>(
     DependencyInjectionKeys.FoundationaLLM_Vectorization_GatewayTextEmbeddingService);
 builder.AddGatewayService();
-builder.Services.AddHttpClient();
+
+builder.Services.AddScoped<ICallContext, CallContext>();
+builder.AddHttpClientFactoryService();
 
 // Indexing
 builder.Services.AddKeyedSingleton<IIndexingService, AzureAISearchIndexingService>(
@@ -161,10 +164,7 @@ builder.Services.AddKeyedSingleton<IIndexingService, AzureCosmosDBNoSQLIndexingS
 builder.Services.AddKeyedSingleton<IIndexingService, PostgresIndexingService>(
     DependencyInjectionKeys.FoundationaLLM_Vectorization_PostgresIndexingService);
 
-
-
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
-
 builder.Services.AddTransient<IAPIKeyValidationService, APIKeyValidationService>();
 builder.Services.AddControllers();
 

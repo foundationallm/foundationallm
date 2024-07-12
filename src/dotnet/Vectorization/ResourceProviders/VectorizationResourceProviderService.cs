@@ -342,7 +342,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                 },
                 VectorizationResourceTypeNames.VectorizationRequests => resourcePath.ResourceTypeInstances.Last().Action switch
                 {
-                    VectorizationResourceProviderActions.Process => await ProcessVectorizationRequest(resourcePath),
+                    VectorizationResourceProviderActions.Process => await ProcessVectorizationRequest(resourcePath, userIdentity),
                     _ => throw new ResourceProviderException($"The action {resourcePath.ResourceTypeInstances.Last().Action} is not supported by the {_name} resource provider.",
                                                StatusCodes.Status400BadRequest)
                 },
@@ -401,9 +401,10 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         /// Processes a vectorization request.
         /// </summary>
         /// <param name="resourcePath">The resource path to the vectorization request that is to be processed.</param>
+        /// <param name="userIdentity">The user identity.</param>
         /// <returns>Vectorization result <see cref="VectorizationResult"/></returns>
         /// <exception cref="ResourceProviderException"></exception>
-        private async Task<VectorizationResult> ProcessVectorizationRequest(ResourcePath resourcePath)
+        private async Task<VectorizationResult> ProcessVectorizationRequest(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
         {
             var vectorizationRequestId = resourcePath.ResourceTypeInstances[0].ResourceId!;            
             var result = (List<VectorizationRequest>)(await GetResourcesAsync(resourcePath, GetUnifiedUserIdentity())); //should only return one or none
@@ -413,7 +414,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             var request = result.First();
 
             var requestProcessor = serviceProvider.GetService<IVectorizationRequestProcessor>();           
-            var response = await requestProcessor!.ProcessRequest(request);
+            var response = await requestProcessor!.ProcessRequest(request, userIdentity);
             return response;            
         }
 
