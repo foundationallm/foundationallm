@@ -32,13 +32,22 @@ namespace FoundationaLLM.Authorization.Services
         /// <inheritdoc/>
         public async Task<ActionAuthorizationResult> ProcessAuthorizationRequest(
             string instanceId,
-            ActionAuthorizationRequest authorizationRequest,
+            string action,
+            List<string> resourcePaths,
             UnifiedUserIdentity userIdentity)
         {
-            var defaultResults = authorizationRequest.ResourcePaths.Distinct().ToDictionary(rp => rp, auth => false);
+            var defaultResults = resourcePaths.Distinct().ToDictionary(rp => rp, auth => false);
 
             try
             {
+                var authorizationRequest = new ActionAuthorizationRequest
+                {
+                    Action = action,
+                    ResourcePaths = resourcePaths,
+                    PrincipalId = userIdentity.UserId,
+                    SecurityGroupIds = userIdentity.GroupIds
+                };
+
                 var httpClient = await _httpClientFactoryService.CreateClient(HttpClients.AuthorizationAPI, userIdentity);
                 var response = await httpClient.PostAsync(
                     $"/instances/{instanceId}/authorize",

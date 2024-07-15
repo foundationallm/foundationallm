@@ -12,10 +12,11 @@ namespace FoundationaLLM.Authorization.Services
         /// <inheritdoc/>
         public async Task<ActionAuthorizationResult> ProcessAuthorizationRequest(
             string instanceId,
-            ActionAuthorizationRequest authorizationRequest,
+            string action,
+            List<string> resourcePaths,
             UnifiedUserIdentity userIdentity)
         {
-            var defaultResults = authorizationRequest.ResourcePaths.Distinct().ToDictionary(rp => rp, auth => true);
+            var defaultResults = resourcePaths.Distinct().ToDictionary(rp => rp, auth => true);
 
             await Task.CompletedTask;
             return new ActionAuthorizationResult { AuthorizationResults = defaultResults };

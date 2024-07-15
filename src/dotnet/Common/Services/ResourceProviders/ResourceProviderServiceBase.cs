@@ -399,13 +399,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 var rp = resourcePath.GetObjectId(_instanceSettings.Id, _name);
                 var result = await _authorizationService.ProcessAuthorizationRequest(
                     _instanceSettings.Id,
-                    new ActionAuthorizationRequest
-                    {
-                        Action = $"{_name}/{resourcePath.MainResourceType}/{actionType}",
-                        ResourcePaths = [rp],
-                        PrincipalId = userIdentity.UserId,
-                        SecurityGroupIds = userIdentity.GroupIds
-                    },
+                    $"{_name}/{resourcePath.MainResourceType}/{actionType}",
+                    [rp],
                     userIdentity);
 
                 if (!result.AuthorizationResults[rp])
