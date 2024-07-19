@@ -1,0 +1,58 @@
+{
+	"ResourceReferences": [
+		{
+			"Name": "AuthorizationAPI",
+			"Filename": "/FoundationaLLM.Configuration/AuthorizationAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "AzureContentSafety",
+			"Filename": "/FoundationaLLM.Configuration/AzureContentSafety.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "GatekeeperAPI",
+			"Filename": "/FoundationaLLM.Configuration/GatekeeperAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "GatekeeperIntegrationAPI",
+			"Filename": "/FoundationaLLM.Configuration/GatekeeperIntegrationAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "GatewayAPI",
+			"Filename": "/FoundationaLLM.Configuration/GatewayAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "LangChainAPI",
+			"Filename": "/FoundationaLLM.Configuration/LangChainAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "OrchestrationAPI",
+			"Filename": "/FoundationaLLM.Configuration/OrchestrationAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "SemanticKernelAPI",
+			"Filename": "/FoundationaLLM.Configuration/SemanticKernelAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "VectorizationAPI",
+			"Filename": "/FoundationaLLM.Configuration/VectorizationAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		}
+	]
+}

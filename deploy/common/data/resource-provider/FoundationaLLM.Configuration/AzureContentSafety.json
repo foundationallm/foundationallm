@@ -1,0 +1,22 @@
+{
+  "type": "api-endpoint",
+  "name": "AzureContentSafety",
+  "object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.Configuration/apiEndpoints/AzureContentSafety",
+  "display_name": null,
+  "description": null,
+  "cost_center": null,
+  "category": 2,
+  "authentication_type": "APIKey",
+  "url": "{{url}}",
+  "url_exceptions": [],
+  "api_key": null,
+  "api_key_configuration_name": "FoundationaLLM:AzureContentSafety:APIKey",
+  "api_key_header_name": "{{keyHeaderName}}",
+  "timeout_seconds": 60,
+  "retry_strategy_name": "ExponentialBackoff",
+  "created_on": "0001-01-01T00:00:00+00:00",
+  "updated_on": "0001-01-01T00:00:00+00:00",
+  "created_by": null,
+  "updated_by": "SYSTEM",
+  "deleted": false
+}
