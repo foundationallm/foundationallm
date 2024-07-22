@@ -19,7 +19,7 @@ namespace FoundationaLLM.Vectorization.Worker.Controllers
         public IActionResult Get() => new OkObjectResult(new ServiceStatusInfo
         {
             Name = ServiceNames.VectorizationWorker,
-            Instance = ValidatedEnvironment.MachineName,
+            InstanceName = ValidatedEnvironment.MachineName,
             Version = Environment.GetEnvironmentVariable(EnvironmentVariables.FoundationaLLM_Version),
             Status = ServiceStatuses.Ready
         });
