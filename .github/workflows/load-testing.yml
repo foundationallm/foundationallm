@@ -55,6 +55,7 @@ jobs:
       test_matrix: ${{ steps.set-test-matrix.outputs.result }}
       docker_tag: ${{ steps.docker-tag.outputs.docker_tag }}
       unique_id: ${{ steps.set-unique-id.outputs.digest }}
+      qs_resources: ${{ steps.qs-resources.outputs.result }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -113,6 +114,17 @@ jobs:
           echo "DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
           echo "docker_tag: Latest Tag is : $DOCKER_TAG"
           echo "docker_tag=$DOCKER_TAG" >> $GITHUB_OUTPUT
+
+      - name: Resource Parameterization
+        id: qs-resources
+        uses: actions/github-script@v7
+        with:
+          result-encoding: string
+          script: |
+            const fs = require('fs')
+            const jsonString = fs.readFileSync('./tests/config/load-testing-parameters.json')
+            var data = JSON.parse(jsonString)
+            return JSON.stringify(data.resources)
   
   helm_build:
     name: Package Helm Charts
@@ -203,20 +215,6 @@ jobs:
             --tenant-id "$($info.tenantId)"
         shell: pwsh
 
-      - name: Provision App Registrations
-        id: provision-app-registrations
-        run: |
-          Write-Host "Provision App Registrations"
-          Push-Location ./tests/scripts
-          ./Create-FllmEntraIdApps.ps1 `
-            -authAppName FoundationaLLM-Authorization-E2E-${{ needs.generate_matrix.outputs.unique_id }} `
-            -coreAppName FoundationaLLM-Core-E2E-${{ needs.generate_matrix.outputs.unique_id }} `
-            -coreClientAppName FoundationaLLM-Core-E2E-Client-${{ needs.generate_matrix.outputs.unique_id }} `
-            -mgmtAppName FoundationaLLM-Management-E2E-${{ needs.generate_matrix.outputs.unique_id }} `
-            -mgmtClientAppName FoundationaLLM-Management-E2E-Client-${{ needs.generate_matrix.outputs.unique_id }}
-          Pop-Location
-        shell: pwsh
-
       - name: Provision Admin Group
         id: provision-admin-group
         run: |
@@ -275,7 +273,7 @@ jobs:
           azd env set PIPELINE_DEPLOY "$true"
           azd env set FLLM_E2E_SP_OBJECT_ID $spObjectId
 
-          if (${{ inputs.deployOpenAi }}) {
+          if ('${{ inputs.deployOpenAi }}' -eq 'false') {
             azd env set OPENAI_NAME ${{ inputs.openAiName }}
             azd env set OPENAI_RESOURCE_GROUP ${{ inputs.openAiResourceGroup }}
             azd env set OPENAI_SUBSCRIPTION_ID $($info.subscriptionId)
@@ -306,11 +304,11 @@ jobs:
             -tenantId $($info.tenantId) `
             -principalType ServicePrincipal `
             -instanceId 6fa496ce-d5c0-4e02-9223-06a98c9c0176 `
-            -fllmApiName FoundationaLLM-Core-E2E-${{ needs.generate_matrix.outputs.unique_id }} `
-            -fllmClientName FoundationaLLM-Core-E2E-Client-${{ needs.generate_matrix.outputs.unique_id }} `
-            -fllmMgmtApiName FoundationaLLM-Management-E2E-${{ needs.generate_matrix.outputs.unique_id }} `
-            -fllmMgmtClientName FoundationaLLM-Management-E2E-Client-${{ needs.generate_matrix.outputs.unique_id }} `
-            -fllmAuthApiName FoundationaLLM-Authorization-E2E-${{ needs.generate_matrix.outputs.unique_id }} `
+            -fllmApiName FoundationaLLM-Core-API `
+            -fllmClientName FoundationaLLM-Core-Portal `
+            -fllmMgmtApiName FoundationaLLM-Management-API `
+            -fllmMgmtClientName FoundationaLLM-Management-Portal `
+            -fllmAuthApiName FoundationaLLM-Authorization-API `
             -fllmAdminGroupName FLLM-E2E-Admins-${{ needs.generate_matrix.outputs.unique_id }}
           Pop-Location
         shell: pwsh
@@ -323,6 +321,35 @@ jobs:
           $env:AZURE_SUBSCRIPTION_ID=$($info.subscriptionId)
 
           Push-Location ./deploy/quick-start
+          
+          if (${{ fromJson(needs.generate_matrix.outputs.qs_resources).core_api_replica_count }}) {
+            azd env set SERVICE_COREAPI_REPLICAS ${{ fromJson(needs.generate_matrix.outputs.qs_resources).core_api_replica_count }}
+          }
+
+          if (${{ fromJson(needs.generate_matrix.outputs.qs_resources).orchestration_api_replica_count }}) {
+            azd env set SERVICE_ORCHESTRATIONAPI_REPLICAS ${{ fromJson(needs.generate_matrix.outputs.qs_resources).orchestration_api_replica_count }}
+          }
+
+          if (${{ fromJson(needs.generate_matrix.outputs.qs_resources).langchain_api_replica_count }}) {
+            azd env set SERVICE_LANGCHAINAPI_REPLICAS ${{ fromJson(needs.generate_matrix.outputs.qs_resources).langchain_api_replica_count }}
+          }
+
+          if (${{ fromJson(needs.generate_matrix.outputs.qs_resources).semantickernel_api_replica_count }}) {
+            azd env set SERVICE_SEMANTICKERNELAPI_REPLICAS ${{ fromJson(needs.generate_matrix.outputs.qs_resources).semantickernel_api_replica_count }}
+          }
+          
+          azd env set SERVICE_COREAPI_CPU ${{ fromJson(needs.generate_matrix.outputs.qs_resources).core_api_cpu }}
+          azd env set SERVICE_COREAPI_MEMORY ${{ fromJson(needs.generate_matrix.outputs.qs_resources).core_api_mem }}
+
+          azd env set SERVICE_ORCHESTRATIONAPI_CPU ${{ fromJson(needs.generate_matrix.outputs.qs_resources).orchestration_api_cpu }}
+          azd env set SERVICE_ORCHESTRATIONAPI_MEMORY ${{ fromJson(needs.generate_matrix.outputs.qs_resources).orchestration_api_mem }}
+
+          azd env set SERVICE_LANGCHAINAPI_CPU ${{ fromJson(needs.generate_matrix.outputs.qs_resources).langchain_api_cpu }}
+          azd env set SERVICE_LANGCHAINAPI_MEMORY ${{ fromJson(needs.generate_matrix.outputs.qs_resources).langchain_api_mem }}
+
+          azd env set SERVICE_SEMANTICKERNELAPI_CPU ${{ fromJson(needs.generate_matrix.outputs.qs_resources).semantickernel_api_cpu }}
+          azd env set SERVICE_SEMANTICKERNELAPI_MEMORY ${{ fromJson(needs.generate_matrix.outputs.qs_resources).semantickernel_api_mem }}
+          
           azd provision --no-prompt
           Pop-Location
         shell: pwsh
@@ -345,8 +372,8 @@ jobs:
           Write-Host "Update App Registration OAuth Callbacks"
           Push-Location ./deploy/quick-start
           pwsh -File ../../tests/scripts/Update-OAuthCallbackUris.ps1 `
-            -fllmChatUiName FoundationaLLM-Core-E2E-Client-${{ needs.generate_matrix.outputs.unique_id }} `
-            -fllmMgmtUiName FoundationaLLM-Management-E2E-Client-${{ needs.generate_matrix.outputs.unique_id }}
+            -fllmChatUiName FoundationaLLM-Core-Portal `
+            -fllmMgmtUiName FoundationaLLM-Management-Portal
           Pop-Location
         shell: pwsh
 
@@ -605,7 +632,7 @@ jobs:
           echo "AZURE_APP_CONFIG_NAME=$($configurationParameters['AZURE_APP_CONFIG_NAME'])" >> $env:GITHUB_ENV
           echo "AZURE_ENV_NAME=$($configurationParameters['AZURE_ENV_NAME'])" >> $env:GITHUB_ENV
           
-          $token = (az account get-access-token --scope "api://FoundationaLLM-Core-E2E-${{ needs.generate_matrix.outputs.unique_id }}/.default" --query accessToken | ConvertFrom-Json)
+          $token = (az account get-access-token --scope "api://FoundationaLLM-Core/.default" --query accessToken | ConvertFrom-Json)
           $kvUrl = (az keyvault secret set --vault-name "fllme2emkeyvault7f393d64" --name "bearer-token-${{ needs.generate_matrix.outputs.unique_id }}" --value $token --query '{id: id}' | ConvertFrom-Json).id
 
           # Replace Placeholders
@@ -745,20 +772,15 @@ jobs:
             -instanceId 6fa496ce-d5c0-4e02-9223-06a98c9c0176
 
           azd env refresh --no-prompt
+          
+          Write-Host "Removing App Registration OAuth Callbacks"
+          pwsh -File ../../tests/scripts/Remove-OAuthCallbackUris.ps1 `
+            -fllmChatUiName FoundationaLLM-Core-Portal `
+            -fllmMgmtUiName FoundationaLLM-Management-Portal
+
           azd down --force --purge --no-prompt
           Pop-Location
 
           Write-Host "Remove Admin Group"
           az ad group delete --group FLLM-E2E-Admins-${{ needs.generate_matrix.outputs.unique_id }} --output json
-
-          Write-Host "Tear down App Registrations"
-          Push-Location ./tests/scripts
-          ./Remove-EntraIdApps.ps1 `
-            -authAppName FoundationaLLM-Authorization-E2E-${{ needs.generate_matrix.outputs.unique_id }} `
-            -coreAppName FoundationaLLM-Core-E2E-${{ needs.generate_matrix.outputs.unique_id }} `
-            -coreClientAppName FoundationaLLM-Core-E2E-Client-${{ needs.generate_matrix.outputs.unique_id }} `
-            -mgmtAppName FoundationaLLM-Management-E2E-${{ needs.generate_matrix.outputs.unique_id }} `
-            -mgmtClientAppName FoundationaLLM-Management-E2E-Client-${{ needs.generate_matrix.outputs.unique_id }} `
-            -interactiveMode $false
-          Pop-Location
         shell: pwsh
