@@ -1,27 +1,40 @@
-﻿using Asp.Versioning;
-using FoundationaLLM.Common.Authentication;
-using FoundationaLLM.Vectorization.Models;
+﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Configuration;
+using FoundationaLLM.Common.Models.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoundationaLLM.Vectorization.Worker.Controllers
 {
     /// <summary>
-    /// Methods for managing vectorization requests.
+    /// Provides methods for checking the status of the service.
     /// </summary>
     [ApiController]
-    [APIKeyAuthentication]
     [Route("[controller]")]
     public class StatusController : ControllerBase
     {
         /// <summary>
-        /// Gets the status of the vectorization worker.
+        /// Returns the status of the Vectorization Worker service.
         /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<bool> GetWorkerStatus()
+        [HttpGet(Name = "GetServiceStatus")]
+        public IActionResult Get() => new OkObjectResult(new ServiceStatusInfo
         {
-            await Task.CompletedTask;
-            return true;
+            Name = ServiceNames.VectorizationWorker,
+            Instance = ValidatedEnvironment.MachineName,
+            Version = Environment.GetEnvironmentVariable(EnvironmentVariables.FoundationaLLM_Version),
+            Status = ServiceStatuses.Ready
+        });
+
+        private static readonly string[] MethodNames = ["GET", "OPTIONS"];
+
+        /// <summary>
+        /// Returns the allowed HTTP methods for the Vectorization Worker service.
+        /// </summary>
+        [HttpOptions]
+        public IActionResult Options()
+        {
+            HttpContext.Response.Headers.Append("Allow", MethodNames);
+
+            return Ok();
         }
     }
 }

@@ -66,7 +66,7 @@ public class OrchestrationService : IOrchestrationService
         return new ServiceStatusInfo
         {
             Name = ServiceNames.OrchestrationAPI,
-            Instance = ValidatedEnvironment.MachineName,
+            InstanceName = ValidatedEnvironment.MachineName,
             Version = Environment.GetEnvironmentVariable(EnvironmentVariables.FoundationaLLM_Version),
             Status = subordinateStatuses.All(s => s.Status!.Equals("ready", StringComparison.CurrentCultureIgnoreCase))
                 ? "ready"

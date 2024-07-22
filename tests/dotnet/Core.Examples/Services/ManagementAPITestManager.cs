@@ -147,6 +147,11 @@ namespace FoundationaLLM.Core.Examples.Services
             throw new FoundationaLLMException($"Failed to process vectorization request. Status code: {response.StatusCode}. Reason: {response.ReasonPhrase}");
         }
 
+        public async Task DeleteAppConfiguration(string key)
+        {
+            await managementClient.Configuration.DeleteAppConfigurationAsync(key);
+        }
+        
         public async Task DeleteVectorizationRequest(VectorizationRequest vectorizationRequest)
         {
             await DeleteResourceAsync(instanceSettings.Value.Id, ResourceProviderNames.FoundationaLLM_Vectorization, $"vectorizationRequests/{vectorizationRequest.ObjectId}");

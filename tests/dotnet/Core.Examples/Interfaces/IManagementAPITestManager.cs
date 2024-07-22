@@ -41,6 +41,13 @@ public interface IManagementAPITestManager
     Task DeletePrompt(string promptName);
 
     /// <summary>
+    /// Deletes an Azure App Configuration key and associated Azure Key Vault secret.
+    /// </summary>
+    /// <param name="key">The name of the App Configuration key to delete.</param>
+    /// <returns></returns>
+    Task DeleteAppConfiguration(string key);
+
+    /// <summary>
     /// Deletes a resource then purges it, so we can reuse the name.
     /// </summary>
     /// <param name="instanceId">The FoundationaLLM instance identifier.</param>

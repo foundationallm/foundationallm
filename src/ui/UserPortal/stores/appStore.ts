@@ -195,11 +195,11 @@ export const useAppStore = defineStore('app', {
 			// Update the session name based on the message sent.
 			if (this.currentMessages.length === 2) {
 				const sessionFullText = this.currentMessages.map((message) => message.text).join('\n');
-				const { text: newSessionName } = await api.summarizeSessionName(
+				const { text: newSessionName } = await api.generateSessionName(
 					this.currentSession!.id,
 					sessionFullText,
-				);
-				await api.renameSession(this.currentSession!.id, newSessionName);
+				);				
+				// the generate session name already renames the session in the backend
 				this.currentSession!.name = newSessionName;
 			}
 		},

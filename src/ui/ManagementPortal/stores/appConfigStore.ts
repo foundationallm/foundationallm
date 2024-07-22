@@ -20,6 +20,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 		instanceId: null,
 
 		// Style: These settings impact the visual style of the chat interface.
+		favIconUrl: null,
 		logoUrl: null,
 		logoText: null,
 		primaryBg: null,
@@ -69,6 +70,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				vectorizationApiUrl,
 				vectorizationWorkerApiUrl,
 				instanceId,
+				favIconUrl,
 				logoUrl,
 				logoText,
 				primaryBg,
@@ -101,8 +103,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				api.getConfigValue('FoundationaLLM:APIs:VectorizationAPI:APIUrl'),
 				api.getConfigValue('FoundationaLLM:APIs:VectorizationWorker:APIUrl'),
 
-				api.getConfigValue('FoundationaLLM:Instance:Id'),
-
+				getConfigValueSafe('FoundationaLLM:Branding:FavIconUrl'),
 				getConfigValueSafe('FoundationaLLM:Branding:LogoUrl', 'foundationallm-logo-white.svg'),
 				getConfigValueSafe('FoundationaLLM:Branding:LogoText'),
 				getConfigValueSafe('FoundationaLLM:Branding:BackgroundColor', '#fff'),
@@ -117,7 +118,8 @@ export const useAppConfigStore = defineStore('appConfig', {
 				getConfigValueSafe('FoundationaLLM:Branding:SecondaryButtonBackgroundColor', '#70829a'),
 				getConfigValueSafe('FoundationaLLM:Branding:SecondaryButtonTextColor', '#fff'),
 				getConfigValueSafe('FoundationaLLM:Branding:FooterText'),
-
+				api.getConfigValueSafe('FoundationaLLM:Instance:Id','00000000-0000-0000-0000-000000000000'),
+				
 				api.getConfigValue('FoundationaLLM:Management:Entra:ClientId'),
 				api.getConfigValue('FoundationaLLM:Management:Entra:Instance'),
 				api.getConfigValue('FoundationaLLM:Management:Entra:TenantId'),
@@ -139,6 +141,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 
 			this.instanceId = instanceId;
 
+			this.favIconUrl = favIconUrl;
 			this.logoUrl = logoUrl;
 			this.logoText = logoText;
 			this.primaryBg = primaryBg;

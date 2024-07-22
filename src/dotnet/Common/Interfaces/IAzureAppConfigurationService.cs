@@ -48,5 +48,19 @@
         /// </summary>
         /// <returns></returns>
         Task<Dictionary<string, bool>> CheckAppConfigurationSettingsExistAsync();
+
+        /// <summary>
+        /// Check if an individual Azure App Configuration key exists.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        Task<bool> CheckAppConfigurationSettingExistsAsync(string key);
+
+        /// <summary>
+        /// Deletes an Azure App Configuration setting and its associated Azure Key Vault secret.
+        /// </summary>
+        /// <param name="key">The App Configuration setting key.</param>
+        /// <returns></returns>
+        Task DeleteAppConfigurationSettingAsync(string key);
     }
 }

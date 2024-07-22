@@ -5,6 +5,7 @@ using Azure.Search.Documents;
 using Azure.Search.Documents.Indexes;
 using Azure.Search.Documents.Models;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Core.Examples.Interfaces;
 using FoundationaLLM.Core.Examples.Models;
@@ -221,6 +222,16 @@ namespace FoundationaLLM.Core.Examples.Services
             }
 
             await managementAPITestManager.DeleteIndexingProfile(name);
+        }
+
+        async public Task CreateAppConfiguration(AppConfigurationKeyValue appConfigurationKeyValue)
+        {
+            await managementAPITestManager.CreateAppConfiguration(appConfigurationKeyValue);
+        }
+
+        async public Task DeleteAppConfiguration(string key)
+        {
+            await managementAPITestManager.DeleteAppConfiguration(key);
         }
     }
 }

@@ -16,7 +16,6 @@ import OverlayPanel from 'primevue/overlaypanel';
 import Badge from 'primevue/badge';
 import BadgeDirective from 'primevue/badgedirective';
 
-
 import { defineNuxtPlugin } from '#app';
 
 export default defineNuxtPlugin((nuxtApp) => {

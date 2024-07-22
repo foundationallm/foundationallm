@@ -28,7 +28,7 @@ namespace FoundationaLLM.Client.Management.Interfaces
         /// Retrieves all external orchestration services.
         /// </summary>
         /// <returns></returns>
-        Task<List<ResourceProviderGetResult<ExternalOrchestrationService>>> GetExternalOrchestrationServicesAsync();
+        Task<List<ResourceProviderGetResult<APIEndpoint>>> GetExternalOrchestrationServicesAsync();
 
         /// <summary>
         /// Returns a specific external orchestration service by name.
@@ -36,7 +36,7 @@ namespace FoundationaLLM.Client.Management.Interfaces
         /// <param name="externalOrchestrationServiceName">The name of the external orchestration
         /// service to retrieve.</param>
         /// <returns></returns>
-        Task<ResourceProviderGetResult<ExternalOrchestrationService>> GetExternalOrchestrationServiceAsync(string externalOrchestrationServiceName);
+        Task<ResourceProviderGetResult<APIEndpoint>> GetExternalOrchestrationServiceAsync(string externalOrchestrationServiceName);
 
         /// <summary>
         /// Upserts an app configuration value. If the value does not exist, it will be created.
@@ -49,5 +49,12 @@ namespace FoundationaLLM.Client.Management.Interfaces
         /// setting or a Key Vault reference, respectively.</param>
         /// <returns></returns>
         Task<ResourceProviderUpsertResult> UpsertAppConfigurationAsync(AppConfigurationKeyBase appConfiguration);
+
+        /// <summary>
+        /// Deletes an Azure App Configuration key and associated Azure Key Vault secret.
+        /// </summary>
+        /// <param name="key">The name of the Azure App Configuration key to delete.</param>
+        /// <returns></returns>
+        Task DeleteAppConfigurationAsync(string key);
     }
 }

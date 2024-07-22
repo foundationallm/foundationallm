@@ -266,6 +266,38 @@ export default {
 		const data = await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/indexingProfiles?api-version=${this.apiVersion}`,
 		) as ResourceProviderGetResult<AgentIndex>[];
+		// If data is empty, return an empty array.
+		if (!data) {
+			return [];
+		}
+		// Retrieve all the app config values for the vectorization resources.
+		const appConfigFilter = `FoundationaLLM:Vectorization:*`;
+		const appConfigResults = await this.getAppConfigs(appConfigFilter);
+		if (appConfigResults) {
+			// Store all of the app config values (resource property of each result) in a map for easy access.
+			const appConfigValues = new Map<string, AppConfigUnion>();
+			for (const appConfigResult of appConfigResults) {
+				appConfigValues.set(appConfigResult.resource.name, appConfigResult.resource);
+			}
+
+			// Loop through the text embedding profiles and replace the app config keys with the real values.
+			for (const indexingProfile of data) {
+				if (indexingProfile.resource.configuration_references === undefined) {
+					continue;
+				}
+				indexingProfile.resource.resolved_configuration_references = { ...indexingProfile.resource.configuration_references };
+				if (appConfigValues.has(indexingProfile.resource.configuration_references?.APIKey)) {
+					indexingProfile.resource.resolved_configuration_references.APIKey = appConfigValues.get(indexingProfile.resource.configuration_references.APIKey)?.value || '';
+				}
+				if (appConfigValues.has(indexingProfile.resource.configuration_references?.AuthenticationType)) {
+					indexingProfile.resource.resolved_configuration_references.AuthenticationType = appConfigValues.get(indexingProfile.resource.configuration_references.AuthenticationType)?.value || '';
+				}
+				if (appConfigValues.has(indexingProfile.resource.configuration_references?.Endpoint)) {
+					indexingProfile.resource.resolved_configuration_references.Endpoint = appConfigValues.get(indexingProfile.resource.configuration_references.Endpoint)?.value || '';
+				}
+			}
+		}
+
 		if (addDefaultOption) {
 			const defaultAgentIndex: AgentIndex = {
 				name: 'Select default index source',
@@ -305,9 +337,47 @@ export default {
 
 	// Text embedding profiles
 	async getTextEmbeddingProfiles(): Promise<ResourceProviderGetResult<TextEmbeddingProfile>[]> {
-		return await this.fetch(
+		const data = await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Vectorization/textEmbeddingProfiles?api-version=${this.apiVersion}`,
 		) as ResourceProviderGetResult<TextEmbeddingProfile>[];
+		// If data is empty, return an empty array.
+		if (!data) {
+			return [];
+		}
+		// Retrieve all the app config values for the vectorization resources.
+		const appConfigFilter = `FoundationaLLM:Vectorization:*`;
+		const appConfigResults = await this.getAppConfigs(appConfigFilter);
+		if (appConfigResults) {
+			// Store all of the app config values (resource property of each result) in a map for easy access.
+			const appConfigValues = new Map<string, AppConfigUnion>();
+			for (const appConfigResult of appConfigResults) {
+				appConfigValues.set(appConfigResult.resource.name, appConfigResult.resource);
+			}
+
+			// Loop through the text embedding profiles and replace the app config keys with the real values.
+			for (const textEmbeddingProfile of data) {
+				if (textEmbeddingProfile.resource.configuration_references === undefined) {
+					continue;
+				}
+				textEmbeddingProfile.resource.resolved_configuration_references = { ...textEmbeddingProfile.resource.configuration_references };
+				if (appConfigValues.has(textEmbeddingProfile.resource.configuration_references?.APIKey)) {
+					textEmbeddingProfile.resource.resolved_configuration_references.APIKey = appConfigValues.get(textEmbeddingProfile.resource.configuration_references.APIKey)?.value || '';
+				}
+				if (appConfigValues.has(textEmbeddingProfile.resource.configuration_references?.APIVersion)) {
+					textEmbeddingProfile.resource.resolved_configuration_references.APIVersion = appConfigValues.get(textEmbeddingProfile.resource.configuration_references.APIVersion)?.value || '';
+				}
+				if (appConfigValues.has(textEmbeddingProfile.resource.configuration_references?.AuthenticationType)) {
+					textEmbeddingProfile.resource.resolved_configuration_references.AuthenticationType = appConfigValues.get(textEmbeddingProfile.resource.configuration_references.AuthenticationType)?.value || '';
+				}
+				if (appConfigValues.has(textEmbeddingProfile.resource.configuration_references?.DeploymentName)) {
+					textEmbeddingProfile.resource.resolved_configuration_references.DeploymentName = appConfigValues.get(textEmbeddingProfile.resource.configuration_references.DeploymentName)?.value || '';
+				}
+				if (appConfigValues.has(textEmbeddingProfile.resource.configuration_references?.Endpoint)) {
+					textEmbeddingProfile.resource.resolved_configuration_references.Endpoint = appConfigValues.get(textEmbeddingProfile.resource.configuration_references.Endpoint)?.value || '';
+				}
+			}
+		}
+		return data;
 	},
 
 	// Agents
@@ -507,7 +577,7 @@ export default {
 
 	async getExternalOrchestrationServices(resolveApiKey: boolean = false): Promise<ResourceProviderGetResult<ExternalOrchestrationService>[]> {
 		const data = await this.fetch(
-			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/externalOrchestrationServices?api-version=${this.apiVersion}`,
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpoints?api-version=${this.apiVersion}`,
 		) as ResourceProviderGetResult<ExternalOrchestrationService>[];
 		
 		// Retrieve all the app config values for the external orchestration services..

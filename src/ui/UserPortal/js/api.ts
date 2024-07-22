@@ -77,7 +77,7 @@ export default {
 	 * @returns {Promise<Array<Session>>} A promise that resolves to an array of sessions.
 	 */
 	async getSessions() {
-		return (await this.fetch(`/sessions`)) as Array<Session>;
+		return (await this.fetch(`/instances/${this.instanceId}/sessions`)) as Array<Session>;
 	},
 
 	/**
@@ -85,7 +85,7 @@ export default {
 	 * @returns {Promise<Session>} A promise that resolves to the created session.
 	 */
 	async addSession() {
-		return (await this.fetch(`/sessions`, { method: 'POST' })) as Session;
+		return (await this.fetch(`/instances/${this.instanceId}/sessions`, { method: 'POST' })) as Session;
 	},
 
 	/**
@@ -95,7 +95,7 @@ export default {
 	 * @returns The renamed session.
 	 */
 	async renameSession(sessionId: string, newChatSessionName: string) {
-		return (await this.fetch(`/sessions/${sessionId}/rename`, {
+		return (await this.fetch(`/instances/${this.instanceId}/sessions/${sessionId}/rename`, {
 			method: 'POST',
 			params: {
 				newChatSessionName,
@@ -104,14 +104,14 @@ export default {
 	},
 
 	/**
-	 * Summarizes the session name.
+	 * Generates the session name.
 	 *
 	 * @param sessionId - The ID of the session.
-	 * @param text - The text to be summarized.
-	 * @returns The summarized text.
+	 * @param text - The text to be used when generating a session name.
+	 * @returns The generated text.
 	 */
-	async summarizeSessionName(sessionId: string, text: string) {
-		return (await this.fetch(`/sessions/${sessionId}/summarize-name`, {
+	async generateSessionName(sessionId: string, text: string) {
+		return (await this.fetch(`/instances/${this.instanceId}/sessions/${sessionId}/generate-name`, {
 			method: 'POST',
 			body: JSON.stringify(text),
 		})) as { text: string };
@@ -123,7 +123,7 @@ export default {
 	 * @returns A promise that resolves to the deleted session.
 	 */
 	async deleteSession(sessionId: string) {
-		return (await this.fetch(`/sessions/${sessionId}`, { method: 'DELETE' })) as Session;
+		return (await this.fetch(`/instances/${this.instanceId}/sessions/${sessionId}`, { method: 'DELETE' })) as Session;
 	},
 
 	/**
@@ -132,7 +132,7 @@ export default {
 	 * @returns An array of messages.
 	 */
 	async getMessages(sessionId: string) {
-		return (await this.fetch(`/sessions/${sessionId}/messages`)) as Array<Message>;
+		return (await this.fetch(`/instances/${this.instanceId}/sessions/${sessionId}/messages`)) as Array<Message>;
 	},
 
 	/**
@@ -143,7 +143,7 @@ export default {
 	 */
 	async getPrompt(sessionId: string, promptId: string) {
 		return (await this.fetch(
-			`/sessions/${sessionId}/completionprompts/${promptId}`,
+			`/instances/${this.instanceId}/sessions/${sessionId}/completionprompts/${promptId}`,
 		)) as CompletionPrompt;
 	},
 
@@ -159,7 +159,7 @@ export default {
 		} = {};
 		if (rating !== null) params.rating = rating;
 
-		return (await this.fetch(`/sessions/${message.sessionId}/message/${message.id}/rate`, {
+		return (await this.fetch(`/instances/${this.instanceId}/sessions/${message.sessionId}/message/${message.id}/rate`, {
 			method: 'POST',
 			params,
 		})) as Message;
@@ -180,7 +180,7 @@ export default {
 			settings: null,
 			attachments: attachments
 		};
-		return (await this.fetch(`/completions`, {
+		return (await this.fetch(`/instances/${this.instanceId}/completions`, {
 			method: 'POST',
 			body: orchestrationRequest,
 		})) as string;
@@ -191,7 +191,7 @@ export default {
 	 * @returns {Promise<Agent[]>} A promise that resolves to an array of Agent objects.
 	 */
 	async getAllowedAgents() {
-		const agents = (await this.fetch('/completions/agents')) as ResourceProviderGetResult<Agent>[];
+		const agents = (await this.fetch(`/instances/${this.instanceId}/completions/agents`)) as ResourceProviderGetResult<Agent>[];
 		agents.sort((a, b) => a.resource.name.localeCompare(b.resource.name));
 		return agents;
 	},
@@ -202,7 +202,7 @@ export default {
 	 * @returns The ObjectID of the uploaded attachment.
 	 */
 	async uploadAttachment(file: FormData) {
-		const response = await this.fetch('/attachments/upload', {
+		const response = await this.fetch(`/instances/${this.instanceId}/attachments/upload`, {
 			method: 'POST',
 			body: file,
 		});

@@ -76,10 +76,6 @@ module storage 'modules/storageAccount.bicep' = {
     subnetId: '${vnetId}/subnets/FLLMStorage'
     tags: tags
     containers: [
-      'agents'
-      'data-sources'
-      'foundationallm-source'
-      'prompts'
       'resource-provider'
       'vectorization-input'
       'vectorization-state'

@@ -35,14 +35,14 @@ namespace FoundationaLLM.Core.Services
         }
 
         /// <inheritdoc/>
-        public async Task<UserProfile?> GetUserProfileAsync() => await _cosmosDbService.GetUserProfileAsync(_callContext.CurrentUserIdentity?.UPN ??
+        public async Task<UserProfile?> GetUserProfileAsync(string instanceId) => await _cosmosDbService.GetUserProfileAsync(_callContext.CurrentUserIdentity?.UPN ??
                                                               throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving the user profile."));
 
         /// <inheritdoc/>
-        public async Task<UserProfile?> GetUserProfileForUserAsync(string upn) => await _cosmosDbService.GetUserProfileAsync(upn);
+        public async Task<UserProfile?> GetUserProfileForUserAsync(string instanceId, string upn) => await _cosmosDbService.GetUserProfileAsync(upn);
 
         /// <inheritdoc/>
-        public async Task UpsertUserProfileAsync(UserProfile userProfile)
+        public async Task UpsertUserProfileAsync(string instanceId, UserProfile userProfile)
         {
             // Ensure the user profile contains the user's UPN.
             if (string.IsNullOrEmpty(userProfile.UPN))

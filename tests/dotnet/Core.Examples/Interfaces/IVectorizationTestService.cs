@@ -22,4 +22,6 @@ public interface IVectorizationTestService
     public Task DeleteDataSource(string name);   
     public Task DeleteTextPartitioningProfile(string name);
     public Task DeleteTextEmbeddingProfile(string name);
+    public Task CreateAppConfiguration(AppConfigurationKeyValue appConfigurationKeyValue);
+    public Task DeleteAppConfiguration(string key);
 }

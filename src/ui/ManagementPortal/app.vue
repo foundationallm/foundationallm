@@ -3,6 +3,7 @@
 		<Head>
 			<Title>{{ pageTitle }}</Title>
 			<Meta name="description" :content="pageTitle" />
+			<Link rel="icon" type="image/x-icon" :href="iconLink" />
 		</Head>
 
 		<NuxtLayout>
@@ -18,6 +19,7 @@ export default {
 	data() {
 		return {
 			pageTitle: 'FoundationaLLM Management',
+			iconLink: this.$appConfigStore.favIconUrl || '/favicon.ico',
 		};
 	},
 

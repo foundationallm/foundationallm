@@ -394,18 +394,6 @@ module storage './shared/storage.bicep' = {
   params: {
     containers: [
       {
-        name: 'agents'
-      }
-      {
-        name: 'data-sources'
-      }
-      {
-        name: 'foundationallm-source'
-      }
-      {
-        name: 'prompts'
-      }
-      {
         name: 'resource-provider'
       }
       {

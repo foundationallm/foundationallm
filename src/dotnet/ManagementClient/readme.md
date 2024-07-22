@@ -8,7 +8,7 @@ This library contains two primary classes:
 - `ManagementClient`: A class that provides a set of methods for interacting with the Foundationa**LLM** Management API using a higher-level abstraction. This class is designed to simplify the process of interacting with the Management API by providing a more intuitive interface. It does not contain all the methods available in the `ManagementRESTClient` class, but it provides a more user-friendly way to interact with the Management API.
 
 > [!NOTE]
-> These two classes are mutually exclusive, and you should choose one based on your requirements. If you need direct access to all Core API endpoints, use the `ManagementRESTClient` class. If you need a more user-friendly interface, use the `ManagementClient` class.
+> These two classes are mutually exclusive, and you should choose one based on your requirements. If you need direct access to all Management API endpoints, use the `ManagementRESTClient` class. If you need a more user-friendly interface, use the `ManagementClient` class.
 
 ## Getting started
 
@@ -18,7 +18,7 @@ This library contains two primary classes:
 Install the NuGet package:
 
 ```bash
-dotnet add package FoundationaLLM.Client.Core
+dotnet add package FoundationaLLM.Client.Management
 ```
 
 ### Manual service instantiation
@@ -173,7 +173,7 @@ If you prefer to retrieve the configuration settings from Azure App Configuratio
         configuration[AppConfigurationKeys.FoundationaLLM_Instance_Id]!);
     ```
 
-3. Retrieve the `CoreClient` and `CoreRESTClient` instances from the service provider:
+3. Retrieve the `ManagementClient` and `ManagementRESTClient` instances from the service provider:
 
     ```csharp
     var managementClient = serviceProvider.GetRequiredService<IManagementClient>();
@@ -182,7 +182,7 @@ If you prefer to retrieve the configuration settings from Azure App Configuratio
 
 ### Example projects
 
-The `Core.Examples` test project contains several examples that demonstrate how to use the `ManagementClient` and `ManagementRESTClient` classes to interact with the Core API through a series of end-to-end tests.
+The `Core.Examples` test project contains several examples that demonstrate how to use the `ManagementClient` and `ManagementRESTClient` classes to interact with the Management API through a series of end-to-end tests.
 
 ## Foundationa**LLM**: The platform for deploying, scaling, securing and governing generative AI in the enterprises 🚀
 

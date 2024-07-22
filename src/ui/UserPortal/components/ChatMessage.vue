@@ -36,7 +36,7 @@
 				<template v-if="message.sender === 'Assistant' && message.type === 'LoadingMessage'">
 					<i class="pi pi-spin pi-spinner"></i>
 				</template>
-				<span v-else>{{ displayText }}</span>
+				<div v-html="displayHtml"></div>
 			</div>
 
 			<div v-if="message.sender !== 'User'" class="message__footer">
@@ -128,6 +128,22 @@ import type { PropType } from 'vue';
 import type { Message, CompletionPrompt } from '@/js/types';
 import api from '@/js/api';
 
+import hljs from 'highlight.js';
+import 'highlight.js/styles/github-dark-dimmed.css';
+import { marked } from 'marked';
+import { markedHighlight } from 'marked-highlight';
+import truncate from 'truncate-html';
+import DOMPurify from 'dompurify';
+
+const renderer = new marked.Renderer();
+renderer.code = (code, language) => {
+	const validLanguage = !!(language && hljs.getLanguage(language));
+	const highlighted = validLanguage ? hljs.highlight(code, { language }).value : hljs.highlightAuto(code).value;
+	const languageClass = validLanguage ? `hljs language-${language}` : 'hljs';
+	return `<pre><code class="${languageClass}">${highlighted}</code></pre>`;
+};
+marked.use({ renderer });
+
 export default {
 	name: 'ChatMessage',
 
@@ -149,34 +165,44 @@ export default {
 		return {
 			prompt: {} as CompletionPrompt,
 			viewPrompt: false,
-			displayText: '',
+			displayHtml: '',
+			currentWordIndex: 0,
 			primaryButtonBg: this.$appConfigStore.primaryButtonBg,
-      		primaryButtonText: this.$appConfigStore.primaryButtonText
+			primaryButtonText: this.$appConfigStore.primaryButtonText,
 		};
+	},
+
+	computed: {
+		compiledMarkdown() {
+			return DOMPurify.sanitize(marked(this.message.text));
+		}
 	},
 
 	created() {
 		if (this.showWordAnimation) {
 			this.displayWordByWord();
 		} else {
-			this.displayText = this.message.text;
+			this.displayHtml = this.compiledMarkdown;
 		}
 	},
 
 	methods: {
 		displayWordByWord() {
-			const words = this.message.text.split(' ');
-			let index = 0;
+			if (this.currentWordIndex >= this.compiledMarkdown.split(/\s+/).length) return;
 
-			const displayNextWord = () => {
-				if (index < words.length) {
-					this.displayText += words[index] + ' ';
-					index++;
-					setTimeout(displayNextWord, 10);
-				}
-			};
+			this.currentWordIndex += 1;
+			this.displayHtml = truncate(this.compiledMarkdown, this.currentWordIndex, {
+				byWords: true,
+				stripTags: false,
+				ellipsis: '',
+				decodeEntities: false,
+				keepWhitespaces: true,
+				excludes: '',
+				reserveLastWord: false,
+				keepWhitespaces: true
+			});
 
-			displayNextWord();
+			setTimeout(this.displayWordByWord, 10);
 		},
 
 		formatTimeStamp(timeStamp: string) {
@@ -260,7 +286,7 @@ export default {
 }
 
 .message__body {
-	white-space: pre-wrap;
+	// white-space: pre-wrap;
 	overflow-wrap: break-word;
 	padding-left: 12px;
 	padding-right: 12px;

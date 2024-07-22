@@ -9,12 +9,15 @@
 
 Core API changes:
 
-1. The `/orchestration/*` endpoints have been moved to `/completions/*`.
-   1. The previous `/orchestration/completions` endpoint is now `/completions`.
-2. The `/sessions/{sessionId}/completion` endpoint has been moved to `/completions`. Instead of having the `sessionId` as a path parameter, it is now in the request body as part of the `CompletionRequest` payload.
-3. `/sessions/{sessionId}/summarize-name` has been removed. In the future, the `/completions` endpoint will be used to generate summaries.
-4. `OrchestrationRequest` and `CompletionRequest` have combined into a single `CompletionRequest` object.
-5. `DirectionCompletionRequest` has been removed. Use `CompletionRequest` instead.
+1. All Core API endpoints have been moved to the `/instances/{instanceId}` path. For example, the `/status` endpoint is now `/instances/{instanceId}/status`.
+
+2. The `/orchestration/*` endpoints have been moved to `/instances/{instanceId}/completions/*`.
+   1. The previous `/orchestration/completions` endpoint is now `/instances/{instanceId}/completions`.
+3. The `/sessions/{sessionId}/completion` endpoint has been moved to `/instances/{instanceId}/completions`. Instead of having the `sessionId` as a path parameter, it is now in the request body as part of the `CompletionRequest` payload.
+4. `/sessions/{sessionId}/summarize-name` has been removed. In the future, the `/completions` endpoint will be used to generate summaries.
+5. `OrchestrationRequest` and `CompletionRequest` have combined into a single `CompletionRequest` object.
+6. `DirectionCompletionRequest` has been removed. Use `CompletionRequest` instead.
+7. `Status` controllers `\status` action in the .NET API projects return value has renamed the `Instance` property to `InstanceName`.
 
 ### Pre-0.8.0
 

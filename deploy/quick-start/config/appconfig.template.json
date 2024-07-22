@@ -352,7 +352,7 @@
     },
     {
       "key": "FoundationaLLM:APIs:VectorizationWorker:APIUrl",
-      "value": "WHYDOESTHISEXIST",
+      "value": "${env:SERVICE_VECTORIZATION_JOB_ENDPOINT_URL}",
       "label": null,
       "content_type": null,
       "tags": {}

@@ -1,5 +1,4 @@
-﻿using Asp.Versioning;
-using FoundationaLLM.Common.Constants;
+﻿using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Models.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
@@ -12,19 +11,21 @@ namespace FoundationaLLM.Core.API.Controllers
     /// </summary>
     [Authorize(Policy = "DefaultPolicy")]
     [ApiController]
-    [Route("[controller]")]
+    [Route("instances/{instanceId}/[controller]")]
     public class StatusController : ControllerBase
     {
         /// <summary>
         /// Returns the status of the Core API service.
         /// </summary>
+        /// <param name="instanceId">The id of the instance.</param>
         [AllowAnonymous]
         [HttpGet(Name = "GetServiceStatus")]
-        public IActionResult GetServiceStatus() =>
+        public IActionResult GetServiceStatus(string instanceId) =>
             new OkObjectResult(new ServiceStatusInfo
             {
                 Name = ServiceNames.CoreAPI,
-                Instance = ValidatedEnvironment.MachineName,
+                InstanceId = instanceId,
+                InstanceName = ValidatedEnvironment.MachineName,
                 Version = Environment.GetEnvironmentVariable(EnvironmentVariables.FoundationaLLM_Version),
                 Status = ServiceStatuses.Ready
             });
@@ -33,8 +34,9 @@ namespace FoundationaLLM.Core.API.Controllers
         /// Returns OK if the requester is authenticated and allowed to execute
         /// requests against this service.
         /// </summary>
+        /// <param name="instanceId">The id of the instance.</param>
         [HttpGet("auth", Name = "GetAuthStatus")]
-        public IActionResult GetAuthStatus() =>
+        public IActionResult GetAuthStatus(string instanceId) =>
             Ok();
 
         private static readonly string[] AllowedHttpVerbs = ["GET", "POST", "OPTIONS"];

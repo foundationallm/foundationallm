@@ -1,4 +1,7 @@
-﻿using Azure.Data.AppConfiguration;
+﻿using Azure;
+using Azure.Data.AppConfiguration;
+using Azure.Security.KeyVault.Secrets;
+using FoundationaLLM.Common.Authentication;
 using Microsoft.Extensions.Logging;
 using System.Net;
 
@@ -106,6 +109,47 @@ namespace FoundationaLLM.Common.Services
                 existenceMap[setting.Key] = !string.IsNullOrWhiteSpace(setting.Value);
             }
             return existenceMap;
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> CheckAppConfigurationSettingExistsAsync(string key)
+        {
+            try
+            {
+                await _configurationClient.GetConfigurationSettingAsync(key);
+            }
+            catch (RequestFailedException ex)
+            {
+                if (ex.GetRawResponse()!.Status == 404)
+                    return false;
+                throw;
+            }
+            return true;
+        }
+
+        /// <inheritdoc/>
+        public async Task DeleteAppConfigurationSettingAsync(string key)
+        {
+            ConfigurationSetting setting = await _configurationClient.GetConfigurationSettingAsync(key);
+            
+            if (setting is SecretReferenceConfigurationSetting secretReference)
+            {
+                var identifier = new KeyVaultSecretIdentifier(secretReference.SecretId);
+                _logger.LogInformation("App Configuration key {key} references Key Vault secret {identifier.Name}. Deleting.", key, identifier.Name);
+                var secretClient = new SecretClient(identifier.VaultUri, DefaultAuthentication.AzureCredential);
+                try
+                {
+                    await secretClient.StartDeleteSecretAsync(identifier.Name);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, "Error deleting Key Vault secret {key}.", identifier.Name);
+                }
+            }
+
+            var deleteSettingResponse = await _configurationClient.DeleteConfigurationSettingAsync(key);
+            if (deleteSettingResponse.IsError)
+                throw new Exception($"Failed to delete App Configuration setting {key}: {deleteSettingResponse.ReasonPhrase}");
         }
     }
 }

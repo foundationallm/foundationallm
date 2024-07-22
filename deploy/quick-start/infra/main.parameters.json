@@ -276,7 +276,7 @@
           {
             "name": "vectorization-job",
             "useEndpoint": false,
-            "hasIngress": false,
+            "hasIngress": true,
             "image": "${SERVICE_VECTORIZATIONJOB_IMAGE=cropseastus2svinternal.azurecr.io/vectorization-job:${FLLM_VERSION}}",
             "appConfigEnvironmentVarName": "FoundationaLLM_AppConfig_ConnectionString",
             "apiKeySecretName": "foundationallm-apis-vectorizationworker-apikey",

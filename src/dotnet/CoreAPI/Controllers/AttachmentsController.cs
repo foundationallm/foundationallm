@@ -1,15 +1,10 @@
-﻿using Asp.Versioning;
-using FoundationaLLM.Attachment.Models;
-using FoundationaLLM.Common.Constants.ResourceProviders;
+﻿using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing.Constraints;
-using Microsoft.Extensions.Options;
 
 namespace FoundationaLLM.Core.API.Controllers
 {
@@ -18,13 +13,19 @@ namespace FoundationaLLM.Core.API.Controllers
     /// </summary>
     [Authorize(Policy = "DefaultPolicy")]
     [ApiController]
-    [Route("[controller]")]
+    [Route("instances/{instanceId}/[controller]")]
     public class AttachmentsController : ControllerBase
     {
         private readonly IResourceProviderService _attachmentResourceProvider;
 #pragma warning disable IDE0052 // Remove unread private members.
         private readonly ILogger<AttachmentsController> _logger;
 
+        /// <summary>
+        /// The controller for managing attachments.
+        /// </summary>
+        /// <param name="resourceProviderServices"></param>
+        /// <param name="logger"></param>
+        /// <exception cref="ResourceProviderException"></exception>
         public AttachmentsController(
             IEnumerable<IResourceProviderService> resourceProviderServices,
             ILogger<AttachmentsController> logger)
@@ -41,16 +42,17 @@ namespace FoundationaLLM.Core.API.Controllers
         /// Retrieves the uploaded attachments.
         /// </summary>
         [HttpGet(Name = "Get")]
-        public IActionResult Index() =>
+        public IActionResult Index(string instanceId) =>
             Ok();
 
         /// <summary>
         /// Uploads an attachment.
         /// </summary>
+        /// <param name="instanceId">The instance ID.</param>
         /// <param name="file">The file sent with the HTTP request.</param>
         /// <returns></returns>
         [HttpPost("Upload")]
-        public async Task<IActionResult> Upload(IFormFile file)
+        public async Task<IActionResult> Upload(string instanceId, IFormFile file)
         {
             if (file == null || file.Length == 0)
                 return BadRequest("File not selected.");

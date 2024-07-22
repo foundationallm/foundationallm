@@ -80,10 +80,8 @@ This example demonstrates a synchronous vectorization request for a file located
 This example expects the following file named [`SDZWA-Journal-January-2024.pdf`](https://sandiegozoowildlifealliance.org/Journal/january-2024) to be located `vectorization-input` container in the data lake storage account created with the FoundationaLLM deployment.
 
 ##### App Config settings
-| Key | Value | Description |
-| --- | --- | --- |
-| `FoundationaLLM:DataSources:datalake_vectorization_input:AuthenticationType` | `AzureIdentity` | The authentication method for the vectorization api and vectorization job managed identities. |
-| `FoundationaLLM:DataSources:datalake_vectorization_input:AccountName` | N/A | Account name of the storage account. |
+
+This test will create the App Config settings required by the Data Source. The Data Source Azure Blob Storage account name must be provided through the `AZURE_STORAGE_ACCOUNT_NAME` environment variable.
 
 #### Running the example
 
@@ -121,10 +119,8 @@ This example demonstrates a synchronous vectorization request for a file located
 This example expects the following file named [`SDZWA-Journal-January-2024.pdf`](https://sandiegozoowildlifealliance.org/Journal/january-2024) to be located `vectorization-input` container in the data lake storage account created with the FoundationaLLM deployment.
 
 ##### App Config settings
-| Key | Value | Description |
-| --- | --- | --- |
-| `FoundationaLLM:DataSources:datalake_vectorization_input:AuthenticationType` | `AzureIdentity` | The authentication method for the vectorization api and vectorization job managed identities. |
-| `FoundationaLLM:DataSources:datalake_vectorization_input:AccountName` | N/A | Account name of the storage account. |
+
+This test will create the App Config settings required by the Data Source. The Data Source Azure Blob Storage account name must be provided through the `AZURE_STORAGE_ACCOUNT_NAME` environment variable.
 
 #### Running the example
 

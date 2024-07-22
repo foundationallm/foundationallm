@@ -391,6 +391,12 @@ jobs:
           Pop-Location
         shell: pwsh
 
+      - name: Publish AZD Environment
+        uses: actions/upload-artifact@v4
+        with:
+          name: azd-env
+          path: ./deploy/quick-start/.azure
+
       - name: Update App Registration OAuth Callbacks
         id: update-app-reg-oauth
         run: |
@@ -487,6 +493,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Download AZD Environment
+        uses: actions/download-artifact@v4
+        with:
+          name: azd-env
+          path: ./deploy/quick-start/.azure
+
       - name: Install azd
         uses: Azure/setup-azd@v1.0.0
         with:
@@ -520,21 +532,7 @@ jobs:
           $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable;
           Write-Host "::add-mask::$($info.clientSecret)"
 
-          Write-Host "Create new AZD Environment"
           Push-Location ./deploy/quick-start
-          azd env new ${{ inputs.environment }}
-          azd env set AZURE_SUBSCRIPTION_ID $($info.subscriptionId)
-          azd env set PIPELINE_DEPLOY "$true"
-          Pop-Location
-
-          Push-Location ./deploy/quick-start
-          ../../tests/scripts/Set-AzdEnv.ps1 `
-            -tenantId $($info.tenantId) `
-            -principalType ServicePrincipal `
-            -instanceId 6fa496ce-d5c0-4e02-9223-06a98c9c0176
-
-          azd env refresh --no-prompt
-
           (azd env get-values) | foreach {
               $name, $value = $_.split('=')
               $value = $value.Trim('"')
@@ -669,6 +667,12 @@ jobs:
           name: build
           path: ./dist
 
+      - name: Download AZD Environment
+        uses: actions/download-artifact@v4
+        with:
+          name: azd-env
+          path: ./deploy/quick-start/.azure
+
       - name: Install azd
         uses: Azure/setup-azd@v1.0.0
         with:
@@ -700,21 +704,7 @@ jobs:
           $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable;
           Write-Host "::add-mask::$($info.clientSecret)"
 
-          Write-Host "Create new AZD Environment"
           Push-Location ./deploy/quick-start
-          azd env new ${{ inputs.environment }}
-          azd env set AZURE_SUBSCRIPTION_ID $($info.subscriptionId)
-          azd env set PIPELINE_DEPLOY "$true"
-          Pop-Location
-
-          Push-Location ./deploy/quick-start
-          ../../tests/scripts/Set-AzdEnv.ps1 `
-            -tenantId $($info.tenantId) `
-            -principalType ServicePrincipal `
-            -instanceId 6fa496ce-d5c0-4e02-9223-06a98c9c0176
-
-          azd env refresh --no-prompt
-
           (azd env get-values) | foreach {
               $name, $value = $_.split('=')
               set-content env:\$name $value
@@ -832,6 +822,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Download AZD Environment
+        uses: actions/download-artifact@v4
+        with:
+          name: azd-env
+          path: ./deploy/quick-start/.azure
+
       - name: Install azd
         uses: Azure/setup-azd@v1.0.0
         with:
@@ -876,20 +872,7 @@ jobs:
           $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable;
           Write-Host "::add-mask::$($info.clientSecret)"
 
-          Write-Host "Create new AZD Environment"
           Push-Location ./deploy/quick-start
-          azd env new ${{ inputs.environment }}
-          azd env set AZURE_SUBSCRIPTION_ID $($info.subscriptionId)
-          azd env set PIPELINE_DEPLOY "$true"
-          Pop-Location
-
-          Push-Location ./deploy/quick-start
-          ../../tests/scripts/Set-AzdEnv.ps1 `
-            -tenantId $($info.tenantId) `
-            -principalType ServicePrincipal `
-            -instanceId 6fa496ce-d5c0-4e02-9223-06a98c9c0176
-
-          azd env refresh --no-prompt
           Write-Host "Removing App Registration OAuth Callbacks"
           pwsh -File ../common/scripts/Remove-OAuthCallbackUris.ps1 `
             -fllmChatUiName FoundationaLLM-Core-Portal `

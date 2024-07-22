@@ -95,6 +95,23 @@ task Main -depends Configuration {
         }
     }
 
+    if (-not $script:deployOpenAi) {
+        $parameters.Add("existingOpenAiInstanceName", @{
+            type = "string"
+            value = $script:existingOpenAiInstance.name
+        })
+
+        $parameters.Add("existingOpenAiInstanceRg", @{
+            type = "string"
+            value = $script:existingOpenAiInstance.resourceGroup
+        })
+
+        $parameters.Add("existingOpenAiInstanceSub", @{
+            type = "string"
+            value = $script:existingOpenAiInstance.subscriptionId
+        })
+    }
+
     if ($script:useExternalDns) {
         $parameters.Add("externalDnsResourceGroupName", @{
                 type  = "string"
@@ -211,7 +228,6 @@ task Configuration {
     Write-Host -ForegroundColor Blue "Loading Deployment Manifest ../$($manifestName)"
     $manifest = $(Get-Content -Raw -Path ../$($manifestName) | ConvertFrom-Json)
 
-
     $script:administratorObjectId = $manifest.adminObjectId
     $script:chatUiClientSecret = "CHAT-CLIENT-SECRET"
     $script:coreApiClientSecret = "CORE-API-CLIENT-SECRET"
@@ -243,6 +259,15 @@ task Configuration {
     foreach ($property in $resourceGroups.PSObject.Properties) {
         $script:deployments.Add($property.Name, "$($property.Value)-${timestamp}")
         $script:resourceGroups.Add($property.Name, $property.Value)
+    }
+
+    $script:existingOpenAiInstance = $null
+    if ($manifest.PSobject.Properties.Name -contains "existingOpenAiInstance") {
+        $existingOpenAiInstance = $manifest.existingOpenAiInstance
+        $script:existingOpenAiInstance = @{}
+        foreach ($property in $existingOpenAiInstance.PSObject.Properties) {
+            $script:existingOpenAiInstance.Add($property.Name, $property.Value)
+        }
     }
 
     $script:externalResourceGroups = $null
@@ -284,6 +309,11 @@ task Configuration {
     $script:useExternalNetworking = $false
     if ($script:externalResourceGroups -ne $null -and $script:externalResourceGroups.ContainsKey("net")) {
         $script:useExternalNetworking = $true
+    }
+
+    $script:deployOpenAi = $true
+    if ($script:existingOpenAiInstance -ne $null -and $script:existingOpenAiInstance.ContainsKey("name")) {
+        $script:deployOpenAi = $false
     }
 
     Write-Host -ForegroundColor Blue "Configuration complete."

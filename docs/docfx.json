@@ -44,7 +44,7 @@
         {
           "files": [
             "api/dotnet/**.yml",
-            "api/dotnet/README.md"
+            "api/dotnet/index.md"
           ]
         },
         {

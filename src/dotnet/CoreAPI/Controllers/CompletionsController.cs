@@ -9,7 +9,6 @@ using FoundationaLLM.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace FoundationaLLM.Core.API.Controllers
 {
     /// <summary>
@@ -20,7 +19,7 @@ namespace FoundationaLLM.Core.API.Controllers
     /// </remarks>
     [Authorize(Policy = "DefaultPolicy")]
     [ApiController]
-    [Route("[controller]")]
+    [Route("instances/{instanceId}/[controller]")]
     public class CompletionsController : ControllerBase
     {
         private readonly ICoreService _coreService;
@@ -59,18 +58,20 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <summary>
         /// Requests a completion from the downstream APIs.
         /// </summary>
+        /// <param name="instanceId">The instance ID of the current request.</param>
         /// <param name="completionRequest">The user prompt for which to generate a completion.</param>
         [HttpPost(Name = "GetCompletion")]
-        public async Task<IActionResult> GetCompletion([FromBody] CompletionRequest completionRequest) =>
-            !string.IsNullOrWhiteSpace(completionRequest.SessionId) ? Ok(await _coreService.GetChatCompletionAsync(completionRequest)) :
-                Ok(await _coreService.GetCompletionAsync(completionRequest));
+        public async Task<IActionResult> GetCompletion(string instanceId, [FromBody] CompletionRequest completionRequest) =>
+            !string.IsNullOrWhiteSpace(completionRequest.SessionId) ? Ok(await _coreService.GetChatCompletionAsync(instanceId, completionRequest)) :
+                Ok(await _coreService.GetCompletionAsync(instanceId, completionRequest));
 
         /// <summary>
         /// Retrieves a list of global and private agents.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="instanceId">The instance ID of the current request.</param>
+        /// <returns>A list of available agents.</returns>
         [HttpGet("agents", Name = "GetAgents")]
-        public async Task<IEnumerable<ResourceProviderGetResult<AgentBase>>> GetAgents() =>
+        public async Task<IEnumerable<ResourceProviderGetResult<AgentBase>>> GetAgents(string instanceId) =>
             await _agentResourceProvider.GetResourcesWithRBAC<AgentBase>(_callContext.CurrentUserIdentity!);
     }
 }

@@ -22,18 +22,18 @@ namespace FoundationaLLM.Client.Management.Clients.Resources
             );
 
         /// <inheritdoc/>
-        public async Task<List<ResourceProviderGetResult<ExternalOrchestrationService>>> GetExternalOrchestrationServicesAsync() =>
-            await managementRestClient.Resources.GetResourcesAsync<List<ResourceProviderGetResult<ExternalOrchestrationService>>>(
+        public async Task<List<ResourceProviderGetResult<APIEndpoint>>> GetExternalOrchestrationServicesAsync() =>
+            await managementRestClient.Resources.GetResourcesAsync<List<ResourceProviderGetResult<APIEndpoint>>>(
                 ResourceProviderNames.FoundationaLLM_Configuration,
-                ConfigurationResourceTypeNames.ExternalOrchestrationServices
+                ConfigurationResourceTypeNames.APIEndpoints
             );
 
         /// <inheritdoc/>
-        public async Task<ResourceProviderGetResult<ExternalOrchestrationService>> GetExternalOrchestrationServiceAsync(string externalOrchestrationServiceName)
+        public async Task<ResourceProviderGetResult<APIEndpoint>> GetExternalOrchestrationServiceAsync(string externalOrchestrationServiceName)
         {
-            var result = await managementRestClient.Resources.GetResourcesAsync<List<ResourceProviderGetResult<ExternalOrchestrationService>>>(
+            var result = await managementRestClient.Resources.GetResourcesAsync<List<ResourceProviderGetResult<APIEndpoint>>>(
                 ResourceProviderNames.FoundationaLLM_Configuration,
-                $"{ConfigurationResourceTypeNames.ExternalOrchestrationServices}/{externalOrchestrationServiceName}"
+                $"{ConfigurationResourceTypeNames.APIEndpoints}/{externalOrchestrationServiceName}"
             );
 
             if (result == null || result.Count == 0)
@@ -52,6 +52,13 @@ namespace FoundationaLLM.Client.Management.Clients.Resources
                 ResourceProviderNames.FoundationaLLM_Configuration,
                 $"{ConfigurationResourceTypeNames.AppConfigurations}/{appConfiguration.Name}",
                 appConfiguration
+            );
+
+        /// <inheritdoc/>
+        public async Task DeleteAppConfigurationAsync(string key) =>
+            await managementRestClient.Resources.DeleteResourceAsync(
+                ResourceProviderNames.FoundationaLLM_Configuration,
+                $"{ConfigurationResourceTypeNames.AppConfigurations}/{key}"
             );
     }
 }
