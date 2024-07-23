@@ -379,42 +379,42 @@
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:APIs:Gatekeeper:AzureContentSafety:APIKey",
-        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apis-gatekeeper-azurecontentsafety-apikey\"}",
+        "key": "FoundationaLLM:AzureContentSafety:APIKey",
+        "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-azurecontentsafety-apikey\"}",
         "label": null,
         "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:APIs:Gatekeeper:AzureContentSafety:APIUrl",
+        "key": "FoundationaLLM:AzureContentSafety:APIUrl",
         "value": "{{contentSafetyEndpointUri}}",
         "label": null,
         "content_type": "",
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:APIs:Gatekeeper:AzureContentSafety:HateSeverity",
+        "key": "FoundationaLLM:AzureContentSafety:HateSeverity",
         "value": "2",
         "label": null,
         "content_type": "",
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:APIs:Gatekeeper:AzureContentSafety:SelfHarmSeverity",
+        "key": "FoundationaLLM:AzureContentSafety:SelfHarmSeverity",
         "value": "2",
         "label": null,
         "content_type": "",
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:APIs:Gatekeeper:AzureContentSafety:SexualSeverity",
+        "key": "FoundationaLLM:AzureContentSafety:SexualSeverity",
         "value": "2",
         "label": null,
         "content_type": "",
         "tags": {}
       },
       {
-        "key": "FoundationaLLM:APIs:Gatekeeper:AzureContentSafety:ViolenceSeverity",
+        "key": "FoundationaLLM:AzureContentSafety:ViolenceSeverity",
         "value": "2",
         "label": null,
         "content_type": "",
