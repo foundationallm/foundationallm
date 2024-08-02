@@ -202,20 +202,43 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             continue;
                         }
 
-                        var indexingProfile = await vectorizationResourceProvider.HandleGet<VectorizationProfileBase>(
+                        var indexingProfile = await vectorizationResourceProvider.GetResource<IndexingProfile>(
                             indexingProfileName,
                             currentUserIdentity);
 
                         explodedObjects[indexingProfileName] = indexingProfile;
+
+                        // Provide the indexing profile API endpoint configuration.
+                        var indexingProfileAPIEndpointConfiguration = await configurationResourceProvider.GetResource<APIEndpointConfiguration>(
+                            indexingProfile.IndexingAPIEndpointConfigurationObjectId,
+                            currentUserIdentity);
+
+                        explodedObjects[indexingProfile.IndexingAPIEndpointConfigurationObjectId] = indexingProfileAPIEndpointConfiguration;
                     }
 
                     if (!string.IsNullOrWhiteSpace(kmAgent.Vectorization.TextEmbeddingProfileObjectId))
                     {
-                        var textEmbeddingProfile = await vectorizationResourceProvider.HandleGet<VectorizationProfileBase>(
+                        var textEmbeddingProfile = await vectorizationResourceProvider.GetResource<TextEmbeddingProfile>(
                             kmAgent.Vectorization.TextEmbeddingProfileObjectId,
                             currentUserIdentity);
 
                         explodedObjects[kmAgent.Vectorization.TextEmbeddingProfileObjectId!] = textEmbeddingProfile;
+
+                        if(textEmbeddingProfile.TextEmbedding != TextEmbeddingType.GatewayTextEmbedding)
+                        {
+                            // Provide the Embedding AI Model and associated API endpoint configuration.
+                            var embeddingAIModel = await aiModelResourceProvider.GetResource<AIModelBase>(
+                                textEmbeddingProfile.EmbeddingAIModelObjectId!,
+                                currentUserIdentity);
+                            explodedObjects[textEmbeddingProfile.EmbeddingAIModelObjectId!] = embeddingAIModel;
+
+                            // Provide the embedding AI model API endpoint configuration.
+                            var embeddingAIModelAPIEndpointConfiguration = await configurationResourceProvider.GetResource<APIEndpointConfiguration>(
+                                embeddingAIModel.EndpointObjectId!,
+                                currentUserIdentity);
+                            explodedObjects[embeddingAIModel.EndpointObjectId!] = embeddingAIModelAPIEndpointConfiguration;
+                        }
+                       
                     }
                 }
             }
