@@ -202,35 +202,47 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             continue;
                         }
 
-                        var indexingProfile = await vectorizationResourceProvider.GetResource<IndexingProfile>(
+                        var indexingProfile = await vectorizationResourceProvider.GetResource<VectorizationProfileBase>(
                             indexingProfileName,
                             currentUserIdentity);
+                        var indexingProfileCasted = indexingProfile as IndexingProfile;
+                        if (indexingProfileCasted == null)
+                            throw new OrchestrationException($"The indexing profile {indexingProfileName} is not a valid indexing profile.");
 
                         explodedObjects[indexingProfileName] = indexingProfile;
-
+                                               
                         // Provide the indexing profile API endpoint configuration.
                         var indexingProfileAPIEndpointConfiguration = await configurationResourceProvider.GetResource<APIEndpointConfiguration>(
-                            indexingProfile.IndexingAPIEndpointConfigurationObjectId,
+                            indexingProfileCasted.IndexingAPIEndpointConfigurationObjectId,
                             currentUserIdentity);
 
-                        explodedObjects[indexingProfile.IndexingAPIEndpointConfigurationObjectId] = indexingProfileAPIEndpointConfiguration;
+                        explodedObjects[indexingProfileCasted.IndexingAPIEndpointConfigurationObjectId] = indexingProfileAPIEndpointConfiguration;
                     }
 
                     if (!string.IsNullOrWhiteSpace(kmAgent.Vectorization.TextEmbeddingProfileObjectId))
                     {
-                        var textEmbeddingProfile = await vectorizationResourceProvider.GetResource<TextEmbeddingProfile>(
+                        var textEmbeddingProfile = await vectorizationResourceProvider.GetResource<VectorizationProfileBase>(
                             kmAgent.Vectorization.TextEmbeddingProfileObjectId,
                             currentUserIdentity);
 
-                        explodedObjects[kmAgent.Vectorization.TextEmbeddingProfileObjectId!] = textEmbeddingProfile;
+                        var textEmbeddingProfileCasted = textEmbeddingProfile as TextEmbeddingProfile;
+                        if (textEmbeddingProfileCasted == null)
+                            throw new OrchestrationException($"The text embedding profile {kmAgent.Vectorization.TextEmbeddingProfileObjectId} is not a valid text embedding profile.");
 
-                        if(textEmbeddingProfile.TextEmbedding != TextEmbeddingType.GatewayTextEmbedding)
+                        explodedObjects[kmAgent.Vectorization.TextEmbeddingProfileObjectId!] = textEmbeddingProfileCasted;
+
+                        if(textEmbeddingProfileCasted.TextEmbedding != TextEmbeddingType.GatewayTextEmbedding)
                         {
                             // Provide the Embedding AI Model and associated API endpoint configuration.
-                            var embeddingAIModel = await aiModelResourceProvider.GetResource<AIModelBase>(
-                                textEmbeddingProfile.EmbeddingAIModelObjectId!,
+                            var embeddingAIModelBase = await aiModelResourceProvider.GetResource<AIModelBase>(
+                                textEmbeddingProfileCasted.EmbeddingAIModelObjectId!,
                                 currentUserIdentity);
-                            explodedObjects[textEmbeddingProfile.EmbeddingAIModelObjectId!] = embeddingAIModel;
+
+                            var embeddingAIModel = embeddingAIModelBase as EmbeddingAIModel;
+                            if (embeddingAIModel == null)
+                                throw new OrchestrationException($"The AI model {textEmbeddingProfileCasted.EmbeddingAIModelObjectId} is not a valid Embedding AI model.");
+
+                            explodedObjects[textEmbeddingProfileCasted.EmbeddingAIModelObjectId!] = embeddingAIModel;
 
                             // Provide the embedding AI model API endpoint configuration.
                             var embeddingAIModelAPIEndpointConfiguration = await configurationResourceProvider.GetResource<APIEndpointConfiguration>(
