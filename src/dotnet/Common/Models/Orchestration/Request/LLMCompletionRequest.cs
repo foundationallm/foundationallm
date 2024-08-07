@@ -152,7 +152,7 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
                         throw new OrchestrationException("The text embedding profile object provided in the request's objects is invalid.");
 
                     if (!Objects.TryGetValue(
-                                textEmbeddingProfile.EmbeddingAIModelObjectId, out var embeddingAIModelObject))
+                                textEmbeddingProfile.EmbeddingAIModelObjectId!, out var embeddingAIModelObject))
                         throw new OrchestrationException($"The AI Model object with id {textEmbeddingProfile.EmbeddingAIModelObjectId} is missing from the request's objects.");
 
                     //validate deployment name and endpoint url are present
