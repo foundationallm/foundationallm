@@ -90,11 +90,12 @@ class AzureAISearchServiceRetriever(BaseRetriever, CitationRetrievalBase):
 
             #load search results into VectorDocument objects for score processing
             for result in results:
-                metadata = {}
-
+                metadata = {}              
+                
                 if index_config.indexing_profile.settings.metadata_field_name in result:
+                    
                     try:
-                        metadata = json.loads(result[index_config.indexing_profile.settings.metadata_field_name]) if profile.settings.metadata_field_name in result else {}
+                        metadata = json.loads(result[index_config.indexing_profile.settings.metadata_field_name]) if index_config.indexing_profile.settings.metadata_field_name in result else {}
                     except Exception as e:
                         metadata = {}
 
@@ -133,6 +134,7 @@ class AzureAISearchServiceRetriever(BaseRetriever, CitationRetrievalBase):
         """
         citations = []
         added_ids = set()  # Avoid duplicates
+        
         for result in self.search_results:  # Unpack the tuple
             result_id = result.id
             metadata = result.metadata
