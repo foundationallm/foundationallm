@@ -84,5 +84,17 @@ namespace FoundationaLLM.Common.Models.Orchestration
         /// </summary>
         [JsonPropertyName("deleted")]
         public bool Deleted { get; set; }
+
+        /// <summary>
+        /// List of file object identifiers.
+        /// </summary>
+        [JsonPropertyName("file_object_identifiers")]
+        public List<string>? FileObjectIdentifiers { get; set; }
+
+        /// <summary>
+        /// Deep link of the file.
+        /// </summary>
+        [JsonPropertyName("core_api_deep_link")]
+        public string? CoreAPIDeepLink { get; set; }
     }
 }
