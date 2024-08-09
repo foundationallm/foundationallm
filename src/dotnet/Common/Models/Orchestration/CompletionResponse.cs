@@ -25,8 +25,6 @@ public class CompletionResponse : CompletionResponseBase
     /// <param name="userPromptTokens">The number of tokens in the prompt.</param>
     /// <param name="responseTokens">The number of tokens in the completion.</param>
     /// <param name="userPromptEmbedding">User prompt embedding.</param>
-    /// <param name="fileObjectIdentifiers">List of file object identifiers.</param>
-    /// <param name="coreAPIDeepLink">Deep link of the object.</param>
     public CompletionResponse(string operationId, string completion, string userPrompt, int userPromptTokens, int responseTokens,
         float[]? userPromptEmbedding)
     {
