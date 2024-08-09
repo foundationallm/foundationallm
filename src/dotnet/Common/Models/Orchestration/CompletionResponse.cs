@@ -28,7 +28,7 @@ public class CompletionResponse : CompletionResponseBase
     /// <param name="fileObjectIdentifiers">List of file object identifiers.</param>
     /// <param name="coreAPIDeepLink">Deep link of the object.</param>
     public CompletionResponse(string operationId, string completion, string userPrompt, int userPromptTokens, int responseTokens,
-        float[]? userPromptEmbedding, List<string>? fileObjectIdentifiers, string? coreAPIDeepLink)
+        float[]? userPromptEmbedding)
     {
         OperationId = operationId;
         Completion = completion;
@@ -36,8 +36,6 @@ public class CompletionResponse : CompletionResponseBase
         PromptTokens = userPromptTokens;
         CompletionTokens = responseTokens;
         UserPromptEmbedding = userPromptEmbedding;
-        FileObjectIdentifiers = fileObjectIdentifiers;
-        CoreAPIDeepLink = coreAPIDeepLink;
     }
 
     /// <summary>
