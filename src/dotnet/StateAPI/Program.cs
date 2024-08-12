@@ -44,6 +44,8 @@ builder.Configuration.AddAzureAppConfiguration(options =>
 if (builder.Environment.IsDevelopment())
     builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
 
+builder.AddLogging();
+
 builder.AddOpenTelemetry(
     AppConfigurationKeys.FoundationaLLM_APIEndpoints_StateAPI_Essentials_AppInsightsConnectionString,
     ServiceNames.StateAPI);

@@ -70,6 +70,8 @@ namespace FoundationaLLM.Orchestration.API
 
             // Add services to the container.
 
+            builder.AddLogging();
+
             // Add OpenTelemetry.
             builder.AddOpenTelemetry(
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_OrchestrationAPI_Essentials_AppInsightsConnectionString,

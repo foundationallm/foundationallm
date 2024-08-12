@@ -44,6 +44,8 @@ builder.AddAuthenticationConfiguration(
     requireScopes: false,
     allowACLAuthorization: true);
 
+builder.AddLogging();
+
 // Add OpenTelemetry.
 builder.AddOpenTelemetry(
     AuthorizationKeyVaultSecretNames.FoundationaLLM_APIEndpoints_AuthorizationAPI_AppInsightsConnectionString,

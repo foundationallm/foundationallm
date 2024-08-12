@@ -55,6 +55,8 @@ namespace FoundationaLLM.SemanticKernel.API
             if (builder.Environment.IsDevelopment())
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
 
+            builder.AddLogging();
+
             // Add OpenTelemetry.
             builder.AddOpenTelemetry(
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_SemanticKernelAPI_Essentials_AppInsightsConnectionString,

@@ -66,6 +66,8 @@ namespace FoundationaLLM.Gatekeeper.API
             builder.AddGroupMembership();
             builder.AddAuthorizationService();
 
+            builder.AddLogging();
+
             // Add OpenTelemetry.
             builder.AddOpenTelemetry(
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_GatekeeperAPI_Essentials_AppInsightsConnectionString,
