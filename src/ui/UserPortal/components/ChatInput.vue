@@ -2,11 +2,11 @@
 	<div class="chat-input p-inputgroup">
 		<div class="input-wrapper">
 			<i
-				v-tooltip.top="{ value: 'Use Shift+Enter to add a new line', autoHide: false }"
+				v-tooltip.focus.top="{ value: 'Use Shift+Enter to add a new line', autoHide: false }"
 				class="pi pi-info-circle tooltip-component"
 			></i>
 			<Button
-				v-tooltip.top="{
+				v-tooltip.focus.top="{
 					value: `Attach files (${fileArrayFiltered.length === 1 ? '1 file' : fileArrayFiltered.length + ' files'})`,
 					autoHide: false
 				}"

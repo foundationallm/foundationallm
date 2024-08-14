@@ -27,7 +27,7 @@
 								},
 							}"
 						/>
-						<span v-tooltip.top="{ value: formatTimeStamp(message.timeStamp), autoHide: false }" class="time-stamp">{{
+						<span v-tooltip.focus.top="{ value: formatTimeStamp(message.timeStamp), autoHide: false }" class="time-stamp">{{
 							$filters.timeAgo(new Date(message.timeStamp))
 						}}</span>
 					</span>
@@ -71,7 +71,7 @@
 						<span
 							v-for="citation in message.citations"
 							:key="citation.id"
-							v-tooltip.top="{ value: citation.filepath, showDelay: 500, hideDelay: 300 }"
+							v-tooltip.focus.top="{ value: citation.filepath, showDelay: 500, hideDelay: 300 }"
 							class="citation"
 						>
 							<i class="pi pi-file"></i>
