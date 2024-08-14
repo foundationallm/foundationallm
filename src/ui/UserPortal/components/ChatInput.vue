@@ -2,13 +2,14 @@
 	<div class="chat-input p-inputgroup">
 		<div class="input-wrapper">
 			<i
-				v-tooltip.top="'Use Shift+Enter to add a new line'"
+				v-tooltip.top="{ value: 'Use Shift+Enter to add a new line', autoHide: false }"
 				class="pi pi-info-circle tooltip-component"
 			></i>
 			<Button
-				v-tooltip.top="
-					`Attach files (${fileArrayFiltered.length === 1 ? '1 file' : fileArrayFiltered.length + ' files'})`
-				"
+				v-tooltip.top="{
+					value: `Attach files (${fileArrayFiltered.length === 1 ? '1 file' : fileArrayFiltered.length + ' files'})`,
+					autoHide: false
+				}"
 				:badge="fileArrayFiltered.length.toString() || null"
 				:aria-label="'Upload file (' + fileArrayFiltered.length.toString() + ' files attached)'"
 				icon="pi pi-paperclip"

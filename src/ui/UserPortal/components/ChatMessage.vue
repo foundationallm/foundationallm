@@ -27,7 +27,7 @@
 								},
 							}"
 						/>
-						<span v-tooltip="formatTimeStamp(message.timeStamp)" class="time-stamp">{{
+						<span v-tooltip.top="{ value: formatTimeStamp(message.timeStamp), autoHide: false }" class="time-stamp">{{
 							$filters.timeAgo(new Date(message.timeStamp))
 						}}</span>
 					</span>
