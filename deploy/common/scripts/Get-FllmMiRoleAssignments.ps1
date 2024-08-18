@@ -11,29 +11,6 @@ $ErrorActionPreference = "Stop"
 
 . ./Function-Library.ps1
 
-# Function to get role assignments at different scopes
-function Get-RoleAssignments {
-	param (
-		[string]$principalId,
-		[string]$scope
-	)
-
-
-
-	$roleAssignments = $null
-	Invoke-CliCommand "Get role assignments for the principal at the specified scope" {
-		$script:roleAssignments = az role assignment list `
-			--assignee $principalId `
-			--scope $scope `
-			--output json | `
-			ConvertFrom-Json -AsHashtable
-
-		Write-Host "Role Assignments:"
-		$roleAssignments | ConvertTo-Json
-	}
-	return $roleAssignments
-}
-
 # Set the subscription context
 Invoke-CliCommand "Set the subscription context" {
 	az account set --subscription $subscriptionId
@@ -60,14 +37,11 @@ foreach ($rg in $subscriptionRgs) {
 	}
 }
 
-# Show the resource group names
-Write-Host "Resource Groups:"
-$resourceGroups | ConvertTo-Json
-
 # Loop through each resource group in the map
+$report = @()
 foreach ($resourceGroup in $resourceGroups.GetEnumerator()) {
-	$scope = $resourceGroup.Value
-	Write-Host "Processing resource group: $($resourceGroup.Key) with scope: $scope"
+	Write-Host "Processing resource group: $($resourceGroup.Key)"
+	$report += "Resource Group: $($resourceGroup.Key)"
 
 	# Get all Managed Identities in the current resource group
 	$managedIdentities = @()
@@ -80,14 +54,14 @@ foreach ($resourceGroup in $resourceGroups.GetEnumerator()) {
 
 	# Check if we found any managed identities is it null or empty
 	if (-not $managedIdentities -or $managedIdentities.Count -eq 0) {
-		Write-Host "No Managed Identities found in resource group '$($resourceGroup.Key)'."
-		Write-Host "----------------------------"
+		$report += "  No Managed Identities found in resource group '$($resourceGroup.Key)'."
+		$report += "---"
 		continue
 	}
 
 	# Loop through each Managed Identity and summarize their role assignments for different scopes
 	foreach ($managedIdentity in $managedIdentities) {
-		Write-Host "  Managed Identity: $($managedIdentity.name)"
+		$report += "  Managed Identity: $($managedIdentity.name)"
 
 		# Get role assignments for the identity
 		$roleAssignments = $null
@@ -101,18 +75,23 @@ foreach ($resourceGroup in $resourceGroups.GetEnumerator()) {
 
 		# Check if we found any role assignments
 		if (-not $roleAssignments -or $roleAssignments.Count -eq 0) {
-			Write-Host "    No role assignments found for the Managed Identity."
-			Write-Host "----------------------------"
+			$report += "    No role assignments found for the Managed Identity."
+			$report += "---"
 			continue
 		}
 
-		Write-Host "    Summary of Role Assignments:"
+		$report += "    Summary of Role Assignments:"
 		foreach ($roleAssignment in $roleAssignments) {
-			Write-Host "      - Role: $($roleAssignment.roleDefinitionName), Scope: $($roleAssignment.scope)"
+			$report += "      - Role: $($roleAssignment.roleDefinitionName), Scope: $($roleAssignment.scope)"
 		}
 
-		Write-Host "---"
+		$report += "---"
 	}
+	Write-Host "---"
 }
+
+# Save the report to a file
+$reportPath = "./role-assignments-report.txt"
+$report | Out-File -FilePath $reportPath
 
 Write-Host "Script completed."
