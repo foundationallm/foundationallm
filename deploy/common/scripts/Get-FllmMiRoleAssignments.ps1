@@ -1,73 +1,114 @@
-# Disable command echo and set strict mode
+#! /usr/bin/pwsh
+
+Param(
+	[parameter(Mandatory = $true)][string]$subscriptionId,
+	[parameter(Mandatory = $true)][string]$azdEnvName
+)
+
+Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable)
+Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
-Set-StrictMode -Version Latest
 
-# Variables - Set these according to your environment
-$SubscriptionId = "6356d509-cdce-4a30-922d-ff7346a15a65"
-
-# Resource Groups map: Define the resource groups as key-value pairs where
-# the key is the resource group name and the value is the specific scope for that resource group.
-$ResourceGroups = @{
-	"rg-yale-eastus2-app-test"  = "/subscriptions/$SubscriptionId/resourceGroups/rg-yale-eastus2-app-test"
-	"rg-yale-eastus2-auth-test" = "/subscriptions/$SubscriptionId/resourceGroups/rg-yale-eastus2-auth-test"
-	"rg-yale-eastus2-data-test" = "/subscriptions/$SubscriptionId/resourceGroups/rg-yale-eastus2-data-test"
-	"rg-yale-eastus2-jbx-test"  = "/subscriptions/$SubscriptionId/resourceGroups/rg-yale-eastus2-jbx-test"
-	"rg-yale-eastus2-net-test"  = "/subscriptions/$SubscriptionId/resourceGroups/rg-yale-eastus2-net-test"
-	"rg-yale-eastus2-oai-test"  = "/subscriptions/$SubscriptionId/resourceGroups/rg-yale-eastus2-oai-test"
-	"rg-yale-eastus2-ops-test"  = "/subscriptions/$SubscriptionId/resourceGroups/rg-yale-eastus2-ops-test"
-	"rg-yale-eastus2-storage-test" = "/subscriptions/$SubscriptionId/resourceGroups/rg-yale-eastus2-storage-test"
-	"rg-yale-eastus2-vec-test"  = "/subscriptions/$SubscriptionId/resourceGroups/rg-yale-eastus2-vec-test"
-	# Add more resource groups and their specific scopes as needed
-}
-
-# Set the subscription context
-az account set --subscription $SubscriptionId
+. ./Function-Library.ps1
 
 # Function to get role assignments at different scopes
 function Get-RoleAssignments {
 	param (
-		[string]$PrincipalId,
-		[string]$Scope
+		[string]$principalId,
+		[string]$scope
 	)
-	$RoleAssignments = az role assignment list --assignee $PrincipalId --scope $Scope --output json | ConvertFrom-Json
-	return $RoleAssignments
+
+
+
+	$roleAssignments = $null
+	Invoke-CliCommand "Get role assignments for the principal at the specified scope" {
+		$script:roleAssignments = az role assignment list `
+			--assignee $principalId `
+			--scope $scope `
+			--output json | `
+			ConvertFrom-Json -AsHashtable
+
+		Write-Host "Role Assignments:"
+		$roleAssignments | ConvertTo-Json
+	}
+	return $roleAssignments
 }
 
+# Set the subscription context
+Invoke-CliCommand "Set the subscription context" {
+	az account set --subscription $subscriptionId
+}
+
+# List all Resource Groups
+$subscriptionRgs = $null
+Invoke-CliCommand "List all resource groups in the subscription" {
+	$script:subscriptionRgs = az group list `
+		--subscription $subscriptionId `
+		--output json | `
+		ConvertFrom-Json -AsHashtable
+}
+
+# Filter for the resource groups where the tags property exists
+$resourceGroups = @{}
+foreach ($rg in $subscriptionRgs) {
+	if (-not ($rg.tags -is [hashtable] -and $rg.tags.ContainsKey('azd-env-name'))) {
+		continue
+	}
+
+	if ($rg.tags.'azd-env-name' -eq $azdEnvName) {
+		$resourceGroups[$rg.name] += $rg.id
+	}
+}
+
+# Show the resource group names
+Write-Host "Resource Groups:"
+$resourceGroups | ConvertTo-Json
+
 # Loop through each resource group in the map
-foreach ($ResourceGroup in $ResourceGroups.Keys) {
-	$Scope = $ResourceGroups[$ResourceGroup]
-	Write-Host "Processing resource group: $ResourceGroup with scope: $Scope"
+foreach ($resourceGroup in $resourceGroups.GetEnumerator()) {
+	$scope = $resourceGroup.Value
+	Write-Host "Processing resource group: $($resourceGroup.Key) with scope: $scope"
 
 	# Get all Managed Identities in the current resource group
-	$ManagedIdentities = az identity list --resource-group $ResourceGroup --output json | ConvertFrom-Json
+	$managedIdentities = @()
+	Invoke-CliCommand "List all managed identities in the resource group" {
+		$script:managedIdentities = az identity list `
+			--resource-group $resourceGroup.Key `
+			--output json | `
+			ConvertFrom-Json -AsHashtable
+	}
 
-	if (-not $ManagedIdentities) {
-		Write-Host "No Managed Identities found in resource group '$ResourceGroup'."
+	# Check if we found any managed identities is it null or empty
+	if (-not $managedIdentities -or $managedIdentities.Count -eq 0) {
+		Write-Host "No Managed Identities found in resource group '$($resourceGroup.Key)'."
 		Write-Host "----------------------------"
 		continue
 	}
 
 	# Loop through each Managed Identity and summarize their role assignments for different scopes
-	foreach ($ManagedIdentity in $ManagedIdentities) {
-		Write-Host "  Managed Identity: $($ManagedIdentity.Name)"
-        
-		# Get role assignments at the subscription level
-		$SubscriptionRoles = Get-RoleAssignments -PrincipalId $ManagedIdentity.PrincipalId -Scope "/subscriptions/$SubscriptionId"
-        
-		# Get role assignments at the resource group level
-		$ResourceGroupRoles = Get-RoleAssignments -PrincipalId $ManagedIdentity.PrincipalId -Scope $Scope
-        
-		# Combine all role assignments
-		$AllRoles = @($SubscriptionRoles + $ResourceGroupRoles)
-        
-		if (-not $AllRoles) {
-			Write-Host "    No role assignments found at the subscription or resource group scope."
+	foreach ($managedIdentity in $managedIdentities) {
+		Write-Host "  Managed Identity: $($managedIdentity.name)"
+
+		# Get role assignments for the identity
+		$roleAssignments = $null
+		Invoke-CliCommand "Get role assignments for the managed identity" {
+			$script:roleAssignments = az role assignment list `
+				--all `
+				--assignee $managedIdentity.principalId `
+				-o json | `
+				ConvertFrom-Json -AsHashtable
 		}
-		else {
-			Write-Host "    Summary of Role Assignments:"
-			foreach ($RoleAssignment in $AllRoles) {
-				Write-Host "      - Role: $($RoleAssignment.roleDefinitionName), Scope: $($RoleAssignment.scope)"
-			}
+
+		# Check if we found any role assignments
+		if (-not $roleAssignments -or $roleAssignments.Count -eq 0) {
+			Write-Host "    No role assignments found for the Managed Identity."
+			Write-Host "----------------------------"
+			continue
+		}
+
+		Write-Host "    Summary of Role Assignments:"
+		foreach ($roleAssignment in $roleAssignments) {
+			Write-Host "      - Role: $($roleAssignment.roleDefinitionName), Scope: $($roleAssignment.scope)"
 		}
 
 		Write-Host "---"
