@@ -1,5 +1,34 @@
 #! /usr/bin/pwsh
 
+<#
+.SYNOPSIS
+Get-FllmMiRoleAssignments.ps1 - Retrieves role assignments for Managed
+Identities in specified resource groups.
+
+.DESCRIPTION
+This script retrieves role assignments for Managed Identities in the specified
+resource groups. It sets the subscription context, lists all resource groups,
+filters for resource groups with a specific tag, and then retrieves role
+assignments for each Managed Identity within those resource groups. The script
+generates a report summarizing the role assignments and saves it to a file.
+
+.PARAMETER subscriptionId
+The ID of the subscription to retrieve role assignments from.
+
+.PARAMETER azdEnvName
+The name of the AZD environment.
+
+.EXAMPLE
+.\Get-FllmMiRoleAssignments.ps1 -subscriptionId "12345678-1234-1234-1234-1234567890ab" -azdEnvName "Dev"
+
+This example retrieves role assignments for Managed Identities in the specified
+subscription and AZD environment.
+
+.OUTPUTS
+A report summarizing the role assignments for Managed Identities in the
+specified resource groups.
+
+#>
 Param(
 	[parameter(Mandatory = $true)][string]$subscriptionId,
 	[parameter(Mandatory = $true)][string]$azdEnvName
