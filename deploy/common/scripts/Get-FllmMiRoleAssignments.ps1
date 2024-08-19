@@ -45,26 +45,10 @@ Invoke-CliCommand "Set the subscription context" {
 	az account set --subscription $subscriptionId
 }
 
-# List all Resource Groups
-$subscriptionRgs = $null
-Invoke-CliCommand "List all resource groups in the subscription" {
-	$script:subscriptionRgs = az group list `
-		--subscription $subscriptionId `
-		--output json | `
-		ConvertFrom-Json -AsHashtable
-}
-
-# Filter for the resource groups where the tags property exists
-$resourceGroups = @{}
-foreach ($rg in $subscriptionRgs) {
-	if (-not ($rg.tags -is [hashtable] -and $rg.tags.ContainsKey('azd-env-name'))) {
-		continue
-	}
-
-	if ($rg.tags.'azd-env-name' -eq $azdEnvName) {
-		$resourceGroups[$rg.name] += $rg.id
-	}
-}
+# Find all Resource Groups with the specified AZD environment tag
+$resourceGroups = Get-ResourceGroups `
+	-subscriptionId $subscriptionId `
+	-azdEnvName $azdEnvName
 
 # Loop through each resource group in the map
 $report = @()
