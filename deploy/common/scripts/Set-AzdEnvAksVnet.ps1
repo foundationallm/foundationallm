@@ -30,7 +30,8 @@
 
 Param(
 	[parameter(Mandatory = $false)][string]$fllmAksServiceCidr = "10.100.0.0/16", # CIDR block for the VNet - e.g., 10.100.0.0/16
-	[parameter(Mandatory = $false)][string]$fllmVnetCidr = "10.220.128.0/20" # CIDR block for the VNet - e.g., 10.220.128.0/20
+	[parameter(Mandatory = $false)][string]$fllmVnetCidr = "10.220.128.0/20", # CIDR block for the VNet - e.g., 10.220.128.0/20
+	[parameter(Mandatory = $false)][string]$fllmAllowedExternalCidrs = "192.168.101.0/28" # CIDR block for NSGs to allow VPN or HUB VNet - e.g., 192.168.101.0/28,10.0.0.0/16 - comma separated - updates allow-vpn nsg rule
 )
 
 # Set Debugging and Error Handling
@@ -49,6 +50,7 @@ $userPortalHostname = (Get-ChildItem -Path "$basePath/chatui" -Filter "*.pfx").N
 
 # Set the environment values
 $values = @(
+	"FLLM_ALLOWED_CIDR=$fllmAllowedExternalCidrs",
 	"FLLM_CORE_API_HOSTNAME=$coreApiHostname",
 	"FLLM_AKS_SERVICE_CIDR=$fllmAksServiceCidr",
 	"FLLM_VNET_CIDR=$fllmVnetCidr",
@@ -64,6 +66,7 @@ azd env list
 # Write AZD environment values
 Write-Host -ForegroundColor Yellow "Setting azd environment values for Networking:"
 Write-Host -ForegroundColor Yellow "-------------------------------------------"
+Write-Host -ForegroundColor Yellow "FLLM Allowed External CIDRs: $fllmAllowedExternalCidrs"
 Write-Host -ForegroundColor Yellow "FLLM Vnet CIDR Range: $fllmVnetCidr"
 Write-Host -ForegroundColor Yellow "FLLM AKS Service CIDR Range: $fllmAksServiceCidr"
 Write-Host -ForegroundColor Yellow "Core API Hostname: $coreApiHostname"

@@ -81,7 +81,8 @@ $mgmtAppId = (az ad app list --display-name "$mgmtAppName" --query '[].appId' --
 $mgmtClientAppId = (az ad app list --display-name "$mgmtClientAppName" --query '[].appId' --output tsv)
 
 $values = @(
-	"ENTRA_AUTH_API_CLIENT_ID=$authAppId",
+   "ADMIN_GROUP_OBJECT_ID=$adminGroupId"	
+   "ENTRA_AUTH_API_CLIENT_ID=$authAppId",
 	"ENTRA_AUTH_API_INSTANCE=https://login.microsoftonline.com/",
 	"ENTRA_AUTH_API_SCOPES=api://FoundationaLLM-Authorization",
 	"ENTRA_CHAT_UI_CLIENT_ID=$coreClientAppId",
@@ -91,8 +92,7 @@ $values = @(
 	"ENTRA_MANAGEMENT_API_CLIENT_ID=$mgmtAppId",
 	"ENTRA_MANAGEMENT_API_SCOPES=Data.Manage",
 	"ENTRA_MANAGEMENT_UI_CLIENT_ID=$mgmtClientAppId",
-	"ENTRA_MANAGEMENT_UI_SCOPES=api://FoundationaLLM-Management/Data.Manage",
-	"ADMIN_GROUP_OBJECT_ID=$adminGroupId"
+	"ENTRA_MANAGEMENT_UI_SCOPES=api://FoundationaLLM-Management/Data.Manage"
 )
 
 # Show azd environments
