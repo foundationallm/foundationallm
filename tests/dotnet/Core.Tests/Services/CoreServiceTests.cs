@@ -3,17 +3,13 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Chat;
 using FoundationaLLM.Common.Models.Configuration.Branding;
-using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
-using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.Core.Interfaces;
-using FoundationaLLM.Core.Models;
 using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 //using Microsoft.Graph.Models.CallRecords;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 

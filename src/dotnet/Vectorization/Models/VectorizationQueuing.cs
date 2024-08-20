@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FoundationaLLM.Vectorization.Models
+﻿namespace FoundationaLLM.Vectorization.Models
 {
     /// <summary>
     /// Types of queuing engines used to dispatch vectorization requests.

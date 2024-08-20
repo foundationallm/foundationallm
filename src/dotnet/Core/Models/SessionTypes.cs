@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FoundationaLLM.Core.Models
+﻿namespace FoundationaLLM.Core.Models
 {
     /// <summary>
     /// Constants for chat session types.

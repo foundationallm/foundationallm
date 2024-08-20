@@ -53,6 +53,7 @@ param actionGroupId string
 @description('The Managed Identity for the AKS Cluster')
 param admnistratorObjectIds array
 param aksServiceCidr string = '10.100.0.0/16'
+param aksNodeSku string
 
 param hubResourceGroup string
 param hubSubscriptionId string = subscription().subscriptionId
@@ -228,23 +229,6 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
           maxSurge: '200'
         }
       }
-      {
-        count: 1
-        enableAutoScaling: true
-        maxCount: 10
-        minCount: 1
-        mode: 'User'
-        name: 'user'
-        osDiskSizeGB: 1024
-        tags: tags
-        type: 'VirtualMachineScaleSets'
-        vmSize: 'Standard_D4s_v3'
-        vnetSubnetID: subnetId
-
-        upgradeSettings: {
-          maxSurge: '200'
-        }
-      }
     ]
 
     apiServerAccessProfile: {
@@ -324,6 +308,27 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
       }
     }
 
+  }
+}
+
+resource userPool 'Microsoft.ContainerService/managedClusters/agentPools@2024-04-02-preview' = {
+  name: 'fllm'
+  parent: main
+  properties: {
+    count: 1
+    enableAutoScaling: true
+    maxCount: 5
+    minCount: 1
+    mode: 'User'
+    osDiskSizeGB: 1024
+    tags: tags
+    type: 'VirtualMachineScaleSets'
+    vmSize: aksNodeSku
+    vnetSubnetID: subnetId
+
+    upgradeSettings: {
+      maxSurge: '200'
+    }
   }
 }
 

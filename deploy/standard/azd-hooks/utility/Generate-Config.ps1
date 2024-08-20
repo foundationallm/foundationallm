@@ -228,6 +228,7 @@ $tokens.coreApiRoleAssignmentGuid = $(New-Guid).Guid
 $tokens.vectorizationApiRoleAssignmentGuid = $(New-Guid).Guid
 $tokens.orchestrationApiRoleAssignmentGuid = $(New-Guid).Guid
 $tokens.gatekeeperApiRoleAssignmentGuid = $(New-Guid).Guid
+$tokens.gatewayApiRoleAssignmentGuid = $(New-Guid).Guid
 $tokens.vectorizationJobRoleAssignmentGuid = $(New-Guid).Guid
 $tokens.subscriptionId = $subscriptionId
 $tokens.storageResourceGroup = $resourceGroups.storage

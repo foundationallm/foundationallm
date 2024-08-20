@@ -56,27 +56,27 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>RoleDefinitionNames.cs</LastGenOutput>
     </None>
-    <None Update="Constants\Configuration\AppConfigurationKeyFilters.tt">
+    <None Update="Templates\AppConfigurationKeyFilters.tt">
       <LastGenOutput>AppConfigurationKeyFilters.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Constants\Configuration\AppConfigurationKeySections.tt">
+    <None Update="Templates\AppConfigurationKeySections.tt">
       <LastGenOutput>AppConfigurationKeySections.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Constants\Configuration\KeyVaultSecretNames.tt">
+    <None Update="Templates\KeyVaultSecretNames.tt">
       <LastGenOutput>KeyVaultSecretNames.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Constants\Configuration\DependencyInjection.tt">
+    <None Update="Templates\DependencyInjection.tt">
       <LastGenOutput>DependencyInjection.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Constants\Configuration\DependencyInjectionKeys.tt">
+    <None Update="Templates\DependencyInjectionKeys.tt">
       <LastGenOutput>DependencyInjectionKeys.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Constants\Configuration\AppConfigurationKeys.tt">
+    <None Update="Templates\AppConfigurationKeys.tt">
       <LastGenOutput>AppConfigurationKeys.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
@@ -142,40 +142,40 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>RoleDefinitionNames.tt</DependentUpon>
     </Compile>
-    <Compile Update="Constants\Configuration\AppConfigurationKeyFilters.cs">
+    <Compile Update="Templates\AppConfigurationKeyFilters.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>AppConfigurationKeyFilters.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Constants\Configuration\AppConfigurationKeySections.cs">
-      <DependentUpon>AppConfigurationKeySections.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Constants\Configuration\DependencyInjection.cs">
-      <DependentUpon>DependencyInjection.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Constants\Configuration\DependencyInjectionKeys.cs">
-      <DependentUpon>DependencyInjectionKeys.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Constants\Configuration\AppConfigurationKeys.cs">
+    <Compile Update="Templates\AppConfigurationKeys.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AppConfigurationKeys.tt</DependentUpon>
     </Compile>
-    <Compile Update="Constants\Configuration\KeyVaultSecretNames.cs">
+    <Compile Update="Templates\AppConfigurationKeySections.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>KeyVaultSecretNames.tt</DependentUpon>
+      <DependentUpon>AppConfigurationKeySections.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\AuthorizableActions.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AuthorizableActions.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\DependencyInjection.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DependencyInjection.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\DependencyInjectionKeys.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DependencyInjectionKeys.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\KeyVaultSecretNames.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>KeyVaultSecretNames.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\RoleDefinitions.cs">
       <DesignTime>True</DesignTime>

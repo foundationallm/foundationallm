@@ -156,6 +156,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             if (contentItems.Count == 0)
                 return [];
 
+            if (contentItems.All(ci => ci.AgentCapabilityCategory == AgentCapabilityCategoryNames.FoundationaLLMKnowledgeManagement))
+                return contentItems;
+
             var result = contentItems.Select(ci => TransformContentItem(ci, newFileMappings)).ToList();
 
             var fileUserContext = await _azureOpenAIResourceProvider.GetResource<FileUserContext>(

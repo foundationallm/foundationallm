@@ -7,6 +7,9 @@ param administratorObjectId string
 
 param aksServiceCidr string
 
+param backendAksNodeSku string
+param frontendAksNodeSku string
+
 @description('The environment name token used in naming resources.')
 param environmentName string
 
@@ -135,6 +138,7 @@ module aksBackend 'modules/aks.bicep' = {
     actionGroupId: actionGroupId
     admnistratorObjectIds: [ administratorObjectId ]
     aksServiceCidr: aksServiceCidr
+    aksNodeSku: backendAksNodeSku
     hubResourceGroup: hubResourceGroup
     hubSubscriptionId: hubSubscriptionId
     location: location
@@ -156,6 +160,7 @@ module aksFrontend 'modules/aks.bicep' = {
     actionGroupId: actionGroupId
     admnistratorObjectIds: [ administratorObjectId ]
     aksServiceCidr: aksServiceCidr
+    aksNodeSku: frontendAksNodeSku
     hubResourceGroup: hubResourceGroup
     hubSubscriptionId: hubSubscriptionId
     location: location
@@ -469,6 +474,7 @@ module cognitiveServicesOpenAiUserCoreRole 'modules/utility/roleAssignments.bice
     principalId: srCoreApi[0].outputs.servicePrincipalId
     roleDefinitionIds: {
       'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
+      'Cognitive Services OpenAI Contributor': 'a001fd3d-188f-4b5d-821b-7da978bf7442'
     }
   }
 }

@@ -206,7 +206,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 {
                     Orchestrator = LLMOrchestrationServiceNames.LangChain
                 },
-                AIModelObjectId = TestAIModelNames.Completions_GPT4_32K
+                AIModelObjectId = TestAIModelNames.Completions_GPT4o
             },
             new KnowledgeManagementAgent
             {

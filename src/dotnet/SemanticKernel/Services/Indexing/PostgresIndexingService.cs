@@ -1,15 +1,10 @@
-﻿using FoundationaLLM.Common.Authentication;
-using FoundationaLLM.Common.Exceptions;
+﻿using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Vectorization;
-using FoundationaLLM.Common.Settings;
 using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Connectors.AzureAISearch;
 using Microsoft.SemanticKernel.Memory;
-using System.ComponentModel;
 using System.Text.Json;
 using Microsoft.SemanticKernel.Connectors.Postgres;
 

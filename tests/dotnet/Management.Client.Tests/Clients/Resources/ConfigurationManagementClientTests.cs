@@ -4,7 +4,6 @@ using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
-using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using NSubstitute;
 
 namespace Management.Client.Tests.Clients.Resources

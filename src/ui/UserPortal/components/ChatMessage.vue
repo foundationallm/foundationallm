@@ -5,10 +5,9 @@
 				<div class="message__header">
 					<!-- Sender -->
 					<span class="header__sender">
-						<img
+						<AgentIcon
 							v-if="message.sender !== 'User'"
-							class="avatar"
-							src="~/assets/FLLM-Agent-Light.svg"
+							:src="$appConfigStore.agentIconUrl || '~/assets/FLLM-Agent-Light.svg'"
 							alt="Agent avatar"
 						/>
 						<span>{{ getDisplayName() }}</span>
@@ -39,6 +38,7 @@
 					<AttachmentList
 						v-if="message.sender === 'User'"
 						:attachments="message.attachmentDetails ?? []"
+						:attachmentIds="message.attachments"
 					/>
 
 					<template v-if="message.sender === 'Assistant' && message.type === 'LoadingMessage'">
@@ -60,7 +60,10 @@
 								<template v-if="content.loading || (!content.error && !content.blobUrl)">
 									<div class="loading-content-container">
 										<i class="pi pi-image loading-content-icon" style="font-size: 2rem"></i>
-										<i class="pi pi-spin pi-spinner loading-content-icon" style="font-size: 1rem"></i>
+										<i
+											class="pi pi-spin pi-spinner loading-content-icon"
+											style="font-size: 1rem"
+										></i>
 										<span class="loading-content-text">Loading image...</span>
 									</div>
 								</template>
@@ -89,30 +92,30 @@
 								<template v-if="content.loading || (!content.error && !content.blobUrl)">
 									<div class="loading-content-container">
 										<i class="pi pi-chart-line loading-content-icon" style="font-size: 2rem"></i>
-										<i class="pi pi-spin pi-spinner loading-content-icon" style="font-size: 1rem"></i>
+										<i
+											class="pi pi-spin pi-spinner loading-content-icon"
+											style="font-size: 1rem"
+										></i>
 										<span class="loading-content-text">Loading visualization...</span>
 									</div>
 								</template>
-								<iframe
-									v-if="content.blobUrl"
-									:src="content.blobUrl"
-									frameborder="0">
-								</iframe>
+								<iframe v-if="content.blobUrl" :src="content.blobUrl" frameborder="0"> </iframe>
 							</div>
 
 							<div v-else-if="content.type === 'file_path'">
+								Download <i :class="$getFileIconClass(content.fileName, true)" class="attachment-icon"></i> 
 								<a
 									:href="content.blobUrl"
 									:download="content.fileName ?? content.blobUrl ?? content.value"
 									target="_blank"
 								>
-									Download {{ content.fileName ?? content.blobUrl }}
+									{{ content.fileName ?? content.blobUrl }}
 								</a>
 							</div>
 						</div>
 
 						<Button
-							v-if="message.analysisResults && message.analysisResults.length > 0"	
+							v-if="message.analysisResults && message.analysisResults.length > 0"
 							class="message__button"
 							:disabled="message.type === 'LoadingMessage'"
 							size="small"
@@ -220,6 +223,7 @@
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark-dimmed.css';
 import { marked } from 'marked';
+import katex from 'katex';
 import truncate from 'truncate-html';
 import DOMPurify from 'dompurify';
 import type { PropType, ref } from 'vue';
@@ -229,15 +233,46 @@ import api from '@/js/api';
 import CodeBlockHeader from '@/components/CodeBlockHeader.vue';
 import AttachmentList from '@/components/AttachmentList.vue';
 import AnalysisModal from '@/components/AnalysisModal.vue';
+import AgentIcon from '@/components/AgentIcon.vue';
 
 const renderer = new marked.Renderer();
+
 renderer.code = (code, language) => {
+	const sourceCode = code.raw || code;
 	const validLanguage = !!(language && hljs.getLanguage(language));
-	const highlighted = validLanguage ? hljs.highlight(code, { language }) : hljs.highlightAuto(code);
+	const highlighted = validLanguage
+		? hljs.highlight(sourceCode, { language })
+		: hljs.highlightAuto(sourceCode);
 	const languageClass = validLanguage ? `hljs language-${language}` : 'hljs';
-	const encodedCode = encodeURIComponent(code);
+	const encodedCode = encodeURIComponent(sourceCode);
 	return `<pre><code class="${languageClass}" data-code="${encodedCode}" data-language="${highlighted.language}">${highlighted.value}</code></pre>`;
 };
+function processLatex(html) {
+	const blockLatexPattern = /\\\[([^\]]+)\\\]/g;
+	const inlineLatexPattern = /\\\(([^\)]+)\\\)/g;
+
+	// Check if LaTeX syntax is detected in the content
+	const hasBlockLatex = blockLatexPattern.test(html);
+	const hasInlineLatex = inlineLatexPattern.test(html);
+
+	// Process block LaTeX: \[ ... \]
+	html = html.replace(blockLatexPattern, (_, math) => {
+		return katex.renderToString(math, { displayMode: true, throwOnError: false });
+	});
+
+	// Process inline LaTeX: \( ... \)
+	html = html.replace(inlineLatexPattern, (_, math) => {
+		return katex.renderToString(math, { throwOnError: false });
+	});
+
+	// If LaTeX was found, render the content again with marked
+	if (hasBlockLatex || hasInlineLatex) {
+		html = marked(html);
+	}
+
+	return html;
+}
+
 marked.use({ renderer });
 
 function addCodeHeaderComponents(htmlString) {
@@ -316,7 +351,9 @@ export default {
 
 	computed: {
 		compiledMarkdown() {
-			return DOMPurify.sanitize(marked(this.message.text ?? ''));
+			let htmlContent = processLatex(this.message.text ?? '');
+			htmlContent = marked(htmlContent);
+			return DOMPurify.sanitize(htmlContent);
 		},
 
 		compiledMarkdownComponent() {
@@ -343,9 +380,10 @@ export default {
 
 	methods: {
 		renderMarkdownComponent(contentValue: string) {
-			const sanitizedContent = DOMPurify.sanitize(marked(contentValue));
+			let htmlContent = processLatex(contentValue ?? '');
+			htmlContent = DOMPurify.sanitize(marked(htmlContent));
 			return {
-				template: `<div>${sanitizedContent}</div>`,
+				template: `<div>${htmlContent}</div>`,
 				components: {
 					CodeBlockHeader,
 				},
@@ -419,8 +457,7 @@ export default {
 						if (content.type === 'html') {
 							const blob = new Blob([response], { type: 'text/html' });
 							content.blobUrl = URL.createObjectURL(blob);
-						}
-						else {
+						} else {
 							content.blobUrl = URL.createObjectURL(response);
 						}
 						content.fileName = content.fileName?.split('/').pop();
@@ -639,6 +676,13 @@ iframe {
 		line-height: 1.5;
 	}
 }
+
+.attachment-icon {
+        width: 24px;
+        margin-right: 4px;
+        vertical-align: middle;
+        line-height: 1;
+    }
 </style>
 
 <style lang="scss">

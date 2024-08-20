@@ -1,7 +1,4 @@
-﻿using FoundationaLLM.Vectorization.Models;
-using System.Threading.Tasks;
-
-namespace FoundationaLLM.Vectorization.Interfaces
+﻿namespace FoundationaLLM.Vectorization.Interfaces
 {
     /// <summary>
     /// Manages vectorization requests.

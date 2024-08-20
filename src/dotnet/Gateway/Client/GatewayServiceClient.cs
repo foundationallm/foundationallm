@@ -1,5 +1,4 @@
-﻿using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Vectorization;
+﻿using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Gateway.Exceptions;
 using FoundationaLLM.Gateway.Models;
 using Microsoft.Extensions.Logging;

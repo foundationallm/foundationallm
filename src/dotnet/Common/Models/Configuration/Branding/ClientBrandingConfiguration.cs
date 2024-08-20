@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FoundationaLLM.Common.Models.Configuration.Branding
+﻿namespace FoundationaLLM.Common.Models.Configuration.Branding
 {
     /// <summary>
     /// Provides configuration for client branding.
@@ -20,9 +14,13 @@ namespace FoundationaLLM.Common.Models.Configuration.Branding
         /// </summary>
         public string? PageTitle { get; set; }
         /// <summary>
-        /// The URL of the client's favicon. Can be an absolute URL or a relative URL.
+        /// The URL of the client's favicon. Can be an absolute URL, relative path, or base64string value.
         /// </summary>
         public string? FavIconUrl { get; set; }
+        /// <summary>
+        /// The agent icon that displays next to the agent select list and agent responses. Can be an absolute URL, relative path, or base64string value.
+        /// </summary>
+        public string? AgentIconUrl { get; set; }
         /// <summary>
         /// The URL of the client's logo. Can be an absolute URL or a relative URL.
         /// </summary>

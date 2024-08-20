@@ -1,5 +1,4 @@
-﻿using FoundationaLLM.Client.Management.Clients.Resources;
-using FoundationaLLM.Common.Models.ResourceProviders;
+﻿using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 
 namespace FoundationaLLM.Client.Management.Interfaces

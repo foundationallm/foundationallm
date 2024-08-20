@@ -39,6 +39,8 @@
 				:key="session.id"
 				class="chat-sidebar__chat"
 				@click="handleSessionSelected(session)"
+				@keydown.enter="handleSessionSelected(session)"
+				tabindex="0"
 			>
 				<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
 					<!-- Chat name -->
@@ -92,15 +94,19 @@
 		<Dialog
 			class="sidebar-dialog"
 			:visible="sessionToRename !== null"
+			v-if="sessionToRename !== null"
 			modal
 			:header="`Rename Chat ${sessionToRename?.name}`"
 			:closable="false"
+			v-focustrap
 		>
 			<InputText
 				v-model="newSessionName"
 				type="text"
 				placeholder="New chat name"
 				:style="{ width: '100%' }"
+				@keydown="renameSessionInputKeydown"
+				autofocus
 			></InputText>
 			<template #footer>
 				<Button label="Cancel" text @click="closeRenameModal" />
@@ -112,14 +118,22 @@
 		<Dialog
 			class="sidebar-dialog"
 			:visible="sessionToDelete !== null"
+			v-if="sessionToDelete !== null"
 			modal
 			header="Delete a Chat"
 			:closable="false"
+			@keydown="deleteSessionKeydown"
+			v-focustrap
 		>
-			<p>Do you want to delete the chat "{{ sessionToDelete.name }}" ?</p>
+			<div v-if="deleteProcessing" class="delete-dialog-content">
+				<i class="pi pi-spin pi-spinner" style="font-size: 2rem;"></i>
+			</div>
+			<div v-else>
+				<p>Do you want to delete the chat "{{ sessionToDelete.name }}" ?</p>
+			</div>
 			<template #footer>
-				<Button label="Cancel" text @click="sessionToDelete = null" />
-				<Button label="Delete" severity="danger" @click="handleDeleteSession" />
+				<Button label="Cancel" text @click="sessionToDelete = null" :disabled="deleteProcessing" />
+				<Button label="Delete" severity="danger" @click="handleDeleteSession" autofocus :disabled="deleteProcessing" />
 			</template>
 		</Dialog>
 	</div>
@@ -137,6 +151,7 @@ export default {
 			sessionToRename: null as Session | null,
 			newSessionName: '' as string,
 			sessionToDelete: null as Session | null,
+			deleteProcessing: false,
 		};
 	},
 
@@ -186,8 +201,25 @@ export default {
 		},
 
 		async handleDeleteSession() {
+			this.deleteProcessing = true;
 			await this.$appStore.deleteSession(this.sessionToDelete!);
 			this.sessionToDelete = null;
+			this.deleteProcessing = false;
+		},
+
+		renameSessionInputKeydown(event: KeyboardEvent) {
+			if (event.key === 'Enter') {
+				this.handleRenameSession();
+			}
+			if (event.key === 'Escape') {
+				this.closeRenameModal();
+			}
+		},
+
+		deleteSessionKeydown(event: KeyboardEvent) {
+			if (event.key === 'Escape') {
+				this.sessionToDelete = null;
+			}
 		},
 	},
 };
@@ -351,6 +383,12 @@ export default {
 
 .overlay-panel__option:hover {
 	color: var(--primary-color);
+}
+
+.delete-dialog-content {
+	display: flex; 
+	justify-content: 
+	center; padding: 20px 150px;
 }
 
 @media only screen and (max-width: 950px) {

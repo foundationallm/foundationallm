@@ -2,7 +2,6 @@
 using FluentValidation;
 using FoundationaLLM.Agent.Models.Resources;
 using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.ResourceProviders;

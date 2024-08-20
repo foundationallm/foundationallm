@@ -1,11 +1,4 @@
-﻿using FoundationaLLM.Common.Settings;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using Microsoft.Azure.Cosmos;
 
 namespace FoundationaLLM.SemanticKernel.Core.Models.Configuration

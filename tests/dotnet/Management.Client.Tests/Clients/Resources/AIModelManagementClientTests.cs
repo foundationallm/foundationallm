@@ -2,7 +2,6 @@
 using FoundationaLLM.Client.Management.Interfaces;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
 using NSubstitute;
 

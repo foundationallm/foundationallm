@@ -1,5 +1,3 @@
-using Azure.Core;
-using Azure.Storage.Blobs;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;

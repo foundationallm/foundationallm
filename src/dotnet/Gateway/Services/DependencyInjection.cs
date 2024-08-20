@@ -1,6 +1,4 @@
 ﻿using FoundationaLLM.Common.Constants.Configuration;
-using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Gateway.Client;
 using FoundationaLLM.Gateway.Interfaces;
 using FoundationaLLM.Gateway.Models.Configuration;
 using FoundationaLLM.Gateway.Services;

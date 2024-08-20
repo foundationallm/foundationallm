@@ -79,7 +79,8 @@ foreach ($chart in $chartsToInstall.GetEnumerator()) {
             --namespace ${serviceNamespace} `
             --values $valuesFile `
             --set image.repository=$($registry)/$($chart.Key) `
-            --set image.tag=$version
+            --set image.tag=$version `
+            --set controller.config.proxy-body-size=512m
     }
 }
 

@@ -8,15 +8,10 @@
 <#@ import namespace="System.Text.Json.Nodes" #>
 <#@ output extension=".cs" #>
 <#
-    string inputFileName = this.Host.ResolvePath($"../Data/AppConfiguration.json");
+    string inputFileName = this.Host.ResolvePath($"../Constants/Data/AppConfiguration.json");
     string inputContent = File.ReadAllText(inputFileName);
     var jsonObjects = JsonNode.Parse(inputContent)!;
-
     Func<JsonNode, string> getName = n => n.GetValue<string>().Replace(":", "_");
-
-    Func<JsonNode, string> getValue = n => string.IsNullOrWhiteSpace(n["secret"].GetValue<string>())
-        ? n["value"].GetValue<string>()
-        : $"{{\\\"uri\\\":\\\"${{env:AZURE_KEY_VAULT_ENDPOINT}}secrets/foundationallm-{n["secret"].GetValue<string>()}}}\\\"}}";
 #>
 // -------------------------------------------------------------------------------
 //
@@ -28,25 +23,23 @@
 namespace FoundationaLLM.Common.Constants.Configuration
 {
     /// <summary>
-    /// Defines all Azure Key vault secret names referred by the Azure App Configuration keys.
+    /// Defines all keys used for named dependency injection.
     /// </summary>
-    public static partial class KeyVaultSecretNames
+    public static partial class DependencyInjectionKeys
     {<#
     foreach (var jsonObject in jsonObjects.AsArray())
     {
-        foreach (var key in jsonObject["configuration_keys"].AsArray())
+        var dependencyInjectionKey = jsonObject["dependency_injection_key"];
+        if (dependencyInjectionKey != null)
         {
-            if (!string.IsNullOrWhiteSpace(key["secret"].GetValue<string>()))
-            {
 #>
-
+        
         /// <summary>
-        /// <#=key["description"].GetValue<string>()#>
+        /// <#=dependencyInjectionKey["description"].GetValue<string>()#>
         /// </summary>
-        public const string FoundationaLLM_<#=getName(jsonObject["namespace"])#>_<#=getName(key["name"])#> =
-            "foundationallm-<#=key["secret"].GetValue<string>()#>";
+        public const string FoundationaLLM_<#=getName(jsonObject["namespace"])#> =
+            "FoundationaLLM:<#=jsonObject["namespace"]#>";
 <#
-            }
         }
     }
 #>

@@ -1,6 +1,4 @@
-﻿using FoundationaLLM.Common.Models.Configuration.Storage;
-
-namespace FoundationaLLM.Vectorization.Models.Configuration
+﻿namespace FoundationaLLM.Vectorization.Models.Configuration
 {
     /// <summary>
     /// Provides configuration settings to initialize a request source service.

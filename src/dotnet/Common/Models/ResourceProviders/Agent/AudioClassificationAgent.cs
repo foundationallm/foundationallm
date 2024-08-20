@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
+﻿namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
 {
     /// <summary>
     /// The Knowledge Management agent metadata model.

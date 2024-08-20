@@ -8,7 +8,7 @@
 <#@ import namespace="System.Text.Json.Nodes" #>
 <#@ output extension=".cs" #>
 <#
-    string inputFileName = this.Host.ResolvePath($"../Data/AppConfiguration.json");
+    string inputFileName = this.Host.ResolvePath($"../Constants/Data/AppConfiguration.json");
     string inputContent = File.ReadAllText(inputFileName);
     var jsonObjects = JsonNode.Parse(inputContent)!;
     Func<JsonNode, string> getName = n => n.GetValue<string>().Replace(":", "_");

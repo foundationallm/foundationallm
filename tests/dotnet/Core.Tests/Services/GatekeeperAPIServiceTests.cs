@@ -1,6 +1,5 @@
 ﻿using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Chat;
-using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Core.Services;
 using FoundationaLLM.TestUtils.Helpers;
 using NSubstitute;

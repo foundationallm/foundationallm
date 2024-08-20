@@ -1,5 +1,4 @@
 ﻿using FoundationaLLM.Common.Models.Orchestration.Response;
-using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Chat
 {

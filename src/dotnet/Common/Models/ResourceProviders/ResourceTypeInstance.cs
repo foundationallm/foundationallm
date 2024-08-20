@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Abstractions;
-using System.Diagnostics.CodeAnalysis;
-
-namespace FoundationaLLM.Common.Models.ResourceProviders
+﻿namespace FoundationaLLM.Common.Models.ResourceProviders
 {
     /// <summary>
     /// Identifies a specific resource type instance.

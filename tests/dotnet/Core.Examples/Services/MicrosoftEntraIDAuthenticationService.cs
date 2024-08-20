@@ -2,7 +2,6 @@
 using FoundationaLLM.Core.Examples.Interfaces;
 using FoundationaLLM.Core.Examples.Models;
 using Microsoft.Extensions.Options;
-using System.Net.Http.Headers;
 
 namespace FoundationaLLM.Core.Examples.Services
 {

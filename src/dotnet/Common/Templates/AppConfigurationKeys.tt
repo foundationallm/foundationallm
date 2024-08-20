@@ -8,7 +8,7 @@
 <#@ import namespace="System.Text.Json.Nodes" #>
 <#@ output extension=".cs" #>
 <#
-    string inputFileName = this.Host.ResolvePath($"../Data/AppConfiguration.json");
+    string inputFileName = this.Host.ResolvePath($"../Constants/Data/AppConfiguration.json");
     string inputContent = File.ReadAllText(inputFileName);
     var jsonObjects = JsonNode.Parse(inputContent)!;
     Func<JsonNode, string> getName = n => n.GetValue<string>().Replace(":", "_");
@@ -23,24 +23,32 @@
 namespace FoundationaLLM.Common.Constants.Configuration
 {
     /// <summary>
-    /// Defines all configuration section names used to map configuration values to settings classes.
+    /// Defines all App Configuration key names used by FoundationaLLM.
     /// </summary>
-    public static partial class AppConfigurationKeySections
+    public static class AppConfigurationKeys
     {<#
     foreach (var jsonObject in jsonObjects.AsArray())
     {
-        var configurationSection = jsonObject["configuration_section"];
-        if (configurationSection != null)
+#>
+
+        #region FoundationaLLM:<#=jsonObject["namespace"]#>
+<#
+        foreach (var key in jsonObject["configuration_keys"].AsArray())
         {
 #>
         
         /// <summary>
-        /// <#=configurationSection["description"].GetValue<string>()#>
+        /// The app configuration key for the FoundationaLLM:<#=jsonObject["namespace"]#>:<#=key["name"]#> setting.
+        /// <para>Value description:<br/><#=key["description"]#></para>
         /// </summary>
-        public const string FoundationaLLM_<#=getName(jsonObject["namespace"])#> =
-            "FoundationaLLM:<#=jsonObject["namespace"]#>";
+        public const string FoundationaLLM_<#=getName(jsonObject["namespace"])#>_<#=getName(key["name"])#> =
+            "FoundationaLLM:<#=jsonObject["namespace"]#>:<#=key["name"]#>";
 <#
         }
+#>
+
+        #endregion
+<#
     }
 #>
     }

@@ -1,5 +1,4 @@
-﻿using Azure.Identity;
-using Azure.Security.KeyVault.Certificates;
+﻿using Azure.Security.KeyVault.Certificates;
 using Azure.Security.KeyVault.Secrets;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Vectorization.Interfaces;
@@ -10,7 +9,6 @@ using PnP.Core.Auth;
 using PnP.Core.Services.Builder.Configuration;
 using PnP.Core.Services;
 using System.Security.Cryptography.X509Certificates;
-using System;
 using PnP.Core.Model.SharePoint;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Models.Vectorization;

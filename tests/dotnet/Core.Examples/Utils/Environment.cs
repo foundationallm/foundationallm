@@ -1,14 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FoundationaLLM.Core.Examples.Exceptions;
 
 namespace FoundationaLLM.Core.Examples.Utils
 {
-	public sealed class Environment
+    public sealed class Environment
 	{
 		/// <summary>
 		/// Simple helper used to load env vars and secrets like credentials,

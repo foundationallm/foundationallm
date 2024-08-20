@@ -1,5 +1,4 @@
 using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
@@ -17,10 +16,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Quartz;
-using System.Configuration;
 using FoundationaLLM.Vectorization.Services.DataSources.Configuration.SQLDatabase;
 using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.Configuration;
 
 namespace FoundationaLLM.Vectorization.Services.Pipelines
 {

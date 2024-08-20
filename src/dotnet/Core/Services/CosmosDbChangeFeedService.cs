@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using FoundationaLLM.Core.Interfaces;
-using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Models.Chat;
 using Microsoft.Azure.Cosmos.Fluent;

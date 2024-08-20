@@ -1,6 +1,4 @@
-﻿using FoundationaLLM.Common.Interfaces;
-
-namespace FoundationaLLM.Common.Constants.OpenAI
+﻿namespace FoundationaLLM.Common.Constants.OpenAI
 {
     /// <summary>
     /// Provides the names of the parameters that can be used to create OpenAI agent capabilities.

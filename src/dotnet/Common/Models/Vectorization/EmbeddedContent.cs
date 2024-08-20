@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FoundationaLLM.Common.Models.Vectorization
+﻿namespace FoundationaLLM.Common.Models.Vectorization
 {
     /// <summary>
     /// Provides information about embedded content.

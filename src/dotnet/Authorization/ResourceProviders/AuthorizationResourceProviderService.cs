@@ -1,9 +1,6 @@
 ﻿using FluentValidation;
-using FoundationaLLM.Authorization.Models;
-using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
-using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models;
 using FoundationaLLM.Common.Models.Authentication;

@@ -21,6 +21,22 @@
 				"value": "IdentityManagementService",
 				"content_type": "",
 				"first_version": "0.8.0"
+			},
+			{
+				"name": "IdentitySubstitutionSecurityPrincipalId",
+				"description": "The object identifier of the security principal who is allowed to substitute its identity with a value provided in the X-USER-IDENTITY header.",
+				"secret": "",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "IdentitySubstitutionUserPrincipalNamePattern",
+				"description": "The Regex pattern used to validate the values allowed as User Principal Name (UPN) substitutes in the X-USER-IDENTITY header.",
+				"secret": "",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
 			}
 		]
 	},
@@ -1172,6 +1188,14 @@
 				"description": "Fav icon url.",
 				"secret": "",
 				"value": "favicon.ico",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AgentIconUrl",
+				"description": "The agent icon that displays next to the agent select list and agent responses. Can be an absolute URL, relative path, or base64string value.",
+				"secret": "",
+				"value": "",
 				"content_type": "",
 				"first_version": "0.8.0"
 			},

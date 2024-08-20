@@ -1,7 +1,4 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-
-namespace FoundationaLLM.Common.Extensions
+﻿namespace FoundationaLLM.Common.Extensions
 {
     /// <summary>
     /// Extends the <see cref="System.String"/> interface with helper methods.

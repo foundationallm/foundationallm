@@ -9,8 +9,8 @@
 .PARAMETER deploymentType
     Specifies whether to use quickstart or standard providers. Acceptable values are 'QuickStart' or 'Standard'.
 
-.PARAMETER providers
-    An array of Azure resource providers to check and register if not already registered.
+.PARAMETER listOnly
+    Writes the list of standard and quickstart providers to a file then exits.
 
 .EXAMPLE
     ./Register-AzureProviders.ps1 -deploymentType "Standard"
@@ -27,7 +27,8 @@
 #>
 
 param (
-    [string]$deploymentType
+    [parameter(Mandatory = $true)][string]$deploymentType,
+    [parameter(Mandatory = $false)][bool]$listOnly = $false
 )
 
 # Set Debugging and Error Handling
@@ -81,6 +82,15 @@ $quickStartProviders = @(
     "Microsoft.Search/searchServices",
     "Microsoft.Storage/storageAccounts"
 )
+
+if($listOnly) {
+    "Standard Providers:" | Out-File -FilePath "fllm.providers.txt"
+    $standardProviders | Out-File -FilePath "fllm.providers.txt" -Append
+
+    "QuickStart Providers:" | Out-File -FilePath "fllm.providers.txt" -Append
+    $quickStartProviders | Out-File -FilePath "fllm.providers.txt" -Append
+    exit
+}
 
 # Select the appropriate list of providers based on the parameter
 if ($deploymentType -eq "Standard") {

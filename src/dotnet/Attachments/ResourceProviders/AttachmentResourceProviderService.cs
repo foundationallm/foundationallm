@@ -1,11 +1,13 @@
 ﻿using Azure.Messaging;
 using FluentValidation;
+using FoundationaLLM.Attachment.Models;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Chat;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
@@ -15,12 +17,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Collections.Concurrent;
-using System.Text;
 using System.Text.Json;
-using FoundationaLLM.Common.Models.Chat;
-using System.Linq;
-using FoundationaLLM.Attachment.Models;
 
 namespace FoundationaLLM.Attachment.ResourceProviders
 {

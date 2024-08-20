@@ -1,5 +1,4 @@
 ﻿using FoundationaLLM.Common.Models.Vectorization;
-using Microsoft.Graph.Privacy;
 
 namespace FoundationaLLM.Gateway.Models
 {

@@ -28,6 +28,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 		secondaryButtonText: null,
 		footerText: null,
 		instanceId: null,
+		agentIconUrl: null,
 
 		// Auth: These settings configure the MSAL authentication.
 		auth: {
@@ -43,7 +44,11 @@ export const useAppConfigStore = defineStore('appConfig', {
 		async getConfigVariables() {
 			const getConfigValueSafe = async (key: string, defaultValue: any = null) => {
 				try {
-					return await api.getConfigValue(key);
+					const value = await api.getConfigValue(key);
+					if (!value) {
+						return defaultValue;
+					}
+					return value;
 				} catch (error) {
 					console.error(`Failed to get config value for key ${key}:`, error);
 					return defaultValue;
@@ -70,6 +75,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				secondaryButtonText,
 				footerText,
 				instanceId,
+				agentIconUrl,
 				authClientId,
 				authInstance,
 				authTenantId,
@@ -82,7 +88,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				getConfigValueSafe('FoundationaLLM:Branding:PageTitle'),
 				getConfigValueSafe('FoundationaLLM:Branding:FavIconUrl'),
 				getConfigValueSafe('FoundationaLLM:Branding:LogoUrl', 'foundationallm-logo-white.svg'),
-				getConfigValueSafe('FoundationaLLM:Branding:LogoText'),
+				getConfigValueSafe('FoundationaLLM:Branding:LogoText', ''),
 				getConfigValueSafe('FoundationaLLM:Branding:BackgroundColor', '#fff'),
 				getConfigValueSafe('FoundationaLLM:Branding:PrimaryColor', '#131833'),
 				getConfigValueSafe('FoundationaLLM:Branding:SecondaryColor', '#334581'),
@@ -96,6 +102,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				getConfigValueSafe('FoundationaLLM:Branding:SecondaryButtonTextColor', '#fff'),
 				getConfigValueSafe('FoundationaLLM:Branding:FooterText'),
 				getConfigValueSafe('FoundationaLLM:Instance:Id', '00000000-0000-0000-0000-000000000000'),
+				getConfigValueSafe('FoundationaLLM:Branding:AgentIconUrl', '~/assets/FLLM-Agent-Light.svg'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:ClientId'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:Instance'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:TenantId'),
@@ -124,6 +131,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.secondaryButtonText = secondaryButtonText;
 			this.footerText = footerText;
 			this.instanceId = instanceId;
+			this.agentIconUrl = agentIconUrl;
 
 			this.auth.clientId = authClientId;
 			this.auth.instance = authInstance;

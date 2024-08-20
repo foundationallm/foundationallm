@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FoundationaLLM.Common.Models.Configuration.API
+﻿namespace FoundationaLLM.Common.Models.Configuration.API
 {
     /// <summary>
     /// Standard settings for an API client.

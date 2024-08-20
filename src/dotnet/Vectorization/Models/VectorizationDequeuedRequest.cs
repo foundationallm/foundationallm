@@ -1,6 +1,4 @@
-﻿using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
-
-namespace FoundationaLLM.Vectorization.Models
+﻿namespace FoundationaLLM.Vectorization.Models
 {
     /// <summary>
     /// Represents a vectorization request that has been dequeued from a request source.

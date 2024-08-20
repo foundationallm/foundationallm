@@ -1,5 +1,4 @@
-﻿using FoundationaLLM.Common.Constants.Configuration;
-using FoundationaLLM.Common.Models.Configuration.AppConfiguration;
+﻿using FoundationaLLM.Common.Models.Configuration.AppConfiguration;
 
 namespace FoundationaLLM.Configuration.Catalog
 {

@@ -1,6 +1,4 @@
-﻿using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
-using FoundationaLLM.Vectorization.Models;
-using System.Threading.Tasks;
+﻿using FoundationaLLM.Vectorization.Models;
 
 namespace FoundationaLLM.Vectorization.Interfaces
 {

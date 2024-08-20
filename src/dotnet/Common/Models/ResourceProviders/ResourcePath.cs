@@ -1,6 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
-using FoundationaLLM.Common.Models.ResourceProviders;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Immutable;
 

@@ -3,7 +3,6 @@ using FoundationaLLM.Common.Models.Configuration.Events;
 using FoundationaLLM.Common.Models.Events;
 using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
-using System.Threading;
 
 namespace FoundationaLLM.Common.Services.Events
 {

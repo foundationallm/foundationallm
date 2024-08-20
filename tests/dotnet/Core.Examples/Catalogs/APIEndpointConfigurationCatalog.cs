@@ -1,6 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
-using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Core.Examples.Constants;
 
 namespace FoundationaLLM.Core.Examples.Catalogs

@@ -27,6 +27,7 @@ namespace FoundationaLLM.Core.Examples
         {
             public required int Id { get; set; }
             public required string Tone { get; set; }
+            public required string ProductCharacteristic { get; set; }
             public required List<Product> TargetProducts { get; set; }
             public required List<ConversationMessage> Messages { get; set; }
             public required double TimeToGenerate { get; set; }
@@ -49,6 +50,14 @@ namespace FoundationaLLM.Core.Examples
             "obstructionist",
             "concise",
             "verbose"
+        ];
+        private readonly List<string> __questionProductCharacteristics = [
+            "price",
+            "brand",
+            "type",
+            "description",
+            "color",
+            "usability"
         ];
         private readonly object _syncRoot = new object();
         private readonly List<Conversation> _conversations = [];
@@ -100,6 +109,7 @@ namespace FoundationaLLM.Core.Examples
             {
                 Id = id,
                 Tone = _questionTones[Random.Shared.Next(_questionTones.Count)],
+                ProductCharacteristic = __questionProductCharacteristics[Random.Shared.Next(__questionProductCharacteristics.Count)],
                 TargetProducts = selectedProducts,
                 Messages = [],
                 TimeToGenerate = 0
@@ -107,6 +117,8 @@ namespace FoundationaLLM.Core.Examples
 
             var prompt = string.Join(Environment.NewLine, [
                 $"TONE: {conversation.Tone}",
+                string.Empty,
+                $"PRODUCT_CHARACTERISTIC: {conversation.ProductCharacteristic}",
                 string.Empty,
                 "TARGET_PRODUCTS:",
                 JsonSerializer.Serialize(selectedProducts, _jsonSerializerOptions).Replace("{", "{{").Replace("}", "}}")
@@ -127,7 +139,7 @@ namespace FoundationaLLM.Core.Examples
                     var startTime = DateTimeOffset.UtcNow;
 
                     var response = await _agentConversationTestService.RunAgentCompletionWithNoSession(
-                        agentName, conversationStarter.UserPrompt, createAgent: false);
+                        agentName, conversationStarter.UserPrompt, createAgent: true);
 
                     conversation.Messages = ParseConversation(response.Text!);
                     foreach (var message in conversation.Messages)

@@ -1,5 +1,7 @@
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
+using FoundationaLLM.Common.Constants.Configuration;
+using FoundationaLLM.Common.Constants.Orchestration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
@@ -21,7 +23,8 @@ using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models;
 using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Utils;
-using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Azure;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
@@ -44,6 +47,7 @@ namespace FoundationaLLM.Core.Services;
 /// <param name="settings">The <see cref="CoreServiceSettings"/> settings for the service.</param>
 /// <param name="callContext">Contains contextual data for the calling service.</param>
 /// <param name="resourceProviderServices">A dictionary of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
+/// <param name="configuration">The <see cref="IConfiguration"/> service providing configuration settings.</param>
 public partial class CoreService(
     ICosmosDbService cosmosDbService,
     IEnumerable<IDownstreamAPIService> downstreamAPIServices,
@@ -52,7 +56,7 @@ public partial class CoreService(
     IOptions<CoreServiceSettings> settings,
     ICallContext callContext,
     IEnumerable<IResourceProviderService> resourceProviderServices,
-    IHttpContextAccessor httpContextAccessor) : ICoreService
+    IConfiguration configuration) : ICoreService
 {
     private readonly ICosmosDbService _cosmosDbService = cosmosDbService;
     private readonly IDownstreamAPIService _gatekeeperAPIService = downstreamAPIServices.Single(das => das.APIName == HttpClientNames.GatekeeperAPI);
@@ -61,7 +65,7 @@ public partial class CoreService(
     private readonly ICallContext _callContext = callContext;
     private readonly string _sessionType = brandingSettings.Value.KioskMode ? SessionTypes.KioskSession : SessionTypes.Session;
     private readonly CoreServiceSettings _settings = settings.Value;
-    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+    private readonly string _baseUrl = configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl]!;
 
     private readonly IResourceProviderService _attachmentResourceProvider =
         resourceProviderServices.Single(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Attachment);
@@ -125,14 +129,13 @@ public partial class CoreService(
             }
         }
 
-        var rootUrl = GetRootUrl();
         foreach (var message in messages)
         {
             if (message.Content is { Count: > 0 })
             {
                 foreach (var content in message.Content)
                 {
-                    content.Value = ResolveContentDeepLinks(content.Value, rootUrl);
+                    content.Value = ResolveContentDeepLinks(content.Value, _baseUrl);
                 }
             }
         }
@@ -298,7 +301,12 @@ public partial class CoreService(
             // Generate the completion to return to the user.
             var result = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, directCompletionRequest);
 
-            return new Completion { Text = result.Completion };
+            return new Completion
+            {
+                Text = result.Completion
+                    ?? (result.Content?.Where(c => c.Type == MessageContentItemTypes.Text).FirstOrDefault() as OpenAITextMessageContentItem)?.Value
+                        ?? "Could not generate a completion due to an internal error."
+            };
         }
         catch (Exception ex)
         {
@@ -566,26 +574,5 @@ public partial class CoreService(
             rootUrl = rootUrl[..^1];
         }
         return text.Replace(token, rootUrl);
-    }
-
-    private string GetRootUrl()
-    {
-        var request = _httpContextAccessor.HttpContext?.Request;
-
-        if (request == null)
-        {
-            throw new InvalidOperationException("Request cannot be null.");
-        }
-
-        var scheme = request.Headers["X-Forwarded-Proto"].FirstOrDefault() ?? request.Scheme;
-
-        var uriBuilder = new UriBuilder
-        {
-            Scheme = scheme,
-            Host = request.Host.Host,
-            Port = request.Host.Port ?? (scheme == "https" ? 443 : 80)
-        };
-
-        return uriBuilder.ToString();
     }
 }

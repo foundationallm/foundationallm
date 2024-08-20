@@ -610,6 +610,13 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:Branding:AgentIconUrl",
+            "value": "",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:Branding:KioskMode",
             "value": "false",
             "label": null,

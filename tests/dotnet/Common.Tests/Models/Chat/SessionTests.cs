@@ -1,9 +1,4 @@
 ﻿using FoundationaLLM.Common.Models.Chat;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FoundationaLLM.Common.Tests.Models.Chat
 {

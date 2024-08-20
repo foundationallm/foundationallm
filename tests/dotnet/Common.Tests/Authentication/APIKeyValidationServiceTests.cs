@@ -1,12 +1,5 @@
 ﻿using FoundationaLLM.Common.Authentication;
-using FoundationaLLM.Common.Interfaces;
 using Microsoft.Extensions.Options;
-using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FoundationaLLM.Common.Tests.Authentication
 {

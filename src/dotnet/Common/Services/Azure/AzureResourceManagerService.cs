@@ -7,7 +7,6 @@ using Azure.ResourceManager.EventGrid.Models;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Azure;
-using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Logging;
 using System.Collections.Immutable;
 using System.Xml;

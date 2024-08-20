@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FoundationaLLM.Common.Models.Configuration.KeyVault
+﻿namespace FoundationaLLM.Common.Models.Configuration.KeyVault
 {
     /// <summary>
     /// Represents a single entry in the Key Vault catalog.

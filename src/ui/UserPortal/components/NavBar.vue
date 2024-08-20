@@ -45,11 +45,10 @@
 			<div class="navbar__content__right">
 				<template v-if="currentSession">
 					<span class="header__dropdown">
-						<img
-							v-tooltip.bottom="'Select an agent'"
+						<AgentIcon
+							:src="$appConfigStore.agentIconUrl || '~/assets/FLLM-Agent-Light.svg'"
 							alt="Select an agent"
-							class="avatar"
-							src="~/assets/FLLM-Agent-Light.svg"
+							tooltip="Select an agent"
 						/>
 						<Dropdown
 							v-model="agentSelection"
@@ -72,6 +71,7 @@
 
 <script lang="ts">
 import type { Session } from '@/js/types';
+import AgentIcon from '@/components/AgentIcon.vue';
 
 interface AgentDropdownOption {
 	label: string;

@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace FoundationaLLM.Common.Models.Orchestration.Response
+﻿namespace FoundationaLLM.Common.Models.Orchestration.Response
 {
     /// <summary>
     /// LLMOrchestrationCompletionResponse class

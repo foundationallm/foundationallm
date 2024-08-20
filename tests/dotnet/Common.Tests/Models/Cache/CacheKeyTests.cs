@@ -1,5 +1,4 @@
 ﻿using FoundationaLLM.Common.Models.Cache;
-using Microsoft.AspNetCore.Routing;
 
 namespace FoundationaLLM.Common.Tests.Models.Cache
 {

@@ -4,7 +4,6 @@ using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Vectorization;
-using FoundationaLLM.Common.Settings;
 using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
 using FoundationaLLM.SemanticKernel.Core.Services.Indexing;
 using Microsoft.Extensions.Logging;

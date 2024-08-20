@@ -27,6 +27,20 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_Instance_SecurityGroupRetrievalStrategy =
             "FoundationaLLM:Instance:SecurityGroupRetrievalStrategy";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Instance:IdentitySubstitutionSecurityPrincipalId setting.
+        /// <para>Value description:<br/>The object identifier of the security principal who is allowed to substitute its identity with a value provided in the X-USER-IDENTITY header.</para>
+        /// </summary>
+        public const string FoundationaLLM_Instance_IdentitySubstitutionSecurityPrincipalId =
+            "FoundationaLLM:Instance:IdentitySubstitutionSecurityPrincipalId";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Instance:IdentitySubstitutionUserPrincipalNamePattern setting.
+        /// <para>Value description:<br/>The Regex pattern used to validate the values allowed as User Principal Name (UPN) substitutes in the X-USER-IDENTITY header.</para>
+        /// </summary>
+        public const string FoundationaLLM_Instance_IdentitySubstitutionUserPrincipalNamePattern =
+            "FoundationaLLM:Instance:IdentitySubstitutionUserPrincipalNamePattern";
 
         #endregion
 
@@ -838,6 +852,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_Branding_FavIconUrl =
             "FoundationaLLM:Branding:FavIconUrl";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Branding:AgentIconUrl setting.
+        /// <para>Value description:<br/>The agent icon that displays next to the agent select list and agent responses. Can be an absolute URL, relative path, or base64string value.</para>
+        /// </summary>
+        public const string FoundationaLLM_Branding_AgentIconUrl =
+            "FoundationaLLM:Branding:AgentIconUrl";
         
         /// <summary>
         /// The app configuration key for the FoundationaLLM:Branding:KioskMode setting.
