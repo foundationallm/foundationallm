@@ -9,7 +9,6 @@ using FoundationaLLM.Common.Models.Configuration.AppConfiguration;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.ResourceProviders;
@@ -132,7 +131,7 @@ namespace FoundationaLLM.Configuration.Services
         private async Task<List<ResourceProviderGetResult<AppConfigurationKeyBase>>> LoadAppConfigurationKeys(ResourceTypeInstance instance)
         {
             var keyFilter = instance.ResourceId ?? "FoundationaLLM:*";
-            var result = new List<ResourceProviderGetResult<AppConfigurationKeyBase>>(); 
+            var result = new List<ResourceProviderGetResult<AppConfigurationKeyBase>>();
 
             var settings = await _appConfigurationService.GetConfigurationSettingsAsync(keyFilter);
             foreach (var setting in settings)
@@ -210,24 +209,6 @@ namespace FoundationaLLM.Configuration.Services
                 StatusCodes.Status404NotFound);
         }
 
-        /// <inheritdoc/>
-        protected override T GetResourceInternal<T>(ResourcePath resourcePath) where T : class
-        {
-            if (resourcePath.ResourceTypeInstances.Count != 1)
-                throw new ResourceProviderException($"Invalid resource path");
-
-            if (typeof(T) != typeof(APIEndpointConfiguration))
-                throw new ResourceProviderException($"The type of requested resource ({typeof(T)}) does not match the resource type specified in the path ({resourcePath.ResourceTypeInstances[0].ResourceType}).");
-
-            _apiEndpointReferences.TryGetValue(resourcePath.ResourceTypeInstances[0].ResourceId!, out var apiEndpointReference);
-            if (apiEndpointReference == null || apiEndpointReference.Deleted)
-                throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceType} was not found.");
-
-            var apiEndpoint = LoadAPIEndpoint(apiEndpointReference).Result;
-            return apiEndpoint as T
-                ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceType} was not found.");
-        }
-
         #endregion
 
         /// <inheritdoc/>
@@ -281,7 +262,7 @@ namespace FoundationaLLM.Configuration.Services
                     ?? throw new ResourceProviderException("Invalid key vault reference value.", StatusCodes.Status400BadRequest);
 
                 kvAppConfig.KeyVaultUri = _keyVaultService.KeyVaultUri;
-                
+
                 if (string.IsNullOrWhiteSpace(kvAppConfig.KeyVaultSecretName))
                     throw new ResourceProviderException("The key vault secret name is invalid.", StatusCodes.Status400BadRequest);
 
@@ -289,15 +270,15 @@ namespace FoundationaLLM.Configuration.Services
                 await _appConfigurationService.SetConfigurationSettingAsync(
                     appConfig.Key,
                     JsonSerializer.Serialize(new AppConfigurationKeyVaultUri
-                        {
-                            Uri = new Uri(new Uri(kvAppConfig.KeyVaultUri), $"/secrets/{kvAppConfig.KeyVaultSecretName}").AbsoluteUri
-                        }),
+                    {
+                        Uri = new Uri(new Uri(kvAppConfig.KeyVaultUri), $"/secrets/{kvAppConfig.KeyVaultSecretName}").AbsoluteUri
+                    }),
                     appConfig.ContentType);
 
             }
             else
                 await _appConfigurationService.SetConfigurationSettingAsync(appConfig.Key, appConfig.Value, appConfig.ContentType);
-                
+
             return new ResourceProviderUpsertResult
             {
                 ObjectId = $"/instances/{_instanceSettings.Id}/providers/{_name}/{ConfigurationResourceTypeNames.AppConfigurations}/{appConfig.Key}"

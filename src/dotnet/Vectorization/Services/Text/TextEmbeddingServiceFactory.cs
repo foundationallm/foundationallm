@@ -1,3 +1,4 @@
+using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
@@ -51,7 +52,7 @@ namespace FoundationaLLM.Vectorization.Services.Text
 
             return textEmbeddingProfile.TextEmbedding switch
             {
-                TextEmbeddingType.SemanticKernelTextEmbedding => CreateSemanticKernelTextEmbeddingService(textEmbeddingProfile),
+                TextEmbeddingType.SemanticKernelTextEmbedding => await CreateSemanticKernelTextEmbeddingService(textEmbeddingProfile),
                 TextEmbeddingType.GatewayTextEmbedding => CreateGatewayTextEmbeddingService(),
                 _ => throw new VectorizationException($"The text embedding type {textEmbeddingProfile.TextEmbedding} is not supported."),
             };
@@ -69,17 +70,17 @@ namespace FoundationaLLM.Vectorization.Services.Text
 
             return textEmbeddingProfile.TextEmbedding switch
             {
-                TextEmbeddingType.SemanticKernelTextEmbedding => (CreateSemanticKernelTextEmbeddingService(textEmbeddingProfile), textEmbeddingProfile),
+                TextEmbeddingType.SemanticKernelTextEmbedding => (await CreateSemanticKernelTextEmbeddingService(textEmbeddingProfile), textEmbeddingProfile),
                 TextEmbeddingType.GatewayTextEmbedding => (CreateGatewayTextEmbeddingService(), textEmbeddingProfile),
                 _ => throw new VectorizationException($"The text embedding type {textEmbeddingProfile.TextEmbedding} is not supported."),
             };
         }
 
-        private ITextEmbeddingService CreateSemanticKernelTextEmbeddingService(TextEmbeddingProfile textEmbeddingProfile)
+        private async Task<ITextEmbeddingService> CreateSemanticKernelTextEmbeddingService(TextEmbeddingProfile textEmbeddingProfile)
         {
             // Get the EmbeddingAIModel resource
-            var embeddingAIModel = GetEmbeddingAIModelByObjectId(textEmbeddingProfile.EmbeddingAIModelObjectId);            
-            var embeddingAIModelAPIEndpointConfiguration = GetAPIEndpointConfigurationByObjectId(embeddingAIModel.EndpointObjectId);
+            var embeddingAIModel = await GetEmbeddingAIModelByObjectId(textEmbeddingProfile.EmbeddingAIModelObjectId);            
+            var embeddingAIModelAPIEndpointConfiguration = await GetAPIEndpointConfigurationByObjectId(embeddingAIModel.EndpointObjectId);
                         
             var deploymentName = 
                 (textEmbeddingProfile.Settings!.TryGetValue("deployment_name", out string? deploymentNameOverride)
@@ -107,24 +108,24 @@ namespace FoundationaLLM.Vectorization.Services.Text
             return textEmbeddingService!;
         }
 
-        private EmbeddingAIModel GetEmbeddingAIModelByObjectId(string objectId)
+        private async Task<EmbeddingAIModel> GetEmbeddingAIModelByObjectId(string objectId)
         {
             _resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_AIModel, out var aiModelResourceProviderService);
             if (aiModelResourceProviderService == null)
                 throw new VectorizationException($"The resource provider {ResourceProviderNames.FoundationaLLM_AIModel} was not loaded.");
 
-            var aiModelBase = aiModelResourceProviderService.GetResource<AIModelBase>(objectId);
+            var aiModelBase = await aiModelResourceProviderService.GetResource<AIModelBase>(objectId, DefaultAuthentication.ServiceIdentity!);
             var embeddingModel = aiModelBase as EmbeddingAIModel;
             return embeddingModel!;
         }
 
-        private APIEndpointConfiguration GetAPIEndpointConfigurationByObjectId(string objectId)
+        private async Task<APIEndpointConfiguration> GetAPIEndpointConfigurationByObjectId(string objectId)
         {
             _resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Configuration, out var configurationResourceProviderService);
             if (configurationResourceProviderService == null)
                 throw new VectorizationException($"The resource provider {ResourceProviderNames.FoundationaLLM_Configuration} was not loaded.");
 
-            return configurationResourceProviderService.GetResource<APIEndpointConfiguration>(objectId);
+            return await configurationResourceProviderService.GetResource<APIEndpointConfiguration>(objectId, DefaultAuthentication.ServiceIdentity!);
         }
     }
 }

@@ -1,3 +1,4 @@
+using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
@@ -49,7 +50,7 @@ namespace FoundationaLLM.Vectorization.Services.Text
 
             return indexingProfile.Indexer switch
             {
-                IndexerType.AzureAISearchIndexer => CreateAzureAISearchIndexingService(indexingProfile),
+                IndexerType.AzureAISearchIndexer => await CreateAzureAISearchIndexingService(indexingProfile),
                 _ => throw new VectorizationException($"The text embedding type {indexingProfile.Indexer} is not supported."),
             };
         }
@@ -66,21 +67,21 @@ namespace FoundationaLLM.Vectorization.Services.Text
 
             return indexingProfile.Indexer switch
             {
-                IndexerType.AzureAISearchIndexer => (CreateAzureAISearchIndexingService(indexingProfile), indexingProfile),
+                IndexerType.AzureAISearchIndexer => (await CreateAzureAISearchIndexingService(indexingProfile), indexingProfile),
                 IndexerType.AzureCosmosDBNoSQLIndexer => (CreateAzureCosmosDBNoSQLIndexingService(), indexingProfile),
                 IndexerType.PostgresIndexer => (CreatePostgresIndexingService(), indexingProfile),
                 _ => throw new VectorizationException($"The text embedding type {indexingProfile.Indexer} is not supported."),
             };
         }
 
-        private IIndexingService CreateAzureAISearchIndexingService(IndexingProfile profile)
+        private async Task<IIndexingService> CreateAzureAISearchIndexingService(IndexingProfile profile)
         {
             // Get the API Endpoint configuration for the Azure AI Search service from the profile.
             _resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Configuration, out var configurationResourceProviderService);
             if (configurationResourceProviderService == null)
                 throw new VectorizationException($"The resource provider {ResourceProviderNames.FoundationaLLM_Configuration} was not loaded.");
 
-            var apiEndpoint = configurationResourceProviderService.GetResource<APIEndpointConfiguration>(profile.IndexingAPIEndpointConfigurationObjectId);
+            var apiEndpoint = await configurationResourceProviderService.GetResource<APIEndpointConfiguration>(profile.IndexingAPIEndpointConfigurationObjectId, DefaultAuthentication.ServiceIdentity!);
             if(apiEndpoint==null)
                 throw new VectorizationException($"The API endpoint configuration {profile.IndexingAPIEndpointConfigurationObjectId} for the Azure AI Search service was not found.");
 
