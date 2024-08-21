@@ -1,85 +1,145 @@
 #! /usr/bin/pwsh
 <#
 .SYNOPSIS
-    Updates environment variables in Azure Developer CLI (azd) based on certificate filenames in a specified folder structure.
+Sets the environment variables for Networking in the default environment file.
 
 .DESCRIPTION
-    This script reads .pfx certificate filenames from specific directories and uses them to update environment variables in Azure Developer CLI (azd). 
-    It assumes that each folder contains a single .pfx file, and the script will trim the ".pfx" extension from the filename to use as the hostname.
-    It also outputs the current environment settings before and after the update.
+This script sets the environment variables for Networking in the default
+environment file located in the .azure directory. It takes the following
+parameters:
+- $fllmAksServiceCidr: The CIDR block for the AKS Services. Default value is "10.100.0.0/16".
+- $fllmVnetCidr: The CIDR block for the VNet. Default value is "10.220.128.0/20".
+- $fllmAllowedExternalCidrs: The CIDR block for NSGs to allow VPN or HUB VNet. Default value is "192.168.101.0/28".
 
-.PARAMETER coreApiHostname
-    The hostname for the Core API. This value is derived from the certificate file found in the "coreapi" directory.
+.PARAMETER fllmAksServiceCidr
+The CIDR block for the AKS Services.
 
-.PARAMETER mgmtApiHostname
-    The hostname for the Management API. This value is derived from the certificate file found in the "managementapi" directory.
+.PARAMETER fllmVnetCidr
+The CIDR block for the VNet.
 
-.PARAMETER mgmtPortalHostname
-    The hostname for the Management Portal. This value is derived from the certificate file found in the "managementapi" directory.
-
-.PARAMETER userPortalHostname
-    The hostname for the User Portal. This value is derived from the certificate file found in the "chatui" directory.
+.PARAMETER fllmAllowedExternalCidrs
+The CIDR block for NSGs to allow VPN or HUB VNet.
 
 .EXAMPLE
-    ./Set-AzdAksNet.ps1 -coreApiHostname "coreapi.example.com" -mgmtApiHostname "mgmtapi.example.com" -mgmtPortalHostname "portal.example.com" -userPortalHostname "userportal.example.com"
-    This example shows how to run the script with specified hostnames for each component.
+Set-AzdEnvAksVnet.ps1 -fllmAksServiceCidr "10.100.0.0/16" -fllmVnetCidr "10.220.128.0/20" -fllmAllowedExternalCidrs "192.168.101.0/28"
+Sets the environment variables for Networking with the specified CIDR blocks.
+
+.OUTPUTS
+None. The script sets the environment variables in the default environment file.
 
 .NOTES
-    The script assumes that the .pfx files are named according to the desired hostnames and are located in their respective folders under "./certs".
+This script requires the Function-Library.ps1 script to be present in the same
+directory.
+
 #>
 
 Param(
-	[parameter(Mandatory = $false)][string]$fllmAksServiceCidr = "10.100.0.0/16", # CIDR block for the VNet - e.g., 10.100.0.0/16
-	[parameter(Mandatory = $false)][string]$fllmVnetCidr = "10.220.128.0/20", # CIDR block for the VNet - e.g., 10.220.128.0/20
-	[parameter(Mandatory = $false)][string]$fllmAllowedExternalCidrs = "192.168.101.0/28" # CIDR block for NSGs to allow VPN or HUB VNet - e.g., 192.168.101.0/28,10.0.0.0/16 - comma separated - updates allow-vpn nsg rule
+	[parameter(Mandatory = $false, HelpMessage = "CIDR block for the AKS Services - e.g., 10.100.0.0/16")][string]
+	$fllmAksServiceCidr = "10.100.0.0/16",
+	[parameter(Mandatory = $false, HelpMessage = "CIDR block for the VNet - e.g., 10.220.128.0/20")][string]
+	$fllmVnetCidr = "10.220.128.0/20",
+	[parameter(Mandatory = $false, HelpMessage = "CIDR block for NSGs to allow VPN or HUB VNet - e.g., 192.168.101.0/28,10.0.0.0/16 - comma separated - updates allow-vpn nsg rule")][string]
+	$fllmAllowedExternalCidrs = "192.168.101.0/28"
 )
 
-# Set Debugging and Error Handling
+$TranscriptName = $($MyInvocation.MyCommand.Name) -replace ".ps1", ".transcript.txt"
+Start-Transcript -path .\$TranscriptName -Force
+
 Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable)
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
-# Define the path to the certificates
-$basePath = "./certs"
+$ScriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Path
+. $ScriptDirectory/Function-Library.ps1
 
-# Read and process the filenames
-$coreApiHostname = (Get-ChildItem -Path "$basePath/coreapi" -Filter "*.pfx").Name -replace "\.pfx$"
-$mgmtApiHostname = (Get-ChildItem -Path "$basePath/managementapi" -Filter "*.pfx").Name -replace "\.pfx$"
-$mgmtPortalHostname = (Get-ChildItem -Path "$basePath/managementapi" -Filter "*.pfx").Name -replace "\.pfx$"
-$userPortalHostname = (Get-ChildItem -Path "$basePath/chatui" -Filter "*.pfx").Name -replace "\.pfx$"
+function Get-HostNameFromPfxName {
+	param(
+		[string]$directory
+	)
 
-# Set the environment values
-$values = @(
-	"FLLM_ALLOWED_CIDR=$fllmAllowedExternalCidrs",
-	"FLLM_CORE_API_HOSTNAME=$coreApiHostname",
-	"FLLM_AKS_SERVICE_CIDR=$fllmAksServiceCidr",
-	"FLLM_VNET_CIDR=$fllmVnetCidr",
-	"FLLM_MGMT_API_HOSTNAME=$mgmtApiHostname",
-	"FLLM_MGMT_PORTAL_HOSTNAME=$mgmtPortalHostname",
-	"FLLM_USER_PORTAL_HOSTNAME=$userPortalHostname"
-)
+	# Fail if basePath directory does not exist
+	if (-not (Test-Path -Path "$directory")) {
+		throw "The basePath $directory does not exist."
+	}
 
-# Show azd environments
-Write-Host -ForegroundColor Blue "Your azd environments are listed. Environment values updated for the default environment file located in the .azure directory."
-azd env list
+	# Get the first pfx file in the directory
+	$certificate = Get-ChildItem -Path "$directory" -Filter "*.pfx" | Select-Object -First 1
 
-# Write AZD environment values
-Write-Host -ForegroundColor Yellow "Setting azd environment values for Networking:"
-Write-Host -ForegroundColor Yellow "-------------------------------------------"
-Write-Host -ForegroundColor Yellow "FLLM Allowed External CIDRs: $fllmAllowedExternalCidrs"
-Write-Host -ForegroundColor Yellow "FLLM Vnet CIDR Range: $fllmVnetCidr"
-Write-Host -ForegroundColor Yellow "FLLM AKS Service CIDR Range: $fllmAksServiceCidr"
-Write-Host -ForegroundColor Yellow "Core API Hostname: $coreApiHostname"
-Write-Host -ForegroundColor Yellow "Management API Hostname: $mgmtApiHostname"
-Write-Host -ForegroundColor Yellow "Management Portal Hostname: $userPortalHostname"
-Write-Host -ForegroundColor Yellow "User Portal Hostname: $userPortalHostname"
+	# Fail if certificate does not exist
+	if (-not $certificate) {
+		throw "No pfx files found in the $directory directory."
+	}
 
-foreach ($value in $values) {
-	$key, $val = $value -split '=', 2
-	Write-Host -ForegroundColor Yellow "Setting $key to $val"
-	azd env set $key $val
+	$hostname = $certificate.Name -replace "\.pfx$"
+	return $hostname
 }
 
-Write-Host -ForegroundColor Blue "Environment values updated for the default environment file located in the .azure directory."
-Write-Host -ForegroundColor Blue "Here are your current environment values:"
-azd env get-values
+# Define the path to the certificates
+$basePath = "./certs" | Get-AbsolutePath
+
+# Fail if base path does not exist
+if (-not (Test-Path -Path $basePath)) {
+	throw "The base path $basePath does not exist."
+}
+
+$hosts = @(
+	"coreapi",
+	"managementapi",
+	"managementui",
+	"chatui"
+)
+$hostnames = @{}
+foreach ($hostId in $hosts) {
+	$hostnames[$hostId] = Get-HostNameFromPfxName -directory "$basePath/$hostId"
+}
+
+# Set the environment values
+$envValues = @{
+	"FLLM_ALLOWED_CIDR"         = $fllmAllowedExternalCidrs
+	"FLLM_CORE_API_HOSTNAME"    = $hostnames["coreapi"]
+	"FLLM_AKS_SERVICE_CIDR"     = $fllmAksServiceCidr
+	"FLLM_VNET_CIDR"            = $fllmVnetCidr
+	"FLLM_MGMT_API_HOSTNAME"    = $hostnames["managementapi"]
+	"FLLM_MGMT_PORTAL_HOSTNAME" = $hostnames["managementui"]
+	"FLLM_USER_PORTAL_HOSTNAME" = $hostnames["chatui"]
+}
+
+# Show azd environments
+$message = @"
+Your azd environments are listed. Environment values updated for the default
+environment file located in the .azure directory.
+"@
+Write-Host -ForegroundColor Blue $message
+Invoke-CliCommand "azd env list" {
+	azd env list
+}
+
+# Write AZD environment values
+$message = @"
+Setting azd environment values for Networking:
+-------------------------------------------
+FLLM Allowed External CIDRs: $fllmAllowedExternalCidrs
+FLLM Vnet CIDR Range: $fllmVnetCidr
+FLLM AKS Service CIDR Range: $fllmAksServiceCidr
+Core API Hostname: $($hostnames["coreapi"])
+Management API Hostname: $($hostnames["managementapi"])
+Management Portal Hostname: $($hostnames["managementui"])
+User Portal Hostname: $($hostnames["chatui"])
+-------------------------------------------
+"@
+Write-Host -ForegroundColor Yellow $message
+
+foreach ($value in $envValues.GetEnumerator()) {
+	Write-Host -ForegroundColor Yellow "Setting $($value.Name) to $($value.Value)"
+	azd env set $value.Name $value.Value
+}
+
+$message = @"
+Environment values updated for the default environment file located in the
+.azure directory.
+Here are your current environment values:
+"@
+Write-Host -ForegroundColor Blue $message
+Invoke-CliCommand "azd env get-values" {
+	azd env get-values
+}
