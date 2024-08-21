@@ -39,12 +39,11 @@ builder.Configuration.AddAzureAppConfiguration(options =>
     });
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_StateAPI_Essentials);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_Logging);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_StateAPI_Configuration_CosmosDB);
 });
 if (builder.Environment.IsDevelopment())
     builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
-
-builder.AddLogging();
 
 builder.AddOpenTelemetry(
     AppConfigurationKeys.FoundationaLLM_APIEndpoints_StateAPI_Essentials_AppInsightsConnectionString,

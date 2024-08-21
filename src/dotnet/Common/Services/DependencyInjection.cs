@@ -51,9 +51,16 @@ namespace FoundationaLLM
                 config.AddDebug();
                 config.AddEventSourceLogger();
 
-                if (builder.Configuration["ASPNETCORE_ENVIRONMENT"] == EnvironmentName.Development)
+                //get the log level
+                string logLevel = builder.Configuration["Logging:LogLevel:Default"];
+
+                //enable console for debug or trace
+                switch(logLevel)
                 {
-                    config.AddConsole();
+                    case "Trace":
+                    case "Debug":
+                        config.AddConsole();
+                        break;
                 }
             });
 
@@ -116,6 +123,25 @@ namespace FoundationaLLM
 
             builder.Services.AddLogging(logging =>
             {
+                // clear out default configuration
+                logging.ClearProviders();
+
+                logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
+                logging.AddDebug();
+                logging.AddEventSourceLogger();
+
+                //get the log level
+                string logLevel = builder.Configuration["Logging:LogLevel:Default"];
+
+                //enable console for debug or trace
+                switch (logLevel)
+                {
+                    case "Trace":
+                    case "Debug":
+                        logging.AddConsole();
+                        break;
+                }
+
                 logging.AddOpenTelemetry(builderOptions =>
                 {
                     var resourceBuilder = ResourceBuilder.CreateDefault();

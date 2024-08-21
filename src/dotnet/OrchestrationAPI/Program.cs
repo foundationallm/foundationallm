@@ -45,6 +45,7 @@ namespace FoundationaLLM.Orchestration.API
                     options.SetCredential(DefaultAuthentication.AzureCredential);
                 });
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Logging);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
 
                 //TODO: Replace this with a more granular approach that would only bring in the configuration namespaces that are actually needed.
@@ -69,8 +70,6 @@ namespace FoundationaLLM.Orchestration.API
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
 
             // Add services to the container.
-
-            builder.AddLogging();
 
             // Add OpenTelemetry.
             builder.AddOpenTelemetry(

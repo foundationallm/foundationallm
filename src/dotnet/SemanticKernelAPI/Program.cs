@@ -44,6 +44,7 @@ namespace FoundationaLLM.SemanticKernel.API
                     options.SetCredential(DefaultAuthentication.AzureCredential);
                 });
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Logging);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Events_Profiles_VectorizationAPI);
@@ -54,8 +55,6 @@ namespace FoundationaLLM.SemanticKernel.API
             }));
             if (builder.Environment.IsDevelopment())
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
-
-            builder.AddLogging();
 
             // Add OpenTelemetry.
             builder.AddOpenTelemetry(
