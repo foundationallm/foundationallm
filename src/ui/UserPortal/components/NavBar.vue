@@ -59,10 +59,9 @@
 								:autoHide="false"
 								:popperTriggers="['hover']"
 						>
-							<img
+							<AgentIcon
+								:src="$appConfigStore.agentIconUrl || '~/assets/FLLM-Agent-Light.svg'"
 								alt="Select an agent"
-								class="avatar"
-								src="~/assets/FLLM-Agent-Light.svg"
 							/>
 							<template #popper>
 								Select an agent
