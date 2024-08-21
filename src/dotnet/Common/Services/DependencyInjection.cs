@@ -28,6 +28,7 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
+using FoundationaLLM.Common.Constants.Configuration;
 
 namespace FoundationaLLM
 {
@@ -94,10 +95,25 @@ namespace FoundationaLLM
         {
             AzureMonitorOptions options = new AzureMonitorOptions { ConnectionString = connectionStringConfigurationKey };
 
+            var resourceBuilder = ResourceBuilder.CreateDefault();
+
+            // Create a dictionary of resource attributes.
+            var resourceAttributes = new Dictionary<string, object> {
+                     { "service.name", serviceName },
+                     { "service.namespace", "FoundationaLLM" },
+                     { "service.version", builder.Configuration[EnvironmentVariables.FoundationaLLM_Version] },
+                     { "service.instance.id", ValidatedEnvironment.MachineName }
+                 };
+
+            resourceBuilder.AddAttributes(resourceAttributes);
+
             builder.Services.AddOpenTelemetry()
              .WithTracing(b =>
              {
+                 
+
                  b
+                 .SetResourceBuilder(resourceBuilder)
                  .AddSource("Azure.*")
                  //.AddConsoleExporter()
                  .AddAspNetCoreInstrumentation()
@@ -117,9 +133,6 @@ namespace FoundationaLLM
                  })
                  .AddAzureMonitorTraceExporter(options => { options.ConnectionString = builder.Configuration[connectionStringConfigurationKey]; });
              });
-
-            Action<ResourceBuilder> configureResource = (r) => r
-                .AddAttributes(new[] { new KeyValuePair<string, object>("telemetry.distro.name", "Azure.Monitor.OpenTelemetry.AspNetCore") });
 
             builder.Services.AddLogging(logging =>
             {
@@ -144,10 +157,7 @@ namespace FoundationaLLM
 
                 logging.AddOpenTelemetry(builderOptions =>
                 {
-                    var resourceBuilder = ResourceBuilder.CreateDefault();
-                    configureResource(resourceBuilder);
                     builderOptions.SetResourceBuilder(resourceBuilder);
-
                     builderOptions.IncludeFormattedMessage = true;
                     builderOptions.IncludeScopes = false;
                     builderOptions.AddAzureMonitorLogExporter(options => { options.ConnectionString = builder.Configuration[connectionStringConfigurationKey]; });
@@ -155,13 +165,6 @@ namespace FoundationaLLM
                 .AddConfiguration(builder.Configuration);
 
             });
-
-            // Create a dictionary of resource attributes.
-            var resourceAttributes = new Dictionary<string, object> {
-                     { "service.name", serviceName },
-                     { "service.namespace", "FoundationaLLM" },
-                     { "service.instance.id", ValidatedEnvironment.MachineName }
-                 };
 
             // Configure the OpenTelemetry tracer provider to add the resource attributes to all traces.
             builder.Services.ConfigureOpenTelemetryTracerProvider((sp, builder) =>

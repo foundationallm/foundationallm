@@ -1,5 +1,7 @@
 import sys
 import logging
+import platform
+import foundationallm
 from azure.monitor.opentelemetry import configure_azure_monitor
 from logging import getLogger
 
@@ -7,7 +9,7 @@ from azure.monitor.opentelemetry.exporter import AzureMonitorTraceExporter
 from opentelemetry import trace
 from opentelemetry.trace import Span, Status, StatusCode, Tracer
 from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.resources import SERVICE_NAME, Resource
+from opentelemetry.sdk.resources import SERVICE_NAME, Resource, SERVICE_INSTANCE_ID, SERVICE_VERSION, SERVICE_NAMESPACE
 from opentelemetry.sdk.trace.export import (
     BatchSpanProcessor,
     ConsoleSpanExporter,
@@ -71,8 +73,13 @@ class Telemetry:
 
         Telemetry.telemetry_connection_string = config.get_value(telemetry_connection_string)
         Telemetry.api_name = api_name
-        resource = Resource.create({SERVICE_NAME: f"[FoundationaLLM]/{api_name}"})
-        logger_name = None
+        resource = Resource.create(
+            {
+                SERVICE_NAME: f"{Telemetry.api_name}",
+                SERVICE_NAMESPACE : f"FoundationaLLM",
+                SERVICE_VERSION: f"{foundationallm.__version__}",
+                SERVICE_INSTANCE_ID: f"{platform.node()}"
+            })
 
         # Configure Azure Monitor defaults
         configure_azure_monitor(
@@ -172,7 +179,8 @@ class Telemetry:
             'loggers': {
                 'azure': {  # Adjust the logger name accordingly
                     'level': Telemetry.log_level,  # Set to WARNING or higher
-                    "class": "opentelemetry.sdk._logs.LoggingHandler"
+                    "class": "opentelemetry.sdk._logs.LoggingHandler",
+                    'filters': ['exclude_trace_logs']
                 },
                 '': {
                     'handlers': ['console'],
@@ -219,7 +227,13 @@ class Telemetry:
 
             if logger_provider is None:
                 #set the service name
-                resource = Resource.create({SERVICE_NAME: f"[FoundationaLLM]/{Telemetry.api_name}", 'application': ''})
+                resource = Resource.create(
+                    {
+                        SERVICE_NAME: f"{Telemetry.api_name}",
+                        SERVICE_NAMESPACE : f"FoundationaLLM",
+                        SERVICE_VERSION: f"{foundationallm.__version__}",
+                        SERVICE_INSTANCE_ID: f"{platform.node()}"
+                    })
                 logger_provider = LoggerProvider(resource=resource)
 
             handler = LoggingHandler(logger_provider=logger_provider)
