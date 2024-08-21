@@ -30,7 +30,7 @@
 .EXAMPLE
     ./Test-FllmConnection.ps1 -userPortalHostName "userportal" -managementPortalHostName "managementportal" -coreApiHostName "coreapi" -managementApiHostName "managementapi" -fllmInstanceId "your-instance-id" -fllmBaseDomain "example.com"
     This example shows how to run the script to test connectivity to the FLLM User Portal and Management Portal, and verify the Core API and Management API endpoints.
-	
+
 .NOTES
     This script requires PowerShell Core to be installed on the system.
     The script uses the `Test-Connection` cmdlet and `Invoke-WebRequest` cmdlet.
@@ -40,23 +40,12 @@
 #>
 
 param (
-	[Parameter(Mandatory = $false)]
-	[string]$coreApiHostName = "ai-api",
-
-	[Parameter(Mandatory = $false)]
-	[string]$fllmBaseDomain = "yale.edu",
-
-	[Parameter(Mandatory = $false)]
-	[string]$fllmInstanceId = "747c1c88-fc26-4336-be46-2f454109e922",
-
-	[Parameter(Mandatory = $false)]
-	[string]$managementApiHostName = "ai-management-api",
-
-	[Parameter(Mandatory = $false)]
-	[string]$managementPortalHostName = "ai-management",
-
-	[Parameter(Mandatory = $false)]
-	[string]$userPortalHostName = "ai-chat"
+	[Parameter(Mandatory = $true)][string]$fllmBaseDomain,
+	[Parameter(Mandatory = $true)][string]$fllmInstanceId,
+	[Parameter(Mandatory = $false)][string]$coreApiHostName = "ai-api",
+	[Parameter(Mandatory = $false)][string]$managementApiHostName = "ai-management-api",
+	[Parameter(Mandatory = $false)][string]$managementPortalHostName = "ai-management",
+	[Parameter(Mandatory = $false)][string]$userPortalHostName = "ai-chat"
 )
 
 # Set Debugging and Error Handling
