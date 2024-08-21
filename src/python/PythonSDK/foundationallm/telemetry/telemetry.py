@@ -215,9 +215,13 @@ class Telemetry:
         #if telemetry is configured, add the azure monitor exporter to the logger - by default only the root logger gets it
         if Telemetry.api_name is not None and Telemetry.telemetry_connection_string is not None:
 
-            #set the service name
-            resource = Resource.create({SERVICE_NAME: f"[FoundationaLLM]/{Telemetry.api_name}", 'application': ''})
-            logger_provider = LoggerProvider(resource=resource)
+            logger_provider = get_logger_provider()
+
+            if logger_provider is None:
+                #set the service name
+                resource = Resource.create({SERVICE_NAME: f"[FoundationaLLM]/{Telemetry.api_name}", 'application': ''})
+                logger_provider = LoggerProvider(resource=resource)
+
             handler = LoggingHandler(logger_provider=logger_provider)
 
             exists = False
