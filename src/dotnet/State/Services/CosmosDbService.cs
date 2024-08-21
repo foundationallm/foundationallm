@@ -145,7 +145,7 @@ namespace FoundationaLLM.State.Services
                 operation
             );
             batch.CreateItem<LongRunningOperationLogEntry>(
-                new LongRunningOperationLogEntry(operation.OperationId, operation.Status, operation.StatusMessage)
+                new LongRunningOperationLogEntry(operation.OperationId!, operation.Status, operation.StatusMessage)
             );
 
             var result = await batch.ExecuteAsync(cancellationToken);

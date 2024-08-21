@@ -283,7 +283,10 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         if "OpenAI.Assistants" in agent.capabilities:
             operation_type_override = OperationTypes.ASSISTANTS_API
             # create the service
-            assistant_svc = OpenAIAssistantsApiService(azure_openai_client=self._get_language_model(override_operation_type=operation_type_override, is_async=False))
+            assistant_svc = OpenAIAssistantsApiService(
+                azure_openai_client=self._get_language_model(override_operation_type=operation_type_override, is_async=False),
+                operations_manager=self.operations_manager
+            )
 
             # populate service request object
             assistant_req = OpenAIAssistantsAPIRequest(
@@ -458,7 +461,10 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         if "OpenAI.Assistants" in agent.capabilities:
             operation_type_override = OperationTypes.ASSISTANTS_API
             # create the service
-            assistant_svc = OpenAIAssistantsApiService(azure_openai_client=self._get_language_model(override_operation_type=operation_type_override, is_async=True))
+            assistant_svc = OpenAIAssistantsApiService(
+                azure_openai_client=self._get_language_model(override_operation_type=operation_type_override, is_async=True),
+                operations_manager=self.operations_manager
+            )
 
             # populate service request object
             assistant_req = OpenAIAssistantsAPIRequest(

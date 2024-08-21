@@ -1,5 +1,6 @@
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.agents import AgentFactory, LangChainAgentBase
+from foundationallm.operations import OperationsManager
 from foundationallm.models.orchestration import (
     CompletionRequestBase,
     CompletionResponse
@@ -12,7 +13,8 @@ class OrchestrationManager:
         completion_request: CompletionRequestBase,
         instance_id: str,
         user_identity: UserIdentity,
-        configuration: Configuration):
+        configuration: Configuration,
+        operations_manager: OperationsManager):
         """
         Initializes an instance of the OrchestrationManager.
         
@@ -27,17 +29,22 @@ class OrchestrationManager:
             The user context under which to execution completion requests.
         """        
         self.completion_request = completion_request
-        self.instance_id = instance_id
-        self.user_identity = user_identity
-        self.agent = self.__create_agent(config=configuration)        
+        self.agent = self.__create_agent(
+            completion_request=completion_request,
+            config=configuration,
+            operations_manager=operations_manager,
+            instance_id=instance_id,
+            user_identity=user_identity)
 
-    def __create_agent(self, config: Configuration) -> LangChainAgentBase:
-        """Creates an agent for executing completion requests."""        
-        agent_factory = AgentFactory(
-            instance_id = self.instance_id,
-            user_identity = self.user_identity,
-            config=config)        
-        return agent_factory.get_agent(self.completion_request.agent.type)
+    def __create_agent(self,
+                       completion_request: CompletionRequestBase,
+                       config: Configuration,
+                       operations_manager: OperationsManager,
+                       instance_id: str,
+                       user_identity: UserIdentity) -> LangChainAgentBase:
+        """Creates an agent for executing completion requests."""
+
+        return AgentFactory().get_agent(completion_request.agent.type, config=config, operations_manager=operations_manager, instance_id=instance_id, user_identity=user_identity)
 
     def invoke(self, request: CompletionRequestBase) -> CompletionResponse:
         """

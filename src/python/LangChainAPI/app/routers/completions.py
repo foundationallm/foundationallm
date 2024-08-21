@@ -223,38 +223,38 @@ async def get_operation_status(
         except Exception as e:
             handle_exception(e)
 
-@router.get(
-    '/async-completions/{operation_id}/result',
-    summary = 'Retrieve the completion result of the operation with the specified operation ID.',
-    responses = {
-        200: {'description': 'The operation result was retrieved successfully.'},
-        404: {'description': 'The specified operation or its result was not found.'}
-    }
-)
-async def get_operation_result(
-    raw_request: Request,
-    instance_id: str,
-    operation_id: str
-) -> CompletionResponse:
-    with tracer.start_as_current_span(f'get_operation_result') as span:
-        # Create an operations manager to get the operation result.
-        operations_manager = OperationsManager(raw_request.app.extra['config'])
+# @router.get(
+#     '/async-completions/{operation_id}/result',
+#     summary = 'Retrieve the completion result of the operation with the specified operation ID.',
+#     responses = {
+#         200: {'description': 'The operation result was retrieved successfully.'},
+#         404: {'description': 'The specified operation or its result was not found.'}
+#     }
+# )
+# async def get_operation_result(
+#     raw_request: Request,
+#     instance_id: str,
+#     operation_id: str
+# ) -> CompletionResponse:
+#     with tracer.start_as_current_span(f'get_operation_result') as span:
+#         # Create an operations manager to get the operation result.
+#         operations_manager = OperationsManager(raw_request.app.extra['config'])
 
-        try:
-            span.set_attribute('operation_id', operation_id)
-            span.set_attribute('instance_id', instance_id)
+#         try:
+#             span.set_attribute('operation_id', operation_id)
+#             span.set_attribute('instance_id', instance_id)
 
-            completion_response = await operations_manager.get_operation_result(
-                operation_id,
-                instance_id
-            )
+#             completion_response = await operations_manager.get_operation_result(
+#                 operation_id,
+#                 instance_id
+#             )
 
-            if completion_response is None:
-                raise HTTPException(status_code=404)
+#             if completion_response is None:
+#                 raise HTTPException(status_code=404)
 
-            return completion_response
-        except Exception as e:
-            handle_exception(e)
+#             return completion_response
+#         except Exception as e:
+#             handle_exception(e)
 
 @router.get(
     '/async-completions/{operation_id}/logs',
@@ -264,7 +264,7 @@ async def get_operation_result(
         404: {'description': 'The specified operation or its log was not found.'}
     }
 )
-async def get_operation_log(
+async def get_operation_logs(
     raw_request: Request,
     instance_id: str,
     operation_id: str
@@ -277,7 +277,7 @@ async def get_operation_log(
             span.set_attribute('operation_id', operation_id)
             span.set_attribute('instance_id', instance_id)
 
-            log = await operations_manager.get_operation_log(
+            log = await operations_manager.get_operation_logs(
                 operation_id,
                 instance_id
             )

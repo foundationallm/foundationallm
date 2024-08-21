@@ -20,6 +20,7 @@ from openai.types.beta.threads.runs import (
     RunStep
 )
 from foundationallm.models.constants import AgentCapabilityCategories
+from foundationallm.operations import OperationsManager
 from foundationallm.models.orchestration import (
     OpenAIFilePathMessageContentItem,
     OpenAIImageFileMessageContentItem,
@@ -33,7 +34,7 @@ class OpenAIAssistantsApiService:
     Integration with the OpenAI Assistants API.
     """
 
-    def __init__(self, azure_openai_client: Union[AzureOpenAI, AsyncAzureOpenAI]):
+    def __init__(self, azure_openai_client: Union[AzureOpenAI, AsyncAzureOpenAI], operations_manager: OperationsManager):
         """
         Initializes an OpenAI Assistants API service.
 
@@ -41,9 +42,13 @@ class OpenAIAssistantsApiService:
         ----------
         azure_openai_client : AzureOpenAI
             Azure OpenAI client for interacting with the OpenAI Assistants API.
-            TODO: AzureOpenAI extends OpenAI, test with OpenAI client as input at some point, for now just focus on Azure.
+        operations_manager : OperationsManager
+            Operations manager for updating the operation.
         """
         self.client = azure_openai_client
+        self.operations_manager = operations_manager
+
+        # TODO: Inside callback event handler, call operations_manager.update_operation() to append the result to the CompletionResponse.AnalysisResults collection.
 
     async def aadd_thread_message(self, thread_id: str, role: str, content: str, attachments: list = None):
         return await self.client.beta.threads.messages.create(
