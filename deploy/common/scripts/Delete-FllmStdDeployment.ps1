@@ -1,102 +1,211 @@
 #! /usr/bin/pwsh
+
 <#
 .SYNOPSIS
-Deletes resource groups and associated resources in Azure.
+This script is used to delete resource groups and their associated resources in
+Azure.
 
 .DESCRIPTION
-This script is used to delete resource groups and their associated resources in Azure. It takes the environment name, project identifier, and Azure region/location as parameters. The script loops through a list of resource groups to be deleted and checks if each resource group exists before deleting the resources within it. The script also deletes and purges Key Vaults, OpenAI resources, and App Configurations within each resource group. After deleting the resources, the script deletes the resource group itself. It then checks the status of the deletion until all resource groups are confirmed to be deleted.
+The Delete-FllmStdDeployment.ps1 script takes the subscription ID and AZD
+environment name as parameters. It finds the resource groups belonging to the
+environment and checks if each resource group exists before deleting the
+resources within it. The script also deletes and purges Key Vaults, OpenAI
+resources, and App Configurations within each resource group. After deleting the
+resources, the script deletes the resource group itself. It then checks the
+status of the deletion until all resource groups are confirmed to be deleted.
 
-.PARAMETER env
-The environment name. Default value is "prd".
+.PARAMETER SubscriptionId
+The ID of the Azure subscription.
 
-.PARAMETER project
-The project identifier or name. Default value is "fllm".
-
-.PARAMETER location
-The Azure region/location. Default value is "eastus2".
+.PARAMETER EnvironmentName
+The name of the AZD environment.
 
 .EXAMPLE
-Delete-FllmStdDeployment -env "dev" -project "fllm" -location "westeurope"
-Deletes resource groups and associated resources in the "dev" environment, with the project identifier "fllm" and Azure region "westeurope".
+PS> .\Delete-FllmStdDeployment.ps1 -SubscriptionId "12345678-1234-1234-1234-1234567890AB" -EnvironmentName "TestEnvironment"
+Deletes the resource groups and their associated resources in Azure for the specified subscription ID and AZD environment name.
 
-.NOTES
-This script requires the Azure CLI to be installed and authenticated.
 #>
 
-param (
-	[string]$env = "foo", # The environment name (e.g., prd, dev, etc.)
-	[string]$project = "test", # The project identifier or name
-	[string]$location = "eastus2" # The Azure region/location (e.g., eastus2, westeurope, etc.)
-)
+$TranscriptName = $($MyInvocation.MyCommand.Name) -replace ".ps1", ".transcript.txt"
+Start-Transcript -path .\$TranscriptName -Force
 
-# List of resource groups to delete
-$resourceGroups = @(
-	"rg-$env-$location-app-$project",
-	"rg-$env-$location-auth-$project",
-	"rg-$env-$location-data-$project",
-	"rg-$env-$location-jbx-$project",
-	"rg-$env-$location-net-$project",
-	"rg-$env-$location-oai-$project",
-	"rg-$env-$location-ops-$project",
-	"rg-$env-$location-storage-$project",
-	"rg-$env-$location-vec-$project"
-)
+Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable)
+Set-StrictMode -Version 3.0
+$ErrorActionPreference = "Stop"
+
+. ./Function-Library.ps1
+
+function Remove-AppConfig {
+	param(
+		[string]$acName,
+		[string]$rg,
+		[bool]$purge,
+		[string]$location
+	)
+
+	Invoke-CliCommand "Delete App Configuration $acName" {
+		az appconfig delete `
+			--name $acName `
+			--resource-group $rg `
+			--yes
+	}
+
+	if ($purge) {
+		Invoke-CliCommand "Purge App Configuration $acName" {
+			az appconfig purge `
+				--name $acName `
+				--location $location `
+				--yes
+		}
+	}
+}
+
+function Remove-KeyVault {
+	param(
+		[string]$keyVaultName,
+		[bool]$purge,
+		[string]$location,
+		[string]$resourceGroup
+	)
+
+	Invoke-CliCommand "Delete KeyVault $keyVaultName" {
+		az keyvault delete `
+			--name $keyVaultName `
+			--resource-group $resourceGroup
+	}
+
+	if ($purge) {
+		Invoke-CliCommand "Purge KeyVault $keyVaultName" {
+			az keyvault purge `
+				--name $keyVaultName `
+				--location $location
+		}
+	}
+}
+
+function Remove-OpenAI {
+	param(
+		[string]$openAiName,
+		[string]$resourceGroup,
+		[string]$location
+	)
+
+	Invoke-CliCommand "Delete OpenAI resource $openAiName" {
+		az cognitiveservices account delete `
+			--name $openAiName `
+			--resource-group $resourceGroup
+	}
+
+	Invoke-CliCommand "Purge OpenAI resource $openAiName" {
+		az cognitiveservices account purge `
+			--name $openAiName `
+			--resource-group $resourceGroup `
+			--location $location
+	}
+}
 
 # Function to delete and purge Key Vaults, OpenAI, and App Configurations
-function Delete-And-Purge-Resources($rg) {
-	# Delete Key Vaults in the specified resource group
-	$keyVaults = az keyvault list --resource-group $rg --query "[].name" -o tsv
-	foreach ($kv in $keyVaults) {
-		az keyvault delete --name $kv --location $location
-		az keyvault purge --name $kv --location $location
+function Remove-Resources {
+	param([string]$rg)
+
+	$script:keyVaults = $null
+	Invoke-CliCommand "Find KeyVaults in $($rg)" {
+		$script:keyVaults = az keyvault list `
+			--resource-group $rg `
+			--query "[].{name:name,location:location,purgeProtection:properties.enablePurgeProtection}" `
+			--output json | ConvertFrom-Json -AsHashtable
 	}
 
-	# Delete OpenAI resources in the specified resource group (assuming a method to list them)
-	$openAIResources = az cognitiveservices account list --resource-group $rg --query "[?kind=='OpenAI'].name" -o tsv
-	foreach ($oai in $openAIResources) {
-		az cognitiveservices account delete --name $oai --resource-group $rg --location $location
-		az cognitiveservices account purge --name $oai --resource-group $rg --location $location
-	}
-
-	# Delete App Configurations in the specified resource group
-	$appConfigs = az appconfig list --resource-group $rg --query "[].name" -o tsv
-	foreach ($ac in $appConfigs) {
-		az appconfig delete --name $ac --resource-group $rg --yes
-		az appconfig purge --name $ac --resource-group $rg --yes
-	}
-}
-
-# Loop through each resource group, check if it exists, delete resources, and then delete the resource group
-foreach ($rg in $resourceGroups) {
-	# Check if the resource group exists before processing
-	$exists = az group exists --name $rg
-	if ($exists -eq "true") {
-		Write-Host -ForegroundColor Blue "Processing resource group: $rg"
-		Delete-And-Purge-Resources -rg $rg
-		az group delete --name $rg --no-wait --yes
-	}
- else {
-		Write-Host "Resource group $rg does not exist. Skipping..."
-	}
-}
-
-# Check the status of the deletion until all resource groups are confirmed deleted
-while ($true) {
-	$remainingGroups = @()
-	foreach ($rg in $resourceGroups) {
-		$exists = az group exists --name $rg
-		if ($exists -eq "true") {
-			$remainingGroups += $rg
+	if ($null -ne $script:keyVaults) {
+		foreach ($kv in $script:keyVaults) {
+			$purgeKeyVault = !$kv.purgeProtection
+			Remove-KeyVault `
+				-keyVaultName $kv.name `
+				-purge $purgeKeyVault `
+				-location $kv.location `
+				-resourceGroup $rg
 		}
 	}
 
-	# If all resource groups have been deleted, exit the loop
-	if ($remainingGroups.Count -eq 0) {
-		Write-Host -ForegroundColor Green "All resource groups have been successfully deleted."
-		break
+	$script:openAiResources = $null
+	Invoke-CliCommand "Find OpenAI resources in $($rg)" {
+		$script:openAiResources = az cognitiveservices account list `
+			--resource-group $rg `
+			--query "[?kind=='OpenAI'].{name:name,location:location}" `
+			--output json | ConvertFrom-Json -AsHashtable
 	}
-	else {
-		Write-Host -ForegroundColor Blue "Waiting for the following resource groups to be deleted: $($remainingGroups -join ', ')"
-		Start-Sleep -Seconds 30
+
+	# If openAI resources are found, delete and purge them
+	if ($null -ne $script:openAiResources) {
+		foreach ($oai in $script:openAiResources) {
+			Remove-OpenAI `
+				-openAiName $oai.name `
+				-resourceGroup $rg `
+				-location $oai.location
+		}
+	}
+
+	# Find App Configurations in the specified resource group using Invoke-CliCommand
+	$script:appConfigs = $null
+	Invoke-CliCommand "Find App Configurations in $($rg)" {
+		$script:appConfigs = az appconfig list `
+			--resource-group $rg `
+			--query "[].{name:name,location:location,purgeProtection:enablePurgeProtection}" `
+			--output json | ConvertFrom-Json -AsHashtable
+	}
+
+	# If app configurations are found, delete and purge them
+	if ($null -ne $script:appConfigs) {
+		foreach ($ac in $script:appConfigs) {
+			$purgeAppConfig = !$ac.purgeProtection
+			Remove-AppConfig `
+				-acName $ac.name `
+				-rg $rg `
+				-purge $purgeAppConfig `
+				-location $ac.location
+		}
 	}
 }
+
+# Set the subscription context
+Invoke-CliCommand "Set the subscription context" {
+	az account set --subscription $subscriptionId
+}
+
+# Find all Resource Groups with the specified AZD environment tag
+$resourceGroups = Get-ResourceGroups `
+	-subscriptionId $subscriptionId `
+	-azdEnvName $azdEnvName
+
+# Loop through each resource group, delete resources, and then delete the
+# resource group
+foreach ($rg in $resourceGroups.GetEnumerator()) {
+	Write-Host -ForegroundColor Blue "Processing resource group: $($rg.Key)"
+	Remove-Resources -rg $rg.Key
+}
+
+while ($resourceGroups.Count -gt 0) {
+	foreach ($rg in $resourceGroups.GetEnumerator()) {
+		$rgExists = 'false'
+		Invoke-CliCommand "Check if resource group $($rg.Key) exists" {
+			$script:rgExists = az group exists --name $rg.Key --output tsv
+		}
+
+		if ($rgExists -eq "true") {
+			# This command is allowed to fail because the RG might already be
+			# deleted from a previous iteration even if the check for existence was
+			# true. So we do not use Invoke-CliCommand.
+			Write-Host "--Deleting resource group $($rg.Key)..." -ForegroundColor Yellow
+			az group delete --name $rg.Key --no-wait --yes
+		}
+	}
+
+	Write-Host "Waiting 30 seconds before checking the status of the deletion." -ForegroundColor Cyan
+	Start-Sleep -Seconds 30
+
+	$resourceGroups = Get-ResourceGroups `
+		-subscriptionId $subscriptionId `
+		-azdEnvName $azdEnvName
+}
+
+Stop-Transcript
