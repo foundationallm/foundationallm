@@ -1,23 +1,36 @@
 <template>
 	<div class="chat-input p-inputgroup">
 		<div class="input-wrapper">
-			<i
-				v-tooltip.focus.top="{ value: 'Use Shift+Enter to add a new line', autoHide: false }"
-				class="pi pi-info-circle tooltip-component"
-			></i>
-			<Button
-				v-tooltip.focus.top="{
-					value: `Attach files (${fileArrayFiltered.length === 1 ? '1 file' : fileArrayFiltered.length + ' files'})`,
-					autoHide: false
-				}"
-				:badge="fileArrayFiltered.length.toString() || null"
-				:aria-label="'Upload file (' + fileArrayFiltered.length.toString() + ' files attached)'"
-				icon="pi pi-paperclip"
-				label=""
-				class="file-upload-button secondary-button"
-				style="height: 100%"
-				@click="showFileUploadDialog = true"
-			/>
+			<div class="tooltip-component">
+				<VTooltip
+					:autoHide="false"
+					:popperTriggers="['hover']"
+				>
+						<i
+							class="pi pi-info-circle"
+						></i>
+					<template #popper>
+						Use Shift+Enter to add a new line
+					</template>
+				</VTooltip>
+			</div>
+			<VTooltip
+				:autoHide="false"
+				:popperTriggers="['hover']"
+			>
+				<Button
+					:badge="fileArrayFiltered.length.toString() || null"
+					:aria-label="'Upload file (' + fileArrayFiltered.length.toString() + ' files attached)'"
+					icon="pi pi-paperclip"
+					label=""
+					class="file-upload-button secondary-button"
+					style="height: 100%"
+					@click="showFileUploadDialog = true"
+				/>
+				<template #popper>
+					Attach files ({{ fileArrayFiltered.length === 1 ? '1 file' : fileArrayFiltered.length + ' files' }})
+				</template>
+			</VTooltip>
 			<Dialog
 				v-model:visible="showFileUploadDialog"
 				header="Upload File(s)"
@@ -398,6 +411,7 @@ export default {
 }
 
 .tooltip-component {
+	height: 100%;
 	margin-right: 0.5rem;
 	display: flex;
 	align-items: center;

@@ -27,9 +27,17 @@
 								},
 							}"
 						/>
-						<span v-tooltip.focus.top="{ value: formatTimeStamp(message.timeStamp), autoHide: false }" class="time-stamp">{{
-							$filters.timeAgo(new Date(message.timeStamp))
-						}}</span>
+						<VTooltip
+							:autoHide="false"
+							:popperTriggers="['hover']"
+						>
+							<span class="time-stamp">{{
+								$filters.timeAgo(new Date(message.timeStamp))
+							}}</span>
+							<template #popper>
+								{{formatTimeStamp(message.timeStamp)}}
+							</template>
+						</VTooltip>
 					</span>
 				</div>
 
@@ -71,7 +79,7 @@
 						<span
 							v-for="citation in message.citations"
 							:key="citation.id"
-							v-tooltip.focus.top="{ value: citation.filepath, showDelay: 500, hideDelay: 300 }"
+							v-tooltip.top="{ content: citation.filepath, showDelay: 500, hideDelay: 300 }"
 							class="citation"
 						>
 							<i class="pi pi-file"></i>

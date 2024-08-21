@@ -23,16 +23,23 @@
 				<div class="navbar__content__left__item">
 					<template v-if="currentSession">
 						<span>{{ currentSession.name }}</span>
-						<Button
-							v-if="!$appConfigStore.isKioskMode"
-							v-tooltip.focus.bottom="{ value: 'Copy link to chat session', autoHide: false }"
-							class="button--share"
-							icon="pi pi-copy"
-							text
-							severity="secondary"
-							aria-label="Copy link to chat session"
-							@click="handleCopySession"
-						/>
+						<VTooltip
+								:autoHide="false"
+								:popperTriggers="['hover']"
+						>
+							<Button
+								v-if="!$appConfigStore.isKioskMode"
+								class="button--share"
+								icon="pi pi-copy"
+								text
+								severity="secondary"
+								aria-label="Copy link to chat session"
+								@click="handleCopySession"
+							/>
+							<template #popper>
+								Copy link to chat session
+							</template>
+						</VTooltip>
 						<Toast position="top-center" />
 					</template>
 					<template v-else>
@@ -48,12 +55,19 @@
 			<div class="navbar__content__right">
 				<template v-if="currentSession">
 					<span class="header__dropdown">
-						<AgentIcon
-							:src="$appConfigStore.agentIconUrl || '~/assets/FLLM-Agent-Light.svg'"
-							v-tooltip.focus.bottom="{ value: 'Select an agent', autoHide: false }"
-							alt="Select an agent"
-							tooltip="Select an agent"
-						/>
+						<VTooltip
+								:autoHide="false"
+								:popperTriggers="['hover']"
+						>
+							<img
+								alt="Select an agent"
+								class="avatar"
+								src="~/assets/FLLM-Agent-Light.svg"
+							/>
+							<template #popper>
+								Select an agent
+							</template>
+						</VTooltip>
 						<Dropdown
 							v-model="agentSelection"
 							:options="agentOptionsGroup"

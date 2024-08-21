@@ -44,31 +44,54 @@
 			>
 				<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
 					<!-- Chat name -->
-					<span v-tooltip.focus="{ value: session.name, autoHide: false }" class="chat__name">{{ session.name }}</span>
+					
+					<VTooltip
+							:autoHide="false"
+							:popperTriggers="['hover']"
+					>
+						<span class="chat__name">{{ session.name }}</span>
+						<template #popper>
+							{{session.name}}
+						</template>
+					</VTooltip>
 
 					<!-- Chat icons -->
 					<span v-if="currentSession?.id === session.id" class="chat__icons">
 						<!-- Rename session -->
-						<Button
-							v-tooltip.focus="{ value: 'Rename chat session', autoHide: false }"
-							icon="pi pi-pencil"
-							size="small"
-							severity="secondary"
-							text
-							aria-label="Rename chat session"
-							@click.stop="openRenameModal(session)"
-						/>
+						<VTooltip
+								:autoHide="false"
+								:popperTriggers="['hover']"
+						>
+							<Button
+								icon="pi pi-pencil"
+								size="small"
+								severity="secondary"
+								text
+								aria-label="Rename chat session"
+								@click.stop="openRenameModal(session)"
+							/>
+							<template #popper>
+								Rename chat session
+							</template>
+						</VTooltip>
 
 						<!-- Delete session -->
-						<Button
-							v-tooltip.focus="{ value: 'Delete chat session', autoHide: false }"
-							icon="pi pi-trash"
-							size="small"
-							severity="danger"
-							text
-							aria-label="Delete chat session"
-							@click.stop="sessionToDelete = session"
-						/>
+						<VTooltip
+								:autoHide="false"
+								:popperTriggers="['hover']"
+						>
+							<Button
+								icon="pi pi-trash"
+								size="small"
+								severity="danger"
+								text
+								aria-label="Delete chat session"
+								@click.stop="sessionToDelete = session"
+							/>
+							<template #popper>
+								Delete chat session
+							</template>
+						</VTooltip>
 					</span>
 				</div>
 			</div>
