@@ -53,8 +53,8 @@ class OrchestrationManager:
         
         Parameters
         ----------
-        prompt : str
-            The prompt for which a completion is being generated.
+        request : CompletionRequestBase
+            The completion request to execute.
             
         Returns
         -------
@@ -70,8 +70,8 @@ class OrchestrationManager:
         
         Parameters
         ----------
-        prompt : str
-            The prompt for which a completion is being generated.
+        request : CompletionRequestBase
+            The completion request to execute.
             
         Returns
         -------

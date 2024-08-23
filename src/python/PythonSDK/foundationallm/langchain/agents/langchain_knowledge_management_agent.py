@@ -7,8 +7,10 @@ from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.retrievers import RetrieverFactory, CitationRetrievalBase
 from foundationallm.models.constants import AgentCapabilityCategories
 from foundationallm.models.orchestration import (
-    CompletionRequestObjectKeys,
-    CompletionResponse
+    CompletionResponse,
+    OpenAITextMessageContentItem,
+    OperationTypes
+    CompletionRequestObjectKeys
 )
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 from foundationallm.models.agents import (
@@ -20,10 +22,8 @@ from foundationallm.models.agents import (
 from foundationallm.models.attachments import AttachmentProviders
 from foundationallm.models.authentication import AuthenticationTypes
 from foundationallm.models.language_models import LanguageModelProvider
-from foundationallm.models.orchestration import (
-    OpenAITextMessageContentItem,
-    OperationTypes
-)
+from foundationallm.models.orchestration.openai_text_message_content_item import OpenAITextMessageContentItem
+from foundationallm.models.orchestration.operation_types import OperationTypes
 from foundationallm.models.resource_providers.vectorization import (
     EmbeddingProfileSettingsKeys,
     AzureAISearchIndexingProfile,
@@ -280,7 +280,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             audio_analysis_results = audio_service.classify(request, audio_attachments)
 
         # Check for Assistants API capability
-        if "OpenAI.Assistants" in agent.capabilities:
+        if AgentCapabilityCategories.OPENAI_ASSISTANTS in agent.capabilities:
             operation_type_override = OperationTypes.ASSISTANTS_API
             # create the service
             assistant_svc = OpenAIAssistantsApiService(
@@ -290,6 +290,8 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
             # populate service request object
             assistant_req = OpenAIAssistantsAPIRequest(
+                operation_id=request.operation_id,
+                instance_id=self.config.get_value("FoundationaLLM:Instance:Id"),
                 assistant_id=request.objects["OpenAI.AssistantId"],
                 thread_id=request.objects["OpenAI.AssistantThreadId"],
                 attachments=[attachment.provider_file_name for attachment in request.attachments if attachment.provider == AttachmentProviders.FOUNDATIONALLM_AZURE_OPENAI],
@@ -360,6 +362,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 retriever = self._get_document_retriever(request, agent)
                 if retriever is not None:
                     self.has_retriever = True
+
                 # Get the prompt template.
                 prompt_template = self._get_prompt_template(
                     request,
@@ -458,7 +461,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             audio_analysis_results = audio_service.classify(request, audio_attachments)
 
         # Check for Assistants API capability
-        if "OpenAI.Assistants" in agent.capabilities:
+        if AgentCapabilityCategories.OPENAI_ASSISTANTS in agent.capabilities:
             operation_type_override = OperationTypes.ASSISTANTS_API
             # create the service
             assistant_svc = OpenAIAssistantsApiService(
@@ -468,6 +471,8 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
             # populate service request object
             assistant_req = OpenAIAssistantsAPIRequest(
+                operation_id=request.operation_id,
+                instance_id=self.config.get_value("FoundationaLLM:Instance:Id"),
                 assistant_id=request.objects["OpenAI.AssistantId"],
                 thread_id=request.objects["OpenAI.AssistantThreadId"],
                 attachments=[attachment.provider_file_name for attachment in request.attachments if attachment.provider == AttachmentProviders.FOUNDATIONALLM_AZURE_OPENAI],
@@ -524,8 +529,8 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             return CompletionResponse(
                 operation_id = request.operation_id,
                 full_prompt = self.prompt.prefix,
-                analysis_results = assistant_response.analysis_results,
                 content = assistant_response.content,
+                analysis_results = assistant_response.analysis_results,
                 completion_tokens = assistant_response.completion_tokens + image_analysis_token_usage.completion_tokens,
                 prompt_tokens = assistant_response.prompt_tokens + image_analysis_token_usage.prompt_tokens,
                 total_tokens = assistant_response.total_tokens + image_analysis_token_usage.total_tokens,
@@ -538,6 +543,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 retriever = self._get_document_retriever(request, agent)
                 if retriever is not None:
                     self.has_retriever = True
+
                 # Get the prompt template.
                 prompt_template = self._get_prompt_template(
                     request,

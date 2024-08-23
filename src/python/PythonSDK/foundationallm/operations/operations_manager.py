@@ -1,4 +1,3 @@
-import json
 import os
 import requests
 from typing import List
@@ -68,8 +67,7 @@ class OperationsManager():
         operation_id: str,
         instance_id: str,
         status: OperationStatus,
-        status_message: str,
-        result: CompletionResponse) -> LongRunningOperation:
+        status_message: str) -> LongRunningOperation:
         """
         Updates the state of a background operation through the State API.
 
@@ -94,8 +92,7 @@ class OperationsManager():
         operation = LongRunningOperation(
             operation_id=operation_id,
             status=status,
-            status_message=status_message,
-            result=result
+            status_message=status_message
         )
         
         try:
@@ -213,50 +210,50 @@ class OperationsManager():
         except Exception as e:
             raise e
 
-    # async def get_operation_result(
-    #     self,
-    #     operation_id: str,
-    #     instance_id: str) -> CompletionResponse:
-    #     """
-    #     Retrieves the result of an async completion operation through the State API.
+    async def get_operation_result(
+        self,
+        operation_id: str,
+        instance_id: str) -> CompletionResponse:
+        """
+        Retrieves the result of an async completion operation through the State API.
 
-    #     GET {state_api_url}/instances/{instanceId}/operations/{operationId}/result -> CompletionResponse
+        GET {state_api_url}/instances/{instanceId}/operations/{operationId}/result -> CompletionResponse
         
-    #     Parameters
-    #     ----------
-    #     operation_id : str
-    #         The unique identifier for the operation.
-    #     instance_id : str
-    #         The unique identifier for the FLLM instance.
+        Parameters
+        ----------
+        operation_id : str
+            The unique identifier for the operation.
+        instance_id : str
+            The unique identifier for the FLLM instance.
         
-    #     Returns
-    #     -------
-    #     CompletionResponse
-    #         Object representing the operation result.
-    #     """
-    #     try:
-    #         # Call the State API to create a new operation.
-    #         headers = {
-    #             "x-api-key": self.state_api_key,
-    #             "charset":"utf-8",
-    #             "Content-Type":"application/json"
-    #         }
+        Returns
+        -------
+        CompletionResponse
+            Object representing the operation result.
+        """
+        try:
+            # Call the State API to create a new operation.
+            headers = {
+                "x-api-key": self.state_api_key,
+                "charset":"utf-8",
+                "Content-Type":"application/json"
+            }
 
-    #         r = requests.get(
-    #             f'{self.state_api_url}/instances/{instance_id}/operations/{operation_id}/result',
-    #             headers=headers,
-    #             verify=self.verify_certs
-    #         )
+            r = requests.get(
+                f'{self.state_api_url}/instances/{instance_id}/operations/{operation_id}/result',
+                headers=headers,
+                verify=self.verify_certs
+            )
 
-    #         if r.status_code == 404:
-    #             return None
+            if r.status_code == 404:
+                return None
 
-    #         if r.status_code != 200:
-    #             raise Exception(f'An error occurred while retrieving the result of operation {operation_id}: ({r.status_code}) {r.text}')
+            if r.status_code != 200:
+                raise Exception(f'An error occurred while retrieving the result of operation {operation_id}: ({r.status_code}) {r.text}')
 
-    #         return r.json()
-    #     except Exception as e:
-    #         raise e
+            return r.json()
+        except Exception as e:
+            raise e
 
     async def get_operation_logs(
         self,
