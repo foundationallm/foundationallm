@@ -33,7 +33,7 @@
 		"@pinia/nuxt": "^0.5.1",
 		"dompurify": "^3.1.6",
 		"file-icons-js": "github:websemantics/file-icons-js",
-		"floating-vue": "^5.2.2",
+		"floating-vue": "^2.0.0",
 		"highlight.js": "^11.10.0",
 		"javascript-time-ago": "^2.5.9",
 		"katex": "^0.16.11",
