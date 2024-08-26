@@ -14,6 +14,7 @@ using FoundationaLLM.Vectorization.Extensions;
 using FoundationaLLM.Vectorization.ResourceProviders;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Models.Authentication;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace FoundationaLLM.Vectorization.Services
 {
@@ -327,9 +328,15 @@ namespace FoundationaLLM.Vectorization.Services
             }
         }
 
+        /// <summary>
+        /// Retrieves an instance of the vectorization resource provider service.
+        /// </summary>
+        /// <returns>An instance of the vectorization resource provider service.</returns>
+        /// <exception cref="VectorizationException"></exception>
         private VectorizationResourceProviderService GetVectorizationResourceProvider()
         {
-            var vectorizationResourceProviderService = _serviceProvider.GetService<IResourceProviderService>();
+            var vectorizationResourceProviderService = _serviceProvider.GetRequiredService<IEnumerable<IResourceProviderService>>()
+                        .Single(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Vectorization);
             if (vectorizationResourceProviderService == null)
                 throw new VectorizationException($"The resource provider {ResourceProviderNames.FoundationaLLM_Vectorization} was not loaded.");
 

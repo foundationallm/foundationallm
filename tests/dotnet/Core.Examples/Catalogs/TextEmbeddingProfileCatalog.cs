@@ -8,7 +8,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
         public static readonly List<TextEmbeddingProfile> Items =
         [
             new TextEmbeddingProfile { Name = "text_embedding_profile_gateway", Settings = new Dictionary<string, string> { { "model_name", "text-embedding-ada-002"} },  TextEmbedding = TextEmbeddingType.GatewayTextEmbedding },
-            new TextEmbeddingProfile { Name = "text_embedding_profile_generic", TextEmbedding = TextEmbeddingType.SemanticKernelTextEmbedding, EmbeddingAIModelObjectId=TestAIModelNames.Embeddings_Default }
+            new TextEmbeddingProfile { Name = "text_embedding_profile_generic", TextEmbedding = TextEmbeddingType.GatewayTextEmbedding, EmbeddingAIModelObjectId=TestAIModelNames.Embeddings_Default }
         ];
 
         public static List<TextEmbeddingProfile> GetTextEmbeddingProfiles()

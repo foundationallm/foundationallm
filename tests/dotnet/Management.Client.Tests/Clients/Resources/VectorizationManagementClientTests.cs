@@ -240,19 +240,7 @@ namespace Management.Client.Tests.Clients.Resources
         {
             // Arrange
             var expectedProfiles = new List<ResourceProviderGetResult<TextEmbeddingProfile>>
-            {
-                new ResourceProviderGetResult<TextEmbeddingProfile>
-                {
-                    Resource = new TextEmbeddingProfile
-                    {
-                        Name = "test-profile",
-                        TextEmbedding = TextEmbeddingType.SemanticKernelTextEmbedding,
-                        ObjectId = "test-object-id",
-                        EmbeddingAIModelObjectId = "test-ai-model-object-id"
-                    },
-                    Actions = [],
-                    Roles = []
-                },
+            {                
                 new ResourceProviderGetResult<TextEmbeddingProfile>
                 {
                     Resource = new TextEmbeddingProfile
@@ -295,7 +283,7 @@ namespace Management.Client.Tests.Clients.Resources
                 Resource = new TextEmbeddingProfile
                 {
                     Name = profileName,
-                    TextEmbedding = TextEmbeddingType.SemanticKernelTextEmbedding,
+                    TextEmbedding = TextEmbeddingType.GatewayTextEmbedding,
                     ObjectId = "test-object-id",
                     EmbeddingAIModelObjectId = "test-ai-model-object-id"
                 },
@@ -842,7 +830,7 @@ namespace Management.Client.Tests.Clients.Resources
             var profile = new TextEmbeddingProfile
             {
                 Name = "test-profile",
-                TextEmbedding = TextEmbeddingType.SemanticKernelTextEmbedding,
+                TextEmbedding = TextEmbeddingType.GatewayTextEmbedding,
                 EmbeddingAIModelObjectId = "test-ai-model-object-id"
             };
             var expectedUpsertResult = new ResourceProviderUpsertResult

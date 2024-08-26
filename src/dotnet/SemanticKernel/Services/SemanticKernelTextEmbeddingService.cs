@@ -77,6 +77,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Services
 
         private Kernel CreateKernel()
         {
+
             ValidateDeploymentName(_settings.DeploymentName);
             ValidateEndpoint(_settings.Endpoint);
 

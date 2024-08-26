@@ -126,6 +126,46 @@ namespace FoundationaLLM.Configuration.Services
                     StatusCodes.Status400BadRequest)
             };
 
+        /// <inheritdoc/>
+        protected override async Task<T> GetResourceInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderOptions? options = null) where T : class
+        {
+            var loadResult = new List<ResourceProviderGetResult<ResourceBase>>();
+
+            if (typeof(T) == typeof(APIEndpointConfiguration))
+            {
+                var apiEndpoints = await LoadAPIEndpoints(resourcePath.ResourceTypeInstances[0]);
+                loadResult.AddRange(apiEndpoints.Select(endpoint => new ResourceProviderGetResult<ResourceBase>
+                {
+                    Resource = endpoint.Resource,
+                    Actions = endpoint.Actions,
+                    Roles = endpoint.Roles
+                }));
+            }
+            else
+            {
+                var appConfigKeys = await LoadAppConfigurationKeys(resourcePath.ResourceTypeInstances[0]);
+                loadResult.AddRange(appConfigKeys.Select(key => new ResourceProviderGetResult<ResourceBase>
+                {
+                    Resource = key.Resource,
+                    Actions = key.Actions,
+                    Roles = key.Roles
+                }));
+            }
+
+            var resource = loadResult.FirstOrDefault();
+            if (resource == null || resource.Resource == null)
+            {
+                throw new ResourceProviderException(
+                    $"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceType} was not found.",
+                    StatusCodes.Status404NotFound);
+            }
+
+            return resource.Resource as T
+                ?? throw new ResourceProviderException(
+                    $"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceType} was not found.");
+
+        }
+
         #region Helpers for GetResourcesAsyncInternal
 
         private async Task<List<ResourceProviderGetResult<AppConfigurationKeyBase>>> LoadAppConfigurationKeys(ResourceTypeInstance instance)

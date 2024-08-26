@@ -2,6 +2,7 @@
 using FoundationaLLM.Common.Models.Azure;
 using FoundationaLLM.Common.Models.Gateway;
 using FoundationaLLM.Common.Models.Vectorization;
+using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Gateway.Services;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
@@ -24,9 +25,9 @@ namespace FoundationaLLM.Gateway.Models
         private readonly ILogger<EmbeddingModelDeploymentContext> _logger = loggerFactory.CreateLogger<EmbeddingModelDeploymentContext>();
         private List<TextChunk> _inputTextChunks = [];
 
-        private readonly ITextEmbeddingService _textEmbeddingService = new GatewayTextEmbeddingService(
+        private readonly ITextEmbeddingService _textEmbeddingService = new AzureOpenAITextEmbeddingService(
                 deployment.AccountEndpoint,
-                loggerFactory.CreateLogger<GatewayTextEmbeddingService>());
+                loggerFactory.CreateLogger<AzureOpenAITextEmbeddingService>());
 
         private readonly JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
 

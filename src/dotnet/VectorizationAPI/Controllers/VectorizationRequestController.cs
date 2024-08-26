@@ -18,8 +18,7 @@ namespace FoundationaLLM.Vectorization.API.Controllers
     [ApiController]
     [APIKeyAuthentication]
     [Route("[controller]")]
-    public class VectorizationRequestController(
-        ICallContext callContext,
+    public class VectorizationRequestController(        
         IVectorizationRequestProcessor vectorizationRequestProcessor) : ControllerBase
     {
         /// <summary>
@@ -29,7 +28,7 @@ namespace FoundationaLLM.Vectorization.API.Controllers
         /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> ProcessRequest([FromBody] VectorizationRequest vectorizationRequest)
-            => new OkObjectResult(await vectorizationRequestProcessor.ProcessRequest(vectorizationRequest, callContext.CurrentUserIdentity));
+            => new OkObjectResult(await vectorizationRequestProcessor.ProcessRequest(vectorizationRequest, DefaultAuthentication.ServiceIdentity));
 
     }
 }
