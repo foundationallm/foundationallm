@@ -5,7 +5,7 @@
 			<img
 				v-if="$appConfigStore.logoUrl !== ''"
 				:src="$filters.enforceLeadingSlash($appConfigStore.logoUrl)"
-				alt="Logo"
+				:alt="$appConfigStore.logoText"
 			/>
 			<span v-else>{{ $appConfigStore.logoText }}</span>
 			<Button
