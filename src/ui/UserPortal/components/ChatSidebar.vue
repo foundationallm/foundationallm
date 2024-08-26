@@ -18,7 +18,7 @@
 			/>
 		</div>
 		<div class="chat-sidebar__section-header">
-			<span>Chats</span>
+			<h2 class="chat-sidebar__section-header__text">Chats</h2>
 			<!-- <button @click="handleAddSession">
 				<span class="text">+</span>
 			</button> -->
@@ -43,13 +43,13 @@
 				@keydown.enter="handleSessionSelected(session)"
 			>
 				<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
-					<!-- Chat name -->
 					
+					<!-- Chat name -->
 					<VTooltip
 							:autoHide="false"
 							:popperTriggers="['hover']"
 					>
-						<span class="chat__name">{{ session.name }}</span>
+						<h2 v-tooltip="{ value: session.name }" class="chat__name">{{ session.name }}</h2>
 						<template #popper>
 							{{session.name}}
 						</template>
@@ -300,6 +300,11 @@ export default {
 	font-weight: 600;
 }
 
+.chat-sidebar__section-header__text {
+	font-size: 0.875rem;
+	font-weight: 600;
+}
+
 .chat-sidebar__section-header--mobile {
 	display: none;
 }
@@ -325,6 +330,8 @@ export default {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	font-size: 0.8125rem;
+	font-weight: 400;
 }
 
 .chat__icons {
