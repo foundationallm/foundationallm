@@ -5,8 +5,8 @@
 			:class="messages.length === 0 && 'empty'"
 			ref="messageContainer">
 			<template v-if="isLoading">
-				<div class="chat-thread__loading">
-					<i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+				<div class="chat-thread__loading" role="status">
+					<i class="pi pi-spin pi-spinner" style="font-size: 2rem" role="img" aria-label="Loading"></i>
 				</div>
 			</template>
 

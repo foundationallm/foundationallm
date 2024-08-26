@@ -64,7 +64,9 @@
 
 					<!-- Message loading -->
 					<template v-if="message.sender === 'Assistant' && message.type === 'LoadingMessage'">
-						<i class="pi pi-spin pi-spinner"></i>
+						<div role="status">
+							<i class="pi pi-spin pi-spinner" role="img" aria-label="Loading message"></i>
+						</div>
 					</template>
 
 					<!-- Render the html content and any vue components within -->

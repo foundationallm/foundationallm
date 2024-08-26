@@ -149,7 +149,9 @@
 			@keydown="deleteSessionKeydown"
 		>
 			<div v-if="deleteProcessing" class="delete-dialog-content">
-				<i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+				<div role="status">
+					<i class="pi pi-spin pi-spinner" style="font-size: 2rem;" role="img" aria-label="Loading"></i>
+				</div>
 			</div>
 			<div v-else>
 				<p>Do you want to delete the chat "{{ sessionToDelete.name }}" ?</p>
