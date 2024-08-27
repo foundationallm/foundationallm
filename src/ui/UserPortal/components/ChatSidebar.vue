@@ -8,27 +8,33 @@
 				:alt="$appConfigStore.logoText"
 			/>
 			<span v-else>{{ $appConfigStore.logoText }}</span>
-			<Button
-				:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
-				size="small"
-				severity="secondary"
-				class="secondary-button"
-				aria-label="Toggle sidebar"
-				@click="$appStore.toggleSidebar"
-			/>
+			<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+				<Button
+					:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
+					size="small"
+					severity="secondary"
+					class="secondary-button"
+					aria-label="Toggle sidebar"
+					@click="$appStore.toggleSidebar"
+				/>
+				<template #popper>Toggle sidebar</template>
+			</VTooltip>
 		</div>
 		<div class="chat-sidebar__section-header">
 			<h2 class="chat-sidebar__section-header__text">Chats</h2>
 			<!-- <button @click="handleAddSession">
 				<span class="text">+</span>
 			</button> -->
-			<Button
-				icon="pi pi-plus"
-				text
-				severity="secondary"
-				aria-label="Add new chat"
-				@click="handleAddSession"
-			/>
+			<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+				<Button
+					icon="pi pi-plus"
+					text
+					severity="secondary"
+					aria-label="Add new chat"
+					@click="handleAddSession"
+				/>
+				<template #popper>Add new chat</template>
+			</VTooltip>
 		</div>
 
 		<!-- Chats -->

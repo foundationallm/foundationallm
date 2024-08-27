@@ -6,14 +6,17 @@
 			<span v-else>{{ $appConfigStore.logoText }}</span>
 
 			<template v-if="!$appConfigStore.isKioskMode">
-				<Button
-					:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
-					size="small"
-					severity="secondary"
-					class="secondary-button"
-					aria-label="Toggle sidebar"
-					@click="$appStore.toggleSidebar"
-				/>
+				<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+					<Button
+						:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
+						size="small"
+						severity="secondary"
+						class="secondary-button"
+						aria-label="Toggle sidebar"
+						@click="$appStore.toggleSidebar"
+					/>
+					<template #popper>Toggle sidebar</template>
+				</VTooltip>
 			</template>
 		</div>
 

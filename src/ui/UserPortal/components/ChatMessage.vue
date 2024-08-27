@@ -35,15 +35,18 @@
 						</VTooltip>
 
 						<!-- Copy user message button -->
-						<Button
-							v-if="message.sender === 'User'"
-							class="message__copy"
-							size="small"
-							text
-							icon="pi pi-copy"
-							aria-label="Copy Message"
-							@click.stop="handleCopyMessageContent"
-						/>
+						<VTooltip :auto-hide="false" :popper-riggers="['hover']">
+							<Button
+								v-if="message.sender === 'User'"
+								class="message__copy"
+								size="small"
+								text
+								icon="pi pi-copy"
+								aria-label="Copy Message"
+								@click.stop="handleCopyMessageContent"
+							/>
+							<template #popper>Copy Message</template>
+						</VTooltip>
 					</span>
 				</div>
 
