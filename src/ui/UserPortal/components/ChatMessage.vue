@@ -577,6 +577,10 @@ export default {
 	border-color: var(--primary-button-bg) !important;
 	color: var(--primary-button-text) !important;
 }
+
+.message__button {
+	color: #00356b;
+}
 </style>
 
 <style lang="scss">
