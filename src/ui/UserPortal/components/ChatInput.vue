@@ -522,6 +522,10 @@ export default {
 		padding: 0.25rem 0.5rem;
 		margin-right: 0.25rem !important;
 	}
+
+	.tooltip-component {
+		display: none;
+	}
 }
 
 @media only screen and (max-width: 950px) {
