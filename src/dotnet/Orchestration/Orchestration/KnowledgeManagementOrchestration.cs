@@ -14,8 +14,8 @@ using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.OpenAI;
-using FoundationaLLM.Gateway.Client;
-using FoundationaLLM.Common.Models.Configuration.Instance;
+using FoundationaLLM.Common.Clients;
+
 
 namespace FoundationaLLM.Orchestration.Core.Orchestration
 {
