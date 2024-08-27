@@ -65,10 +65,16 @@ namespace FoundationaLLM.Vectorization.Services.VectorizationServices
                     _serviceProvider,
                     _loggerFactory);
 
-                // vectorization request state is persisted in the Invoke method.
-                var handlerSuccess = await stepHandler.Invoke(vectorizationRequest, state, userIdentity!, default).ConfigureAwait(false);
-                if (!handlerSuccess)
-                    break;
+                // do polling if there is a running operation
+                var handlerSuccess = true;
+                do
+                {
+                    handlerSuccess = await stepHandler.Invoke(vectorizationRequest, state, userIdentity!, default).ConfigureAwait(false);
+                    //handlerSuccess is false if the step is still in progress, check for running operations
+                    if (!handlerSuccess && !vectorizationRequest.RunningOperations.Any(ro => ro.Key == step.Id))
+                        break;
+                    await Task.Delay(1000); //wait for 1 second between polling.
+                } while (vectorizationRequest.RunningOperations.Any(ro => ro.Key == step.Id && !ro.Value.Complete));
 
                 var steps = vectorizationRequest.MoveToNextStep();
 
