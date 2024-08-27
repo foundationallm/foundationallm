@@ -27,14 +27,8 @@
 								},
 							}"
 						/>
-						
-						<VTooltip
-							:autoHide="false"
-							:popperTriggers="['hover']"
-						>
-							<span class="time-stamp">{{
-								$filters.timeAgo(new Date(message.timeStamp))
-							}}</span>
+						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+							<span class="time-stamp" tabindex="0">{{ $filters.timeAgo(new Date(message.timeStamp)) }}</span>
 							<template #popper>
 								{{formatTimeStamp(message.timeStamp)}}
 							</template>

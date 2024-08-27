@@ -62,6 +62,7 @@
 							<AgentIcon
 								:src="$appConfigStore.agentIconUrl || '~/assets/FLLM-Agent-Light.svg'"
 								alt="Select an agent"
+								tabindex="0"
 							/>
 							<template #popper>
 								Select an agent

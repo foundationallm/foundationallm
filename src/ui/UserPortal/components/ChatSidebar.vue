@@ -38,18 +38,14 @@
 				v-for="session in sessions"
 				:key="session.id"
 				class="chat-sidebar__chat"
-				tabindex="0"
 				@click="handleSessionSelected(session)"
 				@keydown.enter="handleSessionSelected(session)"
 			>
 				<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
 					
 					<!-- Chat name -->
-					<VTooltip
-							:autoHide="false"
-							:popperTriggers="['hover']"
-					>
-						<h2 v-tooltip="{ value: session.name }" class="chat__name">{{ session.name }}</h2>
+					<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+						<h2 class="chat__name" tabindex="0">{{ session.name }}</h2>
 						<template #popper>
 							{{session.name}}
 						</template>

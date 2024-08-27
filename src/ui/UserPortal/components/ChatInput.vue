@@ -2,16 +2,9 @@
 	<div class="chat-input p-inputgroup">
 		<div class="input-wrapper">
 			<div class="tooltip-component">
-				<VTooltip
-					:autoHide="false"
-					:popperTriggers="['hover']"
-				>
-						<i
-							class="pi pi-info-circle"
-						></i>
-					<template #popper>
-						Use Shift+Enter to add a new line
-					</template>
+				<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+					<i class="pi pi-info-circle" tabindex="0"></i>
+					<template #popper> Use Shift+Enter to add a new line </template>
 				</VTooltip>
 			</div>
 			<VTooltip
