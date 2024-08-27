@@ -80,6 +80,8 @@ items:
       href: setup-guides/agents/knowledge-management-agent.md
     - name: Prompt resources
       href: setup-guides/agents/prompt-resource.md
+  - name: Branding
+    href: setup-guides/branding/index.md
   - name: Exposed APIs
     href: setup-guides/exposed-apis/index.md
     items:
