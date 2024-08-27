@@ -165,6 +165,7 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark-dimmed.css';
 import { marked } from 'marked';
 import katex from 'katex';
+import 'katex/dist/katex.min.css';
 import truncate from 'truncate-html';
 import DOMPurify from 'dompurify';
 import type { PropType } from 'vue';
@@ -175,8 +176,9 @@ import CodeBlockHeader from '@/components/CodeBlockHeader.vue';
 import ChatMessageContentBlock from '@/components/ChatMessageContentBlock.vue';
 
 const renderer = new marked.Renderer();
-renderer.code = (code, language) => {
-	const sourceCode = code.raw || code;
+renderer.code = (code) => {
+	const language = code.lang;
+	const sourceCode = code.text || code;
 	const validLanguage = !!(language && hljs.getLanguage(language));
 	const highlighted = validLanguage
 		? hljs.highlight(sourceCode, { language })
@@ -187,30 +189,21 @@ renderer.code = (code, language) => {
 };
 marked.use({ renderer });
 
-function processLatex(html) {
-	const blockLatexPattern = /\\\[([^\]]+)\\\]/g;
-	const inlineLatexPattern = /\\\(([^)]+)\\\)/g;
-
-	// Check if LaTeX syntax is detected in the content
-	// const hasBlockLatex = blockLatexPattern.test(html);
-	// const hasInlineLatex = inlineLatexPattern.test(html);
+function processLatex(content) {
+	const blockLatexPattern = /\\\[\s*([\s\S]+?)\s*\\\]/g;
+	const inlineLatexPattern = /\\\(([\s\S]+?)\\\)/g;
 
 	// Process block LaTeX: \[ ... \]
-	html = html.replace(blockLatexPattern, (_, math) => {
+	content = content.replace(blockLatexPattern, (_, math) => {
 		return katex.renderToString(math, { displayMode: true, throwOnError: false });
 	});
 
 	// Process inline LaTeX: \( ... \)
-	html = html.replace(inlineLatexPattern, (_, math) => {
+	content = content.replace(inlineLatexPattern, (_, math) => {
 		return katex.renderToString(math, { throwOnError: false });
 	});
 
-	// If LaTeX was found, render the content again with marked
-	// if (hasBlockLatex || hasInlineLatex) {
-	// 	html = marked(html);
-	// }
-
-	return html;
+	return content;
 }
 
 function addCodeHeaderComponents(htmlString) {
