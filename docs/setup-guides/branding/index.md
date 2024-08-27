@@ -26,6 +26,10 @@ Takes a hexadecimal color value to set the accent color of the chat application 
 Takes a hexadecimal color value to set the accent text color of the chat application which is used for top header and the the token counter in the chat.
 ## FoundationaLLM:Branding:AgentIconUrl
 A string value to set the Agent Icon Url which is displayed in the chat window.
+
+> [!IMPORTANT]
+> The AgentIconUrl can be an SVG or PNG image placed in the Public folder of the application's source code but will require rebuilding of the docker image to reflect the changes. The preferred ways of setting the LogoUrl is to set it to a relative accessible public URL to an SVG or PNG image or include the full Base64 encoded image in the configuration value directly.
+
 ## FoundationaLLM:Branding:BackgroundColor
 Takes a hexadecimal color value to set the background color of the chat application.
 ## FoundationaLLM:Branding:CompanyName
