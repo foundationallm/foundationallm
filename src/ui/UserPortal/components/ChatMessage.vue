@@ -153,10 +153,9 @@
 						<!-- Prompt dialog -->
 						<Dialog
 							class="prompt-dialog"
-							:visible="viewPrompt"
+							v-model:visible="viewPrompt"
 							modal
 							header="Completion Prompt"
-							:closable="false"
 						>
 							<p class="prompt-text">{{ prompt.prompt }}</p>
 							<template #footer>
