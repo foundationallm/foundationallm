@@ -30,6 +30,17 @@
 						<span v-tooltip="formatTimeStamp(message.timeStamp)" class="time-stamp">{{
 							$filters.timeAgo(new Date(message.timeStamp))
 						}}</span>
+
+						<!-- Copy user message button -->
+						<Button
+							v-if="message.sender === 'User'"
+							class="message__copy"
+							size="small"
+							text
+							icon="pi pi-copy"
+							aria-label="Copy Message"
+							@click.stop="handleCopyMessageContent"
+						/>
 					</span>
 				</div>
 
@@ -108,8 +119,19 @@
 						</span>
 					</span>
 
-					<!-- View prompt -->
-					<span class="view-prompt">
+					<!-- Right side buttons -->
+					<span>
+						<!-- Copy message button -->
+						<Button
+							class="message__button"
+							size="small"
+							text
+							icon="pi pi-copy"
+							label="Copy"
+							@click.stop="handleCopyMessageContent"
+						/>
+
+						<!-- View prompt buttom -->
 						<Button
 							class="message__button"
 							:disabled="message.type === 'LoadingMessage'"
@@ -364,6 +386,37 @@ export default {
 				: this.message.senderDisplayName || 'Agent';
 		},
 
+		handleCopyMessageContent() {
+			let contentToCopy = '';
+			if (this.messageContent && this.messageContent?.length > 0) {
+				this.messageContent.forEach((contentBlock) => {
+					switch (contentBlock.type) {
+						case 'text':
+							contentToCopy += contentBlock.value;
+							break;
+						// default:
+						// 	contentToCopy += `![${contentBlock.fileName || 'image'}](${contentBlock.value})`;
+						// 	break;
+					}
+				});
+			} else {
+				contentToCopy = this.message.text;
+			}
+
+			const textarea = document.createElement('textarea');
+			textarea.value = decodeURIComponent(contentToCopy);
+			document.body.appendChild(textarea);
+			textarea.select();
+			document.execCommand('copy');
+			document.body.removeChild(textarea);
+
+			this.$toast.add({
+				severity: 'success',
+				detail: 'Message copied to clipboard!',
+				life: 5000,
+			});
+		},
+
 		handleRate(message: Message, isLiked: boolean) {
 			this.$emit('rate', { message, isLiked: message.rating === isLiked ? null : isLiked });
 		},
@@ -440,6 +493,11 @@ export default {
 	flex-wrap: wrap;
 }
 
+.message__copy {
+	color: var(--primary-text);
+	margin-left: 4px;
+}
+
 .header__sender {
 	display: flex;
 	align-items: center;
@@ -484,24 +542,11 @@ export default {
 
 .ratings {
 	display: flex;
-	gap: 16px;
+	// gap: 16px;
 }
 
 .icon {
 	margin-right: 4px;
-	cursor: pointer;
-}
-
-.view-prompt {
-	cursor: pointer;
-}
-
-.dislike {
-	margin-left: 12px;
-	cursor: pointer;
-}
-
-.like {
 	cursor: pointer;
 }
 
