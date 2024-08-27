@@ -30,11 +30,11 @@ namespace FoundationaLLM.Gateway.Services
         }
 
         /// <inheritdoc/>
-        public async Task<TextEmbeddingResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string modelName = "text-embedding-ada-002")
+        public async Task<TextEmbeddingResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string deploymentName)
         {
             try
             {
-                var embeddingClient = _azureOpenAIClient.GetEmbeddingClient(modelName);
+                var embeddingClient = _azureOpenAIClient.GetEmbeddingClient(deploymentName);
                 var result = await embeddingClient.GenerateEmbeddingsAsync(textChunks.Select(tc => tc.Content!).ToList());
 
                 return new TextEmbeddingResult

@@ -101,7 +101,7 @@ namespace FoundationaLLM.Gateway.Models
                     JsonSerializer.Serialize<GatewayTextEmbeddingRequestMetrics>(gatewayMetrics, _jsonSerializerOptions));
 
                 var embeddingResult =
-                    await _textEmbeddingService.GetEmbeddingsAsync(_inputTextChunks);
+                    await _textEmbeddingService.GetEmbeddingsAsync(_inputTextChunks, _deployment.Name);
 
                 if (embeddingResult.Failed)
                     _logger.LogWarning("The text embedding request with id {RequestId} failed with the following error: {ErrorMessage}",

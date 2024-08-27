@@ -12,9 +12,9 @@ namespace FoundationaLLM.Common.Interfaces
         /// Depending on the implementation, this can be an atomic operation or a long-running one.
         /// </summary>
         /// <param name="textChunks">The list of text chunks which need to be embedded.</param>
-        /// <param name="modelName"> The name of the model to use for embedding.</param>
+        /// <param name="deploymentName"> The name of the model deployment to use for embedding.</param>
         /// <returns>A <see cref="TextEmbeddingResult"/> object containing the result of the text embedding operation.</returns>
-        Task<TextEmbeddingResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string modelName = "text-embedding-ada-002");
+        Task<TextEmbeddingResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string deploymentName);
 
         /// <summary>
         /// Retrieves the result of a long-running text embedding operation.
