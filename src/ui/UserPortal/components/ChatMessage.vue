@@ -27,9 +27,18 @@
 								},
 							}"
 						/>
-						<span v-tooltip="formatTimeStamp(message.timeStamp)" class="time-stamp">{{
-							$filters.timeAgo(new Date(message.timeStamp))
-						}}</span>
+						
+						<VTooltip
+							:autoHide="false"
+							:popperTriggers="['hover']"
+						>
+							<span class="time-stamp">{{
+								$filters.timeAgo(new Date(message.timeStamp))
+							}}</span>
+							<template #popper>
+								{{formatTimeStamp(message.timeStamp)}}
+							</template>
+						</VTooltip>
 
 						<!-- Copy user message button -->
 						<Button
@@ -82,7 +91,7 @@
 						<span
 							v-for="citation in message.citations"
 							:key="citation.id"
-							v-tooltip.top="{ value: citation.filepath, showDelay: 500, hideDelay: 300 }"
+							v-tooltip.top="{ content: citation.filepath, showDelay: 500, hideDelay: 300 }"
 							class="citation"
 						>
 							<i class="pi pi-file"></i>
