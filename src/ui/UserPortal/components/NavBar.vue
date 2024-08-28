@@ -2,18 +2,21 @@
 	<div class="navbar">
 		<!-- Sidebar header -->
 		<div class="navbar__header">
-			<img v-if="$appConfigStore.logoUrl !== ''" :src="$appConfigStore.logoUrl" alt="Logo" />
+			<img v-if="$appConfigStore.logoUrl !== ''" :src="$appConfigStore.logoUrl" :alt="$appConfigStore.logoText" />
 			<span v-else>{{ $appConfigStore.logoText }}</span>
 
 			<template v-if="!$appConfigStore.isKioskMode">
-				<Button
-					:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
-					size="small"
-					severity="secondary"
-					class="secondary-button"
-					aria-label="Toggle sidebar"
-					@click="$appStore.toggleSidebar"
-				/>
+				<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+					<Button
+						:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
+						size="small"
+						severity="secondary"
+						class="secondary-button"
+						aria-label="Toggle sidebar"
+						@click="$appStore.toggleSidebar"
+					/>
+					<template #popper>Toggle sidebar</template>
+				</VTooltip>
 			</template>
 		</div>
 
@@ -62,6 +65,7 @@
 							<AgentIcon
 								:src="$appConfigStore.agentIconUrl || '~/assets/FLLM-Agent-Light.svg'"
 								alt="Select an agent"
+								tabindex="0"
 							/>
 							<template #popper>
 								Select an agent
@@ -77,6 +81,7 @@
 							option-disabled="disabled"
 							option-label="label"
 							placeholder="--Select--"
+							aria-label="Select an agent"
 							@change="handleAgentChange"
 						/>
 					</span>

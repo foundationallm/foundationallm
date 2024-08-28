@@ -1,22 +1,26 @@
 <template>
 	<div class="chat-thread">
 		<!-- Message list -->
-		<div class="chat-thread__messages" :class="messages.length === 0 && 'empty'">
+		<div class="chat-thread__messages"
+			:class="messages.length === 0 && 'empty'"
+			ref="messageContainer">
 			<template v-if="isLoading">
-				<div class="chat-thread__loading">
-					<i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+				<div class="chat-thread__loading" role="status">
+					<i class="pi pi-spin pi-spinner" style="font-size: 2rem" role="img" aria-label="Loading"></i>
 				</div>
 			</template>
 
 			<template v-else>
 				<!-- Messages -->
 				<template v-if="messages.length !== 0">
+					<div class="spacer" />
 					<ChatMessage
-						v-for="(message, index) in messages.slice().reverse()"
+						v-for="(message, index) in messages.slice()"
 						:key="`${message.id}-${componentKey}`"
 						:message="message"
 						:show-word-animation="index === 0 && userSentMessage && message.sender === 'Assistant'"
 						@rate="handleRateMessage($event.message, $event.isLiked)"
+						role="log"
 					/>
 				</template>
 
@@ -86,6 +90,11 @@ export default {
 
 	mounted() {
 		eventBus.on('operation-completed', this.handleOperationCompleted);
+		this.scrollToBottom();
+	},
+
+	updated() {
+		this.scrollToBottom();
 	},
 
 	methods: {
@@ -150,6 +159,12 @@ export default {
 				await this.$appStore.getMessages();
 			}
 		},
+
+		scrollToBottom() {
+            this.$nextTick(() => {
+                this.$refs.messageContainer.scrollTop = this.$refs.messageContainer.scrollHeight;
+            });
+        },
 	},
 };
 </script>
@@ -181,7 +196,7 @@ export default {
 
 .chat-thread__messages {
 	display: flex;
-	flex-direction: column-reverse;
+	flex-direction: column;
 	flex: 1;
 	overflow-y: auto;
 	overscroll-behavior: auto;
@@ -233,5 +248,9 @@ footer {
 	text-align: right;
 	font-size: 0.85rem;
 	padding-right: 24px;
+}
+
+.spacer {
+	flex-grow: 1;
 }
 </style>

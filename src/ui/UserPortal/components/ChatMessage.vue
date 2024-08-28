@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="message-row" :class="message.sender === 'User' ? 'message--out' : 'message--in'">
-			<div class="message">
+			<div class="message" tabindex="0">
 				<div class="message__header">
 					<!-- Sender -->
 					<span class="header__sender">
@@ -27,29 +27,26 @@
 								},
 							}"
 						/>
-						
-						<VTooltip
-							:autoHide="false"
-							:popperTriggers="['hover']"
-						>
-							<span class="time-stamp">{{
-								$filters.timeAgo(new Date(message.timeStamp))
-							}}</span>
+						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+							<span class="time-stamp" tabindex="0">{{ $filters.timeAgo(new Date(message.timeStamp)) }}</span>
 							<template #popper>
 								{{formatTimeStamp(message.timeStamp)}}
 							</template>
 						</VTooltip>
 
 						<!-- Copy user message button -->
-						<Button
-							v-if="message.sender === 'User'"
-							class="message__copy"
-							size="small"
-							text
-							icon="pi pi-copy"
-							aria-label="Copy Message"
-							@click.stop="handleCopyMessageContent"
-						/>
+						<VTooltip :auto-hide="false" :popper-riggers="['hover']">
+							<Button
+								v-if="message.sender === 'User'"
+								class="message__copy"
+								size="small"
+								text
+								icon="pi pi-copy"
+								aria-label="Copy Message"
+								@click.stop="handleCopyMessageContent"
+							/>
+							<template #popper>Copy Message</template>
+						</VTooltip>
 					</span>
 				</div>
 
@@ -64,7 +61,9 @@
 
 					<!-- Message loading -->
 					<template v-if="message.sender === 'Assistant' && message.type === 'LoadingMessage'">
-						<i class="pi pi-spin pi-spinner"></i>
+						<div role="status">
+							<i class="pi pi-spin pi-spinner" role="img" aria-label="Loading message"></i>
+						</div>
 					</template>
 
 					<!-- Render the html content and any vue components within -->
@@ -154,10 +153,9 @@
 						<!-- Prompt dialog -->
 						<Dialog
 							class="prompt-dialog"
-							:visible="viewPrompt"
+							v-model:visible="viewPrompt"
 							modal
 							header="Completion Prompt"
-							:closable="false"
 						>
 							<p class="prompt-text">{{ prompt.prompt }}</p>
 							<template #footer>
@@ -574,6 +572,10 @@ export default {
 	background-color: var(--primary-button-bg) !important;
 	border-color: var(--primary-button-bg) !important;
 	color: var(--primary-button-text) !important;
+}
+
+.message__button {
+	color: #00356b;
 }
 </style>
 
