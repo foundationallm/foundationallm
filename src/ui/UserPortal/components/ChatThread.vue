@@ -25,7 +25,9 @@
 						v-for="(message, index) in messages.slice()"
 						:key="`${message.id}-${componentKey}`"
 						:message="message"
-						:show-word-animation="index === messages.length-1 && userSentMessage && message.sender === 'Assistant'"
+						:show-word-animation="
+							index === messages.length - 1 && userSentMessage && message.sender === 'Assistant'
+						"
 						role="log"
 						@rate="handleRateMessage($event.message, $event.isLiked)"
 					/>
