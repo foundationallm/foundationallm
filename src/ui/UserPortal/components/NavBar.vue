@@ -30,7 +30,7 @@
 				<div class="navbar__content__left__item">
 					<template v-if="currentSession">
 						<span>{{ currentSession.name }}</span>
-						<VTooltip :autoHide="false" :popperTriggers="['hover']">
+						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
 							<Button
 								v-if="!$appConfigStore.isKioskMode"
 								class="button--share"
@@ -57,7 +57,7 @@
 			<div class="navbar__content__right">
 				<template v-if="currentSession">
 					<span class="header__dropdown">
-						<VTooltip :autoHide="false" :popperTriggers="['hover']">
+						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
 							<AgentIcon
 								:src="$appConfigStore.agentIconUrl || '~/assets/FLLM-Agent-Light.svg'"
 								alt="Select an agent"

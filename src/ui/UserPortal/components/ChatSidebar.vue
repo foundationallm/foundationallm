@@ -59,7 +59,7 @@
 					<!-- Chat icons -->
 					<span v-if="currentSession?.id === session.id" class="chat__icons">
 						<!-- Rename session -->
-						<VTooltip :autoHide="false" :popperTriggers="['hover']">
+						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
 							<Button
 								icon="pi pi-pencil"
 								size="small"
@@ -72,7 +72,7 @@
 						</VTooltip>
 
 						<!-- Delete session -->
-						<VTooltip :autoHide="false" :popperTriggers="['hover']">
+						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
 							<Button
 								icon="pi pi-trash"
 								size="small"
