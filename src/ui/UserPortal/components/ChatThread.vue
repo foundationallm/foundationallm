@@ -20,15 +20,17 @@
 			<template v-else>
 				<!-- Messages -->
 				<template v-if="messages.length !== 0">
-					<div class="spacer" />
 					<ChatMessage
-						v-for="(message, index) in messages.slice()"
+						v-for="(message, index) in messages.slice().reverse()"
+						:id="`message-${getMessageOrderFromReversedIndex(index)}`"
 						:key="`${message.id}-${componentKey}`"
 						:message="message"
-						:show-word-animation="
-							index === messages.length - 1 && userSentMessage && message.sender === 'Assistant'
-						"
+						:show-word-animation="index === 0 && userSentMessage && message.sender === 'Assistant'"
 						role="log"
+						:tabindex="getMessageOrderFromReversedIndex(index)"
+						:aria-flowto="
+							index === 0 ? null : `message-${getMessageOrderFromReversedIndex(index) + 1}`
+						"
 						@rate="handleRateMessage($event.message, $event.isLiked)"
 					/>
 				</template>
@@ -99,14 +101,13 @@ export default {
 
 	mounted() {
 		eventBus.on('operation-completed', this.handleOperationCompleted);
-		this.scrollToBottom();
-	},
-
-	updated() {
-		this.scrollToBottom();
 	},
 
 	methods: {
+		getMessageOrderFromReversedIndex(index) {
+			return this.messages.length - 1 - index;
+		},
+
 		async handleRateMessage(message: Message, isLiked: Message['rating']) {
 			await this.$appStore.rateMessage(message, isLiked);
 		},
@@ -168,12 +169,6 @@ export default {
 				await this.$appStore.getMessages();
 			}
 		},
-
-		scrollToBottom() {
-			this.$nextTick(() => {
-				this.$refs.messageContainer.scrollTop = this.$refs.messageContainer.scrollHeight;
-			});
-		},
 	},
 };
 </script>
@@ -205,7 +200,7 @@ export default {
 
 .chat-thread__messages {
 	display: flex;
-	flex-direction: column;
+	flex-direction: column-reverse;
 	flex: 1;
 	overflow-y: auto;
 	overscroll-behavior: auto;
@@ -222,6 +217,7 @@ export default {
 .empty {
 	flex-direction: column;
 }
+
 .new-chat-alert {
 	background-color: #fafafa;
 	margin: 10px;
@@ -257,9 +253,5 @@ footer {
 	text-align: right;
 	font-size: 0.85rem;
 	padding-right: 24px;
-}
-
-.spacer {
-	flex-grow: 1;
 }
 </style>
