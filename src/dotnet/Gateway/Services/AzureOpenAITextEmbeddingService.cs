@@ -30,8 +30,9 @@ namespace FoundationaLLM.Gateway.Services
         }
 
         /// <inheritdoc/>
-        public async Task<TextEmbeddingResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string deploymentName)
+        public async Task<TextEmbeddingResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string deploymentName, bool prioritized)
         {
+            // Priority not relevant as the text embedding context has already been queued at a higher level.
             try
             {
                 var embeddingClient = _azureOpenAIClient.GetEmbeddingClient(deploymentName);

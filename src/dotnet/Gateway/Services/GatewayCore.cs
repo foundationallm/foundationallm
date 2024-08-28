@@ -158,7 +158,8 @@ namespace FoundationaLLM.Gateway.Services
                         Position = tc.Position
                     }).ToList(),
                     TokenCount = 0
-                }
+                },
+                Prioritized = embeddingRequest.Prioritized
             };
 
             embeddingModel.AddEmbeddingOperationContext(embeddingOperationContext);

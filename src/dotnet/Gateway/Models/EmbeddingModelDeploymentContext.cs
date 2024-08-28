@@ -2,7 +2,6 @@
 using FoundationaLLM.Common.Models.Azure;
 using FoundationaLLM.Common.Models.Gateway;
 using FoundationaLLM.Common.Models.Vectorization;
-using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Gateway.Services;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
@@ -100,8 +99,9 @@ namespace FoundationaLLM.Gateway.Models
                     gatewayMetrics.Id,
                     JsonSerializer.Serialize<GatewayTextEmbeddingRequestMetrics>(gatewayMetrics, _jsonSerializerOptions));
 
+                // Priority is false since the embedding operation context is already added to the queue.
                 var embeddingResult =
-                    await _textEmbeddingService.GetEmbeddingsAsync(_inputTextChunks, _deployment.Name);
+                    await _textEmbeddingService.GetEmbeddingsAsync(_inputTextChunks, _deployment.Name, false);
 
                 if (embeddingResult.Failed)
                     _logger.LogWarning("The text embedding request with id {RequestId} failed with the following error: {ErrorMessage}",

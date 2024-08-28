@@ -89,6 +89,8 @@ namespace FoundationaLLM.Vectorization.Handlers
                     return false;
                 }
 
+                // Synchronous processing is prioritized over asynchronous processing.
+                var prioritized = request.ProcessingType == VectorizationProcessingType.Synchronous;
                 embeddingResult = await textEmbeddingService.GetEmbeddingsAsync(
                     textPartitioningArtifacts.Select(tpa => new TextChunk
                     {
@@ -96,7 +98,8 @@ namespace FoundationaLLM.Vectorization.Handlers
                         Content = tpa.Content!,
                         TokensCount = tpa.Size
                     }).ToList(),
-                    embeddingModelName);
+                    embeddingModelName,
+                    prioritized);
 
                 if (embeddingResult.InProgress)
                 {

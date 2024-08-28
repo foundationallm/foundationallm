@@ -19,5 +19,12 @@ namespace FoundationaLLM.Common.Models.Vectorization
         /// </summary>
         [JsonPropertyName("embedding_model_name")]
         public string EmbeddingModelName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Indicates whether the request should be prioritized.
+        /// Example: Synchronous vectorization and user prompt embedding for completions.
+        /// </summary>
+        [JsonPropertyName("prioritized")]
+        public bool Prioritized { get; set; } = false;
     }
 }
