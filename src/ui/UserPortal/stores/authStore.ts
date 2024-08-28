@@ -7,6 +7,7 @@ export const useAuthStore = defineStore('auth', {
 		msalInstance: null,
 		tokenExpirationTimerId: null as number | null,
 		isExpired: false,
+		apiToken: null,
 	}),
 
 	getters: {
@@ -25,6 +26,10 @@ export const useAuthStore = defineStore('auth', {
 		authConfig() {
 			return useNuxtApp().$appConfigStore.auth;
 		},
+
+		apiScopes() {
+			return [this.authConfig.scopes];
+		},
 	},
 
 	actions: {
@@ -34,7 +39,7 @@ export const useAuthStore = defineStore('auth', {
 					clientId: this.authConfig.clientId,
 					authority: `${this.authConfig.instance}${this.authConfig.tenantId}`,
 					redirectUri: this.authConfig.callbackPath,
-					scopes: this.authConfig.scopes,
+					scopes: this.apiScopes,
 					// Must be registered as a SPA redirectURI on your app registration.
 					postLogoutRedirectUri: '/',
 				},
@@ -43,72 +48,55 @@ export const useAuthStore = defineStore('auth', {
 				},
 			});
 
-			msalInstance.addEventCallback((event) => {
-				const { eventType } = event;
-				if (
-					eventType === EventType.ACQUIRE_TOKEN_SUCCESS ||
-					eventType === EventType.LOGIN_SUCCESS
-				) {
-					this.createTokenRefreshTimer();
-				}
-			});
-
 			await msalInstance.initialize();
-
 			this.msalInstance = msalInstance;
 
 			return this;
 		},
 
 		createTokenRefreshTimer() {
-			const tokenExpirationTime = this.currentAccount.idTokenClaims.exp * 1000;
+			const tokenExpirationTimeMS = this.apiToken.expiresOn;
 			const currentTime = Date.now();
-			const timeUntilExpirationMS = tokenExpirationTime - currentTime;
+			const timeUntilExpirationMS = tokenExpirationTimeMS - currentTime;
 
-			if (timeUntilExpirationMS <= 0) {
-				console.log(`Auth: Access token expired ${timeUntilExpirationMS / 1000} seconds ago.`);
-				this.isExpired = true;
-				return;
-				// return useNuxtApp().$router.push({
-				// 	name: 'auth/login',
-				// 	query: {
-				// 		message: 'Your login has expired. Please sign in again.',
-				// 	},
-				// });
+			// If the token expires within the next minute, try to refresh it
+			if (timeUntilExpirationMS <= 60 * 1000) {
+				return this.tryTokenRefresh();
 			}
 
+			console.log(`Auth: Cleared previous access token timer.`);
 			clearTimeout(this.tokenExpirationTimerId);
 
 			this.tokenExpirationTimerId = setTimeout(() => {
-				this.refreshToken();
+				this.tryTokenRefresh();
 			}, timeUntilExpirationMS);
 
+			const refreshDate = new Date(tokenExpirationTimeMS);
 			console.log(
-				`Auth: Set access token timer refresh in ${timeUntilExpirationMS / 1000} seconds.`,
+				`Auth: Set access token timer refresh for ${refreshDate} (in ${timeUntilExpirationMS / 1000} seconds).`,
 			);
 		},
 
-		async refreshToken() {
+		async tryTokenRefresh() {
 			try {
-				await this.msalInstance.acquireTokenSilent({
-					account: this.currentAccount,
-					scopes: [this.authConfig.scopes],
-				});
-				console.log('Auth: Refreshed access token.');
-				this.createTokenRefreshTimer();
+				await this.getApiToken()
+				console.log('Auth: Successfully refreshed access token.');
 			} catch (error) {
-				console.error('Auth: Token refresh error:', error);
-				// sessionStorage.clear();
+				console.error('Auth: Failed to refresh access token:', error);
 				this.isExpired = true;
-				// useNuxtApp().$router.push({ name: 'auth/login' });
 			}
 		},
 
-		async getToken() {
+		async getApiToken() {
 			try {
-				return await this.msalInstance.acquireTokenSilent({
+				this.apiToken = await this.msalInstance.acquireTokenSilent({
 					account: this.currentAccount,
+					scopes: this.apiScopes,
 				});
+
+				this.createTokenRefreshTimer();
+
+				return this.apiToken;
 			} catch (error) {
 				this.isExpired = true;
 				throw error;
@@ -117,7 +105,7 @@ export const useAuthStore = defineStore('auth', {
 
 		async login() {
 			return await this.msalInstance.loginRedirect({
-				scopes: [this.authConfig.scopes],
+				scopes: this.apiScopes,
 			});
 		},
 
