@@ -133,6 +133,7 @@
 					<span>
 						<!-- Copy message button -->
 						<Button
+							:disabled="message.type === 'LoadingMessage'"
 							class="message__button"
 							size="small"
 							text
