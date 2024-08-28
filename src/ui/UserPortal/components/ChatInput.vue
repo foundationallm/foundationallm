@@ -7,10 +7,7 @@
 					<template #popper> Use Shift+Enter to add a new line </template>
 				</VTooltip>
 			</div>
-			<VTooltip
-				:autoHide="false"
-				:popperTriggers="['hover']"
-			>
+			<VTooltip :auto-hide="false" :popper-triggers="['hover']">
 				<Button
 					:badge="fileArrayFiltered.length.toString() || null"
 					:aria-label="'Upload file (' + fileArrayFiltered.length.toString() + ' files attached)'"
@@ -21,7 +18,9 @@
 					@click="showFileUploadDialog = true"
 				/>
 				<template #popper>
-					Attach files ({{ fileArrayFiltered.length === 1 ? '1 file' : fileArrayFiltered.length + ' files' }})
+					Attach files ({{
+						fileArrayFiltered.length === 1 ? '1 file' : fileArrayFiltered.length + ' files'
+					}})
 				</template>
 			</VTooltip>
 			<Dialog

@@ -1,12 +1,19 @@
 <template>
 	<div class="chat-thread">
 		<!-- Message list -->
-		<div class="chat-thread__messages"
+		<div
+			ref="messageContainer"
+			class="chat-thread__messages"
 			:class="messages.length === 0 && 'empty'"
-			ref="messageContainer">
+		>
 			<template v-if="isLoading">
 				<div class="chat-thread__loading" role="status">
-					<i class="pi pi-spin pi-spinner" style="font-size: 2rem" role="img" aria-label="Loading"></i>
+					<i
+						class="pi pi-spin pi-spinner"
+						style="font-size: 2rem"
+						role="img"
+						aria-label="Loading"
+					></i>
 				</div>
 			</template>
 
@@ -18,9 +25,11 @@
 						v-for="(message, index) in messages.slice()"
 						:key="`${message.id}-${componentKey}`"
 						:message="message"
-						:show-word-animation="index === 0 && userSentMessage && message.sender === 'Assistant'"
-						@rate="handleRateMessage($event.message, $event.isLiked)"
+						:show-word-animation="
+							index === messages.length - 1 && userSentMessage && message.sender === 'Assistant'
+						"
 						role="log"
+						@rate="handleRateMessage($event.message, $event.isLiked)"
 					/>
 				</template>
 
@@ -161,10 +170,10 @@ export default {
 		},
 
 		scrollToBottom() {
-            this.$nextTick(() => {
-                this.$refs.messageContainer.scrollTop = this.$refs.messageContainer.scrollHeight;
-            });
-        },
+			this.$nextTick(() => {
+				this.$refs.messageContainer.scrollTop = this.$refs.messageContainer.scrollHeight;
+			});
+		},
 	},
 };
 </script>

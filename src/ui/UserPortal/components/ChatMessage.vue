@@ -28,9 +28,11 @@
 							}"
 						/>
 						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
-							<span class="time-stamp" tabindex="0">{{ $filters.timeAgo(new Date(message.timeStamp)) }}</span>
+							<span class="time-stamp" tabindex="0">{{
+								$filters.timeAgo(new Date(message.timeStamp))
+							}}</span>
 							<template #popper>
-								{{formatTimeStamp(message.timeStamp)}}
+								{{ formatTimeStamp(message.timeStamp) }}
 							</template>
 						</VTooltip>
 
@@ -131,6 +133,7 @@
 					<span>
 						<!-- Copy message button -->
 						<Button
+							:disabled="message.type === 'LoadingMessage'"
 							class="message__button"
 							size="small"
 							text
@@ -152,8 +155,8 @@
 
 						<!-- Prompt dialog -->
 						<Dialog
-							class="prompt-dialog"
 							v-model:visible="viewPrompt"
+							class="prompt-dialog"
 							modal
 							header="Completion Prompt"
 						>
