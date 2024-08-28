@@ -32,7 +32,7 @@
 								$filters.timeAgo(new Date(message.timeStamp))
 							}}</span>
 							<template #popper>
-								{{formatTimeStamp(message.timeStamp)}}
+								{{ formatTimeStamp(message.timeStamp) }}
 							</template>
 						</VTooltip>
 
