@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import type { AccountInfo } from '@azure/msal-browser';
-import { PublicClientApplication, EventType } from '@azure/msal-browser';
+import { PublicClientApplication } from '@azure/msal-browser';
 
 export const useAuthStore = defineStore('auth', {
 	state: () => ({
@@ -79,7 +79,7 @@ export const useAuthStore = defineStore('auth', {
 
 		async tryTokenRefresh() {
 			try {
-				await this.getApiToken()
+				await this.getApiToken();
 				console.log('Auth: Successfully refreshed access token.');
 			} catch (error) {
 				console.error('Auth: Failed to refresh access token:', error);
