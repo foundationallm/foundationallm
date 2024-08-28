@@ -2,9 +2,9 @@
 	<div class="chat-thread">
 		<!-- Message list -->
 		<div
+			ref="messageContainer"
 			class="chat-thread__messages"
 			:class="messages.length === 0 && 'empty'"
-			ref="messageContainer"
 		>
 			<template v-if="isLoading">
 				<div class="chat-thread__loading" role="status">
@@ -26,8 +26,8 @@
 						:key="`${message.id}-${componentKey}`"
 						:message="message"
 						:show-word-animation="index === 0 && userSentMessage && message.sender === 'Assistant'"
-						@rate="handleRateMessage($event.message, $event.isLiked)"
 						role="log"
+						@rate="handleRateMessage($event.message, $event.isLiked)"
 					/>
 				</template>
 

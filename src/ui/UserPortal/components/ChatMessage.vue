@@ -154,8 +154,8 @@
 
 						<!-- Prompt dialog -->
 						<Dialog
-							class="prompt-dialog"
 							v-model:visible="viewPrompt"
+							class="prompt-dialog"
 							modal
 							header="Completion Prompt"
 						>
