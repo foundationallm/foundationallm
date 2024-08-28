@@ -2,7 +2,11 @@
 	<div class="navbar">
 		<!-- Sidebar header -->
 		<div class="navbar__header">
-			<img v-if="$appConfigStore.logoUrl !== ''" :src="$appConfigStore.logoUrl" :alt="$appConfigStore.logoText" />
+			<img
+				v-if="$appConfigStore.logoUrl !== ''"
+				:src="$appConfigStore.logoUrl"
+				:alt="$appConfigStore.logoText"
+			/>
 			<span v-else>{{ $appConfigStore.logoText }}</span>
 
 			<template v-if="!$appConfigStore.isKioskMode">

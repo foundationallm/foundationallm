@@ -152,7 +152,12 @@
 		>
 			<div v-if="deleteProcessing" class="delete-dialog-content">
 				<div role="status">
-					<i class="pi pi-spin pi-spinner" style="font-size: 2rem;" role="img" aria-label="Loading"></i>
+					<i
+						class="pi pi-spin pi-spinner"
+						style="font-size: 2rem"
+						role="img"
+						aria-label="Loading"
+					></i>
 				</div>
 			</div>
 			<div v-else>

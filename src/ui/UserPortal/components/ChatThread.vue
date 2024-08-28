@@ -1,12 +1,19 @@
 <template>
 	<div class="chat-thread">
 		<!-- Message list -->
-		<div class="chat-thread__messages"
+		<div
+			class="chat-thread__messages"
 			:class="messages.length === 0 && 'empty'"
-			ref="messageContainer">
+			ref="messageContainer"
+		>
 			<template v-if="isLoading">
 				<div class="chat-thread__loading" role="status">
-					<i class="pi pi-spin pi-spinner" style="font-size: 2rem" role="img" aria-label="Loading"></i>
+					<i
+						class="pi pi-spin pi-spinner"
+						style="font-size: 2rem"
+						role="img"
+						aria-label="Loading"
+					></i>
 				</div>
 			</template>
 
@@ -161,10 +168,10 @@ export default {
 		},
 
 		scrollToBottom() {
-            this.$nextTick(() => {
-                this.$refs.messageContainer.scrollTop = this.$refs.messageContainer.scrollHeight;
-            });
-        },
+			this.$nextTick(() => {
+				this.$refs.messageContainer.scrollTop = this.$refs.messageContainer.scrollHeight;
+			});
+		},
 	},
 };
 </script>
