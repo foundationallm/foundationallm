@@ -13,7 +13,6 @@ import type {
 
 export default {
 	apiUrl: null as string | null,
-	bearerToken: null as string | null,
 	virtualUser: null as string | null,
 
 	getVirtualUser() {
@@ -47,11 +46,11 @@ export default {
 	 * @returns The bearer token.
 	 */
 	async getBearerToken() {
-		if (this.bearerToken) return this.bearerToken;
-
-		const token = await useNuxtApp().$authStore.getToken();
-		this.bearerToken = token.accessToken;
-		return this.bearerToken;
+		// When the scope is specific on aquireTokenSilent this seems to be instant
+		// otherwise we would have to store the token and check if it has expired here
+		// to determine if we need to fetch it again
+		const token = await useNuxtApp().$authStore.getApiToken();
+		return token.accessToken;
 	},
 
 	/**

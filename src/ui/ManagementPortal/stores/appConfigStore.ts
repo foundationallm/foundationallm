@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-// import type { AuthConfigOptions } from '@js/auth';
 import api from '@/js/api';
 
 export const useAppConfigStore = defineStore('appConfig', {
@@ -44,7 +43,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 			tenantId: null,
 			scopes: [],
 			callbackPath: null,
-		}, // as AuthConfigOptions,
+		},
 	}),
 	getters: {},
 	actions: {
