@@ -248,7 +248,10 @@ namespace Management.Client.Tests.Clients.Resources
                         Name = "test-profile-2",
                         TextEmbedding = TextEmbeddingType.GatewayTextEmbedding,
                         ObjectId = "test-object-id-2",
-                        EmbeddingAIModelObjectId = "test-ai-model-object-id-2"
+                        Settings = new Dictionary<string, string>
+                        {
+                            { "model_name", "text-embedding-ada-002"}
+                        }
                     },
                     Actions = [],
                     Roles = []
@@ -285,7 +288,10 @@ namespace Management.Client.Tests.Clients.Resources
                     Name = profileName,
                     TextEmbedding = TextEmbeddingType.GatewayTextEmbedding,
                     ObjectId = "test-object-id",
-                    EmbeddingAIModelObjectId = "test-ai-model-object-id"
+                    Settings = new Dictionary<string, string>
+                    {
+                        { "model_name", "text-embedding-ada-002"}
+                    }
                 },
                 Actions = [],
                 Roles = []
@@ -339,7 +345,10 @@ namespace Management.Client.Tests.Clients.Resources
                     {
                         Name = "test-profile",
                         Indexer = IndexerType.AzureAISearchIndexer,
-                        IndexingAPIEndpointConfigurationObjectId = "test-api-endpoint-object-id"
+                        Settings = new Dictionary<string, string>
+                        {
+                            { "api_endpoint_configuration_object_id", "test-api-endpoint-object-id" }
+                        }
                     },
                     Actions = [],
                     Roles = []
@@ -350,7 +359,10 @@ namespace Management.Client.Tests.Clients.Resources
                     {
                         Name = "test-profile-2",
                         Indexer = IndexerType.AzureCosmosDBNoSQLIndexer,
-                        IndexingAPIEndpointConfigurationObjectId = "test-api-endpoint-object-id-2"
+                        Settings = new Dictionary<string, string>
+                        {
+                            { "api_endpoint_configuration_object_id", "test-api-endpoint-object-id-2" }
+                        }
                     },
                     Actions = [],
                     Roles = []
@@ -361,7 +373,10 @@ namespace Management.Client.Tests.Clients.Resources
                     {
                         Name = "test-profile-3",
                         Indexer = IndexerType.PostgresIndexer,
-                        IndexingAPIEndpointConfigurationObjectId = "test-api-endpoint-object-id-3"
+                        Settings = new Dictionary<string, string>
+                        {
+                            { "api_endpoint_configuration_object_id", "test-api-endpoint-object-id-3" }
+                        }
                     },
                     Actions = [],
                     Roles = []
@@ -397,7 +412,10 @@ namespace Management.Client.Tests.Clients.Resources
                 {
                     Name = profileName,
                     Indexer = IndexerType.AzureCosmosDBNoSQLIndexer,
-                    IndexingAPIEndpointConfigurationObjectId = "test-api-endpoint-object-id"
+                    Settings = new Dictionary<string, string>
+                    {
+                        { "api_endpoint_configuration_object_id", "test-api-endpoint-object-id" }
+                    }
                 },
                 Actions = [],
                 Roles = []
@@ -684,7 +702,10 @@ namespace Management.Client.Tests.Clients.Resources
                 {
                     Name = "test-profile",
                     Indexer = IndexerType.AzureAISearchIndexer,
-                    IndexingAPIEndpointConfigurationObjectId = "test-api-endpoint-object-id"
+                    Settings = new Dictionary<string, string>
+                        {
+                            { "api_endpoint_configuration_object_id", "test-api-endpoint-object-id" }
+                        }
                 }
             };
 
@@ -831,7 +852,10 @@ namespace Management.Client.Tests.Clients.Resources
             {
                 Name = "test-profile",
                 TextEmbedding = TextEmbeddingType.GatewayTextEmbedding,
-                EmbeddingAIModelObjectId = "test-ai-model-object-id"
+                Settings = new Dictionary<string, string>
+                {
+                    { "model_name", "text-embedding-ada-002"}
+                }
             };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {
@@ -866,7 +890,10 @@ namespace Management.Client.Tests.Clients.Resources
             {
                 Name = "test-profile",
                 Indexer = IndexerType.AzureAISearchIndexer,
-                IndexingAPIEndpointConfigurationObjectId = "test-api-endpoint-object-id"
+                Settings = new Dictionary<string, string>
+                        {
+                            { "api_endpoint_configuration_object_id", "test-api-endpoint-object-id" }
+                        }
             };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {

@@ -212,11 +212,16 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         explodedObjects[indexingProfileName] = indexingProfile;
                                                
                         // Provide the indexing profile API endpoint configuration.
+                        if (indexingProfileCasted.Settings == null)
+                            throw new OrchestrationException($"The settings for the indexing profile {indexingProfileName} were not found. Must include \"api_endpoint_configuration_object_id\" setting.");
+
+                        if(indexingProfileCasted.Settings.TryGetValue("api_endpoint_configuration_object_id", out var apiEndpointConfigurationObjectId) == false)
+                            throw new OrchestrationException($"The API endpoint configuration object ID was not found in the settings of the indexing profile.");
                         var indexingProfileAPIEndpointConfiguration = await configurationResourceProvider.GetResource<APIEndpointConfiguration>(
-                            indexingProfileCasted.IndexingAPIEndpointConfigurationObjectId,
+                            apiEndpointConfigurationObjectId,
                             currentUserIdentity);
 
-                        explodedObjects[indexingProfileCasted.IndexingAPIEndpointConfigurationObjectId] = indexingProfileAPIEndpointConfiguration;
+                        explodedObjects[apiEndpointConfigurationObjectId] = indexingProfileAPIEndpointConfiguration;
                     }
 
                     if (!string.IsNullOrWhiteSpace(kmAgent.Vectorization.TextEmbeddingProfileObjectId))
@@ -230,27 +235,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             throw new OrchestrationException($"The text embedding profile {kmAgent.Vectorization.TextEmbeddingProfileObjectId} is not a valid text embedding profile.");
 
                         explodedObjects[kmAgent.Vectorization.TextEmbeddingProfileObjectId!] = textEmbeddingProfileCasted;
-
-                        if(textEmbeddingProfileCasted.TextEmbedding != TextEmbeddingType.GatewayTextEmbedding)
-                        {
-                            // Provide the Embedding AI Model and associated API endpoint configuration.
-                            var embeddingAIModelBase = await aiModelResourceProvider.GetResource<AIModelBase>(
-                                textEmbeddingProfileCasted.EmbeddingAIModelObjectId!,
-                                currentUserIdentity);
-
-                            var embeddingAIModel = embeddingAIModelBase as EmbeddingAIModel;
-                            if (embeddingAIModel == null)
-                                throw new OrchestrationException($"The AI model {textEmbeddingProfileCasted.EmbeddingAIModelObjectId} is not a valid Embedding AI model.");
-
-                            explodedObjects[textEmbeddingProfileCasted.EmbeddingAIModelObjectId!] = embeddingAIModel;
-
-                            // Provide the embedding AI model API endpoint configuration.
-                            var embeddingAIModelAPIEndpointConfiguration = await configurationResourceProvider.GetResource<APIEndpointConfiguration>(
-                                embeddingAIModel.EndpointObjectId!,
-                                currentUserIdentity);
-                            explodedObjects[embeddingAIModel.EndpointObjectId!] = embeddingAIModelAPIEndpointConfiguration;
-                        }
-                       
                     }
                 }
             }

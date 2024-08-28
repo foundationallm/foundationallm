@@ -80,9 +80,15 @@ namespace FoundationaLLM.Vectorization.Services.Text
             if (configurationResourceProviderService == null)
                 throw new VectorizationException($"The resource provider {ResourceProviderNames.FoundationaLLM_Configuration} was not loaded.");
 
-            var apiEndpoint = await configurationResourceProviderService.GetResource<APIEndpointConfiguration>(profile.IndexingAPIEndpointConfigurationObjectId, DefaultAuthentication.ServiceIdentity!);
+            if (profile.Settings==null)
+                throw new VectorizationException($"The settings for the Azure AI Search service were not found.");
+
+            if (profile.Settings.TryGetValue("api_endpoint_configuration_object_id", out var apiEndpointObjectId) == false)
+                throw new VectorizationException($"The API endpoint configuration object ID was not found in the settings.");
+            
+            var apiEndpoint = await configurationResourceProviderService.GetResource<APIEndpointConfiguration>(apiEndpointObjectId, DefaultAuthentication.ServiceIdentity!);
             if(apiEndpoint==null)
-                throw new VectorizationException($"The API endpoint configuration {profile.IndexingAPIEndpointConfigurationObjectId} for the Azure AI Search service was not found.");
+                throw new VectorizationException($"The API endpoint configuration {apiEndpointObjectId} for the Azure AI Search service was not found.");
 
             var settings = new AzureAISearchIndexingServiceSettings()
                 {

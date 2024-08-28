@@ -45,8 +45,8 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
     {
         private readonly ILoggerFactory _loggerFactory = loggerFactory;
 
-        private string _textEmbeddingDeploymentName = string.Empty;
-        private string _textEmbeddingEndpoint = string.Empty;
+        //private string _textEmbeddingDeploymentName = string.Empty;
+        //private string _textEmbeddingEndpoint = string.Empty;
         private string _indexerName = string.Empty;
         private IndexerType _indexerType = IndexerType.AzureAISearchIndexer;
         private string _indexName = string.Empty;
@@ -69,41 +69,13 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
             if (textEmbeddingProfile != null)
             {
                 // Get the text embedding ai model for deployment name and endpoint URL from its API endpoint configuration.
+                if (textEmbeddingProfile.Settings==null)
+                    throw new SemanticKernelException("The text embedding profile settings cannot be null. Requires: model_name", StatusCodes.Status400BadRequest);
+
+                if (!textEmbeddingProfile.Settings.ContainsKey("model_name"))
+                    throw new SemanticKernelException("The text embedding profile settings must contain the 'model_name' key.", StatusCodes.Status400BadRequest);
                
-                if (!_request.Objects.TryGetValue(
-                        textEmbeddingProfile.EmbeddingAIModelObjectId, out var embeddingAIModelObject))
-                    throw new SemanticKernelException($"The AI Model object with id {textEmbeddingProfile.EmbeddingAIModelObjectId} is missing from the request's objects.");
-
-                // Validate deployment name and endpoint url are present.
-                var embeddingAIModel = embeddingAIModelObject is JsonElement embeddingAIModelJsonElement
-                    ? embeddingAIModelJsonElement.Deserialize<EmbeddingAIModel>()
-                    : embeddingAIModelObject as EmbeddingAIModel;
-
-                if (embeddingAIModel == null)
-                    throw new SemanticKernelException($"The AI Model object with id {textEmbeddingProfile.EmbeddingAIModelObjectId} provided in the request's objects is invalid.");
-
-                _deploymentName = embeddingAIModel.DeploymentName!;
-                //check for deployment name override from Settings
-                if(textEmbeddingProfile.Settings is not null && textEmbeddingProfile.Settings.TryGetValue("deployment_name", out string? deploymentNameOverride))
-                {
-                    _deploymentName = deploymentNameOverride;
-                }
-                if(!_request.Objects.TryGetValue(
-                            embeddingAIModel.EndpointObjectId, out var embeddingAIModelEndpointObject))
-                        throw new SemanticKernelException($"The AI Model API endpoint configuration object is missing from the request's objects.");
-
-                // Get the endpoint configuration object, ensure it can be deserialized to an APIEndpointConfiguration. URL is required on APIEndpointConfiguration, no further validation required.
-                var embeddingAIModelEndpoint = embeddingAIModelEndpointObject is JsonElement embeddingAIModelEndpointJsonElement
-                    ? embeddingAIModelEndpointJsonElement.Deserialize<APIEndpointConfiguration>()
-                    : embeddingAIModelEndpointObject as APIEndpointConfiguration;
-
-                if (embeddingAIModelEndpoint == null)
-                    throw new SemanticKernelException("The AI Model API endpoint configuration object provided in the request's objects is invalid.");
-
-                if (string.IsNullOrWhiteSpace(embeddingAIModelEndpoint.Url))
-                    throw new SemanticKernelException($"The AI Model API endpoint configuration URL is invalid.");
-
-                _textEmbeddingEndpoint = embeddingAIModelEndpoint.Url;
+                
             }
 
             if ((indexingProfiles ?? []).Count > 0)
@@ -142,15 +114,15 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
             {
                 case IndexerType.AzureAISearchIndexer:
                     if (!_request.Objects.TryGetValue(
-                        indexingProfile.IndexingAPIEndpointConfigurationObjectId, out var endpointConfigurationObject))
-                        throw new SemanticKernelException($"The indexing profile endpoint object with id {indexingProfile.IndexingAPIEndpointConfigurationObjectId} is missing from the request's objects.");
+                        indexingProfile.Settings!["api_endpoint_configuration_object_id"], out var endpointConfigurationObjectId))
+                        throw new SemanticKernelException($"The indexing profile api endpoint configuraition object ID is missing from the indexing profile settings.");
 
-                    var endpointConfiguration = endpointConfigurationObject is JsonElement endpointConfigurationJsonElement
+                    var endpointConfiguration = endpointConfigurationObjectId is JsonElement endpointConfigurationJsonElement
                         ? endpointConfigurationJsonElement.Deserialize<APIEndpointConfiguration>()
-                        : endpointConfigurationObject as APIEndpointConfiguration;
+                        : endpointConfigurationObjectId as APIEndpointConfiguration;
 
                     if(endpointConfiguration == null)
-                        throw new SemanticKernelException($"The indexing profile endpoint object with id {indexingProfile.IndexingAPIEndpointConfigurationObjectId} provided in the request's objects is invalid.");
+                        throw new SemanticKernelException($"The indexing profile endpoint object with id {endpointConfigurationObjectId} provided in the request's objects is invalid.");
 
                     // URL and Authentication type is already required on the APIEndpointConfiguration, no further validation required.                                        
                     _azureAISearchIndexingServiceSettings = new AzureAISearchIndexingServiceSettings
@@ -276,7 +248,8 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
                     {
                         var memory = new MemoryBuilder()
                             .WithMemoryStore(new AzureAISearchMemoryStore(_azureAISearchIndexingServiceSettings.Endpoint, credential))
-                            .WithAzureOpenAITextEmbeddingGeneration(_textEmbeddingDeploymentName, _textEmbeddingEndpoint, credential)
+                            //TODO: IMPLEMENT GATEWAY
+                            //       .WithAzureOpenAITextEmbeddingGeneration(_textEmbeddingDeploymentName, _textEmbeddingEndpoint, credential)
                             .Build();
 
                         kernel.ImportPluginFromObject(new KnowledgeManagementContextPlugin(memory, _indexName));
@@ -291,8 +264,9 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
                                 _azureCosmosDBNoSQLIndexingServiceSettings.ConnectionString,
                                 _azureCosmosDBNoSQLIndexingServiceSettings.VectorDatabase!,
                                 _azureCosmosDBNoSQLIndexingServiceSettings.VectorEmbeddingPolicy,
-                                _azureCosmosDBNoSQLIndexingServiceSettings.IndexingPolicy))                            
-                            .WithAzureOpenAITextEmbeddingGeneration(_textEmbeddingDeploymentName, _textEmbeddingEndpoint, credential)
+                                _azureCosmosDBNoSQLIndexingServiceSettings.IndexingPolicy))
+                       // TODO: IMPLEMENT GATEWAY
+                       //     .WithAzureOpenAITextEmbeddingGeneration(_textEmbeddingDeploymentName, _textEmbeddingEndpoint, credential)
                             .Build();
 
                         kernel.ImportPluginFromObject(new KnowledgeManagementContextPlugin(memory, _indexName));
@@ -307,7 +281,8 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
                             .WithMemoryStore(new PostgresMemoryStore(
                                 _postgresIndexingServiceSettings.ConnectionString,
                                 vectorSize))
-                            .WithAzureOpenAITextEmbeddingGeneration(_textEmbeddingDeploymentName, _textEmbeddingEndpoint, credential)
+                         //TODO: IMPLEMENT GATEWAY
+                         //   .WithAzureOpenAITextEmbeddingGeneration(_textEmbeddingDeploymentName, _textEmbeddingEndpoint, credential)
                             .Build();
 
                         kernel.ImportPluginFromObject(new KnowledgeManagementContextPlugin(memory, _indexName));

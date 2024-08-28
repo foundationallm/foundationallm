@@ -147,37 +147,17 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
                     var textEmbeddingProfile = textEmbeddingProfileObject is JsonElement textEmbeddingProfileJsonElement
                         ? textEmbeddingProfileJsonElement.Deserialize<TextEmbeddingProfile>()
                         : textEmbeddingProfileObject as TextEmbeddingProfile;
-                                       
+
+                    // All embedding is accomplished via the Gateway with a non-deterministic endpoint, requires the embedding model name (not deployment) in settings.                                       
                     if (textEmbeddingProfile == null)                       
                         throw new OrchestrationException("The text embedding profile object provided in the request's objects is invalid.");
 
-                    if (!Objects.TryGetValue(
-                                textEmbeddingProfile.EmbeddingAIModelObjectId!, out var embeddingAIModelObject))
-                        throw new OrchestrationException($"The AI Model object with id {textEmbeddingProfile.EmbeddingAIModelObjectId} is missing from the request's objects.");
+                    if (textEmbeddingProfile.Settings == null)
+                        throw new OrchestrationException("The text embedding profile settings must contain a model_name item.");
 
-                    //validate deployment name and endpoint url are present
-                    var embeddingAIModel = embeddingAIModelObject is JsonElement embeddingAIModelJsonElement
-                        ? embeddingAIModelJsonElement.Deserialize<EmbeddingAIModel>()
-                        : embeddingAIModelObject as EmbeddingAIModel;
-
-                    if (embeddingAIModel == null)
-                        throw new OrchestrationException($"The AI Model object with id {textEmbeddingProfile.EmbeddingAIModelObjectId} provided in the request's objects is invalid.");
-
-                    if(string.IsNullOrWhiteSpace(embeddingAIModel.DeploymentName))
-                        throw new OrchestrationException($"The AI Model object with id {textEmbeddingProfile.EmbeddingAIModelObjectId} provided in the request's objects is invalid. Deployment Name is required.");
-
-                    // AIModelBase.EndpointObjectId is already required on AIModelBase
-                    if (!Objects.TryGetValue(
-                            embeddingAIModel.EndpointObjectId, out var embeddingAIModelEndpointObject))
-                        throw new OrchestrationException($"The AI Model API endpoint configuration object is missing from the request's objects.");
-
-                    // Get the endpoint configuration object, ensure it can be deserialized to an APIEndpointConfiguration. URL is required on APIEndpointConfiguration, no further validation required.
-                    var embeddingAIModelEndpoint = embeddingAIModelEndpointObject is JsonElement embeddingAIModelEndpointJsonElement
-                        ? embeddingAIModelEndpointJsonElement.Deserialize<APIEndpointConfiguration>()
-                        : embeddingAIModelEndpointObject as APIEndpointConfiguration;
-                    if (embeddingAIModelEndpoint == null)
-                        throw new OrchestrationException($"The AI Model API endpoint configuration object provided in the request's objects is invalid.");
-                    
+                    if (textEmbeddingProfile.Settings.ContainsKey("model_name"))
+                        throw new OrchestrationException("The text embedding profile object provided in the request's objects is invalid.");
+                   
                     _hasTextEmbeddingProfile = true;
                 }
 

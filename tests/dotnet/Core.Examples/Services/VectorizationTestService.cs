@@ -79,10 +79,10 @@ namespace FoundationaLLM.Core.Examples.Services
         public async Task<ReadOnlyMemory<float>> GetVector(TextEmbeddingProfile embedProfile, string query)
         {
             //embed the query
-            var embeddingModel = AIModelCatalog.EmbeddingAIModels.Where(x => x.ObjectId == embedProfile.EmbeddingAIModelObjectId).FirstOrDefault();
-            var endpoint = APIEndpointConfigurationCatalog.APIEndpointConfigurations.Where(x => x.ObjectId == embeddingModel!.EndpointObjectId).FirstOrDefault();
-            string oaiEndpoint = await TestConfiguration.GetAppConfigValueAsync(endpoint!.Url);
-            string authType = endpoint.AuthenticationType.ToString();
+            //var embeddingModel = AIModelCatalog.EmbeddingAIModels.Where(x => x.ObjectId == embedProfile.EmbeddingAIModelObjectId).FirstOrDefault();
+            //var endpoint = APIEndpointConfigurationCatalog.APIEndpointConfigurations.Where(x => x.ObjectId == embeddingModel!.EndpointObjectId).FirstOrDefault();
+            //string oaiEndpoint = await TestConfiguration.GetAppConfigValueAsync(endpoint!.Url);
+            //string authType = endpoint.AuthenticationType.ToString();
             //To do: GO THROUGH GATEWAY
             //OpenAIClient openAIClient;
             //switch(authType)
@@ -111,7 +111,8 @@ namespace FoundationaLLM.Core.Examples.Services
 
         async public Task<SearchIndexClient> GetIndexClient(IndexingProfile indexProfile)
         {
-            var endpoint = APIEndpointConfigurationCatalog.APIEndpointConfigurations.Where(x => x.ObjectId == indexProfile.IndexingAPIEndpointConfigurationObjectId).FirstOrDefault();
+            var indexEndpointObjectId = indexProfile.Settings!["api_endpoint_configuration_object_id"];
+            var endpoint = APIEndpointConfigurationCatalog.APIEndpointConfigurations.Where(x => x.ObjectId == indexEndpointObjectId).FirstOrDefault();
             string searchServiceEndPoint = await TestConfiguration.GetAppConfigValueAsync(endpoint!.Url);
             string authType = endpoint.AuthenticationType.ToString();
 
