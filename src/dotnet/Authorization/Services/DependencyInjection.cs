@@ -23,7 +23,7 @@ namespace FoundationaLLM
     public static partial class DependencyInjection
     {
         /// <summary>
-        /// Add the Authorization Core service to the dependency injection container (used by the Authorization API).
+        /// Adds the Authorization Core service to the dependency injection container (used by the Authorization API).
         /// </summary>
         /// <param name="builder">The host application builder.</param>
         public static void AddAuthorizationCore(this IHostApplicationBuilder builder)
@@ -59,7 +59,7 @@ namespace FoundationaLLM
         }
 
         /// <summary>
-        /// Add the authorization service to the dependency injection container (used by all resource providers).
+        /// Adds the authorization service to the dependency injection container (used by all resource providers).
         /// </summary>
         /// <param name="builder"></param>
         public static void AddAuthorizationService(this IHostApplicationBuilder builder)
@@ -70,7 +70,7 @@ namespace FoundationaLLM
         }
 
         /// <summary>
-        /// Add the authorization service to the dependency injection container (used by all resource providers).
+        /// Adds the authorization service to the dependency injection container (used by all resource providers).
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
         /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>

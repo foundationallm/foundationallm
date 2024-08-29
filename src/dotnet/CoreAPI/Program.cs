@@ -83,8 +83,6 @@ namespace FoundationaLLM.Core.API
 
             builder.Services.AddInstanceProperties(builder.Configuration);
 
-            builder.Services.AddOptions<CosmosDbSettings>()
-                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB));
             builder.Services.AddOptions<ClientBrandingConfiguration>()
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Branding));
             builder.Services.AddOptions<CoreServiceSettings>()
@@ -107,25 +105,14 @@ namespace FoundationaLLM.Core.API
             builder.AddConfigurationResourceProvider();
             builder.AddAzureOpenAIResourceProvider();
             builder.AddAIModelResourceProvider();
+            builder.AddConversationResourceProvider();
 
             // Register the downstream services and HTTP clients.
             builder.AddHttpClientFactoryService();
             builder.AddDownstreamAPIService(HttpClientNames.GatekeeperAPI);
             builder.AddDownstreamAPIService(HttpClientNames.OrchestrationAPI);
 
-            builder.Services.AddSingleton<CosmosClient>(serviceProvider =>
-            {
-                var settings = serviceProvider.GetRequiredService<IOptions<CosmosDbSettings>>().Value;
-                return new CosmosClientBuilder(settings.Endpoint, DefaultAuthentication.AzureCredential)
-                    .WithSerializerOptions(new CosmosSerializationOptions
-                    {
-                        PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
-                    })
-                    .WithConnectionModeGateway()
-                    .Build();
-            });
-
-            builder.Services.AddScoped<ICosmosDBService, AzureCosmosDBService>();
+            builder.AddAzureCosmosDBService();
             builder.Services.AddScoped<ICoreService, CoreService>();
             builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 

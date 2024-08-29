@@ -1,4 +1,6 @@
-﻿using FoundationaLLM.Common.Interfaces;
+﻿using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Services.ResourceProviders;
@@ -38,5 +40,31 @@ namespace FoundationaLLM.Conversation.ResourceProviders
             useInternalStore: false)
     {
         private readonly ICosmosDBService _cosmosDBService = cosmosDBService;
+
+        /// <inheritdoc />
+        protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
+            ConversationResourceProviderMetadata.AllowedResourceTypes;
+
+        protected override string _name => ResourceProviderNames.FoundationaLLM_Conversation;
+
+        protected override async Task InitializeInternal() =>
+            await Task.CompletedTask;
+
+        #region Resource provider support for Management API
+
+        protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
+            resourcePath.ResourceTypeInstances[0].ResourceType switch
+            {
+                ConversationResourceTypeNames.Conversations => await Task.FromResult<string>(string.Empty),
+                _ => throw new NotImplementedException()
+            };
+
+        protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string serializedResource, UnifiedUserIdentity userIdentity) =>
+            throw new NotImplementedException();
+
+        protected override async Task<object> DeleteResourceAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
+            throw new NotImplementedException();
+
+        #endregion
     }
 }

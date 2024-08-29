@@ -1,7 +1,8 @@
-﻿using FoundationaLLM.Common.Models.Conversation;
+﻿using ConversationModels = FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using FoundationaLLM.Common.Models.Conversation;
 
 namespace FoundationaLLM.Core.API.Controllers
 {
@@ -29,7 +30,7 @@ namespace FoundationaLLM.Core.API.Controllers
         /// </summary>
         /// <param name="instanceId">The id of the instance.</param>
         [HttpGet(Name = "GetAllChatSessions")]
-        public async Task<IEnumerable<Conversation>> GetAllChatSessions(string instanceId) =>
+        public async Task<IEnumerable<ConversationModels.Conversation>> GetAllChatSessions(string instanceId) =>
             await _coreService.GetAllChatSessionsAsync(instanceId);
 
         /// <summary>
@@ -70,7 +71,7 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <param name="instanceId">The id of the instance.</param>
         /// <param name="chatSessionProperties">The session properties.</param>
         [HttpPost(Name = "CreateNewChatSession")]
-        public async Task<Conversation> CreateNewChatSession(string instanceId, [FromBody] ChatSessionProperties chatSessionProperties) =>
+        public async Task<ConversationModels.Conversation> CreateNewChatSession(string instanceId, [FromBody] ChatSessionProperties chatSessionProperties) =>
             await _coreService.CreateNewChatSessionAsync(instanceId, chatSessionProperties);
 
         /// <summary>
@@ -80,7 +81,7 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <param name="sessionId">The id of the session to rename.</param>
         /// <param name="chatSessionProperties">The session properties.</param>
         [HttpPost("{sessionId}/rename", Name = "RenameChatSession")]
-        public async Task<Conversation> RenameChatSession(string instanceId, string sessionId, [FromBody] ChatSessionProperties chatSessionProperties) =>
+        public async Task<ConversationModels.Conversation> RenameChatSession(string instanceId, string sessionId, [FromBody] ChatSessionProperties chatSessionProperties) =>
             await _coreService.RenameChatSessionAsync(instanceId, sessionId, chatSessionProperties);
 
         /// <summary>
