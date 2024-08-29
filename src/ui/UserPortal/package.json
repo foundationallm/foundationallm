@@ -45,5 +45,8 @@
 		"primevue": "^3.53.0",
 		"truncate-html": "^1.1.1",
 		"vue-mention": "^2.0.0-alpha.3"
-	}
+	},
+	"optionalDependencies": {
+		"@rollup/rollup-linux-x64-gnu": "4.21.0"  
+	 }
 }
