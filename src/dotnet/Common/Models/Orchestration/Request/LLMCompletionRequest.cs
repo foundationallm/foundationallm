@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.Configuration;
+using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
@@ -155,7 +156,7 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
                     if (textEmbeddingProfile.Settings == null)
                         throw new OrchestrationException("The text embedding profile settings must contain a model_name item.");
 
-                    if (textEmbeddingProfile.Settings.ContainsKey("model_name"))
+                    if (textEmbeddingProfile.Settings.ContainsKey(VectorizationSettingsNames.EmbeddingProfileModelName))
                         throw new OrchestrationException("The text embedding profile object provided in the request's objects is invalid.");
                    
                     _hasTextEmbeddingProfile = true;

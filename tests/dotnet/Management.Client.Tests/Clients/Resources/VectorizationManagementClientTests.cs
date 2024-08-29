@@ -250,7 +250,7 @@ namespace Management.Client.Tests.Clients.Resources
                         ObjectId = "test-object-id-2",
                         Settings = new Dictionary<string, string>
                         {
-                            { "model_name", "text-embedding-ada-002"}
+                            { VectorizationSettingsNames.EmbeddingProfileModelName, "text-embedding-ada-002"}
                         }
                     },
                     Actions = [],
@@ -290,7 +290,7 @@ namespace Management.Client.Tests.Clients.Resources
                     ObjectId = "test-object-id",
                     Settings = new Dictionary<string, string>
                     {
-                        { "model_name", "text-embedding-ada-002"}
+                        { VectorizationSettingsNames.EmbeddingProfileModelName, "text-embedding-ada-002"}
                     }
                 },
                 Actions = [],
@@ -347,7 +347,7 @@ namespace Management.Client.Tests.Clients.Resources
                         Indexer = IndexerType.AzureAISearchIndexer,
                         Settings = new Dictionary<string, string>
                         {
-                            { "api_endpoint_configuration_object_id", "test-api-endpoint-object-id" }
+                            { VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, "test-api-endpoint-object-id" }
                         }
                     },
                     Actions = [],
@@ -361,7 +361,7 @@ namespace Management.Client.Tests.Clients.Resources
                         Indexer = IndexerType.AzureCosmosDBNoSQLIndexer,
                         Settings = new Dictionary<string, string>
                         {
-                            { "api_endpoint_configuration_object_id", "test-api-endpoint-object-id-2" }
+                            { VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, "test-api-endpoint-object-id-2" }
                         }
                     },
                     Actions = [],
@@ -375,7 +375,7 @@ namespace Management.Client.Tests.Clients.Resources
                         Indexer = IndexerType.PostgresIndexer,
                         Settings = new Dictionary<string, string>
                         {
-                            { "api_endpoint_configuration_object_id", "test-api-endpoint-object-id-3" }
+                            { VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, "test-api-endpoint-object-id-3" }
                         }
                     },
                     Actions = [],
@@ -414,7 +414,7 @@ namespace Management.Client.Tests.Clients.Resources
                     Indexer = IndexerType.AzureCosmosDBNoSQLIndexer,
                     Settings = new Dictionary<string, string>
                     {
-                        { "api_endpoint_configuration_object_id", "test-api-endpoint-object-id" }
+                        { VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, "test-api-endpoint-object-id" }
                     }
                 },
                 Actions = [],
@@ -704,7 +704,7 @@ namespace Management.Client.Tests.Clients.Resources
                     Indexer = IndexerType.AzureAISearchIndexer,
                     Settings = new Dictionary<string, string>
                         {
-                            { "api_endpoint_configuration_object_id", "test-api-endpoint-object-id" }
+                            { VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, "test-api-endpoint-object-id" }
                         }
                 }
             };
@@ -854,7 +854,7 @@ namespace Management.Client.Tests.Clients.Resources
                 TextEmbedding = TextEmbeddingType.GatewayTextEmbedding,
                 Settings = new Dictionary<string, string>
                 {
-                    { "model_name", "text-embedding-ada-002"}
+                    { VectorizationSettingsNames.EmbeddingProfileModelName, "text-embedding-ada-002"}
                 }
             };
             var expectedUpsertResult = new ResourceProviderUpsertResult
@@ -892,7 +892,7 @@ namespace Management.Client.Tests.Clients.Resources
                 Indexer = IndexerType.AzureAISearchIndexer,
                 Settings = new Dictionary<string, string>
                         {
-                            { "api_endpoint_configuration_object_id", "test-api-endpoint-object-id" }
+                            {VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, "test-api-endpoint-object-id" }
                         }
             };
             var expectedUpsertResult = new ResourceProviderUpsertResult

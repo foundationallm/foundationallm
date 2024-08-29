@@ -3,6 +3,7 @@ using Azure.Identity;
 using Azure.Search.Documents;
 using Azure.Search.Documents.Indexes;
 using Azure.Search.Documents.Models;
+using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
@@ -111,7 +112,7 @@ namespace FoundationaLLM.Core.Examples.Services
 
         async public Task<SearchIndexClient> GetIndexClient(IndexingProfile indexProfile)
         {
-            var indexEndpointObjectId = indexProfile.Settings!["api_endpoint_configuration_object_id"];
+            var indexEndpointObjectId = indexProfile.Settings![VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId];
             var endpoint = APIEndpointConfigurationCatalog.APIEndpointConfigurations.Where(x => x.ObjectId == indexEndpointObjectId).FirstOrDefault();
             string searchServiceEndPoint = await TestConfiguration.GetAppConfigValueAsync(endpoint!.Url);
             string authType = endpoint.AuthenticationType.ToString();

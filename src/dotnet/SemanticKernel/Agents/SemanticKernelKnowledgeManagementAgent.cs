@@ -26,6 +26,7 @@ using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
 using System.Text.Json;
+using FoundationaLLM.Common.Constants.ResourceProviders;
 
 #pragma warning disable SKEXP0001, SKEXP0010, SKEXP0020, SKEXP0050, SKEXP0060
 
@@ -72,7 +73,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
                 if (textEmbeddingProfile.Settings==null)
                     throw new SemanticKernelException("The text embedding profile settings cannot be null. Requires: model_name", StatusCodes.Status400BadRequest);
 
-                if (!textEmbeddingProfile.Settings.ContainsKey("model_name"))
+                if (!textEmbeddingProfile.Settings.ContainsKey(VectorizationSettingsNames.EmbeddingProfileModelName))
                     throw new SemanticKernelException("The text embedding profile settings must contain the 'model_name' key.", StatusCodes.Status400BadRequest);
                
                 
