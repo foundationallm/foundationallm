@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
 	}
 
 	try {
-		const response = await fetch(`${url}/status`);
+		const response = await fetch(url);
 		if (!response.ok) {
 			setResponseStatus(event, response.status, response.statusText);
 			return { error: response.statusText };
