@@ -18,7 +18,7 @@ config = get_config()
 app = FastAPI(
     title=f'FoundationaLLM {API_NAME}',
     summary='API for retrieving DataSource metadata',
-    description="""The FoundationaLLM DataSourceHubAPI is a wrapper around DataSourceHub
+    description=f"""The FoundationaLLM {API_NAME} is a wrapper around DataSourceHub
                 functionality contained in the foundationallm Python SDK.""",
     version='1.0.0',
     contact={
