@@ -183,7 +183,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         private async Task<List<MessageContentItemBase>> TransformContentItems(List<MessageContentItemBase> contentItems)
         {
             List<FileMapping> newFileMappings = [];
-            if (contentItems.Count == 0)
+            if (contentItems == null || contentItems.Count == 0)
                 return [];
 
             if (contentItems.All(ci => ci.AgentCapabilityCategory == AgentCapabilityCategoryNames.FoundationaLLMKnowledgeManagement))
