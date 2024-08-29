@@ -1,9 +1,9 @@
-﻿namespace FoundationaLLM.Core.Models
+﻿namespace FoundationaLLM.Common.Constants.Chat
 {
     /// <summary>
     /// Constants for chat session types.
     /// </summary>
-    public static class SessionTypes
+    public static class ConversationTypes
     {
         /// <summary>
         /// Named session with matching type for the KioskSession.

@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Models.Chat;
+﻿using FoundationaLLM.Common.Models.Conversation;
 
 namespace FoundationaLLM.Common.Tests.Models.Chat
 {
@@ -7,10 +7,10 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
         [Fact]
         public void Constructor_ShouldInitializeProperties()
         {
-            var session = new Session();
+            var session = new Conversation();
 
             Assert.NotNull(session.Id);
-            Assert.Equal(nameof(Session), session.Type);
+            Assert.Equal(nameof(Conversation), session.Type);
             Assert.Equal(session.Id, session.SessionId);
             Assert.Equal(0, session.TokensUsed);
             Assert.Equal("New Chat", session.Name);
@@ -22,7 +22,7 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
         public void AddMessage_ShouldAddMessageToMessagesList()
         {
             // Arrange
-            var session = new Session();
+            var session = new Conversation();
             var message = new Message("1", "sender1", null, "The message", null, null, "test@foundationallm.ai");
 
             // Act
@@ -36,7 +36,7 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
         public void UpdateMessage_ShouldUpdateExistingMessageInMessagesList()
         {
             // Arrange
-            var session = new Session();
+            var session = new Conversation();
             var initialMessage = new Message("1", "sender1", null, "The message", null, null, "test@foundationallm.ai");
             session.AddMessage(initialMessage);
 

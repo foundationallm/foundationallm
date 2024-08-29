@@ -20,7 +20,7 @@ namespace FoundationaLLM.Core.Tests.Services
         private readonly string _instanceId = "00000000-0000-0000-0000-000000000000";
         private readonly CoreService _testedService;
 
-        private readonly ICosmosDbService _cosmosDbService = Substitute.For<ICosmosDbService>();
+        private readonly ICosmosDBService _cosmosDbService = Substitute.For<ICosmosDBService>();
         private readonly IGatekeeperAPIService _gatekeeperAPIService = Substitute.For<IGatekeeperAPIService>();
         private readonly ICallContext _callContext = Substitute.For<ICallContext>();
         private readonly IEnumerable<IResourceProviderService> _resourceProviderServices = Substitute.For<IEnumerable<IResourceProviderService>>();

@@ -1,8 +1,8 @@
 ﻿using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Models.Chat;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Users;
-using FoundationaLLM.Core.Interfaces;
+using FoundationaLLM.Common.Models.Conversation;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -10,12 +10,12 @@ using Polly;
 using Polly.Retry;
 using System.Diagnostics;
 
-namespace FoundationaLLM.Core.Services
+namespace FoundationaLLM.Common.Services
 {
     /// <summary>
     /// Service to access Azure Cosmos DB for NoSQL.
     /// </summary>
-    public class CosmosDbService : ICosmosDbService
+    public class AzureCosmosDBService : ICosmosDBService
     {
         private Container _sessions;
         private Container _userSessions;
@@ -30,19 +30,19 @@ namespace FoundationaLLM.Core.Services
         private const string SoftDeleteQueryRestriction = " (not IS_DEFINED(c.deleted) OR c.deleted = false)";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CosmosDbService"/> class.
+        /// Initializes a new instance of the <see cref="AzureCosmosDBService"/> class.
         /// </summary>
         /// <param name="settings">The <see cref="CosmosDbSettings"/> settings retrieved
         /// by the injected <see cref="IOptions{TOptions}"/>.</param>
         /// <param name="client">The Cosmos DB client.</param>
         /// <param name="logger">The logging interface used to log under the
-        /// <see cref="CosmosDbService"></see> type name.</param>
+        /// <see cref="AzureCosmosDBService"></see> type name.</param>
         /// <exception cref="ArgumentException">Thrown if any of the required settings
         /// are null or empty.</exception>
-        public CosmosDbService(
+        public AzureCosmosDBService(
             IOptions<CosmosDbSettings> settings,
             CosmosClient client,
-            ILogger<CosmosDbService> logger)
+            ILogger<AzureCosmosDBService> logger)
         {
             _settings = settings.Value;
             ArgumentException.ThrowIfNullOrEmpty(_settings.Endpoint);
@@ -111,15 +111,15 @@ namespace FoundationaLLM.Core.Services
                 "/upn"), ThroughputProperties.CreateAutoscaleThroughput(1000), cancellationToken: token)!);
 
         /// <inheritdoc/>
-        public async Task<List<Session>> GetSessionsAsync(string type, string upn, CancellationToken cancellationToken = default)
+        public async Task<List<Conversation>> GetSessionsAsync(string type, string upn, CancellationToken cancellationToken = default)
         {
             var query = new QueryDefinition($"SELECT DISTINCT * FROM c WHERE c.type = @type AND c.upn = @upn AND {SoftDeleteQueryRestriction} ORDER BY c._ts DESC")
                 .WithParameter("@type", type)
                 .WithParameter("@upn", upn);
 
-            var response = _userSessions.GetItemQueryIterator<Session>(query);
+            var response = _userSessions.GetItemQueryIterator<Conversation>(query);
 
-            List<Session> output = [];
+            List<Conversation> output = [];
             while (response.HasMoreResults)
             {
                 var results = await response.ReadNextAsync(cancellationToken);
@@ -130,9 +130,9 @@ namespace FoundationaLLM.Core.Services
         }
 
         /// <inheritdoc/>
-        public async Task<Session> GetSessionAsync(string id, CancellationToken cancellationToken = default)
+        public async Task<Conversation> GetSessionAsync(string id, CancellationToken cancellationToken = default)
         {
-            var session = await _sessions.ReadItemAsync<Session>(
+            var session = await _sessions.ReadItemAsync<Conversation>(
                 id: id,
                 partitionKey: new PartitionKey(id),
                 cancellationToken: cancellationToken);
@@ -162,7 +162,7 @@ namespace FoundationaLLM.Core.Services
         }
 
         /// <inheritdoc/>
-        public async Task<Session> InsertSessionAsync(Session session, CancellationToken cancellationToken = default)
+        public async Task<Conversation> InsertSessionAsync(Conversation session, CancellationToken cancellationToken = default)
         {
             PartitionKey partitionKey = new(session.SessionId);
             return await _sessions.CreateItemAsync(
@@ -211,7 +211,7 @@ namespace FoundationaLLM.Core.Services
         }
 
         /// <inheritdoc/>
-        public async Task<Session> UpdateSessionAsync(Session session, CancellationToken cancellationToken = default)
+        public async Task<Conversation> UpdateSessionAsync(Conversation session, CancellationToken cancellationToken = default)
         {
             PartitionKey partitionKey = new(session.SessionId);
             return await _sessions.ReplaceItemAsync(
@@ -223,9 +223,9 @@ namespace FoundationaLLM.Core.Services
         }
 
         /// <inheritdoc/>
-        public async Task<Session> UpdateSessionNameAsync(string id, string sessionName, CancellationToken cancellationToken = default)
+        public async Task<Conversation> UpdateSessionNameAsync(string id, string sessionName, CancellationToken cancellationToken = default)
         {
-            var response = await _sessions.PatchItemAsync<Session>(
+            var response = await _sessions.PatchItemAsync<Conversation>(
                 id: id,
                 partitionKey: new PartitionKey(id),
                 patchOperations: new[]
@@ -258,7 +258,7 @@ namespace FoundationaLLM.Core.Services
         }
 
         /// <inheritdoc/>
-        public async Task UpsertUserSessionAsync(Session session, CancellationToken cancellationToken = default)
+        public async Task UpsertUserSessionAsync(Conversation session, CancellationToken cancellationToken = default)
         {
             PartitionKey partitionKey = new(session.UPN);
             await _userSessions.UpsertItemAsync(

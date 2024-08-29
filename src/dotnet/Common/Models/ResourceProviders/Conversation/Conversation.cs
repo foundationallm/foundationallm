@@ -1,11 +1,13 @@
+using FoundationaLLM.Common.Constants.Chat;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Common.Models.Chat;
+namespace FoundationaLLM.Common.Models.Conversation;
 
 /// <summary>
 /// The session object.
 /// </summary>
-public record Session
+public class Conversation : ResourceBase
 {
     /// <summary>
     /// The unique identifier.
@@ -14,7 +16,7 @@ public record Session
     /// <summary>
     /// The type of the session.
     /// </summary>
-    public string Type { get; set; }
+    public new string Type { get; set; }
 
     /// <summary>
     /// The Partition key.
@@ -27,7 +29,7 @@ public record Session
     /// <summary>
     /// The name of the session.
     /// </summary>
-    public string Name { get; set; }
+    public override required string Name { get; set; }
     /// <summary>
     /// The UPN of the user who created the chat session.
     /// </summary>
@@ -35,7 +37,7 @@ public record Session
     /// <summary>
     /// Deleted flag used for soft delete.
     /// </summary>
-    public bool Deleted { get; set; }
+    public override bool Deleted { get; set; }
     /// <summary>
     /// The list of messages associated with the session.
     /// </summary>
@@ -45,10 +47,10 @@ public record Session
     /// <summary>
     /// Constructor for Session.
     /// </summary>
-    public Session()
+    public Conversation()
     {
         Id = Guid.NewGuid().ToString();
-        Type = nameof(Session);
+        Type = ConversationTypes.Session;
         SessionId = Id;
         TokensUsed = 0;
         Name = "New Chat";

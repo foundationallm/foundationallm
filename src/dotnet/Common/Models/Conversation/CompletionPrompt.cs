@@ -1,6 +1,6 @@
 ﻿using FoundationaLLM.Common.Models.Orchestration.Response;
 
-namespace FoundationaLLM.Common.Models.Chat
+namespace FoundationaLLM.Common.Models.Conversation
 {
     /// <summary>
     /// The completion prompt object.

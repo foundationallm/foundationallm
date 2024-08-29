@@ -127,7 +127,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureOpenAI", "dotnet\Azure
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{B9ABEB53-19C8-4224-8820-CF2D82DCC559}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Examples.LoadTests", "..\tests\dotnet\Core.Examples.LoadTests\Core.Examples.LoadTests.csproj", "{ABA2F0F5-6372-4D7A-9B97-E1089C988B59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Examples.LoadTests", "..\tests\dotnet\Core.Examples.LoadTests\Core.Examples.LoadTests.csproj", "{ABA2F0F5-6372-4D7A-9B97-E1089C988B59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conversation", "dotnet\Conversation\Conversation.csproj", "{EE94F312-488C-448B-92C9-20C4C1816F16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -326,6 +328,10 @@ Global
 		{ABA2F0F5-6372-4D7A-9B97-E1089C988B59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABA2F0F5-6372-4D7A-9B97-E1089C988B59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABA2F0F5-6372-4D7A-9B97-E1089C988B59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE94F312-488C-448B-92C9-20C4C1816F16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE94F312-488C-448B-92C9-20C4C1816F16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE94F312-488C-448B-92C9-20C4C1816F16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE94F312-488C-448B-92C9-20C4C1816F16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -388,6 +394,7 @@ Global
 		{71DD0475-532B-49C0-8699-6552FF3A4A6E} = {2C948535-3001-4852-9686-492A23E9E356}
 		{B9ABEB53-19C8-4224-8820-CF2D82DCC559} = {28E0E967-A94D-4820-8A61-0B71D3B2780F}
 		{ABA2F0F5-6372-4D7A-9B97-E1089C988B59} = {B9ABEB53-19C8-4224-8820-CF2D82DCC559}
+		{EE94F312-488C-448B-92C9-20C4C1816F16} = {2C948535-3001-4852-9686-492A23E9E356}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF5DE858-4B85-4EE8-8A6D-46E8E4FBA078}

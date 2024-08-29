@@ -6,6 +6,7 @@ using FoundationaLLM.Common.Models.Configuration.AzureAI;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.Storage;
+using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Common.Services.Storage;
 using FoundationaLLM.Common.Settings;
@@ -13,8 +14,6 @@ using FoundationaLLM.Core.Examples.Exceptions;
 using FoundationaLLM.Core.Examples.Interfaces;
 using FoundationaLLM.Core.Examples.Models;
 using FoundationaLLM.Core.Examples.Services;
-using FoundationaLLM.Core.Interfaces;
-using FoundationaLLM.Core.Services;
 using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
 using FoundationaLLM.SemanticKernel.Core.Services.Indexing;
 using Microsoft.Azure.Cosmos;
@@ -98,7 +97,7 @@ namespace FoundationaLLM.Core.Examples.Setup
 					.Build();
 			});
 
-			services.AddScoped<ICosmosDbService, CosmosDbService>();
+			services.AddScoped<ICosmosDBService, AzureCosmosDBService>();
 		}
 
 		private static void RegisterAzureAIService(IServiceCollection services, IConfiguration configuration)

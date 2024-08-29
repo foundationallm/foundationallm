@@ -1,5 +1,5 @@
 using FoundationaLLM.Common.Models.Authentication;
-using FoundationaLLM.Common.Models.Chat;
+using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
@@ -18,7 +18,7 @@ public interface ICoreService
     /// Returns list of chat session ids and names.
     /// </summary>
     /// <param name="instanceId">The instance id for which to retrieve chat sessions.</param>
-    Task<List<Session>> GetAllChatSessionsAsync(string instanceId);
+    Task<List<Conversation>> GetAllChatSessionsAsync(string instanceId);
 
     /// <summary>
     /// Returns the chat messages related to an existing session.
@@ -32,7 +32,7 @@ public interface ICoreService
     /// </summary>
     /// <param name="instanceId">The instance Id.</param>
     /// <param name="chatSessionProperties">The session properties.</param>
-    Task<Session> CreateNewChatSessionAsync(string instanceId, ChatSessionProperties chatSessionProperties);
+    Task<Conversation> CreateNewChatSessionAsync(string instanceId, ChatSessionProperties chatSessionProperties);
 
     /// <summary>
     /// Rename the chat session from its default (eg., "New Chat") to the summary provided by OpenAI.
@@ -40,7 +40,7 @@ public interface ICoreService
     /// <param name="instanceId">The instance id.</param>
     /// <param name="sessionId">The session id to rename.</param>
     /// <param name="chatSessionProperties">The session properties.</param>
-    Task<Session> RenameChatSessionAsync(string instanceId, string sessionId, ChatSessionProperties chatSessionProperties);
+    Task<Conversation> RenameChatSessionAsync(string instanceId, string sessionId, ChatSessionProperties chatSessionProperties);
 
     /// <summary>
     /// Delete a chat session and related messages.

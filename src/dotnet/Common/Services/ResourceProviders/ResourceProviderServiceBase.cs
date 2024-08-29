@@ -160,9 +160,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             {
                 _logger.LogInformation("Starting to initialize the {ResourceProvider} resource provider...", _name);
 
-                //TODO: Remove this check after all resource providers are updated to use the new resource reference store.
                 if (_useInternalStore)
                 {
+                    // The resource provider uses the default internal resource reference store.
                     _resourceReferenceStore = new ResourceProviderResourceReferenceStore<TResourceReference>(
                         this,
                         _storageService,

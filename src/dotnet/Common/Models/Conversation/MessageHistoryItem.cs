@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Common.Models.Chat
+namespace FoundationaLLM.Common.Models.Conversation
 {
     /// <summary>
     /// Represents an historic message sender and text item.

@@ -8,7 +8,7 @@ namespace FoundationaLLM.Core.Services
     /// <inheritdoc/>
     public class UserProfileService : IUserProfileService
     {
-        private readonly ICosmosDbService _cosmosDbService;
+        private readonly ICosmosDBService _cosmosDbService;
         private readonly ILogger<CoreService> _logger;
         private readonly ICallContext _callContext;
 
@@ -20,7 +20,7 @@ namespace FoundationaLLM.Core.Services
         /// <param name="logger">The logging interface used to log under the
         /// <see cref="UserProfileService"/> type name.</param>
         /// <param name="callContext">Contains contextual data for the calling service.</param>
-        public UserProfileService(ICosmosDbService cosmosDbService,
+        public UserProfileService(ICosmosDBService cosmosDbService,
             ILogger<CoreService> logger,
             ICallContext callContext)
         {

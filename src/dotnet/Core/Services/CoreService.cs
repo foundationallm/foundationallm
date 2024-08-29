@@ -1,5 +1,6 @@
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
+using FoundationaLLM.Common.Constants.Chat;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Orchestration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
@@ -7,8 +8,8 @@ using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
-using FoundationaLLM.Common.Models.Chat;
 using FoundationaLLM.Common.Models.Configuration.Branding;
+using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
@@ -35,7 +36,7 @@ namespace FoundationaLLM.Core.Services;
 /// <summary>
 /// Initializes a new instance of the <see cref="CoreService"/> class.
 /// </summary>
-/// <param name="cosmosDbService">The Azure Cosmos DB service that contains
+/// <param name="cosmosDBService">The Azure Cosmos DB service that contains
 /// chat sessions and messages.</param>
 /// <param name="downstreamAPIServices">The services used to make calls to
 /// the downstream APIs.</param>
@@ -48,7 +49,7 @@ namespace FoundationaLLM.Core.Services;
 /// <param name="resourceProviderServices">A dictionary of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
 /// <param name="configuration">The <see cref="IConfiguration"/> service providing configuration settings.</param>
 public partial class CoreService(
-    ICosmosDbService cosmosDbService,
+    ICosmosDBService cosmosDBService,
     IEnumerable<IDownstreamAPIService> downstreamAPIServices,
     ILogger<CoreService> logger,
     IOptions<ClientBrandingConfiguration> brandingSettings,
@@ -57,12 +58,12 @@ public partial class CoreService(
     IEnumerable<IResourceProviderService> resourceProviderServices,
     IConfiguration configuration) : ICoreService
 {
-    private readonly ICosmosDbService _cosmosDbService = cosmosDbService;
+    private readonly ICosmosDBService _cosmosDBService = cosmosDBService;
     private readonly IDownstreamAPIService _gatekeeperAPIService = downstreamAPIServices.Single(das => das.APIName == HttpClientNames.GatekeeperAPI);
     private readonly IDownstreamAPIService _orchestrationAPIService = downstreamAPIServices.Single(das => das.APIName == HttpClientNames.OrchestrationAPI);
     private readonly ILogger<CoreService> _logger = logger;
     private readonly ICallContext _callContext = callContext;
-    private readonly string _sessionType = brandingSettings.Value.KioskMode ? SessionTypes.KioskSession : SessionTypes.Session;
+    private readonly string _sessionType = brandingSettings.Value.KioskMode ? ConversationTypes.KioskSession : ConversationTypes.Session;
     private readonly CoreServiceSettings _settings = settings.Value;
     private readonly string _baseUrl = configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl]!;
 
@@ -84,15 +85,15 @@ public partial class CoreService(
             .ToHashSet();
 
     /// <inheritdoc/>
-    public async Task<List<Session>> GetAllChatSessionsAsync(string instanceId) =>
-        await _cosmosDbService.GetSessionsAsync(_sessionType, _callContext.CurrentUserIdentity?.UPN ??
+    public async Task<List<Conversation>> GetAllChatSessionsAsync(string instanceId) =>
+        await _cosmosDBService.GetSessionsAsync(_sessionType, _callContext.CurrentUserIdentity?.UPN ??
                                                               throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat sessions."));
 
     /// <inheritdoc/>
     public async Task<List<Message>> GetChatSessionMessagesAsync(string instanceId, string sessionId)
     {
         ArgumentNullException.ThrowIfNull(sessionId);
-        var messages = await _cosmosDbService.GetSessionMessagesAsync(sessionId, _callContext.CurrentUserIdentity?.UPN ??
+        var messages = await _cosmosDBService.GetSessionMessagesAsync(sessionId, _callContext.CurrentUserIdentity?.UPN ??
             throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat messages."));
 
         // Get a list of all attachment IDs in the messages.
@@ -149,33 +150,33 @@ public partial class CoreService(
     }
 
     /// <inheritdoc/>
-    public async Task<Session> CreateNewChatSessionAsync(string instanceId, ChatSessionProperties chatSessionProperties)
+    public async Task<Conversation> CreateNewChatSessionAsync(string instanceId, ChatSessionProperties chatSessionProperties)
     {
         ArgumentException.ThrowIfNullOrEmpty(chatSessionProperties.Name);
 
-        Session session = new()
+        Conversation session = new()
         {
             Name = chatSessionProperties.Name,
             Type = _sessionType,
             UPN = _callContext.CurrentUserIdentity?.UPN ?? throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when creating a new chat session.")
         };
-        return await _cosmosDbService.InsertSessionAsync(session);
+        return await _cosmosDBService.InsertSessionAsync(session);
     }
 
     /// <inheritdoc/>
-    public async Task<Session> RenameChatSessionAsync(string instanceId, string sessionId, ChatSessionProperties chatSessionProperties)
+    public async Task<Conversation> RenameChatSessionAsync(string instanceId, string sessionId, ChatSessionProperties chatSessionProperties)
     {
         ArgumentNullException.ThrowIfNull(sessionId);
         ArgumentException.ThrowIfNullOrEmpty(chatSessionProperties.Name);
 
-        return await _cosmosDbService.UpdateSessionNameAsync(sessionId, chatSessionProperties.Name);
+        return await _cosmosDBService.UpdateSessionNameAsync(sessionId, chatSessionProperties.Name);
     }
 
     /// <inheritdoc/>
     public async Task DeleteChatSessionAsync(string instanceId, string sessionId)
     {
         ArgumentNullException.ThrowIfNull(sessionId);
-        await _cosmosDbService.DeleteSessionAndMessagesAsync(sessionId);
+        await _cosmosDBService.DeleteSessionAndMessagesAsync(sessionId);
     }
 
     /// <inheritdoc/>
@@ -188,7 +189,7 @@ public partial class CoreService(
             completionRequest = PrepareCompletionRequest(completionRequest);
 
             // Retrieve conversation, including latest prompt.
-            var messages = await _cosmosDbService.GetSessionMessagesAsync(completionRequest.SessionId, _callContext.CurrentUserIdentity?.UPN ??
+            var messages = await _cosmosDBService.GetSessionMessagesAsync(completionRequest.SessionId, _callContext.CurrentUserIdentity?.UPN ??
                 throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat completions."));
             var messageHistoryList = messages
                 .Select(message => new MessageHistoryItem(message.Sender, string.IsNullOrWhiteSpace(message.Text) ? "" : message.Text))
@@ -512,7 +513,7 @@ public partial class CoreService(
     /// </summary>
     private async Task AddSessionMessageAsync(string sessionId, Message message)
     {
-        var session = await _cosmosDbService.GetSessionAsync(sessionId);
+        var session = await _cosmosDBService.GetSessionAsync(sessionId);
 
         // Update session cache with tokens used.
         session.TokensUsed += message.Tokens;
@@ -522,7 +523,7 @@ public partial class CoreService(
         message.UPN = upn;
 
         // Adds the incoming message to the session and updates the session with token usage.
-        await _cosmosDbService.UpsertSessionBatchAsync(message, session);
+        await _cosmosDBService.UpsertSessionBatchAsync(message, session);
     }
 
     /// <summary>
@@ -530,7 +531,7 @@ public partial class CoreService(
     /// </summary>
     private async Task AddPromptCompletionMessagesAsync(string sessionId, Message promptMessage, Message completionMessage, CompletionPrompt completionPrompt)
     {
-        var session = await _cosmosDbService.GetSessionAsync(sessionId);
+        var session = await _cosmosDBService.GetSessionAsync(sessionId);
 
         // Update session cache with tokens used.
         session.TokensUsed += promptMessage.Tokens;
@@ -540,7 +541,7 @@ public partial class CoreService(
         promptMessage.UPN = upn;
         completionMessage.UPN = upn;
 
-        await _cosmosDbService.UpsertSessionBatchAsync(promptMessage, completionMessage, completionPrompt, session);
+        await _cosmosDBService.UpsertSessionBatchAsync(promptMessage, completionMessage, completionPrompt, session);
     }
 
     /// <inheritdoc/>
@@ -549,7 +550,7 @@ public partial class CoreService(
         ArgumentNullException.ThrowIfNull(id);
         ArgumentNullException.ThrowIfNull(sessionId);
 
-        return await _cosmosDbService.UpdateMessageRatingAsync(id, sessionId, rating);
+        return await _cosmosDBService.UpdateMessageRatingAsync(id, sessionId, rating);
     }
 
     /// <inheritdoc/>
@@ -558,7 +559,7 @@ public partial class CoreService(
         ArgumentNullException.ThrowIfNullOrEmpty(sessionId);
         ArgumentNullException.ThrowIfNullOrEmpty(completionPromptId);
 
-        return await _cosmosDbService.GetCompletionPrompt(sessionId, completionPromptId);
+        return await _cosmosDBService.GetCompletionPrompt(sessionId, completionPromptId);
     }
 
     /// <summary>

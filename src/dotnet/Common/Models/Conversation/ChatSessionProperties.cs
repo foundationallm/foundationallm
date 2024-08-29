@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Common.Models.Chat
+namespace FoundationaLLM.Common.Models.Conversation
 {
     /// <summary>
     /// The session properties object.

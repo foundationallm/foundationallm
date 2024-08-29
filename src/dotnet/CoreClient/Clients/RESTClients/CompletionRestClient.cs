@@ -1,11 +1,11 @@
-﻿using System.Text;
-using System.Text.Json;
-using Azure.Core;
+﻿using Azure.Core;
 using FoundationaLLM.Client.Core.Interfaces;
-using FoundationaLLM.Common.Models.Chat;
+using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using System.Text;
+using System.Text.Json;
 
 namespace FoundationaLLM.Client.Core.Clients.RESTClients
 {
