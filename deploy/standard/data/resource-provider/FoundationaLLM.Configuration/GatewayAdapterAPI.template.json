@@ -12,6 +12,7 @@
     "api_key_header_name": "X-API-KEY"
   },
   "url": "http://gateway-adapter-api/gatewayadapter",
+  "status_url": "http://gateway-adapter-api/gatewayadapter/status",
   "url_exceptions": [],
   "timeout_seconds": 60,
   "retry_strategy_name": "ExponentialBackoff",

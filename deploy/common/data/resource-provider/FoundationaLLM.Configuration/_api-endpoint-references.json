@@ -7,6 +7,12 @@
 			"Deleted": false
 		},
 		{
+			"Name": "CoreAPI",
+			"Filename": "/FoundationaLLM.Configuration/CoreAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
 			"Name": "GatekeeperAPI",
 			"Filename": "/FoundationaLLM.Configuration/GatekeeperAPI.json",
 			"Type": "api-endpoint",

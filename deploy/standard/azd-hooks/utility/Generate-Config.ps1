@@ -540,6 +540,7 @@ PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,AzureContentSafety.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,AzureContentSafety.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,AzureEventGrid.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,AzureEventGrid.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,AzureOpenAI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,AzureOpenAI.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,CoreAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,CoreAPI.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,GatekeeperAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,GatekeeperAPI.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,GatekeeperIntegrationAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,GatekeeperIntegrationAPI.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,GatewayAdapterAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,GatewayAdapterAPI.json"
