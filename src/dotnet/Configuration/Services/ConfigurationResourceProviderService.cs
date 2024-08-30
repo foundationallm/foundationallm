@@ -118,11 +118,11 @@ namespace FoundationaLLM.Configuration.Services
 
         /// <inheritdoc/>
         protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances[0].ResourceType switch
+            resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
                 ConfigurationResourceTypeNames.AppConfigurations => await LoadAppConfigurationKeys(resourcePath.ResourceTypeInstances[0]),
                 ConfigurationResourceTypeNames.APIEndpointConfigurations => await LoadAPIEndpoints(resourcePath.ResourceTypeInstances[0]),
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceType} is not supported by the {_name} resource provider.",
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
 
@@ -213,18 +213,18 @@ namespace FoundationaLLM.Configuration.Services
 
         /// <inheritdoc/>
         protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string serializedResource, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances[0].ResourceType switch
+            resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
                 ConfigurationResourceTypeNames.AppConfigurations => await UpdateAppConfigurationKey(resourcePath, serializedResource),
                 ConfigurationResourceTypeNames.APIEndpointConfigurations => await UpdateAPIEndpoints(resourcePath, serializedResource, userIdentity),
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceType} is not supported by the {_name} resource provider.",
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
 
         /// <inheritdoc/>
         protected override async Task DeleteResourceAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
         {
-            switch (resourcePath.ResourceTypeInstances.Last().ResourceType)
+            switch (resourcePath.ResourceTypeInstances.Last().ResourceTypeName)
             {
                 case ConfigurationResourceTypeNames.APIEndpointConfigurations:
                     await DeleteAPIEndpoint(resourcePath.ResourceTypeInstances);
@@ -233,7 +233,7 @@ namespace FoundationaLLM.Configuration.Services
                     await DeleteAppConfigurationKey(resourcePath.ResourceTypeInstances);
                     break;
                 default:
-                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances.Last().ResourceType} is not supported by the {_name} resource provider.",
+                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances.Last().ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest);
             };
         }

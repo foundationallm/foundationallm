@@ -17,7 +17,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 ConfigurationResourceTypeNames.AppConfigurations,
                 new ResourceTypeDescriptor(
-                        ConfigurationResourceTypeNames.AppConfigurations)
+                        ConfigurationResourceTypeNames.AppConfigurations,
+                        typeof(AppConfigurationKeyBase))
                 {
                     AllowedTypes = [
                             new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<AppConfigurationKeyBase>)]),
@@ -35,7 +36,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 ConfigurationResourceTypeNames.APIEndpointConfigurations,
                 new ResourceTypeDescriptor(
-                        ConfigurationResourceTypeNames.APIEndpointConfigurations)
+                        ConfigurationResourceTypeNames.APIEndpointConfigurations,
+                        typeof(APIEndpointConfiguration))
                 {
                     AllowedTypes = [
                             new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<APIEndpointConfiguration>)]),

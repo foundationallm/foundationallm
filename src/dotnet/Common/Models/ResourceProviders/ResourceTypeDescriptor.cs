@@ -3,14 +3,21 @@
     /// <summary>
     /// Provides details about a resource type managed by a resource provider.
     /// </summary>
-    /// <param name="resourceType">The name of the resource type.</param>
+    /// <param name="resourceTypeName">The name of the resource type.</param>
+    /// <param name="resourceType">The object type of the resource type.</param>
     public class ResourceTypeDescriptor(
-        string resourceType)
+        string resourceTypeName,
+        Type resourceType)
     {
         /// <summary>
         /// The name of the resource type.
         /// </summary>
-        public string ResourceType { get; set; } = resourceType;
+        public string ResourceTypeName { get; set; } = resourceTypeName;
+
+        /// <summary>
+        /// The object type of the resource type.
+        /// </summary>
+        public Type ResourceType { get; set; } = resourceType;
 
         /// <summary>
         /// The list of actions supported by the resource type.

@@ -17,7 +17,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 VectorizationResourceTypeNames.VectorizationPipelines,
                 new ResourceTypeDescriptor(
-                    VectorizationResourceTypeNames.VectorizationPipelines)
+                    VectorizationResourceTypeNames.VectorizationPipelines,
+                    typeof(VectorizationPipeline))
                 {
                     AllowedTypes = [
                         new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<VectorizationPipeline>)]),
@@ -40,7 +41,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 VectorizationResourceTypeNames.VectorizationRequests,
                 new ResourceTypeDescriptor(
-                        VectorizationResourceTypeNames.VectorizationRequests)
+                        VectorizationResourceTypeNames.VectorizationRequests,
+                    typeof(VectorizationRequest))
                 {
                     AllowedTypes = [
                         new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(VectorizationRequest)]),
@@ -57,7 +59,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 VectorizationResourceTypeNames.TextPartitioningProfiles,
                 new ResourceTypeDescriptor(
-                    VectorizationResourceTypeNames.TextPartitioningProfiles)
+                    VectorizationResourceTypeNames.TextPartitioningProfiles,
+                    typeof(TextPartitioningProfile))
                 {
                     AllowedTypes = [
                         new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<TextPartitioningProfile>)]),
@@ -77,7 +80,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 VectorizationResourceTypeNames.TextEmbeddingProfiles,
                 new ResourceTypeDescriptor(
-                    VectorizationResourceTypeNames.TextEmbeddingProfiles)
+                    VectorizationResourceTypeNames.TextEmbeddingProfiles,
+                    typeof(TextEmbeddingProfile))
                 {
                     AllowedTypes = [
                         new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<TextEmbeddingProfile>)]),
@@ -97,7 +101,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 VectorizationResourceTypeNames.IndexingProfiles,
                 new ResourceTypeDescriptor(
-                    VectorizationResourceTypeNames.IndexingProfiles)
+                    VectorizationResourceTypeNames.IndexingProfiles,
+                    typeof(IndexingProfile))
                 {
                     AllowedTypes = [
                         new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<IndexingProfile>)]),

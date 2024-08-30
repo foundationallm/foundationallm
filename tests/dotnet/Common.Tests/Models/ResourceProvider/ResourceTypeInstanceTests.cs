@@ -11,10 +11,10 @@ namespace FoundationaLLM.Common.Tests.Models.ResourceProvider
             string expectedResourceType = "ResourceType";
 
             // Act
-            var instance = new ResourceTypeInstance(expectedResourceType);
+            var instance = new ResourceTypeInstance(expectedResourceType, typeof(object));
 
             // Assert
-            Assert.Equal(expectedResourceType, instance.ResourceType);
+            Assert.Equal(expectedResourceType, instance.ResourceTypeName);
             Assert.Null(instance.ResourceId);
             Assert.Null(instance.Action);
         }

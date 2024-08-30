@@ -14,7 +14,7 @@ namespace FoundationaLLM.Common.Tests.Models.ResourceProvider
         {
             { 
                 "shapes", 
-                new ResourceTypeDescriptor("shapes")
+                new ResourceTypeDescriptor("shapes", typeof(object))
                 {
                     AllowedTypes = [
                         new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [])
@@ -27,7 +27,7 @@ namespace FoundationaLLM.Common.Tests.Models.ResourceProvider
                     {
                         {
                             "components",
-                            new ResourceTypeDescriptor("components")
+                            new ResourceTypeDescriptor("components", typeof(object))
                             {
                                 AllowedTypes = [
                                     new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [])

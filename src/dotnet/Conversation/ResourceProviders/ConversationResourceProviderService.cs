@@ -53,7 +53,7 @@ namespace FoundationaLLM.Conversation.ResourceProviders
         #region Resource provider support for Management API
 
         protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances[0].ResourceType switch
+            resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
                 ConversationResourceTypeNames.Conversations => await Task.FromResult<string>(string.Empty),
                 _ => throw new NotImplementedException()

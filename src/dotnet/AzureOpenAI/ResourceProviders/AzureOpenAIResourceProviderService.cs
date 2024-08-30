@@ -68,26 +68,26 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
         /// <inheritdoc/>
         protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances[0].ResourceType switch
+            resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
                 AzureOpenAIResourceTypeNames.AssistantUserContexts => await LoadResources<AssistantUserContext>(resourcePath.ResourceTypeInstances[0]),
                 AzureOpenAIResourceTypeNames.FileUserContexts => await LoadResources<FileUserContext>(resourcePath.ResourceTypeInstances[0]),
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceType} is not supported by the {_name} resource provider.",
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
 
         /// <inheritdoc/>
         protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string serializedResource, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances[0].ResourceType switch
+            resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceType} is not supported by the {_name} resource provider.",
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest),
             };
 
         /// <inheritdoc/>
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         protected override async Task<object> ExecuteActionAsync(ResourcePath resourcePath, string serializedAction, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances.Last().ResourceType switch
+            resourcePath.ResourceTypeInstances.Last().ResourceTypeName switch
             {
                 AzureOpenAIResourceTypeNames.AssistantUserContexts => resourcePath.ResourceTypeInstances.Last().Action switch
                 {
@@ -134,13 +134,13 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
         /// <inheritdoc/>
         protected override async Task DeleteResourceAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
         {
-            switch (resourcePath.ResourceTypeInstances.Last().ResourceType)
+            switch (resourcePath.ResourceTypeInstances.Last().ResourceTypeName)
             {
                 case AzureOpenAIResourceTypeNames.AssistantUserContexts:
                     await DeleteAssistantUserContext(resourcePath.ResourceTypeInstances);
                     break;
                 default:
-                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances.Last().ResourceType} is not supported by the {_name} resource provider.",
+                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances.Last().ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest);
             };
         }
@@ -158,14 +158,14 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
         /// <inheritdoc/>
         protected override async Task<T> GetResourceInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderOptions? options = null) =>
-            resourcePath.ResourceTypeInstances.Last().ResourceType switch
+            resourcePath.ResourceTypeInstances.Last().ResourceTypeName switch
             {
                 AzureOpenAIResourceTypeNames.FilesContent => ((await LoadFileContent(
                     resourcePath.ResourceTypeInstances[0].ResourceId!,
                     resourcePath.ResourceTypeInstances[1].ResourceId!)) as T)!,
                 AzureOpenAIResourceTypeNames.FileUserContexts => ((await LoadFileUserContext(resourcePath.ResourceTypeInstances[0].ResourceId!)) as T)!,
                 _ => throw new ResourceProviderException(
-                    $"The {resourcePath.MainResourceType} resource type is not supported by the {_name} resource provider.")
+                    $"The {resourcePath.MainResourceTypeName} resource type is not supported by the {_name} resource provider.")
             };
 
         /// <inheritdoc/>

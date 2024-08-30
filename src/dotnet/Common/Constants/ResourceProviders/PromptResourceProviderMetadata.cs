@@ -16,7 +16,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 PromptResourceTypeNames.Prompts,
                 new ResourceTypeDescriptor(
-                        PromptResourceTypeNames.Prompts)
+                        PromptResourceTypeNames.Prompts,
+                        typeof(MultipartPrompt))
                 {
                     AllowedTypes = [
                         new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<MultipartPrompt>)]),

@@ -16,7 +16,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 AzureOpenAIResourceTypeNames.AssistantUserContexts,
                 new ResourceTypeDescriptor(
-                    AzureOpenAIResourceTypeNames.AssistantUserContexts)
+                    AzureOpenAIResourceTypeNames.AssistantUserContexts,
+                    typeof(AssistantUserContext))
                 {
                     AllowedTypes = [
                         new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<AssistantUserContext>)]),
@@ -36,7 +37,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 AzureOpenAIResourceTypeNames.FileUserContexts,
                 new ResourceTypeDescriptor(
-                    AzureOpenAIResourceTypeNames.FileUserContexts)
+                    AzureOpenAIResourceTypeNames.FileUserContexts,
+                    typeof(FileUserContext))
                 {
                     AllowedTypes = [
                         new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<FileUserContext>)]),
@@ -48,7 +50,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         {
                             AzureOpenAIResourceTypeNames.FilesContent,
                             new ResourceTypeDescriptor (
-                                AzureOpenAIResourceTypeNames.FilesContent)
+                                AzureOpenAIResourceTypeNames.FilesContent,
+                                typeof(FileContent))
                             {
                                 AllowedTypes = [
                                     new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<FileContent>)])

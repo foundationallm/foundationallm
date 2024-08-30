@@ -103,10 +103,10 @@ namespace FoundationaLLM.AIModel.ResourceProviders
 
         /// <inheritdoc/>
         protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances[0].ResourceType switch
+            resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
                 AIModelResourceTypeNames.AIModels => await LoadAIModels(resourcePath.ResourceTypeInstances[0], userIdentity),
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceType} is not supported by the {_name} resource provider.",
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
 
@@ -199,10 +199,10 @@ namespace FoundationaLLM.AIModel.ResourceProviders
 
         /// <inheritdoc/>
         protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string serializedResource, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances[0].ResourceType switch
+            resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
                 AIModelResourceTypeNames.AIModels => await UpdateAIModel(resourcePath, serializedResource, userIdentity),
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceType} is not supported by the {_name} resource provider.",
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
 
@@ -286,13 +286,13 @@ namespace FoundationaLLM.AIModel.ResourceProviders
         /// <inheritdoc/>
         protected override async Task DeleteResourceAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
         {
-            switch (resourcePath.ResourceTypeInstances.Last().ResourceType)
+            switch (resourcePath.ResourceTypeInstances.Last().ResourceTypeName)
             {
                 case AIModelResourceTypeNames.AIModels:
                     await DeleteAIModel(resourcePath.ResourceTypeInstances);
                     break;
                 default:
-                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances.Last().ResourceType} is not supported by the {_name} resource provider.",
+                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances.Last().ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest);
             };
         }
@@ -331,11 +331,11 @@ namespace FoundationaLLM.AIModel.ResourceProviders
         {
             _aiModelReferences.TryGetValue(resourcePath.ResourceTypeInstances[0].ResourceId!, out var aiModelReference);
             if (aiModelReference == null || aiModelReference.Deleted)
-                throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceType} was not found.");
+                throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} was not found.");
 
             var aiModel = await LoadAIModel(aiModelReference);
             return aiModel as T
-                ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceType} was not found.");
+                ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} was not found.");
         }
 
 

@@ -53,10 +53,10 @@ namespace FoundationaLLM.Authorization.ResourceProviders
 
         /// <inheritdoc/>
         protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances[0].ResourceType switch
+            resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
                 AuthorizationResourceTypeNames.RoleDefinitions => LoadRoleDefinitions(resourcePath.ResourceTypeInstances[0]),
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceType} is not supported by the {_name} resource provider.",
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
 
@@ -79,10 +79,10 @@ namespace FoundationaLLM.Authorization.ResourceProviders
 
         /// <inheritdoc/>
         protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string serializedResource, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances[0].ResourceType switch
+            resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
                 AuthorizationResourceTypeNames.RoleAssignments => await UpdateRoleAssignments(resourcePath, serializedResource, userIdentity),
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceType} is not supported by the {_name} resource provider.",
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
 
@@ -138,7 +138,7 @@ namespace FoundationaLLM.Authorization.ResourceProviders
         /// <inheritdoc/>
         protected override async Task DeleteResourceAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
         {
-            switch (resourcePath.ResourceTypeInstances.Last().ResourceType)
+            switch (resourcePath.ResourceTypeInstances.Last().ResourceTypeName)
             {
                 case AuthorizationResourceTypeNames.RoleAssignments:
                     await _authorizationService.RevokeRoleAssignment(
@@ -147,7 +147,7 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                         userIdentity);
                     break;
                 default:
-                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances.Last().ResourceType} is not supported by the {_name} resource provider.",
+                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances.Last().ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest);
             };
         }
@@ -156,7 +156,7 @@ namespace FoundationaLLM.Authorization.ResourceProviders
 
         /// <inheritdoc/>
         protected override async Task<object> ExecuteActionAsync(ResourcePath resourcePath, string serializedAction, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances.Last().ResourceType switch
+            resourcePath.ResourceTypeInstances.Last().ResourceTypeName switch
             {
                 AuthorizationResourceTypeNames.RoleAssignments => resourcePath.ResourceTypeInstances.Last().Action switch
                 {

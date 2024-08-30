@@ -13,6 +13,7 @@ using FoundationaLLM.Common.Services.Events;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using OpenTelemetry.Resources;
 using System.Collections.Immutable;
 using System.Text;
 using System.Text.Json;
@@ -469,7 +470,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 var rp = resourcePath.GetObjectId(_instanceSettings.Id, _name);
                 var result = await _authorizationService.ProcessAuthorizationRequest(
                     _instanceSettings.Id,
-                    $"{_name}/{resourcePath.MainResourceType!}/{actionType}",
+                    $"{_name}/{resourcePath.MainResourceTypeName!}/{actionType}",
                     [rp],
                     userIdentity);
 
@@ -521,7 +522,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 _allowedResourceTypes,
                 allowAction: allowAction);
 
-            var mainResourceType = parsedResourcePath.MainResourceType
+            var mainResourceType = parsedResourcePath.MainResourceTypeName
                 ?? throw new ResourceProviderException(
                     $"The resource path {resourcePath} does not have a main resource type and cannot be handled by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest);
@@ -555,6 +556,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <returns>A list of <see cref="ResourceProviderGetResult{T}"/> objects.</returns>
         protected async Task<List<ResourceProviderGetResult<T>>> LoadResources<T>(ResourceTypeInstance instance) where T : ResourceBase
         {
+            List<T> resources = [];
+
             try
             {
                 await _lock.WaitAsync();
@@ -563,18 +566,12 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 {
                     var allResourceReferences =
                         await _resourceReferenceStore!.GetAllResourceReferences();
-                    var resources = (await Task.WhenAll(
+                    resources = (await Task.WhenAll(
                             allResourceReferences
                                 .Select(r => LoadResource<T>(r))))
                       .Where(r => r != null)
+                      .Select(r => r!)
                       .ToList();
-
-                    return resources.Select(r => new ResourceProviderGetResult<T>()
-                    {
-                        Resource = r!,
-                        Actions = [],
-                        Roles = []
-                    }).ToList();
                 }
                 else
                 {
@@ -583,25 +580,24 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     if (resourceReference != null)
                     {
                         var resource = await LoadResource<T>(resourceReference);
-                        return resource == null
-                            ? []
-                            : [
-                                new ResourceProviderGetResult<T>()
-                                {
-                                    Resource = resource,
-                                    Actions = [],
-                                    Roles = []
-                                }
-                            ];
+                        if (resource != null)
+                        {
+                            resources = [resource];
+                        }
                     }
-                    else
-                        return [];
                 }
             }
             finally
             {
                 _lock.Release();
             }
+
+            return resources.Select(r => new ResourceProviderGetResult<T>
+            {
+                Resource = r,
+                Actions = [],
+                Roles = []
+            }).ToList();
         }
 
         /// <summary>

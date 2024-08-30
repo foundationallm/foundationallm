@@ -123,7 +123,7 @@ namespace FoundationaLLM.Common.Extensions
                 ?? throw new ResourceProviderException($"The resource provider {resourceProviderService.Name} does not support retrieving resources of type {typeof(T).Name}.");
 
             var result = await resourceProviderService.HandleGetAsync(
-                $"/{resourceTypeDescriptor.ResourceType}",
+                $"/{resourceTypeDescriptor.ResourceTypeName}",
                 userIdentity);
 
             return (result as List<ResourceProviderGetResult<T>>)!.Select(x => x.Resource).ToList();
@@ -152,7 +152,7 @@ namespace FoundationaLLM.Common.Extensions
                 ?? throw new ResourceProviderException($"The resource provider {resourceProviderService.Name} does not support retrieving resources of type {typeof(T).Name}.");
 
             var result = await resourceProviderService.HandleGetAsync(
-                $"{resourceTypeDescriptor.ResourceType}",
+                $"{resourceTypeDescriptor.ResourceTypeName}",
                 userIdentity);
 
             return (result as List<ResourceProviderGetResult<T>>)!;

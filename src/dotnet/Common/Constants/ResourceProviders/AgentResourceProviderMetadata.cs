@@ -16,7 +16,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 AgentResourceTypeNames.Agents,
                 new ResourceTypeDescriptor(
-                        AgentResourceTypeNames.Agents)
+                        AgentResourceTypeNames.Agents,
+                        typeof(AgentBase))
                 {
                     AllowedTypes = [
                             new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<AgentBase>)]),

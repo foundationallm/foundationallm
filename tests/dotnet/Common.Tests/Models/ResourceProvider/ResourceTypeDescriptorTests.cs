@@ -11,10 +11,10 @@ namespace FoundationaLLM.Common.Tests.Models.ResourceProvider
             string expectedResourceType = "ResourceType";
 
             // Act
-            var descriptor = new ResourceTypeDescriptor(expectedResourceType);
+            var descriptor = new ResourceTypeDescriptor(expectedResourceType, typeof(object));
 
             // Assert
-            Assert.Equal(expectedResourceType, descriptor.ResourceType);
+            Assert.Equal(expectedResourceType, descriptor.ResourceTypeName);
             Assert.NotNull(descriptor.Actions);
             Assert.NotNull(descriptor.AllowedTypes);
             Assert.NotNull(descriptor.SubTypes);

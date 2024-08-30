@@ -16,7 +16,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 AIModelResourceTypeNames.AIModels,
                 new ResourceTypeDescriptor(
-                        AIModelResourceTypeNames.AIModels)
+                        AIModelResourceTypeNames.AIModels,
+                        typeof(AIModelBase))
                 {
                     AllowedTypes = [
                             new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<AIModelBase>)]),

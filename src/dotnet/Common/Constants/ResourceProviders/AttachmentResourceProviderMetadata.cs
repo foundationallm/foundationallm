@@ -17,7 +17,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 AttachmentResourceTypeNames.Attachments,
                 new ResourceTypeDescriptor(
-                        AttachmentResourceTypeNames.Attachments)
+                        AttachmentResourceTypeNames.Attachments,
+                        typeof(AttachmentFile))
                 {
                     AllowedTypes = [
                             new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<AttachmentFile>)]),

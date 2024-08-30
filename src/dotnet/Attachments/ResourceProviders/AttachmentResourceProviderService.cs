@@ -65,10 +65,10 @@ namespace FoundationaLLM.Attachment.ResourceProviders
 
         /// <inheritdoc/>
         protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances[0].ResourceType switch
+            resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
                 AttachmentResourceTypeNames.Attachments => await LoadAttachments(resourcePath.ResourceTypeInstances[0], userIdentity),
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceType} is not supported by the {_name} resource provider.",
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
 
@@ -137,7 +137,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
         /// <inheritdoc/>
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         protected override async Task<object> ExecuteActionAsync(ResourcePath resourcePath, string serializedAction, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances.Last().ResourceType switch
+            resourcePath.ResourceTypeInstances.Last().ResourceTypeName switch
             {
                 AttachmentResourceTypeNames.Attachments => resourcePath.ResourceTypeInstances.Last().Action switch
                 {
@@ -187,13 +187,13 @@ namespace FoundationaLLM.Attachment.ResourceProviders
         /// <inheritdoc/>
         protected override async Task DeleteResourceAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
         {
-            switch (resourcePath.ResourceTypeInstances.Last().ResourceType)
+            switch (resourcePath.ResourceTypeInstances.Last().ResourceTypeName)
             {
                 case AttachmentResourceTypeNames.Attachments:
                     await DeleteResource<AttachmentFile>(resourcePath.ResourceTypeInstances.Last().ResourceId!);
                     break;
                 default:
-                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances.Last().ResourceType} is not supported by the {_name} resource provider.",
+                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances.Last().ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest);
             };
         }
@@ -206,10 +206,10 @@ namespace FoundationaLLM.Attachment.ResourceProviders
         protected override async Task<T> GetResourceInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderOptions? options = null) where T : class
         {
             var attachmentReference = await _resourceReferenceStore!.GetResourceReference(resourcePath.ResourceTypeInstances[0].ResourceId!)
-                ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceType} was not found.");
+                ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} was not found.");
 
             return (await LoadAttachment(attachmentReference, loadContent: options?.LoadContent ?? false)) as T
-                ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceType} could not be loaded.");
+                ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} could not be loaded.");
         }
 
         /// <inheritdoc/>

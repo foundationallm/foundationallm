@@ -47,9 +47,17 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
             && _resourceTypeInstances.Last().ResourceId == null;
 
         /// <summary>
-        /// The main resource type of the path.
+        /// The name of the main resource type of the path.
         /// </summary>
-        public string? MainResourceType =>
+        public string? MainResourceTypeName =>
+            _resourceTypeInstances == null || _resourceTypeInstances.Count == 0
+            ? null
+            : _resourceTypeInstances[0].ResourceTypeName;
+
+        /// <summary>
+        /// The object type of the main resource type of the path.
+        /// </summary>
+        public Type? MainResourceType =>
             _resourceTypeInstances == null || _resourceTypeInstances.Count == 0
             ? null
             : _resourceTypeInstances[0].ResourceType;
@@ -157,7 +165,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                         StatusCodes.Status400BadRequest);
                 else
                     return $"/instances/{instanceId}/providers/{resourceProvider}/{string.Join("/",
-                        _resourceTypeInstances.Select(i => i.ResourceId == null ? $"{i.ResourceType}" : $"{i.ResourceType}/{i.ResourceId}").ToArray())}";
+                        _resourceTypeInstances.Select(i => i.ResourceId == null ? $"{i.ResourceTypeName}" : $"{i.ResourceTypeName}/{i.ResourceId}").ToArray())}";
             }
             else
             {
@@ -169,7 +177,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                         StatusCodes.Status400BadRequest);
                 else
                     return $"/instances/{_instanceId}/providers/{_resourceProvider}/{string.Join("/",
-                        _resourceTypeInstances.Select(i => i.ResourceId == null ? $"{i.ResourceType}" : $"{i.ResourceType}/{i.ResourceId}").ToArray())}";
+                        _resourceTypeInstances.Select(i => i.ResourceId == null ? $"{i.ResourceTypeName}" : $"{i.ResourceTypeName}/{i.ResourceId}").ToArray())}";
             }
         }
 
@@ -298,7 +306,9 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                         || !currentResourceTypes.TryGetValue(tokens[currentIndex], out ResourceTypeDescriptor? currentResourceType))
                         throw new Exception();
 
-                    var resourceTypeInstance = new ResourceTypeInstance(tokens[currentIndex]);
+                    var resourceTypeInstance = new ResourceTypeInstance(
+                        tokens[currentIndex],
+                        allowedResourceTypes[tokens[currentIndex]].ResourceType);
                     resourceTypeInstances.Add(resourceTypeInstance);
 
                     if (currentIndex + 1 == tokens.Length)

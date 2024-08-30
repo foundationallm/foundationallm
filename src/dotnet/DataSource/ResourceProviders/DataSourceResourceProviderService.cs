@@ -99,10 +99,10 @@ namespace FoundationaLLM.DataSource.ResourceProviders
 
         /// <inheritdoc/>
         protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances[0].ResourceType switch
+            resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
                 DataSourceResourceTypeNames.DataSources => await LoadDataSources(resourcePath.ResourceTypeInstances[0], userIdentity),
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceType} is not supported by the {_name} resource provider.",
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
 
@@ -194,10 +194,10 @@ namespace FoundationaLLM.DataSource.ResourceProviders
 
         /// <inheritdoc/>
         protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string serializedResource, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances[0].ResourceType switch
+            resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
                 DataSourceResourceTypeNames.DataSources => await UpdateDataSource(resourcePath, serializedResource, userIdentity),
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceType} is not supported by the {_name} resource provider.",
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
 
@@ -272,7 +272,7 @@ namespace FoundationaLLM.DataSource.ResourceProviders
         /// <inheritdoc/>
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         protected override async Task<object> ExecuteActionAsync(ResourcePath resourcePath, string serializedAction, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances.Last().ResourceType switch
+            resourcePath.ResourceTypeInstances.Last().ResourceTypeName switch
             {
                 DataSourceResourceTypeNames.DataSources => resourcePath.ResourceTypeInstances.Last().Action switch
                 {
@@ -398,13 +398,13 @@ namespace FoundationaLLM.DataSource.ResourceProviders
         /// <inheritdoc/>
         protected override async Task DeleteResourceAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
         {
-            switch (resourcePath.ResourceTypeInstances.Last().ResourceType)
+            switch (resourcePath.ResourceTypeInstances.Last().ResourceTypeName)
             {
                 case DataSourceResourceTypeNames.DataSources:
                     await DeleteDataSource(resourcePath.ResourceTypeInstances);
                     break;
                 default:
-                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances.Last().ResourceType} is not supported by the {_name} resource provider.",
+                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances.Last().ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest);
             };
         }
@@ -444,15 +444,15 @@ namespace FoundationaLLM.DataSource.ResourceProviders
                 throw new ResourceProviderException($"Invalid resource path");
 
             if (typeof(T) != typeof(DataSourceBase))
-                throw new ResourceProviderException($"The type of requested resource ({typeof(T)}) does not match the resource type specified in the path ({resourcePath.ResourceTypeInstances[0].ResourceType}).");
+                throw new ResourceProviderException($"The type of requested resource ({typeof(T)}) does not match the resource type specified in the path ({resourcePath.ResourceTypeInstances[0].ResourceTypeName}).");
                      
             _dataSourceReferences.TryGetValue(resourcePath.ResourceTypeInstances[0].ResourceId!, out var dataSourceReference);
             if (dataSourceReference is not null && dataSourceReference.Deleted)
-                throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId} of type {resourcePath.ResourceTypeInstances[0].ResourceType} has been soft deleted.");
+                throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId} of type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} has been soft deleted.");
 
             var dataSource = await LoadDataSource(dataSourceReference, resourcePath.ResourceTypeInstances[0].ResourceId);
             return dataSource as T
-                ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId} of type {resourcePath.ResourceTypeInstances[0].ResourceType} was not found.");
+                ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId} of type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} was not found.");
         }
         
 

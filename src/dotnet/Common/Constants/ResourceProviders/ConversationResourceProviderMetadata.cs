@@ -16,7 +16,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 ConversationResourceTypeNames.Conversations,
                 new ResourceTypeDescriptor(
-                    ConversationResourceTypeNames.Conversations)
+                    ConversationResourceTypeNames.Conversations,
+                    typeof(Conversation))
                 {
                     AllowedTypes = [
                         new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<Conversation>)]),

@@ -17,7 +17,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 AuthorizationResourceTypeNames.RoleAssignments,
                 new ResourceTypeDescriptor(
-                        AuthorizationResourceTypeNames.RoleAssignments)
+                        AuthorizationResourceTypeNames.RoleAssignments,
+                        typeof(RoleAssignment))
                 {
                     AllowedTypes = [
                         new ResourceTypeAllowedTypes(HttpMethod.Post.Method, [], [typeof(RoleAssignment)], [typeof(ResourceProviderUpsertResult)]),
@@ -33,7 +34,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 AuthorizationResourceTypeNames.RoleDefinitions,
                 new ResourceTypeDescriptor(
-                        AuthorizationResourceTypeNames.RoleDefinitions)
+                        AuthorizationResourceTypeNames.RoleDefinitions,
+                        typeof(RoleDefinition))
                 {
                     AllowedTypes = [
                         new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(RoleDefinition)])

@@ -16,7 +16,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 DataSourceResourceTypeNames.DataSources,
                 new ResourceTypeDescriptor(
-                        DataSourceResourceTypeNames.DataSources)
+                        DataSourceResourceTypeNames.DataSources,
+                        typeof(DataSourceBase))
                 {
                     AllowedTypes = [
                             new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<DataSourceBase>)]),
