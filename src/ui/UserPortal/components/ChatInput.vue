@@ -515,6 +515,7 @@ export default {
 	.upload-files-header button {
 		padding: 0.25rem 0.5rem;
 		margin-right: 0.25rem !important;
+		margin-bottom: 0.25rem !important;
 	}
 
 	.tooltip-component {
