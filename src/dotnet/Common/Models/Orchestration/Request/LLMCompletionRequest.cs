@@ -157,7 +157,7 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
                         throw new OrchestrationException("The text embedding profile settings must contain a model_name item.");
 
                     if (textEmbeddingProfile.Settings.ContainsKey(VectorizationSettingsNames.EmbeddingProfileModelName))
-                        throw new OrchestrationException("The text embedding profile object provided in the request's objects is invalid.");
+                        throw new OrchestrationException("The text embedding profile settings must contain a model_name item.");
                    
                     _hasTextEmbeddingProfile = true;
                 }

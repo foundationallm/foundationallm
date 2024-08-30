@@ -19,8 +19,9 @@ Core API changes:
 7. `Status` controllers `\status` action in the .NET API projects return value has renamed the `Instance` property to `InstanceName`.
 8. The `CompletionController.cs` file under `dotnet/CoreApi/controllers` has introduced the `Async-Completions` endpoint to handle asynchronous completions.
 9. With the introduction of `Async-Completions`, long running operations can now report on completion status based on `Pending`, `InProgress`, `Completed` and `Failed` states.
-10. Vectorization Embedding Profile introduces a required field `EmbeddingAIModelObjectId` property (serializes to `embedding_ai_model_object_id`).
-11. Vectorization Indexing Profile introduces a required field `IndexingAPIEndpointConfigurationObjectId` property (serializes to `indexing_api_endpoint_configuration_object_id`).
+10. Vectorization Embedding Profile introduces a required key in the `Settings` property named `model_name`. Every embedding request now flows through the Gateway API.
+11. Vectorization Indexing Profile introduces a required key `api_endpoint_configuration_object_id` in the `Settings` property.
+12. Retirement of `SemanticKernel` embedding type. All embedding requests now flow through the Gateway API.
 
 Gatekeeper API changes:
 1. All Gatekeeper API endpoints have been moved to the `/instances/{instanceId}` path. For example, the `/status` endpoint is now `/instances/{instanceId}/status`.
