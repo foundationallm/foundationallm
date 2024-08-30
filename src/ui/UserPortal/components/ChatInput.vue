@@ -28,6 +28,7 @@
 				header="Upload File(s)"
 				modal
 				aria-label="File Upload Dialog"
+				style="max-width: 98%"
 			>
 				<FileUpload
 					ref="fileUpload"
@@ -492,7 +493,8 @@ export default {
 }
 
 .upload-files-header {
-	width: 500px;
+	width: 100%; /* Ensure the header is responsive */
+	max-width: 500px; /* Limit the max width */
 }
 
 .upload-files-header button {
@@ -574,6 +576,26 @@ export default {
 	flex-direction: row;
 	align-items: center;
 	gap: 10px;
+	overflow: hidden; /* Ensure the container doesn't overflow */
+	flex-shrink: 1; /* Allow the container to shrink if needed */
+	max-width: calc(100% - 50px); /* Ensure the container does not exceed the modal width */
+
+	span {
+		font-weight: 600;
+		overflow: hidden; /* Hide overflowed text */
+		text-overflow: ellipsis; /* Show ellipsis for overflowed text */
+		white-space: wrap; /* Prevent text from wrapping to the next line */
+		flex-shrink: 1; /* Allow the text to shrink */
+		max-width: 80%; /* Allow the span to shrink, but will expand as needed */
+		min-width: 0; /* Ensures the element shrinks down to zero if needed */
+		/*width: 0; */
+	}
+}
+
+@media only screen and (max-width: 405px) {
+	.file-upload-file_info div {
+		display: none;
+	}
 }
 
 .p-fileupload-content {
