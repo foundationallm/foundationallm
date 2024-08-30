@@ -206,20 +206,20 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             continue;
                         }
 
-                        var indexingProfile = await vectorizationResourceProvider.GetResource<VectorizationProfileBase>(
+                        var indexingProfile = await vectorizationResourceProvider.GetResource<IndexingProfile>(
                             indexingProfileName,
                             currentUserIdentity);
-                        var indexingProfileCasted = indexingProfile as IndexingProfile;
-                        if (indexingProfileCasted == null)
+                       
+                        if (indexingProfile == null)
                             throw new OrchestrationException($"The indexing profile {indexingProfileName} is not a valid indexing profile.");
 
                         explodedObjects[indexingProfileName] = indexingProfile;
                                                
                         // Provide the indexing profile API endpoint configuration.
-                        if (indexingProfileCasted.Settings == null)
+                        if (indexingProfile.Settings == null)
                             throw new OrchestrationException($"The settings for the indexing profile {indexingProfileName} were not found. Must include \"api_endpoint_configuration_object_id\" setting.");
 
-                        if(indexingProfileCasted.Settings.TryGetValue("api_endpoint_configuration_object_id", out var apiEndpointConfigurationObjectId) == false)
+                        if(indexingProfile.Settings.TryGetValue("api_endpoint_configuration_object_id", out var apiEndpointConfigurationObjectId) == false)
                             throw new OrchestrationException($"The API endpoint configuration object ID was not found in the settings of the indexing profile.");
                         var indexingProfileAPIEndpointConfiguration = await configurationResourceProvider.GetResource<APIEndpointConfiguration>(
                             apiEndpointConfigurationObjectId,
@@ -230,15 +230,14 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                     if (!string.IsNullOrWhiteSpace(kmAgent.Vectorization.TextEmbeddingProfileObjectId))
                     {
-                        var textEmbeddingProfile = await vectorizationResourceProvider.GetResource<VectorizationProfileBase>(
+                        var textEmbeddingProfile = await vectorizationResourceProvider.GetResource<TextEmbeddingProfile>(
                             kmAgent.Vectorization.TextEmbeddingProfileObjectId,
                             currentUserIdentity);
-
-                        var textEmbeddingProfileCasted = textEmbeddingProfile as TextEmbeddingProfile;
-                        if (textEmbeddingProfileCasted == null)
+                                                
+                        if (textEmbeddingProfile == null)
                             throw new OrchestrationException($"The text embedding profile {kmAgent.Vectorization.TextEmbeddingProfileObjectId} is not a valid text embedding profile.");
 
-                        explodedObjects[kmAgent.Vectorization.TextEmbeddingProfileObjectId!] = textEmbeddingProfileCasted;
+                        explodedObjects[kmAgent.Vectorization.TextEmbeddingProfileObjectId!] = textEmbeddingProfile;
                     }
                 }
             }
