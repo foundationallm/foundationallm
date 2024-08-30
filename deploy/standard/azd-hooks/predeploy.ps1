@@ -60,6 +60,7 @@ try {
             }
         }
 
+        # TODO this needs to be in its own try-finally block
         Push-Location ..
         azd env set EXTENSIONS_INSTALLED 1
         Pop-Location
@@ -103,7 +104,7 @@ try {
 
     $frontEndHosts = @()
     if ($env:FLLM_USER_PORTAL_HOSTNAME) {
-        $frontEndHosts += $env:FLLM_USER_PORTAL_HOSTNAME 
+        $frontEndHosts += $env:FLLM_USER_PORTAL_HOSTNAME
         $($ingress.frontendIngress).chatui = @{
             host = $env:FLLM_USER_PORTAL_HOSTNAME
             path = "/"
@@ -113,8 +114,8 @@ try {
         }
     }
 
-    if ($env:FLLM_MGMT_PORTAL_HOSTNAME) { 
-        $frontEndHosts += $env:FLLM_MGMT_PORTAL_HOSTNAME 
+    if ($env:FLLM_MGMT_PORTAL_HOSTNAME) {
+        $frontEndHosts += $env:FLLM_MGMT_PORTAL_HOSTNAME
         $($ingress.frontendIngress).managementui = @{
             host = $env:FLLM_MGMT_PORTAL_HOSTNAME
             path = "/"
@@ -125,8 +126,8 @@ try {
     }
 
     $backendHosts = @()
-    if ($env:FLLM_CORE_API_HOSTNAME) { 
-        $backendHosts += $env:FLLM_CORE_API_HOSTNAME 
+    if ($env:FLLM_CORE_API_HOSTNAME) {
+        $backendHosts += $env:FLLM_CORE_API_HOSTNAME
         $($ingress.apiIngress).coreapi = @{
             host = $env:FLLM_CORE_API_HOSTNAME
             path = "/core/"
@@ -136,8 +137,8 @@ try {
         }
     }
 
-    if ($env:FLLM_MGMT_API_HOSTNAME) { 
-        $backendHosts += $env:FLLM_MGMT_API_HOSTNAME 
+    if ($env:FLLM_MGMT_API_HOSTNAME) {
+        $backendHosts += $env:FLLM_MGMT_API_HOSTNAME
         $($ingress.apiIngress).managementapi = @{
             host = $env:FLLM_MGMT_API_HOSTNAME
             path = "/management/"
@@ -246,4 +247,3 @@ try {
 finally {
     Pop-Location
 }
-

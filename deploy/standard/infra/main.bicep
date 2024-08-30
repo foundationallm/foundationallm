@@ -109,6 +109,7 @@ module app 'app-rg.bicep' = {
     logAnalyticsWorkspaceResourceId: ops.outputs.logAnalyticsWorkspaceId
     networkingResourceGroupName: resourceGroups.net
     openAiResourceGroupName: resourceGroups.oai
+    openAiName: openai.outputs.azureOpenAiName
     opsResourceGroupName: resourceGroups.ops
     project: project
     services: services

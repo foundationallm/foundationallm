@@ -23,7 +23,6 @@ using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models;
 using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Utils;
-using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -56,7 +55,8 @@ public partial class CoreService(
     IOptions<CoreServiceSettings> settings,
     ICallContext callContext,
     IEnumerable<IResourceProviderService> resourceProviderServices,
-    IConfiguration configuration) : ICoreService
+    IConfiguration configuration,
+    IHttpClientFactoryService httpClientFactory) : ICoreService
 {
     private readonly ICosmosDbService _cosmosDbService = cosmosDbService;
     private readonly IDownstreamAPIService _gatekeeperAPIService = downstreamAPIServices.Single(das => das.APIName == HttpClientNames.GatekeeperAPI);
@@ -65,7 +65,8 @@ public partial class CoreService(
     private readonly ICallContext _callContext = callContext;
     private readonly string _sessionType = brandingSettings.Value.KioskMode ? SessionTypes.KioskSession : SessionTypes.Session;
     private readonly CoreServiceSettings _settings = settings.Value;
-    private readonly string _baseUrl = configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl]!;
+    private readonly IHttpClientFactoryService _httpClientFactory = httpClientFactory;
+    private readonly string _baseUrl = GetBaseUrl(configuration, httpClientFactory, callContext).GetAwaiter().GetResult();
 
     private readonly IResourceProviderService _attachmentResourceProvider =
         resourceProviderServices.Single(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Attachment);
@@ -77,6 +78,12 @@ public partial class CoreService(
         resourceProviderServices.Single(rps => rps.Name == ResourceProviderNames.FoundationaLLM_AIModel);
     private readonly IResourceProviderService _configurationResourceProvider =
         resourceProviderServices.Single(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Configuration);
+
+    private readonly HashSet<string> _azureOpenAIFileSearchFileExtensions =
+        settings.Value.AzureOpenAIAssistantsFileSearchFileExtensions
+            .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+            .Select(s => s.ToLowerInvariant())
+            .ToHashSet();
 
     /// <inheritdoc/>
     public async Task<List<Session>> GetAllChatSessionsAsync(string instanceId) =>
@@ -331,7 +338,7 @@ public partial class CoreService(
         throw new NotImplementedException();
 
     /// <inheritdoc/>
-    public async Task<ResourceProviderUpsertResult> UploadAttachment(string instanceId, AttachmentFile attachmentFile, string agentName, UnifiedUserIdentity userIdentity)
+    public async Task<ResourceProviderUpsertResult> UploadAttachment(string instanceId, string sessionId, AttachmentFile attachmentFile, string agentName, UnifiedUserIdentity userIdentity)
     {
         var agentBase = await _agentResourceProvider.HandleGet<AgentBase>(
             $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Agent}/{AgentResourceTypeNames.Agents}/{agentName}",
@@ -359,6 +366,13 @@ public partial class CoreService(
             var assistantUserContextName = $"{userName}-assistant-{instanceId.ToLower()}";
             var fileUserContextName = $"{userName}-file-{instanceId.ToLower()}";
 
+            var fileMapping = new FileMapping
+            {
+                FoundationaLLMObjectId = result.ObjectId!,
+                OriginalFileName = attachmentFile.OriginalFileName,
+                ContentType = attachmentFile.ContentType!
+            };
+
             var fileUserContext = new FileUserContext
             {
                 Name = fileUserContextName,
@@ -369,15 +383,17 @@ public partial class CoreService(
                 {
                     {
                         result.ObjectId!,
-                        new FileMapping
-                        {
-                            FoundationaLLMObjectId = result.ObjectId!,
-                            OriginalFileName = attachmentFile.OriginalFileName,
-                            ContentType = attachmentFile.ContentType!
-                        }
+                        fileMapping
                     }
                 }
             };
+
+            var extension = Path.GetExtension(attachmentFile.OriginalFileName).ToLowerInvariant().Replace(".", string.Empty);
+            if (_azureOpenAIFileSearchFileExtensions.Contains(extension))
+            {
+                // The file also needs to be vectorized for the OpenAI assistant.
+                fileMapping.RequiresVectorization = true;
+            }
 
             _ = await _azureOpenAIResourceProvider.UpsertResourceAsync<FileUserContext, ResourceProviderUpsertResult>(
                 $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileUserContexts}/{fileUserContextName}",
@@ -557,6 +573,35 @@ public partial class CoreService(
         request.OperationId = Guid.NewGuid().ToString();
         return request;
     }
+
+    private static async Task<string> GetBaseUrl(
+        IConfiguration configuration,
+        IHttpClientFactoryService httpClientFactory,
+        ICallContext callContext)
+    {
+        var baseUrl = configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl]!;
+        try
+        {
+            var baseUrlOverride = await httpClientFactory.CreateClient<string?>(
+                HttpClientNames.CoreAPI,
+                callContext.CurrentUserIdentity!,
+                BuildClient);
+            if (!string.IsNullOrWhiteSpace(baseUrlOverride))
+            {
+                baseUrl = baseUrlOverride;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            // Ignore the exception since we should always fall back to the configured value.
+        }
+        
+        return baseUrl;
+    }
+
+    private static string? BuildClient(Dictionary<string, object> parameters) =>
+        parameters[HttpClientFactoryServiceKeyNames.Endpoint].ToString();
 
     [GeneratedRegex(@"[^\w\s]")]
     private static partial Regex ChatSessionNameReplacementRegex();

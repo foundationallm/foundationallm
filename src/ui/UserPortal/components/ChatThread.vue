@@ -1,11 +1,19 @@
 <template>
 	<div class="chat-thread">
 		<!-- Message list -->
-		<div class="chat-thread__messages"
-			:class="messages.length === 0 && 'empty'">
+		<div
+			ref="messageContainer"
+			class="chat-thread__messages"
+			:class="messages.length === 0 && 'empty'"
+		>
 			<template v-if="isLoading">
-				<div class="chat-thread__loading">
-					<i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+				<div class="chat-thread__loading" role="status">
+					<i
+						class="pi pi-spin pi-spinner"
+						style="font-size: 2rem"
+						role="img"
+						aria-label="Loading"
+					></i>
 				</div>
 			</template>
 
@@ -14,20 +22,23 @@
 				<template v-if="messages.length !== 0">
 					<ChatMessage
 						v-for="(message, index) in messages.slice().reverse()"
+						:id="`message-${getMessageOrderFromReversedIndex(index)}`"
 						:key="`${message.id}-${componentKey}`"
 						:message="message"
 						:show-word-animation="index === 0 && userSentMessage && message.sender === 'Assistant'"
+						role="log"
+						:tabindex="getMessageOrderFromReversedIndex(index)"
+						:aria-flowto="
+							index === 0 ? null : `message-${getMessageOrderFromReversedIndex(index) + 1}`
+						"
 						@rate="handleRateMessage($event.message, $event.isLiked)"
-						@refresh="handleRefresh()"
 					/>
 				</template>
 
 				<!-- New chat alert -->
 				<div v-else class="new-chat-alert">
 					<div class="alert-body">
-						<div class="alert-body-text">
-							Start the conversation using the text box below.
-						</div>
+						<div class="alert-body-text">Start the conversation using the text box below.</div>
 					</div>
 				</div>
 			</template>
@@ -93,13 +104,12 @@ export default {
 	},
 
 	methods: {
-		async handleRateMessage(message: Message, isLiked: Message['rating']) {
-			await this.$appStore.rateMessage(message, isLiked);
+		getMessageOrderFromReversedIndex(index) {
+			return this.messages.length - 1 - index;
 		},
 
-		async handleRefresh() {
-			this.componentKey += 1;
-			this.$nextTick();
+		async handleRateMessage(message: Message, isLiked: Message['rating']) {
+			await this.$appStore.rateMessage(message, isLiked);
 		},
 
 		async handleSend(text: string) {
@@ -115,7 +125,8 @@ export default {
 				this.$toast.add({
 					severity: 'info',
 					summary: 'Could not send message',
-					detail: 'Please select an agent and try again. If no agents are available, refresh the page.',
+					detail:
+						'Please select an agent and try again. If no agents are available, refresh the page.',
 					life: 8000,
 				});
 				this.isMessagePending = false;
@@ -206,8 +217,9 @@ export default {
 .empty {
 	flex-direction: column;
 }
+
 .new-chat-alert {
-	background-color: #FAFAFA;
+	background-color: #fafafa;
 	margin: 10px;
 	margin-left: auto;
 	margin-right: auto;

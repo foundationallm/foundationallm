@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="message-row" :class="message.sender === 'User' ? 'message--out' : 'message--in'">
-			<div class="message">
+			<div class="message" tabindex="0">
 				<div class="message__header">
 					<!-- Sender -->
 					<span class="header__sender">
@@ -27,119 +27,80 @@
 								},
 							}"
 						/>
-						<span v-tooltip="formatTimeStamp(message.timeStamp)" class="time-stamp">{{
-							$filters.timeAgo(new Date(message.timeStamp))
-						}}</span>
+						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+							<span class="time-stamp" tabindex="0">{{
+								$filters.timeAgo(new Date(message.timeStamp))
+							}}</span>
+							<template #popper>
+								{{ formatTimeStamp(message.timeStamp) }}
+							</template>
+						</VTooltip>
+
+						<!-- Copy user message button -->
+						<VTooltip :auto-hide="false" :popper-riggers="['hover']">
+							<Button
+								v-if="message.sender === 'User'"
+								class="message__copy"
+								size="small"
+								text
+								icon="pi pi-copy"
+								aria-label="Copy Message"
+								@click.stop="handleCopyMessageContent"
+							/>
+							<template #popper>Copy Message</template>
+						</VTooltip>
 					</span>
 				</div>
 
 				<!-- Message text -->
 				<div class="message__body">
+					<!-- Attachments -->
 					<AttachmentList
 						v-if="message.sender === 'User'"
 						:attachments="message.attachmentDetails ?? []"
-						:attachmentIds="message.attachments"
+						:attachment-ids="message.attachments"
 					/>
 
+					<!-- Message loading -->
 					<template v-if="message.sender === 'Assistant' && message.type === 'LoadingMessage'">
-						<i class="pi pi-spin pi-spinner"></i>
-					</template>
-
-					<template v-if="!messageContent || messageContent.length === 0">
-						<div v-html="compiledVueTemplate"></div>
-					</template>
-
-					<template v-else>
-						<!-- Render the html content and any vue components within -->
-						<div v-for="content in messageContent" :key="content.fileName" class="message-content">
-							<div v-if="content.type === 'text'">
-								<component :is="renderMarkdownComponent(content.value)"></component>
-							</div>
-
-							<div v-else-if="content.type === 'image_file'">
-								<template v-if="content.loading || (!content.error && !content.blobUrl)">
-									<div class="loading-content-container">
-										<i class="pi pi-image loading-content-icon" style="font-size: 2rem"></i>
-										<i
-											class="pi pi-spin pi-spinner loading-content-icon"
-											style="font-size: 1rem"
-										></i>
-										<span class="loading-content-text">Loading image...</span>
-									</div>
-								</template>
-								<Image
-									v-if="content.blobUrl"
-									:src="content.blobUrl"
-									:alt="content.fileName"
-									@load="content.loading = false"
-									@error="
-										content.loading = false;
-										content.error = true;
-									"
-									width="45%"
-									preview
-								/>
-								<div v-if="content.error" class="loading-content-error">
-									<i
-										class="pi pi-times-circle loading-content-error-icon"
-										style="font-size: 2rem"
-									></i>
-									<span class="loading-content-error-text">Could not load image</span>
-								</div>
-							</div>
-
-							<div v-else-if="content.type === 'html'">
-								<template v-if="content.loading || (!content.error && !content.blobUrl)">
-									<div class="loading-content-container">
-										<i class="pi pi-chart-line loading-content-icon" style="font-size: 2rem"></i>
-										<i
-											class="pi pi-spin pi-spinner loading-content-icon"
-											style="font-size: 1rem"
-										></i>
-										<span class="loading-content-text">Loading visualization...</span>
-									</div>
-								</template>
-								<iframe v-if="content.blobUrl" :src="content.blobUrl" frameborder="0"> </iframe>
-							</div>
-
-							<div v-else-if="content.type === 'file_path'">
-								Download <i :class="$getFileIconClass(content.fileName, true)" class="attachment-icon"></i> 
-								<a
-									:href="content.blobUrl"
-									:download="content.fileName ?? content.blobUrl ?? content.value"
-									target="_blank"
-								>
-									{{ content.fileName ?? content.blobUrl }}
-								</a>
-							</div>
+						<div role="status">
+							<i class="pi pi-spin pi-spinner" role="img" aria-label="Loading message"></i>
 						</div>
-
-						<Button
-							v-if="message.analysisResults && message.analysisResults.length > 0"
-							class="message__button"
-							:disabled="message.type === 'LoadingMessage'"
-							size="small"
-							text
-							icon="pi pi-window-maximize"
-							label="Analysis"
-							@click.stop="showAnalysisModal"
-						/>
 					</template>
+
+					<!-- Render the html content and any vue components within -->
+					<component :is="compiledMarkdownComponent" v-else />
+
+					<!-- Analysis button -->
+					<Button
+						v-if="message.analysisResults && message.analysisResults.length > 0"
+						class="message__button"
+						:disabled="message.type === 'LoadingMessage'"
+						size="small"
+						text
+						icon="pi pi-window-maximize"
+						label="Analysis"
+						@click.stop="isAnalysisModalVisible = true"
+					/>
 				</div>
 
+				<!-- Assistant message footer -->
 				<div v-if="message.sender !== 'User'" class="message__footer">
+					<!-- Citations -->
 					<div v-if="message.citations?.length" class="citations">
 						<span><b>Citations: </b></span>
 						<span
 							v-for="citation in message.citations"
 							:key="citation.id"
-							v-tooltip.top="{ value: citation.filepath, showDelay: 500, hideDelay: 300 }"
+							v-tooltip.top="{ content: citation.filepath, showDelay: 500, hideDelay: 300 }"
 							class="citation"
 						>
 							<i class="pi pi-file"></i>
 							{{ citation.title.split('/').pop() }}
 						</span>
 					</div>
+
+					<!-- Rating -->
 					<span class="ratings">
 						<!-- Like -->
 						<span>
@@ -168,8 +129,20 @@
 						</span>
 					</span>
 
-					<!-- View prompt -->
-					<span class="view-prompt">
+					<!-- Right side buttons -->
+					<span>
+						<!-- Copy message button -->
+						<Button
+							:disabled="message.type === 'LoadingMessage'"
+							class="message__button"
+							size="small"
+							text
+							icon="pi pi-copy"
+							label="Copy"
+							@click.stop="handleCopyMessageContent"
+						/>
+
+						<!-- View prompt buttom -->
 						<Button
 							class="message__button"
 							:disabled="message.type === 'LoadingMessage'"
@@ -182,11 +155,10 @@
 
 						<!-- Prompt dialog -->
 						<Dialog
+							v-model:visible="viewPrompt"
 							class="prompt-dialog"
-							:visible="viewPrompt"
 							modal
 							header="Completion Prompt"
-							:closable="false"
 						>
 							<p class="prompt-text">{{ prompt.prompt }}</p>
 							<template #footer>
@@ -211,9 +183,10 @@
 			{{ $filters.timeAgo(new Date(message.timeStamp)) }}
 		</Divider>
 
+		<!-- Analysis Modal -->
 		<AnalysisModal
 			:visible="isAnalysisModalVisible"
-			:analysisResults="message.analysisResults ?? []"
+			:analysis-results="message.analysisResults ?? []"
 			@update:visible="isAnalysisModalVisible = $event"
 		/>
 	</div>
@@ -224,21 +197,20 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark-dimmed.css';
 import { marked } from 'marked';
 import katex from 'katex';
+import 'katex/dist/katex.min.css';
 import truncate from 'truncate-html';
 import DOMPurify from 'dompurify';
-import type { PropType, ref } from 'vue';
+import type { PropType } from 'vue';
 
 import type { Message, CompletionPrompt } from '@/js/types';
 import api from '@/js/api';
 import CodeBlockHeader from '@/components/CodeBlockHeader.vue';
-import AttachmentList from '@/components/AttachmentList.vue';
-import AnalysisModal from '@/components/AnalysisModal.vue';
-import AgentIcon from '@/components/AgentIcon.vue';
+import ChatMessageContentBlock from '@/components/ChatMessageContentBlock.vue';
 
 const renderer = new marked.Renderer();
-
-renderer.code = (code, language) => {
-	const sourceCode = code.raw || code;
+renderer.code = (code) => {
+	const language = code.lang;
+	const sourceCode = code.text || code;
 	const validLanguage = !!(language && hljs.getLanguage(language));
 	const highlighted = validLanguage
 		? hljs.highlight(sourceCode, { language })
@@ -247,33 +219,24 @@ renderer.code = (code, language) => {
 	const encodedCode = encodeURIComponent(sourceCode);
 	return `<pre><code class="${languageClass}" data-code="${encodedCode}" data-language="${highlighted.language}">${highlighted.value}</code></pre>`;
 };
-function processLatex(html) {
-	const blockLatexPattern = /\\\[([^\]]+)\\\]/g;
-	const inlineLatexPattern = /\\\(([^\)]+)\\\)/g;
+marked.use({ renderer });
 
-	// Check if LaTeX syntax is detected in the content
-	const hasBlockLatex = blockLatexPattern.test(html);
-	const hasInlineLatex = inlineLatexPattern.test(html);
+function processLatex(content) {
+	const blockLatexPattern = /\\\[\s*([\s\S]+?)\s*\\\]/g;
+	const inlineLatexPattern = /\\\(([\s\S]+?)\\\)/g;
 
 	// Process block LaTeX: \[ ... \]
-	html = html.replace(blockLatexPattern, (_, math) => {
+	content = content.replace(blockLatexPattern, (_, math) => {
 		return katex.renderToString(math, { displayMode: true, throwOnError: false });
 	});
 
 	// Process inline LaTeX: \( ... \)
-	html = html.replace(inlineLatexPattern, (_, math) => {
+	content = content.replace(inlineLatexPattern, (_, math) => {
 		return katex.renderToString(math, { throwOnError: false });
 	});
 
-	// If LaTeX was found, render the content again with marked
-	if (hasBlockLatex || hasInlineLatex) {
-		html = marked(html);
-	}
-
-	return html;
+	return content;
 }
-
-marked.use({ renderer });
 
 function addCodeHeaderComponents(htmlString) {
 	const parser = new DOMParser();
@@ -303,11 +266,6 @@ function addCodeHeaderComponents(htmlString) {
 export default {
 	name: 'ChatMessage',
 
-	components: {
-		AttachmentList,
-		AnalysisModal,
-	},
-
 	props: {
 		message: {
 			type: Object as PropType<Message>,
@@ -320,20 +278,7 @@ export default {
 		},
 	},
 
-	setup() {
-		const isAnalysisModalVisible = ref(false);
-
-		function showAnalysisModal() {
-			isAnalysisModalVisible.value = true;
-		}
-
-		return {
-			isAnalysisModalVisible,
-			showAnalysisModal,
-		};
-	},
-
-	emits: ['rate', 'refresh'],
+	emits: ['rate'],
 
 	data() {
 		return {
@@ -346,14 +291,45 @@ export default {
 			messageContent: this.message.content
 				? JSON.parse(JSON.stringify(this.message.content))
 				: null,
+			isAnalysisModalVisible: false,
 		};
 	},
 
 	computed: {
 		compiledMarkdown() {
-			let htmlContent = processLatex(this.message.text ?? '');
-			htmlContent = marked(htmlContent);
-			return DOMPurify.sanitize(htmlContent);
+			function processContentBlock(contentToProcess) {
+				let htmlContent = processLatex(contentToProcess ?? '');
+				htmlContent = marked(htmlContent);
+				return DOMPurify.sanitize(htmlContent);
+			}
+
+			let content = '';
+			if (this.messageContent && this.messageContent?.length > 0) {
+				this.messageContent.forEach((contentBlock) => {
+					switch (contentBlock.type) {
+						case 'text': {
+							content += processContentBlock(contentBlock.value);
+							break;
+						}
+						// case 'image_file':
+						// 	break;
+						// case 'html':
+						// 	break;
+						// case 'file_path':
+						// 	break;
+						default: {
+							// Maybe just pass invidual values directly as primitives instead of full object
+							const contentBlockEncoded = encodeURIComponent(JSON.stringify(contentBlock));
+							content += `<chat-message-content-block contentencoded="${contentBlockEncoded}"></chat-message-content-block>`;
+							break;
+						}
+					}
+				});
+			} else {
+				content = processContentBlock(this.message.text);
+			}
+
+			return content;
 		},
 
 		compiledMarkdownComponent() {
@@ -361,6 +337,7 @@ export default {
 				template: `<div>${this.compiledVueTemplate}</div>`,
 				components: {
 					CodeBlockHeader,
+					ChatMessageContentBlock,
 				},
 			};
 		},
@@ -374,22 +351,7 @@ export default {
 		}
 	},
 
-	mounted() {
-		this.fetchContentFiles();
-	},
-
 	methods: {
-		renderMarkdownComponent(contentValue: string) {
-			let htmlContent = processLatex(contentValue ?? '');
-			htmlContent = DOMPurify.sanitize(marked(htmlContent));
-			return {
-				template: `<div>${htmlContent}</div>`,
-				components: {
-					CodeBlockHeader,
-				},
-			};
-		},
-
 		displayWordByWord() {
 			const words = this.compiledMarkdown.split(/\s+/);
 			if (this.currentWordIndex >= words.length) {
@@ -404,7 +366,7 @@ export default {
 				stripTags: false,
 				ellipsis: '',
 				decodeEntities: false,
-				excludes: '',
+				excludes: ['code-block-header', 'chat-message-content-block'],
 				reserveLastWord: false,
 				keepWhitespaces: true,
 			});
@@ -434,6 +396,37 @@ export default {
 				: this.message.senderDisplayName || 'Agent';
 		},
 
+		handleCopyMessageContent() {
+			let contentToCopy = '';
+			if (this.messageContent && this.messageContent?.length > 0) {
+				this.messageContent.forEach((contentBlock) => {
+					switch (contentBlock.type) {
+						case 'text':
+							contentToCopy += contentBlock.value;
+							break;
+						// default:
+						// 	contentToCopy += `![${contentBlock.fileName || 'image'}](${contentBlock.value})`;
+						// 	break;
+					}
+				});
+			} else {
+				contentToCopy = this.message.text;
+			}
+
+			const textarea = document.createElement('textarea');
+			textarea.value = decodeURIComponent(contentToCopy);
+			document.body.appendChild(textarea);
+			textarea.select();
+			document.execCommand('copy');
+			document.body.removeChild(textarea);
+
+			this.$toast.add({
+				severity: 'success',
+				detail: 'Message copied to clipboard!',
+				life: 5000,
+			});
+		},
+
 		handleRate(message: Message, isLiked: boolean) {
 			this.$emit('rate', { message, isLiked: message.rating === isLiked ? null : isLiked });
 		},
@@ -442,34 +435,6 @@ export default {
 			const prompt = await api.getPrompt(this.message.sessionId, this.message.completionPromptId);
 			this.prompt = prompt;
 			this.viewPrompt = true;
-		},
-
-		// Add this method to fetch content files securely
-		async fetchContentFiles() {
-			if (!this.messageContent || this.messageContent.length === 0) return;
-
-			const fetchPromises = this.messageContent.map(async (content) => {
-				if (['image_file', 'html', 'file_path'].includes(content.type)) {
-					content.loading = true;
-					content.error = false;
-					try {
-						const response = await api.fetchDirect(content.value);
-						if (content.type === 'html') {
-							const blob = new Blob([response], { type: 'text/html' });
-							content.blobUrl = URL.createObjectURL(blob);
-						} else {
-							content.blobUrl = URL.createObjectURL(response);
-						}
-						content.fileName = content.fileName?.split('/').pop();
-					} catch (error) {
-						console.error(`Failed to fetch content from ${content.value}`, error);
-						content.error = true;
-					}
-					content.loading = false;
-				}
-			});
-
-			await Promise.all(fetchPromises);
 		},
 	},
 };
@@ -538,6 +503,11 @@ export default {
 	flex-wrap: wrap;
 }
 
+.message__copy {
+	color: var(--primary-text);
+	margin-left: 4px;
+}
+
 .header__sender {
 	display: flex;
 	align-items: center;
@@ -582,24 +552,11 @@ export default {
 
 .ratings {
 	display: flex;
-	gap: 16px;
+	// gap: 16px;
 }
 
 .icon {
 	margin-right: 4px;
-	cursor: pointer;
-}
-
-.view-prompt {
-	cursor: pointer;
-}
-
-.dislike {
-	margin-left: 12px;
-	cursor: pointer;
-}
-
-.like {
 	cursor: pointer;
 }
 
@@ -620,69 +577,9 @@ export default {
 	color: var(--primary-button-text) !important;
 }
 
-.message-content {
-	margin-top: 5px;
-	margin-bottom: 5px;
+.message__button {
+	color: #00356b;
 }
-
-img {
-	max-width: 100%;
-	height: auto;
-	border-radius: 8px;
-}
-
-iframe {
-	width: 100%;
-	height: 600px;
-	border-radius: 8px;
-}
-
-.loading-content-container {
-	display: flex;
-	align-items: center;
-
-	.loading-content-icon {
-		margin-right: 8px;
-		vertical-align: middle;
-		line-height: 1;
-	}
-
-	.loading-content-text {
-		font-size: 0.75rem;
-		font-style: italic;
-		line-height: 1.5;
-	}
-}
-
-.loading-content-error {
-	display: flex;
-	align-items: center;
-	width: 200px;
-	padding: 8px 12px;
-	border-radius: 0.75rem;
-	border-color: rgb(182, 2, 2);
-	color: rgb(182, 2, 2);
-	box-shadow: 0 1px 3px rgba(182, 2, 2, 0.664);
-
-	.loading-content-error-icon {
-		margin-right: 8px;
-		vertical-align: middle;
-		line-height: 1;
-	}
-
-	.loading-content-error-text {
-		font-size: 0.85rem;
-		font-style: italic;
-		line-height: 1.5;
-	}
-}
-
-.attachment-icon {
-        width: 24px;
-        margin-right: 4px;
-        vertical-align: middle;
-        line-height: 1;
-    }
 </style>
 
 <style lang="scss">

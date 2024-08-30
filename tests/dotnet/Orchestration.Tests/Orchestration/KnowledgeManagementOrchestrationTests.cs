@@ -29,7 +29,9 @@ namespace FoundationaLLM.Orchestration.Tests.Orchestration
                 _orchestrationService,
                 _logger,
                 null,
-                false);
+                null,
+                false,
+                string.Empty);
         }
 
         [Fact]

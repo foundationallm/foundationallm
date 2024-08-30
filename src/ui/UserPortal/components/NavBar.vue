@@ -2,18 +2,25 @@
 	<div class="navbar">
 		<!-- Sidebar header -->
 		<div class="navbar__header">
-			<img v-if="$appConfigStore.logoUrl !== ''" :src="$appConfigStore.logoUrl" alt="Logo" />
+			<img
+				v-if="$appConfigStore.logoUrl !== ''"
+				:src="$appConfigStore.logoUrl"
+				:alt="$appConfigStore.logoText"
+			/>
 			<span v-else>{{ $appConfigStore.logoText }}</span>
 
 			<template v-if="!$appConfigStore.isKioskMode">
-				<Button
-					:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
-					size="small"
-					severity="secondary"
-					class="secondary-button"
-					aria-label="Toggle sidebar"
-					@click="$appStore.toggleSidebar"
-				/>
+				<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+					<Button
+						:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
+						size="small"
+						severity="secondary"
+						class="secondary-button"
+						aria-label="Toggle sidebar"
+						@click="$appStore.toggleSidebar"
+					/>
+					<template #popper>Toggle sidebar</template>
+				</VTooltip>
 			</template>
 		</div>
 
@@ -23,10 +30,25 @@
 				<div class="navbar__content__left__item">
 					<template v-if="currentSession">
 						<span>{{ currentSession.name }}</span>
+						<!-- <VTooltip :auto-hide="false" :popper-triggers="['hover']">
+							<Button
+								v-if="!$appConfigStore.isKioskMode"
+								class="button--share"
+								icon="pi pi-copy"
+								text
+								severity="secondary"
+								aria-label="Copy link to chat session"
+								@click="handleCopySession"
+							/>
+							<template #popper>Copy link to chat session</template>
+						</VTooltip> -->
 						<Toast position="top-center" />
 					</template>
 					<template v-else>
 						<span>Please select a session</span>
+					</template>
+					<template v-if="virtualUser">
+						<span style="margin-left: 10px">{{ virtualUser }}</span>
 					</template>
 				</div>
 			</div>
@@ -35,11 +57,14 @@
 			<div class="navbar__content__right">
 				<template v-if="currentSession">
 					<span class="header__dropdown">
-						<AgentIcon
-							:src="$appConfigStore.agentIconUrl || '~/assets/FLLM-Agent-Light.svg'"
-							alt="Select an agent"
-							tooltip="Select an agent"
-						/>
+						<VTooltip :auto-hide="false" :popper-riggers="['hover']">
+							<AgentIcon
+								:src="$appConfigStore.agentIconUrl || '~/assets/FLLM-Agent-Light.svg'"
+								alt="Select an agent"
+								tabindex="0"
+							/>
+							<template #popper> Select an agent </template>
+						</VTooltip>
 						<Dropdown
 							v-model="agentSelection"
 							:options="agentOptionsGroup"
@@ -50,6 +75,7 @@
 							option-disabled="disabled"
 							option-label="label"
 							placeholder="--Select--"
+							aria-label="Select an agent"
 							@change="handleAgentChange"
 						/>
 					</span>
@@ -61,7 +87,6 @@
 
 <script lang="ts">
 import type { Session } from '@/js/types';
-import AgentIcon from '@/components/AgentIcon.vue';
 
 interface AgentDropdownOption {
 	label: string;
@@ -86,6 +111,7 @@ export default {
 			agentSelection: null as AgentDropdownOption | null,
 			agentOptions: [] as AgentDropdownOption[],
 			agentOptionsGroup: [] as AgentDropdownOptionsGroup[],
+			virtualUser: null as string | null,
 		};
 	},
 
@@ -124,6 +150,7 @@ export default {
 		const publicAgentOptions = this.agentOptions;
 		const privateAgentOptions = this.agentOptions.filter((agent) => agent.my_agent);
 		const noAgentOptions = [{ label: 'None', value: null, disabled: true }];
+		this.virtualUser = await this.$appStore.getVirtualUser();
 
 		this.agentOptionsGroup.push({
 			label: '',
@@ -162,6 +189,17 @@ export default {
 		async handleLogout() {
 			await this.$authStore.logout();
 		},
+
+		// handleCopySession() {
+		// 	const chatLink = `${window.location.origin}?chat=${this.currentSession!.id}`;
+		// 	navigator.clipboard.writeText(chatLink);
+
+		// 	this.$toast.add({
+		// 		severity: 'success',
+		// 		detail: 'Chat link copied!',
+		// 		life: 5000,
+		// 	});
+		// },
 
 		updateAgentSelection() {
 			const agent = this.$appStore.getSessionAgent(this.currentSession);

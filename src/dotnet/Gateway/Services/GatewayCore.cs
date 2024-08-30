@@ -14,10 +14,12 @@ using FoundationaLLM.Gateway.Interfaces;
 using FoundationaLLM.Gateway.Models;
 using FoundationaLLM.Gateway.Models.Configuration;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OpenAI.Assistants;
 using OpenAI.Files;
+using OpenAI.VectorStores;
 using System.Collections.Concurrent;
 using System.Text.Json;
 
@@ -219,6 +221,7 @@ namespace FoundationaLLM.Gateway.Services
             var createAssistant = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.CreateAssistant, false);
             var createAssistantThread = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.CreateAssistantThread, false);
             var createAssistantFile = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.CreateAssistantFile, false);
+            var addAssistantFileToVectorStore = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStore, false);
 
             var endpoint = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.Endpoint);
             var azureOpenAIAccount = _azureOpenAIAccounts.Values.FirstOrDefault(
@@ -245,7 +248,7 @@ namespace FoundationaLLM.Gateway.Services
                         true) == 0)
                     ?? throw new GatewayException($"The Gateway service cannot find the {modelDeploymentName} model deployment in the account with endpoint {endpoint}.");
 
-                var response = await assistantClient.CreateAssistantAsync(modelDeploymentName, new AssistantCreationOptions()
+                var assistantResult = await assistantClient.CreateAssistantAsync(modelDeploymentName, new AssistantCreationOptions()
                 {
                     Name = capabilityName,
                     Instructions = prompt,
@@ -256,18 +259,42 @@ namespace FoundationaLLM.Gateway.Services
                     }
                 });
 
-                var assistant = response.Value;
+                var assistant = assistantResult.Value;
                 result[OpenAIAgentCapabilityParameterNames.AssistantId] = assistant.Id;
             }
 
             if (createAssistantThread)
             {
                 var assistantClient = azureOpenAIClient.GetAssistantClient();
+                var vectorStoreClient = azureOpenAIClient.GetVectorStoreClient();
 
-                var response = await assistantClient.CreateThreadAsync();
-                var thread = response.Value;
+                var vectorStoreResult = await vectorStoreClient.CreateVectorStoreAsync(new VectorStoreCreationOptions
+                {
+                    ExpirationPolicy = new VectorStoreExpirationPolicy
+                    {
+                        Anchor = VectorStoreExpirationAnchor.LastActiveAt,
+                        Days = 365
+                    }
+                });
+
+                var threadResult = await assistantClient.CreateThreadAsync(new ThreadCreationOptions
+                {
+                    ToolResources = new ToolResources()
+                    {
+                        FileSearch = new FileSearchToolResources()
+                        {
+                            VectorStoreIds = [vectorStoreResult.Value.Id]
+                        }
+                    }
+                });
+                var thread = threadResult.Value;
+                var vectorStore = vectorStoreResult.Value;
+
                 result[OpenAIAgentCapabilityParameterNames.AssistantThreadId] = thread.Id;
+                result[OpenAIAgentCapabilityParameterNames.AssistantVectorStoreId] = vectorStore.Id;
             }
+
+            var fileId = GetParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.AssistantFileId, string.Empty);
 
             if (createAssistantFile)
             {
@@ -276,12 +303,44 @@ namespace FoundationaLLM.Gateway.Services
                 var attachmentObjectId = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.AttachmentObjectId);
                 var attachmentFile = await _attachmentResourceProvider.GetResource<AttachmentFile>(attachmentObjectId, userIdentity, new ResourceProviderOptions { LoadContent = true });
 
-                var response = await fileClient.UploadFileAsync(
+                var fileResult = await fileClient.UploadFileAsync(
                     new MemoryStream(attachmentFile.Content!),
                     attachmentFile.OriginalFileName,
                     FileUploadPurpose.Assistants);
-                var file = response.Value;
+                var file = fileResult.Value;
                 result[OpenAIAgentCapabilityParameterNames.AssistantFileId] = file.Id;
+                fileId = file.Id;
+            }
+
+            if (addAssistantFileToVectorStore)
+            {
+                var vectorStoreClient = azureOpenAIClient.GetVectorStoreClient();
+                var vectorStoreId = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.AssistantVectorStoreId);
+
+                var vectorizationResult = await vectorStoreClient.AddFileToVectorStoreAsync(vectorStoreId, fileId);
+
+                var startTime = DateTimeOffset.UtcNow;
+                _logger.LogInformation("Started vectorization of file {FileId} in vector store {VectorStoreId}.", fileId, vectorStoreId);
+
+                var pollingCount = 0;
+                var maxPollingCountExceeded = false;
+                while (vectorizationResult.Value.Status == VectorStoreFileAssociationStatus.InProgress)
+                {
+                    await Task.Delay(1000);
+                    if (pollingCount++ > 1800)
+                    {
+                        // Will not wait more than 30 minutes for the vectorization to complete.
+                        maxPollingCountExceeded = true;
+                        break;
+                    }
+                    vectorizationResult = await vectorStoreClient.GetFileAssociationAsync(vectorStoreId, fileId);
+                }
+
+                if (maxPollingCountExceeded)
+                    _logger.LogWarning("The maximum polling count was exceeded during the vectorization of file {FileId} in vector store {VectorStoreId}.", fileId, vectorStoreId);
+                else
+                    _logger.LogInformation("Completed vectorization of file {FileId} in vector store {VectorStoreId} in {TotalSeconds}.",
+                        fileId, vectorStoreId, (DateTimeOffset.UtcNow - startTime).TotalSeconds);
             }
 
             return result;

@@ -34,7 +34,8 @@ namespace FoundationaLLM
                         {
                             policy.AllowAnyOrigin();
                             policy.WithHeaders("DNT", "Keep-Alive", "User-Agent", "X-Requested-With", "If-Modified-Since",
-                                "Cache-Control", "Content-Type", "Range", "Authorization");
+                                "Cache-Control", "Content-Type", "Range", "Authorization", "X-User-Identity",
+                                "Access-Control-Request-Headers");
                             policy.AllowAnyMethod();
                         });
                 });

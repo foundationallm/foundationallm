@@ -1,8 +1,8 @@
 #!/usr/bin/pwsh
 <#
 .SYNOPSIS
-    Generates azd environment values to be used with the FLLM deployment. 
-    This script should be run after running: 
+    Generates azd environment values to be used with the FLLM deployment.
+    This script should be run after running:
     ./deploy/common/scripts/Create-FllmEntraApps.ps1 script to create your FLLM EntraID apps.
     ./deploy/common/scripts/Create-FllmAdminGroup.ps1 script to create your FLLM-Admins Group.
 
@@ -12,25 +12,25 @@
     using the azd env command.
 
     For more information on setting up the FLLM EntraID apps: https://docs.foundationallm.ai/deployment/authentication/index.html
-    
+
 .PARAMETER tenantID
    The Azure EntraID tenant ID.
-   
+
 .PARAMETER adminGroupName
    The name of the admin group. Default is 'FLLM-Admins'.
-   
+
 .PARAMETER authAppName
    The name of the Authorization API app. Default is 'FoundationaLLM-Authorization-API'.
-   
+
 .PARAMETER coreAppName
    The name of the Core API app. Default is 'FoundationaLLM-Core-API'.
-   
+
 .PARAMETER coreClientAppName
    The name of the Core Portal app. Default is 'FoundationaLLM-Core-Portal'.
-   
+
 .PARAMETER mgmtAppName
    The name of the Management API app. Default is 'FoundationaLLM-Management-API'.
-   
+
 .PARAMETER mgmtClientAppName
    The name of the Management Portal app. Default is 'FoundationaLLM-Management-Portal'.
 
@@ -50,62 +50,101 @@ from the ./foundationallm/deploy/standard directory:
     This script must be run from the ./deploy/quikstart or the .deploy/standard directory after
     created the azd environment using the azd env create command. The values will be populated in the .env file
     located in the hidden .azure directory in the root of the project.
-    
+
     Example location:
     ./deploy/standard/.azure/[environment_name]/.env
 #>
 
 Param(
-	[parameter(Mandatory = $true)][string]$tenantID, # Azure EntraID Tenant
-	[string]$adminGroupName = 'FLLM-Admins',
-	[string]$authAppName = 'FoundationaLLM-Authorization-API',
-	[string]$coreAppName = 'FoundationaLLM-Core-API',
-	[string]$coreClientAppName = 'FoundationaLLM-Core-Portal',
-	[string]$mgmtAppName = 'FoundationaLLM-Management-API',
-	[string]$mgmtClientAppName = 'FoundationaLLM-Management-Portal'
+   [parameter(Mandatory = $true, HelpMessage = "Azure EntraID Tenant")][string]$tenantID,
+   [string]$adminGroupName = 'FLLM-Admins',
+   [string]$authAppName = 'FoundationaLLM-Authorization-API',
+   [string]$coreAppName = 'FoundationaLLM-Core-API',
+   [string]$coreClientAppName = 'FoundationaLLM-Core-Portal',
+   [string]$mgmtAppName = 'FoundationaLLM-Management-API',
+   [string]$mgmtClientAppName = 'FoundationaLLM-Management-Portal'
 )
 
-# Set Debugging and Error Handling
+$TranscriptName = $($MyInvocation.MyCommand.Name) -replace ".ps1", ".transcript.txt"
+Start-Transcript -path .\$TranscriptName -Force
+
 Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable)
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
+$ScriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Path
+. $ScriptDirectory/Function-Library.ps1
+
+
 # Set the environment values
 Write-Host -ForegroundColor Blue "Please wait while gathering azd environment values for the ${tenantID} EntraID Tenant."
 
-$adminGroupId = (az ad group list --filter "displayName eq '$adminGroupName'" --query "[0].id" --output tsv)
-$authAppId = (az ad app list --display-name "$authAppName" --query '[].appId' --output tsv) 
-$coreAppId = (az ad app list --display-name "$coreAppName" --query '[].appId' --output tsv)
-$coreClientAppId = (az ad app list --display-name "$coreClientAppName" --query '[].appId' --output tsv) 
-$mgmtAppId = (az ad app list --display-name "$mgmtAppName" --query '[].appId' --output tsv) 
-$mgmtClientAppId = (az ad app list --display-name "$mgmtClientAppName" --query '[].appId' --output tsv)
+$adminGroupId = $null
+Invoke-CliCommand "Get Admin Group ID" {
+   $script:adminGroupId = az ad group list `
+      --filter "displayName eq '$adminGroupName'" `
+      --query "[0].id" `
+      --output tsv
+}
 
-$values = @(
-	"ENTRA_AUTH_API_CLIENT_ID=$authAppId",
-	"ENTRA_AUTH_API_INSTANCE=https://login.microsoftonline.com/",
-	"ENTRA_AUTH_API_SCOPES=api://FoundationaLLM-Authorization",
-	"ENTRA_CHAT_UI_CLIENT_ID=$coreClientAppId",
-	"ENTRA_CHAT_UI_SCOPES=api://FoundationaLLM-Core/Data.Read",
-	"ENTRA_CORE_API_CLIENT_ID=$coreAppId",
-	"ENTRA_CORE_API_SCOPES=Data.Read",
-	"ENTRA_MANAGEMENT_API_CLIENT_ID=$mgmtAppId",
-	"ENTRA_MANAGEMENT_API_SCOPES=Data.Manage",
-	"ENTRA_MANAGEMENT_UI_CLIENT_ID=$mgmtClientAppId",
-	"ENTRA_MANAGEMENT_UI_SCOPES=api://FoundationaLLM-Management/Data.Manage",
-	"ADMIN_GROUP_OBJECT_ID=$adminGroupId"
-)
+$appIds = @{}
+$appNames = @{
+   auth             = $authAppName
+   coreapi          = $coreAppName
+   coreclient       = $coreClientAppName
+   managmentapi     = $mgmtAppName
+   managementclient = $mgmtClientAppName
+}
+
+foreach ($app in $appNames.GetEnumerator()) {
+   $appId = $null
+   Invoke-CliCommand "Get App ID for $($app.Value)" {
+      $script:appId = az ad app list `
+         --display-name "$($app.Value)" `
+         --query '[].appId' `
+         --output tsv
+   }
+   $appIds[$app.Key] = $appId
+}
+
+$values = @{
+   "ADMIN_GROUP_OBJECT_ID"          = $adminGroupId
+   "ENTRA_AUTH_API_CLIENT_ID"       = $appIds["auth"]
+   "ENTRA_AUTH_API_INSTANCE"        = "https://login.microsoftonline.com/"
+   "ENTRA_AUTH_API_SCOPES"          = "api://FoundationaLLM-Authorization"
+   "ENTRA_CHAT_UI_CLIENT_ID"        = $appIds["coreclient"]
+   "ENTRA_CHAT_UI_SCOPES"           = "api://FoundationaLLM-Core/Data.Read"
+   "ENTRA_CORE_API_CLIENT_ID"       = $appIds["coreapi"]
+   "ENTRA_CORE_API_SCOPES"          = "Data.Read"
+   "ENTRA_MANAGEMENT_API_CLIENT_ID" = $appIds["managmentapi"]
+   "ENTRA_MANAGEMENT_API_SCOPES"    = "Data.Manage"
+   "ENTRA_MANAGEMENT_UI_CLIENT_ID"  = $appIds["managementclient"]
+   "ENTRA_MANAGEMENT_UI_SCOPES"     = "api://FoundationaLLM-Management/Data.Manage"
+}
 
 # Show azd environments
-Write-Host -ForegroundColor Blue "Your azd environments are listed. Environment values updated for default environment file located ./deploy/[FLLM-Deployment-Type]/.azure/[environment_name]/.env file."
-azd env list
+$message = @"
+Your azd environments are listed. Environment values updated for the default
+environment file located in the .azure directory.
+"@
+Write-Host -ForegroundColor Blue $message
+Invoke-CliCommand "azd env list" {
+   azd env list
+}
 
 # Write AZD environment values
 Write-Host -ForegroundColor Yellow "Setting azd environment values for the ${tenantID} EntraID Tenant."
-foreach ($value in $values) {
-	$key, $val = $value -split '=', 2
-	Write-Host -ForegroundColor Yellow  "Setting $key to $val"
-	azd env set $key $val
+foreach ($value in $values.GetEnumerator()) {
+   Write-Host -ForegroundColor Yellow  "Setting $($value.Name) to $($value.Value)"
+   azd env set $value.Name $value.Value
 }
-Write-Host -ForegroundColor Green "Environment values updated for default environment file located ./deploy/[FLLM-Deployment-Type]/.azure/[environment_name]/.env"
-Write-Host -ForegroundColor Blue "Here are your current environment values:"
-azd env get-values
+
+$message = @"
+Environment values updated for the default environment file located in the
+.azure directory.
+Here are your current environment values:
+"@
+Write-Host -ForegroundColor Blue $message
+Invoke-CliCommand "azd env get-values" {
+   azd env get-values
+}

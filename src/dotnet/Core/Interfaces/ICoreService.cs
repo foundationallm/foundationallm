@@ -110,12 +110,13 @@ public interface ICoreService
     /// Uploads an attachment.
     /// </summary>
     /// <param name="instanceId">The FoundationaLLM instance id.</param>
+    /// <param name="sessionId">The session id from which the attachment is uploaded.</param>
     /// <param name="attachmentFile">The <see cref="AttachmentFile"/> object containing the attachment file data.</param>
     /// <param name="agentName">The name of the agent.</param>
     /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
     /// <returns>A <see cref="ResourceProviderUpsertResult"/> object with the FoundationaLLM.Attachment resource provider object id.</returns>
     Task<ResourceProviderUpsertResult> UploadAttachment(
-        string instanceId, AttachmentFile attachmentFile, string agentName, UnifiedUserIdentity userIdentity);
+        string instanceId, string sessionId, AttachmentFile attachmentFile, string agentName, UnifiedUserIdentity userIdentity);
 
     /// <summary>
     /// Downloads an attachment.

@@ -14,17 +14,17 @@
 		"lint-fix": "prettier --write --list-different . && npm run lint:js --fix"
 	},
 	"devDependencies": {
-		"@nuxt/devtools": "^1.3.9",
-		"@nuxt/eslint-config": "^0.2.0",
+		"@nuxt/devtools": "^1.4.1",
+		"@nuxt/eslint-config": "^0.5.3",
 		"@nuxtjs/eslint-config-typescript": "^12.1.0",
 		"@nuxtjs/eslint-module": "^4.1.0",
 		"eslint": "^8.57.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-prettier": "^5.1.3",
-		"nuxt": "^3.11.1",
+		"nuxt": "^3.13.0",
 		"prettier": "^3.2.5",
 		"sass": "^1.74.1",
-		"vue": "^3.4.21",
+		"vue": "^3.4.38",
 		"vue-router": "^4.3.0"
 	},
 	"dependencies": {
@@ -33,16 +33,20 @@
 		"@pinia/nuxt": "^0.5.1",
 		"dompurify": "^3.1.6",
 		"file-icons-js": "github:websemantics/file-icons-js",
+		"floating-vue": "^2.0.0",
 		"highlight.js": "^11.10.0",
 		"javascript-time-ago": "^2.5.9",
 		"katex": "^0.16.11",
-		"marked": "^13.0.2",
+		"marked": "^14.1.0",
 		"marked-highlight": "^2.1.3",
 		"mitt": "^3.0.1",
 		"pinia": "^2.1.7",
-		"primeicons": "^6.0.1",
-		"primevue": "^3.35.0",
+		"primeicons": "^7.0.0",
+		"primevue": "^3.53.0",
 		"truncate-html": "^1.1.1",
 		"vue-mention": "^2.0.0-alpha.3"
-	}
+	},
+	"optionalDependencies": {
+		"@rollup/rollup-linux-x64-gnu": "4.21.0"  
+	 }
 }

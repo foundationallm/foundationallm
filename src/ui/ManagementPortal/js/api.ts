@@ -37,13 +37,18 @@ export default {
 		this.instanceId = instanceId;
 	},
 
-	bearerToken: null,
+	/**
+	 * Retrieves the bearer token for authentication.
+	 * If the bearer token is already available, it will be returned immediately.
+	 * Otherwise, it will acquire a new bearer token using the MSAL instance.
+	 * @returns The bearer token.
+	 */
 	async getBearerToken() {
-		if (this.bearerToken) return this.bearerToken;
-
-		const token = await useNuxtApp().$authStore.getToken();
-		this.bearerToken = token.accessToken;
-		return this.bearerToken;
+		// When the scope is specific on aquireTokenSilent this seems to be instant
+		// otherwise we would have to store the token and check if it has expired here
+		// to determine if we need to fetch it again
+		const token = await useNuxtApp().$authStore.getApiToken();
+		return token.accessToken;
 	},
 
 	async fetch(url: string, opts: any = {}) {

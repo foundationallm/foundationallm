@@ -2,6 +2,7 @@
 Class: OpenAIAssistantsApiService
 Description: Integration with the OpenAI Assistants API.
 """
+import re
 from typing import List, Union
 from openai import AsyncAzureOpenAI, AzureOpenAI
 from openai.pagination import AsyncCursorPage, SyncCursorPage
@@ -259,10 +260,12 @@ class OpenAIAssistantsApiService:
             The content items within the message.
         """
         ret_content = []
+        
         # for each content item in the message
         for ci in message.content:
                 match ci:
                     case TextContentBlock():
+                        citations = []
                         text_ci = OpenAITextMessageContentItem(
                             value=ci.text.value,
                             agent_capability_category = AgentCapabilityCategories.OPENAI_ASSISTANTS
@@ -279,14 +282,13 @@ class OpenAIAssistantsApiService:
                                     )
                                     text_ci.annotations.append(file_an)
                                 case FileCitationAnnotation():
-                                    file_cit = OpenAIFilePathMessageContentItem(
-                                        file_id=annotation.file_citation.file_id,
-                                        start_index=annotation.start_index,
-                                        end_index=annotation.end_index,
-                                        text=annotation.text,
-                                        agent_capability_category = AgentCapabilityCategories.OPENAI_ASSISTANTS
-                                    )
-                                    text_ci.annotations.append(file_cit)
+                                    # collect citations for string replacement
+                                    citations.append(annotation.text)
+                        if citations:
+                            # replace any instance of a citation string in the text content item with an empty string                           
+                            pattern = re.compile('|'.join(map(re.escape, citations)))                            
+                            text_ci.value = pattern.sub('', text_ci.value)
+                            
                         ret_content.append(text_ci)
                     case ImageFileContentBlock():
                         ci_img = OpenAIImageFileMessageContentItem(

@@ -5,30 +5,36 @@
 			<img
 				v-if="$appConfigStore.logoUrl !== ''"
 				:src="$filters.enforceLeadingSlash($appConfigStore.logoUrl)"
-				alt="Logo"
+				:alt="$appConfigStore.logoText"
 			/>
 			<span v-else>{{ $appConfigStore.logoText }}</span>
-			<Button
-				:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
-				size="small"
-				severity="secondary"
-				class="secondary-button"
-				aria-label="Toggle sidebar"
-				@click="$appStore.toggleSidebar"
-			/>
+			<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+				<Button
+					:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
+					size="small"
+					severity="secondary"
+					class="secondary-button"
+					aria-label="Toggle sidebar"
+					@click="$appStore.toggleSidebar"
+				/>
+				<template #popper>Toggle sidebar</template>
+			</VTooltip>
 		</div>
 		<div class="chat-sidebar__section-header">
-			<span>Chats</span>
+			<h2 class="chat-sidebar__section-header__text">Chats</h2>
 			<!-- <button @click="handleAddSession">
 				<span class="text">+</span>
 			</button> -->
-			<Button
-				icon="pi pi-plus"
-				text
-				severity="secondary"
-				aria-label="Add new chat"
-				@click="handleAddSession"
-			/>
+			<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+				<Button
+					icon="pi pi-plus"
+					text
+					severity="secondary"
+					aria-label="Add new chat"
+					@click="handleAddSession"
+				/>
+				<template #popper>Add new chat</template>
+			</VTooltip>
 		</div>
 
 		<!-- Chats -->
@@ -40,35 +46,44 @@
 				class="chat-sidebar__chat"
 				@click="handleSessionSelected(session)"
 				@keydown.enter="handleSessionSelected(session)"
-				tabindex="0"
 			>
 				<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
 					<!-- Chat name -->
-					<span v-tooltip="{ value: session.name }" class="chat__name">{{ session.name }}</span>
+
+					<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+						<span class="chat__name" tabindex="0">{{ session.name }}</span>
+						<template #popper>
+							{{ session.name }}
+						</template>
+					</VTooltip>
 
 					<!-- Chat icons -->
 					<span v-if="currentSession?.id === session.id" class="chat__icons">
 						<!-- Rename session -->
-						<Button
-							v-tooltip="'Rename chat session'"
-							icon="pi pi-pencil"
-							size="small"
-							severity="secondary"
-							text
-							aria-label="Rename chat session"
-							@click.stop="openRenameModal(session)"
-						/>
+						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+							<Button
+								icon="pi pi-pencil"
+								size="small"
+								severity="secondary"
+								text
+								aria-label="Rename chat session"
+								@click.stop="openRenameModal(session)"
+							/>
+							<template #popper> Rename chat session </template>
+						</VTooltip>
 
 						<!-- Delete session -->
-						<Button
-							v-tooltip="'Delete chat session'"
-							icon="pi pi-trash"
-							size="small"
-							severity="danger"
-							text
-							aria-label="Delete chat session"
-							@click.stop="sessionToDelete = session"
-						/>
+						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+							<Button
+								icon="pi pi-trash"
+								size="small"
+								severity="danger"
+								text
+								aria-label="Delete chat session"
+								@click.stop="sessionToDelete = session"
+							/>
+							<template #popper> Delete chat session </template>
+						</VTooltip>
 					</span>
 				</div>
 			</div>
@@ -92,21 +107,21 @@
 
 		<!-- Rename session dialog -->
 		<Dialog
-			class="sidebar-dialog"
-			:visible="sessionToRename !== null"
 			v-if="sessionToRename !== null"
-			modal
+			v-focustrap
+			:visible="sessionToRename !== null"
 			:header="`Rename Chat ${sessionToRename?.name}`"
 			:closable="false"
-			v-focustrap
+			class="sidebar-dialog"
+			modal
 		>
 			<InputText
 				v-model="newSessionName"
+				:style="{ width: '100%' }"
 				type="text"
 				placeholder="New chat name"
-				:style="{ width: '100%' }"
-				@keydown="renameSessionInputKeydown"
 				autofocus
+				@keydown="renameSessionInputKeydown"
 			></InputText>
 			<template #footer>
 				<Button label="Cancel" text @click="closeRenameModal" />
@@ -116,24 +131,37 @@
 
 		<!-- Delete session dialog -->
 		<Dialog
-			class="sidebar-dialog"
-			:visible="sessionToDelete !== null"
 			v-if="sessionToDelete !== null"
+			v-focustrap
+			:visible="sessionToDelete !== null"
+			:closable="false"
+			class="sidebar-dialog"
 			modal
 			header="Delete a Chat"
-			:closable="false"
 			@keydown="deleteSessionKeydown"
-			v-focustrap
 		>
 			<div v-if="deleteProcessing" class="delete-dialog-content">
-				<i class="pi pi-spin pi-spinner" style="font-size: 2rem;"></i>
+				<div role="status">
+					<i
+						class="pi pi-spin pi-spinner"
+						style="font-size: 2rem"
+						role="img"
+						aria-label="Loading"
+					></i>
+				</div>
 			</div>
 			<div v-else>
 				<p>Do you want to delete the chat "{{ sessionToDelete.name }}" ?</p>
 			</div>
 			<template #footer>
-				<Button label="Cancel" text @click="sessionToDelete = null" :disabled="deleteProcessing" />
-				<Button label="Delete" severity="danger" @click="handleDeleteSession" autofocus :disabled="deleteProcessing" />
+				<Button label="Cancel" text :disabled="deleteProcessing" @click="sessionToDelete = null" />
+				<Button
+					label="Delete"
+					severity="danger"
+					autofocus
+					:disabled="deleteProcessing"
+					@click="handleDeleteSession"
+				/>
 			</template>
 		</Dialog>
 	</div>
@@ -269,6 +297,11 @@ export default {
 	font-weight: 600;
 }
 
+.chat-sidebar__section-header__text {
+	font-size: 0.875rem;
+	font-weight: 600;
+}
+
 .chat-sidebar__section-header--mobile {
 	display: none;
 }
@@ -294,6 +327,8 @@ export default {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	font-size: 0.8125rem;
+	font-weight: 400;
 }
 
 .chat__icons {
@@ -386,9 +421,9 @@ export default {
 }
 
 .delete-dialog-content {
-	display: flex; 
-	justify-content: 
-	center; padding: 20px 150px;
+	display: flex;
+	justify-content: center;
+	padding: 20px 150px;
 }
 
 @media only screen and (max-width: 950px) {

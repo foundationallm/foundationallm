@@ -22,7 +22,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Run versioning script
-      run: ./versioning.sh
+      run: bash ./versioning.sh
       id: versioning
 
     - name: Build CoreClient

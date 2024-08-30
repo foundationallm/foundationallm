@@ -1,17 +1,17 @@
 import { defineStore } from 'pinia';
 import { useAppConfigStore } from './appConfigStore';
 import { useAuthStore } from './authStore';
-import type { 
+import type {
 	Session,
 	ChatSessionProperties,
 	Message,
 	Agent,
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
-	ResourceProviderDeleteResult,
+	// ResourceProviderDeleteResult,
 	ResourceProviderDeleteResults,
 	Attachment,
-	MessageContent
+	MessageContent,
 } from '@/js/types';
 import api from '@/js/api';
 import eventBus from '@/js/eventBus';
@@ -61,15 +61,18 @@ export const useAppStore = defineStore('app', {
 		getDefaultChatSessionProperties(): ChatSessionProperties {
 			const now = new Date();
 			// Using the 'sv-SE' locale since it uses the 'YYY-MM-DD' format.
-			const formattedNow = now.toLocaleString('sv-SE', {
-			year: 'numeric',
-			month: '2-digit',
-			day: '2-digit',
-			hour: '2-digit',
-			minute: '2-digit',
-			second: '2-digit',
-			hour12: false,
-			}).replace(' ', 'T').replace('T', ' ');
+			const formattedNow = now
+				.toLocaleString('sv-SE', {
+					year: 'numeric',
+					month: '2-digit',
+					day: '2-digit',
+					hour: '2-digit',
+					minute: '2-digit',
+					second: '2-digit',
+					hour12: false,
+				})
+				.replace(' ', 'T')
+				.replace('T', ' ');
 			return {
 				name: formattedNow,
 			};
@@ -146,23 +149,21 @@ export const useAppStore = defineStore('app', {
 		},
 
 		removeSession(sessionId: string) {
-			this.sessions = this.sessions.filter(
-				(session: Session) => session.id !== sessionId
-			);
+			this.sessions = this.sessions.filter((session: Session) => session.id !== sessionId);
 		},
 
 		initializeMessageContent(content: MessageContent) {
 			return reactive({
-			  ...content,
-			  blobUrl: '',
-			  loading: true,
-			  error: false
+				...content,
+				blobUrl: '',
+				loading: true,
+				error: false,
 			});
-		  },
+		},
 
 		async getMessages() {
 			const data = await api.getMessages(this.currentSession.id);
-			this.currentMessages = data.map(message => ({
+			this.currentMessages = data.map((message) => ({
 				...message,
 				content: message.content ? message.content.map(this.initializeMessageContent) : [],
 			}));
@@ -237,7 +238,7 @@ export const useAppStore = defineStore('app', {
 				tokens: 0,
 				type: 'Message',
 				vector: [],
-				attachmentDetails: attachmentDetails,
+				attachmentDetails,
 			};
 			this.currentMessages.push(tempUserMessage);
 
@@ -277,7 +278,9 @@ export const useAppStore = defineStore('app', {
 				);
 				await this.getMessages();
 				// Get rid of the attachments that were just sent.
-				this.attachments = this.attachments.filter((attachment) => { return !relevantAttachments.includes(attachment) });
+				this.attachments = this.attachments.filter((attachment) => {
+					return !relevantAttachments.includes(attachment);
+				});
 			}
 		},
 
@@ -348,10 +351,20 @@ export const useAppStore = defineStore('app', {
 				throw new Error('No agent selected.');
 			}
 
-			const upsertResult = await api.uploadAttachment(file, agent.name, progressCallback) as ResourceProviderUpsertResult;
+			const upsertResult = (await api.uploadAttachment(
+				file,
+				sessionId,
+				agent.name,
+				progressCallback,
+			)) as ResourceProviderUpsertResult;
 			const fileName = file.get('file')?.name;
 			const contentType = file.get('file')?.type;
-			const newAttachment: Attachment = { id: upsertResult.objectId, fileName, sessionId, contentType };
+			const newAttachment: Attachment = {
+				id: upsertResult.objectId,
+				fileName,
+				sessionId,
+				contentType,
+			};
 
 			this.attachments.push(newAttachment);
 
@@ -359,7 +372,9 @@ export const useAppStore = defineStore('app', {
 		},
 
 		async deleteAttachment(attachment: Attachment) {
-			const deleteResults: ResourceProviderDeleteResults = await api.deleteAttachments([attachment.id]);
+			const deleteResults: ResourceProviderDeleteResults = await api.deleteAttachments([
+				attachment.id,
+			]);
 			Object.entries(deleteResults).forEach(([key, value]) => {
 				if (key === attachment.id) {
 					if (value.deleted) {
@@ -369,6 +384,10 @@ export const useAppStore = defineStore('app', {
 					}
 				}
 			});
+		},
+
+		async getVirtualUser() {
+			return await api.getVirtualUser();
 		},
 	},
 });

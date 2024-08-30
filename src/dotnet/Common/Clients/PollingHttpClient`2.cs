@@ -133,7 +133,7 @@ namespace FoundationaLLM.Common.Clients
                     }
                     await Task.Delay(currentPollingInterval, cancellationToken);
                     // Exponential backoff
-                    currentPollingInterval = TimeSpan.FromSeconds(currentPollingInterval.TotalSeconds * 2);
+                    currentPollingInterval = TimeSpan.FromSeconds(currentPollingInterval.TotalSeconds);
                 }
             }
             catch (Exception ex)

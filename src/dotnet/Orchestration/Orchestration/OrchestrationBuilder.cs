@@ -17,6 +17,7 @@ using FoundationaLLM.Orchestration.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Net;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FoundationaLLM.Orchestration.Core.Orchestration
 {
@@ -67,7 +68,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             if (result.Agent == null) return null;
 
-            await EnsureAgentCapabilities(
+            var vectorStoreId = await EnsureAgentCapabilities(
                 instanceId,
                 result.Agent,
                 originalRequest.SessionId!,
@@ -91,8 +92,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     callContext,
                     orchestrationService,
                     loggerFactory.CreateLogger<OrchestrationBase>(),
+                    serviceProvider.GetRequiredService<IHttpClientFactoryService>(),
                     resourceProviderServices,
-                    result.DataSourceAccessDenied);
+                    result.DataSourceAccessDenied,
+                    vectorStoreId);
 
                 return kmOrchestration;
             }
@@ -223,7 +226,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             return (agentBase, explodedObjects, false);
         }
 
-        private static async Task EnsureAgentCapabilities(
+        private static async Task<string?> EnsureAgentCapabilities(
             string instanceId,
             AgentBase agent,
             string sessionId,
@@ -235,6 +238,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_AzureOpenAI, out var azureOpenAIResourceProvider))
                 throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_AzureOpenAI} was not loaded.");
 
+            string? vectorStoreId = null;
             var prompt = explodedObjects[agent.PromptObjectId!] as MultipartPrompt;
             var aiModel = explodedObjects[agent.AIModelObjectId!] as AIModelBase;
             var apiEndpointConfiguration = explodedObjects[aiModel!.EndpointObjectId!] as APIEndpointConfiguration;
@@ -277,6 +281,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                     if (!string.IsNullOrWhiteSpace(result.NewOpenAIAssistantThreadId))
                         explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantThreadId] = result.NewOpenAIAssistantThreadId;
+
+                    vectorStoreId = result.NewOpenAIAssistantVectorStoreId;
                 }
                 else
                 {
@@ -312,13 +318,18 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         if (!string.IsNullOrWhiteSpace(result.NewOpenAIAssistantThreadId))
                             explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantThreadId] =
                                 result.NewOpenAIAssistantThreadId;
+
+                        vectorStoreId = result.NewOpenAIAssistantVectorStoreId;
                     }
                     else
                     {
                         explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantThreadId] = assistantConversation.OpenAIThreadId;
+                        vectorStoreId = assistantConversation.OpenAIVectorStoreId;
                     }
                 }
             }
+
+            return vectorStoreId;
         }
     }
 }

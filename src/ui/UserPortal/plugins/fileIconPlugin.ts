@@ -4,7 +4,7 @@ import 'file-icons-js/css/style.css';
 
 export default defineNuxtPlugin(() => {
 	const getFileIconClass = (fileName: string, useColorVersion: boolean = false) => {
-		var iconClass;
+		let iconClass;
 		if (useColorVersion) {
 			iconClass = getClassWithColor(fileName.toLowerCase());
 		} else {

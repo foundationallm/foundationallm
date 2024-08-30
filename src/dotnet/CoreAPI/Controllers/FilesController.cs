@@ -47,11 +47,12 @@ namespace FoundationaLLM.Core.API.Controllers
         /// Uploads an attachment.
         /// </summary>
         /// <param name="instanceId">The instance ID.</param>
+        /// <param name="sessionId">The session ID from which the file is uploaded.</param>
         /// <param name="agentName">The agent name.</param>
         /// <param name="file">The file sent with the HTTP request.</param>
         /// <returns></returns>
         [HttpPost("upload")]
-        public async Task<IActionResult> Upload(string instanceId, string agentName, IFormFile file)
+        public async Task<IActionResult> Upload(string instanceId, string sessionId, string agentName, IFormFile file)
         {
             if (file == null || file.Length == 0)
                 return BadRequest("File not selected.");
@@ -68,6 +69,7 @@ namespace FoundationaLLM.Core.API.Controllers
             return new OkObjectResult(
                 await _coreService.UploadAttachment(
                     instanceId,
+                    sessionId,
                     new AttachmentFile
                     {
                         Name = name,

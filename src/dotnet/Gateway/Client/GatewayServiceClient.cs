@@ -13,7 +13,7 @@ namespace FoundationaLLM.Gateway.Client
     public class GatewayServiceClient
     {
         private readonly HttpClient _gatewayAPIHttpClient;
-        private readonly ILogger<GatewayServiceClient> _logger;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// Creates a new instance of the Gateway API service.
@@ -22,7 +22,7 @@ namespace FoundationaLLM.Gateway.Client
         /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
         public GatewayServiceClient(
             HttpClient gatewayAPIHttpClient,
-            ILogger<GatewayServiceClient> logger)
+            ILogger logger)
         {
             _gatewayAPIHttpClient = gatewayAPIHttpClient;
             _logger = logger;
@@ -97,7 +97,7 @@ namespace FoundationaLLM.Gateway.Client
                 var responseContent = await response.Content.ReadAsStringAsync();
                 var responseObject = JsonSerializer.Deserialize<Dictionary<string, object>>(responseContent);
 
-                if (responseObject == null || responseObject.Count == 0)
+                if (responseObject == null)
                     throw new GatewayException("The Gatekeeper API returned an invalid response.");
 
                 return responseObject;

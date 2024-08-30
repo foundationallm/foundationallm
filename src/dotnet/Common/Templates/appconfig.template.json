@@ -183,6 +183,13 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions",
+            "value": "c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:Instance",
             "value": "https://login.microsoftonline.com/",
             "label": null,

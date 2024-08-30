@@ -1,6 +1,8 @@
 import { defineNuxtPlugin } from '#app';
-import { useAppConfigStore, useAuthStore, useAppStore } from '@/stores';
 import api from '@/js/api';
+import { useAppConfigStore } from '@/stores/appConfigStore';
+import { useAuthStore } from '@/stores/authStore';
+import { useAppStore } from '@/stores/appStore';
 
 export default defineNuxtPlugin(async (nuxtApp: any) => {
 	// Load config variables into the app config store

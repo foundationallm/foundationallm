@@ -7,12 +7,27 @@ import type {
 	CompletionRequest,
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
-	ResourceProviderDeleteResult,
-	ResourceProviderDeleteResults
+	// ResourceProviderDeleteResult,
+	ResourceProviderDeleteResults,
 } from '@/js/types';
 
 export default {
 	apiUrl: null as string | null,
+	virtualUser: null as string | null,
+
+	getVirtualUser() {
+		return this.virtualUser;
+	},
+
+	/**
+	 * Checks if the given email is valid.
+	 * @param email - The email to validate.
+	 * @returns True if the email is valid, false otherwise.
+	 */
+	isValidEmail(email: string): boolean {
+		const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		return emailPattern.test(email);
+	},
 
 	setApiUrl(url: string) {
 		// Set the api url and remove a trailing slash if there is one.
@@ -30,13 +45,12 @@ export default {
 	 * Otherwise, it will acquire a new bearer token using the MSAL instance.
 	 * @returns The bearer token.
 	 */
-	bearerToken: null as string | null,
 	async getBearerToken() {
-		if (this.bearerToken) return this.bearerToken;
-
-		const token = await useNuxtApp().$authStore.getToken();
-		this.bearerToken = token.accessToken;
-		return this.bearerToken;
+		// When the scope is specific on aquireTokenSilent this seems to be instant
+		// otherwise we would have to store the token and check if it has expired here
+		// to determine if we need to fetch it again
+		const token = await useNuxtApp().$authStore.getApiToken();
+		return token.accessToken;
 	},
 
 	/**
@@ -69,6 +83,22 @@ export default {
 
 		const bearerToken = await this.getBearerToken();
 		options.headers.Authorization = `Bearer ${bearerToken}`;
+
+		// Add X-USER-IDENTITY header if virtualUser is set.
+		if (!this.virtualUser) {
+			const urlParams = new URLSearchParams(window.location.search);
+			const virtualUser = urlParams.get('virtual_user');
+			this.virtualUser = virtualUser;
+		}
+		if (this.virtualUser && this.isValidEmail(this.virtualUser)) {
+			options.headers['X-USER-IDENTITY'] = JSON.stringify({
+				name: this.virtualUser,
+				user_name: this.virtualUser,
+				upn: this.virtualUser,
+				user_id: '00000000-0000-0000-0001-000000000001',
+				group_ids: ['00000000-0000-0000-0000-000000000001'],
+			});
+		}
 
 		try {
 			const response = await $fetch(url, options);
@@ -286,8 +316,15 @@ export default {
 	 * @param file The file formData to upload.
 	 * @returns The ObjectID of the uploaded attachment.
 	 */
-	async uploadAttachment(file: FormData, agentName: string, progressCallback: Function) {
-		const response: ResourceProviderUpsertResult = await new Promise(async (resolve, reject) => {
+	async uploadAttachment(
+		file: FormData,
+		sessionId: string,
+		agentName: string,
+		progressCallback: Function,
+	) {
+		const bearerToken = await this.getBearerToken();
+
+		const response: ResourceProviderUpsertResult = (await new Promise((resolve, reject) => {
 			const xhr = new XMLHttpRequest();
 
 			xhr.upload.onprogress = function (event) {
@@ -304,17 +341,20 @@ export default {
 				}
 			};
 
-			xhr.onerror = (error) => {
+			xhr.onerror = () => {
+				// eslint-disable-next-line prefer-promise-reject-errors
 				reject('Error during file upload.');
 			};
 
-			xhr.open('POST', `${this.apiUrl}/instances/${this.instanceId}/files/upload?agentName=${agentName}`, true);
+			xhr.open(
+				'POST',
+				`${this.apiUrl}/instances/${this.instanceId}/files/upload?sessionId=${sessionId}&agentName=${agentName}`,
+				true,
+			);
 
-			const bearerToken = await this.getBearerToken();
-			xhr.setRequestHeader("Authorization", `Bearer ${bearerToken}`);
-
+			xhr.setRequestHeader('Authorization', `Bearer ${bearerToken}`);
 			xhr.send(file);
-		}) as ResourceProviderUpsertResult;
+		})) as ResourceProviderUpsertResult;
 
 		return response;
 	},
@@ -325,11 +365,11 @@ export default {
 	 * @returns A promise that resolves to the delete results.
 	 */
 	async deleteAttachments(attachments: string[]) {
-		return await this.fetch(`/instances/${this.instanceId}/files/delete`, {
+		return (await this.fetch(`/instances/${this.instanceId}/files/delete`, {
 			method: 'POST',
 			body: JSON.stringify(attachments),
-		}) as ResourceProviderDeleteResults;
-	}
+		})) as ResourceProviderDeleteResults;
+	},
 };
 
 function formatError(error: any): string {
@@ -339,7 +379,7 @@ function formatError(error: any): string {
 		return Object.values(errors).flat().join(' ');
 	}
 	if (error.data) {
-		return error.data.message || error.data || 'An unknown error occurred';
+		return error.data.message || error.data.title || error.data || 'An unknown error occurred';
 	}
 	if (error.message) {
 		return error.message;

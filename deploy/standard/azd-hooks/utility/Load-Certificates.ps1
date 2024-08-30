@@ -3,7 +3,7 @@
 param(
     [parameter(Mandatory = $true)][array]$certificates,
     [parameter(Mandatory = $true)][string]$keyVaultName,
-    [parameter(Mandatory = $true)][string]$keyVaultResourceGroup
+    [parameter(Mandatory = $true)][string]$keyVaultResourceGroup # TODO remove unused parameter
 )
 
 Set-StrictMode -Version 3.0

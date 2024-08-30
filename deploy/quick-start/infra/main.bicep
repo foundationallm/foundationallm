@@ -611,11 +611,12 @@ module cosmosRoles './shared/sqlRoleAssignments.bicep' = [
   }
 ]
 
-module openAiRoles './shared/roleAssignments.bicep' = [
+module openAiRoles './shared/openAiRoleAssignments.bicep' = [
   for target in openAiRoleTargets: {
     scope: rg
     name: '${target}-openai-roles-${timestamp}'
     params: {
+      targetOpenAiName: openAiInstance.name
       principalId: acaServices[indexOf(serviceNames, target)].outputs.miPrincipalId
       roleDefinitionNames: [
         'Cognitive Services OpenAI User'
@@ -625,11 +626,12 @@ module openAiRoles './shared/roleAssignments.bicep' = [
   }
 ]
 
-module openAiContribRole './shared/roleAssignments.bicep' = [
+module openAiContribRole './shared/openAiRoleAssignments.bicep' = [
   for target in openAiContribRoleTargets: {
     scope: rg
     name: '${target}-openai-contrib-${timestamp}'
     params: {
+      targetOpenAiName: openAiInstance.name
       principalId: acaServices[indexOf(serviceNames, target)].outputs.miPrincipalId
       roleDefinitionNames: [
         'Cognitive Services OpenAI Contributor'

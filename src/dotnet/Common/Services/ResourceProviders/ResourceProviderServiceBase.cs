@@ -634,6 +634,13 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             return null;
         }
 
+        /// <summary>
+        /// Loads a resource based on its name.
+        /// </summary>
+        /// <typeparam name="T">The type of resource to load.</typeparam>
+        /// <param name="resourceName">The name of the resource.</param>
+        /// <returns>The loaded resource.</returns>
+        /// <exception cref="ResourceProviderException"></exception>
         protected async Task<T?> LoadResource<T>(string resourceName) where T : ResourceBase
         {
             try

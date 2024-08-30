@@ -19,11 +19,6 @@
 
 .NOTES
     - This script requires Certbot and the dns-azure plugin to be installed.
-    - The script assumes the existence of the following directories:
-        - ../config/certbot/config
-        - ../config/certbot/work
-        - ../config/certbot/log
-        - ../config/certbot/certs
     - The script generates certificates for the following subdomains:
         - api
         - management
@@ -41,27 +36,27 @@
 param(
     [parameter(Mandatory = $true)][string]$baseDomain,
     [parameter(Mandatory = $true)][string]$email,
-    [parameter(Mandatory = $false)][string]$subdomainPrefix=""
+    [parameter(Mandatory = $false)][string]$subdomainPrefix = ""
 )
 
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable, 2 to enable verbose)
 
-. ./utility/Invoke-AndRequireSuccess.ps1
+. ../utility/Invoke-AndRequireSuccess.ps1
 
-$basenames = @(
-    "api"
-    "management"
-    "management-api"
-    "www"
-)
+$basenames = @{
+    "api"            = "coreapi"
+    "management"     = "managementui"
+    "management-api" = "managementapi"
+    "www"            = "chatui"
+}
 
 $directories = @{
     "config" = "../config/certbot/config"
     "work"   = "../config/certbot/work"
     "log"    = "../config/certbot/log"
-    "certs"  = "../config/certbot/certs"
+    "certs"  = "../../certs"
 }
 
 foreach ($directory in $directories.GetEnumerator()) {
@@ -70,16 +65,16 @@ foreach ($directory in $directories.GetEnumerator()) {
     }
 }
 
-foreach ($basename in $basenames) {
+foreach ($basename in $basenames.GetEnumerator()) {
     # Domain Name
-    $hostname = @($subdomainPrefix, $basename) | Join-String -Separator "-"
+    $hostname = @($subdomainPrefix, $basename.Name) | Join-String -Separator "-"
     $fqdn = @($hostname, $baseDomain) | Join-String -Separator "."
 
     # File Paths
     $paths = @{
         "pemFullChain" = Join-Path $directories["config"] "live" $fqdn "fullchain.pem"
-        "pemPrivKey" = Join-Path $directories["config"] "live" $fqdn "privkey.pem"
-        "pfx" = Join-Path $directories["certs"] "${fqdn}.pfx"
+        "pemPrivKey"   = Join-Path $directories["config"] "live" $fqdn "privkey.pem"
+        "pfx"          = Join-Path $directories["certs"] $basename.Value "${fqdn}.pfx"
     }
 
     Invoke-AndRequireSuccess "Generate certificate for ${fqdn}" {

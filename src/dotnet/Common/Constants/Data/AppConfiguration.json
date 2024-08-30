@@ -393,6 +393,14 @@
 				"value": "true",
 				"content_type": "",
 				"first_version": "0.8.0"
+			},
+			{
+				"name": "AzureOpenAIAssistantsFileSearchFileExtensions",
+				"description": "The comma-separated list file extensions that are supported by the Azure OpenAI Assistants file search tool.",
+				"secret": "",
+				"value": "c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt",
+				"content_type": "",
+				"first_version": "0.8.0"
 			}
 		]
 	},

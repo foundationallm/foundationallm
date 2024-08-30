@@ -158,8 +158,11 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                     StatusCodes.Status400BadRequest);
             if (resourceFilter.ObjectIDs is {Count: > 0})
             {
+                var resourceNames = resourceFilter.ObjectIDs
+                    .Select(id => this.GetResourcePath(id, false).ResourceTypeInstances.Last().ResourceId!)
+                    .ToList();
                 var filteredReferences =
-                    await _resourceReferenceStore!.GetResourceReferences(r => !string.IsNullOrWhiteSpace(r.ObjectId) && resourceFilter.ObjectIDs.Contains(r.ObjectId));
+                    await _resourceReferenceStore!.GetResourceReferences(resourceNames);
 
                 return filteredReferences.Select(r => new AttachmentDetail
                 {

@@ -12,6 +12,7 @@
     "api_key_header_name": "X-API-KEY"
   },
   "url": "http://state-api/state",
+  "status_url": "http://state-api/state/status",
   "url_exceptions": [],
   "timeout_seconds": 60,
   "retry_strategy_name": "ExponentialBackoff",
