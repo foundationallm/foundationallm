@@ -67,23 +67,31 @@ namespace FoundationaLLM.Vectorization.Services.VectorizationServices
 
                 // do polling if there is a running operation
                 var handlerSuccess = true;
+                var hasFailed = false;
                 do
                 {
                     handlerSuccess = await stepHandler.Invoke(vectorizationRequest, state, userIdentity!, default).ConfigureAwait(false);
-                    //handlerSuccess is false if the step is still in progress, check for running operations
-                    if (!handlerSuccess && !vectorizationRequest.RunningOperations.Any(ro => ro.Key == step.Id))
+                    // handlerSuccess is false if the step is still in progress, check for running operations
+                    if (!handlerSuccess && !vectorizationRequest.RunningOperations.Any(ro => ro.Key == step.Id && !ro.Value.Complete))
+                    {
+                        hasFailed = true;
                         break;
-                    await Task.Delay(1000); //wait for 1 second between polling.
-                } while (vectorizationRequest.RunningOperations.Any(ro => ro.Key == step.Id && !ro.Value.Complete));
+                    }
+                                               
+                    await Task.Delay(1000); // wait for 1 second between polling.
+                } while (!handlerSuccess || vectorizationRequest.RunningOperations.Any(ro => ro.Key == step.Id && !ro.Value.Complete));
 
-                var steps = vectorizationRequest.MoveToNextStep();
+                if(!hasFailed)
+                {
+                    var steps = vectorizationRequest.MoveToNextStep();
 
-                if (!string.IsNullOrEmpty(steps.CurrentStep))
-                    _logger.LogInformation("The pipeline for request id {RequestId} was advanced from step [{PreviousStepName}] to step [{CurrentStepName}].",
-                        vectorizationRequest.Name, steps.PreviousStep, steps.CurrentStep);
-                else
-                    _logger.LogInformation("The pipeline for request id {RequestId} was advanced from step [{PreviousStepName}] to finalized state.",
-                       vectorizationRequest.Name, steps.PreviousStep);
+                    if (!string.IsNullOrEmpty(steps.CurrentStep))
+                        _logger.LogInformation("The pipeline for request id {RequestId} was advanced from step [{PreviousStepName}] to step [{CurrentStepName}].",
+                            vectorizationRequest.Name, steps.PreviousStep, steps.CurrentStep);
+                    else
+                        _logger.LogInformation("The pipeline for request id {RequestId} was advanced from step [{PreviousStepName}] to finalized state.",
+                           vectorizationRequest.Name, steps.PreviousStep);
+                }               
 
                 // save execution state
                 await _vectorizationStateService.SaveState(state).ConfigureAwait(false);

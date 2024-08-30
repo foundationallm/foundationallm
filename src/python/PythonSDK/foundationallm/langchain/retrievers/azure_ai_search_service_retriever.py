@@ -16,6 +16,7 @@ from azure.search.documents.models import VectorizedQuery
 from azure.identity import DefaultAzureCredential
 from foundationallm.models.orchestration import Citation
 from foundationallm.models.vectors import VectorDocument
+from foundationallm.services.gateway_text_embedding import GatewayTextEmbeddingService
 from .citation_retrieval_base import CitationRetrievalBase
 from foundationallm.models.agents import KnowledgeManagementIndexConfiguration
 
@@ -26,7 +27,8 @@ class AzureAISearchServiceRetriever(BaseRetriever, CitationRetrievalBase):
         config: Any -> Application configuration
         index_configurations: List[KnowledgeManagementIndexConfiguration]
             -> List of indexing profiles and associated API endpoint configurations
-        embedding_model: OpenAIEmbeddings -> OpenAI Embeddings model
+        gateway_text_embedding_service: GatewayTextEmbeddingService
+            -> Service for retrieving text embeddings
 
     Searches embedding and text fields in the index for the top_n most relevant documents.
 
@@ -43,15 +45,15 @@ class AzureAISearchServiceRetriever(BaseRetriever, CitationRetrievalBase):
     """
     config : Any
     index_configurations: List[KnowledgeManagementIndexConfiguration]
-    embedding_model: OpenAIEmbeddings
+    gateway_text_embedding_service: GatewayTextEmbeddingService
     search_results: Optional[VectorDocument] = [] # Tuple of document id and document
 
     def __get_embeddings(self, text: str) -> List[float]:
         """
         Returns embeddings vector for a given text.
         """
-        embedding = self.embedding_model.embed_query(text)
-        return embedding
+        embedding_response = self.gateway_text_embedding_service.get_embedding(text)
+        return embedding_response.embedding_vector
 
     def _get_relevant_documents(
         self, query: str, *, run_manager: CallbackManagerForRetrieverRun

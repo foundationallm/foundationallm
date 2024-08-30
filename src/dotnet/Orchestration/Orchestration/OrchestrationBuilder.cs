@@ -143,6 +143,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             var apiEndpointConfiguration = await configurationResourceProvider.HandleGet<APIEndpointConfiguration>(
                 aiModel.EndpointObjectId!,
                 currentUserIdentity);
+            var gatewayAPIEndpointConfiguration = await configurationResourceProvider.HandleGet<APIEndpointConfiguration>(
+                $"/{ConfigurationResourceTypeNames.APIEndpointConfigurations}/GatewayAPI",
+                currentUserIdentity);
 
             // Merge the model parameter overrides with the existing model parameter values from the AI model.
             if (modelParameterOverrides != null)
@@ -157,6 +160,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             explodedObjects[agentBase.PromptObjectId!] = prompt;
             explodedObjects[agentBase.AIModelObjectId!] = aiModel;
             explodedObjects[aiModel.EndpointObjectId!] = apiEndpointConfiguration;
+            explodedObjects[CompletionRequestObjectsKeys.GatewayAPIEndpointConfiguration] = gatewayAPIEndpointConfiguration;
 
             var allAgents = await agentResourceProvider.GetResources<AgentBase>(currentUserIdentity);
             var allAgentsDescriptions = allAgents

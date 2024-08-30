@@ -15,8 +15,7 @@ class AzureOpenAIEmbeddingProfile(EmbeddingProfileBase):
     """
     settings: Optional[dict] = None
     configuration_references: Optional[dict] = None
-    embedding_ai_model_object_id: Optional[str] = None
-
+    
     @staticmethod
     def from_object(obj: Any) -> Self:
 

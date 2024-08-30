@@ -14,7 +14,7 @@ from fastapi import (
     Response,
     status
 )
-from foundationallm.config import Configuration
+from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.operations import (
     LongRunningOperation,
     LongRunningOperationLogEntry,
@@ -141,9 +141,13 @@ async def create_completion_response(
                 status_message = 'Operation state changed to in progress.'
             )
 
+            # Create the user identity object from the x_user_identity header.
+            user_identity = UserIdentity.from_json(x_user_identity)
             # Create an orchestration manager to process the completion request.
             orchestration_manager = OrchestrationManager(
                 completion_request = completion_request,
+                instance_id = instance_id,
+                user_identity = user_identity,
                 configuration = configuration
             )
             # Await the completion response from the orchestration manager.

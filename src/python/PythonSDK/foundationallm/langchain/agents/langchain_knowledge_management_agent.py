@@ -2,11 +2,13 @@ from langchain_community.callbacks import get_openai_callback
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from langchain_core.output_parsers import StrOutputParser
+from foundationallm.config import UserIdentity
 from foundationallm.langchain.agents import LangChainAgentBase
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.retrievers import RetrieverFactory, CitationRetrievalBase
 from foundationallm.models.constants import AgentCapabilityCategories
 from foundationallm.models.orchestration import (
+    CompletionRequestObjectKeys,
     CompletionResponse
 )
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
@@ -23,11 +25,14 @@ from foundationallm.models.language_models import LanguageModelProvider
 from foundationallm.models.orchestration.openai_text_message_content_item import OpenAITextMessageContentItem
 from foundationallm.models.orchestration.operation_types import OperationTypes
 from foundationallm.models.resource_providers.vectorization import (
+    IndexingProfileSettingsKeys,
+    EmbeddingProfileSettingsKeys,
     AzureAISearchIndexingProfile,
     AzureOpenAIEmbeddingProfile
 )
 from foundationallm.models.services import OpenAIAssistantsAPIRequest
 from foundationallm.services import ImageAnalysisService, OpenAIAssistantsApiService
+from foundationallm.services.gateway_text_embedding import GatewayTextEmbeddingService
 from openai.types import CompletionUsage
 from openai import AzureOpenAI, AsyncAzureOpenAI
 
@@ -50,15 +55,21 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 request.objects[agent.vectorization.text_embedding_profile_object_id]
             )
             
-            # text_embedding_profile has embedding_ai_model_object_id
-            text_embedding_model = EmbeddingAIModel.from_object(
-                request.objects[text_embedding_profile.embedding_ai_model_object_id]
+            # text_embedding_profile has the embedding model name in Settings.
+            text_embedding_model_name = text_embedding_profile.settings.get(EmbeddingProfileSettingsKeys.EMBEDDING_MODEL_NAME)
+            
+            # objects dictionary has the gateway API endpoint configuration.
+            gateway_endpoint_configuration = APIEndpointConfiguration.from_object(
+                request.objects[CompletionRequestObjectKeys.GATEWAY_API_ENDPOINT_CONFIGURATION]
             )
             
-            # text_embedding_model has endpoint_object_id
-            embedding_endpoint_configuration = APIEndpointConfiguration.from_object(
-                request.objects[text_embedding_model.endpoint_object_id]
-            )
+            gateway_embedding_service = GatewayTextEmbeddingService(
+                instance_id= self.instance_id,
+                user_principal_name=self.user_identity,
+                gateway_api_endpoint_configuration=gateway_endpoint_configuration,
+                model_name = text_embedding_model_name,
+                config=self.config
+                )
             
             # array of objects containing the indexing profile and associated endpoint configuration
             index_configurations = []
@@ -69,10 +80,9 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     indexing_profile = AzureAISearchIndexingProfile.from_object(
                             request.objects[profile_id]
                         )
-
-                    # indexing profile has indexing_api_endpoint_configuration_object_id
+                    # indexing profile has indexing_api_endpoint_configuration_object_id in Settings.                    
                     indexing_api_endpoint_configuration = APIEndpointConfiguration.from_object(
-                        request.objects[indexing_profile.indexing_api_endpoint_configuration_object_id]
+                        request.objects[indexing_profile.settings.get(IndexingProfileSettingsKeys.API_ENDPOINT_CONFIGURATION_OBJECT_ID)]
                     )
       
                     index_configurations.append(
@@ -83,10 +93,9 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     )                
 
                 retriever_factory = RetrieverFactory(
-                                index_configurations,
-                                text_embedding_model,
-                                embedding_endpoint_configuration,
-                                self.config)
+                                index_configurations=index_configurations,
+                                gateway_text_embedding_service=gateway_embedding_service,
+                                config=self.config)
                 retriever = retriever_factory.get_retriever()
         return retriever
 
@@ -200,14 +209,22 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             if request.agent.vectorization.text_embedding_profile_object_id is None or request.agent.vectorization.text_embedding_profile_object_id == '':
                 raise LangChainException("The TextEmbeddingProfileObjectId property of the agent's Vectorization property cannot be null or empty.", 400)
 
-            # TODO: Validate the text embedding profile object id exists in request.objects.
+            if request.objects.get(request.agent.vectorization.text_embedding_profile_object_id) is None:
+                raise LangChainException("The TextEmbeddingProfile object provided in the request's objects dictionary is invalid.", 400)
+
+            # Ensure the text embedding profile has model_name in the settings.
+            text_embedding_profile = AzureOpenAIEmbeddingProfile.from_object(request.objects[request.agent.vectorization.text_embedding_profile_object_id])
+            if text_embedding_profile.settings.get(EmbeddingProfileSettingsKeys.EMBEDDING_MODEL_NAME) is None or text_embedding_profile.settings.get(EmbeddingProfileSettingsKeys.EMBEDDING_MODEL_NAME) == '':
+                raise LangChainException("The TextEmbeddingProfile object provided in the request's objects dictionary is invalid because it is missing an embedding_model_name value.", 400)
 
             if request.agent.vectorization.indexing_profile_object_ids is not None and len(request.agent.vectorization.indexing_profile_object_ids) > 0:
                 for idx, indexing_profile in enumerate(request.agent.vectorization.indexing_profile_object_ids):
                     if indexing_profile is None or indexing_profile == '':
                         raise LangChainException(f"The indexing profile object id at index {idx} is invalid.", 400)
 
-                    # TODO: Validate the indexing profile object id exist in request.objects.
+                    idx_profile = AzureAISearchIndexingProfile.from_object(request.objects[indexing_profile])
+                    if idx_profile.settings.get(IndexingProfileSettingsKeys.API_ENDPOINT_CONFIGURATION_OBJECT_ID) is None or idx_profile.settings.get(IndexingProfileSettingsKeys.API_ENDPOINT_CONFIGURATION_OBJECT_ID) == '':
+                        raise LangChainException(f"The indexing profile object provided in the request's objects dictionary is invalid because it is missing an api_endpoint_configuration_object_id value.", 400)
 
                 self.has_indexing_profiles = True
 
