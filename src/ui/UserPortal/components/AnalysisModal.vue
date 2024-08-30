@@ -4,7 +4,7 @@
 		:header="header"
 		:modal="true"
 		:closable="true"
-		:style="{ width: '50vw' }"
+		:style="{ width: '95vw' }"
 		@update:visible="$emit('update:visible', $event)"
 	>
 		<template v-if="analysisResults && analysisResults.length > 0" #default>
