@@ -21,16 +21,20 @@ class OrchestrationManager:
         completion_request : CompletionRequest
             The CompletionRequest is the metadata object containing the details needed for
             the OrchestrationManager to assemble an agent.
-        context : Context
-            The user context under which to execution completion requests.
+        configuration : Configuration
+            The configuration object containing the details needed for the OrchestrationManager to assemble an agent.
+        operations_manager : OperationsManager
+            The operations manager object for allowing an agent to interact with the State API.
         """
-        self.completion_request = completion_request
-        self.agent = self.__create_agent(config=configuration, operations_manager=operations_manager)
+        self.agent = self.__create_agent(
+            completion_request = completion_request,
+            config = configuration,
+            operations_manager = operations_manager
+        )
 
-    def __create_agent(self, config: Configuration, operations_manager: OperationsManager) -> LangChainAgentBase:
+    def __create_agent(self, completion_request: CompletionRequestBase, config: Configuration, operations_manager: OperationsManager) -> LangChainAgentBase:
         """Creates an agent for executing completion requests."""
-        agent_factory = AgentFactory()
-        return agent_factory.get_agent(self.completion_request.agent.type, config=config, self.operations_manager)
+        return AgentFactory().get_agent(completion_request.agent.type, config, operations_manager)
 
     def invoke(self, request: CompletionRequestBase) -> CompletionResponse:
         """
@@ -39,8 +43,8 @@ class OrchestrationManager:
         
         Parameters
         ----------
-        prompt : str
-            The prompt for which a completion is being generated.
+        request : CompletionRequestBase
+            The completion request to execute.
             
         Returns
         -------
@@ -56,8 +60,8 @@ class OrchestrationManager:
         
         Parameters
         ----------
-        prompt : str
-            The prompt for which a completion is being generated.
+        request : CompletionRequestBase
+            The completion request to execute.
             
         Returns
         -------

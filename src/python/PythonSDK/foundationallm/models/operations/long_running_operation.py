@@ -12,4 +12,3 @@ class LongRunningOperation(BaseModel):
     status_message: Optional[str] = Field(description='The message associated with the operation status.')
     last_updated: Optional[datetime] = Field(default=None, description='The timestamp of the last update to the operation.')
     result: Optional[CompletionResponse] = Field(default=None, description='The result of the operation.')
-    

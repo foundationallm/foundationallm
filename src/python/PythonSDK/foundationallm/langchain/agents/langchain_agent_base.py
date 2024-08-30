@@ -3,19 +3,19 @@ from typing import List
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 
 from langchain_core.language_models import BaseLanguageModel
-from langchain_openai import AzureChatOpenAI, AzureOpenAI, ChatOpenAI, OpenAI
+from langchain_openai import AzureChatOpenAI, ChatOpenAI, OpenAI
 from openai import AzureOpenAI as aoi
 from openai import AsyncAzureOpenAI as async_aoi
 from foundationallm.config.configuration import Configuration
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.operations import OperationsManager
-from foundationallm.models.orchestration import OperationTypes
 from foundationallm.models.authentication import AuthenticationTypes
 from foundationallm.models.language_models import LanguageModelProvider
 from foundationallm.models.orchestration import (
     CompletionRequestBase,
     CompletionResponse,
-    MessageHistoryItem
+    MessageHistoryItem,
+    OperationTypes
 )
 from foundationallm.models.resource_providers.ai_models import AIModelBase
 from foundationallm.models.resource_providers.attachments import Attachment

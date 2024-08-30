@@ -7,7 +7,9 @@ from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.retrievers import RetrieverFactory, CitationRetrievalBase
 from foundationallm.models.constants import AgentCapabilityCategories
 from foundationallm.models.orchestration import (
-    CompletionResponse
+    CompletionResponse,
+    OpenAITextMessageContentItem,
+    OperationTypes
 )
 from foundationallm.models.agents import (
     AgentConversationHistorySettings,
@@ -17,8 +19,6 @@ from foundationallm.models.agents import (
 from foundationallm.models.attachments import AttachmentProviders
 from foundationallm.models.authentication import AuthenticationTypes
 from foundationallm.models.language_models import LanguageModelProvider
-from foundationallm.models.orchestration.openai_text_message_content_item import OpenAITextMessageContentItem
-from foundationallm.models.orchestration.operation_types import OperationTypes
 from foundationallm.models.resource_providers.vectorization import (
     AzureAISearchIndexingProfile,
     AzureOpenAIEmbeddingProfile
@@ -228,7 +228,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             image_analysis_token_usage.total_tokens += usage.total_tokens
 
         # Check for Assistants API capability
-        if "OpenAI.Assistants" in agent.capabilities:
+        if AgentCapabilityCategories.OPENAI_ASSISTANTS in agent.capabilities:
             operation_type_override = OperationTypes.ASSISTANTS_API
             # create the service
             assistant_svc = OpenAIAssistantsApiService(
@@ -238,6 +238,8 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
             # populate service request object
             assistant_req = OpenAIAssistantsAPIRequest(
+                operation_id=request.operation_id,
+                instance_id=self.config.get_value("FoundationaLLM:Instance:Id"),
                 assistant_id=request.objects["OpenAI.AssistantId"],
                 thread_id=request.objects["OpenAI.AssistantThreadId"],
                 attachments=[attachment.provider_file_name for attachment in request.attachments if attachment.provider == AttachmentProviders.FOUNDATIONALLM_AZURE_OPENAI],
@@ -260,7 +262,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     content = image_analysis_svc.format_results(image_analysis_results),
                     attachments = []
                 )
-            # invoke/run the service
+
             assistant_response = assistant_svc.run(assistant_req)
 
             # create the CompletionResponse object
@@ -273,7 +275,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 prompt_tokens = assistant_response.prompt_tokens + image_analysis_token_usage.prompt_tokens,
                 total_tokens = assistant_response.total_tokens + image_analysis_token_usage.total_tokens,
                 user_prompt = request.user_prompt
-                )
+            )
 
         with get_openai_callback() as cb:
             try:
@@ -281,6 +283,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 retriever = self._get_document_retriever(request, agent)
                 if retriever is not None:
                     self.has_retriever = True
+
                 # Get the prompt template.
                 prompt_template = self._get_prompt_template(
                     request,
@@ -360,7 +363,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             image_analysis_token_usage.total_tokens += usage.total_tokens
 
         # Check for Assistants API capability
-        if "OpenAI.Assistants" in agent.capabilities:
+        if AgentCapabilityCategories.OPENAI_ASSISTANTS in agent.capabilities:
             operation_type_override = OperationTypes.ASSISTANTS_API
             # create the service
             assistant_svc = OpenAIAssistantsApiService(
@@ -370,6 +373,8 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
             # populate service request object
             assistant_req = OpenAIAssistantsAPIRequest(
+                operation_id=request.operation_id,
+                instance_id=self.config.get_value("FoundationaLLM:Instance:Id"),
                 assistant_id=request.objects["OpenAI.AssistantId"],
                 thread_id=request.objects["OpenAI.AssistantThreadId"],
                 attachments=[attachment.provider_file_name for attachment in request.attachments if attachment.provider == AttachmentProviders.FOUNDATIONALLM_AZURE_OPENAI],
@@ -393,20 +398,19 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     attachments = []
                 )
 
-            # invoke/run the service
             assistant_response = await assistant_svc.arun(assistant_req)
 
             # create the CompletionResponse object
             return CompletionResponse(
                 operation_id = request.operation_id,
                 full_prompt = self.prompt.prefix,
-                analysis_results = assistant_response.analysis_results,
                 content = assistant_response.content,
+                analysis_results = assistant_response.analysis_results,
                 completion_tokens = assistant_response.completion_tokens + image_analysis_token_usage.completion_tokens,
                 prompt_tokens = assistant_response.prompt_tokens + image_analysis_token_usage.prompt_tokens,
                 total_tokens = assistant_response.total_tokens + image_analysis_token_usage.total_tokens,
                 user_prompt = request.user_prompt
-                )
+            )
 
         with get_openai_callback() as cb:
             try:
@@ -414,6 +418,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 retriever = self._get_document_retriever(request, agent)
                 if retriever is not None:
                     self.has_retriever = True
+
                 # Get the prompt template.
                 prompt_template = self._get_prompt_template(
                     request,
