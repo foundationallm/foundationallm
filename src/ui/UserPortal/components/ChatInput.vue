@@ -493,8 +493,8 @@ export default {
 }
 
 .upload-files-header {
-	width: 100%; /* Ensure the header is responsive */
-	max-width: 500px; /* Limit the max width */
+	width: 100%;
+	max-width: 500px;
 }
 
 .upload-files-header button {
@@ -577,19 +577,18 @@ export default {
 	flex-direction: row;
 	align-items: center;
 	gap: 10px;
-	overflow: hidden; /* Ensure the container doesn't overflow */
-	flex-shrink: 1; /* Allow the container to shrink if needed */
-	max-width: calc(100% - 50px); /* Ensure the container does not exceed the modal width */
+	overflow: hidden;
+	flex-shrink: 1;
+	max-width: calc(100% - 50px);
 
 	span {
 		font-weight: 600;
-		overflow: hidden; /* Hide overflowed text */
-		text-overflow: ellipsis; /* Show ellipsis for overflowed text */
-		white-space: wrap; /* Prevent text from wrapping to the next line */
-		flex-shrink: 1; /* Allow the text to shrink */
-		max-width: 80%; /* Allow the span to shrink, but will expand as needed */
-		min-width: 0; /* Ensures the element shrinks down to zero if needed */
-		/*width: 0; */
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: wrap;
+		flex-shrink: 1;
+		max-width: 80%;
+		min-width: 0;
 	}
 }
 
