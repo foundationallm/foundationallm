@@ -56,7 +56,8 @@ public partial class CoreService(
     IOptions<CoreServiceSettings> settings,
     ICallContext callContext,
     IEnumerable<IResourceProviderService> resourceProviderServices,
-    IConfiguration configuration) : ICoreService
+    IConfiguration configuration,
+    IHttpClientFactoryService httpClientFactory) : ICoreService
 {
     private readonly ICosmosDbService _cosmosDbService = cosmosDbService;
     private readonly IDownstreamAPIService _gatekeeperAPIService = downstreamAPIServices.Single(das => das.APIName == HttpClientNames.GatekeeperAPI);
@@ -65,7 +66,8 @@ public partial class CoreService(
     private readonly ICallContext _callContext = callContext;
     private readonly string _sessionType = brandingSettings.Value.KioskMode ? SessionTypes.KioskSession : SessionTypes.Session;
     private readonly CoreServiceSettings _settings = settings.Value;
-    private readonly string _baseUrl = configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl]!;
+    private readonly IHttpClientFactoryService _httpClientFactory = httpClientFactory;
+    private readonly string _baseUrl = GetBaseUrl(configuration, httpClientFactory, callContext).GetAwaiter().GetResult();
 
     private readonly IResourceProviderService _attachmentResourceProvider =
         resourceProviderServices.Single(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Attachment);
@@ -572,6 +574,35 @@ public partial class CoreService(
         request.OperationId = Guid.NewGuid().ToString();
         return request;
     }
+
+    private static async Task<string> GetBaseUrl(
+        IConfiguration configuration,
+        IHttpClientFactoryService httpClientFactory,
+        ICallContext callContext)
+    {
+        var baseUrl = configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl]!;
+        try
+        {
+            var baseUrlOverride = await httpClientFactory.CreateClient<string?>(
+                HttpClientNames.CoreAPI,
+                callContext.CurrentUserIdentity!,
+                BuildClient);
+            if (!string.IsNullOrWhiteSpace(baseUrlOverride))
+            {
+                baseUrl = baseUrlOverride;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            // Ignore the exception since we should always fall back to the configured value.
+        }
+        
+        return baseUrl;
+    }
+
+    private static string? BuildClient(Dictionary<string, object> parameters) =>
+        parameters[HttpClientFactoryServiceKeyNames.Endpoint].ToString();
 
     [GeneratedRegex(@"[^\w\s]")]
     private static partial Regex ChatSessionNameReplacementRegex();
