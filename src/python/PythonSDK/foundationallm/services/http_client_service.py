@@ -24,7 +24,7 @@ class HttpClientService:
         headers["charset"] = "utf-8"
         if self.api_endpoint_configuration.authentication_type == AuthenticationTypes.API_KEY:
             api_key_value_prefix = self.api_endpoint_configuration.authentication_parameters.get(AuthenticationParametersKeys.API_KEY_PREFIX, "")
-            api_key_value = self.config.get_value(self.api_endpoint_configuration.get(AuthenticationParametersKeys.API_KEY_CONFIGURATION_NAME))
+            api_key_value = self.config.get_value(self.api_endpoint_configuration.authentication_parameters.get(AuthenticationParametersKeys.API_KEY_CONFIGURATION_NAME))
             api_key_header_name = self.api_endpoint_configuration.authentication_parameters.get(AuthenticationParametersKeys.API_KEY_HEADER_NAME)
             headers[api_key_header_name] = api_key_value_prefix + api_key_value
         else:
@@ -49,14 +49,14 @@ class HttpClientService:
             response.raise_for_status()
             return response.json()
 
-    def post(self, endpoint: str, data: dict = None, json: dict = None):
+    def post(self, endpoint: str, data: dict = None):
         """
         Execute a synchronous POST request.
-        """
+        """        
         with requests.Session() as session:
             session.headers.update(self.headers)
-            url = self.base_url + endpoint
-            response = session.post(url, data=data, json=json, timeout=self.time_out, verify=self.verify_certs)
+            url = self.base_url + endpoint            
+            response = session.post(url, data=data, timeout=self.time_out, verify=self.verify_certs)            
             response.raise_for_status()
             return response.json()
 
@@ -70,12 +70,12 @@ class HttpClientService:
                 response.raise_for_status()
                 return await response.json()
 
-    async def apost(self, endpoint: str, data: dict = None, json: dict = None):
+    async def apost(self, endpoint: str, data: dict = None):
         """
         Execute an asynchronous POST request.
         """
         async with aiohttp.ClientSession(headers=self.headers) as session:
             url = self.base_url + endpoint
-            async with session.post(url, data=data, json=json, timeout=self.time_out, ssl=self.verify_certs) as response:
+            async with session.post(url, data=data, timeout=self.time_out, ssl=self.verify_certs) as response:
                 response.raise_for_status()
                 return await response.json()

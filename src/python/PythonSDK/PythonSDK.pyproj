@@ -41,9 +41,7 @@
     <Compile Include="foundationallm\models\orchestration\openai_image_file_message_content_item.py" />
     <Compile Include="foundationallm\models\orchestration\openai_text_message_content_item.py" />
     <Compile Include="foundationallm\models\resource_providers\vectorization\embedding_profiles\embedding_profile_settings_keys.py" />
-    <Compile Include="foundationallm\models\resource_providers\vectorization\indexing_profiles\indexing_profile_settings_keys.py" />
     <Compile Include="foundationallm\models\services\gateway_text_embedding_response.py" />
-    <Compile Include="foundationallm\services\gateway_text_embedding\embedding.py" />
     <Compile Include="foundationallm\models\services\openai_assistants_response.py" />
     <Compile Include="foundationallm\services\gateway_text_embedding\text_chunk.py" />
     <Compile Include="foundationallm\services\gateway_text_embedding\text_embedding_request.py" />

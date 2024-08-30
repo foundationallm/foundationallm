@@ -1,7 +1,6 @@
 from .profile_base import ProfileBase
 
 from .indexing_profiles.indexing_profile_base import IndexingProfileBase
-from .indexing_profiles.indexing_profile_settings_keys import IndexingProfileSettingsKeys
 from .indexing_profiles.azure_ai_search.azure_ai_search_settings import AzureAISearchSettings
 from .indexing_profiles.azure_ai_search.azure_ai_search_configuration_references import AzureAISearchConfigurationReferences
 from .indexing_profiles.azure_ai_search.azure_ai_search_indexing_profile import AzureAISearchIndexingProfile

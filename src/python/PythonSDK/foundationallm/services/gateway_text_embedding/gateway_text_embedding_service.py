@@ -3,7 +3,7 @@ Class: GatewayTextEmbeddingService
 Description:  Class responsible for obtaining text embedding vectors from the Gateway API.
 """
 import asyncio
-from time import time
+import time
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 from foundationallm.models.services import GatewayTextEmbeddingResponse
@@ -22,51 +22,62 @@ class GatewayTextEmbeddingService():
                  gateway_api_endpoint_configuration: APIEndpointConfiguration,
                  model_name:str,
                  config: Configuration):
-        self.http_client = HttpClientService(gateway_api_endpoint_configuration, user_principal_name, config)       
+        self.http_client = HttpClientService(gateway_api_endpoint_configuration, user_identity, config)       
         self.model_name = model_name
         self.config = config
-        self.url =  f'instances/{instance_id}/embeddings'
+        self.url =  f'/instances/{instance_id}/embeddings'
         
     def get_embedding(self, text: str) -> GatewayTextEmbeddingResponse:
         """
         Get the embedding vector for a given text.
-        """              
-        # create the text embedding request
-        text_chunk = TextChunk(position=0, content=text, tokens_count=0)
-        text_embedding_request = TextEmbeddingRequest(text_chunks=[text_chunk], embedding_model_name=self.model_name, prioritized=True)
+        """        
+        # create the text embedding request        
+        text_embedding_request = self._create_text_embedding_request(text)
+        
         # start the operation
-        response = TextEmbeddingResponse.model_validate_json(self.http_client.post(self.url, data=text_embedding_request))
+        request_json = text_embedding_request.model_dump_json(by_alias=True)
+        
+        resp = self.http_client.post(self.url, data=request_json)        
+        response = TextEmbeddingResponse.model_validate(resp)        
         # poll until completion
-        while response.in_progress and not response.failed:
-            # delay for a second in between polling
+        while response.in_progress and not response.failed:            
+            # delay for a second in between polling            
             time.sleep(1)
-            response = TextEmbeddingResponse.model_validate_json(self.http_client.get(self.url + f'?operationId={response.operation_id}'))
+            get_resp = self.http_client.get(self.url + f'?operationId={response.operation_id}')            
+            response = TextEmbeddingResponse.model_validate(get_resp)
 
         if response.failed:
             raise Exception(f"Text embedding operation failed: {response.error_message}")
 
         return GatewayTextEmbeddingResponse(
-            embedding_vector=response.text_chunks[0].embedding.vector,
+            embedding_vector=response.text_chunks[0].embedding,
             tokens_count=response.text_chunks[0].tokens_count)
 
     async def aget_embedding(self, text: str) -> GatewayTextEmbeddingResponse:
         """
         Asynchronously get the embedding vector for a given text.
         """
-        text_chunk = TextChunk(position=0, content=text, tokens_count=0)
-        text_embedding_request = TextEmbeddingRequest(text_chunks=[text_chunk], embedding_model_name=self.model_name, prioritized=True)
         
+        text_embedding_request = self._create_text_embedding_request(text)
+
+        # start the operation
+        request_json = text_embedding_request.model_dump_json(by_alias=True)
+
         # Send asynchronous POST request to start the operation
-        response = TextEmbeddingResponse.model_validate_json(await self.http_client.apost(self.url, data=text_embedding_request))
+        response = TextEmbeddingResponse.model_validate(await self.http_client.apost(self.url, data=request_json))
         
         # Poll until operation is complete
         while response.in_progress and not response.failed:
             await asyncio.sleep(1)  # Use asyncio.sleep for non-blocking delay
-            response = TextEmbeddingResponse.model_validate_json(await self.http_client.aget(self.url + f'?operationId={response.operation_id}'))
+            response = TextEmbeddingResponse.model_validate(await self.http_client.aget(self.url + f'?operationId={response.operation_id}'))
         
         if response.failed:
             raise Exception(f"Text embedding operation failed: {response.error_message}")
 
         return GatewayTextEmbeddingResponse(
-            embedding_vector=response.text_chunks[0].embedding.vector,
+            embedding_vector=response.text_chunks[0].embedding,
             tokens_count=response.text_chunks[0].tokens_count)
+
+    def _create_text_embedding_request(self, text: str) -> TextEmbeddingRequest:
+        text_chunk = TextChunk(content=text)
+        return TextEmbeddingRequest(text_chunks=[text_chunk], embedding_model_name=self.model_name, prioritized=True)

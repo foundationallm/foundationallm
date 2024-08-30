@@ -25,7 +25,6 @@ from foundationallm.models.language_models import LanguageModelProvider
 from foundationallm.models.orchestration.openai_text_message_content_item import OpenAITextMessageContentItem
 from foundationallm.models.orchestration.operation_types import OperationTypes
 from foundationallm.models.resource_providers.vectorization import (
-    IndexingProfileSettingsKeys,
     EmbeddingProfileSettingsKeys,
     AzureAISearchIndexingProfile,
     AzureOpenAIEmbeddingProfile
@@ -56,7 +55,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             )
             
             # text_embedding_profile has the embedding model name in Settings.
-            text_embedding_model_name = text_embedding_profile.settings.get(EmbeddingProfileSettingsKeys.EMBEDDING_MODEL_NAME)
+            text_embedding_model_name = text_embedding_profile.settings.get(EmbeddingProfileSettingsKeys.MODEL_NAME)
             
             # objects dictionary has the gateway API endpoint configuration.
             gateway_endpoint_configuration = APIEndpointConfiguration.from_object(
@@ -65,7 +64,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             
             gateway_embedding_service = GatewayTextEmbeddingService(
                 instance_id= self.instance_id,
-                user_principal_name=self.user_identity,
+                user_identity=self.user_identity,
                 gateway_api_endpoint_configuration=gateway_endpoint_configuration,
                 model_name = text_embedding_model_name,
                 config=self.config
@@ -82,7 +81,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                         )
                     # indexing profile has indexing_api_endpoint_configuration_object_id in Settings.                    
                     indexing_api_endpoint_configuration = APIEndpointConfiguration.from_object(
-                        request.objects[indexing_profile.settings.get(IndexingProfileSettingsKeys.API_ENDPOINT_CONFIGURATION_OBJECT_ID)]
+                        request.objects[indexing_profile.settings.api_endpoint_configuration_object_id]
                     )
       
                     index_configurations.append(
@@ -214,7 +213,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
             # Ensure the text embedding profile has model_name in the settings.
             text_embedding_profile = AzureOpenAIEmbeddingProfile.from_object(request.objects[request.agent.vectorization.text_embedding_profile_object_id])
-            if text_embedding_profile.settings.get(EmbeddingProfileSettingsKeys.EMBEDDING_MODEL_NAME) is None or text_embedding_profile.settings.get(EmbeddingProfileSettingsKeys.EMBEDDING_MODEL_NAME) == '':
+            if text_embedding_profile.settings.get(EmbeddingProfileSettingsKeys.MODEL_NAME) is None or text_embedding_profile.settings.get(EmbeddingProfileSettingsKeys.MODEL_NAME) == '':
                 raise LangChainException("The TextEmbeddingProfile object provided in the request's objects dictionary is invalid because it is missing an embedding_model_name value.", 400)
 
             if request.agent.vectorization.indexing_profile_object_ids is not None and len(request.agent.vectorization.indexing_profile_object_ids) > 0:
@@ -223,7 +222,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                         raise LangChainException(f"The indexing profile object id at index {idx} is invalid.", 400)
 
                     idx_profile = AzureAISearchIndexingProfile.from_object(request.objects[indexing_profile])
-                    if idx_profile.settings.get(IndexingProfileSettingsKeys.API_ENDPOINT_CONFIGURATION_OBJECT_ID) is None or idx_profile.settings.get(IndexingProfileSettingsKeys.API_ENDPOINT_CONFIGURATION_OBJECT_ID) == '':
+                    if idx_profile.settings.api_endpoint_configuration_object_id is None or idx_profile.settings.api_endpoint_configuration_object_id == '':
                         raise LangChainException(f"The indexing profile object provided in the request's objects dictionary is invalid because it is missing an api_endpoint_configuration_object_id value.", 400)
 
                 self.has_indexing_profiles = True

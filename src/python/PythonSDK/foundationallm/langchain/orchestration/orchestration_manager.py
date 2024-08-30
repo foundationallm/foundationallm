@@ -25,18 +25,18 @@ class OrchestrationManager:
             The unique identifier of the FoundationaLLM instance.
         user_identity : UserIdentity
             The user context under which to execution completion requests.
-        """
+        """        
         self.completion_request = completion_request
-        self.agent = self.__create_agent(config=configuration)
         self.instance_id = instance_id
         self.user_identity = user_identity
+        self.agent = self.__create_agent(config=configuration)        
 
     def __create_agent(self, config: Configuration) -> LangChainAgentBase:
-        """Creates an agent for executing completion requests."""
+        """Creates an agent for executing completion requests."""        
         agent_factory = AgentFactory(
             instance_id = self.instance_id,
             user_identity = self.user_identity,
-            config=config)
+            config=config)        
         return agent_factory.get_agent(self.completion_request.agent.type)
 
     def invoke(self, request: CompletionRequestBase) -> CompletionResponse:
@@ -70,6 +70,6 @@ class OrchestrationManager:
         -------
         CompletionResponse
             Object containing the completion response and token usage details.
-        """
+        """        
         completion_response = await self.agent.ainvoke(request)
         return completion_response
