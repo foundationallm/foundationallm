@@ -96,9 +96,7 @@ export const useAppStore = defineStore('app', {
 				this.sessions = sessions;
 			}
 
-			// If there are any renamed sessions, match them up with the sessions in this.sessions.
-			// If found, set the name in the matching session to the name in the renamed session.
-			// This is necessary due to a delay in the backend updating the session name.
+			// Handle inconsistencies in displaying the rename session due to potential delays in the backend updating the session name.
 			this.renamedSessions.forEach((renamedSession: Session) => {
 				const existingSession = this.sessions.find((s: Session) => s.id === renamedSession.id);
 				if (existingSession) {
@@ -135,7 +133,6 @@ export const useAppStore = defineStore('app', {
 
 			try {
 				await api.renameSession(sessionToRename.id, newSessionName);
-				// Add or update this renamed session in the list of renamed sessions.
 				const existingRenamedSession = this.renamedSessions.find(
 					(session: Session) => session.id === sessionToRename.id,
 				);
