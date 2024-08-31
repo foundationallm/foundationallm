@@ -217,10 +217,11 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                                
                         // Provide the indexing profile API endpoint configuration.
                         if (indexingProfile.Settings == null)
-                            throw new OrchestrationException($"The settings for the indexing profile {indexingProfileName} were not found. Must include \"api_endpoint_configuration_object_id\" setting.");
+                            throw new OrchestrationException($"The settings for the indexing profile {indexingProfileName} were not found. Must include \"{VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId}\" setting.");
 
-                        if(indexingProfile.Settings.TryGetValue("api_endpoint_configuration_object_id", out var apiEndpointConfigurationObjectId) == false)
+                        if(indexingProfile.Settings.TryGetValue(VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, out var apiEndpointConfigurationObjectId) == false)
                             throw new OrchestrationException($"The API endpoint configuration object ID was not found in the settings of the indexing profile.");
+
                         var indexingProfileAPIEndpointConfiguration = await configurationResourceProvider.GetResource<APIEndpointConfiguration>(
                             apiEndpointConfigurationObjectId,
                             currentUserIdentity);
@@ -232,8 +233,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     {
                         var textEmbeddingProfile = await vectorizationResourceProvider.GetResource<TextEmbeddingProfile>(
                             kmAgent.Vectorization.TextEmbeddingProfileObjectId,
-                            currentUserIdentity);
-                                                
+                            currentUserIdentity);                                               
+                                           
                         if (textEmbeddingProfile == null)
                             throw new OrchestrationException($"The text embedding profile {kmAgent.Vectorization.TextEmbeddingProfileObjectId} is not a valid text embedding profile.");
 
