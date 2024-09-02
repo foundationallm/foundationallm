@@ -109,7 +109,7 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                     StatusCodes.Status400BadRequest);
             }
 
-            var roleAssignmentResult = await _authorizationService.ProcessRoleAssignmentRequest(
+            var roleAssignmentResult = await _authorizationService.CreateRoleAssignment(
                 _instanceSettings.Id,
                 new RoleAssignmentRequest()
                 {
@@ -141,7 +141,7 @@ namespace FoundationaLLM.Authorization.ResourceProviders
             switch (resourcePath.ResourceTypeInstances.Last().ResourceTypeName)
             {
                 case AuthorizationResourceTypeNames.RoleAssignments:
-                    await _authorizationService.RevokeRoleAssignment(
+                    await _authorizationService.DeleteRoleAssignment(
                         _instanceSettings.Id,
                         resourcePath.ResourceTypeInstances.Last().ResourceId!,
                         userIdentity);
@@ -177,16 +177,10 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                 throw new ResourceProviderException("Invalid scope. Unable to retrieve role assignments.");
             else
             {
-                var roleAssignments = new List<RoleAssignment>();
-                var roleAssignmentObjects = await _authorizationService.GetRoleAssignments(
-                    _instanceSettings.Id, queryParameters, userIdentity);
-
-                foreach (var obj in roleAssignmentObjects)
-                {
-                    var roleAssignment = JsonSerializer.Deserialize<RoleAssignment>(obj.ToString()!)!;
-                    if (!roleAssignment.Deleted)
-                        roleAssignments.Add(roleAssignment);
-                }
+                var roleAssignments = (await _authorizationService.GetRoleAssignments(
+                    _instanceSettings.Id, queryParameters, userIdentity))
+                    .Where(ra => !ra.Deleted)
+                    .ToList();
 
                 if (instance.ResourceId != null)
                 {

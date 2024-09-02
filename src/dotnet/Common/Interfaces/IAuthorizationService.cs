@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Models.Authentication;
+﻿using FoundationaLLM.Common.Models;
+using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 
 namespace FoundationaLLM.Common.Interfaces
@@ -23,18 +24,6 @@ namespace FoundationaLLM.Common.Interfaces
             UnifiedUserIdentity userIdentity);
 
         /// <summary>
-        /// Processes a role assignment request.
-        /// </summary>
-        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
-        /// <param name="roleAssignmentRequest">The role assignment request.</param>
-        /// <param name="userIdentity">The user identity.</param>
-        /// <returns></returns>
-        Task<RoleAssignmentResult> ProcessRoleAssignmentRequest(
-            string instanceId,
-            RoleAssignmentRequest roleAssignmentRequest,
-            UnifiedUserIdentity userIdentity);
-
-        /// <summary>
         /// Returns a list of role names and a list of allowed actions for the specified scope.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
@@ -47,25 +36,37 @@ namespace FoundationaLLM.Common.Interfaces
             UnifiedUserIdentity userIdentity);
 
         /// <summary>
-        /// Returns a list of role assignments for the specified instance and resource.
+        /// Creates a new role assignment.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="roleAssignmentRequest">The <see cref="RoleAssignmentRequest"/> containing the details of the role assignment to be created.</param>
+        /// <param name="userIdentity">The user identity.</param>
+        /// <returns>A <see cref="RoleAssignmentOperationResult"/> containing information about the result of the operation.</returns>
+        Task<RoleAssignmentOperationResult> CreateRoleAssignment(
+            string instanceId,
+            RoleAssignmentRequest roleAssignmentRequest,
+            UnifiedUserIdentity userIdentity);
+
+        /// <summary>
+        /// Returns a list of role assignments.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="queryParameters">The <see cref="RoleAssignmentQueryParameters"/> providing the inputs for filtering the role assignments.</param>
         /// <param name="userIdentity">The user identity.</param>
         /// <returns>The list of all role assignments for the specified instance.</returns>
-        Task<List<object>> GetRoleAssignments(
+        Task<List<RoleAssignment>> GetRoleAssignments(
             string instanceId,
             RoleAssignmentQueryParameters queryParameters,
             UnifiedUserIdentity userIdentity);
 
         /// <summary>
-        /// Revokes a role assignment for a specified instance.
+        /// Deletes a role assignment.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="roleAssignment">The role assignment object identifier.</param>
         /// <param name="userIdentity">The user identity.</param>
-        /// <returns>The role assignment result.</returns>
-        Task<RoleAssignmentResult> RevokeRoleAssignment(
+        /// <returns>A <see cref="RoleAssignmentOperationResult"/> containing information about the result of the operation.</returns>
+        Task<RoleAssignmentOperationResult> DeleteRoleAssignment(
             string instanceId,
             string roleAssignment,
             UnifiedUserIdentity userIdentity);

@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 
@@ -23,13 +24,13 @@ namespace FoundationaLLM.Authorization.Services
         }
 
         /// <inheritdoc/>
-        public async Task<RoleAssignmentResult> ProcessRoleAssignmentRequest(
+        public async Task<RoleAssignmentOperationResult> CreateRoleAssignment(
             string instanceId,
             RoleAssignmentRequest roleAssignmentRequest,
             UnifiedUserIdentity userIdentity)
         {
             await Task.CompletedTask;
-            return new RoleAssignmentResult { Success = true };
+            return new RoleAssignmentOperationResult { Success = true };
         }
 
         /// <inheritdoc/>
@@ -45,7 +46,7 @@ namespace FoundationaLLM.Authorization.Services
         }
 
         /// <inheritdoc/>
-        public async Task<List<object>> GetRoleAssignments(
+        public async Task<List<RoleAssignment>> GetRoleAssignments(
             string instanceId,
             RoleAssignmentQueryParameters queryParameters,
             UnifiedUserIdentity userIdentity)
@@ -54,13 +55,13 @@ namespace FoundationaLLM.Authorization.Services
             return [];
         }
 
-        public async Task<RoleAssignmentResult> RevokeRoleAssignment(
+        public async Task<RoleAssignmentOperationResult> DeleteRoleAssignment(
             string instanceId,
             string roleAssignment,
             UnifiedUserIdentity userIdentity)
         {
             await Task.CompletedTask;
-            return new RoleAssignmentResult { Success = true };
+            return new RoleAssignmentOperationResult { Success = true };
         }
     }
 }

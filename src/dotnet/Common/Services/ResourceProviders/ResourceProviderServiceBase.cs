@@ -255,7 +255,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 {
                     var roleAssignmentName = Guid.NewGuid().ToString();
                     var roleAssignmentDescription = $"Owner role for {userIdentity.Name}";
-                    var roleAssignmentResult = await _authorizationService.ProcessRoleAssignmentRequest(
+                    var roleAssignmentResult = await _authorizationService.CreateRoleAssignment(
                         _instanceSettings.Id,
                         new RoleAssignmentRequest()
                         {
@@ -392,7 +392,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             {
                 var roleAssignmentName = Guid.NewGuid().ToString();
                 var roleAssignmentDescription = $"Owner role for {userIdentity.Name}";
-                var roleAssignmentResult = await _authorizationService.ProcessRoleAssignmentRequest(
+                var roleAssignmentResult = await _authorizationService.CreateRoleAssignment(
                     _instanceSettings.Id,
                     new RoleAssignmentRequest()
                     {
