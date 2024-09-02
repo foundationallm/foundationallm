@@ -28,6 +28,7 @@
 				header="Upload File(s)"
 				modal
 				aria-label="File Upload Dialog"
+				style="max-width: 98%"
 			>
 				<FileUpload
 					ref="fileUpload"
@@ -492,7 +493,8 @@ export default {
 }
 
 .upload-files-header {
-	width: 500px;
+	width: 100%;
+	max-width: 500px;
 }
 
 .upload-files-header button {
@@ -513,6 +515,7 @@ export default {
 	.upload-files-header button {
 		padding: 0.25rem 0.5rem;
 		margin-right: 0.25rem !important;
+		margin-bottom: 0.25rem !important;
 	}
 
 	.tooltip-component {
@@ -574,6 +577,25 @@ export default {
 	flex-direction: row;
 	align-items: center;
 	gap: 10px;
+	overflow: hidden;
+	flex-shrink: 1;
+	max-width: calc(100% - 50px);
+
+	span {
+		font-weight: 600;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: wrap;
+		flex-shrink: 1;
+		max-width: 80%;
+		min-width: 0;
+	}
+}
+
+@media only screen and (max-width: 405px) {
+	.file-upload-file_info div {
+		display: none;
+	}
 }
 
 .p-fileupload-content {
