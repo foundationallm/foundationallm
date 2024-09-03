@@ -113,7 +113,7 @@ public record Message
     /// </summary>
     [JsonPropertyName("status")]
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public required OperationStatus Status { get; set; }
+    public OperationStatus Status { get; set; }
 
     /// <summary>
     /// Constructor for Message.
@@ -122,7 +122,7 @@ public record Message
         float[]? vector, bool? rating, string upn, string? senderDisplayName = null,
         Citation[]? citations = null, string? expectedCompletion = null,
         List<MessageContent>? content = null, List<string>? attachments = null,
-        List<AttachmentDetail> attachmentDetails = null, List<AnalysisResult>? analysisResults = null,
+        List<AttachmentDetail>? attachmentDetails = null, List<AnalysisResult>? analysisResults = null,
         OperationStatus status = OperationStatus.Pending)
     {
         Id = Guid.NewGuid().ToString();
