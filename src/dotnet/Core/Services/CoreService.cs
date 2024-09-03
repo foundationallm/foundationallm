@@ -262,7 +262,11 @@ public partial class CoreService(
                 null,
                 null,
                 null,
-                completionRequest.Attachments);
+                completionRequest.Attachments,
+                null,
+                null,
+                OperationStatus.Pending);
+
             await AddSessionMessageAsync(instanceId, completionRequest.SessionId, promptMessage, _callContext.CurrentUserIdentity!);
 
             var agentOption = await ProcessGatekeeperOptions(completionRequest);
@@ -327,7 +331,8 @@ public partial class CoreService(
                 newContent,
                 null,
                 null,
-                result.AnalysisResults);
+                result.AnalysisResults,
+                OperationStatus.Completed);
             var completionPromptText =
                 $"User prompt: {result.UserPrompt}{Environment.NewLine}Agent: {result.AgentName}{Environment.NewLine}Prompt template: {(!string.IsNullOrWhiteSpace(result.FullPrompt) ? result.FullPrompt : result.PromptTemplate)}";
             var completionPrompt = new CompletionPrompt(completionRequest.SessionId, completionMessage.Id, completionPromptText);
