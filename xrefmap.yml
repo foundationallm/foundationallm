@@ -18306,19 +18306,6 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.HasCapability
   nameWithType: AgentBase.HasCapability
-- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.LongRunning
-  name: LongRunning
-  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_LongRunning
-  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.LongRunning
-  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.LongRunning
-  nameWithType: AgentBase.LongRunning
-- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.LongRunning*
-  name: LongRunning
-  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_LongRunning_
-  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.LongRunning
-  isSpec: "True"
-  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.LongRunning
-  nameWithType: AgentBase.LongRunning
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.OrchestrationSettings
   name: OrchestrationSettings
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_OrchestrationSettings
