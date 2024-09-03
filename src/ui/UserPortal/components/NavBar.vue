@@ -29,7 +29,7 @@
 			<div class="navbar__content__left">
 				<div class="navbar__content__left__item">
 					<template v-if="currentSession">
-						<span>{{ currentSession.name }}</span>
+						<span class="current_session_name">{{ currentSession.name }}</span>
 						<!-- <VTooltip :auto-hide="false" :popper-triggers="['hover']">
 							<Button
 								v-if="!$appConfigStore.isKioskMode"
@@ -318,10 +318,13 @@ export default {
 <style>
 @media only screen and (max-width: 545px) {
 	.dropdown--agent .p-dropdown-label {
-		display: none;
+		/* display: none; */
 	}
 	.dropdown--agent .p-dropdown-trigger {
 		height: 40px;
+	}
+	.current_session_name {
+		display: none;
 	}
 }
 
