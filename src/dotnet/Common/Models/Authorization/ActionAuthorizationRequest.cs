@@ -20,15 +20,9 @@ namespace FoundationaLLM.Common.Models.Authorization
         public required List<string> ResourcePaths { get; set; }
 
         /// <summary>
-        /// The id of the security principal requesting authorization.
+        /// The <see cref="UserAuthorizationContext"/> containing the authorization context for the user.
         /// </summary>
-        [JsonPropertyName("principal_id")]
-        public required string PrincipalId { get; set; }
-
-        /// <summary>
-        /// The list of security group ids to which the principal belongs.
-        /// </summary>
-        [JsonPropertyName("security_group_ids")]
-        public List<string> SecurityGroupIds { get; set; } = [];    
+        [JsonPropertyName("user_context")]
+        public required UserAuthorizationContext UserContext { get; set; }
     }
 }

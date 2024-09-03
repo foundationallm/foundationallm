@@ -46,8 +46,12 @@ namespace FoundationaLLM.Authorization.Services
                 {
                     Action = action,
                     ResourcePaths = resourcePaths,
-                    PrincipalId = userIdentity.UserId,
-                    SecurityGroupIds = userIdentity.GroupIds
+                    UserContext = new UserAuthorizationContext
+                    {
+                        SecurityPrincipalId = userIdentity.UserId!,
+                        UserPrincipalName = userIdentity.UPN!,
+                        SecurityGroupIds = userIdentity.GroupIds
+                    }
                 };
 
                 var httpClient = await CreateHttpClient();

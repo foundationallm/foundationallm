@@ -413,7 +413,7 @@ public partial class CoreService(
                 var userName = userIdentity.UPN?.NormalizeUserPrincipalName() ?? userIdentity.UserId;
                 var fileUserContextName = $"{userName}-file-{instanceId.ToLower()}";
 
-                var result = await _azureOpenAIResourceProvider.GetResource<FileContent>(
+                var result = await _azureOpenAIResourceProvider.GetResourceAsync<FileContent>(
                     $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileUserContexts}/{fileUserContextName}/{AzureOpenAIResourceTypeNames.FilesContent}/{fileId}",
                     userIdentity);
 

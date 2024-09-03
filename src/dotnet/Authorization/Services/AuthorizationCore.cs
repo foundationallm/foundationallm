@@ -129,8 +129,13 @@ namespace FoundationaLLM.Authorization.Services
             return ActionAllowed(parsedResourcePath!, new ActionAuthorizationRequest
             {
                 Action = AuthorizableActionNames.FoundationaLLM_Authorization_RoleAssignments_Read,
-                PrincipalId = securityPrincipalId,
-                ResourcePaths = [resourcePath]
+                ResourcePaths = [resourcePath],
+                UserContext = new UserAuthorizationContext
+                {
+                    SecurityPrincipalId = securityPrincipalId,
+                    UserPrincipalName = securityPrincipalId,
+                    SecurityGroupIds = []
+                }
             });
         }
 
@@ -172,8 +177,7 @@ namespace FoundationaLLM.Authorization.Services
                         {
                             Action = authorizationRequest.Action,
                             ResourcePaths = [rp],
-                            PrincipalId = authorizationRequest.PrincipalId,
-                            SecurityGroupIds = authorizationRequest.SecurityGroupIds
+                            UserContext = authorizationRequest.UserContext
                         });
                     }
                     catch (Exception ex)
@@ -206,7 +210,7 @@ namespace FoundationaLLM.Authorization.Services
             {
                 try
                 {
-                    _ = ResourcePath.TryParseResourceProvider(scope, out string? resourceProdiver);
+                    _ = ResourcePath.TryParseResourceProvider(scope, out string? resourceProvider);
                     var requestScope = ResourcePathUtils.ParseForAuthorizationRequestResourcePath(scope, _settings.InstanceIds);
 
                     if (string.IsNullOrWhiteSpace(requestScope.InstanceId) || requestScope.InstanceId.ToLower().CompareTo(instanceId.ToLower()) != 0)
@@ -220,7 +224,7 @@ namespace FoundationaLLM.Authorization.Services
                         {
                             if (scope.Contains(ra.Scope))
                             {
-                                result[scope].Actions.AddRange(ra.AllowedActions.Where(x => x.Contains(resourceProdiver!)).ToList());
+                                result[scope].Actions.AddRange(ra.AllowedActions.Where(x => x.Contains(resourceProvider!)).ToList());
                                 result[scope].Roles.Add(ra.RoleDefinition!.DisplayName!);
                             }
                         }
@@ -333,9 +337,9 @@ namespace FoundationaLLM.Authorization.Services
             if (_roleAssignmentCaches.TryGetValue(resourcePath.InstanceId!, out var roleAssignmentCache))
             {
                 // Combine the principal id and security group ids into one list.
-                var objectIds = new List<string> { authorizationRequest.PrincipalId };
-                if (authorizationRequest.SecurityGroupIds != null)
-                    objectIds.AddRange(authorizationRequest.SecurityGroupIds);
+                var objectIds = new List<string> { authorizationRequest.UserContext.SecurityPrincipalId };
+                if (authorizationRequest.UserContext.SecurityGroupIds != null)
+                    objectIds.AddRange(authorizationRequest.UserContext.SecurityGroupIds);
 
                 foreach (var objectId in objectIds)
                 {
@@ -364,7 +368,7 @@ namespace FoundationaLLM.Authorization.Services
             _logger.LogWarning("The action {ActionName} is not allowed on the resource {ResourcePath} for the principal {PrincipalId}.",
                 authorizationRequest.Action,
                 resourcePath,
-                authorizationRequest.PrincipalId);
+                authorizationRequest.UserContext.SecurityPrincipalId);
 
             return false;
         }

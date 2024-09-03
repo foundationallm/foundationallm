@@ -42,7 +42,7 @@ namespace FoundationaLLM.Vectorization.Services.Text
             if (vectorizationResourceProviderService == null)
                 throw new VectorizationException($"The resource provider {ResourceProviderNames.FoundationaLLM_DataSource} was not loaded.");
 
-            var textPartitionProfile = await vectorizationResourceProviderService.GetResource<TextPartitioningProfile>(
+            var textPartitionProfile = await vectorizationResourceProviderService.GetResourceAsync<TextPartitioningProfile>(
                 $"/{VectorizationResourceTypeNames.TextPartitioningProfiles}/{serviceName}", userIdentity);
 
             return textPartitionProfile.TextSplitter switch
@@ -60,7 +60,7 @@ namespace FoundationaLLM.Vectorization.Services.Text
             if (vectorizationResourceProviderService == null)
                 throw new VectorizationException($"The resource provider {ResourceProviderNames.FoundationaLLM_DataSource} was not loaded.");
 
-            var textPartitionProfile = await vectorizationResourceProviderService.GetResource<TextPartitioningProfile>(
+            var textPartitionProfile = await vectorizationResourceProviderService.GetResourceAsync<TextPartitioningProfile>(
                 $"/{VectorizationResourceTypeNames.TextPartitioningProfiles}/{serviceName}", userIdentity);
 
             return textPartitionProfile.TextSplitter switch

@@ -44,7 +44,7 @@ namespace FoundationaLLM.Vectorization.Services.Text
             if (vectorizationResourceProviderService == null)
                 throw new VectorizationException($"The resource provider {ResourceProviderNames.FoundationaLLM_DataSource} was not loaded.");
 
-            var textEmbeddingProfile = await vectorizationResourceProviderService.GetResource<TextEmbeddingProfile>(
+            var textEmbeddingProfile = await vectorizationResourceProviderService.GetResourceAsync<TextEmbeddingProfile>(
                 $"/{VectorizationResourceTypeNames.TextEmbeddingProfiles}/{serviceName}", userIdentity);
 
             return textEmbeddingProfile.TextEmbedding switch
@@ -62,7 +62,7 @@ namespace FoundationaLLM.Vectorization.Services.Text
             if (vectorizationResourceProviderService == null)
                 throw new VectorizationException($"The resource provider {ResourceProviderNames.FoundationaLLM_DataSource} was not loaded.");
 
-            var textEmbeddingProfile = await vectorizationResourceProviderService.GetResource<TextEmbeddingProfile>(
+            var textEmbeddingProfile = await vectorizationResourceProviderService.GetResourceAsync<TextEmbeddingProfile>(
                 $"/{VectorizationResourceTypeNames.TextEmbeddingProfiles}/{serviceName}", userIdentity);
 
             return textEmbeddingProfile.TextEmbedding switch

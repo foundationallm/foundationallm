@@ -41,7 +41,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
         /// <param name="options">The <see cref="ResourceProviderOptions"/> which provides operation parameters.</param>
         /// <returns>The instance of the resource corresponding to the specified logical path.</returns>
-        Task<T> GetResource<T>(string resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderOptions? options = null) where T : class;
+        Task<T> GetResourceAsync<T>(string resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderOptions? options = null) where T : class;
 
         /// <summary>
         /// Creates or updates a resource based on its logical path.

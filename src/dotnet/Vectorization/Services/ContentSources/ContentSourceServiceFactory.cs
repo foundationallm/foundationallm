@@ -47,7 +47,7 @@ namespace FoundationaLLM.Vectorization.Services.ContentSources
             if (dataSourceResourceProviderService == null)
                 throw new VectorizationException($"The resource provider {ResourceProviderNames.FoundationaLLM_DataSource} was not loaded.");
 
-            var dataSource = await dataSourceResourceProviderService.GetResource<DataSourceBase>(serviceName, userIdentity);
+            var dataSource = await dataSourceResourceProviderService.GetResourceAsync<DataSourceBase>(serviceName, userIdentity);
             return dataSource == null
                 ? throw new VectorizationException($"The data source {serviceName} was not found.")
                 : dataSource.Type switch

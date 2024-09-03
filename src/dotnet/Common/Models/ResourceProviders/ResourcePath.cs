@@ -47,7 +47,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
             && _resourceTypeInstances.Last().ResourceId == null;
 
         /// <summary>
-        /// The name of the main resource type of the path.
+        /// Gets the name of the main resource type of the path.
         /// </summary>
         public string? MainResourceTypeName =>
             _resourceTypeInstances == null || _resourceTypeInstances.Count == 0
@@ -55,12 +55,20 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
             : _resourceTypeInstances[0].ResourceTypeName;
 
         /// <summary>
-        /// The object type of the main resource type of the path.
+        /// Gets the object type of the main resource type of the path.
         /// </summary>
         public Type? MainResourceType =>
             _resourceTypeInstances == null || _resourceTypeInstances.Count == 0
             ? null
             : _resourceTypeInstances[0].ResourceType;
+
+        /// <summary>
+        /// Gets the resource id of the main resource type of the path.
+        /// </summary>
+        public string? MainResourceId =>
+            _resourceTypeInstances == null || _resourceTypeInstances.Count == 0
+            ? null
+            : _resourceTypeInstances[0].ResourceId;
 
         /// <summary>
         /// Indicates whether the resource path is an instance path or not (i.e., only contains the FoundationaLLM instance identifier).

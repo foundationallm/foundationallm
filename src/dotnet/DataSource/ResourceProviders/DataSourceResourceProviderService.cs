@@ -439,7 +439,7 @@ namespace FoundationaLLM.DataSource.ResourceProviders
         #endregion
 
         /// <inheritdoc/>
-        protected override async Task<T> GetResourceInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderOptions? options = null) where T : class {
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderOptions? options = null) where T : class {
             if (resourcePath.ResourceTypeInstances.Count != 1)
                 throw new ResourceProviderException($"Invalid resource path");
 

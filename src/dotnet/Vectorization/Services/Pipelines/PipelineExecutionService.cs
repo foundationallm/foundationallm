@@ -372,7 +372,7 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
         /// <returns>The requested resource object.</returns>
         private static async Task<T> GetResource<T>(string objectId, string resourceTypeName, IResourceProviderService resourceProviderService, UnifiedUserIdentity userIdentity)
             where T : ResourceBase =>
-          await resourceProviderService.GetResource<T>($"/{resourceTypeName}/{objectId.Split("/").Last()}", userIdentity);
+          await resourceProviderService.GetResourceAsync<T>($"/{resourceTypeName}/{objectId.Split("/").Last()}", userIdentity);
         
 
         private static bool CheckNextExecution(string? cronExpression)

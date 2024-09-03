@@ -40,7 +40,7 @@ namespace FoundationaLLM.Vectorization.Services.Text
             if (vectorizationResourceProviderService == null)
                 throw new VectorizationException($"The resource provider {ResourceProviderNames.FoundationaLLM_DataSource} was not loaded.");
 
-            var indexingProfile = await vectorizationResourceProviderService.GetResource<IndexingProfile>(
+            var indexingProfile = await vectorizationResourceProviderService.GetResourceAsync<IndexingProfile>(
                 $"/{VectorizationResourceTypeNames.IndexingProfiles}/{serviceName}", userIdentity);
 
             return indexingProfile.Indexer switch
@@ -57,7 +57,7 @@ namespace FoundationaLLM.Vectorization.Services.Text
             if (vectorizationResourceProviderService == null)
                 throw new VectorizationException($"The resource provider {ResourceProviderNames.FoundationaLLM_DataSource} was not loaded.");
 
-            var indexingProfile = await vectorizationResourceProviderService.GetResource<IndexingProfile>(
+            var indexingProfile = await vectorizationResourceProviderService.GetResourceAsync<IndexingProfile>(
                 $"/{VectorizationResourceTypeNames.IndexingProfiles}/{serviceName}", userIdentity);
 
             return indexingProfile.Indexer switch

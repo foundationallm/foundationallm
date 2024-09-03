@@ -131,9 +131,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             var attachments = attachmentObjectIds
                 .ToAsyncEnumerable()
-                .SelectAwait(async x => await _attachmentResourceProvider.GetResource<AttachmentFile>(x, _callContext.CurrentUserIdentity!));
+                .SelectAwait(async x => await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(x, _callContext.CurrentUserIdentity!));
 
-            var fileUserContext = await _azureOpenAIResourceProvider.GetResource<FileUserContext>(
+            var fileUserContext = await _azureOpenAIResourceProvider.GetResourceAsync<FileUserContext>(
                 _fileUserContextObjectId,
                 _callContext.CurrentUserIdentity!);
 
@@ -193,7 +193,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             if (newFileMappings.Count > 0)
             {
-                var fileUserContext = await _azureOpenAIResourceProvider.GetResource<FileUserContext>(
+                var fileUserContext = await _azureOpenAIResourceProvider.GetResourceAsync<FileUserContext>(
                     _fileUserContextObjectId,
                     _callContext.CurrentUserIdentity!);
 

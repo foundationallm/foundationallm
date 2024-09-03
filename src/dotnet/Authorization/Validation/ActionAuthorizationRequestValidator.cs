@@ -22,24 +22,33 @@ namespace FoundationaLLM.Authorization.Validation
                 .Must(x => AuthorizableActions.Actions.ContainsKey(x))
                 .WithMessage("The action must be a valid action.");
 
-            RuleFor(x => x.PrincipalId)
+            RuleFor(x => x.UserContext)
                 .NotNull()
-                .NotEmpty()
-                .WithMessage("The principal identifier must be a valid string.")
-                .Must(x => Guid.TryParse(x, out _))
-                .WithMessage("The principal identifier must be a valid GUID.");
+                .WithMessage("The user context must be a valid object.");
 
-            RuleForEach(x => x.SecurityGroupIds)
+            RuleFor(x => x.UserContext.SecurityPrincipalId)
                 .NotNull()
                 .NotEmpty()
-                .WithMessage("The security group identifier must be a valid string.")
+                .WithMessage("The security principal identifier provided in the user context must be a valid string.")
                 .Must(x => Guid.TryParse(x, out _))
-                .WithMessage("The security group identifier must be a valid GUID.");
+                .WithMessage("The security principal identifier provided in the user context must be a valid GUID.");
+
+            RuleFor(x => x.UserContext.UserPrincipalName)
+                .NotNull()
+                .NotEmpty()
+                .WithMessage("The user principal name provided in the user context must be a valid string.");
+
+            RuleForEach(x => x.UserContext.SecurityGroupIds)
+                .NotNull()
+                .NotEmpty()
+                .WithMessage("Every security group identifier provided in the user context must be a valid string.")
+                .Must(x => Guid.TryParse(x, out _))
+                .WithMessage("Every security group identifier provided in the user context must be a valid GUID.");
 
             RuleForEach(x => x.ResourcePaths)
                 .NotNull()
                 .NotEmpty()
-                .WithMessage("The resource path must be a valid string.");
+                .WithMessage("Each resource path must be a valid string.");
         }
     }
 }

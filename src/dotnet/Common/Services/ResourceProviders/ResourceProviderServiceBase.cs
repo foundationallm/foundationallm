@@ -223,7 +223,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         public async Task<object> HandleGetAsync(string resourcePath, UnifiedUserIdentity userIdentity)
         {
             EnsureServiceInitialization();
-            var parsedResourcePath = EnsureValidResourcePath(resourcePath, HttpMethod.Get, false);
+            var parsedResourcePath = EnsureValidResourcePath(resourcePath, HttpMethod.Get, false, requireResource: false);
 
             if (!parsedResourcePath.IsResourceTypePath)
             {
@@ -362,7 +362,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         #region IResourceProviderService
 
         /// <inheritdoc/>
-        public async Task<T> GetResource<T>(string resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderOptions? options = null) where T : class
+        public async Task<T> GetResourceAsync<T>(string resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderOptions? options = null) where T : class
         {
             EnsureServiceInitialization();
             var parsedResourcePath = EnsureValidResourcePath(resourcePath, HttpMethod.Get, false, typeof(T));
@@ -370,7 +370,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             // Authorize access to the resource path.
             await Authorize(parsedResourcePath, userIdentity, "read");
 
-            return await GetResourceInternal<T>(parsedResourcePath, userIdentity, options);
+            return await GetResourceAsyncInternal<T>(parsedResourcePath, userIdentity, options);
         }
 
         /// <inheritdoc/>
@@ -422,7 +422,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
         /// <param name="options">The <see cref="ResourceProviderOptions"/> which provides operation parameters.</param>
         /// <returns></returns>
-        protected virtual async Task<T> GetResourceInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderOptions? options = null) where T : class
+        protected virtual async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderOptions? options = null) where T : class
         {
             await Task.CompletedTask;
             throw new NotImplementedException();
@@ -514,7 +514,12 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 throw new ResourceProviderException($"The resource provider {_name} is not initialized.");
         }
 
-        private ResourcePath EnsureValidResourcePath(string resourcePath, HttpMethod operationType, bool allowAction = true, Type? resourceType = null)
+        private ResourcePath EnsureValidResourcePath(
+            string resourcePath,
+            HttpMethod operationType,
+            bool allowAction = true,
+            Type? resourceType = null,
+            bool requireResource = true)
         {
             var parsedResourcePath = new ResourcePath(
                 resourcePath,
@@ -530,6 +535,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             if (!AllowedResourceTypes.TryGetValue(mainResourceType, out ResourceTypeDescriptor? resourceTypeDescriptor))
                 throw new ResourceProviderException(
                     $"The resource type {mainResourceType} cannot be handled by the {_name} resource provider",
+                    StatusCodes.Status400BadRequest);
+
+            if (requireResource && string.IsNullOrWhiteSpace(parsedResourcePath.MainResourceId))
+                throw new ResourceProviderException(
+                    $"The resource path {resourcePath} does not have a main resource identifier and cannot be handled by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest);
 
             if (operationType.Method == HttpMethods.Post)

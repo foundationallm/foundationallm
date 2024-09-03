@@ -301,7 +301,7 @@ namespace FoundationaLLM.Gateway.Services
                 var fileClient = azureOpenAIClient.GetFileClient();
 
                 var attachmentObjectId = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.AttachmentObjectId);
-                var attachmentFile = await _attachmentResourceProvider.GetResource<AttachmentFile>(attachmentObjectId, userIdentity, new ResourceProviderOptions { LoadContent = true });
+                var attachmentFile = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(attachmentObjectId, userIdentity, new ResourceProviderOptions { LoadContent = true });
 
                 var fileResult = await fileClient.UploadFileAsync(
                     new MemoryStream(attachmentFile.Content!),
