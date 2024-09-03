@@ -168,8 +168,8 @@ Class AzureAISearchIndexingService  <a class="header-action link-secondary" titl
 
   <a id="FoundationaLLM_SemanticKernel_Core_Services_Indexing_AzureAISearchIndexingService__ctor_" data-uid="FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_SemanticKernel_Core_Services_Indexing_AzureAISearchIndexingService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_SemanticKernel_Core_Models_Configuration_AzureAISearchIndexingServiceSettings__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_SemanticKernel_Core_Services_Indexing_AzureAISearchIndexingService__" data-uid="FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureAISearchIndexingServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService})">
-  AzureAISearchIndexingService(IOptions&lt;AzureAISearchIndexingServiceSettings&gt;, ILogger&lt;AzureAISearchIndexingService&gt;)
+  <h3 id="FoundationaLLM_SemanticKernel_Core_Services_Indexing_AzureAISearchIndexingService__ctor_FoundationaLLM_SemanticKernel_Core_Models_Configuration_AzureAISearchIndexingServiceSettings_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_SemanticKernel_Core_Services_Indexing_AzureAISearchIndexingService__" data-uid="FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService.#ctor(FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureAISearchIndexingServiceSettings,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService})">
+  AzureAISearchIndexingService(AzureAISearchIndexingServiceSettings, ILogger&lt;AzureAISearchIndexingService&gt;)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/SemanticKernel/Services/Indexing/AzureAISearchIndexingService.cs/#L33"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -178,13 +178,13 @@ Class AzureAISearchIndexingService  <a class="header-action link-secondary" titl
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AzureAISearchIndexingService(IOptions&lt;AzureAISearchIndexingServiceSettings&gt; options, ILogger&lt;AzureAISearchIndexingService&gt; logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public AzureAISearchIndexingService(AzureAISearchIndexingServiceSettings settings, ILogger&lt;AzureAISearchIndexingService&gt; logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>options</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1">IOptions</a>&lt;<a class="xref" href="FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureAISearchIndexingServiceSettings.html">AzureAISearchIndexingServiceSettings</a>&gt;</dt>
-    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1">IOptions&lt;TOptions&gt;</a> providing configuration settings.</p>
+    <dt><code>settings</code> <a class="xref" href="FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureAISearchIndexingServiceSettings.html">AzureAISearchIndexingServiceSettings</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureAISearchIndexingServiceSettings.html">AzureAISearchIndexingServiceSettings</a> providing configuration settings.</p>
 </dd>
     <dt><code>logger</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>&lt;<a class="xref" href="FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService.html">AzureAISearchIndexingService</a>&gt;</dt>
     <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger">ILogger</a> used for logging.</p>

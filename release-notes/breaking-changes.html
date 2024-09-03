@@ -94,6 +94,9 @@
 <li><code>Status</code> controllers <code>\status</code> action in the .NET API projects return value has renamed the <code>Instance</code> property to <code>InstanceName</code>.</li>
 <li>The <code>CompletionController.cs</code> file under <code>dotnet/CoreApi/controllers</code> has introduced the <code>Async-Completions</code> endpoint to handle asynchronous completions.</li>
 <li>With the introduction of <code>Async-Completions</code>, long running operations can now report on completion status based on <code>Pending</code>, <code>InProgress</code>, <code>Completed</code> and <code>Failed</code> states.</li>
+<li>Vectorization Embedding Profile introduces a required key in the <code>Settings</code> property named <code>model_name</code>. Every embedding request now flows through the Gateway API.</li>
+<li>Vectorization Indexing Profile introduces a required key <code>api_endpoint_configuration_object_id</code> in the <code>Settings</code> property.</li>
+<li>Retirement of <code>SemanticKernel</code> embedding type. All embedding requests now flow through the Gateway API.</li>
 </ol>
 <p>Gatekeeper API changes:</p>
 <ol>
@@ -114,7 +117,7 @@
 <li><code>FoundationaLLM:APIs:GatewayAdapterAPI:APIAppInsightsConnectionString</code> (mapped to the <code>foundationallm-app-insights-connection-string</code> secret)</li>
 <li></li>
 </ul>
-<p><strong>Stater API</strong> - requires the following configuration settings:</p>
+<p><strong>State API</strong> - requires the following configuration settings:</p>
 <ul>
 <li><code>FoundationaLLM:APIs:StateAPI:APIUrl</code></li>
 <li><code>FoundationaLLM:APIs:StateAPI:APIKey</code> (mapped to the <code>foundationallm-apis-stateapi-apikey</code> secret)</li>

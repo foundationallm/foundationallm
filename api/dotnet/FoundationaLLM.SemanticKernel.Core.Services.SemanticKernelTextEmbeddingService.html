@@ -208,8 +208,8 @@ Class SemanticKernelTextEmbeddingService  <a class="header-action link-secondary
 
   <a id="FoundationaLLM_SemanticKernel_Core_Services_SemanticKernelTextEmbeddingService_GetEmbeddingsAsync_" data-uid="FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelTextEmbeddingService.GetEmbeddingsAsync*"></a>
 
-  <h3 id="FoundationaLLM_SemanticKernel_Core_Services_SemanticKernelTextEmbeddingService_GetEmbeddingsAsync_System_Collections_Generic_IList_FoundationaLLM_Common_Models_Vectorization_TextChunk__System_String_" data-uid="FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String)">
-  GetEmbeddingsAsync(IList&lt;TextChunk&gt;, string)
+  <h3 id="FoundationaLLM_SemanticKernel_Core_Services_SemanticKernelTextEmbeddingService_GetEmbeddingsAsync_System_Collections_Generic_IList_FoundationaLLM_Common_Models_Vectorization_TextChunk__System_String_System_Boolean_" data-uid="FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String,System.Boolean)">
+  GetEmbeddingsAsync(IList&lt;TextChunk&gt;, string, bool)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/SemanticKernel/Services/SemanticKernelTextEmbeddingService.cs/#L47"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -219,7 +219,7 @@ Depending on the implementation, this can be an atomic operation or a long-runni
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;TextEmbeddingResult&gt; GetEmbeddingsAsync(IList&lt;TextChunk&gt; textChunks, string modelName = &quot;text-embedding-ada-002&quot;)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;TextEmbeddingResult&gt; GetEmbeddingsAsync(IList&lt;TextChunk&gt; textChunks, string modelName = &quot;text-embedding-ada-002&quot;, bool Prioritized = false)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -228,7 +228,9 @@ Depending on the implementation, this can be an atomic operation or a long-runni
     <dd><p>The list of text chunks which need to be embedded.</p>
 </dd>
     <dt><code>modelName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The name of the model to use for embedding.</p>
+    <dd></dd>
+    <dt><code>Prioritized</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Indicates whether the request should be prioritized.</p>
 </dd>
   </dl>
 

@@ -4429,6 +4429,79 @@ references:
   commentId: N:FoundationaLLM.Common.Clients
   fullName: FoundationaLLM.Common.Clients
   nameWithType: FoundationaLLM.Common.Clients
+- uid: FoundationaLLM.Common.Clients.GatewayServiceClient
+  name: GatewayServiceClient
+  href: api/dotnet/FoundationaLLM.Common.Clients.GatewayServiceClient.html
+  commentId: T:FoundationaLLM.Common.Clients.GatewayServiceClient
+  fullName: FoundationaLLM.Common.Clients.GatewayServiceClient
+  nameWithType: GatewayServiceClient
+- uid: FoundationaLLM.Common.Clients.GatewayServiceClient.#ctor(System.Net.Http.HttpClient,Microsoft.Extensions.Logging.ILogger)
+  name: GatewayServiceClient(HttpClient, ILogger)
+  href: api/dotnet/FoundationaLLM.Common.Clients.GatewayServiceClient.html#FoundationaLLM_Common_Clients_GatewayServiceClient__ctor_System_Net_Http_HttpClient_Microsoft_Extensions_Logging_ILogger_
+  commentId: M:FoundationaLLM.Common.Clients.GatewayServiceClient.#ctor(System.Net.Http.HttpClient,Microsoft.Extensions.Logging.ILogger)
+  name.vb: New(HttpClient, ILogger)
+  fullName: FoundationaLLM.Common.Clients.GatewayServiceClient.GatewayServiceClient(System.Net.Http.HttpClient, Microsoft.Extensions.Logging.ILogger)
+  fullName.vb: FoundationaLLM.Common.Clients.GatewayServiceClient.New(System.Net.Http.HttpClient, Microsoft.Extensions.Logging.ILogger)
+  nameWithType: GatewayServiceClient.GatewayServiceClient(HttpClient, ILogger)
+  nameWithType.vb: GatewayServiceClient.New(HttpClient, ILogger)
+- uid: FoundationaLLM.Common.Clients.GatewayServiceClient.#ctor*
+  name: GatewayServiceClient
+  href: api/dotnet/FoundationaLLM.Common.Clients.GatewayServiceClient.html#FoundationaLLM_Common_Clients_GatewayServiceClient__ctor_
+  commentId: Overload:FoundationaLLM.Common.Clients.GatewayServiceClient.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: FoundationaLLM.Common.Clients.GatewayServiceClient.GatewayServiceClient
+  fullName.vb: FoundationaLLM.Common.Clients.GatewayServiceClient.New
+  nameWithType: GatewayServiceClient.GatewayServiceClient
+  nameWithType.vb: GatewayServiceClient.New
+- uid: FoundationaLLM.Common.Clients.GatewayServiceClient.CreateAgentCapability(System.String,System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object})
+  name: CreateAgentCapability(string, string, string, Dictionary<string, object>?)
+  href: api/dotnet/FoundationaLLM.Common.Clients.GatewayServiceClient.html#FoundationaLLM_Common_Clients_GatewayServiceClient_CreateAgentCapability_System_String_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__
+  commentId: M:FoundationaLLM.Common.Clients.GatewayServiceClient.CreateAgentCapability(System.String,System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object})
+  name.vb: CreateAgentCapability(String, String, String, Dictionary(Of String, Object))
+  fullName: FoundationaLLM.Common.Clients.GatewayServiceClient.CreateAgentCapability(string, string, string, System.Collections.Generic.Dictionary<string, object>?)
+  fullName.vb: FoundationaLLM.Common.Clients.GatewayServiceClient.CreateAgentCapability(String, String, String, System.Collections.Generic.Dictionary(Of String, Object))
+  nameWithType: GatewayServiceClient.CreateAgentCapability(string, string, string, Dictionary<string, object>?)
+  nameWithType.vb: GatewayServiceClient.CreateAgentCapability(String, String, String, Dictionary(Of String, Object))
+- uid: FoundationaLLM.Common.Clients.GatewayServiceClient.CreateAgentCapability*
+  name: CreateAgentCapability
+  href: api/dotnet/FoundationaLLM.Common.Clients.GatewayServiceClient.html#FoundationaLLM_Common_Clients_GatewayServiceClient_CreateAgentCapability_
+  commentId: Overload:FoundationaLLM.Common.Clients.GatewayServiceClient.CreateAgentCapability
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Clients.GatewayServiceClient.CreateAgentCapability
+  nameWithType: GatewayServiceClient.CreateAgentCapability
+- uid: FoundationaLLM.Common.Clients.GatewayServiceClient.GetEmbeddingOperationResult(System.String,System.String)
+  name: GetEmbeddingOperationResult(string, string)
+  href: api/dotnet/FoundationaLLM.Common.Clients.GatewayServiceClient.html#FoundationaLLM_Common_Clients_GatewayServiceClient_GetEmbeddingOperationResult_System_String_System_String_
+  commentId: M:FoundationaLLM.Common.Clients.GatewayServiceClient.GetEmbeddingOperationResult(System.String,System.String)
+  name.vb: GetEmbeddingOperationResult(String, String)
+  fullName: FoundationaLLM.Common.Clients.GatewayServiceClient.GetEmbeddingOperationResult(string, string)
+  fullName.vb: FoundationaLLM.Common.Clients.GatewayServiceClient.GetEmbeddingOperationResult(String, String)
+  nameWithType: GatewayServiceClient.GetEmbeddingOperationResult(string, string)
+  nameWithType.vb: GatewayServiceClient.GetEmbeddingOperationResult(String, String)
+- uid: FoundationaLLM.Common.Clients.GatewayServiceClient.GetEmbeddingOperationResult*
+  name: GetEmbeddingOperationResult
+  href: api/dotnet/FoundationaLLM.Common.Clients.GatewayServiceClient.html#FoundationaLLM_Common_Clients_GatewayServiceClient_GetEmbeddingOperationResult_
+  commentId: Overload:FoundationaLLM.Common.Clients.GatewayServiceClient.GetEmbeddingOperationResult
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Clients.GatewayServiceClient.GetEmbeddingOperationResult
+  nameWithType: GatewayServiceClient.GetEmbeddingOperationResult
+- uid: FoundationaLLM.Common.Clients.GatewayServiceClient.StartEmbeddingOperation(System.String,FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest)
+  name: StartEmbeddingOperation(string, TextEmbeddingRequest)
+  href: api/dotnet/FoundationaLLM.Common.Clients.GatewayServiceClient.html#FoundationaLLM_Common_Clients_GatewayServiceClient_StartEmbeddingOperation_System_String_FoundationaLLM_Common_Models_Vectorization_TextEmbeddingRequest_
+  commentId: M:FoundationaLLM.Common.Clients.GatewayServiceClient.StartEmbeddingOperation(System.String,FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest)
+  name.vb: StartEmbeddingOperation(String, TextEmbeddingRequest)
+  fullName: FoundationaLLM.Common.Clients.GatewayServiceClient.StartEmbeddingOperation(string, FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest)
+  fullName.vb: FoundationaLLM.Common.Clients.GatewayServiceClient.StartEmbeddingOperation(String, FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest)
+  nameWithType: GatewayServiceClient.StartEmbeddingOperation(string, TextEmbeddingRequest)
+  nameWithType.vb: GatewayServiceClient.StartEmbeddingOperation(String, TextEmbeddingRequest)
+- uid: FoundationaLLM.Common.Clients.GatewayServiceClient.StartEmbeddingOperation*
+  name: StartEmbeddingOperation
+  href: api/dotnet/FoundationaLLM.Common.Clients.GatewayServiceClient.html#FoundationaLLM_Common_Clients_GatewayServiceClient_StartEmbeddingOperation_
+  commentId: Overload:FoundationaLLM.Common.Clients.GatewayServiceClient.StartEmbeddingOperation
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Clients.GatewayServiceClient.StartEmbeddingOperation
+  nameWithType: GatewayServiceClient.StartEmbeddingOperation
 - uid: FoundationaLLM.Common.Clients.PollingHttpClient`2
   name: PollingHttpClient<TRequest, TResponse>
   href: api/dotnet/FoundationaLLM.Common.Clients.PollingHttpClient-2.html
@@ -4565,6 +4638,12 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.Agents.CompletionRequestObjectsKeys.AllAgents
   fullName: FoundationaLLM.Common.Constants.Agents.CompletionRequestObjectsKeys.AllAgents
   nameWithType: CompletionRequestObjectsKeys.AllAgents
+- uid: FoundationaLLM.Common.Constants.Agents.CompletionRequestObjectsKeys.GatewayAPIEndpointConfiguration
+  name: GatewayAPIEndpointConfiguration
+  href: api/dotnet/FoundationaLLM.Common.Constants.Agents.CompletionRequestObjectsKeys.html#FoundationaLLM_Common_Constants_Agents_CompletionRequestObjectsKeys_GatewayAPIEndpointConfiguration
+  commentId: F:FoundationaLLM.Common.Constants.Agents.CompletionRequestObjectsKeys.GatewayAPIEndpointConfiguration
+  fullName: FoundationaLLM.Common.Constants.Agents.CompletionRequestObjectsKeys.GatewayAPIEndpointConfiguration
+  nameWithType: CompletionRequestObjectsKeys.GatewayAPIEndpointConfiguration
 - uid: FoundationaLLM.Common.Constants.Agents.CompletionRequestObjectsKeys.OpenAIAssistantId
   name: OpenAIAssistantId
   href: api/dotnet/FoundationaLLM.Common.Constants.Agents.CompletionRequestObjectsKeys.html#FoundationaLLM_Common_Constants_Agents_CompletionRequestObjectsKeys_OpenAIAssistantId
@@ -5663,12 +5742,6 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials
   fullName: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials
   nameWithType: AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials
-- uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration
-  name: FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration
-  href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeySections.html#FoundationaLLM_Common_Constants_Configuration_AppConfigurationKeySections_FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration
-  commentId: F:FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration
-  fullName: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration
-  nameWithType: AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration
 - uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AzureAIStudio_Configuration
   name: FoundationaLLM_APIEndpoints_AzureAIStudio_Configuration
   href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeySections.html#FoundationaLLM_Common_Constants_Configuration_AppConfigurationKeySections_FoundationaLLM_APIEndpoints_AzureAIStudio_Configuration
@@ -6827,12 +6900,6 @@ references:
   commentId: T:FoundationaLLM.Common.Constants.Configuration.DependencyInjectionKeys
   fullName: FoundationaLLM.Common.Constants.Configuration.DependencyInjectionKeys
   nameWithType: DependencyInjectionKeys
-- uid: FoundationaLLM.Common.Constants.Configuration.DependencyInjectionKeys.FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration
-  name: FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration
-  href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.DependencyInjectionKeys.html#FoundationaLLM_Common_Constants_Configuration_DependencyInjectionKeys_FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration
-  commentId: F:FoundationaLLM.Common.Constants.Configuration.DependencyInjectionKeys.FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration
-  fullName: FoundationaLLM.Common.Constants.Configuration.DependencyInjectionKeys.FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration
-  nameWithType: DependencyInjectionKeys.FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration
 - uid: FoundationaLLM.Common.Constants.Configuration.DependencyInjectionKeys.FoundationaLLM_APIEndpoints_AzureCosmosDBNoSQLVectorStore_Configuration
   name: FoundationaLLM_APIEndpoints_AzureCosmosDBNoSQLVectorStore_Configuration
   href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.DependencyInjectionKeys.html#FoundationaLLM_Common_Constants_Configuration_DependencyInjectionKeys_FoundationaLLM_APIEndpoints_AzureCosmosDBNoSQLVectorStore_Configuration
@@ -8406,6 +8473,24 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.VectorizationResourceTypeNames.VectorizationRequests
   fullName: FoundationaLLM.Common.Constants.ResourceProviders.VectorizationResourceTypeNames.VectorizationRequests
   nameWithType: VectorizationResourceTypeNames.VectorizationRequests
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.VectorizationSettingsNames
+  name: VectorizationSettingsNames
+  href: api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.VectorizationSettingsNames.html
+  commentId: T:FoundationaLLM.Common.Constants.ResourceProviders.VectorizationSettingsNames
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.VectorizationSettingsNames
+  nameWithType: VectorizationSettingsNames
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.VectorizationSettingsNames.EmbeddingProfileModelName
+  name: EmbeddingProfileModelName
+  href: api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.VectorizationSettingsNames.html#FoundationaLLM_Common_Constants_ResourceProviders_VectorizationSettingsNames_EmbeddingProfileModelName
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.VectorizationSettingsNames.EmbeddingProfileModelName
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.VectorizationSettingsNames.EmbeddingProfileModelName
+  nameWithType: VectorizationSettingsNames.EmbeddingProfileModelName
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId
+  name: IndexingProfileApiEndpointConfigurationObjectId
+  href: api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.VectorizationSettingsNames.html#FoundationaLLM_Common_Constants_ResourceProviders_VectorizationSettingsNames_IndexingProfileApiEndpointConfigurationObjectId
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId
+  nameWithType: VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId
 - uid: FoundationaLLM.Common.Constants.ServiceNames
   name: ServiceNames
   href: api/dotnet/FoundationaLLM.Common.Constants.ServiceNames.html
@@ -8917,6 +9002,49 @@ references:
   fullName.vb: FoundationaLLM.Common.Exceptions.EventException.New
   nameWithType: EventException.EventException
   nameWithType.vb: EventException.New
+- uid: FoundationaLLM.Common.Exceptions.GatewayException
+  name: GatewayException
+  href: api/dotnet/FoundationaLLM.Common.Exceptions.GatewayException.html
+  commentId: T:FoundationaLLM.Common.Exceptions.GatewayException
+  fullName: FoundationaLLM.Common.Exceptions.GatewayException
+  nameWithType: GatewayException
+- uid: FoundationaLLM.Common.Exceptions.GatewayException.#ctor
+  name: GatewayException()
+  href: api/dotnet/FoundationaLLM.Common.Exceptions.GatewayException.html#FoundationaLLM_Common_Exceptions_GatewayException__ctor
+  commentId: M:FoundationaLLM.Common.Exceptions.GatewayException.#ctor
+  name.vb: New()
+  fullName: FoundationaLLM.Common.Exceptions.GatewayException.GatewayException()
+  fullName.vb: FoundationaLLM.Common.Exceptions.GatewayException.New()
+  nameWithType: GatewayException.GatewayException()
+  nameWithType.vb: GatewayException.New()
+- uid: FoundationaLLM.Common.Exceptions.GatewayException.#ctor(System.String,System.Exception,System.Int32)
+  name: GatewayException(string?, Exception?, int)
+  href: api/dotnet/FoundationaLLM.Common.Exceptions.GatewayException.html#FoundationaLLM_Common_Exceptions_GatewayException__ctor_System_String_System_Exception_System_Int32_
+  commentId: M:FoundationaLLM.Common.Exceptions.GatewayException.#ctor(System.String,System.Exception,System.Int32)
+  name.vb: New(String, Exception, Integer)
+  fullName: FoundationaLLM.Common.Exceptions.GatewayException.GatewayException(string?, System.Exception?, int)
+  fullName.vb: FoundationaLLM.Common.Exceptions.GatewayException.New(String, System.Exception, Integer)
+  nameWithType: GatewayException.GatewayException(string?, Exception?, int)
+  nameWithType.vb: GatewayException.New(String, Exception, Integer)
+- uid: FoundationaLLM.Common.Exceptions.GatewayException.#ctor(System.String,System.Int32)
+  name: GatewayException(string?, int)
+  href: api/dotnet/FoundationaLLM.Common.Exceptions.GatewayException.html#FoundationaLLM_Common_Exceptions_GatewayException__ctor_System_String_System_Int32_
+  commentId: M:FoundationaLLM.Common.Exceptions.GatewayException.#ctor(System.String,System.Int32)
+  name.vb: New(String, Integer)
+  fullName: FoundationaLLM.Common.Exceptions.GatewayException.GatewayException(string?, int)
+  fullName.vb: FoundationaLLM.Common.Exceptions.GatewayException.New(String, Integer)
+  nameWithType: GatewayException.GatewayException(string?, int)
+  nameWithType.vb: GatewayException.New(String, Integer)
+- uid: FoundationaLLM.Common.Exceptions.GatewayException.#ctor*
+  name: GatewayException
+  href: api/dotnet/FoundationaLLM.Common.Exceptions.GatewayException.html#FoundationaLLM_Common_Exceptions_GatewayException__ctor_
+  commentId: Overload:FoundationaLLM.Common.Exceptions.GatewayException.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: FoundationaLLM.Common.Exceptions.GatewayException.GatewayException
+  fullName.vb: FoundationaLLM.Common.Exceptions.GatewayException.New
+  nameWithType: GatewayException.GatewayException
+  nameWithType.vb: GatewayException.New
 - uid: FoundationaLLM.Common.Exceptions.HttpStatusCodeException
   name: HttpStatusCodeException
   href: api/dotnet/FoundationaLLM.Common.Exceptions.HttpStatusCodeException.html
@@ -10561,15 +10689,15 @@ references:
   commentId: T:FoundationaLLM.Common.Interfaces.ITextEmbeddingService
   fullName: FoundationaLLM.Common.Interfaces.ITextEmbeddingService
   nameWithType: ITextEmbeddingService
-- uid: FoundationaLLM.Common.Interfaces.ITextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String)
-  name: GetEmbeddingsAsync(IList<TextChunk>, string)
-  href: api/dotnet/FoundationaLLM.Common.Interfaces.ITextEmbeddingService.html#FoundationaLLM_Common_Interfaces_ITextEmbeddingService_GetEmbeddingsAsync_System_Collections_Generic_IList_FoundationaLLM_Common_Models_Vectorization_TextChunk__System_String_
-  commentId: M:FoundationaLLM.Common.Interfaces.ITextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String)
-  name.vb: GetEmbeddingsAsync(IList(Of TextChunk), String)
-  fullName: FoundationaLLM.Common.Interfaces.ITextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList<FoundationaLLM.Common.Models.Vectorization.TextChunk>, string)
-  fullName.vb: FoundationaLLM.Common.Interfaces.ITextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList(Of FoundationaLLM.Common.Models.Vectorization.TextChunk), String)
-  nameWithType: ITextEmbeddingService.GetEmbeddingsAsync(IList<TextChunk>, string)
-  nameWithType.vb: ITextEmbeddingService.GetEmbeddingsAsync(IList(Of TextChunk), String)
+- uid: FoundationaLLM.Common.Interfaces.ITextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String,System.Boolean)
+  name: GetEmbeddingsAsync(IList<TextChunk>, string, bool)
+  href: api/dotnet/FoundationaLLM.Common.Interfaces.ITextEmbeddingService.html#FoundationaLLM_Common_Interfaces_ITextEmbeddingService_GetEmbeddingsAsync_System_Collections_Generic_IList_FoundationaLLM_Common_Models_Vectorization_TextChunk__System_String_System_Boolean_
+  commentId: M:FoundationaLLM.Common.Interfaces.ITextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String,System.Boolean)
+  name.vb: GetEmbeddingsAsync(IList(Of TextChunk), String, Boolean)
+  fullName: FoundationaLLM.Common.Interfaces.ITextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList<FoundationaLLM.Common.Models.Vectorization.TextChunk>, string, bool)
+  fullName.vb: FoundationaLLM.Common.Interfaces.ITextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList(Of FoundationaLLM.Common.Models.Vectorization.TextChunk), String, Boolean)
+  nameWithType: ITextEmbeddingService.GetEmbeddingsAsync(IList<TextChunk>, string, bool)
+  nameWithType.vb: ITextEmbeddingService.GetEmbeddingsAsync(IList(Of TextChunk), String, Boolean)
 - uid: FoundationaLLM.Common.Interfaces.ITextEmbeddingService.GetEmbeddingsAsync(System.String)
   name: GetEmbeddingsAsync(string)
   href: api/dotnet/FoundationaLLM.Common.Interfaces.ITextEmbeddingService.html#FoundationaLLM_Common_Interfaces_ITextEmbeddingService_GetEmbeddingsAsync_System_String_
@@ -15132,6 +15260,51 @@ references:
   commentId: N:FoundationaLLM.Common.Models.Gateway
   fullName: FoundationaLLM.Common.Models.Gateway
   nameWithType: FoundationaLLM.Common.Models.Gateway
+- uid: FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest
+  name: AgentCapabilityRequest
+  href: api/dotnet/FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.html
+  commentId: T:FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest
+  fullName: FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest
+  nameWithType: AgentCapabilityRequest
+- uid: FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.CapabilityCategory
+  name: CapabilityCategory
+  href: api/dotnet/FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.html#FoundationaLLM_Common_Models_Gateway_AgentCapabilityRequest_CapabilityCategory
+  commentId: P:FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.CapabilityCategory
+  fullName: FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.CapabilityCategory
+  nameWithType: AgentCapabilityRequest.CapabilityCategory
+- uid: FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.CapabilityCategory*
+  name: CapabilityCategory
+  href: api/dotnet/FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.html#FoundationaLLM_Common_Models_Gateway_AgentCapabilityRequest_CapabilityCategory_
+  commentId: Overload:FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.CapabilityCategory
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.CapabilityCategory
+  nameWithType: AgentCapabilityRequest.CapabilityCategory
+- uid: FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.CapabilityName
+  name: CapabilityName
+  href: api/dotnet/FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.html#FoundationaLLM_Common_Models_Gateway_AgentCapabilityRequest_CapabilityName
+  commentId: P:FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.CapabilityName
+  fullName: FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.CapabilityName
+  nameWithType: AgentCapabilityRequest.CapabilityName
+- uid: FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.CapabilityName*
+  name: CapabilityName
+  href: api/dotnet/FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.html#FoundationaLLM_Common_Models_Gateway_AgentCapabilityRequest_CapabilityName_
+  commentId: Overload:FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.CapabilityName
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.CapabilityName
+  nameWithType: AgentCapabilityRequest.CapabilityName
+- uid: FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.Parameters
+  name: Parameters
+  href: api/dotnet/FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.html#FoundationaLLM_Common_Models_Gateway_AgentCapabilityRequest_Parameters
+  commentId: P:FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.Parameters
+  fullName: FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.Parameters
+  nameWithType: AgentCapabilityRequest.Parameters
+- uid: FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.Parameters*
+  name: Parameters
+  href: api/dotnet/FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.html#FoundationaLLM_Common_Models_Gateway_AgentCapabilityRequest_Parameters_
+  commentId: Overload:FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.Parameters
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.Parameters
+  nameWithType: AgentCapabilityRequest.Parameters
 - uid: FoundationaLLM.Common.Models.Gateway.GatewayTextEmbeddingRequestMetrics
   name: GatewayTextEmbeddingRequestMetrics
   href: api/dotnet/FoundationaLLM.Common.Models.Gateway.GatewayTextEmbeddingRequestMetrics.html
@@ -21081,12 +21254,6 @@ references:
   commentId: F:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextEmbeddingType.GatewayTextEmbedding
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextEmbeddingType.GatewayTextEmbedding
   nameWithType: TextEmbeddingType.GatewayTextEmbedding
-- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextEmbeddingType.SemanticKernelTextEmbedding
-  name: SemanticKernelTextEmbedding
-  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextEmbeddingType.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_TextEmbeddingType_SemanticKernelTextEmbedding
-  commentId: F:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextEmbeddingType.SemanticKernelTextEmbedding
-  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextEmbeddingType.SemanticKernelTextEmbedding
-  nameWithType: TextEmbeddingType.SemanticKernelTextEmbedding
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextPartitioningProfile
   name: TextPartitioningProfile
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextPartitioningProfile.html
@@ -22393,6 +22560,19 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest.EmbeddingModelName
   nameWithType: TextEmbeddingRequest.EmbeddingModelName
+- uid: FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest.Prioritized
+  name: Prioritized
+  href: api/dotnet/FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest.html#FoundationaLLM_Common_Models_Vectorization_TextEmbeddingRequest_Prioritized
+  commentId: P:FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest.Prioritized
+  fullName: FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest.Prioritized
+  nameWithType: TextEmbeddingRequest.Prioritized
+- uid: FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest.Prioritized*
+  name: Prioritized
+  href: api/dotnet/FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest.html#FoundationaLLM_Common_Models_Vectorization_TextEmbeddingRequest_Prioritized_
+  commentId: Overload:FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest.Prioritized
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest.Prioritized
+  nameWithType: TextEmbeddingRequest.Prioritized
 - uid: FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest.TextChunks
   name: TextChunks
   href: api/dotnet/FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest.html#FoundationaLLM_Common_Models_Vectorization_TextEmbeddingRequest_TextChunks
@@ -26412,6 +26592,22 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.DeleteResourceAsync
   nameWithType: ConfigurationResourceProviderService.DeleteResourceAsync
+- uid: FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.GetResourceInternal*
+  name: GetResourceInternal
+  href: api/dotnet/FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.html#FoundationaLLM_Configuration_Services_ConfigurationResourceProviderService_GetResourceInternal_
+  commentId: Overload:FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.GetResourceInternal
+  isSpec: "True"
+  fullName: FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.GetResourceInternal
+  nameWithType: ConfigurationResourceProviderService.GetResourceInternal
+- uid: FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.GetResourceInternal``1(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderOptions)
+  name: GetResourceInternal<T>(ResourcePath, UnifiedUserIdentity, ResourceProviderOptions?)
+  href: api/dotnet/FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.html#FoundationaLLM_Configuration_Services_ConfigurationResourceProviderService_GetResourceInternal__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderOptions_
+  commentId: M:FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.GetResourceInternal``1(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderOptions)
+  name.vb: GetResourceInternal(Of T)(ResourcePath, UnifiedUserIdentity, ResourceProviderOptions)
+  fullName: FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.GetResourceInternal<T>(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderOptions?)
+  fullName.vb: FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.GetResourceInternal(Of T)(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderOptions)
+  nameWithType: ConfigurationResourceProviderService.GetResourceInternal<T>(ResourcePath, UnifiedUserIdentity, ResourceProviderOptions?)
+  nameWithType.vb: ConfigurationResourceProviderService.GetResourceInternal(Of T)(ResourcePath, UnifiedUserIdentity, ResourceProviderOptions)
 - uid: FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.GetResourceTypes
   name: GetResourceTypes()
   href: api/dotnet/FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.html#FoundationaLLM_Configuration_Services_ConfigurationResourceProviderService_GetResourceTypes
@@ -31069,13 +31265,13 @@ references:
   fullName.vb: FoundationaLLM.Gateway.API.Controllers.AgentCapabilitiesController.New
   nameWithType: AgentCapabilitiesController.AgentCapabilitiesController
   nameWithType.vb: AgentCapabilitiesController.New
-- uid: FoundationaLLM.Gateway.API.Controllers.AgentCapabilitiesController.CreateAgentCapability(System.String,FoundationaLLM.Gateway.Models.AgentCapabilityRequest)
+- uid: FoundationaLLM.Gateway.API.Controllers.AgentCapabilitiesController.CreateAgentCapability(System.String,FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest)
   name: CreateAgentCapability(string, AgentCapabilityRequest)
-  href: api/dotnet/FoundationaLLM.Gateway.API.Controllers.AgentCapabilitiesController.html#FoundationaLLM_Gateway_API_Controllers_AgentCapabilitiesController_CreateAgentCapability_System_String_FoundationaLLM_Gateway_Models_AgentCapabilityRequest_
-  commentId: M:FoundationaLLM.Gateway.API.Controllers.AgentCapabilitiesController.CreateAgentCapability(System.String,FoundationaLLM.Gateway.Models.AgentCapabilityRequest)
+  href: api/dotnet/FoundationaLLM.Gateway.API.Controllers.AgentCapabilitiesController.html#FoundationaLLM_Gateway_API_Controllers_AgentCapabilitiesController_CreateAgentCapability_System_String_FoundationaLLM_Common_Models_Gateway_AgentCapabilityRequest_
+  commentId: M:FoundationaLLM.Gateway.API.Controllers.AgentCapabilitiesController.CreateAgentCapability(System.String,FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest)
   name.vb: CreateAgentCapability(String, AgentCapabilityRequest)
-  fullName: FoundationaLLM.Gateway.API.Controllers.AgentCapabilitiesController.CreateAgentCapability(string, FoundationaLLM.Gateway.Models.AgentCapabilityRequest)
-  fullName.vb: FoundationaLLM.Gateway.API.Controllers.AgentCapabilitiesController.CreateAgentCapability(String, FoundationaLLM.Gateway.Models.AgentCapabilityRequest)
+  fullName: FoundationaLLM.Gateway.API.Controllers.AgentCapabilitiesController.CreateAgentCapability(string, FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest)
+  fullName.vb: FoundationaLLM.Gateway.API.Controllers.AgentCapabilitiesController.CreateAgentCapability(String, FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest)
   nameWithType: AgentCapabilitiesController.CreateAgentCapability(string, AgentCapabilityRequest)
   nameWithType.vb: AgentCapabilitiesController.CreateAgentCapability(String, AgentCapabilityRequest)
 - uid: FoundationaLLM.Gateway.API.Controllers.AgentCapabilitiesController.CreateAgentCapability*
@@ -31212,134 +31408,12 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Gateway.AdapterAPI.Controllers.StatusController.Options
   nameWithType: StatusController.Options
-- uid: FoundationaLLM.Gateway.Client
-  name: FoundationaLLM.Gateway.Client
-  href: api/dotnet/FoundationaLLM.Gateway.Client.html
-  commentId: N:FoundationaLLM.Gateway.Client
-  fullName: FoundationaLLM.Gateway.Client
-  nameWithType: FoundationaLLM.Gateway.Client
-- uid: FoundationaLLM.Gateway.Client.GatewayServiceClient
-  name: GatewayServiceClient
-  href: api/dotnet/FoundationaLLM.Gateway.Client.GatewayServiceClient.html
-  commentId: T:FoundationaLLM.Gateway.Client.GatewayServiceClient
-  fullName: FoundationaLLM.Gateway.Client.GatewayServiceClient
-  nameWithType: GatewayServiceClient
-- uid: FoundationaLLM.Gateway.Client.GatewayServiceClient.#ctor(System.Net.Http.HttpClient,Microsoft.Extensions.Logging.ILogger)
-  name: GatewayServiceClient(HttpClient, ILogger)
-  href: api/dotnet/FoundationaLLM.Gateway.Client.GatewayServiceClient.html#FoundationaLLM_Gateway_Client_GatewayServiceClient__ctor_System_Net_Http_HttpClient_Microsoft_Extensions_Logging_ILogger_
-  commentId: M:FoundationaLLM.Gateway.Client.GatewayServiceClient.#ctor(System.Net.Http.HttpClient,Microsoft.Extensions.Logging.ILogger)
-  name.vb: New(HttpClient, ILogger)
-  fullName: FoundationaLLM.Gateway.Client.GatewayServiceClient.GatewayServiceClient(System.Net.Http.HttpClient, Microsoft.Extensions.Logging.ILogger)
-  fullName.vb: FoundationaLLM.Gateway.Client.GatewayServiceClient.New(System.Net.Http.HttpClient, Microsoft.Extensions.Logging.ILogger)
-  nameWithType: GatewayServiceClient.GatewayServiceClient(HttpClient, ILogger)
-  nameWithType.vb: GatewayServiceClient.New(HttpClient, ILogger)
-- uid: FoundationaLLM.Gateway.Client.GatewayServiceClient.#ctor*
-  name: GatewayServiceClient
-  href: api/dotnet/FoundationaLLM.Gateway.Client.GatewayServiceClient.html#FoundationaLLM_Gateway_Client_GatewayServiceClient__ctor_
-  commentId: Overload:FoundationaLLM.Gateway.Client.GatewayServiceClient.#ctor
-  isSpec: "True"
-  name.vb: New
-  fullName: FoundationaLLM.Gateway.Client.GatewayServiceClient.GatewayServiceClient
-  fullName.vb: FoundationaLLM.Gateway.Client.GatewayServiceClient.New
-  nameWithType: GatewayServiceClient.GatewayServiceClient
-  nameWithType.vb: GatewayServiceClient.New
-- uid: FoundationaLLM.Gateway.Client.GatewayServiceClient.CreateAgentCapability(System.String,System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object})
-  name: CreateAgentCapability(string, string, string, Dictionary<string, object>?)
-  href: api/dotnet/FoundationaLLM.Gateway.Client.GatewayServiceClient.html#FoundationaLLM_Gateway_Client_GatewayServiceClient_CreateAgentCapability_System_String_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__
-  commentId: M:FoundationaLLM.Gateway.Client.GatewayServiceClient.CreateAgentCapability(System.String,System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object})
-  name.vb: CreateAgentCapability(String, String, String, Dictionary(Of String, Object))
-  fullName: FoundationaLLM.Gateway.Client.GatewayServiceClient.CreateAgentCapability(string, string, string, System.Collections.Generic.Dictionary<string, object>?)
-  fullName.vb: FoundationaLLM.Gateway.Client.GatewayServiceClient.CreateAgentCapability(String, String, String, System.Collections.Generic.Dictionary(Of String, Object))
-  nameWithType: GatewayServiceClient.CreateAgentCapability(string, string, string, Dictionary<string, object>?)
-  nameWithType.vb: GatewayServiceClient.CreateAgentCapability(String, String, String, Dictionary(Of String, Object))
-- uid: FoundationaLLM.Gateway.Client.GatewayServiceClient.CreateAgentCapability*
-  name: CreateAgentCapability
-  href: api/dotnet/FoundationaLLM.Gateway.Client.GatewayServiceClient.html#FoundationaLLM_Gateway_Client_GatewayServiceClient_CreateAgentCapability_
-  commentId: Overload:FoundationaLLM.Gateway.Client.GatewayServiceClient.CreateAgentCapability
-  isSpec: "True"
-  fullName: FoundationaLLM.Gateway.Client.GatewayServiceClient.CreateAgentCapability
-  nameWithType: GatewayServiceClient.CreateAgentCapability
-- uid: FoundationaLLM.Gateway.Client.GatewayServiceClient.GetEmbeddingOperationResult(System.String,System.String)
-  name: GetEmbeddingOperationResult(string, string)
-  href: api/dotnet/FoundationaLLM.Gateway.Client.GatewayServiceClient.html#FoundationaLLM_Gateway_Client_GatewayServiceClient_GetEmbeddingOperationResult_System_String_System_String_
-  commentId: M:FoundationaLLM.Gateway.Client.GatewayServiceClient.GetEmbeddingOperationResult(System.String,System.String)
-  name.vb: GetEmbeddingOperationResult(String, String)
-  fullName: FoundationaLLM.Gateway.Client.GatewayServiceClient.GetEmbeddingOperationResult(string, string)
-  fullName.vb: FoundationaLLM.Gateway.Client.GatewayServiceClient.GetEmbeddingOperationResult(String, String)
-  nameWithType: GatewayServiceClient.GetEmbeddingOperationResult(string, string)
-  nameWithType.vb: GatewayServiceClient.GetEmbeddingOperationResult(String, String)
-- uid: FoundationaLLM.Gateway.Client.GatewayServiceClient.GetEmbeddingOperationResult*
-  name: GetEmbeddingOperationResult
-  href: api/dotnet/FoundationaLLM.Gateway.Client.GatewayServiceClient.html#FoundationaLLM_Gateway_Client_GatewayServiceClient_GetEmbeddingOperationResult_
-  commentId: Overload:FoundationaLLM.Gateway.Client.GatewayServiceClient.GetEmbeddingOperationResult
-  isSpec: "True"
-  fullName: FoundationaLLM.Gateway.Client.GatewayServiceClient.GetEmbeddingOperationResult
-  nameWithType: GatewayServiceClient.GetEmbeddingOperationResult
-- uid: FoundationaLLM.Gateway.Client.GatewayServiceClient.StartEmbeddingOperation(System.String,FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest)
-  name: StartEmbeddingOperation(string, TextEmbeddingRequest)
-  href: api/dotnet/FoundationaLLM.Gateway.Client.GatewayServiceClient.html#FoundationaLLM_Gateway_Client_GatewayServiceClient_StartEmbeddingOperation_System_String_FoundationaLLM_Common_Models_Vectorization_TextEmbeddingRequest_
-  commentId: M:FoundationaLLM.Gateway.Client.GatewayServiceClient.StartEmbeddingOperation(System.String,FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest)
-  name.vb: StartEmbeddingOperation(String, TextEmbeddingRequest)
-  fullName: FoundationaLLM.Gateway.Client.GatewayServiceClient.StartEmbeddingOperation(string, FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest)
-  fullName.vb: FoundationaLLM.Gateway.Client.GatewayServiceClient.StartEmbeddingOperation(String, FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest)
-  nameWithType: GatewayServiceClient.StartEmbeddingOperation(string, TextEmbeddingRequest)
-  nameWithType.vb: GatewayServiceClient.StartEmbeddingOperation(String, TextEmbeddingRequest)
-- uid: FoundationaLLM.Gateway.Client.GatewayServiceClient.StartEmbeddingOperation*
-  name: StartEmbeddingOperation
-  href: api/dotnet/FoundationaLLM.Gateway.Client.GatewayServiceClient.html#FoundationaLLM_Gateway_Client_GatewayServiceClient_StartEmbeddingOperation_
-  commentId: Overload:FoundationaLLM.Gateway.Client.GatewayServiceClient.StartEmbeddingOperation
-  isSpec: "True"
-  fullName: FoundationaLLM.Gateway.Client.GatewayServiceClient.StartEmbeddingOperation
-  nameWithType: GatewayServiceClient.StartEmbeddingOperation
 - uid: FoundationaLLM.Gateway.Exceptions
   name: FoundationaLLM.Gateway.Exceptions
   href: api/dotnet/FoundationaLLM.Gateway.Exceptions.html
   commentId: N:FoundationaLLM.Gateway.Exceptions
   fullName: FoundationaLLM.Gateway.Exceptions
   nameWithType: FoundationaLLM.Gateway.Exceptions
-- uid: FoundationaLLM.Gateway.Exceptions.GatewayException
-  name: GatewayException
-  href: api/dotnet/FoundationaLLM.Gateway.Exceptions.GatewayException.html
-  commentId: T:FoundationaLLM.Gateway.Exceptions.GatewayException
-  fullName: FoundationaLLM.Gateway.Exceptions.GatewayException
-  nameWithType: GatewayException
-- uid: FoundationaLLM.Gateway.Exceptions.GatewayException.#ctor
-  name: GatewayException()
-  href: api/dotnet/FoundationaLLM.Gateway.Exceptions.GatewayException.html#FoundationaLLM_Gateway_Exceptions_GatewayException__ctor
-  commentId: M:FoundationaLLM.Gateway.Exceptions.GatewayException.#ctor
-  name.vb: New()
-  fullName: FoundationaLLM.Gateway.Exceptions.GatewayException.GatewayException()
-  fullName.vb: FoundationaLLM.Gateway.Exceptions.GatewayException.New()
-  nameWithType: GatewayException.GatewayException()
-  nameWithType.vb: GatewayException.New()
-- uid: FoundationaLLM.Gateway.Exceptions.GatewayException.#ctor(System.String,System.Exception,System.Int32)
-  name: GatewayException(string?, Exception?, int)
-  href: api/dotnet/FoundationaLLM.Gateway.Exceptions.GatewayException.html#FoundationaLLM_Gateway_Exceptions_GatewayException__ctor_System_String_System_Exception_System_Int32_
-  commentId: M:FoundationaLLM.Gateway.Exceptions.GatewayException.#ctor(System.String,System.Exception,System.Int32)
-  name.vb: New(String, Exception, Integer)
-  fullName: FoundationaLLM.Gateway.Exceptions.GatewayException.GatewayException(string?, System.Exception?, int)
-  fullName.vb: FoundationaLLM.Gateway.Exceptions.GatewayException.New(String, System.Exception, Integer)
-  nameWithType: GatewayException.GatewayException(string?, Exception?, int)
-  nameWithType.vb: GatewayException.New(String, Exception, Integer)
-- uid: FoundationaLLM.Gateway.Exceptions.GatewayException.#ctor(System.String,System.Int32)
-  name: GatewayException(string?, int)
-  href: api/dotnet/FoundationaLLM.Gateway.Exceptions.GatewayException.html#FoundationaLLM_Gateway_Exceptions_GatewayException__ctor_System_String_System_Int32_
-  commentId: M:FoundationaLLM.Gateway.Exceptions.GatewayException.#ctor(System.String,System.Int32)
-  name.vb: New(String, Integer)
-  fullName: FoundationaLLM.Gateway.Exceptions.GatewayException.GatewayException(string?, int)
-  fullName.vb: FoundationaLLM.Gateway.Exceptions.GatewayException.New(String, Integer)
-  nameWithType: GatewayException.GatewayException(string?, int)
-  nameWithType.vb: GatewayException.New(String, Integer)
-- uid: FoundationaLLM.Gateway.Exceptions.GatewayException.#ctor*
-  name: GatewayException
-  href: api/dotnet/FoundationaLLM.Gateway.Exceptions.GatewayException.html#FoundationaLLM_Gateway_Exceptions_GatewayException__ctor_
-  commentId: Overload:FoundationaLLM.Gateway.Exceptions.GatewayException.#ctor
-  isSpec: "True"
-  name.vb: New
-  fullName: FoundationaLLM.Gateway.Exceptions.GatewayException.GatewayException
-  fullName.vb: FoundationaLLM.Gateway.Exceptions.GatewayException.New
-  nameWithType: GatewayException.GatewayException
-  nameWithType.vb: GatewayException.New
 - uid: FoundationaLLM.Gateway.Exceptions.GatewayExceptionHandler
   name: GatewayExceptionHandler
   href: api/dotnet/FoundationaLLM.Gateway.Exceptions.GatewayExceptionHandler.html
@@ -31483,51 +31557,6 @@ references:
   commentId: N:FoundationaLLM.Gateway.Models
   fullName: FoundationaLLM.Gateway.Models
   nameWithType: FoundationaLLM.Gateway.Models
-- uid: FoundationaLLM.Gateway.Models.AgentCapabilityRequest
-  name: AgentCapabilityRequest
-  href: api/dotnet/FoundationaLLM.Gateway.Models.AgentCapabilityRequest.html
-  commentId: T:FoundationaLLM.Gateway.Models.AgentCapabilityRequest
-  fullName: FoundationaLLM.Gateway.Models.AgentCapabilityRequest
-  nameWithType: AgentCapabilityRequest
-- uid: FoundationaLLM.Gateway.Models.AgentCapabilityRequest.CapabilityCategory
-  name: CapabilityCategory
-  href: api/dotnet/FoundationaLLM.Gateway.Models.AgentCapabilityRequest.html#FoundationaLLM_Gateway_Models_AgentCapabilityRequest_CapabilityCategory
-  commentId: P:FoundationaLLM.Gateway.Models.AgentCapabilityRequest.CapabilityCategory
-  fullName: FoundationaLLM.Gateway.Models.AgentCapabilityRequest.CapabilityCategory
-  nameWithType: AgentCapabilityRequest.CapabilityCategory
-- uid: FoundationaLLM.Gateway.Models.AgentCapabilityRequest.CapabilityCategory*
-  name: CapabilityCategory
-  href: api/dotnet/FoundationaLLM.Gateway.Models.AgentCapabilityRequest.html#FoundationaLLM_Gateway_Models_AgentCapabilityRequest_CapabilityCategory_
-  commentId: Overload:FoundationaLLM.Gateway.Models.AgentCapabilityRequest.CapabilityCategory
-  isSpec: "True"
-  fullName: FoundationaLLM.Gateway.Models.AgentCapabilityRequest.CapabilityCategory
-  nameWithType: AgentCapabilityRequest.CapabilityCategory
-- uid: FoundationaLLM.Gateway.Models.AgentCapabilityRequest.CapabilityName
-  name: CapabilityName
-  href: api/dotnet/FoundationaLLM.Gateway.Models.AgentCapabilityRequest.html#FoundationaLLM_Gateway_Models_AgentCapabilityRequest_CapabilityName
-  commentId: P:FoundationaLLM.Gateway.Models.AgentCapabilityRequest.CapabilityName
-  fullName: FoundationaLLM.Gateway.Models.AgentCapabilityRequest.CapabilityName
-  nameWithType: AgentCapabilityRequest.CapabilityName
-- uid: FoundationaLLM.Gateway.Models.AgentCapabilityRequest.CapabilityName*
-  name: CapabilityName
-  href: api/dotnet/FoundationaLLM.Gateway.Models.AgentCapabilityRequest.html#FoundationaLLM_Gateway_Models_AgentCapabilityRequest_CapabilityName_
-  commentId: Overload:FoundationaLLM.Gateway.Models.AgentCapabilityRequest.CapabilityName
-  isSpec: "True"
-  fullName: FoundationaLLM.Gateway.Models.AgentCapabilityRequest.CapabilityName
-  nameWithType: AgentCapabilityRequest.CapabilityName
-- uid: FoundationaLLM.Gateway.Models.AgentCapabilityRequest.Parameters
-  name: Parameters
-  href: api/dotnet/FoundationaLLM.Gateway.Models.AgentCapabilityRequest.html#FoundationaLLM_Gateway_Models_AgentCapabilityRequest_Parameters
-  commentId: P:FoundationaLLM.Gateway.Models.AgentCapabilityRequest.Parameters
-  fullName: FoundationaLLM.Gateway.Models.AgentCapabilityRequest.Parameters
-  nameWithType: AgentCapabilityRequest.Parameters
-- uid: FoundationaLLM.Gateway.Models.AgentCapabilityRequest.Parameters*
-  name: Parameters
-  href: api/dotnet/FoundationaLLM.Gateway.Models.AgentCapabilityRequest.html#FoundationaLLM_Gateway_Models_AgentCapabilityRequest_Parameters_
-  commentId: Overload:FoundationaLLM.Gateway.Models.AgentCapabilityRequest.Parameters
-  isSpec: "True"
-  fullName: FoundationaLLM.Gateway.Models.AgentCapabilityRequest.Parameters
-  nameWithType: AgentCapabilityRequest.Parameters
 - uid: FoundationaLLM.Gateway.Models.Configuration
   name: FoundationaLLM.Gateway.Models.Configuration
   href: api/dotnet/FoundationaLLM.Gateway.Models.Configuration.html
@@ -31726,6 +31755,19 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Gateway.Models.EmbeddingOperationContext.InputTextChunks
   nameWithType: EmbeddingOperationContext.InputTextChunks
+- uid: FoundationaLLM.Gateway.Models.EmbeddingOperationContext.Prioritized
+  name: Prioritized
+  href: api/dotnet/FoundationaLLM.Gateway.Models.EmbeddingOperationContext.html#FoundationaLLM_Gateway_Models_EmbeddingOperationContext_Prioritized
+  commentId: P:FoundationaLLM.Gateway.Models.EmbeddingOperationContext.Prioritized
+  fullName: FoundationaLLM.Gateway.Models.EmbeddingOperationContext.Prioritized
+  nameWithType: EmbeddingOperationContext.Prioritized
+- uid: FoundationaLLM.Gateway.Models.EmbeddingOperationContext.Prioritized*
+  name: Prioritized
+  href: api/dotnet/FoundationaLLM.Gateway.Models.EmbeddingOperationContext.html#FoundationaLLM_Gateway_Models_EmbeddingOperationContext_Prioritized_
+  commentId: Overload:FoundationaLLM.Gateway.Models.EmbeddingOperationContext.Prioritized
+  isSpec: "True"
+  fullName: FoundationaLLM.Gateway.Models.EmbeddingOperationContext.Prioritized
+  nameWithType: EmbeddingOperationContext.Prioritized
 - uid: FoundationaLLM.Gateway.Models.EmbeddingOperationContext.Result
   name: Result
   href: api/dotnet/FoundationaLLM.Gateway.Models.EmbeddingOperationContext.html#FoundationaLLM_Gateway_Models_EmbeddingOperationContext_Result
@@ -31790,6 +31832,56 @@ references:
   commentId: N:FoundationaLLM.Gateway.Services
   fullName: FoundationaLLM.Gateway.Services
   nameWithType: FoundationaLLM.Gateway.Services
+- uid: FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService
+  name: AzureOpenAITextEmbeddingService
+  href: api/dotnet/FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.html
+  commentId: T:FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService
+  fullName: FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService
+  nameWithType: AzureOpenAITextEmbeddingService
+- uid: FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.#ctor(System.String,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService})
+  name: AzureOpenAITextEmbeddingService(string, ILogger<AzureOpenAITextEmbeddingService>)
+  href: api/dotnet/FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.html#FoundationaLLM_Gateway_Services_AzureOpenAITextEmbeddingService__ctor_System_String_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Gateway_Services_AzureOpenAITextEmbeddingService__
+  commentId: M:FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.#ctor(System.String,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService})
+  name.vb: New(String, ILogger(Of AzureOpenAITextEmbeddingService))
+  fullName: FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.AzureOpenAITextEmbeddingService(string, Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService>)
+  fullName.vb: FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.New(String, Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService))
+  nameWithType: AzureOpenAITextEmbeddingService.AzureOpenAITextEmbeddingService(string, ILogger<AzureOpenAITextEmbeddingService>)
+  nameWithType.vb: AzureOpenAITextEmbeddingService.New(String, ILogger(Of AzureOpenAITextEmbeddingService))
+- uid: FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.#ctor*
+  name: AzureOpenAITextEmbeddingService
+  href: api/dotnet/FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.html#FoundationaLLM_Gateway_Services_AzureOpenAITextEmbeddingService__ctor_
+  commentId: Overload:FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.AzureOpenAITextEmbeddingService
+  fullName.vb: FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.New
+  nameWithType: AzureOpenAITextEmbeddingService.AzureOpenAITextEmbeddingService
+  nameWithType.vb: AzureOpenAITextEmbeddingService.New
+- uid: FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String,System.Boolean)
+  name: GetEmbeddingsAsync(IList<TextChunk>, string, bool)
+  href: api/dotnet/FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.html#FoundationaLLM_Gateway_Services_AzureOpenAITextEmbeddingService_GetEmbeddingsAsync_System_Collections_Generic_IList_FoundationaLLM_Common_Models_Vectorization_TextChunk__System_String_System_Boolean_
+  commentId: M:FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String,System.Boolean)
+  name.vb: GetEmbeddingsAsync(IList(Of TextChunk), String, Boolean)
+  fullName: FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList<FoundationaLLM.Common.Models.Vectorization.TextChunk>, string, bool)
+  fullName.vb: FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList(Of FoundationaLLM.Common.Models.Vectorization.TextChunk), String, Boolean)
+  nameWithType: AzureOpenAITextEmbeddingService.GetEmbeddingsAsync(IList<TextChunk>, string, bool)
+  nameWithType.vb: AzureOpenAITextEmbeddingService.GetEmbeddingsAsync(IList(Of TextChunk), String, Boolean)
+- uid: FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.GetEmbeddingsAsync(System.String)
+  name: GetEmbeddingsAsync(string)
+  href: api/dotnet/FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.html#FoundationaLLM_Gateway_Services_AzureOpenAITextEmbeddingService_GetEmbeddingsAsync_System_String_
+  commentId: M:FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.GetEmbeddingsAsync(System.String)
+  name.vb: GetEmbeddingsAsync(String)
+  fullName: FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.GetEmbeddingsAsync(string)
+  fullName.vb: FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.GetEmbeddingsAsync(String)
+  nameWithType: AzureOpenAITextEmbeddingService.GetEmbeddingsAsync(string)
+  nameWithType.vb: AzureOpenAITextEmbeddingService.GetEmbeddingsAsync(String)
+- uid: FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.GetEmbeddingsAsync*
+  name: GetEmbeddingsAsync
+  href: api/dotnet/FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.html#FoundationaLLM_Gateway_Services_AzureOpenAITextEmbeddingService_GetEmbeddingsAsync_
+  commentId: Overload:FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.GetEmbeddingsAsync
+  isSpec: "True"
+  fullName: FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.GetEmbeddingsAsync
+  nameWithType: AzureOpenAITextEmbeddingService.GetEmbeddingsAsync
 - uid: FoundationaLLM.Gateway.Services.GatewayCore
   name: GatewayCore
   href: api/dotnet/FoundationaLLM.Gateway.Services.GatewayCore.html
@@ -31902,56 +31994,6 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Gateway.Services.GatewayCore.StopAsync
   nameWithType: GatewayCore.StopAsync
-- uid: FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService
-  name: GatewayTextEmbeddingService
-  href: api/dotnet/FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.html
-  commentId: T:FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService
-  fullName: FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService
-  nameWithType: GatewayTextEmbeddingService
-- uid: FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.#ctor(System.String,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService})
-  name: GatewayTextEmbeddingService(string, ILogger<GatewayTextEmbeddingService>)
-  href: api/dotnet/FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.html#FoundationaLLM_Gateway_Services_GatewayTextEmbeddingService__ctor_System_String_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Gateway_Services_GatewayTextEmbeddingService__
-  commentId: M:FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.#ctor(System.String,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService})
-  name.vb: New(String, ILogger(Of GatewayTextEmbeddingService))
-  fullName: FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.GatewayTextEmbeddingService(string, Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService>)
-  fullName.vb: FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.New(String, Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService))
-  nameWithType: GatewayTextEmbeddingService.GatewayTextEmbeddingService(string, ILogger<GatewayTextEmbeddingService>)
-  nameWithType.vb: GatewayTextEmbeddingService.New(String, ILogger(Of GatewayTextEmbeddingService))
-- uid: FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.#ctor*
-  name: GatewayTextEmbeddingService
-  href: api/dotnet/FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.html#FoundationaLLM_Gateway_Services_GatewayTextEmbeddingService__ctor_
-  commentId: Overload:FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.#ctor
-  isSpec: "True"
-  name.vb: New
-  fullName: FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.GatewayTextEmbeddingService
-  fullName.vb: FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.New
-  nameWithType: GatewayTextEmbeddingService.GatewayTextEmbeddingService
-  nameWithType.vb: GatewayTextEmbeddingService.New
-- uid: FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String)
-  name: GetEmbeddingsAsync(IList<TextChunk>, string)
-  href: api/dotnet/FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.html#FoundationaLLM_Gateway_Services_GatewayTextEmbeddingService_GetEmbeddingsAsync_System_Collections_Generic_IList_FoundationaLLM_Common_Models_Vectorization_TextChunk__System_String_
-  commentId: M:FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String)
-  name.vb: GetEmbeddingsAsync(IList(Of TextChunk), String)
-  fullName: FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList<FoundationaLLM.Common.Models.Vectorization.TextChunk>, string)
-  fullName.vb: FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList(Of FoundationaLLM.Common.Models.Vectorization.TextChunk), String)
-  nameWithType: GatewayTextEmbeddingService.GetEmbeddingsAsync(IList<TextChunk>, string)
-  nameWithType.vb: GatewayTextEmbeddingService.GetEmbeddingsAsync(IList(Of TextChunk), String)
-- uid: FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.GetEmbeddingsAsync(System.String)
-  name: GetEmbeddingsAsync(string)
-  href: api/dotnet/FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.html#FoundationaLLM_Gateway_Services_GatewayTextEmbeddingService_GetEmbeddingsAsync_System_String_
-  commentId: M:FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.GetEmbeddingsAsync(System.String)
-  name.vb: GetEmbeddingsAsync(String)
-  fullName: FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.GetEmbeddingsAsync(string)
-  fullName.vb: FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.GetEmbeddingsAsync(String)
-  nameWithType: GatewayTextEmbeddingService.GetEmbeddingsAsync(string)
-  nameWithType.vb: GatewayTextEmbeddingService.GetEmbeddingsAsync(String)
-- uid: FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.GetEmbeddingsAsync*
-  name: GetEmbeddingsAsync
-  href: api/dotnet/FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.html#FoundationaLLM_Gateway_Services_GatewayTextEmbeddingService_GetEmbeddingsAsync_
-  commentId: Overload:FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.GetEmbeddingsAsync
-  isSpec: "True"
-  fullName: FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.GetEmbeddingsAsync
-  nameWithType: GatewayTextEmbeddingService.GetEmbeddingsAsync
 - uid: FoundationaLLM.Gateway.Services.GatewayWorker
   name: GatewayWorker
   href: api/dotnet/FoundationaLLM.Gateway.Services.GatewayWorker.html
@@ -34568,15 +34610,15 @@ references:
   commentId: T:FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService
   fullName: FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService
   nameWithType: AzureAISearchIndexingService
-- uid: FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureAISearchIndexingServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService})
-  name: AzureAISearchIndexingService(IOptions<AzureAISearchIndexingServiceSettings>, ILogger<AzureAISearchIndexingService>)
-  href: api/dotnet/FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService.html#FoundationaLLM_SemanticKernel_Core_Services_Indexing_AzureAISearchIndexingService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_SemanticKernel_Core_Models_Configuration_AzureAISearchIndexingServiceSettings__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_SemanticKernel_Core_Services_Indexing_AzureAISearchIndexingService__
-  commentId: M:FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureAISearchIndexingServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService})
-  name.vb: New(IOptions(Of AzureAISearchIndexingServiceSettings), ILogger(Of AzureAISearchIndexingService))
-  fullName: FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService.AzureAISearchIndexingService(Microsoft.Extensions.Options.IOptions<FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureAISearchIndexingServiceSettings>, Microsoft.Extensions.Logging.ILogger<FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService>)
-  fullName.vb: FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService.New(Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureAISearchIndexingServiceSettings), Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService))
-  nameWithType: AzureAISearchIndexingService.AzureAISearchIndexingService(IOptions<AzureAISearchIndexingServiceSettings>, ILogger<AzureAISearchIndexingService>)
-  nameWithType.vb: AzureAISearchIndexingService.New(IOptions(Of AzureAISearchIndexingServiceSettings), ILogger(Of AzureAISearchIndexingService))
+- uid: FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService.#ctor(FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureAISearchIndexingServiceSettings,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService})
+  name: AzureAISearchIndexingService(AzureAISearchIndexingServiceSettings, ILogger<AzureAISearchIndexingService>)
+  href: api/dotnet/FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService.html#FoundationaLLM_SemanticKernel_Core_Services_Indexing_AzureAISearchIndexingService__ctor_FoundationaLLM_SemanticKernel_Core_Models_Configuration_AzureAISearchIndexingServiceSettings_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_SemanticKernel_Core_Services_Indexing_AzureAISearchIndexingService__
+  commentId: M:FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService.#ctor(FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureAISearchIndexingServiceSettings,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService})
+  name.vb: New(AzureAISearchIndexingServiceSettings, ILogger(Of AzureAISearchIndexingService))
+  fullName: FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService.AzureAISearchIndexingService(FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureAISearchIndexingServiceSettings, Microsoft.Extensions.Logging.ILogger<FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService>)
+  fullName.vb: FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService.New(FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureAISearchIndexingServiceSettings, Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService))
+  nameWithType: AzureAISearchIndexingService.AzureAISearchIndexingService(AzureAISearchIndexingServiceSettings, ILogger<AzureAISearchIndexingService>)
+  nameWithType.vb: AzureAISearchIndexingService.New(AzureAISearchIndexingServiceSettings, ILogger(Of AzureAISearchIndexingService))
 - uid: FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService.#ctor*
   name: AzureAISearchIndexingService
   href: api/dotnet/FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService.html#FoundationaLLM_SemanticKernel_Core_Services_Indexing_AzureAISearchIndexingService__ctor_
@@ -34783,15 +34825,15 @@ references:
   fullName.vb: FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelTextEmbeddingService.New
   nameWithType: SemanticKernelTextEmbeddingService.SemanticKernelTextEmbeddingService
   nameWithType.vb: SemanticKernelTextEmbeddingService.New
-- uid: FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String)
-  name: GetEmbeddingsAsync(IList<TextChunk>, string)
-  href: api/dotnet/FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelTextEmbeddingService.html#FoundationaLLM_SemanticKernel_Core_Services_SemanticKernelTextEmbeddingService_GetEmbeddingsAsync_System_Collections_Generic_IList_FoundationaLLM_Common_Models_Vectorization_TextChunk__System_String_
-  commentId: M:FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String)
-  name.vb: GetEmbeddingsAsync(IList(Of TextChunk), String)
-  fullName: FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList<FoundationaLLM.Common.Models.Vectorization.TextChunk>, string)
-  fullName.vb: FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList(Of FoundationaLLM.Common.Models.Vectorization.TextChunk), String)
-  nameWithType: SemanticKernelTextEmbeddingService.GetEmbeddingsAsync(IList<TextChunk>, string)
-  nameWithType.vb: SemanticKernelTextEmbeddingService.GetEmbeddingsAsync(IList(Of TextChunk), String)
+- uid: FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String,System.Boolean)
+  name: GetEmbeddingsAsync(IList<TextChunk>, string, bool)
+  href: api/dotnet/FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelTextEmbeddingService.html#FoundationaLLM_SemanticKernel_Core_Services_SemanticKernelTextEmbeddingService_GetEmbeddingsAsync_System_Collections_Generic_IList_FoundationaLLM_Common_Models_Vectorization_TextChunk__System_String_System_Boolean_
+  commentId: M:FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String,System.Boolean)
+  name.vb: GetEmbeddingsAsync(IList(Of TextChunk), String, Boolean)
+  fullName: FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList<FoundationaLLM.Common.Models.Vectorization.TextChunk>, string, bool)
+  fullName.vb: FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList(Of FoundationaLLM.Common.Models.Vectorization.TextChunk), String, Boolean)
+  nameWithType: SemanticKernelTextEmbeddingService.GetEmbeddingsAsync(IList<TextChunk>, string, bool)
+  nameWithType.vb: SemanticKernelTextEmbeddingService.GetEmbeddingsAsync(IList(Of TextChunk), String, Boolean)
 - uid: FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelTextEmbeddingService.GetEmbeddingsAsync(System.String)
   name: GetEmbeddingsAsync(string)
   href: api/dotnet/FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelTextEmbeddingService.html#FoundationaLLM_SemanticKernel_Core_Services_SemanticKernelTextEmbeddingService_GetEmbeddingsAsync_System_String_
@@ -35680,15 +35722,15 @@ references:
   commentId: T:FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController
   fullName: FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController
   nameWithType: VectorizationRequestController
-- uid: FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController.#ctor(FoundationaLLM.Common.Interfaces.ICallContext,FoundationaLLM.Vectorization.Interfaces.IVectorizationRequestProcessor)
-  name: VectorizationRequestController(ICallContext, IVectorizationRequestProcessor)
-  href: api/dotnet/FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController.html#FoundationaLLM_Vectorization_API_Controllers_VectorizationRequestController__ctor_FoundationaLLM_Common_Interfaces_ICallContext_FoundationaLLM_Vectorization_Interfaces_IVectorizationRequestProcessor_
-  commentId: M:FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController.#ctor(FoundationaLLM.Common.Interfaces.ICallContext,FoundationaLLM.Vectorization.Interfaces.IVectorizationRequestProcessor)
-  name.vb: New(ICallContext, IVectorizationRequestProcessor)
-  fullName: FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController.VectorizationRequestController(FoundationaLLM.Common.Interfaces.ICallContext, FoundationaLLM.Vectorization.Interfaces.IVectorizationRequestProcessor)
-  fullName.vb: FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController.New(FoundationaLLM.Common.Interfaces.ICallContext, FoundationaLLM.Vectorization.Interfaces.IVectorizationRequestProcessor)
-  nameWithType: VectorizationRequestController.VectorizationRequestController(ICallContext, IVectorizationRequestProcessor)
-  nameWithType.vb: VectorizationRequestController.New(ICallContext, IVectorizationRequestProcessor)
+- uid: FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController.#ctor(FoundationaLLM.Vectorization.Interfaces.IVectorizationRequestProcessor)
+  name: VectorizationRequestController(IVectorizationRequestProcessor)
+  href: api/dotnet/FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController.html#FoundationaLLM_Vectorization_API_Controllers_VectorizationRequestController__ctor_FoundationaLLM_Vectorization_Interfaces_IVectorizationRequestProcessor_
+  commentId: M:FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController.#ctor(FoundationaLLM.Vectorization.Interfaces.IVectorizationRequestProcessor)
+  name.vb: New(IVectorizationRequestProcessor)
+  fullName: FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController.VectorizationRequestController(FoundationaLLM.Vectorization.Interfaces.IVectorizationRequestProcessor)
+  fullName.vb: FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController.New(FoundationaLLM.Vectorization.Interfaces.IVectorizationRequestProcessor)
+  nameWithType: VectorizationRequestController.VectorizationRequestController(IVectorizationRequestProcessor)
+  nameWithType.vb: VectorizationRequestController.New(IVectorizationRequestProcessor)
 - uid: FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController.#ctor*
   name: VectorizationRequestController
   href: api/dotnet/FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController.html#FoundationaLLM_Vectorization_API_Controllers_VectorizationRequestController__ctor_
@@ -38959,15 +39001,15 @@ references:
   commentId: T:FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService
   fullName: FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService
   nameWithType: GatewayTextEmbeddingService
-- uid: FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings})
-  name: GatewayTextEmbeddingService(IOptions<InstanceSettings>)
-  href: api/dotnet/FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.html#FoundationaLLM_Vectorization_Services_Text_GatewayTextEmbeddingService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Instance_InstanceSettings__
-  commentId: M:FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings})
-  name.vb: New(IOptions(Of InstanceSettings))
-  fullName: FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.GatewayTextEmbeddingService(Microsoft.Extensions.Options.IOptions<FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings>)
-  fullName.vb: FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.New(Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings))
-  nameWithType: GatewayTextEmbeddingService.GatewayTextEmbeddingService(IOptions<InstanceSettings>)
-  nameWithType.vb: GatewayTextEmbeddingService.New(IOptions(Of InstanceSettings))
+- uid: FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,Microsoft.Extensions.Logging.ILoggerFactory)
+  name: GatewayTextEmbeddingService(IOptions<InstanceSettings>, IHttpClientFactoryService, ILoggerFactory)
+  href: api/dotnet/FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.html#FoundationaLLM_Vectorization_Services_Text_GatewayTextEmbeddingService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Instance_InstanceSettings__FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_Microsoft_Extensions_Logging_ILoggerFactory_
+  commentId: M:FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,Microsoft.Extensions.Logging.ILoggerFactory)
+  name.vb: New(IOptions(Of InstanceSettings), IHttpClientFactoryService, ILoggerFactory)
+  fullName: FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.GatewayTextEmbeddingService(Microsoft.Extensions.Options.IOptions<FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings>, FoundationaLLM.Common.Interfaces.IHttpClientFactoryService, Microsoft.Extensions.Logging.ILoggerFactory)
+  fullName.vb: FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.New(Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings), FoundationaLLM.Common.Interfaces.IHttpClientFactoryService, Microsoft.Extensions.Logging.ILoggerFactory)
+  nameWithType: GatewayTextEmbeddingService.GatewayTextEmbeddingService(IOptions<InstanceSettings>, IHttpClientFactoryService, ILoggerFactory)
+  nameWithType.vb: GatewayTextEmbeddingService.New(IOptions(Of InstanceSettings), IHttpClientFactoryService, ILoggerFactory)
 - uid: FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.#ctor*
   name: GatewayTextEmbeddingService
   href: api/dotnet/FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.html#FoundationaLLM_Vectorization_Services_Text_GatewayTextEmbeddingService__ctor_
@@ -38978,15 +39020,15 @@ references:
   fullName.vb: FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.New
   nameWithType: GatewayTextEmbeddingService.GatewayTextEmbeddingService
   nameWithType.vb: GatewayTextEmbeddingService.New
-- uid: FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String)
-  name: GetEmbeddingsAsync(IList<TextChunk>, string)
-  href: api/dotnet/FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.html#FoundationaLLM_Vectorization_Services_Text_GatewayTextEmbeddingService_GetEmbeddingsAsync_System_Collections_Generic_IList_FoundationaLLM_Common_Models_Vectorization_TextChunk__System_String_
-  commentId: M:FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String)
-  name.vb: GetEmbeddingsAsync(IList(Of TextChunk), String)
-  fullName: FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList<FoundationaLLM.Common.Models.Vectorization.TextChunk>, string)
-  fullName.vb: FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList(Of FoundationaLLM.Common.Models.Vectorization.TextChunk), String)
-  nameWithType: GatewayTextEmbeddingService.GetEmbeddingsAsync(IList<TextChunk>, string)
-  nameWithType.vb: GatewayTextEmbeddingService.GetEmbeddingsAsync(IList(Of TextChunk), String)
+- uid: FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String,System.Boolean)
+  name: GetEmbeddingsAsync(IList<TextChunk>, string, bool)
+  href: api/dotnet/FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.html#FoundationaLLM_Vectorization_Services_Text_GatewayTextEmbeddingService_GetEmbeddingsAsync_System_Collections_Generic_IList_FoundationaLLM_Common_Models_Vectorization_TextChunk__System_String_System_Boolean_
+  commentId: M:FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String,System.Boolean)
+  name.vb: GetEmbeddingsAsync(IList(Of TextChunk), String, Boolean)
+  fullName: FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList<FoundationaLLM.Common.Models.Vectorization.TextChunk>, string, bool)
+  fullName.vb: FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList(Of FoundationaLLM.Common.Models.Vectorization.TextChunk), String, Boolean)
+  nameWithType: GatewayTextEmbeddingService.GetEmbeddingsAsync(IList<TextChunk>, string, bool)
+  nameWithType.vb: GatewayTextEmbeddingService.GetEmbeddingsAsync(IList(Of TextChunk), String, Boolean)
 - uid: FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.GetEmbeddingsAsync(System.String)
   name: GetEmbeddingsAsync(string)
   href: api/dotnet/FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.html#FoundationaLLM_Vectorization_Services_Text_GatewayTextEmbeddingService_GetEmbeddingsAsync_System_String_

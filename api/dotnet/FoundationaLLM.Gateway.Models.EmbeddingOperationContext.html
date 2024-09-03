@@ -192,6 +192,39 @@ Class EmbeddingOperationContext  <a class="header-action link-secondary" title="
 
 
 
+  <a id="FoundationaLLM_Gateway_Models_EmbeddingOperationContext_Prioritized_" data-uid="FoundationaLLM.Gateway.Models.EmbeddingOperationContext.Prioritized*"></a>
+
+  <h3 id="FoundationaLLM_Gateway_Models_EmbeddingOperationContext_Prioritized" data-uid="FoundationaLLM.Gateway.Models.EmbeddingOperationContext.Prioritized">
+  Prioritized
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/EmbeddingOperationContext.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Indicates whether the requests associated with the context should be prioritized.
+Example: Synchronous vectorization and user prompt embedding for completions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Prioritized { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Gateway_Models_EmbeddingOperationContext_Result_" data-uid="FoundationaLLM.Gateway.Models.EmbeddingOperationContext.Result*"></a>
 
   <h3 id="FoundationaLLM_Gateway_Models_EmbeddingOperationContext_Result" data-uid="FoundationaLLM.Gateway.Models.EmbeddingOperationContext.Result">
@@ -232,7 +265,7 @@ Class EmbeddingOperationContext  <a class="header-action link-secondary" title="
 
   <h3 id="FoundationaLLM_Gateway_Models_EmbeddingOperationContext_SetComplete" data-uid="FoundationaLLM.Gateway.Models.EmbeddingOperationContext.SetComplete">
   SetComplete()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/EmbeddingOperationContext.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/EmbeddingOperationContext.cs/#L45"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Marks the embedding operation as complete.</p>
@@ -259,7 +292,7 @@ Class EmbeddingOperationContext  <a class="header-action link-secondary" title="
 
   <h3 id="FoundationaLLM_Gateway_Models_EmbeddingOperationContext_SetEmbeddings_System_Collections_Generic_IList_FoundationaLLM_Common_Models_Vectorization_TextChunk__" data-uid="FoundationaLLM.Gateway.Models.EmbeddingOperationContext.SetEmbeddings(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk})">
   SetEmbeddings(IList&lt;TextChunk&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/EmbeddingOperationContext.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/EmbeddingOperationContext.cs/#L58"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the embeddings for a specified set of position.
@@ -293,7 +326,7 @@ If all positions have non-null embeddings, marks the operation as complete.</p>
 
   <h3 id="FoundationaLLM_Gateway_Models_EmbeddingOperationContext_SetError_System_String_" data-uid="FoundationaLLM.Gateway.Models.EmbeddingOperationContext.SetError(System.String)">
   SetError(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/EmbeddingOperationContext.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Gateway/Models/EmbeddingOperationContext.cs/#L32"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets a specified error message on the context of the embedding operation.</p>

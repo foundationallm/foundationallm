@@ -892,6 +892,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Clients.GatewayServiceClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Clients.GatewayServiceClient.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Clients.PollingHttpClient-2.yml",
       "output": {
         ".html": {
@@ -1702,6 +1712,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.VectorizationSettingsNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.VectorizationSettingsNames.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.yml",
       "output": {
         ".html": {
@@ -1826,6 +1846,16 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Common.Exceptions.EventException.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Exceptions.GatewayException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Exceptions.GatewayException.html"
         }
       },
       "version": ""
@@ -3096,6 +3126,16 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Events.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.html"
         }
       },
       "version": ""
@@ -6232,36 +6272,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Client.GatewayServiceClient.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Client.GatewayServiceClient.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Client.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Client.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Exceptions.GatewayException.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Exceptions.GatewayException.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Exceptions.GatewayExceptionHandler.yml",
       "output": {
         ".html": {
@@ -6296,16 +6306,6 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Gateway.Interfaces.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Models.AgentCapabilityRequest.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Models.AgentCapabilityRequest.html"
         }
       },
       "version": ""
@@ -6372,20 +6372,20 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Services.GatewayCore.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Services.GatewayCore.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.html"
         }
       },
       "version": ""
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Gateway.Services.GatewayCore.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Services.GatewayTextEmbeddingService.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Gateway.Services.GatewayCore.html"
         }
       },
       "version": ""

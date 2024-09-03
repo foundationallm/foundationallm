@@ -130,9 +130,9 @@ Interface ITextEmbeddingService  <a class="header-action link-secondary" title="
 
   <a id="FoundationaLLM_Common_Interfaces_ITextEmbeddingService_GetEmbeddingsAsync_" data-uid="FoundationaLLM.Common.Interfaces.ITextEmbeddingService.GetEmbeddingsAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Interfaces_ITextEmbeddingService_GetEmbeddingsAsync_System_Collections_Generic_IList_FoundationaLLM_Common_Models_Vectorization_TextChunk__System_String_" data-uid="FoundationaLLM.Common.Interfaces.ITextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String)">
-  GetEmbeddingsAsync(IList&lt;TextChunk&gt;, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/ITextEmbeddingService.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Interfaces_ITextEmbeddingService_GetEmbeddingsAsync_System_Collections_Generic_IList_FoundationaLLM_Common_Models_Vectorization_TextChunk__System_String_System_Boolean_" data-uid="FoundationaLLM.Common.Interfaces.ITextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String,System.Boolean)">
+  GetEmbeddingsAsync(IList&lt;TextChunk&gt;, string, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/ITextEmbeddingService.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes the text embedding operation.
@@ -141,7 +141,7 @@ Depending on the implementation, this can be an atomic operation or a long-runni
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;TextEmbeddingResult&gt; GetEmbeddingsAsync(IList&lt;TextChunk&gt; textChunks, string modelName = &quot;text-embedding-ada-002&quot;)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;TextEmbeddingResult&gt; GetEmbeddingsAsync(IList&lt;TextChunk&gt; textChunks, string deploymentName, bool Prioritized)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -149,8 +149,11 @@ Depending on the implementation, this can be an atomic operation or a long-runni
     <dt><code>textChunks</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Vectorization.TextChunk.html">TextChunk</a>&gt;</dt>
     <dd><p>The list of text chunks which need to be embedded.</p>
 </dd>
-    <dt><code>modelName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The name of the model to use for embedding.</p>
+    <dt><code>deploymentName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the model deployment to use for embedding.</p>
+</dd>
+    <dt><code>Prioritized</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Indicates whether the request should be prioritized.</p>
 </dd>
   </dl>
 
@@ -175,7 +178,7 @@ Depending on the implementation, this can be an atomic operation or a long-runni
 
   <h3 id="FoundationaLLM_Common_Interfaces_ITextEmbeddingService_GetEmbeddingsAsync_System_String_" data-uid="FoundationaLLM.Common.Interfaces.ITextEmbeddingService.GetEmbeddingsAsync(System.String)">
   GetEmbeddingsAsync(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/ITextEmbeddingService.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/ITextEmbeddingService.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves the result of a long-running text embedding operation.</p>

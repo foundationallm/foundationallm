@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Vectorization_Services_Text_GatewayTextEmbeddingService" data-uid="FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService" class="text-break">
-Class GatewayTextEmbeddingService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Services/Text/GatewayTextEmbeddingService.cs/#L13"><i class="bi bi-code-slash"></i></a>
+Class GatewayTextEmbeddingService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Services/Text/GatewayTextEmbeddingService.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -168,9 +168,9 @@ Class GatewayTextEmbeddingService  <a class="header-action link-secondary" title
 
   <a id="FoundationaLLM_Vectorization_Services_Text_GatewayTextEmbeddingService__ctor_" data-uid="FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Vectorization_Services_Text_GatewayTextEmbeddingService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Instance_InstanceSettings__" data-uid="FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings})">
-  GatewayTextEmbeddingService(IOptions&lt;InstanceSettings&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Services/Text/GatewayTextEmbeddingService.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Vectorization_Services_Text_GatewayTextEmbeddingService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Instance_InstanceSettings__FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_Microsoft_Extensions_Logging_ILoggerFactory_" data-uid="FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,Microsoft.Extensions.Logging.ILoggerFactory)">
+  GatewayTextEmbeddingService(IOptions&lt;InstanceSettings&gt;, IHttpClientFactoryService, ILoggerFactory)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Services/Text/GatewayTextEmbeddingService.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Generates text embeddings by routing requests through the FoundationaLLM Gateway API.</p>
@@ -178,13 +178,19 @@ Class GatewayTextEmbeddingService  <a class="header-action link-secondary" title
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public GatewayTextEmbeddingService(IOptions&lt;InstanceSettings&gt; instanceOptions)</code></pre>
+    <pre><code class="lang-csharp hljs">public GatewayTextEmbeddingService(IOptions&lt;InstanceSettings&gt; instanceOptions, IHttpClientFactoryService httpClientFactoryService, ILoggerFactory loggerFactory)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>instanceOptions</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1">IOptions</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings.html">InstanceSettings</a>&gt;</dt>
     <dd><p>The options providing the <a class="xref" href="FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings.html">InstanceSettings</a> with instance settings.</p>
+</dd>
+    <dt><code>httpClientFactoryService</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IHttpClientFactoryService.html">IHttpClientFactoryService</a></dt>
+    <dd><p>The HTTP Client Factory service.</p>
+</dd>
+    <dt><code>loggerFactory</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory">ILoggerFactory</a></dt>
+    <dd><p>The logger factory used to create loggers for logging.</p>
 </dd>
   </dl>
 
@@ -205,9 +211,9 @@ Class GatewayTextEmbeddingService  <a class="header-action link-secondary" title
 
   <a id="FoundationaLLM_Vectorization_Services_Text_GatewayTextEmbeddingService_GetEmbeddingsAsync_" data-uid="FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.GetEmbeddingsAsync*"></a>
 
-  <h3 id="FoundationaLLM_Vectorization_Services_Text_GatewayTextEmbeddingService_GetEmbeddingsAsync_System_Collections_Generic_IList_FoundationaLLM_Common_Models_Vectorization_TextChunk__System_String_" data-uid="FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String)">
-  GetEmbeddingsAsync(IList&lt;TextChunk&gt;, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Services/Text/GatewayTextEmbeddingService.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Vectorization_Services_Text_GatewayTextEmbeddingService_GetEmbeddingsAsync_System_Collections_Generic_IList_FoundationaLLM_Common_Models_Vectorization_TextChunk__System_String_System_Boolean_" data-uid="FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.GetEmbeddingsAsync(System.Collections.Generic.IList{FoundationaLLM.Common.Models.Vectorization.TextChunk},System.String,System.Boolean)">
+  GetEmbeddingsAsync(IList&lt;TextChunk&gt;, string, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Services/Text/GatewayTextEmbeddingService.cs/#L28"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes the text embedding operation.
@@ -216,7 +222,7 @@ Depending on the implementation, this can be an atomic operation or a long-runni
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;TextEmbeddingResult&gt; GetEmbeddingsAsync(IList&lt;TextChunk&gt; textChunks, string modelName)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;TextEmbeddingResult&gt; GetEmbeddingsAsync(IList&lt;TextChunk&gt; textChunks, string modelName, bool Prioritized)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -225,7 +231,9 @@ Depending on the implementation, this can be an atomic operation or a long-runni
     <dd><p>The list of text chunks which need to be embedded.</p>
 </dd>
     <dt><code>modelName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The name of the model to use for embedding.</p>
+    <dd></dd>
+    <dt><code>Prioritized</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Indicates whether the request should be prioritized.</p>
 </dd>
   </dl>
 
@@ -250,7 +258,7 @@ Depending on the implementation, this can be an atomic operation or a long-runni
 
   <h3 id="FoundationaLLM_Vectorization_Services_Text_GatewayTextEmbeddingService_GetEmbeddingsAsync_System_String_" data-uid="FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.GetEmbeddingsAsync(System.String)">
   GetEmbeddingsAsync(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Services/Text/GatewayTextEmbeddingService.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Services/Text/GatewayTextEmbeddingService.cs/#L41"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves the result of a long-running text embedding operation.</p>
@@ -289,7 +297,7 @@ Depending on the implementation, this can be an atomic operation or a long-runni
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Services/Text/GatewayTextEmbeddingService.cs/#L13" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Services/Text/GatewayTextEmbeddingService.cs/#L18" class="edit-link">Edit this page</a>
         </div>
 
 
