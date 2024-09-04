@@ -401,6 +401,14 @@
 				"value": "c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt",
 				"content_type": "",
 				"first_version": "0.8.0"
+			},
+			{
+				"name": "AllowedUploadFileExtensions",
+				"description": "The comma-separated list file extensions that users are allowed to upload to a conversation.",
+				"secret": "",
+				"value": "c, cpp, cs, css, csv, doc, docx, git, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
+				"content_type": "",
+				"first_version": "0.8.0"
 			}
 		]
 	},
