@@ -414,7 +414,7 @@ export default {
 			}
 
 			const textarea = document.createElement('textarea');
-			textarea.value = decodeURIComponent(contentToCopy);
+			textarea.value = contentToCopy;
 			document.body.appendChild(textarea);
 			textarea.select();
 			document.execCommand('copy');
