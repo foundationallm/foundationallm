@@ -31,10 +31,11 @@ namespace FoundationaLLM.Core.Services
 
         /// <inheritdoc/>
         public async Task<UserProfile?> GetUserProfileAsync(string instanceId) => await _cosmosDbService.GetUserProfileAsync(_callContext.CurrentUserIdentity?.UPN ??
-                                                              throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving the user profile."));
+            throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving the user profile."));
 
         /// <inheritdoc/>
-        public async Task<UserProfile?> GetUserProfileForUserAsync(string instanceId, string upn) => await _cosmosDbService.GetUserProfileAsync(upn);
+        public async Task<UserProfile?> GetUserProfileForUserAsync(string instanceId, string upn) =>
+            await _cosmosDbService.GetUserProfileAsync(upn);
 
         /// <inheritdoc/>
         public async Task UpsertUserProfileAsync(string instanceId, UserProfile userProfile)
@@ -42,8 +43,8 @@ namespace FoundationaLLM.Core.Services
             // Ensure the user profile contains the user's UPN.
             if (string.IsNullOrEmpty(userProfile.UPN))
             {
-                userProfile.UPN = _callContext.CurrentUserIdentity?.UPN ??
-                                  throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat sessions.");
+                userProfile.UPN = _callContext.CurrentUserIdentity?.UPN
+                    ?? throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat sessions.");
                 userProfile.Id = userProfile.UPN;
             }
             await _cosmosDbService.UpsertUserProfileAsync(userProfile);

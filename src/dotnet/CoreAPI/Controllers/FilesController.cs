@@ -11,7 +11,7 @@ using Microsoft.Extensions.Options;
 namespace FoundationaLLM.Core.API.Controllers
 {
     /// <summary>
-    /// Provides branding information for the client.
+    /// Provides methods for retrieving and managing files.
     /// </summary>
     [Authorize(Policy = "DefaultPolicy")]
     [ApiController]
@@ -24,7 +24,7 @@ namespace FoundationaLLM.Core.API.Controllers
         private readonly ILogger<FilesController> _logger;
 
         /// <summary>
-        /// The controller for managing attachments.
+        /// The controller for managing files.
         /// </summary>
         /// <param name="callContext">The <see cref="ICallContext"/> call context of the request being handled.</param>
         /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>
