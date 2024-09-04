@@ -10,7 +10,7 @@
 			<span v-else>{{ $appConfigStore.logoText }}</span>
 
 			<template v-if="!$appConfigStore.isKioskMode">
-				<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 					<Button
 						:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
 						size="small"
@@ -57,7 +57,7 @@
 			<div class="navbar__content__right">
 				<template v-if="currentSession">
 					<span class="header__dropdown">
-						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+						<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 							<AgentIcon
 								:src="$appConfigStore.agentIconUrl || '~/assets/FLLM-Agent-Light.svg'"
 								alt="Select an agent"
@@ -112,6 +112,7 @@ export default {
 			agentOptions: [] as AgentDropdownOption[],
 			agentOptionsGroup: [] as AgentDropdownOptionsGroup[],
 			virtualUser: null as string | null,
+			isMobile: window.screen.width < 950,
 		};
 	},
 

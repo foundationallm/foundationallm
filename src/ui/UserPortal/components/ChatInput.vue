@@ -2,12 +2,12 @@
 	<div class="chat-input p-inputgroup">
 		<div class="input-wrapper">
 			<div class="tooltip-component">
-				<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 					<i class="pi pi-info-circle" tabindex="0"></i>
 					<template #popper> Use Shift+Enter to add a new line </template>
 				</VTooltip>
 			</div>
-			<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
 					:badge="fileArrayFiltered.length.toString() || null"
 					:aria-label="'Upload file (' + fileArrayFiltered.length.toString() + ' files attached)'"
@@ -210,6 +210,7 @@ export default {
 			showFileUploadDialog: false,
 			isUploading: false,
 			uploadProgress: 0,
+			isMobile: window.screen.width < 950,
 		};
 	},
 
