@@ -10,7 +10,7 @@ namespace FoundationaLLM.Core.API.Controllers
     /// <remarks>
     /// Constructor for the UserProfiles Controller.
     /// </remarks>
-    /// <param name="userProfileService">The Core service provides methods for managing the user profile.</param>
+    /// <param name="userProfileService">Service that provides methods for managing the user profile.</param>
     [Authorize(Policy = "DefaultPolicy")]
     [ApiController]
     [Route("instances/{instanceId}/[controller]")]

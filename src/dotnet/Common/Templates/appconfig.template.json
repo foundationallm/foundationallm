@@ -205,7 +205,7 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:Scopes",
-            "value": "Data.Read",
+            "value": "Data.Read Files.Read.All",
             "label": null,
             "content_type": "",
             "tags": {}
@@ -220,6 +220,27 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:ClientId",
             "value": "${env:ENTRA_CORE_API_CLIENT_ID}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:ClientSecret",
+            "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-coreapi-client-secret\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:OneDriveBaseURL",
+            "value": "${env:ENTRA_CORE_API_ONEDRIVE_BASE_URL}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:OneDriveScopes",
+            "value": "Files.OneDrive.Download",
             "label": null,
             "content_type": "",
             "tags": {}

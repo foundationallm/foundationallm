@@ -431,7 +431,7 @@
 				"name": "Scopes",
 				"description": "The list of scopes exposed by the Core API.",
 				"secret": "",
-				"value": "Data.Read",
+				"value": "Data.Read Files.Read.All",
 				"content_type": "",
 				"first_version": "0.8.0"
 			},
@@ -450,6 +450,30 @@
 				"value": "${env:ENTRA_CORE_API_CLIENT_ID}",
 				"content_type": "",
 				"first_version": "0.8.0"
+			},
+			{
+				"name": "ClientSecret",
+				"description": "The client secret of the Entra ID app registration used by the Core API to authenticate.",
+				"secret": "apiendpoints-coreapi-client-secret",
+				"value": "${env:ENTRA_CORE_API_CLIENT_SECRET}",
+				"content_type": "",
+				"first_version": "0.8.2"
+			},
+			{
+				"name": "OneDriveBaseURL",
+				"description": "The base URL of the tenant OneDrive.",
+				"secret": "",
+				"value": "${env:ENTRA_CORE_API_ONEDRIVE_BASE_URL}",
+				"content_type": "",
+				"first_version": "0.8.2"
+			},
+			{
+				"name": "OneDriveScopes",
+				"description": "The list of scopes exposed by the OneDrive API.",
+				"secret": "",
+				"value": "Files.OneDrive.Download",
+				"content_type": "",
+				"first_version": "0.8.2"
 			}
 		]
 	},

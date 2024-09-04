@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace FoundationaLLM.Core.API.Controllers
 {
     /// <summary>
-    /// Provides methods for interacting with the Core service.
+    /// Provides methods for retrieving and managing sessions.
     /// </summary>
     /// <remarks>
-    /// Constructor for the Core Controller.
+    /// Constructor for the Sessions Controller.
     /// </remarks>
     /// <param name="coreService">The Core service provides methods for managing chat
     /// sessions and messages, and for getting completions from the orchestrator.</param>

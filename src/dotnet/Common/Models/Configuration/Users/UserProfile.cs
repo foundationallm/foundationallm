@@ -1,5 +1,5 @@
-﻿using System.Text.Json.Serialization;
-
+﻿using FoundationaLLM.Common.Constants;
+using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Configuration.Users
 {
@@ -24,5 +24,10 @@ namespace FoundationaLLM.Common.Models.Configuration.Users
         /// </summary>
         [JsonPropertyName("upn")]
         public string UPN { get; set; } = UPN;
+
+        /// <summary>
+        /// A dictionary of <see cref="UserProfileFlags"/>.
+        /// </summary>
+        public Dictionary<string, bool> Flags { get; set; } = UserProfileFlags.All.ToDictionary(key => key, value => false);
     }
 }
