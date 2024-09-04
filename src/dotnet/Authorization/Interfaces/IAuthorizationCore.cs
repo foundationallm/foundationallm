@@ -25,14 +25,6 @@ namespace FoundationaLLM.Authorization.Interfaces
         ActionAuthorizationResult ProcessAuthorizationRequest(string instanceId, ActionAuthorizationRequest authorizationRequest);
 
         /// <summary>
-        /// Returns a list of role names and a list of allowed actions for the specified scope.
-        /// </summary>
-        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
-        /// <param name="request">The get roles with actions request.</param>
-        /// <returns>The get roles and actions result.</returns>
-        Dictionary<string, RoleAssignmentsWithActionsResult> ProcessRoleAssignmentsWithActionsRequest(string instanceId, RoleAssignmentsWithActionsRequest request);
-
-        /// <summary>
         /// Creates a role assignment for a specified security principal.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>

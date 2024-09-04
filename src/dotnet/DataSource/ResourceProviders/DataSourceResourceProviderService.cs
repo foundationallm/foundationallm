@@ -11,6 +11,7 @@ using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.DataSource;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using FoundationaLLM.DataSource.Models;
@@ -21,6 +22,7 @@ using Microsoft.Extensions.Options;
 using System.Collections.Concurrent;
 using System.Text;
 using System.Text.Json;
+using static Microsoft.IO.RecyclableMemoryStreamManager;
 
 namespace FoundationaLLM.DataSource.ResourceProviders
 {
@@ -143,9 +145,12 @@ namespace FoundationaLLM.DataSource.ResourceProviders
                 }
             }
 
-            return await _authorizationService.FilterResourcesByAuthorizableAction(
-                _instanceSettings.Id, userIdentity, dataSources,
-                AuthorizableActionNames.FoundationaLLM_DataSource_DataSources_Read);
+            return dataSources.Select(dataSource => new ResourceProviderGetResult<DataSourceBase>
+            {
+                Resource = dataSource,
+                Roles = new List<string>(),
+                Actions = new List<string>()
+            }).ToList();
         }
 
         private async Task<DataSourceBase?> LoadDataSource(DataSourceReference? dataSourceReference, string? resourceId = null)

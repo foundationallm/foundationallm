@@ -39,18 +39,6 @@ namespace FoundationaLLM.Common.Interfaces
             UnifiedUserIdentity userIdentity);
 
         /// <summary>
-        /// Returns a list of role names and a list of allowed actions for the specified scope.
-        /// </summary>
-        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
-        /// <param name="request">The get roles with actions request.</param>
-        /// <param name="userIdentity">The user identity.</param>
-        /// <returns>The get roles and actions result.</returns>
-        Task<Dictionary<string, RoleAssignmentsWithActionsResult>> ProcessRoleAssignmentsWithActionsRequest(
-            string instanceId,
-            RoleAssignmentsWithActionsRequest request,
-            UnifiedUserIdentity userIdentity);
-
-        /// <summary>
         /// Creates a new role assignment.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>

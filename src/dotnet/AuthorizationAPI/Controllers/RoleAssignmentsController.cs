@@ -22,16 +22,6 @@ namespace FoundationaLLM.Authorization.API.Controllers
         #region IAuthorizationCore
 
         /// <summary>
-        /// Returns a list of role names and a list of allowed actions for the specified scope.
-        /// </summary>
-        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
-        /// <param name="request">The get roles with actions request.</param>
-        /// <returns>The get roles and actions result.</returns>
-        [HttpPost("querywithactions")]
-        public IActionResult ProcessRoleAssignmentsWithActionsRequest(string instanceId, [FromBody] RoleAssignmentsWithActionsRequest request) =>
-            new OkObjectResult(_authorizationCore.ProcessRoleAssignmentsWithActionsRequest(instanceId, request));
-
-        /// <summary>
         /// Returns a list of role assignments for the specified instance.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>

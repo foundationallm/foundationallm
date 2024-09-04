@@ -213,48 +213,6 @@ namespace FoundationaLLM.Authorization.Services
         }
 
         /// <inheritdoc/>
-        public Dictionary<string, RoleAssignmentsWithActionsResult> ProcessRoleAssignmentsWithActionsRequest(string instanceId, RoleAssignmentsWithActionsRequest request)
-        {
-            var result = request.Scopes.Distinct().ToDictionary(scp => scp, res => new RoleAssignmentsWithActionsResult() { Actions = [], Roles = [] });
-
-            foreach (var scope in request.Scopes)
-            {
-                try
-                {
-                    _ = ResourcePath.TryParseResourceProvider(scope, out string? resourceProvider);
-                    var requestScope = ResourcePathUtils.ParseForAuthorizationRequestResourcePath(scope, _settings.InstanceIds);
-
-                    if (string.IsNullOrWhiteSpace(requestScope.InstanceId) || requestScope.InstanceId.ToLower().CompareTo(instanceId.ToLower()) != 0)
-                    {
-                        _logger.LogError("The instance id from the controller route and the instance id from the authorization request do not match.");
-                    }
-                    else
-                    {
-                        var roleAssignments = _roleAssignmentStores[instanceId].RoleAssignments.Where(x => x.PrincipalId == request.PrincipalId || request.SecurityGroupIds.Contains(x.PrincipalId)).ToList();
-                        foreach (var ra in roleAssignments)
-                        {
-                            if (scope.Contains(ra.Scope))
-                            {
-                                result[scope].Actions.AddRange(ra.AllowedActions.Where(x => x.Contains(resourceProvider!)).ToList());
-                                result[scope].Roles.Add(ra.RoleDefinition!.DisplayName!);
-                            }
-                        }
-
-                        // Duplicated actions might exist when a pricipal has multiple roles with overlapping permissions.
-                        result[scope].Actions = result[scope].Actions.Distinct().ToList();
-                        result[scope].Roles = result[scope].Roles.Distinct().ToList();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "There was an issue while processing the get roles with actions request for {Scope}.", scope);
-                }
-            }
-
-            return result;
-        }
-
-        /// <inheritdoc/>
         public async Task<RoleAssignmentOperationResult> CreateRoleAssignment(string instanceId, RoleAssignmentRequest roleAssignmentRequest)
         {
             var roleAssignmentStoreFile = $"/{instanceId.ToLower()}.json";

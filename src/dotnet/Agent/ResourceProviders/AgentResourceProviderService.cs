@@ -142,9 +142,12 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 }
             }
 
-            return await _authorizationService.FilterResourcesByAuthorizableAction(
-                _instanceSettings.Id, userIdentity, agents,
-                AuthorizableActionNames.FoundationaLLM_Agent_Agents_Read);
+            return agents.Select(agent => new ResourceProviderGetResult<AgentBase>
+            {
+                Resource = agent,
+                Roles = new List<string>(),
+                Actions = new List<string>()
+            }).ToList();
         }
 
         private async Task<AgentBase?> LoadAgent(AgentReference? agentReference, string? resourceId = null)
