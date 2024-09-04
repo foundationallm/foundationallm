@@ -359,7 +359,7 @@ export default {
 		},
 
 		fileSelected(event: any) {
-			const allowedFileTypes = this.$appConfigStore.azureOpenAIAssistantsFileSearchFileExtensions;
+			const allowedFileTypes = this.$appConfigStore.allowedUploadFileExtensions;
 			event.files.forEach((file: any, index) => {
 				if (file.size > 536870912) {
 					this.$toast.add({
