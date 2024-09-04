@@ -32,7 +32,7 @@ namespace FoundationaLLM.Authorization.Services
 
         private const string ROLE_ASSIGNMENTS_CONTAINER_NAME = "role-assignments";
         private bool _initialized = false;
-        private readonly object _syncRoot = new();
+        private readonly SemaphoreSlim _syncRoot = new SemaphoreSlim(1, 1);
 
         /// <summary>
         /// Creates a new instance of the <see cref="AuthorizationCore"/> class.
@@ -126,10 +126,12 @@ namespace FoundationaLLM.Authorization.Services
                 AuthorizationResourceProviderMetadata.AllowedResourceTypes,
                 false,
                 out ResourcePath? parsedResourcePath);
-            return ActionAllowed(parsedResourcePath!, new ActionAuthorizationRequest
+            var result = ProcessAuthorizationRequestForResourcePath(parsedResourcePath!, new ActionAuthorizationRequest
             {
                 Action = AuthorizableActionNames.FoundationaLLM_Authorization_RoleAssignments_Read,
                 ResourcePaths = [resourcePath],
+                ExpandResourceTypePaths = false,
+                IncludeRoles = false,
                 UserContext = new UserAuthorizationContext
                 {
                     SecurityPrincipalId = securityPrincipalId,
@@ -137,12 +139,19 @@ namespace FoundationaLLM.Authorization.Services
                     SecurityGroupIds = []
                 }
             });
+            return result.Authorized;
         }
 
         /// <inheritdoc/>
         public ActionAuthorizationResult ProcessAuthorizationRequest(string instanceId, ActionAuthorizationRequest authorizationRequest)
         {
-            var authorizationResults = authorizationRequest.ResourcePaths.Distinct().ToDictionary(rp => rp, auth => false);
+            var authorizationResults = authorizationRequest.ResourcePaths.Distinct().ToDictionary(rp => rp, rp => new ResourcePathAuthorizationResult
+            {
+                ResourcePath = rp,
+                Authorized = false,
+                Roles = [],
+                SubordinateAuthorizedResourcePaths = []
+            });
             var invalidResourcePaths = new List<string>();
 
             try
@@ -163,28 +172,30 @@ namespace FoundationaLLM.Authorization.Services
                 {
                     try
                     {
-                        var resourcePath = ResourcePathUtils.ParseForAuthorizationRequestResourcePath(rp, _settings.InstanceIds);
+                        var parsedResourcePath = ResourcePathUtils.ParseForAuthorizationRequestResourcePath(rp, _settings.InstanceIds);
 
-                        if (string.IsNullOrWhiteSpace(resourcePath.InstanceId)
-                            || resourcePath.InstanceId.ToLower().CompareTo(instanceId.ToLower()) != 0)
+                        if (string.IsNullOrWhiteSpace(parsedResourcePath.InstanceId)
+                            || StringComparer.OrdinalIgnoreCase.Compare(parsedResourcePath.InstanceId, instanceId) != 0)
                         {
                             _logger.LogError("The instance id from the controller route and the instance id from the authorization request do not match.");
-                            authorizationResults[rp] = false;
                             invalidResourcePaths.Add(rp);
                         }
-
-                        authorizationResults[rp] = ActionAllowed(resourcePath, new ActionAuthorizationRequest()
+                        else
                         {
-                            Action = authorizationRequest.Action,
-                            ResourcePaths = [rp],
-                            UserContext = authorizationRequest.UserContext
-                        });
+                            authorizationResults[rp] = ProcessAuthorizationRequestForResourcePath(parsedResourcePath, new ActionAuthorizationRequest()
+                            {
+                                Action = authorizationRequest.Action,
+                                ResourcePaths = [rp],
+                                ExpandResourceTypePaths = authorizationRequest.ExpandResourceTypePaths,
+                                IncludeRoles = authorizationRequest.IncludeRoles,
+                                UserContext = authorizationRequest.UserContext
+                            });
+                        }
                     }
                     catch (Exception ex)
                     {
                         // If anything goes wrong, we default to denying the request on that particular resource.
                         _logger.LogWarning(ex, "The authorization core failed to process the authorization request for: {ResourcePath}.", rp);
-                        authorizationResults[rp] = false;
                         invalidResourcePaths.Add(rp);
                     }
                 }
@@ -250,43 +261,52 @@ namespace FoundationaLLM.Authorization.Services
 
             if (await _storageService.FileExistsAsync(ROLE_ASSIGNMENTS_CONTAINER_NAME, roleAssignmentStoreFile, default))
             {
-                var fileContent = await _storageService.ReadFileAsync(ROLE_ASSIGNMENTS_CONTAINER_NAME, roleAssignmentStoreFile, default);
-                var roleAssignmentStore = JsonSerializer.Deserialize<RoleAssignmentStore>(
-                    Encoding.UTF8.GetString(fileContent.ToArray()));
-                if (roleAssignmentStore != null)
+                try
                 {
-                    var exists = roleAssignmentStore.RoleAssignments.Any(x => x.PrincipalId == roleAssignmentRequest.PrincipalId
-                                                                           && x.Scope == roleAssignmentRequest.Scope
-                                                                           && x.RoleDefinitionId == roleAssignmentRequest.RoleDefinitionId);
-                    if (!exists)
+                    await _syncRoot.WaitAsync();
+
+                    var fileContent = await _storageService.ReadFileAsync(ROLE_ASSIGNMENTS_CONTAINER_NAME, roleAssignmentStoreFile, default);
+                    var roleAssignmentStore = JsonSerializer.Deserialize<RoleAssignmentStore>(
+                        Encoding.UTF8.GetString(fileContent.ToArray()));
+                    if (roleAssignmentStore != null)
                     {
-                        var roleAssignment = new RoleAssignment()
+                        var exists = roleAssignmentStore.RoleAssignments.Any(x => x.PrincipalId == roleAssignmentRequest.PrincipalId
+                                                                               && x.Scope == roleAssignmentRequest.Scope
+                                                                               && x.RoleDefinitionId == roleAssignmentRequest.RoleDefinitionId);
+                        if (!exists)
                         {
-                            Type = $"{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleAssignments}",
-                            Name = roleAssignmentRequest.Name,
-                            Description = roleAssignmentRequest.Description,
-                            ObjectId = roleAssignmentRequest.ObjectId,
-                            PrincipalId = roleAssignmentRequest.PrincipalId,
-                            PrincipalType = roleAssignmentRequest.PrincipalType,
-                            RoleDefinitionId = roleAssignmentRequest.RoleDefinitionId,
-                            Scope = roleAssignmentRequest.Scope,
-                            CreatedBy = roleAssignmentRequest.CreatedBy
-                        };
+                            var roleAssignment = new RoleAssignment()
+                            {
+                                Type = $"{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleAssignments}",
+                                Name = roleAssignmentRequest.Name,
+                                Description = roleAssignmentRequest.Description,
+                                ObjectId = roleAssignmentRequest.ObjectId,
+                                PrincipalId = roleAssignmentRequest.PrincipalId,
+                                PrincipalType = roleAssignmentRequest.PrincipalType,
+                                RoleDefinitionId = roleAssignmentRequest.RoleDefinitionId,
+                                Scope = roleAssignmentRequest.Scope,
+                                CreatedBy = roleAssignmentRequest.CreatedBy
+                            };
 
-                        roleAssignmentStore.RoleAssignments.Add(roleAssignment);
-                        _roleAssignmentStores.AddOrUpdate(instanceId, roleAssignmentStore, (k, v) => roleAssignmentStore);
-                        roleAssignmentStore.EnrichRoleAssignments();
-                        _roleAssignmentCaches[instanceId].AddOrUpdateRoleAssignment(roleAssignment);
+                            roleAssignmentStore.RoleAssignments.Add(roleAssignment);
+                            _roleAssignmentStores.AddOrUpdate(instanceId, roleAssignmentStore, (k, v) => roleAssignmentStore);
+                            roleAssignmentStore.EnrichRoleAssignments();
+                            _roleAssignmentCaches[instanceId].AddOrUpdateRoleAssignment(roleAssignment);
 
-                        await _storageService.WriteFileAsync(
-                                ROLE_ASSIGNMENTS_CONTAINER_NAME,
-                                roleAssignmentStoreFile,
-                                JsonSerializer.Serialize(roleAssignmentStore),
-                                default,
-                                default);
+                            await _storageService.WriteFileAsync(
+                                    ROLE_ASSIGNMENTS_CONTAINER_NAME,
+                                    roleAssignmentStoreFile,
+                                    JsonSerializer.Serialize(roleAssignmentStore),
+                                    default,
+                                    default);
 
-                        return new RoleAssignmentOperationResult() { Success = true };
+                            return new RoleAssignmentOperationResult() { Success = true };
+                        }
                     }
+                }
+                finally
+                {
+                    _syncRoot.Release();
                 }
             }
 
@@ -331,37 +351,114 @@ namespace FoundationaLLM.Authorization.Services
                 .ToList();
         }
         
-        private bool ActionAllowed(ResourcePath resourcePath, ActionAuthorizationRequest authorizationRequest)
+        private ResourcePathAuthorizationResult ProcessAuthorizationRequestForResourcePath(
+            ResourcePath resourcePath,
+            ActionAuthorizationRequest authorizationRequest)
         {
+            var result = new ResourcePathAuthorizationResult
+            {
+                ResourcePath = resourcePath.RawResourcePath,
+                Authorized = false,
+                Roles = [],
+                SubordinateAuthorizedResourcePaths = []
+            };
+
             // Get cache associated with the instance id.
             if (_roleAssignmentCaches.TryGetValue(resourcePath.InstanceId!, out var roleAssignmentCache))
             {
-                // Combine the principal id and security group ids into one list.
-                var objectIds = new List<string> { authorizationRequest.UserContext.SecurityPrincipalId };
-                if (authorizationRequest.UserContext.SecurityGroupIds != null)
-                    objectIds.AddRange(authorizationRequest.UserContext.SecurityGroupIds);
+                List<RoleAssignment> allRoleAssignments = [];
 
-                foreach (var objectId in objectIds)
+                // Combine the principal id and security group ids into one list.
+                var securityPrincipalIds = new List<string> { authorizationRequest.UserContext.SecurityPrincipalId };
+                if (authorizationRequest.UserContext.SecurityGroupIds != null)
+                    securityPrincipalIds.AddRange(authorizationRequest.UserContext.SecurityGroupIds);
+
+                foreach (var securityPrincipalId in securityPrincipalIds)
                 {
-                    // Retrieve all role assignments associated with the id.
-                    var roleAssignments = roleAssignmentCache.GetRoleAssignments(objectId);
+                    // Retrieve all role assignments associated with the security principal id.
+                    var roleAssignments = roleAssignmentCache.GetRoleAssignments(securityPrincipalId);
                     foreach (var roleAssignment in roleAssignments)
                     {
                         // Retrieve the role definition object
                         if (RoleDefinitions.All.TryGetValue(roleAssignment.RoleDefinitionId, out var roleDefinition))
                         {
-                            // Check if the scope of the role assignment includes the resource.
+                            // Check if the scope of the role assignment covers the resource.
                             // Check if the actions of the role definition include the requested action.
                             if (resourcePath.IncludesResourcePath(roleAssignment.ScopeResourcePath!)
                                 && roleAssignment.AllowedActions.Contains(authorizationRequest.Action))
                             {
-                                return true;
+                                result.Authorized = true;
+
+                                // Since we are authorized, we will ignore the potential instruction to expand subordinate resource paths for resource type paths.
+                                // If we are not asked to include roles, we can return immediately.
+                                if (!authorizationRequest.IncludeRoles)
+                                    return result;
                             }
                         }
                         else
                             _logger.LogWarning("The role assignment {RoleAssignmentName} references the role definition {RoleDefinitionId} which is invalid.",
                                 roleAssignment.Name, roleAssignment.RoleDefinitionId);
                     }
+
+                    allRoleAssignments.AddRange(roleAssignments);
+                }
+
+                if (result.Authorized
+                    && authorizationRequest.IncludeRoles
+                    && allRoleAssignments.Count > 0)
+                {
+                    // Include the display names of the roles in the result.
+                    result.Roles = allRoleAssignments
+                        .Select(ra => ra.RoleDefinition!.DisplayName!)
+                        .Distinct()
+                        .ToList();
+                }
+
+                if (!result.Authorized
+                    && authorizationRequest.ExpandResourceTypePaths
+                    && resourcePath.IsResourceTypePath)
+                {
+                    Dictionary<string, ResourcePathAuthorizationResult> subordinateAuthorizedResourcePaths = [];
+
+                    // If the resource path is a resource type path and the action is not authorized, we need to expand the resource type path.
+                    // We will check all the resource paths that are authorized and add them to the list of subordinate authorized resource paths.
+                    foreach (var roleAssignment in allRoleAssignments)
+                    {
+                        // Considering only resource paths that are subordinate to the requested resource path.
+                        if (roleAssignment.ScopeResourcePath!.IncludesResourcePath(resourcePath, allowEqual: false))
+                        {
+                            // Keep track of all role assignments until the end, when we know for sure whether the action is authorized or not.
+                            if (!subordinateAuthorizedResourcePaths.ContainsKey(roleAssignment.ScopeResourcePath!.RawResourcePath))
+                            {
+                                subordinateAuthorizedResourcePaths.Add(roleAssignment.ScopeResourcePath!.RawResourcePath, new ResourcePathAuthorizationResult
+                                {
+                                    ResourcePath = roleAssignment.ScopeResourcePath!.RawResourcePath,
+                                    Authorized = false,
+                                    Roles = [],
+                                    SubordinateAuthorizedResourcePaths = []
+                                });
+                            }
+
+                            var subordinateAuthorizedResourcePath = subordinateAuthorizedResourcePaths[roleAssignment.ScopeResourcePath!.RawResourcePath];
+
+                            subordinateAuthorizedResourcePath.Roles.Add(roleAssignment.RoleDefinition!.DisplayName!);
+                            if (roleAssignment.AllowedActions.Contains(authorizationRequest.Action))
+                            {
+                                subordinateAuthorizedResourcePath.Authorized = true;
+                            }
+                        }
+                    }
+
+                    result.SubordinateAuthorizedResourcePaths = subordinateAuthorizedResourcePaths.Values
+                        .Where(sarp => sarp.Authorized)
+                        .Select(sarp => new ResourcePathAuthorizationResult
+                        {
+                            ResourcePath = sarp.ResourcePath,
+                            Authorized = true,
+                            Roles = authorizationRequest.IncludeRoles ? sarp.Roles : [],
+                            SubordinateAuthorizedResourcePaths = []
+                        })
+                        .ToList();
                 }
             }
 
@@ -370,7 +467,7 @@ namespace FoundationaLLM.Authorization.Services
                 resourcePath,
                 authorizationRequest.UserContext.SecurityPrincipalId);
 
-            return false;
+            return result;
         }
     }
 }

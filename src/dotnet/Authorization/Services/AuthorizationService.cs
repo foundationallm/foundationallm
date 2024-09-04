@@ -36,9 +36,17 @@ namespace FoundationaLLM.Authorization.Services
             string instanceId,
             string action,
             List<string> resourcePaths,
+            bool expandResourceTypePaths,
+            bool includeRoleAssignments,
             UnifiedUserIdentity userIdentity)
         {
-            var defaultResults = resourcePaths.Distinct().ToDictionary(rp => rp, auth => false);
+            var defaultResults = resourcePaths.Distinct().ToDictionary(
+                rp => rp,
+                rp => new ResourcePathAuthorizationResult
+                {
+                    ResourcePath = rp,
+                    Authorized = false
+                });
 
             try
             {
@@ -46,6 +54,8 @@ namespace FoundationaLLM.Authorization.Services
                 {
                     Action = action,
                     ResourcePaths = resourcePaths,
+                    ExpandResourceTypePaths = expandResourceTypePaths,
+                    IncludeRoles = includeRoleAssignments,
                     UserContext = new UserAuthorizationContext
                     {
                         SecurityPrincipalId = userIdentity.UserId!,

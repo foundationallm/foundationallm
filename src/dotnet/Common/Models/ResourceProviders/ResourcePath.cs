@@ -14,6 +14,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         private readonly string? _resourceProvider;
         private readonly List<ResourceTypeInstance> _resourceTypeInstances;
         private readonly bool _isRootPath;
+        private readonly string _rawResourcePath;
 
         private const string INSTANCE_TOKEN = "instances";
         private const string RESOURCE_PROVIDER_TOKEN = "providers";
@@ -78,6 +79,12 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
             && (_resourceProvider == null);
 
         /// <summary>
+        /// Gets the raw resource path which was used to create the resource path object.
+        /// </summary>
+        public string RawResourcePath =>
+            _rawResourcePath;
+
+        /// <summary>
         /// Creates a new resource identifier from a resource path optionally allowing an action.
         /// </summary>
         /// <param name="resourcePath">The resource path used to create the resource identifier.</param>
@@ -88,7 +95,10 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
             string resourcePath,
             ImmutableList<string> allowedResourceProviders,
             Dictionary<string, ResourceTypeDescriptor> allowedResourceTypes,
-            bool allowAction = true) =>
+            bool allowAction = true)
+        {
+            _rawResourcePath = resourcePath;
+
             ParseResourcePath(
                 resourcePath,
                 allowedResourceProviders,
@@ -98,6 +108,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                 out _instanceId,
                 out _resourceProvider,
                 out _resourceTypeInstances);
+        }
 
         /// <summary>
         /// Tries to parse a resource path and create a resource identifier from it.
@@ -208,13 +219,14 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         /// Determines whether the resource path includes another specified resource path.
         /// </summary>
         /// <param name="other">The <see cref="ResourcePath"/> to check for inclusion.</param>
+        /// <param name="allowEqual">Indicates whether an equal resource path is considered to be included or not.</param>
         /// <returns>True if the specified resource path is included in the resource path.</returns>
-        public bool IncludesResourcePath(ResourcePath other)
+        public bool IncludesResourcePath(ResourcePath other, bool allowEqual = true)
         {
             if (_isRootPath)
                 // The other path is included only if it is root.
                 return
-                    other.IsRootPath;
+                    other.IsRootPath && allowEqual;
 
             if (IsInstancePath)
             {
@@ -224,7 +236,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
 
                 // An instance path includes another instance path for the same instance id.
                 if (other.IsInstancePath)
-                    return _instanceId == other.InstanceId;
+                    return (_instanceId == other.InstanceId) && allowEqual;
             }
 
             // A full path includes a root path or an instance path.
@@ -241,7 +253,9 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                     return false;
             }
 
-            return true;
+            return
+                allowEqual
+                || StringComparer.OrdinalIgnoreCase.Compare(_rawResourcePath, other.RawResourcePath) != 0;
         }
 
         private void ParseResourcePath(

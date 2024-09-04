@@ -15,9 +15,17 @@ namespace FoundationaLLM.Authorization.Services
             string instanceId,
             string action,
             List<string> resourcePaths,
+            bool expandResourceTypePaths,
+            bool includeRoleAssignments,
             UnifiedUserIdentity userIdentity)
         {
-            var defaultResults = resourcePaths.Distinct().ToDictionary(rp => rp, auth => true);
+            var defaultResults = resourcePaths.Distinct().ToDictionary(
+                rp => rp,
+                rp => new ResourcePathAuthorizationResult
+                {
+                    ResourcePath = rp,
+                    Authorized = false
+                });
 
             await Task.CompletedTask;
             return new ActionAuthorizationResult { AuthorizationResults = defaultResults };

@@ -228,7 +228,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             if (!parsedResourcePath.IsResourceTypePath)
             {
                 // Authorize access to the resource path.
-                await Authorize(parsedResourcePath, userIdentity, "read");
+                await Authorize(parsedResourcePath, userIdentity, "read", false, false);
             }
            
             return await GetResourcesAsync(parsedResourcePath, userIdentity);
@@ -241,7 +241,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             var parsedResourcePath = EnsureValidResourcePath(resourcePath, HttpMethod.Post, true);
 
             // Authorize access to the resource path.
-            await Authorize(parsedResourcePath, userIdentity, "write");
+            await Authorize(parsedResourcePath, userIdentity, "write", false, false);
 
             if (parsedResourcePath.ResourceTypeInstances.Last().Action != null)
                 return await ExecuteActionAsync(parsedResourcePath, serializedResource, userIdentity);
@@ -284,7 +284,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             var parsedResourcePath = EnsureValidResourcePath(resourcePath, HttpMethod.Delete, false);
 
             // Authorize access to the resource path.
-            await Authorize(parsedResourcePath, userIdentity, "delete");
+            await Authorize(parsedResourcePath, userIdentity, "delete", false, false);
 
             await DeleteResourceAsync(parsedResourcePath, userIdentity);
         }
@@ -368,7 +368,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             var parsedResourcePath = EnsureValidResourcePath(resourcePath, HttpMethod.Get, false, typeof(T));
 
             // Authorize access to the resource path.
-            await Authorize(parsedResourcePath, userIdentity, "read");
+            await Authorize(parsedResourcePath, userIdentity, "read", false, false);
 
             return await GetResourceAsyncInternal<T>(parsedResourcePath, userIdentity, options);
         }
@@ -382,7 +382,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             var parsedResourcePath = EnsureValidResourcePath(resourcePath, HttpMethod.Post, false, typeof(T));
 
             // Authorize access to the resource path.
-            await Authorize(parsedResourcePath, userIdentity, "write");
+            await Authorize(parsedResourcePath, userIdentity, "write", false, false);
 
             var result = await UpsertResourceAsyncInternal<T, TResult>(parsedResourcePath, resource, userIdentity);
 
@@ -456,10 +456,13 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// </summary>
         /// <param name="resourcePath"></param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> containing information about the identity of the user.</param>
-        /// <param name="actionType"></param>
+        /// <param name="actionType">The type of action to be authorized (e.g., "read", "write", "delete").</param>
+        /// <param name="expandResourceTypePaths">Indicates whether to expand resource type paths that are not authorized.</param>
+        /// <param name="includeRoles">Indicates whether to include roles in the response.</param>
         /// <returns></returns>
         /// <exception cref="ResourceProviderException"></exception>
-        private async Task Authorize(ResourcePath resourcePath, UnifiedUserIdentity? userIdentity, string actionType)
+        private async Task Authorize(ResourcePath resourcePath, UnifiedUserIdentity? userIdentity, string actionType,
+            bool expandResourceTypePaths, bool includeRoles)
         {
             try
             {
@@ -472,9 +475,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     _instanceSettings.Id,
                     $"{_name}/{resourcePath.MainResourceTypeName!}/{actionType}",
                     [rp],
+                    expandResourceTypePaths,
+                    includeRoles,
                     userIdentity);
 
-                if (!result.AuthorizationResults[rp])
+                if (!result.AuthorizationResults[rp].Authorized)
                     throw new AuthorizationException("Access is not authorized.");
             }
             catch (AuthorizationException)
