@@ -8,7 +8,7 @@
 				:alt="$appConfigStore.logoText"
 			/>
 			<span v-else>{{ $appConfigStore.logoText }}</span>
-			<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
 					:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
 					size="small"
@@ -22,7 +22,7 @@
 		</div>
 		<div class="chat-sidebar__section-header">
 			<h2 class="chat-sidebar__section-header__text">Chats</h2>
-			<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
 					icon="pi pi-plus"
 					text
@@ -48,7 +48,7 @@
 				<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
 					<!-- Chat name -->
 
-					<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+					<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 						<span class="chat__name" tabindex="0">{{ session.name }}</span>
 						<template #popper>
 							{{ session.name }}
@@ -58,7 +58,7 @@
 					<!-- Chat icons -->
 					<span v-if="currentSession?.id === session.id" class="chat__icons">
 						<!-- Rename session -->
-						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+						<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 							<Button
 								icon="pi pi-pencil"
 								size="small"
@@ -71,7 +71,7 @@
 						</VTooltip>
 
 						<!-- Delete session -->
-						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+						<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 							<Button
 								icon="pi pi-trash"
 								size="small"
@@ -179,6 +179,7 @@ export default {
 			sessionToDelete: null as Session | null,
 			deleteProcessing: false,
 			createProcessing: false,
+			isMobile: window.screen.width < 950,
 		};
 	},
 
