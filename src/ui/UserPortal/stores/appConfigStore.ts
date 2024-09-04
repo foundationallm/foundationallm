@@ -28,6 +28,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 		footerText: null,
 		instanceId: null,
 		agentIconUrl: null,
+		azureOpenAIAssistantsFileSearchFileExtensions: null,
 
 		// Auth: These settings configure the MSAL authentication.
 		auth: {
@@ -75,6 +76,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				footerText,
 				instanceId,
 				agentIconUrl,
+				azureOpenAIAssistantsFileSearchFileExtensions,
 				authClientId,
 				authInstance,
 				authTenantId,
@@ -102,6 +104,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				getConfigValueSafe('FoundationaLLM:Branding:FooterText'),
 				getConfigValueSafe('FoundationaLLM:Instance:Id', '00000000-0000-0000-0000-000000000000'),
 				getConfigValueSafe('FoundationaLLM:Branding:AgentIconUrl', '~/assets/FLLM-Agent-Light.svg'),
+				getConfigValueSafe('FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:ClientId'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:Instance'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:TenantId'),
@@ -131,6 +134,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.footerText = footerText;
 			this.instanceId = instanceId;
 			this.agentIconUrl = agentIconUrl;
+			this.azureOpenAIAssistantsFileSearchFileExtensions = azureOpenAIAssistantsFileSearchFileExtensions;
 
 			this.auth.clientId = authClientId;
 			this.auth.instance = authInstance;
