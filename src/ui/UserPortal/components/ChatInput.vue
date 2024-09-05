@@ -359,12 +359,26 @@ export default {
 		},
 
 		fileSelected(event: any) {
+			const allowedFileTypes = this.$appConfigStore.allowedUploadFileExtensions;
 			event.files.forEach((file: any, index) => {
-				if (file.size > 512000000) {
+				if (file.size > 536870912) {
 					this.$toast.add({
 						severity: 'error',
 						summary: 'Error',
 						detail: 'File size exceeds the limit of 512MB.',
+						life: 5000,
+					});
+					event.files.splice(index, 1);
+				}
+				
+				if (!allowedFileTypes || allowedFileTypes === '') {
+					return;
+				}
+				if (!allowedFileTypes.includes(file.name.split('.').pop())) {
+					this.$toast.add({
+						severity: 'error',
+						summary: 'Error',
+						detail: `File type not supported. File: ${file.name}`,
 						life: 5000,
 					});
 					event.files.splice(index, 1);
