@@ -66,6 +66,9 @@ namespace FoundationaLLM.Core.Examples.Services
                 throw new InvalidOperationException($"The indexing profile {indexingProfileName} was not found.");
             }
 
+            var aiSearchConfigurationResource = indexingProfile.Settings![VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId];
+            indexingProfile.Settings![VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId] = $"/instances/{instanceSettings.Value.Id}/providers/{ResourceProviderNames.FoundationaLLM_Configuration}/{ConfigurationResourceTypeNames.APIEndpointConfigurations}/{aiSearchConfigurationResource}";
+
             var response = await managementClient.Vectorization.UpsertIndexingProfileAsync(indexingProfile);
 
             if (!string.IsNullOrWhiteSpace(GetObjectId(response)))
@@ -146,8 +149,8 @@ namespace FoundationaLLM.Core.Examples.Services
 
         public async Task<VectorizationRequest> GetVectorizationRequest(VectorizationRequest vectorizationRequest)
         {
-            return await managementRestClient.Resources.GetResourcesAsync<VectorizationRequest>(
-                    ResourceProviderNames.FoundationaLLM_Vectorization, vectorizationRequest.ObjectId!);
+            return (await managementRestClient.Resources.GetResourcesAsync<List<ResourceProviderGetResult<VectorizationRequest>>>(
+                    ResourceProviderNames.FoundationaLLM_Vectorization, vectorizationRequest.ObjectId!)).First().Resource;
         }
 
         public async Task<string> CreateVectorizationRequest(VectorizationRequest vectorizationRequest)

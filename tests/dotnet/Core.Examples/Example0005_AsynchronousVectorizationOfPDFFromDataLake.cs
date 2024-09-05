@@ -33,7 +33,7 @@ namespace FoundationaLLM.Core.Examples
         private string dataSourceName = "datalake_vectorization_input";
         private string dataSourceObjectId = String.Empty;
         private string textPartitioningProfileName = "text_partition_profile";
-        private string textEmbeddingProfileName = "text_embedding_profile_generic";
+        private string textEmbeddingProfileName = "text_embedding_profile_gateway";
         private string indexingProfileName = "indexing_profile_pdf";
         private string searchString = "Kurt and Ollie";
         private string id = String.Empty;
@@ -125,7 +125,7 @@ namespace FoundationaLLM.Core.Examples
                 {
                     RemainingSteps = new List<string> { "extract", "partition", "embed", "index" },
                     CompletedSteps = new List<string>(),
-                    ProcessingType = VectorizationProcessingType.Synchronous,
+                    ProcessingType = VectorizationProcessingType.Asynchronous,
                     ContentIdentifier = ci,
                     Name = id,
                     Steps = steps,
