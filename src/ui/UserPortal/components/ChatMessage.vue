@@ -27,7 +27,7 @@
 								},
 							}"
 						/>
-						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+						<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 							<span class="time-stamp" tabindex="0">{{
 								$filters.timeAgo(new Date(message.timeStamp))
 							}}</span>
@@ -37,7 +37,7 @@
 						</VTooltip>
 
 						<!-- Copy user message button -->
-						<VTooltip :auto-hide="false" :popper-riggers="['hover']">
+						<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 							<Button
 								v-if="message.sender === 'User'"
 								class="message__copy"
@@ -294,6 +294,7 @@ export default {
 				? JSON.parse(JSON.stringify(this.message.content))
 				: null,
 			isAnalysisModalVisible: false,
+			isMobile: window.screen.width < 950,
 		};
 	},
 
