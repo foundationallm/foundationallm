@@ -160,7 +160,9 @@
 							modal
 							header="Completion Prompt"
 						>
-							<p class="prompt-text">{{ prompt.prompt }}</p>
+							<p class="prompt-text" tabindex="0">
+								{{ prompt.prompt }}
+							</p>
 							<template #footer>
 								<Button
 									:style="{

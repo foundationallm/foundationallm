@@ -92,6 +92,7 @@
 										icon="pi pi-times"
 										text
 										severity="danger"
+										aria-label="Remove file"
 										@click="removeFileCallback(index)"
 									/>
 								</div>
@@ -107,7 +108,7 @@
 										icon="pi pi-times"
 										text
 										severity="danger"
-										aria-label="Remove attachment"
+										aria-label="Delete attachment"
 										@click="removeAttachment(file)"
 									/>
 								</div>
