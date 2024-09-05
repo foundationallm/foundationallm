@@ -44,6 +44,7 @@ namespace FoundationaLLM.Authorization.Services
                 rp => rp,
                 rp => new ResourcePathAuthorizationResult
                 {
+                    ResourceName = string.Empty,
                     ResourcePath = rp,
                     Authorized = false
                 });

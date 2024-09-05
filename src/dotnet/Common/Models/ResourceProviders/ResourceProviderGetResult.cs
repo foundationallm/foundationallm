@@ -14,12 +14,6 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         public required T Resource { get; set; }
 
         /// <summary>
-        /// List of authorized actions on the resource.
-        /// </summary>
-        [JsonPropertyName("actions")]
-        public required List<string> Actions { get; set; }
-
-        /// <summary>
         /// List of roles on the resource.
         /// </summary>
         [JsonPropertyName("roles")]

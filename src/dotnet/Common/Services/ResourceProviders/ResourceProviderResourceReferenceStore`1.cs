@@ -162,7 +162,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <remarks>
         /// This method is not safe in scenarios where multiple instances of a resource provider are running at the same time.
         /// </remarks>
-        public async Task<List<T>> GetAllResourceReferences()
+        public async Task<IEnumerable<T>> GetAllResourceReferences()
         {
             await _lock.WaitAsync();
             try

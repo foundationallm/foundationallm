@@ -7,6 +7,7 @@ using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Events;
@@ -64,7 +65,11 @@ namespace FoundationaLLM.Attachment.ResourceProviders
         #region Resource provider support for Management API
 
         /// <inheritdoc/>
-        protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
+        protected override async Task<object> GetResourcesAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderLoadOptions? options = null) =>
             resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
                 AttachmentResourceTypeNames.Attachments => await LoadAttachments(resourcePath.ResourceTypeInstances[0], userIdentity),
@@ -101,7 +106,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                         attachments.Add(attachment);
                 }
             }
-            return attachments.Select(attachment => new ResourceProviderGetResult<AttachmentFile>() { Resource = attachment, Actions = [], Roles = [] }).ToList();
+            return attachments.Select(attachment => new ResourceProviderGetResult<AttachmentFile>() { Resource = attachment, Roles = [] }).ToList();
         }
 
         private async Task<AttachmentFile?> LoadAttachment(AttachmentReference attachmentReference, bool loadContent = false)
@@ -203,7 +208,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
         #region Resource provider strongly typed operations
 
         /// <inheritdoc/>
-        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderOptions? options = null) where T : class
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) where T : class
         {
             var attachmentReference = await _resourceReferenceStore!.GetResourceReference(resourcePath.ResourceTypeInstances[0].ResourceId!)
                 ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} was not found.");

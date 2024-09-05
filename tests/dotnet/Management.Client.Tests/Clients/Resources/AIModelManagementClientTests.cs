@@ -32,7 +32,6 @@ namespace Management.Client.Tests.Clients.Resources
                         Type = AIModelTypes.Completion,
                         EndpointObjectId = "endpoint-object-id"
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -69,7 +68,6 @@ namespace Management.Client.Tests.Clients.Resources
                     Type = AIModelTypes.Completion,
                     EndpointObjectId = "endpoint-object-id"
                 },
-                Actions = [],
                 Roles = []
             };
             var expectedAIModels = new List<ResourceProviderGetResult<AIModelBase>> { expectedAIModel };

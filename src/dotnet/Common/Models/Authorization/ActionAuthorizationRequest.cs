@@ -31,7 +31,8 @@ namespace FoundationaLLM.Common.Models.Authorization
         /// Gets or sets a value indicating whether to include roles in the response.
         /// </summary>
         /// <remarks>
-        /// If this property is set to <c>true</c>, for each authrorized resource path, the response will include the roles from the role assignments that authorize the action for the resource path.
+        /// If this property is set to <c>true</c>, for each authrorized resource path,
+        /// the response will include the roles assigned directly or indirectly to the resource path.
         /// </remarks>
         public required bool IncludeRoles { get; set; }
 

@@ -6,6 +6,7 @@ using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
@@ -132,7 +133,11 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         #region Resource provider support for Management API
 
         /// <inheritdoc/>
-        protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
+        protected override async Task<object> GetResourcesAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderLoadOptions? options = null) =>
             resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
                 VectorizationResourceTypeNames.TextPartitioningProfiles =>
@@ -159,7 +164,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             {
                 var resources = resourceStore.Values.Where(p => !p.Deleted).ToList();
 
-                return resources.Select(resource => new ResourceProviderGetResult<TBase>() { Resource = resource, Actions = [], Roles = [] }).ToList();
+                return resources.Select(resource => new ResourceProviderGetResult<TBase>() { Resource = resource, Roles = [] }).ToList();
             }
             else
             {
@@ -185,7 +190,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                     throw new ResourceProviderException($"Could not locate the {instance.ResourceId} vectorization resource.",
                                                StatusCodes.Status404NotFound);
 
-                return [new ResourceProviderGetResult<TBase>() { Resource = resource, Actions = [], Roles = [] }];
+                return [new ResourceProviderGetResult<TBase>() { Resource = resource, Roles = [] }];
             }
         }
         private async Task<List<VectorizationRequest>> LoadVectorizationRequestResource(string resourceId)           
@@ -394,7 +399,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         /// <param name="resourcePath">The resource path from which to retrieve resources.</param>
         /// <returns>List of vectorization resources.</returns>
         public async Task<object> GetResourcesAsync(string resourcePath) =>
-            await GetResourcesAsync(GetResourcePath(resourcePath), GetUnifiedUserIdentity());
+            await HandleGetAsync(resourcePath, GetUnifiedUserIdentity());
 
 
         /// <summary>
@@ -407,7 +412,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         private async Task<VectorizationResult> ProcessVectorizationRequest(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
         {
             var vectorizationRequestId = resourcePath.ResourceTypeInstances[0].ResourceId!;            
-            var result = (List<VectorizationRequest>)(await GetResourcesAsync(resourcePath, GetUnifiedUserIdentity())); //should only return one or none
+            var result = (List<VectorizationRequest>)(await HandleGetAsync(resourcePath.RawResourcePath, GetUnifiedUserIdentity())); //should only return one or none
             if (result.Count == 0)
                 throw new ResourceProviderException($"The resource {vectorizationRequestId} was not found.",
                                        StatusCodes.Status404NotFound);
@@ -573,7 +578,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         #endregion
 
         /// <inheritdoc/>
-        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderOptions? options = null) where T : class =>
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) where T : class =>
             resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
                 VectorizationResourceTypeNames.TextPartitioningProfiles => await GetTextPartitioningProfile<T>(resourcePath),

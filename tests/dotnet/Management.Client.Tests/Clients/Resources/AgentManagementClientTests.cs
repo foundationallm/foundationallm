@@ -31,7 +31,6 @@ namespace Management.Client.Tests.Clients.Resources
                         Description = "A test agent",
                         Type = AgentTypes.KnowledgeManagement
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -67,7 +66,6 @@ namespace Management.Client.Tests.Clients.Resources
                     Description = "A test agent",
                     Type = AgentTypes.KnowledgeManagement
                 },
-                Actions = [],
                 Roles = []
             };
             var expectedAgents = new List<ResourceProviderGetResult<AgentBase>> { expectedAgent };

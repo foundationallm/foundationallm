@@ -7,6 +7,7 @@ using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
@@ -102,7 +103,11 @@ namespace FoundationaLLM.AIModel.ResourceProviders
         #region Resource provider support for Management API
 
         /// <inheritdoc/>
-        protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
+        protected override async Task<object> GetResourcesAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderLoadOptions? options = null) =>
             resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
                 AIModelResourceTypeNames.AIModels => await LoadAIModels(resourcePath.ResourceTypeInstances[0], userIdentity),
@@ -147,7 +152,7 @@ namespace FoundationaLLM.AIModel.ResourceProviders
                         aiModels.Add(aiModel);
                 }
             }
-            return aiModels.Select(aiModel => new ResourceProviderGetResult<AIModelBase>() { Resource = aiModel, Actions = [], Roles = [] }).ToList();
+            return aiModels.Select(aiModel => new ResourceProviderGetResult<AIModelBase>() { Resource = aiModel, Roles = [] }).ToList();
         }
 
         /// <inheritdoc/>
@@ -327,7 +332,7 @@ namespace FoundationaLLM.AIModel.ResourceProviders
         #endregion
 
         /// <inheritdoc/>
-        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderOptions? options = null) where T : class
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) where T : class
         {
             _aiModelReferences.TryGetValue(resourcePath.ResourceTypeInstances[0].ResourceId!, out var aiModelReference);
             if (aiModelReference == null || aiModelReference.Deleted)

@@ -10,6 +10,7 @@ using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
@@ -67,11 +68,19 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
         #region Resource provider support for Management API
 
         /// <inheritdoc/>
-        protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
+        protected override async Task<object> GetResourcesAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderLoadOptions? options = null) =>
             resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
-                AzureOpenAIResourceTypeNames.AssistantUserContexts => await LoadResources<AssistantUserContext>(resourcePath.ResourceTypeInstances[0]),
-                AzureOpenAIResourceTypeNames.FileUserContexts => await LoadResources<FileUserContext>(resourcePath.ResourceTypeInstances[0]),
+                AzureOpenAIResourceTypeNames.AssistantUserContexts => await LoadResources<AssistantUserContext>(
+                    resourcePath.ResourceTypeInstances[0],
+                    authorizationResult),
+                AzureOpenAIResourceTypeNames.FileUserContexts => await LoadResources<FileUserContext>(
+                    resourcePath.ResourceTypeInstances[0],
+                    authorizationResult),
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
@@ -157,7 +166,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
         #region Resource provider strongly typed operations
 
         /// <inheritdoc/>
-        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderOptions? options = null) =>
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) =>
             resourcePath.ResourceTypeInstances.Last().ResourceTypeName switch
             {
                 AzureOpenAIResourceTypeNames.FilesContent => ((await LoadFileContent(
@@ -181,15 +190,25 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
         private async Task<FileUserContext> LoadFileUserContext(string fileUserContextName)
         {
-            var resourceReference = await _resourceReferenceStore!.GetResourceReference(fileUserContextName)
-                ?? throw new ResourceProviderException(
-                    $"The resource {fileUserContextName} was not found.",
-                    StatusCodes.Status404NotFound);
+            try
+            {
+                await _localLock.WaitAsync();
 
-            return await LoadResource<FileUserContext>(resourceReference)
-                ?? throw new ResourceProviderException(
-                    $"The resource {fileUserContextName} has a valid resource reference but cannot be loaded from the storage. This might indicate a missing resource file.",
-                    StatusCodes.Status500InternalServerError);
+                var resourceReference = await _resourceReferenceStore!.GetResourceReference(fileUserContextName)
+                    ?? throw new ResourceProviderException(
+                        $"The resource {fileUserContextName} was not found.",
+                        StatusCodes.Status404NotFound);
+
+                return await LoadResource<FileUserContext>(resourceReference)
+                    ?? throw new ResourceProviderException(
+                        $"The resource {fileUserContextName} has a valid resource reference but cannot be loaded from the storage. This might indicate a missing resource file.",
+                        StatusCodes.Status500InternalServerError);
+
+            }
+            finally
+            {
+                _localLock.Release();
+            }
         }
 
         private async Task<FileContent> LoadFileContent(string fileUserContextName, string openAIFileId)

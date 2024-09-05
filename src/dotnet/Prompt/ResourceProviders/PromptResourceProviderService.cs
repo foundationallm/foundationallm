@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
@@ -87,7 +88,11 @@ namespace FoundationaLLM.Prompt.ResourceProviders
         #region Resource provider support for Management API
 
         /// <inheritdoc/>
-        protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
+        protected override async Task<object> GetResourcesAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderLoadOptions? options = null) =>
             resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
                 PromptResourceTypeNames.Prompts => await LoadPrompts(resourcePath.ResourceTypeInstances[0]),
@@ -108,7 +113,7 @@ namespace FoundationaLLM.Prompt.ResourceProviders
                   .Where(pr => pr != null)
                   .ToList();
 
-                return prompts.Select(prompt => new ResourceProviderGetResult<PromptBase>() { Resource = prompt, Actions = [], Roles = [] }).ToList();
+                return prompts.Select(prompt => new ResourceProviderGetResult<PromptBase>() { Resource = prompt, Roles = [] }).ToList();
             }
             else
             {
@@ -118,7 +123,7 @@ namespace FoundationaLLM.Prompt.ResourceProviders
                     prompt = await LoadPrompt(null, instance.ResourceId);
                     if (prompt != null)
                     {
-                        return [new ResourceProviderGetResult<PromptBase>() { Resource = prompt, Actions = [], Roles = [] }];
+                        return [new ResourceProviderGetResult<PromptBase>() { Resource = prompt, Roles = [] }];
                     }
                     return [];
                 }
@@ -133,7 +138,7 @@ namespace FoundationaLLM.Prompt.ResourceProviders
                 prompt = await LoadPrompt(promptReference);
                 if (prompt != null)
                 {
-                    return [new ResourceProviderGetResult<PromptBase>() { Resource = prompt, Actions = [], Roles = [] }];
+                    return [new ResourceProviderGetResult<PromptBase>() { Resource = prompt, Roles = [] }];
                 }
                 return [];
             }

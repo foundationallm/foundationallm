@@ -9,6 +9,7 @@ using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
@@ -98,7 +99,11 @@ namespace FoundationaLLM.Agent.ResourceProviders
         #region Resource provider support for Management API
 
         /// <inheritdoc/>
-        protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
+        protected override async Task<object> GetResourcesAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderLoadOptions? options = null) =>
             resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
                 AgentResourceTypeNames.Agents => await LoadAgents(resourcePath.ResourceTypeInstances[0], userIdentity),
@@ -145,8 +150,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             return agents.Select(agent => new ResourceProviderGetResult<AgentBase>
             {
                 Resource = agent,
-                Roles = new List<string>(),
-                Actions = new List<string>()
+                Roles = new List<string>()
             }).ToList();
         }
 

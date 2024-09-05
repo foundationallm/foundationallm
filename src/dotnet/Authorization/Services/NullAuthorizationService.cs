@@ -23,6 +23,7 @@ namespace FoundationaLLM.Authorization.Services
                 rp => rp,
                 rp => new ResourcePathAuthorizationResult
                 {
+                    ResourceName = string.Empty,
                     ResourcePath = rp,
                     Authorized = false
                 });
@@ -39,18 +40,6 @@ namespace FoundationaLLM.Authorization.Services
         {
             await Task.CompletedTask;
             return new RoleAssignmentOperationResult { Success = true };
-        }
-
-        /// <inheritdoc/>
-        public async Task<Dictionary<string, RoleAssignmentsWithActionsResult>> ProcessRoleAssignmentsWithActionsRequest(
-            string instanceId,
-            RoleAssignmentsWithActionsRequest request,
-            UnifiedUserIdentity userIdentity)
-        {
-            var defaultResults = request.Scopes.Distinct().ToDictionary(scp => scp, res => new RoleAssignmentsWithActionsResult() { Actions = [], Roles = [] });
-
-            await Task.CompletedTask;
-            return defaultResults;
         }
 
         /// <inheritdoc/>

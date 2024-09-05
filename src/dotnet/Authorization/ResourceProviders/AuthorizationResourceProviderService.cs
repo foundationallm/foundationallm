@@ -52,7 +52,11 @@ namespace FoundationaLLM.Authorization.ResourceProviders
         #region Resource provider support for Management API
 
         /// <inheritdoc/>
-        protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
+        protected override async Task<object> GetResourcesAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderLoadOptions? options = null) =>
             resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
                 AuthorizationResourceTypeNames.RoleDefinitions => LoadRoleDefinitions(resourcePath.ResourceTypeInstances[0]),
@@ -193,7 +197,7 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                         roleAssignments = [roleAssignment];
                 }
 
-                return roleAssignments.Select(x => new ResourceProviderGetResult<RoleAssignment>() { Resource = x, Actions = [], Roles = [] }).ToList();
+                return roleAssignments.Select(x => new ResourceProviderGetResult<RoleAssignment>() { Resource = x, Roles = [] }).ToList();
             }
         }
 

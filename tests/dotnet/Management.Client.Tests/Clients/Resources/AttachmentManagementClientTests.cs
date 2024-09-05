@@ -35,7 +35,6 @@ namespace Management.Client.Tests.Clients.Resources
                         Path = "test-attachment.txt",
                         OriginalFileName = "test-attachment.txt"
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -74,7 +73,6 @@ namespace Management.Client.Tests.Clients.Resources
                     Path = "test-attachment.txt",
                     OriginalFileName = "test-attachment.txt"
                 },
-                Actions = [],
                 Roles = []
             };
             var expectedAttachments = new List<ResourceProviderGetResult<AttachmentFile>> { expectedAttachment };

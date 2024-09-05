@@ -156,7 +156,6 @@ namespace FoundationaLLM.Client.Core.Tests
                         Name = "TestAgent",
                         Description = "Test Agent Description"
                     },
-                    Actions = [],
                     Roles = []
                 }
             };

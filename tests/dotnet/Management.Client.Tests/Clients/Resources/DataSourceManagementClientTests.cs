@@ -37,7 +37,6 @@ namespace Management.Client.Tests.Clients.Resources
                         },
                         Folders = ["/folder1", "/folder2"],
                     },
-                    Actions = [],
                     Roles = []
                 },
                 new ResourceProviderGetResult<DataSourceBase>()
@@ -53,7 +52,6 @@ namespace Management.Client.Tests.Clients.Resources
                         },
                         Tables = ["Customers", "Orders"],
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -94,7 +92,6 @@ namespace Management.Client.Tests.Clients.Resources
                      },
                     Folders = ["/folder1", "/folder2"],
                 },
-                Actions = [],
                 Roles = []
             };
             var expectedDataSources = new List<ResourceProviderGetResult<DataSourceBase>> { expectedDataSource };

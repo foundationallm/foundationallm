@@ -34,7 +34,6 @@ namespace Management.Client.Tests.Clients.Resources
                         Value = "TestValue",
                         ContentType = "text/plain",
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -73,7 +72,6 @@ namespace Management.Client.Tests.Clients.Resources
                         Value = "TestValue",
                         ContentType = "text/plain",
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -118,7 +116,6 @@ namespace Management.Client.Tests.Clients.Resources
                             {AuthenticationParametersKeys.APIKeyHeaderName, "FoundationaLLM:TestAPIKeyHeaderName" }
                         }
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -162,7 +159,6 @@ namespace Management.Client.Tests.Clients.Resources
                         {AuthenticationParametersKeys.APIKeyHeaderName, "FoundationaLLM:TestAPIKeyHeaderName" }
                     }
                 },
-                Actions = [],
                 Roles = []
             };
             var expectedServices = new List<ResourceProviderGetResult<APIEndpointConfiguration>> { expectedService };

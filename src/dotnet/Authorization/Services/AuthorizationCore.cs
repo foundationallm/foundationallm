@@ -147,10 +147,11 @@ namespace FoundationaLLM.Authorization.Services
         {
             var authorizationResults = authorizationRequest.ResourcePaths.Distinct().ToDictionary(rp => rp, rp => new ResourcePathAuthorizationResult
             {
+                ResourceName = string.Empty,
                 ResourcePath = rp,
                 Authorized = false,
                 Roles = [],
-                SubordinateAuthorizedResourcePaths = []
+                SubordinateResourcePathsAuthorizationResults = []
             });
             var invalidResourcePaths = new List<string>();
 
@@ -186,7 +187,9 @@ namespace FoundationaLLM.Authorization.Services
                             {
                                 Action = authorizationRequest.Action,
                                 ResourcePaths = [rp],
-                                ExpandResourceTypePaths = authorizationRequest.ExpandResourceTypePaths,
+                                ExpandResourceTypePaths = parsedResourcePath.IsResourceTypePath
+                                    ? authorizationRequest.ExpandResourceTypePaths
+                                    : false,
                                 IncludeRoles = authorizationRequest.IncludeRoles,
                                 UserContext = authorizationRequest.UserContext
                             });
@@ -315,10 +318,11 @@ namespace FoundationaLLM.Authorization.Services
         {
             var result = new ResourcePathAuthorizationResult
             {
+                ResourceName = resourcePath.MainResourceId,
                 ResourcePath = resourcePath.RawResourcePath,
                 Authorized = false,
                 Roles = [],
-                SubordinateAuthorizedResourcePaths = []
+                SubordinateResourcePathsAuthorizationResults = []
             };
 
             // Get cache associated with the instance id.
@@ -347,9 +351,12 @@ namespace FoundationaLLM.Authorization.Services
                             {
                                 result.Authorized = true;
 
-                                // Since we are authorized, we will ignore the potential instruction to expand subordinate resource paths for resource type paths.
-                                // If we are not asked to include roles, we can return immediately.
-                                if (!authorizationRequest.IncludeRoles)
+                                // If we are not asked to include roles and not asked to expand resource paths,
+                                // we can return immediately (this is the most common case).
+                                // Otherwise, we need to go through the entire list of security principals and their role assignments,
+                                // to include collect all the roles and/or all the subordinate authorized resource paths.
+                                if (!authorizationRequest.IncludeRoles
+                                    && !authorizationRequest.ExpandResourceTypePaths)
                                     return result;
                             }
                         }
@@ -361,8 +368,16 @@ namespace FoundationaLLM.Authorization.Services
                     allRoleAssignments.AddRange(roleAssignments);
                 }
 
-                if (result.Authorized
-                    && authorizationRequest.IncludeRoles
+                if (!result.Authorized
+                    && !resourcePath.IsResourceTypePath)
+                {
+                    _logger.LogWarning("The action {ActionName} is not allowed on the resource {ResourcePath} for the principal {PrincipalId}.",
+                        authorizationRequest.Action,
+                        resourcePath,
+                        authorizationRequest.UserContext.SecurityPrincipalId);
+                }
+
+                if (authorizationRequest.IncludeRoles
                     && allRoleAssignments.Count > 0)
                 {
                     // Include the display names of the roles in the result.
@@ -372,58 +387,54 @@ namespace FoundationaLLM.Authorization.Services
                         .ToList();
                 }
 
-                if (!result.Authorized
-                    && authorizationRequest.ExpandResourceTypePaths
+                if (authorizationRequest.ExpandResourceTypePaths
                     && resourcePath.IsResourceTypePath)
                 {
-                    Dictionary<string, ResourcePathAuthorizationResult> subordinateAuthorizedResourcePaths = [];
+                    Dictionary<string, ResourcePathAuthorizationResult> subordinateResults = [];
 
-                    // If the resource path is a resource type path and the action is not authorized, we need to expand the resource type path.
+                    // If the resource path is a resource type path, we need to expand the resource type path.
                     // We will check all the resource paths that are authorized and add them to the list of subordinate authorized resource paths.
                     foreach (var roleAssignment in allRoleAssignments)
                     {
-                        // Considering only resource paths that are subordinate to the requested resource path.
+                        // Considering only role assignments for resource paths that are subordinate to the requested resource path.
                         if (roleAssignment.ScopeResourcePath!.IncludesResourcePath(resourcePath, allowEqual: false))
                         {
                             // Keep track of all role assignments until the end, when we know for sure whether the action is authorized or not.
-                            if (!subordinateAuthorizedResourcePaths.ContainsKey(roleAssignment.ScopeResourcePath!.RawResourcePath))
+                            if (!subordinateResults.ContainsKey(
+                                roleAssignment.ScopeResourcePath!.MainResourceId!))
                             {
-                                subordinateAuthorizedResourcePaths.Add(roleAssignment.ScopeResourcePath!.RawResourcePath, new ResourcePathAuthorizationResult
-                                {
-                                    ResourcePath = roleAssignment.ScopeResourcePath!.RawResourcePath,
-                                    Authorized = false,
-                                    Roles = [],
-                                    SubordinateAuthorizedResourcePaths = []
-                                });
+                                subordinateResults.Add(
+                                    roleAssignment.ScopeResourcePath!.MainResourceId!,
+                                    new ResourcePathAuthorizationResult
+                                    {
+                                        ResourceName = roleAssignment.ScopeResourcePath!.MainResourceId,
+                                        ResourcePath = roleAssignment.ScopeResourcePath!.RawResourcePath,
+                                        Authorized = false,
+                                        Roles = [],
+                                        SubordinateResourcePathsAuthorizationResults = []
+                                    });
                             }
 
-                            var subordinateAuthorizedResourcePath = subordinateAuthorizedResourcePaths[roleAssignment.ScopeResourcePath!.RawResourcePath];
+                            var subordinateResult =
+                                subordinateResults[roleAssignment.ScopeResourcePath!.MainResourceId!];
 
-                            subordinateAuthorizedResourcePath.Roles.Add(roleAssignment.RoleDefinition!.DisplayName!);
+                            if (authorizationRequest.IncludeRoles
+                                && !subordinateResult.Roles.Contains(roleAssignment.RoleDefinition!.DisplayName!))
+                            {
+                                subordinateResult.Roles.Add(roleAssignment.RoleDefinition!.DisplayName!);
+                            }
+
                             if (roleAssignment.AllowedActions.Contains(authorizationRequest.Action))
                             {
-                                subordinateAuthorizedResourcePath.Authorized = true;
+                                subordinateResult.Authorized = true;
                             }
                         }
                     }
 
-                    result.SubordinateAuthorizedResourcePaths = subordinateAuthorizedResourcePaths.Values
-                        .Where(sarp => sarp.Authorized)
-                        .Select(sarp => new ResourcePathAuthorizationResult
-                        {
-                            ResourcePath = sarp.ResourcePath,
-                            Authorized = true,
-                            Roles = authorizationRequest.IncludeRoles ? sarp.Roles : [],
-                            SubordinateAuthorizedResourcePaths = []
-                        })
-                        .ToList();
+                    result.SubordinateResourcePathsAuthorizationResults =
+                        subordinateResults;
                 }
             }
-
-            _logger.LogWarning("The action {ActionName} is not allowed on the resource {ResourcePath} for the principal {PrincipalId}.",
-                authorizationRequest.Action,
-                resourcePath,
-                authorizationRequest.UserContext.SecurityPrincipalId);
 
             return result;
         }

@@ -31,7 +31,6 @@ namespace Management.Client.Tests.Clients.Resources
                         Name = "agent-norman",
                         Prefix = "YOu are an analytic agent named Norman. You can answer questions about Norman Rockwell's life and work."
                     },
-                    Actions = [],
                     Roles = []
                 },
                 new ResourceProviderGetResult<PromptBase>
@@ -41,7 +40,6 @@ namespace Management.Client.Tests.Clients.Resources
                         Name = "agent-bernice",
                         Prefix = "YOu are an analytic agent named Bernice. You can answer questions about all duck breeds and what they eat."
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -76,7 +74,6 @@ namespace Management.Client.Tests.Clients.Resources
                     Name = promptName,
                     Prefix = "YOu are an analytic agent named Bernice. You can answer questions about all duck breeds and what they eat."
                 },
-                Actions = [],
                 Roles = []
             };
             var expectedPrompts = new List<ResourceProviderGetResult<PromptBase>> { expectedPrompt };

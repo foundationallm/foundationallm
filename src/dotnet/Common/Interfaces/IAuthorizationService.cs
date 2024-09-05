@@ -25,8 +25,8 @@ namespace FoundationaLLM.Common.Interfaces
         /// any authorized resource paths matching the resource type path.
         /// </para>
         /// <para>
-        /// If <paramref name="includeRoles"/> is set to <c>true</c>, for each authrorized resource path, the response will include
-        /// the roles from the role assignments that authorize the action for the resource path.
+        /// If <paramref name="includeRoles"/> is set to <c>true</c>, for each authrorized resource path,
+        /// the response will include the roles assigned directly or indirectly to the resource path.
         /// </para>
         /// </remarks>
         /// <returns>An <see cref="ActionAuthorizationResult"/> containing the result of the processing.</returns>

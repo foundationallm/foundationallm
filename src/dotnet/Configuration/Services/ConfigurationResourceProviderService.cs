@@ -5,6 +5,7 @@ using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.AppConfiguration;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
@@ -117,7 +118,11 @@ namespace FoundationaLLM.Configuration.Services
         #region Resource provider support for Management API
 
         /// <inheritdoc/>
-        protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
+        protected override async Task<object> GetResourcesAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderLoadOptions? options = null) =>
             resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
             {
                 ConfigurationResourceTypeNames.AppConfigurations => await LoadAppConfigurationKeys(resourcePath.ResourceTypeInstances[0]),
@@ -149,7 +154,7 @@ namespace FoundationaLLM.Configuration.Services
 
                 if (string.IsNullOrEmpty(setting.Value))
                 {
-                    result.Add(new ResourceProviderGetResult<AppConfigurationKeyBase>() { Resource = appConfig, Actions = [], Roles = [] });
+                    result.Add(new ResourceProviderGetResult<AppConfigurationKeyBase>() { Resource = appConfig, Roles = [] });
                     continue;
                 }
 
@@ -161,7 +166,7 @@ namespace FoundationaLLM.Configuration.Services
                         appConfig = kvAppConfig;
                 }
 
-                result.Add(new ResourceProviderGetResult<AppConfigurationKeyBase>() { Resource = appConfig, Actions = [], Roles = [] });
+                result.Add(new ResourceProviderGetResult<AppConfigurationKeyBase>() { Resource = appConfig, Roles = [] });
             }
 
             return result;
@@ -176,7 +181,7 @@ namespace FoundationaLLM.Configuration.Services
                             .Where(apie => !apie.Deleted)
                             .Select(apie => LoadAPIEndpoint(apie)))).ToList();
 
-                return apiEndpoints.Select(service => new ResourceProviderGetResult<APIEndpointConfiguration>() { Resource = service, Actions = [], Roles = [] }).ToList();
+                return apiEndpoints.Select(service => new ResourceProviderGetResult<APIEndpointConfiguration>() { Resource = service, Roles = [] }).ToList();
             }
             else
             {
@@ -187,7 +192,7 @@ namespace FoundationaLLM.Configuration.Services
 
                 var apiEndpoint = await LoadAPIEndpoint(resourceReference);
 
-                return [new ResourceProviderGetResult<APIEndpointConfiguration>() { Resource = apiEndpoint, Actions = [], Roles = [] }];
+                return [new ResourceProviderGetResult<APIEndpointConfiguration>() { Resource = apiEndpoint, Roles = [] }];
             }
         }
 

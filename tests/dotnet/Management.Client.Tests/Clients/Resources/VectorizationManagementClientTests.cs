@@ -39,7 +39,6 @@ namespace Management.Client.Tests.Clients.Resources
                         TextEmbeddingProfileObjectId = "test-text-embedding-profile",
                         IndexingProfileObjectId = "test-indexing-profile",
                     },
-                    Actions = [],
                     Roles = []
                 },
                 new ResourceProviderGetResult<VectorizationPipeline>()
@@ -54,7 +53,6 @@ namespace Management.Client.Tests.Clients.Resources
                         TextEmbeddingProfileObjectId = "test-text-embedding-profile-2",
                         IndexingProfileObjectId = "test-indexing-profile-2",
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -94,7 +92,6 @@ namespace Management.Client.Tests.Clients.Resources
                     TextEmbeddingProfileObjectId = "test-text-embedding-profile",
                     IndexingProfileObjectId = "test-indexing-profile",
                 },
-                Actions = [],
                 Roles = []
             };
             var expectedPipelines = new List<ResourceProviderGetResult<VectorizationPipeline>> { expectedPipeline };
@@ -148,7 +145,6 @@ namespace Management.Client.Tests.Clients.Resources
                         TextSplitter = TextSplitterType.TokenTextSplitter,
                         ObjectId = "test-object-id"
                     },
-                    Actions = [],
                     Roles = []
                 },
                 new ResourceProviderGetResult<TextPartitioningProfile>
@@ -159,7 +155,6 @@ namespace Management.Client.Tests.Clients.Resources
                         TextSplitter = TextSplitterType.TokenTextSplitter,
                         ObjectId = "test-object-id-2"
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -195,7 +190,6 @@ namespace Management.Client.Tests.Clients.Resources
                     TextSplitter = TextSplitterType.TokenTextSplitter,
                     ObjectId = "test-object-id"
                 },
-                Actions = [],
                 Roles = []
             };
             var expectedProfiles = new List<ResourceProviderGetResult<TextPartitioningProfile>> { expectedProfile };
@@ -249,7 +243,6 @@ namespace Management.Client.Tests.Clients.Resources
                         TextEmbedding = TextEmbeddingType.SemanticKernelTextEmbedding,
                         ObjectId = "test-object-id"
                     },
-                    Actions = [],
                     Roles = []
                 },
                 new ResourceProviderGetResult<TextEmbeddingProfile>
@@ -260,7 +253,6 @@ namespace Management.Client.Tests.Clients.Resources
                         TextEmbedding = TextEmbeddingType.GatewayTextEmbedding,
                         ObjectId = "test-object-id-2"
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -296,7 +288,6 @@ namespace Management.Client.Tests.Clients.Resources
                     TextEmbedding = TextEmbeddingType.SemanticKernelTextEmbedding,
                     ObjectId = "test-object-id"
                 },
-                Actions = [],
                 Roles = []
             };
             var expectedProfiles = new List<ResourceProviderGetResult<TextEmbeddingProfile>> { expectedProfile };
@@ -349,7 +340,6 @@ namespace Management.Client.Tests.Clients.Resources
                         Name = "test-profile",
                         Indexer = IndexerType.AzureAISearchIndexer
                     },
-                    Actions = [],
                     Roles = []
                 },
                 new ResourceProviderGetResult<IndexingProfile>
@@ -359,7 +349,6 @@ namespace Management.Client.Tests.Clients.Resources
                         Name = "test-profile-2",
                         Indexer = IndexerType.AzureCosmosDBNoSQLIndexer
                     },
-                    Actions = [],
                     Roles = []
                 },
                 new ResourceProviderGetResult<IndexingProfile>
@@ -369,7 +358,6 @@ namespace Management.Client.Tests.Clients.Resources
                         Name = "test-profile-3",
                         Indexer = IndexerType.PostgresIndexer
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -404,7 +392,6 @@ namespace Management.Client.Tests.Clients.Resources
                     Name = profileName,
                     Indexer = IndexerType.AzureCosmosDBNoSQLIndexer
                 },
-                Actions = [],
                 Roles = []
             };
             var expectedProfiles = new List<ResourceProviderGetResult<IndexingProfile>> { expectedProfile };

@@ -11,6 +11,11 @@
         public required string ResourcePath { get; set; }
 
         /// <summary>
+        /// Gets or sets the name of the resource that was authorized.
+        /// </summary>
+        public string? ResourceName { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the resource path is authorized.
         /// </summary>
         public bool Authorized { get; set; }
@@ -24,14 +29,14 @@
         public List<string> Roles { get; set; } = [];
 
         /// <summary>
-        /// Gets or sets the list of <see cref="ResourcePathAuthorizationResult"/> objects representing
-        /// authorized subordinate resource paths.
+        /// Gets or sets the dictionary of <see cref="ResourcePathAuthorizationResult"/> objects representing
+        /// authorization results for subordinate resource paths. They keys of the dictionary are the resource names.
         /// </summary>
         /// <remarks>
-        /// This list only contain values if the resource path in <see cref="ResourcePath"/> is
-        /// a resource type path that is not authorized and <see cref="ActionAuthorizationRequest.ExpandResourceTypePaths"/>
+        /// This dictionary will only contain values if the resource path in <see cref="ResourcePath"/> is
+        /// a resource type path and <see cref="ActionAuthorizationRequest.ExpandResourceTypePaths"/>
         /// was set to <c>true</c> on the request that generated this result.
         /// </remarks>
-        public List<ResourcePathAuthorizationResult> SubordinateAuthorizedResourcePaths { get; set; } = [];
+        public Dictionary<string, ResourcePathAuthorizationResult> SubordinateResourcePathsAuthorizationResults { get; set; } = [];
     }
 }
