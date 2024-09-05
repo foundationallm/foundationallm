@@ -8,16 +8,18 @@
 		@update:visible="$emit('update:visible', $event)"
 	>
 		<template v-if="analysisResults && analysisResults.length > 0" #default>
-			<div v-for="(analysis, index) in analysisResults" :key="index" class="analysis-block">
-				<h4>Tool: {{ analysis.tool_name }}</h4>
-				<p><strong>Category:</strong> {{ analysis.agent_capability_category }}</p>
+			<div id="analysis-content" tabindex="0">
+				<div v-for="(analysis, index) in analysisResults" :key="index" class="analysis-block">
+					<h4>Tool: {{ analysis.tool_name }}</h4>
+					<p><strong>Category:</strong> {{ analysis.agent_capability_category }}</p>
 
-				<CodeBlockHeader language="python" :codecontent="encodeURIComponent(analysis.tool_input)">
-					<!-- eslint-disable-next-line vue/no-v-html -->
-					<pre v-html="renderCodeBlock(analysis.tool_input)"></pre>
-				</CodeBlockHeader>
+					<CodeBlockHeader language="python" :codecontent="encodeURIComponent(analysis.tool_input)">
+						<!-- eslint-disable-next-line vue/no-v-html -->
+						<pre v-html="renderCodeBlock(analysis.tool_input)"></pre>
+					</CodeBlockHeader>
 
-				<p v-if="analysis.tool_output"><strong>Output:</strong> {{ analysis.tool_output }}</p>
+					<p v-if="analysis.tool_output"><strong>Output:</strong> {{ analysis.tool_output }}</p>
+				</div>
 			</div>
 		</template>
 
