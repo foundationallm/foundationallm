@@ -341,6 +341,8 @@ namespace FoundationaLLM.Gateway.Services
                 else
                     _logger.LogInformation("Completed vectorization of file {FileId} in vector store {VectorStoreId} in {TotalSeconds}.",
                         fileId, vectorStoreId, (DateTimeOffset.UtcNow - startTime).TotalSeconds);
+
+                result[OpenAIAgentCapabilityParameterNames.AssistantFileId] = fileId;
             }
 
             return result;
