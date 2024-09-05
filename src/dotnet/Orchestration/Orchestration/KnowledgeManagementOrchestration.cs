@@ -270,7 +270,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
         private OpenAITextMessageContentItem TransformOpenAIAssistantsTextMessage(OpenAITextMessageContentItem openAITextMessage, List<FileMapping> newFileMappings)
         {
-            var pattern = new Regex("(【[0-9]+:[0-9]+†source】)");
+            var pattern = new Regex("(【[0-9:]+†source】)");
 
             openAITextMessage.Value = pattern.Replace(openAITextMessage.Value!, string.Empty);
 
