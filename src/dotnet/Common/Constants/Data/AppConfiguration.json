@@ -431,7 +431,7 @@
 				"name": "Scopes",
 				"description": "The list of scopes exposed by the Core API.",
 				"secret": "",
-				"value": "Data.Read Files.Read.All",
+				"value": "Data.Read",
 				"content_type": "",
 				"first_version": "0.8.0"
 			},
@@ -460,16 +460,8 @@
 				"first_version": "0.8.2"
 			},
 			{
-				"name": "OneDriveBaseURL",
-				"description": "The base URL of the tenant OneDrive.",
-				"secret": "",
-				"value": "${env:ENTRA_CORE_API_ONEDRIVE_BASE_URL}",
-				"content_type": "",
-				"first_version": "0.8.2"
-			},
-			{
 				"name": "OneDriveScopes",
-				"description": "The list of scopes exposed by the OneDrive API.",
+				"description": "The list of scopes required for OneDrive integration.",
 				"secret": "",
 				"value": "Files.OneDrive.Download",
 				"content_type": "",
@@ -1147,6 +1139,31 @@
 				"value": "2",
 				"content_type": "",
 				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:OneDrive:Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the OneDrive service."
+		},
+		"configuration_keys": [
+			{
+				"name": "BaseURL",
+				"description": "The base URL of the tenant OneDrive.",
+				"secret": "",
+				"value": "${env:ONEDRIVE_BASE_URL}",
+				"content_type": "",
+				"first_version": "0.8.2"
+			},
+			{
+				"name": "Scopes",
+				"description": "The list of scopes exposed by the OneDrive API.",
+				"secret": "",
+				"value": "Files.Read.All",
+				"content_type": "",
+				"first_version": "0.8.2"
 			}
 		]
 	},

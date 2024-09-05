@@ -265,6 +265,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:APIEndpoints:AzureContentSafety:Configuration";
         
         /// <summary>
+        /// Configuration section used to identify the settings for the OneDrive service.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_OneDrive_Configuration =
+            "FoundationaLLM:APIEndpoints:OneDrive:Configuration";
+        
+        /// <summary>
         /// Configuration section used to identify the settings for the Lakera Guard service.
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_LakeraGuard_Configuration =

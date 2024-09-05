@@ -334,15 +334,8 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:ClientSecret";
         
         /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:OneDriveBaseURL setting.
-        /// <para>Value description:<br/>The base URL of the tenant OneDrive.</para>
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_OneDriveBaseURL =
-            "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:OneDriveBaseURL";
-        
-        /// <summary>
         /// The app configuration key for the FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:OneDriveScopes setting.
-        /// <para>Value description:<br/>The list of scopes exposed by the OneDrive API.</para>
+        /// <para>Value description:<br/>The list of scopes required for OneDrive integration.</para>
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_OneDriveScopes =
             "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:OneDriveScopes";
@@ -829,6 +822,24 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_AzureContentSafety_Configuration_ViolenceSeverity =
             "FoundationaLLM:APIEndpoints:AzureContentSafety:Configuration:ViolenceSeverity";
+
+        #endregion
+
+        #region FoundationaLLM:APIEndpoints:OneDrive:Configuration
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:OneDrive:Configuration:BaseURL setting.
+        /// <para>Value description:<br/>The base URL of the tenant OneDrive.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_OneDrive_Configuration_BaseURL =
+            "FoundationaLLM:APIEndpoints:OneDrive:Configuration:BaseURL";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:OneDrive:Configuration:Scopes setting.
+        /// <para>Value description:<br/>The list of scopes exposed by the OneDrive API.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_OneDrive_Configuration_Scopes =
+            "FoundationaLLM:APIEndpoints:OneDrive:Configuration:Scopes";
 
         #endregion
 
