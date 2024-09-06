@@ -372,7 +372,7 @@ export default {
 					});
 					event.files.splice(index, 1);
 				}
-				
+
 				if (!allowedFileTypes || allowedFileTypes === '') {
 					return;
 				}
