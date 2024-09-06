@@ -7,6 +7,7 @@ using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Common.Services.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -97,7 +98,16 @@ namespace FoundationaLLM
                         identityOptions.TenantId = builder.Configuration[entraTenantIdConfigurationKey];
                         identityOptions.ClientId = builder.Configuration[entraClientIdConfigurationkey];
                         identityOptions.AllowWebApiToBeAuthorizedByACL = allowACLAuthorization;
-                    });
+                    })
+                .EnableTokenAcquisitionToCallDownstreamApi(options =>
+                {
+                    options.Instance = builder.Configuration[entraInstanceConfigurationKey];
+                    options.TenantId = builder.Configuration[entraTenantIdConfigurationKey];
+                    options.ClientId = builder.Configuration[entraClientIdConfigurationkey];
+                    options.ClientSecret = "";
+                })
+                .AddDownstreamApi("OneDrive", builder.Configuration.GetSection("DownstreamApi"))
+                .AddInMemoryTokenCaches();
 
             builder.Services.AddScoped<IUserClaimsProviderService, EntraUserClaimsProviderService>();
 

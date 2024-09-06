@@ -38,8 +38,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.4" />
     <PackageReference Include="Microsoft.Azure.AppConfiguration.AspNetCore" Version="7.1.0" />
     <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="8.4.0" />
-    <PackageReference Include="Microsoft.Identity.Web.DownstreamApi" Version="2.17.4" />
-    <PackageReference Include="Microsoft.Identity.Web" Version="2.17.4" />
+    <PackageReference Include="Microsoft.Identity.Web.DownstreamApi" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup>
