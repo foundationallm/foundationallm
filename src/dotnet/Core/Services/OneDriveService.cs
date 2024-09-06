@@ -1,6 +1,8 @@
 ﻿using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Core.Interfaces;
 
 namespace FoundationaLLM.Core.Services
@@ -10,18 +12,22 @@ namespace FoundationaLLM.Core.Services
     /// </summary>
     public class OneDriveService : IOneDriveService
     {
+        private readonly ICoreService _coreService;
         private readonly IUserProfileService _userProfileService;
         private readonly IHttpClientFactoryService _httpClientFactoryService;
 
         /// <summary>
         /// Contructor for OneDrive service.
         /// </summary>
+        /// <param name="coreService"></param>
         /// <param name="userProfileService">Service that provides methods for managing the user profile.</param>
         /// <param name="httpClientFactoryService">The HTTP client factory service.</param>
         public OneDriveService(
+            ICoreService coreService,
             IUserProfileService userProfileService,
             IHttpClientFactoryService httpClientFactoryService)
         {
+            _coreService = coreService;
             _userProfileService = userProfileService;
             _httpClientFactoryService = httpClientFactoryService;
         }
@@ -59,7 +65,8 @@ namespace FoundationaLLM.Core.Services
         }
 
         /// <inheritdoc/>
-        public async Task<string> Download(string instanceId, string itemId, UnifiedUserIdentity userIdentity)
+        public async Task<ResourceProviderUpsertResult> Download(
+            string instanceId, string sessionId, string agentName, string itemId, UnifiedUserIdentity userIdentity)
         {
             var userProfile = await _userProfileService.GetUserProfileAsync(instanceId);
 
@@ -70,10 +77,31 @@ namespace FoundationaLLM.Core.Services
             var client = await _httpClientFactoryService.CreateClient(HttpClientNames.OneDriveAPI, userIdentity);
 
             var response = await client.GetAsync($"/{itemId}/content");
+            var stream = await response.Content.ReadAsStreamAsync();
 
-            var content = await response.Content.ReadAsStringAsync();
+            using var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            var content = memoryStream.ToArray();
 
-            return content;
+            var fileName = $"{Guid.NewGuid()}";
+            var name = $"a-{fileName}-{DateTime.UtcNow.Ticks}";
+            var contentType = "application/octet-stream";
+
+            var result = await _coreService.UploadAttachment(
+                    instanceId,
+                    sessionId,
+                    new AttachmentFile
+                    {
+                        Name = name,
+                        Content = content,
+                        DisplayName = fileName,
+                        ContentType = contentType,
+                        OriginalFileName = fileName
+                    },
+                    agentName,
+                    userIdentity);
+
+            return result;
         }
     }
 }
