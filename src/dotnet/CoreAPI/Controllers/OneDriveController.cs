@@ -61,14 +61,16 @@ namespace FoundationaLLM.Core.API.Controllers
         /// Downloads a file from the user's connected OneDrive work or school account.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="sessionId">The session ID from which the file is uploaded.</param>
+        /// <param name="agentName">The agent name.</param>
         /// <param name="itemId">The OneDrive work or school item identifier.</param>
-        /// <returns>The file contents.</returns>
+        /// <returns></returns>
         [HttpPost("download")]
-        public async Task<IActionResult> Download(string instanceId, [FromQuery] string itemId)
+        public async Task<IActionResult> Download(string instanceId, string sessionId, string agentName, string itemId)
         {
-            var content = await _oneDriveService.Download(instanceId, itemId, _callContext.CurrentUserIdentity!);
+            var result = await _oneDriveService.Download(instanceId, sessionId, agentName, itemId, _callContext.CurrentUserIdentity!);
 
-            return Ok(content);
+            return Ok(result);
         }
     }
 }
