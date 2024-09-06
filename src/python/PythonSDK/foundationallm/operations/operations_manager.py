@@ -16,9 +16,10 @@ class OperationsManager():
     def __init__(self, config: Configuration):
         self.config = config
         # Retrieve the State API configuration settings.
+        env = os.environ.get('FOUNDATIONALLM_ENV', 'prod')
+
         self.state_api_url = config.get_value('FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIUrl').rstrip('/')
         self.state_api_key = config.get_value('FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIKey')
-        env = os.environ.get('FOUNDATIONALLM_ENV', 'prod')
         self.verify_certs = False if env == 'dev' else True
         
     async def create_operation(
