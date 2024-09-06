@@ -1,17 +1,21 @@
 <template>
 	<div class="chat-app">
-		<NavBar />
+		<header role="banner">
+			<NavBar />
+		</header>
 		<div class="chat-content">
-			<div v-show="!$appStore.isSidebarClosed" ref="sidebar" class="chat-sidebar-wrapper">
+			<aside v-show="!$appStore.isSidebarClosed" ref="sidebar" class="chat-sidebar-wrapper" role="navigation">
 				<ChatSidebar class="chat-sidebar" :style="{ width: sidebarWidth + 'px' }" />
 				<div class="resize-handle" @mousedown="startResizing"></div>
-			</div>
+			</aside>
 			<div
 				v-show="!$appStore.isSidebarClosed"
 				class="sidebar-blur"
 				@click="$appStore.toggleSidebar"
 			/>
-			<ChatThread />
+			<main role="main" class="chat-main">
+				<ChatThread />
+			</main>
 		</div>
 	</div>
 </template>
@@ -98,6 +102,11 @@ export default {
 	cursor: col-resize;
 	width: 5px;
 	background-color: #ccc;
+	height: 100%;
+}
+
+.chat-main {
+	width: 100%;
 	height: 100%;
 }
 
