@@ -74,4 +74,16 @@ main {
 .p-component {
 	border-radius: 0px;
 }
+
+.text--danger {
+	color: red;
+}
+
+.d-flex {
+	display: flex;
+}
+
+.justify-center {
+	justify-content: center;
+}
 </style>
