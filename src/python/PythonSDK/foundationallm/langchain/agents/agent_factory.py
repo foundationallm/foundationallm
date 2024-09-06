@@ -42,9 +42,9 @@ class AgentFactory:
         match agent_type:
             case 'knowledge-management':                
                 return LangChainKnowledgeManagementAgent(
-                        instance_id=self.instance_id,
-                        user_identity=self.user_identity,
-                        config=self.config,
+                        instance_id=instance_id,
+                        user_identity=user_identity,
+                        config=config,
                         operations_manager=operations_manager)
             case _:
                 raise ValueError(f'The agent type {agent_type} is not supported.')
