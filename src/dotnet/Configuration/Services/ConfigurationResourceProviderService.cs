@@ -126,12 +126,52 @@ namespace FoundationaLLM.Configuration.Services
                     StatusCodes.Status400BadRequest)
             };
 
+        /// <inheritdoc/>
+        protected override async Task<T> GetResourceInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderOptions? options = null) where T : class
+        {
+            var loadResult = new List<ResourceProviderGetResult<ResourceBase>>();
+
+            if (typeof(T) == typeof(APIEndpointConfiguration))
+            {
+                var apiEndpoints = await LoadAPIEndpoints(resourcePath.ResourceTypeInstances[0]);
+                loadResult.AddRange(apiEndpoints.Select(endpoint => new ResourceProviderGetResult<ResourceBase>
+                {
+                    Resource = endpoint.Resource,
+                    Actions = endpoint.Actions,
+                    Roles = endpoint.Roles
+                }));
+            }
+            else
+            {
+                var appConfigKeys = await LoadAppConfigurationKeys(resourcePath.ResourceTypeInstances[0]);
+                loadResult.AddRange(appConfigKeys.Select(key => new ResourceProviderGetResult<ResourceBase>
+                {
+                    Resource = key.Resource,
+                    Actions = key.Actions,
+                    Roles = key.Roles
+                }));
+            }
+
+            var resource = loadResult.FirstOrDefault();
+            if (resource == null || resource.Resource == null)
+            {
+                throw new ResourceProviderException(
+                    $"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceType} was not found.",
+                    StatusCodes.Status404NotFound);
+            }
+
+            return resource.Resource as T
+                ?? throw new ResourceProviderException(
+                    $"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceType} was not found.");
+
+        }
+
         #region Helpers for GetResourcesAsyncInternal
 
         private async Task<List<ResourceProviderGetResult<AppConfigurationKeyBase>>> LoadAppConfigurationKeys(ResourceTypeInstance instance)
         {
             var keyFilter = instance.ResourceId ?? "FoundationaLLM:*";
-            var result = new List<ResourceProviderGetResult<AppConfigurationKeyBase>>(); 
+            var result = new List<ResourceProviderGetResult<AppConfigurationKeyBase>>();
 
             var settings = await _appConfigurationService.GetConfigurationSettingsAsync(keyFilter);
             foreach (var setting in settings)
@@ -262,7 +302,7 @@ namespace FoundationaLLM.Configuration.Services
                     ?? throw new ResourceProviderException("Invalid key vault reference value.", StatusCodes.Status400BadRequest);
 
                 kvAppConfig.KeyVaultUri = _keyVaultService.KeyVaultUri;
-                
+
                 if (string.IsNullOrWhiteSpace(kvAppConfig.KeyVaultSecretName))
                     throw new ResourceProviderException("The key vault secret name is invalid.", StatusCodes.Status400BadRequest);
 
@@ -270,15 +310,15 @@ namespace FoundationaLLM.Configuration.Services
                 await _appConfigurationService.SetConfigurationSettingAsync(
                     appConfig.Key,
                     JsonSerializer.Serialize(new AppConfigurationKeyVaultUri
-                        {
-                            Uri = new Uri(new Uri(kvAppConfig.KeyVaultUri), $"/secrets/{kvAppConfig.KeyVaultSecretName}").AbsoluteUri
-                        }),
+                    {
+                        Uri = new Uri(new Uri(kvAppConfig.KeyVaultUri), $"/secrets/{kvAppConfig.KeyVaultSecretName}").AbsoluteUri
+                    }),
                     appConfig.ContentType);
 
             }
             else
                 await _appConfigurationService.SetConfigurationSettingAsync(appConfig.Key, appConfig.Value, appConfig.ContentType);
-                
+
             return new ResourceProviderUpsertResult
             {
                 ObjectId = $"/instances/{_instanceSettings.Id}/providers/{_name}/{ConfigurationResourceTypeNames.AppConfigurations}/{appConfig.Key}"

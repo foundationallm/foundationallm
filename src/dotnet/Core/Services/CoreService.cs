@@ -242,12 +242,15 @@ public partial class CoreService(
                             {
                                 foreach (var annotation in textMessageContent.Annotations)
                                 {
-                                    newContent.Add(new MessageContent
+                                    if (!textMessageContent.Value!.Contains(annotation.FileUrl!))
                                     {
-                                        Type = FileMethods.GetMessageContentFileType(annotation.Text, annotation.Type),
-                                        FileName = annotation.Text,
-                                        Value = annotation.FileUrl
-                                    });
+                                        newContent.Add(new MessageContent
+                                        {
+                                            Type = FileMethods.GetMessageContentFileType(annotation.Text, annotation.Type),
+                                            FileName = annotation.Text,
+                                            Value = annotation.FileUrl
+                                        });
+                                    }
                                 }
                             }
                             newContent.Add(new MessageContent
@@ -290,7 +293,12 @@ public partial class CoreService(
 
             await AddPromptCompletionMessagesAsync(completionRequest.SessionId, promptMessage, completionMessage, completionPrompt);
 
-            return new Completion { Text = result.Completion };
+            return new Completion
+            {
+                Text = completionMessage.Text // result.Completion
+                    ?? completionMessage.Content?.Where(c => c.Type == MessageContentItemTypes.Text).FirstOrDefault()?.Value
+                       ?? "Could not generate a completion due to an internal error."
+            };
         }
         catch (Exception ex)
         {

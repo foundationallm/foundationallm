@@ -42,6 +42,13 @@ namespace FoundationaLLM.Common.Authentication
                 UserId = id,
                 GroupIds = []
             };
+
+            // Used when debugging locally, set UPN for URLException overrides.
+            if(!Production)
+            {
+                var upn = token.Claims.First(c => c.Type == ClaimConstants.PreferredUserName)?.Value;
+                ServiceIdentity.UPN = upn;
+            }
         }
 
         /// <summary>

@@ -8,7 +8,7 @@
 				:alt="$appConfigStore.logoText"
 			/>
 			<span v-else>{{ $appConfigStore.logoText }}</span>
-			<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
 					:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
 					size="small"
@@ -22,16 +22,14 @@
 		</div>
 		<div class="chat-sidebar__section-header">
 			<h2 class="chat-sidebar__section-header__text">Chats</h2>
-			<!-- <button @click="handleAddSession">
-				<span class="text">+</span>
-			</button> -->
-			<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
 					icon="pi pi-plus"
 					text
 					severity="secondary"
 					aria-label="Add new chat"
 					@click="handleAddSession"
+					:disabled="createProcessing"
 				/>
 				<template #popper>Add new chat</template>
 			</VTooltip>
@@ -50,7 +48,7 @@
 				<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
 					<!-- Chat name -->
 
-					<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+					<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 						<span class="chat__name" tabindex="0">{{ session.name }}</span>
 						<template #popper>
 							{{ session.name }}
@@ -60,7 +58,7 @@
 					<!-- Chat icons -->
 					<span v-if="currentSession?.id === session.id" class="chat__icons">
 						<!-- Rename session -->
-						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+						<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 							<Button
 								icon="pi pi-pencil"
 								size="small"
@@ -73,7 +71,7 @@
 						</VTooltip>
 
 						<!-- Delete session -->
-						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+						<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 							<Button
 								icon="pi pi-trash"
 								size="small"
@@ -180,6 +178,8 @@ export default {
 			newSessionName: '' as string,
 			sessionToDelete: null as Session | null,
 			deleteProcessing: false,
+			isMobile: window.screen.width < 950,
+			createProcessing: false,
 		};
 	},
 
@@ -219,8 +219,21 @@ export default {
 		},
 
 		async handleAddSession() {
-			const newSession = await this.$appStore.addSession();
-			this.handleSessionSelected(newSession);
+			if (this.createProcessing) return;
+			this.createProcessing = true;
+			try {
+				const newSession = await this.$appStore.addSession();
+				this.handleSessionSelected(newSession);
+			} catch (error) {
+				this.$toast.add({
+					severity: 'error',
+					summary: 'Error',
+					detail: 'Could not create a new session. Please try again.',
+					life: 5000,
+				});
+			} finally {
+				this.createProcessing = false; // Re-enable the button
+			}
 		},
 
 		handleRenameSession() {
@@ -230,9 +243,19 @@ export default {
 
 		async handleDeleteSession() {
 			this.deleteProcessing = true;
-			await this.$appStore.deleteSession(this.sessionToDelete!);
-			this.sessionToDelete = null;
-			this.deleteProcessing = false;
+			try {
+				await this.$appStore.deleteSession(this.sessionToDelete!);
+				this.sessionToDelete = null;
+			} catch (error) {
+				this.$toast.add({
+					severity: 'error',
+					summary: 'Error',
+					detail: 'Could not delete the session. Please try again.',
+					life: 5000,
+				});
+			} finally {
+				this.deleteProcessing = false;
+			}
 		},
 
 		renameSessionInputKeydown(event: KeyboardEvent) {

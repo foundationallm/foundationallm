@@ -240,25 +240,18 @@ namespace Management.Client.Tests.Clients.Resources
         {
             // Arrange
             var expectedProfiles = new List<ResourceProviderGetResult<TextEmbeddingProfile>>
-            {
-                new ResourceProviderGetResult<TextEmbeddingProfile>
-                {
-                    Resource = new TextEmbeddingProfile
-                    {
-                        Name = "test-profile",
-                        TextEmbedding = TextEmbeddingType.SemanticKernelTextEmbedding,
-                        ObjectId = "test-object-id"
-                    },
-                    Actions = [],
-                    Roles = []
-                },
+            {                
                 new ResourceProviderGetResult<TextEmbeddingProfile>
                 {
                     Resource = new TextEmbeddingProfile
                     {
                         Name = "test-profile-2",
                         TextEmbedding = TextEmbeddingType.GatewayTextEmbedding,
-                        ObjectId = "test-object-id-2"
+                        ObjectId = "test-object-id-2",
+                        Settings = new Dictionary<string, string>
+                        {
+                            { VectorizationSettingsNames.EmbeddingProfileModelName, "text-embedding-ada-002"}
+                        }
                     },
                     Actions = [],
                     Roles = []
@@ -293,8 +286,12 @@ namespace Management.Client.Tests.Clients.Resources
                 Resource = new TextEmbeddingProfile
                 {
                     Name = profileName,
-                    TextEmbedding = TextEmbeddingType.SemanticKernelTextEmbedding,
-                    ObjectId = "test-object-id"
+                    TextEmbedding = TextEmbeddingType.GatewayTextEmbedding,
+                    ObjectId = "test-object-id",
+                    Settings = new Dictionary<string, string>
+                    {
+                        { VectorizationSettingsNames.EmbeddingProfileModelName, "text-embedding-ada-002"}
+                    }
                 },
                 Actions = [],
                 Roles = []
@@ -347,7 +344,11 @@ namespace Management.Client.Tests.Clients.Resources
                     Resource = new IndexingProfile
                     {
                         Name = "test-profile",
-                        Indexer = IndexerType.AzureAISearchIndexer
+                        Indexer = IndexerType.AzureAISearchIndexer,
+                        Settings = new Dictionary<string, string>
+                        {
+                            { VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, "test-api-endpoint-object-id" }
+                        }
                     },
                     Actions = [],
                     Roles = []
@@ -357,7 +358,11 @@ namespace Management.Client.Tests.Clients.Resources
                     Resource = new IndexingProfile
                     {
                         Name = "test-profile-2",
-                        Indexer = IndexerType.AzureCosmosDBNoSQLIndexer
+                        Indexer = IndexerType.AzureCosmosDBNoSQLIndexer,
+                        Settings = new Dictionary<string, string>
+                        {
+                            { VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, "test-api-endpoint-object-id-2" }
+                        }
                     },
                     Actions = [],
                     Roles = []
@@ -367,7 +372,11 @@ namespace Management.Client.Tests.Clients.Resources
                     Resource = new IndexingProfile
                     {
                         Name = "test-profile-3",
-                        Indexer = IndexerType.PostgresIndexer
+                        Indexer = IndexerType.PostgresIndexer,
+                        Settings = new Dictionary<string, string>
+                        {
+                            { VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, "test-api-endpoint-object-id-3" }
+                        }
                     },
                     Actions = [],
                     Roles = []
@@ -402,7 +411,11 @@ namespace Management.Client.Tests.Clients.Resources
                 Resource = new IndexingProfile
                 {
                     Name = profileName,
-                    Indexer = IndexerType.AzureCosmosDBNoSQLIndexer
+                    Indexer = IndexerType.AzureCosmosDBNoSQLIndexer,
+                    Settings = new Dictionary<string, string>
+                    {
+                        { VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, "test-api-endpoint-object-id" }
+                    }
                 },
                 Actions = [],
                 Roles = []
@@ -688,7 +701,11 @@ namespace Management.Client.Tests.Clients.Resources
                 new IndexingProfile
                 {
                     Name = "test-profile",
-                    Indexer = IndexerType.AzureAISearchIndexer
+                    Indexer = IndexerType.AzureAISearchIndexer,
+                    Settings = new Dictionary<string, string>
+                        {
+                            { VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, "test-api-endpoint-object-id" }
+                        }
                 }
             };
 
@@ -834,7 +851,11 @@ namespace Management.Client.Tests.Clients.Resources
             var profile = new TextEmbeddingProfile
             {
                 Name = "test-profile",
-                TextEmbedding = TextEmbeddingType.SemanticKernelTextEmbedding
+                TextEmbedding = TextEmbeddingType.GatewayTextEmbedding,
+                Settings = new Dictionary<string, string>
+                {
+                    { VectorizationSettingsNames.EmbeddingProfileModelName, "text-embedding-ada-002"}
+                }
             };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {
@@ -868,7 +889,11 @@ namespace Management.Client.Tests.Clients.Resources
             var profile = new IndexingProfile
             {
                 Name = "test-profile",
-                Indexer = IndexerType.AzureAISearchIndexer
+                Indexer = IndexerType.AzureAISearchIndexer,
+                Settings = new Dictionary<string, string>
+                        {
+                            {VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, "test-api-endpoint-object-id" }
+                        }
             };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {

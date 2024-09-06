@@ -2,6 +2,7 @@
 The API endpoint for returning the completion from the LLM for the specified user prompt.
 """
 import asyncio
+import json
 from typing import Optional, List
 from fastapi import (
     APIRouter,
@@ -14,7 +15,7 @@ from fastapi import (
     Response,
     status
 )
-from foundationallm.config import Configuration
+from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.constants import AgentCapabilityCategories
 from foundationallm.models.operations import (
     LongRunningOperation,
@@ -142,10 +143,16 @@ async def create_completion_response(
                 status_message = 'Operation state changed to in progress.'
             )
 
+            # Create the user identity object from the x_user_identity header.            
+            user_identity_dict = json.loads(x_user_identity)
+            user_identity = UserIdentity(**user_identity_dict)
+          
             # Create an orchestration manager to process the completion request.
             orchestration_manager = OrchestrationManager(
                 completion_request = completion_request,
-                configuration = configuration,
+                instance_id = instance_id,
+                user_identity = user_identity,
+                configuration = configuration
                 operations_manager = operations_manager
             )
             # Await the completion response from the orchestration manager.

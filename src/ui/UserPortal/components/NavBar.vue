@@ -10,7 +10,7 @@
 			<span v-else>{{ $appConfigStore.logoText }}</span>
 
 			<template v-if="!$appConfigStore.isKioskMode">
-				<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 					<Button
 						:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
 						size="small"
@@ -29,7 +29,7 @@
 			<div class="navbar__content__left">
 				<div class="navbar__content__left__item">
 					<template v-if="currentSession">
-						<span>{{ currentSession.name }}</span>
+						<span class="current_session_name">{{ currentSession.name }}</span>
 						<!-- <VTooltip :auto-hide="false" :popper-triggers="['hover']">
 							<Button
 								v-if="!$appConfigStore.isKioskMode"
@@ -57,7 +57,7 @@
 			<div class="navbar__content__right">
 				<template v-if="currentSession">
 					<span class="header__dropdown">
-						<VTooltip :auto-hide="false" :popper-riggers="['hover']">
+						<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 							<AgentIcon
 								:src="$appConfigStore.agentIconUrl || '~/assets/FLLM-Agent-Light.svg'"
 								alt="Select an agent"
@@ -112,6 +112,7 @@ export default {
 			agentOptions: [] as AgentDropdownOption[],
 			agentOptionsGroup: [] as AgentDropdownOptionsGroup[],
 			virtualUser: null as string | null,
+			isMobile: window.screen.width < 950,
 		};
 	},
 
@@ -318,10 +319,13 @@ export default {
 <style>
 @media only screen and (max-width: 545px) {
 	.dropdown--agent .p-dropdown-label {
-		display: none;
+		/* display: none; */
 	}
 	.dropdown--agent .p-dropdown-trigger {
 		height: 40px;
+	}
+	.current_session_name {
+		display: none;
 	}
 }
 

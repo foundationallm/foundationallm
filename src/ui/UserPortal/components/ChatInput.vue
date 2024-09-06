@@ -2,12 +2,12 @@
 	<div class="chat-input p-inputgroup">
 		<div class="input-wrapper">
 			<div class="tooltip-component">
-				<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 					<i class="pi pi-info-circle" tabindex="0"></i>
 					<template #popper> Use Shift+Enter to add a new line </template>
 				</VTooltip>
 			</div>
-			<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
 					:badge="fileArrayFiltered.length.toString() || null"
 					:aria-label="'Upload file (' + fileArrayFiltered.length.toString() + ' files attached)'"
@@ -28,6 +28,7 @@
 				header="Upload File(s)"
 				modal
 				aria-label="File Upload Dialog"
+				style="max-width: 98%"
 			>
 				<FileUpload
 					ref="fileUpload"
@@ -91,6 +92,7 @@
 										icon="pi pi-times"
 										text
 										severity="danger"
+										aria-label="Remove file"
 										@click="removeFileCallback(index)"
 									/>
 								</div>
@@ -106,7 +108,7 @@
 										icon="pi pi-times"
 										text
 										severity="danger"
-										aria-label="Remove attachment"
+										aria-label="Delete attachment"
 										@click="removeAttachment(file)"
 									/>
 								</div>
@@ -208,6 +210,7 @@ export default {
 			showFileUploadDialog: false,
 			isUploading: false,
 			uploadProgress: 0,
+			isMobile: window.screen.width < 950,
 		};
 	},
 
@@ -358,12 +361,26 @@ export default {
 		},
 
 		fileSelected(event: any) {
+			const allowedFileTypes = this.$appConfigStore.allowedUploadFileExtensions;
 			event.files.forEach((file: any, index) => {
-				if (file.size > 512000000) {
+				if (file.size > 536870912) {
 					this.$toast.add({
 						severity: 'error',
 						summary: 'Error',
 						detail: 'File size exceeds the limit of 512MB.',
+						life: 5000,
+					});
+					event.files.splice(index, 1);
+				}
+				
+				if (!allowedFileTypes || allowedFileTypes === '') {
+					return;
+				}
+				if (!allowedFileTypes.includes(file.name.split('.').pop())) {
+					this.$toast.add({
+						severity: 'error',
+						summary: 'Error',
+						detail: `File type not supported. File: ${file.name}`,
 						life: 5000,
 					});
 					event.files.splice(index, 1);
@@ -492,7 +509,8 @@ export default {
 }
 
 .upload-files-header {
-	width: 500px;
+	width: 100%;
+	max-width: 500px;
 }
 
 .upload-files-header button {
@@ -513,6 +531,7 @@ export default {
 	.upload-files-header button {
 		padding: 0.25rem 0.5rem;
 		margin-right: 0.25rem !important;
+		margin-bottom: 0.25rem !important;
 	}
 
 	.tooltip-component {
@@ -574,6 +593,25 @@ export default {
 	flex-direction: row;
 	align-items: center;
 	gap: 10px;
+	overflow: hidden;
+	flex-shrink: 1;
+	max-width: calc(100% - 50px);
+
+	span {
+		font-weight: 600;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: wrap;
+		flex-shrink: 1;
+		max-width: 80%;
+		min-width: 0;
+	}
+}
+
+@media only screen and (max-width: 405px) {
+	.file-upload-file_info div {
+		display: none;
+	}
 }
 
 .p-fileupload-content {

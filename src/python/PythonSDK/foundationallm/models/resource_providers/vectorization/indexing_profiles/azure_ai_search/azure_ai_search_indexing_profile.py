@@ -19,7 +19,7 @@ class AzureAISearchIndexingProfile(IndexingProfileBase):
     """
     settings: AzureAISearchSettings
     configuration_references: AzureAISearchConfigurationReferences
-
+    
     @staticmethod
     def from_object(obj: Any) -> Self:
 

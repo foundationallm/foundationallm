@@ -30,14 +30,13 @@ namespace FoundationaLLM.Core.Examples.Catalogs
         ];
 
         /// <summary>
-        /// Retrieves all API endpoint configurations defined in the catalog.
+        /// Retrieves all AI models defined in the catalog.
         /// </summary>
         /// <returns></returns>
         public static List<AIModelBase> GetAllAIModels()
         {
             var aiModels = new List<AIModelBase>();
-            aiModels.AddRange(CompletionAIModels);
-
+            aiModels.AddRange(CompletionAIModels);            
             return aiModels;
         }
     }

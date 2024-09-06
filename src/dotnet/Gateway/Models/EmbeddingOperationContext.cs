@@ -20,6 +20,12 @@ namespace FoundationaLLM.Gateway.Models
         public required TextEmbeddingResult Result { get; set; }
 
         /// <summary>
+        /// Indicates whether the requests associated with the context should be prioritized.
+        /// Example: Synchronous vectorization and user prompt embedding for completions.
+        /// </summary>        
+        public bool Prioritized { get; set; } = false;
+
+        /// <summary>
         /// Sets a specified error message on the context of the embedding operation.
         /// </summary>
         /// <param name="errorMessage">The error message to be set.</param>

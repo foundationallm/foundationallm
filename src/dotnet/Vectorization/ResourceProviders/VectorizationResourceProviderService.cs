@@ -188,7 +188,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                 return [new ResourceProviderGetResult<TBase>() { Resource = resource, Actions = [], Roles = [] }];
             }
         }
-        private async Task<List<VectorizationRequest>> LoadVectorizationRequestResource(string resourceId)           
+        private async Task<List<ResourceProviderGetResult<VectorizationRequest>>> LoadVectorizationRequestResource(string resourceId)           
         {       
             //load the resource from storage, instance.ResourceId is the request id
             var matchingFilePaths = await GetRequestResourceFilePaths(resourceId); //there should only be zero or one
@@ -199,8 +199,14 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                     Encoding.UTF8.GetString(fileContent.ToArray()));
 
                 if (resource is not null)
-                {
-                    return [resource];
+                {                    
+                    ResourceProviderGetResult<VectorizationRequest> result = new ResourceProviderGetResult<VectorizationRequest>
+                    {
+                        Resource = resource,
+                        Actions = [],
+                        Roles = []
+                    };
+                    return [result];
                 }                       
             }
             throw new ResourceProviderException($"Could not locate the {resourceId} vectorization resource.",
@@ -407,11 +413,11 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         private async Task<VectorizationResult> ProcessVectorizationRequest(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
         {
             var vectorizationRequestId = resourcePath.ResourceTypeInstances[0].ResourceId!;            
-            var result = (List<VectorizationRequest>)(await GetResourcesAsync(resourcePath, GetUnifiedUserIdentity())); //should only return one or none
+            var result = (List<ResourceProviderGetResult<VectorizationRequest>>)(await GetResourcesAsync(resourcePath, GetUnifiedUserIdentity())); //should only return one or none
             if (result.Count == 0)
                 throw new ResourceProviderException($"The resource {vectorizationRequestId} was not found.",
                                        StatusCodes.Status404NotFound);
-            var request = result.First();
+            var request = result.First().Resource;
 
             var requestProcessor = serviceProvider.GetService<IVectorizationRequestProcessor>();           
             var response = await requestProcessor!.ProcessRequest(request, userIdentity);
@@ -655,10 +661,11 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             if (typeof(T) != typeof(VectorizationRequest))
                 throw new ResourceProviderException($"The type of requested resource ({typeof(T)}) does not match the resource type specified in the path ({resourcePath.ResourceTypeInstances[0].ResourceType}).");
 
-            var vectorizationRequestList = (await LoadVectorizationRequestResource(resourcePath.ResourceTypeInstances[0].ResourceId!)) as List<T>;
-            if (vectorizationRequestList is not null && vectorizationRequestList.Count == 1)
+            var vectorizationRequestList = await LoadVectorizationRequestResource(resourcePath.ResourceTypeInstances[0].ResourceId!);
+            if (vectorizationRequestList != null && vectorizationRequestList.Count == 1)
             {
-                return vectorizationRequestList.First() as T;
+                return vectorizationRequestList[0].Resource as T
+                    ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceType} is invalid.");
             }
             
             throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceType} was not found.");            

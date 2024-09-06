@@ -32,15 +32,25 @@
     <Compile Include="foundationallm\models\attachments\attachment_properties.py" />
     <Compile Include="foundationallm\models\attachments\attachment_providers.py" />
     <Compile Include="foundationallm\models\attachments\__init__.py" />
+    <Compile Include="foundationallm\models\authentication\authentication_parameters_keys.py" />
     <Compile Include="foundationallm\models\constants\agent_capability_categories.py" />
     <Compile Include="foundationallm\models\constants\__init__.py" />
     <Compile Include="foundationallm\models\orchestration\analysis_result.py" />
+    <Compile Include="foundationallm\models\orchestration\completion_request_object_keys.py" />
     <Compile Include="foundationallm\models\orchestration\message_content_item_base.py" />
     <Compile Include="foundationallm\models\orchestration\message_content_item_types.py" />
     <Compile Include="foundationallm\models\orchestration\openai_file_path_message_content_item.py" />
     <Compile Include="foundationallm\models\orchestration\openai_image_file_message_content_item.py" />
     <Compile Include="foundationallm\models\orchestration\openai_text_message_content_item.py" />
+    <Compile Include="foundationallm\models\resource_providers\vectorization\embedding_profiles\embedding_profile_settings_keys.py" />
+    <Compile Include="foundationallm\models\services\gateway_text_embedding_response.py" />
     <Compile Include="foundationallm\models\services\openai_assistants_response.py" />
+    <Compile Include="foundationallm\services\gateway_text_embedding\text_chunk.py" />
+    <Compile Include="foundationallm\services\gateway_text_embedding\text_embedding_request.py" />
+    <Compile Include="foundationallm\services\gateway_text_embedding\text_embedding_response.py" />
+    <Compile Include="foundationallm\services\gateway_text_embedding\gateway_text_embedding_service.py" />
+    <Compile Include="foundationallm\services\gateway_text_embedding\__init__.py" />
+    <Compile Include="foundationallm\services\http_client_service.py" />
     <Compile Include="foundationallm\services\image_analysis_service.py" />
     <Compile Include="foundationallm\services\openai_assistants_api_service.py" />
     <Compile Include="foundationallm\langchain\exceptions\langchain_exception.py" />
@@ -56,6 +66,7 @@
     <Compile Include="foundationallm\models\agents\agent_gatekeeper_settings.py" />
     <Compile Include="foundationallm\models\agents\agent_orchestration_settings.py" />
     <Compile Include="foundationallm\models\agents\agent_vectorization_settings.py" />
+    <Compile Include="foundationallm\models\agents\knowledge_management_index_configuration.py" />
     <Compile Include="foundationallm\models\services\openai_assistants_request.py" />
     <Compile Include="foundationallm\models\services\__init__.py" />
     <Compile Include="foundationallm\models\classification\audio_prediction_request.py" />
@@ -113,7 +124,6 @@
     <Compile Include="foundationallm\models\resource_providers\prompts\__init__.py" />
     <Compile Include="foundationallm\models\resource_providers\resource_base.py" />
     <Compile Include="foundationallm\models\resource_providers\resource_name.py" />
-    <Compile Include="foundationallm\models\resource_providers\vectorization\embedding_profiles\azure_openai\azure_openai_configuration_references.py" />
     <Compile Include="foundationallm\models\resource_providers\vectorization\embedding_profiles\azure_openai\azure_openai_embedding_profile.py" />
     <Compile Include="foundationallm\models\resource_providers\vectorization\embedding_profiles\embedding_profile_base.py" />
     <Compile Include="foundationallm\models\resource_providers\vectorization\indexing_profiles\azure_ai_search\azure_ai_search_configuration_references.py" />
@@ -185,6 +195,7 @@
     <Folder Include="foundationallm\models\resource_providers\vectorization\indexing_profiles\azure_ai_search\" />
     <Folder Include="foundationallm\models\resource_providers\vectorization\embedding_profiles\" />
     <Folder Include="foundationallm\operations\" />
+    <Folder Include="foundationallm\services\gateway_text_embedding\" />
     <Folder Include="foundationallm\telemetry\" />
     <Folder Include="foundationallm\storage\" />
   </ItemGroup>

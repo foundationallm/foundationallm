@@ -1,11 +1,11 @@
-﻿using FoundationaLLM.Common.Models.Vectorization;
-using FoundationaLLM.Gateway.Exceptions;
-using FoundationaLLM.Gateway.Models;
+using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Models.Gateway;
+using FoundationaLLM.Common.Models.Vectorization;
 using Microsoft.Extensions.Logging;
 using System.Text;
 using System.Text.Json;
 
-namespace FoundationaLLM.Gateway.Client
+namespace FoundationaLLM.Common.Clients
 {
     /// <summary>
     /// Provides methods to call the Gateway API service.
@@ -97,13 +97,13 @@ namespace FoundationaLLM.Gateway.Client
                 var responseContent = await response.Content.ReadAsStringAsync();
                 var responseObject = JsonSerializer.Deserialize<Dictionary<string, object>>(responseContent);
 
-                if (responseObject == null)
-                    throw new GatewayException("The Gatekeeper API returned an invalid response.");
+                if (responseObject == null || responseObject.Count == 0)
+                    throw new GatewayException("The Gateway API returned an invalid response.");
 
                 return responseObject;
             }
 
-            throw new GatewayException($"The Gatekeeper API returned an error status code ({response.StatusCode}) while processing the agent capability request.");
+            throw new GatewayException($"The Gateway API returned an error status code ({response.StatusCode}) while processing the agent capability request.");
         }
     }
 }
