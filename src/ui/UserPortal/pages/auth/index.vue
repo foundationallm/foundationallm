@@ -1,7 +1,7 @@
 <template>
 	<div class="login-page">
 		<div class="login-container">
-			<img :src="$appConfigStore.logoUrl" class="login__logo" alt="Logo" />
+			<img :src="$appConfigStore.logoUrl" class="login__logo" :alt="$appConfigStore.logoText" />
 			<Button
 				class="primary-button"
 				icon="pi pi-microsoft"
