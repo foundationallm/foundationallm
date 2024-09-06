@@ -118,6 +118,7 @@
 				:style="{ width: '100%' }"
 				type="text"
 				placeholder="New chat name"
+				aria-label="New chat name"
 				autofocus
 				@keydown="renameSessionInputKeydown"
 			></InputText>
