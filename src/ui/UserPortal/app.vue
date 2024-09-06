@@ -9,6 +9,9 @@
 		<!-- Page to render -->
 		<NuxtPage :style="style" />
 
+		<!-- Session expiration dialog -->
+		<SessionExpirationDialog v-if="!$authStore.isExpired" />
+
 		<!-- Session expired dialog -->
 		<Dialog
 			modal
