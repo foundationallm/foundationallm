@@ -6,7 +6,7 @@ from langchain_core.language_models import BaseLanguageModel
 from langchain_openai import AzureChatOpenAI, AzureOpenAI, ChatOpenAI, OpenAI
 from openai import AzureOpenAI as aoi
 from openai import AsyncAzureOpenAI as async_aoi
-from foundationallm.config.configuration import Configuration
+from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.models.orchestration import OperationTypes
 from foundationallm.models.authentication import AuthenticationTypes
@@ -25,7 +25,7 @@ class LangChainAgentBase():
     """
     Implements the base functionality for a LangChain agent.
     """
-    def __init__(self, config: Configuration):
+    def __init__(self, instance_id: str, user_identity: UserIdentity, config: Configuration):
         """
         Initializes a knowledge management agent.
 
@@ -34,6 +34,8 @@ class LangChainAgentBase():
         config : Configuration
             Application configuration class for retrieving configuration settings.
         """
+        self.instance_id = instance_id
+        self.user_identity = user_identity
         self.config = config
         self.ai_model = None
         self.api_endpoint = None

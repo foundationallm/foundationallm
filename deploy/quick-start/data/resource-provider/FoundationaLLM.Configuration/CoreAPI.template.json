@@ -1,0 +1,24 @@
+{
+  "type": "api-endpoint",
+  "name": "CoreAPI",
+  "object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/CoreAPI",
+  "display_name": null,
+  "description": null,
+  "cost_center": null,
+  "category": "General",
+  "authentication_type": "APIKey",
+  "authentication_parameters":{
+    "api_key_configuration_name": "",
+    "api_key_header_name": ""
+  },
+  "url": "",
+  "status_url": "",
+  "url_exceptions": [],
+  "timeout_seconds": 3500,
+  "retry_strategy_name": "ExponentialBackoff",
+  "created_on": "0001-01-01T00:00:00+00:00",
+  "updated_on": "0001-01-01T00:00:00+00:00",
+  "created_by": "SYSTEM",
+  "updated_by": null,
+  "deleted": false
+}

@@ -3,13 +3,13 @@ using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Azure;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.Vectorization;
-using FoundationaLLM.Gateway.Exceptions;
 using FoundationaLLM.Gateway.Interfaces;
 using FoundationaLLM.Gateway.Models;
 using FoundationaLLM.Gateway.Models.Configuration;
@@ -158,7 +158,8 @@ namespace FoundationaLLM.Gateway.Services
                         Position = tc.Position
                     }).ToList(),
                     TokenCount = 0
-                }
+                },
+                Prioritized = embeddingRequest.Prioritized
             };
 
             embeddingModel.AddEmbeddingOperationContext(embeddingOperationContext);
@@ -341,6 +342,8 @@ namespace FoundationaLLM.Gateway.Services
                 else
                     _logger.LogInformation("Completed vectorization of file {FileId} in vector store {VectorStoreId} in {TotalSeconds}.",
                         fileId, vectorStoreId, (DateTimeOffset.UtcNow - startTime).TotalSeconds);
+
+                result[OpenAIAgentCapabilityParameterNames.AssistantFileId] = fileId;
             }
 
             return result;

@@ -15,6 +15,7 @@ using FoundationaLLM.Gateway.Client;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
+using FoundationaLLM.Common.Clients;
 
 namespace FoundationaLLM.Orchestration.Core.Orchestration
 {
@@ -182,7 +183,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         private async Task<List<MessageContentItemBase>> TransformContentItems(List<MessageContentItemBase> contentItems)
         {
             List<FileMapping> newFileMappings = [];
-            if (contentItems.Count == 0)
+            if (contentItems == null || contentItems.Count == 0)
                 return [];
 
             if (contentItems.All(ci => ci.AgentCapabilityCategory == AgentCapabilityCategoryNames.FoundationaLLMKnowledgeManagement))
@@ -269,7 +270,12 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
         private OpenAITextMessageContentItem TransformOpenAIAssistantsTextMessage(OpenAITextMessageContentItem openAITextMessage, List<FileMapping> newFileMappings)
         {
+            var pattern = new Regex(@"\【[0-9:]+†.+?\】");
+
+            openAITextMessage.Value = pattern.Replace(openAITextMessage.Value!, string.Empty);
+
             openAITextMessage.Annotations = openAITextMessage.Annotations
+                .Where(a => !pattern.Match(a.Text!).Success)
                 .Select(a => TransformOpenAIAssistantsFilePath(a, newFileMappings))
                 .ToList();
 
@@ -281,8 +287,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 .Where(a => !string.IsNullOrWhiteSpace(a.FileUrl) && !string.IsNullOrWhiteSpace(a.Text))
                 .DistinctBy(a => a.Text)
                 .ToDictionary(
-                    a => a.Text!,
-                    a => $"{a.FileUrl}");
+                    a => $"({a.Text!})",
+                    a => $"({a.FileUrl})");
             
 
             var input = openAITextMessage.Value!;
@@ -298,7 +304,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             foreach (Match match in matches)
             {
                 var startIndex = previousMatch == null ? 0 : previousMatch.Index + previousMatch.Length;
-                output.Add(input.Substring(startIndex, match.Index - startIndex));
+                output.Add(input[startIndex..match.Index]);
                 var token = input.Substring(match.Index, match.Length);
                 if (codeInterpreterPlaceholders.TryGetValue(token, out var replacement))
                     output.Add(replacement);

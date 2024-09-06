@@ -55,8 +55,7 @@ namespace FoundationaLLM.Vectorization.Handlers
 
             if (request.RunningOperations.TryGetValue(_stepId, out var runningOperation))
             {
-                // We have an ongoing operation, so we need to attempt to retrieve the emebdding results
-
+                // We have an ongoing operation, so we need to attempt to retrieve the embedding results
                 embeddingResult = await textEmbeddingService.GetEmbeddingsAsync(runningOperation.OperationId);
 
                 runningOperation.LastResponseTime = DateTime.UtcNow;
@@ -79,7 +78,6 @@ namespace FoundationaLLM.Vectorization.Handlers
             else
             {
                 // We don't have an ongoing operation, so we need to start the embedding operation
-
                 await _stateService.LoadArtifacts(state, VectorizationArtifactType.TextPartition);
 
                 var textPartitioningArtifacts = state.Artifacts.Where(a => a.Type == VectorizationArtifactType.TextPartition).ToList();
@@ -91,6 +89,8 @@ namespace FoundationaLLM.Vectorization.Handlers
                     return false;
                 }
 
+                // Synchronous processing is prioritized over asynchronous processing.
+                var prioritized = request.ProcessingType == VectorizationProcessingType.Synchronous;
                 embeddingResult = await textEmbeddingService.GetEmbeddingsAsync(
                     textPartitioningArtifacts.Select(tpa => new TextChunk
                     {
@@ -98,7 +98,8 @@ namespace FoundationaLLM.Vectorization.Handlers
                         Content = tpa.Content!,
                         TokensCount = tpa.Size
                     }).ToList(),
-                    embeddingModelName);
+                    embeddingModelName,
+                    prioritized);
 
                 if (embeddingResult.InProgress)
                 {

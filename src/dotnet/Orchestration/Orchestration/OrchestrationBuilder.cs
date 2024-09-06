@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
@@ -143,6 +143,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             var apiEndpointConfiguration = await configurationResourceProvider.HandleGet<APIEndpointConfiguration>(
                 aiModel.EndpointObjectId!,
                 currentUserIdentity);
+            var gatewayAPIEndpointConfiguration = await configurationResourceProvider.HandleGet<APIEndpointConfiguration>(
+                $"/{ConfigurationResourceTypeNames.APIEndpointConfigurations}/GatewayAPI",
+                currentUserIdentity);
 
             // Merge the model parameter overrides with the existing model parameter values from the AI model.
             if (modelParameterOverrides != null)
@@ -157,6 +160,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             explodedObjects[agentBase.PromptObjectId!] = prompt;
             explodedObjects[agentBase.AIModelObjectId!] = aiModel;
             explodedObjects[aiModel.EndpointObjectId!] = apiEndpointConfiguration;
+            explodedObjects[CompletionRequestObjectsKeys.GatewayAPIEndpointConfiguration] = gatewayAPIEndpointConfiguration;
 
             var allAgents = await agentResourceProvider.GetResources<AgentBase>(currentUserIdentity);
             var allAgentsDescriptions = allAgents
@@ -203,18 +207,37 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             continue;
                         }
 
-                        var indexingProfile = await vectorizationResourceProvider.HandleGet<VectorizationProfileBase>(
+                        var indexingProfile = await vectorizationResourceProvider.GetResource<IndexingProfile>(
                             indexingProfileName,
                             currentUserIdentity);
+                       
+                        if (indexingProfile == null)
+                            throw new OrchestrationException($"The indexing profile {indexingProfileName} is not a valid indexing profile.");
 
                         explodedObjects[indexingProfileName] = indexingProfile;
+                                               
+                        // Provide the indexing profile API endpoint configuration.
+                        if (indexingProfile.Settings == null)
+                            throw new OrchestrationException($"The settings for the indexing profile {indexingProfileName} were not found. Must include \"{VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId}\" setting.");
+
+                        if(indexingProfile.Settings.TryGetValue(VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, out var apiEndpointConfigurationObjectId) == false)
+                            throw new OrchestrationException($"The API endpoint configuration object ID was not found in the settings of the indexing profile.");
+
+                        var indexingProfileAPIEndpointConfiguration = await configurationResourceProvider.GetResource<APIEndpointConfiguration>(
+                            apiEndpointConfigurationObjectId,
+                            currentUserIdentity);
+
+                        explodedObjects[apiEndpointConfigurationObjectId] = indexingProfileAPIEndpointConfiguration;
                     }
 
                     if (!string.IsNullOrWhiteSpace(kmAgent.Vectorization.TextEmbeddingProfileObjectId))
                     {
-                        var textEmbeddingProfile = await vectorizationResourceProvider.HandleGet<VectorizationProfileBase>(
+                        var textEmbeddingProfile = await vectorizationResourceProvider.GetResource<TextEmbeddingProfile>(
                             kmAgent.Vectorization.TextEmbeddingProfileObjectId,
-                            currentUserIdentity);
+                            currentUserIdentity);                                               
+                                           
+                        if (textEmbeddingProfile == null)
+                            throw new OrchestrationException($"The text embedding profile {kmAgent.Vectorization.TextEmbeddingProfileObjectId} is not a valid text embedding profile.");
 
                         explodedObjects[kmAgent.Vectorization.TextEmbeddingProfileObjectId!] = textEmbeddingProfile;
                     }

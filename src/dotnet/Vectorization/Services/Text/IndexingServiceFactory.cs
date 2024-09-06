@@ -1,10 +1,14 @@
+using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
+using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
+using FoundationaLLM.SemanticKernel.Core.Services.Indexing;
 using FoundationaLLM.Vectorization.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,7 +49,7 @@ namespace FoundationaLLM.Vectorization.Services.Text
 
             return indexingProfile.Indexer switch
             {
-                IndexerType.AzureAISearchIndexer => CreateAzureAISearchIndexingService(),
+                IndexerType.AzureAISearchIndexer => await CreateAzureAISearchIndexingService(indexingProfile),
                 _ => throw new VectorizationException($"The text embedding type {indexingProfile.Indexer} is not supported."),
             };
         }
@@ -55,27 +59,43 @@ namespace FoundationaLLM.Vectorization.Services.Text
         {
             _resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Vectorization, out var vectorizationResourceProviderService);
             if (vectorizationResourceProviderService == null)
-                throw new VectorizationException($"The resource provider {ResourceProviderNames.FoundationaLLM_DataSource} was not loaded.");
+                throw new VectorizationException($"The resource provider {ResourceProviderNames.FoundationaLLM_Vectorization} was not loaded.");
 
             var indexingProfile = await vectorizationResourceProviderService.GetResourceAsync<IndexingProfile>(
                 $"/{VectorizationResourceTypeNames.IndexingProfiles}/{serviceName}", userIdentity);
 
             return indexingProfile.Indexer switch
             {
-                IndexerType.AzureAISearchIndexer => (CreateAzureAISearchIndexingService(), indexingProfile),
+                IndexerType.AzureAISearchIndexer => (await CreateAzureAISearchIndexingService(indexingProfile), indexingProfile),
                 IndexerType.AzureCosmosDBNoSQLIndexer => (CreateAzureCosmosDBNoSQLIndexingService(), indexingProfile),
                 IndexerType.PostgresIndexer => (CreatePostgresIndexingService(), indexingProfile),
                 _ => throw new VectorizationException($"The text embedding type {indexingProfile.Indexer} is not supported."),
             };
         }
 
-        private IIndexingService CreateAzureAISearchIndexingService()
+        private async Task<IIndexingService> CreateAzureAISearchIndexingService(IndexingProfile profile)
         {
-            var indexingService = _serviceProvider.GetKeyedService<IIndexingService>(
-                DependencyInjectionKeys.FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration)
-                ?? throw new VectorizationException($"Could not retrieve the Azure AI Search indexing service instance.");
+            // Get the API Endpoint configuration for the Azure AI Search service from the profile.
+            _resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Configuration, out var configurationResourceProviderService);
+            if (configurationResourceProviderService == null)
+                throw new VectorizationException($"The resource provider {ResourceProviderNames.FoundationaLLM_Configuration} was not loaded.");
 
-            return indexingService!;
+            if (profile.Settings==null)
+                throw new VectorizationException($"The settings for the Azure AI Search service were not found.");
+
+            if (profile.Settings.TryGetValue("api_endpoint_configuration_object_id", out var apiEndpointObjectId) == false)
+                throw new VectorizationException($"The API endpoint configuration object ID was not found in the settings.");
+            
+            var apiEndpoint = await configurationResourceProviderService.GetResource<APIEndpointConfiguration>(apiEndpointObjectId, DefaultAuthentication.ServiceIdentity!);
+            if(apiEndpoint==null)
+                throw new VectorizationException($"The API endpoint configuration {apiEndpointObjectId} for the Azure AI Search service was not found.");
+
+            var settings = new AzureAISearchIndexingServiceSettings()
+                {
+                    AuthenticationType = apiEndpoint.AuthenticationType,
+                    Endpoint = apiEndpoint.Url
+            };
+            return new AzureAISearchIndexingService(settings, _loggerFactory.CreateLogger<AzureAISearchIndexingService>());
         }
 
         private IIndexingService CreateAzureCosmosDBNoSQLIndexingService()

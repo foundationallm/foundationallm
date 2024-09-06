@@ -19,7 +19,7 @@ Telemetry.configure_monitoring(config, f'FoundationaLLM:APIEndpoints:{API_NAME}:
 app = FastAPI(
     title=f'FoundationaLLM {API_NAME}',
     summary='API for interacting with large language models using the LangChain orchestrator.',
-    description="""The FoundationaLLM LangChainAPI is a wrapper around LangChain functionality
+    description=f"""The FoundationaLLM {API_NAME} is a wrapper around LangChain functionality
                 contained in the foundationallm.core Python SDK.""",
     version='1.0.0',
     contact={

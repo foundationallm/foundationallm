@@ -24,6 +24,11 @@ namespace FoundationaLLM.Common.Constants.Agents
         public const string OpenAIAssistantThreadId = "OpenAI.AssistantThreadId";
 
         /// <summary>
+        /// The key name for the Gateway API EndpointConfiguration identifier value.
+        /// </summary>
+        public const string GatewayAPIEndpointConfiguration = "GatewayAPIEndpointConfiguration";
+
+        /// <summary>
         /// All completion request objects dictionary keys.
         /// </summary>
         public readonly static string[] All = [

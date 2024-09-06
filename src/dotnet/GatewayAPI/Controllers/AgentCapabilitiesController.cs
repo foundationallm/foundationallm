@@ -1,8 +1,8 @@
 ﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Gateway;
 using FoundationaLLM.Gateway.Interfaces;
-using FoundationaLLM.Gateway.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoundationaLLM.Gateway.API.Controllers

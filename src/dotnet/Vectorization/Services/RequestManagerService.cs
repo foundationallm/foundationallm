@@ -133,9 +133,7 @@ namespace FoundationaLLM.Vectorization.Services
                                 }
 
                                 // Retrieve the execution state of the request
-                                var state = await _vectorizationStateService.HasState(request).ConfigureAwait(false)
-                                        ? await _vectorizationStateService.ReadState(request).ConfigureAwait(false)
-                                        : VectorizationState.FromRequest(request);
+                                var state = await GetVectorizationRequestState(request);
 
                                 state.LogEntries.Add(
                                     new VectorizationLogEntry(
@@ -213,9 +211,8 @@ namespace FoundationaLLM.Vectorization.Services
 
         private async Task ProcessRequest(VectorizationRequest request, string messageId, string popReceipt, UnifiedUserIdentity userIdentity, CancellationToken cancellationToken)
         {
-            var state = await _vectorizationStateService.HasState(request).ConfigureAwait(false)
-                   ? await _vectorizationStateService.ReadState(request).ConfigureAwait(false)
-                   : VectorizationState.FromRequest(request);
+            var state = await GetVectorizationRequestState(request);
+
             try
             {
                 if (await HandleRequest(request, state, messageId, userIdentity, cancellationToken).ConfigureAwait(false))
@@ -255,9 +252,7 @@ namespace FoundationaLLM.Vectorization.Services
 
         private async Task AdvanceRequest(VectorizationRequest request)
         {
-            var state = await _vectorizationStateService.HasState(request).ConfigureAwait(false)
-                ? await _vectorizationStateService.ReadState(request).ConfigureAwait(false)
-                : VectorizationState.FromRequest(request);
+            var state = await GetVectorizationRequestState(request);
 
             var vectorizationResourceProvider = GetVectorizationResourceProvider();
             var (PreviousStep, CurrentStep) = request.MoveToNextStep();                      
@@ -327,15 +322,34 @@ namespace FoundationaLLM.Vectorization.Services
             }
         }
 
+        /// <summary>
+        /// Retrieves an instance of the vectorization resource provider service.
+        /// </summary>
+        /// <returns>An instance of the vectorization resource provider service.</returns>
+        /// <exception cref="VectorizationException"></exception>
         private VectorizationResourceProviderService GetVectorizationResourceProvider()
         {
-            var vectorizationResourceProviderService = _serviceProvider.GetService<IResourceProviderService>();
+            var vectorizationResourceProviderService = _serviceProvider.GetRequiredService<IEnumerable<IResourceProviderService>>()
+                        .Single(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Vectorization);
             if (vectorizationResourceProviderService == null)
                 throw new VectorizationException($"The resource provider {ResourceProviderNames.FoundationaLLM_Vectorization} was not loaded.");
 
             return (VectorizationResourceProviderService)vectorizationResourceProviderService;
         }
 
- 
+        /// <summary>
+        /// Retrieve the state of the request.
+        /// </summary>
+        /// <param name="request">The vectorization request.</param>
+        /// <returns>The VectorizationState associated with the vectorization request.</returns>
+        private async Task<VectorizationState> GetVectorizationRequestState(VectorizationRequest request)
+        {
+            var state = await _vectorizationStateService.HasState(request).ConfigureAwait(false)
+                ? await _vectorizationStateService.ReadState(request).ConfigureAwait(false)
+                : VectorizationState.FromRequest(request);
+            return state;
+        }
+
+
     }
 }

@@ -12,6 +12,7 @@
     "api_key_header_name": "X-API-KEY"
   },
   "url": "${env:SERVICE_GATEKEEPER_API_ENDPOINT_URL}",
+  "status_url": "${env:SERVICE_GATEKEEPER_API_ENDPOINT_URL}/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/status",
   "url_exceptions": [],
   "timeout_seconds": 2700,
   "retry_strategy_name": "ExponentialBackoff",

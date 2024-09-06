@@ -3,7 +3,7 @@
 		<h2>{{ apiName }}</h2>
 		<div v-if="loading" class="loading">Loading...</div>
 		<div v-else-if="error" class="error">{{ error }}</div>
-		<div v-else>
+		<div v-else-if="apiStatus">
 			<div class="api-detail">
 				<p><strong>Name:</strong> {{ apiStatus.name }}</p>
 				<p><strong>Description:</strong> {{ description }}</p>
@@ -11,7 +11,6 @@
 				<p><strong>Version:</strong> {{ apiStatus.version }}</p>
 				<p><strong>Status:</strong> {{ apiStatus.status }}</p>
 				<p v-if="apiStatus.message"><strong>Message:</strong> {{ apiStatus.message }}</p>
-				<p><strong>URL:</strong> {{ apiUrl }}</p>
 			</div>
 			<div v-if="apiStatus.subordinate_services" class="subordinate-services">
 				<h3>Subordinate Services</h3>
@@ -26,6 +25,8 @@
 				</ul>
 			</div>
 		</div>
+		<div v-else>This service does not contain a status endpoint.</div>
+		<p><strong>URL:</strong> {{ apiUrl }}</p>
 	</div>
 </template>
 
@@ -39,6 +40,11 @@ export default {
 		apiUrl: {
 			type: String,
 			required: true,
+		},
+		statusUrl: {
+			type: [String, null],
+			required: false,
+			default: '',
 		},
 		description: {
 			type: String,
@@ -60,15 +66,17 @@ export default {
 		async fetchApiStatus() {
 			this.loading = true;
 			try {
-				const response = await $fetch(`/api/api-status?url=${encodeURIComponent(this.apiUrl)}`);
-				if (response.error) {
-					this.error = response.error;
-				} else {
-					this.apiStatus = response;
+				if (this.statusUrl) {
+					const response = await $fetch(`/api/api-status?url=${encodeURIComponent(this.statusUrl)}`);
+					if (response.error) {
+						this.error = response.error;
+					} else {
+						this.apiStatus = response;
+					}
 				}
 			} catch (error) {
 				console.error('Error fetching API status:', error);
-				this.error = `Error fetching API status from ${this.apiUrl}`;
+				this.error = `Error fetching API status from ${this.statusUrl}`;
 			} finally {
 				this.loading = false;
 			}
