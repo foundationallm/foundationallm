@@ -1,4 +1,5 @@
-﻿from langchain_community.callbacks import get_openai_callback
+﻿import uuid
+from langchain_community.callbacks import get_openai_callback
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from langchain_core.output_parsers import StrOutputParser
@@ -290,6 +291,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
             # populate service request object
             assistant_req = OpenAIAssistantsAPIRequest(
+                document_id=str(uuid.uuid4()),
                 operation_id=request.operation_id,
                 instance_id=self.config.get_value("FoundationaLLM:Instance:Id"),
                 assistant_id=request.objects["OpenAI.AssistantId"],
@@ -346,6 +348,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
             # create the CompletionResponse object
             return CompletionResponse(
+                id = assistant_response.document_id,
                 operation_id = request.operation_id,
                 full_prompt = self.prompt.prefix,
                 content = assistant_response.content,
@@ -471,6 +474,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
             # populate service request object
             assistant_req = OpenAIAssistantsAPIRequest(
+                document_id=str(uuid.uuid4()),
                 operation_id=request.operation_id,
                 instance_id=self.config.get_value("FoundationaLLM:Instance:Id"),
                 assistant_id=request.objects["OpenAI.AssistantId"],
@@ -527,6 +531,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
             # create the CompletionResponse object
             return CompletionResponse(
+                id = assistant_response.document_id,
                 operation_id = request.operation_id,
                 full_prompt = self.prompt.prefix,
                 content = assistant_response.content,

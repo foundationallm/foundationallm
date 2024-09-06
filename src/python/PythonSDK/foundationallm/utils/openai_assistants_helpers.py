@@ -21,7 +21,7 @@ from foundationallm.models.orchestration import (
 class OpenAIAssistantsHelpers:
 
     @staticmethod
-    def parse_run_step(run_step: RunStep):
+    def parse_run_step(run_step: RunStep) -> AnalysisResult:
         """
         Parses a run step from the OpenAI Assistants API.
 
@@ -39,7 +39,7 @@ class OpenAIAssistantsHelpers:
             to the code interpreter tool.
         """
         step_details = run_step.step_details
-        if step_details.type == "tool_calls":
+        if step_details and step_details.type == "tool_calls":
             tool_call_detail = step_details.tool_calls
             for details in tool_call_detail:
                 if isinstance(details, CodeInterpreterToolCall):

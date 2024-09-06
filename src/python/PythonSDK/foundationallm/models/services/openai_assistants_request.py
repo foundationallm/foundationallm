@@ -13,6 +13,7 @@ class OpenAIAssistantsAPIRequest(BaseModel):
         attachments: Optional[List[AttachmentProperties]] - The list of OpenAI file attachments to include in the request.
         user_prompt: str - The user prompt/message to send to the assistants API.
     """
+    document_id: Optional[str] = None
     operation_id: str
     instance_id: str
     assistant_id: str
