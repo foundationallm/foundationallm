@@ -100,6 +100,7 @@ class OpenAIAssistantsApiService:
         content = self._parse_messages(messages)
 
         return OpenAIAssistantsAPIResponse(
+            document_id = request.document_id,
             content = content,
             analysis_results = analysis_results,
             completion_tokens = run.usage.completion_tokens,
@@ -139,7 +140,7 @@ class OpenAIAssistantsApiService:
             assistant_id = request.assistant_id,
             event_handler = OpenAIAssistantAsyncEventHandler(self.operations_manager, request)
         ) as stream:
-            stream.until_done()
+            await stream.until_done()
             run = await stream.get_final_run()
 
         # Retrieve the steps from the run_steps for the analysis
@@ -158,6 +159,7 @@ class OpenAIAssistantsApiService:
         content = await self._aparse_messages(messages)
 
         return OpenAIAssistantsAPIResponse(
+            document_id = request.document_id,
             content = content,
             analysis_results = analysis_results,
             completion_tokens = run.usage.completion_tokens,
