@@ -18,7 +18,7 @@ class OperationsManager():
         # Retrieve the State API configuration settings.
         env = os.environ.get('FOUNDATIONALLM_ENV', 'prod')
 
-        self.state_api_url = config.get_value('FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIUrl').rstrip('/')
+        self.state_api_url = 'https://localhost:7068' # config.get_value('FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIUrl').rstrip('/')
         self.state_api_key = config.get_value('FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIKey')
         self.verify_certs = False if env == 'dev' else True
         

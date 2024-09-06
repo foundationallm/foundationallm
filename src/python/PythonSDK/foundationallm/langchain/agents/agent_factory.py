@@ -24,6 +24,14 @@ class AgentFactory:
         ----------
         agent_type : str
             The type type assign to the agent returned.
+        config : Configuration
+            The configuration object containing the details needed for the OrchestrationManager to assemble an agent.
+        operations_manager : OperationsManager
+            The operations manager object for allowing an agent to interact with the State API.
+        instance_id : str
+            The unique identifier of the FoundationaLLM instance.
+        user_identity : UserIdentity
+            The user context under which to execution completion requests.
 
         Returns
         -------
@@ -35,15 +43,15 @@ class AgentFactory:
         match agent_type:
             case 'knowledge-management':                
                 return LangChainKnowledgeManagementAgent(
-                        instance_id=self.instance_id,
-                        user_identity=self.user_identity,
-                        config=self.config,
+                        instance_id=instance_id,
+                        user_identity=user_identity,
+                        config=config,
                         operations_manager=operations_manager)
             case 'audio-classification':
                 return LangChainAudioClassifierAgent(
-                    instance_id=self.instance_id,
-                    user_identity=self.user_identity,
-                    config=self.config,
+                    instance_id=instance_id,
+                    user_identity=user_identity,
+                    config=config,
                     operations_manager=operations_manager)
             case _:
                 raise ValueError(f'The agent type {agent_type} is not supported.')
