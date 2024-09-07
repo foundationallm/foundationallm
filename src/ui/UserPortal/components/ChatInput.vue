@@ -8,15 +8,35 @@
 				</VTooltip>
 			</div>
 			<VTooltip :auto-hide="false" :popper-triggers="['hover']">
-				<Button
+				<Button 
+					type="button" 
 					:badge="fileArrayFiltered.length.toString() || null"
-					:aria-label="'Upload file (' + fileArrayFiltered.length.toString() + ' files attached)'"
-					icon="pi pi-paperclip"
-					label=""
-					class="file-upload-button secondary-button"
-					style="height: 100%"
-					@click="showFileUploadDialog = true"
-				/>
+					:aria-label="'Upload file (' + fileArrayFiltered.length.toString() + ' files attached)'" 
+					icon="pi pi-paperclip" 
+					class="file-upload-button secondary-button" 
+					@click="toggle" 
+					aria-haspopup="true" 
+					aria-controls="overlay_menu" />
+				<Menu ref="menu" id="overlay_menu" :model="items" :popup="true">
+					<template #item="{ item, props }">
+						<li class="menu-item" v-bind="props.action" v-show="item.visible">
+							<a class="flex items-center">
+								<span :class="item.icon"></span>
+								<span class="labelPadding">{{ item.label }} </span>
+								<Badge v-if="item.badge" class="ml-auto" :value="item.badge" />
+							</a>
+							<!-- Check if item has sub-items (submenu) -->
+							<ul v-if="item.items && item.items.length">
+								<li v-for="subItem in item.items" :key="subItem.label">
+									<a v-bind="subItem.command">
+										<span :class="subItem.icon"></span>
+										{{ subItem.label }}
+									</a>
+								</li>
+							</ul>
+						</li>
+					</template>
+				</Menu>
 				<template #popper>
 					Attach files ({{
 						fileArrayFiltered.length === 1 ? '1 file' : fileArrayFiltered.length + ' files'
@@ -218,6 +238,56 @@ export default {
 				(attachment) => attachment.sessionId === this.$appStore.currentSession.sessionId,
 			);
 		},
+
+		items() {
+			return [
+				{
+					label: 'Connect to Microsoft OneDrive (work/school)',
+					icon: 'pi pi-sign-in',
+					visible: !this.$appStore.oneDriveConnected,
+					command: async() => {
+						await this.connectOneDrive();
+					}
+				},
+				{
+					label: 'Microsoft OneDrive (work/school)',
+					labelIcon: 'pi pi-sign-out',
+					items: [
+						{
+							label: 'Upload from OneDrive',
+							icon: 'pi pi-cloud-upload',
+							visible: true,
+							command: async () => {
+							},
+						},
+						{
+							label: 'Disconnect',
+							icon: 'pi pi-sign-out',
+							visible: true,
+							command: async () => {
+								await this.disconnectOneDrive();
+							},
+						},
+					],
+					visible: this.$appStore.oneDriveConnected,
+					command: async() => {
+						await this.uploadFromOneDrive();
+					}
+				},
+				{
+					separator: true
+				},
+				{
+					label: 'Upload from computer',
+					icon: 'pi pi-file-plus',
+					visible: true,
+					command: () => {
+						this.showFileUploadDialog = true;
+					}
+				}
+			];
+		},
+
 	},
 
 	watch: {
@@ -254,6 +324,9 @@ export default {
 	},
 
 	methods: {
+		toggle(event: any) {
+			this.$refs.menu.toggle(event);
+		},
 		handleKeydown(event: KeyboardEvent) {
 			if (event.key === 'Enter' && !event.shiftKey && !this.agentListOpen) {
 				event.preventDefault();
@@ -371,6 +444,31 @@ export default {
 				}
 			});
 		},
+		
+		async connectOneDrive(){
+			//await this.$authStore.requestOneDriveConsent();
+			this.$toast.add({
+				severity: 'success',
+				summary: 'Success',
+				detail: `Your account is now connected to OneDrive.`,
+				life: 5000,
+			});
+			await this.$appStore.oneDriveConnect();
+		},
+
+		async disconnectOneDrive(){
+			this.$toast.add({
+				severity: 'success',
+				summary: 'Success',
+				detail: `Your account is now disconnected from OneDrive.`,
+				life: 5000,
+			});
+			await this.$appStore.oneDriveDisconnect();
+		},
+
+		async uploadFromOneDrive(){
+			//
+		}
 	},
 };
 </script>
@@ -600,5 +698,9 @@ export default {
 
 .p-fileupload-content {
 	padding: 30px 10px 10px 10px;
+}
+
+.labelPadding{
+	padding-left: 10px;
 }
 </style>

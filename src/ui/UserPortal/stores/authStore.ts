@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import type { AccountInfo } from '@azure/msal-browser';
-import { PublicClientApplication } from '@azure/msal-browser';
+import { EventType, PublicClientApplication } from '@azure/msal-browser';
 
 export const useAuthStore = defineStore('auth', {
 	state: () => ({
@@ -100,6 +100,23 @@ export const useAuthStore = defineStore('auth', {
 			} catch (error) {
 				this.isExpired = true;
 				throw error;
+			}
+		},
+
+		async requestOneDriveConsent(){
+			const mockCoreApiScopes: any = {
+				//scopes: ['one_drive_scopes']
+			}
+			try {
+				const tokenResponse = await this.msalInstance.acquireTokenSilent(mockCoreApiScopes);
+				console.log('res=', tokenResponse)
+				return tokenResponse.accessToken;
+				
+			} catch (error) {
+					// Redirect to get token or login
+					console.log('er=',error)
+					mockCoreApiScopes.state = "Core API redirect";
+					await this.msalInstance.loginRedirect(mockCoreApiScopes);
 			}
 		},
 

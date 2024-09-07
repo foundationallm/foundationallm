@@ -5,6 +5,7 @@ import type {
 	Session,
 	ChatSessionProperties,
 	Message,
+	UserProfile,
 	Agent,
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
@@ -28,6 +29,8 @@ export const useAppStore = defineStore('app', {
 		lastSelectedAgent: null as ResourceProviderGetResult<Agent> | null,
 		attachments: [] as Attachment[],
 		longRunningOperations: new Map<string, string>(), // sessionId -> operationId
+		oneDriveConnected: false as boolean,
+		userProfiles: null as UserProfile | null,
 	}),
 
 	getters: {},
@@ -52,6 +55,8 @@ export const useAppStore = defineStore('app', {
 				const existingSession = this.sessions.find((session: Session) => session.id === sessionId);
 				await this.changeSession(existingSession || this.sessions[0]);
 			}
+
+			await this.getUserProfiles();
 
 			// if (this.currentSession) {
 			// 	await this.getMessages();
@@ -359,6 +364,23 @@ export const useAppStore = defineStore('app', {
 		async getAgents() {
 			this.agents = await api.getAllowedAgents();
 			return this.agents;
+		},
+
+		async oneDriveConnect(){
+			await api.oneDriveConnect();
+			this.oneDriveConnected = true;
+		},
+
+		async oneDriveDisconnect(){
+			await api.oneDriveDisconnect();
+			this.oneDriveConnected = false;
+		},
+
+		async getUserProfiles() {
+			this.userProfiles = await api.getUserProfile();
+			this.oneDriveConnected = this.userProfiles?.flags["oneDriveWorkSchool"]
+			
+			return this.userProfiles;
 		},
 
 		async uploadAttachment(file: FormData, sessionId: string, progressCallback: Function) {

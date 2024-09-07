@@ -19,6 +19,7 @@ import ConfirmationService from 'primevue/confirmationservice';
 import ProgressBar from 'primevue/progressbar';
 import FocusTrap from 'primevue/focustrap';
 import Image from 'primevue/image';
+import Menu from 'primevue/menu';
 
 import { defineNuxtPlugin } from '#app';
 
@@ -42,6 +43,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 	nuxtApp.vueApp.component('ProgressBar', ProgressBar);
 	nuxtApp.vueApp.directive('focustrap', FocusTrap);
 	nuxtApp.vueApp.component('Image', Image);
+	nuxtApp.vueApp.component('Menu', Menu);
 
 	nuxtApp.vueApp.use(ConfirmationService);
 
