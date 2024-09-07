@@ -125,3 +125,10 @@ export interface ResourceProviderDeleteResult {
 export interface ResourceProviderDeleteResults {
 	[key: string]: ResourceProviderDeleteResult;
 }
+
+export interface UserProfile {
+	id: string;
+	type: string;
+	upn: string;
+	flags: Record<string, boolean>;
+  }
