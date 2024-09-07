@@ -1,6 +1,7 @@
 import type {
 	Message,
 	Session,
+	UserProfile,
 	ChatSessionProperties,
 	CompletionPrompt,
 	Agent,
@@ -369,6 +370,38 @@ export default {
 			method: 'POST',
 			body: JSON.stringify(attachments),
 		})) as ResourceProviderDeleteResults;
+	},
+
+	/**
+	 * Connects to user's OneDrive work or school account.
+	 * @returns A Promise that resolves to the response from the server.
+	 */
+	async oneDriveConnect() {
+		return (await this.fetch(`/instances/${this.instanceId}/oneDrive/connect`, {
+			method: 'POST',
+			body: null
+		}));
+	},
+
+	/**
+	 * Disconnect to user's OneDrive work or school account.
+	 * @returns A Promise that resolves to the response from the server.
+	 */
+	async oneDriveDisconnect() {
+		return (await this.fetch(`/instances/${this.instanceId}/oneDrive/disconnect`, {
+			method: 'POST',
+			body: null
+		}));
+	},
+
+	/**
+	 * Retrieves user profiles for a given instance.
+	 * @returns An array of user profiles.
+	 */
+	async getUserProfile() {
+		return (await this.fetch(
+			`/instances/${this.instanceId}/userProfiles/`,
+		)) as Array<UserProfile>;
 	},
 };
 
