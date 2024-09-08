@@ -381,7 +381,7 @@ export default {
 		markSkippableContent() {
 			if (!this.messageContent) return;
 
-			this.messageContent.map((contentBlock) => {
+			this.messageContent.forEach((contentBlock) => {
 				if (contentBlock.type === 'file_path') {
 					// Check for a matching text content that shares the same URL
 					const matchingTextContent = this.messageContent.find(
