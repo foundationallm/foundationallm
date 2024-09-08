@@ -83,19 +83,19 @@ export default {
 	async created() {
 		this.content = JSON.parse(decodeURIComponent(this.contentencoded));
 
-		if (this.content.type == 'file_path') {
-			// Check for a matching text content that shares the same URL
-			const matchingTextContent = this.$parent.messageContent.find(
-				(block) => block.type === 'text' && block.value.includes(this.content.value)
-			);
+		// if (this.content.type === 'file_path') {
+		// 	// Check for a matching text content that shares the same URL
+		// 	const matchingTextContent = this.$parent.messageContent.find(
+		// 		(block) => block.type === 'text' && block.value.includes(this.content.value),
+		// 	);
 
-			if (matchingTextContent) {
-				// Set the fileName in the matching text content
-				matchingTextContent.fileName = this.content.fileName;
-				// Skip rendering this file_path block
-				this.content.skip = true;
-			}
-		}
+		// 	if (matchingTextContent) {
+		// 		// Set the fileName in the matching text content
+		// 		matchingTextContent.fileName = this.content.fileName;
+		// 		// Skip rendering this file_path block
+		// 		this.content.skip = true;
+		// 	}
+		// }
 
 		if (['image_file', 'html', 'file_path'].includes(this.content.type)) {
 			this.loading = true;
@@ -126,7 +126,7 @@ export default {
 		// 		this.fetchBlobUrlFromHref(link.dataset.href);
 		// 	}
 		// },
-		
+
 		// async fetchBlobUrlFromHref(href) {
 		// 	const content = {
 		// 		value: href,
@@ -136,7 +136,7 @@ export default {
 
 		// 	await this.fetchBlobUrl(content);
 		// },
-		
+
 		async handleFileDownload(content) {
 			await fetchBlobUrl(content, this.$toast);
 		},
