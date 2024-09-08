@@ -71,22 +71,6 @@
 					<!-- Render the html content and any vue components within -->
 					<component :is="compiledMarkdownComponent" v-else />
 
-					<!-- <template v-if="message.sender === 'User'">
-						<div v-html="compiledVueTemplate"></div>
-					</template> -->
-
-					<!-- <div v-else v-for="(contentBlock, index) in messageContent" :key="index">
-						<div
-							v-if="contentBlock.type === 'text'"
-							v-html="processContentBlock(contentBlock)"
-						></div>
-						<chat-message-content-block
-							v-else
-							:contentencoded="encodeContent(contentBlock)"
-							ref="contentBlockRef"
-						/>
-					</div> -->
-
 					<!-- Analysis button -->
 					<Button
 						v-if="message.analysisResults && message.analysisResults.length > 0"
@@ -271,10 +255,6 @@ function addCodeHeaderComponents(htmlString) {
 export default {
 	name: 'ChatMessage',
 
-	components: {
-		ChatMessageContentBlock,
-	},
-
 	props: {
 		message: {
 			type: Object as PropType<Message>,
@@ -319,26 +299,6 @@ export default {
 				this.messageContent.forEach((contentBlock) => {
 					switch (contentBlock.type) {
 						case 'text': {
-							// Create a custom renderer for links.
-							// const renderer = new marked.Renderer();
-							// renderer.link = ({ href, title, text }) => {
-							// 	// Check if the link is a file download type.
-							// 	const isFileDownload = href.includes('/files/FoundationaLLM');
-
-							// 	if (isFileDownload) {
-							// 		const matchingFileBlock = this.messageContent.find(
-							// 			(block) => block.type === 'file_path' && block.value === href
-							// 		);
-
-							// 		// Append file icon if there's a matching file_path
-							// 		const fileIcon = matchingFileBlock
-							// 			? `<i class="${this.$getFileIconClass(matchingFileBlock.fileName, true)}" class="attachment-icon"></i>`
-							// 			: '';
-							// 		return `${fileIcon} <a href="#" data-href="${href}" title="${title || ''}" class="file-download-link">${text}</a>`;
-							// 	} else {
-							// 		return `<a href="${href}" title="${title || ''}" target="_blank">${text}</a>`;
-							// 	}
-							// };
 							content += processContentBlock(contentBlock.value);
 							break;
 						}
@@ -420,7 +380,7 @@ export default {
 
 		markSkippableContent() {
 			if (!this.messageContent) return;
-	
+
 			this.messageContent.map((contentBlock) => {
 				if (contentBlock.type === 'file_path') {
 					// Check for a matching text content that shares the same URL
@@ -522,38 +482,6 @@ export default {
 			this.prompt = prompt;
 			this.viewPrompt = true;
 		},
-
-		// processContentBlock(contentBlock: MessageContent) {
-		// 	// Create a custom renderer for links.
-		// 	const renderer = new marked.Renderer();
-		// 	renderer.link = ({ href, title, text }) => {
-		// 		// Check if the link is a file download type.
-		// 		const isFileDownload = href.includes('/files/FoundationaLLM');
-
-		// 		if (isFileDownload) {
-		// 			const matchingFileBlock = this.messageContent.find(
-		// 				(block) => block.type === 'file_path' && block.value === href
-		// 			);
-
-		// 			// Append file icon if there's a matching file_path
-		// 			const fileName = matchingFileBlock?.fileName.split('/').pop() ?? '';
-		// 			const fileIcon = matchingFileBlock
-		// 				? `<i class="${this.$getFileIconClass(fileName, true)}" class="attachment-icon"></i>`
-		// 				: `<i class="pi pi-file" class="attachment-icon"></i>`;
-		// 			return `${fileIcon} &nbsp;<a href="#" data-href="${href}" data-filename="${fileName}" title="${title || ''}" class="file-download-link">${text}</a>`;
-		// 		} else {
-		// 			return `<a href="${href}" title="${title || ''}" target="_blank">${text}</a>`;
-		// 		}
-		// 	};
-
-		// 	let htmlContent = processLatex(contentBlock.value ?? '');
-		// 	htmlContent = marked(htmlContent, { renderer });
-		// 	return DOMPurify.sanitize(htmlContent);
-		// },
-
-		// encodeContent(contentBlock) {
-		// 	return encodeURIComponent(JSON.stringify(contentBlock));
-		// },
 
 		handleFileLinkInText(event: MouseEvent) {
 			const link = (event.target as HTMLElement).closest('a.file-download-link');
