@@ -119,23 +119,23 @@ export default {
 	},
 
 	methods: {
-		handleFileDownloadLinkClick(event) {
-			const link = event.target.closest('a.file-download-link');
-			if (link && link.dataset.href) {
-				event.preventDefault();
-				this.fetchBlobUrlFromHref(link.dataset.href);
-			}
-		},
+		// handleFileDownloadLinkClick(event) {
+		// 	const link = event.target.closest('a.file-download-link');
+		// 	if (link && link.dataset.href) {
+		// 		event.preventDefault();
+		// 		this.fetchBlobUrlFromHref(link.dataset.href);
+		// 	}
+		// },
 		
-		async fetchBlobUrlFromHref(href) {
-			const content = {
-				value: href,
-				blobUrl: null,
-				fileName: href.split('/').pop(),
-			};
+		// async fetchBlobUrlFromHref(href) {
+		// 	const content = {
+		// 		value: href,
+		// 		blobUrl: null,
+		// 		fileName: href.split('/').pop(),
+		// 	};
 
-			await this.fetchBlobUrl(content);
-		},
+		// 	await this.fetchBlobUrl(content);
+		// },
 		
 		async handleFileDownload(content) {
 			await fetchBlobUrl(content, this.$toast);

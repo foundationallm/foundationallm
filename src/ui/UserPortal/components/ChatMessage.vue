@@ -68,11 +68,14 @@
 						</div>
 					</template>
 
-					<template v-if="message.sender === 'User'">
-						<div v-html="compiledVueTemplate"></div>
-					</template>
+					<!-- Render the html content and any vue components within -->
+					<component :is="compiledMarkdownComponent" v-else />
 
-					<div v-else v-for="(contentBlock, index) in messageContent" :key="index">
+					<!-- <template v-if="message.sender === 'User'">
+						<div v-html="compiledVueTemplate"></div>
+					</template> -->
+
+					<!-- <div v-else v-for="(contentBlock, index) in messageContent" :key="index">
 						<div
 							v-if="contentBlock.type === 'text'"
 							v-html="processContentBlock(contentBlock)"
@@ -82,7 +85,7 @@
 							:contentencoded="encodeContent(contentBlock)"
 							ref="contentBlockRef"
 						/>
-					</div>
+					</div> -->
 
 					<!-- Analysis button -->
 					<Button
@@ -223,21 +226,6 @@ import { fetchBlobUrl } from '@/js/fileService';
 import CodeBlockHeader from '@/components/CodeBlockHeader.vue';
 import ChatMessageContentBlock from '@/components/ChatMessageContentBlock.vue';
 
-const renderer = new marked.Renderer();
-renderer.code = (code) => {
-	const language = code.lang;
-	const sourceCode = code.text || code;
-	const validLanguage = !!(language && hljs.getLanguage(language));
-	const highlighted = validLanguage
-		? hljs.highlight(sourceCode, { language })
-		: hljs.highlightAuto(sourceCode);
-	const languageClass = validLanguage ? `hljs language-${language}` : 'hljs';
-	const encodedCode = encodeURIComponent(sourceCode);
-	return `<pre><code class="${languageClass}" data-code="${encodedCode}" data-language="${highlighted.language}">${highlighted.value}</code></pre>`;
-};
-
-marked.use({ renderer });
-
 function processLatex(content) {
 	const blockLatexPattern = /\\\[\s*([\s\S]+?)\s*\\\]/g;
 	const inlineLatexPattern = /\\\(([\s\S]+?)\\\)/g;
@@ -314,14 +302,15 @@ export default {
 				: null,
 			isAnalysisModalVisible: false,
 			isMobile: window.screen.width < 950,
+			markedRenderer: null,
 		};
 	},
 
 	computed: {
 		compiledMarkdown() {
-			function processContentBlock(contentToProcess) {
+			const processContentBlock = (contentToProcess) => {
 				let htmlContent = processLatex(contentToProcess ?? '');
-				htmlContent = marked(htmlContent);
+				htmlContent = marked(htmlContent, { renderer: this.markedRenderer });
 				return DOMPurify.sanitize(htmlContent);
 			}
 
@@ -380,6 +369,8 @@ export default {
 	},
 
 	created() {
+		this.createMarkedRenderer();
+
 		if (this.showWordAnimation) {
 			this.displayWordByWord();
 		} else {
@@ -388,6 +379,44 @@ export default {
 	},
 
 	methods: {
+		createMarkedRenderer() {
+			this.markedRenderer = new marked.Renderer();
+
+			// Code blocks
+			this.markedRenderer.code = (code) => {
+				const language = code.lang;
+				const sourceCode = code.text || code;
+				const validLanguage = !!(language && hljs.getLanguage(language));
+				const highlighted = validLanguage
+					? hljs.highlight(sourceCode, { language })
+					: hljs.highlightAuto(sourceCode);
+				const languageClass = validLanguage ? `hljs language-${language}` : 'hljs';
+				const encodedCode = encodeURIComponent(sourceCode);
+				return `<pre><code class="${languageClass}" data-code="${encodedCode}" data-language="${highlighted.language}">${highlighted.value}</code></pre>`;
+			};
+
+			// Links
+			this.markedRenderer.link = ({ href, title, text }) => {
+				// Check if the link is a file download type.
+				const isFileDownload = href.includes('/files/FoundationaLLM');
+
+				if (isFileDownload) {
+					const matchingFileBlock = this.messageContent.find(
+						(block) => block.type === 'file_path' && block.value === href
+					);
+					
+					// Append file icon if there's a matching file_path
+					const fileName = matchingFileBlock?.fileName.split('/').pop() ?? '';
+					const fileIcon = matchingFileBlock
+						? `<i class="${this.$getFileIconClass(fileName, true)}" class="attachment-icon"></i>`
+						: `<i class="pi pi-file" class="attachment-icon"></i>`;
+					return `${fileIcon} &nbsp;<a href="#" data-href="${href}" data-filename="${fileName}" title="${title || ''}" class="file-download-link">${text}</a>`;
+				} else {
+					return `<a href="${href}" title="${title || ''}" target="_blank">${text}</a>`;
+				}
+			};
+		},
+
 		displayWordByWord() {
 			const words = this.compiledMarkdown.split(/\s+/);
 			if (this.currentWordIndex >= words.length) {
@@ -473,37 +502,37 @@ export default {
 			this.viewPrompt = true;
 		},
 
-		processContentBlock(contentBlock: MessageContent) {
-			// Create a custom renderer for links.
-			const renderer = new marked.Renderer();
-			renderer.link = ({ href, title, text }) => {
-				// Check if the link is a file download type.
-				const isFileDownload = href.includes('/files/FoundationaLLM');
+		// processContentBlock(contentBlock: MessageContent) {
+		// 	// Create a custom renderer for links.
+		// 	const renderer = new marked.Renderer();
+		// 	renderer.link = ({ href, title, text }) => {
+		// 		// Check if the link is a file download type.
+		// 		const isFileDownload = href.includes('/files/FoundationaLLM');
 
-				if (isFileDownload) {
-					const matchingFileBlock = this.messageContent.find(
-						(block) => block.type === 'file_path' && block.value === href
-					);
+		// 		if (isFileDownload) {
+		// 			const matchingFileBlock = this.messageContent.find(
+		// 				(block) => block.type === 'file_path' && block.value === href
+		// 			);
 					
-					// Append file icon if there's a matching file_path
-					const fileName = matchingFileBlock?.fileName.split('/').pop() ?? '';
-					const fileIcon = matchingFileBlock
-						? `<i class="${this.$getFileIconClass(fileName, true)}" class="attachment-icon"></i>`
-						: `<i class="pi pi-file" class="attachment-icon"></i>`;
-					return `${fileIcon} &nbsp;<a href="#" data-href="${href}" data-filename="${fileName}" title="${title || ''}" class="file-download-link">${text}</a>`;
-				} else {
-					return `<a href="${href}" title="${title || ''}" target="_blank">${text}</a>`;
-				}
-			};
+		// 			// Append file icon if there's a matching file_path
+		// 			const fileName = matchingFileBlock?.fileName.split('/').pop() ?? '';
+		// 			const fileIcon = matchingFileBlock
+		// 				? `<i class="${this.$getFileIconClass(fileName, true)}" class="attachment-icon"></i>`
+		// 				: `<i class="pi pi-file" class="attachment-icon"></i>`;
+		// 			return `${fileIcon} &nbsp;<a href="#" data-href="${href}" data-filename="${fileName}" title="${title || ''}" class="file-download-link">${text}</a>`;
+		// 		} else {
+		// 			return `<a href="${href}" title="${title || ''}" target="_blank">${text}</a>`;
+		// 		}
+		// 	};
 			
-			let htmlContent = processLatex(contentBlock.value ?? '');
-			htmlContent = marked(htmlContent, { renderer });
-			return DOMPurify.sanitize(htmlContent);
-		},
+		// 	let htmlContent = processLatex(contentBlock.value ?? '');
+		// 	htmlContent = marked(htmlContent, { renderer });
+		// 	return DOMPurify.sanitize(htmlContent);
+		// },
 
-		encodeContent(contentBlock) {
-			return encodeURIComponent(JSON.stringify(contentBlock));
-		},
+		// encodeContent(contentBlock) {
+		// 	return encodeURIComponent(JSON.stringify(contentBlock));
+		// },
 
 		handleFileLinkInText(event: MouseEvent) {
 			const link = (event.target as HTMLElement).closest('a.file-download-link');
