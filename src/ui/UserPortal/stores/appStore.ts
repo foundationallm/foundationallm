@@ -139,7 +139,10 @@ export const useAppStore = defineStore('app', {
 				if (existingRenamedSession) {
 					existingRenamedSession.name = newSessionName;
 				} else {
-					this.renamedSessions = [{ ...sessionToRename, name: newSessionName }, ...this.renamedSessions];
+					this.renamedSessions = [
+						{ ...sessionToRename, name: newSessionName },
+						...this.renamedSessions,
+					];
 				}
 			} catch (error) {
 				existingSession.name = previousName;
