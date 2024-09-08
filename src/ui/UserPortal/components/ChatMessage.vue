@@ -298,7 +298,7 @@ export default {
 			primaryButtonBg: this.$appConfigStore.primaryButtonBg,
 			primaryButtonText: this.$appConfigStore.primaryButtonText,
 			messageContent: this.message.content
-				? JSON.parse(JSON.stringify(this.message.content)) as MessageContent[]
+				? (JSON.parse(JSON.stringify(this.message.content)) as MessageContent[])
 				: null,
 			isAnalysisModalVisible: false,
 			isMobile: window.screen.width < 950,
@@ -312,7 +312,7 @@ export default {
 				let htmlContent = processLatex(contentToProcess ?? '');
 				htmlContent = marked(htmlContent, { renderer: this.markedRenderer });
 				return DOMPurify.sanitize(htmlContent);
-			}
+			};
 
 			let content = '';
 			if (this.messageContent && this.messageContent?.length > 0) {
@@ -320,7 +320,7 @@ export default {
 					switch (contentBlock.type) {
 						case 'text': {
 							// Create a custom renderer for links.
-      						// const renderer = new marked.Renderer();
+							// const renderer = new marked.Renderer();
 							// renderer.link = ({ href, title, text }) => {
 							// 	// Check if the link is a file download type.
 							// 	const isFileDownload = href.includes('/files/FoundationaLLM');
@@ -329,7 +329,7 @@ export default {
 							// 		const matchingFileBlock = this.messageContent.find(
 							// 			(block) => block.type === 'file_path' && block.value === href
 							// 		);
-									
+
 							// 		// Append file icon if there's a matching file_path
 							// 		const fileIcon = matchingFileBlock
 							// 			? `<i class="${this.$getFileIconClass(matchingFileBlock.fileName, true)}" class="attachment-icon"></i>`
@@ -369,6 +369,7 @@ export default {
 	},
 
 	created() {
+		this.markSkippableContent();
 		this.createMarkedRenderer();
 
 		if (this.showWordAnimation) {
@@ -402,9 +403,9 @@ export default {
 
 				if (isFileDownload) {
 					const matchingFileBlock = this.messageContent.find(
-						(block) => block.type === 'file_path' && block.value === href
+						(block) => block.type === 'file_path' && block.value === href,
 					);
-					
+
 					// Append file icon if there's a matching file_path
 					const fileName = matchingFileBlock?.fileName.split('/').pop() ?? '';
 					const fileIcon = matchingFileBlock
@@ -415,6 +416,26 @@ export default {
 					return `<a href="${href}" title="${title || ''}" target="_blank">${text}</a>`;
 				}
 			};
+		},
+
+		markSkippableContent() {
+			if (!this.messageContent) return;
+	
+			this.messageContent.map((contentBlock) => {
+				if (contentBlock.type === 'file_path') {
+					// Check for a matching text content that shares the same URL
+					const matchingTextContent = this.messageContent.find(
+						(block) => block.type === 'text' && block.value.includes(contentBlock.value),
+					);
+
+					if (matchingTextContent) {
+						// Set the fileName in the matching text content
+						matchingTextContent.fileName = contentBlock.fileName;
+						// Skip rendering this file_path block
+						contentBlock.skip = true;
+					}
+				}
+			});
 		},
 
 		displayWordByWord() {
@@ -513,7 +534,7 @@ export default {
 		// 			const matchingFileBlock = this.messageContent.find(
 		// 				(block) => block.type === 'file_path' && block.value === href
 		// 			);
-					
+
 		// 			// Append file icon if there's a matching file_path
 		// 			const fileName = matchingFileBlock?.fileName.split('/').pop() ?? '';
 		// 			const fileIcon = matchingFileBlock
@@ -524,7 +545,7 @@ export default {
 		// 			return `<a href="${href}" title="${title || ''}" target="_blank">${text}</a>`;
 		// 		}
 		// 	};
-			
+
 		// 	let htmlContent = processLatex(contentBlock.value ?? '');
 		// 	htmlContent = marked(htmlContent, { renderer });
 		// 	return DOMPurify.sanitize(htmlContent);
