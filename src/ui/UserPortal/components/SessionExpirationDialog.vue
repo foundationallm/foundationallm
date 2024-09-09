@@ -12,7 +12,7 @@
 		Would you like to stay logged in?
 		<template #footer>
 			<Button label="No, log out" severity="secondary" @click="handleLogout" />
-			<Button label="Yes, extend my session" @click="handleStayLoggedIn" />
+			<Button label="Yes, extend my session" autofocus @click="handleStayLoggedIn" />
 		</template>
 	</Dialog>
 </template>
