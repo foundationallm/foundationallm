@@ -104,20 +104,19 @@ export const useAuthStore = defineStore('auth', {
 		},
 
 		async requestOneDriveConsent(){
-			const mockCoreApiScopes: any = {
-				//scopes: ['one_drive_scopes']
+			let accessToken = "";
+			const oneDriveAPIScopes: any = {
+				scopes: [`Files.Read.All`]
 			}
 			try {
-				const tokenResponse = await this.msalInstance.acquireTokenSilent(mockCoreApiScopes);
-				console.log('res=', tokenResponse)
-				return tokenResponse.accessToken;
-				
+				const resp = await this.msalInstance.acquireTokenSilent(oneDriveAPIScopes);
+				accessToken = resp.accessToken;
 			} catch (error) {
 					// Redirect to get token or login
-					console.log('er=',error)
-					mockCoreApiScopes.state = "Core API redirect";
-					await this.msalInstance.loginRedirect(mockCoreApiScopes);
+					oneDriveAPIScopes.state = "Core API redirect";
+					await this.msalInstance.loginRedirect(oneDriveAPIScopes);
 			}
+			return accessToken;
 		},
 
 		async login() {
