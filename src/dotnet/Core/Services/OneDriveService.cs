@@ -70,6 +70,9 @@ namespace FoundationaLLM.Core.Services
         public async Task<ResourceProviderUpsertResult> Download(
             string instanceId, string sessionId, string agentName, OneDriveItem oneDriveItem, UnifiedUserIdentity userIdentity)
         {
+            if (string.IsNullOrWhiteSpace(oneDriveItem.AccessToken))
+                throw new InvalidOperationException("Invalid request body. Missing access token.");
+
             var userProfile = await _userProfileService.GetUserProfileAsync(instanceId);
 
             if (!userProfile!.Flags.TryGetValue(UserProfileFlags.OneDriveWorkSchool, out bool oneDriveWorkOrSchool)
@@ -82,19 +85,23 @@ namespace FoundationaLLM.Core.Services
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", oneDriveItem.AccessToken);
 ;
             var item = await client.GetAsync($"me/drive/items/{oneDriveItem.Id}");
+            if (!item.IsSuccessStatusCode)
+                throw new InvalidOperationException($"Could not retrieve OneDrive item information for {oneDriveItem.Id}. Status code: {item.StatusCode}.");
             var itemStr = await item.Content.ReadAsStringAsync();
             var itemObj = JsonSerializer.Deserialize<OneDriveItem>(itemStr);
 
             var response = await client.GetAsync($"me/drive/items/{oneDriveItem.Id}/content");
+            if (!response.IsSuccessStatusCode)
+                throw new InvalidOperationException($"Could not retrieve OneDrive item contents for {oneDriveItem.Id}. Status code: {response.StatusCode}.");
             var stream = await response.Content.ReadAsStreamAsync();
 
             using var memoryStream = new MemoryStream();
             await stream.CopyToAsync(memoryStream);
             var content = memoryStream.ToArray();
 
-            var fileName = itemObj!.Name;
+            var fileName = itemObj?.Name ?? Guid.NewGuid().ToString();
             var name = $"a-{Guid.NewGuid()}-{DateTime.UtcNow.Ticks}";
-            var contentType = "application/octet-stream";
+            var contentType = itemObj?.File?.MimeType ?? "application/octet-stream";
 
             var result = await _coreService.UploadAttachment(
                     instanceId,
