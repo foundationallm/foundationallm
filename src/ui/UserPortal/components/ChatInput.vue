@@ -480,7 +480,7 @@ export default {
 		},
 		
 		async connectOneDrive(){
-			//await this.$authStore.requestOneDriveConsent();
+			await this.$authStore.requestOneDriveConsent();
 			this.$toast.add({
 				severity: 'success',
 				summary: 'Success',
