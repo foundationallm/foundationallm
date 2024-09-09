@@ -1,10 +1,10 @@
 ﻿using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Core.Interfaces;
-using Microsoft.Identity.Abstractions;
+using FoundationaLLM.Core.Models;
+using System.Net.Http.Headers;
 
 namespace FoundationaLLM.Core.Services
 {
@@ -14,27 +14,23 @@ namespace FoundationaLLM.Core.Services
     public class OneDriveService : IOneDriveService
     {
         private readonly ICoreService _coreService;
-        private readonly IDownstreamApi _downstreamApi;
         private readonly IUserProfileService _userProfileService;
-        private readonly IHttpClientFactoryService _httpClientFactoryService;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         /// <summary>
         /// Contructor for OneDrive service.
         /// </summary>
         /// <param name="coreService">The core API service.</param>
-        /// <param name="downstreamApi">The downstream API service.</param>
         /// <param name="userProfileService">The user profile service.</param>
-        /// <param name="httpClientFactoryService">The HTTP client factory service.</param>
+        /// <param name="httpClientFactory">The HTTP client factory.</param>
         public OneDriveService(
             ICoreService coreService,
-            IDownstreamApi downstreamApi,
             IUserProfileService userProfileService,
-            IHttpClientFactoryService httpClientFactoryService)
+            IHttpClientFactory httpClientFactory)
         {
             _coreService = coreService;
-            _downstreamApi = downstreamApi;
             _userProfileService = userProfileService;
-            _httpClientFactoryService = httpClientFactoryService;
+            _httpClientFactory = httpClientFactory;
         }
 
         /// <inheritdoc/>
@@ -71,7 +67,7 @@ namespace FoundationaLLM.Core.Services
 
         /// <inheritdoc/>
         public async Task<ResourceProviderUpsertResult> Download(
-            string instanceId, string sessionId, string agentName, string itemId, UnifiedUserIdentity userIdentity)
+            string instanceId, string sessionId, string agentName, OneDriveItem oneDriveItem, UnifiedUserIdentity userIdentity)
         {
             var userProfile = await _userProfileService.GetUserProfileAsync(instanceId);
 
@@ -79,15 +75,12 @@ namespace FoundationaLLM.Core.Services
                 || !oneDriveWorkOrSchool)
                 throw new InvalidOperationException("User has not granted consent to connect to the OneDrive work or school account.");
 
-            //var client = await _httpClientFactoryService.CreateClient(HttpClientNames.OneDriveAPI, userIdentity); 
-
-            var response = await _downstreamApi.CallApiForUserAsync("OneDrive", options =>
-            {
-                options.BaseUrl = $"https://graph.microsoft.com/v1.0/";
-                options.RelativePath = $"me/drive/items/{itemId}/content";
-                options.Scopes = [ "Files.Read.All" ];
-            });
-
+            var client = _httpClientFactory.CreateClient();
+            client.Timeout = TimeSpan.FromSeconds(30);
+            client.BaseAddress = new Uri("https://graph.microsoft.com/v1.0/");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", oneDriveItem.AccessToken);
+;
+            var response = await client.GetAsync($"me/drive/items/{oneDriveItem.ItemId}/content");
             var stream = await response.Content.ReadAsStreamAsync();
 
             using var memoryStream = new MemoryStream();
