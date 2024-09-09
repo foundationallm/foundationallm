@@ -8,18 +8,18 @@
 				</VTooltip>
 			</div>
 			<VTooltip :auto-hide="false" :popper-triggers="['hover']">
-				<Button 
-					type="button" 
+				<Button
+					type="button"
 					:badge="fileArrayFiltered.length.toString() || null"
-					:aria-label="'Upload file (' + fileArrayFiltered.length.toString() + ' files attached)'" 
-					icon="pi pi-paperclip" 
-					class="file-upload-button secondary-button" 
-					@click="toggle" 
-					aria-haspopup="true" 
-					aria-controls="overlay_menu" />
-				<Menu ref="menu" id="overlay_menu" :model="items" :popup="true">
+					:aria-label="'Upload file (' + fileArrayFiltered.length.toString() + ' files attached)'"
+					icon="pi pi-paperclip"
+					class="file-upload-button secondary-button"
+					aria-controls="overlay_menu"
+					aria-haspopup="true"
+					@click="toggle" />
+				<Menu id="overlay_menu" ref="menu" :model="items" :popup="true">
 					<template #item="{ item, props }">
-						<li class="menu-item" v-bind="props.action" v-show="item.visible">
+						<li v-show="item.visible" class="menu-item" v-bind="props.action">
 							<a class="flex items-center">
 								<span :class="item.icon"></span>
 								<span class="labelPadding">{{ item.label }} </span>
@@ -245,9 +245,9 @@ export default {
 					label: 'Connect to Microsoft OneDrive (work/school)',
 					icon: 'pi pi-sign-in',
 					visible: !this.$appStore.oneDriveConnected,
-					command: async() => {
+					command: async () => {
 						await this.connectOneDrive();
-					}
+					},
 				},
 				{
 					label: 'Microsoft OneDrive (work/school)',
@@ -257,8 +257,6 @@ export default {
 							label: 'Upload from OneDrive',
 							icon: 'pi pi-cloud-upload',
 							visible: true,
-							command: async () => {
-							},
 						},
 						{
 							label: 'Disconnect',
@@ -270,12 +268,12 @@ export default {
 						},
 					],
 					visible: this.$appStore.oneDriveConnected,
-					command: async() => {
+					command: async () => {
 						await this.uploadFromOneDrive();
-					}
+					},
 				},
 				{
-					separator: true
+					separator: true,
 				},
 				{
 					label: 'Upload from computer',
@@ -283,11 +281,10 @@ export default {
 					visible: true,
 					command: () => {
 						this.showFileUploadDialog = true;
-					}
-				}
+					},
+				},
 			];
 		},
-
 	},
 
 	watch: {
@@ -444,8 +441,7 @@ export default {
 				}
 			});
 		},
-		
-		async connectOneDrive(){
+		async connectOneDrive() {
 			await this.$appStore.oneDriveConnect();
 			await this.$authStore.requestOneDriveConsent();
 			this.$toast.add({
@@ -456,7 +452,7 @@ export default {
 			});
 		},
 
-		async disconnectOneDrive(){
+		async disconnectOneDrive() {
 			this.$toast.add({
 				severity: 'success',
 				summary: 'Success',
@@ -466,14 +462,14 @@ export default {
 			await this.$appStore.oneDriveDisconnect();
 		},
 
-		async downloadFromOneDrive(){
+		async downloadFromOneDrive() {
 			const accessToken = await this.$authStore.requestOneDriveConsent();
-			//TODO: set id from file picker
+			// TODO: set id from file picker
 			await this.$appStore.oneDriveDownload(
 				this.$appStore.currentSession.sessionId,
 				{id: '', access_token: accessToken}
 			);
-		}
+		},
 	},
 };
 </script>
@@ -705,7 +701,7 @@ export default {
 	padding: 30px 10px 10px 10px;
 }
 
-.labelPadding{
+.labelPadding {
 	padding-left: 10px;
 }
 </style>

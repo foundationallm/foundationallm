@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import type { AccountInfo } from '@azure/msal-browser';
-import { EventType, PublicClientApplication } from '@azure/msal-browser';
+import { PublicClientApplication } from '@azure/msal-browser';
 
 export const useAuthStore = defineStore('auth', {
 	state: () => ({
@@ -103,18 +103,18 @@ export const useAuthStore = defineStore('auth', {
 			}
 		},
 
-		async requestOneDriveConsent(){
-			let accessToken = "";
+		async requestOneDriveConsent() {
+			let accessToken = '';
 			const oneDriveAPIScopes: any = {
 				account: this.currentAccount,
-				scopes: [`Files.Read.All`]
-			}
+				scopes: [`Files.Read.All`],
+			};
 			try {
 				const resp = await this.msalInstance.acquireTokenSilent(oneDriveAPIScopes);
 				accessToken = resp.accessToken;
 			} catch (error) {
 				// Redirect to get token or login
-				oneDriveAPIScopes.state = "Core API redirect";
+				oneDriveAPIScopes.state = 'Core API redirect';
 				await this.msalInstance.loginRedirect(oneDriveAPIScopes);
 			}
 			return accessToken;

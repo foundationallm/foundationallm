@@ -28,8 +28,8 @@
 					text
 					severity="secondary"
 					aria-label="Add new chat"
-					@click="handleAddSession"
 					:disabled="createProcessing"
+					@click="handleAddSession"
 				/>
 				<template #popper>Add new chat</template>
 			</VTooltip>

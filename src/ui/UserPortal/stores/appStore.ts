@@ -367,24 +367,23 @@ export const useAppStore = defineStore('app', {
 			return this.agents;
 		},
 
-		async oneDriveConnect(){
+		async oneDriveConnect() {
 			await api.oneDriveConnect();
 			this.oneDriveConnected = true;
 		},
 
-		async oneDriveDisconnect(){
+		async oneDriveDisconnect() {
 			await api.oneDriveDisconnect();
 			this.oneDriveConnected = false;
 		},
 
 		async getUserProfiles() {
 			this.userProfiles = await api.getUserProfile();
-			this.oneDriveConnected = this.userProfiles?.flags["oneDriveWorkSchool"]
-			
+			this.oneDriveConnected = this.userProfiles?.flags['oneDriveWorkSchool'];	
 			return this.userProfiles;
 		},
 
-		async oneDriveDownload(sessionId: string, oneDriveItem: OneDriveItem){
+		async oneDriveDownload(sessionId: string, oneDriveItem: OneDriveItem) {
 			const agent = this.getSessionAgent(this.currentSession!).resource;
 			// If the agent is not found, do not upload the attachment and display an error message.
 			if (!agent) {
@@ -394,7 +393,7 @@ export const useAppStore = defineStore('app', {
 			const item = (await api.oneDriveDownload(
 				sessionId,
 				agent.name,
-				oneDriveItem
+				oneDriveItem,
 			)) as OneDriveItem;
 			const newAttachment: Attachment = {
 				id: item.objectId,
