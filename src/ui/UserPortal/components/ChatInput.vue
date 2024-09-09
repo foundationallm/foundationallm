@@ -257,6 +257,9 @@ export default {
 							label: 'Upload from OneDrive',
 							icon: 'pi pi-cloud-upload',
 							visible: true,
+							command: async () => {
+								await this.downloadFromOneDrive();
+							},
 						},
 						{
 							label: 'Disconnect',
