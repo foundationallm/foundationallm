@@ -7,6 +7,7 @@ import type {
 	Message,
 	UserProfile,
 	Agent,
+	OneDriveItem,
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
 	// ResourceProviderDeleteResult,
@@ -381,6 +382,30 @@ export const useAppStore = defineStore('app', {
 			this.oneDriveConnected = this.userProfiles?.flags["oneDriveWorkSchool"]
 			
 			return this.userProfiles;
+		},
+
+		async oneDriveDownload(sessionId: string, oneDriveItem: OneDriveItem){
+			const agent = this.getSessionAgent(this.currentSession!).resource;
+			// If the agent is not found, do not upload the attachment and display an error message.
+			if (!agent) {
+				throw new Error('No agent selected.');
+			}
+
+			const item = (await api.oneDriveDownload(
+				sessionId,
+				agent.name,
+				oneDriveItem
+			)) as OneDriveItem;
+			const newAttachment: Attachment = {
+				id: item.objectId,
+				fileName: item.name,
+				sessionId,
+				contentType: item.file.mimeType,
+			};
+
+			this.attachments.push(newAttachment);
+
+			return item.objectId;
 		},
 
 		async uploadAttachment(file: FormData, sessionId: string, progressCallback: Function) {
