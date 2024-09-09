@@ -131,4 +131,9 @@ export interface UserProfile {
 	type: string;
 	upn: string;
 	flags: Record<string, boolean>;
-  }
+}
+
+export interface OneDriveItem {
+	itemId: string;
+	accessToken: string;
+}
