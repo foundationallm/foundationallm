@@ -621,8 +621,10 @@
 				/>
 			</div>
 
+			<div class="step-header">Which AI model should the orchestrator use?</div>
+			<div class="step-header">Which capabilities should the agent have?</div>
+
 			<!-- AI model -->
-			<div class="step-header span-2">Which AI model should the orchestrator use?</div>
 			<CreateAgentStepItem v-model="editAIModel">
 				<template v-if="selectedAIModel">
 					<div v-if="selectedAIModel.object_id !== ''">
@@ -653,6 +655,33 @@
 								<span>{{ aiModel.deployment_name }}</span>
 							</div>
 						</div>
+					</div>
+				</template>
+			</CreateAgentStepItem>
+
+			<!-- Agent capabilities -->
+			<CreateAgentStepItem>
+				<div>
+					<span class="step-option__header">Agent Capabilities:</span>
+					<span>{{
+						Array.isArray(selectedAgentCapabilities)
+							? selectedAgentCapabilities.map((item) => item.name).join(', ')
+							: ''
+					}}</span>
+				</div>
+
+				<template #edit>
+					<div class="mt-2">
+						<span class="step-option__header">Agent Capabilities:</span>
+						<MultiSelect
+							v-model="selectedAgentCapabilities"
+							class="dropdown--agent"
+							:options="agentCapabilitiesOptions"
+							option-label="name"
+							display="chip"
+							placeholder="--Select--"
+							aria-labelledby="aria-content-safety"
+						/>
 					</div>
 				</template>
 			</CreateAgentStepItem>
@@ -790,6 +819,9 @@ const getDefaultFormValues = () => {
 		gatekeeperContentSafety: { label: 'None', value: null },
 		gatekeeperDataProtection: { label: 'None', value: null },
 
+		selectedAgentCapabilities: ref(),
+		agentCapabilities: { label: 'None', value: null },
+
 		systemPrompt: defaultSystemPrompt as string,
 
 		orchestration_settings: {
@@ -862,10 +894,6 @@ export default {
 
 			gatekeeperContentSafetyOptions: ref([
 				{
-					name: 'None',
-					code: null,
-				},
-				{
 					name: 'Azure Content Safety',
 					code: 'AzureContentSafety',
 				},
@@ -885,13 +913,20 @@ export default {
 
 			gatekeeperDataProtectionOptions: ref([
 				{
-					name: 'None',
-					code: null,
-				},
-				{
 					name: 'Microsoft Presidio',
 					code: 'MicrosoftPresidio',
 				},
+			]),
+
+			agentCapabilitiesOptions: ref([
+				{
+					name: 'OpenAI Assistants',
+					code: 'OpenAI.Assistants',
+				},
+				{
+					name: 'FLLM Knowledge Management',
+					code: 'FoundationaLLM.KnowledgeManagement',
+				}
 			]),
 		};
 	},
@@ -1057,6 +1092,13 @@ export default {
 					this.gatekeeperDataProtectionOptions.filter((localOption) =>
 						agent.gatekeeper_settings?.options?.includes(localOption.code),
 					) || this.selectedGatekeeperDataProtection;
+			}
+
+			if (agent.capabilities) {
+				this.selectedAgentCapabilities =
+					this.agentCapabilitiesOptions.filter((localOption) =>
+						agent.capabilities?.includes(localOption.code),
+					) || this.selectedAgentCapabilities;
 			}
 		},
 
@@ -1274,6 +1316,8 @@ export default {
 							...(this.selectedGatekeeperDataProtection || []).map((option: any) => option.code),
 						].filter((option) => option !== null),
 					},
+
+					capabilities: (this.selectedAgentCapabilities || []).map((option: any) => option.code),
 
 					sessions_enabled: true,
 
