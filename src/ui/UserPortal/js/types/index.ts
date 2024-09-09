@@ -134,6 +134,6 @@ export interface UserProfile {
 }
 
 export interface OneDriveItem {
-	itemId: string;
-	accessToken: string;
+	id: string;
+	access_token: string;
 }
