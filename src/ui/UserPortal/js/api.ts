@@ -419,7 +419,7 @@ export default {
 		return (await this.fetch(`/instances/${this.instanceId}/oneDrive/download?instanceId=${this.instanceId}&sessionId=${sessionId}&agentName=${agentName}`, {
 			method: 'POST',
 			body: oneDriveItem
-		}));
+		})) as OneDriveItem;
 	},
 };
 
