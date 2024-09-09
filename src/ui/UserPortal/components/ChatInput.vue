@@ -273,14 +273,6 @@ export default {
 							},
 						},
 						{
-							label: 'Download',
-							icon: 'pi pi-cloud-upload',
-							visible: true,
-							command: async () => {
-								await this.downloadFromOneDrive();
-							},
-						},
-						{
 							label: 'Disconnect',
 							icon: 'pi pi-sign-out',
 							visible: true,
