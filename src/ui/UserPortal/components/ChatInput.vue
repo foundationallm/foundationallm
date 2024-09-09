@@ -261,6 +261,14 @@ export default {
 							},
 						},
 						{
+							label: 'Download',
+							icon: 'pi pi-cloud-upload',
+							visible: true,
+							command: async () => {
+								await this.downloadFromOneDrive();
+							},
+						},
+						{
 							label: 'Disconnect',
 							icon: 'pi pi-sign-out',
 							visible: true,
@@ -446,6 +454,7 @@ export default {
 		},
 		
 		async connectOneDrive(){
+			await this.$appStore.oneDriveConnect();
 			await this.$authStore.requestOneDriveConsent();
 			this.$toast.add({
 				severity: 'success',
@@ -453,7 +462,6 @@ export default {
 				detail: `Your account is now connected to OneDrive.`,
 				life: 5000,
 			});
-			await this.$appStore.oneDriveConnect();
 		},
 
 		async disconnectOneDrive(){
@@ -467,12 +475,12 @@ export default {
 		},
 
 		async downloadFromOneDrive(){
-			const oneDriveObjectId = await this.$appStore.downloadFromOneDrive(
+			const accessToken = await this.$authStore.requestOneDriveConsent();
+			//TODO: set id from file picker
+			await this.$appStore.oneDriveDownload(
 				this.$appStore.currentSession.sessionId,
-				{id: '', accessToken: ''}
+				{id: '', access_token: accessToken}
 			);
-
-			console.log(oneDriveObjectId);
 		}
 	},
 };
