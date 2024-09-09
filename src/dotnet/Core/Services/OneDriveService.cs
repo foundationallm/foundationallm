@@ -67,7 +67,7 @@ namespace FoundationaLLM.Core.Services
         }
 
         /// <inheritdoc/>
-        public async Task<ResourceProviderUpsertResult> Download(
+        public async Task<OneDriveItem> Download(
             string instanceId, string sessionId, string agentName, OneDriveItem oneDriveItem, UnifiedUserIdentity userIdentity)
         {
             if (string.IsNullOrWhiteSpace(oneDriveItem.AccessToken))
@@ -117,7 +117,12 @@ namespace FoundationaLLM.Core.Services
                     agentName,
                     userIdentity);
 
-            return result;
+            return new OneDriveItem()
+            {
+                Id = oneDriveItem.Id,
+                Name = fileName,
+                File = new OneDriveFile() { MimeType = contentType },
+            };
         }
     }
 }

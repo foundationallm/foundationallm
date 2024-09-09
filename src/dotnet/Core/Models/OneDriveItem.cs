@@ -14,6 +14,11 @@ namespace FoundationaLLM.Core.Models
         public required string Id { get; set; }
 
         /// <summary>
+        /// The id of the object that was created or updated.
+        /// </summary>
+        public string? ObjectId { get; set; }
+
+        /// <summary>
         /// The item name.
         /// </summary>
         [JsonPropertyName("name")]
