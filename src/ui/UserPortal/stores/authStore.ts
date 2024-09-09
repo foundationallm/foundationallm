@@ -116,7 +116,7 @@ export const useAuthStore = defineStore('auth', {
 		async logoutSilent() {
 			const logoutHint = this.currentAccount.idTokenClaims.login_hint;
 			await this.msalInstance.logoutRedirect({
-				logoutHint: logoutHint,
+				logoutHint,
 			});
 		},
 
