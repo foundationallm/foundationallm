@@ -9,6 +9,9 @@
 		<!-- Page to render -->
 		<NuxtPage :style="style" />
 
+		<!-- Session expiration dialog -->
+		<SessionExpirationDialog v-if="!$authStore.isExpired" />
+
 		<!-- Session expired dialog -->
 		<Dialog
 			modal
@@ -53,7 +56,7 @@ export default {
 
 	methods: {
 		async handleRefreshLogin() {
-			await this.$authStore.logoutSilent();
+			await this.$authStore.clearLocalSession();
 			this.$router.push({ name: 'auth/login' });
 		},
 	},
@@ -73,5 +76,17 @@ main {
 
 .p-component {
 	border-radius: 0px;
+}
+
+.text--danger {
+	color: red;
+}
+
+.d-flex {
+	display: flex;
+}
+
+.justify-center {
+	justify-content: center;
 }
 </style>
