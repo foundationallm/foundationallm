@@ -56,7 +56,7 @@ export default {
 
 	methods: {
 		async handleRefreshLogin() {
-			await this.$authStore.logoutSilent();
+			await this.$authStore.clearLocalSession();
 			this.$router.push({ name: 'auth/login' });
 		},
 	},

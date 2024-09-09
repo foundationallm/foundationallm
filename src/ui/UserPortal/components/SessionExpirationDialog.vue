@@ -77,7 +77,7 @@ export default {
 		async handleLogout() {
 			clearInterval(this.dialogInterval);
 			clearInterval(this.countdownInterval);
-			await this.$authStore.logout();
+			await this.$authStore.logoutSilent();
 			// this.$router.push({ name: 'auth/login' });
 		},
 
