@@ -466,8 +466,13 @@ export default {
 			await this.$appStore.oneDriveDisconnect();
 		},
 
-		async uploadFromOneDrive(){
-			//
+		async downloadFromOneDrive(){
+			const oneDriveObjectId = await this.$appStore.downloadFromOneDrive(
+				this.$appStore.currentSession.sessionId,
+				{id: '', accessToken: ''}
+			);
+
+			console.log(oneDriveObjectId);
 		}
 	},
 };
