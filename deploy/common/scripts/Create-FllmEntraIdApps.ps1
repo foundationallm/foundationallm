@@ -126,19 +126,21 @@ function New-FllmEntraIdApps {
         ## Updates the API App Registration
         Write-Host -ForegroundColor Yellow "Preparing updates for the API App Registration $($fllmAppRegMetaData.Api.Name)"
         $appConfig = Get-content $fllmApiConfigPath | ConvertFrom-Json -Depth 20
+        $preAuthorizedApp = @(
+            @{
+                "appId" = "04b07795-8ddb-461a-bbee-02f9e1bf7b46";
+                "delegatedPermissionIds" = @("$($appPermissionsId)")
+            }
+        )
+
         if ($createClientApp) {
-            $preAuthorizedApp = @(
-                @{
-                    "appId" = $($fllmAppRegMetaData.Client.AppId); 
-                    "delegatedPermissionIds" = @("$($appPermissionsId)") 
-                },
-                @{
-                    "appId" = "04b07795-8ddb-461a-bbee-02f9e1bf7b46";
-                    "delegatedPermissionIds" = @("$($appPermissionsId)")
-                }
-            )
-            $appConfig.api.preAuthorizedApplications = $preAuthorizedApp
+            $preAuthorizedApp += @{
+                "appId" = $($fllmAppRegMetaData.Client.AppId); 
+                "delegatedPermissionIds" = @("$($appPermissionsId)") 
+            }
         }
+
+        $appConfig.api.preAuthorizedApplications = $preAuthorizedApp
         $appConfig.identifierUris = @($($fllmAppRegMetaData.Api.Uri))
         $appConfigUpdate = $appConfig | ConvertTo-Json -Depth 20
         Write-Host -ForegroundColor Yellow "Final Update to API App Registration $($fllmAppRegMetaData.Api.Name)"
