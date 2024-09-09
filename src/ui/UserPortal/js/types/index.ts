@@ -135,11 +135,5 @@ export interface UserProfile {
 
 export interface OneDriveItem {
 	id: string;
-	name: string;
-	file: OneDriveFile;
 	accessToken: string;
-}
-
-export interface OneDriveFile {
-	mimeType: string;
 }
