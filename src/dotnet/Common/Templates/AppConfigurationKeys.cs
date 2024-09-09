@@ -325,20 +325,6 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_ClientId =
             "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:ClientId";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:ClientSecret setting.
-        /// <para>Value description:<br/>The client secret of the Entra ID app registration used by the Core API to authenticate.</para>
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_ClientSecret =
-            "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:ClientSecret";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:OneDriveScopes setting.
-        /// <para>Value description:<br/>The list of scopes required for OneDrive integration.</para>
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_OneDriveScopes =
-            "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:OneDriveScopes";
 
         #endregion
 
