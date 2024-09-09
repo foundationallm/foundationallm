@@ -378,10 +378,10 @@ export default {
 	 * @returns A Promise that resolves to the response from the server.
 	 */
 	async oneDriveConnect() {
-		return (await this.fetch(`/instances/${this.instanceId}/oneDrive/connect`, {
+		return await this.fetch(`/instances/${this.instanceId}/oneDrive/connect`, {
 			method: 'POST',
-			body: null
-		}));
+			body: null,
+		});
 	},
 
 	/**
@@ -389,10 +389,10 @@ export default {
 	 * @returns A Promise that resolves to the response from the server.
 	 */
 	async oneDriveDisconnect() {
-		return (await this.fetch(`/instances/${this.instanceId}/oneDrive/disconnect`, {
+		return await this.fetch(`/instances/${this.instanceId}/oneDrive/disconnect`, {
 			method: 'POST',
-			body: null
-		}));
+			body: null,
+		});
 	},
 
 	/**
@@ -417,8 +417,8 @@ export default {
 		agentName: string,
 		oneDriveItem: OneDriveItem) {
 		return (await this.fetch(`/instances/${this.instanceId}/oneDrive/download?instanceId=${this.instanceId}&sessionId=${sessionId}&agentName=${agentName}`, {
-			method: 'POST',
-			body: oneDriveItem
+				method: 'POST',
+				body: oneDriveItem,
 		})) as OneDriveItem;
 	},
 };
