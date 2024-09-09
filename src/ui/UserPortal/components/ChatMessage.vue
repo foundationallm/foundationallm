@@ -53,7 +53,7 @@
 				</div>
 
 				<!-- Message text -->
-				<div class="message__body">
+				<div class="message__body" @click="handleFileLinkInText">
 					<!-- Attachments -->
 					<AttachmentList
 						v-if="message.sender === 'User'"
@@ -204,24 +204,11 @@ import truncate from 'truncate-html';
 import DOMPurify from 'dompurify';
 import type { PropType } from 'vue';
 
-import type { Message, CompletionPrompt } from '@/js/types';
+import type { Message, MessageContent, CompletionPrompt } from '@/js/types';
 import api from '@/js/api';
+import { fetchBlobUrl } from '@/js/fileService';
 import CodeBlockHeader from '@/components/CodeBlockHeader.vue';
 import ChatMessageContentBlock from '@/components/ChatMessageContentBlock.vue';
-
-const renderer = new marked.Renderer();
-renderer.code = (code) => {
-	const language = code.lang;
-	const sourceCode = code.text || code;
-	const validLanguage = !!(language && hljs.getLanguage(language));
-	const highlighted = validLanguage
-		? hljs.highlight(sourceCode, { language })
-		: hljs.highlightAuto(sourceCode);
-	const languageClass = validLanguage ? `hljs language-${language}` : 'hljs';
-	const encodedCode = encodeURIComponent(sourceCode);
-	return `<pre><code class="${languageClass}" data-code="${encodedCode}" data-language="${highlighted.language}">${highlighted.value}</code></pre>`;
-};
-marked.use({ renderer });
 
 function processLatex(content) {
 	const blockLatexPattern = /\\\[\s*([\s\S]+?)\s*\\\]/g;
@@ -291,20 +278,21 @@ export default {
 			primaryButtonBg: this.$appConfigStore.primaryButtonBg,
 			primaryButtonText: this.$appConfigStore.primaryButtonText,
 			messageContent: this.message.content
-				? JSON.parse(JSON.stringify(this.message.content))
+				? (JSON.parse(JSON.stringify(this.message.content)) as MessageContent[])
 				: null,
 			isAnalysisModalVisible: false,
 			isMobile: window.screen.width < 950,
+			markedRenderer: null,
 		};
 	},
 
 	computed: {
 		compiledMarkdown() {
-			function processContentBlock(contentToProcess) {
+			const processContentBlock = (contentToProcess) => {
 				let htmlContent = processLatex(contentToProcess ?? '');
-				htmlContent = marked(htmlContent);
+				htmlContent = marked(htmlContent, { renderer: this.markedRenderer });
 				return DOMPurify.sanitize(htmlContent);
-			}
+			};
 
 			let content = '';
 			if (this.messageContent && this.messageContent?.length > 0) {
@@ -314,12 +302,6 @@ export default {
 							content += processContentBlock(contentBlock.value);
 							break;
 						}
-						// case 'image_file':
-						// 	break;
-						// case 'html':
-						// 	break;
-						// case 'file_path':
-						// 	break;
 						default: {
 							// Maybe just pass invidual values directly as primitives instead of full object
 							const contentBlockEncoded = encodeURIComponent(JSON.stringify(contentBlock));
@@ -347,6 +329,9 @@ export default {
 	},
 
 	created() {
+		this.markSkippableContent();
+		this.createMarkedRenderer();
+
 		if (this.showWordAnimation) {
 			this.displayWordByWord();
 		} else {
@@ -355,6 +340,64 @@ export default {
 	},
 
 	methods: {
+		createMarkedRenderer() {
+			this.markedRenderer = new marked.Renderer();
+
+			// Code blocks
+			this.markedRenderer.code = (code) => {
+				const language = code.lang;
+				const sourceCode = code.text || code;
+				const validLanguage = !!(language && hljs.getLanguage(language));
+				const highlighted = validLanguage
+					? hljs.highlight(sourceCode, { language })
+					: hljs.highlightAuto(sourceCode);
+				const languageClass = validLanguage ? `hljs language-${language}` : 'hljs';
+				const encodedCode = encodeURIComponent(sourceCode);
+				return `<pre><code class="${languageClass}" data-code="${encodedCode}" data-language="${highlighted.language}">${highlighted.value}</code></pre>`;
+			};
+
+			// Links
+			this.markedRenderer.link = ({ href, title, text }) => {
+				// Check if the link is a file download type.
+				const isFileDownload = href.includes('/files/FoundationaLLM');
+
+				if (isFileDownload) {
+					const matchingFileBlock = this.messageContent.find(
+						(block) => block.type === 'file_path' && block.value === href,
+					);
+
+					// Append file icon if there's a matching file_path
+					const fileName = matchingFileBlock?.fileName.split('/').pop() ?? '';
+					const fileIcon = matchingFileBlock
+						? `<i class="${this.$getFileIconClass(fileName, true)}" class="attachment-icon"></i>`
+						: `<i class="pi pi-file" class="attachment-icon"></i>`;
+					return `${fileIcon} &nbsp;<a href="#" data-href="${href}" data-filename="${fileName}" title="${title || ''}" class="file-download-link">${text}</a>`;
+				} else {
+					return `<a href="${href}" title="${title || ''}" target="_blank">${text}</a>`;
+				}
+			};
+		},
+
+		markSkippableContent() {
+			if (!this.messageContent) return;
+
+			this.messageContent.forEach((contentBlock) => {
+				if (contentBlock.type === 'file_path') {
+					// Check for a matching text content that shares the same URL
+					const matchingTextContent = this.messageContent.find(
+						(block) => block.type === 'text' && block.value.includes(contentBlock.value),
+					);
+
+					if (matchingTextContent) {
+						// Set the fileName in the matching text content
+						matchingTextContent.fileName = contentBlock.fileName;
+						// Skip rendering this file_path block
+						contentBlock.skip = true;
+					}
+				}
+			});
+		},
+
 		displayWordByWord() {
 			const words = this.compiledMarkdown.split(/\s+/);
 			if (this.currentWordIndex >= words.length) {
@@ -438,6 +481,21 @@ export default {
 			const prompt = await api.getPrompt(this.message.sessionId, this.message.completionPromptId);
 			this.prompt = prompt;
 			this.viewPrompt = true;
+		},
+
+		handleFileLinkInText(event: MouseEvent) {
+			const link = (event.target as HTMLElement).closest('a.file-download-link');
+			if (link && link.dataset.href) {
+				event.preventDefault();
+
+				const content: MessageContent = {
+					type: 'file_path',
+					value: link.dataset.href,
+					fileName: link.dataset.filename || link.textContent,
+				};
+
+				fetchBlobUrl(content, this.$toast);
+			}
 		},
 	},
 };
