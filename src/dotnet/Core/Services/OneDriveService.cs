@@ -5,6 +5,7 @@ using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models;
 using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace FoundationaLLM.Core.Services
 {
@@ -80,15 +81,19 @@ namespace FoundationaLLM.Core.Services
             client.BaseAddress = new Uri("https://graph.microsoft.com/v1.0/");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", oneDriveItem.AccessToken);
 ;
-            var response = await client.GetAsync($"me/drive/items/{oneDriveItem.ItemId}/content");
+            var item = await client.GetAsync($"me/drive/items/{oneDriveItem.Id}");
+            var itemStr = await item.Content.ReadAsStringAsync();
+            var itemObj = JsonSerializer.Deserialize<OneDriveItem>(itemStr);
+
+            var response = await client.GetAsync($"me/drive/items/{oneDriveItem.Id}/content");
             var stream = await response.Content.ReadAsStreamAsync();
 
             using var memoryStream = new MemoryStream();
             await stream.CopyToAsync(memoryStream);
             var content = memoryStream.ToArray();
 
-            var fileName = $"{Guid.NewGuid()}";
-            var name = $"a-{fileName}-{DateTime.UtcNow.Ticks}";
+            var fileName = itemObj!.Name;
+            var name = $"a-{Guid.NewGuid()}-{DateTime.UtcNow.Ticks}";
             var contentType = "application/octet-stream";
 
             var result = await _coreService.UploadAttachment(
