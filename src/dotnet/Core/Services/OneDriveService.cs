@@ -120,8 +120,9 @@ namespace FoundationaLLM.Core.Services
             return new OneDriveItem()
             {
                 Id = oneDriveItem.Id,
+                ObjectId = result.ObjectId,
                 Name = fileName,
-                File = new OneDriveFile() { MimeType = contentType },
+                File = new OneDriveFile() { MimeType = contentType }
             };
         }
     }
