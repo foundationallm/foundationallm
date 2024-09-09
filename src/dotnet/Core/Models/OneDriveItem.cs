@@ -3,7 +3,7 @@
 namespace FoundationaLLM.Core.Models
 {
     /// <summary>
-    /// OneDrive item.
+    /// OneDrive item object.
     /// </summary>
     public class OneDriveItem
     {
@@ -20,9 +20,27 @@ namespace FoundationaLLM.Core.Models
         public string? Name { get; set; }
 
         /// <summary>
+        /// The file object.
+        /// </summary>
+        [JsonPropertyName("file")]
+        public OneDriveFile? File { get; set; }
+
+        /// <summary>
         /// The access token required to fetch the item contents.
         /// </summary>
         [JsonPropertyName("access_token")]
-        public required string AccessToken { get; set; }
+        public string? AccessToken { get; set; }
+    }
+
+    /// <summary>
+    /// OneDrive file object.
+    /// </summary>
+    public class OneDriveFile
+    {
+        /// <summary>
+        /// The OneDrive file mime type.
+        /// </summary>
+        [JsonPropertyName("mimeType")]
+        public string? MimeType { get; set; }
     }
 }
