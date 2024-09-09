@@ -10,8 +10,14 @@ namespace FoundationaLLM.Core.Models
         /// <summary>
         /// The item unique identifier.
         /// </summary>
-        [JsonPropertyName("item_id")]
-        public required string ItemId { get; set; }
+        [JsonPropertyName("id")]
+        public required string Id { get; set; }
+
+        /// <summary>
+        /// The item name.
+        /// </summary>
+        [JsonPropertyName("name")]
+        public string? Name { get; set; }
 
         /// <summary>
         /// The access token required to fetch the item contents.
