@@ -450,22 +450,6 @@
 				"value": "${env:ENTRA_CORE_API_CLIENT_ID}",
 				"content_type": "",
 				"first_version": "0.8.0"
-			},
-			{
-				"name": "ClientSecret",
-				"description": "The client secret of the Entra ID app registration used by the Core API to authenticate.",
-				"secret": "apiendpoints-coreapi-client-secret",
-				"value": "${env:ENTRA_CORE_API_CLIENT_SECRET}",
-				"content_type": "",
-				"first_version": "0.8.2"
-			},
-			{
-				"name": "OneDriveScopes",
-				"description": "The list of scopes required for OneDrive integration.",
-				"secret": "",
-				"value": "Files.OneDrive.Download",
-				"content_type": "",
-				"first_version": "0.8.2"
 			}
 		]
 	},
