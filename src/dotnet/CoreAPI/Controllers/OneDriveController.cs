@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Core.Interfaces;
+using FoundationaLLM.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -63,12 +64,12 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="sessionId">The session ID from which the file is uploaded.</param>
         /// <param name="agentName">The agent name.</param>
-        /// <param name="itemId">The OneDrive work or school item identifier.</param>
+        /// <param name="oneDriveItem">The OneDrive work or school item.</param>
         /// <returns></returns>
         [HttpPost("download")]
-        public async Task<IActionResult> Download(string instanceId, string sessionId, string agentName, string itemId)
+        public async Task<IActionResult> Download(string instanceId, string sessionId, string agentName, [FromBody] OneDriveItem oneDriveItem)
         {
-            var result = await _oneDriveService.Download(instanceId, sessionId, agentName, itemId, _callContext.CurrentUserIdentity!);
+            var result = await _oneDriveService.Download(instanceId, sessionId, agentName, oneDriveItem, _callContext.CurrentUserIdentity!);
 
             return Ok(result);
         }
