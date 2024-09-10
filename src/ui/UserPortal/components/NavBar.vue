@@ -20,7 +20,7 @@
 						@click="$appStore.toggleSidebar"
 						@keydown.esc="hideAllPoppers"
 					/>
-					<template #popper>Toggle sidebar</template>
+					<template #popper><div role="tooltip">Toggle sidebar</div></template>
 				</VTooltip>
 			</template>
 		</div>
@@ -65,7 +65,7 @@
 								tabindex="0"
 								@keydown.esc="hideAllPoppers"
 							/>
-							<template #popper> Select an agent </template>
+							<template #popper><div role="tooltip">Select an agent</div></template>
 						</VTooltip>
 						<Dropdown
 							v-model="agentSelection"

@@ -4,7 +4,7 @@
 			<div class="tooltip-component">
 				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 					<i class="pi pi-info-circle" tabindex="0" @keydown.esc="hideAllPoppers"></i>
-					<template #popper> Use Shift+Enter to add a new line </template>
+					<template #popper role="tooltip"><div role="tooltip">Use Shift+Enter to add a new line</div></template>
 				</VTooltip>
 			</div>
 			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
@@ -19,9 +19,11 @@
 					@keydown.esc="hideAllPoppers"
 				/>
 				<template #popper>
-					Attach files ({{
-						fileArrayFiltered.length === 1 ? '1 file' : fileArrayFiltered.length + ' files'
-					}})
+					<div role="tooltip">
+						Attach files ({{
+							fileArrayFiltered.length === 1 ? '1 file' : fileArrayFiltered.length + ' files'
+						}})
+					</div>
 				</template>
 			</VTooltip>
 			<Dialog
