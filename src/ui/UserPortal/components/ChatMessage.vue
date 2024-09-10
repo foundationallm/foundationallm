@@ -551,6 +551,7 @@ export default {
 .message__body {
 	// white-space: pre-wrap;
 	overflow-wrap: break-word;
+	overflow-x: auto;
 	padding-left: 12px;
 	padding-right: 12px;
 	padding-top: 8px;
