@@ -21,6 +21,7 @@ export const useAppStore = defineStore('app', {
 		sessions: [] as Session[],
 		currentSession: null as Session | null,
 		renamedSessions: [] as Session[],
+		deletedSessions: [] as Session[],
 		currentMessages: [] as Message[],
 		isSidebarClosed: false as boolean,
 		agents: [] as ResourceProviderGetResult<Agent>[],
@@ -103,6 +104,14 @@ export const useAppStore = defineStore('app', {
 					existingSession.name = renamedSession.name;
 				}
 			});
+
+			// Handle inconsistencies in displaying the deleted session due to potential delays in the backend updating the session list.
+			this.deletedSessions.forEach((deletedSession: Session) => {
+				const existingSession = this.sessions.find((s: Session) => s.id === deletedSession.id);
+				if (existingSession) {
+					this.removeSession(deletedSession.id);
+				}
+			});
 		},
 
 		async addSession(properties: ChatSessionProperties) {
@@ -154,6 +163,9 @@ export const useAppStore = defineStore('app', {
 			await this.getSessions();
 
 			this.removeSession(sessionToDelete!.id);
+
+			// Add the deleted session to the list of deleted sessions to handle inconsistencies in the backend updating the session list.
+			this.deletedSessions = [sessionToDelete, ...this.deletedSessions];
 
 			// Ensure there is at least always 1 session
 			if (this.sessions.length === 0) {
