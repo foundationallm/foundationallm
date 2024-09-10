@@ -14,7 +14,6 @@ using FoundationaLLM.Gateway.Interfaces;
 using FoundationaLLM.Gateway.Models;
 using FoundationaLLM.Gateway.Models.Configuration;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OpenAI.Assistants;
@@ -233,7 +232,13 @@ namespace FoundationaLLM.Gateway.Services
                     StringComparison.OrdinalIgnoreCase) == 0)
                 ?? throw new GatewayException($"The Gateway service is not configured to use the {endpoint} endpoint.");
 
-            var azureOpenAIClient = new AzureOpenAIClient(new Uri(azureOpenAIAccount.Endpoint), DefaultAuthentication.AzureCredential);
+            var azureOpenAIClient = new AzureOpenAIClient(
+                new Uri(azureOpenAIAccount.Endpoint),
+                DefaultAuthentication.AzureCredential,
+                new AzureOpenAIClientOptions
+                {
+                    NetworkTimeout = TimeSpan.FromSeconds(1000)
+                });
 
             if (createAssistant)
             {
@@ -322,22 +327,23 @@ namespace FoundationaLLM.Gateway.Services
                 var startTime = DateTimeOffset.UtcNow;
                 _logger.LogInformation("Started vectorization of file {FileId} in vector store {VectorStoreId}.", fileId, vectorStoreId);
 
-                var pollingCount = 0;
-                var maxPollingCountExceeded = false;
+                var maxPollingTimeExceeded = false;
                 while (vectorizationResult.Value.Status == VectorStoreFileAssociationStatus.InProgress)
                 {
-                    await Task.Delay(1000);
-                    if (pollingCount++ > 1800)
+                    await Task.Delay(5000);
+                    if ((DateTimeOffset.UtcNow - startTime).TotalSeconds >= 1000)
                     {
-                        // Will not wait more than 30 minutes for the vectorization to complete.
-                        maxPollingCountExceeded = true;
+                        // Will not wait more than 1000 seconds for the vectorization to complete.
+                        // The Gateway API clients have a 1200 seconds timeout set for the full operation to complete,
+                        // so we don't want to exceed that while polling.
+                        maxPollingTimeExceeded = true;
                         break;
                     }
                     vectorizationResult = await vectorStoreClient.GetFileAssociationAsync(vectorStoreId, fileId);
                 }
 
-                if (maxPollingCountExceeded)
-                    _logger.LogWarning("The maximum polling count was exceeded during the vectorization of file {FileId} in vector store {VectorStoreId}.", fileId, vectorStoreId);
+                if (maxPollingTimeExceeded)
+                    _logger.LogWarning("The maximum polling time (1000 seconds) was exceeded during the vectorization of file {FileId} in vector store {VectorStoreId}.", fileId, vectorStoreId);
                 else
                     _logger.LogInformation("Completed vectorization of file {FileId} in vector store {VectorStoreId} in {TotalSeconds}.",
                         fileId, vectorStoreId, (DateTimeOffset.UtcNow - startTime).TotalSeconds);
