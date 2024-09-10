@@ -18,7 +18,7 @@
 					@click="$appStore.toggleSidebar"
 					@keydown.esc="hideAllPoppers"
 				/>
-				<template #popper>Toggle sidebar</template>
+				<template #popper><div role="tooltip">Toggle sidebar</div></template>
 			</VTooltip>
 		</div>
 		<div class="chat-sidebar__section-header">
@@ -33,7 +33,7 @@
 					@click="handleAddSession"
 					@keydown.esc="hideAllPoppers"
 				/>
-				<template #popper>Add new chat</template>
+				<template #popper><div role="tooltip">Add new chat</div></template>
 			</VTooltip>
 		</div>
 
@@ -53,7 +53,9 @@
 					<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 						<span class="chat__name" tabindex="0" @keydown.esc="hideAllPoppers">{{ session.name }}</span>
 						<template #popper>
-							{{ session.name }}
+							<div role="tooltip">
+								{{ session.name }}
+							</div>
 						</template>
 					</VTooltip>
 
@@ -70,7 +72,7 @@
 								@click.stop="openRenameModal(session)"
 								@keydown.esc="hideAllPoppers"
 							/>
-							<template #popper> Rename chat session </template>
+							<template #popper><div role="tooltip">Rename chat session</div></template>
 						</VTooltip>
 
 						<!-- Delete session -->
@@ -84,7 +86,7 @@
 								@click.stop="sessionToDelete = session"
 								@keydown.esc="hideAllPoppers"
 							/>
-							<template #popper> Delete chat session </template>
+							<template #popper><div role="tooltip">Delete chat session</div></template>
 						</VTooltip>
 					</span>
 				</div>

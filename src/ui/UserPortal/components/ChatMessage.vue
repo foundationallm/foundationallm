@@ -32,7 +32,9 @@
 								$filters.timeAgo(new Date(message.timeStamp))
 							}}</span>
 							<template #popper>
-								{{ formatTimeStamp(message.timeStamp) }}
+								<div role="tooltip">
+									{{ formatTimeStamp(message.timeStamp) }}
+								</div>
 							</template>
 						</VTooltip>
 
@@ -48,7 +50,7 @@
 								@click.stop="handleCopyMessageContent"
 								@keydown.esc="hideAllPoppers"
 							/>
-							<template #popper>Copy Message</template>
+							<template #popper><div role="tooltip">Copy Message</div></template>
 						</VTooltip>
 					</span>
 				</div>
