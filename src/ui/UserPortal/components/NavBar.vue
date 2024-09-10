@@ -18,6 +18,7 @@
 						class="secondary-button"
 						aria-label="Toggle sidebar"
 						@click="$appStore.toggleSidebar"
+						@keydown.esc="hideAllPoppers"
 					/>
 					<template #popper>Toggle sidebar</template>
 				</VTooltip>
@@ -62,6 +63,7 @@
 								:src="$appConfigStore.agentIconUrl || '~/assets/FLLM-Agent-Light.svg'"
 								alt="Select an agent"
 								tabindex="0"
+								@keydown.esc="hideAllPoppers"
 							/>
 							<template #popper> Select an agent </template>
 						</VTooltip>
@@ -87,6 +89,7 @@
 
 <script lang="ts">
 import type { Session } from '@/js/types';
+import { hideAllPoppers } from 'floating-vue';
 
 interface AgentDropdownOption {
 	label: string;
@@ -197,6 +200,10 @@ export default {
 				this.agentOptions.find(
 					(option) => option.value.resource.object_id === agent.resource.object_id,
 				) || null;
+		},
+
+		hideAllPoppers() {
+			hideAllPoppers();
 		},
 	},
 };

@@ -16,6 +16,7 @@
 					class="secondary-button"
 					aria-label="Toggle sidebar"
 					@click="$appStore.toggleSidebar"
+					@keydown.esc="hideAllPoppers"
 				/>
 				<template #popper>Toggle sidebar</template>
 			</VTooltip>
@@ -30,6 +31,7 @@
 					aria-label="Add new chat"
 					:disabled="createProcessing"
 					@click="handleAddSession"
+					@keydown.esc="hideAllPoppers"
 				/>
 				<template #popper>Add new chat</template>
 			</VTooltip>
@@ -48,7 +50,7 @@
 				<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
 					<!-- Chat name -->
 					<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-						<h2 class="chat__name" tabindex="0">{{ session.name }}</h2>
+						<h2 class="chat__name" tabindex="0" @keydown.esc="hideAllPoppers">{{ session.name }}</h2>
 						<template #popper>
 							{{ session.name }}
 						</template>
@@ -65,6 +67,7 @@
 								text
 								aria-label="Rename chat session"
 								@click.stop="openRenameModal(session)"
+								@keydown.esc="hideAllPoppers"
 							/>
 							<template #popper> Rename chat session </template>
 						</VTooltip>
@@ -78,6 +81,7 @@
 								text
 								aria-label="Delete chat session"
 								@click.stop="sessionToDelete = session"
+								@keydown.esc="hideAllPoppers"
 							/>
 							<template #popper> Delete chat session </template>
 						</VTooltip>
@@ -167,6 +171,7 @@
 
 <script lang="ts">
 import type { Session } from '@/js/types';
+import { hideAllPoppers } from 'floating-vue';
 declare const process: any;
 
 export default {
@@ -271,6 +276,10 @@ export default {
 			if (event.key === 'Escape') {
 				this.sessionToDelete = null;
 			}
+		},
+
+		hideAllPoppers() {
+			hideAllPoppers();
 		},
 	},
 };

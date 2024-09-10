@@ -3,7 +3,7 @@
 		<div class="input-wrapper">
 			<div class="tooltip-component">
 				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-					<i class="pi pi-info-circle" tabindex="0"></i>
+					<i class="pi pi-info-circle" tabindex="0" @keydown.esc="hideAllPoppers"></i>
 					<template #popper> Use Shift+Enter to add a new line </template>
 				</VTooltip>
 			</div>
@@ -16,6 +16,7 @@
 					class="file-upload-button secondary-button"
 					style="height: 100%"
 					@click="showFileUploadDialog = true"
+					@keydown.esc="hideAllPoppers"
 				/>
 				<template #popper>
 					Attach files ({{
@@ -182,6 +183,7 @@
 <script lang="ts">
 import { Mentionable } from 'vue-mention';
 import 'floating-vue/dist/style.css';
+import { hideAllPoppers } from 'floating-vue';
 
 export default {
 	name: 'ChatInput',
@@ -386,6 +388,10 @@ export default {
 					event.files.splice(index, 1);
 				}
 			});
+		},
+
+		hideAllPoppers() {
+			hideAllPoppers();
 		},
 	},
 };
