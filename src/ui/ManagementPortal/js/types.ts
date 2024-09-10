@@ -43,6 +43,8 @@ export type Agent = ResourceBase & {
 		trigger_cron_schedule: string;
 	};
 
+	capabilities: string[];
+
 	sessions_enabled: boolean;
 	orchestration_settings: {
 		orchestrator: string;
@@ -315,6 +317,8 @@ export type CreateAgentRequest = ResourceBase & {
 		version: string;
 		deployment: string;
 	};
+
+	capabilities: string[];
 
 	vectorization: {
 		dedicated_pipeline: boolean;
