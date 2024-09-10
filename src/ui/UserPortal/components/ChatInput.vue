@@ -3,7 +3,7 @@
 		<div class="input-wrapper">
 			<div class="tooltip-component">
 				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-					<i class="pi pi-info-circle" tabindex="0" @keydown.esc="hideAllPoppers"></i>
+					<i class="pi pi-info-circle" tabindex="0" @keydown.esc="hideAllPoppers" aria-label="info icon"></i>
 					<template #popper role="tooltip"><div role="tooltip">Use Shift+Enter to add a new line</div></template>
 				</VTooltip>
 			</div>
