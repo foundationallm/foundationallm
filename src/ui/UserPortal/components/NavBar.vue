@@ -78,6 +78,7 @@
 							option-label="label"
 							placeholder="--Select--"
 							aria-label="Select an agent"
+							aria-activedescendant="selected-agent-{{ agentSelection?.label }}"
 							@change="handleAgentChange"
 						/>
 					</span>
