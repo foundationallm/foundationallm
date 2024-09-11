@@ -1,4 +1,4 @@
-﻿using Azure.AI.OpenAI.Assistants;
+﻿using Azure.AI.OpenAI;
 using FoundationaLLM.AzureOpenAI.Models;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Clients;
@@ -201,9 +201,10 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                         $"Could not find the file {openAIFileId} in the {fileUserContextName} file user context.",
                         StatusCodes.Status404NotFound);
 
-            var assistantsClient = new AssistantsClient(new Uri(fileUserContext!.Endpoint), DefaultAuthentication.AzureCredential);
+            var azureOpenAIClient = new AzureOpenAIClient(new Uri(fileUserContext!.Endpoint), DefaultAuthentication.AzureCredential);
+            var fileClient = azureOpenAIClient.GetFileClient();
 
-            var result = await assistantsClient.GetFileContentAsync(openAIFileId);
+            var result = await fileClient.DownloadFileAsync(openAIFileId);
 
             return new FileContent
             {
