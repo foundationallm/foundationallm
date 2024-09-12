@@ -926,7 +926,7 @@ export default {
 				{
 					name: 'FLLM Knowledge Management',
 					code: 'FoundationaLLM.KnowledgeManagement',
-				}
+				},
 			]),
 		};
 	},

@@ -4,7 +4,12 @@
 			<NavBar />
 		</header>
 		<div class="chat-content">
-			<aside v-show="!$appStore.isSidebarClosed" ref="sidebar" class="chat-sidebar-wrapper" role="navigation">
+			<aside
+				v-show="!$appStore.isSidebarClosed"
+				ref="sidebar"
+				class="chat-sidebar-wrapper"
+				role="navigation"
+			>
 				<ChatSidebar class="chat-sidebar" :style="{ width: sidebarWidth + 'px' }" />
 				<div class="resize-handle" @mousedown="startResizing"></div>
 			</aside>

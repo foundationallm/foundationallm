@@ -51,7 +51,9 @@
 					<!-- Chat name -->
 
 					<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-						<span class="chat__name" tabindex="0" @keydown.esc="hideAllPoppers">{{ session.name }}</span>
+						<span class="chat__name" tabindex="0" @keydown.esc="hideAllPoppers">{{
+							session.name
+						}}</span>
 						<template #popper>
 							<div role="tooltip">
 								{{ session.name }}
