@@ -232,17 +232,9 @@ namespace FoundationaLLM.Gateway.Services
                     StringComparison.OrdinalIgnoreCase) == 0)
                 ?? throw new GatewayException($"The Gateway service is not configured to use the {endpoint} endpoint.");
 
-            var azureOpenAIClient = new AzureOpenAIClient(
-                new Uri(azureOpenAIAccount.Endpoint),
-                DefaultAuthentication.AzureCredential,
-                new AzureOpenAIClientOptions
-                {
-                    NetworkTimeout = TimeSpan.FromSeconds(1000)
-                });
-
             if (createAssistant)
             {
-                var assistantClient = azureOpenAIClient.GetAssistantClient();
+                var assistantClient = GetAzureOpenAIAssistantClient(azureOpenAIAccount.Endpoint);
 
                 var prompt = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.AssistantPrompt);
                 var modelDeploymentName = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.ModelDeploymentName);
@@ -270,8 +262,8 @@ namespace FoundationaLLM.Gateway.Services
 
             if (createAssistantThread)
             {
-                var assistantClient = azureOpenAIClient.GetAssistantClient();
-                var vectorStoreClient = azureOpenAIClient.GetVectorStoreClient();
+                var assistantClient = GetAzureOpenAIAssistantClient(azureOpenAIAccount.Endpoint);
+                var vectorStoreClient = GetAzureOpenAIVectorStoreClient(azureOpenAIAccount.Endpoint);
 
                 var vectorStoreResult = await vectorStoreClient.CreateVectorStoreAsync(new VectorStoreCreationOptions
                 {
@@ -303,7 +295,7 @@ namespace FoundationaLLM.Gateway.Services
 
             if (createAssistantFile)
             {
-                var fileClient = azureOpenAIClient.GetFileClient();
+                var fileClient = GetAzureOpenAIFileClient(azureOpenAIAccount.Endpoint);
 
                 var attachmentObjectId = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.AttachmentObjectId);
                 var attachmentFile = await _attachmentResourceProvider.GetResource<AttachmentFile>(attachmentObjectId, userIdentity, new ResourceProviderOptions { LoadContent = true });
@@ -319,7 +311,7 @@ namespace FoundationaLLM.Gateway.Services
 
             if (addAssistantFileToVectorStore)
             {
-                var vectorStoreClient = azureOpenAIClient.GetVectorStoreClient();
+                var vectorStoreClient = GetAzureOpenAIVectorStoreClient(azureOpenAIAccount.Endpoint);
                 var vectorStoreId = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.AssistantVectorStoreId);
 
                 var vectorizationResult = await vectorStoreClient.AddFileToVectorStoreAsync(vectorStoreId, fileId);
@@ -365,5 +357,23 @@ namespace FoundationaLLM.Gateway.Services
                 ? ((JsonElement)parameterValueObject!).Deserialize<T>()
                     ?? throw new GatewayException($"Could not load required parameter {parameterName}.", StatusCodes.Status400BadRequest)
                 : throw new GatewayException($"The required parameter {parameterName} was not found.");
+
+        private AzureOpenAIClient GetAzureOpenAIClient(string endpoint) =>
+            new AzureOpenAIClient(
+                new Uri(endpoint),
+                DefaultAuthentication.AzureCredential,
+                new AzureOpenAIClientOptions
+                {
+                    NetworkTimeout = TimeSpan.FromSeconds(1000)
+                });
+
+        private AssistantClient GetAzureOpenAIAssistantClient(string endpoint) =>
+            GetAzureOpenAIClient(endpoint).GetAssistantClient();
+
+        private VectorStoreClient GetAzureOpenAIVectorStoreClient(string endpoint) =>
+            GetAzureOpenAIClient(endpoint).GetVectorStoreClient();
+
+        private FileClient GetAzureOpenAIFileClient(string endpoint) =>
+            GetAzureOpenAIClient(endpoint).GetFileClient();
     }
 }
