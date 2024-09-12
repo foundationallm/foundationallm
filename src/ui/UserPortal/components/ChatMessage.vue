@@ -491,7 +491,7 @@ export default {
 		hideAllPoppers() {
 			hideAllPoppers();
 		},
-		
+
 		handleFileLinkInText(event: MouseEvent) {
 			const link = (event.target as HTMLElement).closest('a.file-download-link');
 			if (link && link.dataset.href) {
