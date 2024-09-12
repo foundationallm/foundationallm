@@ -7,7 +7,7 @@
 		</Head>
 
 		<!-- Page to render -->
-		<NuxtPage :style="style" />
+		<NuxtPage />
 
 		<!-- Session expiration dialog -->
 		<SessionExpirationDialog v-if="!$authStore.isExpired" />
@@ -51,6 +51,17 @@ export default {
 				'--secondary-button-bg': this.$appConfigStore.secondaryButtonBg,
 				'--secondary-button-text': this.$appConfigStore.secondaryButtonText,
 			};
+		},
+	},
+
+	watch: {
+		style: {
+			immediate: true,
+			handler() {
+				for (const cssVar in this.style) {
+					document.documentElement.style.setProperty(cssVar, this.style[cssVar]);
+				}
+			},
 		},
 	},
 
