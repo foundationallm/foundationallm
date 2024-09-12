@@ -15,7 +15,7 @@
 
 					<CodeBlockHeader language="python" :codecontent="encodeURIComponent(analysis.tool_input)">
 						<!-- eslint-disable-next-line vue/no-v-html -->
-						<pre v-html="renderCodeBlock(analysis.tool_input)"></pre>
+						<pre v-html="renderCodeBlock(analysis.tool_input)" class="mt-0" />
 					</CodeBlockHeader>
 
 					<p v-if="analysis.tool_output"><strong>Output:</strong> {{ analysis.tool_output }}</p>
@@ -33,6 +33,25 @@
 import type { PropType } from 'vue';
 import { marked } from 'marked';
 import type { AnalysisResult } from '@/js/types';
+
+import hljs from 'highlight.js';
+import 'highlight.js/styles/github-dark-dimmed.css';
+
+const markedRenderer = new marked.Renderer();
+
+markedRenderer.code = (code) => {
+	const language = code.lang;
+	const sourceCode = code.text || code;
+	const validLanguage = !!(language && hljs.getLanguage(language));
+	const highlighted = validLanguage
+		? hljs.highlight(sourceCode, { language })
+		: hljs.highlightAuto(sourceCode);
+	const languageClass = validLanguage ? `hljs language-${language}` : 'hljs';
+	const encodedCode = encodeURIComponent(sourceCode);
+	return `<code class="${languageClass}" data-code="${encodedCode}" data-language="${highlighted.language}">${highlighted.value}</code>`;
+};
+
+marked.use({ renderer: markedRenderer });
 
 export default {
 	name: 'AnalysisModal',
@@ -64,7 +83,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .analysis-block {
 	margin-bottom: 20px;
 }
@@ -73,16 +92,7 @@ p {
 	margin: 10px 0;
 }
 
-.header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	color: var(--secondary-button-text);
-	background: var(--secondary-color);
-	padding-left: 8px;
-}
-
-.copy-button {
-	color: var(--secondary-button-text) !important;
+pre {
+	margin-top: 0;
 }
 </style>
