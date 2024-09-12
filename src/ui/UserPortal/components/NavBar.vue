@@ -18,8 +18,9 @@
 						class="secondary-button"
 						aria-label="Toggle sidebar"
 						@click="$appStore.toggleSidebar"
+						@keydown.esc="hideAllPoppers"
 					/>
-					<template #popper>Toggle sidebar</template>
+					<template #popper><div role="tooltip">Toggle sidebar</div></template>
 				</VTooltip>
 			</template>
 		</div>
@@ -62,8 +63,9 @@
 								:src="$appConfigStore.agentIconUrl || '~/assets/FLLM-Agent-Light.svg'"
 								alt="Select an agent"
 								tabindex="0"
+								@keydown.esc="hideAllPoppers"
 							/>
-							<template #popper> Select an agent </template>
+							<template #popper><div role="tooltip">Select an agent</div></template>
 						</VTooltip>
 						<Dropdown
 							v-model="agentSelection"
@@ -76,6 +78,7 @@
 							option-label="label"
 							placeholder="--Select--"
 							aria-label="Select an agent"
+							aria-activedescendant="selected-agent-{{ agentSelection?.label }}"
 							@change="handleAgentChange"
 						/>
 					</span>
@@ -87,6 +90,7 @@
 
 <script lang="ts">
 import type { Session } from '@/js/types';
+import { hideAllPoppers } from 'floating-vue';
 
 interface AgentDropdownOption {
 	label: string;
@@ -208,6 +212,10 @@ export default {
 				this.agentOptions.find(
 					(option) => option.value.resource.object_id === agent.resource.object_id,
 				) || null;
+		},
+
+		hideAllPoppers() {
+			hideAllPoppers();
 		},
 	},
 };

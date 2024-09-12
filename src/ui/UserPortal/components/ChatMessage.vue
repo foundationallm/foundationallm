@@ -28,11 +28,13 @@
 							}"
 						/>
 						<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-							<span class="time-stamp" tabindex="0">{{
+							<span class="time-stamp" tabindex="0" @keydown.esc="hideAllPoppers">{{
 								$filters.timeAgo(new Date(message.timeStamp))
 							}}</span>
 							<template #popper>
-								{{ formatTimeStamp(message.timeStamp) }}
+								<div role="tooltip">
+									{{ formatTimeStamp(message.timeStamp) }}
+								</div>
 							</template>
 						</VTooltip>
 
@@ -46,8 +48,9 @@
 								icon="pi pi-copy"
 								aria-label="Copy Message"
 								@click.stop="handleCopyMessageContent"
+								@keydown.esc="hideAllPoppers"
 							/>
-							<template #popper>Copy Message</template>
+							<template #popper><div role="tooltip">Copy Message</div></template>
 						</VTooltip>
 					</span>
 				</div>
@@ -209,6 +212,8 @@ import api from '@/js/api';
 import { fetchBlobUrl } from '@/js/fileService';
 import CodeBlockHeader from '@/components/CodeBlockHeader.vue';
 import ChatMessageContentBlock from '@/components/ChatMessageContentBlock.vue';
+
+import { hideAllPoppers } from 'floating-vue';
 
 function processLatex(content) {
 	const blockLatexPattern = /\\\[\s*([\s\S]+?)\s*\\\]/g;
@@ -481,6 +486,10 @@ export default {
 			const prompt = await api.getPrompt(this.message.sessionId, this.message.completionPromptId);
 			this.prompt = prompt;
 			this.viewPrompt = true;
+		},
+
+		hideAllPoppers() {
+			hideAllPoppers();
 		},
 
 		handleFileLinkInText(event: MouseEvent) {
