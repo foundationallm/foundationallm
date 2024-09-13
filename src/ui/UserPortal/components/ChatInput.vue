@@ -387,7 +387,11 @@ export default {
 				if (!allowedFileTypes || allowedFileTypes === '') {
 					return;
 				}
-				if (!allowedFileTypes.includes(file.name.split('.').pop())) {
+				if (!allowedFileTypes
+					.split(',')
+					.map((type: string) => type.trim().toLowerCase())
+					.includes(file.name.split('.').pop()?.toLowerCase())
+				) {
 					this.$toast.add({
 						severity: 'error',
 						summary: 'Error',
