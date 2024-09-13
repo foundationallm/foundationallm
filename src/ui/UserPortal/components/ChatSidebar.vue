@@ -185,8 +185,9 @@ export default {
 			newSessionName: '' as string,
 			sessionToDelete: null as Session | null,
 			deleteProcessing: false,
-			createProcessing: false,
 			isMobile: window.screen.width < 950,
+			createProcessing: false,
+			debounceTimeout: null as NodeJS.Timeout | null,
 		};
 	},
 
@@ -227,10 +228,26 @@ export default {
 
 		async handleAddSession() {
 			if (this.createProcessing) return;
+
+			if (this.debounceTimeout) {
+				this.$toast.add({
+					severity: 'warn',
+					summary: 'Warning',
+					detail: 'Please wait before creating another session.',
+					life: 3000,
+				});
+				return;
+			}
+
 			this.createProcessing = true;
+
 			try {
 				const newSession = await this.$appStore.addSession();
 				this.handleSessionSelected(newSession);
+
+				this.debounceTimeout = setTimeout(() => {
+					this.debounceTimeout = null;
+				}, 2000);
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',
