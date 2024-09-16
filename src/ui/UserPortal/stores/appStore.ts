@@ -368,18 +368,20 @@ export const useAppStore = defineStore('app', {
 		},
 
 		async oneDriveConnect() {
-			await api.oneDriveConnect();
-			this.oneDriveConnected = true;
+			await api.oneDriveConnect().then(() => {
+				this.oneDriveConnected = true;
+			});
 		},
 
 		async oneDriveDisconnect() {
-			await api.oneDriveDisconnect();
-			this.oneDriveConnected = false;
+			await api.oneDriveDisconnect().then(() => {
+				this.oneDriveConnected = false;
+			});
 		},
 
 		async getUserProfiles() {
 			this.userProfiles = await api.getUserProfile();
-			this.oneDriveConnected = this.userProfiles?.flags['oneDriveWorkSchool'];	
+			this.oneDriveConnected = this.userProfiles?.flags['oneDriveWorkSchool'];
 			return this.userProfiles;
 		},
 

@@ -114,6 +114,8 @@ export const useAuthStore = defineStore('auth', {
 				accessToken = resp.accessToken;
 			} catch (error) {
 				// Redirect to get token or login
+				localStorage.setItem('oneDriveConsentRedirect', JSON.stringify(true));
+
 				oneDriveAPIScopes.state = 'Core API redirect';
 				await this.msalInstance.loginRedirect(oneDriveAPIScopes);
 			}
