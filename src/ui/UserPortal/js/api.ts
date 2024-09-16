@@ -400,9 +400,7 @@ export default {
 	 * @returns An array of user profiles.
 	 */
 	async getUserProfile() {
-		return (await this.fetch(
-			`/instances/${this.instanceId}/userProfiles/`,
-		)) as Array<UserProfile>;
+		return (await this.fetch(`/instances/${this.instanceId}/userProfiles/`)) as Array<UserProfile>;
 	},
 
 	/**

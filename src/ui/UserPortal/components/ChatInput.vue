@@ -23,7 +23,8 @@
 					class="file-upload-button secondary-button"
 					aria-controls="overlay_menu"
 					aria-haspopup="true"
-					@click="toggle" />
+					@click="toggle"
+				/>
 				<Menu id="overlay_menu" ref="menu" :model="items" :popup="true">
 					<template #item="{ item, props }">
 						<li v-show="item.visible" class="menu-item" v-bind="props.action">
@@ -329,6 +330,11 @@ export default {
 			label: agent.name,
 			value: agent.name,
 		}));
+
+		if (localStorage.getItem('oneDriveConsentRedirect') === 'true') {
+			await this.oneDriveConnect();
+			localStorage.setItem('oneDriveConsentRedirect', JSON.stringify(false));
+		}
 	},
 
 	mounted() {
@@ -395,7 +401,9 @@ export default {
 					this.$toast.add({
 						severity: 'error',
 						summary: 'Error',
-						detail: `File upload failed for "${file.name}". ${error.message ? error.message : error.title ? error.title : ''}`,
+						detail: `File upload failed for "${file.name}". ${
+							error.message ? error.message : error.title ? error.title : ''
+						}`,
 						life: 5000,
 					});
 				} finally {
@@ -480,33 +488,41 @@ export default {
 		},
 		
 		async connectOneDrive() {
-			await this.$appStore.oneDriveConnect();
 			await this.$authStore.requestOneDriveConsent();
-			this.$toast.add({
-				severity: 'success',
-				summary: 'Success',
-				detail: `Your account is now connected to OneDrive.`,
-				life: 5000,
+			if (localStorage.getItem('oneDriveConsentRedirect') !== 'true') {
+				await this.oneDriveConnect();
+			}
+		},
+
+		async oneDriveConnect() {
+			await this.$appStore.oneDriveConnect().then(() => {
+				this.$toast.add({
+					severity: 'success',
+					summary: 'Success',
+					detail: `Your account is now connected to OneDrive.`,
+					life: 5000,
+				});
 			});
 		},
 
 		async disconnectOneDrive() {
-			this.$toast.add({
-				severity: 'success',
-				summary: 'Success',
-				detail: `Your account is now disconnected from OneDrive.`,
-				life: 5000,
+			await this.$appStore.oneDriveDisconnect().then(() => {
+				this.$toast.add({
+					severity: 'success',
+					summary: 'Success',
+					detail: `Your account is now disconnected from OneDrive.`,
+					life: 5000,
+				});
 			});
-			await this.$appStore.oneDriveDisconnect();
 		},
 
 		async downloadFromOneDrive() {
 			const accessToken = await this.$authStore.requestOneDriveConsent();
 			// TODO: set id from file picker
-			await this.$appStore.oneDriveDownload(
-				this.$appStore.currentSession.sessionId,
-				{id: '', access_token: accessToken}
-			);
+			await this.$appStore.oneDriveDownload(this.$appStore.currentSession.sessionId, {
+				id: '',
+				access_token: accessToken,
+			});
 		},
 	},
 };
@@ -568,11 +584,7 @@ export default {
 	color: #6c6c6c;
 	padding: 1.05rem 0.75rem 0.5rem 0.75rem;
 	border: 2px solid #e1e1e1;
-	transition:
-		background-color 0.3s,
-		color 0.3s,
-		border-color 0.3s,
-		box-shadow 0.3s;
+	transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
 	resize: none;
 }
 
