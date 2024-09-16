@@ -37,6 +37,12 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Configuration
         public required string Url { get; set; }
 
         /// <summary>
+        /// The status URL of the API endpoint, if available.
+        /// </summary>
+        [JsonPropertyName("status_url")]
+        public string? StatusUrl { get; set; }
+
+        /// <summary>
         /// A list of URL exceptions.
         /// </summary>
         [JsonPropertyName("url_exceptions")]
@@ -104,5 +110,11 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Configuration
         /// </summary>
         [JsonPropertyName("url")]
         public required string Url { get; set; }
+
+        /// <summary>
+        /// Indicates whether the exception is enabled.
+        /// </summary>
+        [JsonPropertyName("enabled")]
+        public required bool Enabled { get; set; }
     }
 }

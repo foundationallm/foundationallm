@@ -286,6 +286,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_AzureOpenAIAssistantsFileSearchFileExtensions =
             "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions setting.
+        /// <para>Value description:<br/>The comma-separated list file extensions that users are allowed to upload to a conversation.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_AllowedUploadFileExtensions =
+            "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions";
 
         #endregion
 
@@ -727,10 +734,6 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_AzureOpenAI_Essentials_APIKey =
             "FoundationaLLM:APIEndpoints:AzureOpenAI:Essentials:APIKey";
-
-        #endregion
-
-        #region FoundationaLLM:APIEndpoints:AzureAISearchVectorStore:Configuration
 
         #endregion
 

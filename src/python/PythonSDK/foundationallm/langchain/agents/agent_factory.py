@@ -1,4 +1,4 @@
-from foundationallm.config import Configuration
+from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.agents import (
     LangChainAgentBase,
     LangChainKnowledgeManagementAgent,
@@ -10,7 +10,7 @@ class AgentFactory:
     Factory to determine which agent to use.
     """
 
-    def __init__(self, config: Configuration):
+    def __init__(self, instance_id: str, user_identity: UserIdentity, config: Configuration):
         """
         Initializes an Orchestration for selecting which agent to use for completion.
 
@@ -20,6 +20,8 @@ class AgentFactory:
             Application configuration class for retrieving configuration settings.
         """
         self.config = config
+        self.instance_id = instance_id
+        self.user_identity = user_identity
 
     def get_agent(self, agent_type: str) -> LangChainAgentBase:
         """
@@ -40,10 +42,15 @@ class AgentFactory:
         if agent_type is None:
             raise ValueError("Agent not constructed. Cannot access an object of 'NoneType'.")
         match agent_type:
-            case 'knowledge-management':
-                
-                return LangChainKnowledgeManagementAgent(config=self.config)
+            case 'knowledge-management':                
+                return LangChainKnowledgeManagementAgent(
+                        instance_id=self.instance_id,
+                        user_identity=self.user_identity,
+                        config=self.config)
             case 'audio-classification':
-                return LangChainAudioClassifierAgent(config=self.config)
+                return LangChainAudioClassifierAgent(
+                    instance_id=self.instance_id,
+                    user_identity=self.user_identity,
+                    config=self.config)
             case _:
                 raise ValueError(f'The agent type {agent_type} is not supported.')

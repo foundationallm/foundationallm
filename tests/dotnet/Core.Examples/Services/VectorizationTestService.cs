@@ -1,12 +1,13 @@
 ﻿using Azure;
-using Azure.AI.OpenAI;
 using Azure.Identity;
 using Azure.Search.Documents;
 using Azure.Search.Documents.Indexes;
 using Azure.Search.Documents.Models;
+using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
+using FoundationaLLM.Core.Examples.Catalogs;
 using FoundationaLLM.Core.Examples.Interfaces;
 using FoundationaLLM.Core.Examples.Models;
 using FoundationaLLM.Core.Examples.Setup;
@@ -79,36 +80,42 @@ namespace FoundationaLLM.Core.Examples.Services
         public async Task<ReadOnlyMemory<float>> GetVector(TextEmbeddingProfile embedProfile, string query)
         {
             //embed the query
-            string oaiEndpoint = await TestConfiguration.GetAppConfigValueAsync(embedProfile.ConfigurationReferences["EndpointUrl"]);
-            string authType = await TestConfiguration.GetAppConfigValueAsync(embedProfile.ConfigurationReferences["AuthenticationType"]);            
-            OpenAIClient openAIClient;
-            switch(authType)
-            {
-                case "AzureIdentity":
-                    openAIClient = new OpenAIClient(new Uri(oaiEndpoint), new DefaultAzureCredential());
-                    break;
-                case "ApiKey":
-                    openAIClient = new OpenAIClient(new Uri(oaiEndpoint), new AzureKeyCredential(await TestConfiguration.GetAppConfigValueAsync(embedProfile.ConfigurationReferences["APIKey"])));
-                    break;
-                default:
-                    throw new Exception("Invalid authentication type");
-            }    
+            //var embeddingModel = AIModelCatalog.EmbeddingAIModels.Where(x => x.ObjectId == embedProfile.EmbeddingAIModelObjectId).FirstOrDefault();
+            //var endpoint = APIEndpointConfigurationCatalog.APIEndpointConfigurations.Where(x => x.ObjectId == embeddingModel!.EndpointObjectId).FirstOrDefault();
+            //string oaiEndpoint = await TestConfiguration.GetAppConfigValueAsync(endpoint!.Url);
+            //string authType = endpoint.AuthenticationType.ToString();
+            //To do: GO THROUGH GATEWAY
+            //OpenAIClient openAIClient;
+            //switch(authType)
+            //{
+            //    case "AzureIdentity":
+            //        openAIClient = new OpenAIClient(new Uri(oaiEndpoint), new DefaultAzureCredential());
+            //        break;
+            //    case "ApiKey":
+            //        openAIClient = new OpenAIClient(new Uri(oaiEndpoint), new AzureKeyCredential(await TestConfiguration.GetAppConfigValueAsync(endpoint.AuthenticationParameters["APIKey"].ToString()!)));
+            //        break;
+            //    default:
+            //        throw new Exception("Invalid authentication type");
+            //}    
 
-            EmbeddingsOptions embeddingOptions = new()
-            {
-                DeploymentName = await TestConfiguration.GetAppConfigValueAsync(embedProfile.ConfigurationReferences["DeploymentName"]),
-                Input = { query },
-            };
+            //EmbeddingsOptions embeddingOptions = new()
+            //{
+            //    DeploymentName = embeddingModel!.DeploymentName,
+            //    Input = { query },
+            //};
 
-            var returnValue = openAIClient.GetEmbeddings(embeddingOptions);
+            //var returnValue = openAIClient.GetEmbeddings(embeddingOptions);
+            //return returnValue.Value.Data[0].Embedding.ToArray();
 
-            return returnValue.Value.Data[0].Embedding.ToArray();
+            throw new NotImplementedException();
         }
 
         async public Task<SearchIndexClient> GetIndexClient(IndexingProfile indexProfile)
         {
-            string searchServiceEndPoint = await TestConfiguration.GetAppConfigValueAsync(indexProfile.ConfigurationReferences["EndpointUrl"]);
-            string authType = await TestConfiguration.GetAppConfigValueAsync(indexProfile.ConfigurationReferences["AuthenticationType"]);
+            var indexEndpointObjectId = indexProfile.Settings![VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId];
+            var endpoint = APIEndpointConfigurationCatalog.APIEndpointConfigurations.Where(x => x.ObjectId == indexEndpointObjectId).FirstOrDefault();
+            string searchServiceEndPoint = await TestConfiguration.GetAppConfigValueAsync(endpoint!.Url);
+            string authType = endpoint.AuthenticationType.ToString();
 
             SearchIndexClient indexClient = null;
 
@@ -118,7 +125,7 @@ namespace FoundationaLLM.Core.Examples.Services
                     indexClient = new SearchIndexClient(new Uri(searchServiceEndPoint), new DefaultAzureCredential());
                     break;
                 case "ApiKey":
-                    string adminApiKey = await TestConfiguration.GetAppConfigValueAsync(indexProfile.ConfigurationReferences["ApiKey"]);
+                    string adminApiKey = await TestConfiguration.GetAppConfigValueAsync(endpoint.AuthenticationParameters["ApiKey"].ToString()!);
                     indexClient = new SearchIndexClient(new Uri(searchServiceEndPoint), new AzureKeyCredential(adminApiKey));
                     break;
 

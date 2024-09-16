@@ -71,7 +71,7 @@ var azureOpenAiEndpoint = deployOpenAi ? openAi.outputs.endpoint : customerOpenA
 var azureOpenAiId = deployOpenAi ? openAi.outputs.id : customerOpenAi.id
 var azureOpenAi = deployOpenAi ? openAiInstance : existingOpenAiInstance
 var openAiInstance = {
-  name: openAi.outputs.name
+  name: '${abbrs.openAiAccounts}${resourceToken}'
   resourceGroup: rg.name
   subscriptionId: subscription().subscriptionId
 }
@@ -363,11 +363,11 @@ module openAi './shared/openai.bicep' =
   if (deployOpenAi) {
     dependsOn: [keyVault]
     name: 'openai-${timestamp}'
-    scope: rg
+    scope: resourceGroup(azureOpenAi.resourceGroup)
 
     params: {
       location: location
-      name: '${abbrs.openAiAccounts}${resourceToken}'
+      name: azureOpenAi.name
       sku: 'S0'
       tags: tags
 
@@ -613,10 +613,10 @@ module cosmosRoles './shared/sqlRoleAssignments.bicep' = [
 
 module openAiRoles './shared/openAiRoleAssignments.bicep' = [
   for target in openAiRoleTargets: {
-    scope: rg
+    scope: resourceGroup(azureOpenAi.resourceGroup)
     name: '${target}-openai-roles-${timestamp}'
     params: {
-      targetOpenAiName: openAiInstance.name
+      targetOpenAiName: azureOpenAi.name
       principalId: acaServices[indexOf(serviceNames, target)].outputs.miPrincipalId
       roleDefinitionNames: [
         'Cognitive Services OpenAI User'
@@ -628,10 +628,10 @@ module openAiRoles './shared/openAiRoleAssignments.bicep' = [
 
 module openAiContribRole './shared/openAiRoleAssignments.bicep' = [
   for target in openAiContribRoleTargets: {
-    scope: rg
+    scope: resourceGroup(azureOpenAi.resourceGroup)
     name: '${target}-openai-contrib-${timestamp}'
     params: {
-      targetOpenAiName: openAiInstance.name
+      targetOpenAiName: azureOpenAi.name
       principalId: acaServices[indexOf(serviceNames, target)].outputs.miPrincipalId
       roleDefinitionNames: [
         'Cognitive Services OpenAI Contributor'

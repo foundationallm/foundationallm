@@ -12,6 +12,7 @@
 	  "api_key_header_name": "X-API-KEY"
 	},
 	"url": "http://orchestration-api/orchestration",
+	"status_url": "http://orchestration-api/orchestration/instances/{{instanceId}}/status",
 	"url_exceptions": [],
 	"timeout_seconds": 2400,
 	"retry_strategy_name": "ExponentialBackoff",

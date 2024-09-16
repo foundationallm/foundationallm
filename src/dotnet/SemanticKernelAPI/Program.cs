@@ -85,6 +85,7 @@ namespace FoundationaLLM.SemanticKernel.API
 
             // Resource providers
             builder.AddConfigurationResourceProvider();
+            builder.AddAIModelResourceProvider();
 
             builder.AddHttpClientFactoryService();
             builder.Services.AddScoped<ICallContext, CallContext>();

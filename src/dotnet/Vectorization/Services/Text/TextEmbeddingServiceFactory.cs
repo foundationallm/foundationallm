@@ -1,4 +1,3 @@
-using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
@@ -6,13 +5,10 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
-using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
-using FoundationaLLM.SemanticKernel.Core.Services;
 using FoundationaLLM.Vectorization.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace FoundationaLLM.Vectorization.Services.Text
 {
@@ -48,8 +44,7 @@ namespace FoundationaLLM.Vectorization.Services.Text
                 $"/{VectorizationResourceTypeNames.TextEmbeddingProfiles}/{serviceName}", userIdentity);
 
             return textEmbeddingProfile.TextEmbedding switch
-            {
-                TextEmbeddingType.SemanticKernelTextEmbedding => CreateSemanticKernelTextEmbeddingService(textEmbeddingProfile),
+            {                
                 TextEmbeddingType.GatewayTextEmbedding => CreateGatewayTextEmbeddingService(),
                 _ => throw new VectorizationException($"The text embedding type {textEmbeddingProfile.TextEmbedding} is not supported."),
             };
@@ -66,37 +61,10 @@ namespace FoundationaLLM.Vectorization.Services.Text
                 $"/{VectorizationResourceTypeNames.TextEmbeddingProfiles}/{serviceName}", userIdentity);
 
             return textEmbeddingProfile.TextEmbedding switch
-            {
-                TextEmbeddingType.SemanticKernelTextEmbedding => (CreateSemanticKernelTextEmbeddingService(textEmbeddingProfile), textEmbeddingProfile),
+            {                
                 TextEmbeddingType.GatewayTextEmbedding => (CreateGatewayTextEmbeddingService(), textEmbeddingProfile),
                 _ => throw new VectorizationException($"The text embedding type {textEmbeddingProfile.TextEmbedding} is not supported."),
             };
-        }
-
-        private ITextEmbeddingService CreateSemanticKernelTextEmbeddingService(TextEmbeddingProfile textEmbeddingProfile)
-        {
-            if (!textEmbeddingProfile.ConfigurationReferences!.TryGetValue("EndpointUrl", out string? endpointConfigurationItem)
-                || string.IsNullOrWhiteSpace(endpointConfigurationItem))
-                throw new VectorizationException("The text embedding profile does not contain a valid EndpointUrl configuration reference.");
-
-            if (!textEmbeddingProfile.ConfigurationReferences!.TryGetValue("DeploymentName", out string? deploymentNameConfigurationItem)
-                || string.IsNullOrWhiteSpace(deploymentNameConfigurationItem))
-                throw new VectorizationException("The text embedding profile does not contain a valid DeploymentName configuration reference.");
-
-            var deploymentName = 
-                (textEmbeddingProfile.Settings!.TryGetValue("deployment_name", out string? deploymentNameOverride)
-                || !string.IsNullOrWhiteSpace(deploymentNameOverride))
-                ? deploymentNameOverride
-                : _configuration[deploymentNameConfigurationItem];
-
-            return new SemanticKernelTextEmbeddingService(
-                Options.Create<SemanticKernelTextEmbeddingServiceSettings>(new SemanticKernelTextEmbeddingServiceSettings
-                {
-                    AuthenticationType = AuthenticationTypes.AzureIdentity,
-                    Endpoint = _configuration[endpointConfigurationItem]!,
-                    DeploymentName = deploymentName!
-                }),
-                _loggerFactory);
         }
 
         private ITextEmbeddingService CreateGatewayTextEmbeddingService()
@@ -107,6 +75,6 @@ namespace FoundationaLLM.Vectorization.Services.Text
                 ?? throw new VectorizationException($"Could not retrieve the Gateway text embedding service instance.");
 
             return textEmbeddingService!;
-        }
+        } 
     }
 }

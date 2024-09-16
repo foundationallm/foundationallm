@@ -52,12 +52,6 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public string? AIModelObjectId { get; set; }
 
         /// <summary>
-        /// Indicates whether the agent is long running and should use the polling pattern.
-        /// </summary>
-        [JsonPropertyName("long_running")]
-        public bool LongRunning { get; set; } = false;
-
-        /// <summary>
         /// List of capabilities that the agent supports.
         /// </summary>
         [JsonPropertyName("capabilities")]

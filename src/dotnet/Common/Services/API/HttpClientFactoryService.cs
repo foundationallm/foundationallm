@@ -58,7 +58,7 @@ namespace FoundationaLLM.Common.Services.API
             Dictionary<string, object> clientBuilderParameters = [];
 
             clientBuilderParameters[HttpClientFactoryServiceKeyNames.Endpoint] =
-                endpointConfiguration.UrlExceptions.Where(x => x.UserPrincipalName == userIdentity.UPN).SingleOrDefault()?.Url
+                endpointConfiguration.UrlExceptions.SingleOrDefault(x => x.UserPrincipalName == userIdentity.UPN && x.Enabled)?.Url
                 ?? endpointConfiguration.Url;
             clientBuilderParameters[HttpClientFactoryServiceKeyNames.TimeoutSeconds] = endpointConfiguration.TimeoutSeconds;
             clientBuilderParameters[HttpClientFactoryServiceKeyNames.AuthenticationType] = endpointConfiguration.AuthenticationType;
@@ -90,7 +90,7 @@ namespace FoundationaLLM.Common.Services.API
             // Override the default URL if an exception is provided.
             if (userIdentity != null)
             {
-                var urlException = endpointConfiguration.UrlExceptions.Where(x => x.UserPrincipalName == userIdentity.UPN).SingleOrDefault();
+                var urlException = endpointConfiguration.UrlExceptions.SingleOrDefault(x => x.UserPrincipalName == userIdentity.UPN && x.Enabled);
                 if (urlException != null)
                     httpClient.BaseAddress = new Uri(urlException.Url);
 

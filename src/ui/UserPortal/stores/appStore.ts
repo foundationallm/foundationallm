@@ -20,6 +20,7 @@ export const useAppStore = defineStore('app', {
 	state: () => ({
 		sessions: [] as Session[],
 		currentSession: null as Session | null,
+		renamedSessions: [] as Session[],
 		currentMessages: [] as Message[],
 		isSidebarClosed: false as boolean,
 		agents: [] as ResourceProviderGetResult<Agent>[],
@@ -94,6 +95,14 @@ export const useAppStore = defineStore('app', {
 			} else {
 				this.sessions = sessions;
 			}
+
+			// Handle inconsistencies in displaying the rename session due to potential delays in the backend updating the session name.
+			this.renamedSessions.forEach((renamedSession: Session) => {
+				const existingSession = this.sessions.find((s: Session) => s.id === renamedSession.id);
+				if (existingSession) {
+					existingSession.name = renamedSession.name;
+				}
+			});
 		},
 
 		async addSession(properties: ChatSessionProperties) {
@@ -124,6 +133,14 @@ export const useAppStore = defineStore('app', {
 
 			try {
 				await api.renameSession(sessionToRename.id, newSessionName);
+				const existingRenamedSession = this.renamedSessions.find(
+					(session: Session) => session.id === sessionToRename.id,
+				);
+				if (existingRenamedSession) {
+					existingRenamedSession.name = newSessionName;
+				} else {
+					this.renamedSessions = [{ ...sessionToRename, name: newSessionName }, ...this.renamedSessions];
+				}
 			} catch (error) {
 				existingSession.name = previousName;
 			}

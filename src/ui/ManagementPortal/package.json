@@ -43,5 +43,8 @@
 		"primeicons": "^7.0.0",
 		"primevue": "^3.53.0",
 		"uuid": "^10.0.0"
-	}
+	},
+	"optionalDependencies": {
+		"@rollup/rollup-linux-x64-gnu": "4.21.0"  
+	 }
 }
