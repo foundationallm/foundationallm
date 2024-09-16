@@ -40,6 +40,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         public bool IsRootPath => _isRootPath;
 
         /// <summary>
+        /// Indicates whether the resource path is an instance path or not (i.e., only contains the FoundationaLLM instance identifier).
+        /// </summary>
+        public bool IsInstancePath =>
+            !(_instanceId == null)
+            && (_resourceProvider == null);
+
+        /// <summary>
         /// Indicates whether the resource path refers to a resource type (does not contain a resource name).
         /// </summary>
         public bool IsResourceTypePath =>
@@ -72,11 +79,16 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
             : _resourceTypeInstances[0].ResourceId;
 
         /// <summary>
-        /// Indicates whether the resource path is an instance path or not (i.e., only contains the FoundationaLLM instance identifier).
+        /// Gets the resource id of the resource identified by the path.
         /// </summary>
-        public bool IsInstancePath =>
-            !(_instanceId == null)
-            && (_resourceProvider == null);
+        /// <remarks>
+        /// This is the last resource id in the path. If the path refers to nested resources, this will be the resource id of the last resource.
+        /// Otherwise, it will be the resource id of the main resource (and hence identical to <see cref="MainResourceId"/>).
+        /// </remarks>
+        public string? ResourceId =>
+            _resourceTypeInstances == null || _resourceTypeInstances.Count == 0
+            ? null
+            : _resourceTypeInstances.Last().ResourceId;
 
         /// <summary>
         /// Gets the raw resource path which was used to create the resource path object.

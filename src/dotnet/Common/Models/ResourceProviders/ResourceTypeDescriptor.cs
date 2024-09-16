@@ -64,11 +64,13 @@
     /// Provides details about the types that are allowed for the body and return of a specific HTTP method.
     /// </summary>
     /// <param name="HttpMethod">The name of the HTTP method. Can be one of GET, POST, PUT, PATCH, or DELETE.</param>
+    /// <param name="AuthorizableOperation">The name of the authorizable operation that is required to authorize the request.</param>
     /// <param name="AllowedParameterTypes">The dictionary of query parameter names and types that are allowed for the method.</param>
     /// <param name="AllowedBodyTypes">The list of types that are allowed as payloads for the HTTP request.</param>
     /// <param name="AllowedReturnTypes">The list of types the are allowed as return types for the HTTP request.</param>
     public record ResourceTypeAllowedTypes(
         string HttpMethod,
+        string AuthorizableOperation,
         Dictionary<string, Type> AllowedParameterTypes,
         List<Type> AllowedBodyTypes,
         List<Type> AllowedReturnTypes);

@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Models.ResourceProviders;
+﻿using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 
 namespace FoundationaLLM.Common.Constants.ResourceProviders
@@ -20,16 +21,16 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                     typeof(AssistantUserContext))
                 {
                     AllowedTypes = [
-                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<AssistantUserContext>)]),
-                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, [], [typeof(AssistantUserContext)], [typeof(AssistantUserContextUpsertResult)]),
-                        new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, [], [], []),
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<AssistantUserContext>)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(AssistantUserContext)], [typeof(AssistantUserContextUpsertResult)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], []),
                     ],
                     Actions = [
                         new ResourceTypeAction(ResourceProviderActions.CheckName, false, true, [
-                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)])
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)])
                         ]),
                         new ResourceTypeAction(ResourceProviderActions.Purge, true, false, [
-                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, [], [], [typeof(ResourceProviderActionResult)])
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Delete, [], [], [typeof(ResourceProviderActionResult)])
                         ])
                     ]
                 }
@@ -41,9 +42,9 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                     typeof(FileUserContext))
                 {
                     AllowedTypes = [
-                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<FileUserContext>)]),
-                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, [], [typeof(FileUserContext)], [typeof(FileUserContextUpsertResult)]),
-                        new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, [], [], [])
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<FileUserContext>)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(FileUserContext)], [typeof(FileUserContextUpsertResult)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], [])
                     ],
                     SubTypes = new()
                     {
@@ -54,7 +55,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                                 typeof(FileContent))
                             {
                                 AllowedTypes = [
-                                    new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<FileContent>)])
+                                    new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<FileContent>)])
                                 ]
                             }
                         }

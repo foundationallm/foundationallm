@@ -597,12 +597,22 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="instance">The <see cref="ResourceTypeInstance"/> that indicates a specific resource to load.</param>
         /// <param name="authorizationResult">The <see cref="ResourcePathAuthorizationResult"/> containing the result of the resource path authorization request.</param>
         /// <param name="options">The <see cref="ResourceProviderLoadOptions"/> which provides operation parameters.</param>
+        /// <param name="customResourceLoader">An optional function that loads the resource used to override
+        /// the default resource loading mechanism.</param>
         /// <returns>A list of <see cref="ResourceProviderGetResult{T}"/> objects.</returns>
         protected async Task<List<ResourceProviderGetResult<T>>> LoadResources<T>(
             ResourceTypeInstance instance,
             ResourcePathAuthorizationResult authorizationResult,
-            ResourceProviderLoadOptions? options = null) where T : ResourceBase
+            ResourceProviderLoadOptions? options = null,
+            Func<TResourceReference, bool, Task<T>>? customResourceLoader = null) where T : ResourceBase
         {
+            Func<TResourceReference, Task<T>> resourceLoader =
+                customResourceLoader == null
+                    ? async (resourceReference) =>
+                        (await LoadResource<T>(resourceReference))!
+                    : async (resourceReference) =>
+                        (await customResourceLoader(resourceReference, options?.LoadContent ?? false))!;
+
             try
             {
                 await _lock.WaitAsync();
@@ -619,7 +629,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
                     if (resourceReference != null)
                     {
-                        var resource = await LoadResource<T>(resourceReference);
+                        var resource = await resourceLoader(resourceReference);
                         if (resource != null)
                         {
                             return
@@ -656,7 +666,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
                 var resources = resourceReferencesToLoad
                     .ToAsyncEnumerable()
-                    .SelectAwait(async r => await LoadResource<T>(r));
+                    .SelectAwait(async r => await resourceLoader(r));
 
                 await foreach (var resource in resources)
                     if (resource != null)
@@ -919,30 +929,36 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         }
 
         /// <summary>
-        /// Deletes a resource and its reference.
+        /// Deletes a resource.
         /// </summary>
         /// <typeparam name="T">The type of resource to delete.</typeparam>
-        /// <param name="resourceName">The name of the resource.</param>
+        /// <param name="resourcePath">The <see cref="ResourcePath"/> identifying the resource to delete.</param>
         /// <returns></returns>
         /// <exception cref="ResourceProviderException"></exception>
-        protected async Task DeleteResource<T>(string resourceName)
+        /// <remarks>
+        /// The operation is a logical delete. The resource reference is marked deleted, but the resource content remains in storage.
+        /// To fully remove a resource, the delete operation must be followed by a purge operation.
+        /// </remarks>
+        protected async Task DeleteResource<T>(ResourcePath resourcePath)
         {
+            var resourceName = resourcePath.ResourceId
+                ?? throw new ResourceProviderException("The specified path does not contain a resource identifier.",
+                    StatusCodes.Status400BadRequest);
+
             try
             {
                 await _lock.WaitAsync();
 
-                var resourceReference = await _resourceReferenceStore!.GetResourceReference(resourceName);
+                var result = await _resourceReferenceStore!.TryGetResourceReference(resourceName);
 
-                if (resourceReference != null)
+                if (result.Success
+                    && !result.Deleted)
                 {
-                    await _resourceReferenceStore!.DeleteResourceReference(resourceReference);
-                    await _storageService.DeleteFileAsync(
-                        _storageContainerName,
-                        resourceReference.Filename);
+                    await _resourceReferenceStore!.DeleteResourceReference(result.ResourceReference!);
                 }
                 else
                 {
-                    throw new ResourceProviderException($"Could not locate the {resourceName} resource.",
+                    throw new ResourceProviderException($"The resource {resourceName} cannot be deleted because it was either already deleted or does not exist.",
                         StatusCodes.Status404NotFound);
                 }
             }
@@ -950,6 +966,84 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             {
                 _lock.Release();
             }
+        }
+
+        /// <summary>
+        /// Purges a deleted resource.
+        /// </summary>
+        /// <typeparam name="T">The type of the resource to purge.</typeparam>
+        /// <param name="resourcePath">The <see cref="ResourcePath"/> identifying the resource to purge.</param>
+        /// <returns>A <see cref="ResourceProviderActionResult"/> indicating the outcome of the operation.</returns>
+        /// <exception cref="ResourceProviderException"></exception>
+        /// <remarks>
+        /// The operation can only be applied to a resource that has been logically deleted.
+        /// </remarks>
+        protected async Task<ResourceProviderActionResult> PurgeResource<T>(ResourcePath resourcePath)
+        {
+            var resourceName = resourcePath.ResourceId
+                ?? throw new ResourceProviderException("The specified path does not contain a resource identifier.",
+                    StatusCodes.Status400BadRequest);
+
+            try
+            {
+                await _lock.WaitAsync();
+
+                var result = await _resourceReferenceStore!.TryGetResourceReference(resourceName);
+                if (result.Success && result.Deleted)
+                {
+                    // Conditions are met to purge the resource.
+
+                    // Delete the resource file from storage.
+                    await _storageService.DeleteFileAsync(
+                        _storageContainerName,
+                        result.ResourceReference!.Filename,
+                        default);
+
+                    // Remove the resource reference from the store.
+                    await _resourceReferenceStore!.PurgeResourceReference(result.ResourceReference!);
+
+                    return new ResourceProviderActionResult(true);
+                }
+                else
+                {
+                    throw new ResourceProviderException(
+                        $"The resource {resourceName} cannot be purged because it is either not soft-deleted or does not exist.",
+                        StatusCodes.Status400BadRequest);
+                }
+            }
+            finally
+            {
+                _lock.Release();
+            }
+        }
+
+        /// <summary>
+        /// Checks if a resource name is available.
+        /// </summary>
+        /// <typeparam name="T">The type of resource for which the name check is performed.</typeparam>
+        /// <param name="resourceName">The <see cref="ResourceName"/> providing the name to be checked for availability.</param>
+        /// <returns>A <see cref="ResourceNameCheckResult"/> indicating the outcome of the operation.</returns>
+        protected async Task<ResourceNameCheckResult> CheckResourceName<T>(ResourceName resourceName)
+        {
+            var result = await _resourceReferenceStore!.TryGetResourceReference(resourceName.Name);
+
+            // The name is denied if one of the following conditions is met:
+            // 1. A resource with the specified name already exists (hence the reference was successfully retrieved).
+            // 2. A resource with the specified name was previously deleted and not purged.
+            return result.Success
+                ? new ResourceNameCheckResult
+                {
+                    Name = resourceName!.Name,
+                    Type = resourceName.Type,
+                    Status = NameCheckResultType.Denied,
+                    Message = "A resource with the specified name already exists or was previously deleted and not purged."
+                }
+                : new ResourceNameCheckResult
+                {
+                    Name = resourceName!.Name,
+                    Type = resourceName.Type,
+                    Status = NameCheckResultType.Allowed
+                };
         }
 
         #endregion

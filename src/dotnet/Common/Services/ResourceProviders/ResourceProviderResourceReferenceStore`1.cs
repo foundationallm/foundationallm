@@ -110,6 +110,56 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         }
 
         /// <summary>
+        /// Attempts to get a resource reference by the unique name of the resource.
+        /// </summary>
+        /// <param name="resourceName">The name of the resource.</param>
+        /// <returns>
+        /// A tuple containing a boolean value (Success) indicating whether the resource reference was successfully retrieved,
+        /// a boolean value (Deleted) indicating whether the resource is deleted (and not purged), and the resource reference itself (ResourceReference).
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// When Success is <c>false</c>, the ResourceReference will be <c>null</c>.
+        /// This means that the resource reference was not found in the store.
+        /// </para>
+        /// <para>
+        /// When Success is <c>true</c>, the ResourceReference will contain the reference to the resource.
+        /// This means that the resource reference is either valid or it has been logically deleted.
+        /// Callers should check the Deleted value to determine whether the resource was logically deleted.
+        /// </para>
+        /// </remarks>
+        public async Task<(bool Success, bool Deleted, T? ResourceReference)> TryGetResourceReference(string resourceName)
+        {
+            await _lock.WaitAsync();
+            try
+            {
+                var success = TryGetResourceReferenceInternal(resourceName, out var deleted, out var resourceReference);
+
+                if (success)
+                    return (true, deleted, resourceReference);
+
+                // The reference was not found which means it either does not exist or has been created by another instance of the resource provider.
+
+                // Wait for 100 miliseconds to ensure that potential reference creation processes happening in different instances of the resource provider have completed.
+                await Task.Delay(100, _cancellationToken);
+
+                await LoadAndMergeResourceReferences();
+
+
+                // Try getting the reference again.
+                success = TryGetResourceReferenceInternal(resourceName, out deleted, out resourceReference);
+
+                // Return the result, regardless of whether it is null or not.
+                // If it is null, the caller will have to handle the situation.
+                return (success, deleted, resourceReference);
+            }
+            finally
+            {
+                _lock.Release();
+            }
+        }
+
+        /// <summary>
         /// Filters the resource references in the store based on the predicate.
         /// </summary>
         /// <param name="predicate">The predicate to filter the resource references.</param>
@@ -145,9 +195,10 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     // Some of the resource references are missing, so we need to load them.
                     await LoadAndMergeResourceReferences();
                 }
+
                 return resourceNames
                     .Select(rn => _resourceReferences.GetValueOrDefault(rn))
-                    .Where(rr => rr is {Deleted: false});
+                    .Where(rr => (rr != null) && !rr.Deleted)!;
             }
             finally
             {
@@ -279,6 +330,37 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="resourceReference"></param>
+        /// <returns></returns>
+        /// <exception cref="ResourceProviderException"></exception>
+        public async Task PurgeResourceReference(T resourceReference)
+        {
+            await _lock.WaitAsync();
+            try
+            {
+                if (!resourceReference.Deleted)
+                    throw new ResourceProviderException(
+                        $"The resource reference for the resource {resourceReference.Name} cannot be purged. "
+                        + "It is not marked as deleted.",
+                        StatusCodes.Status400BadRequest);
+
+                if (!_resourceReferences.Remove(resourceReference.Name))
+                    _logger.LogWarning(
+                        "The resource reference for the resource {ResourceName} could not be purged. "
+                        + "It was not found in the resource references store.",
+                        resourceReference.Name);
+                else
+                    await SaveResourceReferences();
+            }
+            finally
+            {
+                _lock.Release();
+            }
+        }
+
+        /// <summary>
         /// Saves the resource references to the storage service.
         /// </summary>
         /// <returns></returns>
@@ -325,6 +407,40 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             }
             else
                 return null;
+        }
+
+        /// <summary>
+        /// Attempts to get a resource reference by the unique name of the resource.
+        /// </summary>
+        /// <param name="resourceName">The name of the resource.</param>
+        /// <param name="deleted">Indicates whether the resource was deleted and not purged (in this case the value is <c>true</c>).</param>
+        /// <param name="resourceReference">The resource reference that matches the resource name.</param>
+        /// <returns><c>True</c> if the resource reference was successfully retrieved.</returns>
+        /// <remarks>
+        /// <para>If the resource exists and it was deleted without being also purged, the result will be <c>false</c> and output <c>null</c>.</para>
+        /// <para>
+        /// IMPORTANT!
+        /// Never call this method without acquiring the lock first.
+        /// </para>
+        /// </remarks>
+        private bool TryGetResourceReferenceInternal(string resourceName, out bool deleted, out T? resourceReference)
+        {
+            resourceReference = null;
+            deleted = false;
+
+            if (_resourceReferences.TryGetValue(resourceName, out var reference))
+            {
+                if (reference == null)
+                    return false;
+
+                if (reference.Deleted)
+                    deleted = true;
+
+                resourceReference = reference;
+                return true;
+            }
+            else
+                return false;
         }
     }
 }

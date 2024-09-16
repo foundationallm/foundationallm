@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Models;
+﻿using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Models;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders;
 
@@ -21,12 +22,12 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         typeof(RoleAssignment))
                 {
                     AllowedTypes = [
-                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, [], [typeof(RoleAssignment)], [typeof(ResourceProviderUpsertResult)]),
-                        new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, [], [], [])
+                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(RoleAssignment)], [typeof(ResourceProviderUpsertResult)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], [])
                     ],
                     Actions = [
                         new ResourceTypeAction(ResourceProviderActions.Filter, false, true, [
-                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, [], [typeof(RoleAssignmentQueryParameters)], [typeof(ResourceProviderGetResult<RoleAssignment>)])
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(RoleAssignmentQueryParameters)], [typeof(ResourceProviderGetResult<RoleAssignment>)])
                         ])
                     ]
                 }
@@ -38,7 +39,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         typeof(RoleDefinition))
                 {
                     AllowedTypes = [
-                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(RoleDefinition)])
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(RoleDefinition)])
                     ],
                     Actions = []
                 }

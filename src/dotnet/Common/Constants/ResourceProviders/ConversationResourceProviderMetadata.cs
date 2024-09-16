@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Models.Conversation;
+﻿using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.ResourceProviders;
 
 namespace FoundationaLLM.Common.Constants.ResourceProviders
@@ -20,9 +21,9 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                     typeof(Conversation))
                 {
                     AllowedTypes = [
-                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<Conversation>)]),
-                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, [], [typeof(Conversation)], [typeof(ResourceProviderUpsertResult)]),
-                        new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, [], [], []),
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<Conversation>)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(Conversation)], [typeof(ResourceProviderUpsertResult)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], []),
                     ]
                 }
             }
