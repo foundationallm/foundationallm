@@ -2,12 +2,19 @@
 	<div class="chat-input p-inputgroup">
 		<div class="input-wrapper">
 			<div class="tooltip-component">
-				<VTooltip :auto-hide="false" :popper-triggers="['hover']">
-					<i class="pi pi-info-circle" tabindex="0"></i>
-					<template #popper> Use Shift+Enter to add a new line </template>
+				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+					<i
+						class="pi pi-info-circle"
+						tabindex="0"
+						@keydown.esc="hideAllPoppers"
+						aria-label="info icon"
+					></i>
+					<template #popper role="tooltip"
+						><div role="tooltip">Use Shift+Enter to add a new line</div></template
+					>
 				</VTooltip>
 			</div>
-			<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
 					type="button"
 					:badge="fileArrayFiltered.length.toString() || null"
@@ -17,6 +24,8 @@
 					aria-controls="overlay_menu"
 					aria-haspopup="true"
 					@click="toggle"
+					style="height: 100%"
+					@keydown.esc="hideAllPoppers"
 				/>
 				<Menu id="overlay_menu" ref="menu" :model="items" :popup="true">
 					<template #item="{ item, props }">
@@ -39,9 +48,11 @@
 					</template>
 				</Menu>
 				<template #popper>
-					Attach files ({{
-						fileArrayFiltered.length === 1 ? '1 file' : fileArrayFiltered.length + ' files'
-					}})
+					<div role="tooltip">
+						Attach files ({{
+							fileArrayFiltered.length === 1 ? '1 file' : fileArrayFiltered.length + ' files'
+						}})
+					</div>
 				</template>
 			</VTooltip>
 			<Dialog
@@ -113,6 +124,7 @@
 										icon="pi pi-times"
 										text
 										severity="danger"
+										aria-label="Remove file"
 										@click="removeFileCallback(index)"
 									/>
 								</div>
@@ -128,7 +140,7 @@
 										icon="pi pi-times"
 										text
 										severity="danger"
-										aria-label="Remove attachment"
+										aria-label="Delete attachment"
 										@click="removeAttachment(file)"
 									/>
 								</div>
@@ -202,6 +214,7 @@
 <script lang="ts">
 import { Mentionable } from 'vue-mention';
 import 'floating-vue/dist/style.css';
+import { hideAllPoppers } from 'floating-vue';
 
 export default {
 	name: 'ChatInput',
@@ -230,6 +243,7 @@ export default {
 			showFileUploadDialog: false,
 			isUploading: false,
 			uploadProgress: 0,
+			isMobile: window.screen.width < 950,
 		};
 	},
 
@@ -440,12 +454,30 @@ export default {
 		},
 
 		fileSelected(event: any) {
+			const allowedFileTypes = this.$appConfigStore.allowedUploadFileExtensions;
 			event.files.forEach((file: any, index) => {
-				if (file.size > 512000000) {
+				if (file.size > 536870912) {
 					this.$toast.add({
 						severity: 'error',
 						summary: 'Error',
 						detail: 'File size exceeds the limit of 512MB.',
+						life: 5000,
+					});
+					event.files.splice(index, 1);
+				}
+
+				if (!allowedFileTypes || allowedFileTypes === '') {
+					return;
+				}
+				if (!allowedFileTypes
+					.split(',')
+					.map((type: string) => type.trim().toLowerCase())
+					.includes(file.name.split('.').pop()?.toLowerCase())
+				) {
+					this.$toast.add({
+						severity: 'error',
+						summary: 'Error',
+						detail: `File type not supported. File: ${file.name}`,
 						life: 5000,
 					});
 					event.files.splice(index, 1);
@@ -489,6 +521,10 @@ export default {
 				id: '',
 				access_token: accessToken,
 			});
+		},
+
+		hideAllPoppers() {
+			hideAllPoppers();
 		},
 	},
 };

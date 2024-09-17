@@ -8,7 +8,7 @@
 				:alt="$appConfigStore.logoText"
 			/>
 			<span v-else>{{ $appConfigStore.logoText }}</span>
-			<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
 					:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
 					size="small"
@@ -16,22 +16,24 @@
 					class="secondary-button"
 					aria-label="Toggle sidebar"
 					@click="$appStore.toggleSidebar"
+					@keydown.esc="hideAllPoppers"
 				/>
-				<template #popper>Toggle sidebar</template>
+				<template #popper><div role="tooltip">Toggle sidebar</div></template>
 			</VTooltip>
 		</div>
 		<div class="chat-sidebar__section-header">
 			<h2 class="chat-sidebar__section-header__text">Chats</h2>
-			<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
 					icon="pi pi-plus"
 					text
 					severity="secondary"
 					aria-label="Add new chat"
 					:disabled="createProcessing"
+					@keydown.esc="hideAllPoppers"
 					@click="handleAddSession"
 				/>
-				<template #popper>Add new chat</template>
+				<template #popper><div role="tooltip">Add new chat</div></template>
 			</VTooltip>
 		</div>
 
@@ -48,17 +50,21 @@
 				<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
 					<!-- Chat name -->
 
-					<VTooltip :auto-hide="false" :popper-triggers="['hover']">
-						<span class="chat__name" tabindex="0">{{ session.name }}</span>
+					<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+						<span class="chat__name" tabindex="0" @keydown.esc="hideAllPoppers">{{
+							session.name
+						}}</span>
 						<template #popper>
-							{{ session.name }}
+							<div role="tooltip">
+								{{ session.name }}
+							</div>
 						</template>
 					</VTooltip>
 
 					<!-- Chat icons -->
 					<span v-if="currentSession?.id === session.id" class="chat__icons">
 						<!-- Rename session -->
-						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+						<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 							<Button
 								icon="pi pi-pencil"
 								size="small"
@@ -66,12 +72,13 @@
 								text
 								aria-label="Rename chat session"
 								@click.stop="openRenameModal(session)"
+								@keydown.esc="hideAllPoppers"
 							/>
-							<template #popper> Rename chat session </template>
+							<template #popper><div role="tooltip">Rename chat session</div></template>
 						</VTooltip>
 
 						<!-- Delete session -->
-						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+						<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 							<Button
 								icon="pi pi-trash"
 								size="small"
@@ -79,8 +86,9 @@
 								text
 								aria-label="Delete chat session"
 								@click.stop="sessionToDelete = session"
+								@keydown.esc="hideAllPoppers"
 							/>
-							<template #popper> Delete chat session </template>
+							<template #popper><div role="tooltip">Delete chat session</div></template>
 						</VTooltip>
 					</span>
 				</div>
@@ -118,6 +126,7 @@
 				:style="{ width: '100%' }"
 				type="text"
 				placeholder="New chat name"
+				aria-label="New chat name"
 				autofocus
 				@keydown="renameSessionInputKeydown"
 			></InputText>
@@ -167,6 +176,7 @@
 
 <script lang="ts">
 import type { Session } from '@/js/types';
+import { hideAllPoppers } from 'floating-vue';
 declare const process: any;
 
 export default {
@@ -178,7 +188,9 @@ export default {
 			newSessionName: '' as string,
 			sessionToDelete: null as Session | null,
 			deleteProcessing: false,
+			isMobile: window.screen.width < 950,
 			createProcessing: false,
+			debounceTimeout: null as NodeJS.Timeout | null,
 		};
 	},
 
@@ -219,10 +231,26 @@ export default {
 
 		async handleAddSession() {
 			if (this.createProcessing) return;
+
+			if (this.debounceTimeout) {
+				this.$toast.add({
+					severity: 'warn',
+					summary: 'Warning',
+					detail: 'Please wait before creating another session.',
+					life: 3000,
+				});
+				return;
+			}
+
 			this.createProcessing = true;
+
 			try {
 				const newSession = await this.$appStore.addSession();
 				this.handleSessionSelected(newSession);
+
+				this.debounceTimeout = setTimeout(() => {
+					this.debounceTimeout = null;
+				}, 2000);
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',
@@ -270,6 +298,10 @@ export default {
 			if (event.key === 'Escape') {
 				this.sessionToDelete = null;
 			}
+		},
+
+		hideAllPoppers() {
+			hideAllPoppers();
 		},
 	},
 };

@@ -10,7 +10,7 @@
 			<span v-else>{{ $appConfigStore.logoText }}</span>
 
 			<template v-if="!$appConfigStore.isKioskMode">
-				<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 					<Button
 						:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
 						size="small"
@@ -18,8 +18,9 @@
 						class="secondary-button"
 						aria-label="Toggle sidebar"
 						@click="$appStore.toggleSidebar"
+						@keydown.esc="hideAllPoppers"
 					/>
-					<template #popper>Toggle sidebar</template>
+					<template #popper><div role="tooltip">Toggle sidebar</div></template>
 				</VTooltip>
 			</template>
 		</div>
@@ -57,13 +58,14 @@
 			<div class="navbar__content__right">
 				<template v-if="currentSession">
 					<span class="header__dropdown">
-						<VTooltip :auto-hide="false" :popper-riggers="['hover']">
+						<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 							<AgentIcon
 								:src="$appConfigStore.agentIconUrl || '~/assets/FLLM-Agent-Light.svg'"
 								alt="Select an agent"
 								tabindex="0"
+								@keydown.esc="hideAllPoppers"
 							/>
-							<template #popper> Select an agent </template>
+							<template #popper><div role="tooltip">Select an agent</div></template>
 						</VTooltip>
 						<Dropdown
 							v-model="agentSelection"
@@ -76,6 +78,7 @@
 							option-label="label"
 							placeholder="--Select--"
 							aria-label="Select an agent"
+							aria-activedescendant="selected-agent-{{ agentSelection?.label }}"
 							@change="handleAgentChange"
 						/>
 					</span>
@@ -87,6 +90,7 @@
 
 <script lang="ts">
 import type { Session } from '@/js/types';
+import { hideAllPoppers } from 'floating-vue';
 
 interface AgentDropdownOption {
 	label: string;
@@ -112,6 +116,7 @@ export default {
 			agentOptions: [] as AgentDropdownOption[],
 			agentOptionsGroup: [] as AgentDropdownOptionsGroup[],
 			virtualUser: null as string | null,
+			isMobile: window.screen.width < 950,
 		};
 	},
 
@@ -207,6 +212,10 @@ export default {
 				this.agentOptions.find(
 					(option) => option.value.resource.object_id === agent.resource.object_id,
 				) || null;
+		},
+
+		hideAllPoppers() {
+			hideAllPoppers();
 		},
 	},
 };

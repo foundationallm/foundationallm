@@ -239,15 +239,12 @@ public partial class CoreService(
                             {
                                 foreach (var annotation in textMessageContent.Annotations)
                                 {
-                                    if (!textMessageContent.Value!.Contains(annotation.FileUrl!))
+                                    newContent.Add(new MessageContent
                                     {
-                                        newContent.Add(new MessageContent
-                                        {
-                                            Type = FileMethods.GetMessageContentFileType(annotation.Text, annotation.Type),
-                                            FileName = annotation.Text,
-                                            Value = annotation.FileUrl
-                                        });
-                                    }
+                                        Type = FileMethods.GetMessageContentFileType(annotation.Text, annotation.Type),
+                                        FileName = annotation.Text,
+                                        Value = annotation.FileUrl
+                                    });
                                 }
                             }
                             newContent.Add(new MessageContent
