@@ -121,7 +121,7 @@ namespace FoundationaLLM.AIModel.ResourceProviders
 
             aiModel.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
 
-            var validator = _resourceValidatorFactory.GetValidator(aiModelReference.AIModelType);
+            var validator = _resourceValidatorFactory.GetValidator(aiModelReference.ResourceType);
             if (validator is IValidator aiModelValidator)
             {
                 var context = new ValidationContext<object>(aiModel);
