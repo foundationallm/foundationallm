@@ -13,7 +13,9 @@ fi
 echo "##[set-output name=version;]$VERSION"
 echo "Version: $VERSION"
 
-# Replace the version placeholder in the .csproj files
+# Replace the version placeholders in the .csproj files
 for csproj in $(find . -name '*.csproj'); do
   sed -i "s/<Version>0.0.0<\/Version>/<Version>$VERSION<\/Version>/" "$csproj"
+  sed -i "s/<FileVersion>0.0.0<\/FileVersion>/<FileVersion>$VERSION<\/FileVersion>/" "$csproj"
+  sed -i "s/<AssemblyVersion>0.0.0<\/AssemblyVersion>/<AssemblyVersion>$VERSION<\/AssemblyVersion>/" "$csproj"
 done
