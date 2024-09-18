@@ -25,6 +25,10 @@ jobs:
       run: bash ./versioning.sh
       id: versioning
 
+    - name: Build Common
+      working-directory: ./src/dotnet/Common
+      run: dotnet build --configuration Release -p:GITHUB_ACTIONS=true
+    
     - name: Build CoreClient
       working-directory: ./src/dotnet/CoreClient
       run: dotnet build --configuration Release -p:GITHUB_ACTIONS=true
@@ -33,6 +37,10 @@ jobs:
       working-directory: ./src/dotnet/ManagementClient
       run: dotnet build --configuration Release -p:GITHUB_ACTIONS=true
 
+    - name: Pack Common
+      working-directory: ./src/dotnet/Common
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+
     - name: Pack CoreClient
       working-directory: ./src/dotnet/CoreClient
       run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
@@ -40,6 +48,10 @@ jobs:
     - name: Pack ManagementClient
       working-directory: ./src/dotnet/ManagementClient
       run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+
+    - name: Publish Common to NuGet
+      working-directory: ./src/dotnet/Common
+      run: dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
 
     - name: Publish CoreClient to NuGet
       working-directory: ./src/dotnet/CoreClient
