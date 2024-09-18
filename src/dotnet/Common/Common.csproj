@@ -42,7 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\assets\fllm-icon-128.png" Pack="true" PackagePath="\" />
+    <None Include="fllm-icon-128.png" Pack="true" PackagePath="\" />
     <None Include="readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   
