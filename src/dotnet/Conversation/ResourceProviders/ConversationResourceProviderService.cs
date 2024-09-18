@@ -38,7 +38,7 @@ namespace FoundationaLLM.Conversation.ResourceProviders
             serviceProvider,
             logger,
             eventNamespacesToSubscribe: null,
-            useInternalStore: false)
+            useInternalReferencesStore: false)
     {
         private readonly ICosmosDBService _cosmosDBService = cosmosDBService;
 
@@ -58,7 +58,7 @@ namespace FoundationaLLM.Conversation.ResourceProviders
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
             ResourceProviderLoadOptions? options = null) =>
-            resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
+            resourcePath.MainResourceTypeName switch
             {
                 ConversationResourceTypeNames.Conversations => await Task.FromResult<string>(string.Empty),
                 _ => throw new NotImplementedException()

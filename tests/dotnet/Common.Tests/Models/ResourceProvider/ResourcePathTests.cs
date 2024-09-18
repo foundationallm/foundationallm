@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Exceptions;
+﻿using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using System.Collections.Immutable;
 
@@ -17,7 +18,7 @@ namespace FoundationaLLM.Common.Tests.Models.ResourceProvider
                 new ResourceTypeDescriptor("shapes", typeof(object))
                 {
                     AllowedTypes = [
-                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [])
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [])
                     ],
                     Actions = [
                         new ResourceTypeAction("action1", false, true, []),
@@ -30,7 +31,7 @@ namespace FoundationaLLM.Common.Tests.Models.ResourceProvider
                             new ResourceTypeDescriptor("components", typeof(object))
                             {
                                 AllowedTypes = [
-                                    new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [])
+                                    new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [])
                                 ],
                                 Actions = [
                                     new ResourceTypeAction("action3", false, true, []),

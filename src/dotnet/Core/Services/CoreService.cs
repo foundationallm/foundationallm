@@ -112,7 +112,9 @@ public partial class CoreService(
                 JsonSerializer.Serialize(filter),
                 _callContext.CurrentUserIdentity!);
             // Cast the result to a list of AttachmentReference objects.
-            var attachmentReferences = result as List<AttachmentDetail> ?? [];
+            var attachmentReferences = (result as List<AttachmentFile> ?? [])
+                .Select(ar => AttachmentDetail.FromAttachmentFile(ar))
+                .ToList();
 
             if (attachmentReferences.Count > 0)
             {

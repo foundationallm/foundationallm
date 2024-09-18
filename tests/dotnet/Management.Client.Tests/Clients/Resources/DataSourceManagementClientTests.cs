@@ -216,7 +216,7 @@ namespace Management.Client.Tests.Clients.Resources
             // Arrange
             var resourceFilter = new ResourceFilter
             {
-                Default = true
+                DefaultResource = true
             };
             var expectedDataSources = new List<DataSourceBase>
             {

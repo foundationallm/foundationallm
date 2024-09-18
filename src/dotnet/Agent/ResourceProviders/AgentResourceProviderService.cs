@@ -52,7 +52,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             eventNamespacesToSubscribe: [
                 EventSetEventNamespaces.FoundationaLLM_ResourceProvider_Agent
             ],
-            useInternalStore: true)
+            useInternalReferencesStore: true)
     {
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
@@ -73,7 +73,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
             ResourceProviderLoadOptions? options = null) =>
-            resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
+            resourcePath.MainResourceTypeName switch
             {
                 AgentResourceTypeNames.Agents => await LoadResources<AgentBase>(
                     resourcePath.ResourceTypeInstances[0],
@@ -82,107 +82,33 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     {
                         IncludeRoles = resourcePath.IsResourceTypePath,
                     }),
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} is not supported by the {_name} resource provider.",
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
 
         /// <inheritdoc/>
         protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string serializedResource, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
+            resourcePath.MainResourceTypeName switch
             {
                 AgentResourceTypeNames.Agents => await UpdateAgent(resourcePath, serializedResource, userIdentity),
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} is not supported by the {_name} resource provider.",
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
 
-        #region Helpers for UpsertResourceAsync
-
-        private async Task<ResourceProviderUpsertResult> UpdateAgent(ResourcePath resourcePath, string serializedAgent, UnifiedUserIdentity userIdentity)
-        {
-            var agent = JsonSerializer.Deserialize<AgentBase>(serializedAgent)
-                ?? throw new ResourceProviderException("The object definition is invalid.",
-                    StatusCodes.Status400BadRequest);
-
-            var existingAgentReference = await _resourceReferenceStore!.GetResourceReference(agent.Name);
-
-            if (resourcePath.ResourceTypeInstances[0].ResourceId != agent.Name)
-                throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
-                    StatusCodes.Status400BadRequest);
-
-            var agentReference = new AgentReference
-            {
-                Name = agent.Name!,
-                Type = agent.Type!,
-                Filename = $"/{_name}/{agent.Name}.json",
-                Deleted = false
-            };
-
-            agent.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
-
-            if ((agent is KnowledgeManagementAgent {Vectorization.DedicatedPipeline: true, InlineContext: false} kmAgent))
-            {
-                var result = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Vectorization)
-                    .HandlePostAsync(
-                        $"/{VectorizationResourceTypeNames.VectorizationPipelines}/{kmAgent.Name}",
-                        JsonSerializer.Serialize<VectorizationPipeline>(new VectorizationPipeline
-                        {
-                            Name = kmAgent.Name,
-                            Active = true,
-                            Description = $"Vectorization data pipeline dedicated to the {kmAgent.Name} agent.",
-                            DataSourceObjectId = kmAgent.Vectorization.DataSourceObjectId!,
-                            TextPartitioningProfileObjectId = kmAgent.Vectorization.TextPartitioningProfileObjectId!,
-                            TextEmbeddingProfileObjectId = kmAgent.Vectorization.TextEmbeddingProfileObjectId!,
-                            IndexingProfileObjectId = kmAgent.Vectorization.IndexingProfileObjectIds[0]!,
-                            TriggerType = (VectorizationPipelineTriggerType) kmAgent.Vectorization.TriggerType!,
-                            TriggerCronSchedule = kmAgent.Vectorization.TriggerCronSchedule
-                        }),
-                        userIdentity);
-
-                if ((result is ResourceProviderUpsertResult resourceProviderResult)
-                    && !string.IsNullOrWhiteSpace(resourceProviderResult.ObjectId))
-                    kmAgent.Vectorization.VectorizationDataPipelineObjectId = resourceProviderResult.ObjectId;
-                else
-                    throw new ResourceProviderException("There was an error attempting to create the associated vectorization pipeline for the agent.",
-                        StatusCodes.Status500InternalServerError);
-            }
-
-            var validator = _resourceValidatorFactory.GetValidator(agentReference.AgentType);
-            if (validator is IValidator agentValidator)
-            {
-                var context = new ValidationContext<object>(agent);
-                var validationResult = await agentValidator.ValidateAsync(context);
-                if (!validationResult.IsValid)
-                {
-                    throw new ResourceProviderException($"Validation failed: {string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage))}",
-                        StatusCodes.Status400BadRequest);
-                }
-            }
-
-            UpdateBaseProperties(agent, userIdentity, isNew: existingAgentReference == null);
-            if (existingAgentReference == null)
-                await CreateResource<AgentBase>(agentReference, agent);
-            else
-                await SaveResource<AgentBase>(existingAgentReference, agent);
-
-            return new ResourceProviderUpsertResult
-            {
-                ObjectId = agent!.ObjectId,
-                ResourceExists = existingAgentReference != null
-            };
-        }
-
-        #endregion
-
         /// <inheritdoc/>
-        protected override async Task<object> ExecuteActionAsync(ResourcePath resourcePath, string serializedAction, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances.Last().ResourceTypeName switch
+        protected override async Task<object> ExecuteActionAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction,
+            UnifiedUserIdentity userIdentity) =>
+            resourcePath.ResourceTypeName switch
             {
-                AgentResourceTypeNames.Agents => resourcePath.ResourceTypeInstances.Last().Action switch
+                AgentResourceTypeNames.Agents => resourcePath.Action switch
                 {
                     ResourceProviderActions.CheckName => await CheckResourceName<AgentBase>(
                         JsonSerializer.Deserialize<ResourceName>(serializedAction)!),
                     ResourceProviderActions.Purge => await PurgeResource<AgentBase>(resourcePath),
-                    _ => throw new ResourceProviderException($"The action {resourcePath.ResourceTypeInstances.Last().Action} is not supported by the {_name} resource provider.",
+                    _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
                 _ => throw new ResourceProviderException()
@@ -191,14 +117,15 @@ namespace FoundationaLLM.Agent.ResourceProviders
         /// <inheritdoc/>
         protected override async Task DeleteResourceAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
         {
-            switch (resourcePath.ResourceTypeInstances.Last().ResourceTypeName)
+            switch (resourcePath.ResourceTypeName)
             {
                 case AgentResourceTypeNames.Agents:
                     await DeleteResource<AgentBase>(resourcePath);
                     break;
                 default:
-                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances.Last().ResourceTypeName} is not supported by the {_name} resource provider.",
-                    StatusCodes.Status400BadRequest);
+                    throw new ResourceProviderException(
+                        $"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest);
             };
         }
 
@@ -260,6 +187,84 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
             //_logger.LogInformation("The agent reference for the [{AgentName}] agent or type [{AgentType}] was loaded.",
             //    agentReference.Name, agentReference.Type);
+        }
+
+        #endregion
+
+        #region Resource management
+
+        private async Task<ResourceProviderUpsertResult> UpdateAgent(ResourcePath resourcePath, string serializedAgent, UnifiedUserIdentity userIdentity)
+        {
+            var agent = JsonSerializer.Deserialize<AgentBase>(serializedAgent)
+                ?? throw new ResourceProviderException("The object definition is invalid.",
+                    StatusCodes.Status400BadRequest);
+
+            var existingAgentReference = await _resourceReferenceStore!.GetResourceReference(agent.Name);
+
+            if (resourcePath.ResourceTypeInstances[0].ResourceId != agent.Name)
+                throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
+                    StatusCodes.Status400BadRequest);
+
+            var agentReference = new AgentReference
+            {
+                Name = agent.Name!,
+                Type = agent.Type!,
+                Filename = $"/{_name}/{agent.Name}.json",
+                Deleted = false
+            };
+
+            agent.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
+
+            if ((agent is KnowledgeManagementAgent { Vectorization.DedicatedPipeline: true, InlineContext: false } kmAgent))
+            {
+                var result = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Vectorization)
+                    .HandlePostAsync(
+                        $"/{VectorizationResourceTypeNames.VectorizationPipelines}/{kmAgent.Name}",
+                        JsonSerializer.Serialize<VectorizationPipeline>(new VectorizationPipeline
+                        {
+                            Name = kmAgent.Name,
+                            Active = true,
+                            Description = $"Vectorization data pipeline dedicated to the {kmAgent.Name} agent.",
+                            DataSourceObjectId = kmAgent.Vectorization.DataSourceObjectId!,
+                            TextPartitioningProfileObjectId = kmAgent.Vectorization.TextPartitioningProfileObjectId!,
+                            TextEmbeddingProfileObjectId = kmAgent.Vectorization.TextEmbeddingProfileObjectId!,
+                            IndexingProfileObjectId = kmAgent.Vectorization.IndexingProfileObjectIds[0]!,
+                            TriggerType = (VectorizationPipelineTriggerType)kmAgent.Vectorization.TriggerType!,
+                            TriggerCronSchedule = kmAgent.Vectorization.TriggerCronSchedule
+                        }),
+                        userIdentity);
+
+                if ((result is ResourceProviderUpsertResult resourceProviderResult)
+                    && !string.IsNullOrWhiteSpace(resourceProviderResult.ObjectId))
+                    kmAgent.Vectorization.VectorizationDataPipelineObjectId = resourceProviderResult.ObjectId;
+                else
+                    throw new ResourceProviderException("There was an error attempting to create the associated vectorization pipeline for the agent.",
+                        StatusCodes.Status500InternalServerError);
+            }
+
+            var validator = _resourceValidatorFactory.GetValidator(agentReference.AgentType);
+            if (validator is IValidator agentValidator)
+            {
+                var context = new ValidationContext<object>(agent);
+                var validationResult = await agentValidator.ValidateAsync(context);
+                if (!validationResult.IsValid)
+                {
+                    throw new ResourceProviderException($"Validation failed: {string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage))}",
+                        StatusCodes.Status400BadRequest);
+                }
+            }
+
+            UpdateBaseProperties(agent, userIdentity, isNew: existingAgentReference == null);
+            if (existingAgentReference == null)
+                await CreateResource<AgentBase>(agentReference, agent);
+            else
+                await SaveResource<AgentBase>(existingAgentReference, agent);
+
+            return new ResourceProviderUpsertResult
+            {
+                ObjectId = agent!.ObjectId,
+                ResourceExists = existingAgentReference != null
+            };
         }
 
         #endregion

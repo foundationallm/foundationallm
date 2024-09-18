@@ -1,5 +1,4 @@
 ﻿using FoundationaLLM.Common.Constants.Authorization;
-using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 
@@ -28,7 +27,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                     ],
                     Actions = [
                         new ResourceTypeAction(ResourceProviderActions.Filter, false, true, [
-                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ResourceFilter)], [typeof(AttachmentDetail)])
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ResourceFilter)], [typeof(AttachmentFile)])
                         ])
                     ]
                 }

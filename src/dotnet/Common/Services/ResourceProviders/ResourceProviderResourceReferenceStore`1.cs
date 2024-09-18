@@ -20,7 +20,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         IResourceProviderService resourceProvider,
         IStorageService resourceProviderStorageService,
         ILogger logger,
-        CancellationToken cancellationToken = default)where T : ResourceReference
+        CancellationToken cancellationToken = default)
+        where T : ResourceReference
     {
         private readonly IResourceProviderService _resourceProvider = resourceProvider;
         private readonly IStorageService _storage = resourceProviderStorageService;
@@ -33,6 +34,12 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         private string ResourceReferencesFilePath => $"/{_resourceProvider.Name}/{RESOURCE_REFERENCES_FILE_NAME}";
 
         private SemaphoreSlim _lock = new SemaphoreSlim(1, 1);
+        private string? _defaultResourceName;
+
+        /// <summary>
+        /// Gets the name of the default resource (if any).
+        /// </summary>
+        public string? DefaultResourceName => _defaultResourceName;
 
         /// <summary>
         /// Loads the resource references from the storage service.
@@ -296,10 +303,12 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                         _resourceProvider.StorageContainerName,
                         ResourceReferencesFilePath,
                         _cancellationToken);
-            var _persistedReferences = JsonSerializer.Deserialize<ResourceReferenceList<T>>(
-                Encoding.UTF8.GetString(fileContent.ToArray()))!.ResourceReferences;
+            var persistedReferencesList = JsonSerializer.Deserialize<ResourceReferenceList<T>>(
+                Encoding.UTF8.GetString(fileContent.ToArray()))!;
 
-            foreach (var reference in _persistedReferences)
+            _defaultResourceName = persistedReferencesList.DefaultResourceName;
+
+            foreach (var reference in persistedReferencesList.ResourceReferences)
             {
                 if (!_resourceReferences.ContainsKey(reference.Name))
                 {

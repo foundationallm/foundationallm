@@ -682,7 +682,7 @@ namespace Management.Client.Tests.Clients.Resources
             // Arrange
             var resourceFilter = new ResourceFilter
             {
-                Default = false
+                DefaultResource = false
             };
             var expectedProfiles = new List<IndexingProfile>
             {

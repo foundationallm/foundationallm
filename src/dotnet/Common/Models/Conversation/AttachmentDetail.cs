@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
+using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Conversation
 {
@@ -24,5 +26,17 @@ namespace FoundationaLLM.Common.Models.Conversation
         /// </summary>
         [JsonPropertyName("contentType")]
         public string? ContentType { get; set; }
+
+        /// <summary>
+        /// Creates an <see cref="AttachmentDetail"/> instance from an <see cref="AttachmentFile"/> instance.
+        /// </summary>
+        /// <param name="attachmentFile">The <see cref="AttachmentFile"/> used to initialize the instance.</param>
+        /// <returns>The newly created <see cref="AttachmentDetail"/> instance.</returns>
+        public static AttachmentDetail FromAttachmentFile(AttachmentFile attachmentFile) => new()
+        {
+            ObjectId = attachmentFile.ObjectId,
+            DisplayName = attachmentFile.DisplayName,
+            ContentType = attachmentFile.ContentType
+        };
     }
 }

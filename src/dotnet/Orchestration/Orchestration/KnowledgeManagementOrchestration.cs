@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Constants;
+﻿using FoundationaLLM.Common.Clients;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Constants.ResourceProviders;
@@ -11,11 +12,9 @@ using FoundationaLLM.Common.Models.Orchestration.Response.OpenAI;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
-using FoundationaLLM.Gateway.Client;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
-using FoundationaLLM.Common.Clients;
 
 namespace FoundationaLLM.Orchestration.Core.Orchestration
 {

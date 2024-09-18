@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Models.ResourceProviders;
+﻿using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Models.ResourceProviders;
 
 namespace FoundationaLLM.Common.Tests.Models.ResourceProvider
 {
@@ -56,7 +57,7 @@ namespace FoundationaLLM.Common.Tests.Models.ResourceProvider
             var allowedReturnTypes = new List<Type>();
 
             // Act
-            var allowedTypes = new ResourceTypeAllowedTypes(expectedHttpMethod, allowedParameterTypes,
+            var allowedTypes = new ResourceTypeAllowedTypes(expectedHttpMethod, AuthorizableOperations.Read, allowedParameterTypes,
                                                             allowedBodyTypes, allowedReturnTypes);
 
             // Assert

@@ -207,7 +207,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             continue;
                         }
 
-                        var indexingProfile = await vectorizationResourceProvider.GetResource<IndexingProfile>(
+                        var indexingProfile = await vectorizationResourceProvider.GetResourceAsync<IndexingProfile>(
                             indexingProfileName,
                             currentUserIdentity);
                        
@@ -223,7 +223,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         if(indexingProfile.Settings.TryGetValue(VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, out var apiEndpointConfigurationObjectId) == false)
                             throw new OrchestrationException($"The API endpoint configuration object ID was not found in the settings of the indexing profile.");
 
-                        var indexingProfileAPIEndpointConfiguration = await configurationResourceProvider.GetResource<APIEndpointConfiguration>(
+                        var indexingProfileAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
                             apiEndpointConfigurationObjectId,
                             currentUserIdentity);
 
@@ -232,7 +232,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                     if (!string.IsNullOrWhiteSpace(kmAgent.Vectorization.TextEmbeddingProfileObjectId))
                     {
-                        var textEmbeddingProfile = await vectorizationResourceProvider.GetResource<TextEmbeddingProfile>(
+                        var textEmbeddingProfile = await vectorizationResourceProvider.GetResourceAsync<TextEmbeddingProfile>(
                             kmAgent.Vectorization.TextEmbeddingProfileObjectId,
                             currentUserIdentity);                                               
                                            

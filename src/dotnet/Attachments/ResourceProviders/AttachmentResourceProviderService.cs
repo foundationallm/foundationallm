@@ -51,7 +51,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
             [
                 EventSetEventNamespaces.FoundationaLLM_ResourceProvider_Attachment
             ],
-            useInternalStore: true)
+            useInternalReferencesStore: true)
     {
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
@@ -70,7 +70,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
             ResourceProviderLoadOptions? options = null) =>
-            resourcePath.ResourceTypeInstances[0].ResourceTypeName switch
+            resourcePath.MainResourceTypeName switch
             {
                 AttachmentResourceTypeNames.Attachments =>
                     // Attachments have a custom implementation for loading resources.
@@ -84,70 +84,48 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                         },
                         LoadAttachment),
                 _ =>
-                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} is not supported by the {_name} resource provider.",
+                    throw new ResourceProviderException($"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
 
         /// <inheritdoc/>
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        protected override async Task<object> ExecuteActionAsync(ResourcePath resourcePath, string serializedAction, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances.Last().ResourceTypeName switch
+        protected override async Task<object> ExecuteActionAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction,
+            UnifiedUserIdentity userIdentity) =>
+            resourcePath.ResourceTypeName switch
             {
-                AttachmentResourceTypeNames.Attachments => resourcePath.ResourceTypeInstances.Last().Action switch
+                AttachmentResourceTypeNames.Attachments => resourcePath.Action switch
                 {
-                    ResourceProviderActions.Filter => await Filter(serializedAction),
-                    _ => throw new ResourceProviderException($"The action {resourcePath.ResourceTypeInstances.Last().Action} is not supported by the {_name} resource provider.",
+                    ResourceProviderActions.Filter =>
+                        // Attachments have a custom implementation for loading resources.
+                        await FilterResources<AttachmentFile>(
+                            resourcePath,
+                            JsonSerializer.Deserialize<ResourceFilter>(serializedAction)!,
+                            authorizationResult,
+                            new ResourceProviderLoadOptions
+                            {
+                                LoadContent = false,
+                                IncludeRoles = false
+                            },
+                            LoadAttachment),
+                    _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
                 _ => throw new ResourceProviderException()
             };
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-
-        #region Helpers for ExecuteActionAsync
-
-        private async Task<List<AttachmentDetail>> Filter(string serializedAction)
-        {
-            var resourceFilter = JsonSerializer.Deserialize<ResourceFilter>(serializedAction)
-                ?? throw new ResourceProviderException("The object definition is invalid. Please provide a resource filter.",
-                    StatusCodes.Status400BadRequest);
-            if (resourceFilter.ObjectIDs is {Count: > 0})
-            {
-                var resourceNames = resourceFilter.ObjectIDs
-                    .Select(id => this.GetResourcePath(id, false).ResourceTypeInstances.Last().ResourceId!)
-                    .ToList();
-                var filteredReferences =
-                    await _resourceReferenceStore!.GetResourceReferences(resourceNames);
-
-                return filteredReferences.Select(r => new AttachmentDetail
-                {
-                    ObjectId = r.ObjectId,
-                    DisplayName = r.OriginalFilename,
-                    ContentType = r.ContentType
-                }).ToList();
-
-            }
-
-            var allResourceReferences = await _resourceReferenceStore!.GetAllResourceReferences();
-            return allResourceReferences.Select(r => new AttachmentDetail
-            {
-                ObjectId = r.ObjectId,
-                DisplayName = r.OriginalFilename,
-                ContentType = r.ContentType
-            }).ToList();
-        }
-
-        #endregion
 
         /// <inheritdoc/>
         protected override async Task DeleteResourceAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
         {
-            switch (resourcePath.ResourceTypeInstances.Last().ResourceTypeName)
+            switch (resourcePath.ResourceTypeName)
             {
                 case AttachmentResourceTypeNames.Attachments:
                     await DeleteResource<AttachmentFile>(resourcePath);
                     break;
                 default:
-                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances.Last().ResourceTypeName} is not supported by the {_name} resource provider.",
+                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest);
             };
         }
@@ -160,10 +138,10 @@ namespace FoundationaLLM.Attachment.ResourceProviders
         protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) where T : class
         {
             var attachmentReference = await _resourceReferenceStore!.GetResourceReference(resourcePath.ResourceTypeInstances[0].ResourceId!)
-                ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} was not found.");
+                ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.MainResourceTypeName} was not found.");
 
             return (await LoadAttachment(attachmentReference, loadContent: options?.LoadContent ?? false)) as T
-                ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceTypeName} could not be loaded.");
+                ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.MainResourceTypeName} could not be loaded.");
         }
 
         /// <inheritdoc/>
