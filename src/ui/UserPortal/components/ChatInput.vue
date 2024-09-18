@@ -1,5 +1,5 @@
 <template>
-	<div class="chat-input p-inputgroup">
+	<div class="chat-input p-inputgroup" role="group" aria-label="Chat input group">
 		<div class="input-wrapper">
 			<div class="tooltip-component">
 				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
