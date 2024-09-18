@@ -236,11 +236,18 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         public async Task<object> HandlePostAsync(string resourcePath, string serializedResource, UnifiedUserIdentity userIdentity)
         {
             EnsureServiceInitialization();
-            var (ParsedResourcePath, AuthorizableOperation) = ParseAndValidateResourcePath(resourcePath, HttpMethod.Post, true);
+            var (ParsedResourcePath, AuthorizableOperation) = ParseAndValidateResourcePath(resourcePath, HttpMethod.Post, true, requireResource: false);
 
             if (ParsedResourcePath.HasAction)
             {
                 // Handle the action.
+
+                // Some actions require a resource identifier.
+                if (ParsedResourcePath.Action! == ResourceProviderActions.Purge
+                    && !ParsedResourcePath.HasResourceId)
+                    throw new ResourceProviderException(
+                        $"The resource path {resourcePath} is required to have a resource identifier but none was found.",
+                        StatusCodes.Status400BadRequest);
 
                 // Authorize access to the resource path.
                 // In the special case of the filter action, if the resource type path is not directly authorized,
@@ -250,6 +257,12 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
                 return await ExecuteActionAsync(ParsedResourcePath, authorizationResult, serializedResource, userIdentity);
             }
+
+            // All resource upserts require a resource identifier.
+            if (!ParsedResourcePath.HasResourceId)
+                throw new ResourceProviderException(
+                    $"The resource path {resourcePath} is required to have a resource identifier but none was found.",
+                    StatusCodes.Status400BadRequest);
 
             // Authorize access to the resource path.
             await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
@@ -604,7 +617,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             if (requireResource
                 && !parsedResourcePath.HasResourceId)
                 throw new ResourceProviderException(
-                    $"The resource path {resourcePath} is required to have a resource identified but none was found.",
+                    $"The resource path {resourcePath} is required to have a resource identifier but none was found.",
                     StatusCodes.Status400BadRequest);
 
             if (!allowAction
