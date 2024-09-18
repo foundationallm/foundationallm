@@ -120,9 +120,6 @@ export const useAuthStore = defineStore('auth', {
 
 				return URL.createObjectURL(profilePhotoBlob);
 			} catch(error) {
-				if (!(error instanceof FetchError)) {
-					console.log(error);
-				}
 				return null;
 			}
 		},
