@@ -49,7 +49,6 @@
 			>
 				<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
 					<!-- Chat name -->
-
 					<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 						<span class="chat__name" tabindex="0" @keydown.esc="hideAllPoppers">{{
 							session.name
@@ -97,7 +96,8 @@
 
 		<!-- Logged in user -->
 		<div v-if="$authStore.currentAccount?.name" class="chat-sidebar__account">
-			<Avatar icon="pi pi-user" class="chat-sidebar__avatar" size="large" />
+			<UserAvatar size="large" class="chat-sidebar__avatar" />
+
 			<div>
 				<span class="chat-sidebar__username">{{ $authStore.currentAccount?.name }}</span>
 				<Button
