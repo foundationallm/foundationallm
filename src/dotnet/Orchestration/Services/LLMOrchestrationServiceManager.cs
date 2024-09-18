@@ -11,6 +11,7 @@ using FoundationaLLM.Orchestration.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 namespace FoundationaLLM.Orchestration.Core.Services
 {
@@ -67,9 +68,9 @@ namespace FoundationaLLM.Orchestration.Core.Services
                 _externalOrchestrationServiceNames = apiEndpointConfigurations
                     .Where(aec => aec.Category == APIEndpointCategory.ExternalOrchestration
                         && aec.AuthenticationParameters.TryGetValue(AuthenticationParametersKeys.APIKeyConfigurationName, out var apiKeyConfigObj)
-                        && apiKeyConfigObj is string apiKeyConfig
-                        && !string.IsNullOrWhiteSpace(apiKeyConfig)
-                        && apiKeyConfig.StartsWith(AppConfigurationKeySections.FoundationaLLM_APIEndpoints))
+                        && apiKeyConfigObj is JsonElement apiKeyConfig
+                        && !string.IsNullOrWhiteSpace(apiKeyConfig.GetString())
+                        && apiKeyConfig.GetString()!.StartsWith(AppConfigurationKeySections.FoundationaLLM_APIEndpoints))
                     .Select(aec => aec.Name)
                     .ToList();
 

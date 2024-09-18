@@ -103,7 +103,8 @@
 
 		<!-- Logged in user -->
 		<div v-if="$authStore.currentAccount?.name" class="chat-sidebar__account">
-			<Avatar icon="pi pi-user" class="chat-sidebar__avatar" size="large" />
+			<UserAvatar size="large" class="chat-sidebar__avatar" />
+
 			<div>
 				<span class="chat-sidebar__username">{{ $authStore.currentAccount?.name }}</span>
 				<Button

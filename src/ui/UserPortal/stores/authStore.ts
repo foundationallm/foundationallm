@@ -121,6 +121,27 @@ export const useAuthStore = defineStore('auth', {
 			}
 			return accessToken;
 		},
+		
+		async getProfilePhoto(): string | null {
+			try {
+				const graphScopes = ['https://graph.microsoft.com/User.Read'];
+				const graphToken = await this.msalInstance.acquireTokenSilent({
+					account: this.currentAccount,
+					scopes: graphScopes,
+				});
+
+				const profilePhotoBlob = await $fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
+					method: 'GET',
+					headers: {
+						Authorization: `Bearer ${graphToken.accessToken}`
+					}
+				});
+
+				return URL.createObjectURL(profilePhotoBlob);
+			} catch(error) {
+				return null;
+			}
+		},
 
 		async login() {
 			return await this.msalInstance.loginRedirect({

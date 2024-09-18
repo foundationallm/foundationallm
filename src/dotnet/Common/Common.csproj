@@ -6,12 +6,44 @@
     <Nullable>enable</Nullable>
     <AssemblyName>FoundationaLLM.Common</AssemblyName>
     <RootNamespace>FoundationaLLM.Common</RootNamespace>
+    <ProjectType>Library</ProjectType>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>FoundationaLLM.Common is a .NET library that the FoundationaLLM.Client.Core and FoundationaLLM.Client.Management client libraries share as a common dependency. Do not directly import and use this library.</Description>
+    <PackageTags>FoundationaLLM;LLM;GPT;AI;SDK;Common</PackageTags>
+    <RepositoryUrl>https://github.com/solliancenet/foundationallm</RepositoryUrl>
+    <PackageId>FoundationaLLM.Common</PackageId>
+    <Version>0.0.0</Version> <!-- Placeholder version -->
+    <AssemblyVersion>0.0.0</AssemblyVersion> <!-- Placeholder version -->
+    <FileVersion>0.0.0</FileVersion> <!-- Placeholder version -->
+    <PackageIcon>fllm-icon-128.png</PackageIcon>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <Title>FoundationaLLM Common</Title>
+    <Authors>Solliance</Authors>
+    <RepositoryType>git</RepositoryType>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageProjectUrl>https://foundationallm.ai</PackageProjectUrl>
+    <Copyright>Copyright © Solliance. All rights reserved.</Copyright>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <Content Remove="C:\Users\ciprian.jichici\.nuget\packages\azure.messaging.eventgrid\4.22.0-beta.1\contentFiles\any\netstandard2.0\EventGridClient.xml" />
     <Content Remove="C:\Users\CiprianJichici\.nuget\packages\azure.messaging.eventgrid\4.22.0-beta.1\contentFiles\any\netstandard2.0\EventGridClient.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="fllm-icon-128.png" Pack="true" PackagePath="\" />
+    <None Include="readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   
   <ItemGroup>
