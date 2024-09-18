@@ -19,16 +19,16 @@ const paleColors = [
 ];
 
 // const darkPaleColors = [
-//   '#CCCC99', // Dark Yellow
-//   '#CC9999', // Dark Red
-//   '#CC99CC', // Dark Pink
-//   '#99CCCC', // Dark Cyan
-//   '#99CC99', // Dark Green
-//   '#9999CC', // Dark Lavender
-//   '#CC9966', // Dark Peach
-//   '#CC6633', // Dark Orange
-//   '#CC6666', // Dark Salmon
-//   '#6699CC'  // Dark Sky Blue
+//   '#CCCC99', // Dark Pale Yellow
+//   '#CC9999', // Dark Pale Red
+//   '#CC99CC', // Dark Pale Pink
+//   '#99CCCC', // Dark Pale Cyan
+//   '#99CC99', // Dark Pale Green
+//   '#9999CC', // Dark Pale Lavender
+//   '#CC9966', // Dark Pale Peach
+//   '#CC6633', // Dark Pale Orange
+//   '#CC6666', // Dark Pale Salmon
+//   '#6699CC'  // Dark Pale Sky Blue
 // ];
 
 const darkerPaleColors = [
