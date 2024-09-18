@@ -246,7 +246,7 @@ namespace FoundationaLLM.DataSource.ResourceProviders
 
             dataSource.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
 
-            var validator = _resourceValidatorFactory.GetValidator(dataSourceReference.DataSourceType);
+            var validator = _resourceValidatorFactory.GetValidator(dataSourceReference.ResourceType);
             if (validator is IValidator dataSourceValidator)
             {
                 var context = new ValidationContext<object>(dataSource);

@@ -242,7 +242,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         StatusCodes.Status500InternalServerError);
             }
 
-            var validator = _resourceValidatorFactory.GetValidator(agentReference.AgentType);
+            var validator = _resourceValidatorFactory.GetValidator(agentReference.ResourceType);
             if (validator is IValidator agentValidator)
             {
                 var context = new ValidationContext<object>(agent);
