@@ -244,6 +244,35 @@ export default {
 			isUploading: false,
 			uploadProgress: 0,
 			isMobile: window.screen.width < 950,
+			win: null as any,
+			port: null as any,
+			filePickerParams: {
+				sdk: "8.0",
+				entry: {
+					oneDrive: {
+						files: {
+						},
+					}
+				},
+				authentication: {},
+				messaging: {
+					origin: document.location.origin,
+					channelId: "27"
+				},
+				typesAndSources: {
+					mode: "files",
+					pivots: {
+						oneDrive: true,
+						recent: false,
+						shared: false,
+						sharedLibraries: true,
+						myOrganization: true,
+						favorites: true
+					},
+				},
+				access: { mode: "read" },
+				search: { enabled: true }
+			},
 		};
 	},
 
@@ -333,10 +362,10 @@ export default {
 			value: agent.name,
 		}));
 
-		if (localStorage.getItem('oneDriveConsentRedirect') === 'true') {
-			await this.oneDriveConnect();
-			localStorage.setItem('oneDriveConsentRedirect', JSON.stringify(false));
-		}
+		// if (localStorage.getItem('oneDriveConsentRedirect') === 'true') {
+		// 	await this.oneDriveConnect();
+		// 	localStorage.setItem('oneDriveConsentRedirect', JSON.stringify(false));
+		// }
 	},
 
 	mounted() {
@@ -515,11 +544,146 @@ export default {
 		},
 
 		async downloadFromOneDrive() {
-			const accessToken = await this.$authStore.requestOneDriveConsent();
-			// TODO: set id from file picker
+			let oneDriveToken;
+			try {
+				oneDriveToken = await this.$authStore.getOneDriveToken();
+			} catch (error) {
+				console.error(error);
+				return await this.$authStore.loginOneDrive();
+			}
+
+			this.win = window.open("", "Picker", "width=600,height=600");
+			const queryString = new URLSearchParams({
+				filePicker: JSON.stringify(this.filePickerParams),
+			});
+
+			const url = "https://solliancenet-my.sharepoint.com/_layouts/15/FilePicker.aspx?" + queryString;
+
+			const form = document.createElement("form");
+			form.setAttribute("action", url);
+			form.setAttribute("method", "POST");
+			this.win?.document.body.append(form);
+
+			const input = this.win.document.createElement("input");
+			input.setAttribute("type", "hidden");
+			input.setAttribute("name", "access_token");
+			input.setAttribute("value", oneDriveToken.accessToken);
+			form.appendChild(input);
+
+			form.submit();
+
+			window.addEventListener("message", (event) => {
+				console.log(event);
+				// if (event.source && event.source) {
+					const message = event.data;
+					if (message.type === "initialize" && message.channelId === this.filePickerParams.messaging.channelId) {
+						this.port = event.ports[0];
+						this.port.addEventListener("message", this.messageListener);
+						this.port.start();
+						this.port.postMessage({
+							type: "activate",
+						});
+					}
+				// }
+			});
+
+			// // TODO: set id from file picker
+			// await this.$appStore.oneDriveDownload(this.$appStore.currentSession.sessionId, {
+			// 	id: '',
+			// 	access_token: oneDriveToken.accessToken,
+			// });
+		},
+
+		async messageListener(message) {
+			console.log(message);
+			switch (message.data.type) {
+
+				case "notification":
+				console.log(`notification: ${message.data}`);
+				break;
+
+				case "command":
+
+				this.port.postMessage({
+					type: "acknowledge",
+					id: message.data.id,
+				});
+
+				const command: any = message.data.data;
+				console.log(command);
+
+				switch (command.command) {
+
+					case "authenticate":
+
+					const token = await this.$authStore.getOneDriveToken();
+					console.log(token);
+
+					if (typeof token !== "undefined" && token !== null) {
+
+						this.port.postMessage({
+						type: "result",
+						id: message.data.id,
+						data: {
+							result: "token",
+							token: token.accessToken,
+						}
+						});
+
+					} else {
+						console.error(`Could not get auth token for command: ${JSON.stringify(command)}`);
+					}
+
+					break;
+
+					case "close":
+
+					this.win.close();
+					break;
+
+					case "pick":
+
+					console.log(`Picked: ${JSON.stringify(command)}`);
+
+					this.callCoreApiOneDriveDownloadEndpoint(command.items[0].id);
+
+					this.port.postMessage({
+						type: "result",
+						id: message.data.id,
+						data: {
+						result: "success",
+						},
+					});
+
+					this.win.close();
+
+					break;
+
+					default:
+
+					console.warn(`Unsupported command: ${JSON.stringify(command)}`, 2);
+
+					this.port.postMessage({
+						result: "error",
+						error: {
+						code: "unsupportedCommand",
+						message: command.command
+						},
+						isExpected: true,
+					});
+					break;
+				}
+
+				break;
+			}
+		},
+
+		async callCoreApiOneDriveDownloadEndpoint(id) {
+			const oneDriveToken = await this.$authStore.getOneDriveToken();
+
 			await this.$appStore.oneDriveDownload(this.$appStore.currentSession.sessionId, {
-				id: '',
-				access_token: accessToken,
+				id: id,
+				access_token: oneDriveToken.accessToken,
 			});
 		},
 
