@@ -1,4 +1,6 @@
-﻿namespace FoundationaLLM.Common.Models.Authorization
+﻿using System.Text.Json.Serialization;
+
+namespace FoundationaLLM.Common.Models.Authorization
 {
     /// <summary>
     /// Represents the result of a resource path authorization request.
@@ -8,16 +10,19 @@
         /// <summary>
         /// Gets or sets the resource path that was authorized.
         /// </summary>
+        [JsonPropertyName("resource_path")]
         public required string ResourcePath { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the resource that was authorized.
         /// </summary>
+        [JsonPropertyName("resource_name")]
         public string? ResourceName { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the resource path is authorized.
         /// </summary>
+        [JsonPropertyName("authorized")]
         public bool Authorized { get; set; }
 
         /// <summary>
@@ -26,6 +31,7 @@
         /// <remarks>
         /// The list contains the display names of the roles (e.g., Reader, Contributor, Owner, etc.).
         /// </remarks>
+        [JsonPropertyName("roles")]
         public List<string> Roles { get; set; } = [];
 
         /// <summary>
@@ -37,6 +43,7 @@
         /// a resource type path and <see cref="ActionAuthorizationRequest.ExpandResourceTypePaths"/>
         /// was set to <c>true</c> on the request that generated this result.
         /// </remarks>
+        [JsonPropertyName("subordinate_resource_paths_authorization_results")]
         public Dictionary<string, ResourcePathAuthorizationResult> SubordinateResourcePathsAuthorizationResults { get; set; } = [];
     }
 }
