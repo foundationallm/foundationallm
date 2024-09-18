@@ -419,7 +419,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             where T : ResourceBase
         {
             EnsureServiceInitialization();
-            var (ParsedResourcePath, AuthorizableOperation) = ParseAndValidateResourcePath(resourcePath, HttpMethod.Get, false, typeof(ResourceProviderGetResult<T>));
+            var (ParsedResourcePath, AuthorizableOperation) = ParseAndValidateResourcePath(resourcePath, HttpMethod.Get, false, typeof(T));
 
             // Authorize access to the resource path.
             await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
