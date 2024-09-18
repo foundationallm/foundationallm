@@ -122,6 +122,23 @@ export const useAuthStore = defineStore('auth', {
 			return accessToken;
 		},
 
+		async loginOneDrive() {
+			const oneDriveAPIScopes: any = {
+				account: this.currentAccount,
+				scopes: ['https://solliancenet-my.sharepoint.com/.default'],
+			};
+			await this.msalInstance.loginRedirect(oneDriveAPIScopes);
+		},
+
+		async getOneDriveToken(): string | null {
+			const oneDriveToken = await this.msalInstance.acquireTokenSilent({
+				account: this.currentAccount,
+				scopes: ['https://solliancenet-my.sharepoint.com/.default'],
+			});
+
+			return oneDriveToken;
+		},
+
 		async getProfilePhoto(): string | null {
 			try {
 				const graphScopes = ['https://graph.microsoft.com/User.Read'];
