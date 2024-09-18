@@ -5,6 +5,8 @@
 </template>
 
 <script lang="ts">
+import md5 from 'md5';
+
 const paleColors = [
 	'#FFFFCC', // Pale Yellow
 	'#FFCCCC', // Pale Red
@@ -105,10 +107,31 @@ export default {
 		// this.loading = true;
 		try {
 			this.profilePhotoSrc = await this.$authStore.getProfilePhoto();
+			if (!this.profilePhotoSrc) {
+				await this.loadGravatarImage();
+			}
 		} catch(error) {
-			// do something
+			// console.error(error);
 		}
 		// this.loading = false;
+	},
+
+	methods: {
+		loadImage(src) {
+			return new Promise((resolve, reject) => {
+				const image = new Image();
+				image.onload = () => resolve(src);
+				image.onerror = () => reject(new Error(`Failed to load image: ${src}`));
+				image.src = src;
+			});
+		},
+		
+		async loadGravatarImage() {
+			const emailHash = md5(this.$authStore.currentAccount?.username?.toLowerCase()); // Hash the email
+			const gravatarUrl = `https://www.gravatar.com/avatar/${emailHash}?d=404`;
+			const gravatarImage = await this.loadImage(gravatarUrl);
+			this.profilePhotoSrc = gravatarUrl;
+		}
 	},
 };
 </script>
