@@ -4,7 +4,7 @@ using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Prompt.Models
+namespace FoundationaLLM.Prompt.Models.Resources
 {
     /// <summary>
     /// Provides details about a prompt.
@@ -15,7 +15,7 @@ namespace FoundationaLLM.Prompt.Models
         /// The object type of the agent.
         /// </summary>
         [JsonIgnore]
-        public override Type ResourceType =>
+        public Type PromptType =>
             Type switch
             {
                 PromptTypes.Basic => typeof(PromptBase),
