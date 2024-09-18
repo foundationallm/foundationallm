@@ -39,60 +39,65 @@
 
 		<!-- Chats -->
 		<div class="chat-sidebar__chats">
-			<div v-if="!sessions">No sessions</div>
-			<div
-				v-for="session in sessions"
-				:key="session.id"
-				class="chat-sidebar__chat"
-				@click="handleSessionSelected(session)"
-				@keydown.enter="handleSessionSelected(session)"
-			>
-				<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
-					<!-- Chat name -->
+			<nav>
+				<ul role="list" class="chat-list">
+					<li v-if="!sessions" role="listitem" class="chat-list-item">No sessions</li>
+					<li
+						v-for="session in sessions"
+						:key="session.id"
+						class="chat-sidebar__chat chat-list-item"
+						@click="handleSessionSelected(session)"
+						@keydown.enter="handleSessionSelected(session)"
+						role="listitem"
+					>
+						<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
+							<!-- Chat name -->
 
-					<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-						<span class="chat__name" tabindex="0" @keydown.esc="hideAllPoppers">{{
-							session.name
-						}}</span>
-						<template #popper>
-							<div role="tooltip">
-								{{ session.name }}
-							</div>
-						</template>
-					</VTooltip>
+							<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+								<span class="chat__name" tabindex="0" @keydown.esc="hideAllPoppers">{{
+									session.name
+								}}</span>
+								<template #popper>
+									<div role="tooltip">
+										{{ session.name }}
+									</div>
+								</template>
+							</VTooltip>
 
-					<!-- Chat icons -->
-					<span v-if="currentSession?.id === session.id" class="chat__icons">
-						<!-- Rename session -->
-						<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-							<Button
-								icon="pi pi-pencil"
-								size="small"
-								severity="secondary"
-								text
-								aria-label="Rename chat session"
-								@click.stop="openRenameModal(session)"
-								@keydown.esc="hideAllPoppers"
-							/>
-							<template #popper><div role="tooltip">Rename chat session</div></template>
-						</VTooltip>
+							<!-- Chat icons -->
+							<span v-if="currentSession?.id === session.id" class="chat__icons">
+								<!-- Rename session -->
+								<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+									<Button
+										icon="pi pi-pencil"
+										size="small"
+										severity="secondary"
+										text
+										aria-label="Rename chat session"
+										@click.stop="openRenameModal(session)"
+										@keydown.esc="hideAllPoppers"
+									/>
+									<template #popper><div role="tooltip">Rename chat session</div></template>
+								</VTooltip>
 
-						<!-- Delete session -->
-						<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-							<Button
-								icon="pi pi-trash"
-								size="small"
-								severity="danger"
-								text
-								aria-label="Delete chat session"
-								@click.stop="sessionToDelete = session"
-								@keydown.esc="hideAllPoppers"
-							/>
-							<template #popper><div role="tooltip">Delete chat session</div></template>
-						</VTooltip>
-					</span>
-				</div>
-			</div>
+								<!-- Delete session -->
+								<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+									<Button
+										icon="pi pi-trash"
+										size="small"
+										severity="danger"
+										text
+										aria-label="Delete chat session"
+										@click.stop="sessionToDelete = session"
+										@keydown.esc="hideAllPoppers"
+									/>
+									<template #popper><div role="tooltip">Delete chat session</div></template>
+								</VTooltip>
+							</span>
+						</div>
+					</li>
+				</ul>
+			</nav>
 		</div>
 
 		<!-- Logged in user -->
@@ -478,6 +483,17 @@ export default {
 	display: flex;
 	justify-content: center;
 	padding: 20px 150px;
+}
+
+ul.chat-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+li.chat-list-item {
+  padding: 0;
+  margin: 0;
 }
 
 @media only screen and (max-width: 950px) {
