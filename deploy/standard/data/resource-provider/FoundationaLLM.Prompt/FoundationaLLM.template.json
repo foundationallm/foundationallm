@@ -1,4 +1,5 @@
 {
+  "type": "multipart",
   "name": "FoundationaLLM",    
   "object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.Prompt/prompts/FoundationaLLM",
   "description": "Describes the persona and context for the FoundationaLLM agent, useful for answering questions about FoundationaLLM (FLLM).",
