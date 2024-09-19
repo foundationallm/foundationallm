@@ -65,7 +65,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
             var pollingClient = new PollingHttpClient<LLMCompletionRequest, LLMCompletionResponse>(
                 client,
                 request,
-                $"instances/{instanceId}/completions",
+                $"instances/{instanceId}/async-completions",
                 TimeSpan.FromSeconds(10),
                 client.Timeout.Subtract(TimeSpan.FromSeconds(1)),
                 _logger);
@@ -77,6 +77,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
                 return new LLMCompletionResponse
                 {
                     OperationId = request.OperationId,
+                    Content = completionResponse!.Content,
                     Completion = completionResponse.Completion,
                     Citations = completionResponse.Citations,
                     UserPrompt = completionResponse.UserPrompt,
@@ -84,7 +85,8 @@ namespace FoundationaLLM.Orchestration.Core.Services
                     PromptTemplate = string.Empty,
                     AgentName = request.Agent.Name,
                     PromptTokens = completionResponse.PromptTokens,
-                    CompletionTokens = completionResponse.CompletionTokens
+                    CompletionTokens = completionResponse.CompletionTokens,
+                    AnalysisResults = completionResponse.AnalysisResults
                 };
             }
 
