@@ -57,7 +57,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
-            AzureOpenAIResourceProviderMetadata.AllowedResourceTypes;
+            AzureOpenAIResourceProviderMetadata.AllowedResourceTypesWithSubTypes;
 
         /// <inheritdoc/>
         protected override string _name => ResourceProviderNames.FoundationaLLM_AzureOpenAI;

@@ -414,7 +414,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                     if (currentResourceTypes == null
                         || !currentResourceTypes.TryGetValue(tokens[currentIndex], out ResourceTypeDescriptor? currentResourceType))
                         throw new Exception();
-
+                                        
                     var resourceTypeInstance = new ResourceTypeInstance(
                         tokens[currentIndex],
                         allowedResourceTypes[tokens[currentIndex]].ResourceType);
