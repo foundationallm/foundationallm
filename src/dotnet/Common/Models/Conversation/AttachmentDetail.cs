@@ -35,7 +35,7 @@ namespace FoundationaLLM.Common.Models.Conversation
         public static AttachmentDetail FromAttachmentFile(AttachmentFile attachmentFile) => new()
         {
             ObjectId = attachmentFile.ObjectId,
-            DisplayName = attachmentFile.DisplayName,
+            DisplayName = !string.IsNullOrWhiteSpace(attachmentFile.DisplayName) ? attachmentFile.DisplayName : attachmentFile.OriginalFileName,
             ContentType = attachmentFile.ContentType
         };
     }
