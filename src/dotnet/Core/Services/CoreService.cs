@@ -111,14 +111,16 @@ public partial class CoreService(
                 $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Attachment}/{AttachmentResourceTypeNames.Attachments}/{ResourceProviderActions.Filter}",
                 JsonSerializer.Serialize(filter),
                 _callContext.CurrentUserIdentity!);
-            // Cast the result to a list of AttachmentReference objects.
-            var attachmentReferences = (result as List<AttachmentFile> ?? [])
-                .Select(ar => AttachmentDetail.FromAttachmentFile(ar))
-                .ToList();
+            var list = result as IEnumerator<AttachmentFile>;
+            var attachmentReferences = new List<AttachmentDetail>();
+            
+            if (list != null)
+            {
+                attachmentReferences.AddRange(from attachment in (IEnumerable<AttachmentFile>) list select AttachmentDetail.FromAttachmentFile(attachment));
+            }
 
             if (attachmentReferences.Count > 0)
             {
-
                 // Add the attachment details to the messages.
                 foreach (var message in messages)
                 {
