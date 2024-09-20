@@ -63,33 +63,5 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                 }
             }
         };
-
-        /// <summary>
-        /// A dictionary surfacing the ResourceTypeDescriptor of the AllowedResourceTypes including all SubTypes recursively.
-        /// </summary>
-        public static Dictionary<string, ResourceTypeDescriptor> AllowedResourceTypesWithSubTypes
-        {
-            get
-            {
-                var allowedResourceTypesWithSubTypes = new Dictionary<string, ResourceTypeDescriptor>();
-
-                void AddResourceTypesRecursively(ResourceTypeDescriptor resourceType)
-                {
-                    allowedResourceTypesWithSubTypes[resourceType.ResourceTypeName] = resourceType;
-                    foreach (var subType in resourceType.SubTypes.Values)
-                    {
-                        AddResourceTypesRecursively(subType);
-                    }
-                }
-
-                foreach (var resourceType in AllowedResourceTypes.Values)
-                {
-                    AddResourceTypesRecursively(resourceType);
-                }
-
-                return allowedResourceTypesWithSubTypes;
-            }
-        }
-
     }
 }

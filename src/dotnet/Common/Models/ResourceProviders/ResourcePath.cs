@@ -417,7 +417,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                                         
                     var resourceTypeInstance = new ResourceTypeInstance(
                         tokens[currentIndex],
-                        allowedResourceTypes[tokens[currentIndex]].ResourceType);
+                        currentResourceTypes[tokens[currentIndex]].ResourceType);
                     resourceTypeInstances.Add(resourceTypeInstance);
 
                     if (currentIndex + 1 == tokens.Length)

@@ -77,7 +77,7 @@ namespace FoundationaLLM.Common.Utils
                 ResourceProviderNames.FoundationaLLM_Attachment => AttachmentResourceProviderMetadata.AllowedResourceTypes,
                 ResourceProviderNames.FoundationaLLM_Authorization => AuthorizationResourceProviderMetadata.AllowedResourceTypes,
                 ResourceProviderNames.FoundationaLLM_AIModel => AIModelResourceProviderMetadata.AllowedResourceTypes,
-                ResourceProviderNames.FoundationaLLM_AzureOpenAI => AzureOpenAIResourceProviderMetadata.AllowedResourceTypesWithSubTypes,
+                ResourceProviderNames.FoundationaLLM_AzureOpenAI => AzureOpenAIResourceProviderMetadata.AllowedResourceTypes,
                 ResourceProviderNames.FoundationaLLM_Conversation => ConversationResourceProviderMetadata.AllowedResourceTypes,
                 _ => []
             };
