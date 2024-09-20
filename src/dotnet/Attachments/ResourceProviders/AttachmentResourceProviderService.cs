@@ -250,7 +250,8 @@ namespace FoundationaLLM.Attachment.ResourceProviders
 
             return new ResourceProviderUpsertResult
             {
-                ObjectId = (attachment as AttachmentFile)!.ObjectId
+                ObjectId = (attachment as AttachmentFile)!.ObjectId,
+                ResourceExists = false
             };
         }
 

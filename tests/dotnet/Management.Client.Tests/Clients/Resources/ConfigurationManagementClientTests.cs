@@ -205,7 +205,8 @@ namespace Management.Client.Tests.Clients.Resources
             var appConfiguration = new AppConfigurationKeyBase { Name = "test-configuration" };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {
-                ObjectId = "test-object-id"
+                ObjectId = "test-object-id",
+                ResourceExists = false
             };
 
             _mockRestClient.Resources
@@ -242,7 +243,8 @@ namespace Management.Client.Tests.Clients.Resources
             };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {
-                ObjectId = "test-object-id"
+                ObjectId = "test-object-id",
+                ResourceExists = false
             };
 
             _mockRestClient.Resources

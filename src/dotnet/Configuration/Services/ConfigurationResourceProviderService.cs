@@ -297,7 +297,8 @@ namespace FoundationaLLM.Configuration.Services
 
             return new ResourceProviderUpsertResult
             {
-                ObjectId = $"/instances/{_instanceSettings.Id}/providers/{_name}/{ConfigurationResourceTypeNames.AppConfigurations}/{appConfig.Key}"
+                ObjectId = $"/instances/{_instanceSettings.Id}/providers/{_name}/{ConfigurationResourceTypeNames.AppConfigurations}/{appConfig.Key}",
+                ResourceExists = false
             };
         }
 

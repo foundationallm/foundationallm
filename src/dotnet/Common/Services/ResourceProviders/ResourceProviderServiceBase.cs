@@ -268,10 +268,10 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 // Authorize access to the resource path.
                 // In the special case of the filter action, if the resource type path is not directly authorized,
                 // the subordinate authorized resource paths must be expanded (and the overrides for ExecuteActionAsync must handle this).
-                var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation,
+                var actionAuthorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation,
                     ParsedResourcePath.Action! == ResourceProviderActions.Filter, false);
 
-                return await ExecuteActionAsync(ParsedResourcePath, authorizationResult, serializedResource, userIdentity);
+                return await ExecuteActionAsync(ParsedResourcePath, actionAuthorizationResult, serializedResource, userIdentity);
             }
 
             // All resource upserts require a resource identifier.
@@ -281,33 +281,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     StatusCodes.Status400BadRequest);
 
             // Authorize access to the resource path.
-            await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
+            var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
 
             var upsertResult = await UpsertResourceAsync(ParsedResourcePath, serializedResource, userIdentity);
 
-            var baseUpsertResult = upsertResult as ResourceProviderUpsertResult;
-
-            if (baseUpsertResult!.ResourceExists == false && Name != ResourceProviderNames.FoundationaLLM_Authorization)
-            {
-                var roleAssignmentName = Guid.NewGuid().ToString();
-                var roleAssignmentDescription = $"Owner role for {userIdentity.Name}";
-                var roleAssignmentResult = await _authorizationService.CreateRoleAssignment(
-                    _instanceSettings.Id,
-                    new RoleAssignmentRequest()
-                    {
-                        Name = roleAssignmentName,
-                        Description = roleAssignmentDescription,
-                        ObjectId = $"/instances/{_instanceSettings.Id}/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleAssignments}/{roleAssignmentName}",
-                        PrincipalId = userIdentity.UserId!,
-                        PrincipalType = PrincipalTypes.User,
-                        RoleDefinitionId = $"/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleDefinitions}/{RoleDefinitionNames.Owner}",
-                        Scope = baseUpsertResult!.ObjectId ?? throw new ResourceProviderException($"The {roleAssignmentDescription} could not be assigned. Could not set the scope for the resource.")
-                    },
-                    userIdentity);
-
-                if (!roleAssignmentResult.Success)
-                    _logger.LogError("The {RoleAssignment} could not be assigned.", roleAssignmentDescription);
-            }
+            await UpsertResourcePostProcess(ParsedResourcePath.InstanceId!, (upsertResult as ResourceProviderUpsertResult)!, authorizationResult, userIdentity);
 
             return upsertResult;
         }
@@ -460,39 +438,19 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         }
 
         /// <inheritdoc/>
-        public async Task<TResult> UpsertResourceAsync<T, TResult>(string resourcePath, T resource, UnifiedUserIdentity userIdentity)
+        public async Task<TResult> UpsertResourceAsync<T, TResult>(string instanceId, T resource, UnifiedUserIdentity userIdentity)
             where T : ResourceBase
             where TResult : ResourceProviderUpsertResult
         {
             EnsureServiceInitialization();
-            var (ParsedResourcePath, AuthorizableOperation) = ParseAndValidateResourcePath(resourcePath, HttpMethod.Post, false, typeof(T));
+            var (ParsedResourcePath, AuthorizableOperation) = CreateAndValidateResourcePath(instanceId, HttpMethod.Post, typeof(T));
 
             // Authorize access to the resource path.
-            await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
+            var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
 
             var upsertResult = await UpsertResourceAsyncInternal<T, TResult>(ParsedResourcePath, resource, userIdentity);
 
-            if (upsertResult!.ResourceExists == false && Name != ResourceProviderNames.FoundationaLLM_Authorization)
-            {
-                var roleAssignmentName = Guid.NewGuid().ToString();
-                var roleAssignmentDescription = $"Owner role for {userIdentity.Name}";
-                var roleAssignmentResult = await _authorizationService.CreateRoleAssignment(
-                    _instanceSettings.Id,
-                    new RoleAssignmentRequest()
-                    {
-                        Name = roleAssignmentName,
-                        Description = roleAssignmentDescription,
-                        ObjectId = $"/instances/{_instanceSettings.Id}/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleAssignments}/{roleAssignmentName}",
-                        PrincipalId = userIdentity.UserId!,
-                        PrincipalType = PrincipalTypes.User,
-                        RoleDefinitionId = $"/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleDefinitions}/{RoleDefinitionNames.Owner}",
-                        Scope = upsertResult!.ObjectId ?? throw new ResourceProviderException($"The {roleAssignmentDescription} could not be assigned. Could not set the scope for the resource.")
-                    },
-                    userIdentity);
-
-                if (!roleAssignmentResult.Success)
-                    _logger.LogError("The {RoleAssignment} could not be assigned.", roleAssignmentDescription);
-            }
+            await UpsertResourcePostProcess(ParsedResourcePath.InstanceId!, upsertResult, authorizationResult, userIdentity);
 
             return upsertResult;
         }
@@ -1394,6 +1352,48 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 _allowedResourceProviders,
                 _allowedResourceTypes,
                 allowAction: allowAction);
+
+        private async Task UpsertResourcePostProcess(
+            string instanceId,
+            ResourceProviderUpsertResult upsertResult,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(instanceId, nameof(instanceId));
+            ArgumentNullException.ThrowIfNull(upsertResult, nameof(upsertResult));
+            ArgumentNullException.ThrowIfNull(authorizationResult, nameof(authorizationResult));
+            ArgumentException.ThrowIfNullOrWhiteSpace(userIdentity.UserId, nameof(userIdentity.UserId));
+            ArgumentException.ThrowIfNullOrWhiteSpace(userIdentity.Name, nameof(userIdentity.Name));
+
+            if (!authorizationResult.Authorized)
+                throw new ResourceProviderException(
+                    $"Upsert result post-processing can only be executed on authorized resources.");
+
+            if (!authorizationResult.MustSetOwnerRoleAssignment)
+                return;
+
+            if (!upsertResult.ResourceExists && Name != ResourceProviderNames.FoundationaLLM_Authorization)
+            {
+                var roleAssignmentName = Guid.NewGuid().ToString();
+                var roleAssignmentDescription = $"Owner role for {userIdentity.Name}";
+                var roleAssignmentResult = await _authorizationService.CreateRoleAssignment(
+                    _instanceSettings.Id,
+                    new RoleAssignmentRequest()
+                    {
+                        Name = roleAssignmentName,
+                        Description = roleAssignmentDescription,
+                        ObjectId = $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleAssignments}/{roleAssignmentName}",
+                        PrincipalId = userIdentity.UserId,
+                        PrincipalType = PrincipalTypes.User,
+                        RoleDefinitionId = $"/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleDefinitions}/{RoleDefinitionNames.Owner}",
+                        Scope = upsertResult.ObjectId
+                    },
+                    userIdentity);
+
+                if (!roleAssignmentResult.Success)
+                    _logger.LogError("The [{RoleAssignment}] could not be assigned to {ObjectId}.", roleAssignmentDescription, upsertResult.ObjectId);
+            }
+        }
 
         #endregion
     }

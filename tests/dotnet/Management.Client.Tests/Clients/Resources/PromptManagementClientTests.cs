@@ -122,7 +122,9 @@ namespace Management.Client.Tests.Clients.Resources
             {
                 Name = resourceName.Name,
                 Status = NameCheckResultType.Allowed,
-                Message = "Name is allowed"
+                Message = "Name is allowed",
+                Exists = false,
+                Deleted = false
             };
 
             _mockRestClient.Resources
@@ -199,7 +201,8 @@ namespace Management.Client.Tests.Clients.Resources
             var prompt = new PromptBase { Name = "test-prompt" };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {
-                ObjectId = "test-object-id"
+                ObjectId = "test-object-id",
+                ResourceExists = false
             };
 
             _mockRestClient.Resources

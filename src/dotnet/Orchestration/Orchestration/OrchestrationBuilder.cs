@@ -277,7 +277,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                 if (!nameCheckResult.Exists)
                 {
-                    var result = await azureOpenAIResourceProvider.CreateOrUpdateResource<AssistantUserContext, AssistantUserContextUpsertResult>(
+                    var result = await azureOpenAIResourceProvider.UpsertResourceAsync<AssistantUserContext, AssistantUserContextUpsertResult>(
                         instanceId,
                         new AssistantUserContext
                         {
@@ -297,7 +297,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 }
                             }
                         },
-                        AzureOpenAIResourceTypeNames.AssistantUserContexts,
                         currentUserIdentity);
 
                     if (!string.IsNullOrWhiteSpace(result.NewOpenAIAssistantId))
@@ -332,10 +331,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         string.IsNullOrWhiteSpace(assistantConversation.OpenAIThreadId))
                     {
                         var result = await azureOpenAIResourceProvider
-                            .CreateOrUpdateResource<AssistantUserContext, AssistantUserContextUpsertResult>(
+                            .UpsertResourceAsync<AssistantUserContext, AssistantUserContextUpsertResult>(
                                 instanceId,
                                 assistantUserContext,
-                                AzureOpenAIResourceTypeNames.AssistantUserContexts,
                                 currentUserIdentity);
 
                         if (!string.IsNullOrWhiteSpace(result.NewOpenAIAssistantThreadId))

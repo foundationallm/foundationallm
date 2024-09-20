@@ -284,7 +284,8 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
 
             return new ResourceProviderUpsertResult
             {
-                ObjectId = resource.ObjectId
+                ObjectId = resource.ObjectId,
+                ResourceExists = existingResource != null
             };
         }
 
@@ -311,7 +312,8 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             await UpdateVectorizationRequest(resourcePath, resource, userIdentity);
             return new ResourceProviderUpsertResult
             {
-                ObjectId = resource.ObjectId
+                ObjectId = resource.ObjectId,
+                ResourceExists = false
             };
         }
 
@@ -439,7 +441,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             var request = result.First().Resource;
 
             var requestProcessor = serviceProvider.GetService<IVectorizationRequestProcessor>();           
-            var response = await requestProcessor!.ProcessRequest(request, userIdentity);
+            var response = await requestProcessor!.ProcessRequest(resourcePath.InstanceId!, request, userIdentity);
             return response;            
         }
 
@@ -742,7 +744,8 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
 
             return new ResourceProviderUpsertResult
             {
-                ObjectId = request.ObjectId
+                ObjectId = request.ObjectId,
+                ResourceExists = false
             };
         }
 

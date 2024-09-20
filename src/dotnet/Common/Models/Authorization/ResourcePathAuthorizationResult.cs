@@ -45,5 +45,10 @@ namespace FoundationaLLM.Common.Models.Authorization
         /// </remarks>
         [JsonPropertyName("subordinate_resource_paths_authorization_results")]
         public Dictionary<string, ResourcePathAuthorizationResult> SubordinateResourcePathsAuthorizationResults { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets a value indicating whether an owner role assignment must be set for the resource.
+        /// </summary>
+        public bool MustSetOwnerRoleAssignment { get; set; } = true;
     }
 }

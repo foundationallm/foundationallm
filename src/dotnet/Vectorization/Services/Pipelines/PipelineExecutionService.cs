@@ -20,24 +20,29 @@ using FoundationaLLM.Vectorization.Services.DataSources.Configuration.SQLDatabas
 using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.Configuration;
+using Microsoft.Extensions.Options;
+using FoundationaLLM.Common.Models.Configuration.Instance;
 
 namespace FoundationaLLM.Vectorization.Services.Pipelines
 {
     /// <summary>
     /// Executes active vectorization data pipelines.
     /// </summary>
+    /// <param name="instanceOptions">The <see cref="IOptions{TOptions}"/> value providing <see cref="InstanceSettings"/> settings.</param>
     /// <param name="configuration">The global configuration provider.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> providing dependency injection services..</param>
     /// <param name="resourceProviderServices">The list of resurce providers registered with the main dependency injection container.</param>
     /// <param name="loggerFactory">Factory responsible for creating loggers.</param>
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
     public class PipelineExecutionService(
+        IOptions<InstanceSettings> instanceOptions,
         IConfiguration configuration,
         IServiceProvider serviceProvider,
         IEnumerable<IResourceProviderService> resourceProviderServices,
         ILoggerFactory loggerFactory,
         ILogger<PipelineExecutionService> logger) : IPipelineExecutionService
     {
+        private readonly InstanceSettings _instanceSettings = instanceOptions.Value;
         private readonly IConfiguration _configuration = configuration;
         private readonly IServiceProvider _serviceProvider = serviceProvider;
         private readonly ILogger<PipelineExecutionService> _logger = logger;
@@ -221,7 +226,10 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                         try
                                         {
                                             //create the vectorization request
-                                            await vectorizationRequest.UpdateVectorizationRequestResource(vectorizationResourceProvider, DefaultAuthentication.ServiceIdentity!);
+                                            await vectorizationRequest.UpdateVectorizationRequestResource(
+                                                _instanceSettings.Id,
+                                                vectorizationResourceProvider,
+                                                DefaultAuthentication.ServiceIdentity!);
                                             pipelineState.VectorizationRequestObjectIds.Add(vectorizationRequest.ObjectId!);
                                             //issue process action on the created vectorization request
                                             await vectorizationRequest.ProcessVectorizationRequest(vectorizationResourceProvider);
@@ -318,7 +326,10 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                         try
                                         {
                                             //create the vectorization request
-                                            await vectorizationRequest.UpdateVectorizationRequestResource(vectorizationResourceProvider, DefaultAuthentication.ServiceIdentity!);
+                                            await vectorizationRequest.UpdateVectorizationRequestResource(
+                                                _instanceSettings.Id,
+                                                vectorizationResourceProvider,
+                                                DefaultAuthentication.ServiceIdentity!);
                                             pipelineState.VectorizationRequestObjectIds.Add(vectorizationRequest.ObjectId!);
 
                                             //issue process action on the created vectorization request
@@ -328,7 +339,10 @@ namespace FoundationaLLM.Vectorization.Services.Pipelines
                                                 vectorizationRequest.ProcessingState = VectorizationProcessingState.Failed;
                                                 pipelineState.ErrorMessages.Add($"Error while submitting process action on vectorization request {vectorizationRequest.Name} in pipeline {pipelineName}: {processResult.ErrorMessage!}");
                                             }
-                                            await vectorizationRequest.UpdateVectorizationRequestResource(vectorizationResourceProvider, DefaultAuthentication.ServiceIdentity!);
+                                            await vectorizationRequest.UpdateVectorizationRequestResource(
+                                                _instanceSettings.Id,
+                                                vectorizationResourceProvider,
+                                                DefaultAuthentication.ServiceIdentity!);
                                         }
                                         catch (Exception ex)
                                         {

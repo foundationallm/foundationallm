@@ -119,7 +119,8 @@ namespace Management.Client.Tests.Clients.Resources
             var attachment = new AttachmentFile { Name = "test-attachment", OriginalFileName = "test-attachment.txt" };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {
-                ObjectId = "test-object-id"
+                ObjectId = "test-object-id",
+                ResourceExists = false
             }; ;
 
             _mockRestClient.Resources

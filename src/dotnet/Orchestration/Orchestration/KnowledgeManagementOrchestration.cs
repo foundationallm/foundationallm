@@ -51,8 +51,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         private readonly ILogger<OrchestrationBase> _logger = logger;
         private readonly bool _dataSourceAccessDenied = dataSourceAccessDenied;
         private readonly string _fileUserContextName = $"{callContext.CurrentUserIdentity!.UPN?.NormalizeUserPrincipalName() ?? callContext.CurrentUserIdentity!.UserId}-file-{instanceId.ToLower()}";
-        private readonly string _fileUserContextObjectId = $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileUserContexts}/"
-            + $"{callContext.CurrentUserIdentity!.UPN?.NormalizeUserPrincipalName() ?? callContext.CurrentUserIdentity!.UserId}-file-{instanceId.ToLower()}";
 
         private readonly IResourceProviderService _attachmentResourceProvider =
             resourceProviderServices[ResourceProviderNames.FoundationaLLM_Attachment];
@@ -133,7 +131,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 .SelectAwait(async x => await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(x, _callContext.CurrentUserIdentity!));
 
             var fileUserContext = await _azureOpenAIResourceProvider.GetResourceAsync<FileUserContext>(
-                _fileUserContextObjectId,
+                _instanceId,
+                _fileUserContextName,
                 _callContext.CurrentUserIdentity!);
 
             List<AttachmentProperties> result = [];
@@ -193,7 +192,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             if (newFileMappings.Count > 0)
             {
                 var fileUserContext = await _azureOpenAIResourceProvider.GetResourceAsync<FileUserContext>(
-                    _fileUserContextObjectId,
+                    _instanceId,
+                    _fileUserContextName,
                     _callContext.CurrentUserIdentity!);
 
                 foreach (var fileMapping in newFileMappings)
@@ -202,7 +202,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 }
 
                 await _azureOpenAIResourceProvider.UpsertResourceAsync<FileUserContext, FileUserContextUpsertResult>(
-                    _fileUserContextObjectId,
+                    _instanceId,
                     fileUserContext,
                     _callContext.CurrentUserIdentity!);
             }

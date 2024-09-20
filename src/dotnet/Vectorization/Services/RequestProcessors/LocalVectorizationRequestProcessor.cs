@@ -12,10 +12,10 @@ namespace FoundationaLLM.Vectorization.Services.RequestProcessors
     public class LocalVectorizationRequestProcessor (VectorizationServiceFactory vectorizationServiceFactory) : IVectorizationRequestProcessor
     {        
         /// <inheritdoc/>
-        public async Task<VectorizationResult> ProcessRequest(VectorizationRequest vectorizationRequest, UnifiedUserIdentity? userIdentity)
+        public async Task<VectorizationResult> ProcessRequest(string instanceId, VectorizationRequest vectorizationRequest, UnifiedUserIdentity? userIdentity)
         {            
             var vectorizationService = vectorizationServiceFactory!.GetService(vectorizationRequest);
-            var response = await vectorizationService.ProcessRequest(vectorizationRequest, userIdentity);
+            var response = await vectorizationService.ProcessRequest(instanceId, vectorizationRequest, userIdentity);
             return response;
         }
     }

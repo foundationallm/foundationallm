@@ -316,6 +316,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     return new AssistantUserContextUpsertResult
                     {
                         ObjectId = assistantUserContext.ObjectId,
+                        ResourceExists = false,
                         NewOpenAIAssistantId = newOpenAIAssistantId,
                         NewOpenAIAssistantThreadId = newOpenAIAssistantThreadId,
                         NewOpenAIAssistantVectorStoreId = newOpenAIAssistantVectorStoreId
@@ -376,6 +377,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     return new AssistantUserContextUpsertResult
                     {
                         ObjectId = existingAssistantUserContext.ObjectId,
+                        ResourceExists = true,
                         NewOpenAIAssistantId = newOpenAIAssistantId,
                         NewOpenAIAssistantThreadId = newOpenAIAssistantThreadId,
                         NewOpenAIAssistantVectorStoreId = newOpenAIAssistantVectorStoreId
@@ -523,6 +525,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     return new FileUserContextUpsertResult
                     {
                         ObjectId = existingFileUserContext.ObjectId,
+                        ResourceExists = false,
                         NewOpenAIFileId = newOpenAIFileId!
                     };
                 }
@@ -594,6 +597,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     return new FileUserContextUpsertResult
                     {
                         ObjectId = existingFileUserContext.ObjectId,
+                        ResourceExists = true,
                         NewOpenAIFileId = newOpenAIFileId!
                     };
                 }

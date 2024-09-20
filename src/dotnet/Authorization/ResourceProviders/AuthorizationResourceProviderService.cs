@@ -133,7 +133,8 @@ namespace FoundationaLLM.Authorization.ResourceProviders
             if (roleAssignmentResult.Success)
                 return new ResourceProviderUpsertResult
                 {
-                    ObjectId = roleAssignment.ObjectId
+                    ObjectId = roleAssignment.ObjectId,
+                    ResourceExists = false
                 };
 
             throw new ResourceProviderException("The role assignment failed.");

@@ -358,7 +358,7 @@ public partial class CoreService(
             ? ResourceProviderNames.FoundationaLLM_AzureOpenAI
             : null;
         var result = await _attachmentResourceProvider.UpsertResourceAsync<AttachmentFile, ResourceProviderUpsertResult>(
-                $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Attachment}/attachments/{attachmentFile.Name}",
+                instanceId,
                 attachmentFile,
                 _callContext.CurrentUserIdentity!);
 
@@ -398,7 +398,7 @@ public partial class CoreService(
             }
 
             _ = await _azureOpenAIResourceProvider.UpsertResourceAsync<FileUserContext, ResourceProviderUpsertResult>(
-                $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileUserContexts}/{fileUserContextName}",
+                instanceId,
                 fileUserContext,
                 userIdentity);
         }

@@ -73,12 +73,12 @@ namespace FoundationaLLM.Orchestration.Core.Services
                     DefaultAuthentication.ServiceIdentity!);
 
                 _externalOrchestrationServiceNames = apiEndpointConfigurations
-                    .Where(aec => aec.Category == APIEndpointCategory.ExternalOrchestration
-                        && aec.AuthenticationParameters.TryGetValue(AuthenticationParametersKeys.APIKeyConfigurationName, out var apiKeyConfigObj)
+                    .Where(aec => aec.Resource.Category == APIEndpointCategory.ExternalOrchestration
+                        && aec.Resource.AuthenticationParameters.TryGetValue(AuthenticationParametersKeys.APIKeyConfigurationName, out var apiKeyConfigObj)
                         && apiKeyConfigObj is JsonElement apiKeyConfig
                         && !string.IsNullOrWhiteSpace(apiKeyConfig.GetString())
                         && apiKeyConfig.GetString()!.StartsWith(AppConfigurationKeySections.FoundationaLLM_APIEndpoints))
-                    .Select(aec => aec.Name)
+                    .Select(aec => aec.Resource.Name)
                     .ToList();
 
                 _logger.LogInformation("The LLM Orchestration Service Manager service was successfully initialized.");

@@ -74,11 +74,11 @@ namespace FoundationaLLM.Common.Interfaces
         /// </summary>
         /// <typeparam name="T">The type of the resource.</typeparam>
         /// <typeparam name="TResult">The type of the result returned</typeparam>
-        /// <param name="resourcePath">The logical path of the resource.</param>
+        /// <param name="instanceId">The FoundationaLLM instance id.</param>
         /// <param name="resource">The instance of the resource being created or updated.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
         /// <returns>The object id of the resource.</returns>
-        Task<TResult> UpsertResourceAsync<T, TResult>(string resourcePath, T resource, UnifiedUserIdentity userIdentity)
+        Task<TResult> UpsertResourceAsync<T, TResult>(string instanceId, T resource, UnifiedUserIdentity userIdentity)
             where T : ResourceBase
             where TResult : ResourceProviderUpsertResult;
 
