@@ -399,7 +399,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         /// <returns></returns>
         public async Task<object> ExecuteActionAsync(string resourcePath, string? serializedAction = null) =>
             await ExecuteActionAsync(
-                GetResourcePath(resourcePath),
+                GetParsedResourcePath(resourcePath),
                 new ResourcePathAuthorizationResult
                 {
                     ResourcePath = resourcePath,
@@ -447,19 +447,24 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             where T : VectorizationProfileBase
         {
             var resourceName = JsonSerializer.Deserialize<ResourceName>(serializedAction);
-            return profileStore.Values.Any(p => p.Name == resourceName!.Name)
+            var vectorizationProfile = profileStore.Values.SingleOrDefault(p => p.Name == resourceName!.Name);
+            return vectorizationProfile != null
                 ? new ResourceNameCheckResult
                 {
                     Name = resourceName!.Name,
                     Type = resourceName.Type,
                     Status = NameCheckResultType.Denied,
+                    Exists = true,
+                    Deleted = vectorizationProfile.Deleted,
                     Message = "A resource with the specified name already exists or was previously deleted and not purged."
                 }
                 : new ResourceNameCheckResult
                 {
                     Name = resourceName!.Name,
                     Type = resourceName.Type,
-                    Status = NameCheckResultType.Allowed
+                    Status = NameCheckResultType.Allowed,
+                    Exists = false,
+                    Deleted = false
                 };
         }
 

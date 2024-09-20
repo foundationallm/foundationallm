@@ -194,6 +194,22 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             }
         }
 
+        /// <inheritdoc/>
+        public async Task WaitForInitialization()
+        {
+            if (IsInitialized)
+                return;
+
+            for (int i = 0; i < 6; i++)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(10));
+                if (IsInitialized)
+                    return;
+            }
+
+            throw new ResourceProviderException($"The resource provider {Name} did not initialize within the expected time frame.");
+        }
+
         #region Virtuals to override in derived classes
 
         /// <summary>
@@ -308,19 +324,6 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             await DeleteResourceAsync(ParsedResourcePath, userIdentity);
         }
 
-        /// <summary>
-        /// Gets a <see cref="ResourcePath"/> object for the specified string resource path.
-        /// </summary>
-        /// <param name="resourcePath">The resource path.</param>
-        /// <param name="allowAction">Indicates whether actions are allowed in the resource path.</param>
-        /// <returns>A <see cref="ResourcePath"/> object.</returns>
-        public ResourcePath GetResourcePath(string resourcePath, bool allowAction = true) =>
-            new(
-                resourcePath,
-                _allowedResourceProviders,
-                _allowedResourceTypes,
-                allowAction: allowAction);
-
         #region Virtuals to override in derived classes
 
         /// <summary>
@@ -415,11 +418,40 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         #region IResourceProviderService
 
         /// <inheritdoc/>
+        public async Task<List<ResourceProviderGetResult<T>>> GetResourcesAsync<T>(string instanceId, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
+            where T : ResourceBase
+        {
+            EnsureServiceInitialization();
+            var (ParsedResourcePath, AuthorizableOperation) =
+                CreateAndValidateResourcePath(instanceId, HttpMethod.Get, typeof(T));
+
+            var authorizationResult =
+               await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, true, options?.IncludeRoles ?? false);
+
+            return ((await GetResourcesAsync(ParsedResourcePath, authorizationResult, userIdentity)) as List<ResourceProviderGetResult<T>>)!;
+        }
+
+        /// <inheritdoc/>
         public async Task<T> GetResourceAsync<T>(string resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
             where T : ResourceBase
         {
             EnsureServiceInitialization();
-            var (ParsedResourcePath, AuthorizableOperation) = ParseAndValidateResourcePath(resourcePath, HttpMethod.Get, false, typeof(T));
+            var (ParsedResourcePath, AuthorizableOperation) =
+                ParseAndValidateResourcePath(resourcePath, HttpMethod.Get, false, typeof(T));
+
+            // Authorize access to the resource path.
+            await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
+
+            return await GetResourceAsyncInternal<T>(ParsedResourcePath, userIdentity, options);
+        }
+
+        /// <inheritdoc/>
+        public async Task<T> GetResourceAsync<T>(string instanceId, string resourceName, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
+            where T : ResourceBase
+        {
+            EnsureServiceInitialization();
+            var (ParsedResourcePath, AuthorizableOperation) =
+                CreateAndValidateResourcePath(instanceId, HttpMethod.Get, typeof(T), resourceName);
 
             // Authorize access to the resource path.
             await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
@@ -463,6 +495,29 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             }
 
             return upsertResult;
+        }
+
+        /// <inheritdoc/>
+        public async Task<(bool Exists, bool Deleted)> ResourceExists<T>(string instanceId, string resourceName, UnifiedUserIdentity userIdentity)
+            where T : ResourceBase
+        {
+            EnsureServiceInitialization();
+            var (ParsedResourcePath, AuthorizableOperation) =
+                CreateAndValidateResourcePath(instanceId, HttpMethod.Get, typeof(T));
+
+            // Authorize access to the resource path.
+            await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
+
+            var resourceNameCheckResult = await CheckResourceName<T>(new ResourceName
+                {
+                    Name= resourceName
+                });
+
+            return
+                (
+                    resourceNameCheckResult.Exists,
+                    resourceNameCheckResult.Deleted
+                );
         }
 
         #region Virtuals to override in derived classes
@@ -581,6 +636,32 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         {
             if (!_isInitialized)
                 throw new ResourceProviderException($"The resource provider {_name} is not initialized.");
+        }
+
+        private (ResourcePath ParsedResourcePath, string AuthorizableOperation) CreateAndValidateResourcePath(
+            string instanceId,
+            HttpMethod operationType,
+            Type resourceType,
+            string? resourceName = null)
+        {
+            var result = GetResourcePath(instanceId, resourceType, resourceName);
+            var parsedResourcePath = new ResourcePath(
+                result.ResourcePath,
+                _allowedResourceProviders,
+                _allowedResourceTypes,
+                allowAction: false);
+
+            var resourceAllowedTypes =
+                result.ResourceTypeDescriptor.AllowedTypes.SingleOrDefault(at => at.HttpMethod == operationType.Method)
+                ?? throw new ResourceProviderException(
+                    $"The HTTP method {operationType.Method} is not supported for resources of type {resourceType.Name} by the {_name} resource provider.",
+                    StatusCodes.Status400BadRequest);
+
+            return
+                (
+                    parsedResourcePath,
+                    resourceAllowedTypes.AuthorizableOperation
+                );
         }
 
         private (ResourcePath ParsedResourcePath, string AuthorizableOperation) ParseAndValidateResourcePath(
@@ -1078,13 +1159,17 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     Name = resourceName!.Name,
                     Type = resourceName.Type,
                     Status = NameCheckResultType.Denied,
+                    Exists = result.Success,
+                    Deleted = result.Deleted,
                     Message = "A resource with the specified name already exists or was previously deleted and not purged."
                 }
                 : new ResourceNameCheckResult
                 {
                     Name = resourceName!.Name,
                     Type = resourceName.Type,
-                    Status = NameCheckResultType.Allowed
+                    Status = NameCheckResultType.Allowed,
+                    Exists = result.Success,
+                    Deleted = result.Deleted
                 };
         }
 
@@ -1137,7 +1222,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 // Filter resources based on the object IDs provided in the filter.
 
                 var filterResourcePaths = filter.ObjectIDs?
-                    .Select(id => this.GetResourcePath(id, false))
+                    .Select(id => this.GetParsedResourcePath(id, false))
                     .ToList()
                     ?? [];
 
@@ -1267,6 +1352,48 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 resource.UpdatedOn = DateTimeOffset.UtcNow;
             }
         }
+
+        /// <summary>
+        /// Get the fully qualified resource path for a specified resource.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="resourceType">The type of the resource.</param>
+        /// <param name="resourceName">The name of the resource.</param>
+        /// <returns></returns>
+        protected (string ResourcePath, ResourceTypeDescriptor ResourceTypeDescriptor) GetResourcePath(string instanceId, Type resourceType, string? resourceName = null)
+        {
+            if (string.IsNullOrWhiteSpace(instanceId))
+                throw new ResourceProviderException(
+                    $"The FoundationaLLM instance identifier is invalid.",
+                    StatusCodes.Status400BadRequest);
+
+            var resourceTypeDescriptor =
+                AllowedResourceTypes.Values.SingleOrDefault(art => art.ResourceType == resourceType)
+                ?? throw new ResourceProviderException(
+                    $"The resource type {resourceType.Name} is not supported by the {Name} resource provider.",
+                    StatusCodes.Status400BadRequest);
+
+            return
+                (
+                    string.IsNullOrWhiteSpace(resourceName)
+                        ? $"/instances/{instanceId}/providers/{this.Name}/{resourceTypeDescriptor.ResourceTypeName}"
+                        : $"/instances/{instanceId}/providers/{this.Name}/{resourceTypeDescriptor.ResourceTypeName}/{resourceName}",
+                    resourceTypeDescriptor
+                );
+        }
+
+        /// <summary>
+        /// Gets a <see cref="ResourcePath"/> object for the specified string resource path.
+        /// </summary>
+        /// <param name="resourcePath">The resource path.</param>
+        /// <param name="allowAction">Indicates whether actions are allowed in the resource path.</param>
+        /// <returns>A <see cref="ResourcePath"/> object.</returns>
+        protected ResourcePath GetParsedResourcePath(string resourcePath, bool allowAction = true) =>
+            new(
+                resourcePath,
+                _allowedResourceProviders,
+                _allowedResourceTypes,
+                allowAction: allowAction);
 
         #endregion
     }

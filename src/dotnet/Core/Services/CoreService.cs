@@ -351,15 +351,9 @@ public partial class CoreService(
     /// <inheritdoc/>
     public async Task<ResourceProviderUpsertResult> UploadAttachment(string instanceId, string sessionId, AttachmentFile attachmentFile, string agentName, UnifiedUserIdentity userIdentity)
     {
-        var agentBase = await _agentResourceProvider.HandleGet<AgentBase>(
-            $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Agent}/{AgentResourceTypeNames.Agents}/{agentName}",
-            userIdentity);
-        var aiModelBase = await _aiModelResourceProvider.HandleGet<AIModelBase>(
-            agentBase.AIModelObjectId!,
-            userIdentity);
-        var apiEndpointConfiguration = await _configurationResourceProvider.HandleGet<APIEndpointConfiguration>(
-            aiModelBase.EndpointObjectId!,
-            userIdentity);
+        var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>(instanceId, agentName, userIdentity);
+        var aiModelBase = await _aiModelResourceProvider.GetResourceAsync<AIModelBase>(agentBase.AIModelObjectId!, userIdentity);
+        var apiEndpointConfiguration = await _configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(aiModelBase.EndpointObjectId!, userIdentity);
 
         var agentRequiresOpenAIAssistants = agentBase.HasCapability(AgentCapabilityCategoryNames.OpenAIAssistants);
 
@@ -503,7 +497,7 @@ public partial class CoreService(
 
     private async Task<AgentGatekeeperOverrideOption> ProcessGatekeeperOptions(CompletionRequest completionRequest)
     {
-        var agentBase = await _agentResourceProvider.HandleGet<AgentBase>($"/{AgentResourceTypeNames.Agents}/{completionRequest.AgentName}", _callContext.CurrentUserIdentity ??
+        var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>($"/{AgentResourceTypeNames.Agents}/{completionRequest.AgentName}", _callContext.CurrentUserIdentity ??
             throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving the agent settings."));
 
         if (agentBase?.GatekeeperSettings?.UseSystemSetting == false)
