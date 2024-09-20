@@ -56,6 +56,14 @@
 				</template>
 			</VTooltip>
 			<Dialog
+				v-model:visible="showOneDriveIframeDialog"
+				modal
+				aria-label="OneDrive File Picker Dialog"
+				style="max-width: 98%; min-width: 50%; max-height: 98%;"
+			>
+				<div style="height: 500px; width: 100%;" id="oneDriveIframeDialogContent"></div>
+			</Dialog>
+			<Dialog
 				v-model:visible="showFileUploadDialog"
 				header="Upload File(s)"
 				modal
@@ -241,6 +249,7 @@ export default {
 			agents: [],
 			agentListOpen: false,
 			showFileUploadDialog: false,
+			showOneDriveIframeDialog: false,
 			isUploading: false,
 			uploadProgress: 0,
 			isMobile: window.screen.width < 950,
@@ -257,7 +266,7 @@ export default {
 				authentication: {},
 				messaging: {
 					origin: document.location.origin,
-					channelId: "27"
+					channelId: "27",
 				},
 				typesAndSources: {
 					mode: "files",
@@ -376,6 +385,7 @@ export default {
 		toggle(event: any) {
 			this.$refs.menu.toggle(event);
 		},
+
 		handleKeydown(event: KeyboardEvent) {
 			if (event.key === 'Enter' && !event.shiftKey && !this.agentListOpen) {
 				event.preventDefault();
@@ -544,6 +554,8 @@ export default {
 		},
 
 		async downloadFromOneDrive() {
+			this.showOneDriveIframeDialog = true;
+
 			let oneDriveToken;
 			try {
 				oneDriveToken = await this.$authStore.getOneDriveToken();
@@ -552,40 +564,39 @@ export default {
 				return await this.$authStore.loginOneDrive();
 			}
 
-			this.win = window.open("", "Picker", "width=1080,height=680");
-			const queryString = new URLSearchParams({
-				filePicker: JSON.stringify(this.filePickerParams),
-				locale: "en-us",
-			});
+			const iframe = document.createElement('iframe');
+			iframe.style.width = '100%';
+			iframe.style.height = '100%';
+			iframe.style.border = 'none';
 
-			const url = "https://solliancenet-my.sharepoint.com/_layouts/15/FilePicker.aspx?" + queryString;
+			const dialogContent = document.getElementById('oneDriveIframeDialogContent');
+			dialogContent.innerHTML = ''; // Clear any existing content
+			dialogContent.appendChild(iframe);
 
-			const form = document.createElement("form");
-			form.setAttribute("action", url);
-			form.setAttribute("method", "POST");
-			// this.win?.document.body.append(form);
+			iframe.onload = () => {
+				const queryString = new URLSearchParams({
+					filePicker: JSON.stringify(this.filePickerParams),
+					locale: "en-us",
+				});
 
-			const input = this.win.document.createElement("input");
-			input.setAttribute("type", "hidden");
-			input.setAttribute("name", "access_token");
-			input.setAttribute("value", oneDriveToken.accessToken);
-			form.appendChild(input);
+				const url = `https://solliancenet-my.sharepoint.com/_layouts/15/FilePicker.aspx?${queryString}`;
 
-			this.win?.document.body.append(form);
+				const form = document.createElement("form");
+				form.setAttribute("action", url);
+				form.setAttribute("method", "POST");
+				iframe.contentWindow.document.body.append(form);
 
-			form.submit();
+				const input = iframe.contentWindow.document.createElement("input");
+				input.setAttribute("type", "hidden");
+				input.setAttribute("name", "access_token");
+				input.setAttribute("value", oneDriveToken.accessToken);
+				form.appendChild(input);
 
-			console.log(this.win);
+				form.submit();
 
-			window.addEventListener("message", (event) => {
-				// console.log(event);
-				// console.log(event);
-				// console.log("event.source");
-				// console.log(event.source);
-				// console.log("this.win:" + JSON.stringify(this.win));
-				// console.log(this.win);
-				// if (event.source && event.source === this.win) {
+				window.addEventListener("message", (event) => {
 					const message = event.data;
+
 					if (message.type === "initialize" && message.channelId === this.filePickerParams.messaging.channelId) {
 						console.log("initialize");
 						this.port = event.ports[0];
@@ -595,8 +606,8 @@ export default {
 							type: "activate",
 						});
 					}
-				// }
-			});
+				});
+			};
 		},
 		
 		async messageListener(event) {
@@ -604,7 +615,7 @@ export default {
 
 			switch (message.type) {
 				case "notification":
-					console.log(`notification: ${message}`);
+					console.log(`notification: ${JSON.stringify(message)}`);
 					break;
 
 				case "command":
@@ -635,7 +646,12 @@ export default {
 
 						case "close":
 							console.log(`Closed: ${JSON.stringify(command)}`);
-							this.win.close();
+
+							const dialogContent = document.getElementById('oneDriveIframeDialogContent');
+							dialogContent.innerHTML = '';
+							window.removeEventListener("message", this.messageListener);
+							this.port.close();
+							this.showOneDriveIframeDialog = false;
 							break;
 
 						case "pick":
@@ -648,7 +664,6 @@ export default {
 									result: "success",
 								},
 							});
-							this.win.close();
 							break;
 							
 						default:
@@ -666,7 +681,6 @@ export default {
 					break;
 			}
 		},
-		
 
 		async callCoreApiOneDriveDownloadEndpoint(id) {
 			const oneDriveToken = await this.$authStore.requestOneDriveConsent();
@@ -677,6 +691,7 @@ export default {
 				id: id,
 				access_token: oneDriveToken,
 			});
+			this.showOneDriveIframeDialog = false;
 		},
 
 		hideAllPoppers() {
