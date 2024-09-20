@@ -86,6 +86,7 @@ $ErrorActionPreference = "Stop"
 
 function New-FllmEntraIdApps {
     param (
+        [Parameter(Mandatory = $false)][array]$ownerObjectIds=@(),
         [Parameter(Mandatory = $true)][string]$appPermissionsId,
         [Parameter(Mandatory = $false)][string]$appUrl,
         [Parameter(Mandatory = $false)][string]$appUrlLocal,
@@ -107,6 +108,11 @@ function New-FllmEntraIdApps {
         Write-Host -ForegroundColor Yellow "Creating EntraID Application Registration named $($fllmAppRegMetaData.Api.Name)"
         $($fllmAppRegMetaData.Api).AppId = $(az ad app create --display-name $($fllmAppRegMetaData.Api.Name) --query appId --output tsv)
         $($fllmAppRegMetaData.Api).ObjectId = $(az ad app show --id $($fllmAppRegMetaData.Api.AppId) --query id --output tsv)
+
+        foreach ($objectId in $ownerObjectIds) {
+            az ad app owner add --id $($fllmAppRegMetaData.Api.AppId) --owner-object-id $objectId
+        }        
+        
         az ad sp create --id $($fllmAppRegMetaData.Api.AppId) 
 
         # Create the FLLM ClientApp Registration
@@ -174,8 +180,21 @@ function New-FllmEntraIdApps {
 }
 
 $fllmAppRegs = @{}
+$ownerObjectIds = @()
+
+if (Test-Path ../config/admins.json -PathType Leaf) {
+    $ownerAccounts = Get-Content ../config/admins.json -Raw | ConvertFrom-Json
+    foreach ($account in $ownerAccounts) {
+        $objectId = $(az ad user show --id $account --query "id" -o tsv)
+        if ($objectId) {
+            $ownerObjectIds += $objectId
+        }
+    }
+}
+
 # Create FoundationaLLM Core App Registrations
 $params = @{
+    ownerObjectId        = $ownerObjectIds
     appPermissionsId     = "6da07102-bb6a-421d-a71e-dfdb6031d3d8"
     appUrl               = ""
     appUrlLocal          = "http://localhost:3000/signin-oidc"
@@ -189,6 +208,7 @@ $($fllmAppRegs).Core = New-FllmEntraIdApps @params
 
 # Create FoundationaLLM Management App Registrations
 $params = @{
+    ownerObjectId        = $ownerObjectIds
     appPermissionsId     = "c57f4633-0e58-455a-8ede-5de815fe6c9c"
     appUrl               = ""
     appUrlLocal          = "http://localhost:3001/signin-oidc"
@@ -202,6 +222,7 @@ $($fllmAppRegs).Management = New-FllmEntraIdApps @params
 
 # Create FoundationaLLM Authorization App Registration
 $params = @{
+    ownerObjectId        = $ownerObjectIds
     appPermissionsId  = "9e313dd4-51e4-4989-84d0-c713e38e467d"
     createClientApp   = $false
     fllmApi           = $authAppName
