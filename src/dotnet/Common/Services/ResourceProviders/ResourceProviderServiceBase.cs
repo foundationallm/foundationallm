@@ -803,7 +803,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// </remarks>
         protected async Task<T?> LoadResource<T>(TResourceReference resourceReference) where T : ResourceBase
         {
-            if (resourceReference.ResourceType != typeof(T))
+            if (typeof(T).IsAssignableFrom(resourceReference.ResourceType))
                 throw new ResourceProviderException(
                     $"The resource reference {resourceReference.Name} is not of the expected type {typeof(T).Name}.",
                     StatusCodes.Status400BadRequest);
