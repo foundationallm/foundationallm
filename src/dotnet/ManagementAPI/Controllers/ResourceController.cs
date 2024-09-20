@@ -60,7 +60,10 @@ namespace FoundationaLLM.Management.API.Controllers
                 resourcePath,
                 async (resourceProviderService) =>
                 {
-                    var result = await resourceProviderService.HandlePostAsync(resourcePath, serializedResource.ToString()!, _callContext.CurrentUserIdentity);
+                    var result = await resourceProviderService.HandlePostAsync(
+                        $"instances/{instanceId}/providers/{resourceProvider}/{resourcePath}",
+                        serializedResource.ToString()!,
+                        _callContext.CurrentUserIdentity);
                     return new OkObjectResult(result);
                 });
 
