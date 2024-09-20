@@ -131,6 +131,14 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
         #endregion
 
+        #region Resource provider strongly typed operations
+
+        /// <inheritdoc/>
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) =>
+            (await LoadResource<T>(resourcePath.ResourceId!))!;
+
+        #endregion
+
         #region Event handling
 
         /// <inheritdoc/>
