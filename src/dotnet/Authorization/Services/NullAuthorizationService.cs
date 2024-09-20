@@ -25,7 +25,7 @@ namespace FoundationaLLM.Authorization.Services
                 {
                     ResourceName = string.Empty,
                     ResourcePath = rp,
-                    Authorized = false
+                    Authorized = true
                 });
 
             await Task.CompletedTask;
