@@ -3,8 +3,15 @@
 		<div class="input-wrapper">
 			<div class="tooltip-component">
 				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-					<i class="pi pi-info-circle" tabindex="0"></i>
-					<template #popper> Use Shift+Enter to add a new line </template>
+					<i
+						class="pi pi-info-circle"
+						tabindex="0"
+						@keydown.esc="hideAllPoppers"
+						aria-label="info icon"
+					></i>
+					<template #popper role="tooltip"
+						><div role="tooltip">Use Shift+Enter to add a new line</div></template
+					>
 				</VTooltip>
 			</div>
 			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
@@ -16,11 +23,14 @@
 					class="file-upload-button secondary-button"
 					style="height: 100%"
 					@click="showFileUploadDialog = true"
+					@keydown.esc="hideAllPoppers"
 				/>
 				<template #popper>
-					Attach files ({{
-						fileArrayFiltered.length === 1 ? '1 file' : fileArrayFiltered.length + ' files'
-					}})
+					<div role="tooltip">
+						Attach files ({{
+							fileArrayFiltered.length === 1 ? '1 file' : fileArrayFiltered.length + ' files'
+						}})
+					</div>
 				</template>
 			</VTooltip>
 			<Dialog
@@ -182,6 +192,7 @@
 <script lang="ts">
 import { Mentionable } from 'vue-mention';
 import 'floating-vue/dist/style.css';
+import { hideAllPoppers } from 'floating-vue';
 
 export default {
 	name: 'ChatInput',
@@ -372,11 +383,15 @@ export default {
 					});
 					event.files.splice(index, 1);
 				}
-				
+
 				if (!allowedFileTypes || allowedFileTypes === '') {
 					return;
 				}
-				if (!allowedFileTypes.includes(file.name.split('.').pop())) {
+				if (!allowedFileTypes
+					.split(',')
+					.map((type: string) => type.trim().toLowerCase())
+					.includes(file.name.split('.').pop()?.toLowerCase())
+				) {
 					this.$toast.add({
 						severity: 'error',
 						summary: 'Error',
@@ -386,6 +401,10 @@ export default {
 					event.files.splice(index, 1);
 				}
 			});
+		},
+
+		hideAllPoppers() {
+			hideAllPoppers();
 		},
 	},
 };

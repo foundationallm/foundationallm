@@ -1,5 +1,5 @@
 <template>
-	<div v-if="content" class="message-content">
+	<div v-if="content && !content.skip" class="message-content">
 		<!-- Image -->
 		<div v-if="content.type === 'image_file'">
 			<template v-if="loading || (!error && !content.blobUrl)">
@@ -46,7 +46,7 @@
 				:download="content.fileName ?? content.blobUrl ?? content.value"
 				href="#"
 				target="_blank"
-				@click.prevent="fetchBlobUrl(content)"
+				@click.prevent="handleFileDownload(content)"
 			>
 				{{ content.fileName ?? content.blobUrl ?? content.value }}
 			</a>
@@ -56,6 +56,7 @@
 
 <script>
 import api from '@/js/api';
+import { fetchBlobUrl } from '@/js/fileService';
 
 export default {
 	props: {
@@ -104,38 +105,26 @@ export default {
 	},
 
 	methods: {
-		async fetchBlobUrl(content) {
-			if (!content.blobUrl) {
-				content.loading = true;
-				try {
-					const response = await api.fetchDirect(content.value);
-					const blob = new Blob([response], { type: response.type });
-					content.blobUrl = URL.createObjectURL(blob);
-				} catch (error) {
-					console.error(
-						`Failed to fetch content from ${content.value}`,
-						error ? error.message : error,
-					);
-					this.$toast.add({
-						severity: 'error',
-						summary: 'Error downloading file',
-						detail: `Failed to download "${content.fileName}". ${error ? (error.message ? error.message : error.title ? error.title : error) : error}`,
-						life: 5000,
-					});
-					content.error = true;
-				} finally {
-					content.loading = false;
-				}
-			}
+		// handleFileDownloadLinkClick(event) {
+		// 	const link = event.target.closest('a.file-download-link');
+		// 	if (link && link.dataset.href) {
+		// 		event.preventDefault();
+		// 		this.fetchBlobUrlFromHref(link.dataset.href);
+		// 	}
+		// },
 
-			if (content.blobUrl) {
-				const link = document.createElement('a');
-				link.href = content.blobUrl;
-				link.download = content.fileName; // Set the correct filename here
-				document.body.appendChild(link);
-				link.click();
-				document.body.removeChild(link);
-			}
+		// async fetchBlobUrlFromHref(href) {
+		// 	const content = {
+		// 		value: href,
+		// 		blobUrl: null,
+		// 		fileName: href.split('/').pop(),
+		// 	};
+
+		// 	await this.fetchBlobUrl(content);
+		// },
+
+		async handleFileDownload(content) {
+			await fetchBlobUrl(content, this.$toast);
 		},
 	},
 };

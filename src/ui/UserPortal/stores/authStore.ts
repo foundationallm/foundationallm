@@ -109,8 +109,15 @@ export const useAuthStore = defineStore('auth', {
 			});
 		},
 
-		async logoutSilent() {
+		async clearLocalSession() {
 			await this.msalInstance.controller.browserStorage.clear();
+		},
+
+		async logoutSilent() {
+			const logoutHint = this.currentAccount.idTokenClaims.login_hint;
+			await this.msalInstance.logoutRedirect({
+				logoutHint,
+			});
 		},
 
 		async logout() {
