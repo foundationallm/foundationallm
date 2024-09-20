@@ -38,6 +38,7 @@ var kvServiceType = 'kv'
 var name = 'ai-${resourceSuffix}'
 
 /** Outputs **/
+output name string = main.name
 @description('Application Insights Connection String KeyVault Secret Uri.')
 output aiConnectionStringSecretUri string = aiConnectionString.outputs.secretUri
 

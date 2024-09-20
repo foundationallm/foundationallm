@@ -39,12 +39,13 @@
 		"@pinia/nuxt": "^0.5.4",
 		"@vue-js-cron/light": "^4.0.5",
 		"lodash": "^4.17.21",
+		"md5": "^2.3.0",
 		"pinia": "^2.2.2",
 		"primeicons": "^7.0.0",
 		"primevue": "^3.53.0",
 		"uuid": "^10.0.0"
 	},
 	"optionalDependencies": {
-		"@rollup/rollup-linux-x64-gnu": "4.21.0"  
-	 }
+		"@rollup/rollup-linux-x64-gnu": "4.21.0"
+	}
 }
