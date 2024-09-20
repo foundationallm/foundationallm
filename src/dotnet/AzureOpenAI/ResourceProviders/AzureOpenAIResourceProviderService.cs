@@ -113,10 +113,12 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
         protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) =>
             resourcePath.ResourceTypeName switch
             {
+                AzureOpenAIResourceTypeNames.AssistantUserContexts => (await LoadResource<T>(
+                    resourcePath.MainResourceId!))!,
                 AzureOpenAIResourceTypeNames.FilesContent => ((await LoadFileContent(
-                    resourcePath.ResourceTypeInstances[0].ResourceId!,
-                    resourcePath.ResourceTypeInstances[1].ResourceId!)) as T)!,
-                AzureOpenAIResourceTypeNames.FileUserContexts => ((await LoadFileUserContext(resourcePath.ResourceTypeInstances[0].ResourceId!)) as T)!,
+                    resourcePath.MainResourceId!,
+                    resourcePath.ResourceId!)) as T)!,
+                AzureOpenAIResourceTypeNames.FileUserContexts => ((await LoadFileUserContext(resourcePath.MainResourceId!)) as T)!,
                 _ => throw new ResourceProviderException(
                     $"The {resourcePath.MainResourceTypeName} resource type is not supported by the {_name} resource provider.")
             };
