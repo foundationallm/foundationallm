@@ -127,6 +127,14 @@ namespace FoundationaLLM.Prompt.ResourceProviders
 
         #endregion
 
+        #region Resource provider strongly typed operations
+
+        /// <inheritdoc/>
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) =>
+            (await LoadResource<T>(resourcePath.ResourceId!))!;
+
+        #endregion
+
         #region Resource management
 
         private async Task<ResourceProviderUpsertResult> UpdatePrompt(ResourcePath resourcePath, string serializedPrompt, UnifiedUserIdentity userIdentity)
