@@ -443,7 +443,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             where TResult : ResourceProviderUpsertResult
         {
             EnsureServiceInitialization();
-            var (ParsedResourcePath, AuthorizableOperation) = CreateAndValidateResourcePath(instanceId, HttpMethod.Post, typeof(T));
+            var (ParsedResourcePath, AuthorizableOperation) = CreateAndValidateResourcePath(instanceId, HttpMethod.Post, typeof(T), resourceName: resource.Name);
 
             // Authorize access to the resource path.
             var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
@@ -461,7 +461,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         {
             EnsureServiceInitialization();
             var (ParsedResourcePath, AuthorizableOperation) =
-                CreateAndValidateResourcePath(instanceId, HttpMethod.Get, typeof(T));
+                CreateAndValidateResourcePath(instanceId, HttpMethod.Get, typeof(T), resourceName: resourceName);
 
             // Authorize access to the resource path.
             await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
