@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Models.Chat;
+﻿using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;

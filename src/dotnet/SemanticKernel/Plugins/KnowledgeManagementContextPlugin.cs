@@ -1,6 +1,6 @@
 ﻿#pragma warning disable SKEXP0001
 
-using FoundationaLLM.Common.Models.Chat;
+using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Vectorization;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Memory;

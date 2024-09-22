@@ -19,7 +19,9 @@ namespace FoundationaLLM.Common.Tests.Models.ResourceProvider
                 Name = expectedName,
                 Type = expectedType,
                 Status = expectedStatus,
-                Message = expectedMessage
+                Message = expectedMessage,
+                Exists = false,
+                Deleted = false
             };
 
             // Assert

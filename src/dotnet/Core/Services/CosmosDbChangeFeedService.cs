@@ -1,14 +1,15 @@
-﻿using Microsoft.Azure.Cosmos;
+﻿using Azure.Identity;
+using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Configuration.CosmosDB;
+using FoundationaLLM.Common.Models.Conversation;
+using FoundationaLLM.Core.Interfaces;
+using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using FoundationaLLM.Core.Interfaces;
-using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Models.Chat;
-using Microsoft.Azure.Cosmos.Fluent;
 using Polly;
 using Polly.Retry;
-using Azure.Identity;
-using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 
 namespace FoundationaLLM.Core.Services
 {
@@ -22,7 +23,7 @@ namespace FoundationaLLM.Core.Services
         private ChangeFeedProcessor? _changeFeedProcessorProcessUserSessions;
 
         private readonly ILogger<CosmosDbChangeFeedService> _logger;
-        private readonly ICosmosDbService _cosmosDbService;
+        private readonly ICosmosDBService _cosmosDBService;
         private readonly ResiliencePipeline _resiliencePipeline;
 
         private bool _changeFeedsInitialized = false;
@@ -44,10 +45,10 @@ namespace FoundationaLLM.Core.Services
         /// <exception cref="ArgumentException">Thrown if any of the required settings
         /// are null or empty.</exception>
         public CosmosDbChangeFeedService(ILogger<CosmosDbChangeFeedService> logger,
-            ICosmosDbService cosmosDbService,
+            ICosmosDBService cosmosDbService,
             IOptions<CosmosDbSettings> settings)
         {
-            _cosmosDbService = cosmosDbService;
+            _cosmosDBService = cosmosDbService;
             _logger = logger;
 
             CosmosSerializationOptions options = new()
@@ -91,7 +92,7 @@ namespace FoundationaLLM.Core.Services
             try
             {
                 _changeFeedProcessorProcessUserSessions = _sessions
-                    .GetChangeFeedProcessorBuilder<Session>("ProcessUserSessions", ProcessUserSessionsChangeFeedHandler)
+                    .GetChangeFeedProcessorBuilder<Conversation>("ProcessUserSessions", ProcessUserSessionsChangeFeedHandler)
                     .WithInstanceName($"{Guid.NewGuid()}_ProcessUserSessions") // Prefix with a unique name to allow multiple instances to run at the same time.
                     .WithLeaseContainer(_leases)
                     .Build();
@@ -120,12 +121,12 @@ namespace FoundationaLLM.Core.Services
 
         private async Task ProcessUserSessionsChangeFeedHandler(
             ChangeFeedProcessorContext context,
-            IReadOnlyCollection<Session> input,
+            IReadOnlyCollection<Conversation> input,
             CancellationToken cancellationToken)
         {
             using var logScope = _logger.BeginScope("Cosmos DB Change Feed Processor: ProcessUserSessionsChangeFeedHandler");
 
-            var sessions = input.Where(i => i.Type == nameof(Session)).ToArray();
+            var sessions = input.Where(i => i.Type == nameof(Conversation)).ToArray();
 
             _logger.LogInformation("Cosmos DB Change Feed Processor: Processing {count} changes...", sessions.Count());
 
@@ -136,7 +137,7 @@ namespace FoundationaLLM.Core.Services
                     
                     await _resiliencePipeline.ExecuteAsync(async token =>
                     {
-                        await _cosmosDbService.UpsertUserSessionAsync(record, token);
+                        await _cosmosDBService.UpsertUserSessionAsync(record, token);
                     }, cancellationToken);
                 }
                 catch (Exception ex)

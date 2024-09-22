@@ -41,7 +41,7 @@ namespace FoundationaLLM.Management.API.Controllers
                 resourcePath,
                 async (resourceProviderService) =>
                 {
-                    var result = await resourceProviderService.HandleGetAsync(resourcePath, _callContext.CurrentUserIdentity);
+                    var result = await resourceProviderService.HandleGetAsync($"instances/{instanceId}/providers/{resourceProvider}/{resourcePath}", _callContext.CurrentUserIdentity);
                     return new OkObjectResult(result);
                 });
 
@@ -60,7 +60,10 @@ namespace FoundationaLLM.Management.API.Controllers
                 resourcePath,
                 async (resourceProviderService) =>
                 {
-                    var result = await resourceProviderService.HandlePostAsync(resourcePath, serializedResource.ToString()!, _callContext.CurrentUserIdentity);
+                    var result = await resourceProviderService.HandlePostAsync(
+                        $"instances/{instanceId}/providers/{resourceProvider}/{resourcePath}",
+                        serializedResource.ToString()!,
+                        _callContext.CurrentUserIdentity);
                     return new OkObjectResult(result);
                 });
 
@@ -78,7 +81,7 @@ namespace FoundationaLLM.Management.API.Controllers
                 resourcePath,
                 async (resourceProviderService) =>
                 {
-                    await resourceProviderService.HandleDeleteAsync(resourcePath, _callContext.CurrentUserIdentity);
+                    await resourceProviderService.HandleDeleteAsync($"instances/{instanceId}/providers/{resourceProvider}/{resourcePath}", _callContext.CurrentUserIdentity);
                     return new OkResult();
                 });
 

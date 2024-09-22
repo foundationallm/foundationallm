@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Models.Chat;
+﻿using FoundationaLLM.Common.Models.Conversation;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Orchestration.Request

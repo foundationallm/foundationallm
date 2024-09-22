@@ -14,7 +14,7 @@ namespace FoundationaLLM.Agent.Models.Resources
         /// The object type of the agent.
         /// </summary>
         [JsonIgnore]
-        public Type AgentType =>
+        public override Type ResourceType =>
             Type switch
             {
                 AgentTypes.Basic => typeof(AgentBase),

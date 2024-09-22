@@ -19,6 +19,6 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         /// </summary>
         [JsonPropertyName("name")]
         [JsonPropertyOrder(-5)]
-        public required string Name { get; set; }
+        public virtual required string Name { get; set; }
     }
 }
