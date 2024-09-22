@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Core_Services_CosmosDbChangeFeedService" data-uid="FoundationaLLM.Core.Services.CosmosDbChangeFeedService" class="text-break">
-Class CosmosDbChangeFeedService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Services/CosmosDbChangeFeedService.cs/#L16"><i class="bi bi-code-slash"></i></a>
+Class CosmosDbChangeFeedService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Services/CosmosDbChangeFeedService.cs/#L17"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -168,9 +168,9 @@ Class CosmosDbChangeFeedService  <a class="header-action link-secondary" title="
 
   <a id="FoundationaLLM_Core_Services_CosmosDbChangeFeedService__ctor_" data-uid="FoundationaLLM.Core.Services.CosmosDbChangeFeedService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Core_Services_CosmosDbChangeFeedService__ctor_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Core_Services_CosmosDbChangeFeedService__FoundationaLLM_Core_Interfaces_ICosmosDbService_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_CosmosDB_CosmosDbSettings__" data-uid="FoundationaLLM.Core.Services.CosmosDbChangeFeedService.#ctor(Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Core.Services.CosmosDbChangeFeedService},FoundationaLLM.Core.Interfaces.ICosmosDbService,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.CosmosDbSettings})">
-  CosmosDbChangeFeedService(ILogger&lt;CosmosDbChangeFeedService&gt;, ICosmosDbService, IOptions&lt;CosmosDbSettings&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Services/CosmosDbChangeFeedService.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Core_Services_CosmosDbChangeFeedService__ctor_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Core_Services_CosmosDbChangeFeedService__FoundationaLLM_Common_Interfaces_ICosmosDBService_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_CosmosDB_CosmosDbSettings__" data-uid="FoundationaLLM.Core.Services.CosmosDbChangeFeedService.#ctor(Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Core.Services.CosmosDbChangeFeedService},FoundationaLLM.Common.Interfaces.ICosmosDBService,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.CosmosDbSettings})">
+  CosmosDbChangeFeedService(ILogger&lt;CosmosDbChangeFeedService&gt;, ICosmosDBService, IOptions&lt;CosmosDbSettings&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Services/CosmosDbChangeFeedService.cs/#L47"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Core.Services.CosmosDbChangeFeedService.html">CosmosDbChangeFeedService</a> class.</p>
@@ -178,7 +178,7 @@ Class CosmosDbChangeFeedService  <a class="header-action link-secondary" title="
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CosmosDbChangeFeedService(ILogger&lt;CosmosDbChangeFeedService&gt; logger, ICosmosDbService cosmosDbService, IOptions&lt;CosmosDbSettings&gt; settings)</code></pre>
+    <pre><code class="lang-csharp hljs">public CosmosDbChangeFeedService(ILogger&lt;CosmosDbChangeFeedService&gt; logger, ICosmosDBService cosmosDbService, IOptions&lt;CosmosDbSettings&gt; settings)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -187,7 +187,7 @@ Class CosmosDbChangeFeedService  <a class="header-action link-secondary" title="
     <dd><p>The logging interface used to log under the
 <a class="xref" href="FoundationaLLM.Core.Services.CosmosDbChangeFeedService.html">CosmosDbChangeFeedService</a> type name.</p>
 </dd>
-    <dt><code>cosmosDbService</code> <a class="xref" href="FoundationaLLM.Core.Interfaces.ICosmosDbService.html">ICosmosDbService</a></dt>
+    <dt><code>cosmosDbService</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.ICosmosDBService.html">ICosmosDBService</a></dt>
     <dd><p>Contains standard methods for managing data stored
 within the Azure Cosmos DB workspace.</p>
 </dd>
@@ -223,7 +223,7 @@ are null or empty.</p>
 
   <h3 id="FoundationaLLM_Core_Services_CosmosDbChangeFeedService_IsInitialized" data-uid="FoundationaLLM.Core.Services.CosmosDbChangeFeedService.IsInitialized">
   IsInitialized
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Services/CosmosDbChangeFeedService.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Services/CosmosDbChangeFeedService.cs/#L34"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a value indicating whether the change feeds have been initialized.</p>
@@ -259,7 +259,7 @@ are null or empty.</p>
 
   <h3 id="FoundationaLLM_Core_Services_CosmosDbChangeFeedService_StartChangeFeedProcessorsAsync" data-uid="FoundationaLLM.Core.Services.CosmosDbChangeFeedService.StartChangeFeedProcessorsAsync">
   StartChangeFeedProcessorsAsync()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Services/CosmosDbChangeFeedService.cs/#L88"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Services/CosmosDbChangeFeedService.cs/#L89"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes the change feed processors and starts listening for changes.</p>
@@ -291,7 +291,7 @@ are null or empty.</p>
 
   <h3 id="FoundationaLLM_Core_Services_CosmosDbChangeFeedService_StopChangeFeedProcessorAsync" data-uid="FoundationaLLM.Core.Services.CosmosDbChangeFeedService.StopChangeFeedProcessorAsync">
   StopChangeFeedProcessorAsync()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Services/CosmosDbChangeFeedService.cs/#L111"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Services/CosmosDbChangeFeedService.cs/#L112"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Stops the change feed processors.</p>
@@ -323,7 +323,7 @@ are null or empty.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Services/CosmosDbChangeFeedService.cs/#L16" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Services/CosmosDbChangeFeedService.cs/#L17" class="edit-link">Edit this page</a>
         </div>
 
 

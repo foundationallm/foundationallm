@@ -77,8 +77,89 @@
 <h5>Note</h5>
 <p>This section is for changes that are not yet released but will affect future releases.</p>
 </div>
-<h2 id="breaking-changes-that-will-affect-future-releases">Breaking changes that will affect future releases</h2>
-<h3 id="starting-with-080">Starting with 0.8.0</h3>
+<h2 id="starting-with-082">Starting with 0.8.2</h2>
+<h3 id="configuration-changes">Configuration changes</h3>
+<p>The following settings are required:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions</code></td>
+<td><code>c, cpp, cs, css, csv, doc, docx, git, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions</code></td>
+<td><code>c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt</code></td>
+</tr>
+</tbody>
+</table>
+<p>The following settings are optional (they should not be set by default):</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:Instance:IdentitySubstitutionSecurityPrincipalId</code></td>
+<td>&lt;security_principal_id&gt;</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Instance:IdentitySubstitutionUserPrincipalNamePattern</code></td>
+<td><code>^fllm_load_test_user_\d{5}_\d{3}@solliance\.net$</code></td>
+</tr>
+</tbody>
+</table>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The <code>FoundationaLLM:Instance:IdentitySubstitutionSecurityPrincipalId</code> and <code>FoundationaLLM:Instance:IdentitySubstitutionUserPrincipalNamePattern</code> settings are used for load testing purposes only. If set, their values must be replaced with the appropriate values for the specific Entra ID tenant.</p>
+</div>
+<h3 id="resource-provider-changes">Resource provider changes</h3>
+<p>The following resource provider files must be renamed (if they already exist):</p>
+<table>
+<thead>
+<tr>
+<th>Location</th>
+<th>Old name</th>
+<th>New name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>resource-provider/FoundationaLLM.Agent</code></td>
+<td><code>_agent-references.json</code></td>
+<td><code>_resource-references.json</code></td>
+</tr>
+<tr>
+<td><code>resource-provider/FoundationaLLM.AIModel</code></td>
+<td><code>_ai-model-references.json</code></td>
+<td><code>_resource-references.json</code></td>
+</tr>
+<tr>
+<td><code>resource-provider/FoundationaLLM.Configuration</code></td>
+<td><code>_api-endpoint-references.json</code></td>
+<td><code>_resource-references.json</code></td>
+</tr>
+<tr>
+<td><code>resource-provider/FoundationaLLM.DataSource</code></td>
+<td><code>_data-source-references.json</code></td>
+<td><code>_resource-references.json</code></td>
+</tr>
+<tr>
+<td><code>resource-provider/FoundationaLLM.Prompt</code></td>
+<td><code>_prompt-references.json</code></td>
+<td><code>_resource-references.json</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="starting-with-080">Starting with 0.8.0</h2>
 <p>Core API changes:</p>
 <ol>
 <li>All Core API endpoints have been moved to the <code>/instances/{instanceId}</code> path. For example, the <code>/status</code> endpoint is now <code>/instances/{instanceId}/status</code>.</li>
@@ -109,7 +190,7 @@
 <li>The <code>/orchestration/*</code> endpoints have been moved to <code>/instances/{instanceId}/completions/*</code>.
 =======</li>
 </ol>
-<h4 id="new-apis">New APIs</h4>
+<h3 id="new-apis">New APIs</h3>
 <p><strong>Gateway Adapter API</strong> - requires the following configuration settings:</p>
 <ul>
 <li><code>FoundationaLLM:APIs:GatewayAdapterAPI:APIUrl</code></li>
@@ -127,7 +208,7 @@
 <h5>Note</h5>
 <p>These new APIs will be converted to use the new <code>APIEndpoint</code> artifacts.</p>
 </div>
-<h4 id="changes-in-app-registration-names">Changes in app registration names</h4>
+<h3 id="changes-in-app-registration-names">Changes in app registration names</h3>
 <table>
 <thead>
 <tr>
@@ -170,7 +251,7 @@
 </tr>
 </tbody>
 </table>
-<h4 id="changes-in-app-configuration-settings">Changes in app configuration settings</h4>
+<h3 id="changes-in-app-configuration-settings">Changes in app configuration settings</h3>
 <p>The <code>FoundationaLLM:APIs</code> and <code>FoundationaLLM:ExternalAPIs</code> configuration namespaces have been replaced with the <code>FoundationaLLM:APIEndpoints</code> configuration namespace.</p>
 <div class="IMPORTANT">
 <h5>Important</h5>
@@ -188,7 +269,7 @@ This is an example for <code>CoreAPI</code>:</p>
 <li><code>FoundationaLLM:ResourceProviders:AzureOpenAI:Storage:AuthenticationType</code></li>
 <li><code>FoundationaLLM:ResourceProviders:AzureOpenAI:Storage:AccountName</code></li>
 </ul>
-<h3 id="pre-080">Pre-0.8.0</h3>
+<h2 id="pre-080">Pre-0.8.0</h2>
 <ol>
 <li><p>Vectorization resource stores use a unique collection name, <code>Resources</code>. They also add a new top-level property named <code>DefaultResourceName</code>.</p>
 </li>

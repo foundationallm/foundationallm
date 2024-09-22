@@ -204,8 +204,8 @@ Class LocalVectorizationRequestProcessor  <a class="header-action link-secondary
 
   <a id="FoundationaLLM_Vectorization_Services_RequestProcessors_LocalVectorizationRequestProcessor_ProcessRequest_" data-uid="FoundationaLLM.Vectorization.Services.RequestProcessors.LocalVectorizationRequestProcessor.ProcessRequest*"></a>
 
-  <h3 id="FoundationaLLM_Vectorization_Services_RequestProcessors_LocalVectorizationRequestProcessor_ProcessRequest_FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Vectorization.Services.RequestProcessors.LocalVectorizationRequestProcessor.ProcessRequest(FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
-  ProcessRequest(VectorizationRequest, UnifiedUserIdentity?)
+  <h3 id="FoundationaLLM_Vectorization_Services_RequestProcessors_LocalVectorizationRequestProcessor_ProcessRequest_System_String_FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Vectorization.Services.RequestProcessors.LocalVectorizationRequestProcessor.ProcessRequest(System.String,FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  ProcessRequest(string, VectorizationRequest, UnifiedUserIdentity?)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Services/RequestProcessors/LocalVectorizationRequestProcessor.cs/#L15"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -214,11 +214,14 @@ Class LocalVectorizationRequestProcessor  <a class="header-action link-secondary
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;VectorizationResult&gt; ProcessRequest(VectorizationRequest vectorizationRequest, UnifiedUserIdentity? userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;VectorizationResult&gt; ProcessRequest(string instanceId, VectorizationRequest vectorizationRequest, UnifiedUserIdentity? userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
     <dt><code>vectorizationRequest</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html">VectorizationRequest</a></dt>
     <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html">VectorizationRequest</a> object containing the details of the vectorization request.</p>
 </dd>

@@ -131,7 +131,7 @@ orchestrator.</p>
 
   <a id="FoundationaLLM_Core_Interfaces_ICoreService_CreateNewChatSessionAsync_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.CreateNewChatSessionAsync*"></a>
 
-  <h3 id="FoundationaLLM_Core_Interfaces_ICoreService_CreateNewChatSessionAsync_System_String_FoundationaLLM_Common_Models_Chat_ChatSessionProperties_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.CreateNewChatSessionAsync(System.String,FoundationaLLM.Common.Models.Chat.ChatSessionProperties)">
+  <h3 id="FoundationaLLM_Core_Interfaces_ICoreService_CreateNewChatSessionAsync_System_String_FoundationaLLM_Common_Models_Conversation_ChatSessionProperties_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.CreateNewChatSessionAsync(System.String,FoundationaLLM.Common.Models.Conversation.ChatSessionProperties)">
   CreateNewChatSessionAsync(string, ChatSessionProperties)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Interfaces/ICoreService.cs/#L35"><i class="bi bi-code-slash"></i></a>
   </h3>
@@ -141,7 +141,7 @@ orchestrator.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;Session&gt; CreateNewChatSessionAsync(string instanceId, ChatSessionProperties chatSessionProperties)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Conversation&gt; CreateNewChatSessionAsync(string instanceId, ChatSessionProperties chatSessionProperties)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -149,14 +149,14 @@ orchestrator.</p>
     <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The instance Id.</p>
 </dd>
-    <dt><code>chatSessionProperties</code> <a class="xref" href="FoundationaLLM.Common.Models.Chat.ChatSessionProperties.html">ChatSessionProperties</a></dt>
+    <dt><code>chatSessionProperties</code> <a class="xref" href="FoundationaLLM.Common.Models.Conversation.ChatSessionProperties.html">ChatSessionProperties</a></dt>
     <dd><p>The session properties.</p>
 </dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Chat.Session.html">Session</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Conversation.html">Conversation</a>&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -320,7 +320,7 @@ orchestrator.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;List&lt;Session&gt;&gt; GetAllChatSessionsAsync(string instanceId)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;List&lt;Conversation&gt;&gt; GetAllChatSessionsAsync(string instanceId)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -332,7 +332,7 @@ orchestrator.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Chat.Session.html">Session</a>&gt;&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Conversation.html">Conversation</a>&gt;&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -374,7 +374,7 @@ generate a completion response, and log full completion results.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Chat.Completion.html">Completion</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Completion.html">Completion</a>&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -415,7 +415,7 @@ generate a completion response, and log full completion results.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Chat.Message.html">Message</a>&gt;&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -456,7 +456,7 @@ generate a completion response, and log full completion results.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Chat.Completion.html">Completion</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Completion.html">Completion</a>&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -584,7 +584,7 @@ generate a completion response, and log full completion results.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Chat.CompletionPrompt.html">CompletionPrompt</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.CompletionPrompt.html">CompletionPrompt</a>&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -631,7 +631,7 @@ generate a completion response, and log full completion results.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Chat.Message.html">Message</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -647,7 +647,7 @@ generate a completion response, and log full completion results.</p>
 
   <a id="FoundationaLLM_Core_Interfaces_ICoreService_RenameChatSessionAsync_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.RenameChatSessionAsync*"></a>
 
-  <h3 id="FoundationaLLM_Core_Interfaces_ICoreService_RenameChatSessionAsync_System_String_System_String_FoundationaLLM_Common_Models_Chat_ChatSessionProperties_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.RenameChatSessionAsync(System.String,System.String,FoundationaLLM.Common.Models.Chat.ChatSessionProperties)">
+  <h3 id="FoundationaLLM_Core_Interfaces_ICoreService_RenameChatSessionAsync_System_String_System_String_FoundationaLLM_Common_Models_Conversation_ChatSessionProperties_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.RenameChatSessionAsync(System.String,System.String,FoundationaLLM.Common.Models.Conversation.ChatSessionProperties)">
   RenameChatSessionAsync(string, string, ChatSessionProperties)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Interfaces/ICoreService.cs/#L43"><i class="bi bi-code-slash"></i></a>
   </h3>
@@ -657,7 +657,7 @@ generate a completion response, and log full completion results.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;Session&gt; RenameChatSessionAsync(string instanceId, string sessionId, ChatSessionProperties chatSessionProperties)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Conversation&gt; RenameChatSessionAsync(string instanceId, string sessionId, ChatSessionProperties chatSessionProperties)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -668,14 +668,14 @@ generate a completion response, and log full completion results.</p>
     <dt><code>sessionId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The session id to rename.</p>
 </dd>
-    <dt><code>chatSessionProperties</code> <a class="xref" href="FoundationaLLM.Common.Models.Chat.ChatSessionProperties.html">ChatSessionProperties</a></dt>
+    <dt><code>chatSessionProperties</code> <a class="xref" href="FoundationaLLM.Common.Models.Conversation.ChatSessionProperties.html">ChatSessionProperties</a></dt>
     <dd><p>The session properties.</p>
 </dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Chat.Session.html">Session</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Conversation.html">Conversation</a>&gt;</dt>
     <dd></dd>
   </dl>
 

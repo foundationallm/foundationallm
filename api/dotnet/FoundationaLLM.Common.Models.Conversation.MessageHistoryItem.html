@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-      <title>Class Completion | FoundationaLLM </title>
+      <title>Class MessageHistoryItem | FoundationaLLM </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class Completion | FoundationaLLM ">
+      <meta name="title" content="Class MessageHistoryItem | FoundationaLLM ">
       
-      <meta name="description" content="The completion object.">
+      <meta name="description" content="Represents an historic message sender and text item.">
       <link rel="icon" href="../../media/favicon.ico">
       <link rel="stylesheet" href="../../public/docfx.min.css">
       <link rel="stylesheet" href="../../public/main.css">
@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../../">
       
       
-      <meta name="docfx:docurl" content="https://github.com/solliancenet/foundationallm/new/main/apiSpec/new?filename=FoundationaLLM_Common_Models_Chat_Completion.md&amp;value=---%0Auid%3A%20FoundationaLLM.Common.Models.Chat.Completion%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/solliancenet/foundationallm/new/main/apiSpec/new?filename=FoundationaLLM_Common_Models_Conversation_MessageHistoryItem.md&amp;value=---%0Auid%3A%20FoundationaLLM.Common.Models.Conversation.MessageHistoryItem%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -84,25 +84,25 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="FoundationaLLM.Common.Models.Chat.Completion">
+        <article data-uid="FoundationaLLM.Common.Models.Conversation.MessageHistoryItem">
 
 
 
-  <h1 id="FoundationaLLM_Common_Models_Chat_Completion" data-uid="FoundationaLLM.Common.Models.Chat.Completion" class="text-break">
-Class Completion  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Chat/Completion.cs/#L6"><i class="bi bi-code-slash"></i></a>
+  <h1 id="FoundationaLLM_Common_Models_Conversation_MessageHistoryItem" data-uid="FoundationaLLM.Common.Models.Conversation.MessageHistoryItem" class="text-break">
+Class MessageHistoryItem  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/MessageHistoryItem.cs/#L8"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="FoundationaLLM.html">FoundationaLLM</a>.<a class="xref" href="FoundationaLLM.Common.html">Common</a>.<a class="xref" href="FoundationaLLM.Common.Models.html">Models</a>.<a class="xref" href="FoundationaLLM.Common.Models.Chat.html">Chat</a></dd></dl>
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FoundationaLLM.html">FoundationaLLM</a>.<a class="xref" href="FoundationaLLM.Common.html">Common</a>.<a class="xref" href="FoundationaLLM.Common.Models.html">Models</a>.<a class="xref" href="FoundationaLLM.Common.Models.Conversation.html">Conversation</a></dd></dl>
   <dl><dt>Assembly</dt><dd>FoundationaLLM.Common.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>The completion object.</p>
+  <div class="markdown summary"><p>Represents an historic message sender and text item.</p>
 </div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Completion</code></pre>
+    <pre><code class="lang-csharp hljs">public class MessageHistoryItem</code></pre>
   </div>
 
 
@@ -112,7 +112,7 @@ Class Completion  <a class="header-action link-secondary" title="View source" hr
     <dt>Inheritance</dt>
     <dd>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-      <div><span class="xref">Completion</span></div>
+      <div><span class="xref">MessageHistoryItem</span></div>
     </dd>
   </dl>
 
@@ -156,23 +156,97 @@ Class Completion  <a class="header-action link-secondary" title="View source" hr
 
 
 
-  <h2 class="section" id="properties">Properties
+  <h2 class="section" id="constructors">Constructors
 </h2>
 
 
-  <a id="FoundationaLLM_Common_Models_Chat_Completion_Text_" data-uid="FoundationaLLM.Common.Models.Chat.Completion.Text*"></a>
+  <a id="FoundationaLLM_Common_Models_Conversation_MessageHistoryItem__ctor_" data-uid="FoundationaLLM.Common.Models.Conversation.MessageHistoryItem.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_Chat_Completion_Text" data-uid="FoundationaLLM.Common.Models.Chat.Completion.Text">
-  Text
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Chat/Completion.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Models_Conversation_MessageHistoryItem__ctor_System_String_System_String_" data-uid="FoundationaLLM.Common.Models.Conversation.MessageHistoryItem.#ctor(System.String,System.String)">
+  MessageHistoryItem(string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/MessageHistoryItem.cs/#L26"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>The completion text.</p>
+  <div class="markdown level1 summary"><p>Message history item</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string? Text { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public MessageHistoryItem(string sender, string text)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sender</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The sender of the message (e.g., &quot;Agent&quot;, &quot;User&quot;)</p>
+</dd>
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The message text.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="FoundationaLLM_Common_Models_Conversation_MessageHistoryItem_Sender_" data-uid="FoundationaLLM.Common.Models.Conversation.MessageHistoryItem.Sender*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_Conversation_MessageHistoryItem_Sender" data-uid="FoundationaLLM.Common.Models.Conversation.MessageHistoryItem.Sender">
+  Sender
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/MessageHistoryItem.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The sender of the message (e.g. &quot;Agent&quot;, &quot;User&quot;).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;sender&quot;)]
+public string Sender { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Models_Conversation_MessageHistoryItem_Text_" data-uid="FoundationaLLM.Common.Models.Conversation.MessageHistoryItem.Text*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_Conversation_MessageHistoryItem_Text" data-uid="FoundationaLLM.Common.Models.Conversation.MessageHistoryItem.Text">
+  Text
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/MessageHistoryItem.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The message text.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;text&quot;)]
+public string Text { get; set; }</code></pre>
   </div>
 
 
@@ -196,7 +270,7 @@ Class Completion  <a class="header-action link-secondary" title="View source" hr
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Chat/Completion.cs/#L6" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/MessageHistoryItem.cs/#L8" class="edit-link">Edit this page</a>
         </div>
 
 

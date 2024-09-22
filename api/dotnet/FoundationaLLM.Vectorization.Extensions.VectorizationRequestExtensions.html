@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Vectorization_Extensions_VectorizationRequestExtensions" data-uid="FoundationaLLM.Vectorization.Extensions.VectorizationRequestExtensions" class="text-break">
-Class VectorizationRequestExtensions  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Extensions/VectorizationRequestExtensions.cs/#L13"><i class="bi bi-code-slash"></i></a>
+Class VectorizationRequestExtensions  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Extensions/VectorizationRequestExtensions.cs/#L12"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -157,7 +157,7 @@ Class VectorizationRequestExtensions  <a class="header-action link-secondary" ti
 
   <h3 id="FoundationaLLM_Vectorization_Extensions_VectorizationRequestExtensions_ProcessVectorizationRequest_FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_FoundationaLLM_Vectorization_ResourceProviders_VectorizationResourceProviderService_" data-uid="FoundationaLLM.Vectorization.Extensions.VectorizationRequestExtensions.ProcessVectorizationRequest(FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest,FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService)">
   ProcessVectorizationRequest(VectorizationRequest, VectorizationResourceProviderService)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Extensions/VectorizationRequestExtensions.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Extensions/VectorizationRequestExtensions.cs/#L42"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Issues the &quot;process&quot; action on the vectorization request resource using the vectorization resource provider.</p>
@@ -196,8 +196,8 @@ Class VectorizationRequestExtensions  <a class="header-action link-secondary" ti
 
   <a id="FoundationaLLM_Vectorization_Extensions_VectorizationRequestExtensions_UpdateVectorizationRequestResource_" data-uid="FoundationaLLM.Vectorization.Extensions.VectorizationRequestExtensions.UpdateVectorizationRequestResource*"></a>
 
-  <h3 id="FoundationaLLM_Vectorization_Extensions_VectorizationRequestExtensions_UpdateVectorizationRequestResource_FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_FoundationaLLM_Common_Interfaces_IResourceProviderService_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Vectorization.Extensions.VectorizationRequestExtensions.UpdateVectorizationRequestResource(FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest,FoundationaLLM.Common.Interfaces.IResourceProviderService,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
-  UpdateVectorizationRequestResource(VectorizationRequest, IResourceProviderService, UnifiedUserIdentity)
+  <h3 id="FoundationaLLM_Vectorization_Extensions_VectorizationRequestExtensions_UpdateVectorizationRequestResource_FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_System_String_FoundationaLLM_Common_Interfaces_IResourceProviderService_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Vectorization.Extensions.VectorizationRequestExtensions.UpdateVectorizationRequestResource(FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest,System.String,FoundationaLLM.Common.Interfaces.IResourceProviderService,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  UpdateVectorizationRequestResource(VectorizationRequest, string, IResourceProviderService, UnifiedUserIdentity)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Extensions/VectorizationRequestExtensions.cs/#L22"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -207,13 +207,16 @@ Also updates the vectorization pipeline state if request is part of a pipeline.<
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task UpdateVectorizationRequestResource(this VectorizationRequest request, IResourceProviderService vectorizationResourceProvider, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task UpdateVectorizationRequestResource(this VectorizationRequest request, string instanceId, IResourceProviderService vectorizationResourceProvider, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>request</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html">VectorizationRequest</a></dt>
     <dd><p>The vectorization request</p>
+</dd>
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
 </dd>
     <dt><code>vectorizationResourceProvider</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IResourceProviderService.html">IResourceProviderService</a></dt>
     <dd><p>The vectorization resource provider</p>
@@ -243,7 +246,7 @@ Also updates the vectorization pipeline state if request is part of a pipeline.<
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Extensions/VectorizationRequestExtensions.cs/#L13" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Extensions/VectorizationRequestExtensions.cs/#L12" class="edit-link">Edit this page</a>
         </div>
 
 

@@ -130,7 +130,7 @@ Interface ISessionRESTClient  <a class="header-action link-secondary" title="Vie
 
   <a id="FoundationaLLM_Client_Core_Interfaces_ISessionRESTClient_CreateSessionAsync_" data-uid="FoundationaLLM.Client.Core.Interfaces.ISessionRESTClient.CreateSessionAsync*"></a>
 
-  <h3 id="FoundationaLLM_Client_Core_Interfaces_ISessionRESTClient_CreateSessionAsync_FoundationaLLM_Common_Models_Chat_ChatSessionProperties_" data-uid="FoundationaLLM.Client.Core.Interfaces.ISessionRESTClient.CreateSessionAsync(FoundationaLLM.Common.Models.Chat.ChatSessionProperties)">
+  <h3 id="FoundationaLLM_Client_Core_Interfaces_ISessionRESTClient_CreateSessionAsync_FoundationaLLM_Common_Models_Conversation_ChatSessionProperties_" data-uid="FoundationaLLM.Client.Core.Interfaces.ISessionRESTClient.CreateSessionAsync(FoundationaLLM.Common.Models.Conversation.ChatSessionProperties)">
   CreateSessionAsync(ChatSessionProperties)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/Interfaces/ISessionRESTClient.cs/#L30"><i class="bi bi-code-slash"></i></a>
   </h3>
@@ -145,7 +145,7 @@ Interface ISessionRESTClient  <a class="header-action link-secondary" title="Vie
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>chatSessionProperties</code> <a class="xref" href="FoundationaLLM.Common.Models.Chat.ChatSessionProperties.html">ChatSessionProperties</a></dt>
+    <dt><code>chatSessionProperties</code> <a class="xref" href="FoundationaLLM.Common.Models.Conversation.ChatSessionProperties.html">ChatSessionProperties</a></dt>
     <dd><p>The session properties.</p>
 </dd>
   </dl>
@@ -216,13 +216,13 @@ Interface ISessionRESTClient  <a class="header-action link-secondary" title="Vie
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;IEnumerable&lt;Session&gt;&gt; GetAllChatSessionsAsync()</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;IEnumerable&lt;Conversation&gt;&gt; GetAllChatSessionsAsync()</code></pre>
   </div>
 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Chat.Session.html">Session</a>&gt;&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Conversation.html">Conversation</a>&gt;&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -259,7 +259,7 @@ Interface ISessionRESTClient  <a class="header-action link-secondary" title="Vie
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Chat.Message.html">Message</a>&gt;&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -298,7 +298,7 @@ Interface ISessionRESTClient  <a class="header-action link-secondary" title="Vie
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Chat.CompletionPrompt.html">CompletionPrompt</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.CompletionPrompt.html">CompletionPrompt</a>&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -358,7 +358,7 @@ Interface ISessionRESTClient  <a class="header-action link-secondary" title="Vie
 
   <a id="FoundationaLLM_Client_Core_Interfaces_ISessionRESTClient_RenameChatSession_" data-uid="FoundationaLLM.Client.Core.Interfaces.ISessionRESTClient.RenameChatSession*"></a>
 
-  <h3 id="FoundationaLLM_Client_Core_Interfaces_ISessionRESTClient_RenameChatSession_System_String_FoundationaLLM_Common_Models_Chat_ChatSessionProperties_" data-uid="FoundationaLLM.Client.Core.Interfaces.ISessionRESTClient.RenameChatSession(System.String,FoundationaLLM.Common.Models.Chat.ChatSessionProperties)">
+  <h3 id="FoundationaLLM_Client_Core_Interfaces_ISessionRESTClient_RenameChatSession_System_String_FoundationaLLM_Common_Models_Conversation_ChatSessionProperties_" data-uid="FoundationaLLM.Client.Core.Interfaces.ISessionRESTClient.RenameChatSession(System.String,FoundationaLLM.Common.Models.Conversation.ChatSessionProperties)">
   RenameChatSession(string, ChatSessionProperties)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/Interfaces/ISessionRESTClient.cs/#L38"><i class="bi bi-code-slash"></i></a>
   </h3>
@@ -376,7 +376,7 @@ Interface ISessionRESTClient  <a class="header-action link-secondary" title="Vie
     <dt><code>sessionId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The chat session ID.</p>
 </dd>
-    <dt><code>chatSessionProperties</code> <a class="xref" href="FoundationaLLM.Common.Models.Chat.ChatSessionProperties.html">ChatSessionProperties</a></dt>
+    <dt><code>chatSessionProperties</code> <a class="xref" href="FoundationaLLM.Common.Models.Conversation.ChatSessionProperties.html">ChatSessionProperties</a></dt>
     <dd><p>The session properties.</p>
 </dd>
   </dl>

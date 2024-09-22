@@ -288,7 +288,7 @@ Locate this value in the FoundationaLLM Management Portal or in Azure App Config
 
   <a id="FoundationaLLM_Client_Core_CoreClient_AttachFileAndAskQuestionAsync_" data-uid="FoundationaLLM.Client.Core.CoreClient.AttachFileAndAskQuestionAsync*"></a>
 
-  <h3 id="FoundationaLLM_Client_Core_CoreClient_AttachFileAndAskQuestionAsync_System_IO_Stream_System_String_System_String_System_String_System_String_System_Boolean_System_String_FoundationaLLM_Common_Models_Chat_ChatSessionProperties_" data-uid="FoundationaLLM.Client.Core.CoreClient.AttachFileAndAskQuestionAsync(System.IO.Stream,System.String,System.String,System.String,System.String,System.Boolean,System.String,FoundationaLLM.Common.Models.Chat.ChatSessionProperties)">
+  <h3 id="FoundationaLLM_Client_Core_CoreClient_AttachFileAndAskQuestionAsync_System_IO_Stream_System_String_System_String_System_String_System_String_System_Boolean_System_String_FoundationaLLM_Common_Models_Conversation_ChatSessionProperties_" data-uid="FoundationaLLM.Client.Core.CoreClient.AttachFileAndAskQuestionAsync(System.IO.Stream,System.String,System.String,System.String,System.String,System.Boolean,System.String,FoundationaLLM.Common.Models.Conversation.ChatSessionProperties)">
   AttachFileAndAskQuestionAsync(Stream, string, string, string, string, bool, string?, ChatSessionProperties?)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L134"><i class="bi bi-code-slash"></i></a>
   </h3>
@@ -332,14 +332,14 @@ false, no session is created and the sessionless orchestration flow is used.</p>
     <dd><p>The ID of an existing session. If null or empty, a new session
 is created first.</p>
 </dd>
-    <dt><code>chatSessionProperties</code> <a class="xref" href="FoundationaLLM.Common.Models.Chat.ChatSessionProperties.html">ChatSessionProperties</a></dt>
+    <dt><code>chatSessionProperties</code> <a class="xref" href="FoundationaLLM.Common.Models.Conversation.ChatSessionProperties.html">ChatSessionProperties</a></dt>
     <dd><p>Optional session properties.</p>
 </dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Chat.Completion.html">Completion</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Completion.html">Completion</a>&gt;</dt>
     <dd><p>A completion from the designated FoundationaLLM agent.</p>
 </dd>
   </dl>
@@ -356,7 +356,7 @@ is created first.</p>
 
   <a id="FoundationaLLM_Client_Core_CoreClient_CreateChatSessionAsync_" data-uid="FoundationaLLM.Client.Core.CoreClient.CreateChatSessionAsync*"></a>
 
-  <h3 id="FoundationaLLM_Client_Core_CoreClient_CreateChatSessionAsync_FoundationaLLM_Common_Models_Chat_ChatSessionProperties_" data-uid="FoundationaLLM.Client.Core.CoreClient.CreateChatSessionAsync(FoundationaLLM.Common.Models.Chat.ChatSessionProperties)">
+  <h3 id="FoundationaLLM_Client_Core_CoreClient_CreateChatSessionAsync_FoundationaLLM_Common_Models_Conversation_ChatSessionProperties_" data-uid="FoundationaLLM.Client.Core.CoreClient.CreateChatSessionAsync(FoundationaLLM.Common.Models.Conversation.ChatSessionProperties)">
   CreateChatSessionAsync(ChatSessionProperties)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L57"><i class="bi bi-code-slash"></i></a>
   </h3>
@@ -371,7 +371,7 @@ is created first.</p>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>chatSessionProperties</code> <a class="xref" href="FoundationaLLM.Common.Models.Chat.ChatSessionProperties.html">ChatSessionProperties</a></dt>
+    <dt><code>chatSessionProperties</code> <a class="xref" href="FoundationaLLM.Common.Models.Conversation.ChatSessionProperties.html">ChatSessionProperties</a></dt>
     <dd></dd>
   </dl>
 
@@ -486,7 +486,7 @@ is created first.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Chat.Message.html">Message</a>&gt;&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -528,7 +528,7 @@ and UserPrompt at a minimum.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Chat.Completion.html">Completion</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Completion.html">Completion</a>&gt;</dt>
     <dd><p>A completion from the designated FoundationaLLM agent.</p>
 </dd>
   </dl>
@@ -573,7 +573,7 @@ completion request.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Chat.Completion.html">Completion</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Completion.html">Completion</a>&gt;</dt>
     <dd><p>A completion from the designated FoundationaLLM agent.</p>
 </dd>
   </dl>
@@ -615,7 +615,7 @@ SessionID, AgentName, and UserPrompt at a minimum.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Chat.Completion.html">Completion</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Completion.html">Completion</a>&gt;</dt>
     <dd><p>A completion from the designated FoundationaLLM agent.</p>
 </dd>
   </dl>
@@ -632,7 +632,7 @@ SessionID, AgentName, and UserPrompt at a minimum.</p>
 
   <a id="FoundationaLLM_Client_Core_CoreClient_GetCompletionWithSessionAsync_" data-uid="FoundationaLLM.Client.Core.CoreClient.GetCompletionWithSessionAsync*"></a>
 
-  <h3 id="FoundationaLLM_Client_Core_CoreClient_GetCompletionWithSessionAsync_System_String_FoundationaLLM_Common_Models_Chat_ChatSessionProperties_System_String_System_String_" data-uid="FoundationaLLM.Client.Core.CoreClient.GetCompletionWithSessionAsync(System.String,FoundationaLLM.Common.Models.Chat.ChatSessionProperties,System.String,System.String)">
+  <h3 id="FoundationaLLM_Client_Core_CoreClient_GetCompletionWithSessionAsync_System_String_FoundationaLLM_Common_Models_Conversation_ChatSessionProperties_System_String_System_String_" data-uid="FoundationaLLM.Client.Core.CoreClient.GetCompletionWithSessionAsync(System.String,FoundationaLLM.Common.Models.Conversation.ChatSessionProperties,System.String,System.String)">
   GetCompletionWithSessionAsync(string?, ChatSessionProperties?, string, string)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/CoreClient.cs/#L67"><i class="bi bi-code-slash"></i></a>
   </h3>
@@ -653,7 +653,7 @@ be created. If the session name is provided, the session is renamed.</p>
     <dd><p>The ID of an existing session. If null or empty, a new session
 is created first.</p>
 </dd>
-    <dt><code>chatSessionProperties</code> <a class="xref" href="FoundationaLLM.Common.Models.Chat.ChatSessionProperties.html">ChatSessionProperties</a></dt>
+    <dt><code>chatSessionProperties</code> <a class="xref" href="FoundationaLLM.Common.Models.Conversation.ChatSessionProperties.html">ChatSessionProperties</a></dt>
     <dd></dd>
     <dt><code>userPrompt</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The user prompt to send to the agent.</p>
@@ -666,7 +666,7 @@ completion request.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Chat.Completion.html">Completion</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Completion.html">Completion</a>&gt;</dt>
     <dd><p>A completion from the designated FoundationaLLM agent.</p>
 </dd>
   </dl>

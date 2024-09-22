@@ -208,6 +208,42 @@ Class ResourceProviderResourceReferenceStore&lt;T&gt;  <a class="header-action l
 
 
 
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderResourceReferenceStore_1_DefaultResourceName_" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1.DefaultResourceName*"></a>
+
+  <h3 id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderResourceReferenceStore_1_DefaultResourceName" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1.DefaultResourceName">
+  DefaultResourceName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderResourceReferenceStore`1.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the name of the default resource (if any).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? DefaultResourceName { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <h2 class="section" id="methods">Methods
 </h2>
 
@@ -216,7 +252,7 @@ Class ResourceProviderResourceReferenceStore&lt;T&gt;  <a class="header-action l
 
   <h3 id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderResourceReferenceStore_1_AddResourceReference__0_" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1.AddResourceReference(`0)">
   AddResourceReference(T)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderResourceReferenceStore`1.cs/#L183"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderResourceReferenceStore`1.cs/#L241"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Adds a resource reference to the store.</p>
@@ -254,7 +290,7 @@ Class ResourceProviderResourceReferenceStore&lt;T&gt;  <a class="header-action l
 
   <h3 id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderResourceReferenceStore_1_AddResourceReferences_System_Collections_Generic_IEnumerable__0__" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1.AddResourceReferences(System.Collections.Generic.IEnumerable{`0})">
   AddResourceReferences(IEnumerable&lt;T&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderResourceReferenceStore`1.cs/#L210"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderResourceReferenceStore`1.cs/#L268"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Adds a resource reference to the store.</p>
@@ -292,7 +328,7 @@ Class ResourceProviderResourceReferenceStore&lt;T&gt;  <a class="header-action l
 
   <h3 id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderResourceReferenceStore_1_DeleteResourceReference__0_" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1.DeleteResourceReference(`0)">
   DeleteResourceReference(T)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderResourceReferenceStore`1.cs/#L266"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderResourceReferenceStore`1.cs/#L326"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes a resource reference from the store.</p>
@@ -335,7 +371,7 @@ Class ResourceProviderResourceReferenceStore&lt;T&gt;  <a class="header-action l
 
   <h3 id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderResourceReferenceStore_1_GetAllResourceReferences" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1.GetAllResourceReferences">
   GetAllResourceReferences()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderResourceReferenceStore`1.cs/#L165"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderResourceReferenceStore`1.cs/#L223"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets all resource references in the store.</p>
@@ -343,13 +379,13 @@ Class ResourceProviderResourceReferenceStore&lt;T&gt;  <a class="header-action l
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;List&lt;T&gt;&gt; GetAllResourceReferences()</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;IEnumerable&lt;T&gt;&gt; GetAllResourceReferences()</code></pre>
   </div>
 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;T&gt;&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;T&gt;&gt;</dt>
     <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List&lt;T&gt;</a> contain</p>
 </dd>
   </dl>
@@ -371,7 +407,7 @@ Class ResourceProviderResourceReferenceStore&lt;T&gt;  <a class="header-action l
 
   <h3 id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderResourceReferenceStore_1_GetResourceReference_System_String_" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1.GetResourceReference(System.String)">
   GetResourceReference(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderResourceReferenceStore`1.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderResourceReferenceStore`1.cs/#L89"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a resource reference by the unique name of the resource.</p>
@@ -409,7 +445,7 @@ Class ResourceProviderResourceReferenceStore&lt;T&gt;  <a class="header-action l
 
   <h3 id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderResourceReferenceStore_1_GetResourceReferences_System_Collections_Generic_IEnumerable_System_String__" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1.GetResourceReferences(System.Collections.Generic.IEnumerable{System.String})">
   GetResourceReferences(IEnumerable&lt;string&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderResourceReferenceStore`1.cs/#L138"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderResourceReferenceStore`1.cs/#L195"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the resource references for the specified resource names.</p>
@@ -447,7 +483,7 @@ Class ResourceProviderResourceReferenceStore&lt;T&gt;  <a class="header-action l
 
   <h3 id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderResourceReferenceStore_1_GetResourceReferences_System_Func__0_System_Boolean__" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1.GetResourceReferences(System.Func{`0,System.Boolean})">
   GetResourceReferences(Func&lt;T, bool&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderResourceReferenceStore`1.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderResourceReferenceStore`1.cs/#L177"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Filters the resource references in the store based on the predicate.</p>
@@ -488,7 +524,7 @@ Class ResourceProviderResourceReferenceStore&lt;T&gt;  <a class="header-action l
 
   <h3 id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderResourceReferenceStore_1_LoadResourceReferences" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1.LoadResourceReferences">
   LoadResourceReferences()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderResourceReferenceStore`1.cs/#L41"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderResourceReferenceStore`1.cs/#L48"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Loads the resource references from the storage service.</p>
@@ -512,6 +548,98 @@ Class ResourceProviderResourceReferenceStore&lt;T&gt;  <a class="header-action l
 
 
 
+
+
+
+
+  <a id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderResourceReferenceStore_1_PurgeResourceReference_" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1.PurgeResourceReference*"></a>
+
+  <h3 id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderResourceReferenceStore_1_PurgeResourceReference__0_" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1.PurgeResourceReference(`0)">
+  PurgeResourceReference(T)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderResourceReferenceStore`1.cs/#L347"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task PurgeResourceReference(T resourceReference)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>resourceReference</code> <span class="xref">T</span></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FoundationaLLM.Common.Exceptions.ResourceProviderException.html">ResourceProviderException</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+  <a id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderResourceReferenceStore_1_TryGetResourceReference_" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1.TryGetResourceReference*"></a>
+
+  <h3 id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderResourceReferenceStore_1_TryGetResourceReference_System_String_" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1.TryGetResourceReference(System.String)">
+  TryGetResourceReference(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderResourceReferenceStore`1.cs/#L138"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attempts to get a resource reference by the unique name of the resource.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;(bool Success, bool Deleted, T? ResourceReference)&gt; TryGetResourceReference(string resourceName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>resourceName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the resource.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.boolean,system.boolean,-0-.success">Success</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.boolean,system.boolean,-0-.deleted">Deleted</a>, T <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.boolean,system.boolean,-0-.resourcereference">ResourceReference</a>)&gt;</dt>
+    <dd><p>A tuple containing a boolean value (Success) indicating whether the resource reference was successfully retrieved,
+a boolean value (Deleted) indicating whether the resource is deleted (and not purged), and the resource reference itself (ResourceReference).</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderResourceReferenceStore_1_TryGetResourceReference_System_String__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>
+When Success is <code>false</code>, the ResourceReference will be <code>null</code>.
+This means that the resource reference was not found in the store.
+</p>
+<p>
+When Success is <code>true</code>, the ResourceReference will contain the reference to the resource.
+This means that the resource reference is either valid or it has been logically deleted.
+Callers should check the Deleted value to determine whether the resource was logically deleted.
+</p>
+</div>
 
 
 

@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Vectorization_API_Controllers_VectorizationRequestController" data-uid="FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController" class="text-break">
-Class VectorizationRequestController  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationAPI/Controllers/VectorizationRequestController.cs/#L18"><i class="bi bi-code-slash"></i></a>
+Class VectorizationRequestController  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationAPI/Controllers/VectorizationRequestController.cs/#L15"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -104,7 +104,7 @@ Class VectorizationRequestController  <a class="header-action link-secondary" ti
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[ApiController]
 [APIKeyAuthentication]
-[Route(&quot;[controller]&quot;)]
+[Route(&quot;instances/{instanceId}&quot;)]
 public class VectorizationRequestController : ControllerBase</code></pre>
   </div>
 
@@ -690,7 +690,7 @@ public class VectorizationRequestController : ControllerBase</code></pre>
 
   <h3 id="FoundationaLLM_Vectorization_API_Controllers_VectorizationRequestController__ctor_FoundationaLLM_Vectorization_Interfaces_IVectorizationRequestProcessor_" data-uid="FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController.#ctor(FoundationaLLM.Vectorization.Interfaces.IVectorizationRequestProcessor)">
   VectorizationRequestController(IVectorizationRequestProcessor)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationAPI/Controllers/VectorizationRequestController.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationAPI/Controllers/VectorizationRequestController.cs/#L15"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Methods for managing vectorization requests.</p>
@@ -728,9 +728,9 @@ public class VectorizationRequestController : ControllerBase</code></pre>
 
   <a id="FoundationaLLM_Vectorization_API_Controllers_VectorizationRequestController_ProcessRequest_" data-uid="FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController.ProcessRequest*"></a>
 
-  <h3 id="FoundationaLLM_Vectorization_API_Controllers_VectorizationRequestController_ProcessRequest_FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_" data-uid="FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController.ProcessRequest(FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest)">
-  ProcessRequest(VectorizationRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationAPI/Controllers/VectorizationRequestController.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Vectorization_API_Controllers_VectorizationRequestController_ProcessRequest_System_String_FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_" data-uid="FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController.ProcessRequest(System.String,FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest)">
+  ProcessRequest(string, VectorizationRequest)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationAPI/Controllers/VectorizationRequestController.cs/#L27"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Handles an incoming vectorization request by starting a new vectorization pipeline.</p>
@@ -738,14 +738,18 @@ public class VectorizationRequestController : ControllerBase</code></pre>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[HttpPost]
-public Task&lt;IActionResult&gt; ProcessRequest(VectorizationRequest vectorizationRequest)</code></pre>
+    <pre><code class="lang-csharp hljs">[HttpPost(&quot;vectorization-requests&quot;)]
+public Task&lt;IActionResult&gt; ProcessRequest(string instanceId, VectorizationRequest vectorizationRequest)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance id.</p>
+</dd>
     <dt><code>vectorizationRequest</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html">VectorizationRequest</a></dt>
-    <dd></dd>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html">VectorizationRequest</a> that must be processed.</p>
+</dd>
   </dl>
 
   <h4 class="section">Returns</h4>
@@ -768,7 +772,7 @@ public Task&lt;IActionResult&gt; ProcessRequest(VectorizationRequest vectorizati
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationAPI/Controllers/VectorizationRequestController.cs/#L18" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationAPI/Controllers/VectorizationRequestController.cs/#L15" class="edit-link">Edit this page</a>
         </div>
 
 

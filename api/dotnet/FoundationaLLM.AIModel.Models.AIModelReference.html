@@ -138,9 +138,6 @@ Class AIModelReference  <a class="header-action link-secondary" title="View sour
       <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceReference.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceReference_Deleted">ResourceReference.Deleted</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceReference.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceReference_ResourceType">ResourceReference.ResourceType</a>
-    </div>
-    <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
     </div>
     <div>
@@ -179,10 +176,10 @@ Class AIModelReference  <a class="header-action link-secondary" title="View sour
 </h2>
 
 
-  <a id="FoundationaLLM_AIModel_Models_AIModelReference_AIModelType_" data-uid="FoundationaLLM.AIModel.Models.AIModelReference.AIModelType*"></a>
+  <a id="FoundationaLLM_AIModel_Models_AIModelReference_ResourceType_" data-uid="FoundationaLLM.AIModel.Models.AIModelReference.ResourceType*"></a>
 
-  <h3 id="FoundationaLLM_AIModel_Models_AIModelReference_AIModelType" data-uid="FoundationaLLM.AIModel.Models.AIModelReference.AIModelType">
-  AIModelType
+  <h3 id="FoundationaLLM_AIModel_Models_AIModelReference_ResourceType" data-uid="FoundationaLLM.AIModel.Models.AIModelReference.ResourceType">
+  ResourceType
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AIModel/Models/AIModelReference.cs/#L17"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -192,7 +189,7 @@ Class AIModelReference  <a class="header-action link-secondary" title="View sour
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonIgnore]
-public Type AIModelType { get; }</code></pre>
+public override Type ResourceType { get; }</code></pre>
   </div>
 
 

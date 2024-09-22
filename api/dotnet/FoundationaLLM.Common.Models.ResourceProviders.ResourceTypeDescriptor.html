@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeDescriptor" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeDescriptor" class="text-break">
-Class ResourceTypeDescriptor  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L7"><i class="bi bi-code-slash"></i></a>
+Class ResourceTypeDescriptor  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L8"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -162,9 +162,9 @@ Class ResourceTypeDescriptor  <a class="header-action link-secondary" title="Vie
 
   <a id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeDescriptor__ctor_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeDescriptor.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeDescriptor__ctor_System_String_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeDescriptor.#ctor(System.String)">
-  ResourceTypeDescriptor(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L7"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeDescriptor__ctor_System_String_System_Type_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeDescriptor.#ctor(System.String,System.Type)">
+  ResourceTypeDescriptor(string, Type)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L8"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Provides details about a resource type managed by a resource provider.</p>
@@ -172,13 +172,16 @@ Class ResourceTypeDescriptor  <a class="header-action link-secondary" title="Vie
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ResourceTypeDescriptor(string resourceType)</code></pre>
+    <pre><code class="lang-csharp hljs">public ResourceTypeDescriptor(string resourceTypeName, Type resourceType)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>resourceType</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dt><code>resourceTypeName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The name of the resource type.</p>
+</dd>
+    <dt><code>resourceType</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd><p>The object type of the resource type.</p>
 </dd>
   </dl>
 
@@ -201,7 +204,7 @@ Class ResourceTypeDescriptor  <a class="header-action link-secondary" title="Vie
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeDescriptor_Actions" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeDescriptor.Actions">
   Actions
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The list of actions supported by the resource type.</p>
@@ -233,7 +236,7 @@ Class ResourceTypeDescriptor  <a class="header-action link-secondary" title="Vie
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeDescriptor_AllowedTypes" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeDescriptor.AllowedTypes">
   AllowedTypes
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L30"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The list of <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeAllowedTypes.html">ResourceTypeAllowedTypes</a> specifying which body and return types are allowed for various HTTP methods.</p>
@@ -265,7 +268,39 @@ Class ResourceTypeDescriptor  <a class="header-action link-secondary" title="Vie
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeDescriptor_ResourceType" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeDescriptor.ResourceType">
   ResourceType
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The object type of the resource type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Type ResourceType { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeDescriptor_ResourceTypeName_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeDescriptor.ResourceTypeName*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeDescriptor_ResourceTypeName" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeDescriptor.ResourceTypeName">
+  ResourceTypeName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L15"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The name of the resource type.</p>
@@ -273,7 +308,7 @@ Class ResourceTypeDescriptor  <a class="header-action link-secondary" title="Vie
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ResourceType { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string ResourceTypeName { get; set; }</code></pre>
   </div>
 
 
@@ -297,7 +332,7 @@ Class ResourceTypeDescriptor  <a class="header-action link-secondary" title="Vie
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeDescriptor_SubTypes" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeDescriptor.SubTypes">
   SubTypes
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L35"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The dictionary of resource descriptors specifying the resource's allowed subtypes.</p>
@@ -333,7 +368,7 @@ Class ResourceTypeDescriptor  <a class="header-action link-secondary" title="Vie
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeDescriptor_TypeAllowedForHttpGet_System_Type_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeDescriptor.TypeAllowedForHttpGet(System.Type)">
   TypeAllowedForHttpGet(Type)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L42"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Indicates whether the resource type allows the the retrieval of the specified type.</p>
@@ -372,7 +407,7 @@ Class ResourceTypeDescriptor  <a class="header-action link-secondary" title="Vie
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L7" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceTypeDescriptor.cs/#L8" class="edit-link">Edit this page</a>
         </div>
 
 

@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-      <title>Class Session | FoundationaLLM </title>
+      <title>Class Conversation | FoundationaLLM </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class Session | FoundationaLLM ">
+      <meta name="title" content="Class Conversation | FoundationaLLM ">
       
       <meta name="description" content="The session object.">
       <link rel="icon" href="../../media/favicon.ico">
@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../../">
       
       
-      <meta name="docfx:docurl" content="https://github.com/solliancenet/foundationallm/new/main/apiSpec/new?filename=FoundationaLLM_Common_Models_Chat_Session.md&amp;value=---%0Auid%3A%20FoundationaLLM.Common.Models.Chat.Session%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/solliancenet/foundationallm/new/main/apiSpec/new?filename=FoundationaLLM_Common_Models_Conversation_Conversation.md&amp;value=---%0Auid%3A%20FoundationaLLM.Common.Models.Conversation.Conversation%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -84,16 +84,16 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="FoundationaLLM.Common.Models.Chat.Session">
+        <article data-uid="FoundationaLLM.Common.Models.Conversation.Conversation">
 
 
 
-  <h1 id="FoundationaLLM_Common_Models_Chat_Session" data-uid="FoundationaLLM.Common.Models.Chat.Session" class="text-break">
-Class Session  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Chat/Session.cs/#L8"><i class="bi bi-code-slash"></i></a>
+  <h1 id="FoundationaLLM_Common_Models_Conversation_Conversation" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation" class="text-break">
+Class Conversation  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L10"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="FoundationaLLM.html">FoundationaLLM</a>.<a class="xref" href="FoundationaLLM.Common.html">Common</a>.<a class="xref" href="FoundationaLLM.Common.Models.html">Models</a>.<a class="xref" href="FoundationaLLM.Common.Models.Chat.html">Chat</a></dd></dl>
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FoundationaLLM.html">FoundationaLLM</a>.<a class="xref" href="FoundationaLLM.Common.html">Common</a>.<a class="xref" href="FoundationaLLM.Common.Models.html">Models</a>.<a class="xref" href="FoundationaLLM.Common.Models.Conversation.html">Conversation</a></dd></dl>
   <dl><dt>Assembly</dt><dd>FoundationaLLM.Common.dll</dd></dl>
   </div>
 
@@ -102,7 +102,7 @@ Class Session  <a class="header-action link-secondary" title="View source" href=
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public record Session : IEquatable&lt;Session&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public class Conversation : ResourceBase</code></pre>
   </div>
 
 
@@ -112,21 +112,44 @@ Class Session  <a class="header-action link-secondary" title="View source" href=
     <dt>Inheritance</dt>
     <dd>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-      <div><span class="xref">Session</span></div>
+      <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceName.html">ResourceName</a></div>
+      <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html">ResourceBase</a></div>
+      <div><span class="xref">Conversation</span></div>
     </dd>
   </dl>
 
-  <dl class="typelist implements">
-    <dt>Implements</dt>
-    <dd>
-      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Chat.Session.html">Session</a>&gt;</div>
-    </dd>
-  </dl>
 
 
   <dl class="typelist inheritedMembers">
     <dt>Inherited Members</dt>
     <dd>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_ObjectId">ResourceBase.ObjectId</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_DisplayName">ResourceBase.DisplayName</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_Description">ResourceBase.Description</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_CostCenter">ResourceBase.CostCenter</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_CreatedOn">ResourceBase.CreatedOn</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_UpdatedOn">ResourceBase.UpdatedOn</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_CreatedBy">ResourceBase.CreatedBy</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_UpdatedBy">ResourceBase.UpdatedBy</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_ExpirationDate">ResourceBase.ExpirationDate</a>
+    </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
     </div>
@@ -166,11 +189,11 @@ Class Session  <a class="header-action link-secondary" title="View source" href=
 </h2>
 
 
-  <a id="FoundationaLLM_Common_Models_Chat_Session__ctor_" data-uid="FoundationaLLM.Common.Models.Chat.Session.#ctor*"></a>
+  <a id="FoundationaLLM_Common_Models_Conversation_Conversation__ctor_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_Chat_Session__ctor" data-uid="FoundationaLLM.Common.Models.Chat.Session.#ctor">
-  Session()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Chat/Session.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Models_Conversation_Conversation__ctor" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.#ctor">
+  Conversation()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L50"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Constructor for Session.</p>
@@ -178,7 +201,7 @@ Class Session  <a class="header-action link-secondary" title="View source" href=
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Session()</code></pre>
+    <pre><code class="lang-csharp hljs">public Conversation()</code></pre>
   </div>
 
 
@@ -197,11 +220,11 @@ Class Session  <a class="header-action link-secondary" title="View source" href=
 </h2>
 
 
-  <a id="FoundationaLLM_Common_Models_Chat_Session_Deleted_" data-uid="FoundationaLLM.Common.Models.Chat.Session.Deleted*"></a>
+  <a id="FoundationaLLM_Common_Models_Conversation_Conversation_Deleted_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.Deleted*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_Chat_Session_Deleted" data-uid="FoundationaLLM.Common.Models.Chat.Session.Deleted">
+  <h3 id="FoundationaLLM_Common_Models_Conversation_Conversation_Deleted" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.Deleted">
   Deleted
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Chat/Session.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L40"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deleted flag used for soft delete.</p>
@@ -209,7 +232,7 @@ Class Session  <a class="header-action link-secondary" title="View source" href=
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool Deleted { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool Deleted { get; set; }</code></pre>
   </div>
 
 
@@ -229,11 +252,11 @@ Class Session  <a class="header-action link-secondary" title="View source" href=
 
 
 
-  <a id="FoundationaLLM_Common_Models_Chat_Session_Id_" data-uid="FoundationaLLM.Common.Models.Chat.Session.Id*"></a>
+  <a id="FoundationaLLM_Common_Models_Conversation_Conversation_Id_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.Id*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_Chat_Session_Id" data-uid="FoundationaLLM.Common.Models.Chat.Session.Id">
+  <h3 id="FoundationaLLM_Common_Models_Conversation_Conversation_Id" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.Id">
   Id
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Chat/Session.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L15"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The unique identifier.</p>
@@ -261,11 +284,11 @@ Class Session  <a class="header-action link-secondary" title="View source" href=
 
 
 
-  <a id="FoundationaLLM_Common_Models_Chat_Session_Messages_" data-uid="FoundationaLLM.Common.Models.Chat.Session.Messages*"></a>
+  <a id="FoundationaLLM_Common_Models_Conversation_Conversation_Messages_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.Messages*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_Chat_Session_Messages" data-uid="FoundationaLLM.Common.Models.Chat.Session.Messages">
+  <h3 id="FoundationaLLM_Common_Models_Conversation_Conversation_Messages" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.Messages">
   Messages
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Chat/Session.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L44"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The list of messages associated with the session.</p>
@@ -283,7 +306,7 @@ public List&lt;Message&gt; Messages { get; set; }</code></pre>
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Chat.Message.html">Message</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -294,11 +317,11 @@ public List&lt;Message&gt; Messages { get; set; }</code></pre>
 
 
 
-  <a id="FoundationaLLM_Common_Models_Chat_Session_Name_" data-uid="FoundationaLLM.Common.Models.Chat.Session.Name*"></a>
+  <a id="FoundationaLLM_Common_Models_Conversation_Conversation_Name_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.Name*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_Chat_Session_Name" data-uid="FoundationaLLM.Common.Models.Chat.Session.Name">
+  <h3 id="FoundationaLLM_Common_Models_Conversation_Conversation_Name" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.Name">
   Name
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Chat/Session.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L32"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The name of the session.</p>
@@ -306,7 +329,7 @@ public List&lt;Message&gt; Messages { get; set; }</code></pre>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Name { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public override required string Name { get; set; }</code></pre>
   </div>
 
 
@@ -326,11 +349,11 @@ public List&lt;Message&gt; Messages { get; set; }</code></pre>
 
 
 
-  <a id="FoundationaLLM_Common_Models_Chat_Session_SessionId_" data-uid="FoundationaLLM.Common.Models.Chat.Session.SessionId*"></a>
+  <a id="FoundationaLLM_Common_Models_Conversation_Conversation_SessionId_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.SessionId*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_Chat_Session_SessionId" data-uid="FoundationaLLM.Common.Models.Chat.Session.SessionId">
+  <h3 id="FoundationaLLM_Common_Models_Conversation_Conversation_SessionId" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.SessionId">
   SessionId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Chat/Session.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The Partition key.</p>
@@ -358,11 +381,11 @@ public List&lt;Message&gt; Messages { get; set; }</code></pre>
 
 
 
-  <a id="FoundationaLLM_Common_Models_Chat_Session_TokensUsed_" data-uid="FoundationaLLM.Common.Models.Chat.Session.TokensUsed*"></a>
+  <a id="FoundationaLLM_Common_Models_Conversation_Conversation_TokensUsed_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.TokensUsed*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_Chat_Session_TokensUsed" data-uid="FoundationaLLM.Common.Models.Chat.Session.TokensUsed">
+  <h3 id="FoundationaLLM_Common_Models_Conversation_Conversation_TokensUsed" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.TokensUsed">
   TokensUsed
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Chat/Session.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L28"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The number of tokens used in the session.</p>
@@ -390,11 +413,11 @@ public List&lt;Message&gt; Messages { get; set; }</code></pre>
 
 
 
-  <a id="FoundationaLLM_Common_Models_Chat_Session_Type_" data-uid="FoundationaLLM.Common.Models.Chat.Session.Type*"></a>
+  <a id="FoundationaLLM_Common_Models_Conversation_Conversation_Type_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.Type*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_Chat_Session_Type" data-uid="FoundationaLLM.Common.Models.Chat.Session.Type">
+  <h3 id="FoundationaLLM_Common_Models_Conversation_Conversation_Type" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.Type">
   Type
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Chat/Session.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L19"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The type of the session.</p>
@@ -422,11 +445,11 @@ public List&lt;Message&gt; Messages { get; set; }</code></pre>
 
 
 
-  <a id="FoundationaLLM_Common_Models_Chat_Session_UPN_" data-uid="FoundationaLLM.Common.Models.Chat.Session.UPN*"></a>
+  <a id="FoundationaLLM_Common_Models_Conversation_Conversation_UPN_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.UPN*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_Chat_Session_UPN" data-uid="FoundationaLLM.Common.Models.Chat.Session.UPN">
+  <h3 id="FoundationaLLM_Common_Models_Conversation_Conversation_UPN" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.UPN">
   UPN
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Chat/Session.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L36"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The UPN of the user who created the chat session.</p>
@@ -458,11 +481,11 @@ public List&lt;Message&gt; Messages { get; set; }</code></pre>
 </h2>
 
 
-  <a id="FoundationaLLM_Common_Models_Chat_Session_AddMessage_" data-uid="FoundationaLLM.Common.Models.Chat.Session.AddMessage*"></a>
+  <a id="FoundationaLLM_Common_Models_Conversation_Conversation_AddMessage_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.AddMessage*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_Chat_Session_AddMessage_FoundationaLLM_Common_Models_Chat_Message_" data-uid="FoundationaLLM.Common.Models.Chat.Session.AddMessage(FoundationaLLM.Common.Models.Chat.Message)">
+  <h3 id="FoundationaLLM_Common_Models_Conversation_Conversation_AddMessage_FoundationaLLM_Common_Models_Conversation_Message_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.AddMessage(FoundationaLLM.Common.Models.Conversation.Message)">
   AddMessage(Message)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Chat/Session.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L65"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Adds a message to the list of messages associated with the session.</p>
@@ -475,7 +498,7 @@ public List&lt;Message&gt; Messages { get; set; }</code></pre>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>message</code> <a class="xref" href="FoundationaLLM.Common.Models.Chat.Message.html">Message</a></dt>
+    <dt><code>message</code> <a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a></dt>
     <dd><p>The message to be added.</p>
 </dd>
   </dl>
@@ -491,11 +514,11 @@ public List&lt;Message&gt; Messages { get; set; }</code></pre>
 
 
 
-  <a id="FoundationaLLM_Common_Models_Chat_Session_UpdateMessage_" data-uid="FoundationaLLM.Common.Models.Chat.Session.UpdateMessage*"></a>
+  <a id="FoundationaLLM_Common_Models_Conversation_Conversation_UpdateMessage_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.UpdateMessage*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_Chat_Session_UpdateMessage_FoundationaLLM_Common_Models_Chat_Message_" data-uid="FoundationaLLM.Common.Models.Chat.Session.UpdateMessage(FoundationaLLM.Common.Models.Chat.Message)">
+  <h3 id="FoundationaLLM_Common_Models_Conversation_Conversation_UpdateMessage_FoundationaLLM_Common_Models_Conversation_Message_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.UpdateMessage(FoundationaLLM.Common.Models.Conversation.Message)">
   UpdateMessage(Message)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Chat/Session.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L72"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Updates an existing message in the list of messages associated with the session.</p>
@@ -508,7 +531,7 @@ public List&lt;Message&gt; Messages { get; set; }</code></pre>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>message</code> <a class="xref" href="FoundationaLLM.Common.Models.Chat.Message.html">Message</a></dt>
+    <dt><code>message</code> <a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a></dt>
     <dd><p>The updated message.</p>
 </dd>
   </dl>
@@ -528,7 +551,7 @@ public List&lt;Message&gt; Messages { get; set; }</code></pre>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Chat/Session.cs/#L8" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L10" class="edit-link">Edit this page</a>
         </div>
 
 

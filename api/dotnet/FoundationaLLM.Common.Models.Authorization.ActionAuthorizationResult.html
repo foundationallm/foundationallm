@@ -167,13 +167,13 @@ Class ActionAuthorizationResult  <a class="header-action link-secondary" title="
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Authorization/ActionAuthorizationResult.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Indicates whether the action is authorized or not for each resource path.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the dictionary containing <a class="xref" href="FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult.html">ResourcePathAuthorizationResult</a> objects representing the authorization result for each resource path.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;authorization_results&quot;)]
-public required Dictionary&lt;string, bool&gt; AuthorizationResults { get; set; }</code></pre>
+public required Dictionary&lt;string, ResourcePathAuthorizationResult&gt; AuthorizationResults { get; set; }</code></pre>
   </div>
 
 
@@ -182,7 +182,7 @@ public required Dictionary&lt;string, bool&gt; AuthorizationResults { get; set; 
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult.html">ResourcePathAuthorizationResult</a>&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -200,7 +200,7 @@ public required Dictionary&lt;string, bool&gt; AuthorizationResults { get; set; 
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Authorization/ActionAuthorizationResult.cs/#L19"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Contains a list of invalid resource paths, for which authorization could not be completed.</p>
+  <div class="markdown level1 summary"><p>Gets or sets a list of invalid resource paths, for which authorization could not be completed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 

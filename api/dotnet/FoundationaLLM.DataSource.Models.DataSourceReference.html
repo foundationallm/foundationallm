@@ -138,9 +138,6 @@ Class DataSourceReference  <a class="header-action link-secondary" title="View s
       <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceReference.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceReference_Deleted">ResourceReference.Deleted</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceReference.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceReference_ResourceType">ResourceReference.ResourceType</a>
-    </div>
-    <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
     </div>
     <div>
@@ -179,10 +176,10 @@ Class DataSourceReference  <a class="header-action link-secondary" title="View s
 </h2>
 
 
-  <a id="FoundationaLLM_DataSource_Models_DataSourceReference_DataSourceType_" data-uid="FoundationaLLM.DataSource.Models.DataSourceReference.DataSourceType*"></a>
+  <a id="FoundationaLLM_DataSource_Models_DataSourceReference_ResourceType_" data-uid="FoundationaLLM.DataSource.Models.DataSourceReference.ResourceType*"></a>
 
-  <h3 id="FoundationaLLM_DataSource_Models_DataSourceReference_DataSourceType" data-uid="FoundationaLLM.DataSource.Models.DataSourceReference.DataSourceType">
-  DataSourceType
+  <h3 id="FoundationaLLM_DataSource_Models_DataSourceReference_ResourceType" data-uid="FoundationaLLM.DataSource.Models.DataSourceReference.ResourceType">
+  ResourceType
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/DataSource/Models/DataSourceReference.cs/#L17"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -192,7 +189,7 @@ Class DataSourceReference  <a class="header-action link-secondary" title="View s
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonIgnore]
-public Type DataSourceType { get; }</code></pre>
+public override Type ResourceType { get; }</code></pre>
   </div>
 
 

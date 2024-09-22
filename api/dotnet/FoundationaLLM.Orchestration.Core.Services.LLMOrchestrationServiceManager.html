@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Orchestration_Core_Services_LLMOrchestrationServiceManager" data-uid="FoundationaLLM.Orchestration.Core.Services.LLMOrchestrationServiceManager" class="text-break">
-Class LLMOrchestrationServiceManager  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/LLMOrchestrationServiceManager.cs/#L21"><i class="bi bi-code-slash"></i></a>
+Class LLMOrchestrationServiceManager  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/LLMOrchestrationServiceManager.cs/#L23"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -168,9 +168,9 @@ Class LLMOrchestrationServiceManager  <a class="header-action link-secondary" ti
 
   <a id="FoundationaLLM_Orchestration_Core_Services_LLMOrchestrationServiceManager__ctor_" data-uid="FoundationaLLM.Orchestration.Core.Services.LLMOrchestrationServiceManager.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Orchestration_Core_Services_LLMOrchestrationServiceManager__ctor_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__Microsoft_Extensions_Configuration_IConfiguration_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Orchestration_Core_Services_LLMOrchestrationServiceManager__" data-uid="FoundationaLLM.Orchestration.Core.Services.LLMOrchestrationServiceManager.#ctor(System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Orchestration.Core.Services.LLMOrchestrationServiceManager})">
-  LLMOrchestrationServiceManager(IEnumerable&lt;IResourceProviderService&gt;, IConfiguration, ILogger&lt;LLMOrchestrationServiceManager&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/LLMOrchestrationServiceManager.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Orchestration_Core_Services_LLMOrchestrationServiceManager__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Instance_InstanceSettings__System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__Microsoft_Extensions_Configuration_IConfiguration_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Orchestration_Core_Services_LLMOrchestrationServiceManager__" data-uid="FoundationaLLM.Orchestration.Core.Services.LLMOrchestrationServiceManager.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Orchestration.Core.Services.LLMOrchestrationServiceManager})">
+  LLMOrchestrationServiceManager(IOptions&lt;InstanceSettings&gt;, IEnumerable&lt;IResourceProviderService&gt;, IConfiguration, ILogger&lt;LLMOrchestrationServiceManager&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/LLMOrchestrationServiceManager.cs/#L39"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new instance of the LLM Orchestration Service Manager.</p>
@@ -178,11 +178,14 @@ Class LLMOrchestrationServiceManager  <a class="header-action link-secondary" ti
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public LLMOrchestrationServiceManager(IEnumerable&lt;IResourceProviderService&gt; resourceProviderServices, IConfiguration configuration, ILogger&lt;LLMOrchestrationServiceManager&gt; logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public LLMOrchestrationServiceManager(IOptions&lt;InstanceSettings&gt; instanceOptions, IEnumerable&lt;IResourceProviderService&gt; resourceProviderServices, IConfiguration configuration, ILogger&lt;LLMOrchestrationServiceManager&gt; logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
+    <dt><code>instanceOptions</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1">IOptions</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings.html">InstanceSettings</a>&gt;</dt>
+    <dd><p>The options providing the <a class="xref" href="FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings.html">InstanceSettings</a> with instance settings.</p>
+</dd>
     <dt><code>resourceProviderServices</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FoundationaLLM.Common.Interfaces.IResourceProviderService.html">IResourceProviderService</a>&gt;</dt>
     <dd><p>A list of <a class="xref" href="FoundationaLLM.Common.Interfaces.IResourceProviderService.html">IResourceProviderService</a> resource providers.</p>
 </dd>
@@ -213,7 +216,7 @@ Class LLMOrchestrationServiceManager  <a class="header-action link-secondary" ti
 
   <h3 id="FoundationaLLM_Orchestration_Core_Services_LLMOrchestrationServiceManager_GetAggregateStatus_System_String_System_IServiceProvider_" data-uid="FoundationaLLM.Orchestration.Core.Services.LLMOrchestrationServiceManager.GetAggregateStatus(System.String,System.IServiceProvider)">
   GetAggregateStatus(string, IServiceProvider)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/LLMOrchestrationServiceManager.cs/#L88"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/LLMOrchestrationServiceManager.cs/#L95"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets an aggregate initialization status based on the initialization status of each subordinate orchestration service.</p>
@@ -254,7 +257,7 @@ Class LLMOrchestrationServiceManager  <a class="header-action link-secondary" ti
 
   <h3 id="FoundationaLLM_Orchestration_Core_Services_LLMOrchestrationServiceManager_GetService_System_String_System_String_System_IServiceProvider_FoundationaLLM_Common_Interfaces_ICallContext_" data-uid="FoundationaLLM.Orchestration.Core.Services.LLMOrchestrationServiceManager.GetService(System.String,System.String,System.IServiceProvider,FoundationaLLM.Common.Interfaces.ICallContext)">
   GetService(string, string, IServiceProvider, ICallContext)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/LLMOrchestrationServiceManager.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/LLMOrchestrationServiceManager.cs/#L110"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets an <a class="xref" href="FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationService.html">ILLMOrchestrationService</a> instance based on the service name.</p>
@@ -301,7 +304,7 @@ Class LLMOrchestrationServiceManager  <a class="header-action link-secondary" ti
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/LLMOrchestrationServiceManager.cs/#L21" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/LLMOrchestrationServiceManager.cs/#L23" class="edit-link">Edit this page</a>
         </div>
 
 

@@ -138,9 +138,6 @@ Class AgentReference  <a class="header-action link-secondary" title="View source
       <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceReference.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceReference_Deleted">ResourceReference.Deleted</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceReference.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceReference_ResourceType">ResourceReference.ResourceType</a>
-    </div>
-    <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
     </div>
     <div>
@@ -179,10 +176,10 @@ Class AgentReference  <a class="header-action link-secondary" title="View source
 </h2>
 
 
-  <a id="FoundationaLLM_Agent_Models_Resources_AgentReference_AgentType_" data-uid="FoundationaLLM.Agent.Models.Resources.AgentReference.AgentType*"></a>
+  <a id="FoundationaLLM_Agent_Models_Resources_AgentReference_ResourceType_" data-uid="FoundationaLLM.Agent.Models.Resources.AgentReference.ResourceType*"></a>
 
-  <h3 id="FoundationaLLM_Agent_Models_Resources_AgentReference_AgentType" data-uid="FoundationaLLM.Agent.Models.Resources.AgentReference.AgentType">
-  AgentType
+  <h3 id="FoundationaLLM_Agent_Models_Resources_AgentReference_ResourceType" data-uid="FoundationaLLM.Agent.Models.Resources.AgentReference.ResourceType">
+  ResourceType
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Agent/Models/Resources/AgentReference.cs/#L16"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -192,7 +189,7 @@ Class AgentReference  <a class="header-action link-secondary" title="View source
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonIgnore]
-public Type AgentType { get; }</code></pre>
+public override Type ResourceType { get; }</code></pre>
   </div>
 
 

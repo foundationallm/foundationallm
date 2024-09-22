@@ -92,16 +92,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Agent.Models.Resources.AgentReferenceStore.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Agent.Models.Resources.AgentReferenceStore.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Agent.Models.Resources.yml",
       "output": {
         ".html": {
@@ -1072,6 +1062,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Authorization.AuthorizableOperations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Authorization.AuthorizableOperations.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Authorization.RoleDefinitionNames.yml",
       "output": {
         ".html": {
@@ -1096,6 +1096,16 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.AuthorizationClaims.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Chat.ConversationTypes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Chat.ConversationTypes.html"
         }
       },
       "version": ""
@@ -1602,6 +1612,26 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ConversationResourceProviderMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ConversationResourceProviderMetadata.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ConversationResourceTypeNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ConversationResourceTypeNames.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.DataSourceResourceProviderMetadata.yml",
       "output": {
         ".html": {
@@ -1932,16 +1962,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Extensions.AuthorizationServiceExtensions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Extensions.AuthorizationServiceExtensions.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Extensions.BlobStorageExtensions.yml",
       "output": {
         ".html": {
@@ -1966,16 +1986,6 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Common.Extensions.HttpClientExtensions.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Extensions.ResourceProviderServiceExtensions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Extensions.ResourceProviderServiceExtensions.html"
         }
       },
       "version": ""
@@ -2086,6 +2096,16 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.ICallContext.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.ICosmosDBService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.ICosmosDBService.html"
         }
       },
       "version": ""
@@ -2342,6 +2362,26 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters.yml",
       "output": {
         ".html": {
@@ -2356,16 +2396,6 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleAssignmentRequest.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleAssignmentResult.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleAssignmentResult.html"
         }
       },
       "version": ""
@@ -2396,6 +2426,16 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleDefinitions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.UserAuthorizationContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.UserAuthorizationContext.html"
         }
       },
       "version": ""
@@ -2596,106 +2636,6 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Cache.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Chat.AttachmentDetail.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Chat.AttachmentDetail.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Chat.ChatSessionProperties.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Chat.ChatSessionProperties.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Chat.Completion.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Chat.Completion.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Chat.CompletionPrompt.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Chat.CompletionPrompt.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Chat.DocumentVector.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Chat.DocumentVector.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Chat.Message.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Chat.Message.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Chat.MessageContent.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Chat.MessageContent.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Chat.MessageHistoryItem.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Chat.MessageHistoryItem.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Chat.Session.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Chat.Session.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Chat.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Chat.html"
         }
       },
       "version": ""
@@ -3086,6 +3026,106 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.AttachmentDetail.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.AttachmentDetail.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.ChatSessionProperties.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.ChatSessionProperties.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.Completion.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.Completion.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.CompletionPrompt.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.CompletionPrompt.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.Conversation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.Conversation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.DocumentVector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.DocumentVector.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.Message.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.Message.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.MessageContent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.MessageContent.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.MessageHistoryItem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.MessageHistoryItem.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.html"
         }
       },
       "version": ""
@@ -4202,10 +4242,10 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderOptions.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderLoadOptions.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderOptions.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderLoadOptions.html"
         }
       },
       "version": ""
@@ -4692,6 +4732,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.AzureCosmosDBService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Services.AzureCosmosDBService.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.Cache.MemoryCacheService.yml",
       "output": {
         ".html": {
@@ -4856,6 +4906,16 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Common.Services.Storage.DataLakeStorageService.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.Storage.NullStorageService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Services.Storage.NullStorageService.html"
         }
       },
       "version": ""
@@ -5282,6 +5342,26 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Conversation.ResourceProviders.ConversationResourceProviderService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Conversation.ResourceProviders.ConversationResourceProviderService.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Conversation.ResourceProviders.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Conversation.ResourceProviders.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Core.API.Controllers.BrandingController.yml",
       "output": {
         ".html": {
@@ -5392,16 +5472,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Core.Interfaces.ICosmosDbService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Core.Interfaces.ICosmosDbService.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Core.Interfaces.IGatekeeperAPIService.yml",
       "output": {
         ".html": {
@@ -5472,16 +5542,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Core.Models.SessionTypes.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Core.Models.SessionTypes.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Core.Models.yml",
       "output": {
         ".html": {
@@ -5506,16 +5566,6 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Core.Services.CosmosDbChangeFeedService.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Core.Services.CosmosDbService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Core.Services.CosmosDbService.html"
         }
       },
       "version": ""
@@ -5616,16 +5666,6 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.DataSource.Models.DataSourceReference.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.DataSource.Models.DataSourceReferenceStore.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.DataSource.Models.DataSourceReferenceStore.html"
         }
       },
       "version": ""
@@ -6872,30 +6912,20 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Prompt.Models.Resources.PromptReference.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Prompt.Models.PromptReference.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Prompt.Models.Resources.PromptReference.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Prompt.Models.PromptReference.html"
         }
       },
       "version": ""
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Prompt.Models.Resources.PromptReferenceStore.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Prompt.Models.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Prompt.Models.Resources.PromptReferenceStore.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Prompt.Models.Resources.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Prompt.Models.Resources.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Prompt.Models.html"
         }
       },
       "version": ""
