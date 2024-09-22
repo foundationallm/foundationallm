@@ -14,6 +14,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         private readonly string? _resourceProvider;
         private readonly List<ResourceTypeInstance> _resourceTypeInstances;
         private readonly bool _isRootPath;
+        private readonly string _rawResourcePath;
 
         private const string INSTANCE_TOKEN = "instances";
         private const string RESOURCE_PROVIDER_TOKEN = "providers";
@@ -39,6 +40,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         public bool IsRootPath => _isRootPath;
 
         /// <summary>
+        /// Indicates whether the resource path is an instance path or not (i.e., only contains the FoundationaLLM instance identifier).
+        /// </summary>
+        public bool IsInstancePath =>
+            !(_instanceId == null)
+            && (_resourceProvider == null);
+
+        /// <summary>
         /// Indicates whether the resource path refers to a resource type (does not contain a resource name).
         /// </summary>
         public bool IsResourceTypePath =>
@@ -47,19 +55,100 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
             && _resourceTypeInstances.Last().ResourceId == null;
 
         /// <summary>
-        /// The main resource type of the path.
+        /// Gets the name of the main resource type of the path.
         /// </summary>
-        public string? MainResourceType =>
+        /// <remarks>
+        /// The main resource type is the first resource type in the path. In the case of nested resources, this will be the resource type of the main resource.
+        /// </remarks>
+        public string? MainResourceTypeName =>
+            _resourceTypeInstances == null || _resourceTypeInstances.Count == 0
+            ? null
+            : _resourceTypeInstances[0].ResourceTypeName;
+
+        /// <summary>
+        /// Gets the object type of the main resource type of the path.
+        /// </summary>
+        /// <remarks>
+        /// The main resource type is the first resource type in the path. In the case of nested resources, this will be the resource type of the main resource.
+        /// </remarks>
+        public Type? MainResourceType =>
             _resourceTypeInstances == null || _resourceTypeInstances.Count == 0
             ? null
             : _resourceTypeInstances[0].ResourceType;
 
         /// <summary>
-        /// Indicates whether the resource path is an instance path or not (i.e., only contains the FoundationaLLM instance identifier).
+        /// Gets the resource id of the main resource type of the path.
         /// </summary>
-        public bool IsInstancePath =>
-            !(_instanceId == null)
-            && (_resourceProvider == null);
+        public string? MainResourceId =>
+            _resourceTypeInstances == null || _resourceTypeInstances.Count == 0
+            ? null
+            : _resourceTypeInstances[0].ResourceId;
+
+        /// <summary>
+        /// Gets the resource type name of the resource identified by the path.
+        /// </summary>
+        /// <remarks>
+        /// This is the last resource type name in the path. If the path refers to nested resources, this will be the resource type name of the last resource.
+        /// Otherwise, it will be the resource type name of the main resource (and hence identical to <see cref="MainResourceTypeName"/>).
+        /// </remarks>
+        public string? ResourceTypeName =>
+            _resourceTypeInstances == null || _resourceTypeInstances.Count == 0
+            ? null
+            : _resourceTypeInstances.Last().ResourceTypeName;
+
+        /// <summary>
+        /// Gets the resource type of the resource identified by the path.
+        /// </summary>
+        /// <remarks>
+        /// This is the last resource type in the path. If the path refers to nested resources, this will be the resource type of the last resource.
+        /// Otherwise, it will be the resource type of the main resource (and hence identical to <see cref="MainResourceType"/>).
+        /// </remarks>
+        public Type? ResourceType =>
+            _resourceTypeInstances == null || _resourceTypeInstances.Count == 0
+            ? null
+            : _resourceTypeInstances.Last().ResourceType;
+
+        /// <summary>
+        /// Gets the resource id of the resource identified by the path.
+        /// </summary>
+        /// <remarks>
+        /// This is the last resource id in the path. If the path refers to nested resources, this will be the resource id of the last resource.
+        /// Otherwise, it will be the resource id of the main resource (and hence identical to <see cref="MainResourceId"/>).
+        /// </remarks>
+        public string? ResourceId =>
+            _resourceTypeInstances == null || _resourceTypeInstances.Count == 0
+            ? null
+            : _resourceTypeInstances.Last().ResourceId;
+
+        /// <summary>
+        /// Indicates whether the resource path contains a valid resource id or not.
+        /// </summary>
+        public bool HasResourceId =>
+            _resourceTypeInstances != null
+            && _resourceTypeInstances.Count > 0
+            && !string.IsNullOrWhiteSpace(_resourceTypeInstances.Last().ResourceId);
+
+        /// <summary>
+        /// Gets the action (if any) specified in the resource path.
+        /// </summary>
+        public string? Action =>
+            _resourceTypeInstances == null || _resourceTypeInstances.Count == 0
+            ? null
+            : _resourceTypeInstances.Last().Action;
+
+        /// <summary>
+        /// Indicates whether the resource path contains a valid action or not.
+        /// </summary>
+        public bool HasAction =>
+            _resourceTypeInstances != null
+            && _resourceTypeInstances.Count > 0
+            && !string.IsNullOrWhiteSpace(_resourceTypeInstances.Last().Action);
+
+        /// <summary>
+        /// Gets the raw resource path which was used to create the resource path object.
+        /// </summary>
+        public string RawResourcePath =>
+            _rawResourcePath;
 
         /// <summary>
         /// Creates a new resource identifier from a resource path optionally allowing an action.
@@ -72,7 +161,10 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
             string resourcePath,
             ImmutableList<string> allowedResourceProviders,
             Dictionary<string, ResourceTypeDescriptor> allowedResourceTypes,
-            bool allowAction = true) =>
+            bool allowAction = true)
+        {
+            _rawResourcePath = resourcePath;
+
             ParseResourcePath(
                 resourcePath,
                 allowedResourceProviders,
@@ -82,6 +174,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                 out _instanceId,
                 out _resourceProvider,
                 out _resourceTypeInstances);
+        }
 
         /// <summary>
         /// Tries to parse a resource path and create a resource identifier from it.
@@ -157,7 +250,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                         StatusCodes.Status400BadRequest);
                 else
                     return $"/instances/{instanceId}/providers/{resourceProvider}/{string.Join("/",
-                        _resourceTypeInstances.Select(i => i.ResourceId == null ? $"{i.ResourceType}" : $"{i.ResourceType}/{i.ResourceId}").ToArray())}";
+                        _resourceTypeInstances.Select(i => i.ResourceId == null ? $"{i.ResourceTypeName}" : $"{i.ResourceTypeName}/{i.ResourceId}").ToArray())}";
             }
             else
             {
@@ -169,7 +262,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                         StatusCodes.Status400BadRequest);
                 else
                     return $"/instances/{_instanceId}/providers/{_resourceProvider}/{string.Join("/",
-                        _resourceTypeInstances.Select(i => i.ResourceId == null ? $"{i.ResourceType}" : $"{i.ResourceType}/{i.ResourceId}").ToArray())}";
+                        _resourceTypeInstances.Select(i => i.ResourceId == null ? $"{i.ResourceTypeName}" : $"{i.ResourceTypeName}/{i.ResourceId}").ToArray())}";
             }
         }
 
@@ -192,13 +285,14 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         /// Determines whether the resource path includes another specified resource path.
         /// </summary>
         /// <param name="other">The <see cref="ResourcePath"/> to check for inclusion.</param>
+        /// <param name="allowEqual">Indicates whether an equal resource path is considered to be included or not.</param>
         /// <returns>True if the specified resource path is included in the resource path.</returns>
-        public bool IncludesResourcePath(ResourcePath other)
+        public bool IncludesResourcePath(ResourcePath other, bool allowEqual = true)
         {
             if (_isRootPath)
                 // The other path is included only if it is root.
                 return
-                    other.IsRootPath;
+                    other.IsRootPath && allowEqual;
 
             if (IsInstancePath)
             {
@@ -208,7 +302,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
 
                 // An instance path includes another instance path for the same instance id.
                 if (other.IsInstancePath)
-                    return _instanceId == other.InstanceId;
+                    return (_instanceId == other.InstanceId) && allowEqual;
             }
 
             // A full path includes a root path or an instance path.
@@ -224,6 +318,29 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                 if (!_resourceTypeInstances[i].Includes(other.ResourceTypeInstances[i]))
                     return false;
             }
+
+            return
+                allowEqual
+                || StringComparer.OrdinalIgnoreCase.Compare(_rawResourcePath, other.RawResourcePath) != 0;
+        }
+
+        /// <summary>
+        /// Determines whether the resource path matches exactly (including order) the resource types of another specified resource path.
+        /// </summary>
+        /// <param name="other">The <see cref="ResourcePath"/> to be matched.</param>
+        /// <returns>True if the resource path matches exactly (including order) the resource types of the other resource path.</returns>
+        public bool MatchesResourceTypes(ResourcePath other)
+        {
+            if (_resourceTypeInstances.Count == 0
+                || other.ResourceTypeInstances.Count == 0
+                || _resourceTypeInstances.Count != other.ResourceTypeInstances.Count)
+                return false;
+
+            for (int i = 0; i < _resourceTypeInstances.Count; i++)
+                if (!StringComparer.OrdinalIgnoreCase.Equals(
+                    _resourceTypeInstances[i].ResourceTypeName,
+                    other.ResourceTypeInstances[i].ResourceTypeName))
+                    return false;
 
             return true;
         }
@@ -297,8 +414,10 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                     if (currentResourceTypes == null
                         || !currentResourceTypes.TryGetValue(tokens[currentIndex], out ResourceTypeDescriptor? currentResourceType))
                         throw new Exception();
-
-                    var resourceTypeInstance = new ResourceTypeInstance(tokens[currentIndex]);
+                                        
+                    var resourceTypeInstance = new ResourceTypeInstance(
+                        tokens[currentIndex],
+                        currentResourceTypes[tokens[currentIndex]].ResourceType);
                     resourceTypeInstances.Add(resourceTypeInstance);
 
                     if (currentIndex + 1 == tokens.Length)

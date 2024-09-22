@@ -17,6 +17,20 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         /// An optional message indicating why is the name not allowed.
         /// </summary>
         public string? Message { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the resource exists or not.
+        /// </summary>
+        /// <remarks>
+        /// For logically deleted resources, the value of this property will be <c>true</c>.
+        /// The <see cref="Deleted"/> property indicates whether the resource was logically deleted or not.
+        /// </remarks>
+        public required bool Exists { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the resource is logically deleted or not.
+        /// </summary>
+        public required bool Deleted { get; set; }
     }
 
     /// <summary>

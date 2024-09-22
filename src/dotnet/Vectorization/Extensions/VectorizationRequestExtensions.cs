@@ -1,5 +1,4 @@
-﻿using FoundationaLLM.Common.Constants.ResourceProviders;
-using FoundationaLLM.Common.Interfaces;
+﻿using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
@@ -17,21 +16,21 @@ namespace FoundationaLLM.Vectorization.Extensions
         /// Also updates the vectorization pipeline state if request is part of a pipeline.
         /// </summary>
         /// <param name="request">The vectorization request</param>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="vectorizationResourceProvider">The vectorization resource provider</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
         public static async Task UpdateVectorizationRequestResource(
             this VectorizationRequest request,
+            string instanceId,
             IResourceProviderService vectorizationResourceProvider,
             UnifiedUserIdentity userIdentity
         )
         {  
-            if (request.ObjectId == null)
-            {               
-                //build the minimal object id for new requests
-                request.ObjectId = $"/{VectorizationResourceTypeNames.VectorizationRequests}/{request.Name}";
-            }
             // in the case of a new request, this updates the object id with the fully qualified object id, otherwise it remains the same.
-            var result = await vectorizationResourceProvider.UpsertResourceAsync<VectorizationRequest, ResourceProviderUpsertResult>(request.ObjectId, request, userIdentity);
+            var result = await vectorizationResourceProvider.UpsertResourceAsync<VectorizationRequest, ResourceProviderUpsertResult>(
+                instanceId,
+                request,
+                userIdentity);
             request.ObjectId = result.ObjectId;
         }
 

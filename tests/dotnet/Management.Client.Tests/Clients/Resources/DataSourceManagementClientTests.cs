@@ -37,7 +37,6 @@ namespace Management.Client.Tests.Clients.Resources
                         },
                         Folders = ["/folder1", "/folder2"],
                     },
-                    Actions = [],
                     Roles = []
                 },
                 new ResourceProviderGetResult<DataSourceBase>()
@@ -53,7 +52,6 @@ namespace Management.Client.Tests.Clients.Resources
                         },
                         Tables = ["Customers", "Orders"],
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -94,7 +92,6 @@ namespace Management.Client.Tests.Clients.Resources
                      },
                     Folders = ["/folder1", "/folder2"],
                 },
-                Actions = [],
                 Roles = []
             };
             var expectedDataSources = new List<ResourceProviderGetResult<DataSourceBase>> { expectedDataSource };
@@ -143,7 +140,9 @@ namespace Management.Client.Tests.Clients.Resources
             { 
                 Name = resourceName.Name,
                 Status = NameCheckResultType.Allowed,
-                Message = "Name is allowed"
+                Message = "Name is allowed",
+                Exists = false,
+                Deleted = false
             };
 
             _mockRestClient.Resources
@@ -219,7 +218,7 @@ namespace Management.Client.Tests.Clients.Resources
             // Arrange
             var resourceFilter = new ResourceFilter
             {
-                Default = true
+                DefaultResource = true
             };
             var expectedDataSources = new List<DataSourceBase>
             {
@@ -257,7 +256,8 @@ namespace Management.Client.Tests.Clients.Resources
             var dataSource = new DataSourceBase { Name = "test-dataSource" };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {
-                ObjectId = "test-object-id"
+                ObjectId = "test-object-id",
+                ResourceExists = false
             };
 
             _mockRestClient.Resources

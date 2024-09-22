@@ -51,7 +51,6 @@ namespace Management.Client.Tests
                     TextEmbeddingProfileObjectId = "test-text-embedding-profile",
                     IndexingProfileObjectId = "test-indexing-profile",
                 },
-                Actions = [],
                 Roles = []
             };
             var expectedResources = new List<ResourceProviderGetResult<VectorizationPipeline>> { expectedResource };
@@ -103,7 +102,6 @@ namespace Management.Client.Tests
                     TextEmbeddingProfileObjectId = "test-text-embedding-profile",
                     IndexingProfileObjectId = "test-indexing-profile",
                 },
-                Actions = [],
                 Roles = []
             };
             var expectedResources = new List<ResourceProviderGetResult<VectorizationPipeline>> { expectedResource };

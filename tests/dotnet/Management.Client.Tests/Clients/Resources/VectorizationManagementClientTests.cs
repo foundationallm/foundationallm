@@ -39,7 +39,6 @@ namespace Management.Client.Tests.Clients.Resources
                         TextEmbeddingProfileObjectId = "test-text-embedding-profile",
                         IndexingProfileObjectId = "test-indexing-profile",
                     },
-                    Actions = [],
                     Roles = []
                 },
                 new ResourceProviderGetResult<VectorizationPipeline>()
@@ -54,7 +53,6 @@ namespace Management.Client.Tests.Clients.Resources
                         TextEmbeddingProfileObjectId = "test-text-embedding-profile-2",
                         IndexingProfileObjectId = "test-indexing-profile-2",
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -94,7 +92,6 @@ namespace Management.Client.Tests.Clients.Resources
                     TextEmbeddingProfileObjectId = "test-text-embedding-profile",
                     IndexingProfileObjectId = "test-indexing-profile",
                 },
-                Actions = [],
                 Roles = []
             };
             var expectedPipelines = new List<ResourceProviderGetResult<VectorizationPipeline>> { expectedPipeline };
@@ -148,7 +145,6 @@ namespace Management.Client.Tests.Clients.Resources
                         TextSplitter = TextSplitterType.TokenTextSplitter,
                         ObjectId = "test-object-id"
                     },
-                    Actions = [],
                     Roles = []
                 },
                 new ResourceProviderGetResult<TextPartitioningProfile>
@@ -159,7 +155,6 @@ namespace Management.Client.Tests.Clients.Resources
                         TextSplitter = TextSplitterType.TokenTextSplitter,
                         ObjectId = "test-object-id-2"
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -195,7 +190,6 @@ namespace Management.Client.Tests.Clients.Resources
                     TextSplitter = TextSplitterType.TokenTextSplitter,
                     ObjectId = "test-object-id"
                 },
-                Actions = [],
                 Roles = []
             };
             var expectedProfiles = new List<ResourceProviderGetResult<TextPartitioningProfile>> { expectedProfile };
@@ -253,7 +247,6 @@ namespace Management.Client.Tests.Clients.Resources
                             { VectorizationSettingsNames.EmbeddingProfileModelName, "text-embedding-ada-002"}
                         }
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -293,7 +286,6 @@ namespace Management.Client.Tests.Clients.Resources
                         { VectorizationSettingsNames.EmbeddingProfileModelName, "text-embedding-ada-002"}
                     }
                 },
-                Actions = [],
                 Roles = []
             };
             var expectedProfiles = new List<ResourceProviderGetResult<TextEmbeddingProfile>> { expectedProfile };
@@ -350,7 +342,6 @@ namespace Management.Client.Tests.Clients.Resources
                             { VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, "test-api-endpoint-object-id" }
                         }
                     },
-                    Actions = [],
                     Roles = []
                 },
                 new ResourceProviderGetResult<IndexingProfile>
@@ -364,7 +355,6 @@ namespace Management.Client.Tests.Clients.Resources
                             { VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, "test-api-endpoint-object-id-2" }
                         }
                     },
-                    Actions = [],
                     Roles = []
                 },
                 new ResourceProviderGetResult<IndexingProfile>
@@ -378,7 +368,6 @@ namespace Management.Client.Tests.Clients.Resources
                             { VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, "test-api-endpoint-object-id-3" }
                         }
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -417,7 +406,6 @@ namespace Management.Client.Tests.Clients.Resources
                         { VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, "test-api-endpoint-object-id" }
                     }
                 },
-                Actions = [],
                 Roles = []
             };
             var expectedProfiles = new List<ResourceProviderGetResult<IndexingProfile>> { expectedProfile };
@@ -655,7 +643,9 @@ namespace Management.Client.Tests.Clients.Resources
             {
                 Name = resourceName.Name,
                 Status = NameCheckResultType.Allowed,
-                Message = "Name is allowed"
+                Message = "Name is allowed",
+                Exists = false,
+                Deleted = false
             };
 
             _mockRestClient.Resources
@@ -694,7 +684,7 @@ namespace Management.Client.Tests.Clients.Resources
             // Arrange
             var resourceFilter = new ResourceFilter
             {
-                Default = false
+                DefaultResource = false
             };
             var expectedProfiles = new List<IndexingProfile>
             {
@@ -787,7 +777,8 @@ namespace Management.Client.Tests.Clients.Resources
         
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {
-                ObjectId = "test-object-id"
+                ObjectId = "test-object-id",
+                ResourceExists = false
             };
 
             _mockRestClient.Resources
@@ -821,7 +812,8 @@ namespace Management.Client.Tests.Clients.Resources
             };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {
-                ObjectId = "test-object-id"
+                ObjectId = "test-object-id",
+                ResourceExists = false
             };
 
             _mockRestClient.Resources
@@ -859,7 +851,8 @@ namespace Management.Client.Tests.Clients.Resources
             };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {
-                ObjectId = "test-object-id"
+                ObjectId = "test-object-id",
+                ResourceExists = false
             };
 
             _mockRestClient.Resources
@@ -897,7 +890,8 @@ namespace Management.Client.Tests.Clients.Resources
             };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {
-                ObjectId = "test-object-id"
+                ObjectId = "test-object-id",
+                ResourceExists = false
             };
 
             _mockRestClient.Resources

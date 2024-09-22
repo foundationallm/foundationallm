@@ -10,5 +10,10 @@
         /// The dictionary of resource references indexed by their unique names.
         /// </summary>
         public required List<T> ResourceReferences { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the resource that should be used as the default resource.
+        /// </summary>
+        public string? DefaultResourceName { get; set; }
     }
 }

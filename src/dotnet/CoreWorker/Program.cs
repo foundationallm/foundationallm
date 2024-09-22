@@ -1,7 +1,9 @@
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
+using FoundationaLLM.Common.Services;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Services;
 using FoundationaLLM.Core.Worker;
@@ -47,7 +49,7 @@ builder.Services.AddSingleton<CosmosClient>(serviceProvider =>
         .Build();
 });
 
-builder.Services.AddSingleton<ICosmosDbService, CosmosDbService>();
+builder.Services.AddSingleton<ICosmosDBService, AzureCosmosDBService>();
 builder.Services.AddSingleton<ICosmosDbChangeFeedService, CosmosDbChangeFeedService>();
 builder.Services.AddHostedService<ChangeFeedWorker>();
 builder.Services.AddApplicationInsightsTelemetryWorkerService(options =>

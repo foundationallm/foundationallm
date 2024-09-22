@@ -15,7 +15,7 @@ namespace FoundationaLLM.DataSource.Models
         /// The object type of the data source.
         /// </summary>
         [JsonIgnore]
-        public Type DataSourceType =>
+        public override Type ResourceType =>
             Type switch
             {
                 DataSourceTypes.Basic => typeof(DataSourceBase),
