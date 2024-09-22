@@ -1,12 +1,12 @@
-﻿using FoundationaLLM.Common.Models.Chat;
-using FoundationaLLM.Common.Models.Configuration.Users;
+﻿using FoundationaLLM.Common.Models.Configuration.Users;
+using FoundationaLLM.Common.Models.Conversation;
 
-namespace FoundationaLLM.Core.Interfaces;
+namespace FoundationaLLM.Common.Interfaces;
 
 /// <summary>
 /// Contains methods for accessing Azure Cosmos DB for NoSQL.
 /// </summary>
-public interface ICosmosDbService
+public interface ICosmosDBService
 {
     /// <summary>
     /// Gets a list of all current chat sessions.
@@ -16,7 +16,7 @@ public interface ICosmosDbService
     /// sessions for the signed in user.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns>List of distinct chat session items.</returns>
-    Task<List<Session>> GetSessionsAsync(string type, string upn, CancellationToken cancellationToken = default);
+    Task<List<Conversation>> GetSessionsAsync(string type, string upn, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gets a list of all current chat messages for a specified session identifier.
@@ -32,7 +32,7 @@ public interface ICosmosDbService
     /// Performs a point read to retrieve a single chat session item.
     /// </summary>
     /// <returns>The chat session item.</returns>
-    Task<Session> GetSessionAsync(string id, CancellationToken cancellationToken = default);
+    Task<Conversation> GetSessionAsync(string id, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Creates a new chat session.
@@ -40,7 +40,7 @@ public interface ICosmosDbService
     /// <param name="session">Chat session item to create.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns>Newly created chat session item.</returns>
-    Task<Session> InsertSessionAsync(Session session, CancellationToken cancellationToken = default);
+    Task<Conversation> InsertSessionAsync(Conversation session, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Creates a new chat message.
@@ -74,7 +74,7 @@ public interface ICosmosDbService
     /// <param name="session">Chat session item to update.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns>Revised created chat session item.</returns>
-    Task<Session> UpdateSessionAsync(Session session, CancellationToken cancellationToken = default);
+    Task<Conversation> UpdateSessionAsync(Conversation session, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Updates a session's name through a patch operation.
@@ -83,7 +83,7 @@ public interface ICosmosDbService
     /// <param name="sessionName">The session's new name.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns>Revised chat session item.</returns>
-    Task<Session> UpdateSessionNameAsync(string id, string sessionName, CancellationToken cancellationToken = default);
+    Task<Conversation> UpdateSessionNameAsync(string id, string sessionName, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Batch create or update chat messages and session.
@@ -97,7 +97,7 @@ public interface ICosmosDbService
     /// <param name="session">The chat session item to create or replace.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns></returns>
-    Task UpsertUserSessionAsync(Session session, CancellationToken cancellationToken = default);
+    Task UpsertUserSessionAsync(Conversation session, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Batch deletes an existing chat session and all related messages.

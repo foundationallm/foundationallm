@@ -81,10 +81,9 @@ namespace FoundationaLLM.Core.Examples.LoadTests
                 Prompt = "prompt_placeholder",
             };
 
-            await resourceProvider.CreateOrUpdateResource<AssistantUserContext, AssistantUserContextUpsertResult>(
+            await resourceProvider.UpsertResourceAsync<AssistantUserContext, AssistantUserContextUpsertResult>(
                 instanceId,
                 assistantUserContext,
-                AzureOpenAIResourceTypeNames.AssistantUserContexts,
                 userIdentity);
         }
 

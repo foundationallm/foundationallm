@@ -20,15 +20,26 @@ namespace FoundationaLLM.Common.Models.Authorization
         public required List<string> ResourcePaths { get; set; }
 
         /// <summary>
-        /// The id of the security principal requesting authorization.
+        /// Gets or sets a value indicating whether to expand resource type paths that are not authorized.
         /// </summary>
-        [JsonPropertyName("principal_id")]
-        public required string PrincipalId { get; set; }
+        /// <remarks>
+        /// If the action specified by <see cref="Action"/> is not authorized for a resource type path, and this property is set to <c>true</c>, the response will include any authorized resource paths matching the resource type path.
+        /// </remarks>
+        public required bool ExpandResourceTypePaths { get; set; }
 
         /// <summary>
-        /// The list of security group ids to which the principal belongs.
+        /// Gets or sets a value indicating whether to include roles in the response.
         /// </summary>
-        [JsonPropertyName("security_group_ids")]
-        public List<string> SecurityGroupIds { get; set; } = [];    
+        /// <remarks>
+        /// If this property is set to <c>true</c>, for each authrorized resource path,
+        /// the response will include the roles assigned directly or indirectly to the resource path.
+        /// </remarks>
+        public required bool IncludeRoles { get; set; }
+
+        /// <summary>
+        /// The <see cref="UserAuthorizationContext"/> containing the authorization context for the user.
+        /// </summary>
+        [JsonPropertyName("user_context")]
+        public required UserAuthorizationContext UserContext { get; set; }
     }
 }

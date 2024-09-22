@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Models.Chat;
+﻿using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 
@@ -17,16 +17,17 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 AttachmentResourceTypeNames.Attachments,
                 new ResourceTypeDescriptor(
-                        AttachmentResourceTypeNames.Attachments)
+                        AttachmentResourceTypeNames.Attachments,
+                        typeof(AttachmentFile))
                 {
                     AllowedTypes = [
-                            new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<AttachmentFile>)]),
-                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, [], [typeof(AttachmentFile)], [typeof(ResourceProviderUpsertResult)]),
-                            new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, [], [], []),
+                            new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<AttachmentFile>)]),
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(AttachmentFile)], [typeof(ResourceProviderUpsertResult)]),
+                            new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], []),
                     ],
                     Actions = [
                         new ResourceTypeAction(ResourceProviderActions.Filter, false, true, [
-                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, [], [typeof(ResourceFilter)], [typeof(AttachmentDetail)])
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ResourceFilter)], [typeof(AttachmentFile)])
                         ])
                     ]
                 }
