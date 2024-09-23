@@ -90,7 +90,7 @@
 								<Button
 									icon="pi pi-cloud-upload"
 									label="Upload"
-									:disabled="!files || files.length === 0"
+									:disabled="!files || files.length === 0 && oneDriveAttachments.length === 0"
 									@click="uploadCallback()"
 								></Button>
 								<Button
@@ -153,7 +153,35 @@
 									/>
 								</div>
 							</div>
-							<div v-if="files.length === 0 && fileArrayFiltered.length === 0">
+							<div v-if="oneDriveAttachments && oneDriveAttachments.length > 0">
+								<div>
+									<p style="text-align: center">
+										Files from OneDrive
+									</p>
+								</div>
+								<div
+									v-for="(file, index) of oneDriveAttachments"
+									:key="file.name + file.size"
+									class="file-upload-file"
+								>
+									<div class="file-upload-file_info">
+										<i class="pi pi-file" style="font-size: 2rem; margin-right: 1rem"></i>
+										<span style="font-weight: 600">{{ file.name }}</span>
+										<div>{{ formatSize(file.size) }}</div>
+									</div>
+									<div style="display: flex; align-items: center; margin-left: 10px">
+										<Badge value="Pending" />
+										<Button
+											icon="pi pi-times"
+											text
+											severity="danger"
+											aria-label="Remove file"
+											@click="removeOneDriveFile(index)"
+										/>
+									</div>
+								</div>
+							</div>
+							<div v-if="files.length === 0 && fileArrayFiltered.length === 0 && oneDriveAttachments.length === 0">
 								<i class="pi pi-cloud-upload file-upload-icon" />
 								<div>
 									<p style="text-align: center">
@@ -282,6 +310,7 @@ export default {
 				access: { mode: "read" },
 				search: { enabled: true }
 			},
+			oneDriveAttachments: [],
 		};
 	},
 
@@ -463,6 +492,28 @@ export default {
 					}
 				}
 			});
+
+			// TODO: This does not account for running in tandem with local file uploads and the upload progress bar
+			this.oneDriveAttachments.forEach(async (file: any, index) => {
+				try {
+					await this.callCoreApiOneDriveDownloadEndpoint(file.id);
+				} catch (error) {
+					this.$toast.add({
+						severity: 'error',
+						summary: 'Error',
+						detail: `File download failed for "${file.name}". ${
+							error.message ? error.message : error.title ? error.title : ''
+						}`,
+						life: 5000,
+					});
+				} finally {
+					if (this.oneDriveAttachments.length === index + 1) {
+						this.oneDriveAttachments = [];
+						this.showFileUploadDialog = false;
+						this.isUploading = false;
+					}
+				}
+			});
 		},
 
 		toggleFileAttachmentOverlay(event: any) {
@@ -471,6 +522,10 @@ export default {
 
 		async removeAttachment(file: any) {
 			await this.$appStore.deleteAttachment(file);
+		},
+
+		removeOneDriveFile(index: number) {
+			this.oneDriveAttachments.splice(index, 1);
 		},
 
 		browseFiles() {
@@ -612,6 +667,7 @@ export default {
 		
 		async messageListener(event) {
 			const message = event.data;
+			let dialogContent;
 
 			switch (message.type) {
 				case "notification":
@@ -647,7 +703,7 @@ export default {
 						case "close":
 							console.log(`Closed: ${JSON.stringify(command)}`);
 
-							const dialogContent = document.getElementById('oneDriveIframeDialogContent');
+							dialogContent = document.getElementById('oneDriveIframeDialogContent');
 							dialogContent.innerHTML = '';
 							window.removeEventListener("message", this.messageListener);
 							this.port.close();
@@ -656,7 +712,16 @@ export default {
 
 						case "pick":
 							console.log(`Picked: ${JSON.stringify(command)}`);
-							this.callCoreApiOneDriveDownloadEndpoint(command.items[0].id);
+
+							this.oneDriveAttachments.push(...command.items);
+
+							dialogContent = document.getElementById('oneDriveIframeDialogContent');
+							dialogContent.innerHTML = '';
+							window.removeEventListener("message", this.messageListener);
+							this.port.close();
+							this.showOneDriveIframeDialog = false;
+
+							// this.callCoreApiOneDriveDownloadEndpoint(command.items[0].id);
 							this.port.postMessage({
 								type: "result",
 								id: message.id,
@@ -684,14 +749,13 @@ export default {
 
 		async callCoreApiOneDriveDownloadEndpoint(id) {
 			const oneDriveToken = await this.$authStore.requestOneDriveConsent();
-			console.log("OneDrive token:");
-			console.log(oneDriveToken);
 
 			await this.$appStore.oneDriveDownload(this.$appStore.currentSession.sessionId, {
 				id: id,
 				access_token: oneDriveToken,
 			});
-			this.showOneDriveIframeDialog = false;
+			
+			return;
 		},
 
 		hideAllPoppers() {
