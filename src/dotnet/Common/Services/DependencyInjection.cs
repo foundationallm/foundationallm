@@ -115,6 +115,7 @@ namespace FoundationaLLM
                  b
                  .SetResourceBuilder(resourceBuilder)
                  .AddSource("Azure.*")
+                 .AddSource(serviceName)
                  //.AddConsoleExporter()
                  .AddAspNetCoreInstrumentation()
                  .AddHttpClientInstrumentation(o => o.FilterHttpRequestMessage = (_) =>
@@ -169,7 +170,8 @@ namespace FoundationaLLM
             // Configure the OpenTelemetry tracer provider to add the resource attributes to all traces.
             builder.Services.ConfigureOpenTelemetryTracerProvider((sp, builder) =>
                 builder.ConfigureResource(resourceBuilder =>
-                    resourceBuilder.AddAttributes(resourceAttributes)));
+                    resourceBuilder.AddAttributes(resourceAttributes)).AddSource(serviceName)
+            );
         }
 
         /// <summary>
