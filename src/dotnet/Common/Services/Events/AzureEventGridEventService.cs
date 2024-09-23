@@ -55,6 +55,10 @@ namespace FoundationaLLM.Common.Services.Events
             {
                 EventSetEventNamespaces.FoundationaLLM_ResourceProvider_AzureOpenAI,
                 null
+            },
+            {
+                EventSetEventNamespaces.FoundationaLLM_ResourceProvider_Conversation,
+                null
             }
         };
 

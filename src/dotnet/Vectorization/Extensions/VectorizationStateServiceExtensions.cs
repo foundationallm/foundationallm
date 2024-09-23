@@ -48,7 +48,7 @@ namespace FoundationaLLM.Vectorization.Extensions
             var requestProcessingStates = new List<VectorizationProcessingState>();
             foreach (var vectorizationRequestObjectId in pipelineState.VectorizationRequestObjectIds)
             {
-                var vectorizationRequest = await vectorizationResourceProvider.HandleGet<VectorizationRequest>(vectorizationRequestObjectId, userIdentity);
+                var vectorizationRequest = await vectorizationResourceProvider.GetResourceAsync<VectorizationRequest>(vectorizationRequestObjectId, userIdentity);
 
                 if (vectorizationRequest == null)
                 {

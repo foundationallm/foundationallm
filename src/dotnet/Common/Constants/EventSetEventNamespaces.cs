@@ -39,5 +39,10 @@
         /// The namespace name for events concerning the FoundationaLLM.AzureOpenAI resource provider.
         /// </summary>
         public const string FoundationaLLM_ResourceProvider_AzureOpenAI = "ResourceProvider.FoundationaLLM.AzureOpenAI";
+
+        /// <summary>
+        /// The namespace name for events concerning the FoundationaLLM.Conversation resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProvider_Conversation = "ResourceProvider.FoundationaLLM.Conversation";
     }
 }

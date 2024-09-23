@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Models.ResourceProviders;
+﻿using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 
@@ -17,16 +18,17 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 ConfigurationResourceTypeNames.AppConfigurations,
                 new ResourceTypeDescriptor(
-                        ConfigurationResourceTypeNames.AppConfigurations)
+                        ConfigurationResourceTypeNames.AppConfigurations,
+                        typeof(AppConfigurationKeyBase))
                 {
                     AllowedTypes = [
-                            new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<AppConfigurationKeyBase>)]),
-                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, [], [typeof(AgentBase)], [typeof(ResourceProviderUpsertResult)]),
-                            new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, [], [], []),
+                            new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<AppConfigurationKeyBase>)]),
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(AgentBase)], [typeof(ResourceProviderUpsertResult)]),
+                            new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], []),
                     ],
                     Actions = [
                             new ResourceTypeAction(ResourceProviderActions.CheckName, false, true, [
-                                new ResourceTypeAllowedTypes(HttpMethod.Post.Method, [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)])
+                                new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)])
                             ])
                         ]
                 }
@@ -35,12 +37,13 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 ConfigurationResourceTypeNames.APIEndpointConfigurations,
                 new ResourceTypeDescriptor(
-                        ConfigurationResourceTypeNames.APIEndpointConfigurations)
+                        ConfigurationResourceTypeNames.APIEndpointConfigurations,
+                        typeof(APIEndpointConfiguration))
                 {
                     AllowedTypes = [
-                            new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<APIEndpointConfiguration>)]),
-                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, [], [typeof(APIEndpointConfiguration)], [typeof(ResourceProviderUpsertResult)]),
-                            new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, [], [], []),
+                            new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<APIEndpointConfiguration>)]),
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(APIEndpointConfiguration)], [typeof(ResourceProviderUpsertResult)]),
+                            new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], []),
                     ]
                 }
             }

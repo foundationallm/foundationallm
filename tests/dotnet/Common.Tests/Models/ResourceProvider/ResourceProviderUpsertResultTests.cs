@@ -13,7 +13,8 @@ namespace FoundationaLLM.Common.Tests.Models.ResourceProvider
             // Act
             var result = new ResourceProviderUpsertResult
             {
-                ObjectId = expectedObjectId
+                ObjectId = expectedObjectId,
+                ResourceExists = false
             };
 
             // Assert

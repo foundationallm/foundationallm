@@ -40,12 +40,12 @@ namespace FoundationaLLM.Vectorization.Services.VectorizationServices
         private readonly ILogger<AsynchronousVectorizationService> _logger = loggerFactory.CreateLogger<AsynchronousVectorizationService>();
 
         ///<inheritdoc/>
-        public async Task<VectorizationResult> ProcessRequest(VectorizationRequest vectorizationRequest, UnifiedUserIdentity? userIdentity)
+        public async Task<VectorizationResult> ProcessRequest(string instanceId, VectorizationRequest vectorizationRequest, UnifiedUserIdentity? userIdentity)
         {
             var vectorizationResourceProvider = GetVectorizationResourceProvider();
             vectorizationRequest.ProcessingState = VectorizationProcessingState.InProgress;
             vectorizationRequest.ExecutionStart = DateTime.UtcNow;
-            await vectorizationRequest.UpdateVectorizationRequestResource(vectorizationResourceProvider, userIdentity!).ConfigureAwait(false);
+            await vectorizationRequest.UpdateVectorizationRequestResource(instanceId, vectorizationResourceProvider, userIdentity!).ConfigureAwait(false);
 
 
             _logger.LogInformation("Starting synchronous processing for request {RequestId}.", vectorizationRequest.Name);
@@ -102,7 +102,7 @@ namespace FoundationaLLM.Vectorization.Services.VectorizationServices
                 // update the vectorization request state to Completed.
                 vectorizationRequest.ProcessingState = VectorizationProcessingState.Completed;
                 vectorizationRequest.ExecutionEnd = DateTime.UtcNow;
-                await vectorizationRequest.UpdateVectorizationRequestResource(vectorizationResourceProvider, userIdentity!).ConfigureAwait(false);
+                await vectorizationRequest.UpdateVectorizationRequestResource(instanceId, vectorizationResourceProvider, userIdentity!).ConfigureAwait(false);
 
                 _logger.LogInformation("Finished synchronous processing for request {RequestId}. All steps were processed successfully.", vectorizationRequest.Name);
                 return new VectorizationResult(vectorizationRequest.ObjectId!, true, null);
@@ -115,7 +115,7 @@ namespace FoundationaLLM.Vectorization.Services.VectorizationServices
                 // update the vectorization request state to Completed.
                 vectorizationRequest.ProcessingState = VectorizationProcessingState.Failed;
                 vectorizationRequest.ExecutionEnd = DateTime.UtcNow;
-                await vectorizationRequest.UpdateVectorizationRequestResource(vectorizationResourceProvider, userIdentity!).ConfigureAwait(false);
+                await vectorizationRequest.UpdateVectorizationRequestResource(instanceId, vectorizationResourceProvider, userIdentity!).ConfigureAwait(false);
                 _logger.LogInformation("Finished synchronous processing for request {RequestId}. {ErrorMessage}", vectorizationRequest.Name, errorMessage);
                 return new VectorizationResult(vectorizationRequest.ObjectId!, false, errorMessage);
             }
