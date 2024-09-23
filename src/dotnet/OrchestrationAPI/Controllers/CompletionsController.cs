@@ -34,8 +34,19 @@ namespace FoundationaLLM.Orchestration.API.Controllers
         /// <param name="completionRequest">The completion request.</param>
         /// <returns>The completion response.</returns>
         [HttpPost("completions")]
-        public async Task<CompletionResponse> GetCompletion(string instanceId, [FromBody] CompletionRequest completionRequest) =>
-            await _orchestrationService.GetCompletion(instanceId, completionRequest);
+        public async Task<CompletionResponse> GetCompletion(string instanceId, [FromBody] CompletionRequest completionRequest)
+        {
+            using (var activity = ActivitySources.OrchestrationAPIActivitySource.StartActivity("GetCompletion", ActivityKind.Consumer, parentContext: default))
+            {
+                var completionResponse = await _orchestrationService.GetCompletion(instanceId, completionRequest);
+
+                activity?.AddTag("PromptTokens", completionResponse.PromptTokens);
+                activity?.AddTag("CompletionTokens", completionResponse.CompletionTokens);
+                activity?.AddTag("TotalTokens", completionResponse.TotalTokens);
+
+                return completionResponse;
+            }
+        }
 
         /// <summary>
         /// Begins a completion operation.
