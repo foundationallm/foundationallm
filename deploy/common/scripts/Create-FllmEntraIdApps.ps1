@@ -76,7 +76,8 @@ Param(
     [parameter(Mandatory = $false)][string]$coreAppName="FoundationaLLM-Core-API",
     [parameter(Mandatory = $false)][string]$coreClientAppName="FoundationaLLM-Core-Portal",
     [parameter(Mandatory = $false)][string]$mgmtAppName="FoundationaLLM-Management-API",
-    [parameter(Mandatory = $false)][string]$mgmtClientAppName="FoundationaLLM-Management-Portal"
+    [parameter(Mandatory = $false)][string]$mgmtClientAppName="FoundationaLLM-Management-Portal",
+    [parameter(Mandatory = $false)][string]$readerAppName="FoundationaLLM-Reader"
 )
 
 # Set Debugging and Error Handling
@@ -207,6 +208,15 @@ $params = @{
     fllmApi           = $authAppName
     fllmApiConfigPath = "foundationallm-authorization-api.template.json"
     fllmApiUri        = "api://FoundationaLLM-Authorization"
+}
+$($fllmAppRegs).Authorization = New-FllmEntraIdApps @params
+
+$params = @{
+    appPermissionsId  = "9e313dd4-51e4-4989-84d0-c713e38e467d"
+    createClientApp   = $false
+    fllmApi           = $readerAppName
+    fllmApiConfigPath = "foundationallm-reader.template.json"
+    fllmApiUri        = "api://FoundationaLLM-Reader"
 }
 $($fllmAppRegs).Authorization = New-FllmEntraIdApps @params
 
