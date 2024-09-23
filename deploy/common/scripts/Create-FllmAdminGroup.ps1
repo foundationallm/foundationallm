@@ -49,8 +49,32 @@ try {
   
     # Get the ID of the of the user running the script & add the user to the group 
     $currentUserId = (az ad signed-in-user show --query id -o tsv).Trim() 
-    Write-Host -ForegroundColor Yellow "Adding current user to the group..." 
+    Write-Host -ForegroundColor Yellow "Adding users to the group..." 
+
     az ad group member add --group $groupName --member-id $currentUserId 
+    $memberObjectIds = @($currentUserId)
+    if (Test-Path ../config/adminGroupMembers.json -PathType Leaf) {
+        $accounts = Get-Content ../config/adminGroupMembers.json -Raw | ConvertFrom-Json
+        foreach ($account in $accounts) {
+            $objectId = $(az ad user show --id $account --query "id" -o tsv)
+            if ($objectId) {
+                az ad group member add --group $groupName --member-id $objectId 
+            }
+        }
+    }
+
+    az ad group owner add --group $groupName --owner-object-id $currentUserId
+    Write-Host -ForegroundColor Yellow "Setting owners of the group..." 
+    $adminObjectIds = @($currentUserId)
+    if (Test-Path ../config/admins.json -PathType Leaf) {
+        $accounts = Get-Content ../config/admins.json -Raw | ConvertFrom-Json
+        foreach ($account in $accounts) {
+            $objectId = $(az ad user show --id $account --query "id" -o tsv)
+            if ($objectId) {
+                az ad group owner add --group $groupName --owner-object-id $objectId 
+            }
+        }
+    }
     
     # If the command executes successfully, output the result 
     Write-Host -ForegroundColor Blue "Entra ID group '$groupName' created successfully, and added current user with ID $currentUserId to the group." 
