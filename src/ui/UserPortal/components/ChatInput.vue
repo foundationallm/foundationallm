@@ -27,7 +27,7 @@
 					style="height: 100%"
 					@keydown.esc="hideAllPoppers"
 				/>
-				<OverlayPanel ref="menu">
+				<OverlayPanel ref="menu" style="max-width: 98%">
 					<FileUpload
 						ref="fileUpload"
 						:multiple="true"
@@ -49,33 +49,11 @@
 
 							<!-- File list -->
 							<div v-else>
-								<div
-									v-for="(file, index) of localFiles"
-									:key="file.name + file.type + file.size"
-									class="file-upload-file"
-								>
-									<div class="file-upload-file_info">
-										<i class="pi pi-file" style="font-size: 2rem; margin-right: 1rem"></i>
-										<span style="font-weight: 600">{{ file.name }}</span>
-										<div>{{ formatSize(file.size) }}</div>
-										<Badge value="Local Computer" />
-									</div>
-									<div style="display: flex; align-items: center; margin-left: 10px">
-										<Badge value="Pending" />
-										<Button
-											icon="pi pi-times"
-											text
-											severity="danger"
-											aria-label="Remove file"
-											@click="removeLocalFile(index)"
-										/>
-									</div>
-								</div>
 								<div v-for="file in fileArrayFiltered" :key="file.fileName" class="file-upload-file">
 									<div class="file-upload-file_info">
-										<i class="pi pi-file" style="font-size: 2rem; margin-right: 1rem"></i>
+										<i v-if="!isMobile" class="pi pi-file" style="font-size: 2rem; margin-right: 1rem"></i>
 										<span style="font-weight: 600">{{ file.fileName }}</span>
-										<Badge :value="file.source" />
+										<Badge v-if="!isMobile" :value="file.source" />
 									</div>
 									<div style="display: flex; align-items: center; margin-left: 10px">
 										<Badge value="Uploaded" severity="success" />
@@ -88,6 +66,29 @@
 										/>
 									</div>
 								</div>
+								<Divider v-if="fileArrayFiltered.length > 0" />
+								<div
+									v-for="(file, index) of localFiles"
+									:key="file.name + file.type + file.size"
+									class="file-upload-file"
+								>
+									<div class="file-upload-file_info">
+										<i v-if="!isMobile" class="pi pi-file" style="font-size: 2rem; margin-right: 1rem"></i>
+										<span style="font-weight: 600">{{ file.name }}</span>
+										<div v-if="!isMobile">{{ formatSize(file.size) }}</div>
+										<Badge v-if="!isMobile" value="Local Computer" />
+									</div>
+									<div style="display: flex; align-items: center; margin-left: 10px">
+										<Badge value="Pending" />
+										<Button
+											icon="pi pi-times"
+											text
+											severity="danger"
+											aria-label="Remove file"
+											@click="removeLocalFile(index)"
+										/>
+									</div>
+								</div>
 								<div v-if="oneDriveFiles && oneDriveFiles.length > 0">
 									<div
 										v-for="(file, index) of oneDriveFiles"
@@ -95,10 +96,10 @@
 										class="file-upload-file"
 									>
 										<div class="file-upload-file_info">
-											<i class="pi pi-file" style="font-size: 2rem; margin-right: 1rem"></i>
+											<i v-if="!isMobile" class="pi pi-file" style="font-size: 2rem; margin-right: 1rem"></i>
 											<span style="font-weight: 600">{{ file.name }}</span>
-											<div>{{ formatSize(file.size) }}</div>
-											<Badge value="OneDrive Work/School" />
+											<div v-if="!isMobile">{{ formatSize(file.size) }}</div>
+											<Badge v-if="!isMobile" value="OneDrive Work/School" />
 										</div>
 										<div style="display: flex; align-items: center; margin-left: 10px">
 											<Badge value="Pending" />
@@ -113,7 +114,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="file-upload-button-container">
+							<div class="file-upload-button-container" v-if="oneDriveFiles.length > 0 || localFiles.length > 0">
 								<Button
 									icon="pi pi-upload"
 									label="Upload"
@@ -124,6 +125,7 @@
 							</div>
 						</template>
 					</FileUpload>
+					<Divider v-if="oneDriveFiles.length > 0 || localFiles.length > 0" />
 					<div class="file-overlay-panel__footer">
 						<Button icon="pi pi-file-plus" label="Select file from Computer" @click="browseFiles" />
 						<Button icon="pi pi-cloud-upload" label="Select file from OneDrive" @click="downloadFromOneDrive" />
@@ -956,7 +958,6 @@ export default {
 		text-overflow: ellipsis;
 		white-space: wrap;
 		flex-shrink: 1;
-		max-width: 80%;
 		min-width: 0;
 	}
 }
