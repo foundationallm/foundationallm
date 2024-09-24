@@ -1,4 +1,4 @@
-﻿namespace FoundationaLLM.Common.Models.Chat
+﻿namespace FoundationaLLM.Common.Models.Conversation
 {
     /// <summary>
     /// The document vector object.

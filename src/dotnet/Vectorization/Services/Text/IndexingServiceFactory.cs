@@ -13,6 +13,7 @@ using FoundationaLLM.Vectorization.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace FoundationaLLM.Vectorization.Services.Text
 {
@@ -44,7 +45,7 @@ namespace FoundationaLLM.Vectorization.Services.Text
             if (vectorizationResourceProviderService == null)
                 throw new VectorizationException($"The resource provider {ResourceProviderNames.FoundationaLLM_DataSource} was not loaded.");
 
-            var indexingProfile = await vectorizationResourceProviderService.GetResource<IndexingProfile>(
+            var indexingProfile = await vectorizationResourceProviderService.GetResourceAsync<IndexingProfile>(
                 $"/{VectorizationResourceTypeNames.IndexingProfiles}/{serviceName}", userIdentity);
 
             return indexingProfile.Indexer switch
@@ -61,7 +62,7 @@ namespace FoundationaLLM.Vectorization.Services.Text
             if (vectorizationResourceProviderService == null)
                 throw new VectorizationException($"The resource provider {ResourceProviderNames.FoundationaLLM_Vectorization} was not loaded.");
 
-            var indexingProfile = await vectorizationResourceProviderService.GetResource<IndexingProfile>(
+            var indexingProfile = await vectorizationResourceProviderService.GetResourceAsync<IndexingProfile>(
                 $"/{VectorizationResourceTypeNames.IndexingProfiles}/{serviceName}", userIdentity);
 
             return indexingProfile.Indexer switch
@@ -86,7 +87,7 @@ namespace FoundationaLLM.Vectorization.Services.Text
             if (profile.Settings.TryGetValue("api_endpoint_configuration_object_id", out var apiEndpointObjectId) == false)
                 throw new VectorizationException($"The API endpoint configuration object ID was not found in the settings.");
             
-            var apiEndpoint = await configurationResourceProviderService.GetResource<APIEndpointConfiguration>(apiEndpointObjectId, DefaultAuthentication.ServiceIdentity!);
+            var apiEndpoint = await configurationResourceProviderService.GetResourceAsync<APIEndpointConfiguration>(apiEndpointObjectId, DefaultAuthentication.ServiceIdentity!);
             if(apiEndpoint==null)
                 throw new VectorizationException($"The API endpoint configuration {apiEndpointObjectId} for the Azure AI Search service was not found.");
 

@@ -11,9 +11,10 @@ namespace FoundationaLLM.Vectorization.Interfaces
         /// <summary>
         /// Processes an incoming vectorization request.
         /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="vectorizationRequest">The <see cref="VectorizationRequest"/> object containing the details of the vectorization request.</param>
         /// <param name="userIdentity">The user identity.</param>
         /// <returns>The result of the request including the resource object id, success or failure plus any error messages.</returns>
-        Task<VectorizationResult> ProcessRequest(VectorizationRequest vectorizationRequest, UnifiedUserIdentity? userIdentity);
+        Task<VectorizationResult> ProcessRequest(string instanceId, VectorizationRequest vectorizationRequest, UnifiedUserIdentity? userIdentity);
     }
 }

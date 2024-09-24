@@ -5,12 +5,14 @@ using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Infrastructure;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Text.Json;
 
 namespace FoundationaLLM.Orchestration.Core.Services
@@ -20,6 +22,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
     /// </summary>
     public class LLMOrchestrationServiceManager : ILLMOrchestrationServiceManager
     {
+        private readonly InstanceSettings _instanceSettings;
         private readonly Dictionary<string, IResourceProviderService> _resourceProviderServices;
         private readonly IConfiguration _configuration;
         private readonly ILogger<LLMOrchestrationServiceManager> _logger;
@@ -29,14 +32,17 @@ namespace FoundationaLLM.Orchestration.Core.Services
         /// <summary>
         /// Creates a new instance of the LLM Orchestration Service Manager.
         /// </summary>
+        /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>
         /// <param name="resourceProviderServices">A list of <see cref="IResourceProviderService"/> resource providers.</param>
         /// <param name="configuration">The <see cref="IConfiguration"/> used to retrieve configuration values.</param>
         /// <param name="logger">The logger for the orchestration service manager.</param>
         public LLMOrchestrationServiceManager(
+            IOptions<InstanceSettings> instanceOptions,
             IEnumerable<IResourceProviderService> resourceProviderServices,
             IConfiguration configuration,
             ILogger<LLMOrchestrationServiceManager> logger)
         {
+            _instanceSettings = instanceOptions.Value;
             _resourceProviderServices =
                 resourceProviderServices.ToDictionary<IResourceProviderService, string>(rps => rps.Name);
             _configuration = configuration;
@@ -62,16 +68,17 @@ namespace FoundationaLLM.Orchestration.Core.Services
                 var configurationResourceProvider = _resourceProviderServices[ResourceProviderNames.FoundationaLLM_Configuration];
                 await configurationResourceProvider.WaitForInitialization();
 
-                var apiEndpointConfigurations = await configurationResourceProvider.GetResources<APIEndpointConfiguration>(
+                var apiEndpointConfigurations = await configurationResourceProvider.GetResourcesAsync<APIEndpointConfiguration>(
+                    _instanceSettings.Id,
                     DefaultAuthentication.ServiceIdentity!);
 
                 _externalOrchestrationServiceNames = apiEndpointConfigurations
-                    .Where(aec => aec.Category == APIEndpointCategory.ExternalOrchestration
-                        && aec.AuthenticationParameters.TryGetValue(AuthenticationParametersKeys.APIKeyConfigurationName, out var apiKeyConfigObj)
+                    .Where(aec => aec.Resource.Category == APIEndpointCategory.ExternalOrchestration
+                        && aec.Resource.AuthenticationParameters.TryGetValue(AuthenticationParametersKeys.APIKeyConfigurationName, out var apiKeyConfigObj)
                         && apiKeyConfigObj is JsonElement apiKeyConfig
                         && !string.IsNullOrWhiteSpace(apiKeyConfig.GetString())
                         && apiKeyConfig.GetString()!.StartsWith(AppConfigurationKeySections.FoundationaLLM_APIEndpoints))
-                    .Select(aec => aec.Name)
+                    .Select(aec => aec.Resource.Name)
                     .ToList();
 
                 _logger.LogInformation("The LLM Orchestration Service Manager service was successfully initialized.");

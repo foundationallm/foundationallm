@@ -3,9 +3,11 @@
     /// <summary>
     /// Identifies a specific resource type instance.
     /// </summary>
-    /// <param name="ResourceType">The name of the resource type.</param>
+    /// <param name="ResourceTypeName">The name of the resource type.</param>
+    /// <param name="ResourceType">The object type of the resource type.</param>
     public record ResourceTypeInstance(
-        string ResourceType)
+        string ResourceTypeName,
+        Type ResourceType)
     {
         /// <summary>
         /// An optional resource type instance unique identifier.
@@ -32,7 +34,7 @@
                 return true;
 
             // Resource type instances with different resource types
-            if (!ResourceType.Equals(other.ResourceType))
+            if (!ResourceTypeName.Equals(other.ResourceTypeName))
                 return false;
 
             if (this.ResourceId == null)

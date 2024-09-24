@@ -130,20 +130,20 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             var explodedObjects = new Dictionary<string, object>();
 
-            var agentBase = await agentResourceProvider.HandleGet<AgentBase>(
+            var agentBase = await agentResourceProvider.GetResourceAsync<AgentBase>(
                 $"/{AgentResourceTypeNames.Agents}/{agentName}",
                 currentUserIdentity);
 
-            var prompt = await promptResourceProvider.HandleGet<PromptBase>(
+            var prompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
                 agentBase.PromptObjectId!,
                 currentUserIdentity);
-            var aiModel = await aiModelResourceProvider.HandleGet<AIModelBase>(
+            var aiModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
                 agentBase.AIModelObjectId!,
                 currentUserIdentity);
-            var apiEndpointConfiguration = await configurationResourceProvider.HandleGet<APIEndpointConfiguration>(
+            var apiEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
                 aiModel.EndpointObjectId!,
                 currentUserIdentity);
-            var gatewayAPIEndpointConfiguration = await configurationResourceProvider.HandleGet<APIEndpointConfiguration>(
+            var gatewayAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
                 $"/{ConfigurationResourceTypeNames.APIEndpointConfigurations}/GatewayAPI",
                 currentUserIdentity);
 
@@ -162,13 +162,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             explodedObjects[aiModel.EndpointObjectId!] = apiEndpointConfiguration;
             explodedObjects[CompletionRequestObjectsKeys.GatewayAPIEndpointConfiguration] = gatewayAPIEndpointConfiguration;
 
-            var allAgents = await agentResourceProvider.GetResources<AgentBase>(currentUserIdentity);
+            var allAgents = await agentResourceProvider.GetResourcesAsync<AgentBase>(instanceId, currentUserIdentity);
             var allAgentsDescriptions = allAgents
-                .Where(a => !string.IsNullOrWhiteSpace(a.Description) && a.Name != agentBase.Name)
+                .Where(a => !string.IsNullOrWhiteSpace(a.Resource.Description) && a.Resource.Name != agentBase.Name)
                 .Select(a => new
                 {
-                    a.Name,
-                    a.Description
+                    a.Resource.Name,
+                    a.Resource.Description
                 })
                 .ToDictionary(x => x.Name, x => x.Description);
             explodedObjects[CompletionRequestObjectsKeys.AllAgents] = allAgentsDescriptions;
@@ -186,7 +186,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     {
                         try
                         {
-                            var dataSource = await dataSourceResourceProvider.HandleGet<DataSourceBase>(
+                            var dataSource = await dataSourceResourceProvider.GetResourceAsync<DataSourceBase>(
                                 kmAgent.Vectorization.DataSourceObjectId,
                                 currentUserIdentity);
 
@@ -207,7 +207,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             continue;
                         }
 
-                        var indexingProfile = await vectorizationResourceProvider.GetResource<IndexingProfile>(
+                        var indexingProfile = await vectorizationResourceProvider.GetResourceAsync<IndexingProfile>(
                             indexingProfileName,
                             currentUserIdentity);
                        
@@ -223,7 +223,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         if(indexingProfile.Settings.TryGetValue(VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, out var apiEndpointConfigurationObjectId) == false)
                             throw new OrchestrationException($"The API endpoint configuration object ID was not found in the settings of the indexing profile.");
 
-                        var indexingProfileAPIEndpointConfiguration = await configurationResourceProvider.GetResource<APIEndpointConfiguration>(
+                        var indexingProfileAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
                             apiEndpointConfigurationObjectId,
                             currentUserIdentity);
 
@@ -232,7 +232,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                     if (!string.IsNullOrWhiteSpace(kmAgent.Vectorization.TextEmbeddingProfileObjectId))
                     {
-                        var textEmbeddingProfile = await vectorizationResourceProvider.GetResource<TextEmbeddingProfile>(
+                        var textEmbeddingProfile = await vectorizationResourceProvider.GetResourceAsync<TextEmbeddingProfile>(
                             kmAgent.Vectorization.TextEmbeddingProfileObjectId,
                             currentUserIdentity);                                               
                                            
@@ -270,13 +270,14 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             {
                 var assistantUserContextName = $"{currentUserIdentity.UPN?.NormalizeUserPrincipalName() ?? currentUserIdentity.UserId}-assistant-{instanceId.ToLower()}";
 
-                if (!await azureOpenAIResourceProvider.ResourceExists(
+                var nameCheckResult = await azureOpenAIResourceProvider.ResourceExists<AssistantUserContext>(
                     instanceId,
                     assistantUserContextName,
-                    AzureOpenAIResourceTypeNames.AssistantUserContexts,
-                    currentUserIdentity))
+                    currentUserIdentity);
+
+                if (!nameCheckResult.Exists)
                 {
-                    var result = await azureOpenAIResourceProvider.CreateOrUpdateResource<AssistantUserContext, AssistantUserContextUpsertResult>(
+                    var result = await azureOpenAIResourceProvider.UpsertResourceAsync<AssistantUserContext, AssistantUserContextUpsertResult>(
                         instanceId,
                         new AssistantUserContext
                         {
@@ -296,7 +297,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 }
                             }
                         },
-                        AzureOpenAIResourceTypeNames.AssistantUserContexts,
                         currentUserIdentity);
 
                     if (!string.IsNullOrWhiteSpace(result.NewOpenAIAssistantId))
@@ -309,10 +309,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 }
                 else
                 {
-                    var assistantUserContext = await azureOpenAIResourceProvider.HandleGet<AssistantUserContext>(
+                    var assistantUserContext = await azureOpenAIResourceProvider.GetResourceAsync<AssistantUserContext>(
                         instanceId,
                         assistantUserContextName,
-                        AzureOpenAIResourceTypeNames.AssistantUserContexts,
                         currentUserIdentity);
 
                     explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantId] = assistantUserContext.OpenAIAssistantId!;
@@ -332,10 +331,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         string.IsNullOrWhiteSpace(assistantConversation.OpenAIThreadId))
                     {
                         var result = await azureOpenAIResourceProvider
-                            .CreateOrUpdateResource<AssistantUserContext, AssistantUserContextUpsertResult>(
+                            .UpsertResourceAsync<AssistantUserContext, AssistantUserContextUpsertResult>(
                                 instanceId,
                                 assistantUserContext,
-                                AzureOpenAIResourceTypeNames.AssistantUserContexts,
                                 currentUserIdentity);
 
                         if (!string.IsNullOrWhiteSpace(result.NewOpenAIAssistantThreadId))

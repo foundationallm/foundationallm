@@ -14,6 +14,7 @@ using FoundationaLLM.Vectorization.Extensions;
 using FoundationaLLM.Vectorization.ResourceProviders;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.ResourceProviders;
 
 namespace FoundationaLLM.Vectorization.Services
 {
@@ -97,17 +98,19 @@ namespace FoundationaLLM.Vectorization.Services
                             //hydrate the vectorization request
                             var request = await vectorizationResourceProvider.GetVectorizationRequestResource(dequeuedRequest.RequestName, DefaultAuthentication.ServiceIdentity!);
 
-                            var processingContext = new VectorizationRequestProcessingContext
+                            var requestInstanceId = default(string);
+                            if (string.IsNullOrWhiteSpace(request.ObjectId)
+                                || !ResourcePath.TryParseInstanceId(request.ObjectId, out requestInstanceId))
                             {
-                                Request = request,
-                                DequeuedRequest = dequeuedRequest
-                            };
+                                // We are signaling that the request is invalid by setting the error count to int.MaxValue
+                                request.ErrorCount = int.MaxValue;
+                            }
 
                             request.ProcessingState = VectorizationProcessingState.InProgress;
                             if (request.ExecutionStart == null)
                                 request.ExecutionStart = DateTime.UtcNow;
 
-                            //check if the dequeue count is greater than the max number of retries
+                            // Check if the request is still valid and the number of retries has not been exceeded.
                             if (request.Expired
                                 || request.ErrorCount > _settings.QueueMaxNumberOfRetries)
                             {
@@ -121,6 +124,14 @@ namespace FoundationaLLM.Vectorization.Services
                                         request.Name,
                                         request.LastSuccessfulStepTime);
                                     errorMessage = $"The message with id {dequeuedRequest.MessageId} containing the request with id {request.Name} has expired and will be deleted (the last time a step was successfully processed was {request.LastSuccessfulStepTime}).";
+                                }
+                                else if (request.ErrorCount.Equals(int.MaxValue))
+                                {
+                                    _logger.LogError(
+                                        "The message with id {MessageId} contains the request with id {RequestId} which has an invalid object identifier. The request will be discarded and the message deleted.",
+                                        dequeuedRequest.MessageId,
+                                        request.Name);
+                                    errorMessage = $"The message with id {dequeuedRequest.MessageId} contains the request with id {request.Name} which has an invalid object identifier. The request will be discarded and the message deleted.";
                                 }
                                 else
                                 {
@@ -158,13 +169,19 @@ namespace FoundationaLLM.Vectorization.Services
                                 // Persist the state of the vectorization request
                                 await _vectorizationStateService.SaveState(state).ConfigureAwait(false);
                                 // Update the vectorization request resource
-                                await request.UpdateVectorizationRequestResource(vectorizationResourceProvider, DefaultAuthentication.ServiceIdentity!);
+                                if (!request.ErrorCount.Equals(int.MaxValue))
+                                    await request.UpdateVectorizationRequestResource(requestInstanceId!, vectorizationResourceProvider, DefaultAuthentication.ServiceIdentity!);
                                 // Verify if the pipeline state needs to be updated
                                 await UpdatePipelineState(request).ConfigureAwait(false);
                             }
                             else
                             {
-                                validRequests.Add(processingContext);
+                                validRequests.Add(new VectorizationRequestProcessingContext
+                                {
+                                    InstanceId = requestInstanceId!,
+                                    Request = request,
+                                    DequeuedRequest = dequeuedRequest
+                                });
                             }
                         }
 
@@ -187,7 +204,7 @@ namespace FoundationaLLM.Vectorization.Services
                             .Select(r => new TaskInfo
                                 {
                                     PayloadId = r.Request.Name,
-                                    Task = ProcessRequest(r.Request, r.DequeuedRequest.MessageId, r.DequeuedRequest.PopReceipt, DefaultAuthentication.ServiceIdentity!, _cancellationToken),
+                                    Task = ProcessRequest(r.InstanceId, r.Request, r.DequeuedRequest.MessageId, r.DequeuedRequest.PopReceipt, DefaultAuthentication.ServiceIdentity!, _cancellationToken),
                                     StartTime = DateTimeOffset.UtcNow
                                 }));                            
                                                
@@ -209,7 +226,7 @@ namespace FoundationaLLM.Vectorization.Services
             _logger.LogInformation("The request manager service associated with source [{RequestSourceName}] finished processing requests.", _settings.RequestSourceName);
         }
 
-        private async Task ProcessRequest(VectorizationRequest request, string messageId, string popReceipt, UnifiedUserIdentity userIdentity, CancellationToken cancellationToken)
+        private async Task ProcessRequest(string requestInstanceId, VectorizationRequest request, string messageId, string popReceipt, UnifiedUserIdentity userIdentity, CancellationToken cancellationToken)
         {
             var state = await GetVectorizationRequestState(request);
 
@@ -219,7 +236,7 @@ namespace FoundationaLLM.Vectorization.Services
                 {
                     // If the request was handled successfully, remove it from the current source and advance it to the next step.
                     await _incomingRequestSourceService.DeleteRequest(messageId, popReceipt).ConfigureAwait(false);
-                    await AdvanceRequest(request).ConfigureAwait(false);
+                    await AdvanceRequest(requestInstanceId, request).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
@@ -230,7 +247,7 @@ namespace FoundationaLLM.Vectorization.Services
             finally
             {
                 await _vectorizationStateService.SaveState(state).ConfigureAwait(false);
-                await request.UpdateVectorizationRequestResource(GetVectorizationResourceProvider(), DefaultAuthentication.ServiceIdentity!).ConfigureAwait(false);
+                await request.UpdateVectorizationRequestResource(requestInstanceId, GetVectorizationResourceProvider(), DefaultAuthentication.ServiceIdentity!).ConfigureAwait(false);
                 await UpdatePipelineState(request).ConfigureAwait(false);
             }
             
@@ -250,7 +267,7 @@ namespace FoundationaLLM.Vectorization.Services
             return handlerSuccess;
         }
 
-        private async Task AdvanceRequest(VectorizationRequest request)
+        private async Task AdvanceRequest(string requestInstanceId, VectorizationRequest request)
         {
             var state = await GetVectorizationRequestState(request);
 
@@ -265,7 +282,7 @@ namespace FoundationaLLM.Vectorization.Services
                     var errorMessage = $"Could not find the [{CurrentStep}] request source service for request id {request.Name}.";
                     request.ProcessingState = VectorizationProcessingState.Failed;
                     request.ErrorMessages.Add(errorMessage);
-                    await request.UpdateVectorizationRequestResource(vectorizationResourceProvider, DefaultAuthentication.ServiceIdentity!).ConfigureAwait(false);                    
+                    await request.UpdateVectorizationRequestResource(requestInstanceId, vectorizationResourceProvider, DefaultAuthentication.ServiceIdentity!).ConfigureAwait(false);                    
                     throw new VectorizationException(errorMessage);
                 }
 

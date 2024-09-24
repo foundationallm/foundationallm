@@ -17,7 +17,7 @@ namespace FoundationaLLM.Vectorization.Services.VectorizationServices
         private readonly Dictionary<string, IRequestSourceService> _requestSources = requestSourcesCache.RequestSources;       
 
         /// <inheritdoc/>
-        public async Task<VectorizationResult> ProcessRequest(VectorizationRequest vectorizationRequest, UnifiedUserIdentity? userIdentity)
+        public async Task<VectorizationResult> ProcessRequest(string instanceId, VectorizationRequest vectorizationRequest, UnifiedUserIdentity? userIdentity)
         {
             var firstRequestSource = _requestSources[vectorizationRequest.Steps.First().Id];
             await firstRequestSource.SubmitRequest(vectorizationRequest.Name);
