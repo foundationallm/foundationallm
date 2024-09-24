@@ -239,6 +239,6 @@ $params = @{
     fllmApiConfigPath = "foundationallm-reader.template.json"
     fllmApiUri        = "api://FoundationaLLM-Reader"
 }
-$($fllmAppRegs).Authorization = New-FllmEntraIdApps @params
+$($fllmAppRegs).Reader = New-FllmEntraIdApps @params
 
 Write-Host $($fllmAppRegs | ConvertTo-Json)
