@@ -267,55 +267,55 @@ export default {
 			);
 		},
 
-		items() {
-			return [
-				{
-					label: 'Connect to Microsoft OneDrive (work/school)',
-					icon: 'pi pi-sign-in',
-					visible: !this.$appStore.oneDriveConnected,
-					command: async () => {
-						await this.connectOneDrive();
-					},
-				},
-				{
-					label: 'Microsoft OneDrive (work/school)',
-					labelIcon: 'pi pi-sign-out',
-					items: [
-						{
-							label: 'Upload from OneDrive',
-							icon: 'pi pi-cloud-upload',
-							visible: true,
-							command: async () => {
-								await this.downloadFromOneDrive();
-							},
-						},
-						{
-							label: 'Disconnect',
-							icon: 'pi pi-sign-out',
-							visible: true,
-							command: async () => {
-								await this.disconnectOneDrive();
-							},
-						},
-					],
-					visible: this.$appStore.oneDriveConnected,
-					command: async () => {
-						await this.uploadFromOneDrive();
-					},
-				},
-				{
-					separator: true,
-				},
-				{
-					label: 'Upload from computer',
-					icon: 'pi pi-file-plus',
-					visible: true,
-					command: () => {
-						this.showFileUploadDialog = true;
-					},
-				},
-			];
-		},
+		// items() {
+		// 	return [
+		// 		{
+		// 			label: 'Connect to Microsoft OneDrive (work/school)',
+		// 			icon: 'pi pi-sign-in',
+		// 			visible: !this.$appStore.oneDriveConnected,
+		// 			command: async () => {
+		// 				await this.connectOneDrive();
+		// 			},
+		// 		},
+		// 		{
+		// 			label: 'Microsoft OneDrive (work/school)',
+		// 			labelIcon: 'pi pi-sign-out',
+		// 			items: [
+		// 				{
+		// 					label: 'Upload from OneDrive',
+		// 					icon: 'pi pi-cloud-upload',
+		// 					visible: true,
+		// 					command: async () => {
+		// 						await this.downloadFromOneDrive();
+		// 					},
+		// 				},
+		// 				{
+		// 					label: 'Disconnect',
+		// 					icon: 'pi pi-sign-out',
+		// 					visible: true,
+		// 					command: async () => {
+		// 						await this.disconnectOneDrive();
+		// 					},
+		// 				},
+		// 			],
+		// 			visible: this.$appStore.oneDriveConnected,
+		// 			command: async () => {
+		// 				await this.uploadFromOneDrive();
+		// 			},
+		// 		},
+		// 		{
+		// 			separator: true,
+		// 		},
+		// 		{
+		// 			label: 'Upload from computer',
+		// 			icon: 'pi pi-file-plus',
+		// 			visible: true,
+		// 			command: () => {
+		// 				this.showFileUploadDialog = true;
+		// 			},
+		// 		},
+		// 	];
+		// },
 	},
 
 	watch: {
@@ -346,10 +346,10 @@ export default {
 			value: agent.name,
 		}));
 
-		if (localStorage.getItem('oneDriveConsentRedirect') === 'true') {
-			await this.oneDriveConnect();
-			localStorage.setItem('oneDriveConsentRedirect', JSON.stringify(false));
-		}
+		// if (localStorage.getItem('oneDriveConsentRedirect') === 'true') {
+		// 	await this.oneDriveConnect();
+		// 	localStorage.setItem('oneDriveConsentRedirect', JSON.stringify(false));
+		// }
 	},
 
 	mounted() {
@@ -589,7 +589,7 @@ export default {
 				oneDriveToken = await this.$authStore.getOneDriveToken();
 			} catch (error) {
 				console.error(error);
-				return await this.$authStore.loginOneDrive();
+				oneDriveToken = await this.$authStore.requestOneDriveConsent();
 			}
 
 			const iframe = document.createElement('iframe');
