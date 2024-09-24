@@ -417,6 +417,7 @@ export const useAppStore = defineStore('app', {
 				fileName: item.name,
 				sessionId,
 				contentType: item.file.mimeType,
+				source: 'OneDrive Work/School',
 			};
 
 			this.attachments.push(newAttachment);
@@ -444,6 +445,7 @@ export const useAppStore = defineStore('app', {
 				fileName,
 				sessionId,
 				contentType,
+				source: 'Local Computer',
 			};
 
 			this.attachments.push(newAttachment);
