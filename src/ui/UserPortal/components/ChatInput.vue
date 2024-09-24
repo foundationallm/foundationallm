@@ -58,6 +58,7 @@
 										<i class="pi pi-file" style="font-size: 2rem; margin-right: 1rem"></i>
 										<span style="font-weight: 600">{{ file.name }}</span>
 										<div>{{ formatSize(file.size) }}</div>
+										<Badge value="Local Computer" />
 									</div>
 									<div style="display: flex; align-items: center; margin-left: 10px">
 										<Badge value="Pending" />
@@ -74,6 +75,7 @@
 									<div class="file-upload-file_info">
 										<i class="pi pi-file" style="font-size: 2rem; margin-right: 1rem"></i>
 										<span style="font-weight: 600">{{ file.fileName }}</span>
+										<Badge :value="file.source" />
 									</div>
 									<div style="display: flex; align-items: center; margin-left: 10px">
 										<Badge value="Uploaded" severity="success" />
@@ -96,6 +98,7 @@
 											<i class="pi pi-file" style="font-size: 2rem; margin-right: 1rem"></i>
 											<span style="font-weight: 600">{{ file.name }}</span>
 											<div>{{ formatSize(file.size) }}</div>
+											<Badge value="OneDrive Work/School" />
 										</div>
 										<div style="display: flex; align-items: center; margin-left: 10px">
 											<Badge value="Pending" />
