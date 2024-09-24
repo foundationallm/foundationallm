@@ -74,52 +74,6 @@
 				/>
 			</div>
 
-			<!-- Type -->
-			<div class="step-section-header span-2">Type</div>
-
-			<div class="step-header span-2">What type of agent?</div>
-
-			<!-- Knowledge management agent -->
-			<div class="step">
-				<div
-					class="step-container cursor-pointer"
-					@click="handleAgentTypeSelect('knowledge-management')"
-				>
-					<div class="step-container__edit__inner">
-						<div class="step__radio">
-							<RadioButton
-								v-model="agentType"
-								name="agentType"
-								value="knowledge-management"
-								aria-labelledby="aria-type-knowledge"
-							/>
-							<div id="aria-type-knowledge" class="step-container__header">
-								Knowledge Management
-							</div>
-						</div>
-						<div>Best for Q&A, summarization and reasoning over textual data.</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Analytics agent-->
-			<div class="step step--disabled">
-				<div class="step-container cursor-pointer" @click="handleAgentTypeSelect('analytics')">
-					<div class="step-container__edit__inner">
-						<div class="step__radio">
-							<RadioButton
-								v-model="agentType"
-								name="agentType"
-								value="analytics"
-								aria-labelledby="aria-type-analytics"
-							/>
-							<div id="aria-type-analytics" class="step-container__header">Analytics</div>
-						</div>
-						<div>Best to query, analyze, calculate and report on tabular data.</div>
-					</div>
-				</div>
-			</div>
-
 			<!-- Knowledge source -->
 			<div class="step-section-header span-2">Knowledge Source</div>
 
@@ -457,7 +411,7 @@
 			<!-- Agent configuration -->
 			<div class="step-section-header span-2">Agent Configuration</div>
 
-			<div class="step-header">Should conversations be saved?</div>
+			<div class="step-header">Should conversations included in the context?</div>
 			<div class="step-header">How should user-agent interactions be gated?</div>
 
 			<!-- Conversation history -->
@@ -607,7 +561,7 @@
 
 			<!-- Orchestrator -->
 			<div id="aria-orchestrator" class="step-header span-2">
-				Which orchestrator should the agent use?
+				How should the agent communicate with the AI model?
 			</div>
 			<div class="span-2">
 				<Dropdown
@@ -970,6 +924,13 @@ export default {
 			const externalOrchestrationServicesResult = await api.getExternalOrchestrationServices();
 			this.externalOrchestratorOptions = externalOrchestrationServicesResult.map(
 				(result) => result.resource,
+			) as ExternalOrchestrationService[];
+			// Filter the externalOrchestratorOptions so we only display the ones where the category is 'Orchestration'.
+			this.externalOrchestratorOptions = this.externalOrchestratorOptions.filter(
+				(service) => service.category === 'Orchestration',
+			);
+			this.externalOrchestratorOptions = this.externalOrchestratorOptions.filter(
+				(service) => service.name !== 'LangChainAPI' && service.name !== 'SemanticKernelAPI',
 			);
 
 			this.loadingStatusText = 'Retrieving AI models...';
