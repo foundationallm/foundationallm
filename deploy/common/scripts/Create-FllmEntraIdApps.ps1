@@ -231,4 +231,13 @@ $params = @{
 }
 $($fllmAppRegs).Authorization = New-FllmEntraIdApps @params
 
+$params = @{
+    appPermissionsId  = "9e313dd4-51e4-4989-84d0-c713e38e467d"
+    createClientApp   = $false
+    fllmApi           = $readerAppName
+    fllmApiConfigPath = "foundationallm-reader.template.json"
+    fllmApiUri        = "api://FoundationaLLM-Reader"
+}
+$($fllmAppRegs).Reader = New-FllmEntraIdApps @params
+
 Write-Host $($fllmAppRegs | ConvertTo-Json)
