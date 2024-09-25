@@ -11,9 +11,6 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY . .
 
-RUN dotnet restore "dotnet/Common/Common.csproj"
-RUN dotnet build "dotnet/Common/Common.csproj" -c Release -o /app/build
-
 RUN dotnet restore "dotnet/ManagementAPI/ManagementAPI.csproj"
 RUN dotnet build "dotnet/ManagementAPI/ManagementAPI.csproj" -c Release -o /app/build
 
