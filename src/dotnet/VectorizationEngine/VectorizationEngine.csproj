@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyName>FoundationaLLM.Vectorization</AssemblyName>
+    <AssemblyName>FoundationaLLM.Vectorization.Engine</AssemblyName>
     <RootNamespace>FoundationaLLM.Vectorization</RootNamespace>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
@@ -28,7 +28,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AIModel\AIModel.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Configuration\Configuration.csproj" />
+    <ProjectReference Include="..\DataSource\DataSource.csproj" />
+    <ProjectReference Include="..\SemanticKernel\SemanticKernel.csproj" />
+    <ProjectReference Include="..\Vectorization\Vectorization.csproj" />
   </ItemGroup>
 
 </Project>
