@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.41.0-preview.0" />
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.43.1" />
   </ItemGroup>
 
   <ItemGroup>
