@@ -89,12 +89,12 @@
 
 
   <h1 id="FoundationaLLM_Vectorization_Interfaces_IRequestSourceService" data-uid="FoundationaLLM.Vectorization.Interfaces.IRequestSourceService" class="text-break">
-Interface IRequestSourceService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Interfaces/IRequestSourceService.cs/#L8"><i class="bi bi-code-slash"></i></a>
+Interface IRequestSourceService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationEngine/Interfaces/IRequestSourceService.cs/#L8"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
     <dl><dt>Namespace</dt><dd><a class="xref" href="FoundationaLLM.html">FoundationaLLM</a>.<a class="xref" href="FoundationaLLM.Vectorization.html">Vectorization</a>.<a class="xref" href="FoundationaLLM.Vectorization.Interfaces.html">Interfaces</a></dd></dl>
-  <dl><dt>Assembly</dt><dd>FoundationaLLM.Vectorization.dll</dd></dl>
+  <dl><dt>Assembly</dt><dd>FoundationaLLM.Vectorization.Engine.dll</dd></dl>
   </div>
 
   <div class="markdown summary"><p>Manages vectorization requests.</p>
@@ -132,7 +132,7 @@ Interface IRequestSourceService  <a class="header-action link-secondary" title="
 
   <h3 id="FoundationaLLM_Vectorization_Interfaces_IRequestSourceService_SourceName" data-uid="FoundationaLLM.Vectorization.Interfaces.IRequestSourceService.SourceName">
   SourceName
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Interfaces/IRequestSourceService.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationEngine/Interfaces/IRequestSourceService.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The name of the vectorization request source.</p>
@@ -168,7 +168,7 @@ Interface IRequestSourceService  <a class="header-action link-secondary" title="
 
   <h3 id="FoundationaLLM_Vectorization_Interfaces_IRequestSourceService_DeleteRequest_System_String_System_String_" data-uid="FoundationaLLM.Vectorization.Interfaces.IRequestSourceService.DeleteRequest(System.String,System.String)">
   DeleteRequest(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Interfaces/IRequestSourceService.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationEngine/Interfaces/IRequestSourceService.cs/#L37"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Removes a specified vectorization request from the source.
@@ -210,7 +210,7 @@ This should happen when the request was successfully processed.</p>
 
   <h3 id="FoundationaLLM_Vectorization_Interfaces_IRequestSourceService_HasRequests" data-uid="FoundationaLLM.Vectorization.Interfaces.IRequestSourceService.HasRequests">
   HasRequests()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Interfaces/IRequestSourceService.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationEngine/Interfaces/IRequestSourceService.cs/#L19"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Indicates whether the source has pending requests.</p>
@@ -243,7 +243,7 @@ This should happen when the request was successfully processed.</p>
 
   <h3 id="FoundationaLLM_Vectorization_Interfaces_IRequestSourceService_ReceiveRequests_System_Int32_" data-uid="FoundationaLLM.Vectorization.Interfaces.IRequestSourceService.ReceiveRequests(System.Int32)">
   ReceiveRequests(int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Interfaces/IRequestSourceService.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationEngine/Interfaces/IRequestSourceService.cs/#L28"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Receives the specified number of requests.
@@ -284,7 +284,7 @@ They should be removed from the source by calling <a class="xref" href="Foundati
 
   <h3 id="FoundationaLLM_Vectorization_Interfaces_IRequestSourceService_SubmitRequest_System_String_" data-uid="FoundationaLLM.Vectorization.Interfaces.IRequestSourceService.SubmitRequest(System.String)">
   SubmitRequest(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Interfaces/IRequestSourceService.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationEngine/Interfaces/IRequestSourceService.cs/#L44"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Submits a new vectorization request to the source.</p>
@@ -322,7 +322,7 @@ They should be removed from the source by calling <a class="xref" href="Foundati
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Interfaces/IRequestSourceService.cs/#L8" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationEngine/Interfaces/IRequestSourceService.cs/#L8" class="edit-link">Edit this page</a>
         </div>
 
 

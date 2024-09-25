@@ -89,12 +89,12 @@
 
 
   <h1 id="FoundationaLLM_Vectorization_Services_RequestSources_StorageQueueRequestSourceService" data-uid="FoundationaLLM.Vectorization.Services.RequestSources.StorageQueueRequestSourceService" class="text-break">
-Class StorageQueueRequestSourceService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Services/RequestSources/StorageQueueRequestSourceService.cs/#L13"><i class="bi bi-code-slash"></i></a>
+Class StorageQueueRequestSourceService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationEngine/Services/RequestSources/StorageQueueRequestSourceService.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
     <dl><dt>Namespace</dt><dd><a class="xref" href="FoundationaLLM.html">FoundationaLLM</a>.<a class="xref" href="FoundationaLLM.Vectorization.html">Vectorization</a>.<a class="xref" href="FoundationaLLM.Vectorization.Services.html">Services</a>.<a class="xref" href="FoundationaLLM.Vectorization.Services.RequestSources.html">RequestSources</a></dd></dl>
-  <dl><dt>Assembly</dt><dd>FoundationaLLM.Vectorization.dll</dd></dl>
+  <dl><dt>Assembly</dt><dd>FoundationaLLM.Vectorization.Engine.dll</dd></dl>
   </div>
 
   <div class="markdown summary"><p>Implements a request source that uses Azure storage queues.</p>
@@ -170,7 +170,7 @@ Class StorageQueueRequestSourceService  <a class="header-action link-secondary" 
 
   <h3 id="FoundationaLLM_Vectorization_Services_RequestSources_StorageQueueRequestSourceService__ctor_FoundationaLLM_Vectorization_Models_Configuration_RequestSourceServiceSettings_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Vectorization_Services_RequestSources_StorageQueueRequestSourceService__" data-uid="FoundationaLLM.Vectorization.Services.RequestSources.StorageQueueRequestSourceService.#ctor(FoundationaLLM.Vectorization.Models.Configuration.RequestSourceServiceSettings,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Vectorization.Services.RequestSources.StorageQueueRequestSourceService})">
   StorageQueueRequestSourceService(RequestSourceServiceSettings, ILogger&lt;StorageQueueRequestSourceService&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Services/RequestSources/StorageQueueRequestSourceService.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationEngine/Services/RequestSources/StorageQueueRequestSourceService.cs/#L28"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new instance of the request source.</p>
@@ -210,7 +210,7 @@ Class StorageQueueRequestSourceService  <a class="header-action link-secondary" 
 
   <h3 id="FoundationaLLM_Vectorization_Services_RequestSources_StorageQueueRequestSourceService_SourceName" data-uid="FoundationaLLM.Vectorization.Services.RequestSources.StorageQueueRequestSourceService.SourceName">
   SourceName
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Services/RequestSources/StorageQueueRequestSourceService.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationEngine/Services/RequestSources/StorageQueueRequestSourceService.cs/#L20"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The name of the vectorization request source.</p>
@@ -246,7 +246,7 @@ Class StorageQueueRequestSourceService  <a class="header-action link-secondary" 
 
   <h3 id="FoundationaLLM_Vectorization_Services_RequestSources_StorageQueueRequestSourceService_DeleteRequest_System_String_System_String_" data-uid="FoundationaLLM.Vectorization.Services.RequestSources.StorageQueueRequestSourceService.DeleteRequest(System.String,System.String)">
   DeleteRequest(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Services/RequestSources/StorageQueueRequestSourceService.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationEngine/Services/RequestSources/StorageQueueRequestSourceService.cs/#L90"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Removes a specified vectorization request from the source.
@@ -288,7 +288,7 @@ This should happen when the request was successfully processed.</p>
 
   <h3 id="FoundationaLLM_Vectorization_Services_RequestSources_StorageQueueRequestSourceService_HasRequests" data-uid="FoundationaLLM.Vectorization.Services.RequestSources.StorageQueueRequestSourceService.HasRequests">
   HasRequests()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Services/RequestSources/StorageQueueRequestSourceService.cs/#L41"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationEngine/Services/RequestSources/StorageQueueRequestSourceService.cs/#L41"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Indicates whether the source has pending requests.</p>
@@ -321,7 +321,7 @@ This should happen when the request was successfully processed.</p>
 
   <h3 id="FoundationaLLM_Vectorization_Services_RequestSources_StorageQueueRequestSourceService_ReceiveRequests_System_Int32_" data-uid="FoundationaLLM.Vectorization.Services.RequestSources.StorageQueueRequestSourceService.ReceiveRequests(System.Int32)">
   ReceiveRequests(int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Services/RequestSources/StorageQueueRequestSourceService.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationEngine/Services/RequestSources/StorageQueueRequestSourceService.cs/#L56"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Receives the specified number of requests.
@@ -362,7 +362,7 @@ They should be removed from the source by calling <a class="xref" href="Foundati
 
   <h3 id="FoundationaLLM_Vectorization_Services_RequestSources_StorageQueueRequestSourceService_SubmitRequest_System_String_" data-uid="FoundationaLLM.Vectorization.Services.RequestSources.StorageQueueRequestSourceService.SubmitRequest(System.String)">
   SubmitRequest(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Services/RequestSources/StorageQueueRequestSourceService.cs/#L104"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationEngine/Services/RequestSources/StorageQueueRequestSourceService.cs/#L104"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Submits a new vectorization request to the source.</p>
@@ -400,7 +400,7 @@ They should be removed from the source by calling <a class="xref" href="Foundati
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/Services/RequestSources/StorageQueueRequestSourceService.cs/#L13" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/VectorizationEngine/Services/RequestSources/StorageQueueRequestSourceService.cs/#L13" class="edit-link">Edit this page</a>
         </div>
 
 
