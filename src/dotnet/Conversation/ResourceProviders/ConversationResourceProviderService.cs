@@ -18,7 +18,7 @@ namespace FoundationaLLM.Conversation.ResourceProviders
     /// <param name="authorizationService">The <see cref="IAuthorizationService"/> providing authorization services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
-    /// <param name="cosmosDBService">The <see cref="ICosmosDBService"/> providing Cosmos DB services.</param>
+    /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> providing Cosmos DB services.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
     public class ConversationResourceProviderService(
@@ -26,7 +26,7 @@ namespace FoundationaLLM.Conversation.ResourceProviders
         IAuthorizationService authorizationService,
         IEventService eventService,
         IResourceValidatorFactory resourceValidatorFactory,
-        ICosmosDBService cosmosDBService,
+        IAzureCosmosDBService cosmosDBService,
         IServiceProvider serviceProvider,
         ILogger<ConversationResourceProviderService> logger)
         : ResourceProviderServiceBase<ResourceReference>(
@@ -40,7 +40,7 @@ namespace FoundationaLLM.Conversation.ResourceProviders
             eventNamespacesToSubscribe: null,
             useInternalReferencesStore: false)
     {
-        private readonly ICosmosDBService _cosmosDBService = cosmosDBService;
+        private readonly IAzureCosmosDBService _cosmosDBService = cosmosDBService;
 
         /// <inheritdoc />
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>

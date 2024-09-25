@@ -267,6 +267,24 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         }
 
         /// <summary>
+        /// Computes the object id of the resource type associated with the resource identifier.
+        /// </summary>
+        /// <returns>The resource type object id.</returns>
+        /// <exception cref="ResourceProviderException"></exception>
+        public string GetResourceTypeObjectId()
+        {
+            if (_instanceId == null
+                || _resourceProvider == null
+                || _resourceTypeInstances == null
+                || _resourceTypeInstances.Count == 0)
+                throw new ResourceProviderException($"Cannot extract a resource type object id from the {_rawResourcePath} resource path.",
+                    StatusCodes.Status400BadRequest);
+            else
+                return $"/instances/{_instanceId}/providers/{_resourceProvider}/{string.Join("/",
+                    _resourceTypeInstances.SkipLast(1).Select(i => $"{i.ResourceTypeName}/{i.ResourceId}").ToArray(), _resourceTypeInstances.Last().ResourceTypeName)}";
+        }
+
+        /// <summary>
         /// Computes the object id of the resource identifier.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance id.</param>

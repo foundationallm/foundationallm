@@ -23,7 +23,7 @@ namespace FoundationaLLM.Core.Services
         private ChangeFeedProcessor? _changeFeedProcessorProcessUserSessions;
 
         private readonly ILogger<CosmosDbChangeFeedService> _logger;
-        private readonly ICosmosDBService _cosmosDBService;
+        private readonly IAzureCosmosDBService _cosmosDBService;
         private readonly ResiliencePipeline _resiliencePipeline;
 
         private bool _changeFeedsInitialized = false;
@@ -45,7 +45,7 @@ namespace FoundationaLLM.Core.Services
         /// <exception cref="ArgumentException">Thrown if any of the required settings
         /// are null or empty.</exception>
         public CosmosDbChangeFeedService(ILogger<CosmosDbChangeFeedService> logger,
-            ICosmosDBService cosmosDbService,
+            IAzureCosmosDBService cosmosDbService,
             IOptions<CosmosDbSettings> settings)
         {
             _cosmosDBService = cosmosDbService;

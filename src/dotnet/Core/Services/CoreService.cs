@@ -49,7 +49,7 @@ namespace FoundationaLLM.Core.Services;
 /// <param name="resourceProviderServices">A dictionary of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
 /// <param name="configuration">The <see cref="IConfiguration"/> service providing configuration settings.</param>
 public partial class CoreService(
-    ICosmosDBService cosmosDBService,
+    IAzureCosmosDBService cosmosDBService,
     IEnumerable<IDownstreamAPIService> downstreamAPIServices,
     ILogger<CoreService> logger,
     IOptions<ClientBrandingConfiguration> brandingSettings,
@@ -59,7 +59,7 @@ public partial class CoreService(
     IConfiguration configuration,
     IHttpClientFactoryService httpClientFactory) : ICoreService
 {
-    private readonly ICosmosDBService _cosmosDBService = cosmosDBService;
+    private readonly IAzureCosmosDBService _cosmosDBService = cosmosDBService;
     private readonly IDownstreamAPIService _gatekeeperAPIService = downstreamAPIServices.Single(das => das.APIName == HttpClientNames.GatekeeperAPI);
     private readonly IDownstreamAPIService _orchestrationAPIService = downstreamAPIServices.Single(das => das.APIName == HttpClientNames.OrchestrationAPI);
     private readonly ILogger<CoreService> _logger = logger;

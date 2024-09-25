@@ -15,7 +15,7 @@ namespace FoundationaLLM.Common.Services
     /// <summary>
     /// Service to access Azure Cosmos DB for NoSQL.
     /// </summary>
-    public class AzureCosmosDBService : ICosmosDBService
+    public class AzureCosmosDBService : IAzureCosmosDBService
     {
         private Container _sessions;
         private Container _userSessions;

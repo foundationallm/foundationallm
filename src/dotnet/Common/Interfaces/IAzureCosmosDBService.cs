@@ -6,7 +6,7 @@ namespace FoundationaLLM.Common.Interfaces;
 /// <summary>
 /// Contains methods for accessing Azure Cosmos DB for NoSQL.
 /// </summary>
-public interface ICosmosDBService
+public interface IAzureCosmosDBService
 {
     /// <summary>
     /// Gets a list of all current chat sessions.

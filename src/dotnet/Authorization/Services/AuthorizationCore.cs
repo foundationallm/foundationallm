@@ -27,10 +27,14 @@ namespace FoundationaLLM.Authorization.Services
         private readonly ILogger<AuthorizationCore> _logger;
         private readonly AuthorizationCoreSettings _settings;
         private readonly ConcurrentDictionary<string, RoleAssignmentStore> _roleAssignmentStores = [];
+        private readonly ConcurrentDictionary<string, PolicyAssignmentStore> _policyAssignmentStores = [];
         private readonly ConcurrentDictionary<string, RoleAssignmentCache> _roleAssignmentCaches = [];
+        private readonly ConcurrentDictionary<string, PolicyAssignmentCache> _policyAssignmentCaches = [];
         private readonly IValidator<ActionAuthorizationRequest> _actionAuthorizationRequestValidator;
 
         private const string ROLE_ASSIGNMENTS_CONTAINER_NAME = "role-assignments";
+        private const string POLICY_ASSIGNMENTS_CONTAINER_NAME = "policy-assignments";
+
         private bool _initialized = false;
         private readonly SemaphoreSlim _syncRoot = new SemaphoreSlim(1, 1);
 
@@ -65,7 +69,11 @@ namespace FoundationaLLM.Authorization.Services
                 foreach (var instanceId in _settings.InstanceIds)
                 {
                     var roleAssignmentStoreFile = $"/{instanceId.ToLower()}.json";
+                    var policyAssignmentStoreFile = $"/{instanceId.ToLower()}-policy.json";
                     RoleAssignmentStore? roleAssignmentStore;
+                    PolicyAssignmentStore? policyAssignmentStore;
+
+                    #region Load role assignments
 
                     if (await _storageService.FileExistsAsync(ROLE_ASSIGNMENTS_CONTAINER_NAME, roleAssignmentStoreFile, default))
                     {
@@ -101,10 +109,56 @@ namespace FoundationaLLM.Authorization.Services
                         _logger.LogInformation("The role assignment store for instance {InstanceId} has been created.", instanceId);
                     }
 
+                    #endregion
+
+                    #region Load policy assignments
+
+                    if (await _storageService.FileExistsAsync(POLICY_ASSIGNMENTS_CONTAINER_NAME, policyAssignmentStoreFile, default))
+                    {
+                        var fileContent = await _storageService.ReadFileAsync(POLICY_ASSIGNMENTS_CONTAINER_NAME, policyAssignmentStoreFile, default);
+                        policyAssignmentStore = JsonSerializer.Deserialize<PolicyAssignmentStore>(
+                            Encoding.UTF8.GetString(fileContent.ToArray()));
+                        if (policyAssignmentStore == null
+                            || string.Compare(policyAssignmentStore.InstanceId, instanceId) != 0)
+                        {
+                            _logger.LogError("The policy assignment store file for instance {InstanceId} is invalid.", instanceId);
+                        }
+                        else
+                        {
+                            _policyAssignmentStores.AddOrUpdate(instanceId, policyAssignmentStore, (k, v) => policyAssignmentStore);
+                            _logger.LogInformation("The policy assignment store for instance {InstanceId} has been loaded.", instanceId);
+                        }
+                    }
+                    else
+                    {
+                        policyAssignmentStore = new PolicyAssignmentStore
+                        {
+                            InstanceId = instanceId,
+                            PolicyAssignments = []
+                        };
+
+                        _policyAssignmentStores.AddOrUpdate(instanceId, policyAssignmentStore, (k, v) => policyAssignmentStore);
+                        await _storageService.WriteFileAsync(
+                            POLICY_ASSIGNMENTS_CONTAINER_NAME,
+                            policyAssignmentStoreFile,
+                            JsonSerializer.Serialize(policyAssignmentStore),
+                            default,
+                            default);
+                        _logger.LogInformation("The policy assignment store for instance {InstanceId} has been created.", instanceId);
+                    }
+
+                    #endregion
+
                     if (roleAssignmentStore != null)
                     {
                         roleAssignmentStore.EnrichRoleAssignments();
-                        _roleAssignmentCaches.AddOrUpdate(instanceId, new RoleAssignmentCache(_roleAssignmentStores[instanceId]), (k, v) => v);
+                        _roleAssignmentCaches.AddOrUpdate(instanceId, new RoleAssignmentCache(roleAssignmentStore), (k, v) => v);
+                    }
+
+                    if (policyAssignmentStore != null)
+                    {
+                        policyAssignmentStore.EnrichPolicyAssignments();
+                        _policyAssignmentCaches.AddOrUpdate(instanceId, new PolicyAssignmentCache(policyAssignmentStore), (k, v) => v);
                     }
                 }
 
@@ -151,6 +205,7 @@ namespace FoundationaLLM.Authorization.Services
                 ResourcePath = rp,
                 Authorized = false,
                 Roles = [],
+                PolicyDefinitionIds = [],
                 SubordinateResourcePathsAuthorizationResults = []
             });
             var invalidResourcePaths = new List<string>();
@@ -322,8 +377,17 @@ namespace FoundationaLLM.Authorization.Services
                 ResourcePath = resourcePath.RawResourcePath,
                 Authorized = false,
                 Roles = [],
+                PolicyDefinitionIds = [],
                 SubordinateResourcePathsAuthorizationResults = []
             };
+
+            if (_policyAssignmentCaches.TryGetValue(resourcePath.InstanceId!, out var policyAssignmentCache))
+            {
+                result.PolicyDefinitionIds = policyAssignmentCache
+                    .GetPolicyAssignments(resourcePath.GetResourceTypeObjectId())
+                    .Select(pa => pa.PolicyDefinitionId)
+                    .ToList();
+            }
 
             // Get cache associated with the instance id.
             if (_roleAssignmentCaches.TryGetValue(resourcePath.InstanceId!, out var roleAssignmentCache))

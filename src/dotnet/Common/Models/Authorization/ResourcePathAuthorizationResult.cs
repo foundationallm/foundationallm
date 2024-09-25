@@ -35,6 +35,12 @@ namespace FoundationaLLM.Common.Models.Authorization
         public List<string> Roles { get; set; } = [];
 
         /// <summary>
+        /// Gets or sets the list of policy definition IDs that are associated with the resource path.
+        /// </summary>
+        [JsonPropertyName("policy_definition_ids")]
+        public List<string> PolicyDefinitionIds { get; set; } = [];
+
+        /// <summary>
         /// Gets or sets the dictionary of <see cref="ResourcePathAuthorizationResult"/> objects representing
         /// authorization results for subordinate resource paths. They keys of the dictionary are the resource names.
         /// </summary>

@@ -49,7 +49,7 @@ builder.Services.AddSingleton<CosmosClient>(serviceProvider =>
         .Build();
 });
 
-builder.Services.AddSingleton<ICosmosDBService, AzureCosmosDBService>();
+builder.Services.AddSingleton<IAzureCosmosDBService, AzureCosmosDBService>();
 builder.Services.AddSingleton<ICosmosDbChangeFeedService, CosmosDbChangeFeedService>();
 builder.Services.AddHostedService<ChangeFeedWorker>();
 builder.Services.AddApplicationInsightsTelemetryWorkerService(options =>
