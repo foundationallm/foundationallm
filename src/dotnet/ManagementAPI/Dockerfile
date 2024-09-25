@@ -14,15 +14,10 @@ COPY . .
 RUN dotnet restore "dotnet/Common/Common.csproj"
 RUN dotnet build "dotnet/Common/Common.csproj" -c Release -o /app/build
 
-RUN dotnet restore "dotnet/Management/Management.csproj"
-RUN dotnet build "dotnet/Management/Management.csproj" -c Release -o /app/build
-
 RUN dotnet restore "dotnet/ManagementAPI/ManagementAPI.csproj"
 RUN dotnet build "dotnet/ManagementAPI/ManagementAPI.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "dotnet/Common/Common.csproj" -c Release -o /app/publish /p:UseAppHost=false
-RUN dotnet publish "dotnet/Management/Management.csproj" -c Release -o /app/publish /p:UseAppHost=false
 RUN dotnet publish "dotnet/ManagementAPI/ManagementAPI.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
