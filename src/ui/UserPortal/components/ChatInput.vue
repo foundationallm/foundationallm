@@ -128,7 +128,7 @@
 					<Divider v-if="oneDriveFiles.length > 0 || localFiles.length > 0" />
 					<div class="file-overlay-panel__footer">
 						<Button icon="pi pi-file-plus" label="Select file from Computer" @click="browseFiles" />
-						<Button icon="pi pi-cloud-upload" label="Select file from OneDrive" @click="downloadFromOneDrive" />
+						<Button icon="pi pi-cloud-upload" label="Select file from OneDrive" :disabled="oneDriveBaseURL === null" @click="downloadFromOneDrive" />
 					</div>
 				</OverlayPanel>
 				<template #popper>
@@ -257,6 +257,7 @@ export default {
 			},
 			oneDriveFiles: [],
 			localFiles: [],
+			oneDriveBaseURL: null as string | null,
 		};
 	},
 
@@ -347,6 +348,10 @@ export default {
 		}));
 
 		await this.$appStore.getFileStoreConnectors();
+
+		this.oneDriveBaseURL = this.$appStore.fileStoreConnectors.find(
+			(connector) => connector.subcategory === 'OneDriveWorkOrSchool',
+		)?.url;
 
 		// if (localStorage.getItem('oneDriveConsentRedirect') === 'true') {
 		// 	await this.oneDriveConnect();
@@ -608,7 +613,7 @@ export default {
 				locale: "en-us",
 			});
 
-			const url = `https://solliancenet-my.sharepoint.com/_layouts/15/FilePicker.aspx?${queryString}`;
+			const url = `${this.oneDriveBaseURL}_layouts/15/FilePicker.aspx?${queryString}`;
 
 			const form = document.createElement("form");
 			form.setAttribute("action", url);
