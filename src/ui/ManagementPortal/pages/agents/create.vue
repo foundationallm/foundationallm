@@ -925,12 +925,8 @@ export default {
 			this.externalOrchestratorOptions = externalOrchestrationServicesResult.map(
 				(result) => result.resource,
 			) as ExternalOrchestrationService[];
-			// Filter the externalOrchestratorOptions so we only display the ones where the category is 'Orchestration'.
 			this.externalOrchestratorOptions = this.externalOrchestratorOptions.filter(
-				(service) => service.category === 'Orchestration',
-			);
-			this.externalOrchestratorOptions = this.externalOrchestratorOptions.filter(
-				(service) => service.name !== 'LangChainAPI' && service.name !== 'SemanticKernelAPI',
+				(service) => service.category === 'ExternalOrchestration',
 			);
 
 			this.loadingStatusText = 'Retrieving AI models...';
