@@ -134,6 +134,13 @@ export interface UserProfile {
 	flags: Record<string, boolean>;
 }
 
+export interface FileStoreConnector {
+	name: string;
+	category: string;
+	subcategory: string;
+	url: string;
+}
+
 export interface OneDriveItem {
 	id: string;
 	objectId?: string;

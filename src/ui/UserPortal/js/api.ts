@@ -2,6 +2,7 @@ import type {
 	Message,
 	Session,
 	UserProfile,
+	FileStoreConnector,
 	OneDriveItem,
 	ChatSessionProperties,
 	CompletionPrompt,
@@ -371,6 +372,10 @@ export default {
 			method: 'POST',
 			body: JSON.stringify(attachments),
 		})) as ResourceProviderDeleteResults;
+	},
+
+	async getFileStoreConnectors() {
+		return await this.fetch(`/instances/${this.instanceId}/files/file-store-connectors`) as FileStoreConnector[];
 	},
 
 	/**

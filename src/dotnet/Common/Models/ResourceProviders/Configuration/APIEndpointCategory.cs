@@ -36,6 +36,11 @@
         AzureOpenAIDirect,
 
         /// <summary>
+        /// Endpoints for connecting to external file stores, such as OneDrive.
+        /// </summary>
+        FileStoreConnector,
+
+        /// <summary>
         /// General endpoints (internal APIs other than Orchestration, ExternalOrchestration, LLM, Gatekeeper, AzureAIDirect, or AzureOpenAIDirect.
         /// </summary>
         General

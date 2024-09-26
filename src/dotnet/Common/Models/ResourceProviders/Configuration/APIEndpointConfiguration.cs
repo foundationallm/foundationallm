@@ -24,6 +24,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Configuration
         public required APIEndpointCategory Category { get; set; }
 
         /// <summary>
+        /// The api endpoint subcategory.
+        /// </summary>
+        [JsonPropertyName("subcategory")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public APIEndpointSubcategory? Subcategory { get; set; }
+
+        /// <summary>
         /// The type of authentication required for accessing the API.
         /// </summary>
         [JsonPropertyName("authentication_type")]
