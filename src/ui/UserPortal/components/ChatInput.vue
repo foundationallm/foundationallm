@@ -51,9 +51,9 @@
 									<div class="file-upload-file_info">
 										<i v-if="!isMobile" class="pi pi-file" style="font-size: 2rem; margin-right: 1rem"></i>
 										<span style="font-weight: 600">{{ file.fileName }}</span>
-										<Badge v-if="!isMobile" :value="file.source" />
 									</div>
-									<div style="display: flex; align-items: center; margin-left: 10px">
+									<div style="display: flex; align-items: center; margin-left: 10px; gap: 0.5rem">
+										<Badge v-if="!isMobile" :value="file.source" />
 										<Badge value="Uploaded" severity="success" />
 										<Button
 											icon="pi pi-times"
@@ -74,9 +74,9 @@
 										<i v-if="!isMobile" class="pi pi-file" style="font-size: 2rem; margin-right: 1rem"></i>
 										<span style="font-weight: 600">{{ file.name }}</span>
 										<div v-if="!isMobile">{{ formatSize(file.size) }}</div>
-										<Badge v-if="!isMobile" value="Local Computer" />
 									</div>
-									<div style="display: flex; align-items: center; margin-left: 10px">
+									<div style="display: flex; align-items: center; margin-left: 10px; gap: 0.5rem">
+										<Badge v-if="!isMobile" value="Local Computer" />
 										<Badge value="Pending" />
 										<Button
 											icon="pi pi-times"
@@ -97,9 +97,9 @@
 											<i v-if="!isMobile" class="pi pi-file" style="font-size: 2rem; margin-right: 1rem"></i>
 											<span style="font-weight: 600">{{ file.name }}</span>
 											<div v-if="!isMobile">{{ formatSize(file.size) }}</div>
-											<Badge v-if="!isMobile" value="OneDrive Work/School" />
 										</div>
-										<div style="display: flex; align-items: center; margin-left: 10px">
+										<div style="display: flex; align-items: center; margin-left: 10px; gap: 0.5rem">
+											<Badge v-if="!isMobile" value="OneDrive Work/School" />
 											<Badge value="Pending" />
 											<Button
 												icon="pi pi-times"
