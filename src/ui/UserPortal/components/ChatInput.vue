@@ -343,8 +343,8 @@ export default {
 		await this.$appStore.getAgents();
 
 		this.agents = this.$appStore.agents.map((agent) => ({
-			label: agent.name,
-			value: agent.name,
+			label: agent.resource.name,
+			value: agent.resource.name,
 		}));
 
 		await this.$appStore.getFileStoreConnectors();
