@@ -17,6 +17,7 @@
 			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
 					type="button"
+					ref="fileUploadButton"
 					:badge="fileArrayFiltered.length.toString() || null"
 					:aria-label="'Upload file (' + fileArrayFiltered.length.toString() + ' files attached)'"
 					icon="pi pi-paperclip"
@@ -168,6 +169,9 @@
 					autofocus
 					aria-label="Chat input"
 					@keydown="handleKeydown"
+					@dragover.prevent
+					@dragenter.prevent
+					@drop="handleDrop"
 				/>
 				<template #no-result>
 					<div class="dim">No result</div>
@@ -551,13 +555,31 @@ export default {
 			});
 
 			this.localFiles = [...this.localFiles, ...filteredFiles];
-			this.$refs.fileUpload.clear();
+
+			if (this.$refs.fileUpload) {
+				this.$refs.fileUpload.clear();
+			}
 
 			this.$nextTick(() => {
 				this.$refs.menu.alignOverlay();
 			});
 		},
 
+		handleDrop(event: DragEvent) {
+			event.preventDefault();
+
+			const files = Array.from(event.dataTransfer?.files || []);
+			
+			const mockFileEvent = {
+				files: files,
+			};
+
+			this.fileSelected(mockFileEvent);
+
+			if (this.$refs.menu && this.$refs.fileUploadButton) {
+				this.$refs.menu.show(null, this.$refs.fileUploadButton); // Position above the file upload button
+			}
+		},
 
 		async connectOneDrive() {
 			await this.$authStore.requestOneDriveConsent();
