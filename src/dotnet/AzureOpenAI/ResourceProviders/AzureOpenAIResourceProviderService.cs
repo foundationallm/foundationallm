@@ -1,4 +1,4 @@
-﻿using Azure.AI.OpenAI.Assistants;
+﻿using Azure.AI.OpenAI;
 using FoundationaLLM.AzureOpenAI.Models;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Clients;
@@ -11,6 +11,7 @@ using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
@@ -50,7 +51,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
             serviceProvider,
             logger,
             eventNamespacesToSubscribe: null,
-            useInternalStore: true)
+            useInternalReferencesStore: true)
     {
         private readonly SemaphoreSlim _localLock = new(1, 1);
 
@@ -67,105 +68,59 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
         #region Resource provider support for Management API
 
         /// <inheritdoc/>
-        protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances[0].ResourceType switch
+        protected override async Task<object> GetResourcesAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderLoadOptions? options = null) =>
+            resourcePath.MainResourceTypeName switch
             {
-                AzureOpenAIResourceTypeNames.AssistantUserContexts => await LoadResources<AssistantUserContext>(resourcePath.ResourceTypeInstances[0]),
-                AzureOpenAIResourceTypeNames.FileUserContexts => await LoadResources<FileUserContext>(resourcePath.ResourceTypeInstances[0]),
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceType} is not supported by the {_name} resource provider.",
+                AzureOpenAIResourceTypeNames.AssistantUserContexts => await LoadResources<AssistantUserContext>(
+                    resourcePath.ResourceTypeInstances[0],
+                    authorizationResult),
+                AzureOpenAIResourceTypeNames.FileUserContexts => await LoadResources<FileUserContext>(
+                    resourcePath.ResourceTypeInstances[0],
+                    authorizationResult),
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
 
         /// <inheritdoc/>
-        protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string serializedResource, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances[0].ResourceType switch
+        protected override async Task<object> ExecuteActionAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction,
+            UnifiedUserIdentity userIdentity) =>
+            resourcePath.ResourceTypeName switch
             {
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceType} is not supported by the {_name} resource provider.",
-                    StatusCodes.Status400BadRequest),
-            };
-
-        /// <inheritdoc/>
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        protected override async Task<object> ExecuteActionAsync(ResourcePath resourcePath, string serializedAction, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances.Last().ResourceType switch
-            {
-                AzureOpenAIResourceTypeNames.AssistantUserContexts => resourcePath.ResourceTypeInstances.Last().Action switch
+                AzureOpenAIResourceTypeNames.AssistantUserContexts => resourcePath.Action switch
                 {
-                    ResourceProviderActions.CheckName => await CheckResourceName(serializedAction),
-                    ResourceProviderActions.Purge => await PurgeResource(resourcePath),
-                    _ => throw new ResourceProviderException($"The action {resourcePath.ResourceTypeInstances.Last().Action} is not supported by the {_name} resource provider.",
+                    ResourceProviderActions.CheckName => await CheckResourceName<AssistantUserContext>(
+                        JsonSerializer.Deserialize<ResourceName>(serializedAction)!),
+                    ResourceProviderActions.Purge => await PurgeResource<AssistantUserContext>(resourcePath),
+                    _ => throw new ResourceProviderException(
+                        $"The action {resourcePath.Action} is not supported for the resource type {AzureOpenAIResourceTypeNames.AssistantUserContexts} by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
                 _ => throw new ResourceProviderException()
             };
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-
-        #region Helpers for ExecuteActionAsync
-
-        private async Task<ResourceNameCheckResult> CheckResourceName(string serializedAction)
-        {
-            var resourceName = JsonSerializer.Deserialize<ResourceName>(serializedAction);
-            var resourceReference = await _resourceReferenceStore!.GetResourceReference(resourceName!.Name);
-
-            return resourceReference != null
-                ? new ResourceNameCheckResult
-                {
-                    Name = resourceName!.Name,
-                    Type = resourceName.Type,
-                    Status = NameCheckResultType.Denied,
-                    Message = "A resource with the specified name already exists or was previously deleted and not purged."
-                }
-                : new ResourceNameCheckResult
-                {
-                    Name = resourceName!.Name,
-                    Type = resourceName.Type,
-                    Status = NameCheckResultType.Allowed
-                };
-        }
-
-        private async Task<ResourceProviderActionResult> PurgeResource(ResourcePath resourcePath)
-        {
-            await Task.CompletedTask;
-            throw new NotImplementedException("The Azure OpenAI resource cleanup is not implemented.");
-        }
-
-        #endregion
-
-        /// <inheritdoc/>
-        protected override async Task DeleteResourceAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
-        {
-            switch (resourcePath.ResourceTypeInstances.Last().ResourceType)
-            {
-                case AzureOpenAIResourceTypeNames.AssistantUserContexts:
-                    await DeleteAssistantUserContext(resourcePath.ResourceTypeInstances);
-                    break;
-                default:
-                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances.Last().ResourceType} is not supported by the {_name} resource provider.",
-                    StatusCodes.Status400BadRequest);
-            };
-        }
-
-        #region Helpers for DeleteResourceAsync
-
-        private async Task DeleteAssistantUserContext(List<ResourceTypeInstance> instances) =>
-            throw new NotImplementedException("The Azure OpenAI resource deletion is not implemented.");
-
-        #endregion
 
         #endregion
 
         #region Resource provider strongly typed operations
 
         /// <inheritdoc/>
-        protected override async Task<T> GetResourceInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderOptions? options = null) =>
-            resourcePath.ResourceTypeInstances.Last().ResourceType switch
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) =>
+            resourcePath.ResourceTypeName switch
             {
+                AzureOpenAIResourceTypeNames.AssistantUserContexts => (await LoadResource<T>(
+                    resourcePath.MainResourceId!))!,
                 AzureOpenAIResourceTypeNames.FilesContent => ((await LoadFileContent(
-                    resourcePath.ResourceTypeInstances[0].ResourceId!,
-                    resourcePath.ResourceTypeInstances[1].ResourceId!)) as T)!,
-                AzureOpenAIResourceTypeNames.FileUserContexts => ((await LoadFileUserContext(resourcePath.ResourceTypeInstances[0].ResourceId!)) as T)!,
+                    resourcePath.MainResourceId!,
+                    resourcePath.ResourceId!)) as T)!,
+                AzureOpenAIResourceTypeNames.FileUserContexts => ((await LoadFileUserContext(resourcePath.MainResourceId!)) as T)!,
                 _ => throw new ResourceProviderException(
-                    $"The {resourcePath.MainResourceType} resource type is not supported by the {_name} resource provider.")
+                    $"The {resourcePath.MainResourceTypeName} resource type is not supported by the {_name} resource provider.")
             };
 
         /// <inheritdoc/>
@@ -181,15 +136,25 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
         private async Task<FileUserContext> LoadFileUserContext(string fileUserContextName)
         {
-            var resourceReference = await _resourceReferenceStore!.GetResourceReference(fileUserContextName)
-                ?? throw new ResourceProviderException(
-                    $"The resource {fileUserContextName} was not found.",
-                    StatusCodes.Status404NotFound);
+            try
+            {
+                await _localLock.WaitAsync();
 
-            return await LoadResource<FileUserContext>(resourceReference)
-                ?? throw new ResourceProviderException(
-                    $"The resource {fileUserContextName} has a valid resource reference but cannot be loaded from the storage. This might indicate a missing resource file.",
-                    StatusCodes.Status500InternalServerError);
+                var resourceReference = await _resourceReferenceStore!.GetResourceReference(fileUserContextName)
+                    ?? throw new ResourceProviderException(
+                        $"The resource {fileUserContextName} was not found.",
+                        StatusCodes.Status404NotFound);
+
+                return await LoadResource<FileUserContext>(resourceReference)
+                    ?? throw new ResourceProviderException(
+                        $"The resource {fileUserContextName} has a valid resource reference but cannot be loaded from the storage. This might indicate a missing resource file.",
+                        StatusCodes.Status500InternalServerError);
+
+            }
+            finally
+            {
+                _localLock.Release();
+            }
         }
 
         private async Task<FileContent> LoadFileContent(string fileUserContextName, string openAIFileId)
@@ -201,9 +166,10 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                         $"Could not find the file {openAIFileId} in the {fileUserContextName} file user context.",
                         StatusCodes.Status404NotFound);
 
-            var assistantsClient = new AssistantsClient(new Uri(fileUserContext!.Endpoint), DefaultAuthentication.AzureCredential);
+            var azureOpenAIClient = new AzureOpenAIClient(new Uri(fileUserContext!.Endpoint), DefaultAuthentication.AzureCredential);
+            var fileClient = azureOpenAIClient.GetFileClient();
 
-            var result = await assistantsClient.GetFileContentAsync(openAIFileId);
+            var result = await fileClient.DownloadFileAsync(openAIFileId);
 
             return new FileContent
             {
@@ -352,6 +318,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     return new AssistantUserContextUpsertResult
                     {
                         ObjectId = assistantUserContext.ObjectId,
+                        ResourceExists = false,
                         NewOpenAIAssistantId = newOpenAIAssistantId,
                         NewOpenAIAssistantThreadId = newOpenAIAssistantThreadId,
                         NewOpenAIAssistantVectorStoreId = newOpenAIAssistantVectorStoreId
@@ -412,6 +379,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     return new AssistantUserContextUpsertResult
                     {
                         ObjectId = existingAssistantUserContext.ObjectId,
+                        ResourceExists = true,
                         NewOpenAIAssistantId = newOpenAIAssistantId,
                         NewOpenAIAssistantThreadId = newOpenAIAssistantThreadId,
                         NewOpenAIAssistantVectorStoreId = newOpenAIAssistantVectorStoreId
@@ -559,6 +527,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     return new FileUserContextUpsertResult
                     {
                         ObjectId = existingFileUserContext.ObjectId,
+                        ResourceExists = false,
                         NewOpenAIFileId = newOpenAIFileId!
                     };
                 }
@@ -630,6 +599,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     return new FileUserContextUpsertResult
                     {
                         ObjectId = existingFileUserContext.ObjectId,
+                        ResourceExists = true,
                         NewOpenAIFileId = newOpenAIFileId!
                     };
                 }

@@ -1,5 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Models.Chat;
+using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Core.Examples.Exceptions;
@@ -24,7 +24,7 @@ namespace FoundationaLLM.Core.Examples.Services
             if (responseSession.IsSuccessStatusCode)
             {
                 var responseContent = await responseSession.Content.ReadAsStringAsync();
-                var sessionResponse = JsonSerializer.Deserialize<Session>(responseContent, _jsonSerializerOptions);
+                var sessionResponse = JsonSerializer.Deserialize<Conversation>(responseContent, _jsonSerializerOptions);
                 var sessionId = string.Empty;
                 if (sessionResponse?.SessionId != null)
                 {

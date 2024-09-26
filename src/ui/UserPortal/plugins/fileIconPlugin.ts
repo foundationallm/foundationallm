@@ -6,9 +6,9 @@ export default defineNuxtPlugin(() => {
 	const getFileIconClass = (fileName: string, useColorVersion: boolean = false) => {
 		let iconClass;
 		if (useColorVersion) {
-			iconClass = getClassWithColor(fileName.toLowerCase());
+			iconClass = getClassWithColor(fileName?.toLowerCase());
 		} else {
-			iconClass = getClass(fileName.toLowerCase());
+			iconClass = getClass(fileName?.toLowerCase());
 		}
 		return iconClass || 'pi pi-file'; // Use default icon if no class found
 	};

@@ -9,6 +9,7 @@ using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using FoundationaLLM.Orchestration.Core.Models;
 using FoundationaLLM.Orchestration.Core.Orchestration;
@@ -220,12 +221,11 @@ public class OrchestrationService : IOrchestrationService
     {
         var agentResourceProvider = _resourceProviderServices[ResourceProviderNames.FoundationaLLM_Agent];
 
-        var result = await agentResourceProvider.CheckResourceName(
+        var nameCheckResult = await agentResourceProvider.ResourceExists<AgentBase>(
             instanceId,
             agentName,
-            AgentResourceTypeNames.Agents,
             _callContext.CurrentUserIdentity!);
 
-        return result.Status == NameCheckResultType.Allowed;
+        return nameCheckResult.Exists && !nameCheckResult.Deleted;
     }
 }

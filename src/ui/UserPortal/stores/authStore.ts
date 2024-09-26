@@ -103,14 +103,42 @@ export const useAuthStore = defineStore('auth', {
 			}
 		},
 
+		async getProfilePhoto(): string | null {
+			try {
+				const graphScopes = ['https://graph.microsoft.com/User.Read'];
+				const graphToken = await this.msalInstance.acquireTokenSilent({
+					account: this.currentAccount,
+					scopes: graphScopes,
+				});
+
+				const profilePhotoBlob = await $fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
+					method: 'GET',
+					headers: {
+						Authorization: `Bearer ${graphToken.accessToken}`
+					}
+				});
+
+				return URL.createObjectURL(profilePhotoBlob);
+			} catch(error) {
+				return null;
+			}
+		},
+
 		async login() {
 			return await this.msalInstance.loginRedirect({
 				scopes: this.apiScopes,
 			});
 		},
 
-		async logoutSilent() {
+		async clearLocalSession() {
 			await this.msalInstance.controller.browserStorage.clear();
+		},
+
+		async logoutSilent() {
+			const logoutHint = this.currentAccount.idTokenClaims.login_hint;
+			await this.msalInstance.logoutRedirect({
+				logoutHint,
+			});
 		},
 
 		async logout() {

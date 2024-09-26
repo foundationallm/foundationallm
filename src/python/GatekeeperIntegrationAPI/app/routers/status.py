@@ -3,7 +3,7 @@ Status API endpoint that acts as a health check for the API.
 """
 import os
 from fastapi import APIRouter
-from foundationallm.config.environment_variables import HOSTNAME, FOUNDATIONALLM_VERSION
+from foundationallm.integration.config.environment_variables import HOSTNAME, FOUNDATIONALLM_VERSION
 from app.dependencies import API_NAME
 
 router = APIRouter(

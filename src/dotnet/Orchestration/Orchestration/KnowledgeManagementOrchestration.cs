@@ -1,4 +1,7 @@
-﻿using FoundationaLLM.Common.Constants.Agents;
+﻿using FoundationaLLM.Common.Clients;
+using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Agents;
+using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
@@ -12,10 +15,6 @@ using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
-using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Constants.OpenAI;
-using FoundationaLLM.Common.Clients;
-
 
 namespace FoundationaLLM.Orchestration.Core.Orchestration
 {
@@ -52,8 +51,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         private readonly ILogger<OrchestrationBase> _logger = logger;
         private readonly bool _dataSourceAccessDenied = dataSourceAccessDenied;
         private readonly string _fileUserContextName = $"{callContext.CurrentUserIdentity!.UPN?.NormalizeUserPrincipalName() ?? callContext.CurrentUserIdentity!.UserId}-file-{instanceId.ToLower()}";
-        private readonly string _fileUserContextObjectId = $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileUserContexts}/"
-            + $"{callContext.CurrentUserIdentity!.UPN?.NormalizeUserPrincipalName() ?? callContext.CurrentUserIdentity!.UserId}-file-{instanceId.ToLower()}";
 
         private readonly IResourceProviderService _attachmentResourceProvider =
             resourceProviderServices[ResourceProviderNames.FoundationaLLM_Attachment];
@@ -131,10 +128,11 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             var attachments = attachmentObjectIds
                 .ToAsyncEnumerable()
-                .SelectAwait(async x => await _attachmentResourceProvider.GetResource<AttachmentFile>(x, _callContext.CurrentUserIdentity!));
+                .SelectAwait(async x => await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(x, _callContext.CurrentUserIdentity!));
 
-            var fileUserContext = await _azureOpenAIResourceProvider.GetResource<FileUserContext>(
-                _fileUserContextObjectId,
+            var fileUserContext = await _azureOpenAIResourceProvider.GetResourceAsync<FileUserContext>(
+                _instanceId,
+                _fileUserContextName,
                 _callContext.CurrentUserIdentity!);
 
             List<AttachmentProperties> result = [];
@@ -193,8 +191,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             if (newFileMappings.Count > 0)
             {
-                var fileUserContext = await _azureOpenAIResourceProvider.GetResource<FileUserContext>(
-                    _fileUserContextObjectId,
+                var fileUserContext = await _azureOpenAIResourceProvider.GetResourceAsync<FileUserContext>(
+                    _instanceId,
+                    _fileUserContextName,
                     _callContext.CurrentUserIdentity!);
 
                 foreach (var fileMapping in newFileMappings)
@@ -203,7 +202,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 }
 
                 await _azureOpenAIResourceProvider.UpsertResourceAsync<FileUserContext, FileUserContextUpsertResult>(
-                    _fileUserContextObjectId,
+                    _instanceId,
                     fileUserContext,
                     _callContext.CurrentUserIdentity!);
             }
@@ -270,7 +269,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
         private OpenAITextMessageContentItem TransformOpenAIAssistantsTextMessage(OpenAITextMessageContentItem openAITextMessage, List<FileMapping> newFileMappings)
         {
-            var pattern = new Regex("(【[0-9]+:[0-9]+†source】)");
+            var pattern = new Regex(@"\【[0-9:]+†.+?\】");
 
             openAITextMessage.Value = pattern.Replace(openAITextMessage.Value!, string.Empty);
 

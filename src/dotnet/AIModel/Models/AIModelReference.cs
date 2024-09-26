@@ -15,7 +15,7 @@ namespace FoundationaLLM.AIModel.Models
         /// The object type of the data source.
         /// </summary>
         [JsonIgnore]
-        public Type AIModelType =>
+        public override Type ResourceType =>
             Type switch
             {
                 AIModelTypes.Basic => typeof(AIModelBase),

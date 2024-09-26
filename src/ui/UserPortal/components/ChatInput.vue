@@ -2,12 +2,19 @@
 	<div class="chat-input p-inputgroup">
 		<div class="input-wrapper">
 			<div class="tooltip-component">
-				<VTooltip :auto-hide="false" :popper-triggers="['hover']">
-					<i class="pi pi-info-circle" tabindex="0"></i>
-					<template #popper> Use Shift+Enter to add a new line </template>
+				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+					<i
+						class="pi pi-info-circle"
+						tabindex="0"
+						@keydown.esc="hideAllPoppers"
+						aria-label="info icon"
+					></i>
+					<template #popper role="tooltip"
+						><div role="tooltip">Use Shift+Enter to add a new line</div></template
+					>
 				</VTooltip>
 			</div>
-			<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
 					:badge="fileArrayFiltered.length.toString() || null"
 					:aria-label="'Upload file (' + fileArrayFiltered.length.toString() + ' files attached)'"
@@ -16,11 +23,14 @@
 					class="file-upload-button secondary-button"
 					style="height: 100%"
 					@click="showFileUploadDialog = true"
+					@keydown.esc="hideAllPoppers"
 				/>
 				<template #popper>
-					Attach files ({{
-						fileArrayFiltered.length === 1 ? '1 file' : fileArrayFiltered.length + ' files'
-					}})
+					<div role="tooltip">
+						Attach files ({{
+							fileArrayFiltered.length === 1 ? '1 file' : fileArrayFiltered.length + ' files'
+						}})
+					</div>
 				</template>
 			</VTooltip>
 			<Dialog
@@ -92,6 +102,7 @@
 										icon="pi pi-times"
 										text
 										severity="danger"
+										aria-label="Remove file"
 										@click="removeFileCallback(index)"
 									/>
 								</div>
@@ -107,7 +118,7 @@
 										icon="pi pi-times"
 										text
 										severity="danger"
-										aria-label="Remove attachment"
+										aria-label="Delete attachment"
 										@click="removeAttachment(file)"
 									/>
 								</div>
@@ -181,6 +192,7 @@
 <script lang="ts">
 import { Mentionable } from 'vue-mention';
 import 'floating-vue/dist/style.css';
+import { hideAllPoppers } from 'floating-vue';
 
 export default {
 	name: 'ChatInput',
@@ -209,6 +221,7 @@ export default {
 			showFileUploadDialog: false,
 			isUploading: false,
 			uploadProgress: 0,
+			isMobile: window.screen.width < 950,
 		};
 	},
 
@@ -359,8 +372,9 @@ export default {
 		},
 
 		fileSelected(event: any) {
+			const allowedFileTypes = this.$appConfigStore.allowedUploadFileExtensions;
 			event.files.forEach((file: any, index) => {
-				if (file.size > 512000000) {
+				if (file.size > 536870912) {
 					this.$toast.add({
 						severity: 'error',
 						summary: 'Error',
@@ -369,7 +383,28 @@ export default {
 					});
 					event.files.splice(index, 1);
 				}
+
+				if (!allowedFileTypes || allowedFileTypes === '') {
+					return;
+				}
+				if (!allowedFileTypes
+					.split(',')
+					.map((type: string) => type.trim().toLowerCase())
+					.includes(file.name.split('.').pop()?.toLowerCase())
+				) {
+					this.$toast.add({
+						severity: 'error',
+						summary: 'Error',
+						detail: `File type not supported. File: ${file.name}`,
+						life: 5000,
+					});
+					event.files.splice(index, 1);
+				}
 			});
+		},
+
+		hideAllPoppers() {
+			hideAllPoppers();
 		},
 	},
 };

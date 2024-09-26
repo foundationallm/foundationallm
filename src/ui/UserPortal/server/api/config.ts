@@ -33,6 +33,7 @@ const allowedKeys = [
 	'FoundationaLLM:UserPortal:Authentication:Entra:TenantId',
 	'FoundationaLLM:UserPortal:Authentication:Entra:Scopes',
 	'FoundationaLLM:UserPortal:Authentication:Entra:CallbackPath',
+	'FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions',
 ];
 
 export default defineEventHandler(async (event) => {

@@ -35,7 +35,6 @@ namespace Management.Client.Tests.Clients.Resources
                         Path = "test-attachment.txt",
                         OriginalFileName = "test-attachment.txt"
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -74,7 +73,6 @@ namespace Management.Client.Tests.Clients.Resources
                     Path = "test-attachment.txt",
                     OriginalFileName = "test-attachment.txt"
                 },
-                Actions = [],
                 Roles = []
             };
             var expectedAttachments = new List<ResourceProviderGetResult<AttachmentFile>> { expectedAttachment };
@@ -121,7 +119,8 @@ namespace Management.Client.Tests.Clients.Resources
             var attachment = new AttachmentFile { Name = "test-attachment", OriginalFileName = "test-attachment.txt" };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {
-                ObjectId = "test-object-id"
+                ObjectId = "test-object-id",
+                ResourceExists = false
             }; ;
 
             _mockRestClient.Resources

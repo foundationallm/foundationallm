@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Models.Chat;
+﻿using FoundationaLLM.Common.Models.Conversation;
 
 namespace FoundationaLLM.Client.Core.Interfaces
 {
@@ -11,7 +11,7 @@ namespace FoundationaLLM.Client.Core.Interfaces
         /// Retrieves all chat sessions.
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<Session>> GetAllChatSessionsAsync();
+        Task<IEnumerable<Conversation>> GetAllChatSessionsAsync();
 
         /// <summary>
         /// Sets the rating for a message.

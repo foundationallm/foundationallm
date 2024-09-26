@@ -72,7 +72,8 @@
 
 		<!-- Logged in user -->
 		<div v-if="$authStore.currentAccount?.name" class="sidebar__account">
-			<Avatar icon="pi pi-user" class="sidebar__avatar" size="large" />
+			<UserAvatar class="sidebar__avatar" size="large" />
+
 			<div>
 				<span class="sidebar__username">{{ $authStore.currentAccount?.name }}</span>
 				<Button

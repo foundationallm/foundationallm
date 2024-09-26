@@ -34,7 +34,6 @@ namespace Management.Client.Tests.Clients.Resources
                         Value = "TestValue",
                         ContentType = "text/plain",
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -73,7 +72,6 @@ namespace Management.Client.Tests.Clients.Resources
                         Value = "TestValue",
                         ContentType = "text/plain",
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -118,7 +116,6 @@ namespace Management.Client.Tests.Clients.Resources
                             {AuthenticationParametersKeys.APIKeyHeaderName, "FoundationaLLM:TestAPIKeyHeaderName" }
                         }
                     },
-                    Actions = [],
                     Roles = []
                 }
             };
@@ -162,7 +159,6 @@ namespace Management.Client.Tests.Clients.Resources
                         {AuthenticationParametersKeys.APIKeyHeaderName, "FoundationaLLM:TestAPIKeyHeaderName" }
                     }
                 },
-                Actions = [],
                 Roles = []
             };
             var expectedServices = new List<ResourceProviderGetResult<APIEndpointConfiguration>> { expectedService };
@@ -209,7 +205,8 @@ namespace Management.Client.Tests.Clients.Resources
             var appConfiguration = new AppConfigurationKeyBase { Name = "test-configuration" };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {
-                ObjectId = "test-object-id"
+                ObjectId = "test-object-id",
+                ResourceExists = false
             };
 
             _mockRestClient.Resources
@@ -246,7 +243,8 @@ namespace Management.Client.Tests.Clients.Resources
             };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {
-                ObjectId = "test-object-id"
+                ObjectId = "test-object-id",
+                ResourceExists = false
             };
 
             _mockRestClient.Resources
