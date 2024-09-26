@@ -346,6 +346,8 @@ export default {
 			value: agent.name,
 		}));
 
+		await this.$appStore.getFileStoreConnectors();
+
 		// if (localStorage.getItem('oneDriveConsentRedirect') === 'true') {
 		// 	await this.oneDriveConnect();
 		// 	localStorage.setItem('oneDriveConsentRedirect', JSON.stringify(false));

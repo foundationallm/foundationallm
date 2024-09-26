@@ -115,5 +115,15 @@ namespace FoundationaLLM.Core.API.Controllers
         [HttpPost("delete")]
         public async Task<IActionResult> Delete(string instanceId, [FromBody] List<string> resourcePaths) =>
             new OkObjectResult(await _coreService.DeleteAttachments(instanceId, resourcePaths, _callContext.CurrentUserIdentity!));
+
+
+        /// <summary>
+        /// Returns a list of file store connectors.
+        /// </summary>
+        /// <param name="instanceId">The instance ID.</param>
+        /// <returns></returns>
+        [HttpGet("file-store-connectors")]
+        public async Task<IActionResult> GetFileStoreConnectors(string instanceId) =>
+            new OkObjectResult(await _coreService.GetFileStoreConnectors(instanceId, _callContext.CurrentUserIdentity!));
     }
 }

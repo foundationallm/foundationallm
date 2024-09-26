@@ -7,6 +7,7 @@ import type {
 	Message,
 	UserProfile,
 	Agent,
+	FileStoreConnector,
 	OneDriveItem,
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
@@ -31,6 +32,7 @@ export const useAppStore = defineStore('app', {
 		lastSelectedAgent: null as ResourceProviderGetResult<Agent> | null,
 		attachments: [] as Attachment[],
 		longRunningOperations: new Map<string, string>(), // sessionId -> operationId
+		fileStoreConnectors: [] as FileStoreConnector[],
 		oneDriveConnected: false as boolean,
 		userProfiles: null as UserProfile | null,
 	}),
@@ -380,6 +382,11 @@ export const useAppStore = defineStore('app', {
 		async getAgents() {
 			this.agents = await api.getAllowedAgents();
 			return this.agents;
+		},
+
+		async getFileStoreConnectors() {
+			this.fileStoreConnectors = await api.getFileStoreConnectors();
+			return this.fileStoreConnectors;
 		},
 
 		async oneDriveConnect() {
