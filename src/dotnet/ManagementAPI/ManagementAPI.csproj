@@ -53,13 +53,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Agent\Agent.csproj" />
+    <ProjectReference Include="..\AIModel\AIModel.csproj" />
     <ProjectReference Include="..\Attachments\Attachment.csproj" />
     <ProjectReference Include="..\Authorization\Authorization.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\Configuration\Configuration.csproj" />
     <ProjectReference Include="..\DataSource\DataSource.csproj" />
-    <ProjectReference Include="..\Management\Management.csproj" />
     <ProjectReference Include="..\Prompt\Prompt.csproj" />
+    <ProjectReference Include="..\Vectorization\Vectorization.csproj" />
   </ItemGroup>
 
 </Project>

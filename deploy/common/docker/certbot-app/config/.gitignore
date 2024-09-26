@@ -1,0 +1,2 @@
+# Place certbot.ini file in this folder but do not commit it to the repository
+certbot.ini
