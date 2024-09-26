@@ -113,8 +113,8 @@ namespace FoundationaLLM.Core.Examples.Services
         async public Task<SearchIndexClient> GetIndexClient(IndexingProfile indexProfile)
         {
             var indexEndpointObjectId = indexProfile.Settings![VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId];
-            var endpoint = APIEndpointConfigurationCatalog.APIEndpointConfigurations.Where(x => x.ObjectId == indexEndpointObjectId).FirstOrDefault();
-            string searchServiceEndPoint = await TestConfiguration.GetAppConfigValueAsync(endpoint!.Url);
+            var endpoint = await _managementAPITestManager.GetAPIEndpointConfiguration($"{ConfigurationResourceTypeNames.APIEndpointConfigurations}/{indexEndpointObjectId.Split("/").Last()}");
+            string searchServiceEndPoint = endpoint.Url;
             string authType = endpoint.AuthenticationType.ToString();
 
             SearchIndexClient indexClient = null;

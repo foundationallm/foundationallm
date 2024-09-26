@@ -150,7 +150,12 @@ namespace FoundationaLLM.Core.Examples.Services
         public async Task<VectorizationRequest> GetVectorizationRequest(VectorizationRequest vectorizationRequest)
         {
             return (await managementRestClient.Resources.GetResourcesAsync<List<ResourceProviderGetResult<VectorizationRequest>>>(
-                    ResourceProviderNames.FoundationaLLM_Vectorization, vectorizationRequest.ObjectId!)).First().Resource;
+                    ResourceProviderNames.FoundationaLLM_Vectorization, $"{VectorizationResourceTypeNames.VectorizationRequests}/{vectorizationRequest.ObjectId!.Split("/").Last()}")).First().Resource;
+        }
+
+        public async Task<APIEndpointConfiguration> GetAPIEndpointConfiguration(string apiEndpointObjectId)
+        {
+            return (await managementRestClient.Resources.GetResourcesAsync<List<ResourceProviderGetResult<APIEndpointConfiguration>>>(ResourceProviderNames.FoundationaLLM_Configuration, apiEndpointObjectId)).First().Resource;
         }
 
         public async Task<string> CreateVectorizationRequest(VectorizationRequest vectorizationRequest)

@@ -39,8 +39,8 @@ namespace FoundationaLLM.Core.Examples.Setup
 			TestConfiguration.Initialize(configRoot, services);
 
             services.AddOptions<BlobStorageServiceSettings>(
-                    DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization)
-                .Bind(configRoot.GetSection("FoundationaLLM:Vectorization:ResourceProviderService:Storage"));
+                    DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization_Storage)
+                .Bind(configRoot.GetSection("FoundationaLLM:ResourceProviders:Vectorization:Storage"));
 
             RegisterInstance(services, configRoot);
             RegisterHttpClients(services, configRoot);
