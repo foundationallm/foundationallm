@@ -3,14 +3,17 @@ using Azure.Identity;
 using Azure.Search.Documents;
 using Azure.Search.Documents.Indexes;
 using Azure.Search.Documents.Models;
+using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
-using FoundationaLLM.Core.Examples.Catalogs;
+using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Core.Examples.Interfaces;
 using FoundationaLLM.Core.Examples.Models;
 using FoundationaLLM.Core.Examples.Setup;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 #pragma warning disable SKEXP0001, SKEXP0020
@@ -23,10 +26,14 @@ namespace FoundationaLLM.Core.Examples.Services
     /// <param name="managementAPITestManager">Interfacing code with the Management API responsible for resource management.</param>
     /// <param name="instanceSettings">Instance settings for the current environment.</param>
     public class VectorizationTestService(        
-        IManagementAPITestManager managementAPITestManager,       
+        IManagementAPITestManager managementAPITestManager,
+        IHttpClientFactoryService httpClientFactory,
+        ILoggerFactory loggerFactory,
         IOptions<InstanceSettings> instanceSettings) : IVectorizationTestService
     {
-        private IManagementAPITestManager _managementAPITestManager = managementAPITestManager;        
+        private IManagementAPITestManager _managementAPITestManager = managementAPITestManager;
+        private IHttpClientFactoryService _httpClientFactory = httpClientFactory;
+        private ILoggerFactory _loggerFactory = loggerFactory;
         private InstanceSettings _instanceSettings = instanceSettings.Value;
 
         InstanceSettings IVectorizationTestService.InstanceSettings { get { return _instanceSettings; } set { _instanceSettings = value; } }
@@ -79,35 +86,43 @@ namespace FoundationaLLM.Core.Examples.Services
 
         public async Task<ReadOnlyMemory<float>> GetVector(TextEmbeddingProfile embedProfile, string query)
         {
-            //embed the query
-            //var embeddingModel = AIModelCatalog.EmbeddingAIModels.Where(x => x.ObjectId == embedProfile.EmbeddingAIModelObjectId).FirstOrDefault();
-            //var endpoint = APIEndpointConfigurationCatalog.APIEndpointConfigurations.Where(x => x.ObjectId == embeddingModel!.EndpointObjectId).FirstOrDefault();
-            //string oaiEndpoint = await TestConfiguration.GetAppConfigValueAsync(endpoint!.Url);
-            //string authType = endpoint.AuthenticationType.ToString();
-            //To do: GO THROUGH GATEWAY
-            //OpenAIClient openAIClient;
-            //switch(authType)
-            //{
-            //    case "AzureIdentity":
-            //        openAIClient = new OpenAIClient(new Uri(oaiEndpoint), new DefaultAzureCredential());
-            //        break;
-            //    case "ApiKey":
-            //        openAIClient = new OpenAIClient(new Uri(oaiEndpoint), new AzureKeyCredential(await TestConfiguration.GetAppConfigValueAsync(endpoint.AuthenticationParameters["APIKey"].ToString()!)));
-            //        break;
-            //    default:
-            //        throw new Exception("Invalid authentication type");
-            //}    
-
-            //EmbeddingsOptions embeddingOptions = new()
-            //{
-            //    DeploymentName = embeddingModel!.DeploymentName,
-            //    Input = { query },
-            //};
-
-            //var returnValue = openAIClient.GetEmbeddings(embeddingOptions);
-            //return returnValue.Value.Data[0].Embedding.ToArray();
-
-            throw new NotImplementedException();
+            var gatewayConfiguration = await _managementAPITestManager.GetAPIEndpointConfiguration($"{ConfigurationResourceTypeNames.APIEndpointConfigurations}/GatewayAPI");
+            var gatewayServiceClient = new GatewayServiceClient(
+                await _httpClientFactory.CreateClient(gatewayConfiguration, null),
+                _loggerFactory.CreateLogger<GatewayServiceClient>()
+            );
+            var request = new TextEmbeddingRequest
+            {
+                TextChunks = new List<TextChunk>
+                {
+                    new TextChunk
+                    {
+                        Position = 1,
+                        Content = query
+                    }
+                },
+                EmbeddingModelName = embedProfile.Settings!["model_name"],
+                Prioritized = true
+            };
+            
+            var embeddingResult = await gatewayServiceClient.StartEmbeddingOperation(_instanceSettings.Id, request);
+            
+            int timeRemainingMilliseconds = 30000;
+            var pollDurationMilliseconds = 5000;
+            while (embeddingResult.InProgress && timeRemainingMilliseconds > 0)
+            {
+                Thread.Sleep(pollDurationMilliseconds);
+                timeRemainingMilliseconds -= pollDurationMilliseconds;
+                embeddingResult = await gatewayServiceClient.GetEmbeddingOperationResult(_instanceSettings.Id, embeddingResult.OperationId!);
+            }
+            
+            if (embeddingResult.InProgress)
+                throw new Exception("Embedding operation failed to complete within 30 s");
+            if (embeddingResult.Failed)
+                throw new Exception($"Embedding operation failed: {embeddingResult.ErrorMessage}");
+            if (embeddingResult.TextChunks.Count == 0)
+                throw new Exception("No chunks were founding in the embedding result");
+            return embeddingResult.TextChunks.First().Embedding!.Value.Vector;
         }
 
         async public Task<SearchIndexClient> GetIndexClient(IndexingProfile indexProfile)

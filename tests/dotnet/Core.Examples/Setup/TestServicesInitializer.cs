@@ -7,6 +7,7 @@ using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.Storage;
 using FoundationaLLM.Common.Services;
+using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Common.Services.Storage;
 using FoundationaLLM.Common.Settings;
@@ -41,6 +42,8 @@ namespace FoundationaLLM.Core.Examples.Setup
             services.AddOptions<BlobStorageServiceSettings>(
                     DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization_Storage)
                 .Bind(configRoot.GetSection("FoundationaLLM:ResourceProviders:Vectorization:Storage"));
+
+            services.AddScoped<IConfiguration>(_ => configRoot);
 
             RegisterInstance(services, configRoot);
             RegisterHttpClients(services, configRoot);
@@ -181,6 +184,7 @@ namespace FoundationaLLM.Core.Examples.Setup
             services.AddScoped<IAuthenticationService, MicrosoftEntraIDAuthenticationService>();
             services.AddScoped<IHttpClientManager, HttpClientManager>();
 			services.AddScoped<IAgentConversationTestService, AgentConversationTestService>();
+            services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
             services.AddScoped<IVectorizationTestService, VectorizationTestService>();
         }
     }
