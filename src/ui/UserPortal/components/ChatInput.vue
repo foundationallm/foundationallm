@@ -119,7 +119,7 @@
 								<Button
 									icon="pi pi-upload"
 									label="Upload"
-									class="primary-button"
+									class="primary-button file-upload-container-button"
 									:disabled="isUploading || localFiles.length === 0 && oneDriveFiles.length === 0"
 									@click="handleUpload"
 								/>
@@ -128,13 +128,13 @@
 					</FileUpload>
 					<Divider v-if="oneDriveFiles.length > 0 || localFiles.length > 0" />
 					<div class="file-overlay-panel__footer">
-						<Button icon="pi pi-file-plus" label="Select file from Computer" @click="browseFiles" />
+						<Button :icon="!isMobile ? 'pi pi-file-plus' : undefined" label="Select file from Computer" class="file-upload-container-button" @click="browseFiles" />
 						<template v-if="$appStore.oneDriveConnected">
-							<Button icon="pi pi-cloud-upload" label="Select file from OneDrive" :disabled="disconnectingOneDrive" @click="downloadFromOneDrive" :loading="oneDriveBaseURL === null" />
-							<Button icon="pi pi-sign-out" label="Disconnect OneDrive" @click="disconnectOneDrive" :loading="disconnectingOneDrive" />
+							<Button :icon="!isMobile ? 'pi pi-cloud-upload' : undefined" label="Select file from OneDrive" class="file-upload-container-button" :disabled="disconnectingOneDrive" @click="downloadFromOneDrive" :loading="oneDriveBaseURL === null" />
+							<Button :icon="!isMobile ? 'pi pi-sign-out' : undefined" label="Disconnect OneDrive" class="file-upload-container-button" @click="disconnectOneDrive" :loading="disconnectingOneDrive" />
 						</template>
 						<template v-else>
-							<Button icon="pi pi-sign-in" label="Connect to OneDrive" @click="oneDriveConnect" :loading="connectingOneDrive || $appStore.oneDriveConnected === null" />
+							<Button :icon="!isMobile ? 'pi pi-sign-in' : undefined" label="Connect to OneDrive" class="file-upload-container-button" @click="oneDriveConnect" :loading="connectingOneDrive || $appStore.oneDriveConnected === null" />
 						</template>
 					</div>
 				</OverlayPanel>
@@ -151,8 +151,9 @@
 				modal
 				aria-label="OneDrive File Picker Dialog"
 				style="max-width: 98%; min-width: 50%; max-height: 98%;"
+				class="onedrive-iframe-dialog"
 			>
-				<div style="height: 500px; width: 100%;" id="oneDriveIframeDialogContent"></div>
+				<div class="onedrive-iframe-content" id="oneDriveIframeDialogContent"></div>
 			</Dialog>
 			<Mentionable
 				:keys="['@']"
@@ -848,6 +849,11 @@ export default {
 	gap: 0.5rem
 }
 
+.onedrive-iframe-content {
+	height: 500px;
+	width: 100%;
+}
+
 @media only screen and (max-width: 405px) {
 	.upload-files-header button {
 		padding: 0.1rem 0.25rem !important;
@@ -867,6 +873,20 @@ export default {
 
 	.tooltip-component {
 		display: none;
+	}
+
+	.onedrive-iframe-dialog {
+		width: 98vw;
+	}
+
+	.file-upload-container-button {
+		padding: 0.5rem;
+		font-size: 0.8rem;
+	}
+
+	.onedrive-iframe-content {
+		height: 85vh;
+		width: 90vw;
 	}
 }
 
@@ -936,6 +956,9 @@ export default {
 		flex-shrink: 1;
 		min-width: 0;
 	}
+}
+.onedrive-iframe-dialog .p-dialog-content {
+	padding: 0;
 }
 
 @media only screen and (max-width: 405px) {
