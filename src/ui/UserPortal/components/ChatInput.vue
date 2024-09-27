@@ -314,6 +314,11 @@ export default {
 
 	mounted() {
 		this.adjustTextareaHeight();
+		window.addEventListener('resize', this.handleResize);
+	},
+
+	beforeDestroy() {
+		window.removeEventListener('resize', this.handleResize);
 	},
 
 	methods: {
@@ -326,6 +331,14 @@ export default {
 				event.preventDefault();
 				this.handleSend();
 			}
+		},
+
+		handleResize() {
+			console.log('resize');
+			this.isMobile = window.screen.width < 950;
+			this.$nextTick(() => {
+				this.$refs.menu.alignOverlay();
+			});
 		},
 
 		adjustTextareaHeight() {
