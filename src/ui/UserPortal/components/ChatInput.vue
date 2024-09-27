@@ -47,7 +47,7 @@
 							</div>
 
 							<!-- File list -->
-							<div v-else>
+							<div v-else class="file-upload-file-container">
 								<div v-for="file in fileArrayFiltered" :key="file.fileName" class="file-upload-file">
 									<div class="file-upload-file_info">
 										<i v-if="!isMobile" class="pi pi-file" style="font-size: 2rem; margin-right: 1rem"></i>
@@ -118,6 +118,7 @@
 									icon="pi pi-upload"
 									label="Upload"
 									class="primary-button file-upload-container-button"
+									style="margin-top: 0.5rem"
 									:disabled="isUploading || localFiles.length === 0 && oneDriveFiles.length === 0"
 									@click="handleUpload"
 								/>
@@ -772,7 +773,7 @@ export default {
 	width: 100%;
 	height: 64px;
 	max-height: 128px;
-	overflow-y: scroll;
+	overflow-y: auto;
 	border-radius: 0px;
 	font-size: 1rem;
 	color: #6c6c6c;
@@ -933,6 +934,11 @@ export default {
 	text-align: center;
 	font-size: 5rem;
 	color: #000;
+}
+
+.file-upload-file-container {
+	max-height: 50vh;
+	overflow-y: auto;
 }
 
 .file-upload-file {
