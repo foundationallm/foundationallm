@@ -1,6 +1,5 @@
 <template>
-	<div 
-		class="chat-app">
+	<div class="chat-app">
 		<header role="banner">
 			<NavBar />
 		</header>
@@ -100,22 +99,24 @@ export default {
 		},
 
 		handleDrop(event) {
-			event.preventDefault();
+			if (event.dataTransfer && event.dataTransfer.types.includes('Files')) {
+				event.preventDefault();
 
-			this.isDragging = false;
+				this.isDragging = false;
 
-			const dropZone = this.$refs.thread.$refs.dropZone;
+				const dropZone = this.$refs.thread.$refs.dropZone;
 
-			const dropZoneRect = dropZone.getBoundingClientRect();
+				const dropZoneRect = dropZone.getBoundingClientRect();
 
-			const isInDropZone =
-				event.clientX >= dropZoneRect.left &&
-				event.clientX <= dropZoneRect.right &&
-				event.clientY >= dropZoneRect.top &&
-				event.clientY <= dropZoneRect.bottom;
+				const isInDropZone =
+					event.clientX >= dropZoneRect.left &&
+					event.clientX <= dropZoneRect.right &&
+					event.clientY >= dropZoneRect.top &&
+					event.clientY <= dropZoneRect.bottom;
 
-			if (isInDropZone) {
-				this.$refs.thread.handleParentDrop(event);
+				if (isInDropZone) {
+					this.$refs.thread.handleParentDrop(event);
+				}
 			}
 		},
 

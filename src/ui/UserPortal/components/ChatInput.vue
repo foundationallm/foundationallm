@@ -37,7 +37,7 @@
 						@uploader="handleUpload"
 						@select="fileSelected"
 					>
-						<template #content="{ files, removeFileCallback }">
+						<template #content>
 							<!-- Progress bar -->
 							<div v-if="isUploading" style="padding: 60px 10px">
 								<ProgressBar
@@ -276,56 +276,6 @@ export default {
 				(attachment) => attachment.sessionId === this.$appStore.currentSession.sessionId,
 			);
 		},
-
-		// items() {
-		// 	return [
-		// 		{
-		// 			label: 'Connect to Microsoft OneDrive (work/school)',
-		// 			icon: 'pi pi-sign-in',
-		// 			visible: !this.$appStore.oneDriveConnected,
-		// 			command: async () => {
-		// 				await this.connectOneDrive();
-		// 			},
-		// 		},
-		// 		{
-		// 			label: 'Microsoft OneDrive (work/school)',
-		// 			labelIcon: 'pi pi-sign-out',
-		// 			items: [
-		// 				{
-		// 					label: 'Upload from OneDrive',
-		// 					icon: 'pi pi-cloud-upload',
-		// 					visible: true,
-		// 					command: async () => {
-		// 						await this.downloadFromOneDrive();
-		// 					},
-		// 				},
-		// 				{
-		// 					label: 'Disconnect',
-		// 					icon: 'pi pi-sign-out',
-		// 					visible: true,
-		// 					command: async () => {
-		// 						await this.disconnectOneDrive();
-		// 					},
-		// 				},
-		// 			],
-		// 			visible: this.$appStore.oneDriveConnected,
-		// 			command: async () => {
-		// 				await this.uploadFromOneDrive();
-		// 			},
-		// 		},
-		// 		{
-		// 			separator: true,
-		// 		},
-		// 		{
-		// 			label: 'Upload from computer',
-		// 			icon: 'pi pi-file-plus',
-		// 			visible: true,
-		// 			command: () => {
-		// 				this.showFileUploadDialog = true;
-		// 			},
-		// 		},
-		// 	];
-		// },
 	},
 
 	watch: {
@@ -361,11 +311,6 @@ export default {
 		this.oneDriveBaseURL = this.$appStore.fileStoreConnectors.find(
 			(connector) => connector.subcategory === 'OneDriveWorkOrSchool',
 		)?.url;
-
-		// if (localStorage.getItem('oneDriveConsentRedirect') === 'true') {
-		// 	await this.oneDriveConnect();
-		// 	localStorage.setItem('oneDriveConsentRedirect', JSON.stringify(false));
-		// }
 	},
 
 	mounted() {
@@ -582,13 +527,6 @@ export default {
 			}
 		},
 
-		async connectOneDrive() {
-			await this.$authStore.requestOneDriveConsent();
-			if (localStorage.getItem('oneDriveConsentRedirect') !== 'true') {
-				await this.oneDriveConnect();
-			}
-		},
-
 		async oneDriveConnect() {
 			this.connectingOneDrive = true;
 			await this.$appStore.oneDriveConnect().then(() => {
@@ -659,7 +597,6 @@ export default {
 				const message = event.data;
 
 				if (message.type === "initialize" && message.channelId === this.filePickerParams.messaging.channelId) {
-					console.log("initialize");
 					this.port = event.ports[0];
 					this.port.addEventListener("message", this.messageListener);
 					this.port.start();
