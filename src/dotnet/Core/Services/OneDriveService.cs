@@ -75,9 +75,9 @@ namespace FoundationaLLM.Core.Services
 
             var userProfile = await _userProfileService.GetUserProfileAsync(instanceId);
 
-            // if (!userProfile!.Flags.TryGetValue(UserProfileFlags.OneDriveWorkSchool, out bool oneDriveWorkOrSchool)
-            //     || !oneDriveWorkOrSchool)
-            //     throw new InvalidOperationException("User has not granted consent to connect to the OneDrive work or school account.");
+            if (!userProfile!.Flags.TryGetValue(UserProfileFlags.OneDriveWorkSchool, out bool oneDriveWorkOrSchool)
+                || !oneDriveWorkOrSchool)
+                throw new InvalidOperationException("User has not granted consent to connect to the OneDrive work or school account.");
 
             var client = _httpClientFactory.CreateClient();
             client.Timeout = TimeSpan.FromSeconds(30);
