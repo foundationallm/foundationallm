@@ -1,5 +1,6 @@
 <template>
-	<div class="chat-app">
+	<div 
+		class="chat-app">
 		<header role="banner">
 			<NavBar />
 		</header>
@@ -19,7 +20,7 @@
 				@click="$appStore.toggleSidebar"
 			/>
 			<main role="main" class="chat-main">
-				<ChatThread />
+				<ChatThread ref="thread" :isDragging="isDragging" />
 			</main>
 		</div>
 	</div>
@@ -32,6 +33,7 @@ export default {
 	data() {
 		return {
 			sidebarWidth: 305,
+			isDragging: false,
 		};
 	},
 
@@ -39,6 +41,18 @@ export default {
 		if (window.innerWidth < 950) {
 			this.$appStore.toggleSidebar();
 		}
+
+		window.addEventListener('dragenter', this.showDropZone);
+		window.addEventListener('dragleave', this.hideDropZone);
+		window.addEventListener('dragover', this.handleDragOver);
+		window.addEventListener('drop', this.handleDrop);
+	},
+
+	beforeDestroy() {
+		window.removeEventListener('dragenter', this.showDropZone);
+		window.removeEventListener('dragleave', this.hideDropZone);
+		window.removeEventListener('dragover', this.handleDragOver);
+		window.removeEventListener('drop', this.handleDrop);
 	},
 
 	methods: {
@@ -67,6 +81,42 @@ export default {
 			// Update the sidebar width
 			this.sidebarWidth = newWidth;
 			this.$refs.sidebar.style.width = `${this.sidebarWidth}px`;
+		},
+
+		showDropZone(event) {
+			if (event.dataTransfer && event.dataTransfer.types.includes('Files')) {
+				this.isDragging = true;
+			}
+		},
+
+		hideDropZone(event) {
+			if (!event.relatedTarget) {
+				this.isDragging = false;
+			}
+		},
+
+		handleDragOver(event) {
+			event.preventDefault();
+		},
+
+		handleDrop(event) {
+			event.preventDefault();
+
+			this.isDragging = false;
+
+			const dropZone = this.$refs.thread.$refs.dropZone;
+
+			const dropZoneRect = dropZone.getBoundingClientRect();
+
+			const isInDropZone =
+				event.clientX >= dropZoneRect.left &&
+				event.clientX <= dropZoneRect.right &&
+				event.clientY >= dropZoneRect.top &&
+				event.clientY <= dropZoneRect.bottom;
+
+			if (isInDropZone) {
+				this.$refs.thread.handleParentDrop(event);
+			}
 		},
 
 		stopResizing() {

@@ -167,9 +167,6 @@
 					autofocus
 					aria-label="Chat input"
 					@keydown="handleKeydown"
-					@dragover.prevent
-					@dragenter.prevent
-					@drop="handleDrop"
 				/>
 				<template #no-result>
 					<div class="dim">No result</div>
@@ -567,19 +564,15 @@ export default {
 			hideAllPoppers();
 		},
 		
-		handleDrop(event: DragEvent) {
-			event.preventDefault();
-
-			const files = Array.from(event.dataTransfer?.files || []);
-			
-			const mockFileEvent = {
-				files: files,
-			};
+		handleDrop(files) {
+			const mockFileEvent = { files };
 
 			this.fileSelected(mockFileEvent);
 
 			if (this.$refs.menu && this.$refs.fileUploadButton) {
-				this.$refs.menu.show(null, this.$refs.fileUploadButton); // Position above the file upload button
+				const fileUploadButton = this.$refs.fileUploadButton.$el;
+
+				this.$refs.menu.show({ currentTarget: fileUploadButton });
 			}
 		},
 
@@ -872,6 +865,11 @@ export default {
 
 .file-remove {
 	margin-left: 1rem;
+}
+
+.file-upload-drag-and-drop {
+	display: flex;
+	flex: 1;
 }
 
 .p-fileupload-content {
