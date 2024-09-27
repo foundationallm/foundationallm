@@ -129,7 +129,13 @@
 					<Divider v-if="oneDriveFiles.length > 0 || localFiles.length > 0" />
 					<div class="file-overlay-panel__footer">
 						<Button icon="pi pi-file-plus" label="Select file from Computer" @click="browseFiles" />
-						<Button icon="pi pi-cloud-upload" label="Select file from OneDrive" :disabled="oneDriveBaseURL === null" @click="downloadFromOneDrive" />
+						<template v-if="$appStore.oneDriveConnected">
+							<Button icon="pi pi-cloud-upload" label="Select file from OneDrive" :disabled="disconnectingOneDrive" @click="downloadFromOneDrive" :loading="oneDriveBaseURL === null" />
+							<Button icon="pi pi-sign-out" label="Disconnect OneDrive" @click="disconnectOneDrive" :loading="disconnectingOneDrive" />
+						</template>
+						<template v-else>
+							<Button icon="pi pi-sign-in" label="Connect to OneDrive" @click="oneDriveConnect" :loading="connectingOneDrive || $appStore.oneDriveConnected === null" />
+						</template>
 					</div>
 				</OverlayPanel>
 				<template #popper>
@@ -259,6 +265,8 @@ export default {
 			oneDriveFiles: [],
 			localFiles: [],
 			oneDriveBaseURL: null as string | null,
+			disconnectingOneDrive: false,
+			connectingOneDrive: false,
 		};
 	},
 
@@ -582,6 +590,7 @@ export default {
 		},
 
 		async oneDriveConnect() {
+			this.connectingOneDrive = true;
 			await this.$appStore.oneDriveConnect().then(() => {
 				this.$toast.add({
 					severity: 'success',
@@ -589,10 +598,12 @@ export default {
 					detail: `Your account is now connected to OneDrive.`,
 					life: 5000,
 				});
+				this.connectingOneDrive = false;
 			});
 		},
 
 		async disconnectOneDrive() {
+			this.disconnectingOneDrive = true;
 			await this.$appStore.oneDriveDisconnect().then(() => {
 				this.$toast.add({
 					severity: 'success',
@@ -600,6 +611,7 @@ export default {
 					detail: `Your account is now disconnected from OneDrive.`,
 					life: 5000,
 				});
+				this.disconnectingOneDrive = false;
 			});
 		},
 

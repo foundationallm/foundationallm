@@ -33,7 +33,7 @@ export const useAppStore = defineStore('app', {
 		attachments: [] as Attachment[],
 		longRunningOperations: new Map<string, string>(), // sessionId -> operationId
 		fileStoreConnectors: [] as FileStoreConnector[],
-		oneDriveConnected: false as boolean,
+		oneDriveConnected: null as boolean | null,
 		userProfiles: null as UserProfile | null,
 	}),
 
