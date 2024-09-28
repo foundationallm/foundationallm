@@ -2,7 +2,6 @@
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from langchain_core.output_parsers import StrOutputParser
-from foundationallm.config import UserIdentity
 from foundationallm.langchain.agents import LangChainAgentBase
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.retrievers import RetrieverFactory, CitationRetrievalBase
@@ -12,7 +11,6 @@ from foundationallm.models.orchestration import (
     CompletionResponse
 )
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
-from foundationallm.models.resource_providers.ai_models import EmbeddingAIModel
 from foundationallm.models.agents import (
     AgentConversationHistorySettings,
     KnowledgeManagementAgent,
@@ -22,15 +20,21 @@ from foundationallm.models.agents import (
 from foundationallm.models.attachments import AttachmentProviders
 from foundationallm.models.authentication import AuthenticationTypes
 from foundationallm.models.language_models import LanguageModelProvider
-from foundationallm.models.orchestration.openai_text_message_content_item import OpenAITextMessageContentItem
-from foundationallm.models.orchestration.operation_types import OperationTypes
+from foundationallm.models.orchestration import (
+    OpenAITextMessageContentItem,
+    OperationTypes
+)
 from foundationallm.models.resource_providers.vectorization import (
     EmbeddingProfileSettingsKeys,
     AzureAISearchIndexingProfile,
     AzureOpenAIEmbeddingProfile
 )
 from foundationallm.models.services import OpenAIAssistantsAPIRequest
-from foundationallm.services import ImageAnalysisService, OpenAIAssistantsApiService
+from foundationallm.services import (
+    AudioAnalysisService,
+    ImageAnalysisService,
+    OpenAIAssistantsApiService
+)
 from foundationallm.services.gateway_text_embedding import GatewayTextEmbeddingService
 from openai.types import CompletionUsage
 
@@ -269,6 +273,12 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             image_analysis_token_usage.completion_tokens += usage.completion_tokens
             image_analysis_token_usage.total_tokens += usage.total_tokens
 
+        audio_analysis_results = None
+        audio_attachments = [attachment for attachment in request.attachments if (attachment.provider == AttachmentProviders.FOUNDATIONALLM_ATTACHMENT and attachment.content_type.startswith('audio/'))] if request.attachments is not None else []
+        if len(audio_attachments) > 0:
+            audio_service = AudioAnalysisService(config=self.config)
+            audio_analysis_results = audio_service.classify(audio_attachments)
+
         # Check for Assistants API capability
         if "OpenAI.Assistants" in agent.capabilities:
             operation_type_override = OperationTypes.ASSISTANTS_API
@@ -299,6 +309,30 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     content = image_analysis_svc.format_results(image_analysis_results),
                     attachments = []
                 )
+
+            # Add user and assistant messages related to audio classification to the Assistants API request.
+            if audio_analysis_results is not None:
+                audio_analysis_context = ''
+                for key, value in audio_analysis_results.items():
+                    filename = key
+                    prediction = value['predictions'][0]
+                    label = prediction['label']
+                    audio_analysis_context += f'File: {filename}\nPrediction: {label}' + '\n\n'
+                # Add user message
+                assistant_svc.add_thread_message(
+                    thread_id = assistant_req.thread_id,
+                    role = "user",
+                    content = f"Classify the sounds in the audio file.",
+                    attachments = []
+                )
+                # Add assistant message
+                assistant_svc.add_thread_message(
+                    thread_id = assistant_req.thread_id,
+                    role = "assistant",
+                    content = audio_analysis_context, # TODO: This will change at some point to accommodate multiple predictions.
+                    attachments = []
+                )
+
             # invoke/run the service
             assistant_response = assistant_svc.run(assistant_req)
 
@@ -328,8 +362,18 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
                 if retriever is not None:
                     chain_context = { "context": retriever | retriever.format_docs, "question": RunnablePassthrough() }
-                elif image_analysis_results is not None:
-                    chain_context = { "context": lambda x: image_analysis_svc.format_results(image_analysis_results), "question": RunnablePassthrough() }
+                elif image_analysis_results is not None or audio_analysis_results is not None:
+                    external_analysis_context = ''
+                    if image_analysis_results is not None:
+                        external_analysis_context = image_analysis_svc.format_results(image_analysis_results)
+                    if audio_analysis_results is not None:
+                        for key, value in audio_analysis_results.items():
+                            filename = key
+                            prediction = value['predictions'][0]
+                            label = prediction['label']
+                            external_analysis_context += f'File: {filename}\nPrediction: {label}' + '\n\n'
+                        
+                    chain_context = { "context": lambda x: external_analysis_context, "question": RunnablePassthrough() }
                 else:
                     chain_context = { "context": RunnablePassthrough() }
 
@@ -398,6 +442,12 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             image_analysis_token_usage.completion_tokens += usage.completion_tokens
             image_analysis_token_usage.total_tokens += usage.total_tokens
 
+        audio_analysis_results = None
+        audio_attachments = [attachment for attachment in request.attachments if (attachment.provider == AttachmentProviders.FOUNDATIONALLM_ATTACHMENT and attachment.content_type.startswith('audio/'))] if request.attachments is not None else []
+        if len(audio_attachments) > 0:
+            audio_service = AudioAnalysisService(config=self.config)
+            audio_analysis_results = audio_service.classify(audio_attachments)
+
         # Check for Assistants API capability
         if "OpenAI.Assistants" in agent.capabilities:
             operation_type_override = OperationTypes.ASSISTANTS_API
@@ -426,6 +476,29 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     thread_id = assistant_req.thread_id,
                     role = "assistant",
                     content = image_analysis_svc.format_results(image_analysis_results),
+                    attachments = []
+                )
+
+            # Add user and assistant messages related to audio classification to the Assistants API request.
+            if audio_analysis_results is not None:
+                audio_analysis_context = ''
+                for key, value in audio_analysis_results.items():
+                    filename = key
+                    prediction = value['predictions'][0]
+                    label = prediction['label']
+                    audio_analysis_context += f'File: {filename}\nPrediction: {label}' + '\n\n'
+                # Add user message
+                assistant_svc.aadd_thread_message(
+                    thread_id = assistant_req.thread_id,
+                    role = "user",
+                    content = f"Classify the sounds in the audio file.",
+                    attachments = []
+                )
+                # Add assistant message
+                assistant_svc.aadd_thread_message(
+                    thread_id = assistant_req.thread_id,
+                    role = "assistant",
+                    content = audio_analysis_context, # TODO: This will change at some point to accommodate multiple predictions.
                     attachments = []
                 )
 
@@ -458,8 +531,18 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
                 if retriever is not None:
                     chain_context = { "context": retriever | retriever.format_docs, "question": RunnablePassthrough() }
-                elif image_analysis_results is not None:
-                    chain_context = { "context": lambda x: image_analysis_svc.format_results(image_analysis_results), "question": RunnablePassthrough() }
+                elif image_analysis_results is not None or audio_analysis_results is not None:
+                    external_analysis_context = ''
+                    if image_analysis_results is not None:
+                        external_analysis_context = image_analysis_svc.format_results(image_analysis_results)
+                    if audio_analysis_results is not None:
+                        for key, value in audio_analysis_results.items():
+                            filename = key
+                            prediction = value['predictions'][0]
+                            label = prediction['label']
+                            external_analysis_context += f'File: {filename}\nPrediction: {label}' + '\n\n'
+                        
+                    chain_context = { "context": lambda x: external_analysis_context, "question": RunnablePassthrough() }
                 else:
                     chain_context = { "context": RunnablePassthrough() }
 
