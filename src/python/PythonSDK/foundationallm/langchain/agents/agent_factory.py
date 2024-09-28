@@ -1,8 +1,7 @@
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.agents import (
     LangChainAgentBase,
-    LangChainKnowledgeManagementAgent,
-    LangChainAudioClassifierAgent
+    LangChainKnowledgeManagementAgent
 )
 
 class AgentFactory:
@@ -47,10 +46,5 @@ class AgentFactory:
                         instance_id=self.instance_id,
                         user_identity=self.user_identity,
                         config=self.config)
-            case 'audio-classification':
-                return LangChainAudioClassifierAgent(
-                    instance_id=self.instance_id,
-                    user_identity=self.user_identity,
-                    config=self.config)
             case _:
                 raise ValueError(f'The agent type {agent_type} is not supported.')
