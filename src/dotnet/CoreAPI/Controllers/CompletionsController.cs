@@ -115,6 +115,7 @@ namespace FoundationaLLM.Core.API.Controllers
                 new ResourceProviderLoadOptions
                 {
                     IncludeRoles = true,
+                    IncludeActions = true,
                     LoadContent = false
                 });
     }

@@ -35,6 +35,12 @@ namespace FoundationaLLM.Common.Models.Authorization
         public List<string> Roles { get; set; } = [];
 
         /// <summary>
+        /// Gets or sets the list of authorizable actions assigned to the resource path.
+        /// </summary>
+        [JsonPropertyName("actions")]
+        public List<string> Actions { get; set; } = [];
+
+        /// <summary>
         /// Gets or sets the list of policy definition IDs that are associated with the resource path.
         /// </summary>
         [JsonPropertyName("policy_definition_ids")]

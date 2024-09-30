@@ -240,7 +240,7 @@ namespace FoundationaLLM.Configuration.Services
 
                 if (string.IsNullOrEmpty(setting.Value))
                 {
-                    result.Add(new ResourceProviderGetResult<AppConfigurationKeyBase>() { Resource = appConfig, Roles = [] });
+                    result.Add(new ResourceProviderGetResult<AppConfigurationKeyBase>() { Resource = appConfig, Roles = [], Actions = [] });
                     continue;
                 }
 
@@ -252,7 +252,7 @@ namespace FoundationaLLM.Configuration.Services
                         appConfig = kvAppConfig;
                 }
 
-                result.Add(new ResourceProviderGetResult<AppConfigurationKeyBase>() { Resource = appConfig, Roles = [] });
+                result.Add(new ResourceProviderGetResult<AppConfigurationKeyBase>() { Resource = appConfig, Roles = [], Actions = [] });
             }
 
             return result;

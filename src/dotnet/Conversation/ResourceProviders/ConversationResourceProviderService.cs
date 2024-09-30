@@ -1,11 +1,16 @@
-﻿using FoundationaLLM.Common.Constants.ResourceProviders;
+﻿using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Constants.Chat;
+using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using ConversationModels = FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using FoundationaLLM.Common.Services.Storage;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -53,22 +58,58 @@ namespace FoundationaLLM.Conversation.ResourceProviders
 
         #region Resource provider support for Management API
 
-        protected override async Task<object> GetResourcesAsync(
-            ResourcePath resourcePath,
-            ResourcePathAuthorizationResult authorizationResult,
-            UnifiedUserIdentity userIdentity,
-            ResourceProviderLoadOptions? options = null) =>
-            resourcePath.MainResourceTypeName switch
+        // This resource provider does not support the Management API.
+
+        #endregion
+
+        #region Resource provider strongly typed operations
+
+        protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
+        {
+            var policyDefinition = EnsureValidatePolicyDefinitions(resourcePath, authorizationResult);
+
+            var result = await _cosmosDBService.GetSessionsAsync(
+                ConversationTypes.Session,
+                userIdentity.UPN!);
+
+            return result.Select(r => new ResourceProviderGetResult<ConversationModels.Conversation>
             {
-                ConversationResourceTypeNames.Conversations => await Task.FromResult<string>(string.Empty),
-                _ => throw new NotImplementedException()
-            };
+                Resource = r,
+                Actions = [],
+                Roles = []
+            });
+        }
 
-        protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string serializedResource, UnifiedUserIdentity userIdentity) =>
-            throw new NotImplementedException();
+        #endregion
 
-        protected override async Task<object> DeleteResourceAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
-            throw new NotImplementedException();
+        #region Utils
+
+        private PolicyDefinition EnsureValidatePolicyDefinitions(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult)
+        {
+            if (authorizationResult.PolicyDefinitionIds.Count == 0)
+                throw new ResourceProviderException(
+                    $"The {_name} resource provider requires PBAC policy assignments to load the {resourcePath.RawResourcePath} resource path.",
+                    StatusCodes.Status500InternalServerError);
+
+            if (authorizationResult.PolicyDefinitionIds.Count > 1)
+                throw new ResourceProviderException(
+                    $"The {_name} resource provider requires exactly one PBAC policy assignment to load the {resourcePath.RawResourcePath} resource path.",
+                    StatusCodes.Status500InternalServerError);
+
+            if (!PolicyDefinitions.All.TryGetValue(authorizationResult.PolicyDefinitionIds[0], out var policyDefinition))
+                throw new ResourceProviderException(
+                    $"The {_name} resource provider did not find the PBAC policy with id {authorizationResult.PolicyDefinitionIds[0]} required to load the {resourcePath.RawResourcePath} resource path.",
+                    StatusCodes.Status500InternalServerError);
+
+            var userIdentityProperties = policyDefinition.MatchingStrategy?.UserIdentityProperties ?? [];
+            if (userIdentityProperties.Count != 1
+                || userIdentityProperties[0] != UserIdentityPropertyNames.UserPrincipalName)
+                throw new ResourceProviderException(
+                    $"The {_name} resource provider requires one PBAC policy assignment with a matching strategy based on the user principal name (UPN) to load the {resourcePath.RawResourcePath} resource path.",
+                    StatusCodes.Status500InternalServerError);
+
+            return policyDefinition;
+        }
 
         #endregion
     }

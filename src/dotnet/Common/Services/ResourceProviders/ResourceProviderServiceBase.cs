@@ -242,8 +242,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             // Authorize access to the resource path.
             var authorizationResult = ParsedResourcePath.IsResourceTypePath
-                ? await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, true, options?.IncludeRoles ?? false)
-                : await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
+                ? await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, true, options?.IncludeRoles ?? false, options?.IncludeActions ?? false)
+                : await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
            
             return await GetResourcesAsync(ParsedResourcePath, authorizationResult, userIdentity);
         }
@@ -269,7 +269,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 // In the special case of the filter action, if the resource type path is not directly authorized,
                 // the subordinate authorized resource paths must be expanded (and the overrides for ExecuteActionAsync must handle this).
                 var actionAuthorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation,
-                    ParsedResourcePath.Action! == ResourceProviderActions.Filter, false);
+                    ParsedResourcePath.Action! == ResourceProviderActions.Filter, false, false);
 
                 return await ExecuteActionAsync(ParsedResourcePath, actionAuthorizationResult, serializedResource, userIdentity);
             }
@@ -281,7 +281,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     StatusCodes.Status400BadRequest);
 
             // Authorize access to the resource path.
-            var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
+            var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
 
             var upsertResult = await UpsertResourceAsync(ParsedResourcePath, serializedResource, userIdentity);
 
@@ -297,7 +297,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             var (ParsedResourcePath, AuthorizableOperation) = ParseAndValidateResourcePath(resourcePath, HttpMethod.Delete, false);
 
             // Authorize access to the resource path.
-            await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
+            await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
 
             await DeleteResourceAsync(ParsedResourcePath, userIdentity);
         }
@@ -404,9 +404,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 CreateAndValidateResourcePath(instanceId, HttpMethod.Get, typeof(T));
 
             var authorizationResult =
-               await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, true, options?.IncludeRoles ?? false);
+               await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, true, options?.IncludeRoles ?? false, options?.IncludeActions ?? false);
 
-            return ((await GetResourcesAsync(ParsedResourcePath, authorizationResult, userIdentity)) as List<ResourceProviderGetResult<T>>)!;
+            return ((await GetResourcesAsync(ParsedResourcePath, authorizationResult, userIdentity, options)) as List<ResourceProviderGetResult<T>>)!;
         }
 
         /// <inheritdoc/>
@@ -418,7 +418,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 ParseAndValidateResourcePath(resourcePath, HttpMethod.Get, false, typeof(T));
 
             // Authorize access to the resource path.
-            await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
+            await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
 
             return await GetResourceAsyncInternal<T>(ParsedResourcePath, userIdentity, options);
         }
@@ -432,7 +432,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 CreateAndValidateResourcePath(instanceId, HttpMethod.Get, typeof(T), resourceName);
 
             // Authorize access to the resource path.
-            await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
+            await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
 
             return await GetResourceAsyncInternal<T>(ParsedResourcePath, userIdentity, options);
         }
@@ -446,7 +446,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             var (ParsedResourcePath, AuthorizableOperation) = CreateAndValidateResourcePath(instanceId, HttpMethod.Post, typeof(T), resourceName: resource.Name);
 
             // Authorize access to the resource path.
-            var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
+            var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
 
             var upsertResult = await UpsertResourceAsyncInternal<T, TResult>(ParsedResourcePath, resource, userIdentity);
 
@@ -464,7 +464,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 CreateAndValidateResourcePath(instanceId, HttpMethod.Get, typeof(T), resourceName: resourceName);
 
             // Authorize access to the resource path.
-            await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
+            await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
 
             var resourceNameCheckResult = await CheckResourceName<T>(new ResourceName
                 {
@@ -525,10 +525,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="actionType">The type of action to be authorized (e.g., "read", "write", "delete").</param>
         /// <param name="expandResourceTypePaths">Indicates whether to expand resource type paths that are not authorized.</param>
         /// <param name="includeRoles">Indicates whether to include roles in the response.</param>
+        /// <param name="includeActions">Indicates whether to include authorizable actions in the response.</param>
         /// <returns></returns>
         /// <exception cref="ResourceProviderException"></exception>
         private async Task<ResourcePathAuthorizationResult> Authorize(ResourcePath resourcePath, UnifiedUserIdentity? userIdentity, string actionType,
-            bool expandResourceTypePaths, bool includeRoles)
+            bool expandResourceTypePaths, bool includeRoles, bool includeActions)
         {
             try
             {
@@ -543,6 +544,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     [rp],
                     expandResourceTypePaths,
                     includeRoles,
+                    includeActions,
                     userIdentity);
 
                 if (!result.AuthorizationResults[rp].Authorized
@@ -777,6 +779,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                                     Resource = resource,
                                     Roles = (options?.IncludeRoles ?? false)
                                         ? authorizationResult.Roles
+                                        : [],
+                                    Actions = (options?.IncludeActions ?? false)
+                                        ? authorizationResult.Actions
                                         : []
                                 }
                         ];
@@ -1259,6 +1264,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                                 Roles = (options?.IncludeRoles ?? false)
                                     ? authorizationResult.Roles
                                         .Union(subordinateAuthorizationResult?.Roles ?? [])
+                                        .ToList()
+                                    : [],
+                                Actions = (options?.IncludeActions ?? false)
+                                    ? authorizationResult.Actions
+                                        .Union(subordinateAuthorizationResult?.Actions ?? [])
                                         .ToList()
                                     : []
                             });

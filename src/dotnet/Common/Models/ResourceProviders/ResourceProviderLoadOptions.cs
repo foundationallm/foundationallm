@@ -20,5 +20,14 @@
         /// </para>
         /// </remarks>
         public bool IncludeRoles { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to include actions in the response.
+        /// </summary>
+        /// <remarks>
+        /// If the value is set to <c>true</c>, for each resource, the response will include
+        /// the authorizable actions assigned directly or indirectly to the resource.
+        /// </remarks>
+        public bool IncludeActions { get; set; }
     }
 }

@@ -164,7 +164,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             {
                 var resources = resourceStore.Values.Where(p => !p.Deleted).ToList();
 
-                return resources.Select(resource => new ResourceProviderGetResult<TBase>() { Resource = resource, Roles = [] }).ToList();
+                return resources.Select(resource => new ResourceProviderGetResult<TBase>() { Resource = resource, Roles = [], Actions = [] }).ToList();
             }
             else
             {
@@ -190,7 +190,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                     throw new ResourceProviderException($"Could not locate the {instance.ResourceId} vectorization resource.",
                                                StatusCodes.Status404NotFound);
 
-                return [new ResourceProviderGetResult<TBase>() { Resource = resource, Roles = [] }];
+                return [new ResourceProviderGetResult<TBase>() { Resource = resource, Roles = [], Actions = [] }];
             }
         }
         private async Task<List<ResourceProviderGetResult<VectorizationRequest>>> LoadVectorizationRequestResource(string resourceId)           
@@ -208,7 +208,8 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                     ResourceProviderGetResult<VectorizationRequest> result = new ResourceProviderGetResult<VectorizationRequest>
                     {
                         Resource = resource,
-                        Roles = []
+                        Roles = [],
+                        Actions = []
                     };
                     return [result];
                 }                       
