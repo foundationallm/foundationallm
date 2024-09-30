@@ -33,7 +33,7 @@ export const useAppStore = defineStore('app', {
 		attachments: [] as Attachment[],
 		longRunningOperations: new Map<string, string>(), // sessionId -> operationId
 		fileStoreConnectors: [] as FileStoreConnector[],
-		oneDriveConnected: null as boolean | null,
+		oneDriveWorkSchool: null as boolean | null,
 		userProfiles: null as UserProfile | null,
 	}),
 
@@ -391,19 +391,19 @@ export const useAppStore = defineStore('app', {
 
 		async oneDriveConnect() {
 			await api.oneDriveConnect().then(() => {
-				this.oneDriveConnected = true;
+				this.oneDriveWorkSchool = true;
 			});
 		},
 
 		async oneDriveDisconnect() {
 			await api.oneDriveDisconnect().then(() => {
-				this.oneDriveConnected = false;
+				this.oneDriveWorkSchool = false;
 			});
 		},
 
 		async getUserProfiles() {
 			this.userProfiles = await api.getUserProfile();
-			this.oneDriveConnected = this.userProfiles?.flags['oneDriveWorkSchool'];
+			this.oneDriveWorkSchool = this.userProfiles?.flags['oneDriveWorkSchool'];
 			return this.userProfiles;
 		},
 
