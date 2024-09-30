@@ -130,12 +130,12 @@
 					<Divider v-if="oneDriveFiles.length > 0 || localFiles.length > 0" />
 					<div class="file-overlay-panel__footer">
 						<Button :icon="!isMobile ? 'pi pi-file-plus' : undefined" label="Select file from Computer" class="file-upload-container-button" @click="browseFiles" />
-						<template v-if="$appStore.oneDriveConnected">
+						<template v-if="$appStore.oneDriveWorkSchool">
 							<Button :icon="!isMobile ? 'pi pi-cloud-upload' : undefined" label="Select file from OneDrive" class="file-upload-container-button" :disabled="disconnectingOneDrive" @click="downloadFromOneDrive" :loading="oneDriveBaseURL === null" />
 							<Button :icon="!isMobile ? 'pi pi-sign-out' : undefined" label="Disconnect OneDrive" class="file-upload-container-button" @click="disconnectOneDrive" :loading="disconnectingOneDrive" />
 						</template>
 						<template v-else>
-							<Button :icon="!isMobile ? 'pi pi-sign-in' : undefined" label="Connect to OneDrive" class="file-upload-container-button" @click="oneDriveConnect" :loading="connectingOneDrive || $appStore.oneDriveConnected === null" />
+							<Button :icon="!isMobile ? 'pi pi-sign-in' : undefined" label="Connect to OneDrive" class="file-upload-container-button" @click="oneDriveConnect" :loading="connectingOneDrive || $appStore.oneDriveWorkSchool === null" />
 						</template>
 					</div>
 				</OverlayPanel>

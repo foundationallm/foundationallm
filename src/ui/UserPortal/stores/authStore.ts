@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import type { AccountInfo } from '@azure/msal-browser';
 import { PublicClientApplication } from '@azure/msal-browser';
+import { useAppStore } from './appStore';
 
 export const useAuthStore = defineStore('auth', {
 	state: () => ({
@@ -121,9 +122,13 @@ export const useAuthStore = defineStore('auth', {
 		},
 
 		async getOneDriveToken(): string | null {
+			const appStore = useAppStore();
+			const oneDriveBaseURL = appStore.fileStoreConnectors.find(
+				(connector) => connector.subcategory === 'OneDriveWorkOrSchool',
+			)?.url;
 			const oneDriveToken = await this.msalInstance.acquireTokenSilent({
 				account: this.currentAccount,
-				scopes: ['https://solliancenet-my.sharepoint.com/.default'],
+				scopes: [`${ oneDriveBaseURL }.default`],
 			});
 
 			return oneDriveToken;
