@@ -52,6 +52,15 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public string? AIModelObjectId { get; set; }
 
         /// <summary>
+        /// Gets of sets a dictionary of API endpoint configuration object IDs.
+        /// </summary>
+        /// <remarks>
+        /// The key is the name of the API endpoint configuration object, and the value is the object ID.
+        /// </remarks>
+        [JsonPropertyName("api_endpoint_configuration_object_ids")]
+        public Dictionary<string, string> APIEndpointConfigurationObjectIds { get; set; } = [];
+
+        /// <summary>
         /// List of capabilities that the agent supports.
         /// </summary>
         [JsonPropertyName("capabilities")]
@@ -88,6 +97,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// </summary>
         [JsonPropertyName("enabled")]
         public bool Enabled { get; set; }
+
         /// <summary>
         /// The maximum number of turns to store in the conversation history.
         /// </summary>
@@ -105,6 +115,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// </summary>
         [JsonPropertyName("use_system_setting")]
         public bool UseSystemSetting { get; set; }
+
         /// <summary>
         /// If <see cref="UseSystemSetting"/> is false, provides Gatekeeper feature selection.
         /// </summary>
