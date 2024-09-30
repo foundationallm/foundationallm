@@ -33,7 +33,7 @@ namespace FoundationaLLM.Core.Examples
         private string dataSourceName = "datalake_vectorization_input";
         private string dataSourceObjectId = String.Empty;
         private string textPartitioningProfileName = "text_partition_profile";
-        private string textEmbeddingProfileName = "text_embedding_profile_gateway";
+        private string textEmbeddingProfileName = "text_embedding_profile_generic";
         private string indexingProfileName = "indexing_profile_pdf";
         private string searchString = "Kurt and Ollie";
         private string id = String.Empty;
