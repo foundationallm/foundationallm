@@ -143,6 +143,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             var apiEndpointConfiguration = await configurationResourceProvider.HandleGet<APIEndpointConfiguration>(
                 aiModel.EndpointObjectId!,
                 currentUserIdentity);
+            var gatewayAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                instanceId,
+                "GatewayAPI",
+                currentUserIdentity);
 
             // Merge the model parameter overrides with the existing model parameter values from the AI model.
             if (modelParameterOverrides != null)
@@ -168,6 +172,16 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 })
                 .ToDictionary(x => x.Name, x => x.Description);
             explodedObjects[CompletionRequestObjectsKeys.AllAgents] = allAgentsDescriptions;
+
+            foreach (var endpointKey in agentBase.APIEndpointConfigurationObjectIds.Keys)
+            {
+                var apiEndpoint = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                    instanceId,
+                    agentBase.APIEndpointConfigurationObjectIds[endpointKey],
+                    currentUserIdentity);
+
+                explodedObjects[endpointKey] = apiEndpoint;
+            }
 
             #region Knowledge management processing
             if (agentBase.AgentType == typeof(KnowledgeManagementAgent) || agentBase.AgentType == typeof(AudioClassificationAgent))
