@@ -278,9 +278,12 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 audio_analysis_context = ''
                 for key, value in audio_analysis_results.items():
                     filename = key
-                    prediction = value['predictions'][0]
-                    label = prediction['label']
-                    audio_analysis_context += f'File: {filename}\nPrediction: {label}' + '\n\n'
+                    audio_analysis_context += f'File: {filename}\n'
+                    audio_analysis_context += 'Predictions:\n'
+                    for prediction in value['predictions']:
+                        label = prediction['label']
+                        audio_analysis_context += f'- {label}' + '\n'
+                    audio_analysis_context += '\n'
                 # Add user message
                 assistant_svc.add_thread_message(
                     thread_id = assistant_req.thread_id,
@@ -328,13 +331,16 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 elif image_analysis_results is not None or audio_analysis_results is not None:
                     external_analysis_context = ''
                     if image_analysis_results is not None:
-                        external_analysis_context = image_analysis_svc.format_results(image_analysis_results)
+                        external_analysis_context += image_analysis_svc.format_results(image_analysis_results)
                     if audio_analysis_results is not None:
                         for key, value in audio_analysis_results.items():
                             filename = key
-                            prediction = value['predictions'][0]
-                            label = prediction['label']
-                            external_analysis_context += f'File: {filename}\nPrediction: {label}' + '\n\n'
+                            external_analysis_context += f'File: {filename}\n'
+                            external_analysis_context += 'Predictions:\n'
+                            for prediction in value['predictions']:
+                                label = prediction['label']
+                                external_analysis_context += f'- {label}' + '\n'
+                            external_analysis_context += '\n'
                         
                     chain_context = { "context": lambda x: external_analysis_context, "question": RunnablePassthrough() }
                 else:
@@ -447,9 +453,12 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 audio_analysis_context = ''
                 for key, value in audio_analysis_results.items():
                     filename = key
-                    prediction = value['predictions'][0]
-                    label = prediction['label']
-                    audio_analysis_context += f'File: {filename}\nPrediction: {label}' + '\n\n'
+                    audio_analysis_context += f'File: {filename}\n'
+                    audio_analysis_context += 'Predictions:\n'
+                    for prediction in value['predictions']:
+                        label = prediction['label']
+                        audio_analysis_context += f'- {label}' + '\n'
+                    audio_analysis_context += '\n'
                 # Add user message
                 assistant_svc.aadd_thread_message(
                     thread_id = assistant_req.thread_id,
@@ -497,14 +506,17 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 elif image_analysis_results is not None or audio_analysis_results is not None:
                     external_analysis_context = ''
                     if image_analysis_results is not None:
-                        external_analysis_context = image_analysis_svc.format_results(image_analysis_results)
+                        external_analysis_context += image_analysis_svc.format_results(image_analysis_results)
                     if audio_analysis_results is not None:
                         for key, value in audio_analysis_results.items():
                             filename = key
-                            prediction = value['predictions'][0]
-                            label = prediction['label']
-                            external_analysis_context += f'File: {filename}\nPrediction: {label}' + '\n\n'
-                        
+                            external_analysis_context += f'File: {filename}\n'
+                            external_analysis_context += 'Predictions:\n'
+                            for prediction in value['predictions']:
+                                label = prediction['label']
+                                external_analysis_context += f'- {label}' + '\n'
+                            external_analysis_context += '\n'
+
                     chain_context = { "context": lambda x: external_analysis_context, "question": RunnablePassthrough() }
                 else:
                     chain_context = { "context": RunnablePassthrough() }

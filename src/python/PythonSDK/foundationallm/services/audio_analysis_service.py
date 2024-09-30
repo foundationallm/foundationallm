@@ -63,6 +63,10 @@ class AudioAnalysisService:
         base_url = self.config.get_value('FoundationaLLM:APIEndpoints:AudioClassificationAPI:APIUrl').rstrip('/')
         deployment_name = self.config.get_value('FoundationaLLM:APIEndpoints:AudioClassificationAPI:DeploymentName')
         endpoint = self.config.get_value('FoundationaLLM:APIEndpoints:AudioClassificationAPI:PredictionEndpoint').lstrip('/')
+        try:
+            top_k = self.config.get_value('FoundationaLLM:APIEndpoints:AudioClassificationAPI:TopK')
+        except:
+            top_k = 1
         
         api_endpoint = f'{base_url}/{endpoint}'
         audio_analyses = {}
@@ -77,7 +81,12 @@ class AudioAnalysisService:
                 audio_base64 = self._get_as_base64(storage_account_name=attachment.provider_storage_account_name, file_path=attachment.provider_file_name)
                 if audio_base64 and audio_base64 != '':
                     # Create the payload, sending the base64 encoded audio file.
-                    payload = {"file": audio_base64, "deployment_name": deployment_name}
+                    payload = {
+                        "file": audio_base64,
+                        "content_type": attachment.content_type,
+                        "deployment_name": deployment_name,
+                        "top_k": top_k
+                    }
                     headers = {"charset": "utf-8", "Content-Type": "application/json", "x-api-key": api_key}
                     # Make the REST API call.
                     r = requests.post(api_endpoint, json=payload, headers=headers)
