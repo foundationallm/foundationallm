@@ -109,7 +109,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				getConfigValueSafe(
 					'FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions',
 				),
-				getConfigValueSafe('FoundationaLLM:APIEndpoints:OneDriveWorkSchool:Configuration:Scopes'), //,'Files.Read.All'
+				getConfigValueSafe('FoundationaLLM:APIEndpoints:OneDriveWorkSchool:Configuration:Scopes'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:ClientId'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:Instance'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:TenantId'),
