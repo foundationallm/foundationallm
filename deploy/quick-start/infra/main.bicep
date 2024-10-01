@@ -384,11 +384,13 @@ module openAiSecrets './shared/openai-secrets.bicep' = {
     openAiInstance: azureOpenAi
     tags: tags
   }
+  dependsOn: deployOpenAi ? [openAi] : []
 }
 
 module storage './shared/storage.bicep' = {
   name: 'storage-${timestamp}'
   params: {
+    adminGroupObjectId: adminGroupObjectId
     containers: [
       {
         name: 'resource-provider'
