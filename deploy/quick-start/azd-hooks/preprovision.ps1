@@ -11,6 +11,10 @@ $fllmVersionConfig = (Get-content $fllmVersionConfigPath | ConvertFrom-Json)
 Write-Host "Setting FLLM Version to $($fllmVersionConfig.version)..." -ForegroundColor Blue
 azd env set FLLM_VERSION "$($fllmVersionConfig.version)"
 
+Write-Host "Setting Entra Settings..." -ForegroundColor Blue
+$tenantID = $(az account show --query "tenantId" -o tsv)
+& "../common/scripts/Set-AzdEnvEntra.ps1" -tenantID $tenantID
+
 $instanceId = $(azd env get-value FOUNDATIONALLM_INSTANCE_ID)
 if ($LastExitCode -eq 0) 
 {
