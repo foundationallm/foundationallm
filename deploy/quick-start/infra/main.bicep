@@ -390,6 +390,7 @@ module openAiSecrets './shared/openai-secrets.bicep' = {
 module storage './shared/storage.bicep' = {
   name: 'storage-${timestamp}'
   params: {
+    adminGroupObjectId: adminGroupObjectId
     containers: [
       {
         name: 'resource-provider'
