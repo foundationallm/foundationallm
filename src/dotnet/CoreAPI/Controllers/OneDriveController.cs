@@ -16,20 +16,20 @@ namespace FoundationaLLM.Core.API.Controllers
     public class OneDriveController : ControllerBase
     {
         private readonly ICallContext _callContext;
-        private readonly IOneDriveService _oneDriveService;
+        private readonly IOneDriveWorkSchoolService _oneDriveWorkSchoolService;
 
         /// <summary>
         /// The controller for OneDrive integration.
         /// </summary>
         /// <param name="callContext">The <see cref="ICallContext"/> call context of the request being handled.</param>
-        /// <param name="oneDriveService">The <see cref="IOneDriveService"/> OneDrive service.</param>
+        /// <param name="oneDriveService">The <see cref="IOneDriveWorkSchoolService"/> OneDrive service.</param>
         /// <exception cref="ResourceProviderException"></exception>
         public OneDriveController(
             ICallContext callContext,
-            IOneDriveService oneDriveService)
+            IOneDriveWorkSchoolService oneDriveWorkSchoolService)
         {
             _callContext = callContext;
-            _oneDriveService = oneDriveService;
+            _oneDriveWorkSchoolService = oneDriveWorkSchoolService;
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace FoundationaLLM.Core.API.Controllers
         [HttpPost("connect")]
         public async Task<IActionResult> Connect(string instanceId)
         {
-            await _oneDriveService.Connect(instanceId);
+            await _oneDriveWorkSchoolService.Connect(instanceId);
 
             return Ok();
         }
@@ -53,7 +53,7 @@ namespace FoundationaLLM.Core.API.Controllers
         [HttpPost("disconnect")]
         public async Task<IActionResult> Disconnect(string instanceId)
         {
-            await _oneDriveService.Disconnect(instanceId);
+            await _oneDriveWorkSchoolService.Disconnect(instanceId);
 
             return Ok();
         }
@@ -64,12 +64,12 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="sessionId">The session ID from which the file is uploaded.</param>
         /// <param name="agentName">The agent name.</param>
-        /// <param name="oneDriveItem">The OneDrive work or school item.</param>
+        /// <param name="oneDriveWorkSchool">The OneDrive work or school item.</param>
         /// <returns></returns>
         [HttpPost("download")]
-        public async Task<IActionResult> Download(string instanceId, string sessionId, string agentName, [FromBody] OneDriveItem oneDriveItem)
+        public async Task<IActionResult> Download(string instanceId, string sessionId, string agentName, [FromBody] OneDriveWorkSchool oneDriveWorkSchool)
         {
-            var result = await _oneDriveService.Download(instanceId, sessionId, agentName, oneDriveItem, _callContext.CurrentUserIdentity!);
+            var result = await _oneDriveWorkSchoolService.Download(instanceId, sessionId, agentName, oneDriveWorkSchool, _callContext.CurrentUserIdentity!);
 
             return Ok(result);
         }
