@@ -1,3 +1,4 @@
+param adminGroupObjectId string
 param containers array = []
 param files array = []
 param queues array = []
@@ -23,6 +24,16 @@ resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
     allowSharedKeyAccess: false
   }
 }
+
+resource adminRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(adminGroupObjectId, resourceGroup().id, 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
+  properties: {
+    principalId: adminGroupObjectId
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefiniitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
+    principalType: 'Group'
+  }
+}
+
 
 resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01' = {
   parent: storage

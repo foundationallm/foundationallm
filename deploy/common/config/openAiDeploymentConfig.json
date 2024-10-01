@@ -15,7 +15,7 @@
             "version": "0613"
         },
         "sku": {
-            "capacity": 30,
+            "capacity": 10,
             "name": "Standard"
         }
     },
@@ -37,7 +37,7 @@
           "version": "1106"
         },
         "sku": {
-          "capacity": 30,
+          "capacity": 10,
           "name": "Standard"
         }
       },
@@ -61,7 +61,7 @@
           "version": "1106-Preview"
         },
         "sku": {
-          "capacity": 8,
+          "capacity": 4,
           "name": "Standard"
         }
       },
