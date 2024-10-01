@@ -26,7 +26,6 @@
 						:key="`${message.id}-${componentKey}`"
 						:message="message"
 						:show-word-animation="index === 0 && userSentMessage && message.sender === 'Assistant'"
-						role="log"
 						:aria-flowto="
 							index === 0 ? null : `message-${getMessageOrderFromReversedIndex(index) + 1}`
 						"

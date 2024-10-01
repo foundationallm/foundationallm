@@ -5,7 +5,7 @@
 			<img
 				v-if="$appConfigStore.logoUrl !== ''"
 				:src="$appConfigStore.logoUrl"
-				:alt="$appConfigStore.logoText"
+				:alt="$appConfigStore.logoText || 'Logo'"
 			/>
 			<span v-else>{{ $appConfigStore.logoText }}</span>
 
@@ -17,6 +17,7 @@
 						severity="secondary"
 						class="secondary-button"
 						aria-label="Toggle sidebar"
+						:aria-expanded="!$appStore.isSidebarClosed"
 						@click="$appStore.toggleSidebar"
 						@keydown.esc="hideAllPoppers"
 					/>

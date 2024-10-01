@@ -5,6 +5,7 @@
 		:modal="true"
 		:closable="true"
 		:style="{ width: '95vw' }"
+		id="analysis-modal"
 		@update:visible="$emit('update:visible', $event)"
 	>
 		<template v-if="analysisResults && analysisResults.length > 0" #default>

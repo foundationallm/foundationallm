@@ -15,10 +15,12 @@
 					severity="secondary"
 					class="secondary-button"
 					aria-label="Toggle sidebar"
+					aria-describedby="toggle-sidebar-tooltip"
+					:aria-expanded="!$appStore.isSidebarClosed"
 					@click="$appStore.toggleSidebar"
 					@keydown.esc="hideAllPoppers"
 				/>
-				<template #popper><div role="tooltip">Toggle sidebar</div></template>
+				<template #popper><div id="toggle-sidebar-tooltip" role="tooltip">Toggle sidebar</div></template>
 			</VTooltip>
 		</div>
 		<div class="chat-sidebar__section-header">
@@ -29,11 +31,12 @@
 					text
 					severity="secondary"
 					aria-label="Add new chat"
+					aria-describedby="add-chat-tooltip"
 					:disabled="createProcessing"
 					@keydown.esc="hideAllPoppers"
 					@click="handleAddSession"
 				/>
-				<template #popper><div role="tooltip">Add new chat</div></template>
+				<template #popper><div id="add-chat-tooltip" role="tooltip">Add new chat</div></template>
 			</VTooltip>
 		</div>
 
@@ -46,15 +49,16 @@
 				class="chat-sidebar__chat"
 				@click="handleSessionSelected(session)"
 				@keydown.enter="handleSessionSelected(session)"
+				@keydown.space="handleSessionSelected(session)"
 			>
 				<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
 					<!-- Chat name -->
 					<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-						<span class="chat__name" tabindex="0" @keydown.esc="hideAllPoppers">{{
+						<span class="chat__name" tabindex="0" aria-describedby="session-name-tooltip" @keydown.esc="hideAllPoppers">{{
 							session.name
 						}}</span>
 						<template #popper>
-							<div role="tooltip">
+							<div id="session-name-tooltip" role="tooltip">
 								{{ session.name }}
 							</div>
 						</template>
@@ -70,10 +74,13 @@
 								severity="secondary"
 								text
 								aria-label="Rename chat session"
+								aria-describedby="rename-session-tooltip"
+								aria-controls="rename-session-dialog"
+								:aria-expanded="sessionToRename !== null"
 								@click.stop="openRenameModal(session)"
 								@keydown.esc="hideAllPoppers"
 							/>
-							<template #popper><div role="tooltip">Rename chat session</div></template>
+							<template #popper><div id="rename-session-tooltip" role="tooltip">Rename chat session</div></template>
 						</VTooltip>
 
 						<!-- Delete session -->
@@ -84,10 +91,13 @@
 								severity="danger"
 								text
 								aria-label="Delete chat session"
+								aria-describedby="delete-session-tooltip"
+								aria-controls="delete-session-dialog"
+								:aria-expanded="sessionToDelete !== null"
 								@click.stop="sessionToDelete = session"
 								@keydown.esc="hideAllPoppers"
 							/>
-							<template #popper><div role="tooltip">Delete chat session</div></template>
+							<template #popper><div id="delete-session-tooltip" role="tooltip">Delete chat session</div></template>
 						</VTooltip>
 					</span>
 				</div>
@@ -113,6 +123,7 @@
 
 		<!-- Rename session dialog -->
 		<Dialog
+			id="rename-session-dialog"
 			v-if="sessionToRename !== null"
 			v-focustrap
 			:visible="sessionToRename !== null"
@@ -138,6 +149,7 @@
 
 		<!-- Delete session dialog -->
 		<Dialog
+			id="delete-session-dialog"
 			v-if="sessionToDelete !== null"
 			v-focustrap
 			:visible="sessionToDelete !== null"
@@ -148,7 +160,7 @@
 			@keydown="deleteSessionKeydown"
 		>
 			<div v-if="deleteProcessing" class="delete-dialog-content">
-				<div role="status">
+				<div aria-live="polite" role="status">
 					<i
 						class="pi pi-spin pi-spinner"
 						style="font-size: 2rem"

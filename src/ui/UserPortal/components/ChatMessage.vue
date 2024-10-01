@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="message-row" :class="message.sender === 'User' ? 'message--out' : 'message--in'">
-			<div class="message" tabindex="0">
+			<div class="message" role="log" aria-live="polite" tabindex="0">
 				<div class="message__header">
 					<!-- Sender -->
 					<span class="header__sender">
@@ -28,9 +28,10 @@
 							}"
 						/>
 						<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-							<span class="time-stamp" tabindex="0" @keydown.esc="hideAllPoppers">{{
+							<span class="time-stamp" tabindex="0" aria-labelledby="timestampDesc" @keydown.esc="hideAllPoppers">{{
 								$filters.timeAgo(new Date(message.timeStamp))
 							}}</span>
+							<div id="time-stamp-desc" class="sr-only">Message timestamp in relative time</div>
 							<template #popper>
 								<div role="tooltip">
 									{{ formatTimeStamp(message.timeStamp) }}
@@ -66,7 +67,7 @@
 
 					<!-- Message loading -->
 					<template v-if="message.sender === 'Assistant' && message.type === 'LoadingMessage'">
-						<div role="status">
+						<div aria-live="polite" role="status">
 							<i class="pi pi-spin pi-spinner" role="img" aria-label="Loading message"></i>
 						</div>
 					</template>
@@ -83,6 +84,8 @@
 						text
 						icon="pi pi-window-maximize"
 						label="Analysis"
+						aria-controls="analysis-modal"
+						:aria-expanded="isAnalysisModalVisible"
 						@click.stop="isAnalysisModalVisible = true"
 					/>
 				</div>
@@ -115,6 +118,8 @@
 								:icon="message.rating ? 'pi pi-thumbs-up-fill' : 'pi pi-thumbs-up'"
 								:label="message.rating ? 'Message Liked!' : 'Like'"
 								@click.stop="handleRate(message, true)"
+								aria-label="Like message"
+								:aria-pressed="message.rating === true"
 							/>
 						</span>
 
@@ -128,6 +133,8 @@
 								:icon="message.rating === false ? 'pi pi-thumbs-down-fill' : 'pi pi-thumbs-down'"
 								:label="message.rating === false ? 'Message Disliked.' : 'Dislike'"
 								@click.stop="handleRate(message, false)"
+								aria-label="Dislike message"
+								:aria-pressed="message.rating === false"
 							/>
 						</span>
 					</span>
@@ -153,12 +160,15 @@
 							text
 							icon="pi pi-book"
 							label="View Prompt"
+							aria-controls="prompt-dialog"
+							:aria-expanded="viewPrompt"
 							@click.stop="handleViewPrompt"
 						/>
 
 						<!-- Prompt dialog -->
 						<Dialog
 							v-model:visible="viewPrompt"
+							id="prompt-dialog"
 							class="prompt-dialog"
 							modal
 							header="Completion Prompt"
@@ -511,6 +521,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.sr-only {
+	display: none;
+}
+
 .message-row {
 	display: flex;
 	align-items: flex-end;

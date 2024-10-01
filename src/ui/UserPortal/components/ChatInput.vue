@@ -79,6 +79,7 @@
 							<ProgressBar
 								:value="uploadProgress"
 								:show-value="false"
+								aria-label="Status of file upload"
 								style="display: flex; width: 95%; margin: 10px 2.5%"
 							/>
 							<p style="text-align: center">Uploading...</p>
