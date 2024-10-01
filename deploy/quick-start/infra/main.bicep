@@ -384,6 +384,7 @@ module openAiSecrets './shared/openai-secrets.bicep' = {
     openAiInstance: azureOpenAi
     tags: tags
   }
+  dependsOn: deployOpenAi ? [openAi] : []
 }
 
 module storage './shared/storage.bicep' = {
@@ -692,9 +693,8 @@ output ENTRA_MANAGEMENT_UI_CLIENT_ID string = appRegistrations[indexOf(appRegNam
 output ENTRA_MANAGEMENT_UI_SCOPES string = 'api://FoundationaLLM-Management/Data.Manage'
 output ENTRA_MANAGEMENT_UI_TENANT_ID string = tenant().tenantId
 
-output ENTRA_VECTORIZATION_API_CLIENT_ID string = appRegistrations[indexOf(appRegNames, 'vectorization-api')].clientId
-output ENTRA_VECTORIZATION_API_SCOPES string = appRegistrations[indexOf(appRegNames, 'vectorization-api')].scopes
-output ENTRA_VECTORIZATION_API_TENANT_ID string = tenant().tenantId
+output ENTRA_READER_CLIENT_ID string = appRegistrations[indexOf(appRegNames, 'reader')].clientId
+output ENTRA_READER_TENANT_ID string = tenant().tenantId
 
 output FOUNDATIONALLM_INSTANCE_ID string = instanceId
 
@@ -715,6 +715,7 @@ output SERVICE_GATEKEEPER_API_MI_OBJECT_ID string = acaServices[indexOf(serviceN
 output SERVICE_GATEKEEPER_INTEGRATION_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'gatekeeper-integration-api')].outputs.uri
 output SERVICE_GATEWAY_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'gateway-api')].outputs.uri
 output SERVICE_GATEWAY_API_OBJECT_ID string = acaServices[indexOf(serviceNames, 'gateway-api')].outputs.miPrincipalId
+output SERVICE_GATEWAY_API_MI_OBJECT_ID string = acaServices[indexOf(serviceNames, 'gateway-api')].outputs.miPrincipalId
 output SERVICE_GATEWAY_ADAPTER_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'gateway-adapter-api')].outputs.uri
 output SERVICE_LANGCHAIN_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'langchain-api')].outputs.uri
 output SERVICE_MANAGEMENT_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'management-api')].outputs.uri
