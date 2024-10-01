@@ -8,7 +8,7 @@ import type {
 	UserProfile,
 	Agent,
 	FileStoreConnector,
-	OneDriveItem,
+	OneDriveWorkSchool,
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
 	// ResourceProviderDeleteResult,
@@ -407,7 +407,7 @@ export const useAppStore = defineStore('app', {
 			return this.userProfiles;
 		},
 
-		async oneDriveDownload(sessionId: string, oneDriveItem: OneDriveItem) {
+		async oneDriveDownload(sessionId: string, oneDriveWorkSchool: OneDriveWorkSchool) {
 			const agent = this.getSessionAgent(this.currentSession!).resource;
 			// If the agent is not found, do not upload the attachment and display an error message.
 			if (!agent) {
@@ -417,13 +417,13 @@ export const useAppStore = defineStore('app', {
 			const item = (await api.oneDriveDownload(
 				sessionId,
 				agent.name,
-				oneDriveItem,
-			)) as OneDriveItem;
+				oneDriveWorkSchool,
+			)) as OneDriveWorkSchool;
 			const newAttachment: Attachment = {
-				id: item.objectId,
-				fileName: item.name,
+				id: item.objectId!,
+				fileName: item.name!,
 				sessionId,
-				contentType: item.file.mimeType,
+				contentType: item.mimeType!,
 				source: 'OneDrive Work/School',
 			};
 

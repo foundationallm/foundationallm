@@ -141,14 +141,10 @@ export interface FileStoreConnector {
 	url: string;
 }
 
-export interface OneDriveItem {
+export interface OneDriveWorkSchool {
 	id: string;
 	objectId?: string;
 	name?: string;
-	file?: OneDriveFile;
-	access_token?: string;
-}
-
-export interface OneDriveFile {
 	mimeType?: string;
+	access_token?: string;
 }

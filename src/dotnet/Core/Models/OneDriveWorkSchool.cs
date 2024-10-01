@@ -3,9 +3,9 @@
 namespace FoundationaLLM.Core.Models
 {
     /// <summary>
-    /// OneDrive item object.
+    /// OneDriveWorkSchool object.
     /// </summary>
-    public class OneDriveItem
+    public class OneDriveWorkSchool
     {
         /// <summary>
         /// The item unique identifier.
@@ -25,27 +25,15 @@ namespace FoundationaLLM.Core.Models
         public string? Name { get; set; }
 
         /// <summary>
-        /// The file object.
+        /// The OneDrive file mime type.
         /// </summary>
-        [JsonPropertyName("file")]
-        public OneDriveFile? File { get; set; }
+        [JsonPropertyName("mimeType")]
+        public string? MimeType { get; set; }
 
         /// <summary>
         /// The access token required to fetch the item contents.
         /// </summary>
         [JsonPropertyName("access_token")]
         public string? AccessToken { get; set; }
-    }
-
-    /// <summary>
-    /// OneDrive file object.
-    /// </summary>
-    public class OneDriveFile
-    {
-        /// <summary>
-        /// The OneDrive file mime type.
-        /// </summary>
-        [JsonPropertyName("mimeType")]
-        public string? MimeType { get; set; }
     }
 }

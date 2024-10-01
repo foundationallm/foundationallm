@@ -3,7 +3,7 @@ import type {
 	Session,
 	UserProfile,
 	FileStoreConnector,
-	OneDriveItem,
+	OneDriveWorkSchool,
 	ChatSessionProperties,
 	CompletionPrompt,
 	Agent,
@@ -412,17 +412,17 @@ export default {
 	 * Downloads a file from the user's connected OneDrive work or school account.
 	 * @param sessionId - The session ID from which the file is uploaded.
 	 * @param agentName - The agent name.
-	 * @param oneDriveItem - The OneDrive work or school item.
+	 * @param oneDriveWorkSchool - The OneDrive work or school item.
 	 * @returns A Promise that resolves to the response from the server.
 	 */
 	async oneDriveDownload(
 		sessionId: string,
 		agentName: string,
-		oneDriveItem: OneDriveItem) {
+		oneDriveWorkSchool: OneDriveWorkSchool) {
 		return (await this.fetch(`/instances/${this.instanceId}/oneDrive/download?instanceId=${this.instanceId}&sessionId=${sessionId}&agentName=${agentName}`, {
 				method: 'POST',
-				body: oneDriveItem,
-		})) as OneDriveItem;
+				body: oneDriveWorkSchool,
+		})) as OneDriveWorkSchool;
 	},
 };
 

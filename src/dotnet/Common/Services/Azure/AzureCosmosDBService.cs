@@ -370,23 +370,19 @@ namespace FoundationaLLM.Common.Services
         {
             var userProfiles = await _userProfilesTask;
 
-            try
+            var response = await userProfiles.ReadItemAsync<UserProfile>(
+                id: upn,
+                partitionKey: new PartitionKey(upn),
+                cancellationToken: cancellationToken);
+
+            if (response == null)
             {
-                var userProfile = await userProfiles.ReadItemAsync<UserProfile>(
-                    id: upn,
-                    partitionKey: new PartitionKey(upn),
-                    cancellationToken: cancellationToken);
-
-                return userProfile;
+                var newUserProfile = new UserProfile(upn);
+                await UpsertUserProfileAsync(newUserProfile, cancellationToken);
+                return newUserProfile;
             }
-            catch(CosmosException ce) when (ce.StatusCode == System.Net.HttpStatusCode.NotFound)
-            {
-                var userProfile = new UserProfile(upn);
 
-                await UpsertUserProfileAsync(userProfile, cancellationToken);
-
-                return userProfile;
-            }
+            return response;
         }
 
         /// <inheritdoc/>

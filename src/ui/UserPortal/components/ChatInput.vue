@@ -311,7 +311,7 @@ export default {
 		await this.$appStore.getFileStoreConnectors();
 
 		this.oneDriveBaseURL = this.$appStore.fileStoreConnectors.find(
-			(connector) => connector.subcategory === 'OneDriveWorkOrSchool',
+			(connector) => connector.subcategory === 'OneDriveWorkSchool',
 		)?.url;
 	},
 

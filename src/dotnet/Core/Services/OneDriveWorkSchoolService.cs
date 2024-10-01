@@ -1,6 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Models.Authentication;
-using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models;
@@ -10,9 +9,9 @@ using System.Text.Json;
 namespace FoundationaLLM.Core.Services
 {
     /// <summary>
-    /// Implements <see cref="IOneDriveService"/>.
+    /// Implements <see cref="IOneDriveWorkSchoolService"/>.
     /// </summary>
-    public class OneDriveService : IOneDriveService
+    public class OneDriveWorkSchoolService : IOneDriveWorkSchoolService
     {
         private readonly ICoreService _coreService;
         private readonly IUserProfileService _userProfileService;
@@ -24,7 +23,7 @@ namespace FoundationaLLM.Core.Services
         /// <param name="coreService">The core API service.</param>
         /// <param name="userProfileService">The user profile service.</param>
         /// <param name="httpClientFactory">The HTTP client factory.</param>
-        public OneDriveService(
+        public OneDriveWorkSchoolService(
             ICoreService coreService,
             IUserProfileService userProfileService,
             IHttpClientFactory httpClientFactory)
@@ -39,12 +38,12 @@ namespace FoundationaLLM.Core.Services
         {
             var userProfile = await _userProfileService.GetUserProfileAsync(instanceId);
 
-            if (!userProfile!.Flags.TryGetValue(UserProfileFlags.OneDriveWorkSchool, out bool oneDriveWorkOrSchool))
-                userProfile.Flags.Add(UserProfileFlags.OneDriveWorkSchool, false);
+            if (!userProfile!.Flags.TryGetValue(UserProfileFlags.OneDriveWorkSchoolEnabled, out bool oneDriveWorkOrSchool))
+                userProfile.Flags.Add(UserProfileFlags.OneDriveWorkSchoolEnabled, false);
 
             if (!oneDriveWorkOrSchool)
             {
-                userProfile.Flags[UserProfileFlags.OneDriveWorkSchool] = true;
+                userProfile.Flags[UserProfileFlags.OneDriveWorkSchoolEnabled] = true;
 
                 await _userProfileService.UpsertUserProfileAsync(instanceId, userProfile);
             }
@@ -55,27 +54,27 @@ namespace FoundationaLLM.Core.Services
         {
             var userProfile = await _userProfileService.GetUserProfileAsync(instanceId);
 
-            if (!userProfile!.Flags.TryGetValue(UserProfileFlags.OneDriveWorkSchool, out bool oneDriveWorkOrSchool))
-                userProfile.Flags.Add(UserProfileFlags.OneDriveWorkSchool, false);
+            if (!userProfile!.Flags.TryGetValue(UserProfileFlags.OneDriveWorkSchoolEnabled, out bool oneDriveWorkSchool))
+                userProfile.Flags.Add(UserProfileFlags.OneDriveWorkSchoolEnabled, false);
 
-            if (oneDriveWorkOrSchool)
+            if (oneDriveWorkSchool)
             {
-                userProfile.Flags[UserProfileFlags.OneDriveWorkSchool] = false;
+                userProfile.Flags[UserProfileFlags.OneDriveWorkSchoolEnabled] = false;
 
                 await _userProfileService.UpsertUserProfileAsync(instanceId, userProfile);
             }
         }
 
         /// <inheritdoc/>
-        public async Task<OneDriveItem> Download(
-            string instanceId, string sessionId, string agentName, OneDriveItem oneDriveItem, UnifiedUserIdentity userIdentity)
+        public async Task<OneDriveWorkSchool> Download(
+            string instanceId, string sessionId, string agentName, OneDriveWorkSchool oneDriveItem, UnifiedUserIdentity userIdentity)
         {
             if (string.IsNullOrWhiteSpace(oneDriveItem.AccessToken))
                 throw new InvalidOperationException("Invalid request body. Missing access token.");
 
             var userProfile = await _userProfileService.GetUserProfileAsync(instanceId);
 
-            if (!userProfile!.Flags.TryGetValue(UserProfileFlags.OneDriveWorkSchool, out bool oneDriveWorkOrSchool)
+            if (!userProfile!.Flags.TryGetValue(UserProfileFlags.OneDriveWorkSchoolEnabled, out bool oneDriveWorkOrSchool)
                 || !oneDriveWorkOrSchool)
                 throw new InvalidOperationException("User has not granted consent to connect to the OneDrive work or school account.");
 
@@ -88,7 +87,7 @@ namespace FoundationaLLM.Core.Services
             if (!item.IsSuccessStatusCode)
                 throw new InvalidOperationException($"Could not retrieve OneDrive item information for {oneDriveItem.Id}. Status code: {item.StatusCode}.");
             var itemStr = await item.Content.ReadAsStringAsync();
-            var itemObj = JsonSerializer.Deserialize<OneDriveItem>(itemStr);
+            var itemObj = JsonSerializer.Deserialize<OneDriveWorkSchool>(itemStr);
 
             var response = await client.GetAsync($"me/drive/items/{oneDriveItem.Id}/content");
             if (!response.IsSuccessStatusCode)
@@ -101,7 +100,7 @@ namespace FoundationaLLM.Core.Services
 
             var fileName = itemObj?.Name ?? Guid.NewGuid().ToString();
             var name = $"a-{Guid.NewGuid()}-{DateTime.UtcNow.Ticks}";
-            var contentType = itemObj?.File?.MimeType ?? "application/octet-stream";
+            var contentType = itemObj?.MimeType ?? "application/octet-stream";
 
             var result = await _coreService.UploadAttachment(
                     instanceId,
@@ -117,12 +116,12 @@ namespace FoundationaLLM.Core.Services
                     agentName,
                     userIdentity);
 
-            return new OneDriveItem()
+            return new OneDriveWorkSchool()
             {
                 Id = oneDriveItem.Id,
                 ObjectId = result.ObjectId,
                 Name = fileName,
-                File = new OneDriveFile() { MimeType = contentType }
+                MimeType = contentType
             };
         }
     }

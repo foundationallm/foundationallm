@@ -1,5 +1,4 @@
 ﻿using FoundationaLLM.Common.Models.Authentication;
-using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Core.Models;
 
 namespace FoundationaLLM.Core.Interfaces
@@ -7,7 +6,7 @@ namespace FoundationaLLM.Core.Interfaces
     /// <summary>
     /// Interface for OneDrive integration.
     /// </summary>
-    public interface IOneDriveService
+    public interface IOneDriveWorkSchoolService
     {
         /// <summary>
         /// Connects to user's OneDrive work or school account.
@@ -32,7 +31,7 @@ namespace FoundationaLLM.Core.Interfaces
         /// <param name="oneDriveItem">The OneDrive work or school item.</param>
         /// <param name="userIdentity">The user's identity.</param>
         /// <returns></returns>
-        Task<OneDriveItem> Download(
-            string instanceId, string sessionId, string agentName, OneDriveItem oneDriveItem, UnifiedUserIdentity userIdentity);
+        Task<OneDriveWorkSchool> Download(
+            string instanceId, string sessionId, string agentName, OneDriveWorkSchool oneDriveItem, UnifiedUserIdentity userIdentity);
     }
 }

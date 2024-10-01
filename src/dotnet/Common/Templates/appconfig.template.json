@@ -603,20 +603,6 @@
             "tags": {}
         },
         {
-            "key": "FoundationaLLM:APIEndpoints:OneDrive:Configuration:BaseURL",
-            "value": "${env:ONEDRIVE_BASE_URL}",
-            "label": null,
-            "content_type": "",
-            "tags": {}
-        },
-        {
-            "key": "FoundationaLLM:APIEndpoints:OneDrive:Configuration:Scopes",
-            "value": "Files.Read.All",
-            "label": null,
-            "content_type": "",
-            "tags": {}
-        },
-        {
             "key": "FoundationaLLM:Branding:AccentColor",
             "value": "#fff",
             "label": null,

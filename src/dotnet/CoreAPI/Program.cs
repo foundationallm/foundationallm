@@ -115,7 +115,7 @@ namespace FoundationaLLM.Core.API
             builder.AddAzureCosmosDBService();
             builder.Services.AddScoped<ICoreService, CoreService>();
             builder.Services.AddScoped<IUserProfileService, UserProfileService>();
-            builder.Services.AddScoped<IOneDriveService, OneDriveService>();
+            builder.Services.AddScoped<IOneDriveWorkSchoolService, OneDriveWorkSchoolService>();
 
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             builder.Services.AddScoped<ICallContext, CallContext>();
