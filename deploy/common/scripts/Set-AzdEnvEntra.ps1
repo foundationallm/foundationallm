@@ -62,7 +62,8 @@ Param(
    [string]$coreAppName = 'FoundationaLLM-Core-API',
    [string]$coreClientAppName = 'FoundationaLLM-Core-Portal',
    [string]$mgmtAppName = 'FoundationaLLM-Management-API',
-   [string]$mgmtClientAppName = 'FoundationaLLM-Management-Portal'
+   [string]$mgmtClientAppName = 'FoundationaLLM-Management-Portal',
+   [string]$readerAppName = 'FoundationaLLM-Reader'
 )
 
 $TranscriptName = $($MyInvocation.MyCommand.Name) -replace ".ps1", ".transcript.txt"
@@ -94,32 +95,35 @@ $appNames = @{
    coreclient       = $coreClientAppName
    managmentapi     = $mgmtAppName
    managementclient = $mgmtClientAppName
+   reader           = $readerAppName
 }
 
+$appData = @{}
 foreach ($app in $appNames.GetEnumerator()) {
-   $appId = $null
+   $data = $null
    Invoke-CliCommand "Get App ID for $($app.Value)" {
-      $script:appId = az ad app list `
+      $script:data = $(az ad app list `
          --display-name "$($app.Value)" `
-         --query '[].appId' `
-         --output tsv
+         --query '[].{appId:appId,objectId:id}' `
+         --output json | ConvertFrom-Json)
    }
-   $appIds[$app.Key] = $appId
+   $appData[$app.Key] = $script:data
 }
 
 $values = @{
    "ADMIN_GROUP_OBJECT_ID"          = $adminGroupId
-   "ENTRA_AUTH_API_CLIENT_ID"       = $appIds["auth"]
+   "ENTRA_AUTH_API_CLIENT_ID"       = $appData["auth"].appId
    "ENTRA_AUTH_API_INSTANCE"        = "https://login.microsoftonline.com/"
    "ENTRA_AUTH_API_SCOPES"          = "api://FoundationaLLM-Authorization"
-   "ENTRA_CHAT_UI_CLIENT_ID"        = $appIds["coreclient"]
+   "ENTRA_CHAT_UI_CLIENT_ID"        = $appData["coreclient"].appId
    "ENTRA_CHAT_UI_SCOPES"           = "api://FoundationaLLM-Core/Data.Read"
-   "ENTRA_CORE_API_CLIENT_ID"       = $appIds["coreapi"]
+   "ENTRA_CORE_API_CLIENT_ID"       = $appData["coreapi"].appId
    "ENTRA_CORE_API_SCOPES"          = "Data.Read"
-   "ENTRA_MANAGEMENT_API_CLIENT_ID" = $appIds["managmentapi"]
+   "ENTRA_MANAGEMENT_API_CLIENT_ID" = $appData["managmentapi"].appId
    "ENTRA_MANAGEMENT_API_SCOPES"    = "Data.Manage"
-   "ENTRA_MANAGEMENT_UI_CLIENT_ID"  = $appIds["managementclient"]
+   "ENTRA_MANAGEMENT_UI_CLIENT_ID"  = $appData["managementclient"].appId
    "ENTRA_MANAGEMENT_UI_SCOPES"     = "api://FoundationaLLM-Management/Data.Manage"
+   "ENTRA_READER_CLIENT_ID"         = $appData["reader"].appId
 }
 
 # Show azd environments
