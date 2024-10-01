@@ -47,7 +47,7 @@ namespace FoundationaLLM.Core.Examples
             dataSourceObjectId = $"/instances/{_instanceSettings.Id}/providers/FoundationaLLM.DataSource/dataSources/{dataSourceName}";
             id = Guid.NewGuid().ToString();
             _settings = ServiceProvider.GetRequiredService<IOptionsMonitor<BlobStorageServiceSettings>>()
-                    .Get(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization);
+                    .Get(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization_Storage);
             
         }
 
@@ -71,7 +71,7 @@ namespace FoundationaLLM.Core.Examples
                     {
                         Name = accountNameAppConfigKey,
                         Key = accountNameAppConfigKey,
-                        Value = Environment.GetEnvironmentVariable("AZURE_STORAGE_ACCOUNT_NAME"),
+                        Value = _settings!.AccountName,
                         ContentType = ""
                     }
                 );
@@ -86,9 +86,6 @@ namespace FoundationaLLM.Core.Examples
                         ContentType = ""
                     }
                 );
-
-                WriteLine($"Create the data source: {dataSourceName} via the Management API");
-                await _vectorizationTestService.CreateDataSource(dataSourceName);
 
                 WriteLine($"Create the data source: {dataSourceName} via the Management API");
                 await _vectorizationTestService.CreateDataSource(dataSourceName);

@@ -155,6 +155,7 @@
 				@open="agentListOpen = true"
 				@close="agentListOpen = false"
 			>
+				<p class="sr-only" id="chat-input-label">The agent can make mistakes. Please check important information carefully.</p>
 				<textarea
 					id="chat-input"
 					ref="inputRef"
@@ -163,7 +164,8 @@
 					:disabled="disabled"
 					placeholder="What would you like to ask?"
 					autofocus
-					aria-label="Chat input"
+					aria-label="What would you like to ask?"
+					aria-describedby="chat-input-label"
 					@keydown="handleKeydown"
 				/>
 				<template #no-result>
@@ -489,6 +491,10 @@ export default {
 
 .input:focus {
 	// height: 192px;
+}
+
+.sr-only {
+	display: none;
 }
 
 .context-menu {
