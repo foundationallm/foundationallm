@@ -108,7 +108,7 @@ export const useAuthStore = defineStore('auth', {
 			}
 		},
 
-		async requestOneDriveConsent() {
+		async requestOneDriveWorkSchoolConsent() {
 			let accessToken = '';
 			const oneDriveWorkSchoolAPIScopes: any = {
 				account: this.currentAccount,
