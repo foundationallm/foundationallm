@@ -67,6 +67,8 @@ param logAnalyticWorkspaceId string
 @description('Log Analytic Workspace Resource Id to use for diagnostics')
 param logAnalyticWorkspaceResourceId string
 
+param monitorId string
+
 @description('Networking resource group name')
 param networkingResourceGroupName string
 
@@ -351,6 +353,16 @@ resource diagnostics 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' 
   }
 }
 
+resource aksDce 'Microsoft.Insights/dataCollectionEndpoints@2023-03-11' = {
+  name: 'dce-${resourceSuffix}'
+  location: location
+  properties: {
+    networkAcls: {
+      publicNetworkAccess: 'Disabled'
+    }
+  }
+}
+
 resource aksDcr 'Microsoft.Insights/dataCollectionRules@2023-03-11' = {
   name: 'MSCI-${location}-${name}'
   location: location
@@ -363,6 +375,8 @@ resource aksDcr 'Microsoft.Insights/dataCollectionRules@2023-03-11' = {
         }
       ]
     }
+
+    dataCollectionEndpointId: aksDce.id
 
     dataFlows: [
       {
@@ -437,9 +451,11 @@ resource aksDcr 'Microsoft.Insights/dataCollectionRules@2023-03-11' = {
 #disable-next-line BCP174
 resource aksDcra 'Microsoft.ContainerService/managedClusters/providers/dataCollectionRuleAssociations@2022-06-01' = {
   name: '${name}/microsoft.insights/ContainerInsightsExtension'
+  dependsOn: [ main ]
   properties: {
     description: 'Association of data collection rule. Deleting this association will break the data collection for this AKS Cluster.'
     dataCollectionRuleId: aksDcr.id
+    dataCollectionEndpointId: aksDce.id
   }
 }
 
