@@ -131,11 +131,11 @@
 					<div class="file-overlay-panel__footer">
 						<Button :icon="!isMobile ? 'pi pi-file-plus' : undefined" label="Select file from Computer" class="file-upload-container-button" @click="browseFiles" />
 						<template v-if="$appStore.oneDriveWorkSchool">
-							<Button :icon="!isMobile ? 'pi pi-cloud-upload' : undefined" label="Select file from OneDrive" class="file-upload-container-button" :disabled="disconnectingOneDrive" @click="downloadFromOneDrive" :loading="oneDriveBaseURL === null" />
-							<Button :icon="!isMobile ? 'pi pi-sign-out' : undefined" label="Disconnect OneDrive" class="file-upload-container-button" @click="disconnectOneDrive" :loading="disconnectingOneDrive" />
+							<Button :icon="!isMobile ? 'pi pi-cloud-upload' : undefined" label="Select file from OneDrive" class="file-upload-container-button" :disabled="disconnectingOneDrive" @click="oneDriveWorkSchoolDownload" :loading="oneDriveBaseURL === null" />
+							<Button :icon="!isMobile ? 'pi pi-sign-out' : undefined" label="Disconnect OneDrive" class="file-upload-container-button" @click="oneDriveWorkSchoolDisconnect" :loading="disconnectingOneDrive" />
 						</template>
 						<template v-else>
-							<Button :icon="!isMobile ? 'pi pi-sign-in' : undefined" label="Connect to OneDrive" class="file-upload-container-button" @click="oneDriveConnect" :loading="connectingOneDrive || $appStore.oneDriveWorkSchool === null" />
+							<Button :icon="!isMobile ? 'pi pi-sign-in' : undefined" label="Connect to OneDrive" class="file-upload-container-button" @click="oneDriveWorkSchoolConnect" :loading="connectingOneDrive || $appStore.oneDriveWorkSchool === null" />
 						</template>
 					</div>
 				</OverlayPanel>
@@ -401,7 +401,7 @@ export default {
 							onProgress,
 						);
 					} else if (file.source === 'oneDrive') {
-						await this.callCoreApiOneDriveDownloadEndpoint(file.id);
+						await this.callCoreApioneDriveWorkSchoolDownloadEndpoint(file.id);
 					}
 					filesUploaded += 1;
 				} catch (error) {
@@ -542,9 +542,9 @@ export default {
 			}
 		},
 
-		async oneDriveConnect() {
+		async oneDriveWorkSchoolConnect() {
 			this.connectingOneDrive = true;
-			await this.$appStore.oneDriveConnect().then(() => {
+			await this.$appStore.oneDriveWorkSchoolConnect().then(() => {
 				this.$toast.add({
 					severity: 'success',
 					summary: 'Success',
@@ -555,9 +555,9 @@ export default {
 			});
 		},
 
-		async disconnectOneDrive() {
+		async oneDriveWorkSchoolDisconnect() {
 			this.disconnectingOneDrive = true;
-			await this.$appStore.oneDriveDisconnect().then(() => {
+			await this.$appStore.oneDriveWorkSchoolDisconnect().then(() => {
 				this.$toast.add({
 					severity: 'success',
 					summary: 'Success',
@@ -568,12 +568,12 @@ export default {
 			});
 		},
 
-		async downloadFromOneDrive() {
+		async oneDriveWorkSchoolDownload() {
 			this.showOneDriveIframeDialog = true;
 
 			let oneDriveToken;
 			try {
-				oneDriveToken = await this.$authStore.getOneDriveToken();
+				oneDriveToken = await this.$authStore.getOneDriveWorkSchoolToken();
 			} catch (error) {
 				console.error(error);
 				oneDriveToken = await this.$authStore.requestOneDriveConsent();
@@ -641,7 +641,7 @@ export default {
 
 					switch (command.command) {
 						case "authenticate":
-							const token = await this.$authStore.getOneDriveToken();
+							const token = await this.$authStore.getOneDriveWorkSchoolToken();
 
 							if (token) {
 								this.port.postMessage({
@@ -707,10 +707,10 @@ export default {
 			}
 		},
 
-		async callCoreApiOneDriveDownloadEndpoint(id) {
+		async callCoreApioneDriveWorkSchoolDownloadEndpoint(id) {
 			const oneDriveToken = await this.$authStore.requestOneDriveConsent();
 
-			await this.$appStore.oneDriveDownload(this.$appStore.currentSession.sessionId, {
+			await this.$appStore.oneDriveWorkSchoolDownload(this.$appStore.currentSession.sessionId, {
 				id: id,
 				access_token: oneDriveToken,
 			});

@@ -28,8 +28,8 @@ export const useAuthStore = defineStore('auth', {
 			return useNuxtApp().$appConfigStore.auth;
 		},
 
-		oneDriveScopes(){
-			return useNuxtApp().$appConfigStore.oneDriveScopes;
+		oneDriveWorkSchoolScopes(){
+			return useNuxtApp().$appConfigStore.oneDriveWorkSchoolScopes;
 		},
 
 		apiScopes() {
@@ -110,23 +110,23 @@ export const useAuthStore = defineStore('auth', {
 
 		async requestOneDriveConsent() {
 			let accessToken = '';
-			const oneDriveAPIScopes: any = {
+			const oneDriveWorkSchoolAPIScopes: any = {
 				account: this.currentAccount,
-				scopes: [this.oneDriveScopes],
+				scopes: [this.oneDriveWorkSchoolScopes],
 			};
 			
 			try {
-				const resp = await this.msalInstance.acquireTokenSilent(oneDriveAPIScopes);
+				const resp = await this.msalInstance.acquireTokenSilent(oneDriveWorkSchoolAPIScopes);
 				accessToken = resp.accessToken;
 			} catch (error) {
 				// Redirect to get token or login
-				oneDriveAPIScopes.state = 'Core API redirect';
-				await this.msalInstance.loginRedirect(oneDriveAPIScopes);
+				oneDriveWorkSchoolAPIScopes.state = 'Core API redirect';
+				await this.msalInstance.loginRedirect(oneDriveWorkSchoolAPIScopes);
 			}
 			return accessToken;
 		},
 
-		async getOneDriveToken(): string | null {
+		async getOneDriveWorkSchoolToken(): string | null {
 			const appStore = useAppStore();
 			const oneDriveBaseURL = appStore.fileStoreConnectors.find(
 				(connector) => connector.subcategory === 'OneDriveWorkSchool',

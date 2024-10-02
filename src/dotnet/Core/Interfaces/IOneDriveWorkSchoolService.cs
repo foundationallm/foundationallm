@@ -31,7 +31,7 @@ namespace FoundationaLLM.Core.Interfaces
         /// <param name="oneDriveItem">The OneDrive work or school item.</param>
         /// <param name="userIdentity">The user's identity.</param>
         /// <returns></returns>
-        Task<OneDriveWorkSchool> Download(
-            string instanceId, string sessionId, string agentName, OneDriveWorkSchool oneDriveItem, UnifiedUserIdentity userIdentity);
+        Task<OneDriveWorkSchoolItem> Download(
+            string instanceId, string sessionId, string agentName, OneDriveWorkSchoolItem oneDriveItem, UnifiedUserIdentity userIdentity);
     }
 }
