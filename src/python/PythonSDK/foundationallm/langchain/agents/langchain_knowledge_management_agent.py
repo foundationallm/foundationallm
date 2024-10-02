@@ -240,7 +240,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         audio_attachments = [attachment for attachment in request.attachments if (attachment.provider == AttachmentProviders.FOUNDATIONALLM_ATTACHMENT and attachment.content_type.startswith('audio/'))] if request.attachments is not None else []
         if len(audio_attachments) > 0:
             audio_service = AudioAnalysisService(config=self.config)
-            audio_analysis_results = audio_service.classify(audio_attachments)
+            audio_analysis_results = audio_service.classify(request, audio_attachments)
 
         # Check for Assistants API capability
         if "OpenAI.Assistants" in agent.capabilities:
@@ -415,7 +415,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         audio_attachments = [attachment for attachment in request.attachments if (attachment.provider == AttachmentProviders.FOUNDATIONALLM_ATTACHMENT and attachment.content_type.startswith('audio/'))] if request.attachments is not None else []
         if len(audio_attachments) > 0:
             audio_service = AudioAnalysisService(config=self.config)
-            audio_analysis_results = audio_service.classify(audio_attachments)
+            audio_analysis_results = audio_service.classify(request, audio_attachments)
 
         # Check for Assistants API capability
         if "OpenAI.Assistants" in agent.capabilities:
