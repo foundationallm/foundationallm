@@ -7,11 +7,9 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
         [Fact]
         public void Constructor_ShouldInitializeProperties()
         {
-            var session = new Conversation { Name = "Test" };
+            var session = new Conversation { Name = "Test", SessionId = "1" };
 
-            Assert.NotNull(session.Id);
             Assert.Equal(nameof(Conversation), session.Type);
-            Assert.Equal(session.Id, session.SessionId);
             Assert.Equal(0, session.TokensUsed);
             Assert.Equal("New Chat", session.Name);
             Assert.NotNull(session.Messages);
@@ -22,7 +20,7 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
         public void AddMessage_ShouldAddMessageToMessagesList()
         {
             // Arrange
-            var session = new Conversation { Name = "Test" };
+            var session = new Conversation { Name = "Test", SessionId = "1" };
             var message = new Message("1", "sender1", null, "The message", null, null, "test@foundationallm.ai");
 
             // Act
@@ -36,7 +34,7 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
         public void UpdateMessage_ShouldUpdateExistingMessageInMessagesList()
         {
             // Arrange
-            var session = new Conversation { Name = "Test" };
+            var session = new Conversation { Name = "Test", SessionId = "1" };
             var initialMessage = new Message("1", "sender1", null, "The message", null, null, "test@foundationallm.ai");
             session.AddMessage(initialMessage);
 

@@ -29,5 +29,10 @@
         /// the authorizable actions assigned directly or indirectly to the resource.
         /// </remarks>
         public bool IncludeActions { get; set; }
+
+        /// <summary>
+        /// Gets or sets a dictionary of parameters to be used in the resource provider request.
+        /// </summary>
+        public Dictionary<string, object>? Parameters { get; set; }
     }
 }

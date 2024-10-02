@@ -9,14 +9,45 @@ namespace FoundationaLLM.Common.Interfaces;
 public interface IAzureCosmosDBService
 {
     /// <summary>
-    /// Gets a list of all current chat sessions.
+    /// Gets a list of all current conversations.
     /// </summary>
-    /// <param name="type">The session type to return.</param>
+    /// <param name="type">The conversation type to return.</param>
     /// <param name="upn">The user principal name used for retrieving
-    /// sessions for the signed in user.</param>
+    /// conversations for the signed in user.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
-    /// <returns>List of distinct chat session items.</returns>
-    Task<List<Conversation>> GetSessionsAsync(string type, string upn, CancellationToken cancellationToken = default);
+    /// <returns>List of distinct conversation items.</returns>
+    Task<List<Conversation>> GetConversationsAsync(string type, string upn, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Performs a point read to retrieve a single conversation item.
+    /// </summary>
+    /// <returns>The conversation item.</returns>
+    Task<Conversation> GetConversationAsync(string id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Creates or updates a conversation.
+    /// </summary>
+    /// <param name="session">Conversation item to create or update.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>Newly created or updated conversation item.</returns>
+    Task<Conversation> CreateOrUpdateConversationAsync(Conversation session, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Updates conversation properties through a patch operation.
+    /// </summary>
+    /// <param name="id">The conversation id.</param>
+    /// <param name="upn">The user principal name used for policy enforcement.</param>
+    /// <param name="propertyValues">The dictionary containing property names and updated values.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>Updated conversation item.</returns>
+    Task<Conversation> UpdateConversationPropertiesAsync(string id, string upn, Dictionary<string, object> propertyValues, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Batch deletes an existing chat session and all related messages.
+    /// </summary>
+    /// <param name="sessionId">Chat session identifier used to flag messages and sessions for deletion.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    Task DeleteConversationAsync(string sessionId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gets a list of all current chat messages for a specified session identifier.
@@ -27,20 +58,6 @@ public interface IAzureCosmosDBService
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns>List of chat message items for the specified session.</returns>
     Task<List<Message>> GetSessionMessagesAsync(string sessionId, string upn, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Performs a point read to retrieve a single chat session item.
-    /// </summary>
-    /// <returns>The chat session item.</returns>
-    Task<Conversation> GetSessionAsync(string id, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Creates a new chat session.
-    /// </summary>
-    /// <param name="session">Chat session item to create.</param>
-    /// <param name="cancellationToken">Cancellation token for async calls.</param>
-    /// <returns>Newly created chat session item.</returns>
-    Task<Conversation> InsertSessionAsync(Conversation session, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Creates a new chat message.
@@ -69,23 +86,6 @@ public interface IAzureCosmosDBService
     Task<Message> UpdateMessageRatingAsync(string id, string sessionId, bool? rating, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Updates an existing chat session.
-    /// </summary>
-    /// <param name="session">Chat session item to update.</param>
-    /// <param name="cancellationToken">Cancellation token for async calls.</param>
-    /// <returns>Revised created chat session item.</returns>
-    Task<Conversation> UpdateSessionAsync(Conversation session, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Updates a session's name through a patch operation.
-    /// </summary>
-    /// <param name="id">The session id.</param>
-    /// <param name="sessionName">The session's new name.</param>
-    /// <param name="cancellationToken">Cancellation token for async calls.</param>
-    /// <returns>Revised chat session item.</returns>
-    Task<Conversation> UpdateSessionNameAsync(string id, string sessionName, CancellationToken cancellationToken = default);
-
-    /// <summary>
     /// Batch create or update chat messages and session.
     /// </summary>
     /// <param name="messages">Chat message and session items to create or replace.</param>
@@ -98,20 +98,6 @@ public interface IAzureCosmosDBService
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns></returns>
     Task UpsertUserSessionAsync(Conversation session, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Batch deletes an existing chat session and all related messages.
-    /// </summary>
-    /// <param name="sessionId">Chat session identifier used to flag messages and sessions for deletion.</param>
-    /// <param name="cancellationToken">Cancellation token for async calls.</param>
-    Task DeleteSessionAndMessagesAsync(string sessionId, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Reads all documents retrieved by Vector Search.
-    /// </summary>
-    /// <param name="vectorDocuments">List string of JSON documents from vector search results</param>
-    /// <param name="cancellationToken">Cancellation token for async calls.</param>
-    Task<string> GetVectorSearchDocumentsAsync(List<DocumentVector> vectorDocuments, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Returns the completion prompt for a given session and completion prompt id.

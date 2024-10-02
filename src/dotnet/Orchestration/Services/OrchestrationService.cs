@@ -221,7 +221,7 @@ public class OrchestrationService : IOrchestrationService
     {
         var agentResourceProvider = _resourceProviderServices[ResourceProviderNames.FoundationaLLM_Agent];
 
-        var nameCheckResult = await agentResourceProvider.ResourceExists<AgentBase>(
+        var nameCheckResult = await agentResourceProvider.ResourceExistsAsync<AgentBase>(
             instanceId,
             agentName,
             _callContext.CurrentUserIdentity!);
