@@ -84,7 +84,7 @@ namespace FoundationaLLM.Conversation.ResourceProviders
                 Resource = r,
                 Actions = [],
                 Roles = []
-            });
+            }).ToList();
         }
 
         protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)

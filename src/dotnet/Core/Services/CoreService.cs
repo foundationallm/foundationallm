@@ -140,7 +140,7 @@ public partial class CoreService(
             sessionId,
             new Dictionary<string, object>
                                              {
-                { "/name", chatSessionProperties.Name }
+                { "/displayName", chatSessionProperties.Name }
             },
             _callContext.CurrentUserIdentity!);
 

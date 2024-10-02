@@ -280,8 +280,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                 throw new ResourceProviderException($"Cannot extract a resource type object id from the {_rawResourcePath} resource path.",
                     StatusCodes.Status400BadRequest);
             else
-                return $"/instances/{_instanceId}/providers/{_resourceProvider}/{string.Join("/",
-                    _resourceTypeInstances.SkipLast(1).Select(i => $"{i.ResourceTypeName}/{i.ResourceId}").ToArray(), _resourceTypeInstances.Last().ResourceTypeName)}";
+            {
+                var resourceTypePath = _resourceTypeInstances.Count == 1
+                    ? _resourceTypeInstances[0].ResourceTypeName
+                    : string.Join("/", _resourceTypeInstances.Select(i => i.ResourceTypeName).ToArray());
+
+                return $"/instances/{_instanceId}/providers/{_resourceProvider}/{resourceTypePath}";
+            }
         }
 
         /// <summary>
