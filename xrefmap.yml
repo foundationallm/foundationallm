@@ -537,6 +537,19 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Attachment.Models.AttachmentReference.SecondaryProvider
   nameWithType: AttachmentReference.SecondaryProvider
+- uid: FoundationaLLM.Attachment.Models.AttachmentReference.Size
+  name: Size
+  href: api/dotnet/FoundationaLLM.Attachment.Models.AttachmentReference.html#FoundationaLLM_Attachment_Models_AttachmentReference_Size
+  commentId: P:FoundationaLLM.Attachment.Models.AttachmentReference.Size
+  fullName: FoundationaLLM.Attachment.Models.AttachmentReference.Size
+  nameWithType: AttachmentReference.Size
+- uid: FoundationaLLM.Attachment.Models.AttachmentReference.Size*
+  name: Size
+  href: api/dotnet/FoundationaLLM.Attachment.Models.AttachmentReference.html#FoundationaLLM_Attachment_Models_AttachmentReference_Size_
+  commentId: Overload:FoundationaLLM.Attachment.Models.AttachmentReference.Size
+  isSpec: "True"
+  fullName: FoundationaLLM.Attachment.Models.AttachmentReference.Size
+  nameWithType: AttachmentReference.Size
 - uid: FoundationaLLM.Attachment.ResourceProviders
   name: FoundationaLLM.Attachment.ResourceProviders
   href: api/dotnet/FoundationaLLM.Attachment.ResourceProviders.html
