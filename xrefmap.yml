@@ -5307,12 +5307,6 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials
   fullName: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials
   nameWithType: AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials
-- uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration
-  name: FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration
-  href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeyFilters.html#FoundationaLLM_Common_Constants_Configuration_AppConfigurationKeyFilters_FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration
-  commentId: F:FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration
-  fullName: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration
-  nameWithType: AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration
 - uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureAIStudio_Configuration
   name: FoundationaLLM_APIEndpoints_AzureAIStudio_Configuration
   href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeyFilters.html#FoundationaLLM_Common_Constants_Configuration_AppConfigurationKeyFilters_FoundationaLLM_APIEndpoints_AzureAIStudio_Configuration
@@ -7497,6 +7491,12 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.HttpClientNames.ManagementAPI
   fullName: FoundationaLLM.Common.Constants.HttpClientNames.ManagementAPI
   nameWithType: HttpClientNames.ManagementAPI
+- uid: FoundationaLLM.Common.Constants.HttpClientNames.OneDriveWorkSchoolAPI
+  name: OneDriveWorkSchoolAPI
+  href: api/dotnet/FoundationaLLM.Common.Constants.HttpClientNames.html#FoundationaLLM_Common_Constants_HttpClientNames_OneDriveWorkSchoolAPI
+  commentId: F:FoundationaLLM.Common.Constants.HttpClientNames.OneDriveWorkSchoolAPI
+  fullName: FoundationaLLM.Common.Constants.HttpClientNames.OneDriveWorkSchoolAPI
+  nameWithType: HttpClientNames.OneDriveWorkSchoolAPI
 - uid: FoundationaLLM.Common.Constants.HttpClientNames.OrchestrationAPI
   name: OrchestrationAPI
   href: api/dotnet/FoundationaLLM.Common.Constants.HttpClientNames.html#FoundationaLLM_Common_Constants_HttpClientNames_OrchestrationAPI
@@ -8639,6 +8639,24 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.Swagger.SecuritySchemeReferenceId
   fullName: FoundationaLLM.Common.Constants.Swagger.SecuritySchemeReferenceId
   nameWithType: Swagger.SecuritySchemeReferenceId
+- uid: FoundationaLLM.Common.Constants.UserProfileFlags
+  name: UserProfileFlags
+  href: api/dotnet/FoundationaLLM.Common.Constants.UserProfileFlags.html
+  commentId: T:FoundationaLLM.Common.Constants.UserProfileFlags
+  fullName: FoundationaLLM.Common.Constants.UserProfileFlags
+  nameWithType: UserProfileFlags
+- uid: FoundationaLLM.Common.Constants.UserProfileFlags.All
+  name: All
+  href: api/dotnet/FoundationaLLM.Common.Constants.UserProfileFlags.html#FoundationaLLM_Common_Constants_UserProfileFlags_All
+  commentId: F:FoundationaLLM.Common.Constants.UserProfileFlags.All
+  fullName: FoundationaLLM.Common.Constants.UserProfileFlags.All
+  nameWithType: UserProfileFlags.All
+- uid: FoundationaLLM.Common.Constants.UserProfileFlags.OneDriveWorkSchoolEnabled
+  name: OneDriveWorkSchoolEnabled
+  href: api/dotnet/FoundationaLLM.Common.Constants.UserProfileFlags.html#FoundationaLLM_Common_Constants_UserProfileFlags_OneDriveWorkSchoolEnabled
+  commentId: F:FoundationaLLM.Common.Constants.UserProfileFlags.OneDriveWorkSchoolEnabled
+  fullName: FoundationaLLM.Common.Constants.UserProfileFlags.OneDriveWorkSchoolEnabled
+  nameWithType: UserProfileFlags.OneDriveWorkSchoolEnabled
 - uid: FoundationaLLM.Common.Constants.VectorizationSteps
   name: VectorizationSteps
   href: api/dotnet/FoundationaLLM.Common.Constants.VectorizationSteps.html
@@ -14510,6 +14528,19 @@ references:
   fullName.vb: FoundationaLLM.Common.Models.Configuration.Users.UserProfile.New
   nameWithType: UserProfile.UserProfile
   nameWithType.vb: UserProfile.New
+- uid: FoundationaLLM.Common.Models.Configuration.Users.UserProfile.Flags
+  name: Flags
+  href: api/dotnet/FoundationaLLM.Common.Models.Configuration.Users.UserProfile.html#FoundationaLLM_Common_Models_Configuration_Users_UserProfile_Flags
+  commentId: P:FoundationaLLM.Common.Models.Configuration.Users.UserProfile.Flags
+  fullName: FoundationaLLM.Common.Models.Configuration.Users.UserProfile.Flags
+  nameWithType: UserProfile.Flags
+- uid: FoundationaLLM.Common.Models.Configuration.Users.UserProfile.Flags*
+  name: Flags
+  href: api/dotnet/FoundationaLLM.Common.Models.Configuration.Users.UserProfile.html#FoundationaLLM_Common_Models_Configuration_Users_UserProfile_Flags_
+  commentId: Overload:FoundationaLLM.Common.Models.Configuration.Users.UserProfile.Flags
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.Configuration.Users.UserProfile.Flags
+  nameWithType: UserProfile.Flags
 - uid: FoundationaLLM.Common.Models.Configuration.Users.UserProfile.Id
   name: Id
   href: api/dotnet/FoundationaLLM.Common.Models.Configuration.Users.UserProfile.html#FoundationaLLM_Common_Models_Configuration_Users_UserProfile_Id
@@ -19685,6 +19716,12 @@ references:
   commentId: F:FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointCategory.ExternalOrchestration
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointCategory.ExternalOrchestration
   nameWithType: APIEndpointCategory.ExternalOrchestration
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointCategory.FileStoreConnector
+  name: FileStoreConnector
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointCategory.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_APIEndpointCategory_FileStoreConnector
+  commentId: F:FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointCategory.FileStoreConnector
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointCategory.FileStoreConnector
+  nameWithType: APIEndpointCategory.FileStoreConnector
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointCategory.Gatekeeper
   name: Gatekeeper
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointCategory.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_APIEndpointCategory_Gatekeeper
@@ -19838,6 +19875,19 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration.StatusUrl
   nameWithType: APIEndpointConfiguration.StatusUrl
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration.Subcategory
+  name: Subcategory
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_APIEndpointConfiguration_Subcategory
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration.Subcategory
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration.Subcategory
+  nameWithType: APIEndpointConfiguration.Subcategory
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration.Subcategory*
+  name: Subcategory
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_APIEndpointConfiguration_Subcategory_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration.Subcategory
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration.Subcategory
+  nameWithType: APIEndpointConfiguration.Subcategory
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration.TimeoutSeconds
   name: TimeoutSeconds
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_APIEndpointConfiguration_TimeoutSeconds
@@ -19877,6 +19927,18 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration.UrlExceptions
   nameWithType: APIEndpointConfiguration.UrlExceptions
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory
+  name: APIEndpointSubcategory
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory.html
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory
+  nameWithType: APIEndpointSubcategory
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory.OneDriveWorkSchool
+  name: OneDriveWorkSchool
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_APIEndpointSubcategory_OneDriveWorkSchool
+  commentId: F:FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory.OneDriveWorkSchool
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory.OneDriveWorkSchool
+  nameWithType: APIEndpointSubcategory.OneDriveWorkSchool
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyBase
   name: AppConfigurationKeyBase
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyBase.html
@@ -28133,6 +28195,22 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Core.API.Controllers.FilesController.Download
   nameWithType: FilesController.Download
+- uid: FoundationaLLM.Core.API.Controllers.FilesController.GetFileStoreConnectors(System.String)
+  name: GetFileStoreConnectors(string)
+  href: api/dotnet/FoundationaLLM.Core.API.Controllers.FilesController.html#FoundationaLLM_Core_API_Controllers_FilesController_GetFileStoreConnectors_System_String_
+  commentId: M:FoundationaLLM.Core.API.Controllers.FilesController.GetFileStoreConnectors(System.String)
+  name.vb: GetFileStoreConnectors(String)
+  fullName: FoundationaLLM.Core.API.Controllers.FilesController.GetFileStoreConnectors(string)
+  fullName.vb: FoundationaLLM.Core.API.Controllers.FilesController.GetFileStoreConnectors(String)
+  nameWithType: FilesController.GetFileStoreConnectors(string)
+  nameWithType.vb: FilesController.GetFileStoreConnectors(String)
+- uid: FoundationaLLM.Core.API.Controllers.FilesController.GetFileStoreConnectors*
+  name: GetFileStoreConnectors
+  href: api/dotnet/FoundationaLLM.Core.API.Controllers.FilesController.html#FoundationaLLM_Core_API_Controllers_FilesController_GetFileStoreConnectors_
+  commentId: Overload:FoundationaLLM.Core.API.Controllers.FilesController.GetFileStoreConnectors
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.API.Controllers.FilesController.GetFileStoreConnectors
+  nameWithType: FilesController.GetFileStoreConnectors
 - uid: FoundationaLLM.Core.API.Controllers.FilesController.Upload(System.String,System.String,System.String,Microsoft.AspNetCore.Http.IFormFile)
   name: Upload(string, string, string, IFormFile)
   href: api/dotnet/FoundationaLLM.Core.API.Controllers.FilesController.html#FoundationaLLM_Core_API_Controllers_FilesController_Upload_System_String_System_String_System_String_Microsoft_AspNetCore_Http_IFormFile_
@@ -28149,6 +28227,79 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Core.API.Controllers.FilesController.Upload
   nameWithType: FilesController.Upload
+- uid: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController
+  name: OneDriveWorkSchoolController
+  href: api/dotnet/FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.html
+  commentId: T:FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController
+  fullName: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController
+  nameWithType: OneDriveWorkSchoolController
+- uid: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.#ctor(FoundationaLLM.Common.Interfaces.ICallContext,FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService)
+  name: OneDriveWorkSchoolController(ICallContext, IOneDriveWorkSchoolService)
+  href: api/dotnet/FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.html#FoundationaLLM_Core_API_Controllers_OneDriveWorkSchoolController__ctor_FoundationaLLM_Common_Interfaces_ICallContext_FoundationaLLM_Core_Interfaces_IOneDriveWorkSchoolService_
+  commentId: M:FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.#ctor(FoundationaLLM.Common.Interfaces.ICallContext,FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService)
+  name.vb: New(ICallContext, IOneDriveWorkSchoolService)
+  fullName: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.OneDriveWorkSchoolController(FoundationaLLM.Common.Interfaces.ICallContext, FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService)
+  fullName.vb: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.New(FoundationaLLM.Common.Interfaces.ICallContext, FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService)
+  nameWithType: OneDriveWorkSchoolController.OneDriveWorkSchoolController(ICallContext, IOneDriveWorkSchoolService)
+  nameWithType.vb: OneDriveWorkSchoolController.New(ICallContext, IOneDriveWorkSchoolService)
+- uid: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.#ctor*
+  name: OneDriveWorkSchoolController
+  href: api/dotnet/FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.html#FoundationaLLM_Core_API_Controllers_OneDriveWorkSchoolController__ctor_
+  commentId: Overload:FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.OneDriveWorkSchoolController
+  fullName.vb: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.New
+  nameWithType: OneDriveWorkSchoolController.OneDriveWorkSchoolController
+  nameWithType.vb: OneDriveWorkSchoolController.New
+- uid: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Connect(System.String)
+  name: Connect(string)
+  href: api/dotnet/FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.html#FoundationaLLM_Core_API_Controllers_OneDriveWorkSchoolController_Connect_System_String_
+  commentId: M:FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Connect(System.String)
+  name.vb: Connect(String)
+  fullName: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Connect(string)
+  fullName.vb: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Connect(String)
+  nameWithType: OneDriveWorkSchoolController.Connect(string)
+  nameWithType.vb: OneDriveWorkSchoolController.Connect(String)
+- uid: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Connect*
+  name: Connect
+  href: api/dotnet/FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.html#FoundationaLLM_Core_API_Controllers_OneDriveWorkSchoolController_Connect_
+  commentId: Overload:FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Connect
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Connect
+  nameWithType: OneDriveWorkSchoolController.Connect
+- uid: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Disconnect(System.String)
+  name: Disconnect(string)
+  href: api/dotnet/FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.html#FoundationaLLM_Core_API_Controllers_OneDriveWorkSchoolController_Disconnect_System_String_
+  commentId: M:FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Disconnect(System.String)
+  name.vb: Disconnect(String)
+  fullName: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Disconnect(string)
+  fullName.vb: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Disconnect(String)
+  nameWithType: OneDriveWorkSchoolController.Disconnect(string)
+  nameWithType.vb: OneDriveWorkSchoolController.Disconnect(String)
+- uid: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Disconnect*
+  name: Disconnect
+  href: api/dotnet/FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.html#FoundationaLLM_Core_API_Controllers_OneDriveWorkSchoolController_Disconnect_
+  commentId: Overload:FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Disconnect
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Disconnect
+  nameWithType: OneDriveWorkSchoolController.Disconnect
+- uid: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Download(System.String,System.String,System.String,FoundationaLLM.Core.Models.OneDriveWorkSchoolItem)
+  name: Download(string, string, string, OneDriveWorkSchoolItem)
+  href: api/dotnet/FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.html#FoundationaLLM_Core_API_Controllers_OneDriveWorkSchoolController_Download_System_String_System_String_System_String_FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_
+  commentId: M:FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Download(System.String,System.String,System.String,FoundationaLLM.Core.Models.OneDriveWorkSchoolItem)
+  name.vb: Download(String, String, String, OneDriveWorkSchoolItem)
+  fullName: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Download(string, string, string, FoundationaLLM.Core.Models.OneDriveWorkSchoolItem)
+  fullName.vb: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Download(String, String, String, FoundationaLLM.Core.Models.OneDriveWorkSchoolItem)
+  nameWithType: OneDriveWorkSchoolController.Download(string, string, string, OneDriveWorkSchoolItem)
+  nameWithType.vb: OneDriveWorkSchoolController.Download(String, String, String, OneDriveWorkSchoolItem)
+- uid: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Download*
+  name: Download
+  href: api/dotnet/FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.html#FoundationaLLM_Core_API_Controllers_OneDriveWorkSchoolController_Download_
+  commentId: Overload:FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Download
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Download
+  nameWithType: OneDriveWorkSchoolController.Download
 - uid: FoundationaLLM.Core.API.Controllers.SessionsController
   name: SessionsController
   href: api/dotnet/FoundationaLLM.Core.API.Controllers.SessionsController.html
@@ -28588,6 +28739,22 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Core.Interfaces.ICoreService.GetCompletionPrompt
   nameWithType: ICoreService.GetCompletionPrompt
+- uid: FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConnectors(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name: GetFileStoreConnectors(string, UnifiedUserIdentity)
+  href: api/dotnet/FoundationaLLM.Core.Interfaces.ICoreService.html#FoundationaLLM_Core_Interfaces_ICoreService_GetFileStoreConnectors_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  commentId: M:FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConnectors(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: GetFileStoreConnectors(String, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConnectors(string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConnectors(String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType: ICoreService.GetFileStoreConnectors(string, UnifiedUserIdentity)
+  nameWithType.vb: ICoreService.GetFileStoreConnectors(String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConnectors*
+  name: GetFileStoreConnectors
+  href: api/dotnet/FoundationaLLM.Core.Interfaces.ICoreService.html#FoundationaLLM_Core_Interfaces_ICoreService_GetFileStoreConnectors_
+  commentId: Overload:FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConnectors
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConnectors
+  nameWithType: ICoreService.GetFileStoreConnectors
 - uid: FoundationaLLM.Core.Interfaces.ICoreService.RateMessageAsync(System.String,System.String,System.String,System.Nullable{System.Boolean})
   name: RateMessageAsync(string, string, string, bool?)
   href: api/dotnet/FoundationaLLM.Core.Interfaces.ICoreService.html#FoundationaLLM_Core_Interfaces_ICoreService_RateMessageAsync_System_String_System_String_System_String_System_Nullable_System_Boolean__
@@ -28751,6 +28918,60 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Core.Interfaces.IGatekeeperAPIService.RemoveMemory
   nameWithType: IGatekeeperAPIService.RemoveMemory
+- uid: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService
+  name: IOneDriveWorkSchoolService
+  href: api/dotnet/FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.html
+  commentId: T:FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService
+  fullName: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService
+  nameWithType: IOneDriveWorkSchoolService
+- uid: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Connect(System.String)
+  name: Connect(string)
+  href: api/dotnet/FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.html#FoundationaLLM_Core_Interfaces_IOneDriveWorkSchoolService_Connect_System_String_
+  commentId: M:FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Connect(System.String)
+  name.vb: Connect(String)
+  fullName: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Connect(string)
+  fullName.vb: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Connect(String)
+  nameWithType: IOneDriveWorkSchoolService.Connect(string)
+  nameWithType.vb: IOneDriveWorkSchoolService.Connect(String)
+- uid: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Connect*
+  name: Connect
+  href: api/dotnet/FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.html#FoundationaLLM_Core_Interfaces_IOneDriveWorkSchoolService_Connect_
+  commentId: Overload:FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Connect
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Connect
+  nameWithType: IOneDriveWorkSchoolService.Connect
+- uid: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Disconnect(System.String)
+  name: Disconnect(string)
+  href: api/dotnet/FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.html#FoundationaLLM_Core_Interfaces_IOneDriveWorkSchoolService_Disconnect_System_String_
+  commentId: M:FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Disconnect(System.String)
+  name.vb: Disconnect(String)
+  fullName: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Disconnect(string)
+  fullName.vb: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Disconnect(String)
+  nameWithType: IOneDriveWorkSchoolService.Disconnect(string)
+  nameWithType.vb: IOneDriveWorkSchoolService.Disconnect(String)
+- uid: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Disconnect*
+  name: Disconnect
+  href: api/dotnet/FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.html#FoundationaLLM_Core_Interfaces_IOneDriveWorkSchoolService_Disconnect_
+  commentId: Overload:FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Disconnect
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Disconnect
+  nameWithType: IOneDriveWorkSchoolService.Disconnect
+- uid: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Download(System.String,System.String,System.String,FoundationaLLM.Core.Models.OneDriveWorkSchoolItem,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name: Download(string, string, string, OneDriveWorkSchoolItem, UnifiedUserIdentity)
+  href: api/dotnet/FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.html#FoundationaLLM_Core_Interfaces_IOneDriveWorkSchoolService_Download_System_String_System_String_System_String_FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  commentId: M:FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Download(System.String,System.String,System.String,FoundationaLLM.Core.Models.OneDriveWorkSchoolItem,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: Download(String, String, String, OneDriveWorkSchoolItem, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Download(string, string, string, FoundationaLLM.Core.Models.OneDriveWorkSchoolItem, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Download(String, String, String, FoundationaLLM.Core.Models.OneDriveWorkSchoolItem, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType: IOneDriveWorkSchoolService.Download(string, string, string, OneDriveWorkSchoolItem, UnifiedUserIdentity)
+  nameWithType.vb: IOneDriveWorkSchoolService.Download(String, String, String, OneDriveWorkSchoolItem, UnifiedUserIdentity)
+- uid: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Download*
+  name: Download
+  href: api/dotnet/FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.html#FoundationaLLM_Core_Interfaces_IOneDriveWorkSchoolService_Download_
+  commentId: Overload:FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Download
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Download
+  nameWithType: IOneDriveWorkSchoolService.Download
 - uid: FoundationaLLM.Core.Interfaces.IUserProfileService
   name: IUserProfileService
   href: api/dotnet/FoundationaLLM.Core.Interfaces.IUserProfileService.html
@@ -28904,6 +29125,77 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Core.Models.Configuration.CoreServiceSettings.SessionSummarization
   nameWithType: CoreServiceSettings.SessionSummarization
+- uid: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem
+  name: OneDriveWorkSchoolItem
+  href: api/dotnet/FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.html
+  commentId: T:FoundationaLLM.Core.Models.OneDriveWorkSchoolItem
+  fullName: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem
+  nameWithType: OneDriveWorkSchoolItem
+- uid: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.AccessToken
+  name: AccessToken
+  href: api/dotnet/FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.html#FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_AccessToken
+  commentId: P:FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.AccessToken
+  fullName: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.AccessToken
+  nameWithType: OneDriveWorkSchoolItem.AccessToken
+- uid: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.AccessToken*
+  name: AccessToken
+  href: api/dotnet/FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.html#FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_AccessToken_
+  commentId: Overload:FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.AccessToken
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.AccessToken
+  nameWithType: OneDriveWorkSchoolItem.AccessToken
+- uid: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.Id
+  name: Id
+  href: api/dotnet/FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.html#FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_Id
+  commentId: P:FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.Id
+  fullName: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.Id
+  nameWithType: OneDriveWorkSchoolItem.Id
+- uid: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.Id*
+  name: Id
+  href: api/dotnet/FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.html#FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_Id_
+  commentId: Overload:FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.Id
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.Id
+  nameWithType: OneDriveWorkSchoolItem.Id
+- uid: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.MimeType
+  name: MimeType
+  href: api/dotnet/FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.html#FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_MimeType
+  commentId: P:FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.MimeType
+  fullName: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.MimeType
+  nameWithType: OneDriveWorkSchoolItem.MimeType
+- uid: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.MimeType*
+  name: MimeType
+  href: api/dotnet/FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.html#FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_MimeType_
+  commentId: Overload:FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.MimeType
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.MimeType
+  nameWithType: OneDriveWorkSchoolItem.MimeType
+- uid: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.Name
+  name: Name
+  href: api/dotnet/FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.html#FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_Name
+  commentId: P:FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.Name
+  fullName: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.Name
+  nameWithType: OneDriveWorkSchoolItem.Name
+- uid: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.Name*
+  name: Name
+  href: api/dotnet/FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.html#FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_Name_
+  commentId: Overload:FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.Name
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.Name
+  nameWithType: OneDriveWorkSchoolItem.Name
+- uid: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.ObjectId
+  name: ObjectId
+  href: api/dotnet/FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.html#FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_ObjectId
+  commentId: P:FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.ObjectId
+  fullName: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.ObjectId
+  nameWithType: OneDriveWorkSchoolItem.ObjectId
+- uid: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.ObjectId*
+  name: ObjectId
+  href: api/dotnet/FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.html#FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_ObjectId_
+  commentId: Overload:FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.ObjectId
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.ObjectId
+  nameWithType: OneDriveWorkSchoolItem.ObjectId
 - uid: FoundationaLLM.Core.Services
   name: FoundationaLLM.Core.Services
   href: api/dotnet/FoundationaLLM.Core.Services.html
@@ -29111,6 +29403,22 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Core.Services.CoreService.GetCompletionPrompt
   nameWithType: CoreService.GetCompletionPrompt
+- uid: FoundationaLLM.Core.Services.CoreService.GetFileStoreConnectors(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name: GetFileStoreConnectors(string, UnifiedUserIdentity)
+  href: api/dotnet/FoundationaLLM.Core.Services.CoreService.html#FoundationaLLM_Core_Services_CoreService_GetFileStoreConnectors_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  commentId: M:FoundationaLLM.Core.Services.CoreService.GetFileStoreConnectors(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: GetFileStoreConnectors(String, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Core.Services.CoreService.GetFileStoreConnectors(string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Core.Services.CoreService.GetFileStoreConnectors(String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType: CoreService.GetFileStoreConnectors(string, UnifiedUserIdentity)
+  nameWithType.vb: CoreService.GetFileStoreConnectors(String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Core.Services.CoreService.GetFileStoreConnectors*
+  name: GetFileStoreConnectors
+  href: api/dotnet/FoundationaLLM.Core.Services.CoreService.html#FoundationaLLM_Core_Services_CoreService_GetFileStoreConnectors_
+  commentId: Overload:FoundationaLLM.Core.Services.CoreService.GetFileStoreConnectors
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.Services.CoreService.GetFileStoreConnectors
+  nameWithType: CoreService.GetFileStoreConnectors
 - uid: FoundationaLLM.Core.Services.CoreService.RateMessageAsync(System.String,System.String,System.String,System.Nullable{System.Boolean})
   name: RateMessageAsync(string, string, string, bool?)
   href: api/dotnet/FoundationaLLM.Core.Services.CoreService.html#FoundationaLLM_Core_Services_CoreService_RateMessageAsync_System_String_System_String_System_String_System_Nullable_System_Boolean__
@@ -29312,6 +29620,79 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Core.Services.GatekeeperAPIService.RemoveMemory
   nameWithType: GatekeeperAPIService.RemoveMemory
+- uid: FoundationaLLM.Core.Services.OneDriveWorkSchoolService
+  name: OneDriveWorkSchoolService
+  href: api/dotnet/FoundationaLLM.Core.Services.OneDriveWorkSchoolService.html
+  commentId: T:FoundationaLLM.Core.Services.OneDriveWorkSchoolService
+  fullName: FoundationaLLM.Core.Services.OneDriveWorkSchoolService
+  nameWithType: OneDriveWorkSchoolService
+- uid: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.#ctor(FoundationaLLM.Core.Interfaces.ICoreService,FoundationaLLM.Core.Interfaces.IUserProfileService,System.Net.Http.IHttpClientFactory)
+  name: OneDriveWorkSchoolService(ICoreService, IUserProfileService, IHttpClientFactory)
+  href: api/dotnet/FoundationaLLM.Core.Services.OneDriveWorkSchoolService.html#FoundationaLLM_Core_Services_OneDriveWorkSchoolService__ctor_FoundationaLLM_Core_Interfaces_ICoreService_FoundationaLLM_Core_Interfaces_IUserProfileService_System_Net_Http_IHttpClientFactory_
+  commentId: M:FoundationaLLM.Core.Services.OneDriveWorkSchoolService.#ctor(FoundationaLLM.Core.Interfaces.ICoreService,FoundationaLLM.Core.Interfaces.IUserProfileService,System.Net.Http.IHttpClientFactory)
+  name.vb: New(ICoreService, IUserProfileService, IHttpClientFactory)
+  fullName: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.OneDriveWorkSchoolService(FoundationaLLM.Core.Interfaces.ICoreService, FoundationaLLM.Core.Interfaces.IUserProfileService, System.Net.Http.IHttpClientFactory)
+  fullName.vb: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.New(FoundationaLLM.Core.Interfaces.ICoreService, FoundationaLLM.Core.Interfaces.IUserProfileService, System.Net.Http.IHttpClientFactory)
+  nameWithType: OneDriveWorkSchoolService.OneDriveWorkSchoolService(ICoreService, IUserProfileService, IHttpClientFactory)
+  nameWithType.vb: OneDriveWorkSchoolService.New(ICoreService, IUserProfileService, IHttpClientFactory)
+- uid: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.#ctor*
+  name: OneDriveWorkSchoolService
+  href: api/dotnet/FoundationaLLM.Core.Services.OneDriveWorkSchoolService.html#FoundationaLLM_Core_Services_OneDriveWorkSchoolService__ctor_
+  commentId: Overload:FoundationaLLM.Core.Services.OneDriveWorkSchoolService.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.OneDriveWorkSchoolService
+  fullName.vb: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.New
+  nameWithType: OneDriveWorkSchoolService.OneDriveWorkSchoolService
+  nameWithType.vb: OneDriveWorkSchoolService.New
+- uid: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Connect(System.String)
+  name: Connect(string)
+  href: api/dotnet/FoundationaLLM.Core.Services.OneDriveWorkSchoolService.html#FoundationaLLM_Core_Services_OneDriveWorkSchoolService_Connect_System_String_
+  commentId: M:FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Connect(System.String)
+  name.vb: Connect(String)
+  fullName: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Connect(string)
+  fullName.vb: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Connect(String)
+  nameWithType: OneDriveWorkSchoolService.Connect(string)
+  nameWithType.vb: OneDriveWorkSchoolService.Connect(String)
+- uid: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Connect*
+  name: Connect
+  href: api/dotnet/FoundationaLLM.Core.Services.OneDriveWorkSchoolService.html#FoundationaLLM_Core_Services_OneDriveWorkSchoolService_Connect_
+  commentId: Overload:FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Connect
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Connect
+  nameWithType: OneDriveWorkSchoolService.Connect
+- uid: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Disconnect(System.String)
+  name: Disconnect(string)
+  href: api/dotnet/FoundationaLLM.Core.Services.OneDriveWorkSchoolService.html#FoundationaLLM_Core_Services_OneDriveWorkSchoolService_Disconnect_System_String_
+  commentId: M:FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Disconnect(System.String)
+  name.vb: Disconnect(String)
+  fullName: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Disconnect(string)
+  fullName.vb: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Disconnect(String)
+  nameWithType: OneDriveWorkSchoolService.Disconnect(string)
+  nameWithType.vb: OneDriveWorkSchoolService.Disconnect(String)
+- uid: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Disconnect*
+  name: Disconnect
+  href: api/dotnet/FoundationaLLM.Core.Services.OneDriveWorkSchoolService.html#FoundationaLLM_Core_Services_OneDriveWorkSchoolService_Disconnect_
+  commentId: Overload:FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Disconnect
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Disconnect
+  nameWithType: OneDriveWorkSchoolService.Disconnect
+- uid: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Download(System.String,System.String,System.String,FoundationaLLM.Core.Models.OneDriveWorkSchoolItem,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name: Download(string, string, string, OneDriveWorkSchoolItem, UnifiedUserIdentity)
+  href: api/dotnet/FoundationaLLM.Core.Services.OneDriveWorkSchoolService.html#FoundationaLLM_Core_Services_OneDriveWorkSchoolService_Download_System_String_System_String_System_String_FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  commentId: M:FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Download(System.String,System.String,System.String,FoundationaLLM.Core.Models.OneDriveWorkSchoolItem,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: Download(String, String, String, OneDriveWorkSchoolItem, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Download(string, string, string, FoundationaLLM.Core.Models.OneDriveWorkSchoolItem, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Download(String, String, String, FoundationaLLM.Core.Models.OneDriveWorkSchoolItem, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType: OneDriveWorkSchoolService.Download(string, string, string, OneDriveWorkSchoolItem, UnifiedUserIdentity)
+  nameWithType.vb: OneDriveWorkSchoolService.Download(String, String, String, OneDriveWorkSchoolItem, UnifiedUserIdentity)
+- uid: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Download*
+  name: Download
+  href: api/dotnet/FoundationaLLM.Core.Services.OneDriveWorkSchoolService.html#FoundationaLLM_Core_Services_OneDriveWorkSchoolService_Download_
+  commentId: Overload:FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Download
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Download
+  nameWithType: OneDriveWorkSchoolService.Download
 - uid: FoundationaLLM.Core.Services.UserProfileService
   name: UserProfileService
   href: api/dotnet/FoundationaLLM.Core.Services.UserProfileService.html
