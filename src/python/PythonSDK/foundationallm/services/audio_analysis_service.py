@@ -2,6 +2,8 @@ import base64
 import requests
 from foundationallm.config import Configuration
 from foundationallm.models.attachments import AttachmentProperties
+from foundationallm.models.agents import KnowledgeManagementCompletionRequest
+from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 from foundationallm.storage import BlobStorageManager
 
 class AudioAnalysisService:
@@ -58,17 +60,38 @@ class AudioAnalysisService:
             print(f'Error getting image as base64: {e}')
             return None
 
-    def classify(self, audio_attachments: AttachmentProperties):
-        api_key = self.config.get_value('FoundationaLLM:APIEndpoints:AudioClassificationAPI:APIKey')
-        base_url = self.config.get_value('FoundationaLLM:APIEndpoints:AudioClassificationAPI:APIUrl').rstrip('/')
-        deployment_name = self.config.get_value('FoundationaLLM:APIEndpoints:AudioClassificationAPI:DeploymentName')
-        endpoint = self.config.get_value('FoundationaLLM:APIEndpoints:AudioClassificationAPI:PredictionEndpoint').lstrip('/')
-        try:
-            top_k = self.config.get_value('FoundationaLLM:APIEndpoints:AudioClassificationAPI:TopK')
-        except:
-            top_k = 1
+    def _get_audio_classifcation_endpoint_configuration(self, request: KnowledgeManagementCompletionRequest) -> APIEndpointConfiguration:
+        """
+        Gets the audio classification API endpoint configuration.
+
+        Parameters
+        ----------
+        request : KnowledgeManagementCompletionRequest
+            The request object.
+
+        Returns
+        -------
+        APIEndpointConfiguration
+            The audio classification API endpoint configuration.
+        """
+        api_configuration_object_id = request.agent.api_endpoint_configuration_object_ids['AudioClassificationAPI']
+        api_configuration = request.objects.get(api_configuration_object_id, None)
+        if api_configuration is None:
+            raise Exception('Audio classification API endpoint configuration not found.')
+        return APIEndpointConfiguration.from_object(api_configuration)
+
+    def classify(self, request: KnowledgeManagementCompletionRequest, audio_attachments: AttachmentProperties):
+        print('in audio classification service: classify')
+        api_configuration = self._get_audio_classifcation_endpoint_configuration(request)
+        api_key = self.config.get_value(api_configuration.authentication_parameters.get('api_key_configuration_name'))
+        api_key_header_name = api_configuration.authentication_parameters.get('api_key_header_name', 'x-api-key')
+        base_url = api_configuration.url.rstrip('/')
+        deployment_name = api_configuration.properties.get('deployment_name')
+        inference_endpoint = api_configuration.properties.get('inference_endpoint').lstrip('/')
+
+        top_k = int(api_configuration.properties.get('top_k', 1))
         
-        api_endpoint = f'{base_url}/{endpoint}'
+        api_endpoint = f'{base_url}/{inference_endpoint}'
         audio_analyses = {}
 
         for attachment in audio_attachments:
@@ -87,7 +110,7 @@ class AudioAnalysisService:
                         "deployment_name": deployment_name,
                         "top_k": top_k
                     }
-                    headers = {"charset": "utf-8", "Content-Type": "application/json", "x-api-key": api_key}
+                    headers = {"charset": "utf-8", "Content-Type": "application/json", api_key_header_name: api_key}
                     # Make the REST API call.
                     r = requests.post(api_endpoint, json=payload, headers=headers)
                     # Check the response status code.
