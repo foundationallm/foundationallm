@@ -1,5 +1,5 @@
 {
-	"PromptReferences": [
+	"ResourceReferences": [
 		{
 			"Name": "FoundationaLLM",
 			"Filename": "/FoundationaLLM.Prompt/FoundationaLLM.json",
