@@ -9,6 +9,11 @@ namespace FoundationaLLM.Common.Models.Conversation;
 public class Conversation : ResourceBase
 {
     /// <summary>
+    /// The unique identifier.
+    /// </summary>
+    public string Id { get; set; }
+
+    /// <summary>
     /// The Partition key.
     /// </summary>
     public required string SessionId { get; set; }
