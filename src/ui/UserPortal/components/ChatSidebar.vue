@@ -51,11 +51,11 @@
 					<!-- Chat name -->
 					<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 						<span class="chat__name" tabindex="0" @keydown.esc="hideAllPoppers">{{
-							session.name
+							session.display_name
 						}}</span>
 						<template #popper>
 							<div role="tooltip">
-								{{ session.name }}
+								{{ session.display_name }}
 							</div>
 						</template>
 					</VTooltip>
@@ -116,7 +116,7 @@
 			v-if="sessionToRename !== null"
 			v-focustrap
 			:visible="sessionToRename !== null"
-			:header="`Rename Chat ${sessionToRename?.name}`"
+			:header="`Rename Chat ${sessionToRename?.display_name}`"
 			:closable="false"
 			class="sidebar-dialog"
 			modal
@@ -158,7 +158,7 @@
 				</div>
 			</div>
 			<div v-else>
-				<p>Do you want to delete the chat "{{ sessionToDelete.name }}" ?</p>
+				<p>Do you want to delete the chat "{{ sessionToDelete.display_name }}" ?</p>
 			</div>
 			<template #footer>
 				<Button label="Cancel" text :disabled="deleteProcessing" @click="sessionToDelete = null" />
@@ -217,7 +217,7 @@ export default {
 	methods: {
 		openRenameModal(session: Session) {
 			this.sessionToRename = session;
-			this.newSessionName = session.name;
+			this.newSessionName = session.display_name;
 		},
 
 		closeRenameModal() {
