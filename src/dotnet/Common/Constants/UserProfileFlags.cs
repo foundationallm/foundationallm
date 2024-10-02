@@ -8,7 +8,7 @@
         /// <summary>
         /// Flag that allows the user to grant or revoke consent to connect to their OneDrive for work or school account.
         /// </summary>
-        public const string OneDriveWorkSchoolEnabled = "oneDriveWorkSchool";
+        public const string OneDriveWorkSchoolEnabled = "oneDriveWorkSchoolEnabled";
 
         /// <summary>
         /// All user profile flags.

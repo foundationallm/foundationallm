@@ -382,8 +382,8 @@ export default {
 	 * Connects to user's OneDrive work or school account.
 	 * @returns A Promise that resolves to the response from the server.
 	 */
-	async oneDriveConnect() {
-		return await this.fetch(`/instances/${this.instanceId}/oneDrive/connect`, {
+	async oneDriveWorkSchoolConnect() {
+		return await this.fetch(`/instances/${this.instanceId}/oneDriveWorkSchool/connect`, {
 			method: 'POST',
 			body: null,
 		});
@@ -393,8 +393,8 @@ export default {
 	 * Disconnect to user's OneDrive work or school account.
 	 * @returns A Promise that resolves to the response from the server.
 	 */
-	async oneDriveDisconnect() {
-		return await this.fetch(`/instances/${this.instanceId}/oneDrive/disconnect`, {
+	async oneDriveWorkSchoolDisconnect() {
+		return await this.fetch(`/instances/${this.instanceId}/oneDriveWorkSchool/disconnect`, {
 			method: 'POST',
 			body: null,
 		});
@@ -415,11 +415,11 @@ export default {
 	 * @param oneDriveWorkSchool - The OneDrive work or school item.
 	 * @returns A Promise that resolves to the response from the server.
 	 */
-	async oneDriveDownload(
+	async oneDriveWorkSchoolDownload(
 		sessionId: string,
 		agentName: string,
 		oneDriveWorkSchool: OneDriveWorkSchool) {
-		return (await this.fetch(`/instances/${this.instanceId}/oneDrive/download?instanceId=${this.instanceId}&sessionId=${sessionId}&agentName=${agentName}`, {
+		return (await this.fetch(`/instances/${this.instanceId}/oneDriveWorkSchool/download?instanceId=${this.instanceId}&sessionId=${sessionId}&agentName=${agentName}`, {
 				method: 'POST',
 				body: oneDriveWorkSchool,
 		})) as OneDriveWorkSchool;

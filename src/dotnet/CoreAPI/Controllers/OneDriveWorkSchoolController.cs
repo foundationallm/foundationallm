@@ -13,7 +13,7 @@ namespace FoundationaLLM.Core.API.Controllers
     [Authorize(Policy = "DefaultPolicy")]
     [ApiController]
     [Route("instances/{instanceId}/[controller]")]
-    public class OneDriveController : ControllerBase
+    public class OneDriveWorkSchoolController : ControllerBase
     {
         private readonly ICallContext _callContext;
         private readonly IOneDriveWorkSchoolService _oneDriveWorkSchoolService;
@@ -24,7 +24,7 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <param name="callContext">The <see cref="ICallContext"/> call context of the request being handled.</param>
         /// <param name="oneDriveService">The <see cref="IOneDriveWorkSchoolService"/> OneDrive service.</param>
         /// <exception cref="ResourceProviderException"></exception>
-        public OneDriveController(
+        public OneDriveWorkSchoolController(
             ICallContext callContext,
             IOneDriveWorkSchoolService oneDriveWorkSchoolService)
         {
@@ -67,7 +67,7 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <param name="oneDriveWorkSchool">The OneDrive work or school item.</param>
         /// <returns></returns>
         [HttpPost("download")]
-        public async Task<IActionResult> Download(string instanceId, string sessionId, string agentName, [FromBody] OneDriveWorkSchool oneDriveWorkSchool)
+        public async Task<IActionResult> Download(string instanceId, string sessionId, string agentName, [FromBody] OneDriveWorkSchoolItem oneDriveWorkSchool)
         {
             var result = await _oneDriveWorkSchoolService.Download(instanceId, sessionId, agentName, oneDriveWorkSchool, _callContext.CurrentUserIdentity!);
 

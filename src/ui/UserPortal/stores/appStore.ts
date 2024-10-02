@@ -389,32 +389,32 @@ export const useAppStore = defineStore('app', {
 			return this.fileStoreConnectors;
 		},
 
-		async oneDriveConnect() {
-			await api.oneDriveConnect().then(() => {
+		async oneDriveWorkSchoolConnect() {
+			await api.oneDriveWorkSchoolConnect().then(() => {
 				this.oneDriveWorkSchool = true;
 			});
 		},
 
-		async oneDriveDisconnect() {
-			await api.oneDriveDisconnect().then(() => {
+		async oneDriveWorkSchoolDisconnect() {
+			await api.oneDriveWorkSchoolDisconnect().then(() => {
 				this.oneDriveWorkSchool = false;
 			});
 		},
 
 		async getUserProfiles() {
 			this.userProfiles = await api.getUserProfile();
-			this.oneDriveWorkSchool = this.userProfiles?.flags['oneDriveWorkSchool'];
+			this.oneDriveWorkSchool = this.userProfiles?.flags['oneDriveWorkSchoolEnabled'];
 			return this.userProfiles;
 		},
 
-		async oneDriveDownload(sessionId: string, oneDriveWorkSchool: OneDriveWorkSchool) {
+		async oneDriveWorkSchoolDownload(sessionId: string, oneDriveWorkSchool: OneDriveWorkSchool) {
 			const agent = this.getSessionAgent(this.currentSession!).resource;
 			// If the agent is not found, do not upload the attachment and display an error message.
 			if (!agent) {
 				throw new Error('No agent selected.');
 			}
 
-			const item = (await api.oneDriveDownload(
+			const item = (await api.oneDriveWorkSchoolDownload(
 				sessionId,
 				agent.name,
 				oneDriveWorkSchool,

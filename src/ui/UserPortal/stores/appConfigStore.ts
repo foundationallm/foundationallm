@@ -29,7 +29,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 		instanceId: null,
 		agentIconUrl: null,
 		allowedUploadFileExtensions: null,
-		oneDriveScopes: null,
+		oneDriveWorkSchoolScopes: null,
 
 		// Auth: These settings configure the MSAL authentication.
 		auth: {
@@ -78,7 +78,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				instanceId,
 				agentIconUrl,
 				allowedUploadFileExtensions,
-				oneDriveScopes,
+				oneDriveWorkSchoolScopes,
 				authClientId,
 				authInstance,
 				authTenantId,
@@ -147,7 +147,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.auth.scopes = authScopes;
 			this.auth.callbackPath = authCallbackPath;
 
-			this.oneDriveScopes = oneDriveScopes;
+			this.oneDriveWorkSchoolScopes = oneDriveWorkSchoolScopes;
 		},
 	},
 });

@@ -5,7 +5,7 @@ namespace FoundationaLLM.Core.Models
     /// <summary>
     /// OneDriveWorkSchool object.
     /// </summary>
-    public class OneDriveWorkSchool
+    public class OneDriveWorkSchoolItem
     {
         /// <summary>
         /// The item unique identifier.
