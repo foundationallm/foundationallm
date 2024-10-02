@@ -68,6 +68,9 @@
       "networkName": {
         "value": "${FOUNDATIONALLM_EXT_VNET_NAME}"
       },
+      "principalType": {
+        "value": "${AZURE_PRINCIPAL_TYPE=User}"
+      },
       "project": {
         "value": "${FOUNDATIONALLM_PROJECT}"
       },
@@ -75,16 +78,16 @@
         "value": "${FLLM_REGISTRY=cropseastus2svinternal.azurecr.io}"
       },
       "userPortalHostname": {
-        "value": "${FLLM_USER_PORTAL_HOSTNAME=www.internal.foundationallm.ai}"
+        "value": "${FLLM_USER_PORTAL_HOSTNAME=082-www.internal.foundationallm.ai}"
       },
       "managementPortalHostname": {
-        "value": "${FLLM_MGMT_PORTAL_HOSTNAME=management.internal.foundationallm.ai}"
+        "value": "${FLLM_MGMT_PORTAL_HOSTNAME=082-management.internal.foundationallm.ai}"
       },
       "coreApiHostname": {
-        "value": "${FLLM_CORE_API_HOSTNAME=api.internal.foundationallm.ai}"
+        "value": "${FLLM_CORE_API_HOSTNAME=082-api.internal.foundationallm.ai}"
       },
       "managementApiHostname": {
-        "value": "${FLLM_MGMT_API_HOSTNAME=management-api.internal.foundationallm.ai}"
+        "value": "${FLLM_MGMT_API_HOSTNAME=082-management-api.internal.foundationallm.ai}"
       },
       "authService": {
         "value": {

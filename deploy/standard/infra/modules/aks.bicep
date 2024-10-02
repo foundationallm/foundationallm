@@ -67,6 +67,8 @@ param logAnalyticWorkspaceId string
 @description('Log Analytic Workspace Resource Id to use for diagnostics')
 param logAnalyticWorkspaceResourceId string
 
+param monitorId string
+
 @description('Networking resource group name')
 param networkingResourceGroupName string
 
@@ -153,6 +155,7 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
   tags: tags
   dependsOn: [
     dnsRoleAssignment
+    aksDcr
   ]
 
   identity: {
@@ -347,6 +350,112 @@ resource diagnostics 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' 
         enabled: true
       }
     ]
+  }
+}
+
+resource aksDce 'Microsoft.Insights/dataCollectionEndpoints@2023-03-11' = {
+  name: 'dce-${resourceSuffix}'
+  location: location
+  properties: {
+    networkAcls: {
+      publicNetworkAccess: 'Disabled'
+    }
+  }
+}
+
+resource aksDcr 'Microsoft.Insights/dataCollectionRules@2023-03-11' = {
+  name: 'MSCI-${location}-${name}'
+  location: location
+  properties: {
+    destinations: {
+      logAnalytics: [
+        {
+          name: 'ciworkspace'
+          workspaceResourceId: logAnalyticWorkspaceId
+        }
+      ]
+    }
+
+    dataCollectionEndpointId: aksDce.id
+
+    dataFlows: [
+      {
+        destinations: ['ciworkspace']
+        streams: ['Microsoft-ContainerInsights-Group-Default']
+      }
+      {
+        streams: [ 'Microsoft-Syslog' ]
+        destinations: [ 'ciworkspace' ]
+      }
+    ]
+
+    dataSources: {
+      syslog: [
+        {
+          streams: [ 'Microsoft-Syslog' ]
+          facilityNames: [
+            'auth'
+            'authpriv'
+            'cron'
+            'daemon'
+            'mark'
+            'kern'
+            'local0'
+            'local1'
+            'local2'
+            'local3'
+            'local4'
+            'local5'
+            'local6'
+            'local7'
+            'lpr'
+            'mail'
+            'news'
+            'syslog'
+            'user'
+            'uucp'  
+          ]
+          logLevels: [
+            'Debug'
+            'Info'
+            'Notice'
+            'Warning'
+            'Error'
+            'Critical'
+            'Alert'
+            'Emergency'  
+          ]
+          name: 'sysLogsDataSource'
+        }
+      ]
+      extensions: [
+        {
+          streams: ['Microsoft-ContainerInsights-Group-Default']
+          extensionName: 'ContainerInsights'
+          extensionSettings: {
+            dataCollectionSettings: {
+              interval: '5m'
+              namespaceFilteringMode: 'Off'
+              enableContainerLogV2: true
+            }
+          }
+          name: 'ContainerInsightsExtension'
+        }
+      ]
+    }
+
+    description: 'DCR for Azure Monitor Container Insights'
+  }
+}
+
+#disable-next-line BCP174
+resource aksDcra 'Microsoft.ContainerService/managedClusters/providers/dataCollectionRuleAssociations@2022-06-01' = {
+  name: '${name}/microsoft.insights/ContainerInsightsExtension'
+  dependsOn: [ main ]
+  properties: {
+    description: 'Association of data collection rule. Deleting this association will break the data collection for this AKS Cluster.'
+    dataCollectionRuleId: aksDcr.id
+    dataCollectionEndpointId: aksDce.id
   }
 }
 

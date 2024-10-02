@@ -96,7 +96,8 @@ function New-FllmEntraIdApps {
         [Parameter(Mandatory = $true)][string]$fllmApiConfigPath,
         [Parameter(Mandatory = $true)][string]$fllmApiUri,
         [Parameter(Mandatory = $false)][string]$fllmClient,
-        [Parameter(Mandatory = $false)][string]$fllmClientConfigPath       
+        [Parameter(Mandatory = $false)][string]$fllmClientConfigPath,
+        [Parameter(Mandatory = $false)][string]$isApp = $true
     )
 
     $fllmAppRegMetaData = @{}
@@ -116,61 +117,67 @@ function New-FllmEntraIdApps {
         
         az ad sp create --id $($fllmAppRegMetaData.Api.AppId) 
 
-        # Create the FLLM ClientApp Registration
-        if ($createClientApp) {
-            $($fllmAppRegMetaData).Client = @{ Name = $fllmClient }
-            Write-Host -ForegroundColor Yellow "Creating EntraID Application Registration named $($fllmAppRegMetaData.Client.Name)"    
-            $($fllmAppRegMetaData.Client).AppId = $(az ad app create --display-name $($fllmAppRegMetaData.Client.Name) --query appId --output tsv)
-            $($fllmAppRegMetaData.Client).ObjectId = $(az ad app show --id $($fllmAppRegMetaData.Client.AppId) --query id --output tsv)
-            az ad sp create --id $($fllmAppRegMetaData.Client.AppId)
-        }
+        if ($isApp -eq $true) {
+            # Create the FLLM ClientApp Registration
+            if ($createClientApp) {
+                $($fllmAppRegMetaData).Client = @{ Name = $fllmClient }
+                Write-Host -ForegroundColor Yellow "Creating EntraID Application Registration named $($fllmAppRegMetaData.Client.Name)"    
+                $($fllmAppRegMetaData.Client).AppId = $(az ad app create --display-name $($fllmAppRegMetaData.Client.Name) --query appId --output tsv)
+                $($fllmAppRegMetaData.Client).ObjectId = $(az ad app show --id $($fllmAppRegMetaData.Client.AppId) --query id --output tsv)
+                az ad sp create --id $($fllmAppRegMetaData.Client.AppId)
 
-        # Update the API App Registration
-        Write-Host -ForegroundColor Yellow "Laying down scaffolding for the API App Registration $($fllmAppRegMetaData.Api.Name)"
-        az rest --method PATCH --url "https://graph.microsoft.com/v1.0/applications/$($fllmAppRegMetaData.Api.ObjectId)" --header "Content-Type=application/json" --body "@$fllmApiConfigPath"
-        Write-host -ForegroundColor Blue "Sleeping for 10 seconds to allow the API App Registration to be created before updating it..."
-        Start-Sleep -Seconds 10
-        ## Updates the API App Registration
-        Write-Host -ForegroundColor Yellow "Preparing updates for the API App Registration $($fllmAppRegMetaData.Api.Name)"
-        $appConfig = Get-content $fllmApiConfigPath | ConvertFrom-Json -Depth 20
-        $preAuthorizedApp = @(
-            @{
-                "appId" = "04b07795-8ddb-461a-bbee-02f9e1bf7b46";
-                "delegatedPermissionIds" = @("$($appPermissionsId)")
+                foreach ($objectId in $ownerObjectIds) {
+                    az ad app owner add --id $($fllmAppRegMetaData.Client.AppId) --owner-object-id $objectId
+                }        
             }
-        )
 
-        if ($createClientApp) {
-            $preAuthorizedApp += @{
-                "appId" = $($fllmAppRegMetaData.Client.AppId); 
-                "delegatedPermissionIds" = @("$($appPermissionsId)") 
-            }
-        }
-
-        $appConfig.api.preAuthorizedApplications = $preAuthorizedApp
-        $appConfig.identifierUris = @($($fllmAppRegMetaData.Api.Uri))
-        $appConfigUpdate = $appConfig | ConvertTo-Json -Depth 20
-        Write-Host -ForegroundColor Yellow "Final Update to API App Registration $($fllmAppRegMetaData.Api.Name)"
-        Set-Content -Path "$($fllmAppRegMetaData.Api.Name)`.json" $appConfigUpdate
-        az rest --method PATCH --url "https://graph.microsoft.com/v1.0/applications/$($fllmAppRegMetaData.Api.ObjectId)" --header "Content-Type=application/json" --body "@$($fllmAppRegMetaData.Api.Name)`.json"
-
-        # Update the Client App Registration
-        if ($createClientApp) {     
-            Write-Host -ForegroundColor Yellow "Lay down scaffolding for the Client App Registration $($fllmAppRegMetaData.Client.Name)"
-            az rest --method PATCH --url "https://graph.microsoft.com/v1.0/applications/$($fllmAppRegMetaData.Client.ObjectId)" --header "Content-Type=application/json" --body "@$fllmClientConfigPath"
-            Start-Sleep -Seconds 10
+            # Update the API App Registration
+            Write-Host -ForegroundColor Yellow "Laying down scaffolding for the API App Registration $($fllmAppRegMetaData.Api.Name)"
+            az rest --method PATCH --url "https://graph.microsoft.com/v1.0/applications/$($fllmAppRegMetaData.Api.ObjectId)" --header "Content-Type=application/json" --body "@$fllmApiConfigPath"
             Write-host -ForegroundColor Blue "Sleeping for 10 seconds to allow the API App Registration to be created before updating it..."
-            ## Updates the Client App Registration
-            Write-Host -ForegroundColor Yellow "Preparing updates for the Client App Registration $($fllmAppRegMetaData.Client.Name)"
-            $($fllmAppRegMetaData.Client).Uri = @("api://$($fllmAppRegMetaData.Client.Name)")
-            $apiPermissions = @(@{"resourceAppId" = $($fllmAppRegMetaData.Client.AppId); "resourceAccess" = @(@{"id" = "$($appPermissionsId)"; "type" = "Scope" }) }, @{"resourceAppId" = "00000003-0000-0000-c000-000000000000"; "resourceAccess" = @(@{"id" = "e1fe6dd8-ba31-4d61-89e7-88639da4683d"; "type" = "Scope" }) })
-            $appConfig = Get-content $fllmClientConfigPath | ConvertFrom-Json -Depth 20
-            $appConfig.identifierUris = @($($fllmAppRegMetaData.Client.Uri))
-            $appConfig.requiredResourceAccess = $apiPermissions
+            Start-Sleep -Seconds 10
+            ## Updates the API App Registration
+            Write-Host -ForegroundColor Yellow "Preparing updates for the API App Registration $($fllmAppRegMetaData.Api.Name)"
+            $appConfig = Get-content $fllmApiConfigPath | ConvertFrom-Json -Depth 20
+            $preAuthorizedApp = @(
+                @{
+                    "appId" = "04b07795-8ddb-461a-bbee-02f9e1bf7b46";
+                    "delegatedPermissionIds" = @("$($appPermissionsId)")
+                }
+            )
+
+            if ($createClientApp) {
+                $preAuthorizedApp += @{
+                    "appId" = $($fllmAppRegMetaData.Client.AppId); 
+                    "delegatedPermissionIds" = @("$($appPermissionsId)") 
+                }
+            }
+
+            $appConfig.api.preAuthorizedApplications = $preAuthorizedApp
+            $appConfig.identifierUris = @($($fllmAppRegMetaData.Api.Uri))
             $appConfigUpdate = $appConfig | ConvertTo-Json -Depth 20
-            Write-Host -ForegroundColor Yellow "Applying Final Update to Client App Registration $($fllmAppRegMetaData.Client.Name)..."
-            Set-Content -Path "$($fllmAppRegMetaData.Client.Name)`.json" $appConfigUpdate
-            az rest --method PATCH --url "https://graph.microsoft.com/v1.0/applications/$($fllmAppRegMetaData.Client.ObjectId)" --header "Content-Type=application/json" --body "@$($fllmAppRegMetaData.Client.Name)`.json"
+            Write-Host -ForegroundColor Yellow "Final Update to API App Registration $($fllmAppRegMetaData.Api.Name)"
+            Set-Content -Path "$($fllmAppRegMetaData.Api.Name)`.json" $appConfigUpdate
+            az rest --method PATCH --url "https://graph.microsoft.com/v1.0/applications/$($fllmAppRegMetaData.Api.ObjectId)" --header "Content-Type=application/json" --body "@$($fllmAppRegMetaData.Api.Name)`.json"
+
+            # Update the Client App Registration
+            if ($createClientApp) {     
+                Write-Host -ForegroundColor Yellow "Lay down scaffolding for the Client App Registration $($fllmAppRegMetaData.Client.Name)"
+                az rest --method PATCH --url "https://graph.microsoft.com/v1.0/applications/$($fllmAppRegMetaData.Client.ObjectId)" --header "Content-Type=application/json" --body "@$fllmClientConfigPath"
+                Start-Sleep -Seconds 10
+                Write-host -ForegroundColor Blue "Sleeping for 10 seconds to allow the API App Registration to be created before updating it..."
+                ## Updates the Client App Registration
+                Write-Host -ForegroundColor Yellow "Preparing updates for the Client App Registration $($fllmAppRegMetaData.Client.Name)"
+                $($fllmAppRegMetaData.Client).Uri = @("api://$($fllmAppRegMetaData.Client.Name)")
+                $apiPermissions = @(@{"resourceAppId" = $($fllmAppRegMetaData.Client.AppId); "resourceAccess" = @(@{"id" = "$($appPermissionsId)"; "type" = "Scope" }) }, @{"resourceAppId" = "00000003-0000-0000-c000-000000000000"; "resourceAccess" = @(@{"id" = "e1fe6dd8-ba31-4d61-89e7-88639da4683d"; "type" = "Scope" }) })
+                $appConfig = Get-content $fllmClientConfigPath | ConvertFrom-Json -Depth 20
+                $appConfig.identifierUris = @($($fllmAppRegMetaData.Client.Uri))
+                $appConfig.requiredResourceAccess = $apiPermissions
+                $appConfigUpdate = $appConfig | ConvertTo-Json -Depth 20
+                Write-Host -ForegroundColor Yellow "Applying Final Update to Client App Registration $($fllmAppRegMetaData.Client.Name)..."
+                Set-Content -Path "$($fllmAppRegMetaData.Client.Name)`.json" $appConfigUpdate
+                az rest --method PATCH --url "https://graph.microsoft.com/v1.0/applications/$($fllmAppRegMetaData.Client.ObjectId)" --header "Content-Type=application/json" --body "@$($fllmAppRegMetaData.Client.Name)`.json"
+            }
         }
     }
     catch {
@@ -195,7 +202,7 @@ if (Test-Path ../config/admins.json -PathType Leaf) {
 
 # Create FoundationaLLM Core App Registrations
 $params = @{
-    ownerObjectId        = $ownerObjectIds
+    ownerObjectIds       = $ownerObjectIds
     appPermissionsId     = "6da07102-bb6a-421d-a71e-dfdb6031d3d8"
     appUrl               = ""
     appUrlLocal          = "http://localhost:3000/signin-oidc"
@@ -209,7 +216,7 @@ $($fllmAppRegs).Core = New-FllmEntraIdApps @params
 
 # Create FoundationaLLM Management App Registrations
 $params = @{
-    ownerObjectId        = $ownerObjectIds
+    ownerObjectIds       = $ownerObjectIds
     appPermissionsId     = "c57f4633-0e58-455a-8ede-5de815fe6c9c"
     appUrl               = ""
     appUrlLocal          = "http://localhost:3001/signin-oidc"
@@ -223,7 +230,7 @@ $($fllmAppRegs).Management = New-FllmEntraIdApps @params
 
 # Create FoundationaLLM Authorization App Registration
 $params = @{
-    ownerObjectId        = $ownerObjectIds
+    ownerObjectIds    = $ownerObjectIds
     appPermissionsId  = "9e313dd4-51e4-4989-84d0-c713e38e467d"
     createClientApp   = $false
     fllmApi           = $authAppName
@@ -233,11 +240,13 @@ $params = @{
 $($fllmAppRegs).Authorization = New-FllmEntraIdApps @params
 
 $params = @{
+    ownerObjectIds    = $ownerObjectIds
     appPermissionsId  = "9e313dd4-51e4-4989-84d0-c713e38e467d"
     createClientApp   = $false
     fllmApi           = $readerAppName
     fllmApiConfigPath = "foundationallm-reader.template.json"
     fllmApiUri        = "api://FoundationaLLM-Reader"
+    isApp             = $false
 }
 $($fllmAppRegs).Reader = New-FllmEntraIdApps @params
 

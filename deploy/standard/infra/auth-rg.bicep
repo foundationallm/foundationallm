@@ -29,6 +29,8 @@ param location string
 @description('Log Analytics Workspace Id to use for diagnostics')
 param logAnalyticsWorkspaceId string
 
+param principalType string
+
 @description('Project Name, used in naming resources.')
 param project string
 
@@ -107,10 +109,12 @@ module authStore 'modules/storageAccount.bicep' = {
   name: 'auth-store-${timestamp}'
   params: {
     actionGroupId: actionGroupId
+    adminGroupObjectId: administratorObjectId
     enableHns: true
     isDataLake: true
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
+    principalType: principalType
     privateDnsZones: filter(dnsZones.outputs.ids, (zone) => contains(['blob', 'dfs'], zone.key))
     resourceSuffix: resourceToken
     subnetId: '${vnetId}/subnets/auth'
