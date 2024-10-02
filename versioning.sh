@@ -11,7 +11,7 @@ else
 fi
 
 # Output version for GitHub Actions or other CI systems
-echo "##[set-output name=version;]$VERSION"
+echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 echo "Version: $VERSION"
 
 # Replace the version placeholders in the .csproj files
