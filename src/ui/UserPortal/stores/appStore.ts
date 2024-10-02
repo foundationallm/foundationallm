@@ -199,7 +199,6 @@ export const useAppStore = defineStore('app', {
 				...message,
 				content: message.content ? message.content.map(this.initializeMessageContent) : [],
 			}));
-			await nextTick();
 		},
 
 		updateSessionAgentFromMessages(session: Session) {
