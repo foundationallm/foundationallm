@@ -578,7 +578,7 @@ export default {
 				oneDriveToken = await this.$authStore.getOneDriveWorkSchoolToken();
 			} catch (error) {
 				console.error(error);
-				oneDriveToken = await this.$authStore.requestOneDriveConsent();
+				oneDriveToken = await this.$authStore.requestOneDriveWorkSchoolConsent();
 			}
 
 			const iframe = document.createElement('iframe');
@@ -710,7 +710,7 @@ export default {
 		},
 
 		async callCoreApioneDriveWorkSchoolDownloadEndpoint(id) {
-			const oneDriveToken = await this.$authStore.requestOneDriveConsent();
+			const oneDriveToken = await this.$authStore.requestOneDriveWorkSchoolConsent();
 
 			await this.$appStore.oneDriveWorkSchoolDownload(this.$appStore.currentSession.sessionId, {
 				id: id,
