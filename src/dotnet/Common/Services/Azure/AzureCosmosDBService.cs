@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 using Polly;
 using Polly.Retry;
 using System.Diagnostics;
+using System.Net;
 
 namespace FoundationaLLM.Common.Services
 {
@@ -132,14 +133,21 @@ namespace FoundationaLLM.Common.Services
         }
 
         /// <inheritdoc/>
-        public async Task<Conversation> GetConversationAsync(string id, CancellationToken cancellationToken = default)
+        public async Task<Conversation?> GetConversationAsync(string id, CancellationToken cancellationToken = default)
         {
-            var session = await _sessions.ReadItemAsync<Conversation>(
-                id: id,
-                partitionKey: new PartitionKey(id),
-                cancellationToken: cancellationToken);
+            try
+            {
+                var response = await _sessions.ReadItemAsync<Conversation>(
+                    id: id,
+                    partitionKey: new PartitionKey(id),
+                    cancellationToken: cancellationToken);
 
-            return session;
+                return response.Resource;
+            }
+            catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
         }
 
         /// <inheritdoc/>

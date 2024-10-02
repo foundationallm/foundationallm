@@ -134,15 +134,16 @@ namespace FoundationaLLM.Conversation.ResourceProviders
                 || string.IsNullOrWhiteSpace(updatedConversation.ObjectId))
                 updatedConversation.ObjectId = resourcePath.RawResourcePath;
 
-            _ = await _cosmosDBService.CreateOrUpdateConversationAsync(updatedConversation)
+            var conversation = await _cosmosDBService.CreateOrUpdateConversationAsync(updatedConversation)
                 ?? throw new ResourceProviderException(
                     $"The {_name} resource provider did not find the {resourcePath.RawResourcePath} resource.",
                     StatusCodes.Status404NotFound);
 
-            return (new ResourceProviderUpsertResult
+            return (new ResourceProviderUpsertResult<T>
             {
                 ObjectId = updatedConversation.ObjectId,
-                ResourceExists = existingConversation != null
+                ResourceExists = existingConversation != null,
+                Resource = conversation as T
             } as TResult)!;
         }
 

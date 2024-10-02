@@ -114,6 +114,7 @@ public partial class CoreService(
         var newConversationId = Guid.NewGuid().ToString().ToLower();
         Conversation newConversation = new()
         {
+            Id = newConversationId,
             SessionId = newConversationId,
             Name = newConversationId,
             DisplayName = chatSessionProperties.Name,

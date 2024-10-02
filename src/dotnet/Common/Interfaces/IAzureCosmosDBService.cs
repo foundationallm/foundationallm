@@ -21,8 +21,8 @@ public interface IAzureCosmosDBService
     /// <summary>
     /// Performs a point read to retrieve a single conversation item.
     /// </summary>
-    /// <returns>The conversation item.</returns>
-    Task<Conversation> GetConversationAsync(string id, CancellationToken cancellationToken = default);
+    /// <returns>The conversation item. Returns null if the conversation does not exist.</returns>
+    Task<Conversation?> GetConversationAsync(string id, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Creates or updates a conversation.
