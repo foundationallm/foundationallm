@@ -1,6 +1,6 @@
 ﻿using Azure.Identity;
 using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Constants.Chat;
+using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Conversation;
