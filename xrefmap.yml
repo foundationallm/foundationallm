@@ -18701,6 +18701,19 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.AIModelObjectId
   nameWithType: AgentBase.AIModelObjectId
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.APIEndpointConfigurationObjectIds
+  name: APIEndpointConfigurationObjectIds
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_APIEndpointConfigurationObjectIds
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.APIEndpointConfigurationObjectIds
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.APIEndpointConfigurationObjectIds
+  nameWithType: AgentBase.APIEndpointConfigurationObjectIds
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.APIEndpointConfigurationObjectIds*
+  name: APIEndpointConfigurationObjectIds
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_APIEndpointConfigurationObjectIds_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.APIEndpointConfigurationObjectIds
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.APIEndpointConfigurationObjectIds
+  nameWithType: AgentBase.APIEndpointConfigurationObjectIds
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.AgentType
   name: AgentType
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_AgentType
@@ -20570,6 +20583,19 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ObjectId
   nameWithType: ResourceBase.ObjectId
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+  name: Properties
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_Properties
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+  nameWithType: ResourceBase.Properties
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties*
+  name: Properties
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_Properties_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+  nameWithType: ResourceBase.Properties
 - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedBy
   name: UpdatedBy
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_UpdatedBy
