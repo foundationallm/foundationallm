@@ -11,6 +11,7 @@ using FoundationaLLM.Common.Services.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Azure.Cosmos;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
