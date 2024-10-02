@@ -216,7 +216,6 @@ else {
     $env:PATH = $env:PATH, "$(Split-Path -Path $pwd.Path -Parent)/common/tools/azcopy" -join $separator
 }
 
-$env:AZCOPY_AUTO_LOGIN_TYPE="AZCLI"
 $target = "https://$env:AZURE_STORAGE_ACCOUNT_NAME.blob.core.windows.net/resource-provider/"
 
 azcopy cp '../common/data/resource-provider/*' $target --exclude-pattern .git* --recursive=True

@@ -2,6 +2,8 @@
 @description('Action Group to use for alerts.')
 param actionGroupId string
 
+param administratorObjectId string
+
 @description('The environment name token used in naming resources.')
 param environmentName string
 
@@ -13,6 +15,8 @@ param logAnalyticsWorkspaceId string
 
 param hubResourceGroup string
 param hubSubscriptionId string = subscription().subscriptionId
+
+param principalType string
 
 @description('Project Name, used in naming resources.')
 param project string
@@ -67,10 +71,12 @@ module storage 'modules/storageAccount.bicep' = {
   name: 'storage-${timestamp}'
   params: {
     actionGroupId: actionGroupId
+    adminGroupObjectId: administratorObjectId
     enableHns: true
     isDataLake: true
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
+    principalType: principalType
     privateDnsZones: dnsZones.outputs.idsStorage
     resourceSuffix: resourceSuffix
     subnetId: '${vnetId}/subnets/storage'
