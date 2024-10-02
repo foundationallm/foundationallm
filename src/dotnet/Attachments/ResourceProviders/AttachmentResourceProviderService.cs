@@ -248,10 +248,11 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                 new MemoryStream(attachment.Content!),
                 attachment.ContentType ?? default);
 
-            return new ResourceProviderUpsertResult
+            return new ResourceProviderUpsertResult<AttachmentFile>
             {
                 ObjectId = (attachment as AttachmentFile)!.ObjectId,
-                ResourceExists = false
+                ResourceExists = false,
+                Resource = attachment
             };
         }
 
