@@ -134,7 +134,7 @@ export default {
 			const emailHash = md5(this.$authStore.currentAccount?.username?.toLowerCase()); // Hash the email
 			const gravatarUrl = `https://www.gravatar.com/avatar/${emailHash}?d=404`;
 			const gravatarImage = await this.loadImage(gravatarUrl);
-			this.profilePhotoSrc = gravatarUrl;
+			this.profilePhotoSrc = gravatarImage;
 		},
 	},
 };
