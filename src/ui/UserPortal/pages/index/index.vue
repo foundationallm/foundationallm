@@ -19,7 +19,7 @@
 				@click="$appStore.toggleSidebar"
 			/>
 			<main role="main" class="chat-main">
-				<ChatThread ref="thread" :isDragging="isDragging" />
+				<ChatThread ref="thread" :is-dragging="isDragging" />
 			</main>
 		</div>
 	</div>

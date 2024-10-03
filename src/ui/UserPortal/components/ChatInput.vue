@@ -6,18 +6,18 @@
 					<i
 						class="pi pi-info-circle"
 						tabindex="0"
-						@keydown.esc="hideAllPoppers"
 						aria-label="info icon"
+						@keydown.esc="hideAllPoppers"
 					></i>
-					<template #popper role="tooltip"
-						><div role="tooltip">Use Shift+Enter to add a new line</div></template
-					>
+					<template #popper>
+						<div role="tooltip">Use Shift+Enter to add a new line</div>
+					</template>
 				</VTooltip>
 			</div>
 			<VTooltip :auto-hide="false" :popper-triggers="['hover']">
 				<Button
-					type="button"
 					ref="fileUploadButton"
+					type="button"
 					:badge="fileArrayFiltered.length.toString() || null"
 					:aria-label="'Upload file (' + fileArrayFiltered.length.toString() + ' files attached)'"
 					icon="pi pi-paperclip"
@@ -130,8 +130,8 @@
 								</div>
 							</div>
 							<div
-								class="file-upload-button-container"
 								v-if="oneDriveFiles.length > 0 || localFiles.length > 0"
+								class="file-upload-button-container"
 							>
 								<Button
 									icon="pi pi-upload"
@@ -154,28 +154,28 @@
 						/>
 						<template v-if="$appStore.oneDriveWorkSchool">
 							<Button
-								:icon="!isMobile ? 'pi pi-cloud-upload' : undefined"
 								label="Select file from OneDrive"
 								class="file-upload-container-button"
+								:icon="!isMobile ? 'pi pi-cloud-upload' : undefined"
 								:disabled="disconnectingOneDrive"
-								@click="oneDriveWorkSchoolDownload"
 								:loading="oneDriveBaseURL === null"
+								@click="oneDriveWorkSchoolDownload"
 							/>
 							<Button
-								:icon="!isMobile ? 'pi pi-sign-out' : undefined"
 								label="Disconnect OneDrive"
 								class="file-upload-container-button"
-								@click="oneDriveWorkSchoolDisconnect"
+								:icon="!isMobile ? 'pi pi-sign-out' : undefined"
 								:loading="disconnectingOneDrive"
+								@click="oneDriveWorkSchoolDisconnect"
 							/>
 						</template>
 						<template v-else>
 							<Button
-								:icon="!isMobile ? 'pi pi-sign-in' : undefined"
 								label="Connect to OneDrive"
 								class="file-upload-container-button"
-								@click="oneDriveWorkSchoolConnect"
+								:icon="!isMobile ? 'pi pi-sign-in' : undefined"
 								:loading="connectingOneDrive || $appStore.oneDriveWorkSchool === null"
+								@click="oneDriveWorkSchoolConnect"
 							/>
 						</template>
 					</div>
@@ -195,7 +195,7 @@
 				style="max-width: 98%; min-width: 50%; max-height: 98%"
 				class="onedrive-iframe-dialog"
 			>
-				<div class="onedrive-iframe-content" id="oneDriveIframeDialogContent"></div>
+				<div id="oneDriveIframeDialogContent" class="onedrive-iframe-content" />
 			</Dialog>
 			<Mentionable
 				:keys="['@']"
@@ -208,7 +208,7 @@
 				@open="agentListOpen = true"
 				@close="agentListOpen = false"
 			>
-				<p class="sr-only" id="chat-input-label">
+				<p id="chat-input-label" class="sr-only">
 					The agent can make mistakes. Please check important information carefully.
 				</p>
 				<textarea
@@ -445,7 +445,7 @@ export default {
 							onProgress,
 						);
 					} else if (file.source === 'oneDrive') {
-						await this.callCoreApioneDriveWorkSchoolDownloadEndpoint(file.id);
+						await this.callCoreApiOneDriveWorkSchoolDownloadEndpoint(file.id);
 					}
 					filesUploaded += 1;
 				} catch (error) {
@@ -532,9 +532,10 @@ export default {
 				const fileAlreadyExists = this.localFiles.some(
 					(existingFile: any) => existingFile.name === file.name && existingFile.size === file.size,
 				);
-				if (fileAlreadyExists) {
-					return;
-				} else if (file.size > 536870912) {
+
+				if (fileAlreadyExists) return;
+
+				if (file.size > 536870912) {
 					this.$toast.add({
 						severity: 'error',
 						summary: 'Error',
@@ -682,7 +683,7 @@ export default {
 					console.log(`notification: ${JSON.stringify(message)}`);
 					break;
 
-				case 'command':
+				case 'command': {
 					this.port.postMessage({
 						type: 'acknowledge',
 						id: message.id,
@@ -691,7 +692,7 @@ export default {
 					const command: any = message.data;
 
 					switch (command.command) {
-						case 'authenticate':
+						case 'authenticate': {
 							const token = await this.$authStore.getOneDriveWorkSchoolToken();
 
 							if (token) {
@@ -707,6 +708,7 @@ export default {
 								console.error(`Could not get auth token for command: ${JSON.stringify(command)}`);
 							}
 							break;
+						}
 
 						case 'close':
 							console.log(`Closed: ${JSON.stringify(command)}`);
@@ -755,18 +757,17 @@ export default {
 							break;
 					}
 					break;
+				}
 			}
 		},
 
-		async callCoreApioneDriveWorkSchoolDownloadEndpoint(id) {
+		async callCoreApiOneDriveWorkSchoolDownloadEndpoint(id) {
 			const oneDriveToken = await this.$authStore.requestOneDriveWorkSchoolConsent();
 
 			await this.$appStore.oneDriveWorkSchoolDownload(this.$appStore.currentSession.sessionId, {
-				id: id,
+				id,
 				access_token: oneDriveToken,
 			});
-
-			return;
 		},
 	},
 };
