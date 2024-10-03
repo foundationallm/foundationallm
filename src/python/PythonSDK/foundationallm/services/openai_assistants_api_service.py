@@ -48,8 +48,9 @@ class OpenAIAssistantsApiService:
         """
         self.client = azure_openai_client
 
-        self.file_tool_file_types = config.get_value('FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions').split(",") #["c", "cpp", "cs", "css", "doc", "docx", "html", "java", "js", "json", "md", "pdf", "php", "pptx", "py", "rb", "sh", "tex", "ts", "txt"]
-        self.code_tool_file_types = config.get_value('FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsCodeInterpreterFileExtensions').split(",") #["c", "cpp", "cs", "css", "doc", "docx", "html", "java", "js", "json", "md", "pdf", "php", "pptx", "py", "rb", "sh", "tex", "ts", "txt"]
+        #split string and trim whitespace
+        self.file_tool_file_types = [x.strip() for x in config.get_value('FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions').split(",")] #["c", "cpp", "cs", "css", "doc", "docx", "html", "java", "js", "json", "md", "pdf", "php", "pptx", "py", "rb", "sh", "tex", "ts", "txt"]
+        self.code_tool_file_types = [x.strip() for x in config.get_value('FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsCodeInterpreterFileExtensions').split(",")] #["c", "cpp", "cs", "css", "doc", "docx", "html", "java", "js", "json", "md", "pdf", "php", "pptx", "py", "rb", "sh", "tex", "ts", "txt"]
 
         self.tools = [
             {
