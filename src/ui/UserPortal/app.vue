@@ -85,10 +85,6 @@ main {
 	font-family: 'Poppins', sans-serif;
 }
 
-.p-component {
-	border-radius: 0px;
-}
-
 .text--danger {
 	color: red;
 }
@@ -99,5 +95,25 @@ main {
 
 .justify-center {
 	justify-content: center;
+}
+
+.p-component {
+	border-radius: 0px;
+}
+
+.p-button-text {
+	color: var(--primary-button-bg) !important;
+}
+
+.p-button:not(.p-button-text) {
+	background-color: var(--primary-button-bg) !important;
+	border-color: var(--primary-button-bg) !important;
+	color: var(--primary-button-text) !important;
+}
+
+.p-button-secondary:not(.p-button-text) {
+	background-color: var(--secondary-button-bg) !important;
+	border-color: var(--secondary-button-bg) !important;
+	color: var(--secondary-button-text) !important;
 }
 </style>
