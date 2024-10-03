@@ -285,8 +285,8 @@ footer {
 
 .drop-files-here {
 	display: flex;
-    flex-direction: column;
-    align-items: center;
+	flex-direction: column;
+	align-items: center;
 	border-radius: 6px;
 	gap: 2rem;
 }
