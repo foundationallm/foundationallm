@@ -642,12 +642,6 @@ export default {
 	}
 }
 
-.primary-button {
-	background-color: var(--primary-button-bg) !important;
-	border-color: var(--primary-button-bg) !important;
-	color: var(--primary-button-text) !important;
-}
-
 .message__button {
 	color: #00356b;
 }

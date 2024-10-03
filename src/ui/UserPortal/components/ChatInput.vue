@@ -21,7 +21,8 @@
 					:badge="fileArrayFiltered.length.toString() || null"
 					:aria-label="'Upload file (' + fileArrayFiltered.length.toString() + ' files attached)'"
 					icon="pi pi-paperclip"
-					class="file-upload-button secondary-button"
+					class="file-upload-button"
+					severity="secondary"
 					aria-controls="overlay_menu"
 					aria-haspopup="true"
 					@click="toggle"
@@ -119,7 +120,7 @@
 								<Button
 									icon="pi pi-upload"
 									label="Upload"
-									class="primary-button file-upload-container-button"
+									class="file-upload-container-button"
 									style="margin-top: 0.5rem"
 									:disabled="isUploading || localFiles.length === 0 && oneDriveFiles.length === 0"
 									@click="handleUpload"
@@ -195,7 +196,7 @@
 		</div>
 		<Button
 			:disabled="disabled"
-			class="primary-button submit"
+			class="submit"
 			icon="pi pi-send"
 			label="Send"
 			@click="handleSend"
@@ -733,18 +734,6 @@ export default {
 	background-color: white;
 	border-radius: 8px;
 	width: 100%;
-}
-
-.primary-button {
-	background-color: var(--primary-button-bg) !important;
-	border-color: var(--primary-button-bg) !important;
-	color: var(--primary-button-text) !important;
-}
-
-.secondary-button {
-	background-color: var(--secondary-button-bg) !important;
-	border-color: var(--secondary-button-bg) !important;
-	color: var(--secondary-button-text) !important;
 }
 
 .pre-input {
