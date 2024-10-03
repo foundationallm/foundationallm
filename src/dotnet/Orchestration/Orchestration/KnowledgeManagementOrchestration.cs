@@ -207,11 +207,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     _callContext.CurrentUserIdentity!);
             }
 
-            await _azureOpenAIResourceProvider.UpsertResourceAsync<FileUserContext, FileUserContextUpsertResult>(
-                _fileUserContextObjectId,
-                fileUserContext,
-                _callContext.CurrentUserIdentity!);
-
             return result;
         }
 
