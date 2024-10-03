@@ -1,6 +1,9 @@
 import type {
 	Message,
 	Session,
+	UserProfile,
+	FileStoreConnector,
+	OneDriveWorkSchool,
 	ChatSessionProperties,
 	CompletionPrompt,
 	Agent,
@@ -374,6 +377,57 @@ export default {
 			method: 'POST',
 			body: JSON.stringify(attachments),
 		})) as ResourceProviderDeleteResults;
+	},
+
+	async getFileStoreConnectors() {
+		return await this.fetch(`/instances/${this.instanceId}/files/file-store-connectors`) as FileStoreConnector[];
+	},
+
+	/**
+	 * Connects to user's OneDrive work or school account.
+	 * @returns A Promise that resolves to the response from the server.
+	 */
+	async oneDriveWorkSchoolConnect() {
+		return await this.fetch(`/instances/${this.instanceId}/oneDriveWorkSchool/connect`, {
+			method: 'POST',
+			body: null,
+		});
+	},
+
+	/**
+	 * Disconnect to user's OneDrive work or school account.
+	 * @returns A Promise that resolves to the response from the server.
+	 */
+	async oneDriveWorkSchoolDisconnect() {
+		return await this.fetch(`/instances/${this.instanceId}/oneDriveWorkSchool/disconnect`, {
+			method: 'POST',
+			body: null,
+		});
+	},
+
+	/**
+	 * Retrieves user profiles for a given instance.
+	 * @returns An array of user profiles.
+	 */
+	async getUserProfile() {
+		return (await this.fetch(`/instances/${this.instanceId}/userProfiles/`)) as Array<UserProfile>;
+	},
+
+	/**
+	 * Downloads a file from the user's connected OneDrive work or school account.
+	 * @param sessionId - The session ID from which the file is uploaded.
+	 * @param agentName - The agent name.
+	 * @param oneDriveWorkSchool - The OneDrive work or school item.
+	 * @returns A Promise that resolves to the response from the server.
+	 */
+	async oneDriveWorkSchoolDownload(
+		sessionId: string,
+		agentName: string,
+		oneDriveWorkSchool: OneDriveWorkSchool) {
+		return (await this.fetch(`/instances/${this.instanceId}/oneDriveWorkSchool/download?instanceId=${this.instanceId}&sessionId=${sessionId}&agentName=${agentName}`, {
+				method: 'POST',
+				body: oneDriveWorkSchool,
+		})) as OneDriveWorkSchool;
 	},
 };
 

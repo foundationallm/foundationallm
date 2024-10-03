@@ -298,7 +298,9 @@
 	},
 	{
 		"namespace": "ResourceProviders:Vectorization:Storage",
-		"dependency_injection_key": null,
+		"dependency_injection_key": {
+			"description": "Dependency injection key used to inject storage settings for the FoundationaLLM.Vectorization resource provider."
+		},
 		"configuration_section": {
 			"description": "Configuration section used to identify the storage settings for the FoundationaLLM.Vectorization resource provider."
 		},

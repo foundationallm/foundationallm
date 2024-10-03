@@ -115,6 +115,7 @@ export interface Attachment {
 	fileName: string;
 	sessionId: string;
 	contentType: string;
+	source: string;
 }
 
 export interface ResourceProviderDeleteResult {
@@ -124,4 +125,26 @@ export interface ResourceProviderDeleteResult {
 
 export interface ResourceProviderDeleteResults {
 	[key: string]: ResourceProviderDeleteResult;
+}
+
+export interface UserProfile {
+	id: string;
+	type: string;
+	upn: string;
+	flags: Record<string, boolean>;
+}
+
+export interface FileStoreConnector {
+	name: string;
+	category: string;
+	subcategory: string;
+	url: string;
+}
+
+export interface OneDriveWorkSchool {
+	id: string;
+	objectId?: string;
+	name?: string;
+	mimeType?: string;
+	access_token?: string;
 }

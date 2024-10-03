@@ -1,7 +1,7 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class AudioPredictionRequest(BaseModel):
 
-    file: str = None
-    embeddings: list = None
-    #similarity_threshold: float = 29.0
+    file: Optional[str] = None
+    deployment_name: Optional[str] = None
