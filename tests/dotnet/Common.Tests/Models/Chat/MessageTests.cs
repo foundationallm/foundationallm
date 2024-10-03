@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Models.Chat;
+﻿using FoundationaLLM.Common.Models.Conversation;
 
 namespace FoundationaLLM.Common.Tests.Models.Chat
 {

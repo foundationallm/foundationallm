@@ -11,7 +11,7 @@ using Microsoft.Extensions.Options;
 namespace FoundationaLLM.Core.API.Controllers
 {
     /// <summary>
-    /// Provides branding information for the client.
+    /// Provides methods for retrieving and managing files.
     /// </summary>
     [Authorize(Policy = "DefaultPolicy")]
     [ApiController]
@@ -24,7 +24,7 @@ namespace FoundationaLLM.Core.API.Controllers
         private readonly ILogger<FilesController> _logger;
 
         /// <summary>
-        /// The controller for managing attachments.
+        /// The controller for managing files.
         /// </summary>
         /// <param name="callContext">The <see cref="ICallContext"/> call context of the request being handled.</param>
         /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>
@@ -47,11 +47,12 @@ namespace FoundationaLLM.Core.API.Controllers
         /// Uploads an attachment.
         /// </summary>
         /// <param name="instanceId">The instance ID.</param>
+        /// <param name="sessionId">The session ID from which the file is uploaded.</param>
         /// <param name="agentName">The agent name.</param>
         /// <param name="file">The file sent with the HTTP request.</param>
         /// <returns></returns>
         [HttpPost("upload")]
-        public async Task<IActionResult> Upload(string instanceId, string agentName, IFormFile file)
+        public async Task<IActionResult> Upload(string instanceId, string sessionId, string agentName, IFormFile file)
         {
             if (file == null || file.Length == 0)
                 return BadRequest("File not selected.");
@@ -68,6 +69,7 @@ namespace FoundationaLLM.Core.API.Controllers
             return new OkObjectResult(
                 await _coreService.UploadAttachment(
                     instanceId,
+                    sessionId,
                     new AttachmentFile
                     {
                         Name = name,
@@ -113,5 +115,15 @@ namespace FoundationaLLM.Core.API.Controllers
         [HttpPost("delete")]
         public async Task<IActionResult> Delete(string instanceId, [FromBody] List<string> resourcePaths) =>
             new OkObjectResult(await _coreService.DeleteAttachments(instanceId, resourcePaths, _callContext.CurrentUserIdentity!));
+
+
+        /// <summary>
+        /// Returns a list of file store connectors.
+        /// </summary>
+        /// <param name="instanceId">The instance ID.</param>
+        /// <returns></returns>
+        [HttpGet("file-store-connectors")]
+        public async Task<IActionResult> GetFileStoreConnectors(string instanceId) =>
+            new OkObjectResult(await _coreService.GetFileStoreConnectors(instanceId, _callContext.CurrentUserIdentity!));
     }
 }

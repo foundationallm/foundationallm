@@ -28,8 +28,12 @@ param logAnalyticsWorkspaceId string
 @description('Log Analytics Workspace Resource Id to use for diagnostics')
 param logAnalyticsWorkspaceResourceId string
 
+param monitorId string
+
 @description('Networking Resource Group Name')
 param networkingResourceGroupName string
+
+param openAiName string
 
 @description('OPS Resource Group name')
 param opsResourceGroupName string
@@ -144,6 +148,7 @@ module aksBackend 'modules/aks.bicep' = {
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     logAnalyticWorkspaceResourceId: logAnalyticsWorkspaceResourceId
+    monitorId: monitorId
     networkingResourceGroupName: networkingResourceGroupName
     opsResourceGroupName: opsResourceGroupName
     privateDnsZones: filter(dnsZones.outputs.ids, (zone) => contains([ 'aks' ], zone.key))
@@ -166,6 +171,7 @@ module aksFrontend 'modules/aks.bicep' = {
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     logAnalyticWorkspaceResourceId: logAnalyticsWorkspaceResourceId
+    monitorId: monitorId
     networkingResourceGroupName: networkingResourceGroupName
     opsResourceGroupName: opsResourceGroupName
     privateDnsZones: filter(dnsZones.outputs.ids, (zone) => contains([ 'aks' ], zone.key))
@@ -434,10 +440,11 @@ module searchIndexDataReaderWorkerRole 'modules/utility/roleAssignments.bicep' =
   }
 }
 
-module cognitiveServicesOpenAiUserRole 'modules/utility/roleAssignments.bicep' = {
+module cognitiveServicesOpenAiUserRole 'modules/utility/openAiRoleAssignments.bicep' = {
   name: 'cognitiveServicesOpenAiUserRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
   params: {
+    targetOpenAiName: openAiName
     principalId: srBackend[indexOf(vecServiceNames, 'vectorization-api')].outputs.servicePrincipalId
     roleDefinitionIds: {
       'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
@@ -445,10 +452,11 @@ module cognitiveServicesOpenAiUserRole 'modules/utility/roleAssignments.bicep' =
   }
 }
 
-module cognitiveServicesOpenAiUserWorkerRole 'modules/utility/roleAssignments.bicep' = {
+module cognitiveServicesOpenAiUserWorkerRole 'modules/utility/openAiRoleAssignments.bicep' = {
   name: 'cognitiveServicesOpenAiUserWorkerRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
   params: {
+    targetOpenAiName: openAiName
     principalId: srBackend[indexOf(backendServiceNames, 'vectorization-job')].outputs.servicePrincipalId
     roleDefinitionIds: {
       'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
@@ -456,10 +464,11 @@ module cognitiveServicesOpenAiUserWorkerRole 'modules/utility/roleAssignments.bi
   }
 }
 
-module cognitiveServicesOpenAiUserGatewayRole 'modules/utility/roleAssignments.bicep' = {
+module cognitiveServicesOpenAiUserGatewayRole 'modules/utility/openAiRoleAssignments.bicep' = {
   name: 'cognitiveServicesOpenAiUserGatewayRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
   params: {
+    targetOpenAiName: openAiName
     principalId: srBackend[indexOf(backendServiceNames, 'gateway-api')].outputs.servicePrincipalId
     roleDefinitionIds: {
       'Cognitive Services OpenAI Contributor': 'a001fd3d-188f-4b5d-821b-7da978bf7442'
@@ -467,10 +476,11 @@ module cognitiveServicesOpenAiUserGatewayRole 'modules/utility/roleAssignments.b
   }
 }
 
-module cognitiveServicesOpenAiUserCoreRole 'modules/utility/roleAssignments.bicep' = {
+module cognitiveServicesOpenAiUserCoreRole 'modules/utility/openAiRoleAssignments.bicep' = {
   name: 'cognitiveServicesOpenAiUserCoreRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
   params: {
+    targetOpenAiName: openAiName
     principalId: srCoreApi[0].outputs.servicePrincipalId
     roleDefinitionIds: {
       'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
@@ -479,10 +489,11 @@ module cognitiveServicesOpenAiUserCoreRole 'modules/utility/roleAssignments.bice
   }
 }
 
-module cognitiveServicesOpenAiUserMgmtRole 'modules/utility/roleAssignments.bicep' = {
+module cognitiveServicesOpenAiUserMgmtRole 'modules/utility/openAiRoleAssignments.bicep' = {
   name: 'cognitiveServicesOpenAiUserMgmtRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
   params: {
+    targetOpenAiName: openAiName
     principalId: srManagementApi[0].outputs.servicePrincipalId
     roleDefinitionIds: {
       'Cognitive Services OpenAI Contributor': 'a001fd3d-188f-4b5d-821b-7da978bf7442'
@@ -490,10 +501,11 @@ module cognitiveServicesOpenAiUserMgmtRole 'modules/utility/roleAssignments.bice
   }
 }
 
-module cognitiveServicesOpenAiUserLangChainRole 'modules/utility/roleAssignments.bicep' = {
+module cognitiveServicesOpenAiUserLangChainRole 'modules/utility/openAiRoleAssignments.bicep' = {
   name: 'cognitiveServicesOpenAiUserLangChainRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
   params: {
+    targetOpenAiName: openAiName
     principalId: srBackend[indexOf(backendServiceNames, 'langchain-api')].outputs.servicePrincipalId
     roleDefinitionIds: {
       'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
@@ -501,10 +513,11 @@ module cognitiveServicesOpenAiUserLangChainRole 'modules/utility/roleAssignments
   }
 }
 
-module cognitiveServicesOpenAiUserSemanticKernelRole 'modules/utility/roleAssignments.bicep' = {
+module cognitiveServicesOpenAiUserSemanticKernelRole 'modules/utility/openAiRoleAssignments.bicep' = {
   name: 'cognitiveServicesOpenAiUserSemKernelRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
   params: {
+    targetOpenAiName: openAiName
     principalId: srBackend[indexOf(backendServiceNames, 'semantic-kernel-api')].outputs.servicePrincipalId
     roleDefinitionIds: {
       'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'

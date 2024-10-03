@@ -16,10 +16,10 @@ using System.Diagnostics;
 namespace FoundationaLLM.Core.API.Controllers
 {
     /// <summary>
-    /// Methods for orchestration services exposed by the Gatekeeper API service.
+    /// Provides methods for retrieving and managing completions.
     /// </summary>
     /// <remarks>
-    /// Constructor for the Orchestration Controller.
+    /// Constructor for the Completions Controller.
     /// </remarks>
     [Authorize(Policy = "DefaultPolicy")]
     [ApiController]
@@ -120,6 +120,13 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <returns>A list of available agents.</returns>
         [HttpGet("completions/agents", Name = "GetAgents")]
         public async Task<IEnumerable<ResourceProviderGetResult<AgentBase>>> GetAgents(string instanceId) =>
-            await _agentResourceProvider.GetResourcesWithRBAC<AgentBase>(instanceId, _callContext.CurrentUserIdentity!);
+            await _agentResourceProvider.GetResourcesAsync<AgentBase>(
+                instanceId,
+                _callContext.CurrentUserIdentity!,
+                new ResourceProviderLoadOptions
+                {
+                    IncludeRoles = true,
+                    LoadContent = false
+                });
     }
 }

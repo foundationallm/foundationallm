@@ -7,7 +7,6 @@ import Toast from 'primevue/toast';
 import Chip from 'primevue/chip';
 import Textarea from 'primevue/textarea';
 import ToastService from 'primevue/toastservice';
-import Tooltip from 'primevue/tooltip';
 import Divider from 'primevue/divider';
 import Dropdown from 'primevue/dropdown';
 import Avatar from 'primevue/avatar';
@@ -20,6 +19,7 @@ import ConfirmationService from 'primevue/confirmationservice';
 import ProgressBar from 'primevue/progressbar';
 import FocusTrap from 'primevue/focustrap';
 import Image from 'primevue/image';
+import Menu from 'primevue/menu';
 
 import { defineNuxtPlugin } from '#app';
 
@@ -43,9 +43,9 @@ export default defineNuxtPlugin((nuxtApp) => {
 	nuxtApp.vueApp.component('ProgressBar', ProgressBar);
 	nuxtApp.vueApp.directive('focustrap', FocusTrap);
 	nuxtApp.vueApp.component('Image', Image);
+	nuxtApp.vueApp.component('Menu', Menu);
 
 	nuxtApp.vueApp.use(ConfirmationService);
 
 	nuxtApp.vueApp.use(ToastService);
-	nuxtApp.vueApp.directive('tooltip', Tooltip);
 });

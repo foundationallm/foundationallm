@@ -143,14 +143,6 @@ $configurations = @{
         template = './data/resource-provider/FoundationaLLM.AIModel/completion-model.template.json'
         render   = '../common/data/resource-provider/FoundationaLLM.AIModel/completion-model.json'
     }
-    "completion-4-model" = @{
-        template = './data/resource-provider/FoundationaLLM.AIModel/completion-4-model.template.json'
-        render   = '../common/data/resource-provider/FoundationaLLM.AIModel/completion-4-model.json'
-    }
-    "completion-4o-model" = @{
-        template = './data/resource-provider/FoundationaLLM.AIModel/completion-4o-model.template.json'
-        render   = '../common/data/resource-provider/FoundationaLLM.AIModel/completion-4o-model.json'
-    }
     "embedding-model"  = @{
         template = './data/resource-provider/FoundationaLLM.AIModel/embedding-model.template.json'
         render   = '../common/data/resource-provider/FoundationaLLM.AIModel/embedding-model.json'
@@ -224,7 +216,6 @@ else {
     $env:PATH = $env:PATH, "$(Split-Path -Path $pwd.Path -Parent)/common/tools/azcopy" -join $separator
 }
 
-$env:AZCOPY_AUTO_LOGIN_TYPE="AZCLI"
 $target = "https://$env:AZURE_STORAGE_ACCOUNT_NAME.blob.core.windows.net/resource-provider/"
 
 azcopy cp '../common/data/resource-provider/*' $target --exclude-pattern .git* --recursive=True

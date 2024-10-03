@@ -31,7 +31,7 @@
     <ProjectReference Include="..\Configuration\Configuration.csproj" />
     <ProjectReference Include="..\DataSource\DataSource.csproj" />
     <ProjectReference Include="..\Gateway\Gateway.csproj" />
-    <ProjectReference Include="..\Vectorization\Vectorization.csproj" />
+    <ProjectReference Include="..\VectorizationEngine\VectorizationEngine.csproj" />
   </ItemGroup>
 
 </Project>

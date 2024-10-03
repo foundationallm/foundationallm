@@ -24,5 +24,11 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
         /// </summary>
         [JsonPropertyName("openai_thread_created_on")]
         public DateTimeOffset? OpenAIThreadCreatedOn { get; set; }
+
+        /// <summary>
+        /// The OpenAI vector store id associated with the FoundationaLLM session (conversation) id.
+        /// </summary>
+        [JsonPropertyName("openai_vector_store_id")]
+        public string? OpenAIVectorStoreId { get; set; }
     }
 }

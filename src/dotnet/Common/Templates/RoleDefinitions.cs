@@ -166,7 +166,7 @@ namespace FoundationaLLM.Common.Models.Authorization
                                     "FoundationaLLM.AzureOpenAI/fileUserContexts/read",
                                     "FoundationaLLM.AzureOpenAI/fileUserContexts/write",
                                     "FoundationaLLM.Configuration/apiEndpointConfigurations/read",
-                                    "FoundationaLLM.AIModels/aiModels/read",],
+                                    "FoundationaLLM.AIModel/aiModels/read",],
                                 NotActions = [],
                                 DataActions = [],
                                 NotDataActions = [],

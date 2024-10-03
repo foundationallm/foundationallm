@@ -33,6 +33,8 @@ const allowedKeys = [
 	'FoundationaLLM:UserPortal:Authentication:Entra:TenantId',
 	'FoundationaLLM:UserPortal:Authentication:Entra:Scopes',
 	'FoundationaLLM:UserPortal:Authentication:Entra:CallbackPath',
+	'FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions',
+	'FoundationaLLM:APIEndpoints:OneDriveWorkSchool:Configuration:Scopes',
 ];
 
 export default defineEventHandler(async (event) => {

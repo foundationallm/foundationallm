@@ -1,10 +1,11 @@
 using FoundationaLLM.Common.Models.Authentication;
-using FoundationaLLM.Common.Models.Chat;
+using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
+using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 
 namespace FoundationaLLM.Core.Interfaces;
 
@@ -18,7 +19,7 @@ public interface ICoreService
     /// Returns list of chat session ids and names.
     /// </summary>
     /// <param name="instanceId">The instance id for which to retrieve chat sessions.</param>
-    Task<List<Session>> GetAllChatSessionsAsync(string instanceId);
+    Task<List<Conversation>> GetAllChatSessionsAsync(string instanceId);
 
     /// <summary>
     /// Returns the chat messages related to an existing session.
@@ -32,7 +33,7 @@ public interface ICoreService
     /// </summary>
     /// <param name="instanceId">The instance Id.</param>
     /// <param name="chatSessionProperties">The session properties.</param>
-    Task<Session> CreateNewChatSessionAsync(string instanceId, ChatSessionProperties chatSessionProperties);
+    Task<Conversation> CreateNewChatSessionAsync(string instanceId, ChatSessionProperties chatSessionProperties);
 
     /// <summary>
     /// Rename the chat session from its default (eg., "New Chat") to the summary provided by OpenAI.
@@ -40,7 +41,7 @@ public interface ICoreService
     /// <param name="instanceId">The instance id.</param>
     /// <param name="sessionId">The session id to rename.</param>
     /// <param name="chatSessionProperties">The session properties.</param>
-    Task<Session> RenameChatSessionAsync(string instanceId, string sessionId, ChatSessionProperties chatSessionProperties);
+    Task<Conversation> RenameChatSessionAsync(string instanceId, string sessionId, ChatSessionProperties chatSessionProperties);
 
     /// <summary>
     /// Delete a chat session and related messages.
@@ -110,12 +111,13 @@ public interface ICoreService
     /// Uploads an attachment.
     /// </summary>
     /// <param name="instanceId">The FoundationaLLM instance id.</param>
+    /// <param name="sessionId">The session id from which the attachment is uploaded.</param>
     /// <param name="attachmentFile">The <see cref="AttachmentFile"/> object containing the attachment file data.</param>
     /// <param name="agentName">The name of the agent.</param>
     /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
     /// <returns>A <see cref="ResourceProviderUpsertResult"/> object with the FoundationaLLM.Attachment resource provider object id.</returns>
     Task<ResourceProviderUpsertResult> UploadAttachment(
-        string instanceId, AttachmentFile attachmentFile, string agentName, UnifiedUserIdentity userIdentity);
+        string instanceId, string sessionId, AttachmentFile attachmentFile, string agentName, UnifiedUserIdentity userIdentity);
 
     /// <summary>
     /// Downloads an attachment.
@@ -144,4 +146,13 @@ public interface ICoreService
     /// <returns>A dictionary with the delete operation result for each resource path.</returns>
     Task<Dictionary<string, ResourceProviderDeleteResult?>> DeleteAttachments(
         string instanceId, List<string> resourcePaths, UnifiedUserIdentity userIdentity);
+
+    /// <summary>
+    /// Gets the file store connectors for the given instance.
+    /// </summary>
+    /// <param name="instanceId">The FoundationaLLM instance id.</param>
+    /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
+    /// <returns>A list of API endpoint configurations for file store connectors.</returns>
+    Task<IEnumerable<APIEndpointConfiguration>> GetFileStoreConnectors(string instanceId,
+        UnifiedUserIdentity userIdentity);
 }

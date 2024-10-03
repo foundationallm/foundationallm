@@ -17,12 +17,12 @@ namespace FoundationaLLM.Vectorization.Services.RequestProcessors
         ILoggerFactory loggerFactory) : IVectorizationRequestProcessor
     {
         /// <inheritdoc/>
-        public async Task<VectorizationResult> ProcessRequest(VectorizationRequest vectorizationRequest, UnifiedUserIdentity? userIdentity)
+        public async Task<VectorizationResult> ProcessRequest(string instanceId, VectorizationRequest vectorizationRequest, UnifiedUserIdentity? userIdentity)
         {
             var vectorizationServiceClient = new VectorizationServiceClient(
                 httpClientFactoryService,
                 loggerFactory.CreateLogger<VectorizationServiceClient>());
-            return await vectorizationServiceClient.ProcessRequest(vectorizationRequest, userIdentity);
+            return await vectorizationServiceClient.ProcessRequest(instanceId, vectorizationRequest, userIdentity);
         }
     }
 }

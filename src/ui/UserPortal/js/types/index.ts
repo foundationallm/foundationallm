@@ -26,6 +26,28 @@ export interface ResourceProviderUpsertResult {
 	resourceExists: boolean;
 }
 
+export interface MessageContent {
+	type: string;
+	fileName: string;
+	value: string;
+	blobUrl?: string;
+	loading?: boolean;
+	error?: boolean;
+}
+
+export interface AttachmentDetail {
+	objectId: string;
+	displayName: string;
+	contentType: string;
+}
+
+export interface AnalysisResult {
+	tool_input: string;
+	tool_output: string;
+	agent_capability_category: string;
+	tool_name: string;
+}
+
 export interface Message {
 	id: string;
 	type: string;
@@ -43,28 +65,6 @@ export interface Message {
 	attachments: Array<string>;
 	attachmentDetails: Array<AttachmentDetail>;
 	analysisResults: Array<AnalysisResult>;
-}
-
-export interface MessageContent {
-	type: string;
-	fileName: string;
-	value: string;
-	blobUrl?: string;
-	loading?: boolean;
-	error?: boolean;
-}
-
-export interface AttachmentDetail {
-	objectId: string;
-	displayName: string;
-	contentType: string;
-}
-
-export interface AnalysisResult {
-    tool_input: string;
-    tool_output: string;
-    agent_capability_category: string;
-    tool_name: string;
 }
 
 export interface Session {
@@ -115,13 +115,36 @@ export interface Attachment {
 	fileName: string;
 	sessionId: string;
 	contentType: string;
+	source: string;
 }
 
 export interface ResourceProviderDeleteResult {
-    deleted: boolean;
-  	reason?: string;
+	deleted: boolean;
+	reason?: string;
 }
 
 export interface ResourceProviderDeleteResults {
 	[key: string]: ResourceProviderDeleteResult;
+}
+
+export interface UserProfile {
+	id: string;
+	type: string;
+	upn: string;
+	flags: Record<string, boolean>;
+}
+
+export interface FileStoreConnector {
+	name: string;
+	category: string;
+	subcategory: string;
+	url: string;
+}
+
+export interface OneDriveWorkSchool {
+	id: string;
+	objectId?: string;
+	name?: string;
+	mimeType?: string;
+	access_token?: string;
 }

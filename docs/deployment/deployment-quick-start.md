@@ -51,7 +51,7 @@ If you are upgrading from a previous version, like `0.5.0`, please refer to the 
     ```cmd
     git clone https://github.com/solliancenet/foundationallm.git
     cd foundationallm/deploy/quick-start
-    git checkout release/0.7.0
+    git checkout release/0.8.0
     ```
 
 3. **For release 0.7.0+:** Run the following script to install the deployment utilities, including `AzCopy`, locally.
@@ -148,7 +148,7 @@ This script will need to be executed twice for the principal IDs of the followin
 
 These can be found in the Azure portal in the main resource group for the deployment.
 
-> [!TIP]
+> [!IMPORTANT]
 > The user running the script will need to have the appropriate permissions to assign roles to the managed identities. The user will need to be a `Global Administrator` or have the `Privileged Role Administrator` role in the Entra ID tenant.
 
 The syntax for running the script from the `deploy\common\scripts` folder is:

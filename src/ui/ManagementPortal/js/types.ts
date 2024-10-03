@@ -43,6 +43,8 @@ export type Agent = ResourceBase & {
 		trigger_cron_schedule: string;
 	};
 
+	capabilities: string[];
+
 	sessions_enabled: boolean;
 	orchestration_settings: {
 		orchestrator: string;
@@ -90,6 +92,7 @@ export type ExternalOrchestrationService = ResourceBase & {
 	api_url_configuration_name: string;
 	api_key_configuration_name: string;
 	url: string;
+	status_url?: string | null;
 	// The resolved value of the API key configuration reference for displaying in the UI and updating the configuration.
 	resolved_api_key: string;
 };
@@ -314,6 +317,8 @@ export type CreateAgentRequest = ResourceBase & {
 		version: string;
 		deployment: string;
 	};
+
+	capabilities: string[];
 
 	vectorization: {
 		dedicated_pipeline: boolean;

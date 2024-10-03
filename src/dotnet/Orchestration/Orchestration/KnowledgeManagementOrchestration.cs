@@ -1,4 +1,7 @@
-﻿using FoundationaLLM.Common.Constants.Agents;
+﻿using FoundationaLLM.Common.Clients;
+using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Agents;
+using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
@@ -36,8 +39,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         ICallContext callContext,
         ILLMOrchestrationService orchestrationService,
         ILogger<OrchestrationBase> logger,
+        IHttpClientFactoryService httpClientFactoryService,
         Dictionary<string, IResourceProviderService> resourceProviderServices,
-        bool dataSourceAccessDenied) : OrchestrationBase(orchestrationService)
+        bool dataSourceAccessDenied,
+        string? openAIVectorStoreId) : OrchestrationBase(orchestrationService)
     {
         private readonly string _instanceId = instanceId;
         private readonly KnowledgeManagementAgent _agent = agent;
@@ -46,17 +51,22 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         private readonly ILogger<OrchestrationBase> _logger = logger;
         private readonly bool _dataSourceAccessDenied = dataSourceAccessDenied;
         private readonly string _fileUserContextName = $"{callContext.CurrentUserIdentity!.UPN?.NormalizeUserPrincipalName() ?? callContext.CurrentUserIdentity!.UserId}-file-{instanceId.ToLower()}";
-        private readonly string _fileUserContextObjectId = $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileUserContexts}/"
-            + $"{callContext.CurrentUserIdentity!.UPN?.NormalizeUserPrincipalName() ?? callContext.CurrentUserIdentity!.UserId}-file-{instanceId.ToLower()}";
 
         private readonly IResourceProviderService _attachmentResourceProvider =
             resourceProviderServices[ResourceProviderNames.FoundationaLLM_Attachment];
         private readonly IResourceProviderService _azureOpenAIResourceProvider =
             resourceProviderServices[ResourceProviderNames.FoundationaLLM_AzureOpenAI];
+        private readonly string? _openAIVectorStoreId = openAIVectorStoreId;
+        private GatewayServiceClient _gatewayClient;
 
         /// <inheritdoc/>
         public override async Task<CompletionResponse> GetCompletion(CompletionRequest completionRequest)
         {
+            _gatewayClient = new GatewayServiceClient(
+                await httpClientFactoryService
+                    .CreateClient(HttpClientNames.GatewayAPI, callContext.CurrentUserIdentity!),
+                _logger);
+
             if (_dataSourceAccessDenied)
                 return new CompletionResponse
                 {
@@ -82,7 +92,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     OperationId = completionRequest.OperationId,
                     UserPrompt = completionRequest.UserPrompt!,
                     MessageHistory = completionRequest.MessageHistory,
-                    Attachments = completionRequest.Attachments == null ? [] : await GetAttachmentPaths(completionRequest.Attachments),
+                    Attachments = await GetAttachmentPaths(completionRequest.Attachments),
                     Agent = _agent,
                     Objects = _explodedObjects
                 });
@@ -98,8 +108,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             return new CompletionResponse
             {
                 OperationId = completionRequest.OperationId!,
-                Completion = result.Completion!,
-                Content = await TransformContentItems(result.Content!),
+                Completion = result.Completion,
+                Content = result.Content != null ? await TransformContentItems(result.Content) : null,
                 UserPrompt = completionRequest.UserPrompt!,
                 Citations = result.Citations,
                 FullPrompt = result.FullPrompt,
@@ -118,10 +128,11 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             var attachments = attachmentObjectIds
                 .ToAsyncEnumerable()
-                .SelectAwait(async x => await _attachmentResourceProvider.GetResource<AttachmentFile>(x, _callContext.CurrentUserIdentity!));
+                .SelectAwait(async x => await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(x, _callContext.CurrentUserIdentity!));
 
-            var fileUserContext = await _azureOpenAIResourceProvider.GetResource<FileUserContext>(
-                _fileUserContextObjectId,
+            var fileUserContext = await _azureOpenAIResourceProvider.GetResourceAsync<FileUserContext>(
+                _instanceId,
+                _fileUserContextName,
                 _callContext.CurrentUserIdentity!);
 
             List<AttachmentProperties> result = [];
@@ -130,6 +141,23 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 var useAttachmentPath =
                     string.IsNullOrWhiteSpace(attachment.SecondaryProvider)
                     || (attachment.ContentType ?? string.Empty).StartsWith("image/", StringComparison.OrdinalIgnoreCase);
+
+                var fileMapping = fileUserContext.Files[attachment.ObjectId!];
+                if (fileMapping.RequiresVectorization)
+                {
+                    _ = await _gatewayClient!.CreateAgentCapability(
+                        _instanceId,
+                        AgentCapabilityCategoryNames.OpenAIAssistants,
+                        fileUserContext.AssistantUserContextName,
+                        new()
+                        {
+                            { OpenAIAgentCapabilityParameterNames.CreateAssistantFile, false },
+                            { OpenAIAgentCapabilityParameterNames.Endpoint, fileUserContext.Endpoint },
+                            { OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStore, fileMapping.RequiresVectorization },
+                            { OpenAIAgentCapabilityParameterNames.AssistantVectorStoreId, _openAIVectorStoreId ?? string.Empty },
+                            { OpenAIAgentCapabilityParameterNames.AssistantFileId, fileMapping.OpenAIFileId! }
+                        });
+                }
 
                 result.Add(new AttachmentProperties
                 {
@@ -161,13 +189,22 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             var result = contentItems.Select(ci => TransformContentItem(ci, newFileMappings)).ToList();
 
-            var fileUserContext = await _azureOpenAIResourceProvider.GetResource<FileUserContext>(
-                _fileUserContextObjectId,
-                _callContext.CurrentUserIdentity!);
-
-            foreach (var fileMapping in newFileMappings)
+            if (newFileMappings.Count > 0)
             {
-                fileUserContext.Files.TryAdd(fileMapping.FoundationaLLMObjectId, fileMapping);
+                var fileUserContext = await _azureOpenAIResourceProvider.GetResourceAsync<FileUserContext>(
+                    _instanceId,
+                    _fileUserContextName,
+                    _callContext.CurrentUserIdentity!);
+
+                foreach (var fileMapping in newFileMappings)
+                {
+                    fileUserContext.Files.TryAdd(fileMapping.FoundationaLLMObjectId, fileMapping);
+                }
+
+                await _azureOpenAIResourceProvider.UpsertResourceAsync<FileUserContext, FileUserContextUpsertResult>(
+                    _instanceId,
+                    fileUserContext,
+                    _callContext.CurrentUserIdentity!);
             }
 
             await _azureOpenAIResourceProvider.UpsertResourceAsync<FileUserContext, FileUserContextUpsertResult>(
@@ -213,27 +250,50 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
         private OpenAIFilePathContentItem TransformOpenAIAssistantsFilePath(OpenAIFilePathContentItem openAIFilePath, List<FileMapping> newFileMappings)
         {
-            newFileMappings.Add(new FileMapping
+            if (!string.IsNullOrWhiteSpace(openAIFilePath.FileId))
             {
-                FoundationaLLMObjectId = $"/instances/{_instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileUserContexts}/{_fileUserContextName}/{AzureOpenAIResourceTypeNames.FilesContent}/{openAIFilePath.FileId}",
-                OriginalFileName = openAIFilePath.FileId!,
-                ContentType = "application/octet-stream",
-                OpenAIFileId = openAIFilePath.FileId!,
-                Generated = true,
-                OpenAIFileGeneratedOn = DateTimeOffset.UtcNow
-            });
-            openAIFilePath.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{openAIFilePath.FileId}";
+                // Empty file ids occur when dealing with file search annotations.
+                // Looks like the assistant is providing "internal" RAG pattern references to vectorized text chunks that were included in the context.
+                // In this case, we should not generate a file mapping as it will result in invalid file urls.
+                newFileMappings.Add(new FileMapping
+                {
+                    FoundationaLLMObjectId = $"/instances/{_instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileUserContexts}/{_fileUserContextName}/{AzureOpenAIResourceTypeNames.FilesContent}/{openAIFilePath.FileId}",
+                    OriginalFileName = openAIFilePath.FileId!,
+                    ContentType = "application/octet-stream",
+                    OpenAIFileId = openAIFilePath.FileId!,
+                    Generated = true,
+                    OpenAIFileGeneratedOn = DateTimeOffset.UtcNow
+                });
+                openAIFilePath.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{openAIFilePath.FileId}";
+            }
+            else
+                openAIFilePath.FileUrl = null;
+
             return openAIFilePath;
         }
 
         private OpenAITextMessageContentItem TransformOpenAIAssistantsTextMessage(OpenAITextMessageContentItem openAITextMessage, List<FileMapping> newFileMappings)
         {
+            var pattern = new Regex(@"\【[0-9:]+†.+?\】");
+
+            openAITextMessage.Value = pattern.Replace(openAITextMessage.Value!, string.Empty);
+
             openAITextMessage.Annotations = openAITextMessage.Annotations
+                .Where(a => !pattern.Match(a.Text!).Success)
                 .Select(a => TransformOpenAIAssistantsFilePath(a, newFileMappings))
                 .ToList();
-            var sandboxPlaceholders = openAITextMessage.Annotations.ToDictionary(
-                a => a.Text!,
-                a => $"{{{{fllm_base_url}}}}{a.FileUrl!}");
+
+            #region Replace code interpreter placeholders with file urls
+
+            // Code interpreter placeholders are assumed to be in the form of (sandbox:file-id).
+            // They are expected to be unique and have a valid corresponding file url.
+            var codeInterpreterPlaceholders = openAITextMessage.Annotations
+                .Where(a => !string.IsNullOrWhiteSpace(a.FileUrl) && !string.IsNullOrWhiteSpace(a.Text))
+                .DistinctBy(a => a.Text)
+                .ToDictionary(
+                    a => $"({a.Text!})",
+                    a => $"({a.FileUrl})");
+
 
             var input = openAITextMessage.Value!;
             var regex = new Regex(@"\(sandbox:[^)]*\)");
@@ -248,9 +308,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             foreach (Match match in matches)
             {
                 var startIndex = previousMatch == null ? 0 : previousMatch.Index + previousMatch.Length;
-                output.Add(input.Substring(startIndex, match.Index - startIndex));
+                output.Add(input[startIndex..match.Index]);
                 var token = input.Substring(match.Index, match.Length);
-                if (sandboxPlaceholders.TryGetValue(token, out var replacement))
+                if (codeInterpreterPlaceholders.TryGetValue(token, out var replacement))
                     output.Add(replacement);
                 else
                     output.Add(token);
@@ -261,6 +321,25 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             output.Add(input.Substring(previousMatch!.Index + previousMatch.Length));
 
             openAITextMessage.Value = string.Join("", output);
+
+            #endregion
+
+            #region Replace file search placeholders with empty strings
+
+            // File search placeholders are assumed to be unique and not have a corresponding file url.
+            var fileSearchPlaceholders = openAITextMessage.Annotations
+                .Where(a => string.IsNullOrWhiteSpace(a.FileUrl) && !string.IsNullOrWhiteSpace(a.Text))
+                .DistinctBy(a => a.Text)
+                .Select(a => a.Text!)
+                .ToList();
+
+            foreach (var fileSearchPlaceholder in fileSearchPlaceholders)
+            {
+                openAITextMessage.Value = openAITextMessage.Value.Replace(fileSearchPlaceholder, string.Empty);
+            }
+
+            #endregion
+
             return openAITextMessage;
         }
 

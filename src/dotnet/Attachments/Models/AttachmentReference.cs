@@ -24,6 +24,11 @@ namespace FoundationaLLM.Attachment.Models
         public string ContentType { get; set; } = string.Empty;
 
         /// <summary>
+        /// The size of the file.
+        /// </summary>
+        public long Size { get; set; }
+
+        /// <summary>
         /// Indicates an optional secondary provider for the attachment.
         /// </summary>
         /// <remarks>

@@ -14,5 +14,10 @@
         /// The identifier of the newly created OpenAI assistant thread id (if any).
         /// </summary>
         public string? NewOpenAIAssistantThreadId { get; set; }
+
+        /// <summary>
+        /// The identifier of the newly created OpenAI assistant vector store id (if any).
+        /// </summary>
+        public string? NewOpenAIAssistantVectorStoreId { get; set; }
     }
 }

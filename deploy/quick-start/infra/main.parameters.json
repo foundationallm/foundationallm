@@ -43,10 +43,8 @@
             "tenantId": "${ENTRA_MANAGEMENT_UI_TENANT_ID}"
           },
           {
-            "name": "vectorization-api",
-            "clientId": "${ENTRA_VECTORIZATION_API_CLIENT_ID}",
-            "scopes": "${ENTRA_VECTORIZATION_API_SCOPES}",
-            "tenantId": "${ENTRA_VECTORIZATION_API_TENANT_ID}"
+            "name": "reader",
+            "clientId": "${ENTRA_READER_OBJECT_ID}"
           }
         ]
       },

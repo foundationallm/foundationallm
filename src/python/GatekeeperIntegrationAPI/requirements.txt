@@ -1,10 +1,12 @@
 azure-appconfiguration-provider==1.2.0
 azure-identity==1.17.1
 azure-keyvault-secrets==4.8.0
-azure-monitor-opentelemetry==1.6.1
+azure-monitor-opentelemetry==1.6.2
+azure-monitor-opentelemetry-exporter==1.0.0b28
 fastapi==0.112.0
 numpy==1.26.4
 presidio-analyzer==2.2.355
 presidio-anonymizer==2.2.355
+pydantic==2.8.2
 pylint==3.2.6
 uvicorn==0.30.5

@@ -25,6 +25,11 @@
         /// </summary>
         public const string CreateAssistantFile = "OpenAI.Assistants.CreateAssistantFile";
 
+        /// <summary>
+        /// Indicates the need to add an existing OpenAI assistant file to the OpenAI assistant vector store.
+        /// </summary>
+        public const string AddAssistantFileToVectorStore = "OpenAI.Assistants.AddAssistantFileToVectorStore";
+
         #endregion
 
         #region Inputs
@@ -67,6 +72,11 @@
         /// Provides the identifier of an existing OpenAI assistant file.
         /// </summary>
         public const string AssistantFileId = "OpenAI.Assistants.AssistantFileId";
+
+        /// <summary>
+        /// Provides the identifier of an existing OpenAI assistant vector store.
+        /// </summary>
+        public const string AssistantVectorStoreId = "OpenAI.Assistants.AssistantVectorStoreId";
 
         #endregion
     }

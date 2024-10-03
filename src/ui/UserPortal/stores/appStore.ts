@@ -1,17 +1,20 @@
 import { defineStore } from 'pinia';
 import { useAppConfigStore } from './appConfigStore';
 import { useAuthStore } from './authStore';
-import type { 
+import type {
 	Session,
 	ChatSessionProperties,
 	Message,
+	UserProfile,
 	Agent,
+	FileStoreConnector,
+	OneDriveWorkSchool,
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
-	ResourceProviderDeleteResult,
+	// ResourceProviderDeleteResult,
 	ResourceProviderDeleteResults,
 	Attachment,
-	MessageContent
+	MessageContent,
 } from '@/js/types';
 import api from '@/js/api';
 import eventBus from '@/js/eventBus';
@@ -20,6 +23,8 @@ export const useAppStore = defineStore('app', {
 	state: () => ({
 		sessions: [] as Session[],
 		currentSession: null as Session | null,
+		renamedSessions: [] as Session[],
+		deletedSessions: [] as Session[],
 		currentMessages: [] as Message[],
 		isSidebarClosed: false as boolean,
 		agents: [] as ResourceProviderGetResult<Agent>[],
@@ -27,6 +32,9 @@ export const useAppStore = defineStore('app', {
 		lastSelectedAgent: null as ResourceProviderGetResult<Agent> | null,
 		attachments: [] as Attachment[],
 		longRunningOperations: new Map<string, string>(), // sessionId -> operationId
+		fileStoreConnectors: [] as FileStoreConnector[],
+		oneDriveWorkSchool: null as boolean | null,
+		userProfiles: null as UserProfile | null,
 	}),
 
 	getters: {},
@@ -52,6 +60,8 @@ export const useAppStore = defineStore('app', {
 				await this.changeSession(existingSession || this.sessions[0]);
 			}
 
+			await this.getUserProfiles();
+
 			// if (this.currentSession) {
 			// 	await this.getMessages();
 			// 	this.updateSessionAgentFromMessages(this.currentSession);
@@ -61,15 +71,18 @@ export const useAppStore = defineStore('app', {
 		getDefaultChatSessionProperties(): ChatSessionProperties {
 			const now = new Date();
 			// Using the 'sv-SE' locale since it uses the 'YYY-MM-DD' format.
-			const formattedNow = now.toLocaleString('sv-SE', {
-			year: 'numeric',
-			month: '2-digit',
-			day: '2-digit',
-			hour: '2-digit',
-			minute: '2-digit',
-			second: '2-digit',
-			hour12: false,
-			}).replace(' ', 'T').replace('T', ' ');
+			const formattedNow = now
+				.toLocaleString('sv-SE', {
+					year: 'numeric',
+					month: '2-digit',
+					day: '2-digit',
+					hour: '2-digit',
+					minute: '2-digit',
+					second: '2-digit',
+					hour12: false,
+				})
+				.replace(' ', 'T')
+				.replace('T', ' ');
 			return {
 				name: formattedNow,
 			};
@@ -91,6 +104,22 @@ export const useAppStore = defineStore('app', {
 			} else {
 				this.sessions = sessions;
 			}
+
+			// Handle inconsistencies in displaying the rename session due to potential delays in the backend updating the session name.
+			this.renamedSessions.forEach((renamedSession: Session) => {
+				const existingSession = this.sessions.find((s: Session) => s.id === renamedSession.id);
+				if (existingSession) {
+					existingSession.name = renamedSession.name;
+				}
+			});
+
+			// Handle inconsistencies in displaying the deleted session due to potential delays in the backend updating the session list.
+			this.deletedSessions.forEach((deletedSession: Session) => {
+				const existingSession = this.sessions.find((s: Session) => s.id === deletedSession.id);
+				if (existingSession) {
+					this.removeSession(deletedSession.id);
+				}
+			});
 		},
 
 		async addSession(properties: ChatSessionProperties) {
@@ -121,6 +150,17 @@ export const useAppStore = defineStore('app', {
 
 			try {
 				await api.renameSession(sessionToRename.id, newSessionName);
+				const existingRenamedSession = this.renamedSessions.find(
+					(session: Session) => session.id === sessionToRename.id,
+				);
+				if (existingRenamedSession) {
+					existingRenamedSession.name = newSessionName;
+				} else {
+					this.renamedSessions = [
+						{ ...sessionToRename, name: newSessionName },
+						...this.renamedSessions,
+					];
+				}
 			} catch (error) {
 				existingSession.name = previousName;
 			}
@@ -131,6 +171,9 @@ export const useAppStore = defineStore('app', {
 			await this.getSessions();
 
 			this.removeSession(sessionToDelete!.id);
+
+			// Add the deleted session to the list of deleted sessions to handle inconsistencies in the backend updating the session list.
+			this.deletedSessions = [sessionToDelete, ...this.deletedSessions];
 
 			// Ensure there is at least always 1 session
 			if (this.sessions.length === 0) {
@@ -146,23 +189,21 @@ export const useAppStore = defineStore('app', {
 		},
 
 		removeSession(sessionId: string) {
-			this.sessions = this.sessions.filter(
-				(session: Session) => session.id !== sessionId
-			);
+			this.sessions = this.sessions.filter((session: Session) => session.id !== sessionId);
 		},
 
 		initializeMessageContent(content: MessageContent) {
 			return reactive({
-			  ...content,
-			  blobUrl: '',
-			  loading: true,
-			  error: false
+				...content,
+				blobUrl: '',
+				loading: true,
+				error: false,
 			});
-		  },
+		},
 
 		async getMessages() {
 			const data = await api.getMessages(this.currentSession.id);
-			this.currentMessages = data.map(message => ({
+			this.currentMessages = data.map((message) => ({
 				...message,
 				content: message.content ? message.content.map(this.initializeMessageContent) : [],
 			}));
@@ -212,6 +253,7 @@ export const useAppStore = defineStore('app', {
 		async sendMessage(text: string) {
 			if (!text) return;
 
+			const agent = this.getSessionAgent(this.currentSession!).resource;
 			const sessionId = this.currentSession!.id;
 			const relevantAttachments = this.attachments.filter(
 				(attachment) => attachment.sessionId === sessionId,
@@ -236,7 +278,7 @@ export const useAppStore = defineStore('app', {
 				tokens: 0,
 				type: 'Message',
 				vector: [],
-				attachmentDetails: attachmentDetails,
+				attachmentDetails,
 			};
 			this.currentMessages.push(tempUserMessage);
 
@@ -245,7 +287,7 @@ export const useAppStore = defineStore('app', {
 				id: '',
 				rating: null,
 				sender: 'Assistant',
-				senderDisplayName: 'Assistant',
+				senderDisplayName: agent.name,
 				sessionId: this.currentSession!.id,
 				text: '',
 				timeStamp: new Date().toISOString(),
@@ -255,7 +297,6 @@ export const useAppStore = defineStore('app', {
 			};
 			this.currentMessages.push(tempAssistantMessage);
 
-			const agent = this.getSessionAgent(this.currentSession!).resource;
 			if (agent.long_running) {
 				// Handle long-running operations
 				const operationId = await api.startLongRunningProcess('/completions', {
@@ -277,7 +318,9 @@ export const useAppStore = defineStore('app', {
 				);
 				await this.getMessages();
 				// Get rid of the attachments that were just sent.
-				this.attachments = this.attachments.filter((attachment) => { return !relevantAttachments.includes(attachment) });
+				this.attachments = this.attachments.filter((attachment) => {
+					return !relevantAttachments.includes(attachment);
+				});
 			}
 		},
 
@@ -341,6 +384,54 @@ export const useAppStore = defineStore('app', {
 			return this.agents;
 		},
 
+		async getFileStoreConnectors() {
+			this.fileStoreConnectors = await api.getFileStoreConnectors();
+			return this.fileStoreConnectors;
+		},
+
+		async oneDriveWorkSchoolConnect() {
+			await api.oneDriveWorkSchoolConnect().then(() => {
+				this.oneDriveWorkSchool = true;
+			});
+		},
+
+		async oneDriveWorkSchoolDisconnect() {
+			await api.oneDriveWorkSchoolDisconnect().then(() => {
+				this.oneDriveWorkSchool = false;
+			});
+		},
+
+		async getUserProfiles() {
+			this.userProfiles = await api.getUserProfile();
+			this.oneDriveWorkSchool = this.userProfiles?.flags['oneDriveWorkSchoolEnabled'];
+			return this.userProfiles;
+		},
+
+		async oneDriveWorkSchoolDownload(sessionId: string, oneDriveWorkSchool: OneDriveWorkSchool) {
+			const agent = this.getSessionAgent(this.currentSession!).resource;
+			// If the agent is not found, do not upload the attachment and display an error message.
+			if (!agent) {
+				throw new Error('No agent selected.');
+			}
+
+			const item = (await api.oneDriveWorkSchoolDownload(
+				sessionId,
+				agent.name,
+				oneDriveWorkSchool,
+			)) as OneDriveWorkSchool;
+			const newAttachment: Attachment = {
+				id: item.objectId!,
+				fileName: item.name!,
+				sessionId,
+				contentType: item.mimeType!,
+				source: 'OneDrive Work/School',
+			};
+
+			this.attachments.push(newAttachment);
+
+			return item.objectId;
+		},
+
 		async uploadAttachment(file: FormData, sessionId: string, progressCallback: Function) {
 			const agent = this.getSessionAgent(this.currentSession!).resource;
 			// If the agent is not found, do not upload the attachment and display an error message.
@@ -348,10 +439,21 @@ export const useAppStore = defineStore('app', {
 				throw new Error('No agent selected.');
 			}
 
-			const upsertResult = await api.uploadAttachment(file, agent.name, progressCallback) as ResourceProviderUpsertResult;
+			const upsertResult = (await api.uploadAttachment(
+				file,
+				sessionId,
+				agent.name,
+				progressCallback,
+			)) as ResourceProviderUpsertResult;
 			const fileName = file.get('file')?.name;
 			const contentType = file.get('file')?.type;
-			const newAttachment: Attachment = { id: upsertResult.objectId, fileName, sessionId, contentType };
+			const newAttachment: Attachment = {
+				id: upsertResult.objectId,
+				fileName,
+				sessionId,
+				contentType,
+				source: 'Local Computer',
+			};
 
 			this.attachments.push(newAttachment);
 
@@ -359,7 +461,9 @@ export const useAppStore = defineStore('app', {
 		},
 
 		async deleteAttachment(attachment: Attachment) {
-			const deleteResults: ResourceProviderDeleteResults = await api.deleteAttachments([attachment.id]);
+			const deleteResults: ResourceProviderDeleteResults = await api.deleteAttachments([
+				attachment.id,
+			]);
 			Object.entries(deleteResults).forEach(([key, value]) => {
 				if (key === attachment.id) {
 					if (value.deleted) {
@@ -369,6 +473,10 @@ export const useAppStore = defineStore('app', {
 					}
 				}
 			});
+		},
+
+		async getVirtualUser() {
+			return await api.getVirtualUser();
 		},
 	},
 });

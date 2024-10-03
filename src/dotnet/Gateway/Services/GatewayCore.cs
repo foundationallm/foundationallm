@@ -3,13 +3,13 @@ using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Azure;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.Vectorization;
-using FoundationaLLM.Gateway.Exceptions;
 using FoundationaLLM.Gateway.Interfaces;
 using FoundationaLLM.Gateway.Models;
 using FoundationaLLM.Gateway.Models.Configuration;
@@ -18,6 +18,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OpenAI.Assistants;
 using OpenAI.Files;
+using OpenAI.VectorStores;
 using System.Collections.Concurrent;
 using System.Text.Json;
 
@@ -156,7 +157,8 @@ namespace FoundationaLLM.Gateway.Services
                         Position = tc.Position
                     }).ToList(),
                     TokenCount = 0
-                }
+                },
+                Prioritized = embeddingRequest.Prioritized
             };
 
             embeddingModel.AddEmbeddingOperationContext(embeddingOperationContext);
@@ -219,6 +221,7 @@ namespace FoundationaLLM.Gateway.Services
             var createAssistant = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.CreateAssistant, false);
             var createAssistantThread = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.CreateAssistantThread, false);
             var createAssistantFile = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.CreateAssistantFile, false);
+            var addAssistantFileToVectorStore = GetParameterValue<bool>(parameters, OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStore, false);
 
             var endpoint = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.Endpoint);
             var azureOpenAIAccount = _azureOpenAIAccounts.Values.FirstOrDefault(
@@ -230,11 +233,9 @@ namespace FoundationaLLM.Gateway.Services
                     StringComparison.OrdinalIgnoreCase) == 0)
                 ?? throw new GatewayException($"The Gateway service is not configured to use the {endpoint} endpoint.");
 
-            var azureOpenAIClient = new AzureOpenAIClient(new Uri(azureOpenAIAccount.Endpoint), DefaultAuthentication.AzureCredential);
-
             if (createAssistant)
             {
-                var assistantClient = azureOpenAIClient.GetAssistantClient();
+                var assistantClient = GetAzureOpenAIAssistantClient(azureOpenAIAccount.Endpoint);
 
                 var prompt = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.AssistantPrompt);
                 var modelDeploymentName = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.ModelDeploymentName);
@@ -245,7 +246,7 @@ namespace FoundationaLLM.Gateway.Services
                         true) == 0)
                     ?? throw new GatewayException($"The Gateway service cannot find the {modelDeploymentName} model deployment in the account with endpoint {endpoint}.");
 
-                var response = await assistantClient.CreateAssistantAsync(modelDeploymentName, new AssistantCreationOptions()
+                var assistantResult = await assistantClient.CreateAssistantAsync(modelDeploymentName, new AssistantCreationOptions()
                 {
                     Name = capabilityName,
                     Instructions = prompt,
@@ -256,32 +257,91 @@ namespace FoundationaLLM.Gateway.Services
                     }
                 });
 
-                var assistant = response.Value;
+                var assistant = assistantResult.Value;
                 result[OpenAIAgentCapabilityParameterNames.AssistantId] = assistant.Id;
             }
 
             if (createAssistantThread)
             {
-                var assistantClient = azureOpenAIClient.GetAssistantClient();
+                var assistantClient = GetAzureOpenAIAssistantClient(azureOpenAIAccount.Endpoint);
+                var vectorStoreClient = GetAzureOpenAIVectorStoreClient(azureOpenAIAccount.Endpoint);
 
-                var response = await assistantClient.CreateThreadAsync();
-                var thread = response.Value;
+                var vectorStoreResult = await vectorStoreClient.CreateVectorStoreAsync(new VectorStoreCreationOptions
+                {
+                    ExpirationPolicy = new VectorStoreExpirationPolicy
+                    {
+                        Anchor = VectorStoreExpirationAnchor.LastActiveAt,
+                        Days = 365
+                    }
+                });
+
+                var threadResult = await assistantClient.CreateThreadAsync(new ThreadCreationOptions
+                {
+                    ToolResources = new ToolResources()
+                    {
+                        FileSearch = new FileSearchToolResources()
+                        {
+                            VectorStoreIds = [vectorStoreResult.Value.Id]
+                        }
+                    }
+                });
+                var thread = threadResult.Value;
+                var vectorStore = vectorStoreResult.Value;
+
                 result[OpenAIAgentCapabilityParameterNames.AssistantThreadId] = thread.Id;
+                result[OpenAIAgentCapabilityParameterNames.AssistantVectorStoreId] = vectorStore.Id;
             }
+
+            var fileId = GetParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.AssistantFileId, string.Empty);
 
             if (createAssistantFile)
             {
-                var fileClient = azureOpenAIClient.GetFileClient();
+                var fileClient = GetAzureOpenAIFileClient(azureOpenAIAccount.Endpoint);
 
                 var attachmentObjectId = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.AttachmentObjectId);
-                var attachmentFile = await _attachmentResourceProvider.GetResource<AttachmentFile>(attachmentObjectId, userIdentity, new ResourceProviderOptions { LoadContent = true });
+                var attachmentFile = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(attachmentObjectId, userIdentity, new ResourceProviderLoadOptions { LoadContent = true });
 
-                var response = await fileClient.UploadFileAsync(
+                var fileResult = await fileClient.UploadFileAsync(
                     new MemoryStream(attachmentFile.Content!),
                     attachmentFile.OriginalFileName,
                     FileUploadPurpose.Assistants);
-                var file = response.Value;
+                var file = fileResult.Value;
                 result[OpenAIAgentCapabilityParameterNames.AssistantFileId] = file.Id;
+                fileId = file.Id;
+            }
+
+            if (addAssistantFileToVectorStore)
+            {
+                var vectorStoreClient = GetAzureOpenAIVectorStoreClient(azureOpenAIAccount.Endpoint);
+                var vectorStoreId = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.AssistantVectorStoreId);
+
+                var vectorizationResult = await vectorStoreClient.AddFileToVectorStoreAsync(vectorStoreId, fileId);
+
+                var startTime = DateTimeOffset.UtcNow;
+                _logger.LogInformation("Started vectorization of file {FileId} in vector store {VectorStoreId}.", fileId, vectorStoreId);
+
+                var maxPollingTimeExceeded = false;
+                while (vectorizationResult.Value.Status == VectorStoreFileAssociationStatus.InProgress)
+                {
+                    await Task.Delay(5000);
+                    if ((DateTimeOffset.UtcNow - startTime).TotalSeconds >= 1000)
+                    {
+                        // Will not wait more than 1000 seconds for the vectorization to complete.
+                        // The Gateway API clients have a 1200 seconds timeout set for the full operation to complete,
+                        // so we don't want to exceed that while polling.
+                        maxPollingTimeExceeded = true;
+                        break;
+                    }
+                    vectorizationResult = await vectorStoreClient.GetFileAssociationAsync(vectorStoreId, fileId);
+                }
+
+                if (maxPollingTimeExceeded)
+                    _logger.LogWarning("The maximum polling time (1000 seconds) was exceeded during the vectorization of file {FileId} in vector store {VectorStoreId}.", fileId, vectorStoreId);
+                else
+                    _logger.LogInformation("Completed vectorization of file {FileId} in vector store {VectorStoreId} in {TotalSeconds}.",
+                        fileId, vectorStoreId, (DateTimeOffset.UtcNow - startTime).TotalSeconds);
+
+                result[OpenAIAgentCapabilityParameterNames.AssistantFileId] = fileId;
             }
 
             return result;
@@ -298,5 +358,23 @@ namespace FoundationaLLM.Gateway.Services
                 ? ((JsonElement)parameterValueObject!).Deserialize<T>()
                     ?? throw new GatewayException($"Could not load required parameter {parameterName}.", StatusCodes.Status400BadRequest)
                 : throw new GatewayException($"The required parameter {parameterName} was not found.");
+
+        private AzureOpenAIClient GetAzureOpenAIClient(string endpoint) =>
+            new AzureOpenAIClient(
+                new Uri(endpoint),
+                DefaultAuthentication.AzureCredential,
+                new AzureOpenAIClientOptions
+                {
+                    NetworkTimeout = TimeSpan.FromSeconds(1000)
+                });
+
+        private AssistantClient GetAzureOpenAIAssistantClient(string endpoint) =>
+            GetAzureOpenAIClient(endpoint).GetAssistantClient();
+
+        private VectorStoreClient GetAzureOpenAIVectorStoreClient(string endpoint) =>
+            GetAzureOpenAIClient(endpoint).GetVectorStoreClient();
+
+        private FileClient GetAzureOpenAIFileClient(string endpoint) =>
+            GetAzureOpenAIClient(endpoint).GetFileClient();
     }
 }

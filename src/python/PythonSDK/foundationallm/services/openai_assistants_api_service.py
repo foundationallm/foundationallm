@@ -254,6 +254,7 @@ class OpenAIAssistantsApiService:
             The content items within the message.
         """
         ret_content = []
+        
         # for each content item in the message
         for ci in message.content:
                 match ci:

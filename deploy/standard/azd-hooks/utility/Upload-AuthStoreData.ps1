@@ -60,4 +60,5 @@ if (-not (Test-Path $sourceJson)) {
 $target = "https://$storageAccountAdls.blob.core.windows.net/role-assignments/"
 $azcopy = "../../common/tools/azcopy/azcopy" | Get-AbsolutePath
 
+Write-Host "$azcopy cp $sourceJson $target"
 & $azcopy cp $sourceJson $target

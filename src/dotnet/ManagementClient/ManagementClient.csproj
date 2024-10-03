@@ -16,8 +16,9 @@
     <PackageTags>FoundationaLLM;LLM;GPT;AI;SDK;ManagementClient;Management API</PackageTags>
     <RepositoryUrl>https://github.com/solliancenet/foundationallm</RepositoryUrl>
     <PackageId>FoundationaLLM.Client.Management</PackageId>
-    <Version>0.0.0</Version>
-    <!-- Placeholder version -->
+    <Version>0.0.0</Version> <!-- Placeholder version -->
+    <AssemblyVersion>0.0.0</AssemblyVersion> <!-- Placeholder version -->
+    <FileVersion>0.0.0</FileVersion> <!-- Placeholder version -->
     <PackageIcon>fllm-icon-128.png</PackageIcon>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <Title>FoundationaLLM Management Client</Title>

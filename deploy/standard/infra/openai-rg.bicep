@@ -111,4 +111,5 @@ output azureContentSafetyEndpoint string = contentSafety.outputs.endpoint
 output azureOpenAiEndpoint string = azureOpenAiEndpoint
 output azureOpenAiId string = azureOpenAiId
 output azureOpenAiResourceGroup string = openAiInstance.resourceGroup
+output azureOpenAiName string = openAiInstance.name
   

@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import type { AuthConfigOptions } from '@js/auth';
 import api from '@/js/api';
 
 export const useAppConfigStore = defineStore('appConfig', {
@@ -29,6 +28,8 @@ export const useAppConfigStore = defineStore('appConfig', {
 		footerText: null,
 		instanceId: null,
 		agentIconUrl: null,
+		allowedUploadFileExtensions: null,
+		oneDriveWorkSchoolScopes: null,
 
 		// Auth: These settings configure the MSAL authentication.
 		auth: {
@@ -37,7 +38,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 			tenantId: null,
 			scopes: [],
 			callbackPath: null,
-		} as AuthConfigOptions,
+		},
 	}),
 	getters: {},
 	actions: {
@@ -76,6 +77,8 @@ export const useAppConfigStore = defineStore('appConfig', {
 				footerText,
 				instanceId,
 				agentIconUrl,
+				allowedUploadFileExtensions,
+				oneDriveWorkSchoolScopes,
 				authClientId,
 				authInstance,
 				authTenantId,
@@ -103,6 +106,10 @@ export const useAppConfigStore = defineStore('appConfig', {
 				getConfigValueSafe('FoundationaLLM:Branding:FooterText'),
 				getConfigValueSafe('FoundationaLLM:Instance:Id', '00000000-0000-0000-0000-000000000000'),
 				getConfigValueSafe('FoundationaLLM:Branding:AgentIconUrl', '~/assets/FLLM-Agent-Light.svg'),
+				getConfigValueSafe(
+					'FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions',
+				),
+				getConfigValueSafe('FoundationaLLM:APIEndpoints:OneDriveWorkSchool:Configuration:Scopes'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:ClientId'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:Instance'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:TenantId'),
@@ -132,12 +139,15 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.footerText = footerText;
 			this.instanceId = instanceId;
 			this.agentIconUrl = agentIconUrl;
+			this.allowedUploadFileExtensions = allowedUploadFileExtensions;
 
 			this.auth.clientId = authClientId;
 			this.auth.instance = authInstance;
 			this.auth.tenantId = authTenantId;
 			this.auth.scopes = authScopes;
 			this.auth.callbackPath = authCallbackPath;
+
+			this.oneDriveWorkSchoolScopes = oneDriveWorkSchoolScopes;
 		},
 	},
 });

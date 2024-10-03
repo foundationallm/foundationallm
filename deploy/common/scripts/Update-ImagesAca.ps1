@@ -4,8 +4,8 @@
     This script updates container apps image within a specified resource group in Azure by updating the image URI tag.
 
 .DESCRIPTION
-    The script retrieves the list of container apps in the provided resource group and subscription. 
-    It then iterates over each container app, extracting the current image URI, updating the tag with 
+    The script retrieves the list of container apps in the provided resource group and subscription.
+    It then iterates over each container app, extracting the current image URI, updating the tag with
     the value provided via the -tag parameter, and finally, applying the updated image URI to the container app.
 
 .PARAMETER resourceGroupNameName
@@ -40,6 +40,11 @@ $ErrorActionPreference = "Stop"
 
 # Get the list of container apps in the resource group
 $containerApps = (az containerapp list -g $resourceGroupName --query "[].name" --output tsv)
+if ($null -eq $containerApps -or $containerApps.Count -eq 0) {
+    Write-Host -ForegroundColor Yellow "No container apps found in the specified resource group."
+    return
+}
+
 Write-Host -ForegroundColor Yellow "Container Apps to be updated $containerApps"
 Write-Host -ForegroundColor Yellow "Updating container apps using these parameters:Resource group: ${resourceGroupName} Subscription: ${subscriptionId}"
 
@@ -54,12 +59,16 @@ foreach ($acaName in $containerApps.GetEnumerator()) {
     )
     $tagDelimiterPos = $imgUri.IndexOf(":")
     $newImgUri = $imgUri.Substring(0, $tagDelimiterPos) + ":" + $tag
-    
-    Write-Host -ForegroundColor Yellow "Setting Image URI for $acaName to $newImgUri"
-    
-    az containerapp update `
+
+    Write-Host -ForegroundColor Yellow "Set Image URI for $acaName to $newImgUri"
+
+    $updatedImage = az containerapp update `
         --name $acaName `
         -g $resourceGroupName `
         --subscription $subscriptionId `
-        --image $newImgUri
+        --image $newImgUri `
+        --query "properties.template.containers[0].image" `
+        --output tsv
+
+    Write-Host -ForegroundColor Green "New Image URI for $acaName is $updatedImage"
 }

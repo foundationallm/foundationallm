@@ -71,7 +71,7 @@ var azureOpenAiEndpoint = deployOpenAi ? openAi.outputs.endpoint : customerOpenA
 var azureOpenAiId = deployOpenAi ? openAi.outputs.id : customerOpenAi.id
 var azureOpenAi = deployOpenAi ? openAiInstance : existingOpenAiInstance
 var openAiInstance = {
-  name: openAi.outputs.name
+  name: '${abbrs.openAiAccounts}${resourceToken}'
   resourceGroup: rg.name
   subscriptionId: subscription().subscriptionId
 }
@@ -363,11 +363,11 @@ module openAi './shared/openai.bicep' =
   if (deployOpenAi) {
     dependsOn: [keyVault]
     name: 'openai-${timestamp}'
-    scope: rg
+    scope: resourceGroup(azureOpenAi.resourceGroup)
 
     params: {
       location: location
-      name: '${abbrs.openAiAccounts}${resourceToken}'
+      name: azureOpenAi.name
       sku: 'S0'
       tags: tags
 
@@ -384,11 +384,13 @@ module openAiSecrets './shared/openai-secrets.bicep' = {
     openAiInstance: azureOpenAi
     tags: tags
   }
+  dependsOn: deployOpenAi ? [openAi] : []
 }
 
 module storage './shared/storage.bicep' = {
   name: 'storage-${timestamp}'
   params: {
+    adminGroupObjectId: adminGroupObjectId
     containers: [
       {
         name: 'resource-provider'
@@ -611,11 +613,12 @@ module cosmosRoles './shared/sqlRoleAssignments.bicep' = [
   }
 ]
 
-module openAiRoles './shared/roleAssignments.bicep' = [
+module openAiRoles './shared/openAiRoleAssignments.bicep' = [
   for target in openAiRoleTargets: {
-    scope: rg
+    scope: resourceGroup(azureOpenAi.resourceGroup)
     name: '${target}-openai-roles-${timestamp}'
     params: {
+      targetOpenAiName: azureOpenAi.name
       principalId: acaServices[indexOf(serviceNames, target)].outputs.miPrincipalId
       roleDefinitionNames: [
         'Cognitive Services OpenAI User'
@@ -625,11 +628,12 @@ module openAiRoles './shared/roleAssignments.bicep' = [
   }
 ]
 
-module openAiContribRole './shared/roleAssignments.bicep' = [
+module openAiContribRole './shared/openAiRoleAssignments.bicep' = [
   for target in openAiContribRoleTargets: {
-    scope: rg
+    scope: resourceGroup(azureOpenAi.resourceGroup)
     name: '${target}-openai-contrib-${timestamp}'
     params: {
+      targetOpenAiName: azureOpenAi.name
       principalId: acaServices[indexOf(serviceNames, target)].outputs.miPrincipalId
       roleDefinitionNames: [
         'Cognitive Services OpenAI Contributor'
@@ -690,9 +694,8 @@ output ENTRA_MANAGEMENT_UI_CLIENT_ID string = appRegistrations[indexOf(appRegNam
 output ENTRA_MANAGEMENT_UI_SCOPES string = 'api://FoundationaLLM-Management/Data.Manage'
 output ENTRA_MANAGEMENT_UI_TENANT_ID string = tenant().tenantId
 
-output ENTRA_VECTORIZATION_API_CLIENT_ID string = appRegistrations[indexOf(appRegNames, 'vectorization-api')].clientId
-output ENTRA_VECTORIZATION_API_SCOPES string = appRegistrations[indexOf(appRegNames, 'vectorization-api')].scopes
-output ENTRA_VECTORIZATION_API_TENANT_ID string = tenant().tenantId
+output ENTRA_READER_CLIENT_ID string = appRegistrations[indexOf(appRegNames, 'reader')].clientId
+output ENTRA_READER_TENANT_ID string = tenant().tenantId
 
 output FOUNDATIONALLM_INSTANCE_ID string = instanceId
 
@@ -713,6 +716,7 @@ output SERVICE_GATEKEEPER_API_MI_OBJECT_ID string = acaServices[indexOf(serviceN
 output SERVICE_GATEKEEPER_INTEGRATION_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'gatekeeper-integration-api')].outputs.uri
 output SERVICE_GATEWAY_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'gateway-api')].outputs.uri
 output SERVICE_GATEWAY_API_OBJECT_ID string = acaServices[indexOf(serviceNames, 'gateway-api')].outputs.miPrincipalId
+output SERVICE_GATEWAY_API_MI_OBJECT_ID string = acaServices[indexOf(serviceNames, 'gateway-api')].outputs.miPrincipalId
 output SERVICE_GATEWAY_ADAPTER_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'gateway-adapter-api')].outputs.uri
 output SERVICE_LANGCHAIN_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'langchain-api')].outputs.uri
 output SERVICE_MANAGEMENT_API_ENDPOINT_URL string = acaServices[indexOf(serviceNames, 'management-api')].outputs.uri

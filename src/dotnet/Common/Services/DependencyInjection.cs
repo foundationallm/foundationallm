@@ -2,12 +2,16 @@
 using Azure.Monitor.OpenTelemetry.Exporter;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Common.Services.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Azure.Cosmos.Fluent;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -24,6 +28,7 @@ using OpenTelemetry.Trace;
 using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using FoundationaLLM.Common.Constants.Configuration;
+using Microsoft.Extensions.Configuration;
 
 namespace FoundationaLLM
 {
@@ -61,8 +66,9 @@ namespace FoundationaLLM
 
         /// <summary>
         /// Add CORS policies the the dependency injection container.
+        /// Adds CORS policies the the dependency injection container.
         /// </summary>
-        /// <param name="builder">The host application builder.</param>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder managing the dependency injection container.</param>
         public static void AddCorsPolicies(this IHostApplicationBuilder builder) =>
             builder.Services.AddCors(policyBuilder =>
                 {
@@ -71,21 +77,22 @@ namespace FoundationaLLM
                         {
                             policy.AllowAnyOrigin();
                             policy.WithHeaders("DNT", "Keep-Alive", "User-Agent", "X-Requested-With", "If-Modified-Since",
-                                "Cache-Control", "Content-Type", "Range", "Authorization");
+                                "Cache-Control", "Content-Type", "Range", "Authorization", "X-User-Identity",
+                                "Access-Control-Request-Headers");
                             policy.AllowAnyMethod();
                         });
                 });
 
         /// <summary>
-        /// Add OpenTelemetry the the dependency injection container.
+        /// Adds OpenTelemetry the the dependency injection container.
         /// </summary>
-        /// <param name="builder">The host application builder.</param>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder managing the dependency injection container.</param>
         /// <param name="connectionStringConfigurationKey">The configuration key for the OpenTelemetry connection string.</param>
         /// <param name="serviceName">The name of the service.</param>
         public static void AddOpenTelemetry(this IHostApplicationBuilder builder,
             string connectionStringConfigurationKey,
             string serviceName)
-        { 
+        {
             AzureMonitorOptions options = new AzureMonitorOptions { ConnectionString = builder.Configuration[connectionStringConfigurationKey] };
 
             var resourceBuilder = ResourceBuilder.CreateDefault();
@@ -103,7 +110,7 @@ namespace FoundationaLLM
             builder.Services.AddOpenTelemetry()
              .WithTracing(b =>
              {
-                 
+
 
                  b
                  .SetResourceBuilder(resourceBuilder)
@@ -166,9 +173,9 @@ namespace FoundationaLLM
         }
 
         /// <summary>
-        /// Add authentication configuration to the dependency injection container.
+        /// Adds authentication configuration to the dependency injection container.
         /// </summary>
-        /// <param name="builder">The host application builder.</param>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder managing the dependency injection container.</param>
         /// <param name="entraInstanceConfigurationKey">The configuration key for the Entra ID instance.</param>
         /// <param name="entraTenantIdConfigurationKey">The configuration key for the Entra ID tenant id.</param>
         /// <param name="entraClientIdConfigurationkey">The configuration key for the Entra ID client id.</param>
@@ -220,7 +227,7 @@ namespace FoundationaLLM
         }
 
         /// <summary>
-        /// Register the <see cref="AzureKeyVaultService"/> with the dependency injection container.
+        /// Registers the <see cref="AzureKeyVaultService"/> with the dependency injection container.
         /// </summary>
         /// <param name="builder">The host application builder.</param>
         /// <param name="keyVaultUriConfigurationKeyName">The name of the configuration key that provides the URI of the Azure Key Vault service.</param>
@@ -241,9 +248,9 @@ namespace FoundationaLLM
         }
 
         /// <summary>
-        /// Register the <see cref="HttpClientFactoryService"/> with the dependency injection container.
+        /// Registers the <see cref="HttpClientFactoryService"/> with the dependency injection container.
         /// </summary>
-        /// <param name="builder">The host application builder.</param>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder managing the dependency injection container.</param>
         public static void AddHttpClientFactoryService(this IHostApplicationBuilder builder)
         {
             builder.Services.AddHttpClient();
@@ -252,7 +259,7 @@ namespace FoundationaLLM
         }
 
         /// <summary>
-        /// Register the <see cref="HttpClientFactoryService"/> with the dependency injection container.
+        /// Registers the <see cref="HttpClientFactoryService"/> with the dependency injection container.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
         public static void AddHttpClientFactoryService(this IServiceCollection services)
@@ -263,7 +270,7 @@ namespace FoundationaLLM
         }
 
         /// <summary>
-        /// Register the <see cref="IDownstreamAPIService"/> implementation for a named API service with the dependency injection container.
+        /// Registers the <see cref="IDownstreamAPIService"/> implementation for a named API service with the dependency injection container.
         /// </summary>
         /// <param name="builder">The host application builder.</param>
         /// <param name="apiServiceName">The name of the API service whose implementation is being registered.</param>
@@ -277,19 +284,51 @@ namespace FoundationaLLM
                 ));
 
         /// <summary>
-        /// Register the <see cref="IAzureResourceManagerService"/> implementation with the dependency injection container.
+        /// Registers the <see cref="IAzureResourceManagerService"/> implementation with the dependency injection container.
         /// </summary>
-        /// <param name="builder">The host application builder.</param>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder managing the dependency injection container.</param>
         public static void AddAzureResourceManager(
             this IHostApplicationBuilder builder) =>
             builder.Services.AddSingleton<IAzureResourceManagerService, AzureResourceManagerService>();
 
         /// <summary>
-        /// Register the <see cref="IAzureResourceManagerService"/> implementation with the dependency injection container.
+        /// Registers the <see cref="IAzureResourceManagerService"/> implementation with the dependency injection container.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
         public static void AddAzureResourceManager(
             this IServiceCollection services) =>
             services.AddSingleton<IAzureResourceManagerService, AzureResourceManagerService>();
+
+        /// <summary>
+        /// Registers the <see cref="ICosmosDBService"/> implementation with the dependency injection container.
+        /// </summary>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder managing the dependency injection container.</param>
+        public static void AddAzureCosmosDBService(this IHostApplicationBuilder builder) =>
+            builder.Services.AddAzureCosmosDBService(builder.Configuration);
+
+        /// <summary>
+        /// Registers the <see cref="ICosmosDBService"/> implementation with the dependency injection container.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>
+        public static void AddAzureCosmosDBService(this IServiceCollection services, IConfigurationManager configuration)
+        {
+            services.AddOptions<CosmosDbSettings>()
+                .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB));
+
+            services.AddSingleton<CosmosClient>(serviceProvider =>
+            {
+                var settings = serviceProvider.GetRequiredService<IOptions<CosmosDbSettings>>().Value;
+                return new CosmosClientBuilder(settings.Endpoint, DefaultAuthentication.AzureCredential)
+                    .WithSerializerOptions(new CosmosSerializationOptions
+                    {
+                        PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
+                    })
+                    .WithConnectionModeGateway()
+                    .Build();
+            });
+
+            services.AddSingleton<ICosmosDBService, AzureCosmosDBService>();
+        }
     }
 }

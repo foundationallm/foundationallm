@@ -5,78 +5,106 @@
 			<img
 				v-if="$appConfigStore.logoUrl !== ''"
 				:src="$filters.enforceLeadingSlash($appConfigStore.logoUrl)"
-				alt="Logo"
+				:alt="$appConfigStore.logoText"
 			/>
 			<span v-else>{{ $appConfigStore.logoText }}</span>
-			<Button
-				:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
-				size="small"
-				severity="secondary"
-				class="secondary-button"
-				aria-label="Toggle sidebar"
-				@click="$appStore.toggleSidebar"
-			/>
+			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+				<Button
+					:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
+					size="small"
+					severity="secondary"
+					class="secondary-button"
+					aria-label="Toggle sidebar"
+					:aria-expanded="!$appStore.isSidebarClosed"
+					@click="$appStore.toggleSidebar"
+					@keydown.esc="hideAllPoppers"
+				/>
+				<template #popper><div role="tooltip">Toggle sidebar</div></template>
+			</VTooltip>
 		</div>
 		<div class="chat-sidebar__section-header">
-			<span>Chats</span>
-			<!-- <button @click="handleAddSession">
-				<span class="text">+</span>
-			</button> -->
-			<Button
-				icon="pi pi-plus"
-				text
-				severity="secondary"
-				aria-label="Add new chat"
-				@click="handleAddSession"
-			/>
+			<h2 class="chat-sidebar__section-header__text">Chats</h2>
+			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+				<Button
+					icon="pi pi-plus"
+					text
+					severity="secondary"
+					aria-label="Add new chat"
+					:disabled="createProcessing"
+					@keydown.esc="hideAllPoppers"
+					@click="handleAddSession"
+				/>
+				<template #popper><div role="tooltip">Add new chat</div></template>
+			</VTooltip>
 		</div>
 
 		<!-- Chats -->
 		<div class="chat-sidebar__chats">
-			<div v-if="!sessions">No sessions</div>
-			<div
-				v-for="session in sessions"
-				:key="session.id"
-				class="chat-sidebar__chat"
-				@click="handleSessionSelected(session)"
-				@keydown.enter="handleSessionSelected(session)"
-				tabindex="0"
-			>
-				<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
-					<!-- Chat name -->
-					<span v-tooltip="{ value: session.name }" class="chat__name">{{ session.name }}</span>
+			<nav>
+				<ul role="list" class="chat-list">
+					<li v-if="!sessions" role="listitem" class="chat-list-item">No sessions</li>
+					<li
+						v-for="session in sessions"
+						:key="session.id"
+						class="chat-sidebar__chat chat-list-item"
+						@click="handleSessionSelected(session)"
+						@keydown.enter="handleSessionSelected(session)"
+						role="listitem"
+					>
+						<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
+							<!-- Chat name -->
 
-					<!-- Chat icons -->
-					<span v-if="currentSession?.id === session.id" class="chat__icons">
-						<!-- Rename session -->
-						<Button
-							v-tooltip="'Rename chat session'"
-							icon="pi pi-pencil"
-							size="small"
-							severity="secondary"
-							text
-							aria-label="Rename chat session"
-							@click.stop="openRenameModal(session)"
-						/>
+							<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+								<span class="chat__name" tabindex="0" @keydown.esc="hideAllPoppers">{{
+									session.name
+								}}</span>
+								<template #popper>
+									<div role="tooltip">
+										{{ session.name }}
+									</div>
+								</template>
+							</VTooltip>
 
-						<!-- Delete session -->
-						<Button
-							v-tooltip="'Delete chat session'"
-							icon="pi pi-trash"
-							size="small"
-							severity="danger"
-							text
-							aria-label="Delete chat session"
-							@click.stop="sessionToDelete = session"
-						/>
-					</span>
-				</div>
-			</div>
+							<!-- Chat icons -->
+							<span v-if="currentSession?.id === session.id" class="chat__icons">
+								<!-- Rename session -->
+								<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+									<Button
+										icon="pi pi-pencil"
+										size="small"
+										severity="secondary"
+										text
+										aria-label="Rename chat session"
+										@click.stop="openRenameModal(session)"
+										@keydown.esc="hideAllPoppers"
+									/>
+									<template #popper><div role="tooltip">Rename chat session</div></template>
+								</VTooltip>
+
+								<!-- Delete session -->
+								<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+									<Button
+										icon="pi pi-trash"
+										size="small"
+										severity="danger"
+										text
+										aria-label="Delete chat session"
+										@click.stop="sessionToDelete = session"
+										@keydown.esc="hideAllPoppers"
+									/>
+									<template #popper><div role="tooltip">Delete chat session</div></template>
+								</VTooltip>
+							</span>
+						</div>
+					</li>
+				</ul>
+			</nav>
 		</div>
 
 		<!-- Logged in user -->
 		<div v-if="$authStore.currentAccount?.name" class="chat-sidebar__account">
-			<Avatar icon="pi pi-user" class="chat-sidebar__avatar" size="large" />
+			<UserAvatar size="large" class="chat-sidebar__avatar" />
+
 			<div>
 				<span class="chat-sidebar__username">{{ $authStore.currentAccount?.name }}</span>
 				<Button
@@ -92,21 +120,22 @@
 
 		<!-- Rename session dialog -->
 		<Dialog
-			class="sidebar-dialog"
-			:visible="sessionToRename !== null"
 			v-if="sessionToRename !== null"
-			modal
+			v-focustrap
+			:visible="sessionToRename !== null"
 			:header="`Rename Chat ${sessionToRename?.name}`"
 			:closable="false"
-			v-focustrap
+			class="sidebar-dialog"
+			modal
 		>
 			<InputText
 				v-model="newSessionName"
+				:style="{ width: '100%' }"
 				type="text"
 				placeholder="New chat name"
-				:style="{ width: '100%' }"
-				@keydown="renameSessionInputKeydown"
+				aria-label="New chat name"
 				autofocus
+				@keydown="renameSessionInputKeydown"
 			></InputText>
 			<template #footer>
 				<Button label="Cancel" text @click="closeRenameModal" />
@@ -116,24 +145,37 @@
 
 		<!-- Delete session dialog -->
 		<Dialog
-			class="sidebar-dialog"
-			:visible="sessionToDelete !== null"
 			v-if="sessionToDelete !== null"
+			v-focustrap
+			:visible="sessionToDelete !== null"
+			:closable="false"
+			class="sidebar-dialog"
 			modal
 			header="Delete a Chat"
-			:closable="false"
 			@keydown="deleteSessionKeydown"
-			v-focustrap
 		>
 			<div v-if="deleteProcessing" class="delete-dialog-content">
-				<i class="pi pi-spin pi-spinner" style="font-size: 2rem;"></i>
+				<div role="status">
+					<i
+						class="pi pi-spin pi-spinner"
+						style="font-size: 2rem"
+						role="img"
+						aria-label="Loading"
+					></i>
+				</div>
 			</div>
 			<div v-else>
 				<p>Do you want to delete the chat "{{ sessionToDelete.name }}" ?</p>
 			</div>
 			<template #footer>
-				<Button label="Cancel" text @click="sessionToDelete = null" :disabled="deleteProcessing" />
-				<Button label="Delete" severity="danger" @click="handleDeleteSession" autofocus :disabled="deleteProcessing" />
+				<Button label="Cancel" text :disabled="deleteProcessing" @click="sessionToDelete = null" />
+				<Button
+					label="Delete"
+					severity="danger"
+					autofocus
+					:disabled="deleteProcessing"
+					@click="handleDeleteSession"
+				/>
 			</template>
 		</Dialog>
 	</div>
@@ -141,6 +183,7 @@
 
 <script lang="ts">
 import type { Session } from '@/js/types';
+import { hideAllPoppers } from 'floating-vue';
 declare const process: any;
 
 export default {
@@ -152,6 +195,9 @@ export default {
 			newSessionName: '' as string,
 			sessionToDelete: null as Session | null,
 			deleteProcessing: false,
+			isMobile: window.screen.width < 950,
+			createProcessing: false,
+			debounceTimeout: null as NodeJS.Timeout | null,
 		};
 	},
 
@@ -191,8 +237,37 @@ export default {
 		},
 
 		async handleAddSession() {
-			const newSession = await this.$appStore.addSession();
-			this.handleSessionSelected(newSession);
+			if (this.createProcessing) return;
+
+			if (this.debounceTimeout) {
+				this.$toast.add({
+					severity: 'warn',
+					summary: 'Warning',
+					detail: 'Please wait before creating another session.',
+					life: 3000,
+				});
+				return;
+			}
+
+			this.createProcessing = true;
+
+			try {
+				const newSession = await this.$appStore.addSession();
+				this.handleSessionSelected(newSession);
+
+				this.debounceTimeout = setTimeout(() => {
+					this.debounceTimeout = null;
+				}, 2000);
+			} catch (error) {
+				this.$toast.add({
+					severity: 'error',
+					summary: 'Error',
+					detail: 'Could not create a new session. Please try again.',
+					life: 5000,
+				});
+			} finally {
+				this.createProcessing = false; // Re-enable the button
+			}
 		},
 
 		handleRenameSession() {
@@ -202,9 +277,19 @@ export default {
 
 		async handleDeleteSession() {
 			this.deleteProcessing = true;
-			await this.$appStore.deleteSession(this.sessionToDelete!);
-			this.sessionToDelete = null;
-			this.deleteProcessing = false;
+			try {
+				await this.$appStore.deleteSession(this.sessionToDelete!);
+				this.sessionToDelete = null;
+			} catch (error) {
+				this.$toast.add({
+					severity: 'error',
+					summary: 'Error',
+					detail: 'Could not delete the session. Please try again.',
+					life: 5000,
+				});
+			} finally {
+				this.deleteProcessing = false;
+			}
 		},
 
 		renameSessionInputKeydown(event: KeyboardEvent) {
@@ -220,6 +305,10 @@ export default {
 			if (event.key === 'Escape') {
 				this.sessionToDelete = null;
 			}
+		},
+
+		hideAllPoppers() {
+			hideAllPoppers();
 		},
 	},
 };
@@ -269,6 +358,11 @@ export default {
 	font-weight: 600;
 }
 
+.chat-sidebar__section-header__text {
+	font-size: 0.875rem;
+	font-weight: 600;
+}
+
 .chat-sidebar__section-header--mobile {
 	display: none;
 }
@@ -294,6 +388,8 @@ export default {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	font-size: 0.8125rem;
+	font-weight: 400;
 }
 
 .chat__icons {
@@ -386,9 +482,20 @@ export default {
 }
 
 .delete-dialog-content {
-	display: flex; 
-	justify-content: 
-	center; padding: 20px 150px;
+	display: flex;
+	justify-content: center;
+	padding: 20px 150px;
+}
+
+ul.chat-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+li.chat-list-item {
+  padding: 0;
+  margin: 0;
 }
 
 @media only screen and (max-width: 950px) {

@@ -19,7 +19,12 @@ namespace FoundationaLLM
         public static void AddGroupMembership(this IHostApplicationBuilder builder)
         {
             // Register the Microsoft Graph API client.
-            builder.Services.AddSingleton(provider => new GraphServiceClient(DefaultAuthentication.AzureCredential));
+            builder.Services.AddSingleton(provider =>
+            {
+                var httpClient = GraphClientFactory.Create();
+                httpClient.Timeout = TimeSpan.FromMinutes(15);
+                return new GraphServiceClient(httpClient, DefaultAuthentication.AzureCredential);
+            });
 
             // Register the group membership service.
             builder.Services.AddSingleton<IIdentityManagementService, MicrosoftGraphIdentityManagementService>();

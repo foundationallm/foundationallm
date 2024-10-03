@@ -129,13 +129,16 @@
 					<div id="aria-principal-search-query" class="mb-2">Search query</div>
 					<AutoComplete
 						v-model="dialogPrincipal"
-						:suggestions="principalOptionsFiltered"
+						:suggestions="principalOptions.length === 0 ? null : principalOptions"
+						:loading="loadingPrincipals"
 						force-selection
 						dropdown
 						data-key="id"
 						option-label="display_name"
 						class="w-100"
 						aria-labelledby="aria-principal-search-query"
+						@show="handlePrincipalDropdownShow"
+						@hide="handlePrincipalDropdownHide"
 						@complete="handlePrincipalSearch"
 					>
 						<template #option="{ option }">
@@ -245,9 +248,12 @@ export default {
 				display_name: '',
 			},
 			dialogPrincipal: null,
-			users: [],
-			groups: [],
-			principalOptionsFiltered: [],
+
+			loadingPrincipals: false,
+			principalOptions: [],
+			principalSearchQuery: '',
+			principalsCurrentPage: 1,
+			hasNextPrincipalPage: false,
 		};
 	},
 
@@ -268,54 +274,53 @@ export default {
 			this.roleAssignment = await api.getRoleAssignment(this.editId);
 		}
 
-		this.loadingStatusText = `Retrieving users...`;
-		const users = await this.getAllPrinciples(api.getUsers.bind(api));
-		this.users = users;
-		// const user = users[0];
-
-		this.loadingStatusText = `Retrieving groups...`;
-		const groups = await this.getAllPrinciples(api.getGroups.bind(api));
-		this.groups = groups;
-		// const group = groups[0];
-
-		// const objects = await api.getObjects({
-		// 	ids: [user.id, group.id],
-		// });
-
 		this.loading = false;
 	},
 
 	methods: {
-		async getAllPrinciples(apiMethod) {
-			let allPrincipals = [];
-			let currentPage = 1;
-			let hasMorePages = true;
-			while (hasMorePages) {
-				const usersCurrentPage = await apiMethod({
-					page_number: currentPage,
-				});
-
-				allPrincipals = [...allPrincipals, ...usersCurrentPage.items];
-
-				if (usersCurrentPage.has_next_page) {
-					currentPage += 1;
-				} else {
-					hasMorePages = false;
-				}
+		handlePrincipalDropdownShow() {
+			const dropdownPanel = document.querySelector('.p-autocomplete-panel');
+			if (dropdownPanel) {
+				dropdownPanel.addEventListener('scroll', this.handlePrincipalScroll);
 			}
-
-			return allPrincipals;
 		},
 
-		handlePrincipalSearch(event) {
-			const optionsToSearch = this.principalSearchType === 'Group' ? this.groups : this.users;
+		handlePrincipalDropdownHide() {
+			this.principalOptions = [];
+		},
 
-			this.principalOptionsFiltered = optionsToSearch.filter((principal) => {
-				const queryLowercase = event.query.toLowerCase();
-				const nameMatch = principal.display_name?.toLowerCase().includes(queryLowercase);
-				const emailMatch = principal.email?.toLowerCase().includes(queryLowercase);
-				return nameMatch || emailMatch;
+		async handlePrincipalSearch(event) {
+			this.principalSearchQuery = event.query;
+			this.principalsCurrentPage = 1;
+			this.principalOptions = [];
+			await this.loadMorePrincipals();
+		},
+
+		async handlePrincipalScroll(event) {
+			const dropdown = event.target;
+			const buffer = 10;
+			if (dropdown.scrollHeight - dropdown.scrollTop - buffer <= dropdown.clientHeight) {
+				if (this.loadingPrincipals || !this.hasNextPrincipalPage) return;
+
+				this.principalsCurrentPage += 1;
+				await this.loadMorePrincipals();
+			}
+		},
+
+		async loadMorePrincipals() {
+			const apiMethod = this.principalSearchType === 'Group' ? api.getGroups : api.getUsers;
+
+			this.loadingPrincipals = true;
+
+			const principalsCurrentPage = await apiMethod.call(api, {
+				page_number: this.principalsCurrentPage,
+				name: this.principalSearchQuery,
 			});
+
+			this.principalOptions.push(...principalsCurrentPage.items);
+			this.hasNextPrincipalPage = principalsCurrentPage.has_next_page;
+
+			this.loadingPrincipals = false;
 		},
 
 		handleCancel() {

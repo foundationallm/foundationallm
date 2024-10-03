@@ -4,33 +4,33 @@
     Tests connectivity to specified hostnames using TCP port 443 and verifies HTTPS endpoints.
 
 .DESCRIPTION
-    This script tests the connectivity to specified hostnames (UserPortal, ManagementPortal, CoreApi, and ManagementApi) using the `Test-Connection` cmdlet.
+    This script tests the connectivity to specified hostnames (userPortalHostName, managementPortalHostName, coreApiHostName, and managementApiHostName) using the `Test-Connection` cmdlet.
     It uses TCP port 443 and provides detailed output with a count of 2 attempts.
     The script also verifies the HTTP status of specified endpoints using `Invoke-WebRequest`.
     The script can be used to verify network connectivity to web portals or services.
 
-.PARAMETER UserPortal
+.PARAMETER userPortalHostName
     The hostname of the User Portal to test connectivity.
 
-.PARAMETER ManagementPortal
+.PARAMETER managementPortalHostName
     The hostname of the Management Portal to test connectivity.
 
-.PARAMETER CoreApi
+.PARAMETER coreApiHostName
     The hostname of the Core API to verify the status.
 
-.PARAMETER ManagementApi
+.PARAMETER managementApiHostName
     The hostname of the Management API to verify the status.
 
-.PARAMETER FllmInstanceId
+.PARAMETER fllmInstanceId
     The instance ID for the FLLM service.
 
-.PARAMETER FllmBaseDomain
+.PARAMETER fllmBaseDomain
     The base domain for the FLLM service.
 
 .EXAMPLE
-    ./Test-FllmConnection.ps1 -UserPortal "userportal" -ManagementPortal "managementportal" -CoreApi "coreapi" -ManagementApi "managementapi" -FllmInstanceId "your-instance-id" -FllmBaseDomain "example.com"
+    ./Test-FllmConnection.ps1 -userPortalHostName "userportal" -managementPortalHostName "managementportal" -coreApiHostName "coreapi" -managementApiHostName "managementapi" -fllmInstanceId "your-instance-id" -fllmBaseDomain "example.com"
     This example shows how to run the script to test connectivity to the FLLM User Portal and Management Portal, and verify the Core API and Management API endpoints.
-	
+
 .NOTES
     This script requires PowerShell Core to be installed on the system.
     The script uses the `Test-Connection` cmdlet and `Invoke-WebRequest` cmdlet.
@@ -39,15 +39,13 @@
 	example: FOUNDATIONALLM_INSTANCE_ID="d00028c2-89e1-4e76-bca2-fdc64af89f4f"
 #>
 
-
-
 param (
-	[string]$CoreApi,
-	[string]$FllmBaseDomain,
-	[string]$FllmInstanceId,
-	[string]$ManagementApi,
-	[string]$ManagementPortal,
-	[string]$UserPortal
+	[Parameter(Mandatory = $true)][string]$fllmBaseDomain,
+	[Parameter(Mandatory = $true)][string]$fllmInstanceId,
+	[Parameter(Mandatory = $false)][string]$coreApiHostName = "ai-api",
+	[Parameter(Mandatory = $false)][string]$managementApiHostName = "ai-management-api",
+	[Parameter(Mandatory = $false)][string]$managementPortalHostName = "ai-management",
+	[Parameter(Mandatory = $false)][string]$userPortalHostName = "ai-chat"
 )
 
 # Set Debugging and Error Handling
@@ -61,7 +59,13 @@ function Test-HostConnection {
 		[string]$Hostname
 	)
 	Write-Host -ForegroundColor Blue "Testing connection to $Hostname..."
-	Test-Connection $Hostname -TcpPort 443 -Detailed -Count 2
+	$result = Test-Connection $Hostname -TcpPort 443 -Detailed -Count 2
+	if ($result) {
+		Write-Host -ForegroundColor Yellow "Connection to $Hostname successful."
+	}
+ else {
+		Write-Host -ForegroundColor Red "Connection to $Hostname failed."
+	}
 	Write-Host -ForegroundColor Blue "----------------------------------------"
 }
 
@@ -72,8 +76,11 @@ function Test-HttpEndpoint {
 	)
 	Write-Host -ForegroundColor Blue "Testing HTTP endpoint $Url..."
 	try {
-		$response = Invoke-WebRequest -Uri $Url -UseBasicParsing
+		$response = Invoke-WebRequest -Uri $Url -UseBasicParsing -TimeoutSec 10
 		Write-Host -ForegroundColor Yellow "Status Code: $($response.StatusCode)"
+	}
+	catch [System.Net.WebException] {
+		Write-Host -ForegroundColor Red "WebException: $($_.Exception.Message)"
 	}
 	catch {
 		Write-Host -ForegroundColor Red "Failed to reach $Url. Error: $_"
@@ -83,16 +90,16 @@ function Test-HttpEndpoint {
 
 # Construct hostnames
 $hostnames = @(
-	"$UserPortal.$FllmBaseDomain",
-	"$ManagementPortal.$FllmBaseDomain"
+	"$userPortalHostName.$fllmBaseDomain",
+	"$managementPortalHostName.$fllmBaseDomain"
 )
 
 # Construct URLs
 $urls = @(
-	"https://$CoreApi.$FllmBaseDomain/core/instances/$FllmInstanceId/status",
-	"https://$ManagementApi.$FllmBaseDomain/management/instances/$FllmInstanceId/status",
-	"http://$UserPortal.$FllmBaseDomain/ai-chat",
-	"http://$ManagementPortal.$FllmBaseDomain/ai-management"
+	"https://$coreApiHostName.$fllmBaseDomain/core/instances/$fllmInstanceId/status",
+	"https://$managementApiHostName.$fllmBaseDomain/management/instances/$fllmInstanceId/status",
+	"https://$userPortalHostName.$fllmBaseDomain/core/ai-chat",
+	"https://$managementPortalHostName.$fllmBaseDomain/management/ai-management"
 )
 
 # Test TCP connection for each hostname

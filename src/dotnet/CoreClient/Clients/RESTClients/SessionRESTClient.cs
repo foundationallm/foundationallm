@@ -1,6 +1,6 @@
 ﻿using Azure.Core;
 using FoundationaLLM.Client.Core.Interfaces;
-using FoundationaLLM.Common.Models.Chat;
+using FoundationaLLM.Common.Models.Conversation;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -27,7 +27,7 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
             if (responseSession.IsSuccessStatusCode)
             {
                 var responseContent = await responseSession.Content.ReadAsStringAsync();
-                var sessionResponse = JsonSerializer.Deserialize<Session>(responseContent, SerializerOptions);
+                var sessionResponse = JsonSerializer.Deserialize<Conversation>(responseContent, SerializerOptions);
                 if (sessionResponse?.SessionId != null)
                 {
                     return sessionResponse.SessionId;
@@ -80,6 +80,13 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
                 var messages = JsonSerializer.Deserialize<IEnumerable<Message>>(responseContent, SerializerOptions);
+                foreach (Message message in messages!)
+                {
+                    if (message.Text == null && message.Content != null && message.Content.Count > 0)
+                    {
+                        message.Text = message.Content.First().Value!;
+                    }
+                }
                 return messages ?? throw new InvalidOperationException("The returned messages are invalid.");
             }
 
@@ -87,7 +94,7 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<Session>> GetAllChatSessionsAsync()
+        public async Task<IEnumerable<Conversation>> GetAllChatSessionsAsync()
         {
             var coreClient = await GetCoreClientAsync();
             var responseMessage = await coreClient.GetAsync($"instances/{_instanceId}/sessions");
@@ -95,7 +102,7 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var sessions = JsonSerializer.Deserialize<IEnumerable<Session>>(responseContent, SerializerOptions);
+                var sessions = JsonSerializer.Deserialize<IEnumerable<Conversation>>(responseContent, SerializerOptions);
                 return sessions ?? throw new InvalidOperationException("The returned sessions are invalid.");
             }
 

@@ -74,7 +74,7 @@ foreach ($uri in $uris.GetEnumerator()) {
         --query $uri.Value.query `
         -o json | ConvertFrom-Json)
 
-    $redirect = ($uri.Value.endpoint | ConvertFrom-Json) + "/signin-oidc"
+    $redirect = ($uri.Value.endpoint) + "/signin-oidc"
 
     if ($redirects -eq $null)
     {

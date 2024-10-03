@@ -18,7 +18,7 @@ config = get_config()
 app = FastAPI(
     title=f'FoundationaLLM {API_NAME}',
     summary='API for retrieving Prompt metadata',
-    description="""The FoundationaLLM PromptHubAPI is a wrapper around PromptHub
+    description=f"""The FoundationaLLM {API_NAME} is a wrapper around PromptHub
                 functionality contained in the foundationallm.core Python SDK.""",
     version='1.0.0',
     contact={

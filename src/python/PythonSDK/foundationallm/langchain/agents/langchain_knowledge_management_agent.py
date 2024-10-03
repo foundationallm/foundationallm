@@ -7,24 +7,35 @@ from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.retrievers import RetrieverFactory, CitationRetrievalBase
 from foundationallm.models.constants import AgentCapabilityCategories
 from foundationallm.models.orchestration import (
+    CompletionRequestObjectKeys,
     CompletionResponse
 )
+from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 from foundationallm.models.agents import (
     AgentConversationHistorySettings,
     KnowledgeManagementAgent,
-    KnowledgeManagementCompletionRequest
+    KnowledgeManagementCompletionRequest,
+    KnowledgeManagementIndexConfiguration
 )
 from foundationallm.models.attachments import AttachmentProviders
 from foundationallm.models.authentication import AuthenticationTypes
 from foundationallm.models.language_models import LanguageModelProvider
-from foundationallm.models.orchestration.openai_text_message_content_item import OpenAITextMessageContentItem
-from foundationallm.models.orchestration.operation_types import OperationTypes
+from foundationallm.models.orchestration import (
+    OpenAITextMessageContentItem,
+    OperationTypes
+)
 from foundationallm.models.resource_providers.vectorization import (
+    EmbeddingProfileSettingsKeys,
     AzureAISearchIndexingProfile,
     AzureOpenAIEmbeddingProfile
 )
 from foundationallm.models.services import OpenAIAssistantsAPIRequest
-from foundationallm.services import ImageAnalysisService, OpenAIAssistantsApiService
+from foundationallm.services import (
+    AudioAnalysisService,
+    ImageAnalysisService,
+    OpenAIAssistantsApiService
+)
+from foundationallm.services.gateway_text_embedding import GatewayTextEmbeddingService
 from openai.types import CompletionUsage
 from openai import AzureOpenAI, AsyncAzureOpenAI
 
@@ -52,21 +63,48 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             text_embedding_profile = AzureOpenAIEmbeddingProfile.from_object(
                 request.objects[agent.vectorization.text_embedding_profile_object_id]
             )
-
-            indexing_profiles = []
+            
+            # text_embedding_profile has the embedding model name in Settings.
+            text_embedding_model_name = text_embedding_profile.settings.get(EmbeddingProfileSettingsKeys.MODEL_NAME)
+            
+            # objects dictionary has the gateway API endpoint configuration.
+            gateway_endpoint_configuration = APIEndpointConfiguration.from_object(
+                request.objects[CompletionRequestObjectKeys.GATEWAY_API_ENDPOINT_CONFIGURATION]
+            )
+            
+            gateway_embedding_service = GatewayTextEmbeddingService(
+                instance_id= self.instance_id,
+                user_identity=self.user_identity,
+                gateway_api_endpoint_configuration=gateway_endpoint_configuration,
+                model_name = text_embedding_model_name,
+                config=self.config
+                )
+            
+            # array of objects containing the indexing profile and associated endpoint configuration
+            index_configurations = []
 
             if (agent.vectorization.indexing_profile_object_ids is not None) and (text_embedding_profile is not None):
                 for profile_id in agent.vectorization.indexing_profile_object_ids:
-                    indexing_profiles.append(
-                        AzureAISearchIndexingProfile.from_object(
+
+                    indexing_profile = AzureAISearchIndexingProfile.from_object(
                             request.objects[profile_id]
                         )
+                    # indexing profile has indexing_api_endpoint_configuration_object_id in Settings.                    
+                    indexing_api_endpoint_configuration = APIEndpointConfiguration.from_object(
+                        request.objects[indexing_profile.settings.api_endpoint_configuration_object_id]
                     )
+      
+                    index_configurations.append(
+                        KnowledgeManagementIndexConfiguration(
+                            indexing_profile = indexing_profile,
+                            api_endpoint_configuration = indexing_api_endpoint_configuration
+                        )
+                    )                
 
                 retriever_factory = RetrieverFactory(
-                                indexing_profiles,
-                                text_embedding_profile,
-                                self.config)
+                                index_configurations=index_configurations,
+                                gateway_text_embedding_service=gateway_embedding_service,
+                                config=self.config)
                 retriever = retriever_factory.get_retriever()
         return retriever
 
@@ -180,14 +218,22 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             if request.agent.vectorization.text_embedding_profile_object_id is None or request.agent.vectorization.text_embedding_profile_object_id == '':
                 raise LangChainException("The TextEmbeddingProfileObjectId property of the agent's Vectorization property cannot be null or empty.", 400)
 
-            # TODO: Validate the text embedding profile object id exists in request.objects.
+            if request.objects.get(request.agent.vectorization.text_embedding_profile_object_id) is None:
+                raise LangChainException("The TextEmbeddingProfile object provided in the request's objects dictionary is invalid.", 400)
+
+            # Ensure the text embedding profile has model_name in the settings.
+            text_embedding_profile = AzureOpenAIEmbeddingProfile.from_object(request.objects[request.agent.vectorization.text_embedding_profile_object_id])
+            if text_embedding_profile.settings.get(EmbeddingProfileSettingsKeys.MODEL_NAME) is None or text_embedding_profile.settings.get(EmbeddingProfileSettingsKeys.MODEL_NAME) == '':
+                raise LangChainException("The TextEmbeddingProfile object provided in the request's objects dictionary is invalid because it is missing an embedding_model_name value.", 400)
 
             if request.agent.vectorization.indexing_profile_object_ids is not None and len(request.agent.vectorization.indexing_profile_object_ids) > 0:
                 for idx, indexing_profile in enumerate(request.agent.vectorization.indexing_profile_object_ids):
                     if indexing_profile is None or indexing_profile == '':
                         raise LangChainException(f"The indexing profile object id at index {idx} is invalid.", 400)
 
-                    # TODO: Validate the indexing profile object id exist in request.objects.
+                    idx_profile = AzureAISearchIndexingProfile.from_object(request.objects[indexing_profile])
+                    if idx_profile.settings.api_endpoint_configuration_object_id is None or idx_profile.settings.api_endpoint_configuration_object_id == '':
+                        raise LangChainException(f"The indexing profile object provided in the request's objects dictionary is invalid because it is missing an api_endpoint_configuration_object_id value.", 400)
 
                 self.has_indexing_profiles = True
 
@@ -237,6 +283,12 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             image_analysis_token_usage.completion_tokens += usage.completion_tokens
             image_analysis_token_usage.total_tokens += usage.total_tokens
 
+        audio_analysis_results = None
+        audio_attachments = [attachment for attachment in request.attachments if (attachment.provider == AttachmentProviders.FOUNDATIONALLM_ATTACHMENT and attachment.content_type.startswith('audio/'))] if request.attachments is not None else []
+        if len(audio_attachments) > 0:
+            audio_service = AudioAnalysisService(config=self.config)
+            audio_analysis_results = audio_service.classify(request, audio_attachments)
+
         # Check for Assistants API capability
         if "OpenAI.Assistants" in agent.capabilities:
             self.logger.info("OpenAI.Assistants capability detected.")
@@ -268,6 +320,33 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     content = image_analysis_svc.format_results(image_analysis_results),
                     attachments = []
                 )
+
+            # Add user and assistant messages related to audio classification to the Assistants API request.
+            if audio_analysis_results is not None:
+                audio_analysis_context = ''
+                for key, value in audio_analysis_results.items():
+                    filename = key
+                    audio_analysis_context += f'File: {filename}\n'
+                    audio_analysis_context += 'Predictions:\n'
+                    for prediction in value['predictions']:
+                        label = prediction['label']
+                        audio_analysis_context += f'- {label}' + '\n'
+                    audio_analysis_context += '\n'
+                # Add user message
+                assistant_svc.add_thread_message(
+                    thread_id = assistant_req.thread_id,
+                    role = "user",
+                    content = f"Classify the sounds in the audio file.",
+                    attachments = []
+                )
+                # Add assistant message
+                assistant_svc.add_thread_message(
+                    thread_id = assistant_req.thread_id,
+                    role = "assistant",
+                    content = audio_analysis_context, # TODO: This will change at some point to accommodate multiple predictions.
+                    attachments = []
+                )
+
             # invoke/run the service
             assistant_response = assistant_svc.run(assistant_req)
 
@@ -281,7 +360,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 prompt_tokens = assistant_response.prompt_tokens + image_analysis_token_usage.prompt_tokens,
                 total_tokens = assistant_response.total_tokens + image_analysis_token_usage.total_tokens,
                 user_prompt = request.user_prompt
-                )
+            )
 
         self.logger.info("No OpenAI.Assistants capability detected.")
 
@@ -300,8 +379,21 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
                 if retriever is not None:
                     chain_context = { "context": retriever | retriever.format_docs, "question": RunnablePassthrough() }
-                elif image_analysis_results is not None:
-                    chain_context = { "context": lambda x: image_analysis_svc.format_results(image_analysis_results), "question": RunnablePassthrough() }
+                elif image_analysis_results is not None or audio_analysis_results is not None:
+                    external_analysis_context = ''
+                    if image_analysis_results is not None:
+                        external_analysis_context += image_analysis_svc.format_results(image_analysis_results)
+                    if audio_analysis_results is not None:
+                        for key, value in audio_analysis_results.items():
+                            filename = key
+                            external_analysis_context += f'File: {filename}\n'
+                            external_analysis_context += 'Predictions:\n'
+                            for prediction in value['predictions']:
+                                label = prediction['label']
+                                external_analysis_context += f'- {label}' + '\n'
+                            external_analysis_context += '\n'
+                        
+                    chain_context = { "context": lambda x: external_analysis_context, "question": RunnablePassthrough() }
                 else:
                     chain_context = { "context": RunnablePassthrough() }
 
@@ -371,6 +463,12 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             image_analysis_token_usage.completion_tokens += usage.completion_tokens
             image_analysis_token_usage.total_tokens += usage.total_tokens
 
+        audio_analysis_results = None
+        audio_attachments = [attachment for attachment in request.attachments if (attachment.provider == AttachmentProviders.FOUNDATIONALLM_ATTACHMENT and attachment.content_type.startswith('audio/'))] if request.attachments is not None else []
+        if len(audio_attachments) > 0:
+            audio_service = AudioAnalysisService(config=self.config)
+            audio_analysis_results = audio_service.classify(request, audio_attachments)
+
         # Check for Assistants API capability
         if "OpenAI.Assistants" in agent.capabilities:
             operation_type_override = OperationTypes.ASSISTANTS_API
@@ -402,6 +500,32 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     attachments = []
                 )
 
+            # Add user and assistant messages related to audio classification to the Assistants API request.
+            if audio_analysis_results is not None:
+                audio_analysis_context = ''
+                for key, value in audio_analysis_results.items():
+                    filename = key
+                    audio_analysis_context += f'File: {filename}\n'
+                    audio_analysis_context += 'Predictions:\n'
+                    for prediction in value['predictions']:
+                        label = prediction['label']
+                        audio_analysis_context += f'- {label}' + '\n'
+                    audio_analysis_context += '\n'
+                # Add user message
+                assistant_svc.aadd_thread_message(
+                    thread_id = assistant_req.thread_id,
+                    role = "user",
+                    content = f"Classify the sounds in the audio file.",
+                    attachments = []
+                )
+                # Add assistant message
+                assistant_svc.aadd_thread_message(
+                    thread_id = assistant_req.thread_id,
+                    role = "assistant",
+                    content = audio_analysis_context, # TODO: This will change at some point to accommodate multiple predictions.
+                    attachments = []
+                )
+
             # invoke/run the service
             assistant_response = await assistant_svc.arun(assistant_req)
 
@@ -415,7 +539,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 prompt_tokens = assistant_response.prompt_tokens + image_analysis_token_usage.prompt_tokens,
                 total_tokens = assistant_response.total_tokens + image_analysis_token_usage.total_tokens,
                 user_prompt = request.user_prompt
-                )
+            )
 
         with get_openai_callback() as cb:
             try:
@@ -431,8 +555,21 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
                 if retriever is not None:
                     chain_context = { "context": retriever | retriever.format_docs, "question": RunnablePassthrough() }
-                elif image_analysis_results is not None:
-                    chain_context = { "context": lambda x: image_analysis_svc.format_results(image_analysis_results), "question": RunnablePassthrough() }
+                elif image_analysis_results is not None or audio_analysis_results is not None:
+                    external_analysis_context = ''
+                    if image_analysis_results is not None:
+                        external_analysis_context += image_analysis_svc.format_results(image_analysis_results)
+                    if audio_analysis_results is not None:
+                        for key, value in audio_analysis_results.items():
+                            filename = key
+                            external_analysis_context += f'File: {filename}\n'
+                            external_analysis_context += 'Predictions:\n'
+                            for prediction in value['predictions']:
+                                label = prediction['label']
+                                external_analysis_context += f'- {label}' + '\n'
+                            external_analysis_context += '\n'
+
+                    chain_context = { "context": lambda x: external_analysis_context, "question": RunnablePassthrough() }
                 else:
                     chain_context = { "context": RunnablePassthrough() }
 

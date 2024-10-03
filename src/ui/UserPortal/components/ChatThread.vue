@@ -1,11 +1,19 @@
 <template>
 	<div class="chat-thread">
 		<!-- Message list -->
-		<div class="chat-thread__messages"
-			:class="messages.length === 0 && 'empty'">
+		<div
+			ref="messageContainer"
+			class="chat-thread__messages"
+			:class="messages.length === 0 && 'empty'"
+		>
 			<template v-if="isLoading">
-				<div class="chat-thread__loading">
-					<i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+				<div class="chat-thread__loading" role="status">
+					<i
+						class="pi pi-spin pi-spinner"
+						style="font-size: 2rem"
+						role="img"
+						aria-label="Loading"
+					></i>
 				</div>
 			</template>
 
@@ -14,20 +22,22 @@
 				<template v-if="messages.length !== 0">
 					<ChatMessage
 						v-for="(message, index) in messages.slice().reverse()"
+						:id="`message-${getMessageOrderFromReversedIndex(index)}`"
 						:key="`${message.id}-${componentKey}`"
 						:message="message"
 						:show-word-animation="index === 0 && userSentMessage && message.sender === 'Assistant'"
+						role="log"
+						:aria-flowto="
+							index === 0 ? null : `message-${getMessageOrderFromReversedIndex(index) + 1}`
+						"
 						@rate="handleRateMessage($event.message, $event.isLiked)"
-						@refresh="handleRefresh()"
 					/>
 				</template>
 
 				<!-- New chat alert -->
 				<div v-else class="new-chat-alert">
 					<div class="alert-body">
-						<div class="alert-body-text">
-							Start the conversation using the text box below.
-						</div>
+						<div class="alert-body-text">Start the conversation using the text box below.</div>
 					</div>
 				</div>
 			</template>
@@ -35,13 +45,19 @@
 
 		<!-- Chat input -->
 		<div class="chat-thread__input">
-			<ChatInput :disabled="isLoading || isMessagePending" @send="handleSend" />
+			<ChatInput :disabled="isLoading || isMessagePending" ref="chatInput" @send="handleSend" />
 		</div>
 
 		<footer v-if="$appConfigStore.footerText">
 			<!-- eslint-disable-next-line vue/no-v-html -->
 			<div class="footer-item" v-html="$appConfigStore.footerText"></div>
 		</footer>
+		<div class="drop-files-here-container" v-if="isDragging" ref="dropZone">
+			<div class="drop-files-here">
+				<i class="pi pi-upload" style="font-size: 2rem"></i>
+				<div>Drop files here to upload</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -51,6 +67,10 @@ import eventBus from '@/js/eventBus';
 
 export default {
 	name: 'ChatThread',
+
+	props: {
+		isDragging: Boolean,
+	},
 
 	emits: ['session-updated'],
 
@@ -93,13 +113,18 @@ export default {
 	},
 
 	methods: {
+		getMessageOrderFromReversedIndex(index) {
+			return this.messages.length - 1 - index;
+		},
+
 		async handleRateMessage(message: Message, isLiked: Message['rating']) {
 			await this.$appStore.rateMessage(message, isLiked);
 		},
 
-		async handleRefresh() {
-			this.componentKey += 1;
-			this.$nextTick();
+		handleParentDrop(event) {
+			event.preventDefault();
+			const files = Array.from(event.dataTransfer?.files || []);
+			this.$refs.chatInput.handleDrop(files);
 		},
 
 		async handleSend(text: string) {
@@ -115,7 +140,8 @@ export default {
 				this.$toast.add({
 					severity: 'info',
 					summary: 'Could not send message',
-					detail: 'Please select an agent and try again. If no agents are available, refresh the page.',
+					detail:
+						'Please select an agent and try again. If no agents are available, refresh the page.',
 					life: 8000,
 				});
 				this.isMessagePending = false;
@@ -206,8 +232,9 @@ export default {
 .empty {
 	flex-direction: column;
 }
+
 .new-chat-alert {
-	background-color: #FAFAFA;
+	background-color: #fafafa;
 	margin: 10px;
 	margin-left: auto;
 	margin-right: auto;
@@ -241,5 +268,26 @@ footer {
 	text-align: right;
 	font-size: 0.85rem;
 	padding-right: 24px;
+}
+
+.drop-files-here-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.8);
+	z-index: 9999;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.drop-files-here {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+	border-radius: 6px;
+	gap: 2rem;
 }
 </style>

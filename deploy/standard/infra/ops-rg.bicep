@@ -61,6 +61,7 @@ var zonesAmpls = filter(
 output actionGroupId string = actionGroup.outputs.id
 output keyVaultName string = keyVault.outputs.name
 output logAnalyticsWorkspaceId string = logAnalytics.outputs.id
+output monitorId string = logAnalytics.outputs.monitorId
 
 /** Resources **/
 @description('User Assigned Identity for App Configuration')
@@ -123,7 +124,7 @@ module appConfig 'modules/appConfig.bicep' = {
 }
 
 @description('Application Insights')
-module applicationInights 'modules/applicationInsights.bicep' = {
+module applicationInsights 'modules/applicationInsights.bicep' = {
   name: 'appInsights-${timestamp}'
   params: {
     amplsName: ampls.outputs.name
@@ -135,6 +136,16 @@ module applicationInights 'modules/applicationInsights.bicep' = {
     tags: tags
   }
   dependsOn: [ keyVault ]
+}
+
+module dashboard 'modules/dashboard-web.bicep' = {
+  name: 'dashboard-${timestamp}'
+  params: {
+    name: 'dash-${resourceSuffix}'
+    applicationInsightsName: applicationInsights.outputs.name
+    location: location
+    tags: tags
+  }
 }
 
 @description('Key Vault')
