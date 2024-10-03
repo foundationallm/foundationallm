@@ -37,7 +37,7 @@ if (builder.Environment.IsDevelopment())
 
 // Add OpenTelemetry.
 builder.AddOpenTelemetry(
-    AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_AppInsightsConnectionString,
+    AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreWorker_Essentials_AppInsightsConnectionString,
     ServiceNames.CoreAPI);
 
 builder.Services.AddOptions<CosmosDbSettings>()
@@ -58,10 +58,6 @@ builder.Services.AddSingleton<CosmosClient>(serviceProvider =>
 builder.Services.AddSingleton<ICosmosDBService, AzureCosmosDBService>();
 builder.Services.AddSingleton<ICosmosDbChangeFeedService, CosmosDbChangeFeedService>();
 builder.Services.AddHostedService<ChangeFeedWorker>();
-builder.Services.AddApplicationInsightsTelemetryWorkerService(options =>
-{
-    options.ConnectionString = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreWorker_Essentials_AppInsightsConnectionString];
-});
 
 var host = builder.Build();
 
