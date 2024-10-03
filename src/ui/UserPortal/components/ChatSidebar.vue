@@ -488,14 +488,14 @@ export default {
 }
 
 ul.chat-list {
-  list-style-type: none;
-  padding-left: 0;
-  margin: 0;
+	list-style-type: none;
+	padding-left: 0;
+	margin: 0;
 }
 
 li.chat-list-item {
-  padding: 0;
-  margin: 0;
+	padding: 0;
+	margin: 0;
 }
 
 @media only screen and (max-width: 950px) {
