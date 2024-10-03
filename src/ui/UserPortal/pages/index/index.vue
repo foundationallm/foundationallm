@@ -47,7 +47,7 @@ export default {
 		window.addEventListener('drop', this.handleDrop);
 	},
 
-	beforeDestroy() {
+	beforeUnmount() {
 		window.removeEventListener('dragenter', this.showDropZone);
 		window.removeEventListener('dragleave', this.hideDropZone);
 		window.removeEventListener('dragover', this.handleDragOver);
