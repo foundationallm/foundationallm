@@ -77,7 +77,7 @@
 			<div>
 				<span class="sidebar__username">{{ $authStore.currentAccount?.name }}</span>
 				<Button
-					class="sidebar__sign-out-button secondary-button"
+					class="sidebar__sign-out-button"
 					icon="pi pi-sign-out"
 					label="Sign Out"
 					severity="secondary"

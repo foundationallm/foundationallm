@@ -7,7 +7,7 @@
 					<slot name="edit" />
 
 					<div class="d-flex justify-content-end">
-						<Button class="primary-button mt-2" label="Done" @click="handleClose" />
+						<Button class="mt-2" label="Done" @click="handleClose" />
 					</div>
 				</div>
 
