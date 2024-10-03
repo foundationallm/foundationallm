@@ -178,10 +178,11 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             {
                 var apiEndpoint = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
                     instanceId,
-                    agentBase.APIEndpointConfigurationObjectIds[endpointKey],
+                    //agentBase.APIEndpointConfigurationObjectIds[endpointKey],
+                    endpointKey,
                     currentUserIdentity);
 
-                explodedObjects[endpointKey] = apiEndpoint;
+                explodedObjects[agentBase.APIEndpointConfigurationObjectIds[endpointKey]] = apiEndpoint;
             }
 
             #region Knowledge management processing
