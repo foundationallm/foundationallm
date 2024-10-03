@@ -45,14 +45,14 @@
 
 		<!-- Chat input -->
 		<div class="chat-thread__input">
-			<ChatInput :disabled="isLoading || isMessagePending" ref="chatInput" @send="handleSend" />
+			<ChatInput ref="chatInput" :disabled="isLoading || isMessagePending" @send="handleSend" />
 		</div>
 
 		<footer v-if="$appConfigStore.footerText">
 			<!-- eslint-disable-next-line vue/no-v-html -->
 			<div class="footer-item" v-html="$appConfigStore.footerText"></div>
 		</footer>
-		<div class="drop-files-here-container" v-if="isDragging" ref="dropZone">
+		<div v-if="isDragging" ref="dropZone" class="drop-files-here-container">
 			<div class="drop-files-here">
 				<i class="pi pi-upload" style="font-size: 2rem"></i>
 				<div>Drop files here to upload</div>
