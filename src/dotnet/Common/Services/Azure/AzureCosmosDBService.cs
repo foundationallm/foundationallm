@@ -324,19 +324,14 @@ namespace FoundationaLLM.Common.Services
         {
             var userProfiles = await _userProfilesTask;
 
-            var response = await userProfiles.ReadItemAsync<UserProfile>(
-                id: upn,
+            var newUserProfile = new UserProfile(upn);
+
+            var response = await userProfiles.UpsertItemAsync(
+                item: newUserProfile,
                 partitionKey: new PartitionKey(upn),
                 cancellationToken: cancellationToken);
 
-            if (response == null)
-            {
-                var newUserProfile = new UserProfile(upn);
-                await UpsertUserProfileAsync(newUserProfile, cancellationToken);
-                return newUserProfile;
-            }
-
-            return response;
+            return response.Resource;
         }
 
         /// <inheritdoc/>
