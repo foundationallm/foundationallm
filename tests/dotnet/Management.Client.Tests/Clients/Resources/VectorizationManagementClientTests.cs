@@ -39,7 +39,8 @@ namespace Management.Client.Tests.Clients.Resources
                         TextEmbeddingProfileObjectId = "test-text-embedding-profile",
                         IndexingProfileObjectId = "test-indexing-profile",
                     },
-                    Roles = []
+                    Roles = [],
+                    Actions = []
                 },
                 new ResourceProviderGetResult<VectorizationPipeline>()
                 {
@@ -53,7 +54,8 @@ namespace Management.Client.Tests.Clients.Resources
                         TextEmbeddingProfileObjectId = "test-text-embedding-profile-2",
                         IndexingProfileObjectId = "test-indexing-profile-2",
                     },
-                    Roles = []
+                    Roles = [],
+                    Actions = []
                 }
             };
 
@@ -92,7 +94,8 @@ namespace Management.Client.Tests.Clients.Resources
                     TextEmbeddingProfileObjectId = "test-text-embedding-profile",
                     IndexingProfileObjectId = "test-indexing-profile",
                 },
-                Roles = []
+                Roles = [],
+                Actions = []
             };
             var expectedPipelines = new List<ResourceProviderGetResult<VectorizationPipeline>> { expectedPipeline };
 
@@ -145,7 +148,8 @@ namespace Management.Client.Tests.Clients.Resources
                         TextSplitter = TextSplitterType.TokenTextSplitter,
                         ObjectId = "test-object-id"
                     },
-                    Roles = []
+                    Roles = [],
+                    Actions = []
                 },
                 new ResourceProviderGetResult<TextPartitioningProfile>
                 {
@@ -155,7 +159,8 @@ namespace Management.Client.Tests.Clients.Resources
                         TextSplitter = TextSplitterType.TokenTextSplitter,
                         ObjectId = "test-object-id-2"
                     },
-                    Roles = []
+                    Roles = [],
+                    Actions = []
                 }
             };
 
@@ -190,7 +195,8 @@ namespace Management.Client.Tests.Clients.Resources
                     TextSplitter = TextSplitterType.TokenTextSplitter,
                     ObjectId = "test-object-id"
                 },
-                Roles = []
+                Roles = [],
+                Actions = []
             };
             var expectedProfiles = new List<ResourceProviderGetResult<TextPartitioningProfile>> { expectedProfile };
 
@@ -247,7 +253,8 @@ namespace Management.Client.Tests.Clients.Resources
                             { VectorizationSettingsNames.EmbeddingProfileModelName, "text-embedding-ada-002"}
                         }
                     },
-                    Roles = []
+                    Roles = [],
+                    Actions = []
                 }
             };
 
@@ -286,7 +293,8 @@ namespace Management.Client.Tests.Clients.Resources
                         { VectorizationSettingsNames.EmbeddingProfileModelName, "text-embedding-ada-002"}
                     }
                 },
-                Roles = []
+                Roles = [],
+                Actions = []
             };
             var expectedProfiles = new List<ResourceProviderGetResult<TextEmbeddingProfile>> { expectedProfile };
 
@@ -342,7 +350,8 @@ namespace Management.Client.Tests.Clients.Resources
                             { VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, "test-api-endpoint-object-id" }
                         }
                     },
-                    Roles = []
+                    Roles = [],
+                    Actions = []
                 },
                 new ResourceProviderGetResult<IndexingProfile>
                 {
@@ -355,7 +364,8 @@ namespace Management.Client.Tests.Clients.Resources
                             { VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, "test-api-endpoint-object-id-2" }
                         }
                     },
-                    Roles = []
+                    Roles = [],
+                    Actions = []
                 },
                 new ResourceProviderGetResult<IndexingProfile>
                 {
@@ -368,7 +378,8 @@ namespace Management.Client.Tests.Clients.Resources
                             { VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, "test-api-endpoint-object-id-3" }
                         }
                     },
-                    Roles = []
+                    Roles = [],
+                    Actions = []
                 }
             };
 
@@ -406,7 +417,8 @@ namespace Management.Client.Tests.Clients.Resources
                         { VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, "test-api-endpoint-object-id" }
                     }
                 },
-                Roles = []
+                Roles = [],
+                Actions = []
             };
             var expectedProfiles = new List<ResourceProviderGetResult<IndexingProfile>> { expectedProfile };
 

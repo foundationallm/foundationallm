@@ -335,48 +335,6 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "Vectorization")
                 },
                 {
-                    AuthorizableActionNames.FoundationaLLM_Completion_ChatSessions_Read,
-                    new AuthorizableAction(
-                        AuthorizableActionNames.FoundationaLLM_Completion_ChatSessions_Read,
-                        "Read chat sessions.",
-                        "Completion")
-                },
-                {
-                    AuthorizableActionNames.FoundationaLLM_Completion_ChatSessions_Write,
-                    new AuthorizableAction(
-                        AuthorizableActionNames.FoundationaLLM_Completion_ChatSessions_Write,
-                        "Create or update chat sessions.",
-                        "Completion")
-                },
-                {
-                    AuthorizableActionNames.FoundationaLLM_Completion_ChatSessions_Delete,
-                    new AuthorizableAction(
-                        AuthorizableActionNames.FoundationaLLM_Completion_ChatSessions_Delete,
-                        "Delete chat sessions.",
-                        "Completion")
-                },
-                {
-                    AuthorizableActionNames.FoundationaLLM_Completion_DirectCompletions_Read,
-                    new AuthorizableAction(
-                        AuthorizableActionNames.FoundationaLLM_Completion_DirectCompletions_Read,
-                        "Read direct completions.",
-                        "Completion")
-                },
-                {
-                    AuthorizableActionNames.FoundationaLLM_Completion_DirectCompletions_Write,
-                    new AuthorizableAction(
-                        AuthorizableActionNames.FoundationaLLM_Completion_DirectCompletions_Write,
-                        "Create or update direct completions.",
-                        "Completion")
-                },
-                {
-                    AuthorizableActionNames.FoundationaLLM_Completion_DirectCompletions_Delete,
-                    new AuthorizableAction(
-                        AuthorizableActionNames.FoundationaLLM_Completion_DirectCompletions_Delete,
-                        "Delete direct completions.",
-                        "Completion")
-                },
-                {
                     AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Read,
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Read,
@@ -417,6 +375,27 @@ namespace FoundationaLLM.Common.Models.Authorization
                         AuthorizableActionNames.FoundationaLLM_AIModel_AIModels_Delete,
                         "Delete AI models.",
                         "AIModel")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Read,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Read,
+                        "Read conversations",
+                        "Conversation")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Write,
+                        "Create or update conversations.",
+                        "Conversation")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Delete,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Delete,
+                        "Delete conversations.",
+                        "Conversation")
                 },
             });
 

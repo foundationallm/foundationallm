@@ -1,17 +1,17 @@
-﻿namespace FoundationaLLM.Common.Constants.Chat
+﻿namespace FoundationaLLM.Common.Constants.ResourceProviders
 {
     /// <summary>
-    /// Constants for chat session types.
+    /// Provides the types of conversations.
     /// </summary>
     public static class ConversationTypes
     {
         /// <summary>
-        /// Named session with matching type for the KioskSession.
+        /// Conversation type for a Kiosk conversation.
         /// </summary>
         public const string KioskSession = "KioskSession";
 
         /// <summary>
-        /// Named session with matching type for the Session.
+        /// Conversation type for a regular conversation.
         /// </summary>
         public const string Session = "Session";
     }

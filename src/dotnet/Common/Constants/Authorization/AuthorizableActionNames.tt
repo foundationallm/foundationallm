@@ -8,7 +8,7 @@
 <#@ import namespace="System.Text.Json.Nodes" #>
 <#@ output extension=".cs" #>
 <#
-    string inputFileName = this.Host.ResolvePath($"../../../Authorization/Data/AuthorizableActions.json");
+    string inputFileName = this.Host.ResolvePath($"../Data/AuthorizableActions.json");
     string inputContent = File.ReadAllText(inputFileName);
     var jsonObjects = JsonNode.Parse(inputContent)!;
 #>

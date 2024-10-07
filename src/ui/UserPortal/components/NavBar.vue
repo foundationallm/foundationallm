@@ -31,7 +31,7 @@
 			<div class="navbar__content__left">
 				<div class="navbar__content__left__item">
 					<template v-if="currentSession">
-						<span class="current_session_name">{{ currentSession.name }}</span>
+						<span class="current_session_name">{{ currentSession.display_name }}</span>
 						<!-- <VTooltip :auto-hide="false" :popper-triggers="['hover']">
 							<Button
 								v-if="!$appConfigStore.isKioskMode"

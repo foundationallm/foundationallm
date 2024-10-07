@@ -134,7 +134,7 @@ namespace FoundationaLLM.Configuration.Services
         #region Resource provider strongly typed operations
 
         /// <inheritdoc/>
-        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
         {
             switch (typeof(T))
             {
@@ -240,7 +240,7 @@ namespace FoundationaLLM.Configuration.Services
 
                 if (string.IsNullOrEmpty(setting.Value))
                 {
-                    result.Add(new ResourceProviderGetResult<AppConfigurationKeyBase>() { Resource = appConfig, Roles = [] });
+                    result.Add(new ResourceProviderGetResult<AppConfigurationKeyBase>() { Resource = appConfig, Roles = [], Actions = [] });
                     continue;
                 }
 
@@ -252,7 +252,7 @@ namespace FoundationaLLM.Configuration.Services
                         appConfig = kvAppConfig;
                 }
 
-                result.Add(new ResourceProviderGetResult<AppConfigurationKeyBase>() { Resource = appConfig, Roles = [] });
+                result.Add(new ResourceProviderGetResult<AppConfigurationKeyBase>() { Resource = appConfig, Roles = [], Actions = [] });
             }
 
             return result;
