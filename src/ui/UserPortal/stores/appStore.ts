@@ -403,7 +403,7 @@ export const useAppStore = defineStore('app', {
 
 		async getUserProfiles() {
 			this.userProfiles = await api.getUserProfile();
-			this.oneDriveWorkSchool = this.userProfiles?.flags['oneDriveWorkSchoolEnabled'];
+			this.oneDriveWorkSchool = this.userProfiles?.flags.oneDriveWorkSchoolEnabled;
 			return this.userProfiles;
 		},
 
