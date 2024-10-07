@@ -164,7 +164,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             {
                 var resources = resourceStore.Values.Where(p => !p.Deleted).ToList();
 
-                return resources.Select(resource => new ResourceProviderGetResult<TBase>() { Resource = resource, Roles = [] }).ToList();
+                return resources.Select(resource => new ResourceProviderGetResult<TBase>() { Resource = resource, Roles = [], Actions = [] }).ToList();
             }
             else
             {
@@ -190,7 +190,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                     throw new ResourceProviderException($"Could not locate the {instance.ResourceId} vectorization resource.",
                                                StatusCodes.Status404NotFound);
 
-                return [new ResourceProviderGetResult<TBase>() { Resource = resource, Roles = [] }];
+                return [new ResourceProviderGetResult<TBase>() { Resource = resource, Roles = [], Actions = [] }];
             }
         }
         private async Task<List<ResourceProviderGetResult<VectorizationRequest>>> LoadVectorizationRequestResource(string resourceId)           
@@ -208,7 +208,8 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                     ResourceProviderGetResult<VectorizationRequest> result = new ResourceProviderGetResult<VectorizationRequest>
                     {
                         Resource = resource,
-                        Roles = []
+                        Roles = [],
+                        Actions = []
                     };
                     return [result];
                 }                       
@@ -605,7 +606,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         #endregion
 
         /// <inheritdoc/>
-        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) where T : class =>
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) where T : class =>
             resourcePath.MainResourceTypeName switch
             {
                 VectorizationResourceTypeNames.TextPartitioningProfiles => await GetTextPartitioningProfile<T>(resourcePath),
@@ -700,7 +701,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         #endregion
 
         /// <inheritdoc/>
-        protected override async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(ResourcePath resourcePath, T resource, UnifiedUserIdentity userIdentity) =>
+        protected override async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, T resource, UnifiedUserIdentity userIdentity) =>
             resource switch
             {
                 VectorizationRequest vectorizationRequest => (TResult) await UpdateVectorizationRequest(resourcePath, vectorizationRequest, userIdentity),

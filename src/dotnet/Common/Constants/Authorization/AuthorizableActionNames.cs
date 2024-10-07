@@ -263,40 +263,6 @@ namespace FoundationaLLM.Common.Constants.Authorization
 
         #endregion
 
-        #region Completion
-
-        /// <summary>
-        /// Read chat sessions.
-        /// </summary>
-        public const string FoundationaLLM_Completion_ChatSessions_Read = "FoundationaLLM.Completion/chatSessions/read";
-
-        /// <summary>
-        /// Create or update chat sessions.
-        /// </summary>
-        public const string FoundationaLLM_Completion_ChatSessions_Write = "FoundationaLLM.Completion/chatSessions/write";
-
-        /// <summary>
-        /// Delete chat sessions.
-        /// </summary>
-        public const string FoundationaLLM_Completion_ChatSessions_Delete = "FoundationaLLM.Completion/chatSessions/delete";
-
-        /// <summary>
-        /// Read direct completions.
-        /// </summary>
-        public const string FoundationaLLM_Completion_DirectCompletions_Read = "FoundationaLLM.Completion/directCompletions/read";
-
-        /// <summary>
-        /// Create or update direct completions.
-        /// </summary>
-        public const string FoundationaLLM_Completion_DirectCompletions_Write = "FoundationaLLM.Completion/directCompletions/write";
-
-        /// <summary>
-        /// Delete direct completions.
-        /// </summary>
-        public const string FoundationaLLM_Completion_DirectCompletions_Delete = "FoundationaLLM.Completion/directCompletions/delete";
-
-        #endregion
-
         #region Attachment
 
         /// <summary>
@@ -332,6 +298,25 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// Delete AI models.
         /// </summary>
         public const string FoundationaLLM_AIModel_AIModels_Delete = "FoundationaLLM.AIModel/aiModels/delete";
+
+        #endregion
+
+        #region Conversation
+
+        /// <summary>
+        /// Read conversations
+        /// </summary>
+        public const string FoundationaLLM_Conversation_Conversations_Read = "FoundationaLLM.Conversation/conversations/read";
+
+        /// <summary>
+        /// Create or update conversations.
+        /// </summary>
+        public const string FoundationaLLM_Conversation_Conversations_Write = "FoundationaLLM.Conversation/conversations/write";
+
+        /// <summary>
+        /// Delete conversations.
+        /// </summary>
+        public const string FoundationaLLM_Conversation_Conversations_Delete = "FoundationaLLM.Conversation/conversations/delete";
 
         #endregion
     }

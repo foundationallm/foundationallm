@@ -8,15 +8,21 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
     public class ResourceProviderGetResult<T> where T : ResourceBase
     {
         /// <summary>
-        /// The resource resulting from the fetch operation.
+        /// Gets or sets the resource resulting from the fetch operation.
         /// </summary>
         [JsonPropertyName("resource")]
         public required T Resource { get; set; }
 
         /// <summary>
-        /// List of roles on the resource.
+        /// Gets or sets the list of roles assigned directly or indirectly to the resource.
         /// </summary>
         [JsonPropertyName("roles")]
         public required List<string> Roles { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of authorizable actions assigned directly or indirectly to the resource.
+        /// </summary>
+        [JsonPropertyName("actions")]
+        public required List<string> Actions { get; set; }
     }
 }

@@ -37,6 +37,15 @@ namespace FoundationaLLM.Common.Models.Authorization
         public required bool IncludeRoles { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether to include authorizable actions in the response.
+        /// </summary>
+        /// <remarks>
+        /// If this property is set to <c>true</c>, for each authorized resource path,
+        /// the response will include the authorizable actions assigned directly or indirectly to the resource path.
+        /// </remarks>
+        public required bool IncludeActions { get; set; }
+
+        /// <summary>
         /// The <see cref="UserAuthorizationContext"/> containing the authorization context for the user.
         /// </summary>
         [JsonPropertyName("user_context")]

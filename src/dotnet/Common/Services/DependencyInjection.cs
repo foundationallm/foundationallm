@@ -204,14 +204,14 @@ namespace FoundationaLLM
             services.AddSingleton<IAzureResourceManagerService, AzureResourceManagerService>();
 
         /// <summary>
-        /// Registers the <see cref="ICosmosDBService"/> implementation with the dependency injection container.
+        /// Registers the <see cref="IAzureCosmosDBService"/> implementation with the dependency injection container.
         /// </summary>
         /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder managing the dependency injection container.</param>
         public static void AddAzureCosmosDBService(this IHostApplicationBuilder builder) =>
             builder.Services.AddAzureCosmosDBService(builder.Configuration);
 
         /// <summary>
-        /// Registers the <see cref="ICosmosDBService"/> implementation with the dependency injection container.
+        /// Registers the <see cref="IAzureCosmosDBService"/> implementation with the dependency injection container.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
         /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>
@@ -232,7 +232,7 @@ namespace FoundationaLLM
                     .Build();
             });
 
-            services.AddSingleton<ICosmosDBService, AzureCosmosDBService>();
+            services.AddSingleton<IAzureCosmosDBService, AzureCosmosDBService>();
         }
     }
 }
