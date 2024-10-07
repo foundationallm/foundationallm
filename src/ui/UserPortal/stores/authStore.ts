@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import type { AccountInfo } from '@azure/msal-browser';
 import { PublicClientApplication } from '@azure/msal-browser';
+import { useAppStore } from './appStore';
 
 export const useAuthStore = defineStore('auth', {
 	state: () => ({
@@ -25,6 +26,10 @@ export const useAuthStore = defineStore('auth', {
 
 		authConfig() {
 			return useNuxtApp().$appConfigStore.auth;
+		},
+
+		oneDriveWorkSchoolScopes(){
+			return useNuxtApp().$appConfigStore.oneDriveWorkSchoolScopes;
 		},
 
 		apiScopes() {
@@ -101,6 +106,37 @@ export const useAuthStore = defineStore('auth', {
 				this.isExpired = true;
 				throw error;
 			}
+		},
+
+		async requestOneDriveWorkSchoolConsent() {
+			let accessToken = '';
+			const oneDriveWorkSchoolAPIScopes: any = {
+				account: this.currentAccount,
+				scopes: [this.oneDriveWorkSchoolScopes],
+			};
+			
+			try {
+				const resp = await this.msalInstance.acquireTokenSilent(oneDriveWorkSchoolAPIScopes);
+				accessToken = resp.accessToken;
+			} catch (error) {
+				// Redirect to get token or login
+				oneDriveWorkSchoolAPIScopes.state = 'Core API redirect';
+				await this.msalInstance.loginRedirect(oneDriveWorkSchoolAPIScopes);
+			}
+			return accessToken;
+		},
+
+		async getOneDriveWorkSchoolToken(): string | null {
+			const appStore = useAppStore();
+			const oneDriveBaseURL = appStore.fileStoreConnectors.find(
+				(connector) => connector.subcategory === 'OneDriveWorkSchool',
+			)?.url;
+			const oneDriveToken = await this.msalInstance.acquireTokenSilent({
+				account: this.currentAccount,
+				scopes: [`${ oneDriveBaseURL }.default`],
+			});
+
+			return oneDriveToken;
 		},
 
 		async getProfilePhoto(): string | null {

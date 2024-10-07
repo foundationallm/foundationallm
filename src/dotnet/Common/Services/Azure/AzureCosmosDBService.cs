@@ -323,12 +323,20 @@ namespace FoundationaLLM.Common.Services
         public async Task<UserProfile> GetUserProfileAsync(string upn, CancellationToken cancellationToken = default)
         {
             var userProfiles = await _userProfilesTask;
-            var userProfile = await userProfiles.ReadItemAsync<UserProfile>(
+
+            var response = await userProfiles.ReadItemAsync<UserProfile>(
                 id: upn,
                 partitionKey: new PartitionKey(upn),
                 cancellationToken: cancellationToken);
 
-            return userProfile;
+            if (response == null)
+            {
+                var newUserProfile = new UserProfile(upn);
+                await UpsertUserProfileAsync(newUserProfile, cancellationToken);
+                return newUserProfile;
+            }
+
+            return response;
         }
 
         /// <inheritdoc/>

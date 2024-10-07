@@ -4,8 +4,6 @@ Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable)
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
-$env:AZCOPY_AUTO_LOGIN_TYPE="AZCLI"
-
 # Load utility functions
 Push-Location $($MyInvocation.InvocationName | Split-Path)
 try {

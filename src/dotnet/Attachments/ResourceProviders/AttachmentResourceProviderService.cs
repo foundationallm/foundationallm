@@ -227,6 +227,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                 Name = attachment.Name,
                 Type = AttachmentTypes.File,
                 Filename = $"/{_name}/{fullName}",
+                Size = attachment.Content!.Length,
                 SecondaryProvider = attachment.SecondaryProvider,
                 Deleted = false
             };

@@ -26,8 +26,12 @@ using FoundationaLLM.Core.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Graph.Models;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using Conversation = FoundationaLLM.Common.Models.Conversation.Conversation;
+using LongRunningOperation = FoundationaLLM.Common.Models.Orchestration.LongRunningOperation;
+using Message = FoundationaLLM.Common.Models.Conversation.Message;
 
 namespace FoundationaLLM.Core.Services;
 
@@ -526,6 +530,14 @@ public partial class CoreService(
         }
 
         return results;
+    }
+
+    /// <inheritdoc/>
+    public async Task<IEnumerable<APIEndpointConfiguration>> GetFileStoreConnectors(string instanceId, UnifiedUserIdentity userIdentity)
+    {
+        var apiEndpointConfigurations = await _configurationResourceProvider.GetResourcesAsync<APIEndpointConfiguration>(instanceId, userIdentity);
+        var resources = apiEndpointConfigurations.Select(c => c.Resource).ToList();
+        return resources.Where(c => c.Category == APIEndpointCategory.FileStoreConnector);
     }
 
     private IDownstreamAPIService GetDownstreamAPIService(AgentGatekeeperOverrideOption agentOption) =>

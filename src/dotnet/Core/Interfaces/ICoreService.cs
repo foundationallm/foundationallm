@@ -5,6 +5,7 @@ using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
+using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 
 namespace FoundationaLLM.Core.Interfaces;
 
@@ -145,4 +146,13 @@ public interface ICoreService
     /// <returns>A dictionary with the delete operation result for each resource path.</returns>
     Task<Dictionary<string, ResourceProviderDeleteResult?>> DeleteAttachments(
         string instanceId, List<string> resourcePaths, UnifiedUserIdentity userIdentity);
+
+    /// <summary>
+    /// Gets the file store connectors for the given instance.
+    /// </summary>
+    /// <param name="instanceId">The FoundationaLLM instance id.</param>
+    /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
+    /// <returns>A list of API endpoint configurations for file store connectors.</returns>
+    Task<IEnumerable<APIEndpointConfiguration>> GetFileStoreConnectors(string instanceId,
+        UnifiedUserIdentity userIdentity);
 }

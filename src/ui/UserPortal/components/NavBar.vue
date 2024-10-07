@@ -17,6 +17,7 @@
 						severity="secondary"
 						class="secondary-button"
 						aria-label="Toggle sidebar"
+						:aria-expanded="!$appStore.isSidebarClosed"
 						@click="$appStore.toggleSidebar"
 						@keydown.esc="hideAllPoppers"
 					/>

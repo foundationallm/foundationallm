@@ -115,6 +115,7 @@ $values = @{
    "ENTRA_AUTH_API_CLIENT_ID"       = $appData["auth"].appId
    "ENTRA_AUTH_API_INSTANCE"        = "https://login.microsoftonline.com/"
    "ENTRA_AUTH_API_SCOPES"          = "api://FoundationaLLM-Authorization"
+   "ENTRA_AUTH_API_TENANT_ID"       = $tenantID
    "ENTRA_CHAT_UI_CLIENT_ID"        = $appData["coreclient"].appId
    "ENTRA_CHAT_UI_SCOPES"           = "api://FoundationaLLM-Core/Data.Read"
    "ENTRA_CORE_API_CLIENT_ID"       = $appData["coreapi"].appId
