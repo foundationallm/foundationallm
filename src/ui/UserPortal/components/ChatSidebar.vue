@@ -13,7 +13,6 @@
 					:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
 					size="small"
 					severity="secondary"
-					class="secondary-button"
 					aria-label="Toggle sidebar"
 					:aria-expanded="!$appStore.isSidebarClosed"
 					@click="$appStore.toggleSidebar"
@@ -108,7 +107,7 @@
 			<div>
 				<span class="chat-sidebar__username">{{ $authStore.currentAccount?.name }}</span>
 				<Button
-					class="chat-sidebar__sign-out secondary-button"
+					class="chat-sidebar__sign-out"
 					icon="pi pi-sign-out"
 					label="Sign Out"
 					severity="secondary"
@@ -450,12 +449,6 @@ export default {
 }
 .chat-sidebar__sign-out {
 	width: 100%;
-}
-
-.secondary-button {
-	background-color: var(--secondary-button-bg) !important;
-	border-color: var(--secondary-button-bg) !important;
-	color: var(--secondary-button-text) !important;
 }
 
 .chat-sidebar__username {

@@ -586,12 +586,6 @@ $editStepPadding: 16px;
 	margin-right: 8px;
 }
 
-.primary-button {
-	background-color: var(--primary-button-bg) !important;
-	border-color: var(--primary-button-bg) !important;
-	color: var(--primary-button-text) !important;
-}
-
 .input-wrapper {
 	position: relative;
 	display: flex;
