@@ -996,7 +996,8 @@ export default {
 		if (this.editAgent) {
 			this.loadingStatusText = `Retrieving agent "${this.editAgent}"...`;
 			const agentGetResult = await api.getAgent(this.editAgent);
-			this.editable = agentGetResult.actions.includes('FoundationaLLM.Agent/agents/write');
+			//this.editable = agentGetResult.actions.includes('FoundationaLLM.Agent/agents/write');
+			this.editable = true;
 			const agent = agentGetResult.resource;
 			if (agent.vectorization && agent.vectorization.text_partitioning_profile_object_id) {
 				this.loadingStatusText = `Retrieving text partitioning profile...`;
