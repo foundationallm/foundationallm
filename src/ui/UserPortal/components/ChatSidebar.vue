@@ -46,9 +46,9 @@
 						v-for="session in sessions"
 						:key="session.id"
 						class="chat-sidebar__chat chat-list-item"
+						role="listitem"
 						@click="handleSessionSelected(session)"
 						@keydown.enter="handleSessionSelected(session)"
-						role="listitem"
 					>
 						<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
 							<!-- Chat name -->
@@ -181,8 +181,8 @@
 </template>
 
 <script lang="ts">
-import type { Session } from '@/js/types';
 import { hideAllPoppers } from 'floating-vue';
+import type { Session } from '@/js/types';
 declare const process: any;
 
 export default {
@@ -481,14 +481,14 @@ export default {
 }
 
 ul.chat-list {
-  list-style-type: none;
-  padding-left: 0;
-  margin: 0;
+	list-style-type: none;
+	padding-left: 0;
+	margin: 0;
 }
 
 li.chat-list-item {
-  padding: 0;
-  margin: 0;
+	padding: 0;
+	margin: 0;
 }
 
 @media only screen and (max-width: 950px) {

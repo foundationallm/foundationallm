@@ -89,8 +89,8 @@
 </template>
 
 <script lang="ts">
-import type { Session } from '@/js/types';
 import { hideAllPoppers } from 'floating-vue';
+import type { Session } from '@/js/types';
 
 interface AgentDropdownOption {
 	label: string;

@@ -19,7 +19,7 @@
 				@click="$appStore.toggleSidebar"
 			/>
 			<main role="main" class="chat-main">
-				<ChatThread ref="thread" :isDragging="isDragging" />
+				<ChatThread ref="thread" :is-dragging="isDragging" />
 			</main>
 		</div>
 	</div>
@@ -47,7 +47,7 @@ export default {
 		window.addEventListener('drop', this.handleDrop);
 	},
 
-	beforeDestroy() {
+	beforeUnmount() {
 		window.removeEventListener('dragenter', this.showDropZone);
 		window.removeEventListener('dragleave', this.hideDropZone);
 		window.removeEventListener('dragover', this.handleDragOver);

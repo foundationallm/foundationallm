@@ -28,7 +28,7 @@ export const useAuthStore = defineStore('auth', {
 			return useNuxtApp().$appConfigStore.auth;
 		},
 
-		oneDriveWorkSchoolScopes(){
+		oneDriveWorkSchoolScopes() {
 			return useNuxtApp().$appConfigStore.oneDriveWorkSchoolScopes;
 		},
 
@@ -114,7 +114,7 @@ export const useAuthStore = defineStore('auth', {
 				account: this.currentAccount,
 				scopes: [this.oneDriveWorkSchoolScopes],
 			};
-			
+
 			try {
 				const resp = await this.msalInstance.acquireTokenSilent(oneDriveWorkSchoolAPIScopes);
 				accessToken = resp.accessToken;
@@ -133,7 +133,7 @@ export const useAuthStore = defineStore('auth', {
 			)?.url;
 			const oneDriveToken = await this.msalInstance.acquireTokenSilent({
 				account: this.currentAccount,
-				scopes: [`${ oneDriveBaseURL }.default`],
+				scopes: [`${oneDriveBaseURL}.default`],
 			});
 
 			return oneDriveToken;
@@ -150,12 +150,12 @@ export const useAuthStore = defineStore('auth', {
 				const profilePhotoBlob = await $fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
 					method: 'GET',
 					headers: {
-						Authorization: `Bearer ${graphToken.accessToken}`
-					}
+						Authorization: `Bearer ${graphToken.accessToken}`,
+					},
 				});
 
 				return URL.createObjectURL(profilePhotoBlob);
-			} catch(error) {
+			} catch (error) {
 				return null;
 			}
 		},
