@@ -201,14 +201,71 @@ Class ResourcePathUtils  <a class="header-action link-secondary" title="View sou
 
 
 
+  <a id="FoundationaLLM_Common_Utils_ResourcePathUtils_ParseForPolicyAssignmentScope_" data-uid="FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForPolicyAssignmentScope*"></a>
+
+  <h3 id="FoundationaLLM_Common_Utils_ResourcePathUtils_ParseForPolicyAssignmentScope_System_String_System_Collections_Generic_List_System_String__" data-uid="FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForPolicyAssignmentScope(System.String,System.Collections.Generic.List{System.String})">
+  ParseForPolicyAssignmentScope(string, List&lt;string&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Utils/ResourcePathUtils.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses a resource path used as scope for a PBAC policy assignment.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ResourcePath ParseForPolicyAssignmentScope(string resourcePath, List&lt;string&gt; allowedInstanceIds)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>resourcePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The resource path to be parsed.</p>
+</dd>
+    <dt><code>allowedInstanceIds</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>The list of FoundationaLLM instance identifiers used as the context for parsing.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a></dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a> object containing the parsed resource path.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="FoundationaLLM_Common_Utils_ResourcePathUtils_ParseForPolicyAssignmentScope_System_String_System_Collections_Generic_List_System_String___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>
+Resource paths used as scopes for policy assignments must be valid resource type paths.
+If the resource path is not a valid resource type path, the method will throw an exception.
+</p>
+<p>
+Also, all resource paths must reference one of the allowed FoundationaLLM instance identifiers.
+</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FoundationaLLM.Common.Exceptions.AuthorizationException.html">AuthorizationException</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
   <a id="FoundationaLLM_Common_Utils_ResourcePathUtils_ParseForRoleAssignmentScope_" data-uid="FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForRoleAssignmentScope*"></a>
 
   <h3 id="FoundationaLLM_Common_Utils_ResourcePathUtils_ParseForRoleAssignmentScope_System_String_System_Collections_Generic_List_System_String__" data-uid="FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForRoleAssignmentScope(System.String,System.Collections.Generic.List{System.String})">
   ParseForRoleAssignmentScope(string, List&lt;string&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Utils/ResourcePathUtils.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Utils/ResourcePathUtils.cs/#L40"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Parses a resource path used as scope for an RBAC role assignment.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -218,15 +275,18 @@ Class ResourcePathUtils  <a class="header-action link-secondary" title="View sou
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>resourcePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
+    <dd><p>The resource path to be parsed.</p>
+</dd>
     <dt><code>allowedInstanceIds</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
-    <dd></dd>
+    <dd><p>The list of FoundationaLLM instance identifiers used as the context for parsing.</p>
+</dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a></dt>
-    <dd></dd>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a> object containing the parsed resource path.</p>
+</dd>
   </dl>
 
 
@@ -235,7 +295,21 @@ Class ResourcePathUtils  <a class="header-action link-secondary" title="View sou
 
 
 
+  <h4 class="section" id="FoundationaLLM_Common_Utils_ResourcePathUtils_ParseForRoleAssignmentScope_System_String_System_Collections_Generic_List_System_String___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Technically, the resource path can be any valid resource path, including a root path.
+At the moment, role assignments are not allowed at the root level, so the method will throw an exception if the resource path is a root path.
+Role assignments at the root level are reserved for future use (e.g., in SaaS scenarios where cross-FoundationaLLM instance assignments are needed).
+</p>
+<p>
+Any non-root resource path must reference one of the allowed FoundationaLLM instance identifiers.
+</p>
+</div>
 
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FoundationaLLM.Common.Exceptions.AuthorizationException.html">AuthorizationException</a></dt>
+    <dd></dd>
+  </dl>
 
 
 

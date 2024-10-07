@@ -132,7 +132,7 @@ Interface IAuthorizationService  <a class="header-action link-secondary" title="
 
   <h3 id="FoundationaLLM_Common_Interfaces_IAuthorizationService_CreateRoleAssignment_System_String_FoundationaLLM_Common_Models_Authorization_RoleAssignmentRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Interfaces.IAuthorizationService.CreateRoleAssignment(System.String,FoundationaLLM.Common.Models.Authorization.RoleAssignmentRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   CreateRoleAssignment(string, RoleAssignmentRequest, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAuthorizationService.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAuthorizationService.cs/#L53"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new role assignment.</p>
@@ -177,7 +177,7 @@ Interface IAuthorizationService  <a class="header-action link-secondary" title="
 
   <h3 id="FoundationaLLM_Common_Interfaces_IAuthorizationService_DeleteRoleAssignment_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Interfaces.IAuthorizationService.DeleteRoleAssignment(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   DeleteRoleAssignment(string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAuthorizationService.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAuthorizationService.cs/#L77"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes a role assignment.</p>
@@ -222,7 +222,7 @@ Interface IAuthorizationService  <a class="header-action link-secondary" title="
 
   <h3 id="FoundationaLLM_Common_Interfaces_IAuthorizationService_GetRoleAssignments_System_String_FoundationaLLM_Common_Models_Authorization_RoleAssignmentQueryParameters_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Interfaces.IAuthorizationService.GetRoleAssignments(System.String,FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   GetRoleAssignments(string, RoleAssignmentQueryParameters, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAuthorizationService.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAuthorizationService.cs/#L65"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns a list of role assignments.</p>
@@ -248,7 +248,7 @@ Interface IAuthorizationService  <a class="header-action link-secondary" title="
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.RoleAssignment.html">RoleAssignment</a>&gt;&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Authorization.RoleAssignment.html">RoleAssignment</a>&gt;&gt;</dt>
     <dd><p>The list of all role assignments for the specified instance.</p>
 </dd>
   </dl>
@@ -265,9 +265,9 @@ Interface IAuthorizationService  <a class="header-action link-secondary" title="
 
   <a id="FoundationaLLM_Common_Interfaces_IAuthorizationService_ProcessAuthorizationRequest_" data-uid="FoundationaLLM.Common.Interfaces.IAuthorizationService.ProcessAuthorizationRequest*"></a>
 
-  <h3 id="FoundationaLLM_Common_Interfaces_IAuthorizationService_ProcessAuthorizationRequest_System_String_System_String_System_Collections_Generic_List_System_String__System_Boolean_System_Boolean_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Interfaces.IAuthorizationService.ProcessAuthorizationRequest(System.String,System.String,System.Collections.Generic.List{System.String},System.Boolean,System.Boolean,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
-  ProcessAuthorizationRequest(string, string, List&lt;string&gt;, bool, bool, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAuthorizationService.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Interfaces_IAuthorizationService_ProcessAuthorizationRequest_System_String_System_String_System_Collections_Generic_List_System_String__System_Boolean_System_Boolean_System_Boolean_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Interfaces.IAuthorizationService.ProcessAuthorizationRequest(System.String,System.String,System.Collections.Generic.List{System.String},System.Boolean,System.Boolean,System.Boolean,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  ProcessAuthorizationRequest(string, string, List&lt;string&gt;, bool, bool, bool, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAuthorizationService.cs/#L37"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Processes an action authorization request.</p>
@@ -275,7 +275,7 @@ Interface IAuthorizationService  <a class="header-action link-secondary" title="
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;ActionAuthorizationResult&gt; ProcessAuthorizationRequest(string instanceId, string action, List&lt;string&gt; resourcePaths, bool expandResourceTypePaths, bool includeRoles, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;ActionAuthorizationResult&gt; ProcessAuthorizationRequest(string instanceId, string action, List&lt;string&gt; resourcePaths, bool expandResourceTypePaths, bool includeRoles, bool includeActions, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -295,6 +295,9 @@ Interface IAuthorizationService  <a class="header-action link-secondary" title="
     <dt><code>includeRoles</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
     <dd><p>A value indicating whether to include roles in the response.</p>
 </dd>
+    <dt><code>includeActions</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>A value indicating whether to include authorizable actions in the response.</p>
+</dd>
     <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
     <dd><p>The user identity.</p>
 </dd>
@@ -313,7 +316,7 @@ Interface IAuthorizationService  <a class="header-action link-secondary" title="
 
 
 
-  <h4 class="section" id="FoundationaLLM_Common_Interfaces_IAuthorizationService_ProcessAuthorizationRequest_System_String_System_String_System_Collections_Generic_List_System_String__System_Boolean_System_Boolean_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity__remarks">Remarks</h4>
+  <h4 class="section" id="FoundationaLLM_Common_Interfaces_IAuthorizationService_ProcessAuthorizationRequest_System_String_System_String_System_Collections_Generic_List_System_String__System_Boolean_System_Boolean_System_Boolean_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity__remarks">Remarks</h4>
   <div class="markdown level1 remarks"><p>
 If the action specified by <code class="paramref">action</code> is not authorized for a resource type path,
 and <code class="paramref">expandResourceTypePaths</code> is set to <code>true</code>, the response will include
@@ -323,6 +326,9 @@ any authorized resource paths matching the resource type path.
 If <code class="paramref">includeRoles</code> is set to <code>true</code>, for each authrorized resource path,
 the response will include the roles assigned directly or indirectly to the resource path.
 </p>
+<p>
+If <code class="paramref">action</code> is set to <code>true</code>, for each authorized resource path,
+the response will include the autorizable actions assigned directly or indirectly to the resource path.</p>
 </div>
 
 

@@ -159,6 +159,25 @@
 </tr>
 </tbody>
 </table>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Within each of the renamed files, the <code>&lt;entity&gt;References</code> property must be renamed to <code>ResourceReferences</code>.</p>
+</div>
+<p><strong>FoundationaLLM.Authorization</strong></p>
+<p>A new storage container named <code>policy-assignments</code> is required. The <code>FoundationaLLM.Authorization</code> resource provider will use this container to store policy assignments.</p>
+<p>Within the container, the <code>&lt;instance_id&gt;-policy.json</code> must be deployed with the default policy assignments. The template for the default policy assignments is available in <code>Common/Constants/Data/DefaultPolicyAssignments.json</code>.</p>
+<p><strong>FoundationaLLM.Conversation</strong></p>
+<p>When upgrading an existing FoundationaLLM instance, the items in the <code>Sessions</code> collection in Cosmos DB must be updated according to the following rules:</p>
+<pre><code>if Object is of type Session of KioskSession:
+    If the property DisplayName exists and is set to a non-empty string:
+        Don't touch the item
+    else:
+        Set DisplayName to the value of Name
+        Set Name to the value of SessionId
+else:
+    No action needed
+</code></pre>
+<p>Refer to the dedicated upgrade tool for instruction on how to perform this update.</p>
 <h2 id="starting-with-080">Starting with 0.8.0</h2>
 <p>Core API changes:</p>
 <ol>

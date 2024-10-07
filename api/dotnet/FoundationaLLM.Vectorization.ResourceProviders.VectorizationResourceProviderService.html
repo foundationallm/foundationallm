@@ -202,7 +202,19 @@ Class VectorizationResourceProviderService  <a class="header-action link-seconda
       <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_UpsertResourceAsync__2_System_String___0_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;ResourceReference&gt;.UpsertResourceAsync&lt;T, TResult&gt;(string, T, UnifiedUserIdentity)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_ResourceExists__1_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;ResourceReference&gt;.ResourceExists&lt;T&gt;(string, string, UnifiedUserIdentity)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_UpdateResourcePropertiesAsync__2_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;ResourceReference&gt;.UpdateResourcePropertiesAsync&lt;T, TResult&gt;(string, string, Dictionary&lt;string, object&gt;, UnifiedUserIdentity)</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_ResourceExistsAsync__1_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;ResourceReference&gt;.ResourceExistsAsync&lt;T&gt;(string, string, UnifiedUserIdentity)</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_DeleteResourceAsync__1_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;ResourceReference&gt;.DeleteResourceAsync&lt;T&gt;(string, string, UnifiedUserIdentity)</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_UpdateResourcePropertiesAsyncInternal__2_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;ResourceReference&gt;.UpdateResourcePropertiesAsyncInternal&lt;T, TResult&gt;(ResourcePath, ResourcePathAuthorizationResult, Dictionary&lt;string, object&gt;, UnifiedUserIdentity)</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_DeleteResourceAsyncInternal__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;ResourceReference&gt;.DeleteResourceAsyncInternal&lt;T&gt;(ResourcePath, ResourcePathAuthorizationResult, UnifiedUserIdentity)</a>
     </div>
     <div>
       <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_LoadResources__1_FoundationaLLM_Common_Models_ResourceProviders_ResourceTypeInstance_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderLoadOptions_System_Func__0_System_Boolean_System_Threading_Tasks_Task___0___">ResourceProviderServiceBase&lt;ResourceReference&gt;.LoadResources&lt;T&gt;(ResourceTypeInstance, ResourcePathAuthorizationResult, ResourceProviderLoadOptions, Func&lt;ResourceReference, bool, Task&lt;T&gt;&gt;)</a>
@@ -383,7 +395,7 @@ Class VectorizationResourceProviderService  <a class="header-action link-seconda
 
   <h3 id="FoundationaLLM_Vectorization_ResourceProviders_VectorizationResourceProviderService_DeleteResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.DeleteResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   DeleteResourceAsync(ResourcePath, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/ResourceProviders/VectorizationResourceProviderService.cs/#L558"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/ResourceProviders/VectorizationResourceProviderService.cs/#L559"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of DeleteResourceAsync. Must be overridden in derived classes.</p>
@@ -424,7 +436,7 @@ Class VectorizationResourceProviderService  <a class="header-action link-seconda
 
   <h3 id="FoundationaLLM_Vectorization_ResourceProviders_VectorizationResourceProviderService_ExecuteActionAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.ExecuteActionAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   ExecuteActionAsync(ResourcePath, ResourcePathAuthorizationResult, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/ResourceProviders/VectorizationResourceProviderService.cs/#L324"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/ResourceProviders/VectorizationResourceProviderService.cs/#L325"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of ExecuteActionAsync. Must be overriden in derived classes.</p>
@@ -480,7 +492,7 @@ of the authorization result should be returned (if any).</li></ol>
 
   <h3 id="FoundationaLLM_Vectorization_ResourceProviders_VectorizationResourceProviderService_ExecuteActionAsync_System_String_System_String_" data-uid="FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.ExecuteActionAsync(System.String,System.String)">
   ExecuteActionAsync(string, string?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/ResourceProviders/VectorizationResourceProviderService.cs/#L402"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/ResourceProviders/VectorizationResourceProviderService.cs/#L403"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Executes an action on a vectorization resource.</p>
@@ -519,9 +531,9 @@ of the authorization result should be returned (if any).</li></ol>
 
   <a id="FoundationaLLM_Vectorization_ResourceProviders_VectorizationResourceProviderService_GetResourceAsyncInternal_" data-uid="FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.GetResourceAsyncInternal*"></a>
 
-  <h3 id="FoundationaLLM_Vectorization_ResourceProviders_VectorizationResourceProviderService_GetResourceAsyncInternal__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderLoadOptions_" data-uid="FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.GetResourceAsyncInternal``1(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderLoadOptions)">
-  GetResourceAsyncInternal&lt;T&gt;(ResourcePath, UnifiedUserIdentity, ResourceProviderLoadOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/ResourceProviders/VectorizationResourceProviderService.cs/#L608"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Vectorization_ResourceProviders_VectorizationResourceProviderService_GetResourceAsyncInternal__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderLoadOptions_" data-uid="FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.GetResourceAsyncInternal``1(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderLoadOptions)">
+  GetResourceAsyncInternal&lt;T&gt;(ResourcePath, ResourcePathAuthorizationResult, UnifiedUserIdentity, ResourceProviderLoadOptions?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/ResourceProviders/VectorizationResourceProviderService.cs/#L609"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of GetResource. Must be overridden in derived classes.</p>
@@ -529,13 +541,16 @@ of the authorization result should be returned (if any).</li></ol>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override Task&lt;T&gt; GetResourceAsyncInternal&lt;T&gt;(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) where T : ResourceBase</code></pre>
+    <pre><code class="lang-csharp hljs">protected override Task&lt;T&gt; GetResourceAsyncInternal&lt;T&gt;(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) where T : ResourceBase</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>resourcePath</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a></dt>
     <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a> containing information about the resource path.</p>
+</dd>
+    <dt><code>authorizationResult</code> <a class="xref" href="FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult.html">ResourcePathAuthorizationResult</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult.html">ResourcePathAuthorizationResult</a> containing the result of the resource path authorization request.</p>
 </dd>
     <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
     <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a> providing information about the calling user identity.</p>
@@ -658,7 +673,7 @@ In this case, only the resources specified in the subordinate authorized resourc
 
   <h3 id="FoundationaLLM_Vectorization_ResourceProviders_VectorizationResourceProviderService_GetResourcesAsync_System_String_" data-uid="FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.GetResourcesAsync(System.String)">
   GetResourcesAsync(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/ResourceProviders/VectorizationResourceProviderService.cs/#L419"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/ResourceProviders/VectorizationResourceProviderService.cs/#L420"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves resources from the vectorization resource provider.</p>
@@ -697,7 +712,7 @@ In this case, only the resources specified in the subordinate authorized resourc
 
   <h3 id="FoundationaLLM_Vectorization_ResourceProviders_VectorizationResourceProviderService_HandleEvents_FoundationaLLM_Common_Models_Events_EventSetEventArgs_" data-uid="FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.HandleEvents(FoundationaLLM.Common.Models.Events.EventSetEventArgs)">
   HandleEvents(EventSetEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/ResourceProviders/VectorizationResourceProviderService.cs/#L861"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/ResourceProviders/VectorizationResourceProviderService.cs/#L862"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Handles events received from the <a class="xref" href="FoundationaLLM.Common.Interfaces.IEventService.html">IEventService</a> when they are dequeued locally.</p>
@@ -767,7 +782,7 @@ In this case, only the resources specified in the subordinate authorized resourc
 
   <h3 id="FoundationaLLM_Vectorization_ResourceProviders_VectorizationResourceProviderService_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   UpsertResourceAsync(ResourcePath, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/ResourceProviders/VectorizationResourceProviderService.cs/#L222"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/ResourceProviders/VectorizationResourceProviderService.cs/#L223"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of UpsertResourceAsync. Must be overridden in derived classes.</p>
@@ -809,9 +824,9 @@ In this case, only the resources specified in the subordinate authorized resourc
 
   <a id="FoundationaLLM_Vectorization_ResourceProviders_VectorizationResourceProviderService_UpsertResourceAsyncInternal_" data-uid="FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.UpsertResourceAsyncInternal*"></a>
 
-  <h3 id="FoundationaLLM_Vectorization_ResourceProviders_VectorizationResourceProviderService_UpsertResourceAsyncInternal__2_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath___0_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.UpsertResourceAsyncInternal``2(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,``0,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
-  UpsertResourceAsyncInternal&lt;T, TResult&gt;(ResourcePath, T, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/ResourceProviders/VectorizationResourceProviderService.cs/#L703"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Vectorization_ResourceProviders_VectorizationResourceProviderService_UpsertResourceAsyncInternal__2_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult___0_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.UpsertResourceAsyncInternal``2(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,``0,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  UpsertResourceAsyncInternal&lt;T, TResult&gt;(ResourcePath, ResourcePathAuthorizationResult, T, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Vectorization/ResourceProviders/VectorizationResourceProviderService.cs/#L704"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of UpsertResourceAsync. Must be overridden in derived classes.</p>
@@ -819,13 +834,16 @@ In this case, only the resources specified in the subordinate authorized resourc
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override Task&lt;TResult&gt; UpsertResourceAsyncInternal&lt;T, TResult&gt;(ResourcePath resourcePath, T resource, UnifiedUserIdentity userIdentity) where T : ResourceBase where TResult : ResourceProviderUpsertResult</code></pre>
+    <pre><code class="lang-csharp hljs">protected override Task&lt;TResult&gt; UpsertResourceAsyncInternal&lt;T, TResult&gt;(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, T resource, UnifiedUserIdentity userIdentity) where T : ResourceBase where TResult : ResourceProviderUpsertResult&lt;T&gt;</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>resourcePath</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a></dt>
     <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a> containing information about the resource path.</p>
+</dd>
+    <dt><code>authorizationResult</code> <a class="xref" href="FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult.html">ResourcePathAuthorizationResult</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult.html">ResourcePathAuthorizationResult</a> containing the result of the resource path authorization request.</p>
 </dd>
     <dt><code>resource</code> <span class="xref">T</span></dt>
     <dd><p>The instance of the resource being created or updated.</p>

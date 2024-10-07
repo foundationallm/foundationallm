@@ -305,6 +305,56 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
 </h2>
 
 
+  <a id="FoundationaLLM_Common_Interfaces_IResourceProviderService_DeleteResourceAsync_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.DeleteResourceAsync*"></a>
+
+  <h3 id="FoundationaLLM_Common_Interfaces_IResourceProviderService_DeleteResourceAsync__1_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.DeleteResourceAsync``1(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  DeleteResourceAsync&lt;T&gt;(string, string, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Deletes logically a resource based on its logical path.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task DeleteResourceAsync&lt;T&gt;(string instanceId, string resourceName, UnifiedUserIdentity userIdentity) where T : ResourceBase</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance ID.</p>
+</dd>
+    <dt><code>resourceName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the resource being logically deleted.</p>
+</dd>
+    <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a> providing information about the calling user identity.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of the resource.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Interfaces_IResourceProviderService_GetResourceAsync_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.GetResourceAsync*"></a>
 
   <h3 id="FoundationaLLM_Common_Interfaces_IResourceProviderService_GetResourceAsync__1_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderLoadOptions_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.GetResourceAsync``1(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderLoadOptions)">
@@ -465,7 +515,7 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
 
   <h3 id="FoundationaLLM_Common_Interfaces_IResourceProviderService_Initialize" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.Initialize">
   Initialize()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L127"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes the resource provider.</p>
@@ -493,11 +543,11 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
 
 
 
-  <a id="FoundationaLLM_Common_Interfaces_IResourceProviderService_ResourceExists_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.ResourceExists*"></a>
+  <a id="FoundationaLLM_Common_Interfaces_IResourceProviderService_ResourceExistsAsync_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.ResourceExistsAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Interfaces_IResourceProviderService_ResourceExists__1_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.ResourceExists``1(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
-  ResourceExists&lt;T&gt;(string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Interfaces_IResourceProviderService_ResourceExistsAsync__1_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.ResourceExistsAsync``1(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  ResourceExistsAsync&lt;T&gt;(string, string, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L109"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Checks if a resource exists.</p>
@@ -505,7 +555,7 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;(bool Exists, bool Deleted)&gt; ResourceExists&lt;T&gt;(string instanceId, string resourceName, UnifiedUserIdentity userIdentity) where T : ResourceBase</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;(bool Exists, bool Deleted)&gt; ResourceExistsAsync&lt;T&gt;(string instanceId, string resourceName, UnifiedUserIdentity userIdentity) where T : ResourceBase</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -540,9 +590,65 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
 
 
 
-  <h4 class="section" id="FoundationaLLM_Common_Interfaces_IResourceProviderService_ResourceExists__1_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity__remarks">Remarks</h4>
+  <h4 class="section" id="FoundationaLLM_Common_Interfaces_IResourceProviderService_ResourceExistsAsync__1_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity__remarks">Remarks</h4>
   <div class="markdown level1 remarks"><p>If a resource was logically deleted but not purged, this method will return True, indicating the existence of the resource.</p>
 </div>
+
+
+
+
+  <a id="FoundationaLLM_Common_Interfaces_IResourceProviderService_UpdateResourcePropertiesAsync_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.UpdateResourcePropertiesAsync*"></a>
+
+  <h3 id="FoundationaLLM_Common_Interfaces_IResourceProviderService_UpdateResourcePropertiesAsync__2_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.UpdateResourcePropertiesAsync``2(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  UpdateResourcePropertiesAsync&lt;T, TResult&gt;(string, string, Dictionary&lt;string, object&gt;, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates a subset of the properties of a resource.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;TResult&gt; UpdateResourcePropertiesAsync&lt;T, TResult&gt;(string instanceId, string resourceName, Dictionary&lt;string, object&gt; propertyValues, UnifiedUserIdentity userIdentity) where T : ResourceBase where TResult : ResourceProviderUpsertResult&lt;T&gt;</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance id.</p>
+</dd>
+    <dt><code>resourceName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the resource being updated.</p>
+</dd>
+    <dt><code>propertyValues</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd><p>The dictionary with propery names and values to update.</p>
+</dd>
+    <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a> with details about the identity of the user.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;TResult&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of the resource.</p>
+</dd>
+    <dt><code>TResult</code></dt>
+    <dd><p>The type of the result returned.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
 
 
 
@@ -559,7 +665,7 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;TResult&gt; UpsertResourceAsync&lt;T, TResult&gt;(string instanceId, T resource, UnifiedUserIdentity userIdentity) where T : ResourceBase where TResult : ResourceProviderUpsertResult</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;TResult&gt; UpsertResourceAsync&lt;T, TResult&gt;(string instanceId, T resource, UnifiedUserIdentity userIdentity) where T : ResourceBase where TResult : ResourceProviderUpsertResult&lt;T&gt;</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -605,7 +711,7 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
 
   <h3 id="FoundationaLLM_Common_Interfaces_IResourceProviderService_WaitForInitialization" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.WaitForInitialization">
   WaitForInitialization()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L132"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Waits for the resource provider service to be initialized.</p>

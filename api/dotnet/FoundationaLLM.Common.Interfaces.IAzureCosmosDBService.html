@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-      <title>Class AzureCosmosDBService | FoundationaLLM </title>
+      <title>Interface IAzureCosmosDBService | FoundationaLLM </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class AzureCosmosDBService | FoundationaLLM ">
+      <meta name="title" content="Interface IAzureCosmosDBService | FoundationaLLM ">
       
-      <meta name="description" content="Service to access Azure Cosmos DB for NoSQL.">
+      <meta name="description" content="Contains methods for accessing Azure Cosmos DB for NoSQL.">
       <link rel="icon" href="../../media/favicon.ico">
       <link rel="stylesheet" href="../../public/docfx.min.css">
       <link rel="stylesheet" href="../../public/main.css">
@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../../">
       
       
-      <meta name="docfx:docurl" content="https://github.com/solliancenet/foundationallm/new/main/apiSpec/new?filename=FoundationaLLM_Common_Services_AzureCosmosDBService.md&amp;value=---%0Auid%3A%20FoundationaLLM.Common.Services.AzureCosmosDBService%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/solliancenet/foundationallm/new/main/apiSpec/new?filename=FoundationaLLM_Common_Interfaces_IAzureCosmosDBService.md&amp;value=---%0Auid%3A%20FoundationaLLM.Common.Interfaces.IAzureCosmosDBService%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -84,71 +84,33 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService">
+        <article data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService">
 
 
 
-  <h1 id="FoundationaLLM_Common_Services_AzureCosmosDBService" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService" class="text-break">
-Class AzureCosmosDBService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureCosmosDBService.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <h1 id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService" class="text-break">
+Interface IAzureCosmosDBService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureCosmosDBService.cs/#L9"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="FoundationaLLM.html">FoundationaLLM</a>.<a class="xref" href="FoundationaLLM.Common.html">Common</a>.<a class="xref" href="FoundationaLLM.Common.Services.html">Services</a></dd></dl>
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FoundationaLLM.html">FoundationaLLM</a>.<a class="xref" href="FoundationaLLM.Common.html">Common</a>.<a class="xref" href="FoundationaLLM.Common.Interfaces.html">Interfaces</a></dd></dl>
   <dl><dt>Assembly</dt><dd>FoundationaLLM.Common.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Service to access Azure Cosmos DB for NoSQL.</p>
+  <div class="markdown summary"><p>Contains methods for accessing Azure Cosmos DB for NoSQL.</p>
 </div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class AzureCosmosDBService : IAzureCosmosDBService</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IAzureCosmosDBService</code></pre>
   </div>
 
 
 
 
-  <dl class="typelist inheritance">
-    <dt>Inheritance</dt>
-    <dd>
-      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-      <div><span class="xref">AzureCosmosDBService</span></div>
-    </dd>
-  </dl>
-
-  <dl class="typelist implements">
-    <dt>Implements</dt>
-    <dd>
-      <div><a class="xref" href="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html">IAzureCosmosDBService</a></div>
-    </dd>
-  </dl>
 
 
-  <dl class="typelist inheritedMembers">
-    <dt>Inherited Members</dt>
-    <dd>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
-    </div>
-  </dd></dl>
+
 
   <dl class="typelist extensionMethods">
     <dt>Extension Methods</dt>
@@ -162,67 +124,15 @@ Class AzureCosmosDBService  <a class="header-action link-secondary" title="View 
 
 
 
-  <h2 class="section" id="constructors">Constructors
-</h2>
-
-
-  <a id="FoundationaLLM_Common_Services_AzureCosmosDBService__ctor_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.#ctor*"></a>
-
-  <h3 id="FoundationaLLM_Common_Services_AzureCosmosDBService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_CosmosDB_CosmosDbSettings__Microsoft_Azure_Cosmos_CosmosClient_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_AzureCosmosDBService__" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.CosmosDbSettings},Microsoft.Azure.Cosmos.CosmosClient,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.AzureCosmosDBService})">
-  AzureCosmosDBService(IOptions&lt;CosmosDbSettings&gt;, CosmosClient, ILogger&lt;AzureCosmosDBService&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureCosmosDBService.cs/#L43"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Common.Services.AzureCosmosDBService.html">AzureCosmosDBService</a> class.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AzureCosmosDBService(IOptions&lt;CosmosDbSettings&gt; settings, CosmosClient client, ILogger&lt;AzureCosmosDBService&gt; logger)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>settings</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1">IOptions</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Configuration.CosmosDB.CosmosDbSettings.html">CosmosDbSettings</a>&gt;</dt>
-    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Configuration.CosmosDB.CosmosDbSettings.html">CosmosDbSettings</a> settings retrieved
-by the injected <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1">IOptions&lt;TOptions&gt;</a>.</p>
-</dd>
-    <dt><code>client</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.cosmos.cosmosclient">CosmosClient</a></dt>
-    <dd><p>The Cosmos DB client.</p>
-</dd>
-    <dt><code>logger</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>&lt;<a class="xref" href="FoundationaLLM.Common.Services.AzureCosmosDBService.html">AzureCosmosDBService</a>&gt;</dt>
-    <dd><p>The logging interface used to log under the
-<a class="xref" href="FoundationaLLM.Common.Services.AzureCosmosDBService.html">AzureCosmosDBService</a> type name.</p>
-</dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-  <h4 class="section">Exceptions</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
-    <dd><p>Thrown if any of the required settings
-are null or empty.</p>
-</dd>
-  </dl>
-
-
-
   <h2 class="section" id="methods">Methods
 </h2>
 
 
-  <a id="FoundationaLLM_Common_Services_AzureCosmosDBService_CreateOrUpdateConversationAsync_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.CreateOrUpdateConversationAsync*"></a>
+  <a id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_CreateOrUpdateConversationAsync_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.CreateOrUpdateConversationAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_AzureCosmosDBService_CreateOrUpdateConversationAsync_FoundationaLLM_Common_Models_Conversation_Conversation_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.CreateOrUpdateConversationAsync(FoundationaLLM.Common.Models.Conversation.Conversation,System.Threading.CancellationToken)">
+  <h3 id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_CreateOrUpdateConversationAsync_FoundationaLLM_Common_Models_Conversation_Conversation_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.CreateOrUpdateConversationAsync(FoundationaLLM.Common.Models.Conversation.Conversation,System.Threading.CancellationToken)">
   CreateOrUpdateConversationAsync(Conversation, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureCosmosDBService.cs/#L154"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureCosmosDBService.cs/#L33"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates or updates a conversation.</p>
@@ -230,7 +140,7 @@ are null or empty.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;Conversation&gt; CreateOrUpdateConversationAsync(Conversation session, CancellationToken cancellationToken = default)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Conversation&gt; CreateOrUpdateConversationAsync(Conversation session, CancellationToken cancellationToken = default)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -260,11 +170,11 @@ are null or empty.</p>
 
 
 
-  <a id="FoundationaLLM_Common_Services_AzureCosmosDBService_DeleteConversationAsync_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.DeleteConversationAsync*"></a>
+  <a id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_DeleteConversationAsync_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.DeleteConversationAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_AzureCosmosDBService_DeleteConversationAsync_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.DeleteConversationAsync(System.String,System.Threading.CancellationToken)">
+  <h3 id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_DeleteConversationAsync_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.DeleteConversationAsync(System.String,System.Threading.CancellationToken)">
   DeleteConversationAsync(string, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureCosmosDBService.cs/#L182"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureCosmosDBService.cs/#L50"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Batch deletes an existing chat session and all related messages.</p>
@@ -272,7 +182,7 @@ are null or empty.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task DeleteConversationAsync(string sessionId, CancellationToken cancellationToken = default)</code></pre>
+    <pre><code class="lang-csharp hljs">Task DeleteConversationAsync(string sessionId, CancellationToken cancellationToken = default)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -301,11 +211,11 @@ are null or empty.</p>
 
 
 
-  <a id="FoundationaLLM_Common_Services_AzureCosmosDBService_GetCompletionPrompt_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.GetCompletionPrompt*"></a>
+  <a id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_GetCompletionPrompt_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetCompletionPrompt*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_AzureCosmosDBService_GetCompletionPrompt_System_String_System_String_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.GetCompletionPrompt(System.String,System.String)">
+  <h3 id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_GetCompletionPrompt_System_String_System_String_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetCompletionPrompt(System.String,System.String)">
   GetCompletionPrompt(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureCosmosDBService.cs/#L317"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureCosmosDBService.cs/#L108"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns the completion prompt for a given session and completion prompt id.</p>
@@ -313,7 +223,7 @@ are null or empty.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;CompletionPrompt&gt; GetCompletionPrompt(string sessionId, string completionPromptId)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;CompletionPrompt&gt; GetCompletionPrompt(string sessionId, string completionPromptId)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -342,11 +252,11 @@ are null or empty.</p>
 
 
 
-  <a id="FoundationaLLM_Common_Services_AzureCosmosDBService_GetConversationAsync_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.GetConversationAsync*"></a>
+  <a id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_GetConversationAsync_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetConversationAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_AzureCosmosDBService_GetConversationAsync_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.GetConversationAsync(System.String,System.Threading.CancellationToken)">
+  <h3 id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_GetConversationAsync_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetConversationAsync(System.String,System.Threading.CancellationToken)">
   GetConversationAsync(string, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureCosmosDBService.cs/#L136"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureCosmosDBService.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Performs a point read to retrieve a single conversation item.</p>
@@ -354,7 +264,7 @@ are null or empty.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;Conversation?&gt; GetConversationAsync(string id, CancellationToken cancellationToken = default)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Conversation?&gt; GetConversationAsync(string id, CancellationToken cancellationToken = default)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -382,11 +292,11 @@ are null or empty.</p>
 
 
 
-  <a id="FoundationaLLM_Common_Services_AzureCosmosDBService_GetConversationsAsync_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.GetConversationsAsync*"></a>
+  <a id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_GetConversationsAsync_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetConversationsAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_AzureCosmosDBService_GetConversationsAsync_System_String_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.GetConversationsAsync(System.String,System.String,System.Threading.CancellationToken)">
+  <h3 id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_GetConversationsAsync_System_String_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetConversationsAsync(System.String,System.String,System.Threading.CancellationToken)">
   GetConversationsAsync(string, string, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureCosmosDBService.cs/#L117"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureCosmosDBService.cs/#L19"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a list of all current conversations.</p>
@@ -394,7 +304,7 @@ are null or empty.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;List&lt;Conversation&gt;&gt; GetConversationsAsync(string type, string upn, CancellationToken cancellationToken = default)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;List&lt;Conversation&gt;&gt; GetConversationsAsync(string type, string upn, CancellationToken cancellationToken = default)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -428,11 +338,11 @@ conversations for the signed in user.</p>
 
 
 
-  <a id="FoundationaLLM_Common_Services_AzureCosmosDBService_GetSessionMessagesAsync_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.GetSessionMessagesAsync*"></a>
+  <a id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_GetSessionMessagesAsync_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetSessionMessagesAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_AzureCosmosDBService_GetSessionMessagesAsync_System_String_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.GetSessionMessagesAsync(System.String,System.String,System.Threading.CancellationToken)">
+  <h3 id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_GetSessionMessagesAsync_System_String_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetSessionMessagesAsync(System.String,System.String,System.Threading.CancellationToken)">
   GetSessionMessagesAsync(string, string, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureCosmosDBService.cs/#L228"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureCosmosDBService.cs/#L60"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a list of all current chat messages for a specified session identifier.</p>
@@ -440,7 +350,7 @@ conversations for the signed in user.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;List&lt;Message&gt;&gt; GetSessionMessagesAsync(string sessionId, string upn, CancellationToken cancellationToken = default)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;List&lt;Message&gt;&gt; GetSessionMessagesAsync(string sessionId, string upn, CancellationToken cancellationToken = default)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -474,11 +384,11 @@ the signed in user.</p>
 
 
 
-  <a id="FoundationaLLM_Common_Services_AzureCosmosDBService_GetUserProfileAsync_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.GetUserProfileAsync*"></a>
+  <a id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_GetUserProfileAsync_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetUserProfileAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_AzureCosmosDBService_GetUserProfileAsync_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.GetUserProfileAsync(System.String,System.Threading.CancellationToken)">
+  <h3 id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_GetUserProfileAsync_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetUserProfileAsync(System.String,System.Threading.CancellationToken)">
   GetUserProfileAsync(string, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureCosmosDBService.cs/#L323"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureCosmosDBService.cs/#L117"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns the user profile for a given user via their UPN.</p>
@@ -486,7 +396,7 @@ the signed in user.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;UserProfile&gt; GetUserProfileAsync(string upn, CancellationToken cancellationToken = default)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;UserProfile&gt; GetUserProfileAsync(string upn, CancellationToken cancellationToken = default)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -516,11 +426,11 @@ the signed in user.</p>
 
 
 
-  <a id="FoundationaLLM_Common_Services_AzureCosmosDBService_InsertMessageAsync_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.InsertMessageAsync*"></a>
+  <a id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_InsertMessageAsync_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.InsertMessageAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_AzureCosmosDBService_InsertMessageAsync_FoundationaLLM_Common_Models_Conversation_Message_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.InsertMessageAsync(FoundationaLLM.Common.Models.Conversation.Message,System.Threading.CancellationToken)">
+  <h3 id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_InsertMessageAsync_FoundationaLLM_Common_Models_Conversation_Message_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.InsertMessageAsync(FoundationaLLM.Common.Models.Conversation.Message,System.Threading.CancellationToken)">
   InsertMessageAsync(Message, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureCosmosDBService.cs/#L249"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureCosmosDBService.cs/#L68"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new chat message.</p>
@@ -528,7 +438,7 @@ the signed in user.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;Message&gt; InsertMessageAsync(Message message, CancellationToken cancellationToken = default)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Message&gt; InsertMessageAsync(Message message, CancellationToken cancellationToken = default)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -558,11 +468,11 @@ the signed in user.</p>
 
 
 
-  <a id="FoundationaLLM_Common_Services_AzureCosmosDBService_UpdateConversationPropertiesAsync_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.UpdateConversationPropertiesAsync*"></a>
+  <a id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_UpdateConversationPropertiesAsync_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.UpdateConversationPropertiesAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_AzureCosmosDBService_UpdateConversationPropertiesAsync_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.UpdateConversationPropertiesAsync(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Threading.CancellationToken)">
+  <h3 id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_UpdateConversationPropertiesAsync_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.UpdateConversationPropertiesAsync(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Threading.CancellationToken)">
   UpdateConversationPropertiesAsync(string, string, Dictionary&lt;string, object&gt;, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureCosmosDBService.cs/#L165"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureCosmosDBService.cs/#L43"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Updates conversation properties through a patch operation.</p>
@@ -570,7 +480,7 @@ the signed in user.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;Conversation&gt; UpdateConversationPropertiesAsync(string id, string upn, Dictionary&lt;string, object&gt; propertyValues, CancellationToken cancellationToken = default)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Conversation&gt; UpdateConversationPropertiesAsync(string id, string upn, Dictionary&lt;string, object&gt; propertyValues, CancellationToken cancellationToken = default)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -606,11 +516,11 @@ the signed in user.</p>
 
 
 
-  <a id="FoundationaLLM_Common_Services_AzureCosmosDBService_UpdateMessageAsync_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.UpdateMessageAsync*"></a>
+  <a id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_UpdateMessageAsync_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.UpdateMessageAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_AzureCosmosDBService_UpdateMessageAsync_FoundationaLLM_Common_Models_Conversation_Message_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.UpdateMessageAsync(FoundationaLLM.Common.Models.Conversation.Message,System.Threading.CancellationToken)">
+  <h3 id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_UpdateMessageAsync_FoundationaLLM_Common_Models_Conversation_Message_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.UpdateMessageAsync(FoundationaLLM.Common.Models.Conversation.Message,System.Threading.CancellationToken)">
   UpdateMessageAsync(Message, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureCosmosDBService.cs/#L260"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureCosmosDBService.cs/#L76"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Updates an existing chat message.</p>
@@ -618,7 +528,7 @@ the signed in user.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;Message&gt; UpdateMessageAsync(Message message, CancellationToken cancellationToken = default)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Message&gt; UpdateMessageAsync(Message message, CancellationToken cancellationToken = default)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -648,11 +558,11 @@ the signed in user.</p>
 
 
 
-  <a id="FoundationaLLM_Common_Services_AzureCosmosDBService_UpdateMessageRatingAsync_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.UpdateMessageRatingAsync*"></a>
+  <a id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_UpdateMessageRatingAsync_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.UpdateMessageRatingAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_AzureCosmosDBService_UpdateMessageRatingAsync_System_String_System_String_System_Nullable_System_Boolean__System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.UpdateMessageRatingAsync(System.String,System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+  <h3 id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_UpdateMessageRatingAsync_System_String_System_String_System_Nullable_System_Boolean__System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.UpdateMessageRatingAsync(System.String,System.String,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
   UpdateMessageRatingAsync(string, string, bool?, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureCosmosDBService.cs/#L272"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureCosmosDBService.cs/#L86"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Updates a message's rating through a patch operation.</p>
@@ -660,7 +570,7 @@ the signed in user.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;Message&gt; UpdateMessageRatingAsync(string id, string sessionId, bool? rating, CancellationToken cancellationToken = default)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Message&gt; UpdateMessageRatingAsync(string id, string sessionId, bool? rating, CancellationToken cancellationToken = default)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -696,11 +606,11 @@ the signed in user.</p>
 
 
 
-  <a id="FoundationaLLM_Common_Services_AzureCosmosDBService_UpsertSessionBatchAsync_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.UpsertSessionBatchAsync*"></a>
+  <a id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_UpsertSessionBatchAsync_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.UpsertSessionBatchAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_AzureCosmosDBService_UpsertSessionBatchAsync_System_Object___" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.UpsertSessionBatchAsync(System.Object[])">
+  <h3 id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_UpsertSessionBatchAsync_System_Object___" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.UpsertSessionBatchAsync(System.Object[])">
   UpsertSessionBatchAsync(params dynamic[])
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureCosmosDBService.cs/#L287"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureCosmosDBService.cs/#L92"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Batch create or update chat messages and session.</p>
@@ -708,7 +618,7 @@ the signed in user.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task UpsertSessionBatchAsync(params dynamic[] messages)</code></pre>
+    <pre><code class="lang-csharp hljs">Task UpsertSessionBatchAsync(params dynamic[] messages)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -734,11 +644,11 @@ the signed in user.</p>
 
 
 
-  <a id="FoundationaLLM_Common_Services_AzureCosmosDBService_UpsertUserProfileAsync_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.UpsertUserProfileAsync*"></a>
+  <a id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_UpsertUserProfileAsync_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.UpsertUserProfileAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_AzureCosmosDBService_UpsertUserProfileAsync_FoundationaLLM_Common_Models_Configuration_Users_UserProfile_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.UpsertUserProfileAsync(FoundationaLLM.Common.Models.Configuration.Users.UserProfile,System.Threading.CancellationToken)">
+  <h3 id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_UpsertUserProfileAsync_FoundationaLLM_Common_Models_Configuration_Users_UserProfile_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.UpsertUserProfileAsync(FoundationaLLM.Common.Models.Configuration.Users.UserProfile,System.Threading.CancellationToken)">
   UpsertUserProfileAsync(UserProfile, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureCosmosDBService.cs/#L343"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureCosmosDBService.cs/#L125"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Inserts or updates a user profile.</p>
@@ -746,7 +656,7 @@ the signed in user.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task UpsertUserProfileAsync(UserProfile userProfile, CancellationToken cancellationToken = default)</code></pre>
+    <pre><code class="lang-csharp hljs">Task UpsertUserProfileAsync(UserProfile userProfile, CancellationToken cancellationToken = default)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -775,11 +685,11 @@ the signed in user.</p>
 
 
 
-  <a id="FoundationaLLM_Common_Services_AzureCosmosDBService_UpsertUserSessionAsync_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.UpsertUserSessionAsync*"></a>
+  <a id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_UpsertUserSessionAsync_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.UpsertUserSessionAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_AzureCosmosDBService_UpsertUserSessionAsync_FoundationaLLM_Common_Models_Conversation_Conversation_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Services.AzureCosmosDBService.UpsertUserSessionAsync(FoundationaLLM.Common.Models.Conversation.Conversation,System.Threading.CancellationToken)">
+  <h3 id="FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_UpsertUserSessionAsync_FoundationaLLM_Common_Models_Conversation_Conversation_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.UpsertUserSessionAsync(FoundationaLLM.Common.Models.Conversation.Conversation,System.Threading.CancellationToken)">
   UpsertUserSessionAsync(Conversation, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureCosmosDBService.cs/#L307"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureCosmosDBService.cs/#L100"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Create or update a user session from the passed in Session object.</p>
@@ -787,7 +697,7 @@ the signed in user.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task UpsertUserSessionAsync(Conversation session, CancellationToken cancellationToken = default)</code></pre>
+    <pre><code class="lang-csharp hljs">Task UpsertUserSessionAsync(Conversation session, CancellationToken cancellationToken = default)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -820,7 +730,7 @@ the signed in user.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Azure/AzureCosmosDBService.cs/#L19" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureCosmosDBService.cs/#L9" class="edit-link">Edit this page</a>
         </div>
 
 

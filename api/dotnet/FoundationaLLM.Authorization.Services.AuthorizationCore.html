@@ -170,7 +170,7 @@ Class AuthorizationCore  <a class="header-action link-secondary" title="View sou
 
   <h3 id="FoundationaLLM_Authorization_Services_AuthorizationCore__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Authorization_Models_Configuration_AuthorizationCoreSettings__FoundationaLLM_Common_Interfaces_IStorageService_FoundationaLLM_Common_Interfaces_IResourceValidatorFactory_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Authorization_Services_AuthorizationCore__" data-uid="FoundationaLLM.Authorization.Services.AuthorizationCore.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Authorization.Models.Configuration.AuthorizationCoreSettings},FoundationaLLM.Common.Interfaces.IStorageService,FoundationaLLM.Common.Interfaces.IResourceValidatorFactory,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Authorization.Services.AuthorizationCore})">
   AuthorizationCore(IOptions&lt;AuthorizationCoreSettings&gt;, IStorageService, IResourceValidatorFactory, ILogger&lt;AuthorizationCore&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Authorization/Services/AuthorizationCore.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Authorization/Services/AuthorizationCore.cs/#L47"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new instance of the <a class="xref" href="FoundationaLLM.Authorization.Services.AuthorizationCore.html">AuthorizationCore</a> class.</p>
@@ -215,7 +215,7 @@ Class AuthorizationCore  <a class="header-action link-secondary" title="View sou
 
   <h3 id="FoundationaLLM_Authorization_Services_AuthorizationCore_AllowAuthorizationRequestsProcessing_System_String_System_String_" data-uid="FoundationaLLM.Authorization.Services.AuthorizationCore.AllowAuthorizationRequestsProcessing(System.String,System.String)">
   AllowAuthorizationRequestsProcessing(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Authorization/Services/AuthorizationCore.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Authorization/Services/AuthorizationCore.cs/#L174"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Checks if a specified security principal is allowed to process authorization requests.</p>
@@ -257,7 +257,7 @@ Class AuthorizationCore  <a class="header-action link-secondary" title="View sou
 
   <h3 id="FoundationaLLM_Authorization_Services_AuthorizationCore_CreateRoleAssignment_System_String_FoundationaLLM_Common_Models_Authorization_RoleAssignmentRequest_" data-uid="FoundationaLLM.Authorization.Services.AuthorizationCore.CreateRoleAssignment(System.String,FoundationaLLM.Common.Models.Authorization.RoleAssignmentRequest)">
   CreateRoleAssignment(string, RoleAssignmentRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Authorization/Services/AuthorizationCore.cs/#L219"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Authorization/Services/AuthorizationCore.cs/#L276"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a role assignment for a specified security principal.</p>
@@ -299,7 +299,7 @@ Class AuthorizationCore  <a class="header-action link-secondary" title="View sou
 
   <h3 id="FoundationaLLM_Authorization_Services_AuthorizationCore_DeleteRoleAssignment_System_String_System_String_" data-uid="FoundationaLLM.Authorization.Services.AuthorizationCore.DeleteRoleAssignment(System.String,System.String)">
   DeleteRoleAssignment(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Authorization/Services/AuthorizationCore.cs/#L278"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Authorization/Services/AuthorizationCore.cs/#L335"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Revokes a role from an Entra ID user or group.</p>
@@ -341,7 +341,7 @@ Class AuthorizationCore  <a class="header-action link-secondary" title="View sou
 
   <h3 id="FoundationaLLM_Authorization_Services_AuthorizationCore_GetRoleAssignments_System_String_FoundationaLLM_Common_Models_Authorization_RoleAssignmentQueryParameters_" data-uid="FoundationaLLM.Authorization.Services.AuthorizationCore.GetRoleAssignments(System.String,FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters)">
   GetRoleAssignments(string, RoleAssignmentQueryParameters)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Authorization/Services/AuthorizationCore.cs/#L301"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Authorization/Services/AuthorizationCore.cs/#L358"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns a list of role assignments for the specified instance and resource path.</p>
@@ -364,7 +364,7 @@ Class AuthorizationCore  <a class="header-action link-secondary" title="View sou
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.RoleAssignment.html">RoleAssignment</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Authorization.RoleAssignment.html">RoleAssignment</a>&gt;</dt>
     <dd><p>The list of all role assignments for the specified instance.</p>
 </dd>
   </dl>
@@ -383,7 +383,7 @@ Class AuthorizationCore  <a class="header-action link-secondary" title="View sou
 
   <h3 id="FoundationaLLM_Authorization_Services_AuthorizationCore_ProcessAuthorizationRequest_System_String_FoundationaLLM_Common_Models_Authorization_ActionAuthorizationRequest_" data-uid="FoundationaLLM.Authorization.Services.AuthorizationCore.ProcessAuthorizationRequest(System.String,FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest)">
   ProcessAuthorizationRequest(string, ActionAuthorizationRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Authorization/Services/AuthorizationCore.cs/#L146"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Authorization/Services/AuthorizationCore.cs/#L201"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Processes an authorization request.</p>

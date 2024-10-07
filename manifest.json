@@ -352,6 +352,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Authorization.Models.PolicyAssignmentStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Authorization.Models.PolicyAssignmentStore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Authorization.Models.RoleAssignmentStore.yml",
       "output": {
         ".html": {
@@ -416,6 +426,16 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Authorization.Services.NullAuthorizationService.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Authorization.Services.PolicyAssignmentCache.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Authorization.Services.PolicyAssignmentCache.html"
         }
       },
       "version": ""
@@ -1082,6 +1102,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Authorization.UserIdentityPropertyNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Authorization.UserIdentityPropertyNames.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Authorization.yml",
       "output": {
         ".html": {
@@ -1096,16 +1126,6 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.AuthorizationClaims.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Chat.ConversationTypes.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Chat.ConversationTypes.html"
         }
       },
       "version": ""
@@ -1612,6 +1632,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ConversationResourceProviderLoadParameterNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ConversationResourceProviderLoadParameterNames.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ConversationResourceProviderMetadata.yml",
       "output": {
         ".html": {
@@ -1626,6 +1656,16 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ConversationResourceTypeNames.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ConversationTypes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.ConversationTypes.html"
         }
       },
       "version": ""
@@ -2072,6 +2112,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.yml",
       "output": {
         ".html": {
@@ -2106,16 +2156,6 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.ICallContext.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.ICosmosDBService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.ICosmosDBService.html"
         }
       },
       "version": ""
@@ -2332,16 +2372,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.AuthorizableAction.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.AuthorizableAction.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest.yml",
       "output": {
         ".html": {
@@ -2362,6 +2392,26 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.AssignmentBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.AssignmentBase.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.AuthorizableAction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.AuthorizableAction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.AuthorizableActions.yml",
       "output": {
         ".html": {
@@ -2372,10 +2422,60 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.PolicyAssignment.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.PolicyAssignment.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.PolicyDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.PolicyDefinition.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.PolicyDefinitions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.PolicyDefinitions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.PolicyMatchingStrategy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.PolicyMatchingStrategy.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult.yml",
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleAssignment.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleAssignment.html"
         }
       },
       "version": ""
@@ -2426,6 +2526,26 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleAssignmentsWithActionsResult.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleDefinition.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleDefinitionPermissions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Authorization.RoleDefinitionPermissions.html"
         }
       },
       "version": ""
@@ -4272,6 +4392,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult.yml",
       "output": {
         ".html": {
@@ -4486,36 +4616,6 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.RoleAssignment.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.RoleAssignment.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.RoleDefinition.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.RoleDefinition.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.RoleDefinitionPermissions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.RoleDefinitionPermissions.html"
         }
       },
       "version": ""

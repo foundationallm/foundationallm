@@ -129,10 +129,10 @@ orchestrator.</p>
 </h2>
 
 
-  <a id="FoundationaLLM_Core_Interfaces_ICoreService_CreateNewChatSessionAsync_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.CreateNewChatSessionAsync*"></a>
+  <a id="FoundationaLLM_Core_Interfaces_ICoreService_CreateConversationAsync_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.CreateConversationAsync*"></a>
 
-  <h3 id="FoundationaLLM_Core_Interfaces_ICoreService_CreateNewChatSessionAsync_System_String_FoundationaLLM_Common_Models_Conversation_ChatSessionProperties_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.CreateNewChatSessionAsync(System.String,FoundationaLLM.Common.Models.Conversation.ChatSessionProperties)">
-  CreateNewChatSessionAsync(string, ChatSessionProperties)
+  <h3 id="FoundationaLLM_Core_Interfaces_ICoreService_CreateConversationAsync_System_String_FoundationaLLM_Common_Models_Conversation_ChatSessionProperties_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.CreateConversationAsync(System.String,FoundationaLLM.Common.Models.Conversation.ChatSessionProperties)">
+  CreateConversationAsync(string, ChatSessionProperties)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Interfaces/ICoreService.cs/#L36"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -141,7 +141,7 @@ orchestrator.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;Conversation&gt; CreateNewChatSessionAsync(string instanceId, ChatSessionProperties chatSessionProperties)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Conversation&gt; CreateConversationAsync(string instanceId, ChatSessionProperties chatSessionProperties)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -215,10 +215,10 @@ orchestrator.</p>
 
 
 
-  <a id="FoundationaLLM_Core_Interfaces_ICoreService_DeleteChatSessionAsync_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.DeleteChatSessionAsync*"></a>
+  <a id="FoundationaLLM_Core_Interfaces_ICoreService_DeleteConversationAsync_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.DeleteConversationAsync*"></a>
 
-  <h3 id="FoundationaLLM_Core_Interfaces_ICoreService_DeleteChatSessionAsync_System_String_System_String_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.DeleteChatSessionAsync(System.String,System.String)">
-  DeleteChatSessionAsync(string, string)
+  <h3 id="FoundationaLLM_Core_Interfaces_ICoreService_DeleteConversationAsync_System_String_System_String_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.DeleteConversationAsync(System.String,System.String)">
+  DeleteConversationAsync(string, string)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Interfaces/ICoreService.cs/#L51"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -227,7 +227,7 @@ orchestrator.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task DeleteChatSessionAsync(string instanceId, string sessionId)</code></pre>
+    <pre><code class="lang-csharp hljs">Task DeleteConversationAsync(string instanceId, string sessionId)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -308,10 +308,10 @@ orchestrator.</p>
 
 
 
-  <a id="FoundationaLLM_Core_Interfaces_ICoreService_GetAllChatSessionsAsync_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.GetAllChatSessionsAsync*"></a>
+  <a id="FoundationaLLM_Core_Interfaces_ICoreService_GetAllConversationsAsync_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.GetAllConversationsAsync*"></a>
 
-  <h3 id="FoundationaLLM_Core_Interfaces_ICoreService_GetAllChatSessionsAsync_System_String_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.GetAllChatSessionsAsync(System.String)">
-  GetAllChatSessionsAsync(string)
+  <h3 id="FoundationaLLM_Core_Interfaces_ICoreService_GetAllConversationsAsync_System_String_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.GetAllConversationsAsync(System.String)">
+  GetAllConversationsAsync(string)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Interfaces/ICoreService.cs/#L22"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -320,7 +320,7 @@ orchestrator.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;List&lt;Conversation&gt;&gt; GetAllChatSessionsAsync(string instanceId)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;List&lt;Conversation&gt;&gt; GetAllConversationsAsync(string instanceId)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -687,10 +687,10 @@ generate a completion response, and log full completion results.</p>
 
 
 
-  <a id="FoundationaLLM_Core_Interfaces_ICoreService_RenameChatSessionAsync_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.RenameChatSessionAsync*"></a>
+  <a id="FoundationaLLM_Core_Interfaces_ICoreService_RenameConversationAsync_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.RenameConversationAsync*"></a>
 
-  <h3 id="FoundationaLLM_Core_Interfaces_ICoreService_RenameChatSessionAsync_System_String_System_String_FoundationaLLM_Common_Models_Conversation_ChatSessionProperties_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.RenameChatSessionAsync(System.String,System.String,FoundationaLLM.Common.Models.Conversation.ChatSessionProperties)">
-  RenameChatSessionAsync(string, string, ChatSessionProperties)
+  <h3 id="FoundationaLLM_Core_Interfaces_ICoreService_RenameConversationAsync_System_String_System_String_FoundationaLLM_Common_Models_Conversation_ChatSessionProperties_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.RenameConversationAsync(System.String,System.String,FoundationaLLM.Common.Models.Conversation.ChatSessionProperties)">
+  RenameConversationAsync(string, string, ChatSessionProperties)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Interfaces/ICoreService.cs/#L44"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -699,7 +699,7 @@ generate a completion response, and log full completion results.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;Conversation&gt; RenameChatSessionAsync(string instanceId, string sessionId, ChatSessionProperties chatSessionProperties)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Conversation&gt; RenameConversationAsync(string instanceId, string sessionId, ChatSessionProperties chatSessionProperties)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -785,7 +785,7 @@ generate a completion response, and log full completion results.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;ResourceProviderUpsertResult&gt; UploadAttachment(string instanceId, string sessionId, AttachmentFile attachmentFile, string agentName, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;ResourceProviderUpsertResult&lt;AttachmentFile&gt;&gt; UploadAttachment(string instanceId, string sessionId, AttachmentFile attachmentFile, string agentName, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -809,8 +809,8 @@ generate a completion response, and log full completion results.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult.html">ResourceProviderUpsertResult</a>&gt;</dt>
-    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult.html">ResourceProviderUpsertResult</a> object with the FoundationaLLM.Attachment resource provider object id.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult-1.html">ResourceProviderUpsertResult</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile.html">AttachmentFile</a>&gt;&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult-1.html">ResourceProviderUpsertResult&lt;T&gt;</a> object with the FoundationaLLM.Attachment resource provider object id.</p>
 </dd>
   </dl>
 

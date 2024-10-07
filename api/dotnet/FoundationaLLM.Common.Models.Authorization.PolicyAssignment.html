@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-      <title>Class Conversation | FoundationaLLM </title>
+      <title>Class PolicyAssignment | FoundationaLLM </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class Conversation | FoundationaLLM ">
+      <meta name="title" content="Class PolicyAssignment | FoundationaLLM ">
       
-      <meta name="description" content="The session object.">
+      <meta name="description" content="Represents a PBAC policy assignment.">
       <link rel="icon" href="../../media/favicon.ico">
       <link rel="stylesheet" href="../../public/docfx.min.css">
       <link rel="stylesheet" href="../../public/main.css">
@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../../">
       
       
-      <meta name="docfx:docurl" content="https://github.com/solliancenet/foundationallm/new/main/apiSpec/new?filename=FoundationaLLM_Common_Models_Conversation_Conversation.md&amp;value=---%0Auid%3A%20FoundationaLLM.Common.Models.Conversation.Conversation%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/solliancenet/foundationallm/new/main/apiSpec/new?filename=FoundationaLLM_Common_Models_Authorization_PolicyAssignment.md&amp;value=---%0Auid%3A%20FoundationaLLM.Common.Models.Authorization.PolicyAssignment%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -84,25 +84,25 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="FoundationaLLM.Common.Models.Conversation.Conversation">
+        <article data-uid="FoundationaLLM.Common.Models.Authorization.PolicyAssignment">
 
 
 
-  <h1 id="FoundationaLLM_Common_Models_Conversation_Conversation" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation" class="text-break">
-Class Conversation  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L9"><i class="bi bi-code-slash"></i></a>
+  <h1 id="FoundationaLLM_Common_Models_Authorization_PolicyAssignment" data-uid="FoundationaLLM.Common.Models.Authorization.PolicyAssignment" class="text-break">
+Class PolicyAssignment  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Authorization/PolicyAssignment.cs/#L9"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="FoundationaLLM.html">FoundationaLLM</a>.<a class="xref" href="FoundationaLLM.Common.html">Common</a>.<a class="xref" href="FoundationaLLM.Common.Models.html">Models</a>.<a class="xref" href="FoundationaLLM.Common.Models.Conversation.html">Conversation</a></dd></dl>
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FoundationaLLM.html">FoundationaLLM</a>.<a class="xref" href="FoundationaLLM.Common.html">Common</a>.<a class="xref" href="FoundationaLLM.Common.Models.html">Models</a>.<a class="xref" href="FoundationaLLM.Common.Models.Authorization.html">Authorization</a></dd></dl>
   <dl><dt>Assembly</dt><dd>FoundationaLLM.Common.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>The session object.</p>
+  <div class="markdown summary"><p>Represents a PBAC policy assignment.</p>
 </div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Conversation : ResourceBase</code></pre>
+    <pre><code class="lang-csharp hljs">public class PolicyAssignment : AssignmentBase</code></pre>
   </div>
 
 
@@ -114,7 +114,8 @@ Class Conversation  <a class="header-action link-secondary" title="View source" 
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
       <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceName.html">ResourceName</a></div>
       <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html">ResourceBase</a></div>
-      <div><span class="xref">Conversation</span></div>
+      <div><a class="xref" href="FoundationaLLM.Common.Models.Authorization.AssignmentBase.html">AssignmentBase</a></div>
+      <div><span class="xref">PolicyAssignment</span></div>
     </dd>
   </dl>
 
@@ -123,6 +124,18 @@ Class Conversation  <a class="header-action link-secondary" title="View source" 
   <dl class="typelist inheritedMembers">
     <dt>Inherited Members</dt>
     <dd>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.Authorization.AssignmentBase.html#FoundationaLLM_Common_Models_Authorization_AssignmentBase_PrincipalId">AssignmentBase.PrincipalId</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.Authorization.AssignmentBase.html#FoundationaLLM_Common_Models_Authorization_AssignmentBase_PrincipalType">AssignmentBase.PrincipalType</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.Authorization.AssignmentBase.html#FoundationaLLM_Common_Models_Authorization_AssignmentBase_Scope">AssignmentBase.Scope</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.Authorization.AssignmentBase.html#FoundationaLLM_Common_Models_Authorization_AssignmentBase_ScopeResourcePath">AssignmentBase.ScopeResourcePath</a>
+    </div>
     <div>
       <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_ObjectId">ResourceBase.ObjectId</a>
     </div>
@@ -149,6 +162,9 @@ Class Conversation  <a class="header-action link-secondary" title="View source" 
     </div>
     <div>
       <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_UpdatedBy">ResourceBase.UpdatedBy</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_Deleted">ResourceBase.Deleted</a>
     </div>
     <div>
       <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_ExpirationDate">ResourceBase.ExpirationDate</a>
@@ -198,84 +214,20 @@ Class Conversation  <a class="header-action link-secondary" title="View source" 
 </h2>
 
 
-  <a id="FoundationaLLM_Common_Models_Conversation_Conversation_Deleted_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.Deleted*"></a>
+  <a id="FoundationaLLM_Common_Models_Authorization_PolicyAssignment_PolicyDefinition_" data-uid="FoundationaLLM.Common.Models.Authorization.PolicyAssignment.PolicyDefinition*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_Conversation_Conversation_Deleted" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.Deleted">
-  Deleted
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Models_Authorization_PolicyAssignment_PolicyDefinition" data-uid="FoundationaLLM.Common.Models.Authorization.PolicyAssignment.PolicyDefinition">
+  PolicyDefinition
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Authorization/PolicyAssignment.cs/#L20"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Deleted flag used for soft delete.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool Deleted { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_Conversation_Conversation_Id_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.Id*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_Conversation_Conversation_Id" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.Id">
-  Id
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L14"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>The unique identifier.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Id { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_Conversation_Conversation_Messages_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.Messages*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_Conversation_Conversation_Messages" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.Messages">
-  Messages
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L39"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>The list of messages associated with the session.</p>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authorization.PolicyAssignment.html#FoundationaLLM_Common_Models_Authorization_PolicyAssignment_PolicyDefinition">PolicyDefinition</a> referenced by the <a class="xref" href="FoundationaLLM.Common.Models.Authorization.PolicyAssignment.html#FoundationaLLM_Common_Models_Authorization_PolicyAssignment_PolicyDefinitionId">PolicyDefinitionId</a> property.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonIgnore]
-public List&lt;Message&gt; Messages { get; set; }</code></pre>
+public PolicyDefinition? PolicyDefinition { get; set; }</code></pre>
   </div>
 
 
@@ -284,7 +236,7 @@ public List&lt;Message&gt; Messages { get; set; }</code></pre>
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;</dt>
+    <dt><a class="xref" href="FoundationaLLM.Common.Models.Authorization.PolicyDefinition.html">PolicyDefinition</a></dt>
     <dd></dd>
   </dl>
 
@@ -295,83 +247,20 @@ public List&lt;Message&gt; Messages { get; set; }</code></pre>
 
 
 
-  <a id="FoundationaLLM_Common_Models_Conversation_Conversation_SessionId_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.SessionId*"></a>
+  <a id="FoundationaLLM_Common_Models_Authorization_PolicyAssignment_PolicyDefinitionId_" data-uid="FoundationaLLM.Common.Models.Authorization.PolicyAssignment.PolicyDefinitionId*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_Conversation_Conversation_SessionId" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.SessionId">
-  SessionId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Models_Authorization_PolicyAssignment_PolicyDefinitionId" data-uid="FoundationaLLM.Common.Models.Authorization.PolicyAssignment.PolicyDefinitionId">
+  PolicyDefinitionId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Authorization/PolicyAssignment.cs/#L14"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>The Partition key.</p>
+  <div class="markdown level1 summary"><p>The unique identifier of the policy definition.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public required string SessionId { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_Conversation_Conversation_TokensUsed_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.TokensUsed*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_Conversation_Conversation_TokensUsed" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.TokensUsed">
-  TokensUsed
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L24"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>The number of tokens used in the session.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int TokensUsed { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_Conversation_Conversation_UPN_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.UPN*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_Conversation_Conversation_UPN" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.UPN">
-  UPN
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L29"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>The UPN of the user who created the chat session.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string UPN { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;policy_definition_id&quot;)]
+public required string PolicyDefinitionId { get; set; }</code></pre>
   </div>
 
 
@@ -395,25 +284,25 @@ public List&lt;Message&gt; Messages { get; set; }</code></pre>
 </h2>
 
 
-  <a id="FoundationaLLM_Common_Models_Conversation_Conversation_AddMessage_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.AddMessage*"></a>
+  <a id="FoundationaLLM_Common_Models_Authorization_PolicyAssignment_Enrich_" data-uid="FoundationaLLM.Common.Models.Authorization.PolicyAssignment.Enrich*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_Conversation_Conversation_AddMessage_FoundationaLLM_Common_Models_Conversation_Message_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.AddMessage(FoundationaLLM.Common.Models.Conversation.Message)">
-  AddMessage(Message)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Models_Authorization_PolicyAssignment_Enrich_System_Collections_Generic_List_System_String__" data-uid="FoundationaLLM.Common.Models.Authorization.PolicyAssignment.Enrich(System.Collections.Generic.List{System.String})">
+  Enrich(List&lt;string&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Authorization/PolicyAssignment.cs/#L31"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Adds a message to the list of messages associated with the session.</p>
+  <div class="markdown level1 summary"><p>Enriches the policy assignment with additional information.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void AddMessage(Message message)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Enrich(List&lt;string&gt; allowedInstanceIds)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>message</code> <a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a></dt>
-    <dd><p>The message to be added.</p>
+    <dt><code>allowedInstanceIds</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>The list of FoundationaLLM instance identifiers used as context for the enrichment.</p>
 </dd>
   </dl>
 
@@ -424,39 +313,10 @@ public List&lt;Message&gt; Messages { get; set; }</code></pre>
 
 
 
-
-
-
-
-  <a id="FoundationaLLM_Common_Models_Conversation_Conversation_UpdateMessage_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.UpdateMessage*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_Conversation_Conversation_UpdateMessage_FoundationaLLM_Common_Models_Conversation_Message_" data-uid="FoundationaLLM.Common.Models.Conversation.Conversation.UpdateMessage(FoundationaLLM.Common.Models.Conversation.Message)">
-  UpdateMessage(Message)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L53"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Updates an existing message in the list of messages associated with the session.</p>
+  <h4 class="section" id="FoundationaLLM_Common_Models_Authorization_PolicyAssignment_Enrich_System_Collections_Generic_List_System_String___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method is called when the policy assignments are loaded into memory.
+Besides the actual enrichment, it also ensures that the <a class="xref" href="FoundationaLLM.Common.Models.Authorization.AssignmentBase.html#FoundationaLLM_Common_Models_Authorization_AssignmentBase_Scope">Scope</a> property is set correctly.</p>
 </div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void UpdateMessage(Message message)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>message</code> <a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a></dt>
-    <dd><p>The updated message.</p>
-</dd>
-  </dl>
-
-
-
-
-
-
-
-
 
 
 
@@ -465,7 +325,7 @@ public List&lt;Message&gt; Messages { get; set; }</code></pre>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Conversation/Conversation.cs/#L9" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Authorization/PolicyAssignment.cs/#L9" class="edit-link">Edit this page</a>
         </div>
 
 
