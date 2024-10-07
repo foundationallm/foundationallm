@@ -73,6 +73,7 @@ export interface Session {
 	sessionId: string;
 	tokensUsed: Number;
 	name: string;
+	display_name: string;
 	messages: Array<Message>;
 }
 

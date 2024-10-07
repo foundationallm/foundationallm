@@ -4,9 +4,9 @@ using System.Text.Json.Serialization;
 namespace FoundationaLLM.Common.Models.Authorization
 {
     /// <summary>
-    /// Defines a security role used in FoundationaLLM RBAC
+    /// Defines a security policy used in FoundationaLLM PBAC
     /// </summary>
-    public class RoleDefinition : ResourceBase
+    public class PolicyDefinition : ResourceBase
     {
         /// <inheritdoc/>
         [JsonIgnore]
@@ -20,13 +20,10 @@ namespace FoundationaLLM.Common.Models.Authorization
         public List<string> AssignableScopes { get; set; } = [];
 
         /// <summary>
-        /// The permissions associated with the security role definition.
+        /// Gets or sets the <see cref="PolicyMatchingStrategy"/> value defining how the policy should be matched.
         /// </summary>
-        [JsonPropertyName("permissions")]
+        [JsonPropertyName("matching_strategy")]
         [JsonPropertyOrder(2)]
-        public List<RoleDefinitionPermissions> Permissions { get; set; } = [];
-
-        public List<string> GetAllowedActions() =>
-            Permissions.SelectMany(p => p.GetAllowedActions()).Distinct().ToList();
+        public required PolicyMatchingStrategy MatchingStrategy { get; set; }
     }
 }

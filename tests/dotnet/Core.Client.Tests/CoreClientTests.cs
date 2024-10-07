@@ -156,7 +156,8 @@ namespace FoundationaLLM.Client.Core.Tests
                         Name = "TestAgent",
                         Description = "Test Agent Description"
                     },
-                    Roles = []
+                    Roles = [],
+                    Actions = []
                 }
             };
             _coreRestClient.Completions.GetAgentsAsync().Returns(Task.FromResult<IEnumerable<ResourceProviderGetResult<AgentBase>>>(agents));

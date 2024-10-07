@@ -282,7 +282,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             {
                 var assistantUserContextName = $"{currentUserIdentity.UPN?.NormalizeUserPrincipalName() ?? currentUserIdentity.UserId}-assistant-{instanceId.ToLower()}";
 
-                var nameCheckResult = await azureOpenAIResourceProvider.ResourceExists<AssistantUserContext>(
+                var nameCheckResult = await azureOpenAIResourceProvider.ResourceExistsAsync<AssistantUserContext>(
                     instanceId,
                     assistantUserContextName,
                     currentUserIdentity);

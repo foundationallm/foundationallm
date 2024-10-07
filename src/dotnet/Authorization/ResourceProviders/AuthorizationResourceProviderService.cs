@@ -202,7 +202,7 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                         roleAssignments = [roleAssignment];
                 }
 
-                return roleAssignments.Select(x => new ResourceProviderGetResult<RoleAssignment>() { Resource = x, Roles = [] }).ToList();
+                return roleAssignments.Select(x => new ResourceProviderGetResult<RoleAssignment>() { Resource = x, Roles = [], Actions = [] }).ToList();
             }
         }
 

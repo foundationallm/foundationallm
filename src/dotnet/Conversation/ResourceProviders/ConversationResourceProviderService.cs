@@ -1,11 +1,15 @@
-﻿using FoundationaLLM.Common.Constants.ResourceProviders;
+﻿using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using ConversationModels = FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using FoundationaLLM.Common.Services.Storage;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -18,7 +22,7 @@ namespace FoundationaLLM.Conversation.ResourceProviders
     /// <param name="authorizationService">The <see cref="IAuthorizationService"/> providing authorization services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
-    /// <param name="cosmosDBService">The <see cref="ICosmosDBService"/> providing Cosmos DB services.</param>
+    /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> providing Cosmos DB services.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
     public class ConversationResourceProviderService(
@@ -26,7 +30,7 @@ namespace FoundationaLLM.Conversation.ResourceProviders
         IAuthorizationService authorizationService,
         IEventService eventService,
         IResourceValidatorFactory resourceValidatorFactory,
-        ICosmosDBService cosmosDBService,
+        IAzureCosmosDBService cosmosDBService,
         IServiceProvider serviceProvider,
         ILogger<ConversationResourceProviderService> logger)
         : ResourceProviderServiceBase<ResourceReference>(
@@ -40,7 +44,7 @@ namespace FoundationaLLM.Conversation.ResourceProviders
             eventNamespacesToSubscribe: null,
             useInternalReferencesStore: false)
     {
-        private readonly ICosmosDBService _cosmosDBService = cosmosDBService;
+        private readonly IAzureCosmosDBService _cosmosDBService = cosmosDBService;
 
         /// <inheritdoc />
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
@@ -53,22 +57,172 @@ namespace FoundationaLLM.Conversation.ResourceProviders
 
         #region Resource provider support for Management API
 
-        protected override async Task<object> GetResourcesAsync(
-            ResourcePath resourcePath,
-            ResourcePathAuthorizationResult authorizationResult,
-            UnifiedUserIdentity userIdentity,
-            ResourceProviderLoadOptions? options = null) =>
-            resourcePath.MainResourceTypeName switch
+        // This resource provider does not support the Management API.
+
+        #endregion
+
+        #region Resource provider strongly typed operations
+
+        protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
+        {
+            var policyDefinition = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
+
+            var conversationType = options?.Parameters?.GetValueOrDefault(ConversationResourceProviderLoadParameterNames.ConversationType) as string
+                ?? throw new ResourceProviderException(
+                    $"The {_name} resource provider requires the {ConversationResourceProviderLoadParameterNames.ConversationType} parameter to load the {resourcePath.RawResourcePath} resource path.",
+                    StatusCodes.Status500InternalServerError);
+
+            // This is the PEP (Policy Enforcement Point) where the resource provider enforces the policy definition to load the resources.
+            // The implementation of the PEP is straightforward: the resource provider loads the resources from the data store matching the UPN of the user identity.
+
+            var result = await _cosmosDBService.GetConversationsAsync(
+                conversationType,
+                userIdentity.UPN!);
+
+            return result.Select(r => new ResourceProviderGetResult<ConversationModels.Conversation>
             {
-                ConversationResourceTypeNames.Conversations => await Task.FromResult<string>(string.Empty),
-                _ => throw new NotImplementedException()
-            };
+                Resource = r,
+                Actions = [],
+                Roles = []
+            }).ToList();
+        }
 
-        protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string serializedResource, UnifiedUserIdentity userIdentity) =>
-            throw new NotImplementedException();
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
+        {
+            _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
 
-        protected override async Task<object> DeleteResourceAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
-            throw new NotImplementedException();
+            // This is the PEP (Policy Enforcement Point) where the resource provider enforces the policy definition to load the resource.
+            // The implementation of the PEP is straightforward: the resource provider loads the resource and validates the UPN of the user identity.
+            // TODO: improve the performance of the GetSessionAsync method by using a more efficient query.
+
+            var result = await _cosmosDBService.GetConversationAsync(resourcePath.ResourceId!)
+                ?? throw new ResourceProviderException(
+                    $"The {_name} resource provider did not find the {resourcePath.RawResourcePath} resource.",
+                    StatusCodes.Status404NotFound);
+
+            if (!StringComparer.Ordinal.Equals(result!.UPN, userIdentity.UPN))
+                throw new ResourceProviderException(
+                    $"The user {userIdentity.UPN} is not authorized to access the {resourcePath.RawResourcePath} resource path.",
+                    StatusCodes.Status403Forbidden);
+
+            return (result as T)!;
+        }
+
+        protected override async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, T resource, UnifiedUserIdentity userIdentity)
+        {
+            _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
+
+            // This is the PEP (Policy Enforcement Point) where the resource provider enforces the policy definition to upsert the resource.
+            // The implementation of the PEP is straightforward: the resource provider validates the UPN of the user identity.
+
+            var existingConversation = await _cosmosDBService.GetConversationAsync(resourcePath.ResourceId!);
+
+            if (existingConversation != null
+                && !StringComparer.Ordinal.Equals(existingConversation.UPN, userIdentity.UPN))
+                throw new ResourceProviderException(
+                    $"The user {userIdentity.UPN} is not authorized to access the {resourcePath.RawResourcePath} resource path.",
+                    StatusCodes.Status403Forbidden);
+
+            var updatedConversation = (resource as ConversationModels.Conversation)!;
+
+            if (!StringComparer.Ordinal.Equals(updatedConversation!.UPN, userIdentity.UPN))
+                throw new ResourceProviderException(
+                    $"The user {userIdentity.UPN} is not authorized to use the provided resource to update the {resourcePath.RawResourcePath} resource path.",
+                    StatusCodes.Status403Forbidden);
+
+            if (existingConversation == null
+                || string.IsNullOrWhiteSpace(updatedConversation.ObjectId))
+                updatedConversation.ObjectId = resourcePath.RawResourcePath;
+
+            var conversation = await _cosmosDBService.CreateOrUpdateConversationAsync(updatedConversation)
+                ?? throw new ResourceProviderException(
+                    $"The {_name} resource provider did not find the {resourcePath.RawResourcePath} resource.",
+                    StatusCodes.Status404NotFound);
+
+            return (new ResourceProviderUpsertResult<T>
+            {
+                ObjectId = updatedConversation.ObjectId,
+                ResourceExists = existingConversation != null,
+                Resource = conversation as T
+            } as TResult)!;
+        }
+
+        protected override async Task<TResult> UpdateResourcePropertiesAsyncInternal<T, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, Dictionary<string, object> propertyValues, UnifiedUserIdentity userIdentity)
+        {
+            _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
+
+            // This is the PEP (Policy Enforcement Point) where the resource provider enforces the policy definition to update the resource properties.
+            // The implementation relies on using a filter predicate to ensure that the user identity is authorized to update the resource properties.
+
+            var result = await _cosmosDBService.UpdateConversationPropertiesAsync(
+                resourcePath.ResourceId!,
+                userIdentity.UPN!,
+                propertyValues)
+                ?? throw new ResourceProviderException(
+                    $"The {_name} resource provider did not find the {resourcePath.RawResourcePath} resource. "
+                    + "This indicates that either the resource does not exist or existing policies do not allow the user to update it.",
+                    StatusCodes.Status404NotFound);
+
+            return (new ResourceProviderUpsertResult<ConversationModels.Conversation>
+            {
+                ObjectId = resourcePath.RawResourcePath,
+                ResourceExists = true,
+                Resource = result
+            } as TResult)!;
+        }
+
+        protected override async Task DeleteResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity)
+        {
+            _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
+
+            // This is the PEP (Policy Enforcement Point) where the resource provider enforces the policy definition to logically delete the resource.
+            // The implementation relies on attempting to load the resource and validate the user identity is authorized to delete it.
+
+            var existingConversation = await _cosmosDBService.GetConversationAsync(resourcePath.ResourceId!)
+                ?? throw new ResourceProviderException(
+                    $"The {_name} resource provider did not find the {resourcePath.RawResourcePath} resource.",
+                    StatusCodes.Status404NotFound);
+
+            if (!StringComparer.Ordinal.Equals(existingConversation.UPN, userIdentity.UPN))
+                throw new ResourceProviderException(
+                    $"The user {userIdentity.UPN} is not authorized to access the {resourcePath.RawResourcePath} resource path.",
+                    StatusCodes.Status403Forbidden);
+
+            await _cosmosDBService.DeleteConversationAsync(resourcePath.ResourceId!);
+        }
+
+        #endregion
+
+        #region Utils
+
+        private PolicyDefinition EnsureAndValidatePolicyDefinitions(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult)
+        {
+            // The FoundationaLLM.Conversation resource provider is opinionated about the specific PBAC policy assignment required to load resources.
+
+            if (authorizationResult.PolicyDefinitionIds.Count == 0)
+                throw new ResourceProviderException(
+                    $"The {_name} resource provider requires PBAC policy assignments to load the {resourcePath.RawResourcePath} resource path.",
+                    StatusCodes.Status500InternalServerError);
+
+            if (authorizationResult.PolicyDefinitionIds.Count > 1)
+                throw new ResourceProviderException(
+                    $"The {_name} resource provider requires exactly one PBAC policy assignment to load the {resourcePath.RawResourcePath} resource path.",
+                    StatusCodes.Status500InternalServerError);
+
+            if (!PolicyDefinitions.All.TryGetValue(authorizationResult.PolicyDefinitionIds[0], out var policyDefinition))
+                throw new ResourceProviderException(
+                    $"The {_name} resource provider did not find the PBAC policy with id {authorizationResult.PolicyDefinitionIds[0]} required to load the {resourcePath.RawResourcePath} resource path.",
+                    StatusCodes.Status500InternalServerError);
+
+            var userIdentityProperties = policyDefinition.MatchingStrategy?.UserIdentityProperties ?? [];
+            if (userIdentityProperties.Count != 1
+                || userIdentityProperties[0] != UserIdentityPropertyNames.UserPrincipalName)
+                throw new ResourceProviderException(
+                    $"The {_name} resource provider requires one PBAC policy assignment with a matching strategy based on the user principal name (UPN) to load the {resourcePath.RawResourcePath} resource path.",
+                    StatusCodes.Status500InternalServerError);
+
+            return policyDefinition;
+        }
 
         #endregion
     }

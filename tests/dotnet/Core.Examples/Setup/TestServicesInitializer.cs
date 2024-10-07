@@ -87,7 +87,7 @@ namespace FoundationaLLM.Core.Examples.Setup
 					.Build();
 			});
 
-			services.AddScoped<ICosmosDBService, AzureCosmosDBService>();
+			services.AddScoped<IAzureCosmosDBService, AzureCosmosDBService>();
 		}
 
 		private static void RegisterAzureAIService(IServiceCollection services, IConfiguration configuration)
