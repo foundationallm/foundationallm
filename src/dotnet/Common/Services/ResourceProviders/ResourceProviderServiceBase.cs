@@ -902,13 +902,22 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             {
                 var fileContent =
                     await _storageService.ReadFileAsync(_storageContainerName, resourceReference.Filename, default);
-                var resourceObject = JsonSerializer.Deserialize<T>(
-                    Encoding.UTF8.GetString(fileContent.ToArray()),
-                    _serializerSettings)
-                        ?? throw new ResourceProviderException($"Failed to load the resource {resourceReference.Name}. Its content file might be corrupt.",
-                            StatusCodes.Status500InternalServerError);
 
-                return resourceObject;
+                try
+                {
+                    var resourceObject = JsonSerializer.Deserialize<T>(
+                        Encoding.UTF8.GetString(fileContent.ToArray()),
+                        _serializerSettings)
+                            ?? throw new ResourceProviderException($"Failed to load the resource {resourceReference.Name}. Its content file might be corrupt.",
+                                StatusCodes.Status500InternalServerError);
+
+                    return resourceObject;
+                }
+                catch (Exception ex)
+                {
+                    throw new ResourceProviderException($"Failed to load the resource {resourceReference.Name}. {ex.Message}.",
+                                StatusCodes.Status500InternalServerError);
+                }
             }
 
             return null;
