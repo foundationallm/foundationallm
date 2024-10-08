@@ -178,6 +178,42 @@ else:
     No action needed
 </code></pre>
 <p>Refer to the dedicated upgrade tool for instruction on how to perform this update.</p>
+<p><strong>FoundationaLLM.Configuration</strong></p>
+<p>The OneDrive (Work or School) integration requires the following API Endpoint Configuration entry in the storage account:</p>
+<p><code>FoundationaLLM.Configuration/OneDriveFileStoreConnector.json</code></p>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;api-endpoint&quot;,
+    &quot;name&quot;: &quot;OneDriveFileStoreConnector&quot;,
+    &quot;object_id&quot;: &quot;/instances/{{instance_id}}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/OneDriveFileStoreConnector&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: null,
+    &quot;cost_center&quot;: null,
+    &quot;category&quot;: &quot;FileStoreConnector&quot;,
+    &quot;subcategory&quot;: &quot;OneDriveWorkSchool&quot;,
+    &quot;authentication_type&quot;: &quot;AzureIdentity&quot;,
+    &quot;authentication_parameters&quot;: {
+      &quot;scope&quot;: &quot;Files.Read.All&quot;
+    },
+    &quot;url&quot;: &quot;{{onedrive_base_orl}}&quot;,
+    &quot;status_url&quot;: &quot;&quot;,
+    &quot;url_exceptions&quot;: [],
+    &quot;timeout_seconds&quot;: 2400,
+    &quot;retry_strategy_name&quot;: &quot;ExponentialBackoff&quot;,
+    &quot;created_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;,
+    &quot;deleted&quot;: false
+  }
+</code></pre>
+<p>Update <code>FoundationaLLM.Configuration/_resource-references_.json</code> with the reference to the file above.</p>
+<pre><code class="lang-json">{
+	&quot;Name&quot;: &quot;OneDriveFileStoreConnector&quot;,
+	&quot;Filename&quot;: &quot;/FoundationaLLM.Configuration/OneDriveFileStoreConnector.json&quot;,
+	&quot;Type&quot;: &quot;api-endpoint&quot;,
+	&quot;Deleted&quot;: false
+}
+</code></pre>
 <h2 id="starting-with-080">Starting with 0.8.0</h2>
 <p>Core API changes:</p>
 <ol>
