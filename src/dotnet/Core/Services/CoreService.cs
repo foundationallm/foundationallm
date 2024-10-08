@@ -62,7 +62,8 @@ public partial class CoreService(
     private readonly IDownstreamAPIService _gatekeeperAPIService = downstreamAPIServices.Single(das => das.APIName == HttpClientNames.GatekeeperAPI);
     private readonly IDownstreamAPIService _orchestrationAPIService = downstreamAPIServices.Single(das => das.APIName == HttpClientNames.OrchestrationAPI);
     private readonly ILogger<CoreService> _logger = logger;
-    private readonly ICallContext _callContext = callContext;
+    private readonly UnifiedUserIdentity _userIdentity = callContext.CurrentUserIdentity
+        ?? throw new InvalidOperationException("The call context does not contain a valid user identity.");
     private readonly string _sessionType = brandingSettings.Value.KioskMode ? SessionTypes.KioskSession : SessionTypes.Session;
     private readonly CoreServiceSettings _settings = settings.Value;
     private readonly IHttpClientFactoryService _httpClientFactory = httpClientFactory;
@@ -87,14 +88,14 @@ public partial class CoreService(
 
     /// <inheritdoc/>
     public async Task<List<Session>> GetAllChatSessionsAsync(string instanceId) =>
-        await _cosmosDbService.GetSessionsAsync(_sessionType, _callContext.CurrentUserIdentity?.UPN ??
+        await _cosmosDbService.GetSessionsAsync(_sessionType, _userIdentity.UPN ??
                                                               throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat sessions."));
 
     /// <inheritdoc/>
     public async Task<List<Message>> GetChatSessionMessagesAsync(string instanceId, string sessionId)
     {
         ArgumentNullException.ThrowIfNull(sessionId);
-        var messages = await _cosmosDbService.GetSessionMessagesAsync(sessionId, _callContext.CurrentUserIdentity?.UPN ??
+        var messages = await _cosmosDbService.GetSessionMessagesAsync(sessionId, _userIdentity.UPN ??
             throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat messages."));
 
         // Get a list of all attachment IDs in the messages.
@@ -109,7 +110,7 @@ public partial class CoreService(
             var result = await _attachmentResourceProvider!.HandlePostAsync(
                 $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Attachment}/{AttachmentResourceTypeNames.Attachments}/{ResourceProviderActions.Filter}",
                 JsonSerializer.Serialize(filter),
-                _callContext.CurrentUserIdentity!);
+                _userIdentity);
             // Cast the result to a list of AttachmentReference objects.
             var attachmentReferences = result as List<AttachmentDetail> ?? [];
 
@@ -159,7 +160,7 @@ public partial class CoreService(
         {
             Name = chatSessionProperties.Name,
             Type = _sessionType,
-            UPN = _callContext.CurrentUserIdentity?.UPN ?? throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when creating a new chat session.")
+            UPN = _userIdentity.UPN ?? throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when creating a new chat session.")
         };
         return await _cosmosDbService.InsertSessionAsync(session);
     }
@@ -190,7 +191,7 @@ public partial class CoreService(
             completionRequest = PrepareCompletionRequest(completionRequest);
 
             // Retrieve conversation, including latest prompt.
-            var messages = await _cosmosDbService.GetSessionMessagesAsync(completionRequest.SessionId, _callContext.CurrentUserIdentity?.UPN ??
+            var messages = await _cosmosDbService.GetSessionMessagesAsync(completionRequest.SessionId, _userIdentity.UPN ??
                 throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat completions."));
             var messageHistoryList = messages
                 .Select(message => new MessageHistoryItem(message.Sender, string.IsNullOrWhiteSpace(message.Text) ? "" : message.Text))
@@ -199,7 +200,7 @@ public partial class CoreService(
             completionRequest.MessageHistory = messageHistoryList;
 
             // Add the user's UPN to the messages.
-            var upn = _callContext.CurrentUserIdentity?.UPN ?? throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when adding prompt and completion messages.");
+            var upn = _userIdentity.UPN ?? throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when adding prompt and completion messages.");
             // Create prompt message, then persist in Cosmos as transaction with the Session details.
             var promptMessage = new Message(
                 completionRequest.SessionId,
@@ -209,7 +210,7 @@ public partial class CoreService(
                 null,
                 null,
                 upn,
-                _callContext.CurrentUserIdentity?.Name,
+                _userIdentity.Name,
                 null,
                 null,
                 null,
@@ -219,7 +220,7 @@ public partial class CoreService(
                 OperationStatus.Pending);
             await AddSessionMessageAsync(completionRequest.SessionId, promptMessage);
 
-            var agentOption = await ProcessGatekeeperOptions(completionRequest);
+            var agentOption = await ProcessGatekeeperOptions(instanceId, completionRequest);
 
             // Generate the completion to return to the user.
             var result = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, completionRequest);
@@ -370,7 +371,7 @@ public partial class CoreService(
         var result = await _attachmentResourceProvider.UpsertResourceAsync<AttachmentFile, ResourceProviderUpsertResult>(
                 $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Attachment}/attachments/{attachmentFile.Name}",
                 attachmentFile,
-                _callContext.CurrentUserIdentity!);
+                _userIdentity);
 
         if (agentRequiresOpenAIAssistants)
         {
@@ -502,10 +503,11 @@ public partial class CoreService(
             ? _orchestrationAPIService
             : _gatekeeperAPIService;
 
-    private async Task<AgentGatekeeperOverrideOption> ProcessGatekeeperOptions(CompletionRequest completionRequest)
+    private async Task<AgentGatekeeperOverrideOption> ProcessGatekeeperOptions(string instanceId, CompletionRequest completionRequest)
     {
-        var agentBase = await _agentResourceProvider.HandleGet<AgentBase>($"/{AgentResourceTypeNames.Agents}/{completionRequest.AgentName}", _callContext.CurrentUserIdentity ??
-            throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving the agent settings."));
+        var agentBase = await _agentResourceProvider.GetResource<AgentBase>(
+            $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Agent}/{AgentResourceTypeNames.Agents}/{completionRequest.AgentName}",
+            _userIdentity);
 
         if (agentBase?.GatekeeperSettings?.UseSystemSetting == false)
         {
@@ -532,7 +534,7 @@ public partial class CoreService(
         session.TokensUsed += message.Tokens;
 
         // Add the user's UPN to the messages.
-        var upn = _callContext.CurrentUserIdentity?.UPN ?? throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when adding prompt and completion messages.");
+        var upn = _userIdentity.UPN ?? throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when adding prompt and completion messages.");
         message.UPN = upn;
 
         // Adds the incoming message to the session and updates the session with token usage.
@@ -550,7 +552,7 @@ public partial class CoreService(
         session.TokensUsed += promptMessage.Tokens;
         session.TokensUsed += completionMessage.Tokens;
         // Add the user's UPN to the messages.
-        var upn = _callContext.CurrentUserIdentity?.UPN ?? throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when adding prompt and completion messages.");
+        var upn = _userIdentity.UPN ?? throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when adding prompt and completion messages.");
         promptMessage.UPN = upn;
         completionMessage.UPN = upn;
 
