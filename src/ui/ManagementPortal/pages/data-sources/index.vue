@@ -104,7 +104,7 @@
 							:aria-label="`Delete ${data.resource.name}`"
 							@click="dataSourceToDelete = data.resource"
 						>
-							<i class="pi pi-trash" style="font-size: 1.2rem; color: var(--red-400)"></i>
+							<i class="pi pi-trash" style="font-size: 1.2rem;"></i>
 						</Button>
 					</template>
 				</Column>
