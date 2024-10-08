@@ -277,6 +277,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:APIEndpoints:EnkryptGuardrails:Configuration:*";
         
         /// <summary>
+        /// Filter for the configuration section used to identify the main OneDriveWorkSchool API settings.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_OneDriveWorkSchool_Configuration =
+            "FoundationaLLM:APIEndpoints:OneDriveWorkSchool:Configuration:*";
+        
+        /// <summary>
         /// Filter for the configuration section used to identify the branding settings for the User Portal.
         /// </summary>
         public const string FoundationaLLM_Branding =

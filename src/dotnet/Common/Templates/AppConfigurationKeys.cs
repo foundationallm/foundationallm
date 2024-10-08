@@ -826,6 +826,17 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:APIEndpoints:OneDriveWorkSchool:Configuration
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:OneDriveWorkSchool:Configuration:Scopes setting.
+        /// <para>Value description:<br/>The list of scopes exposed by the OneDriveWorkSchool API.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_OneDriveWorkSchool_Configuration_Scopes =
+            "FoundationaLLM:APIEndpoints:OneDriveWorkSchool:Configuration:Scopes";
+
+        #endregion
+
         #region FoundationaLLM:Branding
         
         /// <summary>
