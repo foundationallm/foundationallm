@@ -243,9 +243,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             // Authorize access to the resource path.
             var authorizationResult = ParsedResourcePath.IsResourceTypePath
                 ? await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, true, options?.IncludeRoles ?? false, options?.IncludeActions ?? false)
-                : await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
+                : await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, options?.IncludeRoles ?? false, options?.IncludeActions ?? false);
            
-            return await GetResourcesAsync(ParsedResourcePath, authorizationResult, userIdentity);
+            return await GetResourcesAsync(ParsedResourcePath, authorizationResult, userIdentity, options);
         }
 
         /// <inheritdoc/>
