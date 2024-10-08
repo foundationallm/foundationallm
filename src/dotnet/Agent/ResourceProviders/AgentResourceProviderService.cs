@@ -227,7 +227,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             {
                 var result = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Vectorization)
                     .HandlePostAsync(
-                        $"/{VectorizationResourceTypeNames.VectorizationPipelines}/{kmAgent.Name}",
+                        $"/instances/{_instanceSettings.Id}/providers/{ResourceProviderNames.FoundationaLLM_Vectorization}/{VectorizationResourceTypeNames.VectorizationPipelines}/{kmAgent.Name}",
                         JsonSerializer.Serialize<VectorizationPipeline>(new VectorizationPipeline
                         {
                             Name = kmAgent.Name,
