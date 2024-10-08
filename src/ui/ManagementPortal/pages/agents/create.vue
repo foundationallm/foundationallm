@@ -1514,6 +1514,10 @@ input {
 	cursor: default;
 }
 
+.p-button-icon {
+	color: var(--primary-button-text) !important;
+}
+
 .valid {
 	color: green;
 }
