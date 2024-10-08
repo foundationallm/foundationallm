@@ -1025,6 +1025,7 @@ export default {
 }
 .onedrive-iframe-dialog .p-dialog-content {
 	padding: 0;
+	overflow: hidden;
 }
 
 @media only screen and (max-width: 405px) {
