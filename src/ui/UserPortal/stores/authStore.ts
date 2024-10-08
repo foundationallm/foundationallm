@@ -29,7 +29,10 @@ export const useAuthStore = defineStore('auth', {
 		},
 
 		oneDriveWorkSchoolScopes() {
-			return useNuxtApp().$appConfigStore.oneDriveWorkSchoolScopes;
+			const appStore = useAppStore();
+			return appStore.fileStoreConnectors.find(
+				(connector) => connector.subcategory === 'OneDriveWorkSchool',
+			)?.authentication_parameters['scope'];
 		},
 
 		apiScopes() {
@@ -133,7 +136,7 @@ export const useAuthStore = defineStore('auth', {
 			)?.url;
 			const oneDriveToken = await this.msalInstance.acquireTokenSilent({
 				account: this.currentAccount,
-				scopes: [`${oneDriveBaseURL}.default`],
+				scopes: [`${oneDriveBaseURL}${this.oneDriveWorkSchoolScopes}`],
 			});
 
 			return oneDriveToken;

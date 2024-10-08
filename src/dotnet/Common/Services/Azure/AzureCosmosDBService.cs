@@ -324,14 +324,23 @@ namespace FoundationaLLM.Common.Services
         {
             var userProfiles = await _userProfilesTask;
 
-            var newUserProfile = new UserProfile(upn);
+            try
+            {
+                var userProfile = await userProfiles.ReadItemAsync<UserProfile>(
+                    id: upn,
+                    partitionKey: new PartitionKey(upn),
+                    cancellationToken: cancellationToken);
 
-            var response = await userProfiles.UpsertItemAsync(
-                item: newUserProfile,
-                partitionKey: new PartitionKey(upn),
-                cancellationToken: cancellationToken);
+                return userProfile;
+            }
+            catch (CosmosException ce) when (ce.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                var userProfile = new UserProfile(upn);
 
-            return response.Resource;
+                await UpsertUserProfileAsync(userProfile, cancellationToken);
+
+                return userProfile;
+            }
         }
 
         /// <inheritdoc/>
