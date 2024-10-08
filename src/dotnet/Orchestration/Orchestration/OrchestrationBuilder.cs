@@ -144,7 +144,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 aiModel.EndpointObjectId!,
                 currentUserIdentity);
             var gatewayAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
-                $"/{ConfigurationResourceTypeNames.APIEndpointConfigurations}/GatewayAPI",
+                instanceId,
+                "GatewayAPI",
                 currentUserIdentity);
 
             // Merge the model parameter overrides with the existing model parameter values from the AI model.
@@ -172,6 +173,17 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 })
                 .ToDictionary(x => x.Name, x => x.Description);
             explodedObjects[CompletionRequestObjectsKeys.AllAgents] = allAgentsDescriptions;
+
+            foreach (var endpointKey in agentBase.APIEndpointConfigurationObjectIds.Keys)
+            {
+                var apiEndpoint = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                    instanceId,
+                    //agentBase.APIEndpointConfigurationObjectIds[endpointKey],
+                    endpointKey,
+                    currentUserIdentity);
+
+                explodedObjects[agentBase.APIEndpointConfigurationObjectIds[endpointKey]] = apiEndpoint;
+            }
 
             #region Knowledge management processing
 
@@ -270,7 +282,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             {
                 var assistantUserContextName = $"{currentUserIdentity.UPN?.NormalizeUserPrincipalName() ?? currentUserIdentity.UserId}-assistant-{instanceId.ToLower()}";
 
-                var nameCheckResult = await azureOpenAIResourceProvider.ResourceExists<AssistantUserContext>(
+                var nameCheckResult = await azureOpenAIResourceProvider.ResourceExistsAsync<AssistantUserContext>(
                     instanceId,
                     assistantUserContextName,
                     currentUserIdentity);

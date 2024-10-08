@@ -17,6 +17,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="resourcePaths">The resource paths.</param>
         /// <param name="expandResourceTypePaths">A value indicating whether to expand resource type paths that are not authorized.</param>
         /// <param name="includeRoles">A value indicating whether to include roles in the response.</param>
+        /// <param name="includeActions">A value indicating whether to include authorizable actions in the response.</param>
         /// <param name="userIdentity">The user identity.</param>
         /// <remarks>
         /// <para>
@@ -28,6 +29,9 @@ namespace FoundationaLLM.Common.Interfaces
         /// If <paramref name="includeRoles"/> is set to <c>true</c>, for each authrorized resource path,
         /// the response will include the roles assigned directly or indirectly to the resource path.
         /// </para>
+        /// <para>
+        /// If <paramref name="action"/> is set to <c>true</c>, for each authorized resource path,
+        /// the response will include the autorizable actions assigned directly or indirectly to the resource path.</para>
         /// </remarks>
         /// <returns>An <see cref="ActionAuthorizationResult"/> containing the result of the processing.</returns>
         Task<ActionAuthorizationResult> ProcessAuthorizationRequest(
@@ -36,6 +40,7 @@ namespace FoundationaLLM.Common.Interfaces
             List<string> resourcePaths,
             bool expandResourceTypePaths,
             bool includeRoles,
+            bool includeActions,
             UnifiedUserIdentity userIdentity);
 
         /// <summary>

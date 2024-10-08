@@ -15,7 +15,7 @@
 
 					<CodeBlockHeader language="python" :codecontent="encodeURIComponent(analysis.tool_input)">
 						<!-- eslint-disable-next-line vue/no-v-html -->
-						<pre v-html="renderCodeBlock(analysis.tool_input)" class="mt-0" />
+						<pre class="mt-0" v-html="renderCodeBlock(analysis.tool_input)" />
 					</CodeBlockHeader>
 
 					<p v-if="analysis.tool_output"><strong>Output:</strong> {{ analysis.tool_output }}</p>
@@ -32,10 +32,11 @@
 <script lang="ts">
 import type { PropType } from 'vue';
 import { marked } from 'marked';
-import type { AnalysisResult } from '@/js/types';
 
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark-dimmed.css';
+
+import type { AnalysisResult } from '@/js/types';
 
 const markedRenderer = new marked.Renderer();
 

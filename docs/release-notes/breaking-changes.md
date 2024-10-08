@@ -36,6 +36,73 @@ Location | Old name | New name
 `resource-provider/FoundationaLLM.DataSource` | `_data-source-references.json` | `_resource-references.json`
 `resource-provider/FoundationaLLM.Prompt` | `_prompt-references.json` | `_resource-references.json`
 
+>[!NOTE]
+> Within each of the renamed files, the `<entity>References` property must be renamed to `ResourceReferences`.
+
+**FoundationaLLM.Authorization**
+
+A new storage container named `policy-assignments` is required. The `FoundationaLLM.Authorization` resource provider will use this container to store policy assignments.
+
+Within the container, the `<instance_id>-policy.json` must be deployed with the default policy assignments. The template for the default policy assignments is available in `Common/Constants/Data/DefaultPolicyAssignments.json`.
+
+**FoundationaLLM.Conversation**
+
+When upgrading an existing FoundationaLLM instance, the items in the `Sessions` collection in Cosmos DB must be updated according to the following rules:
+
+```
+if Object is of type Session of KioskSession:
+    If the property DisplayName exists and is set to a non-empty string:
+        Don't touch the item
+    else:
+        Set DisplayName to the value of Name
+        Set Name to the value of SessionId
+else:
+    No action needed
+```
+
+Refer to the dedicated upgrade tool for instruction on how to perform this update.
+
+**FoundationaLLM.Configuration**
+
+The OneDrive (Work or School) integration requires the following API Endpoint Configuration entry in the storage account:
+
+`FoundationaLLM.Configuration/OneDriveFileStoreConnector.json`
+```json
+{
+    "type": "api-endpoint",
+    "name": "OneDriveFileStoreConnector",
+    "object_id": "/instances/{{instance_id}}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/OneDriveFileStoreConnector",
+    "display_name": null,
+    "description": null,
+    "cost_center": null,
+    "category": "FileStoreConnector",
+    "subcategory": "OneDriveWorkSchool",
+    "authentication_type": "AzureIdentity",
+    "authentication_parameters": {
+      "scope": "Files.Read.All"
+    },
+    "url": "{{onedrive_base_orl}}",
+    "status_url": "",
+    "url_exceptions": [],
+    "timeout_seconds": 2400,
+    "retry_strategy_name": "ExponentialBackoff",
+    "created_on": "0001-01-01T00:00:00+00:00",
+    "updated_on": "0001-01-01T00:00:00+00:00",
+    "created_by": null,
+    "updated_by": "SYSTEM",
+    "deleted": false
+  }
+```
+
+Update `FoundationaLLM.Configuration/_resource-references_.json` with the reference to the file above.
+```json
+{
+	"Name": "OneDriveFileStoreConnector",
+	"Filename": "/FoundationaLLM.Configuration/OneDriveFileStoreConnector.json",
+	"Type": "api-endpoint",
+	"Deleted": false
+}
+```
 
 ## Starting with 0.8.0
 

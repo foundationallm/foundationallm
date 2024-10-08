@@ -45,13 +45,19 @@
 
 		<!-- Chat input -->
 		<div class="chat-thread__input">
-			<ChatInput :disabled="isLoading || isMessagePending" @send="handleSend" />
+			<ChatInput ref="chatInput" :disabled="isLoading || isMessagePending" @send="handleSend" />
 		</div>
 
 		<footer v-if="$appConfigStore.footerText">
 			<!-- eslint-disable-next-line vue/no-v-html -->
 			<div class="footer-item" v-html="$appConfigStore.footerText"></div>
 		</footer>
+		<div v-if="isDragging" ref="dropZone" class="drop-files-here-container">
+			<div class="drop-files-here">
+				<i class="pi pi-upload" style="font-size: 2rem"></i>
+				<div>Drop files here to upload</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -61,6 +67,10 @@ import eventBus from '@/js/eventBus';
 
 export default {
 	name: 'ChatThread',
+
+	props: {
+		isDragging: Boolean,
+	},
 
 	emits: ['session-updated'],
 
@@ -109,6 +119,12 @@ export default {
 
 		async handleRateMessage(message: Message, isLiked: Message['rating']) {
 			await this.$appStore.rateMessage(message, isLiked);
+		},
+
+		handleParentDrop(event) {
+			event.preventDefault();
+			const files = Array.from(event.dataTransfer?.files || []);
+			this.$refs.chatInput.handleDrop(files);
 		},
 
 		async handleSend(text: string) {
@@ -252,5 +268,26 @@ footer {
 	text-align: right;
 	font-size: 0.85rem;
 	padding-right: 24px;
+}
+
+.drop-files-here-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.8);
+	z-index: 9999;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.drop-files-here {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border-radius: 6px;
+	gap: 2rem;
 }
 </style>

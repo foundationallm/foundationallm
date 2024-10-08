@@ -108,6 +108,11 @@ public static class HttpClientNames
     public const string StateAPI = "StateAPI";
 
     /// <summary>
+    /// Named client with matching configuration for the OneDriveWorkSchool API.
+    /// </summary>
+    public const string OneDriveWorkSchoolAPI = "OneDriveWorkSchoolAPI";
+
+    /// <summary>
     /// All HTTP client names.
     /// </summary>
     public readonly static string[] All = [

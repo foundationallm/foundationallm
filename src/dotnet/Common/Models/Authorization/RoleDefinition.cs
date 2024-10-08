@@ -1,10 +1,10 @@
 ﻿using FoundationaLLM.Common.Models.ResourceProviders;
 using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Common.Models
+namespace FoundationaLLM.Common.Models.Authorization
 {
     /// <summary>
-    /// Contains information about a security role definition.
+    /// Defines a security role used in FoundationaLLM RBAC
     /// </summary>
     public class RoleDefinition : ResourceBase
     {

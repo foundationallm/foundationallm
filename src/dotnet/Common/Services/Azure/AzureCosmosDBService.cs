@@ -9,13 +9,14 @@ using Microsoft.Extensions.Options;
 using Polly;
 using Polly.Retry;
 using System.Diagnostics;
+using System.Net;
 
 namespace FoundationaLLM.Common.Services
 {
     /// <summary>
     /// Service to access Azure Cosmos DB for NoSQL.
     /// </summary>
-    public class AzureCosmosDBService : ICosmosDBService
+    public class AzureCosmosDBService : IAzureCosmosDBService
     {
         private Container _sessions;
         private Container _userSessions;
@@ -110,8 +111,10 @@ namespace FoundationaLLM.Common.Services
             await _resiliencePipeline.ExecuteAsync<Container>(async token => await _database?.CreateContainerIfNotExistsAsync(new ContainerProperties(CosmosDbContainers.UserProfiles,
                 "/upn"), ThroughputProperties.CreateAutoscaleThroughput(1000), cancellationToken: token)!);
 
+        #region Methods reserved for the FoundationaLLM.Conversation resource provider
+
         /// <inheritdoc/>
-        public async Task<List<Conversation>> GetSessionsAsync(string type, string upn, CancellationToken cancellationToken = default)
+        public async Task<List<Conversation>> GetConversationsAsync(string type, string upn, CancellationToken cancellationToken = default)
         {
             var query = new QueryDefinition($"SELECT DISTINCT * FROM c WHERE c.type = @type AND c.upn = @upn AND {SoftDeleteQueryRestriction} ORDER BY c._ts DESC")
                 .WithParameter("@type", type)
@@ -130,15 +133,96 @@ namespace FoundationaLLM.Common.Services
         }
 
         /// <inheritdoc/>
-        public async Task<Conversation> GetSessionAsync(string id, CancellationToken cancellationToken = default)
+        public async Task<Conversation?> GetConversationAsync(string id, CancellationToken cancellationToken = default)
         {
-            var session = await _sessions.ReadItemAsync<Conversation>(
+            try
+            {
+                var response = await _sessions.ReadItemAsync<Conversation>(
+                    id: id,
+                    partitionKey: new PartitionKey(id),
+                    cancellationToken: cancellationToken);
+
+                return response.Resource;
+            }
+            catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<Conversation> CreateOrUpdateConversationAsync(Conversation session, CancellationToken cancellationToken = default)
+        {
+            PartitionKey partitionKey = new(session.SessionId);
+            return await _sessions.UpsertItemAsync(
+                item: session,
+                partitionKey: partitionKey,
+                cancellationToken: cancellationToken
+            );
+        }
+
+        /// <inheritdoc/>
+        public async Task<Conversation> UpdateConversationPropertiesAsync(string id, string upn, Dictionary<string, object> propertyValues, CancellationToken cancellationToken = default)
+        {
+            var response = await _sessions.PatchItemAsync<Conversation>(
                 id: id,
                 partitionKey: new PartitionKey(id),
-                cancellationToken: cancellationToken);
-            
-            return session;
+                patchOperations: propertyValues.Keys
+                    .Select(key => PatchOperation.Set(key, propertyValues[key])).ToArray(),
+                requestOptions: new PatchItemRequestOptions
+                {
+                    FilterPredicate = $"FROM c WHERE c.upn = '{upn}'"
+                },
+                cancellationToken: cancellationToken
+            );
+            return response.Resource;
         }
+
+        /// <inheritdoc/>
+        public async Task DeleteConversationAsync(string sessionId, CancellationToken cancellationToken = default)
+        {
+            PartitionKey partitionKey = new(sessionId);
+
+            // TODO: await container.DeleteAllItemsByPartitionKeyStreamAsync(partitionKey);
+
+            var query = new QueryDefinition($"SELECT * FROM c WHERE c.sessionId = @sessionId AND {SoftDeleteQueryRestriction}")
+                .WithParameter("@sessionId", sessionId);
+
+            var response = _sessions.GetItemQueryIterator<dynamic>(query);
+
+            var batch = _sessions.CreateTransactionalBatch(partitionKey);
+            var count = 0;
+
+            // Local function to execute and reset the batch.
+            async Task ExecuteBatchAsync()
+            {
+                if (count > 0) // Execute the batch only if it has any items.
+                {
+                    await batch.ExecuteAsync(cancellationToken);
+                    count = 0;
+                    batch = _sessions.CreateTransactionalBatch(partitionKey);
+                }
+            }
+
+            while (response.HasMoreResults)
+            {
+                var results = await response.ReadNextAsync(cancellationToken);
+                foreach (var item in results)
+                {
+                    item.deleted = true;
+                    batch.UpsertItem(item);
+                    count++;
+                    if (count >= 100) // Execute the batch after adding 100 items (100 actions per batch execution is the limit).
+                    {
+                        await ExecuteBatchAsync();
+                    }
+                }
+            }
+
+            await ExecuteBatchAsync();
+        }
+
+        #endregion
 
         /// <inheritdoc/>
         public async Task<List<Message>> GetSessionMessagesAsync(string sessionId, string upn, CancellationToken cancellationToken = default)
@@ -159,17 +243,6 @@ namespace FoundationaLLM.Common.Services
             }
 
             return output;
-        }
-
-        /// <inheritdoc/>
-        public async Task<Conversation> InsertSessionAsync(Conversation session, CancellationToken cancellationToken = default)
-        {
-            PartitionKey partitionKey = new(session.SessionId);
-            return await _sessions.CreateItemAsync(
-                item: session,
-                partitionKey: partitionKey,
-                cancellationToken: cancellationToken
-            );
         }
 
         /// <inheritdoc/>
@@ -211,33 +284,6 @@ namespace FoundationaLLM.Common.Services
         }
 
         /// <inheritdoc/>
-        public async Task<Conversation> UpdateSessionAsync(Conversation session, CancellationToken cancellationToken = default)
-        {
-            PartitionKey partitionKey = new(session.SessionId);
-            return await _sessions.ReplaceItemAsync(
-                item: session,
-                id: session.Id,
-                partitionKey: partitionKey,
-                cancellationToken: cancellationToken
-            );
-        }
-
-        /// <inheritdoc/>
-        public async Task<Conversation> UpdateSessionNameAsync(string id, string sessionName, CancellationToken cancellationToken = default)
-        {
-            var response = await _sessions.PatchItemAsync<Conversation>(
-                id: id,
-                partitionKey: new PartitionKey(id),
-                patchOperations: new[]
-                {
-                    PatchOperation.Set("/name", sessionName),
-                },
-                cancellationToken: cancellationToken
-            );
-            return response.Resource;
-        }
-
-        /// <inheritdoc/>
         public async Task UpsertSessionBatchAsync(params dynamic[] messages)
         {
             if (messages.Select(m => m.SessionId).Distinct().Count() > 1)
@@ -268,98 +314,6 @@ namespace FoundationaLLM.Common.Services
         }
 
         /// <inheritdoc/>
-        public async Task DeleteSessionAndMessagesAsync(string sessionId, CancellationToken cancellationToken = default)
-        {
-            PartitionKey partitionKey = new(sessionId);
-
-            // TODO: await container.DeleteAllItemsByPartitionKeyStreamAsync(partitionKey);
-
-            var query = new QueryDefinition($"SELECT * FROM c WHERE c.sessionId = @sessionId AND {SoftDeleteQueryRestriction}")
-                .WithParameter("@sessionId", sessionId);
-
-            var response = _sessions.GetItemQueryIterator<dynamic>(query);
-
-            Console.WriteLine($"Deleting {sessionId} session and related messages.");
-
-            var batch = _sessions.CreateTransactionalBatch(partitionKey);
-            var count = 0;
-
-            // Local function to execute and reset the batch.
-            async Task ExecuteBatchAsync()
-            {
-                if (count > 0) // Execute the batch only if it has any items.
-                {
-                    await batch.ExecuteAsync(cancellationToken);
-                    count = 0;
-                    batch = _sessions.CreateTransactionalBatch(partitionKey);
-                }
-            }
-
-            while (response.HasMoreResults)
-            {
-                var results = await response.ReadNextAsync(cancellationToken);
-                foreach (var item in results)
-                {
-                    item.deleted = true;
-                    batch.UpsertItem(item);
-                    count++;
-                    if (count >= 100) // Execute the batch after adding 100 items (100 actions per batch execution is the limit).
-                    {
-                        await ExecuteBatchAsync();
-                    }
-                }
-            }
-
-            await ExecuteBatchAsync();
-        }
-
-        /// <inheritdoc/>
-        public async Task<string> GetVectorSearchDocumentsAsync(List<DocumentVector> vectorDocuments, CancellationToken cancellationToken = default)
-        {
-
-            var searchDocuments = new List<string>();
-
-            foreach (var document in vectorDocuments)
-            {
-
-                try
-                {
-                    var response = await _containers[document.containerName].ReadItemStreamAsync(
-                        document.itemId, new PartitionKey(document.partitionKey),
-                        cancellationToken: cancellationToken);
-
-
-                    if ((int)response.StatusCode < 200 || (int)response.StatusCode >= 400)
-                        _logger.LogError(
-                            $"Failed to retrieve an item for id '{document.itemId}' - status code '{response.StatusCode}");
-
-                    if (response.Content == null)
-                    {
-                        _logger.LogInformation(
-                            $"Null content received for document '{document.itemId}' - status code '{response.StatusCode}");
-                        continue;
-                    }
-
-                    string item;
-                    using (var sr = new StreamReader(response.Content))
-                        item = await sr.ReadToEndAsync(cancellationToken);
-
-                    searchDocuments.Add(item);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex.Message, ex);
-
-                }
-            }
-
-            var resultDocuments = string.Join(Environment.NewLine + "-", searchDocuments);
-
-            return resultDocuments;
-
-        }
-
-        /// <inheritdoc/>
         public async Task<CompletionPrompt> GetCompletionPrompt(string sessionId, string completionPromptId) =>
             await _sessions.ReadItemAsync<CompletionPrompt>(
                 id: completionPromptId,
@@ -369,12 +323,24 @@ namespace FoundationaLLM.Common.Services
         public async Task<UserProfile> GetUserProfileAsync(string upn, CancellationToken cancellationToken = default)
         {
             var userProfiles = await _userProfilesTask;
-            var userProfile = await userProfiles.ReadItemAsync<UserProfile>(
-                id: upn,
-                partitionKey: new PartitionKey(upn),
-                cancellationToken: cancellationToken);
 
-            return userProfile;
+            try
+            {
+                var userProfile = await userProfiles.ReadItemAsync<UserProfile>(
+                    id: upn,
+                    partitionKey: new PartitionKey(upn),
+                    cancellationToken: cancellationToken);
+
+                return userProfile;
+            }
+            catch (CosmosException ce) when (ce.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                var userProfile = new UserProfile(upn);
+
+                await UpsertUserProfileAsync(userProfile, cancellationToken);
+
+                return userProfile;
+            }
         }
 
         /// <inheritdoc/>

@@ -206,14 +206,13 @@ import 'katex/dist/katex.min.css';
 import truncate from 'truncate-html';
 import DOMPurify from 'dompurify';
 import type { PropType } from 'vue';
+import { hideAllPoppers } from 'floating-vue';
 
 import type { Message, MessageContent, CompletionPrompt } from '@/js/types';
 import api from '@/js/api';
 import { fetchBlobUrl } from '@/js/fileService';
 import CodeBlockHeader from '@/components/CodeBlockHeader.vue';
 import ChatMessageContentBlock from '@/components/ChatMessageContentBlock.vue';
-
-import { hideAllPoppers } from 'floating-vue';
 
 function processLatex(content) {
 	const blockLatexPattern = /\\\[\s*([\s\S]+?)\s*\\\]/g;
@@ -640,12 +639,6 @@ export default {
 	.message {
 		width: 95%;
 	}
-}
-
-.primary-button {
-	background-color: var(--primary-button-bg) !important;
-	border-color: var(--primary-button-bg) !important;
-	color: var(--primary-button-text) !important;
 }
 
 .message__button {

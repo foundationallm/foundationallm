@@ -1,7 +1,11 @@
 <template>
 	<!-- <Avatar v-if="loading" icon="pi pi-spinner" /> -->
 	<Avatar v-if="profilePhotoSrc" :image="profilePhotoSrc" />
-	<Avatar v-else :label="userInitials" :style="`background-color: ${userColors.background}; color: ${userColors.text};`" />
+	<Avatar
+		v-else
+		:label="userInitials"
+		:style="`background-color: ${userColors.background}; color: ${userColors.text};`"
+	/>
 </template>
 
 <script lang="ts">
@@ -17,7 +21,7 @@ const paleColors = [
 	'#FFCC99', // Pale Peach
 	'#FF9966', // Pale Orange
 	'#FF9999', // Pale Salmon
-	'#99CCFF'  // Pale Sky Blue
+	'#99CCFF', // Pale Sky Blue
 ];
 
 // const paleColorsDarken1 = [
@@ -56,7 +60,7 @@ const paleColorsDarken3 = [
 	'#993300', // Much Darker Pale Peach
 	'#663300', // Much Darker Pale Orange
 	'#993333', // Much Darker Pale Salmon
-	'#336699'  // Much Darker Pale Sky Blue
+	'#336699', // Much Darker Pale Sky Blue
 ];
 
 function hashString(str) {
@@ -110,7 +114,7 @@ export default {
 			if (!this.profilePhotoSrc) {
 				await this.loadGravatarImage();
 			}
-		} catch(error) {
+		} catch (error) {
 			// console.error(error);
 		}
 		// this.loading = false;
@@ -125,13 +129,13 @@ export default {
 				image.src = src;
 			});
 		},
-		
+
 		async loadGravatarImage() {
 			const emailHash = md5(this.$authStore.currentAccount?.username?.toLowerCase()); // Hash the email
 			const gravatarUrl = `https://www.gravatar.com/avatar/${emailHash}?d=404`;
 			const gravatarImage = await this.loadImage(gravatarUrl);
-			this.profilePhotoSrc = gravatarUrl;
-		}
+			this.profilePhotoSrc = gravatarImage;
+		},
 	},
 };
 </script>

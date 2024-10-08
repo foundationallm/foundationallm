@@ -27,7 +27,7 @@ namespace FoundationaLLM.Vectorization.Extensions
         )
         {  
             // in the case of a new request, this updates the object id with the fully qualified object id, otherwise it remains the same.
-            var result = await vectorizationResourceProvider.UpsertResourceAsync<VectorizationRequest, ResourceProviderUpsertResult>(
+            var result = await vectorizationResourceProvider.UpsertResourceAsync<VectorizationRequest, ResourceProviderUpsertResult<VectorizationRequest>>(
                 instanceId,
                 request,
                 userIdentity);

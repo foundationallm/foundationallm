@@ -80,7 +80,20 @@ namespace FoundationaLLM.Common.Interfaces
         /// <returns>The object id of the resource.</returns>
         Task<TResult> UpsertResourceAsync<T, TResult>(string instanceId, T resource, UnifiedUserIdentity userIdentity)
             where T : ResourceBase
-            where TResult : ResourceProviderUpsertResult;
+            where TResult : ResourceProviderUpsertResult<T>;
+
+        /// <summary>
+        /// Updates a subset of the properties of a resource.
+        /// </summary>
+        /// <typeparam name="T">The type of the resource.</typeparam>
+        /// <typeparam name="TResult">The type of the result returned.</typeparam>
+        /// <param name="instanceId">The FoundationaLLM instance id.</param>
+        /// <param name="resourceName">The name of the resource being updated.</param>
+        /// <param name="propertyValues">The dictionary with propery names and values to update.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
+        Task<TResult> UpdateResourcePropertiesAsync<T, TResult>(string instanceId, string resourceName, Dictionary<string, object> propertyValues, UnifiedUserIdentity userIdentity)
+            where T : ResourceBase
+            where TResult : ResourceProviderUpsertResult<T>;
 
         /// <summary>
         /// Checks if a resource exists.
@@ -93,7 +106,18 @@ namespace FoundationaLLM.Common.Interfaces
         /// <remarks>
         /// If a resource was logically deleted but not purged, this method will return True, indicating the existence of the resource.
         /// </remarks>
-        Task<(bool Exists, bool Deleted)> ResourceExists<T>(string instanceId, string resourceName, UnifiedUserIdentity userIdentity)
+        Task<(bool Exists, bool Deleted)> ResourceExistsAsync<T>(string instanceId, string resourceName, UnifiedUserIdentity userIdentity)
+            where T : ResourceBase;
+
+        /// <summary>
+        /// Deletes logically a resource based on its logical path.
+        /// </summary>
+        /// <typeparam name="T">The type of the resource.</typeparam>
+        /// <param name="instanceId">The FoundationaLLM instance ID.</param>
+        /// <param name="resourceName">The name of the resource being logically deleted.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
+        /// <returns></returns>
+        Task DeleteResourceAsync<T>(string instanceId, string resourceName, UnifiedUserIdentity userIdentity)
             where T : ResourceBase;
 
         /// <summary>

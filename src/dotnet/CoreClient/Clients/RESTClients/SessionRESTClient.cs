@@ -80,6 +80,13 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
                 var messages = JsonSerializer.Deserialize<IEnumerable<Message>>(responseContent, SerializerOptions);
+                foreach (Message message in messages!)
+                {
+                    if (message.Text == null && message.Content != null && message.Content.Count > 0)
+                    {
+                        message.Text = message.Content.First().Value!;
+                    }
+                }
                 return messages ?? throw new InvalidOperationException("The returned messages are invalid.");
             }
 

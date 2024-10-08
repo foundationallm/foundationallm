@@ -5,7 +5,10 @@ import type {
 	Session,
 	ChatSessionProperties,
 	Message,
+	UserProfile,
 	Agent,
+	FileStoreConnector,
+	OneDriveWorkSchool,
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
 	// ResourceProviderDeleteResult,
@@ -29,6 +32,9 @@ export const useAppStore = defineStore('app', {
 		lastSelectedAgent: null as ResourceProviderGetResult<Agent> | null,
 		attachments: [] as Attachment[],
 		longRunningOperations: new Map<string, string>(), // sessionId -> operationId
+		fileStoreConnectors: [] as FileStoreConnector[],
+		oneDriveWorkSchool: null as boolean | null,
+		userProfiles: null as UserProfile | null,
 	}),
 
 	getters: {},
@@ -53,6 +59,8 @@ export const useAppStore = defineStore('app', {
 				const existingSession = this.sessions.find((session: Session) => session.id === sessionId);
 				await this.changeSession(existingSession || this.sessions[0]);
 			}
+
+			await this.getUserProfiles();
 
 			// if (this.currentSession) {
 			// 	await this.getMessages();
@@ -97,11 +105,11 @@ export const useAppStore = defineStore('app', {
 				this.sessions = sessions;
 			}
 
-			// Handle inconsistencies in displaying the rename session due to potential delays in the backend updating the session name.
+			// Handle inconsistencies in displaying the renamed session due to potential delays in the backend updating the session name.
 			this.renamedSessions.forEach((renamedSession: Session) => {
 				const existingSession = this.sessions.find((s: Session) => s.id === renamedSession.id);
 				if (existingSession) {
-					existingSession.name = renamedSession.name;
+					existingSession.display_name = renamedSession.display_name;
 				}
 			});
 
@@ -137,8 +145,8 @@ export const useAppStore = defineStore('app', {
 			);
 
 			// Preemptively rename the session for responsiveness, and revert the name if the request fails.
-			const previousName = existingSession.name;
-			existingSession.name = newSessionName;
+			const previousName = existingSession.display_name;
+			existingSession.display_name = newSessionName;
 
 			try {
 				await api.renameSession(sessionToRename.id, newSessionName);
@@ -146,15 +154,15 @@ export const useAppStore = defineStore('app', {
 					(session: Session) => session.id === sessionToRename.id,
 				);
 				if (existingRenamedSession) {
-					existingRenamedSession.name = newSessionName;
+					existingRenamedSession.display_name = newSessionName;
 				} else {
 					this.renamedSessions = [
-						{ ...sessionToRename, name: newSessionName },
+						{ ...sessionToRename, display_name: newSessionName },
 						...this.renamedSessions,
 					];
 				}
 			} catch (error) {
-				existingSession.name = previousName;
+				existingSession.display_name = previousName;
 			}
 		},
 
@@ -376,6 +384,54 @@ export const useAppStore = defineStore('app', {
 			return this.agents;
 		},
 
+		async getFileStoreConnectors() {
+			this.fileStoreConnectors = await api.getFileStoreConnectors();
+			return this.fileStoreConnectors;
+		},
+
+		async oneDriveWorkSchoolConnect() {
+			await api.oneDriveWorkSchoolConnect().then(() => {
+				this.oneDriveWorkSchool = true;
+			});
+		},
+
+		async oneDriveWorkSchoolDisconnect() {
+			await api.oneDriveWorkSchoolDisconnect().then(() => {
+				this.oneDriveWorkSchool = false;
+			});
+		},
+
+		async getUserProfiles() {
+			this.userProfiles = await api.getUserProfile();
+			this.oneDriveWorkSchool = this.userProfiles?.flags.oneDriveWorkSchoolEnabled;
+			return this.userProfiles;
+		},
+
+		async oneDriveWorkSchoolDownload(sessionId: string, oneDriveWorkSchool: OneDriveWorkSchool) {
+			const agent = this.getSessionAgent(this.currentSession!).resource;
+			// If the agent is not found, do not upload the attachment and display an error message.
+			if (!agent) {
+				throw new Error('No agent selected.');
+			}
+
+			const item = (await api.oneDriveWorkSchoolDownload(
+				sessionId,
+				agent.name,
+				oneDriveWorkSchool,
+			)) as OneDriveWorkSchool;
+			const newAttachment: Attachment = {
+				id: item.objectId!,
+				fileName: item.name!,
+				sessionId,
+				contentType: item.mimeType!,
+				source: 'OneDrive Work/School',
+			};
+
+			this.attachments.push(newAttachment);
+
+			return item.objectId;
+		},
+
 		async uploadAttachment(file: FormData, sessionId: string, progressCallback: Function) {
 			const agent = this.getSessionAgent(this.currentSession!).resource;
 			// If the agent is not found, do not upload the attachment and display an error message.
@@ -396,6 +452,7 @@ export const useAppStore = defineStore('app', {
 				fileName,
 				sessionId,
 				contentType,
+				source: 'Local Computer',
 			};
 
 			this.attachments.push(newAttachment);

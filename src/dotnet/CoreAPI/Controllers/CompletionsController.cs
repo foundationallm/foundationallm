@@ -14,10 +14,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace FoundationaLLM.Core.API.Controllers
 {
     /// <summary>
-    /// Methods for orchestration services exposed by the Gatekeeper API service.
+    /// Provides methods for retrieving and managing completions.
     /// </summary>
     /// <remarks>
-    /// Constructor for the Orchestration Controller.
+    /// Constructor for the Completions Controller.
     /// </remarks>
     [Authorize(Policy = "DefaultPolicy")]
     [ApiController]
@@ -115,6 +115,7 @@ namespace FoundationaLLM.Core.API.Controllers
                 new ResourceProviderLoadOptions
                 {
                     IncludeRoles = true,
+                    IncludeActions = true,
                     LoadContent = false
                 });
     }

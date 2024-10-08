@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import type { AccountInfo } from '@azure/msal-browser';
 import { PublicClientApplication } from '@azure/msal-browser';
+import { useAppStore } from './appStore';
 
 export const useAuthStore = defineStore('auth', {
 	state: () => ({
@@ -25,6 +26,13 @@ export const useAuthStore = defineStore('auth', {
 
 		authConfig() {
 			return useNuxtApp().$appConfigStore.auth;
+		},
+
+		oneDriveWorkSchoolScopes() {
+			const appStore = useAppStore();
+			return appStore.fileStoreConnectors.find(
+				(connector) => connector.subcategory === 'OneDriveWorkSchool',
+			)?.authentication_parameters['scope'];
 		},
 
 		apiScopes() {
@@ -103,6 +111,37 @@ export const useAuthStore = defineStore('auth', {
 			}
 		},
 
+		async requestOneDriveWorkSchoolConsent() {
+			let accessToken = '';
+			const oneDriveWorkSchoolAPIScopes: any = {
+				account: this.currentAccount,
+				scopes: [this.oneDriveWorkSchoolScopes],
+			};
+
+			try {
+				const resp = await this.msalInstance.acquireTokenSilent(oneDriveWorkSchoolAPIScopes);
+				accessToken = resp.accessToken;
+			} catch (error) {
+				// Redirect to get token or login
+				oneDriveWorkSchoolAPIScopes.state = 'Core API redirect';
+				await this.msalInstance.loginRedirect(oneDriveWorkSchoolAPIScopes);
+			}
+			return accessToken;
+		},
+
+		async getOneDriveWorkSchoolToken(): string | null {
+			const appStore = useAppStore();
+			const oneDriveBaseURL = appStore.fileStoreConnectors.find(
+				(connector) => connector.subcategory === 'OneDriveWorkSchool',
+			)?.url;
+			const oneDriveToken = await this.msalInstance.acquireTokenSilent({
+				account: this.currentAccount,
+				scopes: [`${oneDriveBaseURL}${this.oneDriveWorkSchoolScopes}`],
+			});
+
+			return oneDriveToken;
+		},
+
 		async getProfilePhoto(): string | null {
 			try {
 				const graphScopes = ['https://graph.microsoft.com/User.Read'];
@@ -114,12 +153,12 @@ export const useAuthStore = defineStore('auth', {
 				const profilePhotoBlob = await $fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
 					method: 'GET',
 					headers: {
-						Authorization: `Bearer ${graphToken.accessToken}`
-					}
+						Authorization: `Bearer ${graphToken.accessToken}`,
+					},
 				});
 
 				return URL.createObjectURL(profilePhotoBlob);
-			} catch(error) {
+			} catch (error) {
 				return null;
 			}
 		},
