@@ -1153,6 +1153,23 @@
 		"configuration_keys": []
 	},
 	{
+		"namespace": "APIEndpoints:OneDriveWorkSchool:Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the main OneDriveWorkSchool API settings."
+		},
+		"configuration_keys": [
+			{
+				"name": "Scopes",
+				"description": "The list of scopes exposed by the OneDriveWorkSchool API.",
+				"secret": "",
+				"value": "Files.Read.All",
+				"content_type": "",
+				"first_version": "0.8.2"
+			}
+		]
+	},
+	{
 		"namespace": "Branding",
 		"dependency_injection_key": null,
 		"configuration_section": {
