@@ -29,7 +29,6 @@ export const useAppConfigStore = defineStore('appConfig', {
 		instanceId: null,
 		agentIconUrl: null,
 		allowedUploadFileExtensions: null,
-		oneDriveWorkSchoolScopes: null,
 
 		// Auth: These settings configure the MSAL authentication.
 		auth: {
@@ -78,7 +77,6 @@ export const useAppConfigStore = defineStore('appConfig', {
 				instanceId,
 				agentIconUrl,
 				allowedUploadFileExtensions,
-				oneDriveWorkSchoolScopes,
 				authClientId,
 				authInstance,
 				authTenantId,
@@ -109,7 +107,6 @@ export const useAppConfigStore = defineStore('appConfig', {
 				getConfigValueSafe(
 					'FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions',
 				),
-				getConfigValueSafe('FoundationaLLM:APIEndpoints:OneDriveWorkSchool:Configuration:Scopes'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:ClientId'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:Instance'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:TenantId'),
@@ -146,8 +143,6 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.auth.tenantId = authTenantId;
 			this.auth.scopes = authScopes;
 			this.auth.callbackPath = authCallbackPath;
-
-			this.oneDriveWorkSchoolScopes = oneDriveWorkSchoolScopes;
 		},
 	},
 });
