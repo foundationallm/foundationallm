@@ -31,6 +31,9 @@ from foundationallm.models.services import OpenAIAssistantsAPIRequest, OpenAIAss
 from foundationallm.models.attachments import AttachmentProperties
 from foundationallm.config import Configuration
 
+CODE_INTERPRETER_FILE_TYPES_CONFIG_NAME = "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsCodeInterpreterFileExtensions"
+FILE_SEARCH_FILE_TYPES_CONFIG_NAME = "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions"
+
 class OpenAIAssistantsApiService:
     """
     Integration with the OpenAI Assistants API.
@@ -49,8 +52,8 @@ class OpenAIAssistantsApiService:
         self.client = azure_openai_client
 
         #split string and trim whitespace
-        self.file_tool_file_types = [x.strip() for x in config.get_value('FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions').split(",")] #["c", "cpp", "cs", "css", "doc", "docx", "html", "java", "js", "json", "md", "pdf", "php", "pptx", "py", "rb", "sh", "tex", "ts", "txt"]
-        self.code_tool_file_types = [x.strip() for x in config.get_value('FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsCodeInterpreterFileExtensions').split(",")] #["c", "cpp", "cs", "css", "doc", "docx", "html", "java", "js", "json", "md", "pdf", "php", "pptx", "py", "rb", "sh", "tex", "ts", "txt"]
+        self.file_tool_file_types = [x.strip() for x in config.get_value(CODE_INTERPRETER_FILE_TYPES_CONFIG_NAME).split(",")]
+        self.code_tool_file_types = [x.strip() for x in config.get_value(FILE_SEARCH_FILE_TYPES_CONFIG_NAME).split(",")]
 
         self.tools = [
             {
