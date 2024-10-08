@@ -26,7 +26,6 @@ using FoundationaLLM.Core.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Graph.Models;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Conversation = FoundationaLLM.Common.Models.Conversation.Conversation;
@@ -68,7 +67,7 @@ public partial class CoreService(
     private readonly ILogger<CoreService> _logger = logger;
     private readonly UnifiedUserIdentity _userIdentity = callContext.CurrentUserIdentity
         ?? throw new InvalidOperationException("The call context does not contain a valid user identity.");
-    private readonly string _sessionType = brandingSettings.Value.KioskMode ? SessionTypes.KioskSession : SessionTypes.Session;
+    private readonly string _sessionType = brandingSettings.Value.KioskMode ? ConversationTypes.KioskSession : ConversationTypes.Session;
     private readonly CoreServiceSettings _settings = settings.Value;
     private readonly IHttpClientFactoryService _httpClientFactory = httpClientFactory;
     private readonly string _baseUrl = GetBaseUrl(configuration, httpClientFactory, callContext).GetAwaiter().GetResult();
@@ -99,7 +98,7 @@ public partial class CoreService(
     {
         var result = await _conversationResourceProvider.GetResourcesAsync<Conversation>(
             instanceId,
-            _callContext.CurrentUserIdentity!,
+            _userIdentity,
             new ResourceProviderLoadOptions
             {
                 Parameters = new Dictionary<string, object>
@@ -124,13 +123,13 @@ public partial class CoreService(
             Name = newConversationId,
             DisplayName = chatSessionProperties.Name,
             Type = _sessionType,
-            UPN = _callContext.CurrentUserIdentity?.UPN!
+            UPN = _userIdentity.UPN!
         };
 
         _ = await _conversationResourceProvider.UpsertResourceAsync<Conversation, ResourceProviderUpsertResult<Conversation>>(
             instanceId,
             newConversation,
-            _callContext.CurrentUserIdentity!);
+            _userIdentity);
 
         return newConversation;
     }
@@ -148,7 +147,7 @@ public partial class CoreService(
                                              {
                 { "/displayName", chatSessionProperties.Name }
             },
-            _callContext.CurrentUserIdentity!);
+            _userIdentity);
 
         return result.Resource!;
     }
@@ -161,7 +160,7 @@ public partial class CoreService(
         await _conversationResourceProvider.DeleteResourceAsync<Conversation>(
             instanceId,
             sessionId,
-            _callContext.CurrentUserIdentity!);
+            _userIdentity);
     }
 
     #endregion
@@ -170,7 +169,7 @@ public partial class CoreService(
     public async Task<List<Message>> GetChatSessionMessagesAsync(string instanceId, string sessionId)
     {
         ArgumentNullException.ThrowIfNull(sessionId);
-        var messages = await _cosmosDbService.GetSessionMessagesAsync(sessionId, _userIdentity.UPN ??
+        var messages = await _cosmosDBService.GetSessionMessagesAsync(sessionId, _userIdentity.UPN ??
             throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat messages."));
 
         // Get a list of all attachment IDs in the messages.
@@ -240,7 +239,7 @@ public partial class CoreService(
             completionRequest = PrepareCompletionRequest(completionRequest);
 
             // Retrieve conversation, including latest prompt.
-            var messages = await _cosmosDbService.GetSessionMessagesAsync(completionRequest.SessionId, _userIdentity.UPN ??
+            var messages = await _cosmosDBService.GetSessionMessagesAsync(completionRequest.SessionId, _userIdentity.UPN ??
                 throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat completions."));
             var messageHistoryList = messages
                 .Select(message => new MessageHistoryItem(message.Sender, string.IsNullOrWhiteSpace(message.Text) ? "" : message.Text))
@@ -339,7 +338,13 @@ public partial class CoreService(
             var completionPrompt = new CompletionPrompt(completionRequest.SessionId, completionMessage.Id, completionPromptText);
             completionMessage.CompletionPromptId = completionPrompt.Id;
 
-            await AddPromptCompletionMessagesAsync(instanceId, completionRequest.SessionId, promptMessage, completionMessage, completionPrompt, _callContext.CurrentUserIdentity!);
+            await AddPromptCompletionMessagesAsync(
+                instanceId,
+                completionRequest.SessionId,
+                promptMessage,
+                completionMessage,
+                completionPrompt,
+                _userIdentity);
 
             return new Completion
             {
@@ -363,7 +368,7 @@ public partial class CoreService(
         {
             directCompletionRequest = PrepareCompletionRequest(directCompletionRequest);
 
-            var agentOption = await ProcessGatekeeperOptions(directCompletionRequest);
+            var agentOption = await ProcessGatekeeperOptions(instanceId, directCompletionRequest);
 
             // Generate the completion to return to the user.
             var result = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, directCompletionRequest);
@@ -554,8 +559,9 @@ public partial class CoreService(
 
     private async Task<AgentGatekeeperOverrideOption> ProcessGatekeeperOptions(string instanceId, CompletionRequest completionRequest)
     {
-        var agentBase = await _agentResourceProvider.GetResource<AgentBase>(
-            $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Agent}/{AgentResourceTypeNames.Agents}/{completionRequest.AgentName}",
+        var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>(
+            instanceId,
+            completionRequest.AgentName!,
             _userIdentity);
 
         if (agentBase?.GatekeeperSettings?.UseSystemSetting == false)

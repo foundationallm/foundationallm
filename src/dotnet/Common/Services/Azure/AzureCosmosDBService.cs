@@ -23,7 +23,6 @@ namespace FoundationaLLM.Common.Services
         private readonly Lazy<Task<Container>> _userProfiles;
         private Task<Container> _userProfilesTask => _userProfiles.Value;
         private readonly Database _database;
-        private readonly Dictionary<string, Container> _containers;
         private readonly CosmosDbSettings _settings;
         private readonly ResiliencePipeline _resiliencePipeline;
         private readonly ILogger _logger;
@@ -81,20 +80,6 @@ namespace FoundationaLLM.Common.Services
 
             _database = database ??
                         throw new ArgumentException("Unable to connect to existing Azure Cosmos DB database.");
-
-            // Dictionary of container references for all containers listed in config.
-            _containers = new Dictionary<string, Container>();
-
-            var containers = _settings.Containers.Split(',').ToList();
-
-            foreach (var containerName in containers)
-            {
-                var container = database?.GetContainer(containerName.Trim()) ??
-                                throw new ArgumentException(
-                                    "Unable to connect to existing Azure Cosmos DB container or database.");
-
-                _containers.Add(containerName.Trim(), container);
-            }
 
             _sessions = database?.GetContainer(CosmosDbContainers.Sessions) ??
                         throw new ArgumentException(
