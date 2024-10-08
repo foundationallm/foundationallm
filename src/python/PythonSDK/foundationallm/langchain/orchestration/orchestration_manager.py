@@ -27,14 +27,18 @@ class OrchestrationManager:
             The unique identifier of the FoundationaLLM instance.
         user_identity : UserIdentity
             The user context under which to execution completion requests.
-        """        
-        self.completion_request = completion_request
+        configuration : Configuration
+            The configuration object containing the details needed for the OrchestrationManager to assemble an agent.
+        operations_manager : OperationsManager
+            The operations manager object for allowing an agent to interact with the State API.
+        """
         self.agent = self.__create_agent(
-            completion_request=completion_request,
-            config=configuration,
-            operations_manager=operations_manager,
-            instance_id=instance_id,
-            user_identity=user_identity)
+            completion_request = completion_request,
+            config = configuration,
+            operations_manager = operations_manager,
+            instance_id = instance_id,
+            user_identity = user_identity
+        )
 
     def __create_agent(self,
                        completion_request: CompletionRequestBase,
@@ -43,8 +47,7 @@ class OrchestrationManager:
                        instance_id: str,
                        user_identity: UserIdentity) -> LangChainAgentBase:
         """Creates an agent for executing completion requests."""
-
-        return AgentFactory().get_agent(completion_request.agent.type, config=config, operations_manager=operations_manager, instance_id=instance_id, user_identity=user_identity)
+        return AgentFactory().get_agent(completion_request.agent.type, config, operations_manager, instance_id, user_identity)
 
     def invoke(self, request: CompletionRequestBase) -> CompletionResponse:
         """

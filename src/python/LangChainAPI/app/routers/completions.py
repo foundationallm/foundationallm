@@ -17,6 +17,7 @@ from fastapi import (
 )
 from foundationallm.models.constants import AgentCapabilityCategories
 from foundationallm.config import Configuration, UserIdentity
+from foundationallm.models.constants import AgentCapabilityCategories
 from foundationallm.models.operations import (
     LongRunningOperation,
     LongRunningOperationLogEntry,
