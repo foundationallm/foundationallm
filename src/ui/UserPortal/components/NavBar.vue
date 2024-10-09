@@ -1,4 +1,5 @@
 <template>
+	<Toast position="top-center" />
 	<div class="navbar">
 		<!-- Sidebar header -->
 		<div class="navbar__header">
@@ -43,7 +44,7 @@
 							/>
 							<template #popper>Copy link to chat session</template>
 						</VTooltip> -->
-						<Toast position="top-center" />
+						
 					</template>
 					<template v-else>
 						<span>Please select a session</span>

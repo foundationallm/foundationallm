@@ -83,13 +83,15 @@ namespace FoundationaLLM.Core.Services
             client.BaseAddress = new Uri("https://graph.microsoft.com/v1.0/");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", oneDriveItem.AccessToken);
 ;
-            var item = await client.GetAsync($"me/drive/items/{oneDriveItem.Id}");
+            var item = await client.GetAsync($"drives/{oneDriveItem.DriveId}/items/{oneDriveItem.Id}");
+
             if (!item.IsSuccessStatusCode)
                 throw new InvalidOperationException($"Could not retrieve OneDrive item information for {oneDriveItem.Id}. Status code: {item.StatusCode}.");
             var itemStr = await item.Content.ReadAsStringAsync();
             var itemObj = JsonSerializer.Deserialize<OneDriveWorkSchoolItem>(itemStr);
 
-            var response = await client.GetAsync($"me/drive/items/{oneDriveItem.Id}/content");
+            var response = await client.GetAsync($"drives/{oneDriveItem.DriveId}/items/{oneDriveItem.Id}/content");
+
             if (!response.IsSuccessStatusCode)
                 throw new InvalidOperationException($"Could not retrieve OneDrive item contents for {oneDriveItem.Id}. Status code: {response.StatusCode}.");
             var stream = await response.Content.ReadAsStreamAsync();
