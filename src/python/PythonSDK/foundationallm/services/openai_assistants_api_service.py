@@ -145,7 +145,8 @@ class OpenAIAssistantsApiService:
         async with self.client.beta.threads.runs.stream(
             thread_id = request.thread_id,
             assistant_id = request.assistant_id,
-            event_handler = OpenAIAssistantAsyncEventHandler(self.client, self.operations_manager, request, image_service)
+            event_handler = OpenAIAssistantAsyncEventHandler(self.client, self.operations_manager, request, image_service),
+            additional_instructions="If you generate an image, return the image inline using markdown."
         ) as stream:
             await stream.until_done()
             run = await stream.get_final_run()
