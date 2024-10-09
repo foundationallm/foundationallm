@@ -349,6 +349,7 @@ export default {
 				},
 				access: { mode: 'read' },
 				search: { enabled: true },
+				multiSelect: true,
 			},
 			oneDriveFiles: [],
 			localFiles: [],
@@ -785,9 +786,13 @@ export default {
 							break;
 
 						case 'pick':
-							console.log(`Picked: ${JSON.stringify(command)}`);
+							console.log(command.items);
+							command.items.forEach((item) => {
+								console.log(`Picked: ${JSON.stringify(item)}`);
+								this.oneDriveFiles.push(item);
+							});
 
-							this.oneDriveFiles.push(...command.items);
+							// this.oneDriveFiles.push(...command.items);
 
 							this.$nextTick(() => {
 								this.$refs.menu.alignOverlay();
