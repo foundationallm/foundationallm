@@ -134,10 +134,19 @@ class OpenAIAssistantsApiService:
             attachments = attachments
         )
 
+        # Create an image generation tool for the assistant
+        image_generation_tool = {"type": "function", "function": image_service.get_function_definition(function_name='generate_image')}
+
         # Add the image generation tool to the assistant.
-        #assistant = await self.client.beta.assistants.retrieve(assistant_id=request.assistant_id)
-        #tools = assistant.tools
-        tools = ([{"type": "function", "function": image_service.get_function_definition(function_name='generate_image')}])
+        assistant = await self.client.beta.assistants.retrieve(assistant_id=request.assistant_id)
+        tools = assistant.tools
+
+        # If the tools collection already contains the function, remove it
+        for tool in tools:
+            if tool.function.name == "generate_image":
+                tools.remove(tool)
+
+        tools.append(image_generation_tool)
         await self.client.beta.assistants.update(assistant_id=request.assistant_id, tools=tools)
 
         # Create and execute the run
