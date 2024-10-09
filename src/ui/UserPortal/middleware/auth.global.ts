@@ -8,7 +8,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 		await authStore.msalInstance.handleRedirectPromise();
 	} catch (ex) {
 		if (ex.name === 'InteractionRequiredAuthError' && ex.message.includes('AADSTS65004')) {
-			localStorage.setItem('oneDriveConsentRedirect', JSON.stringify(false));
+			localStorage.setItem('oneDriveWorkSchoolConsentRedirect', JSON.stringify(false));
 		} else {
 			throw ex;
 		}
