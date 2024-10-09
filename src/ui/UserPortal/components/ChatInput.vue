@@ -178,7 +178,7 @@
 								class="file-upload-container-button"
 								:icon="!isMobile ? 'pi pi-sign-in' : undefined"
 								:loading="connectingOneDrive || $appStore.oneDriveWorkSchool === null"
-								@click="oneDriveWorkSchoolConnect"
+								@click="connectOneDriveWorkSchool"
 							/>
 						</template>
 					</div>
@@ -315,7 +315,7 @@ export default {
 			localFiles: [],
 			oneDriveBaseURL: null as string | null,
 			disconnectingOneDrive: false,
-			connectingOneDrive: false,
+			connectingOneDrive: true,
 		};
 	},
 
@@ -348,14 +348,20 @@ export default {
 	},
 
 	async created() {
+		if (localStorage.getItem('oneDriveWorkSchoolConsentRedirect') === 'true') {
+			await this.oneDriveWorkSchoolConnect();
+			localStorage.setItem('oneDriveWorkSchoolConsentRedirect', JSON.stringify(false));
+		}else{
+			this.connectingOneDrive = false;
+		}
+
+		await this.$appStore.getFileStoreConnectors();
 		await this.$appStore.getAgents();
 
 		this.agents = this.$appStore.agents.map((agent) => ({
 			label: agent.resource.name,
 			value: agent.resource.name,
 		}));
-
-		await this.$appStore.getFileStoreConnectors();
 
 		this.oneDriveBaseURL = this.$appStore.fileStoreConnectors.find(
 			(connector) => connector.subcategory === 'OneDriveWorkSchool',
@@ -587,6 +593,13 @@ export default {
 				const fileUploadButton = this.$refs.fileUploadButton.$el;
 
 				this.$refs.menu.show({ currentTarget: fileUploadButton });
+			}
+		},
+
+		async connectOneDriveWorkSchool() {
+			await this.$authStore.requestOneDriveWorkSchoolConsent();
+			if (localStorage.getItem('oneDriveWorkSchoolConsentRedirect') !== 'true') {
+				await this.oneDriveWorkSchoolConnect();
 			}
 		},
 
