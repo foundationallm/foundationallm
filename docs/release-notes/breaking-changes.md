@@ -62,6 +62,53 @@ else:
 
 Refer to the dedicated upgrade tool for instruction on how to perform this update.
 
+**FoundationaLLM.Configuration**
+
+The OneDrive (Work or School) integration requires the following API Endpoint Configuration entry in the storage account:
+
+`FoundationaLLM.Configuration/OneDriveFileStoreConnector.json`
+```json
+{
+    "type": "api-endpoint",
+    "name": "OneDriveFileStoreConnector",
+    "object_id": "/instances/{{instance_id}}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/OneDriveFileStoreConnector",
+    "display_name": null,
+    "description": null,
+    "cost_center": null,
+    "category": "FileStoreConnector",
+    "subcategory": "OneDriveWorkSchool",
+    "authentication_type": "AzureIdentity",
+    "authentication_parameters": {
+      "scope": "Files.Read.All"
+    },
+    "url": "{{onedrive_base_orl}}",
+    "status_url": "",
+    "url_exceptions": [],
+    "timeout_seconds": 2400,
+    "retry_strategy_name": "ExponentialBackoff",
+    "created_on": "0001-01-01T00:00:00+00:00",
+    "updated_on": "0001-01-01T00:00:00+00:00",
+    "created_by": null,
+    "updated_by": "SYSTEM",
+    "deleted": false
+  }
+```
+
+Update `FoundationaLLM.Configuration/_resource-references_.json` with the reference to the file above.
+```json
+{
+	"Name": "OneDriveFileStoreConnector",
+	"Filename": "/FoundationaLLM.Configuration/OneDriveFileStoreConnector.json",
+	"Type": "api-endpoint",
+	"Deleted": false
+}
+```
+
+**FoundationaLLM.Attachment**
+
+The Attachment resource provider saves the attachment references to Cosmos DB.
+A new Cosmos DB container must be created, named `Attachments`, with a partition key `/upn`.
+
 ## Starting with 0.8.0
 
 Core API changes:
