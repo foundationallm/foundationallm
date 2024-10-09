@@ -437,7 +437,6 @@ export default {
 		},
 
 		handleResize() {
-			console.log('resize');
 			this.isMobile = window.screen.width < 950;
 			if (this.$refs.menu.visible) {
 				this.$nextTick(() => {
