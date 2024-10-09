@@ -144,6 +144,7 @@ export interface FileStoreConnector {
 
 export interface OneDriveWorkSchool {
 	id: string;
+	driveId?: string;
 	objectId?: string;
 	name?: string;
 	mimeType?: string;
