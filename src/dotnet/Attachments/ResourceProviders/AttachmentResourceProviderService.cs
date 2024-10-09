@@ -82,22 +82,26 @@ namespace FoundationaLLM.Attachment.ResourceProviders
             {
                 case AttachmentResourceTypeNames.Attachments:
 
-                    var attachmentReferences = new List<AttachmentReference>();
+                    var attachments = new List<AttachmentReference>();
 
                     if (resourcePath.ResourceTypeInstances[0].ResourceId != null)
-                        attachmentReferences = [await _cosmosDBService.GetAttachmentReference(resourcePath.ResourceTypeInstances[0].ResourceId!)];
+                        attachments = [await _cosmosDBService.GetAttachment(userIdentity.UPN!, resourcePath.ResourceTypeInstances[0].ResourceId!)];
                     else
-                        attachmentReferences = await _cosmosDBService.GetAttachmentReferences(userIdentity.UPN!);
+                        attachments = await _cosmosDBService.GetAttachments(userIdentity.UPN!);
 
-                    var result = new List<AttachmentFile>();
-                    foreach(var ar in attachmentReferences)
-                        result.Add(await LoadAttachment(ar, options != null && options!.LoadContent));
+                    var results = new List<AttachmentFile>();
+                    foreach(var attachment in attachments)
+                        results.Add(await LoadAttachment(attachment, options != null && options!.LoadContent));
 
-                    return result.Select(r => new ResourceProviderGetResult<AttachmentFile>
+                    return results.Select(r => new ResourceProviderGetResult<AttachmentFile>
                     {
                         Resource = r,
-                        Actions = [],
-                        Roles = []
+                        Roles = (options?.IncludeRoles ?? false)
+                              ? authorizationResult.Roles
+                              : [],
+                        Actions = (options?.IncludeActions ?? false)
+                                ? authorizationResult.Actions
+                                : []
                     }).ToList();
                 default:
                     throw new ResourceProviderException($"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
@@ -124,20 +128,15 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                     switch(resourcePath.Action)
                     {
                         case ResourceProviderActions.Filter:
-                            var attachmentReferences = await _cosmosDBService.FilterAttachmentReference(
-                                JsonSerializer.Deserialize<ResourceFilter>(serializedAction)!,
-                                userIdentity.UPN);
+                            var attachments = await _cosmosDBService.FilterAttachments(
+                                userIdentity.UPN!,
+                                JsonSerializer.Deserialize<ResourceFilter>(serializedAction)!);
 
-                            var result = new List<AttachmentFile>();
-                            foreach (var ar in attachmentReferences)
-                                result.Add(await LoadAttachment(ar, false));
+                            var results = new List<AttachmentFile>();
+                            foreach (var attachment in attachments)
+                                results.Add(await LoadAttachment(attachment, false));
 
-                            return result.Select(r => new ResourceProviderGetResult<AttachmentFile>
-                            {
-                                Resource = r,
-                                Actions = [],
-                                Roles = []
-                            }).ToList();
+                            return results;
                         default:
                             throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                                 StatusCodes.Status400BadRequest);
@@ -154,10 +153,10 @@ namespace FoundationaLLM.Attachment.ResourceProviders
             switch (resourcePath.ResourceTypeName)
             {
                 case AttachmentResourceTypeNames.Attachments:
-                    var attachmentReference = await _cosmosDBService.GetAttachmentReference(resourcePath.ResourceTypeInstances[0].ResourceId!)
+                    var attachment = await _cosmosDBService.GetAttachment(userIdentity.UPN!, resourcePath.ResourceTypeInstances[0].ResourceId!)
                         ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.MainResourceTypeName} was not found.");
 
-                    await _cosmosDBService.DeleteAttachmentReference(attachmentReference);
+                    await _cosmosDBService.DeleteAttachment(attachment);
 
                     break;
                 default:
@@ -173,10 +172,10 @@ namespace FoundationaLLM.Attachment.ResourceProviders
         /// <inheritdoc/>
         protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) where T : class
         {
-            var attachmentReference = await _cosmosDBService.GetAttachmentReference(resourcePath.ResourceTypeInstances[0].ResourceId!)
+            var attachment = await _cosmosDBService.GetAttachment(userIdentity.UPN!, resourcePath.ResourceTypeInstances[0].ResourceId!)
                 ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.MainResourceTypeName} was not found.");
 
-            return (await LoadAttachment(attachmentReference, loadContent: options?.LoadContent ?? false)) as T
+            return (await LoadAttachment(attachment, loadContent: options?.LoadContent ?? false)) as T
                 ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.MainResourceTypeName} could not be loaded.");
         }
 
@@ -220,24 +219,24 @@ namespace FoundationaLLM.Attachment.ResourceProviders
 
         #region Resource management
 
-        private async Task<AttachmentFile> LoadAttachment(AttachmentReference attachmentReference, bool loadContent = false)
+        private async Task<AttachmentFile> LoadAttachment(AttachmentReference attachment, bool loadContent = false)
         {
             var attachmentFile = new AttachmentFile
             {
-                ObjectId = attachmentReference.ObjectId,
-                Name = attachmentReference.Name,
-                OriginalFileName = attachmentReference.OriginalFilename,
-                Type = attachmentReference.Type,
-                Path = $"{_storageContainerName}{attachmentReference.Filename}",
-                ContentType = attachmentReference.ContentType,
-                SecondaryProvider = attachmentReference.SecondaryProvider
+                ObjectId = attachment.ObjectId,
+                Name = attachment.Name,
+                OriginalFileName = attachment.OriginalFilename,
+                Type = attachment.Type,
+                Path = $"{_storageContainerName}{attachment.Filename}",
+                ContentType = attachment.ContentType,
+                SecondaryProvider = attachment.SecondaryProvider
             };
 
             if (loadContent)
             {
                 var fileContent = await _storageService.ReadFileAsync(
                     _storageContainerName,
-                    attachmentReference.Filename,
+                    attachment.Filename,
                     default);
                 attachmentFile.Content = fileContent.ToArray();
             }
@@ -245,27 +244,27 @@ namespace FoundationaLLM.Attachment.ResourceProviders
             return attachmentFile;
         }
 
-        private async Task<ResourceProviderUpsertResult> UpdateAttachment(ResourcePath resourcePath, AttachmentFile attachment, UnifiedUserIdentity userIdentity)
+        private async Task<ResourceProviderUpsertResult> UpdateAttachment(ResourcePath resourcePath, AttachmentFile attachmentFile, UnifiedUserIdentity userIdentity)
         {
-            if (resourcePath.ResourceTypeInstances[0].ResourceId != attachment.Name)
+            if (resourcePath.ResourceTypeInstances[0].ResourceId != attachmentFile.Name)
                 throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
                     StatusCodes.Status400BadRequest);
 
-            var extension = GetFileExtension(attachment.DisplayName!);
-            var fullName = $"{attachment.Name}{extension}";
+            var extension = GetFileExtension(attachmentFile.DisplayName!);
+            var fullName = $"{attachmentFile.Name}{extension}";
 
-            attachment.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
-            var attachmentReference = new AttachmentReference
+            attachmentFile.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
+            var attachment = new AttachmentReference
             {
-                Id = attachment.Name,
-                ObjectId = attachment.ObjectId,
-                OriginalFilename = attachment.DisplayName!,
-                ContentType = attachment.ContentType!,
-                Name = attachment.Name,
+                Id = attachmentFile.Name,
+                ObjectId = attachmentFile.ObjectId,
+                OriginalFilename = attachmentFile.DisplayName!,
+                ContentType = attachmentFile.ContentType!,
+                Name = attachmentFile.Name,
                 Type = AttachmentTypes.File,
                 Filename = $"/{_name}/{fullName}",
-                Size = attachment.Content!.Length,
-                SecondaryProvider = attachment.SecondaryProvider,
+                Size = attachmentFile.Content!.Length,
+                SecondaryProvider = attachmentFile.SecondaryProvider,
                 UPN = userIdentity.UPN ?? string.Empty,
                 Deleted = false
             };
@@ -273,7 +272,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
             var validator = _resourceValidatorFactory.GetValidator(typeof(AttachmentFile));
             if (validator is IValidator attachmentValidator)
             {
-                var context = new ValidationContext<object>(attachment);
+                var context = new ValidationContext<object>(attachmentFile);
                 var validationResult = await attachmentValidator.ValidateAsync(context);
                 if (!validationResult.IsValid)
                 {
@@ -283,17 +282,17 @@ namespace FoundationaLLM.Attachment.ResourceProviders
             }
 
             await CreateResource(
-                attachmentReference,
-                new MemoryStream(attachment.Content!),
-                attachment.ContentType ?? default);
+                attachment,
+                new MemoryStream(attachmentFile.Content!),
+                attachmentFile.ContentType ?? default);
 
-            await _cosmosDBService.AddAttachmentReference(attachmentReference);
+            await _cosmosDBService.CreateAttachment(attachment);
 
             return new ResourceProviderUpsertResult<AttachmentFile>
             {
-                ObjectId = (attachment as AttachmentFile)!.ObjectId,
+                ObjectId = attachmentFile!.ObjectId,
                 ResourceExists = false,
-                Resource = attachment
+                Resource = attachmentFile
             };
         }
 

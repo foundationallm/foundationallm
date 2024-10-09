@@ -37,6 +37,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Attachment
         /// <summary>
         /// The UPN of the user who created the attachment.
         /// </summary>
+        [JsonPropertyName("upn")]
         public string UPN { get; set; } = string.Empty;
 
         /// <summary>
