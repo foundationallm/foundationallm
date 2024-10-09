@@ -27,7 +27,6 @@
     <Compile Include="foundationallm\config\user_identity.py" />
     <Compile Include="foundationallm\event_handlers\openai_assistant_event_handler.py" />
     <Compile Include="foundationallm\event_handlers\__init__.py" />
-    <Compile Include="foundationallm\langchain\agents\langchain_audio_classifier_agent.py" />
     <Compile Include="foundationallm\langchain\agents\langchain_knowledge_management_agent.py" />
     <Compile Include="foundationallm\models\attachments\attachment_properties.py" />
     <Compile Include="foundationallm\models\attachments\attachment_providers.py" />
@@ -52,7 +51,7 @@
     <Compile Include="foundationallm\services\gateway_text_embedding\gateway_text_embedding_service.py" />
     <Compile Include="foundationallm\services\gateway_text_embedding\__init__.py" />
     <Compile Include="foundationallm\services\http_client_service.py" />
-    <Compile Include="foundationallm\services\image_analysis_service.py" />
+    <Compile Include="foundationallm\services\image_service.py" />
     <Compile Include="foundationallm\services\openai_assistants_api_service.py" />
     <Compile Include="foundationallm\langchain\exceptions\langchain_exception.py" />
     <Compile Include="foundationallm\langchain\exceptions\__init__.py" />

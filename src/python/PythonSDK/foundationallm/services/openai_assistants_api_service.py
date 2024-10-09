@@ -12,6 +12,7 @@ from openai.types.beta.threads.runs import RunStep
 from foundationallm.event_handlers import OpenAIAssistantAsyncEventHandler, OpenAIAssistantEventHandler
 from foundationallm.operations import OperationsManager
 from foundationallm.models.services import OpenAIAssistantsAPIRequest, OpenAIAssistantsAPIResponse
+from foundationallm.services import ImageService
 from foundationallm.utils import OpenAIAssistantsHelpers
 
 class OpenAIAssistantsApiService:
@@ -108,7 +109,7 @@ class OpenAIAssistantsApiService:
             total_tokens = run.usage.total_tokens
         )
 
-    async def arun(self, request: OpenAIAssistantsAPIRequest) -> OpenAIAssistantsAPIResponse:
+    async def arun(self, request: OpenAIAssistantsAPIRequest, image_service: ImageService) -> OpenAIAssistantsAPIResponse:
         """
         Creates an OpenAI Assistant Run and executes it asynchronously.
 
@@ -133,16 +134,25 @@ class OpenAIAssistantsApiService:
             attachments = attachments
         )
 
+        # Add the image generation tool to the assistant.
+        #assistant = await self.client.beta.assistants.retrieve(assistant_id=request.assistant_id)
+        #tools = assistant.tools
+        tools = ([{"type": "function", "function": image_service.get_function_definition(function_name='generate_image')}])
+        await self.client.beta.assistants.update(assistant_id=request.assistant_id, tools=tools)
+
         # Create and execute the run
         run = None
         async with self.client.beta.threads.runs.stream(
             thread_id = request.thread_id,
             assistant_id = request.assistant_id,
-            event_handler = OpenAIAssistantAsyncEventHandler(self.operations_manager, request)
+            event_handler = OpenAIAssistantAsyncEventHandler(self.client, self.operations_manager, request, image_service)
         ) as stream:
             await stream.until_done()
             run = await stream.get_final_run()
 
+        if run.status != "completed":
+            run = await self.client.beta.threads.runs.retrieve(run_id = run.id, thread_id = request.thread_id)
+        
         # Retrieve the steps from the run_steps for the analysis
         run_steps = await self.client.beta.threads.runs.steps.list(
           thread_id = request.thread_id,

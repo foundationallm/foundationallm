@@ -6,7 +6,6 @@ Description:
 """
 from typing import Any, Self, Optional
 from foundationallm.models.resource_providers.vectorization import EmbeddingProfileBase
-from .azure_openai_configuration_references import AzureOpenAIConfigurationReferences
 from foundationallm.utils import ObjectUtils
 from foundationallm.langchain.exceptions import LangChainException
 

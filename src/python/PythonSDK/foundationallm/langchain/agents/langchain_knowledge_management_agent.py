@@ -31,7 +31,7 @@ from foundationallm.models.resource_providers.vectorization import (
 from foundationallm.models.services import OpenAIAssistantsAPIRequest
 from foundationallm.services import (
     AudioAnalysisService,
-    ImageAnalysisService,
+    ImageService,
     OpenAIAssistantsApiService
 )
 from foundationallm.services.gateway_text_embedding import GatewayTextEmbeddingService
@@ -264,9 +264,9 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         image_analysis_results = None
         image_attachments = [attachment for attachment in request.attachments if (attachment.provider == AttachmentProviders.FOUNDATIONALLM_ATTACHMENT and attachment.content_type.startswith('image/'))] if request.attachments is not None else []
         if len(image_attachments) > 0:
-            image_analysis_client = self._get_language_model(override_operation_type=OperationTypes.IMAGE_ANALYSIS, is_async=False)
-            image_analysis_svc = ImageAnalysisService(config=self.config, client=image_analysis_client, deployment_model=self.ai_model.deployment_name)
-            image_analysis_results, usage = image_analysis_svc.analyze_images(image_attachments)
+            image_client = self._get_language_model(override_operation_type=OperationTypes.IMAGE_SERVICES, is_async=False)
+            image_svc = ImageService(config=self.config, client=image_client, deployment_model=self.ai_model.deployment_name)
+            image_analysis_results, usage = image_svc.analyze_images(image_attachments)
             image_analysis_token_usage.prompt_tokens += usage.prompt_tokens
             image_analysis_token_usage.completion_tokens += usage.completion_tokens
             image_analysis_token_usage.total_tokens += usage.total_tokens
@@ -310,7 +310,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 assistant_svc.add_thread_message(
                     thread_id = assistant_req.thread_id,
                     role = "assistant",
-                    content = image_analysis_svc.format_results(image_analysis_results),
+                    content = image_svc.format_results(image_analysis_results),
                     attachments = []
                 )
 
@@ -374,7 +374,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 elif image_analysis_results is not None or audio_analysis_results is not None:
                     external_analysis_context = ''
                     if image_analysis_results is not None:
-                        external_analysis_context += image_analysis_svc.format_results(image_analysis_results)
+                        external_analysis_context += image_svc.format_results(image_analysis_results)
                     if audio_analysis_results is not None:
                         for key, value in audio_analysis_results.items():
                             filename = key
@@ -447,9 +447,9 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         # Get image attachments that are images with URL file paths.
         image_attachments = [attachment for attachment in request.attachments if (attachment.provider == AttachmentProviders.FOUNDATIONALLM_ATTACHMENT and attachment.content_type.startswith('image/'))] if request.attachments is not None else []
         if len(image_attachments) > 0:
-            image_analysis_client = self._get_language_model(override_operation_type=OperationTypes.IMAGE_ANALYSIS, is_async=True)
-            image_analysis_svc = ImageAnalysisService(config=self.config, client=image_analysis_client, deployment_model=self.ai_model.deployment_name)
-            image_analysis_results, usage = await image_analysis_svc.aanalyze_images(image_attachments)
+            image_client = self._get_language_model(override_operation_type=OperationTypes.IMAGE_SERVICES, is_async=True)
+            image_svc = ImageService(config=self.config, client=image_client, deployment_model=self.ai_model.deployment_name)
+            image_analysis_results, usage = await image_svc.aanalyze_images(image_attachments)
             image_analysis_token_usage.prompt_tokens += usage.prompt_tokens
             image_analysis_token_usage.completion_tokens += usage.completion_tokens
             image_analysis_token_usage.total_tokens += usage.total_tokens
@@ -493,7 +493,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 await assistant_svc.aadd_thread_message(
                     thread_id = assistant_req.thread_id,
                     role = "assistant",
-                    content = image_analysis_svc.format_results(image_analysis_results),
+                    content = image_svc.format_results(image_analysis_results),
                     attachments = []
                 )
 
@@ -524,7 +524,10 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 )
 
             # invoke/run the service
-            assistant_response = await assistant_svc.arun(assistant_req)
+            assistant_response = await assistant_svc.arun(
+                assistant_req,
+                # TODO: deployment_model should pull from the incoming request.
+                image_service=ImageService(config=self.config, client=assistant_svc.client, deployment_model='dall-e-3'))
 
             # create the CompletionResponse object
             return CompletionResponse(
@@ -557,7 +560,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 elif image_analysis_results is not None or audio_analysis_results is not None:
                     external_analysis_context = ''
                     if image_analysis_results is not None:
-                        external_analysis_context += image_analysis_svc.format_results(image_analysis_results)
+                        external_analysis_context += image_svc.format_results(image_analysis_results)
                     if audio_analysis_results is not None:
                         for key, value in audio_analysis_results.items():
                             filename = key

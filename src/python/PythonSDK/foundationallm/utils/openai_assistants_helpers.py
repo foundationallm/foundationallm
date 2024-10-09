@@ -1,3 +1,4 @@
+import json
 from openai.types.beta.threads import (
     FileCitationAnnotation,
     FilePathAnnotation,
@@ -8,6 +9,7 @@ from openai.types.beta.threads import (
 )
 from openai.types.beta.threads.runs import (
     CodeInterpreterToolCall,
+    FunctionToolCall,
     RunStep
 )
 from foundationallm.models.constants import AgentCapabilityCategories
@@ -54,6 +56,15 @@ class OpenAIAssistantsHelpers:
                         elif hasattr(output, 'logs') and output.logs:
                             result.tool_output += output.logs
                     return result
+                elif isinstance(details, FunctionToolCall):
+                    result = AnalysisResult(
+                        tool_name = details.function.name,
+                        agent_capability_category = AgentCapabilityCategories.OPENAI_ASSISTANTS
+                    )
+                    result.tool_input += details.function.arguments
+                    if details.function.output:
+                        output_data = json.loads(details.function.output)['data'][0]
+                        result.tool_output += json.dumps({"url": output_data['url'], "description": output_data['revised_prompt']})
         return None
 
     @staticmethod
