@@ -76,7 +76,7 @@
 								</div>
 								<Divider v-if="fileArrayFiltered.length > 0" />
 								<div
-									v-for="(file, index) of localFiles"
+									v-for="(file) of localFiles"
 									:key="file.name + file.type + file.size"
 									class="file-upload-file"
 								>
@@ -103,7 +103,7 @@
 								</div>
 								<div v-if="oneDriveFiles && oneDriveFiles.length > 0">
 									<div
-										v-for="(file, index) of oneDriveFiles"
+										v-for="(file) of oneDriveFiles"
 										:key="file.name + file.size"
 										class="file-upload-file"
 									>
@@ -510,6 +510,7 @@ export default {
 						this.$nextTick(() => {
 							this.$refs.menu.alignOverlay();
 						});
+						this.toggle();
 						if (filesUploaded > 0) {
 							this.$toast.add({
 								severity: 'success',
