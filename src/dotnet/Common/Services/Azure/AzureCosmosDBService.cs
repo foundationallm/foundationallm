@@ -362,13 +362,13 @@ namespace FoundationaLLM.Common.Services
         }
 
         /// <inheritdoc/>
-        public async Task<AttachmentReference?> GetAttachmentReference(string resourceName, CancellationToken cancellationToken = default)
+        public async Task<AttachmentReference?> GetAttachment(string upn, string resourceName, CancellationToken cancellationToken = default)
         {
             try
             {
                 var response = await _attachments.ReadItemAsync<AttachmentReference>(
                     id: resourceName,
-                    partitionKey: new PartitionKey(resourceName),
+                    partitionKey: new PartitionKey(upn),
                     cancellationToken: cancellationToken);
 
                 return response.Resource;
@@ -380,12 +380,12 @@ namespace FoundationaLLM.Common.Services
         }
 
         /// <inheritdoc/>
-        public async Task<List<AttachmentReference>> FilterAttachmentReference(ResourceFilter resourceFilter, string upn, CancellationToken cancellationToken = default)
+        public async Task<List<AttachmentReference>> FilterAttachments(string upn, ResourceFilter resourceFilter, CancellationToken cancellationToken = default)
         {
             var objectIds = string.Join(',', resourceFilter.ObjectIDs!.Select(x => $"'{x}'"));
 
             var query =
-               new QueryDefinition($"SELECT * FROM c WHERE c.objectId IN ({@objectIds}) AND c.upn = @upn AND {SoftDeleteQueryRestriction}")
+               new QueryDefinition($"SELECT DISTINCT * FROM c WHERE c.objectId IN ({@objectIds}) AND c.upn = @upn AND {SoftDeleteQueryRestriction}")
                    .WithParameter("@upn", upn);
 
             var results = _attachments.GetItemQueryIterator<AttachmentReference>(query);
@@ -401,7 +401,7 @@ namespace FoundationaLLM.Common.Services
         }
 
         /// <inheritdoc/>
-        public async Task<List<AttachmentReference>> GetAttachmentReferences(string upn, CancellationToken cancellationToken = default)
+        public async Task<List<AttachmentReference>> GetAttachments(string upn, CancellationToken cancellationToken = default)
         {
             var query = new QueryDefinition($"SELECT DISTINCT * FROM c WHERE c.upn = @upn AND {SoftDeleteQueryRestriction} ORDER BY c._ts DESC")
                 .WithParameter("@upn", upn);
@@ -419,13 +419,13 @@ namespace FoundationaLLM.Common.Services
         }
 
         /// <inheritdoc/>
-        public async Task AddAttachmentReference(AttachmentReference attachmentReference, CancellationToken cancellationToken = default) =>
-            await _attachments.CreateItemAsync(item: attachmentReference, partitionKey: new PartitionKey(attachmentReference.Id), cancellationToken: cancellationToken);
+        public async Task CreateAttachment(AttachmentReference attachmentReference, CancellationToken cancellationToken = default) =>
+            await _attachments.CreateItemAsync(item: attachmentReference, partitionKey: new PartitionKey(attachmentReference.UPN), cancellationToken: cancellationToken);
 
         /// <inheritdoc/>
-        public async Task DeleteAttachmentReference(AttachmentReference attachmentReference, CancellationToken cancellationToken = default)
+        public async Task DeleteAttachment(AttachmentReference attachmentReference, CancellationToken cancellationToken = default)
         {
-            PartitionKey partitionKey = new(attachmentReference.Id);
+            PartitionKey partitionKey = new(attachmentReference.UPN);
 
             attachmentReference.Deleted = true;
 

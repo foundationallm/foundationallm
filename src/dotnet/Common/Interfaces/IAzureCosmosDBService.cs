@@ -127,44 +127,45 @@ public interface IAzureCosmosDBService
     Task UpsertUserProfileAsync(UserProfile userProfile, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Gets an attachment reference by the unique name of the resource.
+    /// Gets an attachment.
     /// </summary>
-    /// <param name="resourceName">The name of the resource.</param>
-    /// <param name="cancellationToken">Cancellation token for async calls.</param>
-    /// <returns>An attachment reference.</returns>
-    Task<AttachmentReference?> GetAttachmentReference(string resourceName, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Gets list of filtered attachment references.
-    /// </summary>
-    /// <param name="resourceFilter">The resource filter.</param>
     /// <param name="upn">The user's UPN.</param>
+    /// <param name="id">The attachment id.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
-    /// <returns>A list of filtered attachment references.</returns>
-    Task<List<AttachmentReference>> FilterAttachmentReference(ResourceFilter resourceFilter, string upn, CancellationToken cancellationToken = default);
+    /// <returns>An attachment.</returns>
+    Task<AttachmentReference?> GetAttachment(string upn, string id, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Gets a list of attachment references for the signed in user.
+    /// Gets list of filtered attachments.
     /// </summary>
-    /// <param name="upn">The user principal name used for retrieving the attachment references for
+    /// <param name="upn">The user's UPN.</param>
+    /// <param name="resourceFilter">The resource filter.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>A list of filtered attachments.</returns>
+    Task<List<AttachmentReference>> FilterAttachments(string upn, ResourceFilter resourceFilter, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets a list of attachments for the signed in user.
+    /// </summary>
+    /// <param name="upn">The user principal name used for retrieving the attachments for
     /// the signed in user.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
-    /// <returns>A list of attachment references for the signed in user.</returns>
-    Task<List<AttachmentReference>> GetAttachmentReferences(string upn, CancellationToken cancellationToken = default);
+    /// <returns>A list of attachments for the signed in user.</returns>
+    Task<List<AttachmentReference>> GetAttachments(string upn, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Adds an attachment reference.
+    /// Creates an attachment.
     /// </summary>
-    /// <param name="attachmentReference">The attachment reference to be added.</param>
+    /// <param name="attachment">The attachment to be added.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns></returns>
-    Task AddAttachmentReference(AttachmentReference attachmentReference, CancellationToken cancellationToken = default);
+    Task CreateAttachment(AttachmentReference attachment, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Deletes an attachment reference.
+    /// Deletes an attachment.
     /// </summary>
-    /// <param name="attachmentReference">The attachment reference to be deleted.</param>
+    /// <param name="attachment">The attachment to be deleted.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns></returns>
-    Task DeleteAttachmentReference(AttachmentReference attachmentReference, CancellationToken cancellationToken = default);
+    Task DeleteAttachment(AttachmentReference attachment, CancellationToken cancellationToken = default);
 }
