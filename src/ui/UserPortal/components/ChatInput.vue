@@ -439,9 +439,11 @@ export default {
 		handleResize() {
 			console.log('resize');
 			this.isMobile = window.screen.width < 950;
-			this.$nextTick(() => {
-				this.$refs.menu.alignOverlay();
-			});
+			if (this.$refs.menu.style) {
+				this.$nextTick(() => {
+					this.$refs.menu.alignOverlay();
+				});
+			}
 		},
 
 		adjustTextareaHeight() {
