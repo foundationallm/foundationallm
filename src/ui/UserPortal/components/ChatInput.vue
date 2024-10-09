@@ -30,6 +30,14 @@
 					@keydown.esc="hideAllPoppers"
 				/>
 				<OverlayPanel ref="menu" style="max-width: 98%">
+					<div class="file-upload-header">
+						<Button
+							:icon="!isMobile ? 'pi pi-times' : undefined"
+							label="Close"
+							class="file-upload-container-button"
+							@click="toggle"
+						/>
+					</div>
 					<FileUpload
 						ref="fileUpload"
 						:multiple="true"
@@ -39,6 +47,9 @@
 						@select="fileSelected"
 					>
 						<template #content>
+							<div v-if="fileArrayFiltered.length === 0 && oneDriveFiles.length === 0 && localFiles.length === 0" class="file-upload-empty-desktop">
+								<p>No files have been added to this message.</p>
+							</div>
 							<!-- Progress bar -->
 							<div v-if="isUploading" style="padding: 60px 10px">
 								<ProgressBar
@@ -181,12 +192,6 @@
 								@click="oneDriveWorkSchoolConnect"
 							/>
 						</template>
-						<Button
-							:icon="!isMobile ? 'pi pi-times' : undefined"
-							label="Close"
-							class="file-upload-container-button"
-							@click="toggle"
-						/>
 					</div>
 				</OverlayPanel>
 				<template #popper>
@@ -991,6 +996,17 @@ export default {
 	display: flex;
 	justify-content: center;
 	padding: 20px 150px;
+}
+
+.file-upload-header {
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: 0.5rem;
+}
+
+.file-upload-empty-desktop {
+	text-align: center;
+	margin-bottom: 0.5rem;
 }
 
 @media only screen and (max-width: 405px) {
