@@ -70,7 +70,7 @@
 											text
 											severity="danger"
 											aria-label="Delete attachment"
-											@click="removeAttachment(file)"
+											@click="fileToDelete = { name: file.fileName, type: 'attachment', file: file }"
 										/>
 									</div>
 								</div>
@@ -97,7 +97,7 @@
 											text
 											severity="danger"
 											aria-label="Remove file"
-											@click="removeLocalFile(index)"
+											@click="fileToDelete = { name: file.name, type: 'local', file: file }"
 										/>
 									</div>
 								</div>
@@ -124,7 +124,7 @@
 												text
 												severity="danger"
 												aria-label="Remove file"
-												@click="removeOneDriveFile(index)"
+												@click="fileToDelete = { name: file.name, type: 'oneDrive', file: file }"
 											/>
 										</div>
 									</div>
@@ -189,6 +189,39 @@
 					</div>
 				</template>
 			</VTooltip>
+			<Dialog
+				v-if="fileToDelete !== null"
+				v-focustrap
+				:visible="fileToDelete !== null"
+				:closable="false"
+				modal
+				header="Delete a Chat"
+				@keydown="deleteFileKeydown"
+			>
+				<div v-if="deleteFileProcessing" class="delete-dialog-content">
+					<div role="status">
+						<i
+							class="pi pi-spin pi-spinner"
+							style="font-size: 2rem"
+							role="img"
+							aria-label="Loading"
+						></i>
+					</div>
+				</div>
+				<div v-else>
+					<p>Do you want to delete the file "{{ fileToDelete.name }}" ?</p>
+				</div>
+				<template #footer>
+					<Button label="Cancel" text :disabled="deleteFileProcessing" @click="fileToDelete = null" />
+					<Button
+						label="Delete"
+						severity="danger"
+						autofocus
+						:disabled="deleteFileProcessing"
+						@click="removeDialogFile"
+					/>
+				</template>
+			</Dialog>
 			<Dialog
 				v-model:visible="showOneDriveIframeDialog"
 				modal
@@ -314,6 +347,8 @@ export default {
 			oneDriveBaseURL: null as string | null,
 			disconnectingOneDrive: false,
 			connectingOneDrive: true,
+			fileToDelete: null as any,
+			deleteFileProcessing: false,
 		};
 	},
 
@@ -488,24 +523,47 @@ export default {
 			});
 		},
 
+		deleteFileKeydown(event: KeyboardEvent) {
+			if (event.key === 'Escape') {
+				this.fileToDelete = null;
+			}
+		},
+
+		removeDialogFile() {
+			this.deleteFileProcessing = true;
+			if (this.fileToDelete.type === 'local') {
+				this.removeLocalFile(this.fileToDelete.file);
+			} else if (this.fileToDelete.type === 'oneDrive') {
+				this.removeOneDriveFile(this.fileToDelete.file);
+			} else if (this.fileToDelete.type === 'attachment') {
+				this.removeAttachment(this.fileToDelete.file);
+			}
+		},
+
 		async removeAttachment(file: any) {
 			await this.$appStore.deleteAttachment(file);
+			this.fileToDelete = null;
+			this.deleteFileProcessing = false;
 
 			this.$nextTick(() => {
 				this.$refs.menu.alignOverlay();
 			});
 		},
 
-		removeLocalFile(index: number) {
-			this.localFiles.splice(index, 1);
+		removeLocalFile(file: any) {
+			this.localFiles = this.localFiles.filter((localFile) => localFile.name !== file.name);
+			this.fileToDelete = null;
+			this.deleteFileProcessing = false;
 
 			this.$nextTick(() => {
 				this.$refs.menu.alignOverlay();
 			});
 		},
 
-		removeOneDriveFile(index: number) {
-			this.oneDriveFiles.splice(index, 1);
+		removeOneDriveFile(file: any) {
+			this.oneDriveFiles = this.oneDriveFiles.filter((oneDriveFile) => oneDriveFile.name !== file.name);
+			this.fileToDelete = null;
+			this.deleteFileProcessing = false;
 
 			this.$nextTick(() => {
 				this.$refs.menu.alignOverlay();
@@ -925,6 +983,12 @@ export default {
 .onedrive-iframe-content {
 	height: 500px;
 	width: 100%;
+}
+
+.delete-dialog-content {
+	display: flex;
+	justify-content: center;
+	padding: 20px 150px;
 }
 
 @media only screen and (max-width: 405px) {
