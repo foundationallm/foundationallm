@@ -347,7 +347,9 @@ export default {
 				},
 				access: { mode: 'read' },
 				search: { enabled: true },
-				multiSelect: true,
+				selection: {
+					mode: 'multiple',
+				},
 			},
 			oneDriveFiles: [],
 			localFiles: [],
