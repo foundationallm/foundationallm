@@ -201,7 +201,7 @@
 				:visible="fileToDelete !== null"
 				:closable="false"
 				modal
-				header="Delete a Chat"
+				:header="fileToDelete.type === 'local' | 'oneDrive' ? 'Remove a file' : 'Delete a file'"
 				@keydown="deleteFileKeydown"
 			>
 				<div v-if="deleteFileProcessing" class="delete-dialog-content">
@@ -215,12 +215,12 @@
 					</div>
 				</div>
 				<div v-else>
-					<p>Do you want to delete the file "{{ fileToDelete.name }}" ?</p>
+					<p>Do you want to {{ fileToDelete.type === "local" | "oneDrive" ? "remove" : "delete" }} the file "{{ fileToDelete.name }}" ?</p>
 				</div>
 				<template #footer>
 					<Button label="Cancel" text :disabled="deleteFileProcessing" @click="fileToDelete = null" />
 					<Button
-						label="Delete"
+						:label="fileToDelete.type === 'local' | 'oneDrive' ? 'Remove' : 'Delete'"
 						severity="danger"
 						autofocus
 						:disabled="deleteFileProcessing"
@@ -1037,6 +1037,10 @@ export default {
 @media only screen and (max-width: 950px) {
 	.file-upload-empty-desktop {
 		display: none;
+	}
+
+	.file-overlay-panel__footer {
+		flex-direction: column;
 	}
 }
 </style>
