@@ -446,7 +446,7 @@ export default {
 							onProgress,
 						);
 					} else if (file.source === 'oneDrive') {
-						await this.callCoreApiOneDriveWorkSchoolDownloadEndpoint(file.id);
+						await this.callCoreApiOneDriveWorkSchoolDownloadEndpoint(file.id, file.parentReference.driveId);
 					}
 					filesUploaded += 1;
 				} catch (error) {
@@ -762,11 +762,12 @@ export default {
 			}
 		},
 
-		async callCoreApiOneDriveWorkSchoolDownloadEndpoint(id) {
+		async callCoreApiOneDriveWorkSchoolDownloadEndpoint(id, driveId) {
 			const oneDriveToken = await this.$authStore.requestOneDriveWorkSchoolConsent();
 
 			await this.$appStore.oneDriveWorkSchoolDownload(this.$appStore.currentSession.sessionId, {
 				id,
+				driveId,
 				access_token: oneDriveToken,
 			});
 		},
