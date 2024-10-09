@@ -179,6 +179,12 @@
 								@click="connectOneDriveWorkSchool"
 							/>
 						</template>
+						<Button
+							:icon="!isMobile ? 'pi pi-times' : undefined"
+							label="Close"
+							class="file-upload-container-button"
+							@click="toggle"
+						/>
 					</div>
 				</OverlayPanel>
 				<template #popper>
