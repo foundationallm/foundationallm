@@ -1,5 +1,7 @@
 ﻿using FoundationaLLM.Common.Models.Configuration.Users;
 using FoundationaLLM.Common.Models.Conversation;
+using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 
 namespace FoundationaLLM.Common.Interfaces;
 
@@ -123,4 +125,46 @@ public interface IAzureCosmosDBService
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns></returns>
     Task UpsertUserProfileAsync(UserProfile userProfile, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets an attachment reference by the unique name of the resource.
+    /// </summary>
+    /// <param name="resourceName">The name of the resource.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>An attachment reference.</returns>
+    Task<AttachmentReference?> GetAttachmentReference(string resourceName, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets list of filtered attachment references.
+    /// </summary>
+    /// <param name="resourceFilter">The resource filter.</param>
+    /// <param name="upn">The user's UPN.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>A list of filtered attachment references.</returns>
+    Task<List<AttachmentReference>> FilterAttachmentReference(ResourceFilter resourceFilter, string upn, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets a list of attachment references for the signed in user.
+    /// </summary>
+    /// <param name="upn">The user principal name used for retrieving the attachment references for
+    /// the signed in user.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>A list of attachment references for the signed in user.</returns>
+    Task<List<AttachmentReference>> GetAttachmentReferences(string upn, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Adds an attachment reference.
+    /// </summary>
+    /// <param name="attachmentReference">The attachment reference to be added.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns></returns>
+    Task AddAttachmentReference(AttachmentReference attachmentReference, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Deletes an attachment reference.
+    /// </summary>
+    /// <param name="attachmentReference">The attachment reference to be deleted.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns></returns>
+    Task DeleteAttachmentReference(AttachmentReference attachmentReference, CancellationToken cancellationToken = default);
 }
