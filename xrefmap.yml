@@ -29566,6 +29566,19 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.AccessToken
   nameWithType: OneDriveWorkSchoolItem.AccessToken
+- uid: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.DriveId
+  name: DriveId
+  href: api/dotnet/FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.html#FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_DriveId
+  commentId: P:FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.DriveId
+  fullName: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.DriveId
+  nameWithType: OneDriveWorkSchoolItem.DriveId
+- uid: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.DriveId*
+  name: DriveId
+  href: api/dotnet/FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.html#FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_DriveId_
+  commentId: Overload:FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.DriveId
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.DriveId
+  nameWithType: OneDriveWorkSchoolItem.DriveId
 - uid: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.Id
   name: Id
   href: api/dotnet/FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.html#FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_Id
