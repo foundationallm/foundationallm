@@ -1,6 +1,5 @@
 ﻿using Azure.Messaging;
 using FluentValidation;
-using FoundationaLLM.Attachment.Models;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
@@ -9,7 +8,6 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
-using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
@@ -30,6 +28,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
+    /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> providing Cosmos DB services.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
     /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used to provide loggers for logging.</param>
     public class AttachmentResourceProviderService(
@@ -38,6 +37,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
         [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Attachment)] IStorageService storageService,
         IEventService eventService,
         IResourceValidatorFactory resourceValidatorFactory,
+        IAzureCosmosDBService cosmosDBService,
         IServiceProvider serviceProvider,
         ILoggerFactory loggerFactory)
         : ResourceProviderServiceBase<AttachmentReference>(
@@ -51,8 +51,10 @@ namespace FoundationaLLM.Attachment.ResourceProviders
             [
                 EventSetEventNamespaces.FoundationaLLM_ResourceProvider_Attachment
             ],
-            useInternalReferencesStore: true)
+            useInternalReferencesStore: false)
     {
+        private readonly IAzureCosmosDBService _cosmosDBService = cosmosDBService;
+
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
             AttachmentResourceProviderMetadata.AllowedResourceTypes;
@@ -69,52 +71,82 @@ namespace FoundationaLLM.Attachment.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
-            ResourceProviderLoadOptions? options = null) =>
-            resourcePath.MainResourceTypeName switch
+            ResourceProviderLoadOptions? options = null)
+        {
+            var policyDefinition = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
+
+            // This is the PEP (Policy Enforcement Point) where the resource provider enforces the policy definition to load the resources.
+            // The implementation of the PEP is straightforward: the resource provider loads the resources from the data store matching the UPN of the user identity.
+
+            switch (resourcePath.MainResourceTypeName)
             {
-                AttachmentResourceTypeNames.Attachments =>
-                    // Attachments have a custom implementation for loading resources.
-                    await LoadResources<AttachmentFile>(
-                        resourcePath.ResourceTypeInstances[0],
-                        authorizationResult,
-                        options ?? new ResourceProviderLoadOptions
-                        {
-                            IncludeRoles = resourcePath.IsResourceTypePath,
-                            LoadContent = false
-                        },
-                        LoadAttachment),
-                _ =>
+                case AttachmentResourceTypeNames.Attachments:
+
+                    var attachmentReferences = new List<AttachmentReference>();
+
+                    if (resourcePath.ResourceTypeInstances[0].ResourceId != null)
+                        attachmentReferences = [await _cosmosDBService.GetAttachmentReference(resourcePath.ResourceTypeInstances[0].ResourceId!)];
+                    else
+                        attachmentReferences = await _cosmosDBService.GetAttachmentReferences(userIdentity.UPN!);
+
+                    var result = new List<AttachmentFile>();
+                    foreach(var ar in attachmentReferences)
+                        result.Add(await LoadAttachment(ar, options != null && options!.LoadContent));
+
+                    return result.Select(r => new ResourceProviderGetResult<AttachmentFile>
+                    {
+                        Resource = r,
+                        Actions = [],
+                        Roles = []
+                    }).ToList();
+                default:
                     throw new ResourceProviderException($"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
-                    StatusCodes.Status400BadRequest)
+                        StatusCodes.Status400BadRequest);
             };
+        }
 
         /// <inheritdoc/>
         protected override async Task<object> ExecuteActionAsync(
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             string serializedAction,
-            UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeName switch
+            UnifiedUserIdentity userIdentity)
+        {
+            var policyDefinition = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
+
+            // This is the PEP (Policy Enforcement Point) where the resource provider enforces the policy definition to load the resources.
+            // The implementation of the PEP is straightforward: the resource provider loads the resources from the data store matching the UPN of the user identity.
+
+            switch (resourcePath.MainResourceTypeName)
             {
-                AttachmentResourceTypeNames.Attachments => resourcePath.Action switch
-                {
-                    ResourceProviderActions.Filter =>
-                        // Attachments have a custom implementation for loading resources.
-                        await FilterResources<AttachmentFile>(
-                            resourcePath,
-                            JsonSerializer.Deserialize<ResourceFilter>(serializedAction)!,
-                            authorizationResult,
-                            new ResourceProviderLoadOptions
+                case AttachmentResourceTypeNames.Attachments:
+
+                    switch(resourcePath.Action)
+                    {
+                        case ResourceProviderActions.Filter:
+                            var attachmentReferences = await _cosmosDBService.FilterAttachmentReference(
+                                JsonSerializer.Deserialize<ResourceFilter>(serializedAction)!,
+                                userIdentity.UPN);
+
+                            var result = new List<AttachmentFile>();
+                            foreach (var ar in attachmentReferences)
+                                result.Add(await LoadAttachment(ar, false));
+
+                            return result.Select(r => new ResourceProviderGetResult<AttachmentFile>
                             {
-                                LoadContent = false,
-                                IncludeRoles = false
-                            },
-                            LoadAttachment),
-                    _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
-                        StatusCodes.Status400BadRequest)
-                },
-                _ => throw new ResourceProviderException()
+                                Resource = r,
+                                Actions = [],
+                                Roles = []
+                            }).ToList();
+                        default:
+                            throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
+                                StatusCodes.Status400BadRequest);
+                    }
+                default:
+                    throw new ResourceProviderException($"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest);
             };
+        }
 
         /// <inheritdoc/>
         protected override async Task DeleteResourceAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
@@ -122,7 +154,11 @@ namespace FoundationaLLM.Attachment.ResourceProviders
             switch (resourcePath.ResourceTypeName)
             {
                 case AttachmentResourceTypeNames.Attachments:
-                    await DeleteResource<AttachmentFile>(resourcePath);
+                    var attachmentReference = await _cosmosDBService.GetAttachmentReference(resourcePath.ResourceTypeInstances[0].ResourceId!)
+                        ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.MainResourceTypeName} was not found.");
+
+                    await _cosmosDBService.DeleteAttachmentReference(attachmentReference);
+
                     break;
                 default:
                     throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
@@ -137,7 +173,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
         /// <inheritdoc/>
         protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) where T : class
         {
-            var attachmentReference = await _resourceReferenceStore!.GetResourceReference(resourcePath.ResourceTypeInstances[0].ResourceId!)
+            var attachmentReference = await _cosmosDBService.GetAttachmentReference(resourcePath.ResourceTypeInstances[0].ResourceId!)
                 ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.MainResourceTypeName} was not found.");
 
             return (await LoadAttachment(attachmentReference, loadContent: options?.LoadContent ?? false)) as T
@@ -148,7 +184,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
         protected override async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, T resource, UnifiedUserIdentity userIdentity) =>
             resource switch
             {
-                AttachmentFile attachment => (TResult) await UpdateAttachment(resourcePath, attachment),
+                AttachmentFile attachment => (TResult) await UpdateAttachment(resourcePath, attachment, userIdentity),
                 _ => throw new ResourceProviderException(
                     $"The type {nameof(T)} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
@@ -209,7 +245,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
             return attachmentFile;
         }
 
-        private async Task<ResourceProviderUpsertResult> UpdateAttachment(ResourcePath resourcePath, AttachmentFile attachment)
+        private async Task<ResourceProviderUpsertResult> UpdateAttachment(ResourcePath resourcePath, AttachmentFile attachment, UnifiedUserIdentity userIdentity)
         {
             if (resourcePath.ResourceTypeInstances[0].ResourceId != attachment.Name)
                 throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
@@ -221,6 +257,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
             attachment.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
             var attachmentReference = new AttachmentReference
             {
+                Id = attachment.Name,
                 ObjectId = attachment.ObjectId,
                 OriginalFilename = attachment.DisplayName!,
                 ContentType = attachment.ContentType!,
@@ -229,6 +266,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                 Filename = $"/{_name}/{fullName}",
                 Size = attachment.Content!.Length,
                 SecondaryProvider = attachment.SecondaryProvider,
+                UPN = userIdentity.UPN ?? string.Empty,
                 Deleted = false
             };
 
@@ -248,6 +286,8 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                 attachmentReference,
                 new MemoryStream(attachment.Content!),
                 attachment.ContentType ?? default);
+
+            await _cosmosDBService.AddAttachmentReference(attachmentReference);
 
             return new ResourceProviderUpsertResult<AttachmentFile>
             {
