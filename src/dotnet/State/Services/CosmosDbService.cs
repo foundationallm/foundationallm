@@ -59,9 +59,9 @@ namespace FoundationaLLM.State.Services
                 throw new ArgumentException("Unable to connect to existing Azure Cosmos DB database.");
             }
 
-            _state = database?.GetContainer(CosmosDbContainers.State) ??
+            _state = database?.GetContainer(AzureCosmosDBContainers.State) ??
                  throw new ArgumentException(
-                     $"Unable to connect to existing Azure Cosmos DB container ({CosmosDbContainers.State}).");
+                     $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.State}).");
 
             _logger.LogInformation("Cosmos DB service initialized.");
         }

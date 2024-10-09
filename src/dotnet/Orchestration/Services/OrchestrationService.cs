@@ -2,13 +2,11 @@
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
-using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Infrastructure;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
-using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using FoundationaLLM.Orchestration.Core.Models;
@@ -111,11 +109,6 @@ public class OrchestrationService : IOrchestrationService
 
     /// <inheritdoc/>
     public Task<LongRunningOperation> GetCompletionOperationStatus(string instanceId, string operationId) => throw new NotImplementedException();
-
-    /// <inheritdoc/>
-    public async Task<CompletionResponse> GetCompletionOperationResult(string instanceId, string operationId) =>
-        // TODO: Need to call State API to get the operation.
-        throw new NotImplementedException();
 
     private async Task<CompletionResponse> GetCompletionForAgentConversation(
         string instanceId,

@@ -91,16 +91,6 @@ namespace FoundationaLLM.Core.API.Controllers
             await _coreService.GetCompletionOperationStatus(instanceId, operationId);
 
         /// <summary>
-        /// Gets a completion operation from the downstream APIs.
-        /// </summary>
-        /// <param name="instanceId">The FoundationaLLM instance id.</param>
-        /// <param name="operationId">The ID of the operation to retrieve.</param>
-        /// <returns>Returns a completion response</returns>
-        [HttpGet("async-completions/{operationId}/result")]
-        public async Task<CompletionResponse> GetCompletionOperationResult(string instanceId, string operationId) =>
-            await _coreService.GetCompletionOperationResult(instanceId, operationId);
-
-        /// <summary>
         /// Retrieves a list of global and private agents.
         /// </summary>
         /// <param name="instanceId">The instance ID of the current request.</param>

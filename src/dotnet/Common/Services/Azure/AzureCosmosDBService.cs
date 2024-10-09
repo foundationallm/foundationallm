@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Users;
 using FoundationaLLM.Common.Models.Conversation;
+using FoundationaLLM.Common.Models.Orchestration;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -20,6 +21,7 @@ namespace FoundationaLLM.Common.Services
     {
         private Container _sessions;
         private Container _userSessions;
+        private Container _operations;
         private readonly Lazy<Task<Container>> _userProfiles;
         private Task<Container> _userProfilesTask => _userProfiles.Value;
         private readonly Database _database;
@@ -81,19 +83,22 @@ namespace FoundationaLLM.Common.Services
             _database = database ??
                         throw new ArgumentException("Unable to connect to existing Azure Cosmos DB database.");
 
-            _sessions = database?.GetContainer(CosmosDbContainers.Sessions) ??
-                        throw new ArgumentException(
-                            $"Unable to connect to existing Azure Cosmos DB container ({CosmosDbContainers.Sessions}).");
-            _userSessions = database?.GetContainer(CosmosDbContainers.UserSessions) ??
-                            throw new ArgumentException(
-                                $"Unable to connect to existing Azure Cosmos DB container ({CosmosDbContainers.UserSessions}).");
+            _sessions = database?.GetContainer(AzureCosmosDBContainers.Sessions)
+                        ?? throw new ArgumentException(
+                            $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.Sessions}).");
+            _userSessions = database?.GetContainer(AzureCosmosDBContainers.UserSessions)
+                            ?? throw new ArgumentException(
+                                $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.UserSessions}).");
+            _operations = database?.GetContainer(AzureCosmosDBContainers.Operations)
+                          ?? throw new ArgumentException(
+                                $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.Operations}).");
             _userProfiles = new Lazy<Task<Container>>(InitializeUserProfilesContainer);
 
             _logger.LogInformation("Cosmos DB service initialized.");
         }
 
         private async Task<Container> InitializeUserProfilesContainer() =>
-            await _resiliencePipeline.ExecuteAsync<Container>(async token => await _database?.CreateContainerIfNotExistsAsync(new ContainerProperties(CosmosDbContainers.UserProfiles,
+            await _resiliencePipeline.ExecuteAsync<Container>(async token => await _database?.CreateContainerIfNotExistsAsync(new ContainerProperties(AzureCosmosDBContainers.UserProfiles,
                 "/upn"), ThroughputProperties.CreateAutoscaleThroughput(1000), cancellationToken: token)!);
 
         #region Methods reserved for the FoundationaLLM.Conversation resource provider
@@ -299,7 +304,7 @@ namespace FoundationaLLM.Common.Services
         }
 
         /// <inheritdoc/>
-        public async Task<CompletionPrompt> GetCompletionPrompt(string sessionId, string completionPromptId) =>
+        public async Task<CompletionPrompt> GetCompletionPromptAsync(string sessionId, string completionPromptId) =>
             await _sessions.ReadItemAsync<CompletionPrompt>(
                 id: completionPromptId,
                 partitionKey: new PartitionKey(sessionId));
@@ -338,5 +343,36 @@ namespace FoundationaLLM.Common.Services
                 partitionKey: partitionKey,
                 cancellationToken: cancellationToken);
         }
+
+        /// <inheritdoc/>
+        public async Task<LongRunningOperationContext> GetLongRunningOperationContextAsync(string operationId, CancellationToken cancellationToken = default)
+        {
+            var longRunningOperationContext = await _operations.ReadItemAsync<LongRunningOperationContext>(
+                id: operationId,
+                partitionKey: new PartitionKey(operationId),
+                cancellationToken: cancellationToken);
+
+            return longRunningOperationContext;
+        }
+
+        /// <inheritdoc/>
+        public async Task UpsertLongRunningOperationContextAsync(LongRunningOperationContext longRunningOperationContext, CancellationToken cancellationToken = default)
+        {
+            PartitionKey partitionKey = new(longRunningOperationContext.OperationId);
+            await _operations.UpsertItemAsync(
+                item: longRunningOperationContext,
+                partitionKey: partitionKey,
+                cancellationToken: cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public async Task UpdateLongRunningOperationContextPropertiesAsync(string operationId, Dictionary<string, object> propertyValues, CancellationToken cancellationToken = default) =>
+            await _sessions.PatchItemAsync<LongRunningOperationContext>(
+                id: operationId,
+                partitionKey: new PartitionKey(operationId),
+                patchOperations: propertyValues.Keys
+                    .Select(key => PatchOperation.Set(key, propertyValues[key])).ToArray(),
+                cancellationToken: cancellationToken
+            );
     }
 }

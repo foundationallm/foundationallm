@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Infrastructure;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
@@ -21,7 +22,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
     {
         readonly LangChainServiceSettings _settings;
         readonly ILogger<LangChainService> _logger;
-        private readonly ICallContext _callContext;
+        private readonly UnifiedUserIdentity _userIdentity;
         private readonly IHttpClientFactoryService _httpClientFactoryService;
         readonly JsonSerializerOptions _jsonSerializerOptions;
 
@@ -36,7 +37,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
         {
             _settings = options.Value;
             _logger = logger;
-            _callContext = callContext;
+            _userIdentity = callContext.CurrentUserIdentity!;
             _httpClientFactoryService = httpClientFactoryService;
             _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
             _jsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
@@ -45,7 +46,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
         /// <inheritdoc/>
         public async Task<ServiceStatusInfo> GetStatus(string instanceId)
         {
-            var client = await _httpClientFactoryService.CreateClient(HttpClientNames.LangChainAPI, _callContext.CurrentUserIdentity);
+            var client = await _httpClientFactoryService.CreateClient(HttpClientNames.LangChainAPI, _userIdentity);
             var responseMessage = await client.SendAsync(
                 new HttpRequestMessage(HttpMethod.Get, "status"));
 
@@ -64,7 +65,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
         /// <returns>Returns a completion response from the orchestration engine.</returns>
         public async Task<LLMCompletionResponse> GetCompletion(string instanceId, LLMCompletionRequest request)
         {            
-            var client = await _httpClientFactoryService.CreateClient(HttpClientNames.LangChainAPI, _callContext.CurrentUserIdentity);
+            var client = await _httpClientFactoryService.CreateClient(HttpClientNames.LangChainAPI, _userIdentity);
 
             var pollingClient = new PollingHttpClient<LLMCompletionRequest, LLMCompletionResponse>(
                 client,
