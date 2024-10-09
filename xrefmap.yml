@@ -473,83 +473,6 @@ references:
 - uid: FoundationaLLM.Attachment
   name: FoundationaLLM.Attachment
   href: api/dotnet/FoundationaLLM.Attachment.html
-- uid: FoundationaLLM.Attachment.Models
-  name: FoundationaLLM.Attachment.Models
-  href: api/dotnet/FoundationaLLM.Attachment.Models.html
-  commentId: N:FoundationaLLM.Attachment.Models
-  fullName: FoundationaLLM.Attachment.Models
-  nameWithType: FoundationaLLM.Attachment.Models
-- uid: FoundationaLLM.Attachment.Models.AttachmentReference
-  name: AttachmentReference
-  href: api/dotnet/FoundationaLLM.Attachment.Models.AttachmentReference.html
-  commentId: T:FoundationaLLM.Attachment.Models.AttachmentReference
-  fullName: FoundationaLLM.Attachment.Models.AttachmentReference
-  nameWithType: AttachmentReference
-- uid: FoundationaLLM.Attachment.Models.AttachmentReference.ContentType
-  name: ContentType
-  href: api/dotnet/FoundationaLLM.Attachment.Models.AttachmentReference.html#FoundationaLLM_Attachment_Models_AttachmentReference_ContentType
-  commentId: P:FoundationaLLM.Attachment.Models.AttachmentReference.ContentType
-  fullName: FoundationaLLM.Attachment.Models.AttachmentReference.ContentType
-  nameWithType: AttachmentReference.ContentType
-- uid: FoundationaLLM.Attachment.Models.AttachmentReference.ContentType*
-  name: ContentType
-  href: api/dotnet/FoundationaLLM.Attachment.Models.AttachmentReference.html#FoundationaLLM_Attachment_Models_AttachmentReference_ContentType_
-  commentId: Overload:FoundationaLLM.Attachment.Models.AttachmentReference.ContentType
-  isSpec: "True"
-  fullName: FoundationaLLM.Attachment.Models.AttachmentReference.ContentType
-  nameWithType: AttachmentReference.ContentType
-- uid: FoundationaLLM.Attachment.Models.AttachmentReference.OriginalFilename
-  name: OriginalFilename
-  href: api/dotnet/FoundationaLLM.Attachment.Models.AttachmentReference.html#FoundationaLLM_Attachment_Models_AttachmentReference_OriginalFilename
-  commentId: P:FoundationaLLM.Attachment.Models.AttachmentReference.OriginalFilename
-  fullName: FoundationaLLM.Attachment.Models.AttachmentReference.OriginalFilename
-  nameWithType: AttachmentReference.OriginalFilename
-- uid: FoundationaLLM.Attachment.Models.AttachmentReference.OriginalFilename*
-  name: OriginalFilename
-  href: api/dotnet/FoundationaLLM.Attachment.Models.AttachmentReference.html#FoundationaLLM_Attachment_Models_AttachmentReference_OriginalFilename_
-  commentId: Overload:FoundationaLLM.Attachment.Models.AttachmentReference.OriginalFilename
-  isSpec: "True"
-  fullName: FoundationaLLM.Attachment.Models.AttachmentReference.OriginalFilename
-  nameWithType: AttachmentReference.OriginalFilename
-- uid: FoundationaLLM.Attachment.Models.AttachmentReference.ResourceType
-  name: ResourceType
-  href: api/dotnet/FoundationaLLM.Attachment.Models.AttachmentReference.html#FoundationaLLM_Attachment_Models_AttachmentReference_ResourceType
-  commentId: P:FoundationaLLM.Attachment.Models.AttachmentReference.ResourceType
-  fullName: FoundationaLLM.Attachment.Models.AttachmentReference.ResourceType
-  nameWithType: AttachmentReference.ResourceType
-- uid: FoundationaLLM.Attachment.Models.AttachmentReference.ResourceType*
-  name: ResourceType
-  href: api/dotnet/FoundationaLLM.Attachment.Models.AttachmentReference.html#FoundationaLLM_Attachment_Models_AttachmentReference_ResourceType_
-  commentId: Overload:FoundationaLLM.Attachment.Models.AttachmentReference.ResourceType
-  isSpec: "True"
-  fullName: FoundationaLLM.Attachment.Models.AttachmentReference.ResourceType
-  nameWithType: AttachmentReference.ResourceType
-- uid: FoundationaLLM.Attachment.Models.AttachmentReference.SecondaryProvider
-  name: SecondaryProvider
-  href: api/dotnet/FoundationaLLM.Attachment.Models.AttachmentReference.html#FoundationaLLM_Attachment_Models_AttachmentReference_SecondaryProvider
-  commentId: P:FoundationaLLM.Attachment.Models.AttachmentReference.SecondaryProvider
-  fullName: FoundationaLLM.Attachment.Models.AttachmentReference.SecondaryProvider
-  nameWithType: AttachmentReference.SecondaryProvider
-- uid: FoundationaLLM.Attachment.Models.AttachmentReference.SecondaryProvider*
-  name: SecondaryProvider
-  href: api/dotnet/FoundationaLLM.Attachment.Models.AttachmentReference.html#FoundationaLLM_Attachment_Models_AttachmentReference_SecondaryProvider_
-  commentId: Overload:FoundationaLLM.Attachment.Models.AttachmentReference.SecondaryProvider
-  isSpec: "True"
-  fullName: FoundationaLLM.Attachment.Models.AttachmentReference.SecondaryProvider
-  nameWithType: AttachmentReference.SecondaryProvider
-- uid: FoundationaLLM.Attachment.Models.AttachmentReference.Size
-  name: Size
-  href: api/dotnet/FoundationaLLM.Attachment.Models.AttachmentReference.html#FoundationaLLM_Attachment_Models_AttachmentReference_Size
-  commentId: P:FoundationaLLM.Attachment.Models.AttachmentReference.Size
-  fullName: FoundationaLLM.Attachment.Models.AttachmentReference.Size
-  nameWithType: AttachmentReference.Size
-- uid: FoundationaLLM.Attachment.Models.AttachmentReference.Size*
-  name: Size
-  href: api/dotnet/FoundationaLLM.Attachment.Models.AttachmentReference.html#FoundationaLLM_Attachment_Models_AttachmentReference_Size_
-  commentId: Overload:FoundationaLLM.Attachment.Models.AttachmentReference.Size
-  isSpec: "True"
-  fullName: FoundationaLLM.Attachment.Models.AttachmentReference.Size
-  nameWithType: AttachmentReference.Size
 - uid: FoundationaLLM.Attachment.ResourceProviders
   name: FoundationaLLM.Attachment.ResourceProviders
   href: api/dotnet/FoundationaLLM.Attachment.ResourceProviders.html
@@ -562,15 +485,15 @@ references:
   commentId: T:FoundationaLLM.Attachment.ResourceProviders.AttachmentResourceProviderService
   fullName: FoundationaLLM.Attachment.ResourceProviders.AttachmentResourceProviderService
   nameWithType: AttachmentResourceProviderService
-- uid: FoundationaLLM.Attachment.ResourceProviders.AttachmentResourceProviderService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},FoundationaLLM.Common.Interfaces.IAuthorizationService,FoundationaLLM.Common.Interfaces.IStorageService,FoundationaLLM.Common.Interfaces.IEventService,FoundationaLLM.Common.Interfaces.IResourceValidatorFactory,System.IServiceProvider,Microsoft.Extensions.Logging.ILoggerFactory)
-  name: AttachmentResourceProviderService(IOptions<InstanceSettings>, IAuthorizationService, IStorageService, IEventService, IResourceValidatorFactory, IServiceProvider, ILoggerFactory)
-  href: api/dotnet/FoundationaLLM.Attachment.ResourceProviders.AttachmentResourceProviderService.html#FoundationaLLM_Attachment_ResourceProviders_AttachmentResourceProviderService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Instance_InstanceSettings__FoundationaLLM_Common_Interfaces_IAuthorizationService_FoundationaLLM_Common_Interfaces_IStorageService_FoundationaLLM_Common_Interfaces_IEventService_FoundationaLLM_Common_Interfaces_IResourceValidatorFactory_System_IServiceProvider_Microsoft_Extensions_Logging_ILoggerFactory_
-  commentId: M:FoundationaLLM.Attachment.ResourceProviders.AttachmentResourceProviderService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},FoundationaLLM.Common.Interfaces.IAuthorizationService,FoundationaLLM.Common.Interfaces.IStorageService,FoundationaLLM.Common.Interfaces.IEventService,FoundationaLLM.Common.Interfaces.IResourceValidatorFactory,System.IServiceProvider,Microsoft.Extensions.Logging.ILoggerFactory)
-  name.vb: New(IOptions(Of InstanceSettings), IAuthorizationService, IStorageService, IEventService, IResourceValidatorFactory, IServiceProvider, ILoggerFactory)
-  fullName: FoundationaLLM.Attachment.ResourceProviders.AttachmentResourceProviderService.AttachmentResourceProviderService(Microsoft.Extensions.Options.IOptions<FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings>, FoundationaLLM.Common.Interfaces.IAuthorizationService, FoundationaLLM.Common.Interfaces.IStorageService, FoundationaLLM.Common.Interfaces.IEventService, FoundationaLLM.Common.Interfaces.IResourceValidatorFactory, System.IServiceProvider, Microsoft.Extensions.Logging.ILoggerFactory)
-  fullName.vb: FoundationaLLM.Attachment.ResourceProviders.AttachmentResourceProviderService.New(Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings), FoundationaLLM.Common.Interfaces.IAuthorizationService, FoundationaLLM.Common.Interfaces.IStorageService, FoundationaLLM.Common.Interfaces.IEventService, FoundationaLLM.Common.Interfaces.IResourceValidatorFactory, System.IServiceProvider, Microsoft.Extensions.Logging.ILoggerFactory)
-  nameWithType: AttachmentResourceProviderService.AttachmentResourceProviderService(IOptions<InstanceSettings>, IAuthorizationService, IStorageService, IEventService, IResourceValidatorFactory, IServiceProvider, ILoggerFactory)
-  nameWithType.vb: AttachmentResourceProviderService.New(IOptions(Of InstanceSettings), IAuthorizationService, IStorageService, IEventService, IResourceValidatorFactory, IServiceProvider, ILoggerFactory)
+- uid: FoundationaLLM.Attachment.ResourceProviders.AttachmentResourceProviderService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},FoundationaLLM.Common.Interfaces.IAuthorizationService,FoundationaLLM.Common.Interfaces.IStorageService,FoundationaLLM.Common.Interfaces.IEventService,FoundationaLLM.Common.Interfaces.IResourceValidatorFactory,FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,System.IServiceProvider,Microsoft.Extensions.Logging.ILoggerFactory)
+  name: AttachmentResourceProviderService(IOptions<InstanceSettings>, IAuthorizationService, IStorageService, IEventService, IResourceValidatorFactory, IAzureCosmosDBService, IServiceProvider, ILoggerFactory)
+  href: api/dotnet/FoundationaLLM.Attachment.ResourceProviders.AttachmentResourceProviderService.html#FoundationaLLM_Attachment_ResourceProviders_AttachmentResourceProviderService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Instance_InstanceSettings__FoundationaLLM_Common_Interfaces_IAuthorizationService_FoundationaLLM_Common_Interfaces_IStorageService_FoundationaLLM_Common_Interfaces_IEventService_FoundationaLLM_Common_Interfaces_IResourceValidatorFactory_FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_System_IServiceProvider_Microsoft_Extensions_Logging_ILoggerFactory_
+  commentId: M:FoundationaLLM.Attachment.ResourceProviders.AttachmentResourceProviderService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},FoundationaLLM.Common.Interfaces.IAuthorizationService,FoundationaLLM.Common.Interfaces.IStorageService,FoundationaLLM.Common.Interfaces.IEventService,FoundationaLLM.Common.Interfaces.IResourceValidatorFactory,FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,System.IServiceProvider,Microsoft.Extensions.Logging.ILoggerFactory)
+  name.vb: New(IOptions(Of InstanceSettings), IAuthorizationService, IStorageService, IEventService, IResourceValidatorFactory, IAzureCosmosDBService, IServiceProvider, ILoggerFactory)
+  fullName: FoundationaLLM.Attachment.ResourceProviders.AttachmentResourceProviderService.AttachmentResourceProviderService(Microsoft.Extensions.Options.IOptions<FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings>, FoundationaLLM.Common.Interfaces.IAuthorizationService, FoundationaLLM.Common.Interfaces.IStorageService, FoundationaLLM.Common.Interfaces.IEventService, FoundationaLLM.Common.Interfaces.IResourceValidatorFactory, FoundationaLLM.Common.Interfaces.IAzureCosmosDBService, System.IServiceProvider, Microsoft.Extensions.Logging.ILoggerFactory)
+  fullName.vb: FoundationaLLM.Attachment.ResourceProviders.AttachmentResourceProviderService.New(Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings), FoundationaLLM.Common.Interfaces.IAuthorizationService, FoundationaLLM.Common.Interfaces.IStorageService, FoundationaLLM.Common.Interfaces.IEventService, FoundationaLLM.Common.Interfaces.IResourceValidatorFactory, FoundationaLLM.Common.Interfaces.IAzureCosmosDBService, System.IServiceProvider, Microsoft.Extensions.Logging.ILoggerFactory)
+  nameWithType: AttachmentResourceProviderService.AttachmentResourceProviderService(IOptions<InstanceSettings>, IAuthorizationService, IStorageService, IEventService, IResourceValidatorFactory, IAzureCosmosDBService, IServiceProvider, ILoggerFactory)
+  nameWithType.vb: AttachmentResourceProviderService.New(IOptions(Of InstanceSettings), IAuthorizationService, IStorageService, IEventService, IResourceValidatorFactory, IAzureCosmosDBService, IServiceProvider, ILoggerFactory)
 - uid: FoundationaLLM.Attachment.ResourceProviders.AttachmentResourceProviderService.#ctor*
   name: AttachmentResourceProviderService
   href: api/dotnet/FoundationaLLM.Attachment.ResourceProviders.AttachmentResourceProviderService.html#FoundationaLLM_Attachment_ResourceProviders_AttachmentResourceProviderService__ctor_
@@ -7199,6 +7122,12 @@ references:
   commentId: T:FoundationaLLM.Common.Constants.CosmosDbContainers
   fullName: FoundationaLLM.Common.Constants.CosmosDbContainers
   nameWithType: CosmosDbContainers
+- uid: FoundationaLLM.Common.Constants.CosmosDbContainers.Attachments
+  name: Attachments
+  href: api/dotnet/FoundationaLLM.Common.Constants.CosmosDbContainers.html#FoundationaLLM_Common_Constants_CosmosDbContainers_Attachments
+  commentId: F:FoundationaLLM.Common.Constants.CosmosDbContainers.Attachments
+  fullName: FoundationaLLM.Common.Constants.CosmosDbContainers.Attachments
+  nameWithType: CosmosDbContainers.Attachments
 - uid: FoundationaLLM.Common.Constants.CosmosDbContainers.Leases
   name: Leases
   href: api/dotnet/FoundationaLLM.Common.Constants.CosmosDbContainers.html#FoundationaLLM_Common_Constants_CosmosDbContainers_Leases
@@ -9729,6 +9658,19 @@ references:
   commentId: T:FoundationaLLM.Common.Interfaces.IAzureCosmosDBService
   fullName: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService
   nameWithType: IAzureCosmosDBService
+- uid: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.CreateAttachment(FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference,System.Threading.CancellationToken)
+  name: CreateAttachment(AttachmentReference, CancellationToken)
+  href: api/dotnet/FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html#FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_CreateAttachment_FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_System_Threading_CancellationToken_
+  commentId: M:FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.CreateAttachment(FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference,System.Threading.CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.CreateAttachment(FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference, System.Threading.CancellationToken)
+  nameWithType: IAzureCosmosDBService.CreateAttachment(AttachmentReference, CancellationToken)
+- uid: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.CreateAttachment*
+  name: CreateAttachment
+  href: api/dotnet/FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html#FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_CreateAttachment_
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.CreateAttachment
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.CreateAttachment
+  nameWithType: IAzureCosmosDBService.CreateAttachment
 - uid: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.CreateOrUpdateConversationAsync(FoundationaLLM.Common.Models.Conversation.Conversation,System.Threading.CancellationToken)
   name: CreateOrUpdateConversationAsync(Conversation, CancellationToken)
   href: api/dotnet/FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html#FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_CreateOrUpdateConversationAsync_FoundationaLLM_Common_Models_Conversation_Conversation_System_Threading_CancellationToken_
@@ -9742,6 +9684,19 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.CreateOrUpdateConversationAsync
   nameWithType: IAzureCosmosDBService.CreateOrUpdateConversationAsync
+- uid: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.DeleteAttachment(FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference,System.Threading.CancellationToken)
+  name: DeleteAttachment(AttachmentReference, CancellationToken)
+  href: api/dotnet/FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html#FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_DeleteAttachment_FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_System_Threading_CancellationToken_
+  commentId: M:FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.DeleteAttachment(FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference,System.Threading.CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.DeleteAttachment(FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference, System.Threading.CancellationToken)
+  nameWithType: IAzureCosmosDBService.DeleteAttachment(AttachmentReference, CancellationToken)
+- uid: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.DeleteAttachment*
+  name: DeleteAttachment
+  href: api/dotnet/FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html#FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_DeleteAttachment_
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.DeleteAttachment
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.DeleteAttachment
+  nameWithType: IAzureCosmosDBService.DeleteAttachment
 - uid: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.DeleteConversationAsync(System.String,System.Threading.CancellationToken)
   name: DeleteConversationAsync(string, CancellationToken)
   href: api/dotnet/FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html#FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_DeleteConversationAsync_System_String_System_Threading_CancellationToken_
@@ -9758,6 +9713,54 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.DeleteConversationAsync
   nameWithType: IAzureCosmosDBService.DeleteConversationAsync
+- uid: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.FilterAttachments(System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceFilter,System.Threading.CancellationToken)
+  name: FilterAttachments(string, ResourceFilter, CancellationToken)
+  href: api/dotnet/FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html#FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_FilterAttachments_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceFilter_System_Threading_CancellationToken_
+  commentId: M:FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.FilterAttachments(System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceFilter,System.Threading.CancellationToken)
+  name.vb: FilterAttachments(String, ResourceFilter, CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.FilterAttachments(string, FoundationaLLM.Common.Models.ResourceProviders.ResourceFilter, System.Threading.CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.FilterAttachments(String, FoundationaLLM.Common.Models.ResourceProviders.ResourceFilter, System.Threading.CancellationToken)
+  nameWithType: IAzureCosmosDBService.FilterAttachments(string, ResourceFilter, CancellationToken)
+  nameWithType.vb: IAzureCosmosDBService.FilterAttachments(String, ResourceFilter, CancellationToken)
+- uid: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.FilterAttachments*
+  name: FilterAttachments
+  href: api/dotnet/FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html#FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_FilterAttachments_
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.FilterAttachments
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.FilterAttachments
+  nameWithType: IAzureCosmosDBService.FilterAttachments
+- uid: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetAttachment(System.String,System.String,System.Threading.CancellationToken)
+  name: GetAttachment(string, string, CancellationToken)
+  href: api/dotnet/FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html#FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_GetAttachment_System_String_System_String_System_Threading_CancellationToken_
+  commentId: M:FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetAttachment(System.String,System.String,System.Threading.CancellationToken)
+  name.vb: GetAttachment(String, String, CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetAttachment(string, string, System.Threading.CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetAttachment(String, String, System.Threading.CancellationToken)
+  nameWithType: IAzureCosmosDBService.GetAttachment(string, string, CancellationToken)
+  nameWithType.vb: IAzureCosmosDBService.GetAttachment(String, String, CancellationToken)
+- uid: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetAttachment*
+  name: GetAttachment
+  href: api/dotnet/FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html#FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_GetAttachment_
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetAttachment
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetAttachment
+  nameWithType: IAzureCosmosDBService.GetAttachment
+- uid: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetAttachments(System.String,System.Threading.CancellationToken)
+  name: GetAttachments(string, CancellationToken)
+  href: api/dotnet/FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html#FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_GetAttachments_System_String_System_Threading_CancellationToken_
+  commentId: M:FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetAttachments(System.String,System.Threading.CancellationToken)
+  name.vb: GetAttachments(String, CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetAttachments(string, System.Threading.CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetAttachments(String, System.Threading.CancellationToken)
+  nameWithType: IAzureCosmosDBService.GetAttachments(string, CancellationToken)
+  nameWithType.vb: IAzureCosmosDBService.GetAttachments(String, CancellationToken)
+- uid: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetAttachments*
+  name: GetAttachments
+  href: api/dotnet/FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html#FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_GetAttachments_
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetAttachments
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetAttachments
+  nameWithType: IAzureCosmosDBService.GetAttachments
 - uid: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.GetCompletionPrompt(System.String,System.String)
   name: GetCompletionPrompt(string, string)
   href: api/dotnet/FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html#FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_GetCompletionPrompt_System_String_System_String_
@@ -19694,6 +19697,103 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile.Type
   nameWithType: AttachmentFile.Type
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference
+  name: AttachmentReference
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.html
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference
+  nameWithType: AttachmentReference
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.ContentType
+  name: ContentType
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.html#FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_ContentType
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.ContentType
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.ContentType
+  nameWithType: AttachmentReference.ContentType
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.ContentType*
+  name: ContentType
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.html#FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_ContentType_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.ContentType
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.ContentType
+  nameWithType: AttachmentReference.ContentType
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.Id
+  name: Id
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.html#FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_Id
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.Id
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.Id
+  nameWithType: AttachmentReference.Id
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.Id*
+  name: Id
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.html#FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_Id_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.Id
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.Id
+  nameWithType: AttachmentReference.Id
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.OriginalFilename
+  name: OriginalFilename
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.html#FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_OriginalFilename
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.OriginalFilename
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.OriginalFilename
+  nameWithType: AttachmentReference.OriginalFilename
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.OriginalFilename*
+  name: OriginalFilename
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.html#FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_OriginalFilename_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.OriginalFilename
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.OriginalFilename
+  nameWithType: AttachmentReference.OriginalFilename
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.ResourceType
+  name: ResourceType
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.html#FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_ResourceType
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.ResourceType
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.ResourceType
+  nameWithType: AttachmentReference.ResourceType
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.ResourceType*
+  name: ResourceType
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.html#FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_ResourceType_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.ResourceType
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.ResourceType
+  nameWithType: AttachmentReference.ResourceType
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.SecondaryProvider
+  name: SecondaryProvider
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.html#FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_SecondaryProvider
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.SecondaryProvider
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.SecondaryProvider
+  nameWithType: AttachmentReference.SecondaryProvider
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.SecondaryProvider*
+  name: SecondaryProvider
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.html#FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_SecondaryProvider_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.SecondaryProvider
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.SecondaryProvider
+  nameWithType: AttachmentReference.SecondaryProvider
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.Size
+  name: Size
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.html#FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_Size
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.Size
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.Size
+  nameWithType: AttachmentReference.Size
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.Size*
+  name: Size
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.html#FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_Size_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.Size
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.Size
+  nameWithType: AttachmentReference.Size
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.UPN
+  name: UPN
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.html#FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_UPN
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.UPN
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.UPN
+  nameWithType: AttachmentReference.UPN
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.UPN*
+  name: UPN
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.html#FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_UPN_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.UPN
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.UPN
+  nameWithType: AttachmentReference.UPN
 - uid: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
   name: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.html
@@ -24415,6 +24515,19 @@ references:
   fullName.vb: FoundationaLLM.Common.Services.AzureCosmosDBService.New
   nameWithType: AzureCosmosDBService.AzureCosmosDBService
   nameWithType.vb: AzureCosmosDBService.New
+- uid: FoundationaLLM.Common.Services.AzureCosmosDBService.CreateAttachment(FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference,System.Threading.CancellationToken)
+  name: CreateAttachment(AttachmentReference, CancellationToken)
+  href: api/dotnet/FoundationaLLM.Common.Services.AzureCosmosDBService.html#FoundationaLLM_Common_Services_AzureCosmosDBService_CreateAttachment_FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_System_Threading_CancellationToken_
+  commentId: M:FoundationaLLM.Common.Services.AzureCosmosDBService.CreateAttachment(FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference,System.Threading.CancellationToken)
+  fullName: FoundationaLLM.Common.Services.AzureCosmosDBService.CreateAttachment(FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference, System.Threading.CancellationToken)
+  nameWithType: AzureCosmosDBService.CreateAttachment(AttachmentReference, CancellationToken)
+- uid: FoundationaLLM.Common.Services.AzureCosmosDBService.CreateAttachment*
+  name: CreateAttachment
+  href: api/dotnet/FoundationaLLM.Common.Services.AzureCosmosDBService.html#FoundationaLLM_Common_Services_AzureCosmosDBService_CreateAttachment_
+  commentId: Overload:FoundationaLLM.Common.Services.AzureCosmosDBService.CreateAttachment
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Services.AzureCosmosDBService.CreateAttachment
+  nameWithType: AzureCosmosDBService.CreateAttachment
 - uid: FoundationaLLM.Common.Services.AzureCosmosDBService.CreateOrUpdateConversationAsync(FoundationaLLM.Common.Models.Conversation.Conversation,System.Threading.CancellationToken)
   name: CreateOrUpdateConversationAsync(Conversation, CancellationToken)
   href: api/dotnet/FoundationaLLM.Common.Services.AzureCosmosDBService.html#FoundationaLLM_Common_Services_AzureCosmosDBService_CreateOrUpdateConversationAsync_FoundationaLLM_Common_Models_Conversation_Conversation_System_Threading_CancellationToken_
@@ -24428,6 +24541,19 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Services.AzureCosmosDBService.CreateOrUpdateConversationAsync
   nameWithType: AzureCosmosDBService.CreateOrUpdateConversationAsync
+- uid: FoundationaLLM.Common.Services.AzureCosmosDBService.DeleteAttachment(FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference,System.Threading.CancellationToken)
+  name: DeleteAttachment(AttachmentReference, CancellationToken)
+  href: api/dotnet/FoundationaLLM.Common.Services.AzureCosmosDBService.html#FoundationaLLM_Common_Services_AzureCosmosDBService_DeleteAttachment_FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentReference_System_Threading_CancellationToken_
+  commentId: M:FoundationaLLM.Common.Services.AzureCosmosDBService.DeleteAttachment(FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference,System.Threading.CancellationToken)
+  fullName: FoundationaLLM.Common.Services.AzureCosmosDBService.DeleteAttachment(FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference, System.Threading.CancellationToken)
+  nameWithType: AzureCosmosDBService.DeleteAttachment(AttachmentReference, CancellationToken)
+- uid: FoundationaLLM.Common.Services.AzureCosmosDBService.DeleteAttachment*
+  name: DeleteAttachment
+  href: api/dotnet/FoundationaLLM.Common.Services.AzureCosmosDBService.html#FoundationaLLM_Common_Services_AzureCosmosDBService_DeleteAttachment_
+  commentId: Overload:FoundationaLLM.Common.Services.AzureCosmosDBService.DeleteAttachment
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Services.AzureCosmosDBService.DeleteAttachment
+  nameWithType: AzureCosmosDBService.DeleteAttachment
 - uid: FoundationaLLM.Common.Services.AzureCosmosDBService.DeleteConversationAsync(System.String,System.Threading.CancellationToken)
   name: DeleteConversationAsync(string, CancellationToken)
   href: api/dotnet/FoundationaLLM.Common.Services.AzureCosmosDBService.html#FoundationaLLM_Common_Services_AzureCosmosDBService_DeleteConversationAsync_System_String_System_Threading_CancellationToken_
@@ -24444,6 +24570,54 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Services.AzureCosmosDBService.DeleteConversationAsync
   nameWithType: AzureCosmosDBService.DeleteConversationAsync
+- uid: FoundationaLLM.Common.Services.AzureCosmosDBService.FilterAttachments(System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceFilter,System.Threading.CancellationToken)
+  name: FilterAttachments(string, ResourceFilter, CancellationToken)
+  href: api/dotnet/FoundationaLLM.Common.Services.AzureCosmosDBService.html#FoundationaLLM_Common_Services_AzureCosmosDBService_FilterAttachments_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceFilter_System_Threading_CancellationToken_
+  commentId: M:FoundationaLLM.Common.Services.AzureCosmosDBService.FilterAttachments(System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceFilter,System.Threading.CancellationToken)
+  name.vb: FilterAttachments(String, ResourceFilter, CancellationToken)
+  fullName: FoundationaLLM.Common.Services.AzureCosmosDBService.FilterAttachments(string, FoundationaLLM.Common.Models.ResourceProviders.ResourceFilter, System.Threading.CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Services.AzureCosmosDBService.FilterAttachments(String, FoundationaLLM.Common.Models.ResourceProviders.ResourceFilter, System.Threading.CancellationToken)
+  nameWithType: AzureCosmosDBService.FilterAttachments(string, ResourceFilter, CancellationToken)
+  nameWithType.vb: AzureCosmosDBService.FilterAttachments(String, ResourceFilter, CancellationToken)
+- uid: FoundationaLLM.Common.Services.AzureCosmosDBService.FilterAttachments*
+  name: FilterAttachments
+  href: api/dotnet/FoundationaLLM.Common.Services.AzureCosmosDBService.html#FoundationaLLM_Common_Services_AzureCosmosDBService_FilterAttachments_
+  commentId: Overload:FoundationaLLM.Common.Services.AzureCosmosDBService.FilterAttachments
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Services.AzureCosmosDBService.FilterAttachments
+  nameWithType: AzureCosmosDBService.FilterAttachments
+- uid: FoundationaLLM.Common.Services.AzureCosmosDBService.GetAttachment(System.String,System.String,System.Threading.CancellationToken)
+  name: GetAttachment(string, string, CancellationToken)
+  href: api/dotnet/FoundationaLLM.Common.Services.AzureCosmosDBService.html#FoundationaLLM_Common_Services_AzureCosmosDBService_GetAttachment_System_String_System_String_System_Threading_CancellationToken_
+  commentId: M:FoundationaLLM.Common.Services.AzureCosmosDBService.GetAttachment(System.String,System.String,System.Threading.CancellationToken)
+  name.vb: GetAttachment(String, String, CancellationToken)
+  fullName: FoundationaLLM.Common.Services.AzureCosmosDBService.GetAttachment(string, string, System.Threading.CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Services.AzureCosmosDBService.GetAttachment(String, String, System.Threading.CancellationToken)
+  nameWithType: AzureCosmosDBService.GetAttachment(string, string, CancellationToken)
+  nameWithType.vb: AzureCosmosDBService.GetAttachment(String, String, CancellationToken)
+- uid: FoundationaLLM.Common.Services.AzureCosmosDBService.GetAttachment*
+  name: GetAttachment
+  href: api/dotnet/FoundationaLLM.Common.Services.AzureCosmosDBService.html#FoundationaLLM_Common_Services_AzureCosmosDBService_GetAttachment_
+  commentId: Overload:FoundationaLLM.Common.Services.AzureCosmosDBService.GetAttachment
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Services.AzureCosmosDBService.GetAttachment
+  nameWithType: AzureCosmosDBService.GetAttachment
+- uid: FoundationaLLM.Common.Services.AzureCosmosDBService.GetAttachments(System.String,System.Threading.CancellationToken)
+  name: GetAttachments(string, CancellationToken)
+  href: api/dotnet/FoundationaLLM.Common.Services.AzureCosmosDBService.html#FoundationaLLM_Common_Services_AzureCosmosDBService_GetAttachments_System_String_System_Threading_CancellationToken_
+  commentId: M:FoundationaLLM.Common.Services.AzureCosmosDBService.GetAttachments(System.String,System.Threading.CancellationToken)
+  name.vb: GetAttachments(String, CancellationToken)
+  fullName: FoundationaLLM.Common.Services.AzureCosmosDBService.GetAttachments(string, System.Threading.CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Services.AzureCosmosDBService.GetAttachments(String, System.Threading.CancellationToken)
+  nameWithType: AzureCosmosDBService.GetAttachments(string, CancellationToken)
+  nameWithType.vb: AzureCosmosDBService.GetAttachments(String, CancellationToken)
+- uid: FoundationaLLM.Common.Services.AzureCosmosDBService.GetAttachments*
+  name: GetAttachments
+  href: api/dotnet/FoundationaLLM.Common.Services.AzureCosmosDBService.html#FoundationaLLM_Common_Services_AzureCosmosDBService_GetAttachments_
+  commentId: Overload:FoundationaLLM.Common.Services.AzureCosmosDBService.GetAttachments
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Services.AzureCosmosDBService.GetAttachments
+  nameWithType: AzureCosmosDBService.GetAttachments
 - uid: FoundationaLLM.Common.Services.AzureCosmosDBService.GetCompletionPrompt(System.String,System.String)
   name: GetCompletionPrompt(string, string)
   href: api/dotnet/FoundationaLLM.Common.Services.AzureCosmosDBService.html#FoundationaLLM_Common_Services_AzureCosmosDBService_GetCompletionPrompt_System_String_System_String_
@@ -25565,6 +25739,23 @@ references:
   fullName.vb: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase(Of TResourceReference).DeleteResource(Of T)(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath)
   nameWithType: ResourceProviderServiceBase<TResourceReference>.DeleteResource<T>(ResourcePath)
   nameWithType.vb: ResourceProviderServiceBase(Of TResourceReference).DeleteResource(Of T)(ResourcePath)
+- uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.EnsureAndValidatePolicyDefinitions(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult)
+  name: EnsureAndValidatePolicyDefinitions(ResourcePath, ResourcePathAuthorizationResult)
+  href: api/dotnet/FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_EnsureAndValidatePolicyDefinitions_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_
+  commentId: M:FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.EnsureAndValidatePolicyDefinitions(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult)
+  fullName: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase<TResourceReference>.EnsureAndValidatePolicyDefinitions(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult)
+  fullName.vb: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase(Of TResourceReference).EnsureAndValidatePolicyDefinitions(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult)
+  nameWithType: ResourceProviderServiceBase<TResourceReference>.EnsureAndValidatePolicyDefinitions(ResourcePath, ResourcePathAuthorizationResult)
+  nameWithType.vb: ResourceProviderServiceBase(Of TResourceReference).EnsureAndValidatePolicyDefinitions(ResourcePath, ResourcePathAuthorizationResult)
+- uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.EnsureAndValidatePolicyDefinitions*
+  name: EnsureAndValidatePolicyDefinitions
+  href: api/dotnet/FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_EnsureAndValidatePolicyDefinitions_
+  commentId: Overload:FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.EnsureAndValidatePolicyDefinitions
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase<TResourceReference>.EnsureAndValidatePolicyDefinitions
+  fullName.vb: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase(Of TResourceReference).EnsureAndValidatePolicyDefinitions
+  nameWithType: ResourceProviderServiceBase<TResourceReference>.EnsureAndValidatePolicyDefinitions
+  nameWithType.vb: ResourceProviderServiceBase(Of TResourceReference).EnsureAndValidatePolicyDefinitions
 - uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.ExecuteActionAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
   name: ExecuteActionAsync(ResourcePath, ResourcePathAuthorizationResult, string, UnifiedUserIdentity)
   href: api/dotnet/FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_ExecuteActionAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
