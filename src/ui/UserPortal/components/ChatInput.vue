@@ -30,6 +30,14 @@
 					@keydown.esc="hideAllPoppers"
 				/>
 				<OverlayPanel ref="menu" style="max-width: 98%">
+					<div class="file-upload-header">
+						<Button
+							:icon="!isMobile ? 'pi pi-times' : undefined"
+							label="Close"
+							class="file-upload-container-button"
+							@click="toggle"
+						/>
+					</div>
 					<FileUpload
 						ref="fileUpload"
 						:multiple="true"
@@ -39,6 +47,9 @@
 						@select="fileSelected"
 					>
 						<template #content>
+							<div v-if="fileArrayFiltered.length === 0 && oneDriveFiles.length === 0 && localFiles.length === 0" class="file-upload-empty-desktop">
+								<p>No files have been added to this message.</p>
+							</div>
 							<!-- Progress bar -->
 							<div v-if="isUploading" style="padding: 60px 10px">
 								<ProgressBar
@@ -72,13 +83,13 @@
 											text
 											severity="danger"
 											aria-label="Delete attachment"
-											@click="removeAttachment(file)"
+											@click="fileToDelete = { name: file.fileName, type: 'attachment', file: file }"
 										/>
 									</div>
 								</div>
 								<Divider v-if="fileArrayFiltered.length > 0" />
 								<div
-									v-for="(file, index) of localFiles"
+									v-for="(file) of localFiles"
 									:key="file.name + file.type + file.size"
 									class="file-upload-file"
 								>
@@ -99,13 +110,13 @@
 											text
 											severity="danger"
 											aria-label="Remove file"
-											@click="removeLocalFile(index)"
+											@click="fileToDelete = { name: file.name, type: 'local', file: file }"
 										/>
 									</div>
 								</div>
 								<div v-if="oneDriveFiles && oneDriveFiles.length > 0">
 									<div
-										v-for="(file, index) of oneDriveFiles"
+										v-for="(file) of oneDriveFiles"
 										:key="file.name + file.size"
 										class="file-upload-file"
 									>
@@ -126,7 +137,7 @@
 												text
 												severity="danger"
 												aria-label="Remove file"
-												@click="removeOneDriveFile(index)"
+												@click="fileToDelete = { name: file.name, type: 'oneDrive', file: file }"
 											/>
 										</div>
 									</div>
@@ -191,6 +202,39 @@
 					</div>
 				</template>
 			</VTooltip>
+			<Dialog
+				v-if="fileToDelete !== null"
+				v-focustrap
+				:visible="fileToDelete !== null"
+				:closable="false"
+				modal
+				:header="fileToDelete.type === 'local' | 'oneDrive' ? 'Remove a file' : 'Delete a file'"
+				@keydown="deleteFileKeydown"
+			>
+				<div v-if="deleteFileProcessing" class="delete-dialog-content">
+					<div role="status">
+						<i
+							class="pi pi-spin pi-spinner"
+							style="font-size: 2rem"
+							role="img"
+							aria-label="Loading"
+						></i>
+					</div>
+				</div>
+				<div v-else>
+					<p>Do you want to {{ fileToDelete.type === "local" | "oneDrive" ? "remove" : "delete" }} the file "{{ fileToDelete.name }}" ?</p>
+				</div>
+				<template #footer>
+					<Button label="Cancel" text :disabled="deleteFileProcessing" @click="fileToDelete = null" />
+					<Button
+						:label="fileToDelete.type === 'local' | 'oneDrive' ? 'Remove' : 'Delete'"
+						severity="danger"
+						autofocus
+						:disabled="deleteFileProcessing"
+						@click="removeDialogFile"
+					/>
+				</template>
+			</Dialog>
 			<Dialog
 				v-model:visible="showOneDriveIframeDialog"
 				modal
@@ -310,11 +354,17 @@ export default {
 				},
 				access: { mode: 'read' },
 				search: { enabled: true },
+				selection: {
+					mode: 'multiple',
+				},
 			},
 			oneDriveFiles: [],
 			localFiles: [],
 			oneDriveBaseURL: null as string | null,
 			disconnectingOneDrive: false,
+			connectingOneDrive: false,
+			fileToDelete: null as any,
+			deleteFileProcessing: false,
 			connectingOneDrive: true,
 		};
 	},
@@ -477,6 +527,7 @@ export default {
 						this.$nextTick(() => {
 							this.$refs.menu.alignOverlay();
 						});
+						this.toggle();
 						if (filesUploaded > 0) {
 							this.$toast.add({
 								severity: 'success',
@@ -490,24 +541,47 @@ export default {
 			});
 		},
 
+		deleteFileKeydown(event: KeyboardEvent) {
+			if (event.key === 'Escape') {
+				this.fileToDelete = null;
+			}
+		},
+
+		removeDialogFile() {
+			this.deleteFileProcessing = true;
+			if (this.fileToDelete.type === 'local') {
+				this.removeLocalFile(this.fileToDelete.file);
+			} else if (this.fileToDelete.type === 'oneDrive') {
+				this.removeOneDriveFile(this.fileToDelete.file);
+			} else if (this.fileToDelete.type === 'attachment') {
+				this.removeAttachment(this.fileToDelete.file);
+			}
+		},
+
 		async removeAttachment(file: any) {
 			await this.$appStore.deleteAttachment(file);
+			this.fileToDelete = null;
+			this.deleteFileProcessing = false;
 
 			this.$nextTick(() => {
 				this.$refs.menu.alignOverlay();
 			});
 		},
 
-		removeLocalFile(index: number) {
-			this.localFiles.splice(index, 1);
+		removeLocalFile(file: any) {
+			this.localFiles = this.localFiles.filter((localFile) => localFile.name !== file.name);
+			this.fileToDelete = null;
+			this.deleteFileProcessing = false;
 
 			this.$nextTick(() => {
 				this.$refs.menu.alignOverlay();
 			});
 		},
 
-		removeOneDriveFile(index: number) {
-			this.oneDriveFiles.splice(index, 1);
+		removeOneDriveFile(file: any) {
+			this.oneDriveFiles = this.oneDriveFiles.filter((oneDriveFile) => oneDriveFile.name !== file.name);
+			this.fileToDelete = null;
+			this.deleteFileProcessing = false;
 
 			this.$nextTick(() => {
 				this.$refs.menu.alignOverlay();
@@ -733,9 +807,13 @@ export default {
 							break;
 
 						case 'pick':
-							console.log(`Picked: ${JSON.stringify(command)}`);
+							console.log(command.items);
+							command.items.forEach((item) => {
+								console.log(`Picked: ${JSON.stringify(item)}`);
+								this.oneDriveFiles.push(item);
+							});
 
-							this.oneDriveFiles.push(...command.items);
+							// this.oneDriveFiles.push(...command.items);
 
 							this.$nextTick(() => {
 								this.$refs.menu.alignOverlay();
@@ -929,6 +1007,23 @@ export default {
 	width: 100%;
 }
 
+.delete-dialog-content {
+	display: flex;
+	justify-content: center;
+	padding: 20px 150px;
+}
+
+.file-upload-header {
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: 0.5rem;
+}
+
+.file-upload-empty-desktop {
+	text-align: center;
+	margin-bottom: 0.5rem;
+}
+
 @media only screen and (max-width: 405px) {
 	.upload-files-header button {
 		padding: 0.1rem 0.25rem !important;
@@ -968,6 +1063,10 @@ export default {
 @media only screen and (max-width: 950px) {
 	.file-upload-empty-desktop {
 		display: none;
+	}
+
+	.file-overlay-panel__footer {
+		flex-direction: column;
 	}
 }
 </style>
