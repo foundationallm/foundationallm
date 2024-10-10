@@ -362,7 +362,7 @@ public partial class CoreService(
         {
             ArgumentNullException.ThrowIfNull(completionRequest.SessionId);
 
-            completionRequest = await PrepareCompletionRequest(completionRequest);
+            completionRequest = await PrepareCompletionRequest(completionRequest, true);
 
             var promptMessage = await CreateConversationPromptMessageAsync(instanceId, completionRequest, _userIdentity);
 
@@ -665,10 +665,12 @@ public partial class CoreService(
     /// Pre-processing of incoming completion request.
     /// </summary>
     /// <param name="request">The completion request.</param>
+    /// <param name="longRunningOperation">Indicates whether this is a long-running operation.</param>
     /// <returns>The updated completion request with pre-processing applied.</returns>
-    private async Task<CompletionRequest> PrepareCompletionRequest(CompletionRequest request)
+    private async Task<CompletionRequest> PrepareCompletionRequest(CompletionRequest request, bool longRunningOperation = false)
     {
         request.OperationId = Guid.NewGuid().ToString();
+        request.LongRunningOperation = longRunningOperation;
 
         // Retrieve conversation, including latest prompt.
         var messages = await _cosmosDBService.GetSessionMessagesAsync(request.SessionId!, _userIdentity.UPN!);

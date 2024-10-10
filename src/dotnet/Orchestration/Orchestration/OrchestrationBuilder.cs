@@ -81,12 +81,15 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     ? LLMOrchestrationServiceNames.LangChain
                     : result.Agent.OrchestrationSettings?.Orchestrator;
 
-                await cosmosDBService.UpdateLongRunningOperationContextPropertiesAsync(
-                    originalRequest.OperationId!,
-                    new Dictionary<string, object>
-                    {
-                        { "/orchestrator", orchestrator! }
-                    });
+                if (originalRequest.LongRunningOperation)
+                {
+                    await cosmosDBService.UpdateLongRunningOperationContextPropertiesAsync(
+                        originalRequest.OperationId!,
+                        new Dictionary<string, object>
+                        {
+                            { "/orchestrator", orchestrator! }
+                        });
+                }
 
                 var orchestrationService = llmOrchestrationServiceManager.GetService(instanceId, orchestrator!, serviceProvider, callContext);
 

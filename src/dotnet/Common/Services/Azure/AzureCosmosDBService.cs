@@ -367,7 +367,7 @@ namespace FoundationaLLM.Common.Services
 
         /// <inheritdoc/>
         public async Task UpdateLongRunningOperationContextPropertiesAsync(string operationId, Dictionary<string, object> propertyValues, CancellationToken cancellationToken = default) =>
-            await _sessions.PatchItemAsync<LongRunningOperationContext>(
+            await _operations.PatchItemAsync<LongRunningOperationContext>(
                 id: operationId,
                 partitionKey: new PartitionKey(operationId),
                 patchOperations: propertyValues.Keys
