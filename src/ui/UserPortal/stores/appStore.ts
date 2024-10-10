@@ -209,7 +209,7 @@ export const useAppStore = defineStore('app', {
 			}));
 		},
 
-		async getMessage(messageId) {
+		async getMessage(messageId: string) {
 			const data = await api.getMessage(messageId);
 			this.currentMessages.push(data);
 			return data;
