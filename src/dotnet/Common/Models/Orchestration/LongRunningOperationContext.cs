@@ -16,6 +16,24 @@ namespace FoundationaLLM.Common.Models.Orchestration
         public required string OperationId { get; set; }
 
         /// <summary>
+        /// Gets or sets the name of the agent that runs the long-running operation.
+        /// </summary>
+        [JsonProperty("agentName")]
+        public required string AgentName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier of the session in which the long-running operation runs.
+        /// </summary>
+        [JsonProperty("sessionId")]
+        public required string SessionId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier of the user message that triggered the long-running operation.
+        /// </summary>
+        [JsonProperty("userMessageId")]
+        public required string UserMessageId { get; set; }
+
+        /// <summary>
         /// Gets or sets the Time to Live (TTL) of the long-running operation.
         /// </summary>
         [JsonProperty("ttl")]

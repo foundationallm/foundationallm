@@ -243,6 +243,13 @@ namespace FoundationaLLM.Common.Services
         }
 
         /// <inheritdoc/>
+        public async Task<Message> GetMessageAsync(string id, string sessionId, CancellationToken cancellationToken = default) =>
+            await _sessions.ReadItemAsync<Message>(
+                id: id,
+                partitionKey: new PartitionKey(sessionId),
+                cancellationToken: cancellationToken);
+
+        /// <inheritdoc/>
         public async Task<Message> InsertMessageAsync(Message message, CancellationToken cancellationToken = default)
         {
             PartitionKey partitionKey = new(message.SessionId);

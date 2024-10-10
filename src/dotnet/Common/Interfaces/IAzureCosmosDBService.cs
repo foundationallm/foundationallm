@@ -63,6 +63,15 @@ public interface IAzureCosmosDBService
     Task<List<Message>> GetSessionMessagesAsync(string sessionId, string upn, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Gets a single conversation message by its identifier.
+    /// </summary>
+    /// <param name="id">The identifier of the message.</param>
+    /// <param name="sessionId">The identifier of the conversation.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>A <see cref="Message"/> object containing the message.</returns>
+    Task<Message> GetMessageAsync(string id, string sessionId, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Creates a new chat message.
     /// </summary>
     /// <param name="message">Chat message item to create.</param>
