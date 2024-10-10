@@ -131,6 +131,10 @@ $configurations = @{
         template = './data/role-assignments/DefaultRoleAssignments.template.json'
         render   = "./data/role-assignments/${env:FOUNDATIONALLM_INSTANCE_ID}.json"
     }
+    "policy-assignments" = @{
+        template = './data/policy-assignments/DefaultPolicyAssignments.template.json'
+        render   = "./data/policy-assignments/${env:FOUNDATIONALLM_INSTANCE_ID}-policy.json"
+    }
     "completion-4-model" = @{
         template = './data/resource-provider/FoundationaLLM.AIModel/completion-4-model.template.json'
         render   = '../common/data/resource-provider/FoundationaLLM.AIModel/completion-4-model.json'
@@ -223,6 +227,7 @@ azcopy cp '../common/data/resource-provider/*' $target --exclude-pattern .git* -
 $target = "https://$env:AZURE_AUTHORIZATION_STORAGE_ACCOUNT_NAME.blob.core.windows.net/role-assignments/"
 
 azcopy cp ./data/role-assignments/$($env:FOUNDATIONALLM_INSTANCE_ID).json $target --recursive=True
+azcopy cp ./data/policy-assignments/$($env:FOUNDATIONALLM_INSTANCE_ID)-policy.json $target --recursive=True
 
 Invoke-AndRequireSuccess "Restarting Container Apps" {
 
