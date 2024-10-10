@@ -106,8 +106,13 @@ Update `FoundationaLLM.Configuration/_resource-references_.json` with the refere
 
 **FoundationaLLM.Attachment**
 
-The Attachment resource provider saves the attachment references to Cosmos DB.
-A new Cosmos DB container must be created, named `Attachments`, with a partition key `/upn`.
+The Attachment resource provider now saves the attachment references to Cosmos DB, instead of Data Lake storage.
+A new Cosmos DB container must be created, named `Attachments`, with the following partition key: `/upn`.
+
+The following MSIs require a Cosmos DB role assigned:
+1. Gateway API
+2. Orchestration API
+3. Management API
 
 ## Starting with 0.8.0
 
