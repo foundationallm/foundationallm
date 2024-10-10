@@ -152,9 +152,9 @@ async def create_completion_response(
             orchestration_manager = OrchestrationManager(
                 completion_request = completion_request,
                 configuration = configuration,
+                operations_manager = operations_manager,
                 instance_id = instance_id,
-                user_identity = user_identity,
-                operations_manager = operations_manager
+                user_identity = user_identity
             )
             # Await the completion response from the orchestration manager.
             completion_response = await orchestration_manager.ainvoke(completion_request)

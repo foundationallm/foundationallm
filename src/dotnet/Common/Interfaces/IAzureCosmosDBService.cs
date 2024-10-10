@@ -1,5 +1,8 @@
 ﻿using FoundationaLLM.Common.Models.Configuration.Users;
 using FoundationaLLM.Common.Models.Conversation;
+using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 
 namespace FoundationaLLM.Common.Interfaces;
 
@@ -105,7 +108,7 @@ public interface IAzureCosmosDBService
     /// <param name="sessionId">The session id from which to retrieve the completion prompt.</param>
     /// <param name="completionPromptId">The id of the completion prompt to retrieve.</param>
     /// <returns></returns>
-    Task<CompletionPrompt> GetCompletionPrompt(string sessionId, string completionPromptId);
+    Task<CompletionPrompt> GetCompletionPromptAsync(string sessionId, string completionPromptId);
 
     /// <summary>
     /// Returns the user profile for a given user via their UPN.
@@ -123,4 +126,72 @@ public interface IAzureCosmosDBService
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns></returns>
     Task UpsertUserProfileAsync(UserProfile userProfile, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Get the context for a long running operation.
+    /// </summary>
+    /// <param name="operationId">The identifier of the long running operation.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>A <see cref="LongRunningOperationContext"/> object providing the context for the long running operation.</returns>
+    Task<LongRunningOperationContext> GetLongRunningOperationContextAsync(string operationId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Inserts or updates a long running operation context.
+    /// </summary>
+    /// <param name="longRunningOperationContext">The <see cref="LongRunningOperationContext"/> object providing the context for the long running operation.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns></returns>
+    Task UpsertLongRunningOperationContextAsync(LongRunningOperationContext longRunningOperationContext, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Updates a subset of the properties of a long running operation context.
+    /// </summary>
+    /// <param name="operationId">The identifier of the long running operation.</param>
+    /// <param name="propertyValues">The dictionary containing property names and updated values.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns></returns>
+    Task UpdateLongRunningOperationContextPropertiesAsync(string operationId, Dictionary<string, object> propertyValues, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets an attachment.
+    /// </summary>
+    /// <param name="upn">The user's UPN.</param>
+    /// <param name="id">The attachment id.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>An attachment.</returns>
+    Task<AttachmentReference?> GetAttachment(string upn, string id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets list of filtered attachments.
+    /// </summary>
+    /// <param name="upn">The user's UPN.</param>
+    /// <param name="resourceFilter">The resource filter.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>A list of filtered attachments.</returns>
+    Task<List<AttachmentReference>> FilterAttachments(string upn, ResourceFilter resourceFilter, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets a list of attachments for the signed in user.
+    /// </summary>
+    /// <param name="upn">The user principal name used for retrieving the attachments for
+    /// the signed in user.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>A list of attachments for the signed in user.</returns>
+    Task<List<AttachmentReference>> GetAttachments(string upn, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Creates an attachment.
+    /// </summary>
+    /// <param name="attachment">The attachment to be added.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns></returns>
+    Task CreateAttachment(AttachmentReference attachment, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Deletes an attachment.
+    /// </summary>
+    /// <param name="attachment">The attachment to be deleted.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns></returns>
+    Task DeleteAttachment(AttachmentReference attachment, CancellationToken cancellationToken = default);
 }

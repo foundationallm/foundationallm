@@ -123,6 +123,8 @@ export const useAuthStore = defineStore('auth', {
 				accessToken = resp.accessToken;
 			} catch (error) {
 				// Redirect to get token or login
+				localStorage.setItem('oneDriveWorkSchoolConsentRedirect', JSON.stringify(true));
+				
 				oneDriveWorkSchoolAPIScopes.state = 'Core API redirect';
 				await this.msalInstance.loginRedirect(oneDriveWorkSchoolAPIScopes);
 			}

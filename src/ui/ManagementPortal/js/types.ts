@@ -89,6 +89,7 @@ export type AgentDataSource = ResourceBase & {
 export type ExternalOrchestrationService = ResourceBase & {
 	type: string;
 	name: string;
+	category: string;
 	api_url_configuration_name: string;
 	api_key_configuration_name: string;
 	url: string;
