@@ -152,7 +152,7 @@ async def create_completion_response(
             orchestration_manager = OrchestrationManager(
                 completion_request = completion_request,
                 configuration = configuration,
-                operations_manager = operations_manager
+                operations_manager = operations_manager,
                 instance_id = instance_id,
                 user_identity = user_identity
             )
