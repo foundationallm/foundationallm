@@ -19,7 +19,7 @@ Name | Default value
 > Here is an example of an override for the `MaxUploadsPerMessage` setting:
 > ```json
 >{
->	"value": 1,
+>	"value": 10,
 >	"value_exceptions": [
 >		{
 >			"user_principal_name": "ciprian@solliance.net",
