@@ -60,7 +60,7 @@ namespace FoundationaLLM.Orchestration.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AIModel_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Prompt_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AzureOpenAI_Storage);
-
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
                 options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_OrchestrationAPI);
@@ -133,6 +133,8 @@ namespace FoundationaLLM.Orchestration.API
             builder.AddHttpClientFactoryService();
             builder.AddLLMOrchestrationServices();
             builder.AddOrchestrationService();
+
+            builder.AddAzureCosmosDBService();
 
             builder.Services
                 .AddApiVersioning(options =>
