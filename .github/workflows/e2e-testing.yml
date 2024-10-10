@@ -173,7 +173,6 @@ jobs:
 
   docker_build:
     name: Build Docker Images
-    if: ${{ !inputs.bypassAndTeardown }}
     needs: generate_matrix
     strategy:
       fail-fast: false
