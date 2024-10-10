@@ -109,6 +109,12 @@ Update `FoundationaLLM.Configuration/_resource-references_.json` with the refere
 The Attachment resource provider saves the attachment references to Cosmos DB.
 A new Cosmos DB container must be created, named `Attachments`, with a partition key `/upn`.
 
+### Long-Running Operations
+
+The context for a long-running operation is now stored in Cosmos DB.
+A new Cosmos DB container must be created, named `Operations`, with a partition key `/id`.
+
+
 ## Starting with 0.8.0
 
 Core API changes:
