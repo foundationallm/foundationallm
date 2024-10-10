@@ -161,7 +161,11 @@ namespace FoundationaLLM.Common.Clients
                     switch (operationStatus.Status)
                     {
                         case OperationStatus.Completed:
-                            return (operationStatus.Result as TResponse);
+                            if (operationStatus.Result is JsonElement jsonElement)
+                            {
+                                return jsonElement.Deserialize<TResponse>();
+                            }
+                            return default;
                         case OperationStatus.InProgress:
                             if (totalPollingTime > _maxWaitTime)
                             {
