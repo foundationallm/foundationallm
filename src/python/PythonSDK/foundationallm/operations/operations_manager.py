@@ -1,5 +1,6 @@
 import os
 import requests
+import urllib3
 from typing import List
 from foundationallm.config import Configuration
 from foundationallm.models.operations import (
@@ -20,7 +21,9 @@ class OperationsManager():
 
         self.state_api_url = config.get_value('FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIUrl').rstrip('/')
         self.state_api_key = config.get_value('FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIKey')
-        self.verify_certs = False if env == 'dev' else True
+        if env == 'dev':
+            self.verify_certs = False
+            urllib3.disable_warnings(category=urllib3.exceptions.InsecureRequestWarning)
         
     async def create_operation(
         self,
