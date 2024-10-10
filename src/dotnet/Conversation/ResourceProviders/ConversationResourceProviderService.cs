@@ -193,37 +193,5 @@ namespace FoundationaLLM.Conversation.ResourceProviders
 
         #endregion
 
-        #region Utils
-
-        private PolicyDefinition EnsureAndValidatePolicyDefinitions(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult)
-        {
-            // The FoundationaLLM.Conversation resource provider is opinionated about the specific PBAC policy assignment required to load resources.
-
-            if (authorizationResult.PolicyDefinitionIds.Count == 0)
-                throw new ResourceProviderException(
-                    $"The {_name} resource provider requires PBAC policy assignments to load the {resourcePath.RawResourcePath} resource path.",
-                    StatusCodes.Status500InternalServerError);
-
-            if (authorizationResult.PolicyDefinitionIds.Count > 1)
-                throw new ResourceProviderException(
-                    $"The {_name} resource provider requires exactly one PBAC policy assignment to load the {resourcePath.RawResourcePath} resource path.",
-                    StatusCodes.Status500InternalServerError);
-
-            if (!PolicyDefinitions.All.TryGetValue(authorizationResult.PolicyDefinitionIds[0], out var policyDefinition))
-                throw new ResourceProviderException(
-                    $"The {_name} resource provider did not find the PBAC policy with id {authorizationResult.PolicyDefinitionIds[0]} required to load the {resourcePath.RawResourcePath} resource path.",
-                    StatusCodes.Status500InternalServerError);
-
-            var userIdentityProperties = policyDefinition.MatchingStrategy?.UserIdentityProperties ?? [];
-            if (userIdentityProperties.Count != 1
-                || userIdentityProperties[0] != UserIdentityPropertyNames.UserPrincipalName)
-                throw new ResourceProviderException(
-                    $"The {_name} resource provider requires one PBAC policy assignment with a matching strategy based on the user principal name (UPN) to load the {resourcePath.RawResourcePath} resource path.",
-                    StatusCodes.Status500InternalServerError);
-
-            return policyDefinition;
-        }
-
-        #endregion
     }
 }

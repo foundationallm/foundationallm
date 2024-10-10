@@ -184,7 +184,7 @@ public partial class CoreService(
                 $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Attachment}/{AttachmentResourceTypeNames.Attachments}/{ResourceProviderActions.Filter}",
                 JsonSerializer.Serialize(filter),
                 _callContext.CurrentUserIdentity!);
-            var list = result as IEnumerator<AttachmentFile>;
+            var list = result as List<AttachmentFile>;
             var attachmentReferences = new List<AttachmentDetail>();
 
             if (list != null)
