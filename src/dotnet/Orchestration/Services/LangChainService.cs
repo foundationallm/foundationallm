@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Infrastructure;
+using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Settings;
@@ -37,7 +38,8 @@ namespace FoundationaLLM.Orchestration.Core.Services
         {
             _settings = options.Value;
             _logger = logger;
-            _userIdentity = callContext.CurrentUserIdentity!;
+            _userIdentity = callContext.CurrentUserIdentity
+                ?? throw new ArgumentException("The provided call context does not have a valid user identity.");
             _httpClientFactoryService = httpClientFactoryService;
             _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
             _jsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
@@ -57,32 +59,18 @@ namespace FoundationaLLM.Orchestration.Core.Services
         /// <inheritdoc/>
         public string Name => LLMOrchestrationServiceNames.LangChain;
 
-        /// <summary>
-        /// Executes a completion request against the orchestration service.
-        /// </summary>
-        /// <param name="instanceId">The FoundationaLLM instance ID.</param>
-        /// <param name="request">Request object populated from the hub APIs including agent, prompt, data source, and model information.</param>
-        /// <returns>Returns a completion response from the orchestration engine.</returns>
+        /// <inheritdoc/>
         public async Task<LLMCompletionResponse> GetCompletion(string instanceId, LLMCompletionRequest request)
         {            
-            var client = await _httpClientFactoryService.CreateClient(HttpClientNames.LangChainAPI, _userIdentity);
-
-            var pollingClient = new PollingHttpClient<LLMCompletionRequest, LLMCompletionResponse>(
-                client,
-                request,
-                $"instances/{instanceId}/async-completions",
-                TimeSpan.FromSeconds(10),
-                client.Timeout.Subtract(TimeSpan.FromSeconds(1)),
-                _logger);
+            var pollingClient = await GetPollingClient(instanceId, request);
 
             try
             {
-                var completionResponse = await pollingClient.GetResponseAsync();
-                if (completionResponse == null)
-                    throw new Exception("The LangChain orchestration service did not return a valid completion response.");
+                var completionResponse = await pollingClient.ExecuteOperationAsync()
+                    ?? throw new Exception("The LangChain orchestration service did not return a valid completion response.");
                 return new LLMCompletionResponse
                 {
-                    OperationId = request.OperationId,
+                    OperationId = request.OperationId!,
                     Content = completionResponse!.Content,
                     Completion = completionResponse!.Completion,
                     Citations = completionResponse.Citations,
@@ -97,11 +85,14 @@ namespace FoundationaLLM.Orchestration.Core.Services
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while executing the completion request against the LangChain orchestration service.");
-                
+                _logger.LogError(
+                    ex,
+                    "An error occurred while executing the completion request against the {ServiceName} orchestration service.",
+                    HttpClientNames.LangChainAPI);
+
                 return new LLMCompletionResponse
                 {
-                    OperationId = request.OperationId,
+                    OperationId = request.OperationId!,
                     Completion = "A problem on my side prevented me from responding.",
                     UserPrompt = request.UserPrompt,
                     PromptTemplate = string.Empty,
@@ -110,6 +101,35 @@ namespace FoundationaLLM.Orchestration.Core.Services
                     CompletionTokens = 0
                 };
             }
+        }
+
+        /// <inheritdoc/>
+        public async Task<LongRunningOperation> StartCompletionOperation(string instanceId, LLMCompletionRequest completionRequest)
+        {
+            var pollingClient = await GetPollingClient(instanceId, completionRequest);
+            return await pollingClient.StartOperationAsync();
+        }
+
+        /// <inheritdoc/>
+        public async Task<LongRunningOperation> GetCompletionOperationStatus(string instanceId, string operationId)
+        {
+            var pollingClient = await GetPollingClient(instanceId);
+            return await pollingClient.GetOperationStatusAsync(operationId);
+        }
+
+        private async Task<PollingHttpClient<LLMCompletionRequest, LLMCompletionResponse>> GetPollingClient(
+            string instanceId,
+            LLMCompletionRequest? request = null)
+        {
+            var client = await _httpClientFactoryService.CreateClient(HttpClientNames.LangChainAPI, _userIdentity);
+
+            return new PollingHttpClient<LLMCompletionRequest, LLMCompletionResponse>(
+                client,
+                request,
+                $"instances/{instanceId}/async-completions",
+                TimeSpan.FromSeconds(10),
+                client.Timeout.Subtract(TimeSpan.FromSeconds(1)),
+                _logger);
         }
     }
 }

@@ -28,9 +28,15 @@ namespace FoundationaLLM.Common.Models.Orchestration
         public AgentGatekeeperOverrideOption GatekeeperOverride { get; set; }
 
         /// <summary>
-        /// A list of Gatekeeper feature names used by the orchestration request.
+        /// Gets or sets a list of Gatekeeper feature names used by the orchestration request.
         /// </summary>
         [JsonPropertyName("gatekeeperOptions")]
         public string[] GatekeeperOptions { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets the name of the orchestrator used in the long-running operation.
+        /// </summary>
+        [JsonPropertyName("orchestrator")]
+        public string? Orchestrator { get; set; }
     }
 }
