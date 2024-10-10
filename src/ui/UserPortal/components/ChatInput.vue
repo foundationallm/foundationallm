@@ -368,7 +368,7 @@ export default {
 			fileToDelete: null as any,
 			deleteFileProcessing: false,
 			connectingOneDrive: true,
-			maxFiles: 5,
+			maxFiles: 10,
 		};
 	},
 
