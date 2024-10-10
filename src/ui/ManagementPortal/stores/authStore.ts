@@ -114,12 +114,12 @@ export const useAuthStore = defineStore('auth', {
 				const profilePhotoBlob = await $fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
 					method: 'GET',
 					headers: {
-						Authorization: `Bearer ${graphToken.accessToken}`
-					}
+						Authorization: `Bearer ${graphToken.accessToken}`,
+					},
 				});
 
 				return URL.createObjectURL(profilePhotoBlob);
-			} catch(error) {
+			} catch (error) {
 				return null;
 			}
 		},

@@ -1,10 +1,8 @@
 ﻿using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
-using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Attachment.Models
+namespace FoundationaLLM.Common.Models.ResourceProviders.Attachment
 {
     /// <summary>
     /// Contains a reference to an attachment.
@@ -35,6 +33,18 @@ namespace FoundationaLLM.Attachment.Models
         /// The only secondary provider currently supported is the FoundationaLLM.AzureOpenAI provider.
         /// </remarks>
         public string? SecondaryProvider { get; set; }
+
+        /// <summary>
+        /// The UPN of the user who created the attachment.
+        /// </summary>
+        [JsonPropertyName("upn")]
+        public string UPN { get; set; } = string.Empty;
+
+        /// <summary>
+        /// The unique identifier.
+        /// </summary>
+        [JsonPropertyName("id")]
+        public required string Id { get; set; }
 
         /// <summary>
         /// The object type of the resource.

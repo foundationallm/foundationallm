@@ -105,11 +105,11 @@ export const useAppStore = defineStore('app', {
 				this.sessions = sessions;
 			}
 
-			// Handle inconsistencies in displaying the rename session due to potential delays in the backend updating the session name.
+			// Handle inconsistencies in displaying the renamed session due to potential delays in the backend updating the session name.
 			this.renamedSessions.forEach((renamedSession: Session) => {
 				const existingSession = this.sessions.find((s: Session) => s.id === renamedSession.id);
 				if (existingSession) {
-					existingSession.name = renamedSession.name;
+					existingSession.display_name = renamedSession.display_name;
 				}
 			});
 
@@ -145,8 +145,8 @@ export const useAppStore = defineStore('app', {
 			);
 
 			// Preemptively rename the session for responsiveness, and revert the name if the request fails.
-			const previousName = existingSession.name;
-			existingSession.name = newSessionName;
+			const previousName = existingSession.display_name;
+			existingSession.display_name = newSessionName;
 
 			try {
 				await api.renameSession(sessionToRename.id, newSessionName);
@@ -154,15 +154,15 @@ export const useAppStore = defineStore('app', {
 					(session: Session) => session.id === sessionToRename.id,
 				);
 				if (existingRenamedSession) {
-					existingRenamedSession.name = newSessionName;
+					existingRenamedSession.display_name = newSessionName;
 				} else {
 					this.renamedSessions = [
-						{ ...sessionToRename, name: newSessionName },
+						{ ...sessionToRename, display_name: newSessionName },
 						...this.renamedSessions,
 					];
 				}
 			} catch (error) {
-				existingSession.name = previousName;
+				existingSession.display_name = previousName;
 			}
 		},
 
@@ -408,7 +408,7 @@ export const useAppStore = defineStore('app', {
 
 		async getUserProfiles() {
 			this.userProfiles = await api.getUserProfile();
-			this.oneDriveWorkSchool = this.userProfiles?.flags['oneDriveWorkSchoolEnabled'];
+			this.oneDriveWorkSchool = this.userProfiles?.flags.oneDriveWorkSchoolEnabled;
 			return this.userProfiles;
 		},
 

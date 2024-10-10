@@ -242,10 +242,10 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             // Authorize access to the resource path.
             var authorizationResult = ParsedResourcePath.IsResourceTypePath
-                ? await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, true, options?.IncludeRoles ?? false)
-                : await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
+                ? await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, true, options?.IncludeRoles ?? false, options?.IncludeActions ?? false)
+                : await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, options?.IncludeRoles ?? false, options?.IncludeActions ?? false);
            
-            return await GetResourcesAsync(ParsedResourcePath, authorizationResult, userIdentity);
+            return await GetResourcesAsync(ParsedResourcePath, authorizationResult, userIdentity, options);
         }
 
         /// <inheritdoc/>
@@ -269,7 +269,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 // In the special case of the filter action, if the resource type path is not directly authorized,
                 // the subordinate authorized resource paths must be expanded (and the overrides for ExecuteActionAsync must handle this).
                 var actionAuthorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation,
-                    ParsedResourcePath.Action! == ResourceProviderActions.Filter, false);
+                    ParsedResourcePath.Action! == ResourceProviderActions.Filter, false, false);
 
                 return await ExecuteActionAsync(ParsedResourcePath, actionAuthorizationResult, serializedResource, userIdentity);
             }
@@ -281,7 +281,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     StatusCodes.Status400BadRequest);
 
             // Authorize access to the resource path.
-            var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
+            var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
 
             var upsertResult = await UpsertResourceAsync(ParsedResourcePath, serializedResource, userIdentity);
 
@@ -297,7 +297,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             var (ParsedResourcePath, AuthorizableOperation) = ParseAndValidateResourcePath(resourcePath, HttpMethod.Delete, false);
 
             // Authorize access to the resource path.
-            await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
+            await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
 
             await DeleteResourceAsync(ParsedResourcePath, userIdentity);
         }
@@ -404,9 +404,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 CreateAndValidateResourcePath(instanceId, HttpMethod.Get, typeof(T));
 
             var authorizationResult =
-               await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, true, options?.IncludeRoles ?? false);
+               await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, true, options?.IncludeRoles ?? false, options?.IncludeActions ?? false);
 
-            return ((await GetResourcesAsync(ParsedResourcePath, authorizationResult, userIdentity)) as List<ResourceProviderGetResult<T>>)!;
+            return ((await GetResourcesAsync(ParsedResourcePath, authorizationResult, userIdentity, options)) as List<ResourceProviderGetResult<T>>)!;
         }
 
         /// <inheritdoc/>
@@ -418,9 +418,10 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 ParseAndValidateResourcePath(resourcePath, HttpMethod.Get, false, typeof(T));
 
             // Authorize access to the resource path.
-            await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
+            var authorizationResult =
+                await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
 
-            return await GetResourceAsyncInternal<T>(ParsedResourcePath, userIdentity, options);
+            return await GetResourceAsyncInternal<T>(ParsedResourcePath, authorizationResult, userIdentity, options);
         }
 
         /// <inheritdoc/>
@@ -432,23 +433,24 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 CreateAndValidateResourcePath(instanceId, HttpMethod.Get, typeof(T), resourceName);
 
             // Authorize access to the resource path.
-            await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
+            var authorizationResult =
+                await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
 
-            return await GetResourceAsyncInternal<T>(ParsedResourcePath, userIdentity, options);
+            return await GetResourceAsyncInternal<T>(ParsedResourcePath, authorizationResult, userIdentity, options);
         }
 
         /// <inheritdoc/>
         public async Task<TResult> UpsertResourceAsync<T, TResult>(string instanceId, T resource, UnifiedUserIdentity userIdentity)
             where T : ResourceBase
-            where TResult : ResourceProviderUpsertResult
+            where TResult : ResourceProviderUpsertResult<T>
         {
             EnsureServiceInitialization();
             var (ParsedResourcePath, AuthorizableOperation) = CreateAndValidateResourcePath(instanceId, HttpMethod.Post, typeof(T), resourceName: resource.Name);
 
             // Authorize access to the resource path.
-            var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
+            var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
 
-            var upsertResult = await UpsertResourceAsyncInternal<T, TResult>(ParsedResourcePath, resource, userIdentity);
+            var upsertResult = await UpsertResourceAsyncInternal<T, TResult>(ParsedResourcePath, authorizationResult, resource, userIdentity);
 
             await UpsertResourcePostProcess(ParsedResourcePath.InstanceId!, upsertResult, authorizationResult, userIdentity);
 
@@ -456,7 +458,24 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         }
 
         /// <inheritdoc/>
-        public async Task<(bool Exists, bool Deleted)> ResourceExists<T>(string instanceId, string resourceName, UnifiedUserIdentity userIdentity)
+        public async Task<TResult> UpdateResourcePropertiesAsync<T, TResult>(string instanceId, string resourceName, Dictionary<string, object> propertyValues, UnifiedUserIdentity userIdentity)
+            where T : ResourceBase
+            where TResult : ResourceProviderUpsertResult<T>
+        {
+            EnsureServiceInitialization();
+            var (ParsedResourcePath, AuthorizableOperation) = CreateAndValidateResourcePath(instanceId, HttpMethod.Post, typeof(T), resourceName: resourceName);
+
+            // Authorize access to the resource path.
+            var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
+
+            var updateResult =
+                await UpdateResourcePropertiesAsyncInternal<T, TResult>(ParsedResourcePath, authorizationResult, propertyValues, userIdentity);
+
+            return updateResult;
+        }
+
+        /// <inheritdoc/>
+        public async Task<(bool Exists, bool Deleted)> ResourceExistsAsync<T>(string instanceId, string resourceName, UnifiedUserIdentity userIdentity)
             where T : ResourceBase
         {
             EnsureServiceInitialization();
@@ -464,7 +483,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 CreateAndValidateResourcePath(instanceId, HttpMethod.Get, typeof(T), resourceName: resourceName);
 
             // Authorize access to the resource path.
-            await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false);
+            await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
 
             var resourceNameCheckResult = await CheckResourceName<T>(new ResourceName
                 {
@@ -478,16 +497,34 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 );
         }
 
+        /// <inheritdoc/>
+        public async Task DeleteResourceAsync<T>(string instanceId, string resourceName, UnifiedUserIdentity userIdentity)
+            where T : ResourceBase
+        {
+            EnsureServiceInitialization();
+            var (ParsedResourcePath, AuthorizableOperation) =
+                CreateAndValidateResourcePath(instanceId, HttpMethod.Get, typeof(T), resourceName: resourceName);
+
+            // Authorize access to the resource path.
+            var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
+
+            await DeleteResourceAsyncInternal<T>(ParsedResourcePath, authorizationResult, userIdentity);
+        }
+
         #region Virtuals to override in derived classes
 
         /// <summary>
         /// The internal implementation of GetResource. Must be overridden in derived classes.
         /// </summary>
         /// <param name="resourcePath">A <see cref="ResourcePath"/> containing information about the resource path.</param>
+        /// <param name="authorizationResult">The <see cref="ResourcePathAuthorizationResult"/> containing the result of the resource path authorization request.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
         /// <param name="options">The <see cref="ResourceProviderLoadOptions"/> which provides operation parameters.</param>
         /// <returns></returns>
-        protected virtual async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
+        protected virtual async Task<T> GetResourceAsyncInternal<T>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
             where T : ResourceBase
         {
             await Task.CompletedTask;
@@ -500,12 +537,56 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <typeparam name="T">The type of the resource being created or updated.</typeparam>
         /// <typeparam name="TResult">The type of the result returned.</typeparam>
         /// <param name="resourcePath">A <see cref="ResourcePath"/> containing information about the resource path.</param>
+        /// <param name="authorizationResult">The <see cref="ResourcePathAuthorizationResult"/> containing the result of the resource path authorization request.</param>
         /// <param name="resource">The instance of the resource being created or updated.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
         /// <returns></returns>
-        protected virtual async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(ResourcePath resourcePath, T resource, UnifiedUserIdentity userIdentity)
+        protected virtual async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            T resource, UnifiedUserIdentity userIdentity)
             where T : ResourceBase
-            where TResult : ResourceProviderUpsertResult
+            where TResult : ResourceProviderUpsertResult<T>
+        {
+            await Task.CompletedTask;
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// The internal implementation of UpdateResourcePropertiesAsync. Must be overridden in derived classes.
+        /// </summary>
+        /// <typeparam name="T">The type of the resource being updated.</typeparam>
+        /// <typeparam name="TResult">The type of the result returned.</typeparam>
+        /// <param name="resourcePath">The <see cref="ResourcePath"/> containing information about the resource path.</param>
+        /// <param name="authorizationResult">The <see cref="ResourcePathAuthorizationResult"/> containing the result of the resource path authorization request.</param>
+        /// <param name="propertyValues">The dictionary with propery names and values to update.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
+        protected virtual async Task<TResult> UpdateResourcePropertiesAsyncInternal<T, TResult>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            Dictionary<string, object> propertyValues,
+            UnifiedUserIdentity userIdentity)
+            where T : ResourceBase
+            where TResult : ResourceProviderUpsertResult<T>
+        {
+            await Task.CompletedTask;
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// The internal implementation of DeleteResourceAsync. Must be overridden in derived classes.
+        /// </summary>
+        /// <typeparam name="T">The type of the resource being deleted.</typeparam>
+        /// <param name="resourcePath">The <see cref="ResourcePath"/> containing information about the resource path.</param>
+        /// <param name="authorizationResult">The <see cref="ResourcePathAuthorizationResult"/> containing the result of the resource path authorization request.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        protected virtual async Task DeleteResourceAsyncInternal<T>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity)
+            where T : ResourceBase
         {
             await Task.CompletedTask;
             throw new NotImplementedException();
@@ -525,10 +606,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="actionType">The type of action to be authorized (e.g., "read", "write", "delete").</param>
         /// <param name="expandResourceTypePaths">Indicates whether to expand resource type paths that are not authorized.</param>
         /// <param name="includeRoles">Indicates whether to include roles in the response.</param>
+        /// <param name="includeActions">Indicates whether to include authorizable actions in the response.</param>
         /// <returns></returns>
         /// <exception cref="ResourceProviderException"></exception>
         private async Task<ResourcePathAuthorizationResult> Authorize(ResourcePath resourcePath, UnifiedUserIdentity? userIdentity, string actionType,
-            bool expandResourceTypePaths, bool includeRoles)
+            bool expandResourceTypePaths, bool includeRoles, bool includeActions)
         {
             try
             {
@@ -543,12 +625,17 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     [rp],
                     expandResourceTypePaths,
                     includeRoles,
+                    includeActions,
                     userIdentity);
 
                 if (!result.AuthorizationResults[rp].Authorized
-                    && !resourcePath.IsResourceTypePath)
+                    && !resourcePath.IsResourceTypePath
+                    && result.AuthorizationResults[rp].PolicyDefinitionIds.Count == 0)
                 {
-                    // Only throw an exception if the resource path refers to a specific resource.
+                    // Only throw an exception if the resource path refers to a specific resource and there are no policies to enforce.
+                    // For a resource path that refers to a specific resource, it is not acceptable to not be authorized directly
+                    // if there are policies to enforce. Authorization might still fail later on (as a result of the policy enforcement),
+                    // but at this point we don't need to throw.
                     // For a resource path that refers to a resource type, it is acceptable to not be authorized directly.
                     // When this happens, one of the following will occur:
                     // 1. The expandResourceTypePaths parameter is set to true, in which case the response will include
@@ -777,6 +864,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                                     Resource = resource,
                                     Roles = (options?.IncludeRoles ?? false)
                                         ? authorizationResult.Roles
+                                        : [],
+                                    Actions = (options?.IncludeActions ?? false)
+                                        ? authorizationResult.Actions
                                         : []
                                 }
                         ];
@@ -812,13 +902,22 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             {
                 var fileContent =
                     await _storageService.ReadFileAsync(_storageContainerName, resourceReference.Filename, default);
-                var resourceObject = JsonSerializer.Deserialize<T>(
-                    Encoding.UTF8.GetString(fileContent.ToArray()),
-                    _serializerSettings)
-                        ?? throw new ResourceProviderException($"Failed to load the resource {resourceReference.Name}. Its content file might be corrupt.",
-                            StatusCodes.Status500InternalServerError);
 
-                return resourceObject;
+                try
+                {
+                    var resourceObject = JsonSerializer.Deserialize<T>(
+                        Encoding.UTF8.GetString(fileContent.ToArray()),
+                        _serializerSettings)
+                            ?? throw new ResourceProviderException($"Failed to load the resource {resourceReference.Name}. Its content file might be corrupt.",
+                                StatusCodes.Status500InternalServerError);
+
+                    return resourceObject;
+                }
+                catch (Exception ex)
+                {
+                    throw new ResourceProviderException($"Failed to load the resource {resourceReference.Name}. {ex.Message}.",
+                                StatusCodes.Status500InternalServerError);
+                }
             }
 
             return null;
@@ -918,7 +1017,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     contentType ?? default,
                     default);
 
-                await _resourceReferenceStore!.AddResourceReference(resourceReference);
+                if (_useInternalReferencesStore)
+                    await _resourceReferenceStore!.AddResourceReference(resourceReference);
             }
             finally
             {
@@ -1260,6 +1360,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                                     ? authorizationResult.Roles
                                         .Union(subordinateAuthorizationResult?.Roles ?? [])
                                         .ToList()
+                                    : [],
+                                Actions = (options?.IncludeActions ?? false)
+                                    ? authorizationResult.Actions
+                                        .Union(subordinateAuthorizationResult?.Actions ?? [])
+                                        .ToList()
                                     : []
                             });
                 }
@@ -1393,6 +1498,35 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 if (!roleAssignmentResult.Success)
                     _logger.LogError("The [{RoleAssignment}] could not be assigned to {ObjectId}.", roleAssignmentDescription, upsertResult.ObjectId);
             }
+        }
+
+        public PolicyDefinition EnsureAndValidatePolicyDefinitions(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult)
+        {
+            // The FoundationaLLM.Conversation resource provider is opinionated about the specific PBAC policy assignment required to load resources.
+
+            if (authorizationResult.PolicyDefinitionIds.Count == 0)
+                throw new ResourceProviderException(
+                    $"The {_name} resource provider requires PBAC policy assignments to load the {resourcePath.RawResourcePath} resource path.",
+                    StatusCodes.Status500InternalServerError);
+
+            if (authorizationResult.PolicyDefinitionIds.Count > 1)
+                throw new ResourceProviderException(
+                    $"The {_name} resource provider requires exactly one PBAC policy assignment to load the {resourcePath.RawResourcePath} resource path.",
+                    StatusCodes.Status500InternalServerError);
+
+            if (!PolicyDefinitions.All.TryGetValue(authorizationResult.PolicyDefinitionIds[0], out var policyDefinition))
+                throw new ResourceProviderException(
+                    $"The {_name} resource provider did not find the PBAC policy with id {authorizationResult.PolicyDefinitionIds[0]} required to load the {resourcePath.RawResourcePath} resource path.",
+                    StatusCodes.Status500InternalServerError);
+
+            var userIdentityProperties = policyDefinition.MatchingStrategy?.UserIdentityProperties ?? [];
+            if (userIdentityProperties.Count != 1
+                || userIdentityProperties[0] != UserIdentityPropertyNames.UserPrincipalName)
+                throw new ResourceProviderException(
+                    $"The {_name} resource provider requires one PBAC policy assignment with a matching strategy based on the user principal name (UPN) to load the {resourcePath.RawResourcePath} resource path.",
+                    StatusCodes.Status500InternalServerError);
+
+            return policyDefinition;
         }
 
         #endregion

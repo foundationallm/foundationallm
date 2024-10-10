@@ -1,4 +1,5 @@
 <template>
+	<Toast position="top-center" />
 	<div class="navbar">
 		<!-- Sidebar header -->
 		<div class="navbar__header">
@@ -15,7 +16,6 @@
 						:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
 						size="small"
 						severity="secondary"
-						class="secondary-button"
 						aria-label="Toggle sidebar"
 						:aria-expanded="!$appStore.isSidebarClosed"
 						@click="$appStore.toggleSidebar"
@@ -31,7 +31,7 @@
 			<div class="navbar__content__left">
 				<div class="navbar__content__left__item">
 					<template v-if="currentSession">
-						<span class="current_session_name">{{ currentSession.name }}</span>
+						<span class="current_session_name">{{ currentSession.display_name }}</span>
 						<!-- <VTooltip :auto-hide="false" :popper-triggers="['hover']">
 							<Button
 								v-if="!$appConfigStore.isKioskMode"
@@ -44,7 +44,7 @@
 							/>
 							<template #popper>Copy link to chat session</template>
 						</VTooltip> -->
-						<Toast position="top-center" />
+						
 					</template>
 					<template v-else>
 						<span>Please select a session</span>
@@ -90,8 +90,8 @@
 </template>
 
 <script lang="ts">
-import type { Session } from '@/js/types';
 import { hideAllPoppers } from 'floating-vue';
+import type { Session } from '@/js/types';
 
 interface AgentDropdownOption {
 	label: string;
@@ -293,12 +293,6 @@ export default {
 
 .button--auth {
 	margin-left: 24px;
-}
-
-.secondary-button {
-	background-color: var(--secondary-button-bg) !important;
-	border-color: var(--secondary-button-bg) !important;
-	color: var(--secondary-button-text) !important;
 }
 
 .header__dropdown {

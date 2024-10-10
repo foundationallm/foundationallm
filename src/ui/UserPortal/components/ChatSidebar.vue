@@ -13,7 +13,6 @@
 					:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
 					size="small"
 					severity="secondary"
-					class="secondary-button"
 					aria-label="Toggle sidebar"
 					:aria-expanded="!$appStore.isSidebarClosed"
 					@click="$appStore.toggleSidebar"
@@ -47,20 +46,20 @@
 						v-for="session in sessions"
 						:key="session.id"
 						class="chat-sidebar__chat chat-list-item"
+						role="listitem"
 						@click="handleSessionSelected(session)"
 						@keydown.enter="handleSessionSelected(session)"
-						role="listitem"
 					>
 						<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
 							<!-- Chat name -->
 
 							<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 								<span class="chat__name" tabindex="0" @keydown.esc="hideAllPoppers">{{
-									session.name
+									session.display_name
 								}}</span>
 								<template #popper>
 									<div role="tooltip">
-										{{ session.name }}
+										{{ session.display_name }}
 									</div>
 								</template>
 							</VTooltip>
@@ -108,7 +107,7 @@
 			<div>
 				<span class="chat-sidebar__username">{{ $authStore.currentAccount?.name }}</span>
 				<Button
-					class="chat-sidebar__sign-out secondary-button"
+					class="chat-sidebar__sign-out"
 					icon="pi pi-sign-out"
 					label="Sign Out"
 					severity="secondary"
@@ -123,7 +122,7 @@
 			v-if="sessionToRename !== null"
 			v-focustrap
 			:visible="sessionToRename !== null"
-			:header="`Rename Chat ${sessionToRename?.name}`"
+			:header="`Rename Chat ${sessionToRename?.display_name}`"
 			:closable="false"
 			class="sidebar-dialog"
 			modal
@@ -165,7 +164,7 @@
 				</div>
 			</div>
 			<div v-else>
-				<p>Do you want to delete the chat "{{ sessionToDelete.name }}" ?</p>
+				<p>Do you want to delete the chat "{{ sessionToDelete.display_name }}" ?</p>
 			</div>
 			<template #footer>
 				<Button label="Cancel" text :disabled="deleteProcessing" @click="sessionToDelete = null" />
@@ -182,8 +181,8 @@
 </template>
 
 <script lang="ts">
-import type { Session } from '@/js/types';
 import { hideAllPoppers } from 'floating-vue';
+import type { Session } from '@/js/types';
 declare const process: any;
 
 export default {
@@ -224,7 +223,7 @@ export default {
 	methods: {
 		openRenameModal(session: Session) {
 			this.sessionToRename = session;
-			this.newSessionName = session.name;
+			this.newSessionName = session.display_name;
 		},
 
 		closeRenameModal() {
@@ -452,12 +451,6 @@ export default {
 	width: 100%;
 }
 
-.secondary-button {
-	background-color: var(--secondary-button-bg) !important;
-	border-color: var(--secondary-button-bg) !important;
-	color: var(--secondary-button-text) !important;
-}
-
 .chat-sidebar__username {
 	color: var(--primary-text);
 	font-weight: 600;
@@ -488,14 +481,14 @@ export default {
 }
 
 ul.chat-list {
-  list-style-type: none;
-  padding-left: 0;
-  margin: 0;
+	list-style-type: none;
+	padding-left: 0;
+	margin: 0;
 }
 
 li.chat-list-item {
-  padding: 0;
-  margin: 0;
+	padding: 0;
+	margin: 0;
 }
 
 @media only screen and (max-width: 950px) {

@@ -28,8 +28,11 @@ export const useAuthStore = defineStore('auth', {
 			return useNuxtApp().$appConfigStore.auth;
 		},
 
-		oneDriveWorkSchoolScopes(){
-			return useNuxtApp().$appConfigStore.oneDriveWorkSchoolScopes;
+		oneDriveWorkSchoolScopes() {
+			const appStore = useAppStore();
+			return appStore.fileStoreConnectors.find(
+				(connector) => connector.subcategory === 'OneDriveWorkSchool',
+			)?.authentication_parameters['scope'];
 		},
 
 		apiScopes() {
@@ -114,12 +117,14 @@ export const useAuthStore = defineStore('auth', {
 				account: this.currentAccount,
 				scopes: [this.oneDriveWorkSchoolScopes],
 			};
-			
+
 			try {
 				const resp = await this.msalInstance.acquireTokenSilent(oneDriveWorkSchoolAPIScopes);
 				accessToken = resp.accessToken;
 			} catch (error) {
 				// Redirect to get token or login
+				localStorage.setItem('oneDriveWorkSchoolConsentRedirect', JSON.stringify(true));
+				
 				oneDriveWorkSchoolAPIScopes.state = 'Core API redirect';
 				await this.msalInstance.loginRedirect(oneDriveWorkSchoolAPIScopes);
 			}
@@ -133,7 +138,7 @@ export const useAuthStore = defineStore('auth', {
 			)?.url;
 			const oneDriveToken = await this.msalInstance.acquireTokenSilent({
 				account: this.currentAccount,
-				scopes: [`${ oneDriveBaseURL }.default`],
+				scopes: [`${oneDriveBaseURL}${this.oneDriveWorkSchoolScopes}`],
 			});
 
 			return oneDriveToken;
@@ -150,12 +155,12 @@ export const useAuthStore = defineStore('auth', {
 				const profilePhotoBlob = await $fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
 					method: 'GET',
 					headers: {
-						Authorization: `Bearer ${graphToken.accessToken}`
-					}
+						Authorization: `Bearer ${graphToken.accessToken}`,
+					},
 				});
 
 				return URL.createObjectURL(profilePhotoBlob);
-			} catch(error) {
+			} catch (error) {
 				return null;
 			}
 		},

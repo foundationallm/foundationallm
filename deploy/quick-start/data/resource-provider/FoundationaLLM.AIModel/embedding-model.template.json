@@ -1,5 +1,5 @@
 {
-    "type": "completion",
+    "type": "embedding",
     "name": "DefaultEmbeddingAIModel",
     "object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.AIModel/aiModels/DefaultEmbeddingAIModel",
     "display_name": null,

@@ -178,10 +178,11 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             {
                 var apiEndpoint = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
                     instanceId,
-                    agentBase.APIEndpointConfigurationObjectIds[endpointKey],
+                    //agentBase.APIEndpointConfigurationObjectIds[endpointKey],
+                    endpointKey,
                     currentUserIdentity);
 
-                explodedObjects[endpointKey] = apiEndpoint;
+                explodedObjects[agentBase.APIEndpointConfigurationObjectIds[endpointKey]] = apiEndpoint;
             }
 
             #region Knowledge management processing
@@ -281,7 +282,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             {
                 var assistantUserContextName = $"{currentUserIdentity.UPN?.NormalizeUserPrincipalName() ?? currentUserIdentity.UserId}-assistant-{instanceId.ToLower()}";
 
-                var nameCheckResult = await azureOpenAIResourceProvider.ResourceExists<AssistantUserContext>(
+                var nameCheckResult = await azureOpenAIResourceProvider.ResourceExistsAsync<AssistantUserContext>(
                     instanceId,
                     assistantUserContextName,
                     currentUserIdentity);

@@ -380,7 +380,9 @@ export default {
 	},
 
 	async getFileStoreConnectors() {
-		return await this.fetch(`/instances/${this.instanceId}/files/file-store-connectors`) as FileStoreConnector[];
+		return (await this.fetch(
+			`/instances/${this.instanceId}/files/file-store-connectors`,
+		)) as FileStoreConnector[];
 	},
 
 	/**
@@ -423,11 +425,15 @@ export default {
 	async oneDriveWorkSchoolDownload(
 		sessionId: string,
 		agentName: string,
-		oneDriveWorkSchool: OneDriveWorkSchool) {
-		return (await this.fetch(`/instances/${this.instanceId}/oneDriveWorkSchool/download?instanceId=${this.instanceId}&sessionId=${sessionId}&agentName=${agentName}`, {
+		oneDriveWorkSchool: OneDriveWorkSchool,
+	) {
+		return (await this.fetch(
+			`/instances/${this.instanceId}/oneDriveWorkSchool/download?instanceId=${this.instanceId}&sessionId=${sessionId}&agentName=${agentName}`,
+			{
 				method: 'POST',
 				body: oneDriveWorkSchool,
-		})) as OneDriveWorkSchool;
+			},
+		)) as OneDriveWorkSchool;
 	},
 };
 

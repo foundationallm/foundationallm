@@ -16,9 +16,11 @@ using System.Collections.ObjectModel;
 
 namespace FoundationaLLM.Common.Models.Authorization
 {
+    /// <summary>
+    /// Represents all role definitions used in RBAC.
+    /// </summary>
     public static class RoleDefinitions
     {
-
         public static readonly ReadOnlyDictionary<string, RoleDefinition> All = new (
             new Dictionary<string, RoleDefinition>()
             {

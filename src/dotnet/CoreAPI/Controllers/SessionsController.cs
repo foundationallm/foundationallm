@@ -31,7 +31,7 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <param name="instanceId">The id of the instance.</param>
         [HttpGet(Name = "GetAllChatSessions")]
         public async Task<IEnumerable<ConversationModels.Conversation>> GetAllChatSessions(string instanceId) =>
-            await _coreService.GetAllChatSessionsAsync(instanceId);
+            await _coreService.GetAllConversationsAsync(instanceId);
 
         /// <summary>
         /// Returns the chat messages related to an existing session.
@@ -72,7 +72,7 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <param name="chatSessionProperties">The session properties.</param>
         [HttpPost(Name = "CreateNewChatSession")]
         public async Task<ConversationModels.Conversation> CreateNewChatSession(string instanceId, [FromBody] ChatSessionProperties chatSessionProperties) =>
-            await _coreService.CreateNewChatSessionAsync(instanceId, chatSessionProperties);
+            await _coreService.CreateConversationAsync(instanceId, chatSessionProperties);
 
         /// <summary>
         /// Rename the chat session.
@@ -82,7 +82,7 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <param name="chatSessionProperties">The session properties.</param>
         [HttpPost("{sessionId}/rename", Name = "RenameChatSession")]
         public async Task<ConversationModels.Conversation> RenameChatSession(string instanceId, string sessionId, [FromBody] ChatSessionProperties chatSessionProperties) =>
-            await _coreService.RenameChatSessionAsync(instanceId, sessionId, chatSessionProperties);
+            await _coreService.RenameConversationAsync(instanceId, sessionId, chatSessionProperties);
 
         /// <summary>
         /// Delete a chat session and related messages.
@@ -91,6 +91,6 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <param name="sessionId">The session id to delete.</param>
         [HttpDelete("{sessionId}", Name = "DeleteChatSession")]
         public async Task DeleteChatSession(string instanceId, string sessionId) =>
-            await _coreService.DeleteChatSessionAsync(instanceId, sessionId);
+            await _coreService.DeleteConversationAsync(instanceId, sessionId);
     }
 }

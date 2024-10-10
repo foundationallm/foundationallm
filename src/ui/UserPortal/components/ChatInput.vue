@@ -6,29 +6,38 @@
 					<i
 						class="pi pi-info-circle"
 						tabindex="0"
-						@keydown.esc="hideAllPoppers"
 						aria-label="info icon"
+						@keydown.esc="hideAllPoppers"
 					></i>
-					<template #popper role="tooltip"
-						><div role="tooltip">Use Shift+Enter to add a new line</div></template
-					>
+					<template #popper>
+						<div role="tooltip">Use Shift+Enter to add a new line</div>
+					</template>
 				</VTooltip>
 			</div>
 			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
-					type="button"
 					ref="fileUploadButton"
+					type="button"
 					:badge="fileArrayFiltered.length.toString() || null"
 					:aria-label="'Upload file (' + fileArrayFiltered.length.toString() + ' files attached)'"
 					icon="pi pi-paperclip"
-					class="file-upload-button secondary-button"
+					class="file-upload-button"
+					severity="secondary"
 					aria-controls="overlay_menu"
 					aria-haspopup="true"
-					@click="toggle"
 					style="height: 100%"
+					@click="toggle"
 					@keydown.esc="hideAllPoppers"
 				/>
 				<OverlayPanel ref="menu" style="max-width: 98%">
+					<div class="file-upload-header">
+						<Button
+							:icon="!isMobile ? 'pi pi-times' : undefined"
+							label="Close"
+							class="file-upload-container-button"
+							@click="toggle"
+						/>
+					</div>
 					<FileUpload
 						ref="fileUpload"
 						:multiple="true"
@@ -38,6 +47,9 @@
 						@select="fileSelected"
 					>
 						<template #content>
+							<div v-if="fileArrayFiltered.length === 0 && oneDriveFiles.length === 0 && localFiles.length === 0" class="file-upload-empty-desktop">
+								<p>No files have been added to this message.</p>
+							</div>
 							<!-- Progress bar -->
 							<div v-if="isUploading" style="padding: 60px 10px">
 								<ProgressBar
@@ -50,9 +62,17 @@
 
 							<!-- File list -->
 							<div v-else class="file-upload-file-container">
-								<div v-for="file in fileArrayFiltered" :key="file.fileName" class="file-upload-file">
+								<div
+									v-for="file in fileArrayFiltered"
+									:key="file.fileName"
+									class="file-upload-file"
+								>
 									<div class="file-upload-file_info">
-										<i v-if="!isMobile" class="pi pi-file" style="font-size: 2rem; margin-right: 1rem"></i>
+										<i
+											v-if="!isMobile"
+											class="pi pi-file"
+											style="font-size: 2rem; margin-right: 1rem"
+										></i>
 										<span style="font-weight: 600">{{ file.fileName }}</span>
 									</div>
 									<div style="display: flex; align-items: center; margin-left: 10px; gap: 0.5rem">
@@ -63,18 +83,22 @@
 											text
 											severity="danger"
 											aria-label="Delete attachment"
-											@click="removeAttachment(file)"
+											@click="fileToDelete = { name: file.fileName, type: 'attachment', file: file }"
 										/>
 									</div>
 								</div>
 								<Divider v-if="fileArrayFiltered.length > 0" />
 								<div
-									v-for="(file, index) of localFiles"
+									v-for="(file) of localFiles"
 									:key="file.name + file.type + file.size"
 									class="file-upload-file"
 								>
 									<div class="file-upload-file_info">
-										<i v-if="!isMobile" class="pi pi-file" style="font-size: 2rem; margin-right: 1rem"></i>
+										<i
+											v-if="!isMobile"
+											class="pi pi-file"
+											style="font-size: 2rem; margin-right: 1rem"
+										></i>
 										<span style="font-weight: 600">{{ file.name }}</span>
 										<div v-if="!isMobile">{{ formatSize(file.size) }}</div>
 									</div>
@@ -86,18 +110,22 @@
 											text
 											severity="danger"
 											aria-label="Remove file"
-											@click="removeLocalFile(index)"
+											@click="fileToDelete = { name: file.name, type: 'local', file: file }"
 										/>
 									</div>
 								</div>
 								<div v-if="oneDriveFiles && oneDriveFiles.length > 0">
 									<div
-										v-for="(file, index) of oneDriveFiles"
+										v-for="(file) of oneDriveFiles"
 										:key="file.name + file.size"
 										class="file-upload-file"
 									>
 										<div class="file-upload-file_info">
-											<i v-if="!isMobile" class="pi pi-file" style="font-size: 2rem; margin-right: 1rem"></i>
+											<i
+												v-if="!isMobile"
+												class="pi pi-file"
+												style="font-size: 2rem; margin-right: 1rem"
+											></i>
 											<span style="font-weight: 600">{{ file.name }}</span>
 											<div v-if="!isMobile">{{ formatSize(file.size) }}</div>
 										</div>
@@ -109,19 +137,22 @@
 												text
 												severity="danger"
 												aria-label="Remove file"
-												@click="removeOneDriveFile(index)"
+												@click="fileToDelete = { name: file.name, type: 'oneDrive', file: file }"
 											/>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="file-upload-button-container" v-if="oneDriveFiles.length > 0 || localFiles.length > 0">
+							<div
+								v-if="oneDriveFiles.length > 0 || localFiles.length > 0"
+								class="file-upload-button-container"
+							>
 								<Button
 									icon="pi pi-upload"
 									label="Upload"
-									class="primary-button file-upload-container-button"
+									class="file-upload-container-button"
 									style="margin-top: 0.5rem"
-									:disabled="isUploading || localFiles.length === 0 && oneDriveFiles.length === 0"
+									:disabled="isUploading || (localFiles.length === 0 && oneDriveFiles.length === 0)"
 									@click="handleUpload"
 								/>
 							</div>
@@ -129,13 +160,37 @@
 					</FileUpload>
 					<Divider v-if="oneDriveFiles.length > 0 || localFiles.length > 0" />
 					<div class="file-overlay-panel__footer">
-						<Button :icon="!isMobile ? 'pi pi-file-plus' : undefined" label="Select file from Computer" class="file-upload-container-button" @click="browseFiles" />
+						<Button
+							:icon="!isMobile ? 'pi pi-file-plus' : undefined"
+							label="Select file from Computer"
+							class="file-upload-container-button"
+							@click="browseFiles"
+						/>
 						<template v-if="$appStore.oneDriveWorkSchool">
-							<Button :icon="!isMobile ? 'pi pi-cloud-upload' : undefined" label="Select file from OneDrive" class="file-upload-container-button" :disabled="disconnectingOneDrive" @click="oneDriveWorkSchoolDownload" :loading="oneDriveBaseURL === null" />
-							<Button :icon="!isMobile ? 'pi pi-sign-out' : undefined" label="Disconnect OneDrive" class="file-upload-container-button" @click="oneDriveWorkSchoolDisconnect" :loading="disconnectingOneDrive" />
+							<Button
+								label="Select file from OneDrive"
+								class="file-upload-container-button"
+								:icon="!isMobile ? 'pi pi-cloud-upload' : undefined"
+								:disabled="disconnectingOneDrive"
+								:loading="oneDriveBaseURL === null"
+								@click="oneDriveWorkSchoolDownload"
+							/>
+							<Button
+								label="Disconnect OneDrive"
+								class="file-upload-container-button"
+								:icon="!isMobile ? 'pi pi-sign-out' : undefined"
+								:loading="disconnectingOneDrive"
+								@click="oneDriveWorkSchoolDisconnect"
+							/>
 						</template>
 						<template v-else>
-							<Button :icon="!isMobile ? 'pi pi-sign-in' : undefined" label="Connect to OneDrive" class="file-upload-container-button" @click="oneDriveWorkSchoolConnect" :loading="connectingOneDrive || $appStore.oneDriveWorkSchool === null" />
+							<Button
+								label="Connect to OneDrive"
+								class="file-upload-container-button"
+								:icon="!isMobile ? 'pi pi-sign-in' : undefined"
+								:loading="connectingOneDrive || $appStore.oneDriveWorkSchool === null"
+								@click="connectOneDriveWorkSchool"
+							/>
 						</template>
 					</div>
 				</OverlayPanel>
@@ -148,13 +203,46 @@
 				</template>
 			</VTooltip>
 			<Dialog
+				v-if="fileToDelete !== null"
+				v-focustrap
+				:visible="fileToDelete !== null"
+				:closable="false"
+				modal
+				:header="fileToDelete.type === 'local' | 'oneDrive' ? 'Remove a file' : 'Delete a file'"
+				@keydown="deleteFileKeydown"
+			>
+				<div v-if="deleteFileProcessing" class="delete-dialog-content">
+					<div role="status">
+						<i
+							class="pi pi-spin pi-spinner"
+							style="font-size: 2rem"
+							role="img"
+							aria-label="Loading"
+						></i>
+					</div>
+				</div>
+				<div v-else>
+					<p>Do you want to {{ fileToDelete.type === "local" | "oneDrive" ? "remove" : "delete" }} the file "{{ fileToDelete.name }}" ?</p>
+				</div>
+				<template #footer>
+					<Button label="Cancel" text :disabled="deleteFileProcessing" @click="fileToDelete = null" />
+					<Button
+						:label="fileToDelete.type === 'local' | 'oneDrive' ? 'Remove' : 'Delete'"
+						severity="danger"
+						autofocus
+						:disabled="deleteFileProcessing"
+						@click="removeDialogFile"
+					/>
+				</template>
+			</Dialog>
+			<Dialog
 				v-model:visible="showOneDriveIframeDialog"
 				modal
 				aria-label="OneDrive File Picker Dialog"
-				style="max-width: 98%; min-width: 50%; max-height: 98%;"
+				style="max-width: 98%; min-width: 50%; max-height: 98%"
 				class="onedrive-iframe-dialog"
 			>
-				<div class="onedrive-iframe-content" id="oneDriveIframeDialogContent"></div>
+				<div id="oneDriveIframeDialogContent" class="onedrive-iframe-content" />
 			</Dialog>
 			<Mentionable
 				:keys="['@']"
@@ -167,7 +255,9 @@
 				@open="agentListOpen = true"
 				@close="agentListOpen = false"
 			>
-				<p class="sr-only" id="chat-input-label">The agent can make mistakes. Please check important information carefully.</p>
+				<p id="chat-input-label" class="sr-only">
+					The agent can make mistakes. Please check important information carefully.
+				</p>
 				<textarea
 					id="chat-input"
 					ref="inputRef"
@@ -195,7 +285,7 @@
 		</div>
 		<Button
 			:disabled="disabled"
-			class="primary-button submit"
+			class="submit"
 			icon="pi pi-send"
 			label="Send"
 			@click="handleSend"
@@ -240,37 +330,42 @@ export default {
 			win: null as any,
 			port: null as any,
 			filePickerParams: {
-				sdk: "8.0",
+				sdk: '8.0',
 				entry: {
 					oneDrive: {
-						files: {
-						},
-					}
+						files: {},
+					},
 				},
 				authentication: {},
 				messaging: {
 					origin: document.location.origin,
-					channelId: "27",
+					channelId: '27',
 				},
 				typesAndSources: {
-					mode: "files",
+					mode: 'files',
 					pivots: {
 						oneDrive: true,
 						recent: false,
 						shared: false,
 						sharedLibraries: true,
 						myOrganization: true,
-						favorites: true
+						favorites: true,
 					},
 				},
-				access: { mode: "read" },
-				search: { enabled: true }
+				access: { mode: 'read' },
+				search: { enabled: true },
+				selection: {
+					mode: 'multiple',
+				},
 			},
 			oneDriveFiles: [],
 			localFiles: [],
 			oneDriveBaseURL: null as string | null,
 			disconnectingOneDrive: false,
 			connectingOneDrive: false,
+			fileToDelete: null as any,
+			deleteFileProcessing: false,
+			connectingOneDrive: true,
 		};
 	},
 
@@ -303,14 +398,20 @@ export default {
 	},
 
 	async created() {
+		if (localStorage.getItem('oneDriveWorkSchoolConsentRedirect') === 'true') {
+			await this.oneDriveWorkSchoolConnect();
+			localStorage.setItem('oneDriveWorkSchoolConsentRedirect', JSON.stringify(false));
+		}else{
+			this.connectingOneDrive = false;
+		}
+
+		await this.$appStore.getFileStoreConnectors();
 		await this.$appStore.getAgents();
 
 		this.agents = this.$appStore.agents.map((agent) => ({
 			label: agent.resource.name,
 			value: agent.resource.name,
 		}));
-
-		await this.$appStore.getFileStoreConnectors();
 
 		this.oneDriveBaseURL = this.$appStore.fileStoreConnectors.find(
 			(connector) => connector.subcategory === 'OneDriveWorkSchool',
@@ -322,7 +423,7 @@ export default {
 		window.addEventListener('resize', this.handleResize);
 	},
 
-	beforeDestroy() {
+	beforeUnmount() {
 		window.removeEventListener('resize', this.handleResize);
 	},
 
@@ -339,11 +440,12 @@ export default {
 		},
 
 		handleResize() {
-			console.log('resize');
 			this.isMobile = window.screen.width < 950;
-			this.$nextTick(() => {
-				this.$refs.menu.alignOverlay();
-			});
+			if (this.$refs.menu.visible) {
+				this.$nextTick(() => {
+					this.$refs.menu.alignOverlay();
+				});
+			}
 		},
 
 		adjustTextareaHeight() {
@@ -367,7 +469,7 @@ export default {
 
 			const totalFiles = this.localFiles.length + this.oneDriveFiles.length;
 			const combinedFiles = [...this.localFiles, ...this.oneDriveFiles];
-			combinedFiles.forEach(file => {
+			combinedFiles.forEach((file) => {
 				if (file instanceof File) {
 					file.source = 'local';
 				} else {
@@ -403,7 +505,7 @@ export default {
 							onProgress,
 						);
 					} else if (file.source === 'oneDrive') {
-						await this.callCoreApioneDriveWorkSchoolDownloadEndpoint(file.id);
+						await this.callCoreApiOneDriveWorkSchoolDownloadEndpoint(file.id, file.parentReference.driveId);
 					}
 					filesUploaded += 1;
 				} catch (error) {
@@ -426,6 +528,7 @@ export default {
 						this.$nextTick(() => {
 							this.$refs.menu.alignOverlay();
 						});
+						this.toggle();
 						if (filesUploaded > 0) {
 							this.$toast.add({
 								severity: 'success',
@@ -439,24 +542,47 @@ export default {
 			});
 		},
 
+		deleteFileKeydown(event: KeyboardEvent) {
+			if (event.key === 'Escape') {
+				this.fileToDelete = null;
+			}
+		},
+
+		removeDialogFile() {
+			this.deleteFileProcessing = true;
+			if (this.fileToDelete.type === 'local') {
+				this.removeLocalFile(this.fileToDelete.file);
+			} else if (this.fileToDelete.type === 'oneDrive') {
+				this.removeOneDriveFile(this.fileToDelete.file);
+			} else if (this.fileToDelete.type === 'attachment') {
+				this.removeAttachment(this.fileToDelete.file);
+			}
+		},
+
 		async removeAttachment(file: any) {
 			await this.$appStore.deleteAttachment(file);
+			this.fileToDelete = null;
+			this.deleteFileProcessing = false;
 
 			this.$nextTick(() => {
 				this.$refs.menu.alignOverlay();
 			});
 		},
 
-		removeLocalFile(index: number) {
-			this.localFiles.splice(index, 1);
+		removeLocalFile(file: any) {
+			this.localFiles = this.localFiles.filter((localFile) => localFile.name !== file.name);
+			this.fileToDelete = null;
+			this.deleteFileProcessing = false;
 
 			this.$nextTick(() => {
 				this.$refs.menu.alignOverlay();
 			});
 		},
 
-		removeOneDriveFile(index: number) {
-			this.oneDriveFiles.splice(index, 1);
+		removeOneDriveFile(file: any) {
+			this.oneDriveFiles = this.oneDriveFiles.filter((oneDriveFile) => oneDriveFile.name !== file.name);
+			this.fileToDelete = null;
+			this.deleteFileProcessing = false;
 
 			this.$nextTick(() => {
 				this.$refs.menu.alignOverlay();
@@ -488,11 +614,12 @@ export default {
 
 			event.files.forEach((file: any) => {
 				const fileAlreadyExists = this.localFiles.some(
-					(existingFile: any) => existingFile.name === file.name && existingFile.size === file.size
+					(existingFile: any) => existingFile.name === file.name && existingFile.size === file.size,
 				);
-				if (fileAlreadyExists) {
-					return;
-				} else if (file.size > 536870912) {
+
+				if (fileAlreadyExists) return;
+
+				if (file.size > 536870912) {
 					this.$toast.add({
 						severity: 'error',
 						summary: 'Error',
@@ -544,6 +671,13 @@ export default {
 			}
 		},
 
+		async connectOneDriveWorkSchool() {
+			await this.$authStore.requestOneDriveWorkSchoolConsent();
+			if (localStorage.getItem('oneDriveWorkSchoolConsentRedirect') !== 'true') {
+				await this.oneDriveWorkSchoolConnect();
+			}
+		},
+
 		async oneDriveWorkSchoolConnect() {
 			this.connectingOneDrive = true;
 			await this.$appStore.oneDriveWorkSchoolConnect().then(() => {
@@ -592,65 +726,68 @@ export default {
 
 			const queryString = new URLSearchParams({
 				filePicker: JSON.stringify(this.filePickerParams),
-				locale: "en-us",
+				locale: 'en-us',
 			});
 
 			const url = `${this.oneDriveBaseURL}_layouts/15/FilePicker.aspx?${queryString}`;
 
-			const form = document.createElement("form");
-			form.setAttribute("action", url);
-			form.setAttribute("method", "POST");
+			const form = document.createElement('form');
+			form.setAttribute('action', url);
+			form.setAttribute('method', 'POST');
 			iframe.contentWindow.document.body.append(form);
 
-			const input = iframe.contentWindow.document.createElement("input");
-			input.setAttribute("type", "hidden");
-			input.setAttribute("name", "access_token");
-			input.setAttribute("value", oneDriveToken.accessToken);
+			const input = iframe.contentWindow.document.createElement('input');
+			input.setAttribute('type', 'hidden');
+			input.setAttribute('name', 'access_token');
+			input.setAttribute('value', oneDriveToken.accessToken);
 			form.appendChild(input);
 
 			form.submit();
 
-			window.addEventListener("message", (event) => {
+			window.addEventListener('message', (event) => {
 				const message = event.data;
 
-				if (message.type === "initialize" && message.channelId === this.filePickerParams.messaging.channelId) {
+				if (
+					message.type === 'initialize' &&
+					message.channelId === this.filePickerParams.messaging.channelId
+				) {
 					this.port = event.ports[0];
-					this.port.addEventListener("message", this.messageListener);
+					this.port.addEventListener('message', this.messageListener);
 					this.port.start();
 					this.port.postMessage({
-						type: "activate",
+						type: 'activate',
 					});
 				}
 			});
 		},
-		
+
 		async messageListener(event) {
 			const message = event.data;
 			let dialogContent;
 
 			switch (message.type) {
-				case "notification":
+				case 'notification':
 					console.log(`notification: ${JSON.stringify(message)}`);
 					break;
 
-				case "command":
+				case 'command': {
 					this.port.postMessage({
-						type: "acknowledge",
+						type: 'acknowledge',
 						id: message.id,
 					});
 
 					const command: any = message.data;
 
 					switch (command.command) {
-						case "authenticate":
+						case 'authenticate': {
 							const token = await this.$authStore.getOneDriveWorkSchoolToken();
 
 							if (token) {
 								this.port.postMessage({
-									type: "result",
+									type: 'result',
 									id: message.id,
 									data: {
-										result: "token",
+										result: 'token',
 										token: token.accessToken,
 									},
 								});
@@ -658,21 +795,26 @@ export default {
 								console.error(`Could not get auth token for command: ${JSON.stringify(command)}`);
 							}
 							break;
+						}
 
-						case "close":
+						case 'close':
 							console.log(`Closed: ${JSON.stringify(command)}`);
 
 							dialogContent = document.getElementById('oneDriveIframeDialogContent');
 							dialogContent.innerHTML = '';
-							window.removeEventListener("message", this.messageListener);
+							window.removeEventListener('message', this.messageListener);
 							this.port.close();
 							this.showOneDriveIframeDialog = false;
 							break;
 
-						case "pick":
-							console.log(`Picked: ${JSON.stringify(command)}`);
+						case 'pick':
+							console.log(command.items);
+							command.items.forEach((item) => {
+								console.log(`Picked: ${JSON.stringify(item)}`);
+								this.oneDriveFiles.push(item);
+							});
 
-							this.oneDriveFiles.push(...command.items);
+							// this.oneDriveFiles.push(...command.items);
 
 							this.$nextTick(() => {
 								this.$refs.menu.alignOverlay();
@@ -680,25 +822,25 @@ export default {
 
 							dialogContent = document.getElementById('oneDriveIframeDialogContent');
 							dialogContent.innerHTML = '';
-							window.removeEventListener("message", this.messageListener);
+							window.removeEventListener('message', this.messageListener);
 							this.port.close();
 							this.showOneDriveIframeDialog = false;
 
 							this.port.postMessage({
-								type: "result",
+								type: 'result',
 								id: message.id,
 								data: {
-									result: "success",
+									result: 'success',
 								},
 							});
 							break;
-							
+
 						default:
 							console.warn(`Unsupported command: ${JSON.stringify(command)}`, 2);
 							this.port.postMessage({
-								result: "error",
+								result: 'error',
 								error: {
-									code: "unsupportedCommand",
+									code: 'unsupportedCommand',
 									message: command.command,
 								},
 								isExpected: true,
@@ -706,18 +848,18 @@ export default {
 							break;
 					}
 					break;
+				}
 			}
 		},
 
-		async callCoreApioneDriveWorkSchoolDownloadEndpoint(id) {
+		async callCoreApiOneDriveWorkSchoolDownloadEndpoint(id, driveId) {
 			const oneDriveToken = await this.$authStore.requestOneDriveWorkSchoolConsent();
 
 			await this.$appStore.oneDriveWorkSchoolDownload(this.$appStore.currentSession.sessionId, {
-				id: id,
+				id,
+				driveId,
 				access_token: oneDriveToken,
 			});
-			
-			return;
 		},
 
 		hideAllPoppers() {
@@ -733,18 +875,6 @@ export default {
 	background-color: white;
 	border-radius: 8px;
 	width: 100%;
-}
-
-.primary-button {
-	background-color: var(--primary-button-bg) !important;
-	border-color: var(--primary-button-bg) !important;
-	color: var(--primary-button-text) !important;
-}
-
-.secondary-button {
-	background-color: var(--secondary-button-bg) !important;
-	border-color: var(--secondary-button-bg) !important;
-	color: var(--secondary-button-text) !important;
 }
 
 .pre-input {
@@ -783,7 +913,11 @@ export default {
 	color: #6c6c6c;
 	padding: 1.05rem 0.75rem 0.5rem 0.75rem;
 	border: 2px solid #e1e1e1;
-	transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
+	transition:
+		background-color 0.3s,
+		color 0.3s,
+		border-color 0.3s,
+		box-shadow 0.3s;
 	resize: none;
 }
 
@@ -866,12 +1000,29 @@ export default {
 
 .file-overlay-panel__footer {
 	display: flex;
-	gap: 0.5rem
+	gap: 0.5rem;
 }
 
 .onedrive-iframe-content {
 	height: 500px;
 	width: 100%;
+}
+
+.delete-dialog-content {
+	display: flex;
+	justify-content: center;
+	padding: 20px 150px;
+}
+
+.file-upload-header {
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: 0.5rem;
+}
+
+.file-upload-empty-desktop {
+	text-align: center;
+	margin-bottom: 0.5rem;
 }
 
 @media only screen and (max-width: 405px) {
@@ -911,8 +1062,8 @@ export default {
 }
 
 @media only screen and (max-width: 950px) {
-	.file-upload-empty-desktop {
-		display: none;
+	.file-overlay-panel__footer {
+		flex-direction: column;
 	}
 }
 </style>
@@ -984,6 +1135,7 @@ export default {
 }
 .onedrive-iframe-dialog .p-dialog-content {
 	padding: 0;
+	overflow: hidden;
 }
 
 @media only screen and (max-width: 405px) {

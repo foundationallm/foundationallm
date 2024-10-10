@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,7 +42,14 @@ namespace FoundationaLLM.Management.API.Controllers
                 resourcePath,
                 async (resourceProviderService) =>
                 {
-                    var result = await resourceProviderService.HandleGetAsync($"instances/{instanceId}/providers/{resourceProvider}/{resourcePath}", _callContext.CurrentUserIdentity);
+                    var result = await resourceProviderService.HandleGetAsync(
+                        $"instances/{instanceId}/providers/{resourceProvider}/{resourcePath}",
+                        _callContext.CurrentUserIdentity!,
+                        new ResourceProviderLoadOptions
+                        {
+                            IncludeActions = true,
+                            IncludeRoles = true
+                        });
                     return new OkObjectResult(result);
                 });
 

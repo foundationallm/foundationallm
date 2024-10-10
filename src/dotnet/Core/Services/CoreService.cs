@@ -1,6 +1,5 @@
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
-using FoundationaLLM.Common.Constants.Chat;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Orchestration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
@@ -53,7 +52,7 @@ namespace FoundationaLLM.Core.Services;
 /// <param name="resourceProviderServices">A dictionary of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
 /// <param name="configuration">The <see cref="IConfiguration"/> service providing configuration settings.</param>
 public partial class CoreService(
-    ICosmosDBService cosmosDBService,
+    IAzureCosmosDBService cosmosDBService,
     IEnumerable<IDownstreamAPIService> downstreamAPIServices,
     ILogger<CoreService> logger,
     IOptions<ClientBrandingConfiguration> brandingSettings,
@@ -63,7 +62,7 @@ public partial class CoreService(
     IConfiguration configuration,
     IHttpClientFactoryService httpClientFactory) : ICoreService
 {
-    private readonly ICosmosDBService _cosmosDBService = cosmosDBService;
+    private readonly IAzureCosmosDBService _cosmosDBService = cosmosDBService;
     private readonly IDownstreamAPIService _gatekeeperAPIService = downstreamAPIServices.Single(das => das.APIName == HttpClientNames.GatekeeperAPI);
     private readonly IDownstreamAPIService _orchestrationAPIService = downstreamAPIServices.Single(das => das.APIName == HttpClientNames.OrchestrationAPI);
     private readonly ILogger<CoreService> _logger = logger;
@@ -83,6 +82,8 @@ public partial class CoreService(
         resourceProviderServices.Single(rps => rps.Name == ResourceProviderNames.FoundationaLLM_AIModel);
     private readonly IResourceProviderService _configurationResourceProvider =
         resourceProviderServices.Single(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Configuration);
+    private readonly IResourceProviderService _conversationResourceProvider =
+        resourceProviderServices.Single(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Conversation);
 
     private readonly HashSet<string> _azureOpenAIFileSearchFileExtensions =
         settings.Value.AzureOpenAIAssistantsFileSearchFileExtensions
@@ -90,10 +91,79 @@ public partial class CoreService(
             .Select(s => s.ToLowerInvariant())
             .ToHashSet();
 
+    #region Implemented using the FoundationaLLM.Conversation resource provider
+
     /// <inheritdoc/>
-    public async Task<List<Conversation>> GetAllChatSessionsAsync(string instanceId) =>
-        await _cosmosDBService.GetSessionsAsync(_sessionType, _callContext.CurrentUserIdentity?.UPN ??
-                                                              throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat sessions."));
+    public async Task<List<Conversation>> GetAllConversationsAsync(string instanceId)
+    {
+        var result = await _conversationResourceProvider.GetResourcesAsync<Conversation>(
+            instanceId,
+            _callContext.CurrentUserIdentity!,
+            new ResourceProviderLoadOptions
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { ConversationResourceProviderLoadParameterNames.ConversationType, _sessionType }
+                }
+            });
+
+        return result.Select(r => r.Resource).ToList();
+    }
+
+    /// <inheritdoc/>
+    public async Task<Conversation> CreateConversationAsync(string instanceId, ChatSessionProperties chatSessionProperties)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(chatSessionProperties.Name);
+
+        var newConversationId = Guid.NewGuid().ToString().ToLower();
+        Conversation newConversation = new()
+        {
+            Id = newConversationId,
+            SessionId = newConversationId,
+            Name = newConversationId,
+            DisplayName = chatSessionProperties.Name,
+            Type = _sessionType,
+            UPN = _callContext.CurrentUserIdentity?.UPN!
+        };
+
+        _ = await _conversationResourceProvider.UpsertResourceAsync<Conversation, ResourceProviderUpsertResult<Conversation>>(
+            instanceId,
+            newConversation,
+            _callContext.CurrentUserIdentity!);
+
+        return newConversation;
+    }
+
+    /// <inheritdoc/>
+    public async Task<Conversation> RenameConversationAsync(string instanceId, string sessionId, ChatSessionProperties chatSessionProperties)
+    {
+        ArgumentNullException.ThrowIfNull(sessionId);
+        ArgumentException.ThrowIfNullOrEmpty(chatSessionProperties.Name);
+
+        var result = await _conversationResourceProvider.UpdateResourcePropertiesAsync<Conversation, ResourceProviderUpsertResult<Conversation>>(
+            instanceId,
+            sessionId,
+            new Dictionary<string, object>
+                                             {
+                { "/displayName", chatSessionProperties.Name }
+            },
+            _callContext.CurrentUserIdentity!);
+
+        return result.Resource!;
+    }
+
+    /// <inheritdoc/>
+    public async Task DeleteConversationAsync(string instanceId, string sessionId)
+    {
+        ArgumentNullException.ThrowIfNull(sessionId);
+
+        await _conversationResourceProvider.DeleteResourceAsync<Conversation>(
+            instanceId,
+            sessionId,
+            _callContext.CurrentUserIdentity!);
+    }
+
+    #endregion
 
     /// <inheritdoc/>
     public async Task<List<Message>> GetChatSessionMessagesAsync(string instanceId, string sessionId)
@@ -115,12 +185,12 @@ public partial class CoreService(
                 $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Attachment}/{AttachmentResourceTypeNames.Attachments}/{ResourceProviderActions.Filter}",
                 JsonSerializer.Serialize(filter),
                 _callContext.CurrentUserIdentity!);
-            var list = result as IEnumerator<AttachmentFile>;
+            var list = result as List<AttachmentFile>;
             var attachmentReferences = new List<AttachmentDetail>();
-            
+
             if (list != null)
             {
-                attachmentReferences.AddRange(from attachment in (IEnumerable<AttachmentFile>) list select AttachmentDetail.FromAttachmentFile(attachment));
+                attachmentReferences.AddRange(from attachment in (IEnumerable<AttachmentFile>)list select AttachmentDetail.FromAttachmentFile(attachment));
             }
 
             if (attachmentReferences.Count > 0)
@@ -160,36 +230,6 @@ public partial class CoreService(
     }
 
     /// <inheritdoc/>
-    public async Task<Conversation> CreateNewChatSessionAsync(string instanceId, ChatSessionProperties chatSessionProperties)
-    {
-        ArgumentException.ThrowIfNullOrEmpty(chatSessionProperties.Name);
-
-        Conversation session = new()
-        {
-            Name = chatSessionProperties.Name,
-            Type = _sessionType,
-            UPN = _callContext.CurrentUserIdentity?.UPN ?? throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when creating a new chat session.")
-        };
-        return await _cosmosDBService.InsertSessionAsync(session);
-    }
-
-    /// <inheritdoc/>
-    public async Task<Conversation> RenameChatSessionAsync(string instanceId, string sessionId, ChatSessionProperties chatSessionProperties)
-    {
-        ArgumentNullException.ThrowIfNull(sessionId);
-        ArgumentException.ThrowIfNullOrEmpty(chatSessionProperties.Name);
-
-        return await _cosmosDBService.UpdateSessionNameAsync(sessionId, chatSessionProperties.Name);
-    }
-
-    /// <inheritdoc/>
-    public async Task DeleteChatSessionAsync(string instanceId, string sessionId)
-    {
-        ArgumentNullException.ThrowIfNull(sessionId);
-        await _cosmosDBService.DeleteSessionAndMessagesAsync(sessionId);
-    }
-
-    /// <inheritdoc/>
     public async Task<Completion> GetChatCompletionAsync(string instanceId, CompletionRequest completionRequest)
     {
         try
@@ -223,7 +263,7 @@ public partial class CoreService(
                 null,
                 null,
                 completionRequest.Attachments);
-            await AddSessionMessageAsync(completionRequest.SessionId, promptMessage);
+            await AddSessionMessageAsync(instanceId, completionRequest.SessionId, promptMessage, _callContext.CurrentUserIdentity!);
 
             var agentOption = await ProcessGatekeeperOptions(completionRequest);
 
@@ -293,7 +333,7 @@ public partial class CoreService(
             var completionPrompt = new CompletionPrompt(completionRequest.SessionId, completionMessage.Id, completionPromptText);
             completionMessage.CompletionPromptId = completionPrompt.Id;
 
-            await AddPromptCompletionMessagesAsync(completionRequest.SessionId, promptMessage, completionMessage, completionPrompt);
+            await AddPromptCompletionMessagesAsync(instanceId, completionRequest.SessionId, promptMessage, completionMessage, completionPrompt, _callContext.CurrentUserIdentity!);
 
             return new Completion
             {
@@ -352,7 +392,7 @@ public partial class CoreService(
         throw new NotImplementedException();
 
     /// <inheritdoc/>
-    public async Task<ResourceProviderUpsertResult> UploadAttachment(string instanceId, string sessionId, AttachmentFile attachmentFile, string agentName, UnifiedUserIdentity userIdentity)
+    public async Task<ResourceProviderUpsertResult<AttachmentFile>> UploadAttachment(string instanceId, string sessionId, AttachmentFile attachmentFile, string agentName, UnifiedUserIdentity userIdentity)
     {
         var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>(instanceId, agentName, userIdentity);
         var aiModelBase = await _aiModelResourceProvider.GetResourceAsync<AIModelBase>(agentBase.AIModelObjectId!, userIdentity);
@@ -363,7 +403,7 @@ public partial class CoreService(
         attachmentFile.SecondaryProvider = agentRequiresOpenAIAssistants
             ? ResourceProviderNames.FoundationaLLM_AzureOpenAI
             : null;
-        var result = await _attachmentResourceProvider.UpsertResourceAsync<AttachmentFile, ResourceProviderUpsertResult>(
+        var result = await _attachmentResourceProvider.UpsertResourceAsync<AttachmentFile, ResourceProviderUpsertResult<AttachmentFile>>(
                 instanceId,
                 attachmentFile,
                 _callContext.CurrentUserIdentity!);
@@ -403,7 +443,7 @@ public partial class CoreService(
                 fileMapping.RequiresVectorization = true;
             }
 
-            _ = await _azureOpenAIResourceProvider.UpsertResourceAsync<FileUserContext, ResourceProviderUpsertResult>(
+            _ = await _azureOpenAIResourceProvider.UpsertResourceAsync<FileUserContext, ResourceProviderUpsertResult<FileUserContext>>(
                 instanceId,
                 fileUserContext,
                 userIdentity);
@@ -528,12 +568,15 @@ public partial class CoreService(
     /// <summary>
     /// Add session message
     /// </summary>
-    private async Task AddSessionMessageAsync(string sessionId, Message message)
+    private async Task AddSessionMessageAsync(string instanceId, string sessionId, Message message, UnifiedUserIdentity userIdentity)
     {
-        var session = await _cosmosDBService.GetSessionAsync(sessionId);
+        var session = await _conversationResourceProvider.GetResourceAsync<Conversation>(
+            instanceId,
+            sessionId,
+            userIdentity);
 
         // Update session cache with tokens used.
-        session.TokensUsed += message.Tokens;
+        session.TokensUsed += message.Tokens ?? 0;
 
         // Add the user's UPN to the messages.
         var upn = _callContext.CurrentUserIdentity?.UPN ?? throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when adding prompt and completion messages.");
@@ -546,13 +589,19 @@ public partial class CoreService(
     /// <summary>
     /// Add user prompt and AI assistance response to the chat session message list object and insert into the data service as a transaction.
     /// </summary>
-    private async Task AddPromptCompletionMessagesAsync(string sessionId, Message promptMessage, Message completionMessage, CompletionPrompt completionPrompt)
+    private async Task AddPromptCompletionMessagesAsync(
+        string instanceId,
+        string sessionId,
+        Message promptMessage,
+        Message completionMessage,
+        CompletionPrompt completionPrompt,
+        UnifiedUserIdentity userIdentity)
     {
-        var session = await _cosmosDBService.GetSessionAsync(sessionId);
+        var session = await _conversationResourceProvider.GetResourceAsync<Conversation>(instanceId, sessionId, userIdentity);
 
         // Update session cache with tokens used.
-        session.TokensUsed += promptMessage.Tokens;
-        session.TokensUsed += completionMessage.Tokens;
+        session.TokensUsed += promptMessage.Tokens ?? 0;
+        session.TokensUsed += completionMessage.Tokens ?? 0;
         // Add the user's UPN to the messages.
         var upn = _callContext.CurrentUserIdentity?.UPN ?? throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when adding prompt and completion messages.");
         promptMessage.UPN = upn;

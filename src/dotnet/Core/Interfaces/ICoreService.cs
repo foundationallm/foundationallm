@@ -19,7 +19,7 @@ public interface ICoreService
     /// Returns list of chat session ids and names.
     /// </summary>
     /// <param name="instanceId">The instance id for which to retrieve chat sessions.</param>
-    Task<List<Conversation>> GetAllChatSessionsAsync(string instanceId);
+    Task<List<Conversation>> GetAllConversationsAsync(string instanceId);
 
     /// <summary>
     /// Returns the chat messages related to an existing session.
@@ -33,7 +33,7 @@ public interface ICoreService
     /// </summary>
     /// <param name="instanceId">The instance Id.</param>
     /// <param name="chatSessionProperties">The session properties.</param>
-    Task<Conversation> CreateNewChatSessionAsync(string instanceId, ChatSessionProperties chatSessionProperties);
+    Task<Conversation> CreateConversationAsync(string instanceId, ChatSessionProperties chatSessionProperties);
 
     /// <summary>
     /// Rename the chat session from its default (eg., "New Chat") to the summary provided by OpenAI.
@@ -41,14 +41,14 @@ public interface ICoreService
     /// <param name="instanceId">The instance id.</param>
     /// <param name="sessionId">The session id to rename.</param>
     /// <param name="chatSessionProperties">The session properties.</param>
-    Task<Conversation> RenameChatSessionAsync(string instanceId, string sessionId, ChatSessionProperties chatSessionProperties);
+    Task<Conversation> RenameConversationAsync(string instanceId, string sessionId, ChatSessionProperties chatSessionProperties);
 
     /// <summary>
     /// Delete a chat session and related messages.
     /// </summary>
     /// <param name="instanceId">The instance id.</param>
     /// <param name="sessionId">The session id to delete.</param>
-    Task DeleteChatSessionAsync(string instanceId, string sessionId);
+    Task DeleteConversationAsync(string instanceId, string sessionId);
 
     /// <summary>
     /// Receive a prompt from a user, retrieve the message history from the related session,
@@ -115,8 +115,8 @@ public interface ICoreService
     /// <param name="attachmentFile">The <see cref="AttachmentFile"/> object containing the attachment file data.</param>
     /// <param name="agentName">The name of the agent.</param>
     /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
-    /// <returns>A <see cref="ResourceProviderUpsertResult"/> object with the FoundationaLLM.Attachment resource provider object id.</returns>
-    Task<ResourceProviderUpsertResult> UploadAttachment(
+    /// <returns>A <see cref="ResourceProviderUpsertResult{T}"/> object with the FoundationaLLM.Attachment resource provider object id.</returns>
+    Task<ResourceProviderUpsertResult<AttachmentFile>> UploadAttachment(
         string instanceId, string sessionId, AttachmentFile attachmentFile, string agentName, UnifiedUserIdentity userIdentity);
 
     /// <summary>

@@ -265,41 +265,6 @@
 		]
 	},
 	{
-		"category": "Completion",
-		"actions": [
-			{
-				"name": "FoundationaLLM.Completion/chatSessions/read",
-				"description": "Read chat sessions.",
-				"field_name": "FoundationaLLM_Completion_ChatSessions_Read"
-			},
-			{
-				"name": "FoundationaLLM.Completion/chatSessions/write",
-				"description": "Create or update chat sessions.",
-				"field_name": "FoundationaLLM_Completion_ChatSessions_Write"
-			},
-			{
-				"name": "FoundationaLLM.Completion/chatSessions/delete",
-				"description": "Delete chat sessions.",
-				"field_name": "FoundationaLLM_Completion_ChatSessions_Delete"
-			},
-			{
-				"name": "FoundationaLLM.Completion/directCompletions/read",
-				"description": "Read direct completions.",
-				"field_name": "FoundationaLLM_Completion_DirectCompletions_Read"
-			},
-			{
-				"name": "FoundationaLLM.Completion/directCompletions/write",
-				"description": "Create or update direct completions.",
-				"field_name": "FoundationaLLM_Completion_DirectCompletions_Write"
-			},
-			{
-				"name": "FoundationaLLM.Completion/directCompletions/delete",
-				"description": "Delete direct completions.",
-				"field_name": "FoundationaLLM_Completion_DirectCompletions_Delete"
-			}
-		]
-	},
-	{
 		"category": "Attachment",
 		"actions": [
 			{
@@ -338,6 +303,25 @@
 				"field_name": "FoundationaLLM_AIModel_AIModels_Delete"
 			}
 		]
+	},
+	{
+		"category": "Conversation",
+		"actions": [
+			{
+				"name": "FoundationaLLM.Conversation/conversations/read",
+				"description": "Read conversations",
+				"field_name": "FoundationaLLM_Conversation_Conversations_Read"
+			},
+			{
+				"name": "FoundationaLLM.Conversation/conversations/write",
+				"description": "Create or update conversations.",
+				"field_name": "FoundationaLLM_Conversation_Conversations_Write"
+			},
+			{
+				"name": "FoundationaLLM.Conversation/conversations/delete",
+				"description": "Delete conversations.",
+				"field_name": "FoundationaLLM_Conversation_Conversations_Delete"
+			}
+		]
 	}
-
 ]
