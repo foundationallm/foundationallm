@@ -661,7 +661,7 @@ export default {
 				this.$toast.add({
 					severity: 'error',
 					summary: 'Error',
-					detail: `You can only upload a maximum of ${this.maxFiles} files at a time.`,
+					detail: `You can only upload a maximum of ${this.maxFiles} ${this.maxFiles === 1 ? 'file' : 'files'} at a time.`,
 					life: 5000,
 				});
 				filteredFiles.splice((this.maxFiles - (this.localFiles.length + this.oneDriveFiles.length)));
