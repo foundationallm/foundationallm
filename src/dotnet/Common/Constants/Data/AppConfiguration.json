@@ -411,6 +411,14 @@
 				"value": "c, cpp, cs, css, csv, doc, docx, git, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
 				"content_type": "",
 				"first_version": "0.8.0"
+			},
+			{
+				"name": "MaxUploadsPerMessage",
+				"description": "The maximum number of files that can be uploaded for a single conversation message.",
+				"secret": "",
+				"value": "{ 'value': 10, 'value_exceptions': []}",
+				"content_type": "application/json",
+				"first_version": "0.8.2"
 			}
 		]
 	},

@@ -542,9 +542,17 @@ public partial class CoreService(
     /// <inheritdoc/>
     public async Task<FileStoreConfiguration> GetFileStoreConfiguration(string instanceId, UnifiedUserIdentity userIdentity)
     {
+        var appConfigurationValue = await _configurationResourceProvider.GetResourceAsync<AppConfigurationKeyValue>(
+            instanceId,
+            AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_MaxUploadsPerMessage,
+            userIdentity);
+
+        var configurationValue = ConfigurationValue<int>.Deserialize(appConfigurationValue.Value!);
+
         var configuration = new FileStoreConfiguration
         {
-            FileStoreConnectors = await GetFileStoreConnectors(instanceId, userIdentity)
+            FileStoreConnectors = await GetFileStoreConnectors(instanceId, userIdentity),
+            MaxUploadsPerMessage = configurationValue.GetValueForUser(userIdentity.UPN!)
         };
         return configuration;
     }
