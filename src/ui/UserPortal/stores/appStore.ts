@@ -209,6 +209,12 @@ export const useAppStore = defineStore('app', {
 			}));
 		},
 
+		async getMessage(messageId) {
+			const data = await api.getMessage(messageId);
+			this.currentMessages.push(data);
+			return data;
+		},
+
 		updateSessionAgentFromMessages(session: Session) {
 			const lastAssistantMessage = this.currentMessages
 				.filter((message) => message.sender.toLowerCase() === 'assistant')
