@@ -60,6 +60,9 @@ $env:GUID07 = $($(New-Guid).Guid)
 $env:GUID08 = $($(New-Guid).Guid)
 $env:GUID09 = $($(New-Guid).Guid)
 
+$env:POLICYGUID01 = $($(New-Guid).Guid)
+$env:POLICYGUID02 = $($(New-Guid).Guid)
+
 $envConfiguraitons = @{
     "core-api-event-profile"             = @{
         template     = './config/core-api-event-profile.template.json'
