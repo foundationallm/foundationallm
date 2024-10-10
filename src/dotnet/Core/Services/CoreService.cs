@@ -646,7 +646,8 @@ public partial class CoreService(
             null,
             null,
             completionResponse.AnalysisResults,
-            OperationStatus.Completed);
+            OperationStatus.Completed,
+            completionResponse.OperationId);
         var completionPromptText =
             $"User prompt: {completionResponse.UserPrompt}{Environment.NewLine}Agent: {completionResponse.AgentName}{Environment.NewLine}Prompt template: {(!string.IsNullOrWhiteSpace(completionResponse.FullPrompt) ? completionResponse.FullPrompt : completionResponse.PromptTemplate)}";
         var completionPrompt = new CompletionPrompt(sessionId, completionMessage.Id, completionPromptText);
