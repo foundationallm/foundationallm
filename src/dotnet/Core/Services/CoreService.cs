@@ -343,8 +343,9 @@ public partial class CoreService(
             var operationContext = await _cosmosDBService.GetLongRunningOperationContextAsync(operationId);
             var operationStatus = await GetDownstreamAPIService(operationContext.GatekeeperOverride).GetCompletionOperationStatus(instanceId, operationId);
 
-            if (operationStatus.Result is CompletionResponse completionResponse)
+            if (operationStatus.Result is JsonElement jsonElement)
             {
+                var completionResponse = jsonElement.Deserialize<CompletionResponse>();
                 var promptMessage = await _cosmosDBService.GetMessageAsync(
                     operationContext.UserMessageId,
                     operationContext.SessionId);
