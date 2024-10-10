@@ -440,11 +440,12 @@ export default {
 		},
 
 		handleResize() {
-			console.log('resize');
 			this.isMobile = window.screen.width < 950;
-			this.$nextTick(() => {
-				this.$refs.menu.alignOverlay();
-			});
+			if (this.$refs.menu.visible) {
+				this.$nextTick(() => {
+					this.$refs.menu.alignOverlay();
+				});
+			}
 		},
 
 		adjustTextareaHeight() {
@@ -1061,10 +1062,6 @@ export default {
 }
 
 @media only screen and (max-width: 950px) {
-	.file-upload-empty-desktop {
-		display: none;
-	}
-
 	.file-overlay-panel__footer {
 		flex-direction: column;
 	}
