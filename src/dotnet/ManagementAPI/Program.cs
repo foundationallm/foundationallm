@@ -106,6 +106,8 @@ namespace FoundationaLLM.Management.API
             builder.AddAttachmentResourceProvider();
             builder.AddAIModelResourceProvider();
 
+            builder.AddAzureCosmosDBService();
+
             // Add authentication configuration.
             var e2ETestEnvironmentValue = Environment.GetEnvironmentVariable(EnvironmentVariables.FoundationaLLM_Environment) ?? string.Empty;
             var isE2ETestEnvironment = e2ETestEnvironmentValue.Equals(EnvironmentTypes.E2ETest, StringComparison.CurrentCultureIgnoreCase);
