@@ -34,5 +34,10 @@
         /// The Cosmos DB change feed leases container.
         /// </summary>
         public const string Leases = "leases";
+
+        /// <summary>
+        /// Stores file attachment references.
+        /// </summary>
+        public const string Attachments = "Attachments";
     }
 }

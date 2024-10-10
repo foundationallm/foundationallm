@@ -4,6 +4,8 @@ using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Users;
 using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -22,6 +24,7 @@ namespace FoundationaLLM.Common.Services
         private Container _sessions;
         private Container _userSessions;
         private Container _operations;
+        private Container _attachments;
         private readonly Lazy<Task<Container>> _userProfiles;
         private Task<Container> _userProfilesTask => _userProfiles.Value;
         private readonly Database _database;
@@ -93,6 +96,10 @@ namespace FoundationaLLM.Common.Services
                           ?? throw new ArgumentException(
                                 $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.Operations}).");
             _userProfiles = new Lazy<Task<Container>>(InitializeUserProfilesContainer);
+
+            _attachments = database?.GetContainer(CosmosDbContainers.Attachments) ??
+                           throw new ArgumentException(
+                               $"Unable to connect to existing Azure Cosmos DB container ({CosmosDbContainers.Attachments}).");
 
             _logger.LogInformation("Cosmos DB service initialized.");
         }
@@ -374,5 +381,79 @@ namespace FoundationaLLM.Common.Services
                     .Select(key => PatchOperation.Set(key, propertyValues[key])).ToArray(),
                 cancellationToken: cancellationToken
             );
+
+        /// <inheritdoc/>
+        public async Task<AttachmentReference?> GetAttachment(string upn, string resourceName, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var response = await _attachments.ReadItemAsync<AttachmentReference>(
+                    id: resourceName,
+                    partitionKey: new PartitionKey(upn),
+                    cancellationToken: cancellationToken);
+
+                return response.Resource;
+            }
+            catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<AttachmentReference>> FilterAttachments(string upn, ResourceFilter resourceFilter, CancellationToken cancellationToken = default)
+        {
+            var objectIds = string.Join(',', resourceFilter.ObjectIDs!.Select(x => $"'{x}'"));
+
+            var query =
+               new QueryDefinition($"SELECT DISTINCT * FROM c WHERE c.objectId IN ({@objectIds}) AND c.upn = @upn AND {SoftDeleteQueryRestriction}")
+                   .WithParameter("@upn", upn);
+
+            var results = _attachments.GetItemQueryIterator<AttachmentReference>(query);
+
+            List<AttachmentReference> output = new();
+            while (results.HasMoreResults)
+            {
+                var response = await results.ReadNextAsync(cancellationToken);
+                output.AddRange(response);
+            }
+
+            return output;
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<AttachmentReference>> GetAttachments(string upn, CancellationToken cancellationToken = default)
+        {
+            var query = new QueryDefinition($"SELECT DISTINCT * FROM c WHERE c.upn = @upn AND {SoftDeleteQueryRestriction} ORDER BY c._ts DESC")
+                .WithParameter("@upn", upn);
+
+            var response = _attachments.GetItemQueryIterator<AttachmentReference>(query);
+
+            List<AttachmentReference> output = [];
+            while (response.HasMoreResults)
+            {
+                var results = await response.ReadNextAsync(cancellationToken);
+                output.AddRange(results);
+            }
+
+            return output;
+        }
+
+        /// <inheritdoc/>
+        public async Task CreateAttachment(AttachmentReference attachmentReference, CancellationToken cancellationToken = default) =>
+            await _attachments.CreateItemAsync(item: attachmentReference, partitionKey: new PartitionKey(attachmentReference.UPN), cancellationToken: cancellationToken);
+
+        /// <inheritdoc/>
+        public async Task DeleteAttachment(AttachmentReference attachmentReference, CancellationToken cancellationToken = default)
+        {
+            PartitionKey partitionKey = new(attachmentReference.UPN);
+
+            attachmentReference.Deleted = true;
+
+            await _attachments.UpsertItemAsync(
+               item: attachmentReference,
+               partitionKey: partitionKey,
+               cancellationToken: cancellationToken);
+        }
     }
 }

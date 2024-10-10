@@ -104,6 +104,11 @@ Update `FoundationaLLM.Configuration/_resource-references_.json` with the refere
 }
 ```
 
+**FoundationaLLM.Attachment**
+
+The Attachment resource provider saves the attachment references to Cosmos DB.
+A new Cosmos DB container must be created, named `Attachments`, with a partition key `/upn`.
+
 ## Starting with 0.8.0
 
 Core API changes:
