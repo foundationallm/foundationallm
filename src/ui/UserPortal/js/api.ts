@@ -280,18 +280,17 @@ export default {
 			attachments,
 		};
 
-		if (agent.long_running) {
-			const operationId = await this.startLongRunningProcess(
-				`/instances/${this.instanceId}/async-completions`,
-				orchestrationRequest,
-			);
-			return this.pollForCompletion(operationId);
-		} else {
-			return (await this.fetch(`/instances/${this.instanceId}/completions`, {
+		// if (agent.long_running) {
+			return (await this.fetch(`/instances/${this.instanceId}/async-completions`, {
 				method: 'POST',
 				body: orchestrationRequest,
 			})) as string;
-		}
+		// } else {
+		// 	return (await this.fetch(`/instances/${this.instanceId}/completions`, {
+		// 		method: 'POST',
+		// 		body: orchestrationRequest,
+		// 	})) as string;
+		// }
 	},
 
 	/**
