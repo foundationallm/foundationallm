@@ -101,9 +101,10 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         {
             if (completionRequest.GatekeeperOptions != null && completionRequest.GatekeeperOptions.Length > 0)
             {
-                await _cosmosDBService.UpdateLongRunningOperationContextPropertiesAsync(
+                await _cosmosDBService.PathcOperationsItemPropertiesAsync<LongRunningOperationContext>(
                     completionRequest.OperationId!,
-                    new Dictionary<string, object>
+                    completionRequest.OperationId!,
+                    new Dictionary<string, object?>
                     {
                         { "/gatekeeperOptions", completionRequest.GatekeeperOptions }
                     });

@@ -18,7 +18,7 @@ namespace FoundationaLLM.Client.Core.Interfaces
         /// </summary>
         /// <param name="completionRequest">The completion request data sent to the endpoint.</param>
         /// <returns></returns>
-        Task<Completion> GetChatCompletionAsync(CompletionRequest completionRequest);
+        Task<Message> GetChatCompletionAsync(CompletionRequest completionRequest);
 
         /// <summary>
         /// Retrieves agents available to the user for orchestration and session-based requests.

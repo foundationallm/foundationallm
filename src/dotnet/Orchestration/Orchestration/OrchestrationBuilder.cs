@@ -18,6 +18,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using Microsoft.Extensions.DependencyInjection;
+using FoundationaLLM.Common.Models.Orchestration;
 
 namespace FoundationaLLM.Orchestration.Core.Orchestration
 {
@@ -83,9 +84,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                 if (originalRequest.LongRunningOperation)
                 {
-                    await cosmosDBService.UpdateLongRunningOperationContextPropertiesAsync(
+                    await cosmosDBService.PathcOperationsItemPropertiesAsync<LongRunningOperationContext>(
                         originalRequest.OperationId!,
-                        new Dictionary<string, object>
+                        originalRequest.OperationId!,
+                        new Dictionary<string, object?>
                         {
                             { "/orchestrator", orchestrator! }
                         });

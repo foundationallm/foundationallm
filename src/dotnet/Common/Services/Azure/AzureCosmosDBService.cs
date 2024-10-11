@@ -159,7 +159,7 @@ namespace FoundationaLLM.Common.Services
         }
 
         /// <inheritdoc/>
-        public async Task<Conversation> UpdateConversationPropertiesAsync(string id, string upn, Dictionary<string, object> propertyValues, CancellationToken cancellationToken = default)
+        public async Task<Conversation> PatchConversationPropertiesAsync(string id, string upn, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default)
         {
             var response = await _sessions.PatchItemAsync<Conversation>(
                 id: id,
@@ -273,18 +273,17 @@ namespace FoundationaLLM.Common.Services
         }
 
         /// <inheritdoc/>
-        public async Task<Message> UpdateMessageRatingAsync(string id, string sessionId, bool? rating, CancellationToken cancellationToken = default)
+        public async Task<T> PatchSessionsItemPropertiesAsync<T>(string itemId, string partitionKey, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default)
         {
-            var response = await _sessions.PatchItemAsync<Message>(
-                id: id,
-                partitionKey: new PartitionKey(sessionId),
-                patchOperations: new[]
-                {
-                    PatchOperation.Set("/rating", rating),
-                },
+            var result = await _sessions.PatchItemAsync<T>(
+                id: itemId,
+                partitionKey: new PartitionKey(partitionKey),
+                patchOperations: propertyValues.Keys
+                    .Select(key => PatchOperation.Set(key, propertyValues[key])).ToArray(),
                 cancellationToken: cancellationToken
             );
-            return response.Resource;
+
+            return result.Resource;
         }
 
         /// <inheritdoc/>
@@ -380,14 +379,18 @@ namespace FoundationaLLM.Common.Services
         }
 
         /// <inheritdoc/>
-        public async Task UpdateLongRunningOperationContextPropertiesAsync(string operationId, Dictionary<string, object> propertyValues, CancellationToken cancellationToken = default) =>
-            await _operations.PatchItemAsync<LongRunningOperationContext>(
-                id: operationId,
-                partitionKey: new PartitionKey(operationId),
+        public async Task<T> PathcOperationsItemPropertiesAsync<T>(string itemId, string partitionKey, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default)
+        {
+            var result = await _operations.PatchItemAsync<T>(
+                id: itemId,
+                partitionKey: new PartitionKey(partitionKey),
                 patchOperations: propertyValues.Keys
                     .Select(key => PatchOperation.Set(key, propertyValues[key])).ToArray(),
                 cancellationToken: cancellationToken
             );
+
+            return result.Resource;
+        }
 
         /// <inheritdoc/>
         public async Task<AttachmentReference?> GetAttachment(string upn, string resourceName, CancellationToken cancellationToken = default)

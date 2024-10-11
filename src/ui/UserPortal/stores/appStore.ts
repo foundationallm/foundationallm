@@ -310,16 +310,27 @@ export const useAppStore = defineStore('app', {
 
 			//if (agent.long_running) {
 				// Handle long-running operations
-				const operationId = await api.startLongRunningProcess({
-					session_id: this.currentSession!.id,
-					user_prompt: text,
-					agent_name: agent.name,
-					settings: null,
-					attachments: relevantAttachments.map((attachment) => String(attachment.id)),
-				});
+				const message = await api.sendMessage(
+					this.currentSession!.id,
+					text,
+					agent,
+					relevantAttachments.map((attachment) => String(attachment.id)),
+				);
 
-				this.longRunningOperations.set(this.currentSession!.id, operationId);
-				this.pollForCompletion(this.currentSession!.id, operationId);
+				// Set the temp assistant message operation id to stream it
+				this.currentMessages[this.currentMessages.length-1].operationId = message.operation_id;
+
+				// console.log(message);
+
+				// this.longRunningOperations.set(this.currentSession!.id, message.operation_id);
+
+				// setInterval(async () => {
+				// 	await api.checkProcessStatus(message.operation_id);
+				// 	await this.getMessages();
+				// }, 1000);
+
+				return message;
+				// this.pollForCompletion(this.currentSession!.id, message.operationId);
 			// } else {
 			// 	await api.sendMessage(
 			// 		this.currentSession!.id,
@@ -334,6 +345,10 @@ export const useAppStore = defineStore('app', {
 			// 	});
 			// }
 		},
+
+		// async checkProcessStatus(operationId) {
+		// 	this.currentMessages
+		// },
 
 		/**
 		 * Polls for the completion of a long-running operation.

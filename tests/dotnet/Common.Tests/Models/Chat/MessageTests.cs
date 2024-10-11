@@ -80,7 +80,16 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
         public Message CreateMessage(string sessionId, string sender, int? tokens, string text,
             float[]? vector, bool? rating, string upn)
         {
-            return new Message(sessionId, sender, tokens, text, vector, rating, upn);
+            return new Message
+            {
+                SessionId = sessionId,
+                Sender = sender,
+                Tokens = tokens ?? 0,
+                Text = text,
+                Vector = vector,
+                Rating = rating,
+                UPN = upn
+            };
         }
     }
 }

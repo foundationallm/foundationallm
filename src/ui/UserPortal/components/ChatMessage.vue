@@ -74,7 +74,7 @@
 					<!-- Render the html content and any vue components within -->
 					<!-- <component :is="compiledMarkdownComponent" v-else /> -->
 
-					<div v-for="content in processedContent">
+					<div v-else v-for="content in processedContent">
 						<ChatMessageTextBlock v-if="content.type === 'text'" :value="content.value" />
 						<ChatMessageContentBlock v-else :value="content" />
 					</div>
@@ -263,7 +263,7 @@ export default {
 			currentWordIndex: 0,
 			messageContent: this.message.content
 				? (JSON.parse(JSON.stringify(this.message.content)) as MessageContent[])
-				: null,
+				: [],
 			isAnalysisModalVisible: false,
 			isMobile: window.screen.width < 950,
 			markedRenderer: null,
@@ -278,24 +278,60 @@ export default {
 		};
 	},
 
+	watch: {
+		async 'message.operationId'() {
+			console.log('operation id updated');
+			const operationResponse = await api.checkProcessStatus(this.message.operationId);
+			const message = operationResponse.result;
+			// this.$appStore.getMessages();
+			if (this.showWordAnimation) {
+				if (operationResponse.status === 'Completed') {
+					console.log('done', operationResponse);
+				}
+
+				if (operationResponse.status === 'InProgress') {
+					// if (!message) return;
+
+					// Copy initial contents (message might be partially generated already)
+					// const message = await this.$appStore.checkProcessStatus(this.message.operationId);
+					if (message) {
+						this.processedContent = message.content.map(content => {
+							return {
+								type: content.type,
+								value: this.processContentBlock(content.value),
+							};
+						});
+					}
+
+					this.startPolling();
+					this.displayWordByWord();
+				}
+			}
+		},
+	},
+
 	async created() {
 		this.createMarkedRenderer();
 
-		if (this.showWordAnimation) {
-			if (this.message.status === 'InProgress') {
-				// Copy initial contents (message might be partially generated already)
-				const message = await this.$appStore.getMessage();
-				this.processedContent = this.message.content.map(content => {
-					return {
-						type: content.type,
-						value: this.processContentBlock(content.value),
-					};
-				});
+		if (this.showWordAnimation) return;
 
-				this.startPolling();
-				this.displayWordByWord();
-			}
-		} else {
+		// if (this.showWordAnimation) {
+		// 	if (this.message.status === 'InProgress') {
+		// 		// Copy initial contents (message might be partially generated already)
+		// 		const message = await this.$appStore.checkProcessStatus(this.message.operationId);
+		// 		this.processedContent = this.message.content.map(content => {
+		// 			return {
+		// 				type: content.type,
+		// 				value: this.processContentBlock(content.value),
+		// 			};
+		// 		});
+
+		// 		this.startPolling();
+		// 		this.displayWordByWord();
+		// 	}
+		// }
+		// else {
+			// console.log(this.message.text);
 			if (this.message.text) {
 				this.processedContent = [
 					{
@@ -311,7 +347,7 @@ export default {
 					};
 				});
 			}
-		}
+		// }
 	},
 
 	methods: {
@@ -337,8 +373,11 @@ export default {
 		},
 
 		async fetchInProgressMessage() {
-			const message = this.$appStore.getMessage();
+			const operationResponse = await api.checkProcessStatus(this.message.operationId);
+			const message = operationResponse.result;
 			this.pollingIteration += 1;
+
+			if (!message) return;
 
 			// Calculate the number of words in the previous message content
 			let amountOfOldWords = 0;
@@ -370,10 +409,11 @@ export default {
 
 			this.messageContent = message.content;
 
-			if (message.status === 'Completed') {
+			if (operationResponse.status === 'Completed') {
 				this.stopPolling();
 				this.averageTimePerWordMS = 50;
 				this.completed = true;
+				this.message.type = message.type;
 
 				// Just to make sure the message renders fully in the case the animation fails
 				this.processedContent = message.content.map(content => {
