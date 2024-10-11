@@ -10,6 +10,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// <summary>
         /// Gets or sets the name of the tool.
         /// </summary>
+        [JsonPropertyName("name")]
         public required string Name { get; set; }
 
         /// <summary>
