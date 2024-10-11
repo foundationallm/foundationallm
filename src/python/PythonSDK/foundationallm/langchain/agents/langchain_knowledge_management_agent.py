@@ -527,11 +527,20 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     attachments = []
                 )
 
+            image_service = None
+            if "dalle-image-generation" in request.agent.tools.keys():
+                dalle_tool = request.agent.tools["dalle-image-generation"]
+                model_object_id = dalle_tool.ai_model_object_ids["main_model"]
+                image_generation_deployment_model = request.objects[model_object_id]["deployment_name"]
+                api_endpoint_object_id = request.objects[model_object_id]["endpoint_object_id"]
+                image_generation_client = self._get_image_gen_language_model(api_endpoint_object_id=api_endpoint_object_id, objects=request.objects, is_async=True)
+                image_service=ImageService(config=self.config, client=image_generation_client, deployment_name=image_generation_deployment_model)
+
             # invoke/run the service
             assistant_response = await assistant_svc.arun(
                 assistant_req,
-                # TODO: deployment_model should pull from the incoming request.
-                image_service=ImageService(config=self.config, client=assistant_svc.client, deployment_model='dall-e-3'))
+                image_service=image_service
+            )
 
             # create the CompletionResponse object
             return CompletionResponse(

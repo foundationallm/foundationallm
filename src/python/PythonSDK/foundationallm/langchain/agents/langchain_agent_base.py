@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from re import A
 from typing import List
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 
@@ -206,6 +207,33 @@ class LangChainAgentBase():
         """
         self.full_prompt = prompt
         return prompt
+
+    def _get_image_gen_language_model(self, api_endpoint_object_id, objects: dict, is_async: bool = True) -> BaseLanguageModel:
+        api_endpoint = self._get_api_endpoint_from_object_id(api_endpoint_object_id, objects)
+
+        scope = self.api_endpoint.authentication_parameters.get('scope', 'https://cognitiveservices.azure.com/.default')
+        # Set up a Azure AD token provider.
+        # TODO: Determine if there is a more efficient way to get the token provider than making the request for every call.
+        token_provider = get_bearer_token_provider(
+            DefaultAzureCredential(exclude_environment_credential=True),
+            scope
+        )
+        if is_async:
+            # create async client
+            language_model = async_aoi(
+                azure_endpoint=api_endpoint.url,
+                api_version=api_endpoint.api_version,
+                openai_api_type='azure_ad',
+                azure_ad_token_provider=token_provider,
+            )
+        else:
+            language_model = aoi(
+                azure_endpoint=api_endpoint.url,
+                api_version=api_endpoint.api_version,
+                openai_api_type='azure_ad',
+                azure_ad_token_provider=token_provider,
+            )
+        return language_model
 
     def _get_language_model(self, override_operation_type: OperationTypes = None, is_async: bool=False) -> BaseLanguageModel:
         """
