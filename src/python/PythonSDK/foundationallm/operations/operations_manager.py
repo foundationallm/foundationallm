@@ -24,6 +24,8 @@ class OperationsManager():
         if env == 'dev':
             self.verify_certs = False
             urllib3.disable_warnings(category=urllib3.exceptions.InsecureRequestWarning)
+        else:
+            self.verify_certs = True
         
     async def create_operation(
         self,

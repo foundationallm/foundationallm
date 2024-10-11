@@ -1,5 +1,6 @@
 ﻿using Azure.Identity;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Conversation;
@@ -126,7 +127,7 @@ namespace FoundationaLLM.Core.Services
         {
             using var logScope = _logger.BeginScope("Cosmos DB Change Feed Processor: ProcessUserSessionsChangeFeedHandler");
 
-            var sessions = input.Where(i => i.Type == nameof(Conversation)).ToArray();
+            var sessions = input.Where(i => i.Type == ConversationTypes.Session).ToArray();
 
             _logger.LogInformation("Cosmos DB Change Feed Processor: Processing {count} changes...", sessions.Count());
 

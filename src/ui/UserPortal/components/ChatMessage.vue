@@ -687,7 +687,7 @@ $textColor: var(--accent-text);
 }
 
 .message__copy {
-	color: var(--primary-text);
+	color: var(--primary-text)!important;
 	margin-left: 4px;
 }
 
