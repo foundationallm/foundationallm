@@ -9,7 +9,6 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.Models.Conversation;
-using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response.OpenAI;
 using FoundationaLLM.Common.Models.ResourceProviders;
@@ -18,6 +17,7 @@ using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
+using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Utils;
@@ -561,6 +561,24 @@ public partial class CoreService(
         var apiEndpointConfigurations = await _configurationResourceProvider.GetResourcesAsync<APIEndpointConfiguration>(instanceId, userIdentity);
         var resources = apiEndpointConfigurations.Select(c => c.Resource).ToList();
         return resources.Where(c => c.Category == APIEndpointCategory.FileStoreConnector);
+    }
+
+    /// <inheritdoc/>
+    public async Task<FileStoreConfiguration> GetFileStoreConfiguration(string instanceId, UnifiedUserIdentity userIdentity)
+    {
+        var appConfigurationValue = await _configurationResourceProvider.GetResourceAsync<AppConfigurationKeyBase>(
+            instanceId,
+            AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_MaxUploadsPerMessage,
+            userIdentity);
+
+        var configurationValue = ConfigurationValue<int>.Deserialize(appConfigurationValue.Value!);
+
+        var configuration = new FileStoreConfiguration
+        {
+            FileStoreConnectors = await GetFileStoreConnectors(instanceId, userIdentity),
+            MaxUploadsPerMessage = configurationValue.GetValueForUser(userIdentity.UPN!)
+        };
+        return configuration;
     }
 
     private IDownstreamAPIService GetDownstreamAPIService(AgentGatekeeperOverrideOption agentOption) =>
