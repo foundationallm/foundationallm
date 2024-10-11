@@ -220,6 +220,29 @@ class ImageService:
         except Exception as e:
             return f"Error generating image: {e}"
 
+    def generate_image(
+        self,
+        prompt: str,
+        n: int = 1,
+        quality: str = 'hd',
+        style: str = 'natural',
+        size: str='1024x1024') -> str:
+        """
+        Generate an image using the Azure OpenAI client.
+        """
+        try:
+            result = self.client.images.generate(
+                model = self.deployment_name,
+                prompt = prompt,
+                n = n,
+                quality = quality,
+                style = style,
+                size = size
+            )
+            return json.loads(result.model_dump_json())
+        except Exception as e:
+            return f"Error generating image: {e}"
+
     def get_function_definition(self, function_name: str):
         """
         Get the function definition for the specified function name.

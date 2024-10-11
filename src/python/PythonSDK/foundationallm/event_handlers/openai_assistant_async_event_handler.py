@@ -122,10 +122,8 @@ class OpenAIAssistantAsyncEventHandler(AsyncAssistantEventHandler):
             analysis_result = OpenAIAssistantsHelpers.parse_run_step(v)
             if analysis_result:
                 self.interim_result.analysis_results.append(analysis_result)
-
         await self.operations_manager.set_operation_result(self.request.operation_id, self.request.instance_id, self.interim_result)
-        await self.operations_manager.set_operation_result(self.request.operation_id, self.request.instance_id, self.interim_result)
-
+        
     async def update_state_api_content(self):
         self.interim_result.content = [] # Clear the content list before adding new messages.
         for k, v in self.messages.items():

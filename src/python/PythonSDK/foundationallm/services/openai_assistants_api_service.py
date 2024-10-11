@@ -50,7 +50,7 @@ class OpenAIAssistantsApiService:
             attachments = attachments
         )
 
-    def run(self, request: OpenAIAssistantsAPIRequest) -> OpenAIAssistantsAPIResponse:
+    def run(self, request: OpenAIAssistantsAPIRequest, image_service: ImageService) -> OpenAIAssistantsAPIResponse:
         """
         Creates an OpenAI Assistant Run and executes it.
 
@@ -58,6 +58,8 @@ class OpenAIAssistantsApiService:
         ----------
         request : OpenAIAssistantsAPIRequest
             The request to run with the OpenAI Assistants API service.
+        image_service : ImageService
+            The image service to use for generating images. If None, no image generation tool will be added.
 
         Returns
         -------
@@ -74,6 +76,22 @@ class OpenAIAssistantsApiService:
             content = request.user_prompt,
             attachments = attachments
         )
+
+        # Create an image generation tool for the assistant
+        if image_service is not None:
+            image_generation_tool = {"type": "function", "function": image_service.get_function_definition(function_name='generate_image')}
+
+            # Add the image generation tool to the assistant.
+            assistant = self.client.beta.assistants.retrieve(assistant_id=request.assistant_id)
+            tools = assistant.tools
+
+            # If the tools collection already contains the function, remove it
+            for tool in tools:
+                if tool.type == 'function' and tool.function.name == "generate_image":
+                    tools.remove(tool)
+
+            tools.append(image_generation_tool)
+            self.client.beta.assistants.update(assistant_id=request.assistant_id, tools=tools)
 
         # Create and execute the run
         run = None
@@ -117,6 +135,8 @@ class OpenAIAssistantsApiService:
         ----------
         request : OpenAIAssistantsAPIRequest
             The request to run with the OpenAI Assistants API service.
+        image_service : ImageService
+            The image service to use for generating images. If None, no image generation tool will be added.
 
         Returns
         -------
