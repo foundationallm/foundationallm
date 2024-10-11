@@ -96,8 +96,27 @@
 <td><code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions</code></td>
 <td><code>c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt</code></td>
 </tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage</code></td>
+<td><code>{ &quot;value&quot;: 10, &quot;value_exceptions&quot;: [] }</code></td>
+</tr>
 </tbody>
 </table>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Here is an example of an override for the <code>MaxUploadsPerMessage</code> setting:</p>
+<pre><code class="lang-json">{
+   &quot;value&quot;: 10,
+   &quot;value_exceptions&quot;: [
+   	{
+   		&quot;user_principal_name&quot;: &quot;ciprian@solliance.net&quot;,
+   		&quot;value&quot;: 5,
+   		&quot;enabled&quot;: true
+   	}
+   ]
+}
+</code></pre>
+</div>
 <p>The following settings are optional (they should not be set by default):</p>
 <table>
 <thead>

@@ -6102,6 +6102,12 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_TenantId
   fullName: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_TenantId
   nameWithType: AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_TenantId
+- uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_MaxUploadsPerMessage
+  name: FoundationaLLM_APIEndpoints_CoreAPI_Configuration_MaxUploadsPerMessage
+  href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.html#FoundationaLLM_Common_Constants_Configuration_AppConfigurationKeys_FoundationaLLM_APIEndpoints_CoreAPI_Configuration_MaxUploadsPerMessage
+  commentId: F:FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_MaxUploadsPerMessage
+  fullName: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_MaxUploadsPerMessage
+  nameWithType: AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_MaxUploadsPerMessage
 - uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl
   name: FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl
   href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.html#FoundationaLLM_Common_Constants_Configuration_AppConfigurationKeys_FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl
@@ -20606,6 +20612,145 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyVaultReference.KeyVaultUri
   nameWithType: AppConfigurationKeyVaultReference.KeyVaultUri
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1
+  name: ConfigurationValueException<T>
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException-1.html
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1
+  name.vb: ConfigurationValueException(Of T)
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException<T>
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException(Of T)
+  nameWithType: ConfigurationValueException<T>
+  nameWithType.vb: ConfigurationValueException(Of T)
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1.Enabled
+  name: Enabled
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException-1.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_ConfigurationValueException_1_Enabled
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1.Enabled
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException<T>.Enabled
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException(Of T).Enabled
+  nameWithType: ConfigurationValueException<T>.Enabled
+  nameWithType.vb: ConfigurationValueException(Of T).Enabled
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1.Enabled*
+  name: Enabled
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException-1.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_ConfigurationValueException_1_Enabled_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1.Enabled
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException<T>.Enabled
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException(Of T).Enabled
+  nameWithType: ConfigurationValueException<T>.Enabled
+  nameWithType.vb: ConfigurationValueException(Of T).Enabled
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1.UserPrincipalName
+  name: UserPrincipalName
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException-1.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_ConfigurationValueException_1_UserPrincipalName
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1.UserPrincipalName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException<T>.UserPrincipalName
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException(Of T).UserPrincipalName
+  nameWithType: ConfigurationValueException<T>.UserPrincipalName
+  nameWithType.vb: ConfigurationValueException(Of T).UserPrincipalName
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1.UserPrincipalName*
+  name: UserPrincipalName
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException-1.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_ConfigurationValueException_1_UserPrincipalName_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1.UserPrincipalName
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException<T>.UserPrincipalName
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException(Of T).UserPrincipalName
+  nameWithType: ConfigurationValueException<T>.UserPrincipalName
+  nameWithType.vb: ConfigurationValueException(Of T).UserPrincipalName
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1.Value
+  name: Value
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException-1.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_ConfigurationValueException_1_Value
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1.Value
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException<T>.Value
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException(Of T).Value
+  nameWithType: ConfigurationValueException<T>.Value
+  nameWithType.vb: ConfigurationValueException(Of T).Value
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1.Value*
+  name: Value
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException-1.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_ConfigurationValueException_1_Value_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1.Value
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException<T>.Value
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException(Of T).Value
+  nameWithType: ConfigurationValueException<T>.Value
+  nameWithType.vb: ConfigurationValueException(Of T).Value
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1
+  name: ConfigurationValue<T>
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1
+  name.vb: ConfigurationValue(Of T)
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue<T>
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue(Of T)
+  nameWithType: ConfigurationValue<T>
+  nameWithType.vb: ConfigurationValue(Of T)
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Deserialize(System.String)
+  name: Deserialize(string)
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_ConfigurationValue_1_Deserialize_System_String_
+  commentId: M:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Deserialize(System.String)
+  name.vb: Deserialize(String)
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue<T>.Deserialize(string)
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue(Of T).Deserialize(String)
+  nameWithType: ConfigurationValue<T>.Deserialize(string)
+  nameWithType.vb: ConfigurationValue(Of T).Deserialize(String)
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Deserialize*
+  name: Deserialize
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_ConfigurationValue_1_Deserialize_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Deserialize
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue<T>.Deserialize
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue(Of T).Deserialize
+  nameWithType: ConfigurationValue<T>.Deserialize
+  nameWithType.vb: ConfigurationValue(Of T).Deserialize
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Exceptions
+  name: Exceptions
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_ConfigurationValue_1_Exceptions
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Exceptions
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue<T>.Exceptions
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue(Of T).Exceptions
+  nameWithType: ConfigurationValue<T>.Exceptions
+  nameWithType.vb: ConfigurationValue(Of T).Exceptions
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Exceptions*
+  name: Exceptions
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_ConfigurationValue_1_Exceptions_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Exceptions
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue<T>.Exceptions
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue(Of T).Exceptions
+  nameWithType: ConfigurationValue<T>.Exceptions
+  nameWithType.vb: ConfigurationValue(Of T).Exceptions
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.GetValueForUser(System.String)
+  name: GetValueForUser(string)
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_ConfigurationValue_1_GetValueForUser_System_String_
+  commentId: M:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.GetValueForUser(System.String)
+  name.vb: GetValueForUser(String)
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue<T>.GetValueForUser(string)
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue(Of T).GetValueForUser(String)
+  nameWithType: ConfigurationValue<T>.GetValueForUser(string)
+  nameWithType.vb: ConfigurationValue(Of T).GetValueForUser(String)
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.GetValueForUser*
+  name: GetValueForUser
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_ConfigurationValue_1_GetValueForUser_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.GetValueForUser
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue<T>.GetValueForUser
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue(Of T).GetValueForUser
+  nameWithType: ConfigurationValue<T>.GetValueForUser
+  nameWithType.vb: ConfigurationValue(Of T).GetValueForUser
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Value
+  name: Value
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_ConfigurationValue_1_Value
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Value
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue<T>.Value
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue(Of T).Value
+  nameWithType: ConfigurationValue<T>.Value
+  nameWithType.vb: ConfigurationValue(Of T).Value
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Value*
+  name: Value
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_ConfigurationValue_1_Value_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Value
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue<T>.Value
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue(Of T).Value
+  nameWithType: ConfigurationValue<T>.Value
+  nameWithType.vb: ConfigurationValue(Of T).Value
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.UrlException
   name: UrlException
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Configuration.UrlException.html
@@ -27583,6 +27728,38 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Settings.CommonJsonSerializerOptions.GetJsonSerializerOptions
   nameWithType: CommonJsonSerializerOptions.GetJsonSerializerOptions
+- uid: FoundationaLLM.Common.Settings.FileStoreConfiguration
+  name: FileStoreConfiguration
+  href: api/dotnet/FoundationaLLM.Common.Settings.FileStoreConfiguration.html
+  commentId: T:FoundationaLLM.Common.Settings.FileStoreConfiguration
+  fullName: FoundationaLLM.Common.Settings.FileStoreConfiguration
+  nameWithType: FileStoreConfiguration
+- uid: FoundationaLLM.Common.Settings.FileStoreConfiguration.FileStoreConnectors
+  name: FileStoreConnectors
+  href: api/dotnet/FoundationaLLM.Common.Settings.FileStoreConfiguration.html#FoundationaLLM_Common_Settings_FileStoreConfiguration_FileStoreConnectors
+  commentId: P:FoundationaLLM.Common.Settings.FileStoreConfiguration.FileStoreConnectors
+  fullName: FoundationaLLM.Common.Settings.FileStoreConfiguration.FileStoreConnectors
+  nameWithType: FileStoreConfiguration.FileStoreConnectors
+- uid: FoundationaLLM.Common.Settings.FileStoreConfiguration.FileStoreConnectors*
+  name: FileStoreConnectors
+  href: api/dotnet/FoundationaLLM.Common.Settings.FileStoreConfiguration.html#FoundationaLLM_Common_Settings_FileStoreConfiguration_FileStoreConnectors_
+  commentId: Overload:FoundationaLLM.Common.Settings.FileStoreConfiguration.FileStoreConnectors
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Settings.FileStoreConfiguration.FileStoreConnectors
+  nameWithType: FileStoreConfiguration.FileStoreConnectors
+- uid: FoundationaLLM.Common.Settings.FileStoreConfiguration.MaxUploadsPerMessage
+  name: MaxUploadsPerMessage
+  href: api/dotnet/FoundationaLLM.Common.Settings.FileStoreConfiguration.html#FoundationaLLM_Common_Settings_FileStoreConfiguration_MaxUploadsPerMessage
+  commentId: P:FoundationaLLM.Common.Settings.FileStoreConfiguration.MaxUploadsPerMessage
+  fullName: FoundationaLLM.Common.Settings.FileStoreConfiguration.MaxUploadsPerMessage
+  nameWithType: FileStoreConfiguration.MaxUploadsPerMessage
+- uid: FoundationaLLM.Common.Settings.FileStoreConfiguration.MaxUploadsPerMessage*
+  name: MaxUploadsPerMessage
+  href: api/dotnet/FoundationaLLM.Common.Settings.FileStoreConfiguration.html#FoundationaLLM_Common_Settings_FileStoreConfiguration_MaxUploadsPerMessage_
+  commentId: Overload:FoundationaLLM.Common.Settings.FileStoreConfiguration.MaxUploadsPerMessage
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Settings.FileStoreConfiguration.MaxUploadsPerMessage
+  nameWithType: FileStoreConfiguration.MaxUploadsPerMessage
 - uid: FoundationaLLM.Common.Tasks
   name: FoundationaLLM.Common.Tasks
   href: api/dotnet/FoundationaLLM.Common.Tasks.html
@@ -29352,6 +29529,22 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Core.Interfaces.ICoreService.GetCompletionPrompt
   nameWithType: ICoreService.GetCompletionPrompt
+- uid: FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConfiguration(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name: GetFileStoreConfiguration(string, UnifiedUserIdentity)
+  href: api/dotnet/FoundationaLLM.Core.Interfaces.ICoreService.html#FoundationaLLM_Core_Interfaces_ICoreService_GetFileStoreConfiguration_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  commentId: M:FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConfiguration(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: GetFileStoreConfiguration(String, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConfiguration(string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConfiguration(String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType: ICoreService.GetFileStoreConfiguration(string, UnifiedUserIdentity)
+  nameWithType.vb: ICoreService.GetFileStoreConfiguration(String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConfiguration*
+  name: GetFileStoreConfiguration
+  href: api/dotnet/FoundationaLLM.Core.Interfaces.ICoreService.html#FoundationaLLM_Core_Interfaces_ICoreService_GetFileStoreConfiguration_
+  commentId: Overload:FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConfiguration
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConfiguration
+  nameWithType: ICoreService.GetFileStoreConfiguration
 - uid: FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConnectors(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
   name: GetFileStoreConnectors(string, UnifiedUserIdentity)
   href: api/dotnet/FoundationaLLM.Core.Interfaces.ICoreService.html#FoundationaLLM_Core_Interfaces_ICoreService_GetFileStoreConnectors_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
@@ -30029,6 +30222,22 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Core.Services.CoreService.GetCompletionPrompt
   nameWithType: CoreService.GetCompletionPrompt
+- uid: FoundationaLLM.Core.Services.CoreService.GetFileStoreConfiguration(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name: GetFileStoreConfiguration(string, UnifiedUserIdentity)
+  href: api/dotnet/FoundationaLLM.Core.Services.CoreService.html#FoundationaLLM_Core_Services_CoreService_GetFileStoreConfiguration_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  commentId: M:FoundationaLLM.Core.Services.CoreService.GetFileStoreConfiguration(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: GetFileStoreConfiguration(String, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Core.Services.CoreService.GetFileStoreConfiguration(string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Core.Services.CoreService.GetFileStoreConfiguration(String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType: CoreService.GetFileStoreConfiguration(string, UnifiedUserIdentity)
+  nameWithType.vb: CoreService.GetFileStoreConfiguration(String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Core.Services.CoreService.GetFileStoreConfiguration*
+  name: GetFileStoreConfiguration
+  href: api/dotnet/FoundationaLLM.Core.Services.CoreService.html#FoundationaLLM_Core_Services_CoreService_GetFileStoreConfiguration_
+  commentId: Overload:FoundationaLLM.Core.Services.CoreService.GetFileStoreConfiguration
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.Services.CoreService.GetFileStoreConfiguration
+  nameWithType: CoreService.GetFileStoreConfiguration
 - uid: FoundationaLLM.Core.Services.CoreService.GetFileStoreConnectors(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
   name: GetFileStoreConnectors(string, UnifiedUserIdentity)
   href: api/dotnet/FoundationaLLM.Core.Services.CoreService.html#FoundationaLLM_Core_Services_CoreService_GetFileStoreConnectors_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
