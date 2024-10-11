@@ -2,6 +2,7 @@ using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
@@ -87,7 +88,7 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <param name="operationId">The OperationId for which to retrieve the status.</param>
         /// <returns>Returns an <see cref="LongRunningOperation"/> object containing the OperationId and Status.</returns>
         [HttpGet("async-completions/{operationId}/status")]
-        public async Task<LongRunningOperation> GetCompletionOperationStatus(string instanceId, string operationId) =>
+        public async Task<Message> GetCompletionOperationStatus(string instanceId, string operationId) =>
             await _coreService.GetCompletionOperationStatus(instanceId, operationId);
 
         /// <summary>

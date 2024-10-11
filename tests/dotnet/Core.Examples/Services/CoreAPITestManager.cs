@@ -41,7 +41,7 @@ namespace FoundationaLLM.Core.Examples.Services
         }
 
         /// <inheritdoc/>
-        public async Task<Completion> SendSessionCompletionRequestAsync(CompletionRequest completionRequest)
+        public async Task<Message> SendSessionCompletionRequestAsync(CompletionRequest completionRequest)
         {
             var coreClient = await httpClientManager.GetHttpClientAsync(HttpClientNames.CoreAPI);
             var serializedRequest = JsonSerializer.Serialize(completionRequest, _jsonSerializerOptions);
@@ -56,7 +56,7 @@ namespace FoundationaLLM.Core.Examples.Services
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
                 var completionResponse =
-                    JsonSerializer.Deserialize<Completion>(responseContent, _jsonSerializerOptions);
+                    JsonSerializer.Deserialize<Message>(responseContent, _jsonSerializerOptions);
                 return completionResponse ?? throw new InvalidOperationException("The returned completion response is invalid.");
             }
 
@@ -97,7 +97,7 @@ namespace FoundationaLLM.Core.Examples.Services
         }
 
         /// <inheritdoc/>
-        public async Task<Completion> SendOrchestrationCompletionRequestAsync(CompletionRequest completionRequest)
+        public async Task<Message> SendOrchestrationCompletionRequestAsync(CompletionRequest completionRequest)
         {
             var coreClient = await httpClientManager.GetHttpClientAsync(HttpClientNames.CoreAPI);
             var serializedRequest = JsonSerializer.Serialize(completionRequest, _jsonSerializerOptions);
@@ -111,7 +111,7 @@ namespace FoundationaLLM.Core.Examples.Services
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
                 var completionResponse =
-                    JsonSerializer.Deserialize<Completion>(responseContent, _jsonSerializerOptions);
+                    JsonSerializer.Deserialize<Message>(responseContent, _jsonSerializerOptions);
                 return completionResponse ?? throw new InvalidOperationException("The returned completion response is invalid.");
             }
 
