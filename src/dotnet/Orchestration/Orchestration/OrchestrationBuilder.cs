@@ -226,16 +226,43 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 .ToDictionary(x => x.Name, x => x.Description);
             explodedObjects[CompletionRequestObjectsKeys.AllAgents] = allAgentsDescriptions;
 
-            foreach (var endpointKey in agentBase.APIEndpointConfigurationObjectIds.Keys)
-            {
-                var apiEndpoint = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
-                    instanceId,
-                    //agentBase.APIEndpointConfigurationObjectIds[endpointKey],
-                    endpointKey,
-                    currentUserIdentity);
+            #region Tools
 
-                explodedObjects[agentBase.APIEndpointConfigurationObjectIds[endpointKey]] = apiEndpoint;
+            List<string> toolNames = [];
+
+            foreach (var toolName in agentBase.Tools.Keys)
+            {
+                toolNames.Add(toolName);
+                explodedObjects[toolName] = agentBase.Tools[toolName];
+
+                foreach (var aiModelObjectId in agentBase.Tools[toolName].AIModelObjectIds.Values)
+                {
+                    var toolAIModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
+                        aiModelObjectId,
+                        currentUserIdentity);
+
+                    explodedObjects[aiModelObjectId] = toolAIModel;
+
+                    var toolAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                        toolAIModel.EndpointObjectId!,
+                        currentUserIdentity);
+
+                    explodedObjects[toolAIModel.EndpointObjectId!] = toolAPIEndpointConfiguration;
+                }
+
+                foreach (var apiEndpointConfigurationObjectId in agentBase.Tools[toolName].APIEndpointConfigurationObjectIds.Values)
+                {
+                    var toolAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                        apiEndpointConfigurationObjectId,
+                        currentUserIdentity);
+
+                    explodedObjects[apiEndpointConfigurationObjectId] = toolAPIEndpointConfiguration;
+                }
             }
+
+            explodedObjects[CompletionRequestObjectsKeys.ToolNames] = toolNames;
+
+            #endregion
 
             #region Knowledge management processing
 

@@ -29,6 +29,11 @@ namespace FoundationaLLM.Common.Constants.Agents
         public const string GatewayAPIEndpointConfiguration = "GatewayAPIEndpointConfiguration";
 
         /// <summary>
+        /// The key name for the list of tool names that are registered with the agent.
+        /// </summary>
+        public const string ToolNames = "ToolNames";
+
+        /// <summary>
         /// All completion request objects dictionary keys.
         /// </summary>
         public readonly static string[] All = [
