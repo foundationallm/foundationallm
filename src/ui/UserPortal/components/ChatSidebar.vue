@@ -30,8 +30,8 @@
 					severity="secondary"
 					aria-label="Add new chat"
 					:disabled="createProcessing"
-					@keydown.esc="hideAllPoppers"
 					@click="handleAddSession"
+					@keydown.esc="hideAllPoppers"
 				/>
 				<template #popper><div role="tooltip">Add new chat</div></template>
 			</VTooltip>
