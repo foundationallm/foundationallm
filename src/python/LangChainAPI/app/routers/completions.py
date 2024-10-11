@@ -54,10 +54,6 @@ async def resolve_completion_request(request_body: dict = Body(...)) -> Completi
             request = KnowledgeManagementCompletionRequest(**request_body)
             request.agent.type = agent_type
             return request
-        case "audio-classification":
-            request = KnowledgeManagementCompletionRequest(**request_body)
-            request.agent.type = agent_type
-            return request
         case _:
             raise ValueError(f"Unsupported agent type: {agent_type}")
 
