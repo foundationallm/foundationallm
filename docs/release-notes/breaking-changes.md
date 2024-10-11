@@ -130,6 +130,12 @@ The following MSIs require a Cosmos DB role assigned:
 2. Orchestration API
 3. Management API
 
+### Long-Running Operations
+
+The context for a long-running operation is now stored in Cosmos DB.
+A new Cosmos DB container must be created, named `Operations`, with a partition key `/id`.
+
+
 ## Starting with 0.8.0
 
 Core API changes:

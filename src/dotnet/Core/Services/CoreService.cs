@@ -10,6 +10,7 @@ using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration.Request;
+using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.Orchestration.Response.OpenAI;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
@@ -240,84 +241,22 @@ public partial class CoreService(
             var agentOption = await ProcessGatekeeperOptions(instanceId, completionRequest);
 
             // Generate the completion to return to the user.
-            var result = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, completionRequest);
+            var completionResponse = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, completionRequest);
 
-            // Update prompt tokens and add completion, then persist in Cosmos as transaction.
-            // Add the user's UPN to the messages.
-            promptMessage.Tokens = result.PromptTokens;
-            promptMessage.Vector = result.UserPromptEmbedding;
+            var messages = ProcessCompletionResponse(completionRequest.SessionId!, completionRequest.AgentName!, promptMessage, completionResponse);
 
-            var newContent = new List<MessageContent>();
-
-            if (result.Content is { Count: > 0 })
-            {
-                foreach (var content in result.Content)
-                {
-                    switch (content)
-                    {
-                        case OpenAITextMessageContentItem textMessageContent:
-                            if (textMessageContent.Annotations.Count > 0)
-                            {
-                                foreach (var annotation in textMessageContent.Annotations)
-                                {
-                                    newContent.Add(new MessageContent
-                                    {
-                                        Type = FileMethods.GetMessageContentFileType(annotation.Text, annotation.Type),
-                                        FileName = annotation.Text,
-                                        Value = annotation.FileUrl
-                                    });
-                                }
-                            }
-                            newContent.Add(new MessageContent
-                            {
-                                Type = textMessageContent.Type,
-                                Value = textMessageContent.Value
-                            });
-                            break;
-                        case OpenAIImageFileMessageContentItem imageFileMessageContent:
-                            newContent.Add(new MessageContent
-                            {
-                                Type = imageFileMessageContent.Type,
-                                Value = imageFileMessageContent.FileUrl
-                            });
-                            break;
-                    }
-                }
-            }
-
-            var completionMessage = new Message(
-                completionRequest.SessionId!,
-                nameof(Participants.Assistant),
-                result.CompletionTokens,
-                result.Completion,
-                null,
-                null,
-                _userIdentity.UPN!,
-                result.AgentName ?? completionRequest.AgentName,
-                result.Citations,
-                null,
-                newContent,
-                null,
-                null,
-                result.AnalysisResults,
-                OperationStatus.Completed);
-            var completionPromptText =
-                $"User prompt: {result.UserPrompt}{Environment.NewLine}Agent: {result.AgentName}{Environment.NewLine}Prompt template: {(!string.IsNullOrWhiteSpace(result.FullPrompt) ? result.FullPrompt : result.PromptTemplate)}";
-            var completionPrompt = new CompletionPrompt(completionRequest.SessionId!, completionMessage.Id, completionPromptText);
-            completionMessage.CompletionPromptId = completionPrompt.Id;
-
-            await AddPromptCompletionMessagesAsync(
+            await UpsertPromptCompletionMessagesAsync(
                 instanceId,
-                completionRequest.SessionId,
+                completionRequest.SessionId!,
                 promptMessage,
-                completionMessage,
-                completionPrompt,
+                messages.CompletionMessage,
+                messages.CompletionPrompt,
                 _userIdentity);
 
             return new Completion
             {
-                Text = completionMessage.Text // result.Completion
-                    ?? completionMessage.Content?.Where(c => c.Type == MessageContentItemTypes.Text).FirstOrDefault()?.Value
+                Text = messages.CompletionMessage.Text // result.Completion
+                    ?? messages.CompletionMessage.Content?.Where(c => c.Type == MessageContentItemTypes.Text).FirstOrDefault()?.Value
                        ?? "Could not generate a completion due to an internal error."
             };
         }
@@ -328,6 +267,8 @@ public partial class CoreService(
             return new Completion { Text = "Could not generate a completion due to an internal error." };
         }
     }
+
+    
 
     /// <inheritdoc/>
     public async Task<Completion> GetCompletionAsync(string instanceId, CompletionRequest directCompletionRequest)
@@ -370,6 +311,9 @@ public partial class CoreService(
             await _cosmosDBService.UpsertLongRunningOperationContextAsync(new LongRunningOperationContext
             {
                 OperationId = completionRequest.OperationId!,
+                AgentName = completionRequest.AgentName!,
+                SessionId = completionRequest.SessionId!,
+                UserMessageId = promptMessage.Id,
                 GatekeeperOverride = agentOption
             });
 
@@ -397,9 +341,27 @@ public partial class CoreService(
         try
         {
             var operationContext = await _cosmosDBService.GetLongRunningOperationContextAsync(operationId);
-            var statusResult = await GetDownstreamAPIService(operationContext.GatekeeperOverride).GetCompletionOperationStatus(instanceId, operationId);
+            var operationStatus = await GetDownstreamAPIService(operationContext.GatekeeperOverride).GetCompletionOperationStatus(instanceId, operationId);
 
-            return statusResult;
+            if (operationStatus.Result is JsonElement jsonElement)
+            {
+                var completionResponse = jsonElement.Deserialize<CompletionResponse>();
+                var promptMessage = await _cosmosDBService.GetMessageAsync(
+                    operationContext.UserMessageId,
+                    operationContext.SessionId);
+
+                var messages = ProcessCompletionResponse(operationContext.SessionId, operationContext.AgentName, promptMessage, completionResponse);
+
+                await UpsertPromptCompletionMessagesAsync(
+                    instanceId,
+                    operationContext.SessionId,
+                    promptMessage,
+                    messages.CompletionMessage,
+                    messages.CompletionPrompt,
+                    _userIdentity);
+            }
+
+            return operationStatus;
         }
         catch (Exception ex)
         {
@@ -629,7 +591,8 @@ public partial class CoreService(
             request.Attachments,
             null,
             null,
-            OperationStatus.Pending);
+            OperationStatus.Pending,
+            request.OperationId);
 
         // Adds the incoming message to the session and updates the session with token usage.
         await _cosmosDBService.UpsertSessionBatchAsync(promptMessage);
@@ -637,10 +600,84 @@ public partial class CoreService(
         return promptMessage;
     }
 
+    private (Message CompletionMessage, CompletionPrompt CompletionPrompt) ProcessCompletionResponse(
+        string sessionId,
+        string agentName,
+        Message promptMessage,
+        CompletionResponse completionResponse)
+    {
+        // Update prompt tokens and add completion, then persist in Cosmos as transaction.
+        // Add the user's UPN to the messages.
+        promptMessage.Tokens = completionResponse.PromptTokens;
+        promptMessage.Vector = completionResponse.UserPromptEmbedding;
+
+        var newContent = new List<MessageContent>();
+
+        if (completionResponse.Content is { Count: > 0 })
+        {
+            foreach (var content in completionResponse.Content)
+            {
+                switch (content)
+                {
+                    case OpenAITextMessageContentItem textMessageContent:
+                        if (textMessageContent.Annotations.Count > 0)
+                        {
+                            foreach (var annotation in textMessageContent.Annotations)
+                            {
+                                newContent.Add(new MessageContent
+                                {
+                                    Type = FileMethods.GetMessageContentFileType(annotation.Text, annotation.Type),
+                                    FileName = annotation.Text,
+                                    Value = annotation.FileUrl
+                                });
+                            }
+                        }
+                        newContent.Add(new MessageContent
+                        {
+                            Type = textMessageContent.Type,
+                            Value = textMessageContent.Value
+                        });
+                        break;
+                    case OpenAIImageFileMessageContentItem imageFileMessageContent:
+                        newContent.Add(new MessageContent
+                        {
+                            Type = imageFileMessageContent.Type,
+                            Value = imageFileMessageContent.FileUrl
+                        });
+                        break;
+                }
+            }
+        }
+
+        var completionMessage = new Message(
+            sessionId,
+            nameof(Participants.Assistant),
+            completionResponse.CompletionTokens,
+            completionResponse.Completion,
+            null,
+            null,
+            _userIdentity.UPN!,
+            completionResponse.AgentName ?? agentName,
+            completionResponse.Citations,
+            null,
+            newContent,
+            null,
+            null,
+            completionResponse.AnalysisResults,
+            OperationStatus.Completed,
+            completionResponse.OperationId);
+        var completionPromptText =
+            $"User prompt: {completionResponse.UserPrompt}{Environment.NewLine}Agent: {completionResponse.AgentName}{Environment.NewLine}Prompt template: {(!string.IsNullOrWhiteSpace(completionResponse.FullPrompt) ? completionResponse.FullPrompt : completionResponse.PromptTemplate)}";
+        var completionPrompt = new CompletionPrompt(sessionId, completionMessage.Id, completionPromptText);
+        completionMessage.CompletionPromptId = completionPrompt.Id;
+
+        return (completionMessage, completionPrompt);
+    }
+
     /// <summary>
-    /// Add user prompt and AI assistance response to the chat session message list object and insert into the data service as a transaction.
+    /// Add or update user prompt and completion response to the chat session message list object and upsert into the data service as a transaction.
     /// </summary>
-    private async Task AddPromptCompletionMessagesAsync(
+    private async Task UpsertPromptCompletionMessagesAsync(
         string instanceId,
         string sessionId,
         Message promptMessage,

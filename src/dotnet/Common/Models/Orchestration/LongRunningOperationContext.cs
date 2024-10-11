@@ -1,42 +1,61 @@
 ﻿using FoundationaLLM.Common.Models.Conversation;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace FoundationaLLM.Common.Models.Orchestration
 {
     /// <summary>
-    /// Provides a context for long running operations.
+    /// Provides a context for long-running operations.
     /// </summary>
     public class LongRunningOperationContext
     {
         /// <summary>
         /// Gets or sets the identifier of the long-running operation.
         /// </summary>
-        [JsonPropertyName("id")]
+        [JsonProperty("id")]
         public required string OperationId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the agent that runs the long-running operation.
+        /// </summary>
+        [JsonProperty("agentName")]
+        public required string AgentName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier of the session in which the long-running operation runs.
+        /// </summary>
+        [JsonProperty("sessionId")]
+        public required string SessionId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier of the user message that triggered the long-running operation.
+        /// </summary>
+        [JsonProperty("userMessageId")]
+        public required string UserMessageId { get; set; }
 
         /// <summary>
         /// Gets or sets the Time to Live (TTL) of the long-running operation.
         /// </summary>
-        [JsonPropertyName("ttl")]
+        [JsonProperty("ttl")]
         public int TTL { get; set; } = 2592000; // 30 days
 
         /// <summary>
         /// Gets or sets the Gatekeeper override option.
         /// </summary>
-        [JsonPropertyName("gatekeeperOverride")]
-        [JsonConverter(typeof(JsonStringEnumConverter))]
+        [JsonProperty("gatekeeperOverride")]
+        [JsonConverter(typeof(StringEnumConverter))]
         public AgentGatekeeperOverrideOption GatekeeperOverride { get; set; }
 
         /// <summary>
         /// Gets or sets a list of Gatekeeper feature names used by the orchestration request.
         /// </summary>
-        [JsonPropertyName("gatekeeperOptions")]
+        [JsonProperty("gatekeeperOptions")]
         public string[] GatekeeperOptions { get; set; } = [];
 
         /// <summary>
         /// Gets or sets the name of the orchestrator used in the long-running operation.
         /// </summary>
-        [JsonPropertyName("orchestrator")]
+        [JsonProperty("orchestrator")]
         public string? Orchestrator { get; set; }
     }
 }

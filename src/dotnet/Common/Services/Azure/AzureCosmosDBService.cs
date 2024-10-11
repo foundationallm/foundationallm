@@ -97,9 +97,9 @@ namespace FoundationaLLM.Common.Services
                                 $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.Operations}).");
             _userProfiles = new Lazy<Task<Container>>(InitializeUserProfilesContainer);
 
-            _attachments = database?.GetContainer(CosmosDbContainers.Attachments) ??
+            _attachments = database?.GetContainer(AzureCosmosDBContainers.Attachments) ??
                            throw new ArgumentException(
-                               $"Unable to connect to existing Azure Cosmos DB container ({CosmosDbContainers.Attachments}).");
+                               $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.Attachments}).");
 
             _logger.LogInformation("Cosmos DB service initialized.");
         }
@@ -241,6 +241,13 @@ namespace FoundationaLLM.Common.Services
 
             return output;
         }
+
+        /// <inheritdoc/>
+        public async Task<Message> GetMessageAsync(string id, string sessionId, CancellationToken cancellationToken = default) =>
+            await _sessions.ReadItemAsync<Message>(
+                id: id,
+                partitionKey: new PartitionKey(sessionId),
+                cancellationToken: cancellationToken);
 
         /// <inheritdoc/>
         public async Task<Message> InsertMessageAsync(Message message, CancellationToken cancellationToken = default)
