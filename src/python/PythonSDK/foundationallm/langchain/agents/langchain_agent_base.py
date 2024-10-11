@@ -223,14 +223,12 @@ class LangChainAgentBase():
             language_model = async_aoi(
                 azure_endpoint=api_endpoint.url,
                 api_version=api_endpoint.api_version,
-                openai_api_type='azure_ad',
                 azure_ad_token_provider=token_provider,
             )
         else:
             language_model = aoi(
                 azure_endpoint=api_endpoint.url,
                 api_version=api_endpoint.api_version,
-                openai_api_type='azure_ad',
                 azure_ad_token_provider=token_provider,
             )
         return language_model

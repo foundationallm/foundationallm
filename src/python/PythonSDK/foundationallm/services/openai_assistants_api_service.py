@@ -144,7 +144,7 @@ class OpenAIAssistantsApiService:
 
             # If the tools collection already contains the function, remove it
             for tool in tools:
-                if tool.function.name == "generate_image":
+                if tool.type == 'function' and tool.function.name == "generate_image":
                     tools.remove(tool)
 
             tools.append(image_generation_tool)

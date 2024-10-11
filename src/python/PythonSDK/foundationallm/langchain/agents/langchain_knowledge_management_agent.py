@@ -269,7 +269,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         image_attachments = [attachment for attachment in request.attachments if (attachment.provider == AttachmentProviders.FOUNDATIONALLM_ATTACHMENT and attachment.content_type.startswith('image/'))] if request.attachments is not None else []
         if len(image_attachments) > 0:
             image_client = self._get_language_model(override_operation_type=OperationTypes.IMAGE_SERVICES, is_async=False)
-            image_svc = ImageService(config=self.config, client=image_client, deployment_model=self.ai_model.deployment_name)
+            image_svc = ImageService(config=self.config, client=image_client, deployment_name=self.ai_model.deployment_name)
             image_analysis_results, usage = image_svc.analyze_images(image_attachments)
             image_analysis_token_usage.prompt_tokens += usage.prompt_tokens
             image_analysis_token_usage.completion_tokens += usage.completion_tokens
@@ -452,7 +452,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         image_attachments = [attachment for attachment in request.attachments if (attachment.provider == AttachmentProviders.FOUNDATIONALLM_ATTACHMENT and attachment.content_type.startswith('image/'))] if request.attachments is not None else []
         if len(image_attachments) > 0:
             image_client = self._get_language_model(override_operation_type=OperationTypes.IMAGE_SERVICES, is_async=True)
-            image_svc = ImageService(config=self.config, client=image_client, deployment_model=self.ai_model.deployment_name)
+            image_svc = ImageService(config=self.config, client=image_client, deployment_name=self.ai_model.deployment_name)
             image_analysis_results, usage = await image_svc.aanalyze_images(image_attachments)
             image_analysis_token_usage.prompt_tokens += usage.prompt_tokens
             image_analysis_token_usage.completion_tokens += usage.completion_tokens
@@ -528,9 +528,9 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 )
 
             image_service = None
-            if "dalle-image-generation" in request.agent.tools.keys():
+            if "dalle-image-generation" in request.agent.tools:
                 dalle_tool = request.agent.tools["dalle-image-generation"]
-                model_object_id = dalle_tool.ai_model_object_ids["main_model"]
+                model_object_id = dalle_tool["ai_model_object_ids"]["main_model"]
                 image_generation_deployment_model = request.objects[model_object_id]["deployment_name"]
                 api_endpoint_object_id = request.objects[model_object_id]["endpoint_object_id"]
                 image_generation_client = self._get_image_gen_language_model(api_endpoint_object_id=api_endpoint_object_id, objects=request.objects, is_async=True)

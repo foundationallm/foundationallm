@@ -11,7 +11,7 @@ class ImageService:
     """
     Performs image analysis and generation via the Azure OpenAI SDK.
     """
-    def __init__(self, config: Configuration, client: Union[AzureOpenAI, AsyncAzureOpenAI], deployment_model: str):
+    def __init__(self, config: Configuration, client: Union[AzureOpenAI, AsyncAzureOpenAI], deployment_name: str):
         """
         Initializes an Image Service, which performs image analysis and generation.
 
@@ -26,7 +26,7 @@ class ImageService:
         """
         self.config = config
         self.client = client
-        self.deployment_model = deployment_model
+        self.deployment_name = deployment_name
 
     def _get_as_base64(self, mime_type: str, storage_account_name, file_path: str) -> str:
         """
@@ -112,7 +112,7 @@ class ImageService:
                 image_base64 = self._get_as_base64(mime_type=attachment.content_type, storage_account_name=attachment.provider_storage_account_name, file_path=attachment.provider_file_name)
                 if image_base64 is not None and image_base64 != '':
                     response = await self.client.chat.completions.create(
-                        model=self.deployment_model,
+                        model=self.deployment_name,
                         messages=[
                             {
                                 "role": "system",
@@ -163,7 +163,7 @@ class ImageService:
                 image_base64 = self._get_as_base64(mime_type=attachment.content_type, storage_account_name=attachment.provider_storage_account_name, file_path=attachment.provider_file_name)
                 if image_base64 is not None and image_base64 != '':
                     response = self.client.chat.completions.create(
-                        model=self.deployment_model,
+                        model=self.deployment_name,
                         messages=[
                             {
                                 "role": "system",
@@ -209,7 +209,7 @@ class ImageService:
         """
         try:
             result = await self.client.images.generate(
-                model = self.deployment_model,
+                model = self.deployment_name,
                 prompt = prompt,
                 n = n,
                 quality = quality,
