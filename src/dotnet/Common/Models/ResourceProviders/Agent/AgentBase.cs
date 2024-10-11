@@ -52,19 +52,19 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public string? AIModelObjectId { get; set; }
 
         /// <summary>
-        /// Gets of sets a dictionary of API endpoint configuration object IDs.
-        /// </summary>
-        /// <remarks>
-        /// The key is the name of the API endpoint configuration object, and the value is the object ID.
-        /// </remarks>
-        [JsonPropertyName("api_endpoint_configuration_object_ids")]
-        public Dictionary<string, string> APIEndpointConfigurationObjectIds { get; set; } = [];
-
-        /// <summary>
         /// List of capabilities that the agent supports.
         /// </summary>
         [JsonPropertyName("capabilities")]
         public string[]? Capabilities { get; set; }
+
+        /// <summary>
+        /// Gets or sets a dictionary of tools that are registered with the agent.
+        /// </summary>
+        /// <remarks>
+        /// The key is the name of the tool, and the value is the <see cref="AgentTool"/> object.
+        /// </remarks>
+        [JsonPropertyName("tools")]
+        public Dictionary<string, AgentTool> Tools { get; set; } = [];
 
         /// <summary>
         /// The object type of the agent.
