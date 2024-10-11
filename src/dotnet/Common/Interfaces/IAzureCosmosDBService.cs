@@ -43,7 +43,7 @@ public interface IAzureCosmosDBService
     /// <param name="propertyValues">The dictionary containing property names and updated values.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns>Updated conversation item.</returns>
-    Task<Conversation> UpdateConversationPropertiesAsync(string id, string upn, Dictionary<string, object> propertyValues, CancellationToken cancellationToken = default);
+    Task<Conversation> PatchConversationPropertiesAsync(string id, string upn, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Batch deletes an existing chat session and all related messages.
@@ -88,20 +88,21 @@ public interface IAzureCosmosDBService
     Task<Message> UpdateMessageAsync(Message message, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Updates a message's rating through a patch operation.
-    /// </summary>
-    /// <param name="id">The message id.</param>
-    /// <param name="sessionId">The message's partition key (session id).</param>
-    /// <param name="rating">The rating to replace.</param>
-    /// <param name="cancellationToken">Cancellation token for async calls.</param>
-    /// <returns>Revised chat message item.</returns>
-    Task<Message> UpdateMessageRatingAsync(string id, string sessionId, bool? rating, CancellationToken cancellationToken = default);
-
-    /// <summary>
     /// Batch create or update chat messages and session.
     /// </summary>
     /// <param name="messages">Chat message and session items to create or replace.</param>
     Task UpsertSessionBatchAsync(params dynamic[] messages);
+
+    /// <summary>
+    /// Updates a subset of the properties of an item of a specified type from the Sessions collection.
+    /// </summary>
+    /// <typeparam name="T">The type of the item to update.</typeparam>
+    /// <param name="itemId">The identifier of the item being updated.</param>
+    /// <param name="partitionKey">The partition key of the item being updated.</param>
+    /// <param name="propertyValues">The dictionary containing property names and updated values.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns></returns>
+    Task<T> PatchSessionsItemPropertiesAsync<T>(string itemId, string partitionKey, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Create or update a user session from the passed in Session object.
@@ -153,13 +154,15 @@ public interface IAzureCosmosDBService
     Task UpsertLongRunningOperationContextAsync(LongRunningOperationContext longRunningOperationContext, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Updates a subset of the properties of a long running operation context.
+    /// Updates a subset of the properties of an item of a specified type from the Operations collection.
     /// </summary>
-    /// <param name="operationId">The identifier of the long running operation.</param>
+    /// <typeparam name="T">The type of the item to update.</typeparam>
+    /// <param name="itemId">The identifier of the item being updated.</param>
+    /// <param name="partitionKey">The partition key of the item being updated.</param>
     /// <param name="propertyValues">The dictionary containing property names and updated values.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns></returns>
-    Task UpdateLongRunningOperationContextPropertiesAsync(string operationId, Dictionary<string, object> propertyValues, CancellationToken cancellationToken = default);
+    Task<T> PathcOperationsItemPropertiesAsync<T>(string itemId, string partitionKey, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gets an attachment.

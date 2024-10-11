@@ -148,21 +148,23 @@ export default {
 				return;
 			}
 
-			if (agent.long_running) {
-				// Handle long-running operations
-				const operationId = await this.$appStore.startLongRunningProcess('/async-completions', {
-					session_id: this.currentSession.id,
-					user_prompt: text,
-					agent_name: agent.name,
-					settings: null,
-					attachments: this.$appStore.attachments.map((attachment) => String(attachment.id)),
-				});
+			// if (agent.long_running) {
+			// 	// Handle long-running operations
+			// 	const operationId = await this.$appStore.startLongRunningProcess('/async-completions', {
+			// 		session_id: this.currentSession.id,
+			// 		user_prompt: text,
+			// 		agent_name: agent.name,
+			// 		settings: null,
+			// 		attachments: this.$appStore.attachments.map((attachment) => String(attachment.id)),
+			// 	});
 
-				this.longRunningOperations.set(this.currentSession.id, true);
-				await this.pollForCompletion(this.currentSession.id, operationId);
-			} else {
-				await this.$appStore.sendMessage(text);
-			}
+			// 	this.longRunningOperations.set(this.currentSession.id, true);
+			// 	await this.pollForCompletion(this.currentSession.id, operationId);
+			// } else {
+				const message = await this.$appStore.sendMessage(text);
+				// console.log(message);
+				// await this.$appStore.getMessages();
+			// }
 
 			this.isMessagePending = false;
 		},

@@ -1,4 +1,3 @@
-using Azure.Search.Documents.Indexes;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Response;
 using System.Text.Json.Serialization;
@@ -18,7 +17,7 @@ public record Message
     /// <summary>
     /// The type of the message.
     /// </summary>
-    public string Type { get; set; }
+    public string Type { get; set; } = nameof(Message);
 
     /// <summary>
     /// The Partition key.
@@ -36,7 +35,7 @@ public record Message
     /// <summary>
     /// The timestamp when the message was created.
     /// </summary>
-    public DateTime TimeStamp { get; set; }
+    public DateTime TimeStamp { get; set; } = DateTime.UtcNow;
 
     /// <summary>
     /// The sender of the message.
@@ -51,7 +50,7 @@ public record Message
     /// <summary>
     /// The number of tokens associated with the message, if any.
     /// </summary>
-    public int? Tokens { get; set; }
+    public int Tokens { get; set; }
 
     /// <summary>
     /// The text content of the message.
@@ -123,37 +122,5 @@ public record Message
     /// </summary>
     [JsonPropertyName("status")]
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public OperationStatus Status { get; set; }
-
-    /// <summary>
-    /// Constructor for Message.
-    /// </summary>
-    public Message(string sessionId, string sender, int? tokens, string text,
-        float[]? vector, bool? rating, string upn, string? senderDisplayName = null,
-        Citation[]? citations = null, string? expectedCompletion = null,
-        List<MessageContent>? content = null, List<string>? attachments = null,
-        List<AttachmentDetail>? attachmentDetails = null, List<AnalysisResult>? analysisResults = null,
-        OperationStatus status = OperationStatus.Pending,
-        string? operationId = null)
-    {
-        Id = Guid.NewGuid().ToString();
-        Type = nameof(Message);
-        SessionId = sessionId;
-        Sender = sender;
-        SenderDisplayName = senderDisplayName;
-        Tokens = tokens ?? 0;
-        TimeStamp = DateTime.UtcNow;
-        Text = text;
-        Rating = rating;
-        Vector = vector;
-        UPN = upn;
-        ExpectedCompletion = expectedCompletion;
-        Citations = citations;
-        Attachments = attachments;
-        AttachmentDetails = attachmentDetails;
-        Content = content;
-        AnalysisResults = analysisResults;
-        Status = status;
-        OperationId = operationId;
-    }
+    public OperationStatus Status { get; set; } = OperationStatus.Pending;
 }

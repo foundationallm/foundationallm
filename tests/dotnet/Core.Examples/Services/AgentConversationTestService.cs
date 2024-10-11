@@ -66,7 +66,7 @@ namespace FoundationaLLM.Core.Examples.Services
         }
 
         /// <inheritdoc/>
-        public async Task<Completion> RunAgentCompletionWithSession(string agentName,
+        public async Task<Message> RunAgentCompletionWithSession(string agentName,
             string userPrompt, string? sessionId = null, bool createAgent = false)
         {
             var sessionCreated = false;
@@ -103,7 +103,7 @@ namespace FoundationaLLM.Core.Examples.Services
         }
 
         /// <inheritdoc/>
-        public async Task<Completion> RunAgentCompletionWithNoSession(string agentName,
+        public async Task<Message> RunAgentCompletionWithNoSession(string agentName,
             string userPrompt, bool createAgent = false)
         {
             if (createAgent)
@@ -175,7 +175,7 @@ namespace FoundationaLLM.Core.Examples.Services
             var messages = await coreClient.GetChatSessionMessagesAsync(sessionId);
 
             // Get the last message where the agent is the sender.
-            var lastAgentMessage = messages.LastOrDefault(m => m.Sender == nameof(Participants.Assistant));
+            var lastAgentMessage = messages.LastOrDefault(m => m.Sender == nameof(Participants.Agent));
             if (lastAgentMessage != null && !string.IsNullOrWhiteSpace(lastAgentMessage.CompletionPromptId))
             {
                 // Get the completion prompt from the last agent message.
