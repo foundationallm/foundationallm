@@ -687,6 +687,10 @@ export default {
 			});
 		},
 
+		hideAllPoppers() {
+			hideAllPoppers();
+		},
+
 		handleDrop(files) {
 			const mockFileEvent = { files };
 
