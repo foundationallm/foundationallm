@@ -163,7 +163,7 @@ export default {
 			// } else {
 				const message = await this.$appStore.sendMessage(text);
 				// console.log(message);
-				await this.$appStore.getMessages();
+				// await this.$appStore.getMessages();
 			// }
 
 			this.isMessagePending = false;

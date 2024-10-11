@@ -317,14 +317,17 @@ export const useAppStore = defineStore('app', {
 					relevantAttachments.map((attachment) => String(attachment.id)),
 				);
 
+				// Set the temp assistant message operation id to stream it
+				this.currentMessages[this.currentMessages.length-1].operationId = message.operation_id;
+
 				// console.log(message);
 
-				this.longRunningOperations.set(this.currentSession!.id, message.operation_id);
+				// this.longRunningOperations.set(this.currentSession!.id, message.operation_id);
 
-				setInterval(async () => {
-					await api.checkProcessStatus(message.operation_id);
-					await this.getMessages();
-				}, 1000);
+				// setInterval(async () => {
+				// 	await api.checkProcessStatus(message.operation_id);
+				// 	await this.getMessages();
+				// }, 1000);
 
 				return message;
 				// this.pollForCompletion(this.currentSession!.id, message.operationId);
@@ -342,6 +345,10 @@ export const useAppStore = defineStore('app', {
 			// 	});
 			// }
 		},
+
+		// async checkProcessStatus(operationId) {
+		// 	this.currentMessages
+		// },
 
 		/**
 		 * Polls for the completion of a long-running operation.
