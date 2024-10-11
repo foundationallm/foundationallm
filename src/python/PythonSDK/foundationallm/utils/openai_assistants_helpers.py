@@ -63,8 +63,15 @@ class OpenAIAssistantsHelpers:
                     )
                     result.tool_input += details.function.arguments
                     if details.function.output:
-                        output_data = json.loads(details.function.output)['data'][0]
-                        result.tool_output += json.dumps({"url": output_data['url'], "description": output_data['revised_prompt']})
+                        fn_output = json.loads(details.function.output)                       
+                        if 'data' in fn_output:
+                            output_data = json.loads(details.function.output)['data'][0]
+                            result.tool_output += json.dumps({"url": output_data['url'], "description": output_data['revised_prompt']})
+                        else:
+                            # indicative of a failure during the function call
+                            print(fn_output)
+                            raise Exception("Function output does not contain 'data' key: "+ json.dumps(fn_output))
+                                
         return None
 
     @staticmethod
