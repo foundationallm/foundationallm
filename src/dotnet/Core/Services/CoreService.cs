@@ -363,6 +363,28 @@ public partial class CoreService(
             var operationContext = await _cosmosDBService.GetLongRunningOperationContextAsync(operationId);
             var operationStatus = await GetDownstreamAPIService(operationContext.GatekeeperOverride).GetCompletionOperationStatus(instanceId, operationId);
 
+            if ((DateTime.UtcNow - operationContext.StartTime).TotalMinutes > 30
+                && (operationStatus.Status == OperationStatus.Pending || operationStatus.Status == OperationStatus.InProgress))
+            {
+                // We've hit the hard stop time for the operation.
+
+                await _cosmosDBService.PatchSessionsItemPropertiesAsync<Message>(
+                    operationContext.AgentMessageId,
+                    operationContext.SessionId,
+                    new Dictionary<string, object?>
+                    {
+                        { "/status", OperationStatus.Failed },
+                        { "/text", "The completion operation has exceeded the maximum time allowed." }
+                    });
+
+                return new Message
+                {
+                    OperationId = operationId,
+                    Status = OperationStatus.Failed,
+                    Text = "The completion operation has exceeded the maximum time allowed."
+                };
+            }
+
             if (operationStatus.Result is JsonElement jsonElement)
             {
                 var completionResponse = jsonElement.Deserialize<CompletionResponse>();
