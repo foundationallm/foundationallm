@@ -100,7 +100,6 @@ export default {
 			this.isLoading = true;
 			this.userSentMessage = false;
 			await this.$appStore.getMessages();
-			console.log('change');
 			this.$appStore.updateSessionAgentFromMessages(newSession);
 			this.isLoading = false;
 		},
@@ -155,7 +154,7 @@ export default {
 			// 	this.longRunningOperations.set(this.currentSession.id, true);
 			// 	await this.pollForCompletion(this.currentSession.id, operationId);
 			// } else {
-			const message = await this.$appStore.sendMessage(text);
+			await this.$appStore.sendMessage(text);
 			// console.log(message);
 			// await this.$appStore.getMessages();
 			// }
