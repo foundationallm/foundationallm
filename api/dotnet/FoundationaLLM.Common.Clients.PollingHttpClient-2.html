@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Clients_PollingHttpClient_2" data-uid="FoundationaLLM.Common.Clients.PollingHttpClient`2" class="text-break">
-Class PollingHttpClient&lt;TRequest, TResponse&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/PollingHttpClient`2.cs/#L22"><i class="bi bi-code-slash"></i></a>
+Class PollingHttpClient&lt;TRequest, TResponse&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/PollingHttpClient`2.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -102,7 +102,7 @@ Class PollingHttpClient&lt;TRequest, TResponse&gt;  <a class="header-action link
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PollingHttpClient&lt;TRequest, TResponse&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public class PollingHttpClient&lt;TRequest, TResponse&gt; where TRequest : CompletionRequestBase where TResponse : CompletionResponseBase</code></pre>
   </div>
 
 
@@ -172,8 +172,8 @@ Class PollingHttpClient&lt;TRequest, TResponse&gt;  <a class="header-action link
   <a id="FoundationaLLM_Common_Clients_PollingHttpClient_2__ctor_" data-uid="FoundationaLLM.Common.Clients.PollingHttpClient`2.#ctor*"></a>
 
   <h3 id="FoundationaLLM_Common_Clients_PollingHttpClient_2__ctor_System_Net_Http_HttpClient__0_System_String_System_TimeSpan_System_TimeSpan_Microsoft_Extensions_Logging_ILogger_" data-uid="FoundationaLLM.Common.Clients.PollingHttpClient`2.#ctor(System.Net.Http.HttpClient,`0,System.String,System.TimeSpan,System.TimeSpan,Microsoft.Extensions.Logging.ILogger)">
-  PollingHttpClient(HttpClient, TRequest, string, TimeSpan, TimeSpan, ILogger)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/PollingHttpClient`2.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  PollingHttpClient(HttpClient, TRequest?, string, TimeSpan, TimeSpan, ILogger)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/PollingHttpClient`2.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Provides a generic HTTP client that can be used to poll for a response.</p>
@@ -181,7 +181,7 @@ Class PollingHttpClient&lt;TRequest, TResponse&gt;  <a class="header-action link
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PollingHttpClient(HttpClient httpClient, TRequest request, string operationStarterPath, TimeSpan pollingInterval, TimeSpan maxWaitTime, ILogger logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public PollingHttpClient(HttpClient httpClient, TRequest? request, string operationStarterPath, TimeSpan pollingInterval, TimeSpan maxWaitTime, ILogger logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -221,27 +221,26 @@ Class PollingHttpClient&lt;TRequest, TResponse&gt;  <a class="header-action link
 </h2>
 
 
-  <a id="FoundationaLLM_Common_Clients_PollingHttpClient_2_GetResponseAsync_" data-uid="FoundationaLLM.Common.Clients.PollingHttpClient`2.GetResponseAsync*"></a>
+  <a id="FoundationaLLM_Common_Clients_PollingHttpClient_2_ExecuteOperationAsync_" data-uid="FoundationaLLM.Common.Clients.PollingHttpClient`2.ExecuteOperationAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Clients_PollingHttpClient_2_GetResponseAsync_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Clients.PollingHttpClient`2.GetResponseAsync(System.Threading.CancellationToken)">
-  GetResponseAsync(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/PollingHttpClient`2.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Clients_PollingHttpClient_2_ExecuteOperationAsync_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Clients.PollingHttpClient`2.ExecuteOperationAsync(System.Threading.CancellationToken)">
+  ExecuteOperationAsync(CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/PollingHttpClient`2.cs/#L129"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Retrieves the response from the service using a polling mechanism.
+  <div class="markdown level1 summary"><p>Executes an operation and waits for the response using a polling mechanism.
 The polling mechanism is based on the following assumptions:</p>
 - The {operationStarterPath} endpoint will accept a POST with a <code class="typeparamref">TRequest</code> object as payload and will return a 202 Accepted status code when the operation is started.<br>
 - The returned response will contain a LongRunningOperation object with the operation id.<br>
 - The polling endpoint is available at {operationStarterPath}/{operationId}/status.<br>
-- The polling endpoint will return a 200 status code when the operation is in progress containing a property for status.<br>
-- The polling endpoint will return a 200 status code when the operation is completed with the status property indicating Completed.<br>
-- The result retrieval endpoint is available at {operationStarterPath}/{operationId}/result.<br>
+- The polling endpoint will return a 200 status code when the operation is found.<br>
+- The returned response will contain a LongRunningOperation object with the current status of the operation, possibly including the result if the operation completed.<br>
 - The polling endpoint will return a 404 Not Found status code when the operation is not found.<br>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;TResponse?&gt; GetResponseAsync(CancellationToken cancellationToken = default)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;TResponse?&gt; ExecuteOperationAsync(CancellationToken cancellationToken = default)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -273,11 +272,92 @@ The polling mechanism is based on the following assumptions:</p>
 
 
 
+  <a id="FoundationaLLM_Common_Clients_PollingHttpClient_2_GetOperationStatusAsync_" data-uid="FoundationaLLM.Common.Clients.PollingHttpClient`2.GetOperationStatusAsync*"></a>
+
+  <h3 id="FoundationaLLM_Common_Clients_PollingHttpClient_2_GetOperationStatusAsync_System_String_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Clients.PollingHttpClient`2.GetOperationStatusAsync(System.String,System.Threading.CancellationToken)">
+  GetOperationStatusAsync(string, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/PollingHttpClient`2.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the status of a running operation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;LongRunningOperation&gt; GetOperationStatusAsync(string operationId, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>operationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The identifier of the running operation.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a> indicating the need to cancel the process.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html">LongRunningOperation</a>&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html">LongRunningOperation</a>object providing details about the running operation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Clients_PollingHttpClient_2_StartOperationAsync_" data-uid="FoundationaLLM.Common.Clients.PollingHttpClient`2.StartOperationAsync*"></a>
+
+  <h3 id="FoundationaLLM_Common_Clients_PollingHttpClient_2_StartOperationAsync_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Clients.PollingHttpClient`2.StartOperationAsync(System.Threading.CancellationToken)">
+  StartOperationAsync(CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/PollingHttpClient`2.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Starts an operation and returns immediately.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;LongRunningOperation&gt; StartOperationAsync(CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a> indicating the need to cancel the process.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html">LongRunningOperation</a>&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html">LongRunningOperation</a>object providing details about the newly started operation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/PollingHttpClient`2.cs/#L22" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Clients/PollingHttpClient`2.cs/#L24" class="edit-link">Edit this page</a>
         </div>
 
 

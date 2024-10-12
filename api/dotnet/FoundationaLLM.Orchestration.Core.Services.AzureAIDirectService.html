@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Orchestration_Core_Services_AzureAIDirectService" data-uid="FoundationaLLM.Orchestration.Core.Services.AzureAIDirectService" class="text-break">
-Class AzureAIDirectService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/AzureAIDirectService.cs/#L24"><i class="bi bi-code-slash"></i></a>
+Class AzureAIDirectService  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/AzureAIDirectService.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -171,7 +171,7 @@ Class AzureAIDirectService  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Orchestration_Core_Services_AzureAIDirectService__ctor_FoundationaLLM_Common_Interfaces_ICallContext_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Orchestration_Core_Services_AzureAIDirectService__FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__" data-uid="FoundationaLLM.Orchestration.Core.Services.AzureAIDirectService.#ctor(FoundationaLLM.Common.Interfaces.ICallContext,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Orchestration.Core.Services.AzureAIDirectService},FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService})">
   AzureAIDirectService(ICallContext, ILogger&lt;AzureAIDirectService&gt;, IHttpClientFactoryService, IEnumerable&lt;IResourceProviderService&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/AzureAIDirectService.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/AzureAIDirectService.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The Azure AI direct orchestration service.</p>
@@ -217,7 +217,7 @@ Class AzureAIDirectService  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Orchestration_Core_Services_AzureAIDirectService_Name" data-uid="FoundationaLLM.Orchestration.Core.Services.AzureAIDirectService.Name">
   Name
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/AzureAIDirectService.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/AzureAIDirectService.cs/#L48"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The name of the LLM orchestration service.</p>
@@ -253,7 +253,7 @@ Class AzureAIDirectService  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Orchestration_Core_Services_AzureAIDirectService_GetCompletion_System_String_FoundationaLLM_Common_Models_Orchestration_Request_LLMCompletionRequest_" data-uid="FoundationaLLM.Orchestration.Core.Services.AzureAIDirectService.GetCompletion(System.String,FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest)">
   GetCompletion(string, LLMCompletionRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/AzureAIDirectService.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/AzureAIDirectService.cs/#L51"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Method for retrieving a completion from the orchestration service.</p>
@@ -290,11 +290,53 @@ Class AzureAIDirectService  <a class="header-action link-secondary" title="View 
 
 
 
+  <a id="FoundationaLLM_Orchestration_Core_Services_AzureAIDirectService_GetCompletionOperationStatus_" data-uid="FoundationaLLM.Orchestration.Core.Services.AzureAIDirectService.GetCompletionOperationStatus*"></a>
+
+  <h3 id="FoundationaLLM_Orchestration_Core_Services_AzureAIDirectService_GetCompletionOperationStatus_System_String_System_String_" data-uid="FoundationaLLM.Orchestration.Core.Services.AzureAIDirectService.GetCompletionOperationStatus(System.String,System.String)">
+  GetCompletionOperationStatus(string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/AzureAIDirectService.cs/#L153"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the status of a completion operation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;LongRunningOperation&gt; GetCompletionOperationStatus(string instanceId, string operationId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance id.</p>
+</dd>
+    <dt><code>operationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The OperationId for which to retrieve the status.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html">LongRunningOperation</a>&gt;</dt>
+    <dd><p>Returns an <a class="xref" href="FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html">LongRunningOperation</a> object containing the OperationId and Status.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Orchestration_Core_Services_AzureAIDirectService_GetStatus_" data-uid="FoundationaLLM.Orchestration.Core.Services.AzureAIDirectService.GetStatus*"></a>
 
   <h3 id="FoundationaLLM_Orchestration_Core_Services_AzureAIDirectService_GetStatus_System_String_" data-uid="FoundationaLLM.Orchestration.Core.Services.AzureAIDirectService.GetStatus(System.String)">
   GetStatus(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/AzureAIDirectService.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/AzureAIDirectService.cs/#L39"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Get the status of the orchestration service.</p>
@@ -328,11 +370,53 @@ Class AzureAIDirectService  <a class="header-action link-secondary" title="View 
 
 
 
+  <a id="FoundationaLLM_Orchestration_Core_Services_AzureAIDirectService_StartCompletionOperation_" data-uid="FoundationaLLM.Orchestration.Core.Services.AzureAIDirectService.StartCompletionOperation*"></a>
+
+  <h3 id="FoundationaLLM_Orchestration_Core_Services_AzureAIDirectService_StartCompletionOperation_System_String_FoundationaLLM_Common_Models_Orchestration_Request_LLMCompletionRequest_" data-uid="FoundationaLLM.Orchestration.Core.Services.AzureAIDirectService.StartCompletionOperation(System.String,FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest)">
+  StartCompletionOperation(string, LLMCompletionRequest)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/AzureAIDirectService.cs/#L150"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Begins a completion operation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;LongRunningOperation&gt; StartCompletionOperation(string instanceId, LLMCompletionRequest completionRequest)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance id.</p>
+</dd>
+    <dt><code>completionRequest</code> <a class="xref" href="FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest.html">LLMCompletionRequest</a></dt>
+    <dd><p>The completion request containing the user prompt and message history.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html">LongRunningOperation</a>&gt;</dt>
+    <dd><p>Returns an <a class="xref" href="FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html">LongRunningOperation</a> object containing the OperationId and Status.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/AzureAIDirectService.cs/#L24" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Services/AzureAIDirectService.cs/#L25" class="edit-link">Edit this page</a>
         </div>
 
 

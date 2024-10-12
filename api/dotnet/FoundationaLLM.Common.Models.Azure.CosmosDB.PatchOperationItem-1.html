@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-      <title>Class DefaultAuthentication | FoundationaLLM </title>
+      <title>Class PatchOperationItem&lt;T&gt; | FoundationaLLM </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class DefaultAuthentication | FoundationaLLM ">
+      <meta name="title" content="Class PatchOperationItem&lt;T&gt; | FoundationaLLM ">
       
-      <meta name="description" content="Provides the default credentials for authentication.">
+      <meta name="description" content="Contains the contents of an Azure Cosmos DB patch operation item.">
       <link rel="icon" href="../../media/favicon.ico">
       <link rel="stylesheet" href="../../public/docfx.min.css">
       <link rel="stylesheet" href="../../public/main.css">
@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../../">
       
       
-      <meta name="docfx:docurl" content="https://github.com/solliancenet/foundationallm/new/main/apiSpec/new?filename=FoundationaLLM_Common_Authentication_DefaultAuthentication.md&amp;value=---%0Auid%3A%20FoundationaLLM.Common.Authentication.DefaultAuthentication%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/solliancenet/foundationallm/new/main/apiSpec/new?filename=FoundationaLLM_Common_Models_Azure_CosmosDB_PatchOperationItem_1.md&amp;value=---%0Auid%3A%20FoundationaLLM.Common.Models.Azure.CosmosDB.PatchOperationItem%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -84,38 +84,50 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="FoundationaLLM.Common.Authentication.DefaultAuthentication">
+        <article data-uid="FoundationaLLM.Common.Models.Azure.CosmosDB.PatchOperationItem`1">
 
 
 
-  <h1 id="FoundationaLLM_Common_Authentication_DefaultAuthentication" data-uid="FoundationaLLM.Common.Authentication.DefaultAuthentication" class="text-break">
-Class DefaultAuthentication  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Authentication/DefaultAuthentication.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  <h1 id="FoundationaLLM_Common_Models_Azure_CosmosDB_PatchOperationItem_1" data-uid="FoundationaLLM.Common.Models.Azure.CosmosDB.PatchOperationItem`1" class="text-break">
+Class PatchOperationItem&lt;T&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Azure/CosmosDB/PatchOperationItem.cs/#L7"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="FoundationaLLM.html">FoundationaLLM</a>.<a class="xref" href="FoundationaLLM.Common.html">Common</a>.<a class="xref" href="FoundationaLLM.Common.Authentication.html">Authentication</a></dd></dl>
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FoundationaLLM.html">FoundationaLLM</a>.<a class="xref" href="FoundationaLLM.Common.html">Common</a>.<a class="xref" href="FoundationaLLM.Common.Models.html">Models</a>.<a class="xref" href="FoundationaLLM.Common.Models.Azure.html">Azure</a>.<a class="xref" href="FoundationaLLM.Common.Models.Azure.CosmosDB.html">CosmosDB</a></dd></dl>
   <dl><dt>Assembly</dt><dd>FoundationaLLM.Common.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Provides the default credentials for authentication.</p>
+  <div class="markdown summary"><p>Contains the contents of an Azure Cosmos DB patch operation item.</p>
 </div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class DefaultAuthentication</code></pre>
+    <pre><code class="lang-csharp hljs">public class PatchOperationItem&lt;T&gt; : IPatchOperationItem</code></pre>
   </div>
 
 
 
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of the item being updated by the patch operation.</p>
+</dd>
+  </dl>
 
   <dl class="typelist inheritance">
     <dt>Inheritance</dt>
     <dd>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-      <div><span class="xref">DefaultAuthentication</span></div>
+      <div><span class="xref">PatchOperationItem&lt;T&gt;</span></div>
     </dd>
   </dl>
 
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="FoundationaLLM.Common.Models.Azure.CosmosDB.IPatchOperationItem.html">IPatchOperationItem</a></div>
+    </dd>
+  </dl>
 
 
   <dl class="typelist inheritedMembers">
@@ -144,6 +156,13 @@ Class DefaultAuthentication  <a class="header-action link-secondary" title="View
     </div>
   </dd></dl>
 
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__">ObjectExtensions.GetPropertyValues(object, List&lt;string&gt;)</a>
+  </div>
+  </dd></dl>
 
 
 
@@ -153,19 +172,19 @@ Class DefaultAuthentication  <a class="header-action link-secondary" title="View
 </h2>
 
 
-  <a id="FoundationaLLM_Common_Authentication_DefaultAuthentication_AzureCredential_" data-uid="FoundationaLLM.Common.Authentication.DefaultAuthentication.AzureCredential*"></a>
+  <a id="FoundationaLLM_Common_Models_Azure_CosmosDB_PatchOperationItem_1_ItemId_" data-uid="FoundationaLLM.Common.Models.Azure.CosmosDB.PatchOperationItem`1.ItemId*"></a>
 
-  <h3 id="FoundationaLLM_Common_Authentication_DefaultAuthentication_AzureCredential" data-uid="FoundationaLLM.Common.Authentication.DefaultAuthentication.AzureCredential">
-  AzureCredential
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Authentication/DefaultAuthentication.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Models_Azure_CosmosDB_PatchOperationItem_1_ItemId" data-uid="FoundationaLLM.Common.Models.Azure.CosmosDB.PatchOperationItem`1.ItemId">
+  ItemId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Azure/CosmosDB/PatchOperationItem.cs/#L10"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>The default Azure credential to use for authentication.</p>
+  <div class="markdown level1 summary"><p>The identifier of the item being updated.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TokenCredential? AzureCredential { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public required string ItemId { get; set; }</code></pre>
   </div>
 
 
@@ -174,7 +193,7 @@ Class DefaultAuthentication  <a class="header-action link-secondary" title="View
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/azure.core.tokencredential">TokenCredential</a></dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd></dd>
   </dl>
 
@@ -185,19 +204,19 @@ Class DefaultAuthentication  <a class="header-action link-secondary" title="View
 
 
 
-  <a id="FoundationaLLM_Common_Authentication_DefaultAuthentication_Production_" data-uid="FoundationaLLM.Common.Authentication.DefaultAuthentication.Production*"></a>
+  <a id="FoundationaLLM_Common_Models_Azure_CosmosDB_PatchOperationItem_1_ItemType_" data-uid="FoundationaLLM.Common.Models.Azure.CosmosDB.PatchOperationItem`1.ItemType*"></a>
 
-  <h3 id="FoundationaLLM_Common_Authentication_DefaultAuthentication_Production" data-uid="FoundationaLLM.Common.Authentication.DefaultAuthentication.Production">
-  Production
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Authentication/DefaultAuthentication.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Models_Azure_CosmosDB_PatchOperationItem_1_ItemType" data-uid="FoundationaLLM.Common.Models.Azure.CosmosDB.PatchOperationItem`1.ItemType">
+  ItemType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Azure/CosmosDB/PatchOperationItem.cs/#L16"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Indicates whether the environment we run in is production or not.</p>
+  <div class="markdown level1 summary"><p>Specifies the item type to aid with casting within the batch operation.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool Production { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Type ItemType { get; }</code></pre>
   </div>
 
 
@@ -206,7 +225,7 @@ Class DefaultAuthentication  <a class="header-action link-secondary" title="View
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
     <dd></dd>
   </dl>
 
@@ -217,19 +236,19 @@ Class DefaultAuthentication  <a class="header-action link-secondary" title="View
 
 
 
-  <a id="FoundationaLLM_Common_Authentication_DefaultAuthentication_ServiceIdentity_" data-uid="FoundationaLLM.Common.Authentication.DefaultAuthentication.ServiceIdentity*"></a>
+  <a id="FoundationaLLM_Common_Models_Azure_CosmosDB_PatchOperationItem_1_PropertyValues_" data-uid="FoundationaLLM.Common.Models.Azure.CosmosDB.PatchOperationItem`1.PropertyValues*"></a>
 
-  <h3 id="FoundationaLLM_Common_Authentication_DefaultAuthentication_ServiceIdentity" data-uid="FoundationaLLM.Common.Authentication.DefaultAuthentication.ServiceIdentity">
-  ServiceIdentity
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Authentication/DefaultAuthentication.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Models_Azure_CosmosDB_PatchOperationItem_1_PropertyValues" data-uid="FoundationaLLM.Common.Models.Azure.CosmosDB.PatchOperationItem`1.PropertyValues">
+  PropertyValues
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Azure/CosmosDB/PatchOperationItem.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a> of the service based on its managed identity.&quot;/&gt;</p>
+  <div class="markdown level1 summary"><p>The dictionary containing property names and updated values.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static UnifiedUserIdentity? ServiceIdentity { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public required Dictionary&lt;string, object?&gt; PropertyValues { get; set; }</code></pre>
   </div>
 
 
@@ -238,49 +257,9 @@ Class DefaultAuthentication  <a class="header-action link-secondary" title="View
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
     <dd></dd>
   </dl>
-
-
-
-
-
-
-
-
-  <h2 class="section" id="methods">Methods
-</h2>
-
-
-  <a id="FoundationaLLM_Common_Authentication_DefaultAuthentication_Initialize_" data-uid="FoundationaLLM.Common.Authentication.DefaultAuthentication.Initialize*"></a>
-
-  <h3 id="FoundationaLLM_Common_Authentication_DefaultAuthentication_Initialize_System_Boolean_System_String_" data-uid="FoundationaLLM.Common.Authentication.DefaultAuthentication.Initialize(System.Boolean,System.String)">
-  Initialize(bool, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Authentication/DefaultAuthentication.cs/#L21"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Initializes the default authentication.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void Initialize(bool production, string serviceName)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>production</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd><p>Indicates whether the environment is production or not.</p>
-</dd>
-    <dt><code>serviceName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The service name.</p>
-</dd>
-  </dl>
-
-
-
-
 
 
 
@@ -293,7 +272,7 @@ Class DefaultAuthentication  <a class="header-action link-secondary" title="View
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Authentication/DefaultAuthentication.cs/#L14" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Azure/CosmosDB/PatchOperationItem.cs/#L7" class="edit-link">Edit this page</a>
         </div>
 
 

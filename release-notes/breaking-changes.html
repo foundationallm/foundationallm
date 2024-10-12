@@ -90,7 +90,7 @@
 <tbody>
 <tr>
 <td><code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions</code></td>
-<td><code>c, cpp, cs, css, csv, doc, docx, git, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip</code></td>
+<td><code>c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip</code></td>
 </tr>
 <tr>
 <td><code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions</code></td>
@@ -234,6 +234,165 @@ else:
 }
 </code></pre>
 <p><strong>FoundationaLLM.Attachment</strong></p>
+<p>The Attachment resource provider saves the attachment references to Cosmos DB.
+A new Cosmos DB container must be created, named <code>Attachments</code>, with a partition key <code>/upn</code>.</p>
+<h2 id="starting-with-082-1">Starting with 0.8.2</h2>
+<h3 id="configuration-changes-1">Configuration changes</h3>
+<p>The following settings are required:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions</code></td>
+<td><code>c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions</code></td>
+<td><code>c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage</code></td>
+<td><code>{ &quot;value&quot;: 10, &quot;value_exceptions&quot;: [] }</code></td>
+</tr>
+</tbody>
+</table>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Here is an example of an override for the <code>MaxUploadsPerMessage</code> setting:</p>
+<pre><code class="lang-json">{
+  &quot;value&quot;: 10,
+  &quot;value_exceptions&quot;: [
+      {
+          &quot;user_principal_name&quot;: &quot;ciprian@solliance.net&quot;,
+          &quot;value&quot;: 5,
+          &quot;enabled&quot;: true
+      }
+  ]
+}
+</code></pre>
+</div>
+<p>The following settings are optional (they should not be set by default):</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:Instance:IdentitySubstitutionSecurityPrincipalId</code></td>
+<td>&lt;security_principal_id&gt;</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Instance:IdentitySubstitutionUserPrincipalNamePattern</code></td>
+<td><code>^fllm_load_test_user_\d{5}_\d{3}@solliance\.net$</code></td>
+</tr>
+</tbody>
+</table>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The <code>FoundationaLLM:Instance:IdentitySubstitutionSecurityPrincipalId</code> and <code>FoundationaLLM:Instance:IdentitySubstitutionUserPrincipalNamePattern</code> settings are used for load testing purposes only. If set, their values must be replaced with the appropriate values for the specific Entra ID tenant.</p>
+</div>
+<h3 id="resource-provider-changes-1">Resource provider changes</h3>
+<p>The following resource provider files must be renamed (if they already exist):</p>
+<table>
+<thead>
+<tr>
+<th>Location</th>
+<th>Old name</th>
+<th>New name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>resource-provider/FoundationaLLM.Agent</code></td>
+<td><code>_agent-references.json</code></td>
+<td><code>_resource-references.json</code></td>
+</tr>
+<tr>
+<td><code>resource-provider/FoundationaLLM.AIModel</code></td>
+<td><code>_ai-model-references.json</code></td>
+<td><code>_resource-references.json</code></td>
+</tr>
+<tr>
+<td><code>resource-provider/FoundationaLLM.Configuration</code></td>
+<td><code>_api-endpoint-references.json</code></td>
+<td><code>_resource-references.json</code></td>
+</tr>
+<tr>
+<td><code>resource-provider/FoundationaLLM.DataSource</code></td>
+<td><code>_data-source-references.json</code></td>
+<td><code>_resource-references.json</code></td>
+</tr>
+<tr>
+<td><code>resource-provider/FoundationaLLM.Prompt</code></td>
+<td><code>_prompt-references.json</code></td>
+<td><code>_resource-references.json</code></td>
+</tr>
+</tbody>
+</table>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Within each of the renamed files, the <code>&lt;entity&gt;References</code> property must be renamed to <code>ResourceReferences</code>.</p>
+</div>
+<p><strong>FoundationaLLM.Authorization</strong></p>
+<p>A new storage container named <code>policy-assignments</code> is required. The <code>FoundationaLLM.Authorization</code> resource provider will use this container to store policy assignments.</p>
+<p>Within the container, the <code>&lt;instance_id&gt;-policy.json</code> must be deployed with the default policy assignments. The template for the default policy assignments is available in <code>Common/Constants/Data/DefaultPolicyAssignments.json</code>.</p>
+<p><strong>FoundationaLLM.Conversation</strong></p>
+<p>When upgrading an existing FoundationaLLM instance, the items in the <code>Sessions</code> collection in Cosmos DB must be updated according to the following rules:</p>
+<pre><code>if Object is of type Session of KioskSession:
+    If the property DisplayName exists and is set to a non-empty string:
+        Don't touch the item
+    else:
+        Set DisplayName to the value of Name
+        Set Name to the value of SessionId
+else:
+    No action needed
+</code></pre>
+<p>Refer to the dedicated upgrade tool for instruction on how to perform this update.</p>
+<p><strong>FoundationaLLM.Configuration</strong></p>
+<p>The OneDrive (Work or School) integration requires the following API Endpoint Configuration entry in the storage account:</p>
+<p><code>FoundationaLLM.Configuration/OneDriveFileStoreConnector.json</code></p>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;api-endpoint&quot;,
+    &quot;name&quot;: &quot;OneDriveFileStoreConnector&quot;,
+    &quot;object_id&quot;: &quot;/instances/{{instance_id}}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/OneDriveFileStoreConnector&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: null,
+    &quot;cost_center&quot;: null,
+    &quot;category&quot;: &quot;FileStoreConnector&quot;,
+    &quot;subcategory&quot;: &quot;OneDriveWorkSchool&quot;,
+    &quot;authentication_type&quot;: &quot;AzureIdentity&quot;,
+    &quot;authentication_parameters&quot;: {
+      &quot;scope&quot;: &quot;Files.Read.All&quot;
+    },
+    &quot;url&quot;: &quot;{{onedrive_base_url}}&quot;,
+    &quot;status_url&quot;: &quot;&quot;,
+    &quot;url_exceptions&quot;: [],
+    &quot;timeout_seconds&quot;: 2400,
+    &quot;retry_strategy_name&quot;: &quot;ExponentialBackoff&quot;,
+    &quot;created_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;,
+    &quot;deleted&quot;: false
+  }
+</code></pre>
+<p>Update <code>FoundationaLLM.Configuration/_resource-references_.json</code> with the reference to the file above.</p>
+<pre><code class="lang-json">{
+	&quot;Name&quot;: &quot;OneDriveFileStoreConnector&quot;,
+	&quot;Filename&quot;: &quot;/FoundationaLLM.Configuration/OneDriveFileStoreConnector.json&quot;,
+	&quot;Type&quot;: &quot;api-endpoint&quot;,
+	&quot;Deleted&quot;: false
+}
+</code></pre>
+<p><strong>FoundationaLLM.Attachment</strong></p>
 <p>The Attachment resource provider now saves the attachment references to Cosmos DB, instead of Data Lake storage.
 A new Cosmos DB container must be created, named <code>Attachments</code>, with the following partition key: <code>/upn</code>.</p>
 <p>The following MSIs require a Cosmos DB role assigned:</p>
@@ -242,6 +401,9 @@ A new Cosmos DB container must be created, named <code>Attachments</code>, with 
 <li>Orchestration API</li>
 <li>Management API</li>
 </ol>
+<h3 id="long-running-operations">Long-Running Operations</h3>
+<p>The context for a long-running operation is now stored in Cosmos DB.
+A new Cosmos DB container must be created, named <code>Operations</code>, with a partition key <code>/id</code>.</p>
 <h2 id="starting-with-080">Starting with 0.8.0</h2>
 <p>Core API changes:</p>
 <ol>

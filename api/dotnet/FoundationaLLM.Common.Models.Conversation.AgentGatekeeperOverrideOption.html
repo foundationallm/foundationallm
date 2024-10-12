@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-      <title>Enum OperationStatus | FoundationaLLM </title>
+      <title>Enum AgentGatekeeperOverrideOption | FoundationaLLM </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Enum OperationStatus | FoundationaLLM ">
+      <meta name="title" content="Enum AgentGatekeeperOverrideOption | FoundationaLLM ">
       
-      <meta name="description" content="Represents the status of a long-running operation.">
+      <meta name="description" content="Gatekeeper override options expressed by an agent.">
       <link rel="icon" href="../../media/favicon.ico">
       <link rel="stylesheet" href="../../public/docfx.min.css">
       <link rel="stylesheet" href="../../public/main.css">
@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../../">
       
       
-      <meta name="docfx:docurl" content="https://github.com/solliancenet/foundationallm/new/main/apiSpec/new?filename=FoundationaLLM_Common_Models_Orchestration_OperationStatus.md&amp;value=---%0Auid%3A%20FoundationaLLM.Common.Models.Orchestration.OperationStatus%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/solliancenet/foundationallm/new/main/apiSpec/new?filename=FoundationaLLM_Common_Models_Conversation_AgentGatekeeperOverrideOption.md&amp;value=---%0Auid%3A%20FoundationaLLM.Common.Models.Conversation.AgentGatekeeperOverrideOption%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -84,26 +84,26 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="FoundationaLLM.Common.Models.Orchestration.OperationStatus">
+        <article data-uid="FoundationaLLM.Common.Models.Conversation.AgentGatekeeperOverrideOption">
 
 
 
 
-  <h1 id="FoundationaLLM_Common_Models_Orchestration_OperationStatus" data-uid="FoundationaLLM.Common.Models.Orchestration.OperationStatus" class="text-break">
-Enum OperationStatus  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/OperationStatus.cs/#L6"><i class="bi bi-code-slash"></i></a>
+  <h1 id="FoundationaLLM_Common_Models_Conversation_AgentGatekeeperOverrideOption" data-uid="FoundationaLLM.Common.Models.Conversation.AgentGatekeeperOverrideOption" class="text-break">
+Enum AgentGatekeeperOverrideOption  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/AgentGatekeeperOverrideOption.cs/#L6"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="FoundationaLLM.html">FoundationaLLM</a>.<a class="xref" href="FoundationaLLM.Common.html">Common</a>.<a class="xref" href="FoundationaLLM.Common.Models.html">Models</a>.<a class="xref" href="FoundationaLLM.Common.Models.Orchestration.html">Orchestration</a></dd></dl>
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FoundationaLLM.html">FoundationaLLM</a>.<a class="xref" href="FoundationaLLM.Common.html">Common</a>.<a class="xref" href="FoundationaLLM.Common.Models.html">Models</a>.<a class="xref" href="FoundationaLLM.Common.Models.Conversation.html">Conversation</a></dd></dl>
   <dl><dt>Assembly</dt><dd>FoundationaLLM.Common.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Represents the status of a long-running operation.</p>
+  <div class="markdown summary"><p>Gatekeeper override options expressed by an agent.</p>
 </div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public enum OperationStatus</code></pre>
+    <pre><code class="lang-csharp hljs">public enum AgentGatekeeperOverrideOption</code></pre>
   </div>
 
 
@@ -124,17 +124,14 @@ Enum OperationStatus  <a class="header-action link-secondary" title="View source
   <h2 id="fields">Fields
 </h2>
   <dl class="parameters">
-    <dt id="FoundationaLLM_Common_Models_Orchestration_OperationStatus_Completed"><code>Completed = 2</code></dt>
-    <dd><p>Operation has been completed.</p>
+    <dt id="FoundationaLLM_Common_Models_Conversation_AgentGatekeeperOverrideOption_MustBypass"><code>MustBypass = 1</code></dt>
+    <dd><p>The agent requires an explicit bypass of the Gatekeeper, regardless of the system option.</p>
 </dd>
-    <dt id="FoundationaLLM_Common_Models_Orchestration_OperationStatus_Failed"><code>Failed = 3</code></dt>
-    <dd><p>Operation has completed in a failed state</p>
+    <dt id="FoundationaLLM_Common_Models_Conversation_AgentGatekeeperOverrideOption_MustCall"><code>MustCall = 2</code></dt>
+    <dd><p>The agent requires an explicit call to the Gatekeeper, regardless of the system option.</p>
 </dd>
-    <dt id="FoundationaLLM_Common_Models_Orchestration_OperationStatus_InProgress"><code>InProgress = 1</code></dt>
-    <dd><p>Operation is in progress.</p>
-</dd>
-    <dt id="FoundationaLLM_Common_Models_Orchestration_OperationStatus_Pending"><code>Pending = 0</code></dt>
-    <dd><p>Operation is new and Pending processing.</p>
+    <dt id="FoundationaLLM_Common_Models_Conversation_AgentGatekeeperOverrideOption_UseSystemOption"><code>UseSystemOption = 0</code></dt>
+    <dd><p>The agent deferrs to the system option.</p>
 </dd>
   </dl>
 
@@ -143,7 +140,7 @@ Enum OperationStatus  <a class="header-action link-secondary" title="View source
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/OperationStatus.cs/#L6" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/AgentGatekeeperOverrideOption.cs/#L6" class="edit-link">Edit this page</a>
         </div>
 
 

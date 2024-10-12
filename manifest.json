@@ -1112,6 +1112,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.AzureCosmosDBContainers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.AzureCosmosDBContainers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.Chat.MessageContentTypes.yml",
       "output": {
         ".html": {
@@ -1246,16 +1256,6 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.CorsPolicyNames.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.CosmosDbContainers.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.CosmosDbContainers.html"
         }
       },
       "version": ""
@@ -2582,6 +2582,36 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Azure.CosmosDB.IPatchOperationItem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Azure.CosmosDB.IPatchOperationItem.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Azure.CosmosDB.PatchOperationItem-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Azure.CosmosDB.PatchOperationItem-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Azure.CosmosDB.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Azure.CosmosDB.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Azure.yml",
       "output": {
         ".html": {
@@ -3142,6 +3172,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.AgentGatekeeperOverrideOption.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.AgentGatekeeperOverrideOption.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.AttachmentDetail.yml",
       "output": {
         ".html": {
@@ -3156,16 +3196,6 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.ChatSessionProperties.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.Completion.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Conversation.Completion.html"
         }
       },
       "version": ""
@@ -3636,6 +3666,16 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.html"
         }
       },
       "version": ""
@@ -5662,16 +5702,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Core.Models.AgentGatekeeperOverrideOption.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Core.Models.AgentGatekeeperOverrideOption.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType.yml",
       "output": {
         ".html": {
@@ -5722,20 +5752,20 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Core.Services.CoreService.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Core.Services.AzureCosmosDBChangeFeedService.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Core.Services.CoreService.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Core.Services.AzureCosmosDBChangeFeedService.html"
         }
       },
       "version": ""
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Core.Services.CosmosDbChangeFeedService.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Core.Services.CoreService.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Core.Services.CosmosDbChangeFeedService.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Core.Services.CoreService.html"
         }
       },
       "version": ""

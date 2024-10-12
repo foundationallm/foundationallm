@@ -174,7 +174,7 @@ orchestrator.</p>
 
   <h3 id="FoundationaLLM_Core_Interfaces_ICoreService_DeleteAttachments_System_String_System_Collections_Generic_List_System_String__FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.DeleteAttachments(System.String,System.Collections.Generic.List{System.String},FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   DeleteAttachments(string, List&lt;string&gt;, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Interfaces/ICoreService.cs/#L148"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Interfaces/ICoreService.cs/#L140"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes one or more attachments.</p>
@@ -260,7 +260,7 @@ orchestrator.</p>
 
   <h3 id="FoundationaLLM_Core_Interfaces_ICoreService_DownloadAttachment_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.DownloadAttachment(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   DownloadAttachment(string, string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Interfaces/ICoreService.cs/#L138"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Interfaces/ICoreService.cs/#L130"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Downloads an attachment.</p>
@@ -359,7 +359,7 @@ generate a completion response, and log full completion results.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;Completion&gt; GetChatCompletionAsync(string instanceId, CompletionRequest completionRequest)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Message&gt; GetChatCompletionAsync(string instanceId, CompletionRequest completionRequest)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -374,7 +374,7 @@ generate a completion response, and log full completion results.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Completion.html">Completion</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -441,7 +441,7 @@ generate a completion response, and log full completion results.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;Completion&gt; GetCompletionAsync(string instanceId, CompletionRequest directCompletionRequest)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Message&gt; GetCompletionAsync(string instanceId, CompletionRequest directCompletionRequest)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -456,50 +456,8 @@ generate a completion response, and log full completion results.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Completion.html">Completion</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;</dt>
     <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="FoundationaLLM_Core_Interfaces_ICoreService_GetCompletionOperationResult_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.GetCompletionOperationResult*"></a>
-
-  <h3 id="FoundationaLLM_Core_Interfaces_ICoreService_GetCompletionOperationResult_System_String_System_String_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.GetCompletionOperationResult(System.String,System.String)">
-  GetCompletionOperationResult(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Interfaces/ICoreService.cs/#L109"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Gets a completion operation from the downstream API.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;CompletionResponse&gt; GetCompletionOperationResult(string instanceId, string operationId)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The FoundationaLLM instance id.</p>
-</dd>
-    <dt><code>operationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The ID of the operation to retrieve.</p>
-</dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponse.html">CompletionResponse</a>&gt;</dt>
-    <dd><p>Returns a <a class="xref" href="FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponse.html">CompletionResponse</a> object.</p>
-</dd>
   </dl>
 
 
@@ -524,7 +482,7 @@ generate a completion response, and log full completion results.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;LongRunningOperation&gt; GetCompletionOperationStatus(string instanceId, string operationId)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Message&gt; GetCompletionOperationStatus(string instanceId, string operationId)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -539,8 +497,8 @@ generate a completion response, and log full completion results.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html">LongRunningOperation</a>&gt;</dt>
-    <dd><p>Returns an <a class="xref" href="FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html">LongRunningOperation</a> object containing the OperationId and Status.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;</dt>
+    <dd><p>Returns a <a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a> object containing the agent's response message.</p>
 </dd>
   </dl>
 
@@ -602,7 +560,7 @@ generate a completion response, and log full completion results.</p>
 
   <h3 id="FoundationaLLM_Core_Interfaces_ICoreService_GetFileStoreConfiguration_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConfiguration(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   GetFileStoreConfiguration(string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Interfaces/ICoreService.cs/#L166"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Interfaces/ICoreService.cs/#L158"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the file store configuration for the given instance.</p>
@@ -644,7 +602,7 @@ generate a completion response, and log full completion results.</p>
 
   <h3 id="FoundationaLLM_Core_Interfaces_ICoreService_GetFileStoreConnectors_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConnectors(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   GetFileStoreConnectors(string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Interfaces/ICoreService.cs/#L157"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Interfaces/ICoreService.cs/#L149"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the file store connectors for the given instance.</p>
@@ -819,7 +777,7 @@ generate a completion response, and log full completion results.</p>
 
   <h3 id="FoundationaLLM_Core_Interfaces_ICoreService_UploadAttachment_System_String_System_String_FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentFile_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.UploadAttachment(System.String,System.String,FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   UploadAttachment(string, string, AttachmentFile, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Interfaces/ICoreService.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Interfaces/ICoreService.cs/#L112"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Uploads an attachment.</p>

@@ -301,7 +301,7 @@ existing session</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;Completion&gt; AttachFileAndAskQuestionAsync(Stream fileStream, string fileName, string contentType, string agentName, string question, bool useSession, string? sessionId, ChatSessionProperties? chatSessionProperties)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Message&gt; AttachFileAndAskQuestionAsync(Stream fileStream, string fileName, string contentType, string agentName, string question, bool useSession, string? sessionId, ChatSessionProperties? chatSessionProperties)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -339,7 +339,7 @@ is created first.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Completion.html">Completion</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;</dt>
     <dd><p>A completion from the designated FoundationaLLM agent.</p>
 </dd>
   </dl>
@@ -515,7 +515,7 @@ You must ensure that the completion request contains an AgentName and UserPrompt
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;Completion&gt; GetCompletionAsync(CompletionRequest completionRequest)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Message&gt; GetCompletionAsync(CompletionRequest completionRequest)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -528,7 +528,7 @@ and UserPrompt at a minimum.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Completion.html">Completion</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;</dt>
     <dd><p>A completion from the designated FoundationaLLM agent.</p>
 </dd>
   </dl>
@@ -557,7 +557,7 @@ response.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;Completion&gt; GetCompletionAsync(string userPrompt, string agentName)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Message&gt; GetCompletionAsync(string userPrompt, string agentName)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -573,7 +573,7 @@ completion request.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Completion.html">Completion</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;</dt>
     <dd><p>A completion from the designated FoundationaLLM agent.</p>
 </dd>
   </dl>
@@ -602,7 +602,7 @@ UserPrompt.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;Completion&gt; GetCompletionWithSessionAsync(CompletionRequest completionRequest)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Message&gt; GetCompletionWithSessionAsync(CompletionRequest completionRequest)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -615,7 +615,7 @@ SessionID, AgentName, and UserPrompt at a minimum.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Completion.html">Completion</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;</dt>
     <dd><p>A completion from the designated FoundationaLLM agent.</p>
 </dd>
   </dl>
@@ -644,7 +644,7 @@ be created. If the session name is provided, the session is renamed.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;Completion&gt; GetCompletionWithSessionAsync(string? sessionId, ChatSessionProperties? chatSessionProperties, string userPrompt, string agentName)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Message&gt; GetCompletionWithSessionAsync(string? sessionId, ChatSessionProperties? chatSessionProperties, string userPrompt, string agentName)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -666,7 +666,7 @@ completion request.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Completion.html">Completion</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;</dt>
     <dd><p>A completion from the designated FoundationaLLM agent.</p>
 </dd>
   </dl>

@@ -162,68 +162,6 @@ Class Message  <a class="header-action link-secondary" title="View source" href=
 
 
 
-  <h2 class="section" id="constructors">Constructors
-</h2>
-
-
-  <a id="FoundationaLLM_Common_Models_Conversation_Message__ctor_" data-uid="FoundationaLLM.Common.Models.Conversation.Message.#ctor*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_Conversation_Message__ctor_System_String_System_String_System_Nullable_System_Int32__System_String_System_Single___System_Nullable_System_Boolean__System_String_System_String_FoundationaLLM_Common_Models_Orchestration_Response_Citation___System_String_System_Collections_Generic_List_FoundationaLLM_Common_Models_Conversation_MessageContent__System_Collections_Generic_List_System_String__System_Collections_Generic_List_FoundationaLLM_Common_Models_Conversation_AttachmentDetail__System_Collections_Generic_List_FoundationaLLM_Common_Models_Orchestration_Response_AnalysisResult__" data-uid="FoundationaLLM.Common.Models.Conversation.Message.#ctor(System.String,System.String,System.Nullable{System.Int32},System.String,System.Single[],System.Nullable{System.Boolean},System.String,System.String,FoundationaLLM.Common.Models.Orchestration.Response.Citation[],System.String,System.Collections.Generic.List{FoundationaLLM.Common.Models.Conversation.MessageContent},System.Collections.Generic.List{System.String},System.Collections.Generic.List{FoundationaLLM.Common.Models.Conversation.AttachmentDetail},System.Collections.Generic.List{FoundationaLLM.Common.Models.Orchestration.Response.AnalysisResult})">
-  Message(string, string, int?, string, float[]?, bool?, string, string?, Citation[]?, string?, List&lt;MessageContent&gt;?, List&lt;string&gt;?, List&lt;AttachmentDetail&gt;, List&lt;AnalysisResult&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L113"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Constructor for Message.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Message(string sessionId, string sender, int? tokens, string text, float[]? vector, bool? rating, string upn, string? senderDisplayName = null, Citation[]? citations = null, string? expectedCompletion = null, List&lt;MessageContent&gt;? content = null, List&lt;string&gt;? attachments = null, List&lt;AttachmentDetail&gt; attachmentDetails = null, List&lt;AnalysisResult&gt;? analysisResults = null)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>sessionId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-    <dt><code>sender</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-    <dt><code>tokens</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</dt>
-    <dd></dd>
-    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-    <dt><code>vector</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a>[]</dt>
-    <dd></dd>
-    <dt><code>rating</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>?</dt>
-    <dd></dd>
-    <dt><code>upn</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-    <dt><code>senderDisplayName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-    <dt><code>citations</code> <a class="xref" href="FoundationaLLM.Common.Models.Orchestration.Response.Citation.html">Citation</a>[]</dt>
-    <dd></dd>
-    <dt><code>expectedCompletion</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-    <dt><code>content</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.MessageContent.html">MessageContent</a>&gt;</dt>
-    <dd></dd>
-    <dt><code>attachments</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
-    <dd></dd>
-    <dt><code>attachmentDetails</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.AttachmentDetail.html">AttachmentDetail</a>&gt;</dt>
-    <dd></dd>
-    <dt><code>analysisResults</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Orchestration.Response.AnalysisResult.html">AnalysisResult</a>&gt;</dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-
   <h2 class="section" id="properties">Properties
 </h2>
 
@@ -232,7 +170,7 @@ Class Message  <a class="header-action link-secondary" title="View source" href=
 
   <h3 id="FoundationaLLM_Common_Models_Conversation_Message_AnalysisResults" data-uid="FoundationaLLM.Common.Models.Conversation.Message.AnalysisResults">
   AnalysisResults
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L100"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>A list of results from the analysis.</p>
@@ -264,7 +202,7 @@ Class Message  <a class="header-action link-secondary" title="View source" href=
 
   <h3 id="FoundationaLLM_Common_Models_Conversation_Message_AttachmentDetails" data-uid="FoundationaLLM.Common.Models.Conversation.Message.AttachmentDetails">
   AttachmentDetails
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L112"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Contains the details of the attachments. This is not stored in the database.</p>
@@ -297,7 +235,7 @@ public List&lt;AttachmentDetail&gt;? AttachmentDetails { get; set; }</code></pre
 
   <h3 id="FoundationaLLM_Common_Models_Conversation_Message_Attachments" data-uid="FoundationaLLM.Common.Models.Conversation.Message.Attachments">
   Attachments
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L95"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L106"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>One or more attachments included with the orchestration request.
@@ -331,7 +269,7 @@ public List&lt;string&gt;? Attachments { get; init; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Conversation_Message_Citations" data-uid="FoundationaLLM.Common.Models.Conversation.Message.Citations">
   Citations
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L95"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The sources associated with the completion prompt.</p>
@@ -363,7 +301,7 @@ public List&lt;string&gt;? Attachments { get; init; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Conversation_Message_CompletionPromptId" data-uid="FoundationaLLM.Common.Models.Conversation.Message.CompletionPromptId">
   CompletionPromptId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L84"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The identifier for the completion prompt associated with the message.</p>
@@ -395,7 +333,7 @@ public List&lt;string&gt;? Attachments { get; init; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Conversation_Message_Content" data-uid="FoundationaLLM.Common.Models.Conversation.Message.Content">
   Content
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L107"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L118"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The content of the message.</p>
@@ -428,7 +366,7 @@ public List&lt;MessageContent&gt;? Content { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Conversation_Message_Deleted" data-uid="FoundationaLLM.Common.Models.Conversation.Message.Deleted">
   Deleted
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L74"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deleted flag used for soft delete.</p>
@@ -460,7 +398,7 @@ public List&lt;MessageContent&gt;? Content { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Conversation_Message_ExpectedCompletion" data-uid="FoundationaLLM.Common.Models.Conversation.Message.ExpectedCompletion">
   ExpectedCompletion
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L90"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Stores the expected completion for the message and used for evaluating the actual vs. expected agent completion.
@@ -501,8 +439,7 @@ This should be stored in the agent response.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SearchableField(IsKey = true, IsFilterable = true)]
-public string Id { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string Id { get; set; }</code></pre>
   </div>
 
 
@@ -522,11 +459,47 @@ public string Id { get; set; }</code></pre>
 
 
 
+  <a id="FoundationaLLM_Common_Models_Conversation_Message_OperationId_" data-uid="FoundationaLLM.Common.Models.Conversation.Message.OperationId*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_Conversation_Message_OperationId" data-uid="FoundationaLLM.Common.Models.Conversation.Message.OperationId">
+  OperationId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The optional identifier of the long-running operation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;operation_id&quot;)]
+public string? OperationId { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="FoundationaLLM_Common_Models_Conversation_Message_OperationId_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The operation id will be set only for messages that are part of a long-running operation.</p>
+</div>
+
+
+
+
   <a id="FoundationaLLM_Common_Models_Conversation_Message_Rating_" data-uid="FoundationaLLM.Common.Models.Conversation.Message.Rating*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_Conversation_Message_Rating" data-uid="FoundationaLLM.Common.Models.Conversation.Message.Rating">
   Rating
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L64"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The rating associated with the message, if any.</p>
@@ -534,8 +507,7 @@ public string Id { get; set; }</code></pre>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SimpleField]
-public bool? Rating { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool? Rating { get; set; }</code></pre>
   </div>
 
 
@@ -559,7 +531,7 @@ public bool? Rating { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Conversation_Message_Sender" data-uid="FoundationaLLM.Common.Models.Conversation.Message.Sender">
   Sender
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L44"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The sender of the message.</p>
@@ -567,8 +539,7 @@ public bool? Rating { get; set; }</code></pre>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SimpleField]
-public string Sender { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string Sender { get; set; }</code></pre>
   </div>
 
 
@@ -592,7 +563,7 @@ public string Sender { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Conversation_Message_SenderDisplayName" data-uid="FoundationaLLM.Common.Models.Conversation.Message.SenderDisplayName">
   SenderDisplayName
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L49"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The display name of the message sender. This could be the name of the signed in user or the name of the agent.</p>
@@ -600,8 +571,7 @@ public string Sender { get; set; }</code></pre>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SimpleField]
-public string? SenderDisplayName { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string? SenderDisplayName { get; set; }</code></pre>
   </div>
 
 
@@ -633,8 +603,7 @@ public string? SenderDisplayName { get; set; }</code></pre>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SimpleField]
-public string SessionId { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string SessionId { get; set; }</code></pre>
   </div>
 
 
@@ -654,11 +623,45 @@ public string SessionId { get; set; }</code></pre>
 
 
 
+  <a id="FoundationaLLM_Common_Models_Conversation_Message_Status_" data-uid="FoundationaLLM.Common.Models.Conversation.Message.Status*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_Conversation_Message_Status" data-uid="FoundationaLLM.Common.Models.Conversation.Message.Status">
+  Status
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L124"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The status of the long-running operation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;status&quot;)]
+[JsonConverter(typeof(JsonStringEnumConverter))]
+public OperationStatus Status { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FoundationaLLM.Common.Models.Orchestration.OperationStatus.html">OperationStatus</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Models_Conversation_Message_Text_" data-uid="FoundationaLLM.Common.Models.Conversation.Message.Text*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_Conversation_Message_Text" data-uid="FoundationaLLM.Common.Models.Conversation.Message.Text">
   Text
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L59"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The text content of the message.</p>
@@ -666,8 +669,7 @@ public string SessionId { get; set; }</code></pre>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SimpleField]
-public string Text { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string Text { get; set; }</code></pre>
   </div>
 
 
@@ -691,7 +693,7 @@ public string Text { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Conversation_Message_TimeStamp" data-uid="FoundationaLLM.Common.Models.Conversation.Message.TimeStamp">
   TimeStamp
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L39"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The timestamp when the message was created.</p>
@@ -699,8 +701,7 @@ public string Text { get; set; }</code></pre>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SimpleField]
-public DateTime TimeStamp { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public DateTime TimeStamp { get; set; }</code></pre>
   </div>
 
 
@@ -724,7 +725,7 @@ public DateTime TimeStamp { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Conversation_Message_Tokens" data-uid="FoundationaLLM.Common.Models.Conversation.Message.Tokens">
   Tokens
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L54"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The number of tokens associated with the message, if any.</p>
@@ -732,8 +733,7 @@ public DateTime TimeStamp { get; set; }</code></pre>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SimpleField]
-public int? Tokens { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public int Tokens { get; set; }</code></pre>
   </div>
 
 
@@ -742,7 +742,7 @@ public int? Tokens { get; set; }</code></pre>
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
     <dd></dd>
   </dl>
 
@@ -765,8 +765,7 @@ public int? Tokens { get; set; }</code></pre>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SimpleField]
-public string Type { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string Type { get; set; }</code></pre>
   </div>
 
 
@@ -790,7 +789,7 @@ public string Type { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Conversation_Message_UPN" data-uid="FoundationaLLM.Common.Models.Conversation.Message.UPN">
   UPN
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L69"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The UPN of the user who created the chat session.</p>
@@ -822,7 +821,7 @@ public string Type { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Conversation_Message_Vector" data-uid="FoundationaLLM.Common.Models.Conversation.Message.Vector">
   Vector
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Conversation/Message.cs/#L79"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The vector associated with the message.</p>
@@ -830,8 +829,7 @@ public string Type { get; set; }</code></pre>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[FieldBuilderIgnore]
-public float[]? Vector { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public float[]? Vector { get; set; }</code></pre>
   </div>
 
 

@@ -600,7 +600,7 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
   <a id="FoundationaLLM_Common_Interfaces_IResourceProviderService_UpdateResourcePropertiesAsync_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.UpdateResourcePropertiesAsync*"></a>
 
   <h3 id="FoundationaLLM_Common_Interfaces_IResourceProviderService_UpdateResourcePropertiesAsync__2_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Common.Interfaces.IResourceProviderService.UpdateResourcePropertiesAsync``2(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
-  UpdateResourcePropertiesAsync&lt;T, TResult&gt;(string, string, Dictionary&lt;string, object&gt;, UnifiedUserIdentity)
+  UpdateResourcePropertiesAsync&lt;T, TResult&gt;(string, string, Dictionary&lt;string, object?&gt;, UnifiedUserIdentity)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IResourceProviderService.cs/#L94"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -609,7 +609,7 @@ Interface IResourceProviderService  <a class="header-action link-secondary" titl
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;TResult&gt; UpdateResourcePropertiesAsync&lt;T, TResult&gt;(string instanceId, string resourceName, Dictionary&lt;string, object&gt; propertyValues, UnifiedUserIdentity userIdentity) where T : ResourceBase where TResult : ResourceProviderUpsertResult&lt;T&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;TResult&gt; UpdateResourcePropertiesAsync&lt;T, TResult&gt;(string instanceId, string resourceName, Dictionary&lt;string, object?&gt; propertyValues, UnifiedUserIdentity userIdentity) where T : ResourceBase where TResult : ResourceProviderUpsertResult&lt;T&gt;</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>

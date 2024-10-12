@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Orchestration_Core_Orchestration_OrchestrationBuilder" data-uid="FoundationaLLM.Orchestration.Core.Orchestration.OrchestrationBuilder" class="text-break">
-Class OrchestrationBuilder  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Orchestration/OrchestrationBuilder.cs/#L27"><i class="bi bi-code-slash"></i></a>
+Class OrchestrationBuilder  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Orchestration/OrchestrationBuilder.cs/#L28"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -162,21 +162,17 @@ Class OrchestrationBuilder  <a class="header-action link-secondary" title="View 
 
   <a id="FoundationaLLM_Orchestration_Core_Orchestration_OrchestrationBuilder_Build_" data-uid="FoundationaLLM.Orchestration.Core.Orchestration.OrchestrationBuilder.Build*"></a>
 
-  <h3 id="FoundationaLLM_Orchestration_Core_Orchestration_OrchestrationBuilder_Build_System_String_System_String_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_FoundationaLLM_Common_Interfaces_ICallContext_Microsoft_Extensions_Configuration_IConfiguration_System_Collections_Generic_Dictionary_System_String_FoundationaLLM_Common_Interfaces_IResourceProviderService__FoundationaLLM_Orchestration_Core_Interfaces_ILLMOrchestrationServiceManager_System_IServiceProvider_Microsoft_Extensions_Logging_ILoggerFactory_" data-uid="FoundationaLLM.Orchestration.Core.Orchestration.OrchestrationBuilder.Build(System.String,System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest,FoundationaLLM.Common.Interfaces.ICallContext,Microsoft.Extensions.Configuration.IConfiguration,System.Collections.Generic.Dictionary{System.String,FoundationaLLM.Common.Interfaces.IResourceProviderService},FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager,System.IServiceProvider,Microsoft.Extensions.Logging.ILoggerFactory)">
-  Build(string, string, CompletionRequest, ICallContext, IConfiguration, Dictionary&lt;string, IResourceProviderService&gt;, ILLMOrchestrationServiceManager, IServiceProvider, ILoggerFactory)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Orchestration/OrchestrationBuilder.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Orchestration_Core_Orchestration_OrchestrationBuilder_Build_System_String_System_String_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_FoundationaLLM_Common_Interfaces_ICallContext_Microsoft_Extensions_Configuration_IConfiguration_System_Collections_Generic_Dictionary_System_String_FoundationaLLM_Common_Interfaces_IResourceProviderService__FoundationaLLM_Orchestration_Core_Interfaces_ILLMOrchestrationServiceManager_FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_System_IServiceProvider_Microsoft_Extensions_Logging_ILoggerFactory_" data-uid="FoundationaLLM.Orchestration.Core.Orchestration.OrchestrationBuilder.Build(System.String,System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest,FoundationaLLM.Common.Interfaces.ICallContext,Microsoft.Extensions.Configuration.IConfiguration,System.Collections.Generic.Dictionary{System.String,FoundationaLLM.Common.Interfaces.IResourceProviderService},FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager,FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,System.IServiceProvider,Microsoft.Extensions.Logging.ILoggerFactory)">
+  Build(string, string, CompletionRequest, ICallContext, IConfiguration, Dictionary&lt;string, IResourceProviderService&gt;, ILLMOrchestrationServiceManager, IAzureCosmosDBService, IServiceProvider, ILoggerFactory)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Orchestration/OrchestrationBuilder.cs/#L45"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Builds the orchestration based on the user prompt, the session id, and the call context.</p>
-<p>
-Note that the agent name in <code class="paramref">agentName</code> can be different from the agent name in <code class="paramref">originalRequest</code>.
-This happens when the original completion request results in the need to bring in additional agents to the conversation.
-</p>
+  <div class="markdown level1 summary"><p>Builds the orchestration used to handle a synchronous completion operation or start an asynchronous completion operation.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;OrchestrationBase?&gt; Build(string instanceId, string agentName, CompletionRequest originalRequest, ICallContext callContext, IConfiguration configuration, Dictionary&lt;string, IResourceProviderService&gt; resourceProviderServices, ILLMOrchestrationServiceManager llmOrchestrationServiceManager, IServiceProvider serviceProvider, ILoggerFactory loggerFactory)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;OrchestrationBase?&gt; Build(string instanceId, string agentName, CompletionRequest originalRequest, ICallContext callContext, IConfiguration configuration, Dictionary&lt;string, IResourceProviderService&gt; resourceProviderServices, ILLMOrchestrationServiceManager llmOrchestrationServiceManager, IAzureCosmosDBService cosmosDBService, IServiceProvider serviceProvider, ILoggerFactory loggerFactory)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -201,6 +197,76 @@ This happens when the original completion request results in the need to bring i
 </dd>
     <dt><code>llmOrchestrationServiceManager</code> <a class="xref" href="FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.html">ILLMOrchestrationServiceManager</a></dt>
     <dd><p>The <a class="xref" href="FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.html">ILLMOrchestrationServiceManager</a> that manages internal and external orchestration services.</p>
+</dd>
+    <dt><code>cosmosDBService</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html">IAzureCosmosDBService</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html">IAzureCosmosDBService</a> used to interact with the Cosmos DB database.</p>
+</dd>
+    <dt><code>serviceProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> provding dependency injection services for the current scope.</p>
+</dd>
+    <dt><code>loggerFactory</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory">ILoggerFactory</a></dt>
+    <dd><p>The logger factory used to create new loggers.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Orchestration.Core.Orchestration.OrchestrationBase.html">OrchestrationBase</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+  <a id="FoundationaLLM_Orchestration_Core_Orchestration_OrchestrationBuilder_BuildForStatus_" data-uid="FoundationaLLM.Orchestration.Core.Orchestration.OrchestrationBuilder.BuildForStatus*"></a>
+
+  <h3 id="FoundationaLLM_Orchestration_Core_Orchestration_OrchestrationBuilder_BuildForStatus_System_String_System_String_FoundationaLLM_Common_Interfaces_ICallContext_Microsoft_Extensions_Configuration_IConfiguration_System_Collections_Generic_Dictionary_System_String_FoundationaLLM_Common_Interfaces_IResourceProviderService__FoundationaLLM_Orchestration_Core_Interfaces_ILLMOrchestrationServiceManager_FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_System_IServiceProvider_Microsoft_Extensions_Logging_ILoggerFactory_" data-uid="FoundationaLLM.Orchestration.Core.Orchestration.OrchestrationBuilder.BuildForStatus(System.String,System.String,FoundationaLLM.Common.Interfaces.ICallContext,Microsoft.Extensions.Configuration.IConfiguration,System.Collections.Generic.Dictionary{System.String,FoundationaLLM.Common.Interfaces.IResourceProviderService},FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager,FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,System.IServiceProvider,Microsoft.Extensions.Logging.ILoggerFactory)">
+  BuildForStatus(string, string, ICallContext, IConfiguration, Dictionary&lt;string, IResourceProviderService&gt;, ILLMOrchestrationServiceManager, IAzureCosmosDBService, IServiceProvider, ILoggerFactory)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Orchestration/OrchestrationBuilder.cs/#L130"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Builds the orchestration used to retrieve the status of an asynchronous completion operation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;OrchestrationBase?&gt; BuildForStatus(string instanceId, string operationId, ICallContext callContext, IConfiguration configuration, Dictionary&lt;string, IResourceProviderService&gt; resourceProviderServices, ILLMOrchestrationServiceManager llmOrchestrationServiceManager, IAzureCosmosDBService cosmosDBService, IServiceProvider serviceProvider, ILoggerFactory loggerFactory)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>operationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The asynchronous completion operation identifier.</p>
+</dd>
+    <dt><code>callContext</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.ICallContext.html">ICallContext</a></dt>
+    <dd><p>The call context of the request being handled.</p>
+</dd>
+    <dt><code>configuration</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.iconfiguration">IConfiguration</a></dt>
+    <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.iconfiguration">IConfiguration</a> used to retrieve app settings from configuration.</p>
+</dd>
+    <dt><code>resourceProviderServices</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="FoundationaLLM.Common.Interfaces.IResourceProviderService.html">IResourceProviderService</a>&gt;</dt>
+    <dd><p>A dictionary of <a class="xref" href="FoundationaLLM.Common.Interfaces.IResourceProviderService.html">IResourceProviderService</a> resource providers hashed by resource provider name.</p>
+</dd>
+    <dt><code>llmOrchestrationServiceManager</code> <a class="xref" href="FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.html">ILLMOrchestrationServiceManager</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.html">ILLMOrchestrationServiceManager</a> that manages internal and external orchestration services.</p>
+</dd>
+    <dt><code>cosmosDBService</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html">IAzureCosmosDBService</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html">IAzureCosmosDBService</a> used to interact with the Cosmos DB database.</p>
 </dd>
     <dt><code>serviceProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a></dt>
     <dd><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> provding dependency injection services for the current scope.</p>
@@ -235,7 +301,7 @@ This happens when the original completion request results in the need to bring i
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Orchestration/OrchestrationBuilder.cs/#L27" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Orchestration/Orchestration/OrchestrationBuilder.cs/#L28" class="edit-link">Edit this page</a>
         </div>
 
 
