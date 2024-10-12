@@ -14,7 +14,7 @@
 					</template>
 				</VTooltip>
 			</div>
-			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+			<VTooltip :auto-hide="isMobile" style="" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
 					ref="fileUploadButton"
 					type="button"
@@ -466,14 +466,17 @@ export default {
 		handleSend() {
 			this.$emit('send', this.text);
 			this.text = '';
+			this.uploadedFiles = [];
 		},
 
 		handleUpload() {
 			this.isUploading = true;
 
-			this.$nextTick(() => {
-				this.$refs.menu.alignOverlay();
-			});
+			if (this.$refs.menu.visible) {
+				this.$nextTick(() => {
+					this.$refs.menu.alignOverlay();
+				});
+			}
 
 			const totalFiles = this.localFiles.length + this.oneDriveFiles.length;
 			const combinedFiles = [...this.localFiles, ...this.oneDriveFiles];
@@ -534,9 +537,11 @@ export default {
 						this.uploadProgress = 0;
 						this.oneDriveFiles = [];
 						this.localFiles = [];
-						this.$nextTick(() => {
-							this.$refs.menu.alignOverlay();
-						});
+						if (this.$refs.menu.visible) {
+							this.$nextTick(() => {
+								this.$refs.menu.alignOverlay();
+							});
+						}
 						this.toggle();
 						if (filesUploaded > 0) {
 							this.$toast.add({
@@ -572,10 +577,13 @@ export default {
 			await this.$appStore.deleteAttachment(file);
 			this.fileToDelete = null;
 			this.deleteFileProcessing = false;
+			this.uploadedFiles = this.uploadedFiles.filter((uploadedFile) => uploadedFile.name !== file.name);
 
-			this.$nextTick(() => {
-				this.$refs.menu.alignOverlay();
-			});
+			if (this.$refs.menu.visible) {
+				this.$nextTick(() => {
+					this.$refs.menu.alignOverlay();
+				});
+			}
 		},
 
 		removeLocalFile(file: any) {
@@ -583,9 +591,11 @@ export default {
 			this.fileToDelete = null;
 			this.deleteFileProcessing = false;
 
-			this.$nextTick(() => {
-				this.$refs.menu.alignOverlay();
-			});
+			if (this.$refs.menu.visible) {
+				this.$nextTick(() => {
+					this.$refs.menu.alignOverlay();
+				});
+			}
 		},
 
 		removeOneDriveFile(file: any) {
@@ -593,9 +603,11 @@ export default {
 			this.fileToDelete = null;
 			this.deleteFileProcessing = false;
 
-			this.$nextTick(() => {
-				this.$refs.menu.alignOverlay();
-			});
+			if (this.$refs.menu.visible) {
+				this.$nextTick(() => {
+					this.$refs.menu.alignOverlay();
+				});
+			}
 		},
 
 		browseFiles() {
@@ -687,9 +699,11 @@ export default {
 				this.$refs.fileUpload.clear();
 			}
 
-			this.$nextTick(() => {
-				this.$refs.menu.alignOverlay();
-			});
+			if (this.$refs.menu.visible) {
+				this.$nextTick(() => {
+					this.$refs.menu.alignOverlay();
+				});
+			}
 		},
 
 		hideAllPoppers() {
