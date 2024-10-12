@@ -347,6 +347,8 @@ export const useAppStore = defineStore('app', {
 			if (initialSession !== this.currentSession.id) return;
 			this.startPolling(message);
 
+			this.attachments = this.attachments.filter((attachment) => attachment.sessionId !== sessionId);
+
 			return message;
 		},
 

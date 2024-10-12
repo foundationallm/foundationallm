@@ -1,9 +1,8 @@
 """
 Encapsulates properties useful for calling the OpenAI Assistants API.
 """
-from typing import List, Optional
 from pydantic import BaseModel
-from foundationallm.models.attachments import AttachmentProperties
+from typing import List, Optional
 
 class OpenAIAssistantsAPIRequest(BaseModel):
     """
