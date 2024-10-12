@@ -454,7 +454,7 @@ export default {
 	width: 100%;
 }
 .chat-sidebar__button {
-	color: var(--primary-text)!important;
+	color: var(--primary-text) !important;
 }
 
 .chat-sidebar__username {

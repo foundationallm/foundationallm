@@ -147,7 +147,7 @@ export default {
 	async checkProcessStatus(operationId: string) {
 		try {
 			const response = await this.fetch(
-				`/instances/${this.instanceId}/async-completions/${operationId}/status`
+				`/instances/${this.instanceId}/async-completions/${operationId}/status`,
 			);
 
 			return response;
@@ -281,10 +281,10 @@ export default {
 		};
 
 		// if (agent.long_running) {
-			return (await this.fetch(`/instances/${this.instanceId}/async-completions`, {
-				method: 'POST',
-				body: orchestrationRequest,
-			})) as string;
+		return (await this.fetch(`/instances/${this.instanceId}/async-completions`, {
+			method: 'POST',
+			body: orchestrationRequest,
+		})) as string;
 		// } else {
 		// 	return (await this.fetch(`/instances/${this.instanceId}/completions`, {
 		// 		method: 'POST',

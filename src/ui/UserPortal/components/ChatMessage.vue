@@ -138,7 +138,13 @@
 					</span>
 
 					<!-- Avg MS Per Word: {{ averageTimePerWordMS }} -->
-					<div v-if="isMessageLoading && showWordAnimation" class="loading-shimmer" style="font-weight: 600">{{ (isRenderingMessage && messageContent.length > 0) ? 'Generating' : 'Thinking' }}</div>
+					<div
+						v-if="isMessageLoading && showWordAnimation"
+						class="loading-shimmer"
+						style="font-weight: 600"
+					>
+						{{ isRenderingMessage && messageContent.length > 0 ? 'Generating' : 'Thinking' }}
+					</div>
 
 					<!-- Right side buttons -->
 					<span>
@@ -325,7 +331,7 @@ export default {
 				},
 			];
 		} else if (this.message.content) {
-			this.processedContent = this.message.content.map(content => {
+			this.processedContent = this.message.content.map((content) => {
 				return {
 					type: content.type,
 					value: this.processContentBlock(content.value),
@@ -345,7 +351,7 @@ export default {
 			this.pollingInterval = setInterval(async () => {
 				try {
 					await this.fetchInProgressMessage();
-				} catch(error) {
+				} catch (error) {
 					console.error(error);
 					this.stopPolling();
 				}
@@ -365,13 +371,13 @@ export default {
 			let amountOfOldWords = 0;
 			if (this.messageContent) {
 				amountOfOldWords = this.messageContent.reduce((acc, content) => {
-					return acc + ((content.value?.match(/[\w'-]+/g) || []).length);
+					return acc + (content.value?.match(/[\w'-]+/g) || []).length;
 				}, 0);
 			}
 
 			// Calculate the number of words in the new message content
 			let amountOfNewWords = message.content.reduce((acc, content) => {
-				return acc + ((content.value?.match(/[\w'-]+/g) || []).length);
+				return acc + (content.value?.match(/[\w'-]+/g) || []).length;
 			}, 0);
 
 			// Calculate the number of new words generated since the last request
@@ -386,7 +392,10 @@ export default {
 			if (this.pollingIteration === 1) {
 				this.averageTimePerWordMS = MAX_WORD_SPEED_MS;
 			} else {
-				this.averageTimePerWordMS = (this.totalWordsGenerated > 0) ? Number((this.totalTimeElapsed / this.totalWordsGenerated).toFixed(2)) : 0;
+				this.averageTimePerWordMS =
+					this.totalWordsGenerated > 0
+						? Number((this.totalTimeElapsed / this.totalWordsGenerated).toFixed(2))
+						: 0;
 			}
 
 			this.messageContent = message.content;
@@ -402,7 +411,7 @@ export default {
 			this.message.type = message.type;
 
 			// Just to make sure the message renders fully in the case the animation fails
-			this.processedContent = message.content.map(content => {
+			this.processedContent = message.content.map((content) => {
 				return {
 					type: content.type,
 					value: this.processContentBlock(content.value),
@@ -419,7 +428,7 @@ export default {
 
 			// If the processed content block is the same as the current content block,
 			// and there is a new one, then we know to move to the next block
-			if (this.messageContent[currentContentIndex+1] && content === processedContent) {
+			if (this.messageContent[currentContentIndex + 1] && content === processedContent) {
 				currentContentIndex += 1;
 				this.currentWordIndex = 0;
 
@@ -428,7 +437,7 @@ export default {
 			}
 
 			if (content !== processedContent) {
-			 this.currentWordIndex += 1;
+				this.currentWordIndex += 1;
 
 				if (this.messageContent[currentContentIndex]?.type === 'text') {
 					const truncatedContent = trimToWordCount(content, this.currentWordIndex);
@@ -448,7 +457,11 @@ export default {
 			}
 
 			// If the current block is still rendering, or there is another block, or the message is still processing
-			if (content !== processedContent || this.messageContent[currentContentIndex+1] || !this.completed) {
+			if (
+				content !== processedContent ||
+				this.messageContent[currentContentIndex + 1] ||
+				!this.completed
+			) {
 				return setTimeout(() => this.displayWordByWord(), this.averageTimePerWordMS);
 			}
 
@@ -600,11 +613,11 @@ export default {
 <style lang="scss" scoped>
 @keyframes loading-shimmer {
 	0% {
-		background-position: -100% top
+		background-position: -100% top;
 	}
 
 	to {
-		background-position: 250% top
+		background-position: 250% top;
 	}
 }
 
@@ -613,25 +626,26 @@ $textColor: var(--accent-text);
 .loading-shimmer {
 	text-fill-color: transparent;
 	-webkit-text-fill-color: transparent;
-	animation-delay: .3s;
+	animation-delay: 0.3s;
 	animation-duration: 3s;
 	animation-iteration-count: infinite;
 	animation-name: loading-shimmer;
-	background: $textColor gradient(linear,100% 0,0 0,from($textColor),color-stop(.5, $shimmerColor),to($textColor));
-	background: $textColor -webkit-gradient(linear,100% 0,0 0,from($textColor),color-stop(.5, $shimmerColor),to($textColor));
+	background: $textColor
+		gradient(linear, 100% 0, 0 0, from($textColor), color-stop(0.5, $shimmerColor), to($textColor));
+	background: $textColor -webkit-gradient(linear, 100% 0, 0 0, from($textColor), color-stop(0.5, $shimmerColor), to($textColor));
 	background-clip: text;
 	-webkit-background-clip: text;
 	background-repeat: no-repeat;
 	background-size: 50% 200%;
-	display: inline-block
+	display: inline-block;
 }
 
-[dir=ltr] .loading-shimmer {
-	background-position: -100% top
+[dir='ltr'] .loading-shimmer {
+	background-position: -100% top;
 }
 
-[dir=rtl] .loading-shimmer {
-	background-position: 200% top
+[dir='rtl'] .loading-shimmer {
+	background-position: 200% top;
 }
 
 .message-row {
@@ -698,7 +712,7 @@ $textColor: var(--accent-text);
 }
 
 .message__copy {
-	color: var(--primary-text)!important;
+	color: var(--primary-text) !important;
 	margin-left: 4px;
 }
 

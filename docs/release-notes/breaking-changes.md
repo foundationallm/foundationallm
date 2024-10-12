@@ -218,7 +218,7 @@ The OneDrive (Work or School) integration requires the following API Endpoint Co
     "authentication_parameters": {
       "scope": "Files.Read.All"
     },
-    "url": "{{onedrive_base_orl}}",
+    "url": "{{onedrive_base_url}}",
     "status_url": "",
     "url_exceptions": [],
     "timeout_seconds": 2400,
