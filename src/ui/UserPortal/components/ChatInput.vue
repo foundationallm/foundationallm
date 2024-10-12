@@ -14,7 +14,7 @@
 					</template>
 				</VTooltip>
 			</div>
-			<VTooltip :auto-hide="isMobile" style="" :popper-triggers="isMobile ? [] : ['hover']">
+			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
 					ref="fileUploadButton"
 					type="button"

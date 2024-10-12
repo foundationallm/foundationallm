@@ -97,7 +97,7 @@ The OneDrive (Work or School) integration requires the following API Endpoint Co
     "authentication_parameters": {
       "scope": "Files.Read.All"
     },
-    "url": "{{onedrive_base_orl}}",
+    "url": "{{onedrive_base_url}}",
     "status_url": "",
     "url_exceptions": [],
     "timeout_seconds": 2400,
@@ -139,14 +139,14 @@ Name | Default value
 > Here is an example of an override for the `MaxUploadsPerMessage` setting:
 > ```json
 >{
->	"value": 10,
->	"value_exceptions": [
->		{
->			"user_principal_name": "ciprian@solliance.net",
->			"value": 5,
->			"enabled": true
->		}
->	]
+>   "value": 10,
+>   "value_exceptions": [
+>       {
+>           "user_principal_name": "ciprian@solliance.net",
+>           "value": 5,
+>           "enabled": true
+>       }
+>   ]
 >}
 > ```
 
@@ -217,7 +217,7 @@ The OneDrive (Work or School) integration requires the following API Endpoint Co
     "authentication_parameters": {
       "scope": "Files.Read.All"
     },
-    "url": "{{onedrive_base_url}}",
+    "url": "{{onedrive_base_orl}}",
     "status_url": "",
     "url_exceptions": [],
     "timeout_seconds": 2400,
