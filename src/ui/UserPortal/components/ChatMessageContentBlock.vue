@@ -87,6 +87,12 @@ export default {
 		async loadFile() {
 			this.content = this.value;
 
+			// File is still generating
+			if (!this.content.origValue) {
+				this.loading = false;
+				return;
+			}
+
 			if (['image_file', 'html', 'file_path'].includes(this.content.type)) {
 				this.loading = true;
 				this.content.fileName = this.content.fileName?.split('/').pop();
