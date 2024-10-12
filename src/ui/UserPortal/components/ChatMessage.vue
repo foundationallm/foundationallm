@@ -139,11 +139,11 @@
 
 					<!-- Avg MS Per Word: {{ averageTimePerWordMS }} -->
 					<div
-						v-if="isMessageLoading && showWordAnimation"
+						v-if="messageDisplayStatus"
 						class="loading-shimmer"
 						style="font-weight: 600"
 					>
-						{{ isRenderingMessage && messageContent.length > 0 ? 'Generating' : 'Thinking' }}
+						{{ messageDisplayStatus }}
 					</div>
 
 					<!-- Right side buttons -->
@@ -313,6 +313,20 @@ export default {
 			await this.fetchInProgressMessage({ ...newMessage });
 			if (!this.isRenderingMessage && this.showWordAnimation) this.displayWordByWord();
 		},
+
+		processedContent() {
+			this.markSkippableContent();
+		},
+	},
+
+	computed: {
+		messageDisplayStatus() {
+			if (!this.isRenderingMessage) return null;
+
+			if (this.messageContent.length > 0) return 'Generating';
+
+			return 'Thinking';
+		},
 	},
 
 	async created() {
@@ -328,6 +342,7 @@ export default {
 				{
 					type: 'text',
 					value: this.processContentBlock(this.message.text),
+					origValue: this.message.text,
 				},
 			];
 		} else if (this.message.content) {
@@ -335,6 +350,7 @@ export default {
 				return {
 					type: content.type,
 					value: this.processContentBlock(content.value),
+					origValue: content.value,
 				};
 			});
 		}
@@ -415,6 +431,7 @@ export default {
 				return {
 					type: content.type,
 					value: this.processContentBlock(content.value),
+					origValue: content.value,
 				};
 			});
 		},
@@ -446,12 +463,14 @@ export default {
 						type: this.messageContent[currentContentIndex]?.type,
 						content: truncatedContent,
 						value: this.processContentBlock(truncatedContent),
+						origValue: this.messageContent[currentContentIndex]?.value,
 					};
 				} else {
 					this.processedContent[currentContentIndex] = {
 						type: this.messageContent[currentContentIndex]?.type,
 						content: content,
 						value: content,
+						origValue: this.messageContent[currentContentIndex]?.value,
 					};
 				}
 			}
@@ -508,13 +527,13 @@ export default {
 		},
 
 		markSkippableContent() {
-			if (!this.messageContent) return;
+			if (!this.processedContent) return;
 
-			this.messageContent.forEach((contentBlock) => {
+			this.processedContent.forEach((contentBlock) => {
 				if (contentBlock.type === 'file_path') {
 					// Check for a matching text content that shares the same URL
-					const matchingTextContent = this.messageContent.find(
-						(block) => block.type === 'text' && block.value.includes(contentBlock.value),
+					const matchingTextContent = this.processedContent.find(
+						(block) => block.type === 'text' && block.origValue.includes(contentBlock.origValue),
 					);
 
 					if (matchingTextContent) {
@@ -637,7 +656,8 @@ $textColor: var(--accent-text);
 	-webkit-background-clip: text;
 	background-repeat: no-repeat;
 	background-size: 50% 200%;
-	display: inline-block;
+	display: flex;
+	align-items: center;
 }
 
 [dir='ltr'] .loading-shimmer {
