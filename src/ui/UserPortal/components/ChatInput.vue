@@ -363,6 +363,7 @@ export default {
 			},
 			oneDriveFiles: [] as any[],
 			localFiles: [] as any[],
+			uploadedFiles: [] as any[],
 			oneDriveBaseURL: null as string | null,
 			disconnectingOneDrive: false,
 			fileToDelete: null as any,
@@ -515,6 +516,7 @@ export default {
 						await this.callCoreApiOneDriveWorkSchoolDownloadEndpoint(file.id, file.parentReference.driveId);
 					}
 					filesUploaded += 1;
+					this.uploadedFiles.push(file);
 				} catch (error) {
 					filesFailed += 1;
 					this.$toast.add({
@@ -626,7 +628,10 @@ export default {
 				const oneDriveFileAlreadyExists = this.oneDriveFiles.some(
 					(existingFile: any) => existingFile.name === file.name && existingFile.size === file.size,
 				);
-				const fileAlreadyExists = localFileAlreadyExists || oneDriveFileAlreadyExists;
+				const uploadedFileAlreadyExists = this.uploadedFiles.some(
+					(existingFile: any) => existingFile.name === file.name && existingFile.size === file.size,
+				);
+				const fileAlreadyExists = localFileAlreadyExists || oneDriveFileAlreadyExists || uploadedFileAlreadyExists;
 
 				if (fileAlreadyExists) return;
 
@@ -659,14 +664,14 @@ export default {
 				}
 			});
 
-			if (this.localFiles.length + this.oneDriveFiles.length + filteredFiles.length > this.maxFiles) {
+			if (this.localFiles.length + this.oneDriveFiles.length + this.uploadedFiles.length + filteredFiles.length > this.maxFiles) {
 				this.$toast.add({
 					severity: 'error',
 					summary: 'Error',
 					detail: `You can only upload a maximum of ${this.maxFiles} ${this.maxFiles === 1 ? 'file' : 'files'} at a time.`,
 					life: 5000,
 				});
-				filteredFiles.splice((this.maxFiles - (this.localFiles.length + this.oneDriveFiles.length)));
+				filteredFiles.splice((this.maxFiles - (this.localFiles.length + this.oneDriveFiles.length + this.uploadedFiles.length)));
 			}
 
 			return filteredFiles;
