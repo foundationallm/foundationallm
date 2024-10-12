@@ -20,7 +20,7 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
         private readonly string _instanceId = instanceId ?? throw new ArgumentNullException(nameof(instanceId));
 
         /// <inheritdoc/>
-        public async Task<Completion> GetChatCompletionAsync(CompletionRequest completionRequest)
+        public async Task<Message> GetChatCompletionAsync(CompletionRequest completionRequest)
         {
             var coreClient = await GetCoreClientAsync();
             var serializedRequest = JsonSerializer.Serialize(completionRequest, SerializerOptions);
@@ -34,7 +34,7 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
                 var completionResponse =
-                    JsonSerializer.Deserialize<Completion>(responseContent, SerializerOptions);
+                    JsonSerializer.Deserialize<Message>(responseContent, SerializerOptions);
                 return completionResponse ?? throw new InvalidOperationException("The returned completion response is invalid.");
             }
 

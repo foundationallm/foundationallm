@@ -13,5 +13,5 @@ public enum Participants
     /// <summary>
     /// Represents an assistant  type.
     /// </summary>
-    Assistant
+    Agent
 }
