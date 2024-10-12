@@ -11,6 +11,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.AIModel
     [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
     [JsonDerivedType(typeof(EmbeddingAIModel), AIModelTypes.Embedding)]
     [JsonDerivedType(typeof(CompletionAIModel), AIModelTypes.Completion)]
+    [JsonDerivedType(typeof(ImageGenerationAIModel), AIModelTypes.ImageGeneration)]
     public class AIModelBase : ResourceBase
     {
         /// <inheritdoc/>
