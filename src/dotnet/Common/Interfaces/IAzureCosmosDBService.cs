@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Models.Configuration.Users;
+﻿using FoundationaLLM.Common.Models.Azure.CosmosDB;
+using FoundationaLLM.Common.Models.Configuration.Users;
 using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.ResourceProviders;
@@ -103,6 +104,21 @@ public interface IAzureCosmosDBService
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns></returns>
     Task<T> PatchSessionsItemPropertiesAsync<T>(string itemId, string partitionKey, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Updates a subset of the properties of one or more items of a specified type from the Sessions collection.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="partitionKey">The partition key of the item(s) being updated. Batch operations
+    /// must occur within the same partition key.</param>
+    /// <param name="patchOperations">The patch operations to perform on each object, including the
+    /// object's identifier, dictionary containing the property names and updated values, and the item type.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns></returns>
+    Task<Dictionary<string, object>> PatchMultipleSessionsItemsInTransactionAsync(
+        string partitionKey,
+        List<IPatchOperationItem> patchOperations,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Create or update a user session from the passed in Session object.
