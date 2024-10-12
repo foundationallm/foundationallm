@@ -23,9 +23,9 @@
 					<ChatMessage
 						v-for="(message, index) in messages.slice().reverse()"
 						:id="`message-${getMessageOrderFromReversedIndex(index)}`"
-						:key="`${message.id}-${componentKey}`"
+						:key="message.id || message.operation_id"
 						:message="message"
-						:show-word-animation="index === 0 && userSentMessage && message.sender === 'Assistant'"
+						:show-word-animation="index === 0 && message.sender === 'Agent'"
 						role="log"
 						:aria-flowto="
 							index === 0 ? null : `message-${getMessageOrderFromReversedIndex(index) + 1}`
@@ -79,8 +79,7 @@ export default {
 			isLoading: true,
 			userSentMessage: false,
 			isMessagePending: false,
-			componentKey: 0,
-			longRunningOperations: new Map<string, boolean>(), // sessionId -> isPending
+			// longRunningOperations: new Map<string, boolean>(), // sessionId -> isPending
 		};
 	},
 
@@ -104,13 +103,13 @@ export default {
 		},
 	},
 
-	beforeUnmount() {
-		eventBus.off('operation-completed', this.handleOperationCompleted);
-	},
+	// beforeUnmount() {
+	// 	eventBus.off('operation-completed', this.handleOperationCompleted);
+	// },
 
-	mounted() {
-		eventBus.on('operation-completed', this.handleOperationCompleted);
-	},
+	// mounted() {
+	// 	eventBus.on('operation-completed', this.handleOperationCompleted);
+	// },
 
 	methods: {
 		getMessageOrderFromReversedIndex(index) {
@@ -148,42 +147,44 @@ export default {
 				return;
 			}
 
-			if (agent.long_running) {
-				// Handle long-running operations
-				const operationId = await this.$appStore.startLongRunningProcess('/completions', {
-					session_id: this.currentSession.id,
-					user_prompt: text,
-					agent_name: agent.name,
-					settings: null,
-					attachments: this.$appStore.attachments.map((attachment) => String(attachment.id)),
-				});
+			// if (agent.long_running) {
+			// 	// Handle long-running operations
+			// 	const operationId = await this.$appStore.startLongRunningProcess('/async-completions', {
+			// 		session_id: this.currentSession.id,
+			// 		user_prompt: text,
+			// 		agent_name: agent.name,
+			// 		settings: null,
+			// 		attachments: this.$appStore.attachments.map((attachment) => String(attachment.id)),
+			// 	});
 
-				this.longRunningOperations.set(this.currentSession.id, true);
-				await this.pollForCompletion(this.currentSession.id, operationId);
-			} else {
-				await this.$appStore.sendMessage(text);
-			}
+			// 	this.longRunningOperations.set(this.currentSession.id, true);
+			// 	await this.pollForCompletion(this.currentSession.id, operationId);
+			// } else {
+			const message = await this.$appStore.sendMessage(text);
+			// console.log(message);
+			// await this.$appStore.getMessages();
+			// }
 
 			this.isMessagePending = false;
 		},
 
-		async pollForCompletion(sessionId: string, operationId: string) {
-			while (true) {
-				const status = await this.$appStore.checkProcessStatus(operationId);
-				if (status.isCompleted) {
-					this.longRunningOperations.set(sessionId, false);
-					await this.$appStore.getMessages();
-					break;
-				}
-				await new Promise((resolve) => setTimeout(resolve, 2000)); // Poll every 2 seconds
-			}
-		},
+		// async pollForCompletion(sessionId: string, operationId: string) {
+		// 	while (true) {
+		// 		const status = await this.$appStore.checkProcessStatus(operationId);
+		// 		if (status.isCompleted) {
+		// 			this.longRunningOperations.set(sessionId, false);
+		// 			await this.$appStore.getMessages();
+		// 			break;
+		// 		}
+		// 		await new Promise((resolve) => setTimeout(resolve, 2000)); // Poll every 2 seconds
+		// 	}
+		// },
 
-		async handleOperationCompleted({ sessionId }: { sessionId: string; operationId: string }) {
-			if (this.currentSession.id === sessionId) {
-				await this.$appStore.getMessages();
-			}
-		},
+		// async handleOperationCompleted({ sessionId }: { sessionId: string; operationId: string }) {
+		// 	if (this.currentSession.id === sessionId) {
+		// 		await this.$appStore.getMessages();
+		// 	}
+		// },
 	},
 };
 </script>

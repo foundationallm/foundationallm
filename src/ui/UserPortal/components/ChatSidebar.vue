@@ -28,6 +28,7 @@
 					icon="pi pi-plus"
 					text
 					severity="secondary"
+					class="chat-sidebar__button"
 					aria-label="Add new chat"
 					:disabled="createProcessing"
 					@click="handleAddSession"
@@ -73,6 +74,7 @@
 										size="small"
 										severity="secondary"
 										text
+										class="chat-sidebar__button"
 										aria-label="Rename chat session"
 										@click.stop="openRenameModal(session)"
 										@keydown.esc="hideAllPoppers"
@@ -87,6 +89,7 @@
 										size="small"
 										severity="danger"
 										text
+										class="chat-sidebar__button"
 										aria-label="Delete chat session"
 										@click.stop="sessionToDelete = session"
 										@keydown.esc="hideAllPoppers"
@@ -449,6 +452,9 @@ export default {
 }
 .chat-sidebar__sign-out {
 	width: 100%;
+}
+.chat-sidebar__button {
+	color: var(--primary-text) !important;
 }
 
 .chat-sidebar__username {

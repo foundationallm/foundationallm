@@ -44,7 +44,6 @@
 							/>
 							<template #popper>Copy link to chat session</template>
 						</VTooltip> -->
-						
 					</template>
 					<template v-else>
 						<span>Please select a session</span>
