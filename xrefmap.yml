@@ -4571,6 +4571,12 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.Agents.CompletionRequestObjectsKeys.OpenAIAssistantThreadId
   fullName: FoundationaLLM.Common.Constants.Agents.CompletionRequestObjectsKeys.OpenAIAssistantThreadId
   nameWithType: CompletionRequestObjectsKeys.OpenAIAssistantThreadId
+- uid: FoundationaLLM.Common.Constants.Agents.CompletionRequestObjectsKeys.ToolNames
+  name: ToolNames
+  href: api/dotnet/FoundationaLLM.Common.Constants.Agents.CompletionRequestObjectsKeys.html#FoundationaLLM_Common_Constants_Agents_CompletionRequestObjectsKeys_ToolNames
+  commentId: F:FoundationaLLM.Common.Constants.Agents.CompletionRequestObjectsKeys.ToolNames
+  fullName: FoundationaLLM.Common.Constants.Agents.CompletionRequestObjectsKeys.ToolNames
+  nameWithType: CompletionRequestObjectsKeys.ToolNames
 - uid: FoundationaLLM.Common.Constants.Agents.InputMessageRoles
   name: InputMessageRoles
   href: api/dotnet/FoundationaLLM.Common.Constants.Agents.InputMessageRoles.html
@@ -7912,6 +7918,12 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.AIModelTypes.Embedding
   fullName: FoundationaLLM.Common.Constants.ResourceProviders.AIModelTypes.Embedding
   nameWithType: AIModelTypes.Embedding
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.AIModelTypes.ImageGeneration
+  name: ImageGeneration
+  href: api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.AIModelTypes.html#FoundationaLLM_Common_Constants_ResourceProviders_AIModelTypes_ImageGeneration
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.AIModelTypes.ImageGeneration
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.AIModelTypes.ImageGeneration
+  nameWithType: AIModelTypes.ImageGeneration
 - uid: FoundationaLLM.Common.Constants.ResourceProviders.AgentResourceProviderMetadata
   name: AgentResourceProviderMetadata
   href: api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.AgentResourceProviderMetadata.html
@@ -19566,6 +19578,31 @@ references:
   fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.AIModel.EmbeddingAIModel.New
   nameWithType: EmbeddingAIModel.EmbeddingAIModel
   nameWithType.vb: EmbeddingAIModel.New
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel
+  name: ImageGenerationAIModel
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel.html
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel
+  nameWithType: ImageGenerationAIModel
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel.#ctor
+  name: ImageGenerationAIModel()
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel.html#FoundationaLLM_Common_Models_ResourceProviders_AIModel_ImageGenerationAIModel__ctor
+  commentId: M:FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel.#ctor
+  name.vb: New()
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel.ImageGenerationAIModel()
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel.New()
+  nameWithType: ImageGenerationAIModel.ImageGenerationAIModel()
+  nameWithType.vb: ImageGenerationAIModel.New()
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel.#ctor*
+  name: ImageGenerationAIModel
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel.html#FoundationaLLM_Common_Models_ResourceProviders_AIModel_ImageGenerationAIModel__ctor_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel.ImageGenerationAIModel
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel.New
+  nameWithType: ImageGenerationAIModel.ImageGenerationAIModel
+  nameWithType.vb: ImageGenerationAIModel.New
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
   name: FoundationaLLM.Common.Models.ResourceProviders.Agent
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.html
@@ -19591,19 +19628,6 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.AIModelObjectId
   nameWithType: AgentBase.AIModelObjectId
-- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.APIEndpointConfigurationObjectIds
-  name: APIEndpointConfigurationObjectIds
-  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_APIEndpointConfigurationObjectIds
-  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.APIEndpointConfigurationObjectIds
-  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.APIEndpointConfigurationObjectIds
-  nameWithType: AgentBase.APIEndpointConfigurationObjectIds
-- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.APIEndpointConfigurationObjectIds*
-  name: APIEndpointConfigurationObjectIds
-  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_APIEndpointConfigurationObjectIds_
-  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.APIEndpointConfigurationObjectIds
-  isSpec: "True"
-  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.APIEndpointConfigurationObjectIds
-  nameWithType: AgentBase.APIEndpointConfigurationObjectIds
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.AgentType
   name: AgentType
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_AgentType
@@ -19711,6 +19735,19 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.SessionsEnabled
   nameWithType: AgentBase.SessionsEnabled
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.Tools
+  name: Tools
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_Tools
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.Tools
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.Tools
+  nameWithType: AgentBase.Tools
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.Tools*
+  name: Tools
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_Tools_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.Tools
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.Tools
+  nameWithType: AgentBase.Tools
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.Type
   name: Type
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_Type
@@ -19756,6 +19793,51 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOrchestrationSettings.Orchestrator
   nameWithType: AgentOrchestrationSettings.Orchestrator
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool
+  name: AgentTool
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.html
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool
+  nameWithType: AgentTool
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.AIModelObjectIds
+  name: AIModelObjectIds
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_AIModelObjectIds
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.AIModelObjectIds
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.AIModelObjectIds
+  nameWithType: AgentTool.AIModelObjectIds
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.AIModelObjectIds*
+  name: AIModelObjectIds
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_AIModelObjectIds_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.AIModelObjectIds
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.AIModelObjectIds
+  nameWithType: AgentTool.AIModelObjectIds
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.APIEndpointConfigurationObjectIds
+  name: APIEndpointConfigurationObjectIds
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_APIEndpointConfigurationObjectIds
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.APIEndpointConfigurationObjectIds
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.APIEndpointConfigurationObjectIds
+  nameWithType: AgentTool.APIEndpointConfigurationObjectIds
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.APIEndpointConfigurationObjectIds*
+  name: APIEndpointConfigurationObjectIds
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_APIEndpointConfigurationObjectIds_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.APIEndpointConfigurationObjectIds
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.APIEndpointConfigurationObjectIds
+  nameWithType: AgentTool.APIEndpointConfigurationObjectIds
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Name
+  name: Name
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_Name
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Name
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Name
+  nameWithType: AgentTool.Name
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Name*
+  name: Name
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_Name_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Name
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Name
+  nameWithType: AgentTool.Name
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes
   name: AgentTypes
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.html
@@ -19768,12 +19850,6 @@ references:
   commentId: F:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.Analytic
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.Analytic
   nameWithType: AgentTypes.Analytic
-- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.AudioClassification
-  name: AudioClassification
-  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTypes_AudioClassification
-  commentId: F:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.AudioClassification
-  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.AudioClassification
-  nameWithType: AgentTypes.AudioClassification
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.Basic
   name: Basic
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTypes_Basic
@@ -19896,31 +19972,6 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentVectorizationSettings.VectorizationDataPipelineObjectId
   nameWithType: AgentVectorizationSettings.VectorizationDataPipelineObjectId
-- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AudioClassificationAgent
-  name: AudioClassificationAgent
-  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AudioClassificationAgent.html
-  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AudioClassificationAgent
-  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AudioClassificationAgent
-  nameWithType: AudioClassificationAgent
-- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AudioClassificationAgent.#ctor
-  name: AudioClassificationAgent()
-  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AudioClassificationAgent.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AudioClassificationAgent__ctor
-  commentId: M:FoundationaLLM.Common.Models.ResourceProviders.Agent.AudioClassificationAgent.#ctor
-  name.vb: New()
-  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AudioClassificationAgent.AudioClassificationAgent()
-  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Agent.AudioClassificationAgent.New()
-  nameWithType: AudioClassificationAgent.AudioClassificationAgent()
-  nameWithType.vb: AudioClassificationAgent.New()
-- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AudioClassificationAgent.#ctor*
-  name: AudioClassificationAgent
-  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AudioClassificationAgent.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AudioClassificationAgent__ctor_
-  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AudioClassificationAgent.#ctor
-  isSpec: "True"
-  name.vb: New
-  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AudioClassificationAgent.AudioClassificationAgent
-  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Agent.AudioClassificationAgent.New
-  nameWithType: AudioClassificationAgent.AudioClassificationAgent
-  nameWithType.vb: AudioClassificationAgent.New
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.ConversationHistorySettings
   name: ConversationHistorySettings
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.ConversationHistorySettings.html
