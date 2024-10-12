@@ -14,7 +14,7 @@
 					</template>
 				</VTooltip>
 			</div>
-			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+			<VTooltip :auto-hide="isMobile" style="" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
 					ref="fileUploadButton"
 					type="button"
@@ -301,6 +301,8 @@ import { Mentionable } from 'vue-mention';
 import 'floating-vue/dist/style.css';
 import { hideAllPoppers } from 'floating-vue';
 
+const DEFAULT_INPUT_TEXT = '';
+
 export default {
 	name: 'ChatInput',
 
@@ -320,7 +322,7 @@ export default {
 
 	data() {
 		return {
-			text: '' as string,
+			text: DEFAULT_INPUT_TEXT as string,
 			targetRef: null as HTMLElement | null,
 			inputRef: null as HTMLElement | null,
 			agents: [],
@@ -363,6 +365,7 @@ export default {
 			},
 			oneDriveFiles: [] as any[],
 			localFiles: [] as any[],
+			uploadedFiles: [] as any[],
 			oneDriveBaseURL: null as string | null,
 			disconnectingOneDrive: false,
 			fileToDelete: null as any,
@@ -465,14 +468,18 @@ export default {
 		handleSend() {
 			this.$emit('send', this.text);
 			this.text = '';
+			this.uploadedFiles = [];
+			this.text = DEFAULT_INPUT_TEXT;
 		},
 
 		handleUpload() {
 			this.isUploading = true;
 
-			this.$nextTick(() => {
-				this.$refs.menu.alignOverlay();
-			});
+			if (this.$refs.menu.visible) {
+				this.$nextTick(() => {
+					this.$refs.menu.alignOverlay();
+				});
+			}
 
 			const totalFiles = this.localFiles.length + this.oneDriveFiles.length;
 			const combinedFiles = [...this.localFiles, ...this.oneDriveFiles];
@@ -515,6 +522,7 @@ export default {
 						await this.callCoreApiOneDriveWorkSchoolDownloadEndpoint(file.id, file.parentReference.driveId);
 					}
 					filesUploaded += 1;
+					this.uploadedFiles.push(file);
 				} catch (error) {
 					filesFailed += 1;
 					this.$toast.add({
@@ -532,9 +540,11 @@ export default {
 						this.uploadProgress = 0;
 						this.oneDriveFiles = [];
 						this.localFiles = [];
-						this.$nextTick(() => {
-							this.$refs.menu.alignOverlay();
-						});
+						if (this.$refs.menu.visible) {
+							this.$nextTick(() => {
+								this.$refs.menu.alignOverlay();
+							});
+						}
 						this.toggle();
 						if (filesUploaded > 0) {
 							this.$toast.add({
@@ -570,10 +580,13 @@ export default {
 			await this.$appStore.deleteAttachment(file);
 			this.fileToDelete = null;
 			this.deleteFileProcessing = false;
+			this.uploadedFiles = this.uploadedFiles.filter((uploadedFile) => uploadedFile.name !== file.name);
 
-			this.$nextTick(() => {
-				this.$refs.menu.alignOverlay();
-			});
+			if (this.$refs.menu.visible) {
+				this.$nextTick(() => {
+					this.$refs.menu.alignOverlay();
+				});
+			}
 		},
 
 		removeLocalFile(file: any) {
@@ -581,9 +594,11 @@ export default {
 			this.fileToDelete = null;
 			this.deleteFileProcessing = false;
 
-			this.$nextTick(() => {
-				this.$refs.menu.alignOverlay();
-			});
+			if (this.$refs.menu.visible) {
+				this.$nextTick(() => {
+					this.$refs.menu.alignOverlay();
+				});
+			}
 		},
 
 		removeOneDriveFile(file: any) {
@@ -591,9 +606,11 @@ export default {
 			this.fileToDelete = null;
 			this.deleteFileProcessing = false;
 
-			this.$nextTick(() => {
-				this.$refs.menu.alignOverlay();
-			});
+			if (this.$refs.menu.visible) {
+				this.$nextTick(() => {
+					this.$refs.menu.alignOverlay();
+				});
+			}
 		},
 
 		browseFiles() {
@@ -626,7 +643,10 @@ export default {
 				const oneDriveFileAlreadyExists = this.oneDriveFiles.some(
 					(existingFile: any) => existingFile.name === file.name && existingFile.size === file.size,
 				);
-				const fileAlreadyExists = localFileAlreadyExists || oneDriveFileAlreadyExists;
+				const uploadedFileAlreadyExists = this.uploadedFiles.some(
+					(existingFile: any) => existingFile.name === file.name && existingFile.size === file.size,
+				);
+				const fileAlreadyExists = localFileAlreadyExists || oneDriveFileAlreadyExists || uploadedFileAlreadyExists;
 
 				if (fileAlreadyExists) return;
 
@@ -659,14 +679,14 @@ export default {
 				}
 			});
 
-			if (this.localFiles.length + this.oneDriveFiles.length + filteredFiles.length > this.maxFiles) {
+			if (this.localFiles.length + this.oneDriveFiles.length + this.uploadedFiles.length + filteredFiles.length > this.maxFiles) {
 				this.$toast.add({
 					severity: 'error',
 					summary: 'Error',
 					detail: `You can only upload a maximum of ${this.maxFiles} ${this.maxFiles === 1 ? 'file' : 'files'} at a time.`,
 					life: 5000,
 				});
-				filteredFiles.splice((this.maxFiles - (this.localFiles.length + this.oneDriveFiles.length)));
+				filteredFiles.splice((this.maxFiles - (this.localFiles.length + this.oneDriveFiles.length + this.uploadedFiles.length)));
 			}
 
 			return filteredFiles;
@@ -682,9 +702,11 @@ export default {
 				this.$refs.fileUpload.clear();
 			}
 
-			this.$nextTick(() => {
-				this.$refs.menu.alignOverlay();
-			});
+			if (this.$refs.menu.visible) {
+				this.$nextTick(() => {
+					this.$refs.menu.alignOverlay();
+				});
+			}
 		},
 
 		hideAllPoppers() {
