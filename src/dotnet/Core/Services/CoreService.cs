@@ -545,20 +545,21 @@ public partial class CoreService(
     }
 
     /// <inheritdoc/>
-    public async Task<FileStoreConfiguration> GetFileStoreConfiguration(string instanceId, UnifiedUserIdentity userIdentity)
+    public async Task<CoreConfiguration> GetCoreConfiguration(string instanceId, UnifiedUserIdentity userIdentity)
     {
-        var appConfigurationValue = await _configurationResourceProvider.GetResourceAsync<AppConfigurationKeyBase>(
-            instanceId,
-            AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_MaxUploadsPerMessage,
-            userIdentity);
-
-        var configurationValue = ConfigurationValue<int>.Deserialize(appConfigurationValue.Value!);
-
-        var configuration = new FileStoreConfiguration
+        var configuration = new CoreConfiguration
         {
             FileStoreConnectors = await GetFileStoreConnectors(instanceId, userIdentity),
-            MaxUploadsPerMessage = configurationValue.GetValueForUser(userIdentity.UPN!)
+            MaxUploadsPerMessage = await GetCoreConfigurationValue<int>(
+                instanceId,
+                AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_MaxUploadsPerMessage,
+                userIdentity),
+            CompletionResponsePollingIntervalSeconds = await GetCoreConfigurationValue<int>(
+                instanceId,
+                AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CompletionResponsePollingIntervalSeconds,
+                userIdentity),
         };
+
         return configuration;
     }
 
@@ -771,6 +772,16 @@ public partial class CoreService(
         request.MessageHistory = messageHistoryList;
 
         return request;
+    }
+
+    private async Task<T> GetCoreConfigurationValue<T>(string instanceId, string configurationName, UnifiedUserIdentity userIdentity)
+    {
+        var appConfigurationValue = await _configurationResourceProvider.GetResourceAsync<AppConfigurationKeyBase>(
+            instanceId,
+            configurationName,
+            userIdentity);
+
+        return ConfigurationValue<T>.Deserialize(appConfigurationValue.Value!).GetValueForUser(userIdentity.UPN!);
     }
 
     private static async Task<string> GetBaseUrl(

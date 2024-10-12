@@ -427,7 +427,7 @@ export default {
 			this.connectingOneDrive = false;
 		}
 
-		await this.$appStore.getFileStoreConfiguration();
+		await this.$appStore.getCoreConfiguration();
 		await this.$appStore.getAgents();
 
 		this.agents = this.$appStore.agents.map((agent) => ({
@@ -435,12 +435,12 @@ export default {
 			value: agent.resource.name,
 		}));
 
-		this.oneDriveBaseURL = this.$appStore.fileStoreConfiguration.fileStoreConnectors?.find(
+		this.oneDriveBaseURL = this.$appStore.coreConfiguration.fileStoreConnectors?.find(
 			(connector) => connector.subcategory === 'OneDriveWorkSchool',
 		)?.url;
 
-		if (this.$appStore.fileStoreConfiguration.maxUploadsPerMessage) {
-			this.maxFiles = this.$appStore.fileStoreConfiguration.maxUploadsPerMessage;
+		if (this.$appStore.coreConfiguration.maxUploadsPerMessage) {
+			this.maxFiles = this.$appStore.coreConfiguration.maxUploadsPerMessage;
 		}
 	},
 
@@ -947,10 +947,6 @@ export default {
 				driveId,
 				access_token: oneDriveToken,
 			});
-		},
-
-		hideAllPoppers() {
-			hideAllPoppers();
 		},
 	},
 };
