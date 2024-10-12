@@ -322,7 +322,7 @@ export default {
 
 	computed: {
 		messageDisplayStatus() {
-			if (this.message.status === 'Failed' || this.message.status === 'Complete') return null;
+			if (this.message.status === 'Failed' || this.message.status === 'Completed') return null;
 
 			if (this.isRenderingMessage && this.messageContent.length > 0) return 'Generating';
 
