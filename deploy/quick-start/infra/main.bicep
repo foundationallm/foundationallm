@@ -237,6 +237,12 @@ module cosmosDb './shared/cosmosdb.bicep' = {
         maxThroughput: 1000
         defaultTtl: null
       }
+      {
+        name: 'Operations'
+        partitionKeyPath: '/id'
+        maxThroughput: 1000
+        defaultTtl: null
+      }
     ]
     databaseName: 'database'
     location: location
