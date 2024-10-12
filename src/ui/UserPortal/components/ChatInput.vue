@@ -301,7 +301,7 @@ import { Mentionable } from 'vue-mention';
 import 'floating-vue/dist/style.css';
 import { hideAllPoppers } from 'floating-vue';
 
-const DEFAULT_INPUT_TEXT = 'Give me an example of a svelte component';
+const DEFAULT_INPUT_TEXT = '';
 
 export default {
 	name: 'ChatInput',
