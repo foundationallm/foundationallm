@@ -25,7 +25,9 @@
 						:id="`message-${getMessageOrderFromReversedIndex(index)}`"
 						:key="message.id || message.operation_id"
 						:message="message"
-						:show-word-animation="index === 0 && (message.status === 'InProgress' || message.status === 'Pending')"
+						:show-word-animation="
+							index === 0 && (message.status === 'InProgress' || message.status === 'Pending')
+						"
 						role="log"
 						:aria-flowto="
 							index === 0 ? null : `message-${getMessageOrderFromReversedIndex(index) + 1}`
@@ -63,7 +65,6 @@
 
 <script lang="ts">
 import type { Message, Session } from '@/js/types';
-import eventBus from '@/js/eventBus';
 
 export default {
 	name: 'ChatThread',
@@ -99,18 +100,11 @@ export default {
 			this.isLoading = true;
 			this.userSentMessage = false;
 			await this.$appStore.getMessages();
+			console.log('change');
 			this.$appStore.updateSessionAgentFromMessages(newSession);
 			this.isLoading = false;
 		},
 	},
-
-	// beforeUnmount() {
-	// 	eventBus.off('operation-completed', this.handleOperationCompleted);
-	// },
-
-	// mounted() {
-	// 	eventBus.on('operation-completed', this.handleOperationCompleted);
-	// },
 
 	methods: {
 		getMessageOrderFromReversedIndex(index) {
@@ -168,24 +162,6 @@ export default {
 
 			this.isMessagePending = false;
 		},
-
-		// async pollForCompletion(sessionId: string, operationId: string) {
-		// 	while (true) {
-		// 		const status = await this.$appStore.checkProcessStatus(operationId);
-		// 		if (status.isCompleted) {
-		// 			this.longRunningOperations.set(sessionId, false);
-		// 			await this.$appStore.getMessages();
-		// 			break;
-		// 		}
-		// 		await new Promise((resolve) => setTimeout(resolve, 2000)); // Poll every 2 seconds
-		// 	}
-		// },
-
-		// async handleOperationCompleted({ sessionId }: { sessionId: string; operationId: string }) {
-		// 	if (this.currentSession.id === sessionId) {
-		// 		await this.$appStore.getMessages();
-		// 	}
-		// },
 	},
 };
 </script>
