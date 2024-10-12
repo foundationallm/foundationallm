@@ -76,7 +76,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 callContext.CurrentUserIdentity!,
                 logger);
 
-            if (result.Agent.AgentType == typeof(KnowledgeManagementAgent) || result.Agent.AgentType == typeof(AudioClassificationAgent))
+            if (result.Agent.AgentType == typeof(KnowledgeManagementAgent))
             {
                 var orchestrator = string.IsNullOrWhiteSpace(result.Agent.OrchestrationSettings?.Orchestrator)
                     ? LLMOrchestrationServiceNames.LangChain
@@ -268,7 +268,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             #region Knowledge management processing
 
-            if (agentBase.AgentType == typeof(KnowledgeManagementAgent) || agentBase.AgentType == typeof(AudioClassificationAgent))
+            if (agentBase.AgentType == typeof(KnowledgeManagementAgent))
             {
                 KnowledgeManagementAgent kmAgent = (KnowledgeManagementAgent)agentBase;
 

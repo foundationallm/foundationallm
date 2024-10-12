@@ -73,7 +73,6 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
             Type switch
             {
                 AgentTypes.KnowledgeManagement => typeof(KnowledgeManagementAgent),
-                AgentTypes.AudioClassification => typeof(AudioClassificationAgent),
                 _ => throw new ResourceProviderException($"The agent type {Type} is not supported.")
             };
 
