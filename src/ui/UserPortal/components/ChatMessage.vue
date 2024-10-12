@@ -321,11 +321,11 @@ export default {
 
 	computed: {
 		messageDisplayStatus() {
-			if (!this.isRenderingMessage) return null;
+			if (this.isRenderingMessage && this.messageContent.length > 0) return 'Generating';
 
-			if (this.messageContent.length > 0) return 'Generating';
+			if (this.showWordAnimation && (this.message.status === 'Pending' || this.message.status === 'InProgress')) return 'Thinking';
 
-			return 'Thinking';
+			return null;
 		},
 	},
 
