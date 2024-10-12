@@ -63,6 +63,7 @@ export default {
 		value: {
 			type: Object,
 			required: false,
+			default: null,
 		},
 	},
 
@@ -79,7 +80,7 @@ export default {
 			immediate: true,
 			handler() {
 				this.loadFile();
-			}
+			},
 		},
 	},
 

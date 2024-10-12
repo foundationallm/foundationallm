@@ -138,11 +138,7 @@
 					</span>
 
 					<!-- Avg MS Per Word: {{ averageTimePerWordMS }} -->
-					<div
-						v-if="messageDisplayStatus"
-						class="loading-shimmer"
-						style="font-weight: 600"
-					>
+					<div v-if="messageDisplayStatus" class="loading-shimmer" style="font-weight: 600">
 						{{ messageDisplayStatus }}
 					</div>
 
@@ -326,7 +322,11 @@ export default {
 
 			if (this.isRenderingMessage && this.messageContent.length > 0) return 'Generating';
 
-			if (this.showWordAnimation && (this.message.status === 'Pending' || this.message.status === 'InProgress')) return 'Thinking';
+			if (
+				this.showWordAnimation &&
+				(this.message.status === 'Pending' || this.message.status === 'InProgress')
+			)
+				return 'Thinking';
 
 			return null;
 		},
