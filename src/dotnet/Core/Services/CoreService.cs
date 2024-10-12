@@ -735,7 +735,7 @@ public partial class CoreService(
         return await _cosmosDBService.PatchSessionsItemPropertiesAsync<Message>(
             id,
             sessionId,
-            new Dictionary<string, object>
+            new Dictionary<string, object?>
             {
                 { "/rating", rating }
             });
