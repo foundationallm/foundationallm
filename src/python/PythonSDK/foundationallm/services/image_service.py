@@ -258,7 +258,7 @@ class ImageService:
                         "n": {"type": "integer", "description": "The number of images to generate. Default is 1. For DALL-E 3, the maximum value is 1."},
                         "quality": {"type": "string", "description": "The quality of the image.", "enum": ["standard", "hd"]},
                         "style": {"type": "string", "description": "The style of the image.", "enum": ["natural", "vivid"]},
-                        "size": {"type": "string", "description": "The size of the image in pixels.", "enum": ['256x256', '512x512', '1024x1024', '1792x1024', '1024x1792']}
+                        "size": {"type": "string", "description": "The size of the image in pixels.", "enum": ['1024x1024', '1792x1024', '1024x1792']}
                     },
                     "additionalProperties": False,
                     "required": ["prompt"]
