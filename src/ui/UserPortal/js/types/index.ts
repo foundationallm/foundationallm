@@ -135,9 +135,10 @@ export interface UserProfile {
 	flags: Record<string, boolean>;
 }
 
-export interface FileStoreConfiguration {
+export interface CoreConfiguration {
 	maxUploadsPerMessage: number;
 	fileStoreConnectors?: FileStoreConnector[];
+	completionResponsePollingIntervalSeconds: number;
 }
 
 export interface FileStoreConnector {

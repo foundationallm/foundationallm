@@ -7,7 +7,7 @@ import type {
 	Message,
 	UserProfile,
 	Agent,
-	FileStoreConfiguration,
+	CoreConfiguration,
 	OneDriveWorkSchool,
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
@@ -18,7 +18,7 @@ import type {
 import api from '@/js/api';
 import eventBus from '@/js/eventBus';
 
-const POLLING_INTERVAL_MS = 1000;
+const POLLING_INTERVAL_MS = 5000;
 
 export const useAppStore = defineStore('app', {
 	state: () => ({
@@ -33,7 +33,7 @@ export const useAppStore = defineStore('app', {
 		lastSelectedAgent: null as ResourceProviderGetResult<Agent> | null,
 		attachments: [] as Attachment[],
 		longRunningOperations: new Map<string, string>(), // sessionId -> operation_id
-		fileStoreConfiguration: null as FileStoreConfiguration | null,
+		coreConfiguration: null as CoreConfiguration | null,
 		oneDriveWorkSchool: null as boolean | null,
 		userProfiles: null as UserProfile | null,
 	}),
@@ -369,7 +369,7 @@ export const useAppStore = defineStore('app', {
 					console.error(error);
 					this.stopPolling();
 				}
-			}, POLLING_INTERVAL_MS);
+			}, (this.coreConfiguration?.completionResponsePollingIntervalSeconds ?? 5) * 1000 || POLLING_INTERVAL_MS);
 		},
 
 		stopPolling() {
@@ -439,9 +439,9 @@ export const useAppStore = defineStore('app', {
 			return this.agents;
 		},
 
-		async getFileStoreConfiguration() {
-			this.fileStoreConfiguration = await api.getFileStoreConfiguration();
-			return this.fileStoreConfiguration;
+		async getCoreConfiguration() {
+			this.coreConfiguration = await api.getCoreConfiguration();
+			return this.coreConfiguration;
 		},
 
 		async oneDriveWorkSchoolConnect() {

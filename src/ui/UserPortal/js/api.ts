@@ -2,7 +2,7 @@ import type {
 	Message,
 	Session,
 	UserProfile,
-	FileStoreConfiguration,
+	CoreConfiguration,
 	OneDriveWorkSchool,
 	ChatSessionProperties,
 	CompletionPrompt,
@@ -366,14 +366,14 @@ export default {
 	},
 
 	/**
-	 * Retrieves the file store configuration for the current instance.
+	 * Retrieves the core configuration for the current instance.
 	 *
-	 * @returns {Promise<FileStoreConfiguration>} A promise that resolves to the file store configuration.
+	 * @returns {Promise<CoreConfiguration>} A promise that resolves to the core configuration.
 	 */
-	async getFileStoreConfiguration() {
+	async getCoreConfiguration() {
 		return (await this.fetch(
-			`/instances/${this.instanceId}/files/file-store-configuration`,
-		)) as FileStoreConfiguration;
+			`/instances/${this.instanceId}/configuration`,
+		)) as CoreConfiguration;
 	},
 
 	/**
