@@ -32,6 +32,7 @@ using FoundationaLLM.Common.Models.Azure.CosmosDB;
 using Conversation = FoundationaLLM.Common.Models.Conversation.Conversation;
 using LongRunningOperation = FoundationaLLM.Common.Models.Orchestration.LongRunningOperation;
 using Message = FoundationaLLM.Common.Models.Conversation.Message;
+using FoundationaLLM.Common.Models.Orchestration;
 
 namespace FoundationaLLM.Core.Services;
 
