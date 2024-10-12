@@ -14,7 +14,7 @@ namespace FoundationaLLM.Common.Models.Conversation
         /// <summary>
         /// The type of the completion.
         /// </summary>
-        public string Type { get; set; }
+        public string Type { get; set; } = nameof(CompletionPrompt);
         /// <summary>
         /// The sessionId associated with the completion.
         /// </summary>
@@ -36,19 +36,5 @@ namespace FoundationaLLM.Common.Models.Conversation
         /// The sources used in the creation of the completion response.
         /// </summary>
         public Citation[]? Citations { get; set; }
-
-        /// <summary>
-        /// Constructor for Completion Prompt.
-        /// </summary>
-        public CompletionPrompt(string sessionId, string messageId, string prompt,
-            Citation[]? citations = null)
-        {
-            Id = Guid.NewGuid().ToString();
-            Type = nameof(CompletionPrompt);
-            SessionId = sessionId;
-            MessageId = messageId;
-            Prompt = prompt;
-            Citations = citations;
-        }
     }
 }

@@ -91,7 +91,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="resourceName">The name of the resource being updated.</param>
         /// <param name="propertyValues">The dictionary with propery names and values to update.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
-        Task<TResult> UpdateResourcePropertiesAsync<T, TResult>(string instanceId, string resourceName, Dictionary<string, object> propertyValues, UnifiedUserIdentity userIdentity)
+        Task<TResult> UpdateResourcePropertiesAsync<T, TResult>(string instanceId, string resourceName, Dictionary<string, object?> propertyValues, UnifiedUserIdentity userIdentity)
             where T : ResourceBase
             where TResult : ResourceProviderUpsertResult<T>;
 

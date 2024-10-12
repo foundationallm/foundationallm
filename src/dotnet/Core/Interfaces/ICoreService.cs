@@ -57,14 +57,14 @@ public interface ICoreService
     /// </summary>
     /// <param name="instanceId">The instance id.</param>
     /// <param name="completionRequest">The completion request.</param>
-    Task<Completion> GetChatCompletionAsync(string instanceId, CompletionRequest completionRequest);
+    Task<Message> GetChatCompletionAsync(string instanceId, CompletionRequest completionRequest);
 
     /// <summary>
     /// Provides a completion for a user prompt, without a session.
     /// </summary>
     /// <param name="instanceId">The instance id.</param>
     /// <param name="directCompletionRequest">The completion request.</param>
-    Task<Completion> GetCompletionAsync(string instanceId, CompletionRequest directCompletionRequest);
+    Task<Message> GetCompletionAsync(string instanceId, CompletionRequest directCompletionRequest);
 
     /// <summary>
     /// Rate an assistant message. This can be used to discover useful AI responses for training, discoverability, and other benefits down the road.
@@ -97,16 +97,8 @@ public interface ICoreService
     /// </summary>
     /// <param name="instanceId">The FoundationaLLM instance id.</param>
     /// <param name="operationId">The OperationId for which to retrieve the status.</param>
-    /// <returns>Returns an <see cref="LongRunningOperation"/> object containing the OperationId and Status.</returns>
-    Task<LongRunningOperation> GetCompletionOperationStatus(string instanceId, string operationId);
-
-    /// <summary>
-    /// Gets a completion operation from the downstream API.
-    /// </summary>
-    /// <param name="instanceId">The FoundationaLLM instance id.</param>
-    /// <param name="operationId">The ID of the operation to retrieve.</param>
-    /// <returns>Returns a <see cref="CompletionResponse" /> object.</returns>
-    Task<CompletionResponse> GetCompletionOperationResult(string instanceId, string operationId);
+    /// <returns>Returns a <see cref="Message"/> object containing the agent's response message.</returns>
+    Task<Message> GetCompletionOperationStatus(string instanceId, string operationId);
 
     /// <summary>
     /// Uploads an attachment.

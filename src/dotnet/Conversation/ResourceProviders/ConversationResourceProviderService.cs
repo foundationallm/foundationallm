@@ -147,14 +147,14 @@ namespace FoundationaLLM.Conversation.ResourceProviders
             } as TResult)!;
         }
 
-        protected override async Task<TResult> UpdateResourcePropertiesAsyncInternal<T, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, Dictionary<string, object> propertyValues, UnifiedUserIdentity userIdentity)
+        protected override async Task<TResult> UpdateResourcePropertiesAsyncInternal<T, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, Dictionary<string, object?> propertyValues, UnifiedUserIdentity userIdentity)
         {
             _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
 
             // This is the PEP (Policy Enforcement Point) where the resource provider enforces the policy definition to update the resource properties.
             // The implementation relies on using a filter predicate to ensure that the user identity is authorized to update the resource properties.
 
-            var result = await _cosmosDBService.UpdateConversationPropertiesAsync(
+            var result = await _cosmosDBService.PatchConversationPropertiesAsync(
                 resourcePath.ResourceId!,
                 userIdentity.UPN!,
                 propertyValues)

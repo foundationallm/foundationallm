@@ -20,7 +20,6 @@ using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Core.Interfaces;
-using FoundationaLLM.Core.Models;
 using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Utils;
 using Microsoft.Extensions.Configuration;
@@ -28,9 +27,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using FoundationaLLM.Common.Models.Azure.CosmosDB;
 using Conversation = FoundationaLLM.Common.Models.Conversation.Conversation;
 using LongRunningOperation = FoundationaLLM.Common.Models.Orchestration.LongRunningOperation;
 using Message = FoundationaLLM.Common.Models.Conversation.Message;
+using FoundationaLLM.Common.Models.Orchestration;
 
 namespace FoundationaLLM.Core.Services;
 
@@ -65,7 +66,7 @@ public partial class CoreService(
     private readonly IDownstreamAPIService _gatekeeperAPIService = downstreamAPIServices.Single(das => das.APIName == HttpClientNames.GatekeeperAPI);
     private readonly IDownstreamAPIService _orchestrationAPIService = downstreamAPIServices.Single(das => das.APIName == HttpClientNames.OrchestrationAPI);
     private readonly ILogger<CoreService> _logger = logger;
-    private readonly ICallContext _callContext = callContext;
+    private readonly UnifiedUserIdentity _userIdentity = ValidateUserIdentity(callContext.CurrentUserIdentity);
     private readonly string _sessionType = brandingSettings.Value.KioskMode ? ConversationTypes.KioskSession : ConversationTypes.Session;
     private readonly CoreServiceSettings _settings = settings.Value;
     private readonly IHttpClientFactoryService _httpClientFactory = httpClientFactory;
@@ -97,7 +98,7 @@ public partial class CoreService(
     {
         var result = await _conversationResourceProvider.GetResourcesAsync<Conversation>(
             instanceId,
-            _callContext.CurrentUserIdentity!,
+            _userIdentity,
             new ResourceProviderLoadOptions
             {
                 Parameters = new Dictionary<string, object>
@@ -122,13 +123,13 @@ public partial class CoreService(
             Name = newConversationId,
             DisplayName = chatSessionProperties.Name,
             Type = _sessionType,
-            UPN = _callContext.CurrentUserIdentity?.UPN!
+            UPN = _userIdentity.UPN!
         };
 
         _ = await _conversationResourceProvider.UpsertResourceAsync<Conversation, ResourceProviderUpsertResult<Conversation>>(
             instanceId,
             newConversation,
-            _callContext.CurrentUserIdentity!);
+            _userIdentity);
 
         return newConversation;
     }
@@ -146,7 +147,7 @@ public partial class CoreService(
                                              {
                 { "/displayName", chatSessionProperties.Name }
             },
-            _callContext.CurrentUserIdentity!);
+            _userIdentity);
 
         return result.Resource!;
     }
@@ -159,7 +160,7 @@ public partial class CoreService(
         await _conversationResourceProvider.DeleteResourceAsync<Conversation>(
             instanceId,
             sessionId,
-            _callContext.CurrentUserIdentity!);
+            _userIdentity);
     }
 
     #endregion
@@ -168,7 +169,7 @@ public partial class CoreService(
     public async Task<List<Message>> GetChatSessionMessagesAsync(string instanceId, string sessionId)
     {
         ArgumentNullException.ThrowIfNull(sessionId);
-        var messages = await _cosmosDBService.GetSessionMessagesAsync(sessionId, _callContext.CurrentUserIdentity?.UPN ??
+        var messages = await _cosmosDBService.GetSessionMessagesAsync(sessionId, _userIdentity.UPN ??
             throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat messages."));
 
         // Get a list of all attachment IDs in the messages.
@@ -183,14 +184,11 @@ public partial class CoreService(
             var result = await _attachmentResourceProvider!.HandlePostAsync(
                 $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Attachment}/{AttachmentResourceTypeNames.Attachments}/{ResourceProviderActions.Filter}",
                 JsonSerializer.Serialize(filter),
-                _callContext.CurrentUserIdentity!);
-            var list = result as List<AttachmentFile>;
+                _userIdentity);
+            //var list = result as IEnumerator<AttachmentFile>;
             var attachmentReferences = new List<AttachmentDetail>();
 
-            if (list != null)
-            {
-                attachmentReferences.AddRange(from attachment in (IEnumerable<AttachmentFile>)list select AttachmentDetail.FromAttachmentFile(attachment));
-            }
+            attachmentReferences.AddRange(from attachment in (IEnumerable<AttachmentFile>)result select AttachmentDetail.FromAttachmentFile(attachment));
 
             if (attachmentReferences.Count > 0)
             {
@@ -229,140 +227,68 @@ public partial class CoreService(
     }
 
     /// <inheritdoc/>
-    public async Task<Completion> GetChatCompletionAsync(string instanceId, CompletionRequest completionRequest)
+    public async Task<Message> GetChatCompletionAsync(string instanceId, CompletionRequest completionRequest)
     {
         try
         {
             ArgumentNullException.ThrowIfNull(completionRequest.SessionId);
+            var operationStartTime = DateTime.UtcNow;
 
-            completionRequest = PrepareCompletionRequest(completionRequest);
+            completionRequest = await PrepareCompletionRequest(completionRequest);
 
-            // Retrieve conversation, including latest prompt.
-            var messages = await _cosmosDBService.GetSessionMessagesAsync(completionRequest.SessionId, _callContext.CurrentUserIdentity?.UPN ??
-                throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat completions."));
-            var messageHistoryList = messages
-                .Select(message => new MessageHistoryItem(message.Sender, string.IsNullOrWhiteSpace(message.Text) ? "" : message.Text))
-                .ToList();
+            var conversationItems = await CreateConversationItemsAsync(instanceId, completionRequest, _userIdentity);
 
-            completionRequest.MessageHistory = messageHistoryList;
-
-            // Add the user's UPN to the messages.
-            var upn = _callContext.CurrentUserIdentity?.UPN ?? throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when adding prompt and completion messages.");
-            // Create prompt message, then persist in Cosmos as transaction with the Session details.
-            var promptMessage = new Message(
-                completionRequest.SessionId,
-                nameof(Participants.User),
-                null,
-                completionRequest.UserPrompt,
-                null,
-                null,
-                upn,
-                _callContext.CurrentUserIdentity?.Name,
-                null,
-                null,
-                null,
-                completionRequest.Attachments);
-            await AddSessionMessageAsync(instanceId, completionRequest.SessionId, promptMessage, _callContext.CurrentUserIdentity!);
-
-            var agentOption = await ProcessGatekeeperOptions(completionRequest);
+            var agentOption = await ProcessGatekeeperOptions(instanceId, completionRequest);
 
             // Generate the completion to return to the user.
-            var result = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, completionRequest);
+            var completionResponse = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, completionRequest);
 
-            // Update prompt tokens and add completion, then persist in Cosmos as transaction.
-            // Add the user's UPN to the messages.
-            promptMessage.Tokens = result.PromptTokens;
-            promptMessage.Vector = result.UserPromptEmbedding;
-
-            var newContent = new List<MessageContent>();
-
-            if (result.Content is { Count: > 0 })
-            {
-                foreach (var content in result.Content)
+            var agentMessage = await ProcessCompletionResponse(
+                new LongRunningOperationContext
                 {
-                    switch (content)
-                    {
-                        case OpenAITextMessageContentItem textMessageContent:
-                            if (textMessageContent.Annotations.Count > 0)
-                            {
-                                foreach (var annotation in textMessageContent.Annotations)
-                                {
-                                    newContent.Add(new MessageContent
-                                    {
-                                        Type = FileMethods.GetMessageContentFileType(annotation.Text, annotation.Type),
-                                        FileName = annotation.Text,
-                                        Value = annotation.FileUrl
-                                    });
-                                }
-                            }
-                            newContent.Add(new MessageContent
-                            {
-                                Type = textMessageContent.Type,
-                                Value = textMessageContent.Value
-                            });
-                            break;
-                        case OpenAIImageFileMessageContentItem imageFileMessageContent:
-                            newContent.Add(new MessageContent
-                            {
-                                Type = imageFileMessageContent.Type,
-                                Value = imageFileMessageContent.FileUrl
-                            });
-                            break;
-                    }
-                }
-            }
+                    AgentName = completionRequest.AgentName!,
+                    SessionId = completionRequest.SessionId!,
+                    OperationId = completionRequest.OperationId!,
+                    UserMessageId = conversationItems.UserMessage.Id,
+                    AgentMessageId = conversationItems.AgentMessage.Id,
+                    CompletionPromptId = conversationItems.CompletionPrompt.Id,
+                    StartTime = operationStartTime,
+                    UPN = _userIdentity.UPN!
+                },
+                completionResponse,
+                OperationStatus.Completed);
 
-            var completionMessage = new Message(
-                completionRequest.SessionId,
-                nameof(Participants.Assistant),
-                result.CompletionTokens,
-                result.Completion,
-                null,
-                null,
-                upn,
-                result.AgentName ?? completionRequest.AgentName,
-                result.Citations,
-                null,
-                newContent,
-                null,
-                null,
-                result.AnalysisResults);
-            var completionPromptText =
-                $"User prompt: {result.UserPrompt}{Environment.NewLine}Agent: {result.AgentName}{Environment.NewLine}Prompt template: {(!string.IsNullOrWhiteSpace(result.FullPrompt) ? result.FullPrompt : result.PromptTemplate)}";
-            var completionPrompt = new CompletionPrompt(completionRequest.SessionId, completionMessage.Id, completionPromptText);
-            completionMessage.CompletionPromptId = completionPrompt.Id;
-
-            await AddPromptCompletionMessagesAsync(instanceId, completionRequest.SessionId, promptMessage, completionMessage, completionPrompt, _callContext.CurrentUserIdentity!);
-
-            return new Completion
-            {
-                Text = completionMessage.Text // result.Completion
-                    ?? completionMessage.Content?.Where(c => c.Type == MessageContentItemTypes.Text).FirstOrDefault()?.Value
-                       ?? "Could not generate a completion due to an internal error."
-            };
+            return agentMessage;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error getting completion in session {SessionId} for user prompt [{UserPrompt}].",
+            _logger.LogError(ex, "Error getting completion in conversation {SessionId} for user prompt [{UserPrompt}].",
                 completionRequest.SessionId, completionRequest.UserPrompt);
-            return new Completion { Text = "Could not generate a completion due to an internal error." };
+            return new Message
+            {
+                OperationId = completionRequest.OperationId,
+                Status = OperationStatus.Failed,
+                Text = "Could not generate a completion due to an internal error."
+            };
         }
     }
 
     /// <inheritdoc/>
-    public async Task<Completion> GetCompletionAsync(string instanceId, CompletionRequest directCompletionRequest)
+    public async Task<Message> GetCompletionAsync(string instanceId, CompletionRequest directCompletionRequest)
     {
         try
         {
-            directCompletionRequest = PrepareCompletionRequest(directCompletionRequest);
+            directCompletionRequest = await PrepareCompletionRequest(directCompletionRequest);
 
-            var agentOption = await ProcessGatekeeperOptions(directCompletionRequest);
+            var agentOption = await ProcessGatekeeperOptions(instanceId, directCompletionRequest);
 
             // Generate the completion to return to the user.
             var result = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, directCompletionRequest);
 
-            return new Completion
+            return new Message
             {
+                OperationId = directCompletionRequest.OperationId,
+                Status = OperationStatus.Completed,
                 Text = result.Completion
                     ?? (result.Content?.Where(c => c.Type == MessageContentItemTypes.Text).FirstOrDefault() as OpenAITextMessageContentItem)?.Value
                         ?? "Could not generate a completion due to an internal error."
@@ -371,24 +297,102 @@ public partial class CoreService(
         catch (Exception ex)
         {
             _logger.LogError(ex, $"Error getting completion for user prompt [{directCompletionRequest.UserPrompt}].");
-            return new Completion { Text = "Could not generate a completion due to an internal error." };
+            return new Message
+            {
+                OperationId = directCompletionRequest.OperationId,
+                Status = OperationStatus.Failed,
+                Text = "Could not generate a completion due to an internal error."
+            };
         }
     }
 
     /// <inheritdoc/>
     public async Task<LongRunningOperation> StartCompletionOperation(string instanceId, CompletionRequest completionRequest)
     {
-        completionRequest = PrepareCompletionRequest(completionRequest);
-        throw new NotImplementedException();
+        try
+        {
+            ArgumentNullException.ThrowIfNull(completionRequest.SessionId);
+            var operationStartTime = DateTime.UtcNow;
+
+            completionRequest = await PrepareCompletionRequest(completionRequest, true);
+
+            var conversationItems = await CreateConversationItemsAsync(instanceId, completionRequest, _userIdentity);
+
+            var agentOption = await ProcessGatekeeperOptions(instanceId, completionRequest);
+
+            await _cosmosDBService.UpsertLongRunningOperationContextAsync(new LongRunningOperationContext
+            {
+                OperationId = completionRequest.OperationId!,
+                AgentName = completionRequest.AgentName!,
+                SessionId = completionRequest.SessionId!,
+                UserMessageId = conversationItems.UserMessage.Id,
+                AgentMessageId = conversationItems.AgentMessage.Id,
+                CompletionPromptId = conversationItems.CompletionPrompt.Id,
+                GatekeeperOverride = agentOption,
+                StartTime = operationStartTime,
+                UPN = _userIdentity.UPN!
+            });
+
+            // Start the completion operation.
+            var result = await GetDownstreamAPIService(agentOption).StartCompletionOperation(instanceId, completionRequest);
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error starting completion operation in conversation {SessionId} for user prompt [{UserPrompt}].",
+                completionRequest.SessionId, completionRequest.UserPrompt);
+
+            // TODO: Depending on the type of failure, we should update the agent message to reflect the failure.
+
+            return new LongRunningOperation
+            {
+                OperationId = completionRequest.OperationId,
+                Status = OperationStatus.Failed,
+                StatusMessage = "Could not start completion operation due to an internal error."
+            };
+        }
     }
 
     /// <inheritdoc/>
-    public Task<LongRunningOperation> GetCompletionOperationStatus(string instanceId, string operationId) =>
-        throw new NotImplementedException();
+    public async Task<Message> GetCompletionOperationStatus(string instanceId, string operationId)
+    {
+        try
+        {
+            var operationContext = await _cosmosDBService.GetLongRunningOperationContextAsync(operationId);
+            var operationStatus = await GetDownstreamAPIService(operationContext.GatekeeperOverride).GetCompletionOperationStatus(instanceId, operationId);
 
-    /// <inheritdoc/>
-    public async Task<CompletionResponse> GetCompletionOperationResult(string instanceId, string operationId) =>
-        throw new NotImplementedException();
+            if (operationStatus.Result is JsonElement jsonElement)
+            {
+                var completionResponse = jsonElement.Deserialize<CompletionResponse>();
+
+                var agentMessage = await ProcessCompletionResponse(
+                    operationContext,
+                    completionResponse!,
+                    operationStatus.Status);
+
+                return agentMessage;
+            }
+
+            return new Message
+            {
+                OperationId = operationId,
+                Status = operationStatus.Status,
+                Text = operationStatus.StatusMessage ?? "The completion operation is in progress."
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving the status for the operation with id {OperationId}.",
+                operationId);
+            return new Message
+            {
+                OperationId = operationId,
+                Status = OperationStatus.Failed,
+                Text = "Could not retrieve the status of the operation due to an internal error."
+            };
+        }
+    }
 
     /// <inheritdoc/>
     public async Task<ResourceProviderUpsertResult<AttachmentFile>> UploadAttachment(string instanceId, string sessionId, AttachmentFile attachmentFile, string agentName, UnifiedUserIdentity userIdentity)
@@ -405,7 +409,7 @@ public partial class CoreService(
         var result = await _attachmentResourceProvider.UpsertResourceAsync<AttachmentFile, ResourceProviderUpsertResult<AttachmentFile>>(
                 instanceId,
                 attachmentFile,
-                _callContext.CurrentUserIdentity!);
+                _userIdentity);
 
         if (agentRequiresOpenAIAssistants)
         {
@@ -563,10 +567,12 @@ public partial class CoreService(
             ? _orchestrationAPIService
             : _gatekeeperAPIService;
 
-    private async Task<AgentGatekeeperOverrideOption> ProcessGatekeeperOptions(CompletionRequest completionRequest)
+    private async Task<AgentGatekeeperOverrideOption> ProcessGatekeeperOptions(string instanceId, CompletionRequest completionRequest)
     {
-        var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>($"/{AgentResourceTypeNames.Agents}/{completionRequest.AgentName}", _callContext.CurrentUserIdentity ??
-            throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving the agent settings."));
+        var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>(
+            instanceId,
+            completionRequest.AgentName!,
+            _userIdentity);
 
         if (agentBase?.GatekeeperSettings?.UseSystemSetting == false)
         {
@@ -585,46 +591,139 @@ public partial class CoreService(
     /// <summary>
     /// Add session message
     /// </summary>
-    private async Task AddSessionMessageAsync(string instanceId, string sessionId, Message message, UnifiedUserIdentity userIdentity)
+    private async Task<(Message UserMessage, Message AgentMessage, CompletionPrompt CompletionPrompt)> CreateConversationItemsAsync(string instanceId, CompletionRequest request, UnifiedUserIdentity userIdentity)
     {
-        var session = await _conversationResourceProvider.GetResourceAsync<Conversation>(
-            instanceId,
-            sessionId,
-            userIdentity);
+        var userMessage = new Message
+        {
+            Id = Guid.NewGuid().ToString(),
+            SessionId = request.SessionId!,
+            Sender = nameof(Participants.User),
+            Text = request.UserPrompt,
+            UPN = userIdentity.UPN!,
+            SenderDisplayName = userIdentity.Name,
+            Attachments = request.Attachments,
+            Status = OperationStatus.Pending,
+            OperationId = request.OperationId
+        };
 
-        // Update session cache with tokens used.
-        session.TokensUsed += message.Tokens ?? 0;
+        var agentMessage = new Message
+        {
+            Id = Guid.NewGuid().ToString(),
+            SessionId = request.SessionId!,
+            Sender = nameof(Participants.Agent),
+            UPN = userIdentity.UPN!,
+            SenderDisplayName = request.AgentName,
+            Status = OperationStatus.Pending,
+            OperationId = request.OperationId
+        };
 
-        // Add the user's UPN to the messages.
-        var upn = _callContext.CurrentUserIdentity?.UPN ?? throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when adding prompt and completion messages.");
-        message.UPN = upn;
+        var completionPrompt = new CompletionPrompt
+        {
+            Id = Guid.NewGuid().ToString(),
+            SessionId = request.SessionId!,
+            MessageId = agentMessage.Id,
+            Prompt = string.Empty
+        };
+
+        agentMessage.CompletionPromptId = completionPrompt.Id;
 
         // Adds the incoming message to the session and updates the session with token usage.
-        await _cosmosDBService.UpsertSessionBatchAsync(message, session);
+        await _cosmosDBService.UpsertSessionBatchAsync(userMessage, agentMessage, completionPrompt);
+
+        return (userMessage, agentMessage, completionPrompt);
     }
 
-    /// <summary>
-    /// Add user prompt and AI assistance response to the chat session message list object and insert into the data service as a transaction.
-    /// </summary>
-    private async Task AddPromptCompletionMessagesAsync(
-        string instanceId,
-        string sessionId,
-        Message promptMessage,
-        Message completionMessage,
-        CompletionPrompt completionPrompt,
-        UnifiedUserIdentity userIdentity)
+    private async Task<Message> ProcessCompletionResponse(
+        LongRunningOperationContext operationContext,
+        CompletionResponse completionResponse,
+        OperationStatus operationStatus)
     {
-        var session = await _conversationResourceProvider.GetResourceAsync<Conversation>(instanceId, sessionId, userIdentity);
+        #region Process content
+        
+        var newContent = new List<MessageContent>();
 
-        // Update session cache with tokens used.
-        session.TokensUsed += promptMessage.Tokens ?? 0;
-        session.TokensUsed += completionMessage.Tokens ?? 0;
-        // Add the user's UPN to the messages.
-        var upn = _callContext.CurrentUserIdentity?.UPN ?? throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when adding prompt and completion messages.");
-        promptMessage.UPN = upn;
-        completionMessage.UPN = upn;
+        if (completionResponse.Content is { Count: > 0 })
+        {
+            foreach (var content in completionResponse.Content)
+            {
+                switch (content)
+                {
+                    case OpenAITextMessageContentItem textMessageContent:
+                        if (textMessageContent.Annotations.Count > 0)
+                        {
+                            foreach (var annotation in textMessageContent.Annotations)
+                            {
+                                newContent.Add(new MessageContent
+                                {
+                                    Type = FileMethods.GetMessageContentFileType(annotation.Text, annotation.Type),
+                                    FileName = annotation.Text,
+                                    Value = annotation.FileUrl
+                                });
+                            }
+                        }
+                        newContent.Add(new MessageContent
+                        {
+                            Type = textMessageContent.Type,
+                            Value = textMessageContent.Value
+                        });
+                        break;
+                    case OpenAIImageFileMessageContentItem imageFileMessageContent:
+                        newContent.Add(new MessageContent
+                        {
+                            Type = imageFileMessageContent.Type,
+                            Value = imageFileMessageContent.FileUrl
+                        });
+                        break;
+                }
+            }
+        }
 
-        await _cosmosDBService.UpsertSessionBatchAsync(promptMessage, completionMessage, completionPrompt, session);
+        #endregion
+
+        var completionPromptText =
+            $"User prompt: {completionResponse.UserPrompt}{Environment.NewLine}Agent: {completionResponse.AgentName}{Environment.NewLine}Prompt template: {(!string.IsNullOrWhiteSpace(completionResponse.FullPrompt) ? completionResponse.FullPrompt : completionResponse.PromptTemplate)}";
+
+        var patchOperations = new List<IPatchOperationItem>
+        {
+            // TODO: This update only needs to be done the first time a completion is processed (i.e. when status is retrieved).
+            new PatchOperationItem<Message>
+            {
+                ItemId = operationContext.UserMessageId,
+                PropertyValues = new Dictionary<string, object?> { { "/tokens", completionResponse.PromptTokens } }
+            },
+            new PatchOperationItem<Message>
+            {
+                ItemId = operationContext.AgentMessageId,
+                PropertyValues = new Dictionary<string, object?>
+                {
+                    { "/tokens", completionResponse.CompletionTokens },
+                    { "/text", completionResponse.Completion },
+                    { "/citations", completionResponse.Citations },
+                    { "/content", newContent },
+                    { "/analysisResults", completionResponse.AnalysisResults },
+                    { "/status", operationStatus }
+                }
+            },
+            new PatchOperationItem<CompletionPrompt>
+            {
+                ItemId = operationContext.CompletionPromptId,
+                PropertyValues = new Dictionary<string, object?> { { "/prompt", completionPromptText } }
+            },
+        };
+
+        var patchedItems = await _cosmosDBService.PatchMultipleSessionsItemsInTransactionAsync(
+            operationContext.SessionId,
+            patchOperations
+        );
+
+        var agentMessage = patchedItems[operationContext.AgentMessageId] as Message;
+
+        return agentMessage ?? new Message
+        {
+            OperationId = operationContext.OperationId,
+            Status = OperationStatus.Failed,
+            Text = "Could not retrieve the status of the operation due to an internal error."
+        };
     }
 
     /// <inheritdoc/>
@@ -633,7 +732,13 @@ public partial class CoreService(
         ArgumentNullException.ThrowIfNull(id);
         ArgumentNullException.ThrowIfNull(sessionId);
 
-        return await _cosmosDBService.UpdateMessageRatingAsync(id, sessionId, rating);
+        return await _cosmosDBService.PatchSessionsItemPropertiesAsync<Message>(
+            id,
+            sessionId,
+            new Dictionary<string, object?>
+            {
+                { "/rating", rating }
+            });
     }
 
     /// <inheritdoc/>
@@ -642,17 +747,28 @@ public partial class CoreService(
         ArgumentNullException.ThrowIfNullOrEmpty(sessionId);
         ArgumentNullException.ThrowIfNullOrEmpty(completionPromptId);
 
-        return await _cosmosDBService.GetCompletionPrompt(sessionId, completionPromptId);
+        return await _cosmosDBService.GetCompletionPromptAsync(sessionId, completionPromptId);
     }
 
     /// <summary>
     /// Pre-processing of incoming completion request.
     /// </summary>
     /// <param name="request">The completion request.</param>
+    /// <param name="longRunningOperation">Indicates whether this is a long-running operation.</param>
     /// <returns>The updated completion request with pre-processing applied.</returns>
-    private CompletionRequest PrepareCompletionRequest(CompletionRequest request)
+    private async Task<CompletionRequest> PrepareCompletionRequest(CompletionRequest request, bool longRunningOperation = false)
     {
         request.OperationId = Guid.NewGuid().ToString();
+        request.LongRunningOperation = longRunningOperation;
+
+        // Retrieve conversation, including latest prompt.
+        var messages = await _cosmosDBService.GetSessionMessagesAsync(request.SessionId!, _userIdentity.UPN!);
+        var messageHistoryList = messages
+            .Select(message => new MessageHistoryItem(message.Sender, string.IsNullOrWhiteSpace(message.Text) ? "" : message.Text))
+            .ToList();
+
+        request.MessageHistory = messageHistoryList;
+
         return request;
     }
 
@@ -701,5 +817,16 @@ public partial class CoreService(
             rootUrl = rootUrl[..^1];
         }
         return text.Replace(token, rootUrl);
+    }
+
+    private static UnifiedUserIdentity ValidateUserIdentity(UnifiedUserIdentity? userIdentity)
+    {
+        if (userIdentity == null)
+            throw new InvalidOperationException("The call context does not contain a valid user identity.");
+
+        if (string.IsNullOrWhiteSpace(userIdentity.UPN))
+            throw new InvalidOperationException("The user identity provided by the call context does not contain a valid UPN.");
+
+        return userIdentity;
     }
 }
