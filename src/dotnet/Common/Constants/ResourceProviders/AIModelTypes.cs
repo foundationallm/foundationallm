@@ -20,6 +20,6 @@
         /// <summary>
         /// Image generation model type
         /// </summary>
-        public const string ImageGeneration = "image_generation";
+        public const string ImageGeneration = "image-generation";
     }
 }
