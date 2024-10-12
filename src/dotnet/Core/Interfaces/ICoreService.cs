@@ -155,5 +155,5 @@ public interface ICoreService
     /// <param name="instanceId">The FoundationaLLM instance id.</param>
     /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
     /// <returns>The file store configuration.</returns>
-    Task<FileStoreConfiguration> GetFileStoreConfiguration(string instanceId, UnifiedUserIdentity userIdentity);
+    Task<CoreConfiguration> GetCoreConfiguration(string instanceId, UnifiedUserIdentity userIdentity);
 }
