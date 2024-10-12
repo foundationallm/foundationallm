@@ -340,7 +340,8 @@ export default {
 			return;
 		}
 
-		if (this.message.text && this.message.status !== 'InProgress') {
+		const messageInProgress = this.message.status === 'Pending' || this.message.status === 'InProgress';
+		if (this.message.text && !messageInProgress) {
 			this.processedContent = [
 				{
 					type: 'text',
