@@ -1,4 +1,3 @@
-
 import mockMessageStreamData from './mockMessageStreamData';
 
 let mockDataIndex = 0;

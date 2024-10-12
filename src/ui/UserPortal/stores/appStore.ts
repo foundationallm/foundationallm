@@ -225,7 +225,7 @@ export const useAppStore = defineStore('app', {
 
 			// Determine if the latest message needs to be polled
 			if (this.currentMessages.length > 0) {
-				const latestMessage = this.currentMessages[this.currentMessages.length-1];
+				const latestMessage = this.currentMessages[this.currentMessages.length - 1];
 				if (latestMessage.status === 'InProgress' || latestMessage.status === 'Pending') {
 					this.startPolling(latestMessage);
 				}
@@ -234,7 +234,9 @@ export const useAppStore = defineStore('app', {
 
 		async getMessage(messageId: string) {
 			const data = await api.getMessage(messageId);
-			const existingMessageIndex = this.currentMessages.findIndex((message) => message.id === messageId);
+			const existingMessageIndex = this.currentMessages.findIndex(
+				(message) => message.id === messageId,
+			);
 
 			if (existingMessageIndex !== -1) {
 				this.currentMessages[existingMessageIndex] = data;
@@ -354,12 +356,12 @@ export const useAppStore = defineStore('app', {
 			this.pollingInterval = setInterval(async () => {
 				try {
 					const updatedMessage = await api.checkProcessStatus(message.operation_id);
-					this.currentMessages[this.currentMessages.length-1] = { ...updatedMessage };
+					this.currentMessages[this.currentMessages.length - 1] = { ...updatedMessage };
 
 					if (updatedMessage.status === 'Completed' || updatedMessage.status === 'Failed') {
 						this.stopPolling();
 					}
-				} catch(error) {
+				} catch (error) {
 					console.error(error);
 					this.stopPolling();
 				}

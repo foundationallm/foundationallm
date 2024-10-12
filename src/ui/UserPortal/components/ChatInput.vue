@@ -29,10 +29,7 @@
 					@click="toggle"
 					@keydown.esc="hideAllPoppers"
 				/>
-				<OverlayPanel
-					ref="menu"
-					:dismissable="false"
-					style="max-width: 98%">
+				<OverlayPanel ref="menu" :dismissable="false" style="max-width: 98%">
 					<div class="file-upload-header">
 						<Button
 							:icon="!isMobile ? 'pi pi-times' : undefined"
@@ -50,7 +47,14 @@
 						@select="fileSelected"
 					>
 						<template #content>
-							<div v-if="fileArrayFiltered.length === 0 && oneDriveFiles.length === 0 && localFiles.length === 0" class="file-upload-empty-desktop">
+							<div
+								v-if="
+									fileArrayFiltered.length === 0 &&
+									oneDriveFiles.length === 0 &&
+									localFiles.length === 0
+								"
+								class="file-upload-empty-desktop"
+							>
 								<p>No files have been added to this message.</p>
 							</div>
 							<!-- Progress bar -->
@@ -86,13 +90,15 @@
 											text
 											severity="danger"
 											aria-label="Delete attachment"
-											@click="fileToDelete = { name: file.fileName, type: 'attachment', file: file }"
+											@click="
+												fileToDelete = { name: file.fileName, type: 'attachment', file: file }
+											"
 										/>
 									</div>
 								</div>
 								<Divider v-if="fileArrayFiltered.length > 0" />
 								<div
-									v-for="(file) of localFiles"
+									v-for="file of localFiles"
 									:key="file.name + file.type + file.size"
 									class="file-upload-file"
 								>
@@ -119,7 +125,7 @@
 								</div>
 								<div v-if="oneDriveFiles && oneDriveFiles.length > 0">
 									<div
-										v-for="(file) of oneDriveFiles"
+										v-for="file of oneDriveFiles"
 										:key="file.name + file.size"
 										class="file-upload-file"
 									>
@@ -211,7 +217,7 @@
 				:visible="fileToDelete !== null"
 				:closable="false"
 				modal
-				:header="fileToDelete.type === 'local' | 'oneDrive' ? 'Remove a file' : 'Delete a file'"
+				:header="(fileToDelete.type === 'local') | 'oneDrive' ? 'Remove a file' : 'Delete a file'"
 				@keydown="deleteFileKeydown"
 			>
 				<div v-if="deleteFileProcessing" class="delete-dialog-content">
@@ -225,12 +231,22 @@
 					</div>
 				</div>
 				<div v-else>
-					<p>Do you want to {{ fileToDelete.type === "local" | "oneDrive" ? "remove" : "delete" }} the file "{{ fileToDelete.name }}" ?</p>
+					<p>
+						Do you want to
+						{{ (fileToDelete.type === 'local') | 'oneDrive' ? 'remove' : 'delete' }} the file "{{
+							fileToDelete.name
+						}}" ?
+					</p>
 				</div>
 				<template #footer>
-					<Button label="Cancel" text :disabled="deleteFileProcessing" @click="fileToDelete = null" />
 					<Button
-						:label="fileToDelete.type === 'local' | 'oneDrive' ? 'Remove' : 'Delete'"
+						label="Cancel"
+						text
+						:disabled="deleteFileProcessing"
+						@click="fileToDelete = null"
+					/>
+					<Button
+						:label="(fileToDelete.type === 'local') | 'oneDrive' ? 'Remove' : 'Delete'"
 						severity="danger"
 						autofocus
 						:disabled="deleteFileProcessing"
@@ -407,7 +423,7 @@ export default {
 		if (localStorage.getItem('oneDriveWorkSchoolConsentRedirect') === 'true') {
 			await this.oneDriveWorkSchoolConnect();
 			localStorage.setItem('oneDriveWorkSchoolConsentRedirect', JSON.stringify(false));
-		}else{
+		} else {
 			this.connectingOneDrive = false;
 		}
 
@@ -519,7 +535,10 @@ export default {
 							onProgress,
 						);
 					} else if (file.source === 'oneDrive') {
-						await this.callCoreApiOneDriveWorkSchoolDownloadEndpoint(file.id, file.parentReference.driveId);
+						await this.callCoreApiOneDriveWorkSchoolDownloadEndpoint(
+							file.id,
+							file.parentReference.driveId,
+						);
 					}
 					filesUploaded += 1;
 					this.uploadedFiles.push(file);
@@ -580,7 +599,9 @@ export default {
 			await this.$appStore.deleteAttachment(file);
 			this.fileToDelete = null;
 			this.deleteFileProcessing = false;
-			this.uploadedFiles = this.uploadedFiles.filter((uploadedFile) => uploadedFile.name !== file.name);
+			this.uploadedFiles = this.uploadedFiles.filter(
+				(uploadedFile) => uploadedFile.name !== file.name,
+			);
 
 			if (this.$refs.menu.visible) {
 				this.$nextTick(() => {
@@ -602,7 +623,9 @@ export default {
 		},
 
 		removeOneDriveFile(file: any) {
-			this.oneDriveFiles = this.oneDriveFiles.filter((oneDriveFile) => oneDriveFile.name !== file.name);
+			this.oneDriveFiles = this.oneDriveFiles.filter(
+				(oneDriveFile) => oneDriveFile.name !== file.name,
+			);
 			this.fileToDelete = null;
 			this.deleteFileProcessing = false;
 
@@ -646,7 +669,8 @@ export default {
 				const uploadedFileAlreadyExists = this.uploadedFiles.some(
 					(existingFile: any) => existingFile.name === file.name && existingFile.size === file.size,
 				);
-				const fileAlreadyExists = localFileAlreadyExists || oneDriveFileAlreadyExists || uploadedFileAlreadyExists;
+				const fileAlreadyExists =
+					localFileAlreadyExists || oneDriveFileAlreadyExists || uploadedFileAlreadyExists;
 
 				if (fileAlreadyExists) return;
 
@@ -679,14 +703,23 @@ export default {
 				}
 			});
 
-			if (this.localFiles.length + this.oneDriveFiles.length + this.uploadedFiles.length + filteredFiles.length > this.maxFiles) {
+			if (
+				this.localFiles.length +
+					this.oneDriveFiles.length +
+					this.uploadedFiles.length +
+					filteredFiles.length >
+				this.maxFiles
+			) {
 				this.$toast.add({
 					severity: 'error',
 					summary: 'Error',
 					detail: `You can only upload a maximum of ${this.maxFiles} ${this.maxFiles === 1 ? 'file' : 'files'} at a time.`,
 					life: 5000,
 				});
-				filteredFiles.splice((this.maxFiles - (this.localFiles.length + this.oneDriveFiles.length + this.uploadedFiles.length)));
+				filteredFiles.splice(
+					this.maxFiles -
+						(this.localFiles.length + this.oneDriveFiles.length + this.uploadedFiles.length),
+				);
 			}
 
 			return filteredFiles;
