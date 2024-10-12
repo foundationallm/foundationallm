@@ -18,6 +18,8 @@ import type {
 import api from '@/js/api';
 import eventBus from '@/js/eventBus';
 
+const POLLING_INTERVAL_MS = 1000;
+
 export const useAppStore = defineStore('app', {
 	state: () => ({
 		sessions: [] as Session[],
@@ -367,7 +369,7 @@ export const useAppStore = defineStore('app', {
 					console.error(error);
 					this.stopPolling();
 				}
-			}, 500);
+			}, POLLING_INTERVAL_MS);
 		},
 
 		stopPolling() {

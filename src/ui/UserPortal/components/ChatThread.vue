@@ -25,7 +25,7 @@
 						:id="`message-${getMessageOrderFromReversedIndex(index)}`"
 						:key="message.id || message.operation_id"
 						:message="message"
-						:show-word-animation="index === 0 && message.sender === 'Agent'"
+						:show-word-animation="index === 0 && (message.status === 'InProgress' || message.status === 'Pending')"
 						role="log"
 						:aria-flowto="
 							index === 0 ? null : `message-${getMessageOrderFromReversedIndex(index) + 1}`
@@ -99,7 +99,7 @@ export default {
 			this.isLoading = true;
 			this.userSentMessage = false;
 			await this.$appStore.getMessages();
-			this.$appStore.updateSessionAgentFromMessages();
+			this.$appStore.updateSessionAgentFromMessages(newSession);
 			this.isLoading = false;
 		},
 	},

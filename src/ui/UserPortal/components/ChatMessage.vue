@@ -260,6 +260,7 @@ function trimToWordCount(str, count) {
 }
 
 const MAX_WORD_SPEED_MS = 35;
+const POLLING_INTERVAL_MS = 1000;
 
 export default {
 	name: 'ChatMessage',
@@ -321,6 +322,8 @@ export default {
 
 	computed: {
 		messageDisplayStatus() {
+			if (this.message.status === 'Failed' || this.message.status === 'Complete') return null;
+
 			if (this.isRenderingMessage && this.messageContent.length > 0) return 'Generating';
 
 			if (this.showWordAnimation && (this.message.status === 'Pending' || this.message.status === 'InProgress')) return 'Thinking';
@@ -337,7 +340,7 @@ export default {
 			return;
 		}
 
-		if (this.message.text) {
+		if (this.message.text && this.message.sender === 'User') {
 			this.processedContent = [
 				{
 					type: 'text',
@@ -371,7 +374,7 @@ export default {
 					console.error(error);
 					this.stopPolling();
 				}
-			}, 500);
+			}, POLLING_INTERVAL_MS);
 		},
 
 		stopPolling() {
@@ -401,7 +404,7 @@ export default {
 
 			if (newWordsGenerated > 0) {
 				this.totalWordsGenerated += newWordsGenerated;
-				this.totalTimeElapsed += 500;
+				this.totalTimeElapsed += POLLING_INTERVAL_MS;
 			}
 
 			// Calculate the average time per word
