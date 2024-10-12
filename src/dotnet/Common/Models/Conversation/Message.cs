@@ -30,6 +30,7 @@ public record Message
     /// <remarks>
     /// The operation id will be set only for messages that are part of a long-running operation.
     /// </remarks>
+    [JsonPropertyName("operation_id")]
     public string? OperationId { get; set; }
 
     /// <summary>

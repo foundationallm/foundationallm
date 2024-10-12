@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Azure.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Users;
 using FoundationaLLM.Common.Models.Conversation;
@@ -9,6 +10,7 @@ using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Graph.Models.CallRecords;
 using Polly;
 using Polly.Retry;
 using System.Diagnostics;
@@ -61,7 +63,7 @@ namespace FoundationaLLM.Common.Services
             {
                 var defaultTrace =
                     Type.GetType("Microsoft.Azure.Cosmos.Core.Trace.DefaultTrace,Microsoft.Azure.Cosmos.Direct");
-                var traceSource = (TraceSource) defaultTrace?.GetProperty("TraceSource")?.GetValue(null)!;
+                var traceSource = (TraceSource)defaultTrace?.GetProperty("TraceSource")?.GetValue(null)!;
                 traceSource.Switch.Level = SourceLevels.All;
                 traceSource.Listeners.Clear();
             }
@@ -273,7 +275,11 @@ namespace FoundationaLLM.Common.Services
         }
 
         /// <inheritdoc/>
-        public async Task<T> PatchSessionsItemPropertiesAsync<T>(string itemId, string partitionKey, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default)
+        public async Task<T> PatchSessionsItemPropertiesAsync<T>(
+            string itemId,
+            string partitionKey,
+            Dictionary<string, object?> propertyValues,
+            CancellationToken cancellationToken = default)
         {
             var result = await _sessions.PatchItemAsync<T>(
                 id: itemId,
@@ -284,6 +290,51 @@ namespace FoundationaLLM.Common.Services
             );
 
             return result.Resource;
+        }
+
+        /// <inheritdoc/>
+        public async Task<Dictionary<string, object>> PatchMultipleSessionsItemsInTransactionAsync(
+            string partitionKey,
+            List<IPatchOperationItem> patchOperations,
+            CancellationToken cancellationToken = default)
+        {
+            var container = _sessions;
+            var batch = container.CreateTransactionalBatch(new PartitionKey(partitionKey));
+
+            foreach (var patchOperation in patchOperations)
+            {
+                batch.PatchItem(
+                    id: patchOperation.ItemId,
+                    patchOperations: patchOperation.PropertyValues.Keys
+                        .Select(key => PatchOperation.Set(key, patchOperation.PropertyValues[key])).ToArray()
+                );
+            }
+
+            var response = await batch.ExecuteAsync(cancellationToken);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new InvalidOperationException($"Transactional batch failed with status code: {response.StatusCode}");
+            }
+
+            var resultDictionary = new Dictionary<string, object>();
+
+            for (int i = 0; i < response.Count; i++)
+            {
+                var patchOperation = patchOperations[i];
+
+                var method = typeof(TransactionalBatchResponse)
+                    .GetMethod(nameof(response.GetOperationResultAtIndex))!
+                    .MakeGenericMethod(patchOperation.ItemType);
+
+                var result = method.Invoke(response, new object[] { i });
+                var resourceProperty = result.GetType().GetProperty("Resource");
+                var deserializedObject = resourceProperty?.GetValue(result);
+
+                resultDictionary[patchOperation.ItemId] = deserializedObject;
+            }
+
+            return resultDictionary;
         }
 
         /// <inheritdoc/>

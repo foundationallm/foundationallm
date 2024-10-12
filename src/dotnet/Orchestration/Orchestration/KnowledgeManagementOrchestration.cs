@@ -16,6 +16,7 @@ using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using Microsoft.Azure.Cosmos.Serialization.HybridRow;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace FoundationaLLM.Orchestration.Core.Orchestration
@@ -90,10 +91,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             if (operationStatus.Status == OperationStatus.Completed)
             {
-                if (operationStatus.Result is LLMCompletionResponse completionResponse)
+                // parse the LLM Completion response from JsonElement
+                if (operationStatus.Result is JsonElement jsonElement)
                 {
-                    operationStatus.Result = await GetCompletionResponse(operationId, completionResponse);
-                }
+                    var completionResponse = JsonSerializer.Deserialize<LLMCompletionResponse>(jsonElement.ToString());
+                    if (completionResponse != null)
+                        operationStatus.Result = await GetCompletionResponse(operationId, completionResponse);
+                }               
             }
 
             return operationStatus;

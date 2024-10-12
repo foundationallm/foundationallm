@@ -28,6 +28,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using FoundationaLLM.Common.Models.Azure.CosmosDB;
 using Conversation = FoundationaLLM.Common.Models.Conversation.Conversation;
 using LongRunningOperation = FoundationaLLM.Common.Models.Orchestration.LongRunningOperation;
 using Message = FoundationaLLM.Common.Models.Conversation.Message;
@@ -251,7 +252,8 @@ public partial class CoreService(
                     UserMessageId = conversationItems.UserMessage.Id,
                     AgentMessageId = conversationItems.AgentMessage.Id,
                     CompletionPromptId = conversationItems.CompletionPrompt.Id,
-                    StartTime = operationStartTime
+                    StartTime = operationStartTime,
+                    UPN = _userIdentity.UPN!
                 },
                 completionResponse,
                 OperationStatus.Completed);
@@ -327,7 +329,8 @@ public partial class CoreService(
                 AgentMessageId = conversationItems.AgentMessage.Id,
                 CompletionPromptId = conversationItems.CompletionPrompt.Id,
                 GatekeeperOverride = agentOption,
-                StartTime = operationStartTime
+                StartTime = operationStartTime,
+                UPN = _userIdentity.UPN!
             });
 
             // Start the completion operation.
@@ -635,17 +638,8 @@ public partial class CoreService(
         CompletionResponse completionResponse,
         OperationStatus operationStatus)
     {
-        // TODO: This update only needs to be done the first the a completion is processed (i.e. when status is retrieved).
-        var userMessage = await _cosmosDBService.PatchSessionsItemPropertiesAsync<Message>(
-            operationContext.UserMessageId,
-            operationContext.SessionId,
-            new Dictionary<string, object?>
-            {
-                { "/tokens", completionResponse.PromptTokens }
-            });
-
         #region Process content
-
+        
         var newContent = new List<MessageContent>();
 
         if (completionResponse.Content is { Count: > 0 })
@@ -686,33 +680,50 @@ public partial class CoreService(
 
         #endregion
 
-        // TODO: The following two patches can be combined into a single batch operation to improve performance.
-
-        var agentMessage = await _cosmosDBService.PatchSessionsItemPropertiesAsync<Message>(
-            operationContext.AgentMessageId,
-            operationContext.SessionId,
-            new Dictionary<string, object?>
-            {
-                { "/completionTokens", completionResponse.CompletionTokens },
-                { "/text", completionResponse.Completion },
-                { "/citations", completionResponse.Citations },
-                { "/content", newContent },
-                { "/analysisResults", completionResponse.AnalysisResults },
-                { "/status", operationStatus }
-            });
-
         var completionPromptText =
             $"User prompt: {completionResponse.UserPrompt}{Environment.NewLine}Agent: {completionResponse.AgentName}{Environment.NewLine}Prompt template: {(!string.IsNullOrWhiteSpace(completionResponse.FullPrompt) ? completionResponse.FullPrompt : completionResponse.PromptTemplate)}";
 
-        await _cosmosDBService.PatchSessionsItemPropertiesAsync<CompletionPrompt>(
-            operationContext.CompletionPromptId,
-            operationContext.SessionId,
-            new Dictionary<string, object?>
+        var patchOperations = new List<IPatchOperationItem>
+        {
+            // TODO: This update only needs to be done the first time a completion is processed (i.e. when status is retrieved).
+            new PatchOperationItem<Message>
             {
-                { "/prompt", completionPromptText }
-            });
+                ItemId = operationContext.UserMessageId,
+                PropertyValues = new Dictionary<string, object?> { { "/tokens", completionResponse.PromptTokens } }
+            },
+            new PatchOperationItem<Message>
+            {
+                ItemId = operationContext.AgentMessageId,
+                PropertyValues = new Dictionary<string, object?>
+                {
+                    { "/tokens", completionResponse.CompletionTokens },
+                    { "/text", completionResponse.Completion },
+                    { "/citations", completionResponse.Citations },
+                    { "/content", newContent },
+                    { "/analysisResults", completionResponse.AnalysisResults },
+                    { "/status", operationStatus }
+                }
+            },
+            new PatchOperationItem<CompletionPrompt>
+            {
+                ItemId = operationContext.CompletionPromptId,
+                PropertyValues = new Dictionary<string, object?> { { "/prompt", completionPromptText } }
+            },
+        };
 
-        return agentMessage;
+        var patchedItems = await _cosmosDBService.PatchMultipleSessionsItemsInTransactionAsync(
+            operationContext.SessionId,
+            patchOperations
+        );
+
+        var agentMessage = patchedItems[operationContext.AgentMessageId] as Message;
+
+        return agentMessage ?? new Message
+        {
+            OperationId = operationContext.OperationId,
+            Status = OperationStatus.Failed,
+            Text = "Could not retrieve the status of the operation due to an internal error."
+        };
     }
 
     /// <inheritdoc/>
@@ -724,7 +735,7 @@ public partial class CoreService(
         return await _cosmosDBService.PatchSessionsItemPropertiesAsync<Message>(
             id,
             sessionId,
-            new Dictionary<string, object>
+            new Dictionary<string, object?>
             {
                 { "/rating", rating }
             });
