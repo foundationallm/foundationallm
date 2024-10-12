@@ -10,7 +10,6 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
     /// </summary>
     [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
     [JsonDerivedType(typeof(KnowledgeManagementAgent), "knowledge-management")]
-    [JsonDerivedType(typeof(AudioClassificationAgent), "audio-classification")]
     public class AgentBase : ResourceBase
     {
         /// <inheritdoc/>

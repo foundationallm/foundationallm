@@ -19,11 +19,5 @@
         /// Analytic agents are best for querying, analyzing, calculating, and reporting on tabular data.
         /// </summary>
         public const string Analytic = "analytic";
-
-        /// <summary>
-        /// An audio classification agent.
-        /// </summary>
-        public const string AudioClassification = "audio-classification";
-
     }
 }
