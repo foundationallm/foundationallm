@@ -251,7 +251,7 @@ export const useAppStore = defineStore('app', {
 
 		updateSessionAgentFromMessages(session: Session) {
 			const lastAssistantMessage = this.currentMessages
-				.filter((message) => message.sender.toLowerCase() === 'assistant')
+				.filter((message) => message.sender === 'Agent')
 				.pop();
 			if (lastAssistantMessage) {
 				const agent = this.agents.find(
