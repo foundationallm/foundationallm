@@ -136,8 +136,8 @@ export interface UserProfile {
 }
 
 export interface FileStoreConfiguration {
-    maxUploadsPerMessage: number;
-    fileStoreConnectors?: FileStoreConnector[];
+	maxUploadsPerMessage: number;
+	fileStoreConnectors?: FileStoreConnector[];
 }
 
 export interface FileStoreConnector {

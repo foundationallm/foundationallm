@@ -160,9 +160,9 @@ export default {
 			// 	this.longRunningOperations.set(this.currentSession.id, true);
 			// 	await this.pollForCompletion(this.currentSession.id, operationId);
 			// } else {
-				const message = await this.$appStore.sendMessage(text);
-				// console.log(message);
-				// await this.$appStore.getMessages();
+			const message = await this.$appStore.sendMessage(text);
+			// console.log(message);
+			// await this.$appStore.getMessages();
 			// }
 
 			this.isMessagePending = false;
