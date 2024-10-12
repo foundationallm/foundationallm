@@ -155,8 +155,6 @@ class OperationsManager():
                 "Content-Type":"application/json"
             }
 
-            print(f'status endpoint: {self.state_api_url}/instances/{instance_id}/operations/{operation_id}')
-
             r = requests.get(
                 f'{self.state_api_url}/instances/{instance_id}/operations/{operation_id}',
                 headers=headers,
