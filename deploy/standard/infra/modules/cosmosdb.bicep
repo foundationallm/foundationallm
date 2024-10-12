@@ -86,6 +86,15 @@ var containers = [
     }
     defaultTtl: null
   }
+  {
+    name: 'Operations'
+    partitionKey: {
+      paths: [
+        '/id'
+      ]
+    }
+    defaultTtl: null
+  }
 ]
 
 @description('The Resource logs to enable')
