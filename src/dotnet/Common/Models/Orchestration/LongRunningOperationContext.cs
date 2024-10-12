@@ -28,6 +28,12 @@ namespace FoundationaLLM.Common.Models.Orchestration
         public required string SessionId { get; set; }
 
         /// <summary>
+        /// Gets or sets the User Principal Name (UPN) of the user who triggered the long-running operation.
+        /// </summary>
+        [JsonProperty("upn")]
+        public required string UPN { get; set; }
+
+        /// <summary>
         /// Gets or sets the identifier of the user message that triggered the long-running operation.
         /// </summary>
         [JsonProperty("userMessageId")]
