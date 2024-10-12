@@ -659,21 +659,21 @@ public partial class CoreService(
                                 {
                                     Type = FileMethods.GetMessageContentFileType(annotation.Text, annotation.Type),
                                     FileName = annotation.Text,
-                                    Value = annotation.FileUrl
+                                    Value = ResolveContentDeepLinks(annotation.FileUrl, _baseUrl)
                                 });
                             }
                         }
                         newContent.Add(new MessageContent
                         {
                             Type = textMessageContent.Type,
-                            Value = textMessageContent.Value
+                            Value = ResolveContentDeepLinks(textMessageContent.Value, _baseUrl)
                         });
                         break;
                     case OpenAIImageFileMessageContentItem imageFileMessageContent:
                         newContent.Add(new MessageContent
                         {
                             Type = imageFileMessageContent.Type,
-                            Value = imageFileMessageContent.FileUrl
+                            Value = ResolveContentDeepLinks(imageFileMessageContent.FileUrl, _baseUrl)
                         });
                         break;
                 }

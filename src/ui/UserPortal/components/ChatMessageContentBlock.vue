@@ -63,6 +63,7 @@ export default {
 		value: {
 			type: Object,
 			required: false,
+			default: null,
 		},
 	},
 
@@ -79,13 +80,19 @@ export default {
 			immediate: true,
 			handler() {
 				this.loadFile();
-			}
+			},
 		},
 	},
 
 	methods: {
 		async loadFile() {
 			this.content = this.value;
+
+			// File is still generating
+			if (!this.content.origValue) {
+				this.loading = false;
+				return;
+			}
 
 			if (['image_file', 'html', 'file_path'].includes(this.content.type)) {
 				this.loading = true;
@@ -101,7 +108,7 @@ export default {
 						}
 					}
 				} catch (error) {
-					console.error(`Failed to fetch content from ${this.content.value}`, error);
+					console.error(`Failed to fetch content from ${this.content.origValue}`, error);
 					this.error = true;
 				}
 				this.loading = false;

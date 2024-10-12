@@ -18,6 +18,8 @@ import type {
 import api from '@/js/api';
 import eventBus from '@/js/eventBus';
 
+const POLLING_INTERVAL_MS = 1000;
+
 export const useAppStore = defineStore('app', {
 	state: () => ({
 		sessions: [] as Session[],
@@ -45,7 +47,7 @@ export const useAppStore = defineStore('app', {
 			// No need to load sessions if in kiosk mode, simply create a new one and skip.
 			if (appConfigStore.isKioskMode) {
 				const newSession = await api.addSession(this.getDefaultChatSessionProperties());
-				await this.changeSession(newSession);
+				this.changeSession(newSession);
 				return;
 			}
 
@@ -53,10 +55,10 @@ export const useAppStore = defineStore('app', {
 
 			if (this.sessions.length === 0) {
 				await this.addSession(this.getDefaultChatSessionProperties());
-				await this.changeSession(this.sessions[0]);
+				this.changeSession(this.sessions[0]);
 			} else {
 				const existingSession = this.sessions.find((session: Session) => session.id === sessionId);
-				await this.changeSession(existingSession || this.sessions[0]);
+				this.changeSession(existingSession || this.sessions[0]);
 			}
 
 			await this.getUserProfiles();
@@ -178,12 +180,12 @@ export const useAppStore = defineStore('app', {
 			if (this.sessions.length === 0) {
 				const newSession = await this.addSession(this.getDefaultChatSessionProperties());
 				this.removeSession(sessionToDelete!.id);
-				await this.changeSession(newSession);
+				this.changeSession(newSession);
 			}
 
 			const firstSession = this.sessions[0];
 			if (firstSession) {
-				await this.changeSession(firstSession);
+				this.changeSession(firstSession);
 			}
 		},
 
@@ -249,7 +251,7 @@ export const useAppStore = defineStore('app', {
 
 		updateSessionAgentFromMessages(session: Session) {
 			const lastAssistantMessage = this.currentMessages
-				.filter((message) => message.sender.toLowerCase() === 'assistant')
+				.filter((message) => message.sender === 'Agent')
 				.pop();
 			if (lastAssistantMessage) {
 				const agent = this.agents.find(
@@ -347,7 +349,9 @@ export const useAppStore = defineStore('app', {
 			if (initialSession !== this.currentSession.id) return;
 			this.startPolling(message);
 
-			this.attachments = this.attachments.filter((attachment) => attachment.sessionId !== sessionId);
+			this.attachments = this.attachments.filter(
+				(attachment) => attachment.sessionId !== sessionId,
+			);
 
 			return message;
 		},
@@ -367,7 +371,9 @@ export const useAppStore = defineStore('app', {
 					console.error(error);
 					this.stopPolling();
 				}
+
 			}, (this.coreConfiguration?.completionResponsePollingIntervalSeconds ?? 5) * 1000 || 5000);
+
 		},
 
 		stopPolling() {
@@ -379,14 +385,14 @@ export const useAppStore = defineStore('app', {
 		 * Polls for the completion of a long-running operation.
 		 *
 		 * @param sessionId - The session ID associated with the operation.
-		 * @param operation_id - The ID of the operation to check for completion.
+		 * @param operationId - The ID of the operation to check for completion.
 		 */
-		async pollForCompletion(sessionId: string, operation_id: string) {
+		async pollForCompletion(sessionId: string, operationId: string) {
 			while (true) {
-				const status = await api.checkProcessStatus(operation_id);
+				const status = await api.checkProcessStatus(operationId);
 				if (status.isCompleted) {
 					this.longRunningOperations.delete(sessionId);
-					eventBus.emit('operation-completed', { sessionId, operation_id });
+					eventBus.emit('operation-completed', { sessionId, operationId });
 					await this.getMessages();
 					break;
 				}
@@ -410,7 +416,7 @@ export const useAppStore = defineStore('app', {
 			}
 		},
 
-		async changeSession(newSession: Session) {
+		changeSession(newSession: Session) {
 			this.stopPolling();
 
 			const nuxtApp = useNuxtApp();

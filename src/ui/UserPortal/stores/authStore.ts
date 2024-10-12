@@ -32,7 +32,7 @@ export const useAuthStore = defineStore('auth', {
 			const appStore = useAppStore();
 			return appStore.coreConfiguration?.fileStoreConnectors?.find(
 				(connector) => connector.subcategory === 'OneDriveWorkSchool',
-			)?.authentication_parameters['scope'];
+			)?.authentication_parameters.scope;
 		},
 
 		apiScopes() {
