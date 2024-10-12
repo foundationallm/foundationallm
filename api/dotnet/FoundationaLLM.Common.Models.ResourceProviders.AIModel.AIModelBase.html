@@ -105,6 +105,7 @@ Class AIModelBase  <a class="header-action link-secondary" title="View source" h
     <pre><code class="lang-csharp hljs">[JsonPolymorphic(TypeDiscriminatorPropertyName = &quot;type&quot;)]
 [JsonDerivedType(typeof(EmbeddingAIModel), &quot;embedding&quot;)]
 [JsonDerivedType(typeof(CompletionAIModel), &quot;completion&quot;)]
+[JsonDerivedType(typeof(ImageGenerationAIModel), &quot;image-generation&quot;)]
 public class AIModelBase : ResourceBase</code></pre>
   </div>
 
@@ -213,7 +214,7 @@ public class AIModelBase : ResourceBase</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_AIModel_AIModelBase_DeploymentName" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.DeploymentName">
   DeploymentName
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs/#L37"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The name of the deployment corresponding to the AI model.</p>
@@ -246,7 +247,7 @@ public string? DeploymentName { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_AIModel_AIModelBase_EndpointObjectId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.EndpointObjectId">
   EndpointObjectId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The object id of the <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration.html">APIEndpointConfiguration</a> object providing the configuration for the API endpoint used to interact with the model.</p>
@@ -279,7 +280,7 @@ public required string EndpointObjectId { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_AIModel_AIModelBase_ModelParameters" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.ModelParameters">
   ModelParameters
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs/#L46"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Dictionary with default values for the model parameters.</p>
@@ -315,7 +316,7 @@ public Dictionary&lt;string, object&gt; ModelParameters { get; set; }</code></pr
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_AIModel_AIModelBase_Type" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.Type">
   Type
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The type of the resource.</p>
@@ -348,7 +349,7 @@ public override string? Type { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_AIModel_AIModelBase_Version" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.Version">
   Version
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs/#L31"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The version of the AI model.</p>
