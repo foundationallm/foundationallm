@@ -417,6 +417,14 @@
 				"value": "{ 'value': 10, 'value_exceptions': []}",
 				"content_type": "application/json",
 				"first_version": "0.8.2"
+			},
+			{
+				"name": "CompletionResponsePollingIntervalSeconds",
+				"description": "The size in seconds of the polling interval used to check for completion responses.",
+				"secret": "",
+				"value": "{ 'value': 10, 'value_exceptions': []}",
+				"content_type": "application/json",
+				"first_version": "0.8.2"
 			}
 		]
 	},
