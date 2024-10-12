@@ -99,6 +99,7 @@ export default {
 			this.isLoading = true;
 			this.userSentMessage = false;
 			await this.$appStore.getMessages();
+			this.$appStore.updateSessionAgentFromMessages();
 			this.isLoading = false;
 		},
 	},
