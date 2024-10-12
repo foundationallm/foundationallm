@@ -298,7 +298,11 @@ export default {
 	watch: {
 		async message(newMessage) {
 			// There is an issue here if a message that is not the latest has an incomplete status
-			if (newMessage.status === 'Completed') return this.handleMessageCompleted(newMessage);
+			if (newMessage.status === 'Completed') {
+				this.isMessageLoading = false;
+				this.handleMessageCompleted(newMessage);
+				return;
+			}
 
 			await this.fetchInProgressMessage({ ...newMessage });
 			if (!this.isRenderingMessage && this.showWordAnimation) this.displayWordByWord();
