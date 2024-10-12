@@ -293,6 +293,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_AllowedUploadFileExtensions =
             "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage setting.
+        /// <para>Value description:<br/>The maximum number of files that can be uploaded for a single conversation message.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_MaxUploadsPerMessage =
+            "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage";
 
         #endregion
 
