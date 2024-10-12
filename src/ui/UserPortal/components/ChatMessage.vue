@@ -366,21 +366,6 @@ export default {
 			return DOMPurify.sanitize(htmlContent);
 		},
 
-		startPolling() {
-			this.pollingInterval = setInterval(async () => {
-				try {
-					await this.fetchInProgressMessage();
-				} catch (error) {
-					console.error(error);
-					this.stopPolling();
-				}
-			}, POLLING_INTERVAL_MS);
-		},
-
-		stopPolling() {
-			clearInterval(this.pollingInterval);
-		},
-
 		async fetchInProgressMessage(message) {
 			if (!message.content) message.content = [];
 
