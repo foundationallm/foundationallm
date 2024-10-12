@@ -101,7 +101,7 @@ export default {
 						}
 					}
 				} catch (error) {
-					console.error(`Failed to fetch content from ${this.content.value}`, error);
+					console.error(`Failed to fetch content from ${this.content.origValue}`, error);
 					this.error = true;
 				}
 				this.loading = false;
