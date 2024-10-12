@@ -18,5 +18,5 @@ class AgentBase(ResourceBase):
     orchestration_settings: Optional[AgentOrchestrationSettings] = Field(default=AgentOrchestrationSettings(), description="Agent settings for the orchestrator.")
     prompt_object_id: Optional[str] = Field(default=None, description="The object identifier of the Prompt object providing the prompt for the agent.")
     ai_model_object_id: Optional[str] = Field(default=None, description="The object identifier of the AIModelBase object providing the AI model for the agent.")
-    api_endpoint_configuration_object_ids: Optional[dict] = Field(default=[], description="A dictionary object identifiers of the APIEndpointConfiguration objects for the agent.")
     capabilities:Optional[List[str]] = Field(default=[], description="The capabilities of the agent.")
+    tools: Optional[dict] = Field(default=[], description="A dictionary object with assigned agent tools.")
