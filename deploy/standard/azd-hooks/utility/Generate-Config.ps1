@@ -550,6 +550,7 @@ PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,GatewayAdapterAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,GatewayAdapterAPI.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,GatewayAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,GatewayAPI.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,LangChainAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,LangChainAPI.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,OneDriveFileStoreConnector.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,OneDriveFileStoreConnector.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,OrchestrationAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,OrchestrationAPI.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,SemanticKernelAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,SemanticKernelAPI.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,StateAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,StateAPI.json"
