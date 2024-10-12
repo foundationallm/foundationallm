@@ -97,7 +97,7 @@ The OneDrive (Work or School) integration requires the following API Endpoint Co
     "authentication_parameters": {
       "scope": "Files.Read.All"
     },
-    "url": "{{onedrive_base_orl}}",
+    "url": "{{onedrive_base_url}}",
     "status_url": "",
     "url_exceptions": [],
     "timeout_seconds": 2400,
@@ -134,6 +134,22 @@ Name | Default value
 --- | ---
 `FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions` | `c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip`
 `FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions` | `c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt`
+`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage` | `{ "value": 10, "value_exceptions": [] }`
+
+>[!NOTE]
+> Here is an example of an override for the `MaxUploadsPerMessage` setting:
+> ```json
+>{
+>   "value": 10,
+>   "value_exceptions": [
+>       {
+>           "user_principal_name": "ciprian@solliance.net",
+>           "value": 5,
+>           "enabled": true
+>       }
+>   ]
+>}
+> ```
 
 The following settings are optional (they should not be set by default):
 
@@ -227,8 +243,13 @@ Update `FoundationaLLM.Configuration/_resource-references_.json` with the refere
 
 **FoundationaLLM.Attachment**
 
-The Attachment resource provider saves the attachment references to Cosmos DB.
-A new Cosmos DB container must be created, named `Attachments`, with a partition key `/upn`.
+The Attachment resource provider now saves the attachment references to Cosmos DB, instead of Data Lake storage.
+A new Cosmos DB container must be created, named `Attachments`, with the following partition key: `/upn`.
+
+The following MSIs require a Cosmos DB role assigned:
+1. Gateway API
+2. Orchestration API
+3. Management API
 
 ### Long-Running Operations
 
