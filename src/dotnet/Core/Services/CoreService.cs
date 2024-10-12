@@ -252,7 +252,8 @@ public partial class CoreService(
                     UserMessageId = conversationItems.UserMessage.Id,
                     AgentMessageId = conversationItems.AgentMessage.Id,
                     CompletionPromptId = conversationItems.CompletionPrompt.Id,
-                    StartTime = operationStartTime
+                    StartTime = operationStartTime,
+                    UPN = _userIdentity.UPN!
                 },
                 completionResponse,
                 OperationStatus.Completed);
@@ -328,7 +329,8 @@ public partial class CoreService(
                 AgentMessageId = conversationItems.AgentMessage.Id,
                 CompletionPromptId = conversationItems.CompletionPrompt.Id,
                 GatekeeperOverride = agentOption,
-                StartTime = operationStartTime
+                StartTime = operationStartTime,
+                UPN = _userIdentity.UPN!
             });
 
             // Start the completion operation.
