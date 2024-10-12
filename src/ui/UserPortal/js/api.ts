@@ -227,9 +227,9 @@ export default {
 	},
 
 	// Mock polling route
-	async getMessage(messageId: string) {
-		return await $fetch(`/api/stream-message/`);
-	},
+	// async getMessage(messageId: string) {
+	// 	return await $fetch(`/api/stream-message/`);
+	// },
 
 	/**
 	 * Retrieves a specific prompt for a given session.

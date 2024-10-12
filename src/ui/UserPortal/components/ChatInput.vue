@@ -301,6 +301,8 @@ import { Mentionable } from 'vue-mention';
 import 'floating-vue/dist/style.css';
 import { hideAllPoppers } from 'floating-vue';
 
+const DEFAULT_INPUT_TEXT = 'Give me an example of a svelte component';
+
 export default {
 	name: 'ChatInput',
 
@@ -320,7 +322,7 @@ export default {
 
 	data() {
 		return {
-			text: '' as string,
+			text: DEFAULT_INPUT_TEXT as string,
 			targetRef: null as HTMLElement | null,
 			inputRef: null as HTMLElement | null,
 			agents: [],
@@ -467,6 +469,7 @@ export default {
 			this.$emit('send', this.text);
 			this.text = '';
 			this.uploadedFiles = [];
+			this.text = DEFAULT_INPUT_TEXT;
 		},
 
 		handleUpload() {

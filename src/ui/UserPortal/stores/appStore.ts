@@ -30,7 +30,7 @@ export const useAppStore = defineStore('app', {
 		selectedAgents: new Map(),
 		lastSelectedAgent: null as ResourceProviderGetResult<Agent> | null,
 		attachments: [] as Attachment[],
-		longRunningOperations: new Map<string, string>(), // sessionId -> operationId
+		longRunningOperations: new Map<string, string>(), // sessionId -> operation_id
 		fileStoreConfiguration: null as FileStoreConfiguration | null,
 		oneDriveWorkSchool: null as boolean | null,
 		userProfiles: null as UserProfile | null,
@@ -201,11 +201,35 @@ export const useAppStore = defineStore('app', {
 		},
 
 		async getMessages() {
-			const data = await api.getMessages(this.currentSession.id);
-			this.currentMessages = data.map((message) => ({
+			const messagesResponse = await api.getMessages(this.currentSession.id);
+
+			// Temporarily filter out the duplicate streaming message instances
+			// const uniqueMessages = messagesResponse.reduceRight((acc, current) => {
+			// 	const isDuplicate = acc.find(item => {
+			// 		return item.operation_id === current.operation_id && item.sender === current.sender;
+			// 	});
+
+			// 	if (!isDuplicate || current.sender !== 'Agent') {
+			// 		acc.push(current);
+			// 	}
+
+			// 	return acc;
+			// }, []);
+
+			// uniqueMessages.reverse();
+
+			this.currentMessages = messagesResponse.map((message) => ({
 				...message,
 				content: message.content ? message.content.map(this.initializeMessageContent) : [],
 			}));
+
+			// Determine if the latest message needs to be polled
+			if (this.currentMessages.length > 0) {
+				const latestMessage = this.currentMessages[this.currentMessages.length-1];
+				if (latestMessage.status === 'InProgress' || latestMessage.status === 'Pending') {
+					this.startPolling(latestMessage);
+				}
+			}
 		},
 
 		async getMessage(messageId: string) {
@@ -297,7 +321,7 @@ export const useAppStore = defineStore('app', {
 				completionPromptId: null,
 				id: '',
 				rating: null,
-				sender: 'Assistant',
+				sender: 'Agent',
 				senderDisplayName: agent.name,
 				sessionId: this.currentSession!.id,
 				text: '',
@@ -305,63 +329,60 @@ export const useAppStore = defineStore('app', {
 				tokens: 0,
 				type: 'LoadingMessage',
 				vector: [],
+				status: 'Pending',
 			};
 			this.currentMessages.push(tempAssistantMessage);
 
-			//if (agent.long_running) {
-				// Handle long-running operations
-				const message = await api.sendMessage(
-					this.currentSession!.id,
-					text,
-					agent,
-					relevantAttachments.map((attachment) => String(attachment.id)),
-				);
+			const initialSession = this.currentSession.id;
+			const message = await api.sendMessage(
+				this.currentSession!.id,
+				text,
+				agent,
+				relevantAttachments.map((attachment) => String(attachment.id)),
+			);
 
-				// Set the temp assistant message operation id to stream it
-				this.currentMessages[this.currentMessages.length-1].operationId = message.operation_id;
+			// If the session has changed before above completes we need to prevent polling
+			if (initialSession !== this.currentSession.id) return;
+			this.startPolling(message);
 
-				// console.log(message);
-
-				// this.longRunningOperations.set(this.currentSession!.id, message.operation_id);
-
-				// setInterval(async () => {
-				// 	await api.checkProcessStatus(message.operation_id);
-				// 	await this.getMessages();
-				// }, 1000);
-
-				return message;
-				// this.pollForCompletion(this.currentSession!.id, message.operationId);
-			// } else {
-			// 	await api.sendMessage(
-			// 		this.currentSession!.id,
-			// 		text,
-			// 		agent,
-			// 		relevantAttachments.map((attachment) => String(attachment.id)),
-			// 	);
-			// 	await this.getMessages();
-			// 	// Get rid of the attachments that were just sent.
-			// 	this.attachments = this.attachments.filter((attachment) => {
-			// 		return !relevantAttachments.includes(attachment);
-			// 	});
-			// }
+			return message;
 		},
 
-		// async checkProcessStatus(operationId) {
-		// 	this.currentMessages
-		// },
+		startPolling(message) {
+			if (this.pollingInterval) return;
+
+			this.pollingInterval = setInterval(async () => {
+				try {
+					const updatedMessage = await api.checkProcessStatus(message.operation_id);
+					this.currentMessages[this.currentMessages.length-1] = { ...updatedMessage };
+
+					if (updatedMessage.status === 'Completed' || updatedMessage.status === 'Failed') {
+						this.stopPolling();
+					}
+				} catch(error) {
+					console.error(error);
+					this.stopPolling();
+				}
+			}, 500);
+		},
+
+		stopPolling() {
+			clearInterval(this.pollingInterval);
+			this.pollingInterval = null;
+		},
 
 		/**
 		 * Polls for the completion of a long-running operation.
 		 *
 		 * @param sessionId - The session ID associated with the operation.
-		 * @param operationId - The ID of the operation to check for completion.
+		 * @param operation_id - The ID of the operation to check for completion.
 		 */
-		async pollForCompletion(sessionId: string, operationId: string) {
+		async pollForCompletion(sessionId: string, operation_id: string) {
 			while (true) {
-				const status = await api.checkProcessStatus(operationId);
+				const status = await api.checkProcessStatus(operation_id);
 				if (status.isCompleted) {
 					this.longRunningOperations.delete(sessionId);
-					eventBus.emit('operation-completed', { sessionId, operationId });
+					eventBus.emit('operation-completed', { sessionId, operation_id });
 					await this.getMessages();
 					break;
 				}
@@ -386,6 +407,8 @@ export const useAppStore = defineStore('app', {
 		},
 
 		async changeSession(newSession: Session) {
+			this.stopPolling();
+
 			const nuxtApp = useNuxtApp();
 			const appConfigStore = useAppConfigStore();
 
@@ -397,7 +420,7 @@ export const useAppStore = defineStore('app', {
 			}
 
 			this.currentSession = newSession;
-			await this.getMessages();
+			// await this.getMessages();
 			this.updateSessionAgentFromMessages(newSession);
 		},
 
