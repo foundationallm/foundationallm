@@ -7,7 +7,7 @@ import type {
 	Message,
 	UserProfile,
 	Agent,
-	FileStoreConfiguration,
+	CoreConfiguration,
 	OneDriveWorkSchool,
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
@@ -31,7 +31,7 @@ export const useAppStore = defineStore('app', {
 		lastSelectedAgent: null as ResourceProviderGetResult<Agent> | null,
 		attachments: [] as Attachment[],
 		longRunningOperations: new Map<string, string>(), // sessionId -> operation_id
-		fileStoreConfiguration: null as FileStoreConfiguration | null,
+		coreConfiguration: null as CoreConfiguration | null,
 		oneDriveWorkSchool: null as boolean | null,
 		userProfiles: null as UserProfile | null,
 	}),
@@ -367,7 +367,7 @@ export const useAppStore = defineStore('app', {
 					console.error(error);
 					this.stopPolling();
 				}
-			}, 500);
+			}, (this.coreConfiguration?.completionResponsePollingIntervalSeconds ?? 5) * 1000 || 5000);
 		},
 
 		stopPolling() {
@@ -437,9 +437,9 @@ export const useAppStore = defineStore('app', {
 			return this.agents;
 		},
 
-		async getFileStoreConfiguration() {
-			this.fileStoreConfiguration = await api.getFileStoreConfiguration();
-			return this.fileStoreConfiguration;
+		async getCoreConfiguration() {
+			this.coreConfiguration = await api.getCoreConfiguration();
+			return this.coreConfiguration;
 		},
 
 		async oneDriveWorkSchoolConnect() {
