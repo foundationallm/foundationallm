@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-      <title>Class FileStoreConfiguration | FoundationaLLM </title>
+      <title>Class CoreConfiguration | FoundationaLLM </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class FileStoreConfiguration | FoundationaLLM ">
+      <meta name="title" content="Class CoreConfiguration | FoundationaLLM ">
       
       <meta name="description" content="The configuration for the file store.">
       <link rel="icon" href="../../media/favicon.ico">
@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../../">
       
       
-      <meta name="docfx:docurl" content="https://github.com/solliancenet/foundationallm/new/main/apiSpec/new?filename=FoundationaLLM_Common_Settings_FileStoreConfiguration.md&amp;value=---%0Auid%3A%20FoundationaLLM.Common.Settings.FileStoreConfiguration%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/solliancenet/foundationallm/new/main/apiSpec/new?filename=FoundationaLLM_Common_Settings_CoreConfiguration.md&amp;value=---%0Auid%3A%20FoundationaLLM.Common.Settings.CoreConfiguration%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -84,12 +84,12 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="FoundationaLLM.Common.Settings.FileStoreConfiguration">
+        <article data-uid="FoundationaLLM.Common.Settings.CoreConfiguration">
 
 
 
-  <h1 id="FoundationaLLM_Common_Settings_FileStoreConfiguration" data-uid="FoundationaLLM.Common.Settings.FileStoreConfiguration" class="text-break">
-Class FileStoreConfiguration  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Settings/FileStoreConfiguration.cs/#L8"><i class="bi bi-code-slash"></i></a>
+  <h1 id="FoundationaLLM_Common_Settings_CoreConfiguration" data-uid="FoundationaLLM.Common.Settings.CoreConfiguration" class="text-break">
+Class CoreConfiguration  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Settings/CoreConfiguration.cs/#L8"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -102,7 +102,7 @@ Class FileStoreConfiguration  <a class="header-action link-secondary" title="Vie
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class FileStoreConfiguration</code></pre>
+    <pre><code class="lang-csharp hljs">public class CoreConfiguration</code></pre>
   </div>
 
 
@@ -112,7 +112,7 @@ Class FileStoreConfiguration  <a class="header-action link-secondary" title="Vie
     <dt>Inheritance</dt>
     <dd>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-      <div><span class="xref">FileStoreConfiguration</span></div>
+      <div><span class="xref">CoreConfiguration</span></div>
     </dd>
   </dl>
 
@@ -160,11 +160,43 @@ Class FileStoreConfiguration  <a class="header-action link-secondary" title="Vie
 </h2>
 
 
-  <a id="FoundationaLLM_Common_Settings_FileStoreConfiguration_FileStoreConnectors_" data-uid="FoundationaLLM.Common.Settings.FileStoreConfiguration.FileStoreConnectors*"></a>
+  <a id="FoundationaLLM_Common_Settings_CoreConfiguration_CompletionResponsePollingIntervalSeconds_" data-uid="FoundationaLLM.Common.Settings.CoreConfiguration.CompletionResponsePollingIntervalSeconds*"></a>
 
-  <h3 id="FoundationaLLM_Common_Settings_FileStoreConfiguration_FileStoreConnectors" data-uid="FoundationaLLM.Common.Settings.FileStoreConfiguration.FileStoreConnectors">
+  <h3 id="FoundationaLLM_Common_Settings_CoreConfiguration_CompletionResponsePollingIntervalSeconds" data-uid="FoundationaLLM.Common.Settings.CoreConfiguration.CompletionResponsePollingIntervalSeconds">
+  CompletionResponsePollingIntervalSeconds
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Settings/CoreConfiguration.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the polling interval in seconds for checking the completion of a response.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CompletionResponsePollingIntervalSeconds { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Settings_CoreConfiguration_FileStoreConnectors_" data-uid="FoundationaLLM.Common.Settings.CoreConfiguration.FileStoreConnectors*"></a>
+
+  <h3 id="FoundationaLLM_Common_Settings_CoreConfiguration_FileStoreConnectors" data-uid="FoundationaLLM.Common.Settings.CoreConfiguration.FileStoreConnectors">
   FileStoreConnectors
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Settings/FileStoreConfiguration.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Settings/CoreConfiguration.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>A list of API endpoint configurations for file store connectors.</p>
@@ -192,11 +224,11 @@ Class FileStoreConfiguration  <a class="header-action link-secondary" title="Vie
 
 
 
-  <a id="FoundationaLLM_Common_Settings_FileStoreConfiguration_MaxUploadsPerMessage_" data-uid="FoundationaLLM.Common.Settings.FileStoreConfiguration.MaxUploadsPerMessage*"></a>
+  <a id="FoundationaLLM_Common_Settings_CoreConfiguration_MaxUploadsPerMessage_" data-uid="FoundationaLLM.Common.Settings.CoreConfiguration.MaxUploadsPerMessage*"></a>
 
-  <h3 id="FoundationaLLM_Common_Settings_FileStoreConfiguration_MaxUploadsPerMessage" data-uid="FoundationaLLM.Common.Settings.FileStoreConfiguration.MaxUploadsPerMessage">
+  <h3 id="FoundationaLLM_Common_Settings_CoreConfiguration_MaxUploadsPerMessage" data-uid="FoundationaLLM.Common.Settings.CoreConfiguration.MaxUploadsPerMessage">
   MaxUploadsPerMessage
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Settings/FileStoreConfiguration.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Settings/CoreConfiguration.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Indicates the maximum number of files that can be uploaded in a single message.</p>
@@ -228,7 +260,7 @@ Class FileStoreConfiguration  <a class="header-action link-secondary" title="Vie
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Settings/FileStoreConfiguration.cs/#L8" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Settings/CoreConfiguration.cs/#L8" class="edit-link">Edit this page</a>
         </div>
 
 

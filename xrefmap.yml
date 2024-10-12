@@ -6131,6 +6131,12 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_BypassGatekeeper
   fullName: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_BypassGatekeeper
   nameWithType: AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_BypassGatekeeper
+- uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CompletionResponsePollingIntervalSeconds
+  name: FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CompletionResponsePollingIntervalSeconds
+  href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.html#FoundationaLLM_Common_Constants_Configuration_AppConfigurationKeys_FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CompletionResponsePollingIntervalSeconds
+  commentId: F:FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CompletionResponsePollingIntervalSeconds
+  fullName: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CompletionResponsePollingIntervalSeconds
+  nameWithType: AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CompletionResponsePollingIntervalSeconds
 - uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB_ChangeFeedLeaseContainer
   name: FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB_ChangeFeedLeaseContainer
   href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.html#FoundationaLLM_Common_Constants_Configuration_AppConfigurationKeys_FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB_ChangeFeedLeaseContainer
@@ -28279,38 +28285,51 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Settings.CommonJsonSerializerOptions.GetJsonSerializerOptions
   nameWithType: CommonJsonSerializerOptions.GetJsonSerializerOptions
-- uid: FoundationaLLM.Common.Settings.FileStoreConfiguration
-  name: FileStoreConfiguration
-  href: api/dotnet/FoundationaLLM.Common.Settings.FileStoreConfiguration.html
-  commentId: T:FoundationaLLM.Common.Settings.FileStoreConfiguration
-  fullName: FoundationaLLM.Common.Settings.FileStoreConfiguration
-  nameWithType: FileStoreConfiguration
-- uid: FoundationaLLM.Common.Settings.FileStoreConfiguration.FileStoreConnectors
-  name: FileStoreConnectors
-  href: api/dotnet/FoundationaLLM.Common.Settings.FileStoreConfiguration.html#FoundationaLLM_Common_Settings_FileStoreConfiguration_FileStoreConnectors
-  commentId: P:FoundationaLLM.Common.Settings.FileStoreConfiguration.FileStoreConnectors
-  fullName: FoundationaLLM.Common.Settings.FileStoreConfiguration.FileStoreConnectors
-  nameWithType: FileStoreConfiguration.FileStoreConnectors
-- uid: FoundationaLLM.Common.Settings.FileStoreConfiguration.FileStoreConnectors*
-  name: FileStoreConnectors
-  href: api/dotnet/FoundationaLLM.Common.Settings.FileStoreConfiguration.html#FoundationaLLM_Common_Settings_FileStoreConfiguration_FileStoreConnectors_
-  commentId: Overload:FoundationaLLM.Common.Settings.FileStoreConfiguration.FileStoreConnectors
+- uid: FoundationaLLM.Common.Settings.CoreConfiguration
+  name: CoreConfiguration
+  href: api/dotnet/FoundationaLLM.Common.Settings.CoreConfiguration.html
+  commentId: T:FoundationaLLM.Common.Settings.CoreConfiguration
+  fullName: FoundationaLLM.Common.Settings.CoreConfiguration
+  nameWithType: CoreConfiguration
+- uid: FoundationaLLM.Common.Settings.CoreConfiguration.CompletionResponsePollingIntervalSeconds
+  name: CompletionResponsePollingIntervalSeconds
+  href: api/dotnet/FoundationaLLM.Common.Settings.CoreConfiguration.html#FoundationaLLM_Common_Settings_CoreConfiguration_CompletionResponsePollingIntervalSeconds
+  commentId: P:FoundationaLLM.Common.Settings.CoreConfiguration.CompletionResponsePollingIntervalSeconds
+  fullName: FoundationaLLM.Common.Settings.CoreConfiguration.CompletionResponsePollingIntervalSeconds
+  nameWithType: CoreConfiguration.CompletionResponsePollingIntervalSeconds
+- uid: FoundationaLLM.Common.Settings.CoreConfiguration.CompletionResponsePollingIntervalSeconds*
+  name: CompletionResponsePollingIntervalSeconds
+  href: api/dotnet/FoundationaLLM.Common.Settings.CoreConfiguration.html#FoundationaLLM_Common_Settings_CoreConfiguration_CompletionResponsePollingIntervalSeconds_
+  commentId: Overload:FoundationaLLM.Common.Settings.CoreConfiguration.CompletionResponsePollingIntervalSeconds
   isSpec: "True"
-  fullName: FoundationaLLM.Common.Settings.FileStoreConfiguration.FileStoreConnectors
-  nameWithType: FileStoreConfiguration.FileStoreConnectors
-- uid: FoundationaLLM.Common.Settings.FileStoreConfiguration.MaxUploadsPerMessage
-  name: MaxUploadsPerMessage
-  href: api/dotnet/FoundationaLLM.Common.Settings.FileStoreConfiguration.html#FoundationaLLM_Common_Settings_FileStoreConfiguration_MaxUploadsPerMessage
-  commentId: P:FoundationaLLM.Common.Settings.FileStoreConfiguration.MaxUploadsPerMessage
-  fullName: FoundationaLLM.Common.Settings.FileStoreConfiguration.MaxUploadsPerMessage
-  nameWithType: FileStoreConfiguration.MaxUploadsPerMessage
-- uid: FoundationaLLM.Common.Settings.FileStoreConfiguration.MaxUploadsPerMessage*
-  name: MaxUploadsPerMessage
-  href: api/dotnet/FoundationaLLM.Common.Settings.FileStoreConfiguration.html#FoundationaLLM_Common_Settings_FileStoreConfiguration_MaxUploadsPerMessage_
-  commentId: Overload:FoundationaLLM.Common.Settings.FileStoreConfiguration.MaxUploadsPerMessage
+  fullName: FoundationaLLM.Common.Settings.CoreConfiguration.CompletionResponsePollingIntervalSeconds
+  nameWithType: CoreConfiguration.CompletionResponsePollingIntervalSeconds
+- uid: FoundationaLLM.Common.Settings.CoreConfiguration.FileStoreConnectors
+  name: FileStoreConnectors
+  href: api/dotnet/FoundationaLLM.Common.Settings.CoreConfiguration.html#FoundationaLLM_Common_Settings_CoreConfiguration_FileStoreConnectors
+  commentId: P:FoundationaLLM.Common.Settings.CoreConfiguration.FileStoreConnectors
+  fullName: FoundationaLLM.Common.Settings.CoreConfiguration.FileStoreConnectors
+  nameWithType: CoreConfiguration.FileStoreConnectors
+- uid: FoundationaLLM.Common.Settings.CoreConfiguration.FileStoreConnectors*
+  name: FileStoreConnectors
+  href: api/dotnet/FoundationaLLM.Common.Settings.CoreConfiguration.html#FoundationaLLM_Common_Settings_CoreConfiguration_FileStoreConnectors_
+  commentId: Overload:FoundationaLLM.Common.Settings.CoreConfiguration.FileStoreConnectors
   isSpec: "True"
-  fullName: FoundationaLLM.Common.Settings.FileStoreConfiguration.MaxUploadsPerMessage
-  nameWithType: FileStoreConfiguration.MaxUploadsPerMessage
+  fullName: FoundationaLLM.Common.Settings.CoreConfiguration.FileStoreConnectors
+  nameWithType: CoreConfiguration.FileStoreConnectors
+- uid: FoundationaLLM.Common.Settings.CoreConfiguration.MaxUploadsPerMessage
+  name: MaxUploadsPerMessage
+  href: api/dotnet/FoundationaLLM.Common.Settings.CoreConfiguration.html#FoundationaLLM_Common_Settings_CoreConfiguration_MaxUploadsPerMessage
+  commentId: P:FoundationaLLM.Common.Settings.CoreConfiguration.MaxUploadsPerMessage
+  fullName: FoundationaLLM.Common.Settings.CoreConfiguration.MaxUploadsPerMessage
+  nameWithType: CoreConfiguration.MaxUploadsPerMessage
+- uid: FoundationaLLM.Common.Settings.CoreConfiguration.MaxUploadsPerMessage*
+  name: MaxUploadsPerMessage
+  href: api/dotnet/FoundationaLLM.Common.Settings.CoreConfiguration.html#FoundationaLLM_Common_Settings_CoreConfiguration_MaxUploadsPerMessage_
+  commentId: Overload:FoundationaLLM.Common.Settings.CoreConfiguration.MaxUploadsPerMessage
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Settings.CoreConfiguration.MaxUploadsPerMessage
+  nameWithType: CoreConfiguration.MaxUploadsPerMessage
 - uid: FoundationaLLM.Common.Tasks
   name: FoundationaLLM.Common.Tasks
   href: api/dotnet/FoundationaLLM.Common.Tasks.html
@@ -29463,6 +29482,47 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Core.API.Controllers.CompletionsController.StartCompletionOperation
   nameWithType: CompletionsController.StartCompletionOperation
+- uid: FoundationaLLM.Core.API.Controllers.ConfigurationController
+  name: ConfigurationController
+  href: api/dotnet/FoundationaLLM.Core.API.Controllers.ConfigurationController.html
+  commentId: T:FoundationaLLM.Core.API.Controllers.ConfigurationController
+  fullName: FoundationaLLM.Core.API.Controllers.ConfigurationController
+  nameWithType: ConfigurationController
+- uid: FoundationaLLM.Core.API.Controllers.ConfigurationController.#ctor(FoundationaLLM.Common.Interfaces.ICallContext,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},FoundationaLLM.Core.Interfaces.ICoreService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Core.API.Controllers.FilesController})
+  name: ConfigurationController(ICallContext, IOptions<InstanceSettings>, ICoreService, ILogger<FilesController>)
+  href: api/dotnet/FoundationaLLM.Core.API.Controllers.ConfigurationController.html#FoundationaLLM_Core_API_Controllers_ConfigurationController__ctor_FoundationaLLM_Common_Interfaces_ICallContext_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Instance_InstanceSettings__FoundationaLLM_Core_Interfaces_ICoreService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Core_API_Controllers_FilesController__
+  commentId: M:FoundationaLLM.Core.API.Controllers.ConfigurationController.#ctor(FoundationaLLM.Common.Interfaces.ICallContext,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},FoundationaLLM.Core.Interfaces.ICoreService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Core.API.Controllers.FilesController})
+  name.vb: New(ICallContext, IOptions(Of InstanceSettings), ICoreService, ILogger(Of FilesController))
+  fullName: FoundationaLLM.Core.API.Controllers.ConfigurationController.ConfigurationController(FoundationaLLM.Common.Interfaces.ICallContext, Microsoft.Extensions.Options.IOptions<FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings>, FoundationaLLM.Core.Interfaces.ICoreService, Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Core.API.Controllers.FilesController>)
+  fullName.vb: FoundationaLLM.Core.API.Controllers.ConfigurationController.New(FoundationaLLM.Common.Interfaces.ICallContext, Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings), FoundationaLLM.Core.Interfaces.ICoreService, Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Core.API.Controllers.FilesController))
+  nameWithType: ConfigurationController.ConfigurationController(ICallContext, IOptions<InstanceSettings>, ICoreService, ILogger<FilesController>)
+  nameWithType.vb: ConfigurationController.New(ICallContext, IOptions(Of InstanceSettings), ICoreService, ILogger(Of FilesController))
+- uid: FoundationaLLM.Core.API.Controllers.ConfigurationController.#ctor*
+  name: ConfigurationController
+  href: api/dotnet/FoundationaLLM.Core.API.Controllers.ConfigurationController.html#FoundationaLLM_Core_API_Controllers_ConfigurationController__ctor_
+  commentId: Overload:FoundationaLLM.Core.API.Controllers.ConfigurationController.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: FoundationaLLM.Core.API.Controllers.ConfigurationController.ConfigurationController
+  fullName.vb: FoundationaLLM.Core.API.Controllers.ConfigurationController.New
+  nameWithType: ConfigurationController.ConfigurationController
+  nameWithType.vb: ConfigurationController.New
+- uid: FoundationaLLM.Core.API.Controllers.ConfigurationController.GetCoreConfiguration(System.String)
+  name: GetCoreConfiguration(string)
+  href: api/dotnet/FoundationaLLM.Core.API.Controllers.ConfigurationController.html#FoundationaLLM_Core_API_Controllers_ConfigurationController_GetCoreConfiguration_System_String_
+  commentId: M:FoundationaLLM.Core.API.Controllers.ConfigurationController.GetCoreConfiguration(System.String)
+  name.vb: GetCoreConfiguration(String)
+  fullName: FoundationaLLM.Core.API.Controllers.ConfigurationController.GetCoreConfiguration(string)
+  fullName.vb: FoundationaLLM.Core.API.Controllers.ConfigurationController.GetCoreConfiguration(String)
+  nameWithType: ConfigurationController.GetCoreConfiguration(string)
+  nameWithType.vb: ConfigurationController.GetCoreConfiguration(String)
+- uid: FoundationaLLM.Core.API.Controllers.ConfigurationController.GetCoreConfiguration*
+  name: GetCoreConfiguration
+  href: api/dotnet/FoundationaLLM.Core.API.Controllers.ConfigurationController.html#FoundationaLLM_Core_API_Controllers_ConfigurationController_GetCoreConfiguration_
+  commentId: Overload:FoundationaLLM.Core.API.Controllers.ConfigurationController.GetCoreConfiguration
+  isSpec: "True"
+  fullName: FoundationaLLM.Core.API.Controllers.ConfigurationController.GetCoreConfiguration
+  nameWithType: ConfigurationController.GetCoreConfiguration
 - uid: FoundationaLLM.Core.API.Controllers.FilesController
   name: FilesController
   href: api/dotnet/FoundationaLLM.Core.API.Controllers.FilesController.html
@@ -29520,22 +29580,6 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Core.API.Controllers.FilesController.Download
   nameWithType: FilesController.Download
-- uid: FoundationaLLM.Core.API.Controllers.FilesController.GetFileStoreConnectors(System.String)
-  name: GetFileStoreConnectors(string)
-  href: api/dotnet/FoundationaLLM.Core.API.Controllers.FilesController.html#FoundationaLLM_Core_API_Controllers_FilesController_GetFileStoreConnectors_System_String_
-  commentId: M:FoundationaLLM.Core.API.Controllers.FilesController.GetFileStoreConnectors(System.String)
-  name.vb: GetFileStoreConnectors(String)
-  fullName: FoundationaLLM.Core.API.Controllers.FilesController.GetFileStoreConnectors(string)
-  fullName.vb: FoundationaLLM.Core.API.Controllers.FilesController.GetFileStoreConnectors(String)
-  nameWithType: FilesController.GetFileStoreConnectors(string)
-  nameWithType.vb: FilesController.GetFileStoreConnectors(String)
-- uid: FoundationaLLM.Core.API.Controllers.FilesController.GetFileStoreConnectors*
-  name: GetFileStoreConnectors
-  href: api/dotnet/FoundationaLLM.Core.API.Controllers.FilesController.html#FoundationaLLM_Core_API_Controllers_FilesController_GetFileStoreConnectors_
-  commentId: Overload:FoundationaLLM.Core.API.Controllers.FilesController.GetFileStoreConnectors
-  isSpec: "True"
-  fullName: FoundationaLLM.Core.API.Controllers.FilesController.GetFileStoreConnectors
-  nameWithType: FilesController.GetFileStoreConnectors
 - uid: FoundationaLLM.Core.API.Controllers.FilesController.Upload(System.String,System.String,System.String,Microsoft.AspNetCore.Http.IFormFile)
   name: Upload(string, string, string, IFormFile)
   href: api/dotnet/FoundationaLLM.Core.API.Controllers.FilesController.html#FoundationaLLM_Core_API_Controllers_FilesController_Upload_System_String_System_String_System_String_Microsoft_AspNetCore_Http_IFormFile_
@@ -30048,22 +30092,22 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Core.Interfaces.ICoreService.GetCompletionPrompt
   nameWithType: ICoreService.GetCompletionPrompt
-- uid: FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConfiguration(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name: GetFileStoreConfiguration(string, UnifiedUserIdentity)
-  href: api/dotnet/FoundationaLLM.Core.Interfaces.ICoreService.html#FoundationaLLM_Core_Interfaces_ICoreService_GetFileStoreConfiguration_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
-  commentId: M:FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConfiguration(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name.vb: GetFileStoreConfiguration(String, UnifiedUserIdentity)
-  fullName: FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConfiguration(string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  fullName.vb: FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConfiguration(String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  nameWithType: ICoreService.GetFileStoreConfiguration(string, UnifiedUserIdentity)
-  nameWithType.vb: ICoreService.GetFileStoreConfiguration(String, UnifiedUserIdentity)
-- uid: FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConfiguration*
-  name: GetFileStoreConfiguration
-  href: api/dotnet/FoundationaLLM.Core.Interfaces.ICoreService.html#FoundationaLLM_Core_Interfaces_ICoreService_GetFileStoreConfiguration_
-  commentId: Overload:FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConfiguration
+- uid: FoundationaLLM.Core.Interfaces.ICoreService.GetCoreConfiguration(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name: GetCoreConfiguration(string, UnifiedUserIdentity)
+  href: api/dotnet/FoundationaLLM.Core.Interfaces.ICoreService.html#FoundationaLLM_Core_Interfaces_ICoreService_GetCoreConfiguration_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  commentId: M:FoundationaLLM.Core.Interfaces.ICoreService.GetCoreConfiguration(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: GetCoreConfiguration(String, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Core.Interfaces.ICoreService.GetCoreConfiguration(string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Core.Interfaces.ICoreService.GetCoreConfiguration(String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType: ICoreService.GetCoreConfiguration(string, UnifiedUserIdentity)
+  nameWithType.vb: ICoreService.GetCoreConfiguration(String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Core.Interfaces.ICoreService.GetCoreConfiguration*
+  name: GetCoreConfiguration
+  href: api/dotnet/FoundationaLLM.Core.Interfaces.ICoreService.html#FoundationaLLM_Core_Interfaces_ICoreService_GetCoreConfiguration_
+  commentId: Overload:FoundationaLLM.Core.Interfaces.ICoreService.GetCoreConfiguration
   isSpec: "True"
-  fullName: FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConfiguration
-  nameWithType: ICoreService.GetFileStoreConfiguration
+  fullName: FoundationaLLM.Core.Interfaces.ICoreService.GetCoreConfiguration
+  nameWithType: ICoreService.GetCoreConfiguration
 - uid: FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConnectors(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
   name: GetFileStoreConnectors(string, UnifiedUserIdentity)
   href: api/dotnet/FoundationaLLM.Core.Interfaces.ICoreService.html#FoundationaLLM_Core_Interfaces_ICoreService_GetFileStoreConnectors_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
@@ -30765,22 +30809,22 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Core.Services.CoreService.GetCompletionPrompt
   nameWithType: CoreService.GetCompletionPrompt
-- uid: FoundationaLLM.Core.Services.CoreService.GetFileStoreConfiguration(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name: GetFileStoreConfiguration(string, UnifiedUserIdentity)
-  href: api/dotnet/FoundationaLLM.Core.Services.CoreService.html#FoundationaLLM_Core_Services_CoreService_GetFileStoreConfiguration_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
-  commentId: M:FoundationaLLM.Core.Services.CoreService.GetFileStoreConfiguration(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name.vb: GetFileStoreConfiguration(String, UnifiedUserIdentity)
-  fullName: FoundationaLLM.Core.Services.CoreService.GetFileStoreConfiguration(string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  fullName.vb: FoundationaLLM.Core.Services.CoreService.GetFileStoreConfiguration(String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  nameWithType: CoreService.GetFileStoreConfiguration(string, UnifiedUserIdentity)
-  nameWithType.vb: CoreService.GetFileStoreConfiguration(String, UnifiedUserIdentity)
-- uid: FoundationaLLM.Core.Services.CoreService.GetFileStoreConfiguration*
-  name: GetFileStoreConfiguration
-  href: api/dotnet/FoundationaLLM.Core.Services.CoreService.html#FoundationaLLM_Core_Services_CoreService_GetFileStoreConfiguration_
-  commentId: Overload:FoundationaLLM.Core.Services.CoreService.GetFileStoreConfiguration
+- uid: FoundationaLLM.Core.Services.CoreService.GetCoreConfiguration(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name: GetCoreConfiguration(string, UnifiedUserIdentity)
+  href: api/dotnet/FoundationaLLM.Core.Services.CoreService.html#FoundationaLLM_Core_Services_CoreService_GetCoreConfiguration_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  commentId: M:FoundationaLLM.Core.Services.CoreService.GetCoreConfiguration(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: GetCoreConfiguration(String, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Core.Services.CoreService.GetCoreConfiguration(string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Core.Services.CoreService.GetCoreConfiguration(String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType: CoreService.GetCoreConfiguration(string, UnifiedUserIdentity)
+  nameWithType.vb: CoreService.GetCoreConfiguration(String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Core.Services.CoreService.GetCoreConfiguration*
+  name: GetCoreConfiguration
+  href: api/dotnet/FoundationaLLM.Core.Services.CoreService.html#FoundationaLLM_Core_Services_CoreService_GetCoreConfiguration_
+  commentId: Overload:FoundationaLLM.Core.Services.CoreService.GetCoreConfiguration
   isSpec: "True"
-  fullName: FoundationaLLM.Core.Services.CoreService.GetFileStoreConfiguration
-  nameWithType: CoreService.GetFileStoreConfiguration
+  fullName: FoundationaLLM.Core.Services.CoreService.GetCoreConfiguration
+  nameWithType: CoreService.GetCoreConfiguration
 - uid: FoundationaLLM.Core.Services.CoreService.GetFileStoreConnectors(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
   name: GetFileStoreConnectors(string, UnifiedUserIdentity)
   href: api/dotnet/FoundationaLLM.Core.Services.CoreService.html#FoundationaLLM_Core_Services_CoreService_GetFileStoreConnectors_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_

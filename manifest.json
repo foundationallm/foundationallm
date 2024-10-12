@@ -5242,10 +5242,10 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Settings.FileStoreConfiguration.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Settings.CoreConfiguration.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Settings.FileStoreConfiguration.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Settings.CoreConfiguration.html"
         }
       },
       "version": ""
@@ -5566,6 +5566,16 @@
       "output": {
         ".html": {
           "relative_path": "api/dotnet/FoundationaLLM.Core.API.Controllers.CompletionsController.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Core.API.Controllers.ConfigurationController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Core.API.Controllers.ConfigurationController.html"
         }
       },
       "version": ""

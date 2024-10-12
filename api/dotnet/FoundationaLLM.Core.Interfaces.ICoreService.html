@@ -556,10 +556,10 @@ generate a completion response, and log full completion results.</p>
 
 
 
-  <a id="FoundationaLLM_Core_Interfaces_ICoreService_GetFileStoreConfiguration_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConfiguration*"></a>
+  <a id="FoundationaLLM_Core_Interfaces_ICoreService_GetCoreConfiguration_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.GetCoreConfiguration*"></a>
 
-  <h3 id="FoundationaLLM_Core_Interfaces_ICoreService_GetFileStoreConfiguration_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.GetFileStoreConfiguration(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
-  GetFileStoreConfiguration(string, UnifiedUserIdentity)
+  <h3 id="FoundationaLLM_Core_Interfaces_ICoreService_GetCoreConfiguration_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Core.Interfaces.ICoreService.GetCoreConfiguration(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  GetCoreConfiguration(string, UnifiedUserIdentity)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Core/Interfaces/ICoreService.cs/#L158"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -568,7 +568,7 @@ generate a completion response, and log full completion results.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;FileStoreConfiguration&gt; GetFileStoreConfiguration(string instanceId, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;CoreConfiguration&gt; GetCoreConfiguration(string instanceId, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -583,7 +583,7 @@ generate a completion response, and log full completion results.</p>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Settings.FileStoreConfiguration.html">FileStoreConfiguration</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Settings.CoreConfiguration.html">CoreConfiguration</a>&gt;</dt>
     <dd><p>The file store configuration.</p>
 </dd>
   </dl>
