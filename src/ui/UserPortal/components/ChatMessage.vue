@@ -138,7 +138,7 @@
 					</span>
 
 					<!-- Avg MS Per Word: {{ averageTimePerWordMS }} -->
-					<div v-if="isRenderingMessage" class="loading-shimmer" style="font-weight: 600">Generating</div>
+					<div v-if="isMessageLoading && showWordAnimation" class="loading-shimmer" style="font-weight: 600">{{ (isRenderingMessage && messageContent.length > 0) ? 'Generating' : 'Thinking' }}</div>
 
 					<!-- Right side buttons -->
 					<span>
@@ -239,6 +239,22 @@ function processLatex(content) {
 	return content;
 }
 
+function trimToWordCount(str, count) {
+	let wordCount = 0;
+	let index = 0;
+
+	while (wordCount < count && index < str.length) {
+		if (str[index] === ' ' && str[index - 1] !== ' ' && index > 0) {
+			wordCount++;
+		}
+		index++;
+	}
+
+	return str.substring(0, index).trim();
+}
+
+const MAX_WORD_SPEED_MS = 35;
+
 export default {
 	name: 'ChatMessage',
 
@@ -275,79 +291,43 @@ export default {
 			processedContent: [],
 			completed: false,
 			isRenderingMessage: false,
+			isMessageLoading: false,
 		};
 	},
 
 	watch: {
-		async 'message.operationId'() {
-			console.log('operation id updated');
-			const operationResponse = await api.checkProcessStatus(this.message.operationId);
-			const message = operationResponse.result;
-			// this.$appStore.getMessages();
-			if (this.showWordAnimation) {
-				if (operationResponse.status === 'Completed') {
-					console.log('done', operationResponse);
-				}
+		async message(newMessage) {
+			// There is an issue here if a message that is not the latest has an incomplete status
+			if (newMessage.status === 'Completed') return this.handleMessageCompleted(newMessage);
 
-				if (operationResponse.status === 'InProgress') {
-					// if (!message) return;
-
-					// Copy initial contents (message might be partially generated already)
-					// const message = await this.$appStore.checkProcessStatus(this.message.operationId);
-					if (message) {
-						this.processedContent = message.content.map(content => {
-							return {
-								type: content.type,
-								value: this.processContentBlock(content.value),
-							};
-						});
-					}
-
-					this.startPolling();
-					this.displayWordByWord();
-				}
-			}
+			await this.fetchInProgressMessage({ ...newMessage });
+			if (!this.isRenderingMessage && this.showWordAnimation) this.displayWordByWord();
 		},
 	},
 
 	async created() {
 		this.createMarkedRenderer();
 
-		if (this.showWordAnimation) return;
+		if (this.showWordAnimation && this.message.status !== 'Completed') {
+			this.isMessageLoading = true;
+			return;
+		}
 
-		// if (this.showWordAnimation) {
-		// 	if (this.message.status === 'InProgress') {
-		// 		// Copy initial contents (message might be partially generated already)
-		// 		const message = await this.$appStore.checkProcessStatus(this.message.operationId);
-		// 		this.processedContent = this.message.content.map(content => {
-		// 			return {
-		// 				type: content.type,
-		// 				value: this.processContentBlock(content.value),
-		// 			};
-		// 		});
-
-		// 		this.startPolling();
-		// 		this.displayWordByWord();
-		// 	}
-		// }
-		// else {
-			// console.log(this.message.text);
-			if (this.message.text) {
-				this.processedContent = [
-					{
-						type: 'text',
-						value: this.processContentBlock(this.message.text),
-					},
-				];
-			} else {
-				this.processedContent = this.message.content.map(content => {
-					return {
-						type: content.type,
-						value: this.processContentBlock(content.value),
-					};
-				});
-			}
-		// }
+		if (this.message.text) {
+			this.processedContent = [
+				{
+					type: 'text',
+					value: this.processContentBlock(this.message.text),
+				},
+			];
+		} else if (this.message.content) {
+			this.processedContent = this.message.content.map(content => {
+				return {
+					type: content.type,
+					value: this.processContentBlock(content.value),
+				};
+			});
+		}
 	},
 
 	methods: {
@@ -372,24 +352,22 @@ export default {
 			clearInterval(this.pollingInterval);
 		},
 
-		async fetchInProgressMessage() {
-			const operationResponse = await api.checkProcessStatus(this.message.operationId);
-			const message = operationResponse.result;
-			this.pollingIteration += 1;
+		async fetchInProgressMessage(message) {
+			if (!message.content) message.content = [];
 
-			if (!message) return;
+			this.pollingIteration += 1;
 
 			// Calculate the number of words in the previous message content
 			let amountOfOldWords = 0;
 			if (this.messageContent) {
 				amountOfOldWords = this.messageContent.reduce((acc, content) => {
-				  return acc + ((content.value?.match(/[\w'-]+/g) || []).length);
+					return acc + ((content.value?.match(/[\w'-]+/g) || []).length);
 				}, 0);
 			}
 
 			// Calculate the number of words in the new message content
 			let amountOfNewWords = message.content.reduce((acc, content) => {
-			  return acc + ((content.value?.match(/[\w'-]+/g) || []).length);
+				return acc + ((content.value?.match(/[\w'-]+/g) || []).length);
 			}, 0);
 
 			// Calculate the number of new words generated since the last request
@@ -402,27 +380,76 @@ export default {
 
 			// Calculate the average time per word
 			if (this.pollingIteration === 1) {
-				this.averageTimePerWordMS = 50;
+				this.averageTimePerWordMS = MAX_WORD_SPEED_MS;
 			} else {
-				this.averageTimePerWordMS = this.totalWordsGenerated > 0 ? Number((this.totalTimeElapsed / this.totalWordsGenerated).toFixed(2)) : 0;
+				this.averageTimePerWordMS = (this.totalWordsGenerated > 0) ? Number((this.totalTimeElapsed / this.totalWordsGenerated).toFixed(2)) : 0;
 			}
 
 			this.messageContent = message.content;
 
-			if (operationResponse.status === 'Completed') {
-				this.stopPolling();
-				this.averageTimePerWordMS = 50;
-				this.completed = true;
+			if (this.totalWordsGenerated > 0) {
 				this.message.type = message.type;
-
-				// Just to make sure the message renders fully in the case the animation fails
-				this.processedContent = message.content.map(content => {
-					return {
-						type: content.type,
-						value: this.processContentBlock(content.value),
-					};
-				});
 			}
+		},
+
+		handleMessageCompleted(message) {
+			this.averageTimePerWordMS = MAX_WORD_SPEED_MS;
+			this.completed = true;
+			this.message.type = message.type;
+
+			// Just to make sure the message renders fully in the case the animation fails
+			this.processedContent = message.content.map(content => {
+				return {
+					type: content.type,
+					value: this.processContentBlock(content.value),
+				};
+			});
+		},
+
+		displayWordByWord() {
+			this.isRenderingMessage = true;
+
+			let currentContentIndex = Math.max(this.processedContent.length - 1, 0);
+			let content = this.messageContent[currentContentIndex]?.value;
+			let processedContent = this.processedContent[currentContentIndex]?.content;
+
+			// If the processed content block is the same as the current content block,
+			// and there is a new one, then we know to move to the next block
+			if (this.messageContent[currentContentIndex+1] && content === processedContent) {
+				currentContentIndex += 1;
+				this.currentWordIndex = 0;
+
+				content = this.messageContent[currentContentIndex]?.value;
+				processedContent = this.processedContent[currentContentIndex]?.content;
+			}
+
+			if (content !== processedContent) {
+			 this.currentWordIndex += 1;
+
+				if (this.messageContent[currentContentIndex]?.type === 'text') {
+					const truncatedContent = trimToWordCount(content, this.currentWordIndex);
+
+					this.processedContent[currentContentIndex] = {
+						type: this.messageContent[currentContentIndex]?.type,
+						content: truncatedContent,
+						value: this.processContentBlock(truncatedContent),
+					};
+				} else {
+					this.processedContent[currentContentIndex] = {
+						type: this.messageContent[currentContentIndex]?.type,
+						content: content,
+						value: content,
+					};
+				}
+			}
+
+			// If the current block is still rendering, or there is another block, or the message is still processing
+			if (content !== processedContent || this.messageContent[currentContentIndex+1] || !this.completed) {
+				return setTimeout(() => this.displayWordByWord(), this.averageTimePerWordMS);
+			}
+
+			this.isRenderingMessage = false;
+			this.isMessageLoading = false;
 		},
 
 		createMarkedRenderer() {
@@ -481,59 +508,6 @@ export default {
 					}
 				}
 			});
-		},
-
-		displayWordByWord() {
-			this.isRenderingMessage = true;
-
-			let currentContentIndex = Math.max(this.processedContent.length - 1, 0);
-			let content = this.messageContent[currentContentIndex]?.value;
-			let processedContent = this.processedContent[currentContentIndex]?.content;
-
-			// If the processed content block is the same as the current content block,
-			// and there is a new one, then we know to move to the next block
-			if (this.messageContent[currentContentIndex+1] && content === processedContent) {
-				currentContentIndex += 1;
-				this.currentWordIndex = 0;
-
-				content = this.messageContent[currentContentIndex]?.value;
-				processedContent = this.processedContent[currentContentIndex]?.content;
-			}
-
-			if (content !== processedContent) {
-			 this.currentWordIndex += 1;
-
-				if (this.messageContent[currentContentIndex]?.type === 'text') {
-					const htmlString = truncate(content, this.currentWordIndex, {
-						byWords: true,
-						stripTags: false,
-						ellipsis: '',
-						decodeEntities: false,
-						excludes: ['code-block-header', 'chat-message-content-block'],
-						reserveLastWord: false,
-						keepWhitespaces: true,
-					});
-
-					this.processedContent[currentContentIndex] = {
-						type: this.messageContent[currentContentIndex]?.type,
-						content: htmlString,
-						value: this.processContentBlock(htmlString),
-					};
-				} else {
-					this.processedContent[currentContentIndex] = {
-						type: this.messageContent[currentContentIndex]?.type,
-						content: content,
-						value: content,
-					};
-				}
-			}
-
-			// If the current block is still rendering, or there is another block, or the message is still processing
-			if (content !== processedContent || this.messageContent[currentContentIndex+1] || !this.completed) {
-				return setTimeout(() => this.displayWordByWord(), this.averageTimePerWordMS);
-			}
-
-			this.isRenderingMessage = false;
 		},
 
 		formatTimeStamp(timeStamp: string) {
@@ -620,48 +594,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-[dir=ltr] .loading-shimmer {
-    background-position: -100% top
-}
-
-[dir=rtl] .loading-shimmer {
-    background-position: 200% top
-}
-
-// .loading-shimmer:hover {
-//     -webkit-text-fill-color: var(--primary-color);
-//     animation: none;
-//     background: transparent
-// }
-
 @keyframes loading-shimmer {
-    0% {
-        background-position: -100% top
-    }
+	0% {
+		background-position: -100% top
+	}
 
-    to {
-        background-position: 250% top
-    }
+	to {
+		background-position: 250% top
+	}
 }
 
 $shimmerColor: white;
 $textColor: var(--accent-text);
 .loading-shimmer {
-    text-fill-color: transparent;
-    -webkit-text-fill-color: transparent;
-    animation-delay: .3s;
-    animation-duration: 3s;
-    animation-iteration-count: infinite;
-    animation-name: loading-shimmer;
-    background: $textColor gradient(linear,100% 0,0 0,from($textColor),color-stop(.5, $shimmerColor),to($textColor));
-    background: $textColor -webkit-gradient(linear,100% 0,0 0,from($textColor),color-stop(.5, $shimmerColor),to($textColor));
-    background-clip: text;
-    -webkit-background-clip: text;
-    background-repeat: no-repeat;
-    background-size: 50% 200%;
-    display: inline-block
+	text-fill-color: transparent;
+	-webkit-text-fill-color: transparent;
+	animation-delay: .3s;
+	animation-duration: 3s;
+	animation-iteration-count: infinite;
+	animation-name: loading-shimmer;
+	background: $textColor gradient(linear,100% 0,0 0,from($textColor),color-stop(.5, $shimmerColor),to($textColor));
+	background: $textColor -webkit-gradient(linear,100% 0,0 0,from($textColor),color-stop(.5, $shimmerColor),to($textColor));
+	background-clip: text;
+	-webkit-background-clip: text;
+	background-repeat: no-repeat;
+	background-size: 50% 200%;
+	display: inline-block
 }
 
+[dir=ltr] .loading-shimmer {
+	background-position: -100% top
+}
+
+[dir=rtl] .loading-shimmer {
+	background-position: 200% top
+}
 
 .message-row {
 	display: flex;
