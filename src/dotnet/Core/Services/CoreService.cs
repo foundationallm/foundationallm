@@ -184,13 +184,10 @@ public partial class CoreService(
                 $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Attachment}/{AttachmentResourceTypeNames.Attachments}/{ResourceProviderActions.Filter}",
                 JsonSerializer.Serialize(filter),
                 _userIdentity);
-            var list = result as IEnumerator<AttachmentFile>;
+            //var list = result as IEnumerator<AttachmentFile>;
             var attachmentReferences = new List<AttachmentDetail>();
 
-            if (list != null)
-            {
-                attachmentReferences.AddRange(from attachment in (IEnumerable<AttachmentFile>)list select AttachmentDetail.FromAttachmentFile(attachment));
-            }
+            attachmentReferences.AddRange(from attachment in (IEnumerable<AttachmentFile>)result select AttachmentDetail.FromAttachmentFile(attachment));
 
             if (attachmentReferences.Count > 0)
             {
