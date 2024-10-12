@@ -342,6 +342,9 @@ public partial class CoreService(
         {
             _logger.LogError(ex, "Error starting completion operation in conversation {SessionId} for user prompt [{UserPrompt}].",
                 completionRequest.SessionId, completionRequest.UserPrompt);
+
+            // TODO: Depending on the type of failure, we should update the agent message to reflect the failure.
+
             return new LongRunningOperation
             {
                 OperationId = completionRequest.OperationId,
@@ -627,7 +630,7 @@ public partial class CoreService(
         // Adds the incoming message to the session and updates the session with token usage.
         await _cosmosDBService.UpsertSessionBatchAsync(userMessage, agentMessage, completionPrompt);
 
-        return (userMessage, userMessage, completionPrompt);
+        return (userMessage, agentMessage, completionPrompt);
     }
 
     private async Task<Message> ProcessCompletionResponse(
