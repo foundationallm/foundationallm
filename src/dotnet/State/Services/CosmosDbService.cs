@@ -2,7 +2,9 @@
 using FoundationaLLM.Common.Constants.Orchestration;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.State.Exceptions;
 using FoundationaLLM.State.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -88,15 +90,32 @@ namespace FoundationaLLM.State.Services
         /// <inheritdoc/>
         public async Task<LongRunningOperation> GetLongRunningOperation(string id, CancellationToken cancellationToken = default)
         {
-            var record = await _state.ReadItemAsync<LongRunningOperation>(
-                id: id,
-                partitionKey: new PartitionKey(id),
-                cancellationToken: cancellationToken);
+            try
+            {
+                var record = await _state.ReadItemAsync<LongRunningOperation>(
+                    id: id,
+                    partitionKey: new PartitionKey(id),
+                    cancellationToken: cancellationToken);
 
-            var result = await GetLongRunningOperationResult(id, cancellationToken);
-            record.Resource.Result = result;
+                var result = await GetLongRunningOperationResult(id, cancellationToken);
+                record.Resource.Result = result;
 
-            return record;
+                return record;
+            }
+            catch (Exception ex)
+            {
+                if (ex is CosmosException cosmosException)
+                {
+                    if ((int)cosmosException.StatusCode == StatusCodes.Status404NotFound)
+                    {
+                        throw new StateException(
+                            message: $"An operation with the id '{id}' does not exist.",
+                            statusCode: StatusCodes.Status404NotFound
+                        );
+                    }
+                }
+                throw;
+            }
         }
 
         /// <inheritdoc/>

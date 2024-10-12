@@ -225,9 +225,11 @@ async def get_operation_status(
             )
 
             if operation is None:
-                raise HTTPException(status_code=404)
+                raise HTTPException(status_code=404, detail=f"An operation with the id '{operation_id}' does not exist.")
 
             return operation
+        except HTTPException as he:
+            handle_exception(he, he.status_code)
         except Exception as e:
             handle_exception(e)
 
