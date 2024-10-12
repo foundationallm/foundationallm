@@ -380,15 +380,6 @@ module srVectorizationApi 'modules/service.bicep' = [for service in items(vector
   }
 }]
 
-var cosmosRoleTargets = {
-  'core-api':          srCoreApi[0].outputs.servicePrincipalId
-  'core-job':          srBackend[indexOf(backendServiceNames, 'core-job')].outputs.servicePrincipalId
-  'gateway-api':       srBackend[indexOf(backendServiceNames, 'gateway-api')].outputs.servicePrincipalId
-  'orchestration-api': srBackend[indexOf(backendServiceNames, 'orchestration-api')].outputs.servicePrincipalId
-  'management-api':    srBackend[indexOf(backendServiceNames, 'management-api')].outputs.servicePrincipalId
-  'state-api':         srBackend[indexOf(backendServiceNames, 'state-api')].outputs.servicePrincipalId
-}
-
 module coreApiosmosRoles './modules/sqlRoleAssignments.bicep' = {
   scope: resourceGroup(storageResourceGroupName)
   name: 'core-api-cosmos-role'
