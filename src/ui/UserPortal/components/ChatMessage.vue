@@ -260,7 +260,7 @@ function trimToWordCount(str, count) {
 }
 
 const MAX_WORD_SPEED_MS = 35;
-const POLLING_INTERVAL_MS = 500;
+const POLLING_INTERVAL_MS = 1000;
 
 export default {
 	name: 'ChatMessage',

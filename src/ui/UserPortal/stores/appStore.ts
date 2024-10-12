@@ -18,7 +18,7 @@ import type {
 import api from '@/js/api';
 import eventBus from '@/js/eventBus';
 
-const POLLING_INTERVAL_MS = 500;
+const POLLING_INTERVAL_MS = 1000;
 
 export const useAppStore = defineStore('app', {
 	state: () => ({
