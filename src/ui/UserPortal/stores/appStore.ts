@@ -228,7 +228,10 @@ export const useAppStore = defineStore('app', {
 			// Determine if the latest message needs to be polled
 			if (this.currentMessages.length > 0) {
 				const latestMessage = this.currentMessages[this.currentMessages.length - 1];
-				if (latestMessage.status === 'InProgress' || latestMessage.status === 'Pending') {
+
+				// For older messages that have a status of "Pending" but no operation id, assume
+				// it is complete and do no initiate polling as it will return empty data
+				if (latestMessage.operation_id && (latestMessage.status === 'InProgress' || latestMessage.status === 'Pending')) {
 					this.startPolling(latestMessage);
 				}
 			}
@@ -345,15 +348,18 @@ export const useAppStore = defineStore('app', {
 				relevantAttachments.map((attachment) => String(attachment.id)),
 			);
 
-			// If the session has changed before above completes we need to prevent polling
-			if (initialSession !== this.currentSession.id) return;
-			this.startPolling(message);
-
 			this.attachments = this.attachments.filter(
 				(attachment) => attachment.sessionId !== sessionId,
 			);
 
-			return message;
+			// If the session has changed before above completes we need to prevent polling
+			if (initialSession !== this.currentSession.id) return;
+
+			// For older messages that have a status of "Pending" but no operation id, assume
+			// it is complete and do no initiate polling as it will return empty data
+			if (message.operation_id) this.startPolling(message);
+
+			// return message;
 		},
 
 		startPolling(message) {
