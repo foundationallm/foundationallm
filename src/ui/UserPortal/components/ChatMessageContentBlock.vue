@@ -74,31 +74,40 @@ export default {
 		};
 	},
 
-	async created() {
-		this.content = this.value;
-
-		if (['image_file', 'html', 'file_path'].includes(this.content.type)) {
-			this.loading = true;
-			this.content.fileName = this.content.fileName?.split('/').pop();
-			try {
-				if (this.content.type !== 'file_path') {
-					const response = await api.fetchDirect(this.content.value);
-					if (this.content.type === 'html') {
-						const blob = new Blob([response], { type: 'text/html' });
-						this.content.blobUrl = URL.createObjectURL(blob);
-					} else if (this.content.type === 'image_file') {
-						this.content.blobUrl = URL.createObjectURL(response);
-					}
-				}
-			} catch (error) {
-				console.error(`Failed to fetch content from ${this.content.value}`, error);
-				this.error = true;
+	watch: {
+		value: {
+			immediate: true,
+			handler() {
+				this.loadFile();
 			}
-			this.loading = false;
-		}
+		},
 	},
 
 	methods: {
+		async loadFile() {
+			this.content = this.value;
+
+			if (['image_file', 'html', 'file_path'].includes(this.content.type)) {
+				this.loading = true;
+				this.content.fileName = this.content.fileName?.split('/').pop();
+				try {
+					if (this.content.type !== 'file_path') {
+						const response = await api.fetchDirect(this.content.origValue);
+						if (this.content.type === 'html') {
+							const blob = new Blob([response], { type: 'text/html' });
+							this.content.blobUrl = URL.createObjectURL(blob);
+						} else if (this.content.type === 'image_file') {
+							this.content.blobUrl = URL.createObjectURL(response);
+						}
+					}
+				} catch (error) {
+					console.error(`Failed to fetch content from ${this.content.value}`, error);
+					this.error = true;
+				}
+				this.loading = false;
+			}
+		},
+
 		// handleFileDownloadLinkClick(event) {
 		// 	const link = event.target.closest('a.file-download-link');
 		// 	if (link && link.dataset.href) {

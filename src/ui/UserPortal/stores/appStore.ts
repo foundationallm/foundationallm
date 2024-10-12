@@ -425,7 +425,7 @@ export const useAppStore = defineStore('app', {
 
 			this.currentSession = newSession;
 			// await this.getMessages();
-			this.updateSessionAgentFromMessages(newSession);
+			// this.updateSessionAgentFromMessages(newSession);
 		},
 
 		toggleSidebar() {
