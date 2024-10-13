@@ -4462,25 +4462,6 @@ references:
   fullName.vb: FoundationaLLM.Common.Clients.PollingHttpClient(Of TRequest, TResponse).StartOperationAsync
   nameWithType: PollingHttpClient<TRequest, TResponse>.StartOperationAsync
   nameWithType.vb: PollingHttpClient(Of TRequest, TResponse).StartOperationAsync
-- uid: FoundationaLLM.Common.Clients.RunningOperation
-  name: RunningOperation
-  href: api/dotnet/FoundationaLLM.Common.Clients.RunningOperation.html
-  commentId: T:FoundationaLLM.Common.Clients.RunningOperation
-  fullName: FoundationaLLM.Common.Clients.RunningOperation
-  nameWithType: RunningOperation
-- uid: FoundationaLLM.Common.Clients.RunningOperation.OperationId
-  name: OperationId
-  href: api/dotnet/FoundationaLLM.Common.Clients.RunningOperation.html#FoundationaLLM_Common_Clients_RunningOperation_OperationId
-  commentId: P:FoundationaLLM.Common.Clients.RunningOperation.OperationId
-  fullName: FoundationaLLM.Common.Clients.RunningOperation.OperationId
-  nameWithType: RunningOperation.OperationId
-- uid: FoundationaLLM.Common.Clients.RunningOperation.OperationId*
-  name: OperationId
-  href: api/dotnet/FoundationaLLM.Common.Clients.RunningOperation.html#FoundationaLLM_Common_Clients_RunningOperation_OperationId_
-  commentId: Overload:FoundationaLLM.Common.Clients.RunningOperation.OperationId
-  isSpec: "True"
-  fullName: FoundationaLLM.Common.Clients.RunningOperation.OperationId
-  nameWithType: RunningOperation.OperationId
 - uid: FoundationaLLM.Common.Constants
   name: FoundationaLLM.Common.Constants
   href: api/dotnet/FoundationaLLM.Common.Constants.html
@@ -6287,6 +6268,12 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_GatewayAPI_Configuration_AzureOpenAIAccounts
   fullName: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_GatewayAPI_Configuration_AzureOpenAIAccounts
   nameWithType: AppConfigurationKeys.FoundationaLLM_APIEndpoints_GatewayAPI_Configuration_AzureOpenAIAccounts
+- uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_GatewayAPI_Configuration_AzureOpenAIAssistantsMaxVectorizationTimeSeconds
+  name: FoundationaLLM_APIEndpoints_GatewayAPI_Configuration_AzureOpenAIAssistantsMaxVectorizationTimeSeconds
+  href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.html#FoundationaLLM_Common_Constants_Configuration_AppConfigurationKeys_FoundationaLLM_APIEndpoints_GatewayAPI_Configuration_AzureOpenAIAssistantsMaxVectorizationTimeSeconds
+  commentId: F:FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_GatewayAPI_Configuration_AzureOpenAIAssistantsMaxVectorizationTimeSeconds
+  fullName: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_GatewayAPI_Configuration_AzureOpenAIAssistantsMaxVectorizationTimeSeconds
+  nameWithType: AppConfigurationKeys.FoundationaLLM_APIEndpoints_GatewayAPI_Configuration_AzureOpenAIAssistantsMaxVectorizationTimeSeconds
 - uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_GatewayAPI_Essentials_APIKey
   name: FoundationaLLM_APIEndpoints_GatewayAPI_Essentials_APIKey
   href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.html#FoundationaLLM_Common_Constants_Configuration_AppConfigurationKeys_FoundationaLLM_APIEndpoints_GatewayAPI_Essentials_APIKey
@@ -7679,6 +7666,12 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStore
   fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStore
   nameWithType: OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStore
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStoreSuccess
+  name: AddAssistantFileToVectorStoreSuccess
+  href: api/dotnet/FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.html#FoundationaLLM_Common_Constants_OpenAI_OpenAIAgentCapabilityParameterNames_AddAssistantFileToVectorStoreSuccess
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStoreSuccess
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStoreSuccess
+  nameWithType: OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStoreSuccess
 - uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AssistantFileId
   name: AssistantFileId
   href: api/dotnet/FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.html#FoundationaLLM_Common_Constants_OpenAI_OpenAIAgentCapabilityParameterNames_AssistantFileId
@@ -33917,6 +33910,19 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Gateway.Models.Configuration.GatewayCoreSettings.AzureOpenAIAssistantsFileSearchFileExtensions
   nameWithType: GatewayCoreSettings.AzureOpenAIAssistantsFileSearchFileExtensions
+- uid: FoundationaLLM.Gateway.Models.Configuration.GatewayCoreSettings.AzureOpenAIAssistantsMaxVectorizationTimeSeconds
+  name: AzureOpenAIAssistantsMaxVectorizationTimeSeconds
+  href: api/dotnet/FoundationaLLM.Gateway.Models.Configuration.GatewayCoreSettings.html#FoundationaLLM_Gateway_Models_Configuration_GatewayCoreSettings_AzureOpenAIAssistantsMaxVectorizationTimeSeconds
+  commentId: P:FoundationaLLM.Gateway.Models.Configuration.GatewayCoreSettings.AzureOpenAIAssistantsMaxVectorizationTimeSeconds
+  fullName: FoundationaLLM.Gateway.Models.Configuration.GatewayCoreSettings.AzureOpenAIAssistantsMaxVectorizationTimeSeconds
+  nameWithType: GatewayCoreSettings.AzureOpenAIAssistantsMaxVectorizationTimeSeconds
+- uid: FoundationaLLM.Gateway.Models.Configuration.GatewayCoreSettings.AzureOpenAIAssistantsMaxVectorizationTimeSeconds*
+  name: AzureOpenAIAssistantsMaxVectorizationTimeSeconds
+  href: api/dotnet/FoundationaLLM.Gateway.Models.Configuration.GatewayCoreSettings.html#FoundationaLLM_Gateway_Models_Configuration_GatewayCoreSettings_AzureOpenAIAssistantsMaxVectorizationTimeSeconds_
+  commentId: Overload:FoundationaLLM.Gateway.Models.Configuration.GatewayCoreSettings.AzureOpenAIAssistantsMaxVectorizationTimeSeconds
+  isSpec: "True"
+  fullName: FoundationaLLM.Gateway.Models.Configuration.GatewayCoreSettings.AzureOpenAIAssistantsMaxVectorizationTimeSeconds
+  nameWithType: GatewayCoreSettings.AzureOpenAIAssistantsMaxVectorizationTimeSeconds
 - uid: FoundationaLLM.Gateway.Models.EmbeddingModelContext
   name: EmbeddingModelContext
   href: api/dotnet/FoundationaLLM.Gateway.Models.EmbeddingModelContext.html
