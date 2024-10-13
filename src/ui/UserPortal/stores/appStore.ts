@@ -340,7 +340,7 @@ export const useAppStore = defineStore('app', {
 				tokens: 0,
 				type: 'LoadingMessage',
 				vector: [],
-				status: 'Pending',
+				status: 'Loading',
 				renderId: Math.random(),
 			};
 			this.currentMessages.push(tempAssistantMessage);
@@ -473,15 +473,13 @@ export const useAppStore = defineStore('app', {
 		},
 
 		async oneDriveWorkSchoolConnect() {
-			await api.oneDriveWorkSchoolConnect().then(() => {
-				this.oneDriveWorkSchool = true;
-			});
+			await api.oneDriveWorkSchoolConnect();
+			this.oneDriveWorkSchool = true;
 		},
 
 		async oneDriveWorkSchoolDisconnect() {
-			await api.oneDriveWorkSchoolDisconnect().then(() => {
-				this.oneDriveWorkSchool = false;
-			});
+			await api.oneDriveWorkSchoolDisconnect();
+			this.oneDriveWorkSchool = false;
 		},
 
 		async getUserProfiles() {
