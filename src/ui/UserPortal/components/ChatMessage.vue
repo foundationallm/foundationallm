@@ -256,7 +256,6 @@ function trimToWordCount(str, count) {
 }
 
 const MAX_WORD_SPEED_MS = 15;
-const POLLING_INTERVAL_MS = 5000;
 
 export default {
 	name: 'ChatMessage',
@@ -401,7 +400,7 @@ export default {
 
 			if (newWordsGenerated > 0) {
 				this.totalWordsGenerated += newWordsGenerated;
-				this.totalTimeElapsed += POLLING_INTERVAL_MS;
+				this.totalTimeElapsed += this.$appStore.getPollingRateMS();
 			}
 
 			// Calculate the average time per word

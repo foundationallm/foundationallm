@@ -18,7 +18,7 @@ import type {
 import api from '@/js/api';
 import eventBus from '@/js/eventBus';
 
-const POLLING_INTERVAL_MS = 5000;
+const DEFAULT_POLLING_INTERVAL_MS = 5000;
 
 export const useAppStore = defineStore('app', {
 	state: () => ({
@@ -372,6 +372,10 @@ export const useAppStore = defineStore('app', {
 			// return message;
 		},
 
+		getPollingRateMS() {
+			return (this.coreConfiguration?.completionResponsePollingIntervalSeconds * 1000) || DEFAULT_POLLING_INTERVAL_MS;
+		},
+
 		async startPolling(message) {
 			if (this.pollingInterval) return;
 
@@ -392,7 +396,7 @@ export const useAppStore = defineStore('app', {
 						this.stopPolling();
 					}
 				},
-				(this.coreConfiguration?.completionResponsePollingIntervalSeconds ?? 5) * 1000 || 5000,
+				this.getPollingRateMS(),
 			);
 		},
 
