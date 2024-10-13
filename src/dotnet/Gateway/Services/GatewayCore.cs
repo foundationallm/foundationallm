@@ -308,8 +308,6 @@ namespace FoundationaLLM.Gateway.Services
                 var file = fileResult.Value;
                 result[OpenAIAgentCapabilityParameterNames.AssistantFileId] = file.Id;
                 fileId = file.Id;
-
-                result[OpenAIAgentCapabilityParameterNames.AssistantFileId] = fileId;
             }
 
             if (addAssistantFileToVectorStore)
