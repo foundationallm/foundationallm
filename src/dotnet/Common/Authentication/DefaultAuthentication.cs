@@ -40,6 +40,7 @@ namespace FoundationaLLM.Common.Authentication
             {
                 Name = serviceName,
                 UserId = id,
+                UPN = $"{serviceName}-{id}",
                 GroupIds = []
             };
 

@@ -135,16 +135,17 @@ export interface UserProfile {
 	flags: Record<string, boolean>;
 }
 
-export interface FileStoreConfiguration {
-    maxUploadsPerMessage: number;
-    fileStoreConnectors?: FileStoreConnector[];
-}
-
 export interface FileStoreConnector {
 	name: string;
 	category: string;
 	subcategory: string;
 	url: string;
+}
+
+export interface CoreConfiguration {
+	maxUploadsPerMessage: number;
+	fileStoreConnectors?: FileStoreConnector[];
+	completionResponsePollingIntervalSeconds: number;
 }
 
 export interface OneDriveWorkSchool {

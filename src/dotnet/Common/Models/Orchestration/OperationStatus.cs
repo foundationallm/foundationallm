@@ -1,7 +1,7 @@
 ﻿namespace FoundationaLLM.Common.Models.Orchestration
 {
     /// <summary>
-    /// Represents the status of a long running operation.
+    /// Represents the status of a long-running operation.
     /// </summary>
     public enum OperationStatus
     {

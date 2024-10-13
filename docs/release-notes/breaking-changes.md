@@ -11,24 +11,40 @@ The following settings are required:
 
 Name | Default value
 --- | ---
-`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions` | `c, cpp, cs, css, csv, doc, docx, git, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip`
+`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions` | `c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip`
 `FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions` | `c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt`
-`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage` | `{ "value": 10, "value_exceptions": [] }`
+`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage` |	`{ "value": 10, "value_exceptions": [] }`
+`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds` | `{ "value": 5, "value_exceptions": [] }`
 
 >[!NOTE]
 > Here is an example of an override for the `MaxUploadsPerMessage` setting:
 > ```json
 >{
->	"value": 10,
->	"value_exceptions": [
->		{
->			"user_principal_name": "ciprian@solliance.net",
->			"value": 5,
->			"enabled": true
->		}
->	]
+>   "value": 10,
+>   "value_exceptions": [
+>       {
+>           "user_principal_name": "ciprian@solliance.net",
+>           "value": 5,
+>           "enabled": true
+>       }
+>   ]
 >}
 > ```
+
+>[!NOTE]
+> Here is an example of an override for the `CompletionResponsePollingIntervalSeconds` setting:
+> ```json
+>{
+>   "value": 5,
+>   "value_exceptions": [
+>       {
+>           "user_principal_name": "ciprian@solliance.net",
+>           "value": 3,
+>           "enabled": true
+>       }
+>   ]
+>}
+>
 
 The following settings are optional (they should not be set by default):
 
@@ -54,6 +70,22 @@ Location | Old name | New name
 
 >[!NOTE]
 > Within each of the renamed files, the `<entity>References` property must be renamed to `ResourceReferences`.
+
+**FoundationaLLM.Agent**
+
+A new property can be added to agent definitions:
+
+```json
+"tools": {
+    "dalle-image-generation": {
+        "name": "dalle-image-generation",
+        "description": "Generates an image based on a prompt.",
+        "ai_model_object_ids": {
+            "main_model": "/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/DALLE3"
+        }
+    }
+}
+```
 
 **FoundationaLLM.Authorization**
 
@@ -129,6 +161,12 @@ The following MSIs require a Cosmos DB role assigned:
 1. Gateway API
 2. Orchestration API
 3. Management API
+
+### Long-Running Operations
+
+The context for a long-running operation is now stored in Cosmos DB.
+A new Cosmos DB container must be created, named `Operations`, with a partition key `/id`.
+
 
 ## Starting with 0.8.0
 

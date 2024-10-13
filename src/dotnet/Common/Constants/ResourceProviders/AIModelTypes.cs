@@ -1,5 +1,8 @@
 ﻿namespace FoundationaLLM.Common.Constants.ResourceProviders
 {
+    /// <summary>
+    /// AI Model type contants.
+    /// </summary>
     public static class AIModelTypes
     {
         /// <summary>
@@ -14,5 +17,9 @@
         /// Completion model type
         /// </summary>
         public const string Completion = "completion";
+        /// <summary>
+        /// Image generation model type
+        /// </summary>
+        public const string ImageGeneration = "image-generation";
     }
 }

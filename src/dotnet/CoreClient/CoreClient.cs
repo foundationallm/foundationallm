@@ -64,7 +64,7 @@ namespace FoundationaLLM.Client.Core
         }
 
         /// <inheritdoc/>
-        public async Task<Completion> GetCompletionWithSessionAsync(string? sessionId, ChatSessionProperties? chatSessionProperties,
+        public async Task<Message> GetCompletionWithSessionAsync(string? sessionId, ChatSessionProperties? chatSessionProperties,
             string userPrompt, string agentName)
         {
             if (string.IsNullOrWhiteSpace(sessionId))
@@ -91,7 +91,7 @@ namespace FoundationaLLM.Client.Core
         }
 
         /// <inheritdoc/>
-        public async Task<Completion> GetCompletionWithSessionAsync(CompletionRequest completionRequest)
+        public async Task<Message> GetCompletionWithSessionAsync(CompletionRequest completionRequest)
         {
             if (string.IsNullOrWhiteSpace(completionRequest.SessionId) ||
                 string.IsNullOrWhiteSpace(completionRequest.AgentName) ||
@@ -105,7 +105,7 @@ namespace FoundationaLLM.Client.Core
         }
 
         /// <inheritdoc/>
-        public async Task<Completion> GetCompletionAsync(string userPrompt, string agentName)
+        public async Task<Message> GetCompletionAsync(string userPrompt, string agentName)
         {
             var completionRequest = new CompletionRequest
             {
@@ -118,7 +118,7 @@ namespace FoundationaLLM.Client.Core
         }
 
         /// <inheritdoc/>
-        public async Task<Completion> GetCompletionAsync(CompletionRequest completionRequest)
+        public async Task<Message> GetCompletionAsync(CompletionRequest completionRequest)
         {
             if (string.IsNullOrWhiteSpace(completionRequest.AgentName) ||
                 string.IsNullOrWhiteSpace(completionRequest.UserPrompt))
@@ -131,7 +131,7 @@ namespace FoundationaLLM.Client.Core
         }
 
         /// <inheritdoc/>
-        public async Task<Completion> AttachFileAndAskQuestionAsync(Stream fileStream, string fileName, string contentType,
+        public async Task<Message> AttachFileAndAskQuestionAsync(Stream fileStream, string fileName, string contentType,
             string agentName, string question, bool useSession, string? sessionId, ChatSessionProperties? chatSessionProperties)
         {
             if (fileStream == null)

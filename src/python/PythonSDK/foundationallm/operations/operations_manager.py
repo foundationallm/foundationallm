@@ -1,6 +1,6 @@
-import json
 import os
 import requests
+import urllib3
 from typing import List
 from foundationallm.config import Configuration
 from foundationallm.models.operations import (
@@ -17,10 +17,15 @@ class OperationsManager():
     def __init__(self, config: Configuration):
         self.config = config
         # Retrieve the State API configuration settings.
+        env = os.environ.get('FOUNDATIONALLM_ENV', 'prod')
+
         self.state_api_url = config.get_value('FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIUrl').rstrip('/')
         self.state_api_key = config.get_value('FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIKey')
-        env = os.environ.get('FOUNDATIONALLM_ENV', 'prod')
-        self.verify_certs = False if env == 'dev' else True
+        if env == 'dev':
+            self.verify_certs = False
+            urllib3.disable_warnings(category=urllib3.exceptions.InsecureRequestWarning)
+        else:
+            self.verify_certs = True
         
     async def create_operation(
         self,
@@ -150,8 +155,6 @@ class OperationsManager():
                 "Content-Type":"application/json"
             }
 
-            print(f'status endpoint: {self.state_api_url}/instances/{instance_id}/operations/{operation_id}')
-
             r = requests.get(
                 f'{self.state_api_url}/instances/{instance_id}/operations/{operation_id}',
                 headers=headers,
@@ -256,7 +259,7 @@ class OperationsManager():
         except Exception as e:
             raise e
 
-    async def get_operation_log(
+    async def get_operation_logs(
         self,
         operation_id: str,
         instance_id: str) -> List[LongRunningOperationLogEntry]:

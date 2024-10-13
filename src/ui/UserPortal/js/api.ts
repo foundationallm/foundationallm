@@ -2,7 +2,7 @@ import type {
 	Message,
 	Session,
 	UserProfile,
-	FileStoreConfiguration,
+	CoreConfiguration,
 	OneDriveWorkSchool,
 	ChatSessionProperties,
 	CompletionPrompt,
@@ -122,25 +122,19 @@ export default {
 	 * @returns A Promise that resolves to the operation ID if the process is successfully started.
 	 * @throws An error if the process fails to start.
 	 */
-	async startLongRunningProcess(url: string, requestBody: any) {
-		const options = {
-			method: 'POST',
-			body: JSON.stringify(requestBody),
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${await this.getBearerToken()}`,
-			},
-		};
-
+	async startLongRunningProcess(requestBody: any) {
 		try {
-			const response = await $fetch(`${this.apiUrl}${url}`, options);
+			const response = await this.fetch(`/instances/${this.instanceId}/async-completions`, {
+				method: 'POST',
+				body: requestBody,
+			});
 			if (response.status === 202) {
 				return response.operationId;
 			} else {
 				throw new Error('Failed to start process');
 			}
 		} catch (error) {
-			throw new Error(this.formatError(error));
+			throw new Error(formatError(error));
 		}
 	},
 
@@ -152,19 +146,13 @@ export default {
 	 */
 	async checkProcessStatus(operationId: string) {
 		try {
-			const response = await $fetch(
+			const response = await this.fetch(
 				`/instances/${this.instanceId}/async-completions/${operationId}/status`,
-				{
-					method: 'GET',
-					headers: {
-						Authorization: `Bearer ${await this.getBearerToken()}`,
-					},
-				},
 			);
 
 			return response;
 		} catch (error) {
-			throw new Error(this.formatError(error));
+			throw new Error(formatError(error));
 		}
 	},
 
@@ -238,6 +226,11 @@ export default {
 		)) as Array<Message>;
 	},
 
+	// Mock polling route
+	// async getMessage(messageId: string) {
+	// 	return await $fetch(`/api/stream-message/`);
+	// },
+
 	/**
 	 * Retrieves a specific prompt for a given session.
 	 * @param sessionId The ID of the session.
@@ -287,18 +280,17 @@ export default {
 			attachments,
 		};
 
-		if (agent.long_running) {
-			const operationId = await this.startLongRunningProcess(
-				`/instances/${this.instanceId}/async-completions`,
-				orchestrationRequest,
-			);
-			return this.pollForCompletion(operationId);
-		} else {
-			return (await this.fetch(`/instances/${this.instanceId}/completions`, {
-				method: 'POST',
-				body: orchestrationRequest,
-			})) as string;
-		}
+		// if (agent.long_running) {
+		return (await this.fetch(`/instances/${this.instanceId}/async-completions`, {
+			method: 'POST',
+			body: orchestrationRequest,
+		})) as string;
+		// } else {
+		// 	return (await this.fetch(`/instances/${this.instanceId}/completions`, {
+		// 		method: 'POST',
+		// 		body: orchestrationRequest,
+		// 	})) as string;
+		// }
 	},
 
 	/**
@@ -374,14 +366,12 @@ export default {
 	},
 
 	/**
-	 * Retrieves the file store configuration for the current instance.
+	 * Retrieves the core configuration for the current instance.
 	 *
-	 * @returns {Promise<FileStoreConfiguration>} A promise that resolves to the file store configuration.
+	 * @returns {Promise<CoreConfiguration>} A promise that resolves to the core configuration.
 	 */
-	async getFileStoreConfiguration() {
-		return (await this.fetch(
-			`/instances/${this.instanceId}/files/file-store-configuration`,
-		)) as FileStoreConfiguration;
+	async getCoreConfiguration() {
+		return (await this.fetch(`/instances/${this.instanceId}/configuration`)) as CoreConfiguration;
 	},
 
 	/**

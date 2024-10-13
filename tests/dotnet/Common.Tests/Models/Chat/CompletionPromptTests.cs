@@ -56,7 +56,13 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
 
         public CompletionPrompt CreateCompletionPrompt(string sessionId, string messageId, string prompt, Citation[]? citations = null)
         {
-            return new CompletionPrompt(sessionId, messageId, prompt, citations);
+            return new CompletionPrompt
+            {
+                SessionId = sessionId,
+                MessageId = messageId,
+                Prompt = prompt,
+                Citations = citations
+            };
         }
     }
 }
