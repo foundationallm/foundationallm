@@ -39,7 +39,7 @@ public interface IAgentConversationTestService
     /// run and delete these resources when the run completes. This is a potentially destructive action. Do
     /// not enable this option if you wish to use pre-existing resources, such as the default FoundationaLLM agent.</param>
     /// <returns></returns>
-    Task<Completion> RunAgentCompletionWithSession(string agentName,
+    Task<Message> RunAgentCompletionWithSession(string agentName,
         string userPrompt, string? sessionId = null, bool createAgent = false);
 
     /// <summary>
@@ -52,7 +52,7 @@ public interface IAgentConversationTestService
     /// run and delete these resources when the run completes. This is a potentially destructive action. Do
     /// not enable this option if you wish to use pre-existing resources, such as the default FoundationaLLM agent.</param>
     /// <returns></returns>
-    Task<Completion> RunAgentCompletionWithNoSession(string agentName,
+    Task<Message> RunAgentCompletionWithNoSession(string agentName,
         string userPrompt, bool createAgent = false);
 
     /// <summary>

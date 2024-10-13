@@ -5,15 +5,15 @@ from foundationallm.config import Configuration
 from foundationallm.storage import BlobStorageManager
 from openai import AzureOpenAI, AsyncAzureOpenAI
 from openai.types import CompletionUsage
-from typing import List, Union
+from typing import List, Union, Optional
 
-class ImageAnalysisService:
+class ImageService:
     """
-    Performs image analysis via the Azure OpenAI SDK.
+    Performs image analysis and generation via the Azure OpenAI SDK.
     """
-    def __init__(self, config: Configuration, client: Union[AzureOpenAI, AsyncAzureOpenAI], deployment_model: str):
+    def __init__(self, config: Configuration, client: Union[AzureOpenAI, AsyncAzureOpenAI], deployment_name: str, image_generator_tool_description: Optional[str] = None):
         """
-        Initializes the ImageAnalysisService.
+        Initializes an Image Service, which performs image analysis and generation.
 
         Parameters
         ----------
@@ -23,10 +23,13 @@ class ImageAnalysisService:
             The Azure OpenAI client to use for image analysis.
         deployment_model : str
             The deployment model to use for the Azure OpenAI client.
+        image_generator_tool_description : str
+            The description of the image generator tool.
         """
         self.config = config
         self.client = client
-        self.deployment_model = deployment_model
+        self.deployment_name = deployment_name
+        self.image_generator_tool_description = image_generator_tool_description
 
     def _get_as_base64(self, mime_type: str, storage_account_name, file_path: str) -> str:
         """
@@ -112,7 +115,7 @@ class ImageAnalysisService:
                 image_base64 = self._get_as_base64(mime_type=attachment.content_type, storage_account_name=attachment.provider_storage_account_name, file_path=attachment.provider_file_name)
                 if image_base64 is not None and image_base64 != '':
                     response = await self.client.chat.completions.create(
-                        model=self.deployment_model,
+                        model=self.deployment_name,
                         messages=[
                             {
                                 "role": "system",
@@ -163,7 +166,7 @@ class ImageAnalysisService:
                 image_base64 = self._get_as_base64(mime_type=attachment.content_type, storage_account_name=attachment.provider_storage_account_name, file_path=attachment.provider_file_name)
                 if image_base64 is not None and image_base64 != '':
                     response = self.client.chat.completions.create(
-                        model=self.deployment_model,
+                        model=self.deployment_name,
                         messages=[
                             {
                                 "role": "system",
@@ -196,3 +199,71 @@ class ImageAnalysisService:
                     image_analyses[attachment.original_file_name] = f"The image {attachment.original_file_name} was either invalid or inaccessible and could not be analyzed."
 
         return image_analyses, usage
+
+    async def agenerate_image(
+        self,
+        prompt: str,
+        n: int = 1,
+        quality: str = 'hd',
+        style: str = 'natural',
+        size: str='1024x1024') -> str:
+        """
+        Generate an image using the Azure OpenAI client.
+        """
+        try:
+            result = await self.client.images.generate(
+                model = self.deployment_name,
+                prompt = prompt,
+                n = n,
+                quality = quality,
+                style = style,
+                size = size
+            )
+            return json.loads(result.model_dump_json())
+        except Exception as e:
+            return f"Error generating image: {e}"
+
+    def generate_image(
+        self,
+        prompt: str,
+        n: int = 1,
+        quality: str = 'hd',
+        style: str = 'natural',
+        size: str='1024x1024') -> str:
+        """
+        Generate an image using the Azure OpenAI client.
+        """
+        try:
+            result = self.client.images.generate(
+                model = self.deployment_name,
+                prompt = prompt,
+                n = n,
+                quality = quality,
+                style = style,
+                size = size
+            )
+            return json.loads(result.model_dump_json())
+        except Exception as e:
+            return f"Error generating image: {e}"
+
+    def get_function_definition(self, function_name: str):
+        """
+        Get the function definition for the specified function name.
+        """
+        if function_name == 'generate_image':
+            return {
+                "name": "generate_image",
+                "description": self.image_generator_tool_description,
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "prompt": {"type": "string", "description": "Describe the image you want to create. For example, 'a beach with palm trees'."},
+                        "n": {"type": "integer", "description": "The number of images to generate. Default is 1. For DALL-E 3, the maximum value is 1."},
+                        "quality": {"type": "string", "description": "The quality of the image.", "enum": ["standard", "hd"]},
+                        "style": {"type": "string", "description": "The style of the image.", "enum": ["natural", "vivid"]},
+                        "size": {"type": "string", "description": "The size of the image in pixels.", "enum": ['1024x1024', '1792x1024', '1024x1792']}
+                    },
+                    "additionalProperties": False,
+                    "required": ["prompt"]
+                }
+            }
