@@ -23,11 +23,9 @@
 					<ChatMessage
 						v-for="(message, index) in messages.slice().reverse()"
 						:id="`message-${getMessageOrderFromReversedIndex(index)}`"
-						:key="message.id || message.operation_id"
+						:key="message.renderId || message.id"
 						:message="message"
-						:show-word-animation="
-							index === 0 && (message.status === 'InProgress' || message.status === 'Pending')
-						"
+						:show-word-animation="index === 0 && message.sender !== 'User'"
 						role="log"
 						:aria-flowto="
 							index === 0 ? null : `message-${getMessageOrderFromReversedIndex(index) + 1}`
@@ -100,7 +98,6 @@ export default {
 			this.isLoading = true;
 			this.userSentMessage = false;
 			await this.$appStore.getMessages();
-			console.log('change');
 			this.$appStore.updateSessionAgentFromMessages(newSession);
 			this.isLoading = false;
 		},
@@ -155,7 +152,7 @@ export default {
 			// 	this.longRunningOperations.set(this.currentSession.id, true);
 			// 	await this.pollForCompletion(this.currentSession.id, operationId);
 			// } else {
-			const message = await this.$appStore.sendMessage(text);
+			await this.$appStore.sendMessage(text);
 			// console.log(message);
 			// await this.$appStore.getMessages();
 			// }

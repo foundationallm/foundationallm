@@ -16,9 +16,9 @@ import type {
 	MessageContent,
 } from '@/js/types';
 import api from '@/js/api';
-import eventBus from '@/js/eventBus';
+// import eventBus from '@/js/eventBus';
 
-const POLLING_INTERVAL_MS = 1000;
+const DEFAULT_POLLING_INTERVAL_MS = 5000;
 
 export const useAppStore = defineStore('app', {
 	state: () => ({
@@ -228,7 +228,13 @@ export const useAppStore = defineStore('app', {
 			// Determine if the latest message needs to be polled
 			if (this.currentMessages.length > 0) {
 				const latestMessage = this.currentMessages[this.currentMessages.length - 1];
-				if (latestMessage.status === 'InProgress' || latestMessage.status === 'Pending') {
+
+				// For older messages that have a status of "Pending" but no operation id, assume
+				// it is complete and do no initiate polling as it will return empty data
+				if (
+					latestMessage.operation_id &&
+					(latestMessage.status === 'InProgress' || latestMessage.status === 'Pending')
+				) {
 					this.startPolling(latestMessage);
 				}
 			}
@@ -307,7 +313,7 @@ export const useAppStore = defineStore('app', {
 			const authStore = useAuthStore();
 			const tempUserMessage: Message = {
 				completionPromptId: null,
-				id: '',
+				id: null,
 				rating: null,
 				sender: 'User',
 				senderDisplayName: authStore.currentAccount?.name ?? 'You',
@@ -318,6 +324,7 @@ export const useAppStore = defineStore('app', {
 				type: 'Message',
 				vector: [],
 				attachmentDetails,
+				renderId: Math.random(),
 			};
 			this.currentMessages.push(tempUserMessage);
 
@@ -334,6 +341,7 @@ export const useAppStore = defineStore('app', {
 				type: 'LoadingMessage',
 				vector: [],
 				status: 'Pending',
+				renderId: Math.random(),
 			};
 			this.currentMessages.push(tempAssistantMessage);
 
@@ -344,16 +352,31 @@ export const useAppStore = defineStore('app', {
 				agent,
 				relevantAttachments.map((attachment) => String(attachment.id)),
 			);
-
-			// If the session has changed before above completes we need to prevent polling
-			if (initialSession !== this.currentSession.id) return;
-			this.startPolling(message);
+			this.currentMessages[this.currentMessages.length - 1] = {
+				...tempAssistantMessage,
+				...message,
+				type: 'Message',
+			};
 
 			this.attachments = this.attachments.filter(
 				(attachment) => attachment.sessionId !== sessionId,
 			);
 
-			return message;
+			// If the session has changed before above completes we need to prevent polling
+			if (initialSession !== this.currentSession.id) return;
+
+			// For older messages that have a status of "Pending" but no operation id, assume
+			// it is complete and do no initiate polling as it will return empty data
+			if (message.operation_id) this.startPolling(message);
+
+			// return message;
+		},
+
+		getPollingRateMS() {
+			return (
+				this.coreConfiguration?.completionResponsePollingIntervalSeconds * 1000 ||
+				DEFAULT_POLLING_INTERVAL_MS
+			);
 		},
 
 		startPolling(message) {
@@ -362,7 +385,10 @@ export const useAppStore = defineStore('app', {
 			this.pollingInterval = setInterval(async () => {
 				try {
 					const updatedMessage = await api.checkProcessStatus(message.operation_id);
-					this.currentMessages[this.currentMessages.length - 1] = { ...updatedMessage };
+					this.currentMessages[this.currentMessages.length - 1] = {
+						...updatedMessage,
+						renderId: this.currentMessages[this.currentMessages.length - 1].renderId,
+					};
 
 					if (updatedMessage.status === 'Completed' || updatedMessage.status === 'Failed') {
 						this.stopPolling();
@@ -371,9 +397,7 @@ export const useAppStore = defineStore('app', {
 					console.error(error);
 					this.stopPolling();
 				}
-
-			}, (this.coreConfiguration?.completionResponsePollingIntervalSeconds ?? 5) * 1000 || 5000);
-
+			}, this.getPollingRateMS());
 		},
 
 		stopPolling() {
@@ -387,18 +411,18 @@ export const useAppStore = defineStore('app', {
 		 * @param sessionId - The session ID associated with the operation.
 		 * @param operationId - The ID of the operation to check for completion.
 		 */
-		async pollForCompletion(sessionId: string, operationId: string) {
-			while (true) {
-				const status = await api.checkProcessStatus(operationId);
-				if (status.isCompleted) {
-					this.longRunningOperations.delete(sessionId);
-					eventBus.emit('operation-completed', { sessionId, operationId });
-					await this.getMessages();
-					break;
-				}
-				await new Promise((resolve) => setTimeout(resolve, 2000)); // Poll every 2 seconds
-			}
-		},
+		// async pollForCompletion(sessionId: string, operationId: string) {
+		// 	while (true) {
+		// 		const status = await api.checkProcessStatus(operationId);
+		// 		if (status.isCompleted) {
+		// 			this.longRunningOperations.delete(sessionId);
+		// 			eventBus.emit('operation-completed', { sessionId, operationId });
+		// 			await this.getMessages();
+		// 			break;
+		// 		}
+		// 		await new Promise((resolve) => setTimeout(resolve, 2000)); // Poll every 2 seconds
+		// 	}
+		// },
 
 		async rateMessage(messageToRate: Message, isLiked: Message['rating']) {
 			const existingMessage = this.currentMessages.find(

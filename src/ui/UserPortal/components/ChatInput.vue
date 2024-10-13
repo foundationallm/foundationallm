@@ -161,7 +161,10 @@
 									label="Upload"
 									class="file-upload-container-button"
 									style="margin-top: 0.5rem"
-									:disabled="isUploading || (currentLocalFiles.length === 0 && currentOneDriveFiles.length === 0)"
+									:disabled="
+										isUploading ||
+										(currentLocalFiles.length === 0 && currentOneDriveFiles.length === 0)
+									"
 									@click="handleUpload"
 								/>
 							</div>
@@ -380,12 +383,12 @@ export default {
 				},
 			},
 			sessionFiles: {
-            	sessionId: {
+				sessionId: {
 					oneDriveFiles: [] as any[],
 					localFiles: [] as any[],
-					uploadedFiles: [] as any[]
-				}
-        	},
+					uploadedFiles: [] as any[],
+				},
+			},
 			oneDriveBaseURL: null as string | null,
 			disconnectingOneDrive: false,
 			fileToDelete: null as any,
@@ -481,7 +484,7 @@ export default {
 			}
 			return this.sessionFiles[sessionId];
 		},
-		
+
 		addFileToSession(sessionId, file, type) {
 			const files = this.getFilesForSession(sessionId);
 			if (type === 'oneDrive') {
@@ -496,18 +499,18 @@ export default {
 		removeFileFromSession(sessionId, file, type) {
 			const files = this.getFilesForSession(sessionId);
 			if (type === 'oneDrive') {
-				files.oneDriveFiles = files.oneDriveFiles.filter(f => f !== file);
+				files.oneDriveFiles = files.oneDriveFiles.filter((f) => f !== file);
 			} else if (type === 'local') {
-				files.localFiles = files.localFiles.filter(f => f !== file);
+				files.localFiles = files.localFiles.filter((f) => f !== file);
 			} else if (type === 'uploaded') {
-				files.uploadedFiles = files.uploadedFiles.filter(f => f.name !== file.fileName);
+				files.uploadedFiles = files.uploadedFiles.filter((f) => f.name !== file.fileName);
 			}
 		},
 
 		clearFilesForSession(sessionId) {
 			this.sessionFiles[sessionId] = { oneDriveFiles: [], localFiles: [], uploadedFiles: [] };
 		},
-		
+
 		toggle(event: any) {
 			this.$refs.menu.toggle(event);
 		},
@@ -588,11 +591,7 @@ export default {
 							}
 						};
 
-						await this.$appStore.uploadAttachment(
-							formData,
-							sessionId,
-							onProgress,
-						);
+						await this.$appStore.uploadAttachment(formData, sessionId, onProgress);
 					} else if (file.source === 'oneDrive') {
 						await this.callCoreApiOneDriveWorkSchoolDownloadEndpoint(
 							file.id,
@@ -671,7 +670,9 @@ export default {
 		},
 
 		removeLocalFile(currentFiles, file) {
-			currentFiles.localFiles = currentFiles.localFiles.filter((localFile) => localFile.name !== file.name);
+			currentFiles.localFiles = currentFiles.localFiles.filter(
+				(localFile) => localFile.name !== file.name,
+			);
 			this.fileToDelete = null;
 			this.deleteFileProcessing = false;
 
@@ -729,7 +730,8 @@ export default {
 				const uploadedFileAlreadyExists = currentFiles.uploadedFiles.some(
 					(existingFile) => existingFile.name === file.name && existingFile.size === file.size,
 				);
-				const fileAlreadyExists = localFileAlreadyExists || oneDriveFileAlreadyExists || uploadedFileAlreadyExists;
+				const fileAlreadyExists =
+					localFileAlreadyExists || oneDriveFileAlreadyExists || uploadedFileAlreadyExists;
 
 				if (fileAlreadyExists) return;
 
@@ -763,8 +765,11 @@ export default {
 			});
 
 			if (
-				currentFiles.localFiles.length + currentFiles.oneDriveFiles.length + currentFiles.uploadedFiles.length + filteredFiles.length >
-					this.maxFiles
+				currentFiles.localFiles.length +
+					currentFiles.oneDriveFiles.length +
+					currentFiles.uploadedFiles.length +
+					filteredFiles.length >
+				this.maxFiles
 			) {
 				this.$toast.add({
 					severity: 'error',
@@ -773,7 +778,10 @@ export default {
 					life: 5000,
 				});
 				filteredFiles.splice(
-					this.maxFiles - (currentFiles.localFiles.length + currentFiles.oneDriveFiles.length + currentFiles.uploadedFiles.length),
+					this.maxFiles -
+						(currentFiles.localFiles.length +
+							currentFiles.oneDriveFiles.length +
+							currentFiles.uploadedFiles.length),
 				);
 			}
 
