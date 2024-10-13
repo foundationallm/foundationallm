@@ -253,6 +253,26 @@ function trimToWordCount(str, count) {
 	return str.substring(0, index).trim();
 }
 
+function getWordCount(str) {
+	let wordCount = 0;
+	let index = 0;
+
+	str = str.trim();
+
+	while (index < str.length) {
+		if (str[index] === ' ' && str[index - 1] !== ' ' && index > 0) {
+			wordCount++;
+		}
+		index++;
+	}
+
+	if (str.length > 0) {
+		wordCount++;
+	}
+
+	return wordCount;
+}
+
 const MAX_WORD_SPEED_MS = 15;
 
 export default {
@@ -361,6 +381,7 @@ export default {
 			];
 		} else if (this.message.content) {
 			this.processedContent = this.message.content.map((content) => {
+				this.currentWordIndex = getWordCount(content.value);
 				return {
 					type: content.type,
 					content,
