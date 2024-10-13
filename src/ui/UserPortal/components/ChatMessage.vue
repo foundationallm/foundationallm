@@ -317,8 +317,11 @@ export default {
 			},
 		},
 
-		processedContent() {
-			this.markSkippableContent();
+		processedContent: {
+			deep: true,
+			handler() {
+				this.markSkippableContent();
+			}
 		},
 	},
 
