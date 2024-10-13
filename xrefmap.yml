@@ -19831,6 +19831,19 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.APIEndpointConfigurationObjectIds
   nameWithType: AgentTool.APIEndpointConfigurationObjectIds
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Description
+  name: Description
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_Description
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Description
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Description
+  nameWithType: AgentTool.Description
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Description*
+  name: Description
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_Description_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Description
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Description
+  nameWithType: AgentTool.Description
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Name
   name: Name
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_Name
@@ -19844,6 +19857,19 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Name
   nameWithType: AgentTool.Name
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Properties
+  name: Properties
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_Properties
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Properties
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Properties
+  nameWithType: AgentTool.Properties
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Properties*
+  name: Properties
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_Properties_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Properties
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Properties
+  nameWithType: AgentTool.Properties
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes
   name: AgentTypes
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.html

@@ -202,6 +202,18 @@
 <h5>Note</h5>
 <p>Within each of the renamed files, the <code>&lt;entity&gt;References</code> property must be renamed to <code>ResourceReferences</code>.</p>
 </div>
+<p><strong>FoundationaLLM.Agent</strong></p>
+<p>A new property can be added to agent definitions:</p>
+<pre><code class="lang-json">&quot;tools&quot;: {
+    &quot;dalle-image-generation&quot;: {
+        &quot;name&quot;: &quot;dalle-image-generation&quot;,
+        &quot;description&quot;: &quot;Generates an image based on a prompt.&quot;,
+        &quot;ai_model_object_ids&quot;: {
+            &quot;main_model&quot;: &quot;/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/DALLE3&quot;
+        }
+    }
+}
+</code></pre>
 <p><strong>FoundationaLLM.Authorization</strong></p>
 <p>A new storage container named <code>policy-assignments</code> is required. The <code>FoundationaLLM.Authorization</code> resource provider will use this container to store policy assignments.</p>
 <p>Within the container, the <code>&lt;instance_id&gt;-policy.json</code> must be deployed with the default policy assignments. The template for the default policy assignments is available in <code>Common/Constants/Data/DefaultPolicyAssignments.json</code>.</p>
