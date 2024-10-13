@@ -221,6 +221,17 @@ class ImageService:
             )
             return json.loads(result.model_dump_json())
         except Exception as e:
+            # Specifically handle content policy violation errors.
+            err = e.message[e.message.find("{"):e.message.rfind("}")+1]            
+            err_json = err.replace("'", '"')
+            err_json = err_json.replace("True", "true").replace("False", "false")
+            obj = json.loads(err_json)            
+            if(obj and obj['error'] and obj['error']['code'] and obj['error']['code'] == "content_policy_violation"):                
+                cfr = obj['error']['inner_error']['content_filter_results']
+                filtered = [k for k, v in cfr.items() if v['filtered']]               
+                error_fmt = f"Error generating image: Content policy violation for the following category: {', '.join(filtered)}"                
+                return error_fmt
+            # Return other messages as-is.
             return f"Error generating image: {e}"
 
     def generate_image(
