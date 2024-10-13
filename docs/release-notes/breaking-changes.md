@@ -71,6 +71,22 @@ Location | Old name | New name
 >[!NOTE]
 > Within each of the renamed files, the `<entity>References` property must be renamed to `ResourceReferences`.
 
+**FoundationaLLM.Agent**
+
+A new property can be added to agent definitions:
+
+```json
+"tools": {
+    "dalle-image-generation": {
+        "name": "dalle-image-generation",
+        "description": "Generates an image based on a prompt.",
+        "ai_model_object_ids": {
+            "main_model": "/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/DALLE3"
+        }
+    }
+}
+```
+
 **FoundationaLLM.Authorization**
 
 A new storage container named `policy-assignments` is required. The `FoundationaLLM.Authorization` resource provider will use this container to store policy assignments.

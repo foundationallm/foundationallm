@@ -14,6 +14,12 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public required string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets the description of the tool.
+        /// </summary>
+        [JsonPropertyName("description")]
+        public required string Description { get; set; }
+
+        /// <summary>
         /// Gets or sets a dictionary of AI model object identifiers.
         /// </summary>
         /// <remarks>
@@ -30,5 +36,11 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// </remarks>
         [JsonPropertyName("api_endpoint_configuration_object_ids")]
         public Dictionary<string, string> APIEndpointConfigurationObjectIds { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets a dictionary of properties that are specific to the tool.
+        /// </summary>
+        [JsonPropertyName("properties")]
+        public Dictionary<string, object> Properties { get; set; } = [];
     }
 }
