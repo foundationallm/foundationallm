@@ -394,6 +394,14 @@ public partial class CoreService(
                     completionResponse!,
                     operationStatus.Status);
 
+                if (agentMessage.Content is { Count: > 0 })
+                {
+                    foreach (var content in agentMessage.Content)
+                    {
+                        content.Value = ResolveContentDeepLinks(content.Value, _baseUrl);
+                    }
+                }
+
                 return agentMessage;
             }
 
@@ -681,21 +689,21 @@ public partial class CoreService(
                                 {
                                     Type = FileMethods.GetMessageContentFileType(annotation.Text, annotation.Type),
                                     FileName = annotation.Text,
-                                    Value = ResolveContentDeepLinks(annotation.FileUrl, _baseUrl)
+                                    Value = annotation.FileUrl
                                 });
                             }
                         }
                         newContent.Add(new MessageContent
                         {
                             Type = textMessageContent.Type,
-                            Value = ResolveContentDeepLinks(textMessageContent.Value, _baseUrl)
+                            Value = textMessageContent.Value
                         });
                         break;
                     case OpenAIImageFileMessageContentItem imageFileMessageContent:
                         newContent.Add(new MessageContent
                         {
                             Type = imageFileMessageContent.Type,
-                            Value = ResolveContentDeepLinks(imageFileMessageContent.FileUrl, _baseUrl)
+                            Value = imageFileMessageContent.FileUrl
                         });
                         break;
                 }
