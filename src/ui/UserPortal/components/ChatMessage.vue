@@ -305,9 +305,11 @@ export default {
 
 			if (this.isRenderingMessage && this.messageContent.length > 0) return 'Responding';
 
+			// Account for old messages that are complete (status of "Pending" with null operation_id)
+			const isPending = this.message.status === 'Pending' && this.message.operation_id;
 			if (
 				this.showWordAnimation &&
-				(this.message.status === 'Pending' || this.message.status === 'InProgress')
+				(isPending || this.message.status === 'InProgress' || this.message.status === 'Loading')
 			)
 				return 'Thinking';
 
@@ -320,8 +322,6 @@ export default {
 			immediate: true,
 			deep: true,
 			handler(newMessage, oldMessage) {
-				// console.log('do it', newMessage.status, newMessage);
-
 				// There is an issue here if a message that is not the latest has an incomplete status
 				if (newMessage.status === 'Completed') {
 					this.computedAverageTimePerWord({ ...newMessage }, oldMessage ?? {});
@@ -333,7 +333,8 @@ export default {
 				if (
 					!this.isRenderingMessage &&
 					this.showWordAnimation &&
-					newMessage.type !== 'LoadingMessage'
+					newMessage.type !== 'LoadingMessage' &&
+					newMessage.operation_id
 				)
 					this.startRenderingMessage();
 			},
@@ -362,6 +363,7 @@ export default {
 			this.processedContent = this.message.content.map((content) => {
 				return {
 					type: content.type,
+					content,
 					value: this.processContentBlock(content.value),
 					origValue: content.value,
 				};

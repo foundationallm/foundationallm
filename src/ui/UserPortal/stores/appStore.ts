@@ -340,7 +340,7 @@ export const useAppStore = defineStore('app', {
 				tokens: 0,
 				type: 'LoadingMessage',
 				vector: [],
-				status: 'Pending',
+				status: 'Loading',
 				renderId: Math.random(),
 			};
 			this.currentMessages.push(tempAssistantMessage);
