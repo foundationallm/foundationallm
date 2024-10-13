@@ -74,7 +74,7 @@
 					<!-- Render the html content and any vue components within -->
 					<!-- <component :is="compiledMarkdownComponent" v-else /> -->
 
-					<div v-else v-for="content in processedContent">
+					<div v-for="(content, index) in processedContent" v-else :key="index">
 						<ChatMessageTextBlock v-if="content.type === 'text'" :value="content.value" />
 						<ChatMessageContentBlock v-else :value="content" />
 					</div>
@@ -213,7 +213,7 @@ import 'highlight.js/styles/github-dark-dimmed.css';
 import { marked } from 'marked';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
-import truncate from 'truncate-html';
+// import truncate from 'truncate-html';
 import DOMPurify from 'dompurify';
 import type { PropType } from 'vue';
 import { hideAllPoppers } from 'floating-vue';
@@ -221,8 +221,6 @@ import { hideAllPoppers } from 'floating-vue';
 import type { Message, MessageContent, CompletionPrompt } from '@/js/types';
 import api from '@/js/api';
 import { fetchBlobUrl } from '@/js/fileService';
-import CodeBlockHeader from '@/components/CodeBlockHeader.vue';
-import ChatMessageContentBlock from '@/components/ChatMessageContentBlock.vue';
 
 function processLatex(content) {
 	const blockLatexPattern = /\\\[\s*([\s\S]+?)\s*\\\]/g;
@@ -293,38 +291,6 @@ export default {
 		};
 	},
 
-	watch: {
-		message: {
-			immediate: true,
-			deep: true,
-			async handler(newMessage, oldMessage) {
-				// console.log('do it', newMessage.status, newMessage);
-
-				// There is an issue here if a message that is not the latest has an incomplete status
-				if (newMessage.status === 'Completed') {
-					this.computedAverageTimePerWord({ ...newMessage }, oldMessage ?? {});
-					this.handleMessageCompleted(newMessage);
-					return;
-				}
-
-				this.computedAverageTimePerWord({ ...newMessage }, oldMessage ?? {});
-				if (
-					!this.isRenderingMessage &&
-					this.showWordAnimation &&
-					newMessage.type !== 'LoadingMessage'
-				)
-					this.startRenderingMessage();
-			},
-		},
-
-		processedContent: {
-			deep: true,
-			handler() {
-				this.markSkippableContent();
-			}
-		},
-	},
-
 	computed: {
 		messageContent() {
 			return this.message.content ?? [];
@@ -349,8 +315,39 @@ export default {
 		},
 	},
 
-	async created() {
-		console.log('created');
+	watch: {
+		message: {
+			immediate: true,
+			deep: true,
+			handler(newMessage, oldMessage) {
+				// console.log('do it', newMessage.status, newMessage);
+
+				// There is an issue here if a message that is not the latest has an incomplete status
+				if (newMessage.status === 'Completed') {
+					this.computedAverageTimePerWord({ ...newMessage }, oldMessage ?? {});
+					this.handleMessageCompleted(newMessage);
+					return;
+				}
+
+				this.computedAverageTimePerWord({ ...newMessage }, oldMessage ?? {});
+				if (
+					!this.isRenderingMessage &&
+					this.showWordAnimation &&
+					newMessage.type !== 'LoadingMessage'
+				)
+					this.startRenderingMessage();
+			},
+		},
+
+		processedContent: {
+			deep: true,
+			handler() {
+				this.markSkippableContent();
+			},
+		},
+	},
+
+	created() {
 		this.createMarkedRenderer();
 
 		if (this.message.text && this.message.sender === 'User') {
@@ -379,7 +376,7 @@ export default {
 			return DOMPurify.sanitize(htmlContent);
 		},
 
-		async computedAverageTimePerWord(newMessage, oldMessage) {
+		computedAverageTimePerWord(newMessage, oldMessage) {
 			const newContent = newMessage.content ?? [];
 			const oldContent = oldMessage.content ?? [];
 
@@ -394,7 +391,7 @@ export default {
 			}
 
 			// Calculate the number of words in the new message content
-			let amountOfNewWords = newContent.reduce((acc, content) => {
+			const amountOfNewWords = newContent.reduce((acc, content) => {
 				return acc + (content.value?.match(/[\w'-]+/g) || []).length;
 			}, 0);
 
@@ -417,7 +414,7 @@ export default {
 			}
 		},
 
-		handleMessageCompleted(message) {
+		handleMessageCompleted() {
 			this.averageTimePerWordMS = MAX_WORD_SPEED_MS;
 			this.completed = true;
 		},

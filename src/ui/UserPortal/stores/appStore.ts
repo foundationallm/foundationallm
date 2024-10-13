@@ -16,7 +16,7 @@ import type {
 	MessageContent,
 } from '@/js/types';
 import api from '@/js/api';
-import eventBus from '@/js/eventBus';
+// import eventBus from '@/js/eventBus';
 
 const DEFAULT_POLLING_INTERVAL_MS = 5000;
 
@@ -373,31 +373,31 @@ export const useAppStore = defineStore('app', {
 		},
 
 		getPollingRateMS() {
-			return (this.coreConfiguration?.completionResponsePollingIntervalSeconds * 1000) || DEFAULT_POLLING_INTERVAL_MS;
+			return (
+				this.coreConfiguration?.completionResponsePollingIntervalSeconds * 1000 ||
+				DEFAULT_POLLING_INTERVAL_MS
+			);
 		},
 
-		async startPolling(message) {
+		startPolling(message) {
 			if (this.pollingInterval) return;
 
-			this.pollingInterval = setInterval(
-				async () => {
-					try {
-						const updatedMessage = await api.checkProcessStatus(message.operation_id);
-						this.currentMessages[this.currentMessages.length - 1] = {
-							...updatedMessage,
-							renderId: this.currentMessages[this.currentMessages.length - 1].renderId,
-						};
+			this.pollingInterval = setInterval(async () => {
+				try {
+					const updatedMessage = await api.checkProcessStatus(message.operation_id);
+					this.currentMessages[this.currentMessages.length - 1] = {
+						...updatedMessage,
+						renderId: this.currentMessages[this.currentMessages.length - 1].renderId,
+					};
 
-						if (updatedMessage.status === 'Completed' || updatedMessage.status === 'Failed') {
-							this.stopPolling();
-						}
-					} catch (error) {
-						console.error(error);
+					if (updatedMessage.status === 'Completed' || updatedMessage.status === 'Failed') {
 						this.stopPolling();
 					}
-				},
-				this.getPollingRateMS(),
-			);
+				} catch (error) {
+					console.error(error);
+					this.stopPolling();
+				}
+			}, this.getPollingRateMS());
 		},
 
 		stopPolling() {
