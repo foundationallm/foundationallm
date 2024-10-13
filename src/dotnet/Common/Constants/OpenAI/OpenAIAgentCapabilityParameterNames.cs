@@ -78,6 +78,11 @@
         /// </summary>
         public const string AssistantVectorStoreId = "OpenAI.Assistants.AssistantVectorStoreId";
 
+        /// <summary>
+        /// Indicates whether the Open AI assistant file vectorization process completed successfully.
+        /// </summary>
+        public const string AddAssistantFileToVectorStoreSuccess = "OpenAI.Assistants.AddAssistantFileToVectorStoreSuccess";
+
         #endregion
     }
 }
