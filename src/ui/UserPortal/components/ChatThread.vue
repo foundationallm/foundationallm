@@ -23,10 +23,10 @@
 					<ChatMessage
 						v-for="(message, index) in messages.slice().reverse()"
 						:id="`message-${getMessageOrderFromReversedIndex(index)}`"
-						:key="message.id || message.operation_id"
+						:key="message.renderId || message.id"
 						:message="message"
 						:show-word-animation="
-							index === 0 && (message.status === 'InProgress' || message.status === 'Pending')
+							index === 0 && (message.sender !== 'User')
 						"
 						role="log"
 						:aria-flowto="

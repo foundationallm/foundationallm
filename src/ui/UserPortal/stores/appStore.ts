@@ -18,7 +18,7 @@ import type {
 import api from '@/js/api';
 import eventBus from '@/js/eventBus';
 
-const POLLING_INTERVAL_MS = 1000;
+const POLLING_INTERVAL_MS = 5000;
 
 export const useAppStore = defineStore('app', {
 	state: () => ({
@@ -310,7 +310,7 @@ export const useAppStore = defineStore('app', {
 			const authStore = useAuthStore();
 			const tempUserMessage: Message = {
 				completionPromptId: null,
-				id: '',
+				id: null,
 				rating: null,
 				sender: 'User',
 				senderDisplayName: authStore.currentAccount?.name ?? 'You',
@@ -321,6 +321,7 @@ export const useAppStore = defineStore('app', {
 				type: 'Message',
 				vector: [],
 				attachmentDetails,
+				renderId: Math.random(),
 			};
 			this.currentMessages.push(tempUserMessage);
 
@@ -337,6 +338,7 @@ export const useAppStore = defineStore('app', {
 				type: 'LoadingMessage',
 				vector: [],
 				status: 'Pending',
+				renderId: Math.random(),
 			};
 			this.currentMessages.push(tempAssistantMessage);
 
@@ -347,6 +349,11 @@ export const useAppStore = defineStore('app', {
 				agent,
 				relevantAttachments.map((attachment) => String(attachment.id)),
 			);
+			this.currentMessages[this.currentMessages.length - 1] = {
+				...tempAssistantMessage,
+				...message,
+				type: 'Message',
+			};
 
 			this.attachments = this.attachments.filter(
 				(attachment) => attachment.sessionId !== sessionId,
@@ -362,13 +369,16 @@ export const useAppStore = defineStore('app', {
 			// return message;
 		},
 
-		startPolling(message) {
+		async startPolling(message) {
 			if (this.pollingInterval) return;
 
 			this.pollingInterval = setInterval(async () => {
 				try {
 					const updatedMessage = await api.checkProcessStatus(message.operation_id);
-					this.currentMessages[this.currentMessages.length - 1] = { ...updatedMessage };
+					this.currentMessages[this.currentMessages.length - 1] = {
+						...updatedMessage,
+						renderId: this.currentMessages[this.currentMessages.length - 1].renderId,
+					};
 
 					if (updatedMessage.status === 'Completed' || updatedMessage.status === 'Failed') {
 						this.stopPolling();
@@ -391,18 +401,18 @@ export const useAppStore = defineStore('app', {
 		 * @param sessionId - The session ID associated with the operation.
 		 * @param operationId - The ID of the operation to check for completion.
 		 */
-		async pollForCompletion(sessionId: string, operationId: string) {
-			while (true) {
-				const status = await api.checkProcessStatus(operationId);
-				if (status.isCompleted) {
-					this.longRunningOperations.delete(sessionId);
-					eventBus.emit('operation-completed', { sessionId, operationId });
-					await this.getMessages();
-					break;
-				}
-				await new Promise((resolve) => setTimeout(resolve, 2000)); // Poll every 2 seconds
-			}
-		},
+		// async pollForCompletion(sessionId: string, operationId: string) {
+		// 	while (true) {
+		// 		const status = await api.checkProcessStatus(operationId);
+		// 		if (status.isCompleted) {
+		// 			this.longRunningOperations.delete(sessionId);
+		// 			eventBus.emit('operation-completed', { sessionId, operationId });
+		// 			await this.getMessages();
+		// 			break;
+		// 		}
+		// 		await new Promise((resolve) => setTimeout(resolve, 2000)); // Poll every 2 seconds
+		// 	}
+		// },
 
 		async rateMessage(messageToRate: Message, isLiked: Message['rating']) {
 			const existingMessage = this.currentMessages.find(
