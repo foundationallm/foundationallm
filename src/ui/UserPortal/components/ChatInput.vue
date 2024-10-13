@@ -48,8 +48,8 @@
 							<div
 								v-if="
 									fileArrayFiltered.length === 0 &&
-									oneDriveFiles.length === 0 &&
-									localFiles.length === 0
+									currentOneDriveFiles.length === 0 &&
+									currentLocalFiles.length === 0
 								"
 								class="file-upload-empty-desktop"
 							>
@@ -96,7 +96,7 @@
 								</div>
 								<Divider v-if="fileArrayFiltered.length > 0" />
 								<div
-									v-for="file of localFiles"
+									v-for="file of currentLocalFiles"
 									:key="file.name + file.type + file.size"
 									class="file-upload-file"
 								>
@@ -121,9 +121,9 @@
 										/>
 									</div>
 								</div>
-								<div v-if="oneDriveFiles && oneDriveFiles.length > 0">
+								<div v-if="currentOneDriveFiles && currentOneDriveFiles.length > 0">
 									<div
-										v-for="file of oneDriveFiles"
+										v-for="file of currentOneDriveFiles"
 										:key="file.name + file.size"
 										class="file-upload-file"
 									>
@@ -151,7 +151,7 @@
 								</div>
 							</div>
 							<div
-								v-if="oneDriveFiles.length > 0 || localFiles.length > 0"
+								v-if="currentOneDriveFiles.length > 0 || currentLocalFiles.length > 0"
 								class="file-upload-button-container"
 							>
 								<Button
@@ -159,13 +159,13 @@
 									label="Upload"
 									class="file-upload-container-button"
 									style="margin-top: 0.5rem"
-									:disabled="isUploading || (localFiles.length === 0 && oneDriveFiles.length === 0)"
+									:disabled="isUploading || (currentLocalFiles.length === 0 && currentOneDriveFiles.length === 0)"
 									@click="handleUpload"
 								/>
 							</div>
 						</template>
 					</FileUpload>
-					<Divider v-if="oneDriveFiles.length > 0 || localFiles.length > 0" />
+					<Divider v-if="currentOneDriveFiles.length > 0 || currentLocalFiles.length > 0" />
 					<div class="file-overlay-panel__footer">
 						<Button
 							:icon="!isMobile ? 'pi pi-file-plus' : undefined"
@@ -377,9 +377,13 @@ export default {
 					mode: 'multiple',
 				},
 			},
-			oneDriveFiles: [] as any[],
-			localFiles: [] as any[],
-			uploadedFiles: [] as any[],
+			sessionFiles: {
+            	sessionId: {
+					oneDriveFiles: [] as any[],
+					localFiles: [] as any[],
+					uploadedFiles: [] as any[]
+				}
+        	},
 			oneDriveBaseURL: null as string | null,
 			disconnectingOneDrive: false,
 			fileToDelete: null as any,
@@ -394,6 +398,22 @@ export default {
 			return this.$appStore.attachments.filter(
 				(attachment) => attachment.sessionId === this.$appStore.currentSession.sessionId,
 			);
+		},
+
+		currentSessionFiles() {
+			return this.getFilesForSession(this.$appStore.currentSession.sessionId);
+		},
+
+		currentOneDriveFiles() {
+			return this.currentSessionFiles.oneDriveFiles;
+		},
+
+		currentLocalFiles() {
+			return this.currentSessionFiles.localFiles;
+		},
+
+		currentUploadedFiles() {
+			return this.currentSessionFiles.uploadedFiles;
 		},
 	},
 
@@ -452,6 +472,40 @@ export default {
 	},
 
 	methods: {
+		getFilesForSession(sessionId) {
+			// Check if sessionFiles[sessionId] exists, if not, initialize it.
+			if (!this.sessionFiles[sessionId]) {
+				this.sessionFiles[sessionId] = { oneDriveFiles: [], localFiles: [], uploadedFiles: [] };
+			}
+			return this.sessionFiles[sessionId];
+		},
+		
+		addFileToSession(sessionId, file, type) {
+			const files = this.getFilesForSession(sessionId);
+			if (type === 'oneDrive') {
+				files.oneDriveFiles.push(file);
+			} else if (type === 'local') {
+				files.localFiles.push(file);
+			} else if (type === 'uploaded') {
+				files.uploadedFiles.push(file);
+			}
+		},
+
+		removeFileFromSession(sessionId, file, type) {
+			const files = this.getFilesForSession(sessionId);
+			if (type === 'oneDrive') {
+				files.oneDriveFiles = files.oneDriveFiles.filter(f => f !== file);
+			} else if (type === 'local') {
+				files.localFiles = files.localFiles.filter(f => f !== file);
+			} else if (type === 'uploaded') {
+				files.uploadedFiles = files.uploadedFiles.filter(f => f.name !== file.fileName);
+			}
+		},
+
+		clearFilesForSession(sessionId) {
+			this.sessionFiles[sessionId] = { oneDriveFiles: [], localFiles: [], uploadedFiles: [] };
+		},
+		
 		toggle(event: any) {
 			this.$refs.menu.toggle(event);
 		},
@@ -495,8 +549,12 @@ export default {
 				});
 			}
 
-			const totalFiles = this.localFiles.length + this.oneDriveFiles.length;
-			const combinedFiles = [...this.localFiles, ...this.oneDriveFiles];
+			// Use session-based file arrays
+			const sessionId = this.$appStore.currentSession.sessionId;
+			const currentFiles = this.getFilesForSession(sessionId);
+			const totalFiles = currentFiles.localFiles.length + currentFiles.oneDriveFiles.length;
+			const combinedFiles = [...currentFiles.localFiles, ...currentFiles.oneDriveFiles];
+
 			combinedFiles.forEach((file) => {
 				if (file instanceof File) {
 					file.source = 'local';
@@ -504,11 +562,12 @@ export default {
 					file.source = 'oneDrive';
 				}
 			});
+
 			let filesUploaded = 0;
 			let filesFailed = 0;
 			const filesProgress = [];
 
-			combinedFiles.forEach(async (file: any, index) => {
+			combinedFiles.forEach(async (file, index) => {
 				try {
 					if (file.source === 'local') {
 						const formData = new FormData();
@@ -529,7 +588,7 @@ export default {
 
 						await this.$appStore.uploadAttachment(
 							formData,
-							this.$appStore.currentSession.sessionId,
+							sessionId,
 							onProgress,
 						);
 					} else if (file.source === 'oneDrive') {
@@ -539,24 +598,21 @@ export default {
 						);
 					}
 					filesUploaded += 1;
-					this.uploadedFiles.push(file);
+					currentFiles.uploadedFiles.push(file);
 				} catch (error) {
 					filesFailed += 1;
 					this.$toast.add({
 						severity: 'error',
 						summary: 'Error',
-						detail: `File upload failed for "${file.name}". ${
-							error.message ? error.message : error.title ? error.title : ''
-						}`,
+						detail: `File upload failed for "${file.name}". ${error.message || error.title || ''}`,
 						life: 5000,
 					});
 				} finally {
 					if (totalFiles === filesUploaded + filesFailed) {
-						// this.showFileUploadDialog = false;
 						this.isUploading = false;
 						this.uploadProgress = 0;
-						this.oneDriveFiles = [];
-						this.localFiles = [];
+						currentFiles.oneDriveFiles = [];
+						currentFiles.localFiles = [];
 						if (this.$refs.menu.visible) {
 							this.$nextTick(() => {
 								this.$refs.menu.alignOverlay();
@@ -584,20 +640,24 @@ export default {
 
 		removeDialogFile() {
 			this.deleteFileProcessing = true;
+			const sessionId = this.$appStore.currentSession.sessionId;
+			const currentFiles = this.getFilesForSession(sessionId);
+
 			if (this.fileToDelete.type === 'local') {
-				this.removeLocalFile(this.fileToDelete.file);
+				this.removeLocalFile(currentFiles, this.fileToDelete.file);
 			} else if (this.fileToDelete.type === 'oneDrive') {
-				this.removeOneDriveFile(this.fileToDelete.file);
+				this.removeOneDriveFile(currentFiles, this.fileToDelete.file);
 			} else if (this.fileToDelete.type === 'attachment') {
-				this.removeAttachment(this.fileToDelete.file);
+				this.removeAttachment(currentFiles, this.fileToDelete.file);
 			}
+			this.removeFileFromSession(sessionId, this.fileToDelete.file, 'uploaded');
 		},
 
-		async removeAttachment(file: any) {
+		async removeAttachment(currentFiles, file) {
 			await this.$appStore.deleteAttachment(file);
 			this.fileToDelete = null;
 			this.deleteFileProcessing = false;
-			this.uploadedFiles = this.uploadedFiles.filter(
+			currentFiles.uploadedFiles = currentFiles.uploadedFiles.filter(
 				(uploadedFile) => uploadedFile.name !== file.name,
 			);
 
@@ -608,8 +668,8 @@ export default {
 			}
 		},
 
-		removeLocalFile(file: any) {
-			this.localFiles = this.localFiles.filter((localFile) => localFile.name !== file.name);
+		removeLocalFile(currentFiles, file) {
+			currentFiles.localFiles = currentFiles.localFiles.filter((localFile) => localFile.name !== file.name);
 			this.fileToDelete = null;
 			this.deleteFileProcessing = false;
 
@@ -620,8 +680,8 @@ export default {
 			}
 		},
 
-		removeOneDriveFile(file: any) {
-			this.oneDriveFiles = this.oneDriveFiles.filter(
+		removeOneDriveFile(currentFiles, file) {
+			currentFiles.oneDriveFiles = currentFiles.oneDriveFiles.filter(
 				(oneDriveFile) => oneDriveFile.name !== file.name,
 			);
 			this.fileToDelete = null;
@@ -653,22 +713,21 @@ export default {
 			return `${formattedSize} ${sizes[i]}`;
 		},
 
-		validateUploadedFiles(files: any) {
+		validateUploadedFiles(files, currentFiles) {
 			const allowedFileTypes = this.$appConfigStore.allowedUploadFileExtensions;
-			const filteredFiles: any[] = [];
+			const filteredFiles = [];
 
-			files.forEach((file: any) => {
-				const localFileAlreadyExists = this.localFiles.some(
-					(existingFile: any) => existingFile.name === file.name && existingFile.size === file.size,
+			files.forEach((file) => {
+				const localFileAlreadyExists = currentFiles.localFiles.some(
+					(existingFile) => existingFile.name === file.name && existingFile.size === file.size,
 				);
-				const oneDriveFileAlreadyExists = this.oneDriveFiles.some(
-					(existingFile: any) => existingFile.name === file.name && existingFile.size === file.size,
+				const oneDriveFileAlreadyExists = currentFiles.oneDriveFiles.some(
+					(existingFile) => existingFile.name === file.name && existingFile.size === file.size,
 				);
-				const uploadedFileAlreadyExists = this.uploadedFiles.some(
-					(existingFile: any) => existingFile.name === file.name && existingFile.size === file.size,
+				const uploadedFileAlreadyExists = currentFiles.uploadedFiles.some(
+					(existingFile) => existingFile.name === file.name && existingFile.size === file.size,
 				);
-				const fileAlreadyExists =
-					localFileAlreadyExists || oneDriveFileAlreadyExists || uploadedFileAlreadyExists;
+				const fileAlreadyExists = localFileAlreadyExists || oneDriveFileAlreadyExists || uploadedFileAlreadyExists;
 
 				if (fileAlreadyExists) return;
 
@@ -683,7 +742,7 @@ export default {
 					const fileExtension = file.name.split('.').pop()?.toLowerCase();
 					const isFileTypeAllowed = allowedFileTypes
 						.split(',')
-						.map((type: string) => type.trim().toLowerCase())
+						.map((type) => type.trim().toLowerCase())
 						.includes(fileExtension);
 
 					if (!isFileTypeAllowed) {
@@ -702,11 +761,8 @@ export default {
 			});
 
 			if (
-				this.localFiles.length +
-					this.oneDriveFiles.length +
-					this.uploadedFiles.length +
-					filteredFiles.length >
-				this.maxFiles
+				currentFiles.localFiles.length + currentFiles.oneDriveFiles.length + currentFiles.uploadedFiles.length + filteredFiles.length >
+					this.maxFiles
 			) {
 				this.$toast.add({
 					severity: 'error',
@@ -715,8 +771,7 @@ export default {
 					life: 5000,
 				});
 				filteredFiles.splice(
-					this.maxFiles -
-						(this.localFiles.length + this.oneDriveFiles.length + this.uploadedFiles.length),
+					this.maxFiles - (currentFiles.localFiles.length + currentFiles.oneDriveFiles.length + currentFiles.uploadedFiles.length),
 				);
 			}
 
@@ -724,10 +779,11 @@ export default {
 		},
 
 		fileSelected(event: any) {
-			const filteredFiles: any[] = [];
-			filteredFiles.push(...this.validateUploadedFiles(event.files));
+			const sessionId = this.$appStore.currentSession.sessionId;
+			const currentFiles = this.getFilesForSession(sessionId);
 
-			this.localFiles = [...this.localFiles, ...filteredFiles];
+			const filteredFiles = this.validateUploadedFiles(event.files, currentFiles);
+			currentFiles.localFiles = [...currentFiles.localFiles, ...filteredFiles];
 
 			if (this.$refs.fileUpload) {
 				this.$refs.fileUpload.clear();
@@ -868,7 +924,7 @@ export default {
 						id: message.id,
 					});
 
-					const command: any = message.data;
+					const command = message.data;
 
 					switch (command.command) {
 						case 'authenticate': {
@@ -899,11 +955,13 @@ export default {
 							this.showOneDriveIframeDialog = false;
 							break;
 
-						case 'pick':
-							const filteredFiles: any[] = [];
-							filteredFiles.push(...this.validateUploadedFiles(command.items));
+						case 'pick': {
+							const filteredFiles = [];
+							const sessionId = this.$appStore.currentSession.sessionId;
+							const currentFiles = this.getFilesForSession(sessionId);
 
-							this.oneDriveFiles.push(...filteredFiles);
+							filteredFiles.push(...this.validateUploadedFiles(command.items, currentFiles));
+							currentFiles.oneDriveFiles.push(...filteredFiles);
 
 							this.$nextTick(() => {
 								this.$refs.menu.alignOverlay();
@@ -923,6 +981,7 @@ export default {
 								},
 							});
 							break;
+						}
 
 						default:
 							console.warn(`Unsupported command: ${JSON.stringify(command)}`, 2);

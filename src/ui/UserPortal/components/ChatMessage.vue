@@ -816,6 +816,12 @@ $textColor: var(--accent-text);
 	width: 50vw;
 }
 
+.message__body img {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block !important;
+}
+
 @media only screen and (max-width: 950px) {
 	.prompt-dialog {
 		width: 90vw;
