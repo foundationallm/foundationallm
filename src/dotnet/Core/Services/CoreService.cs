@@ -363,6 +363,28 @@ public partial class CoreService(
             var operationContext = await _cosmosDBService.GetLongRunningOperationContextAsync(operationId);
             var operationStatus = await GetDownstreamAPIService(operationContext.GatekeeperOverride).GetCompletionOperationStatus(instanceId, operationId);
 
+            if ((DateTime.UtcNow - operationContext.StartTime).TotalMinutes > 30
+                && (operationStatus.Status == OperationStatus.Pending || operationStatus.Status == OperationStatus.InProgress))
+            {
+                // We've hit the hard stop time for the operation.
+
+                await _cosmosDBService.PatchSessionsItemPropertiesAsync<Message>(
+                    operationContext.AgentMessageId,
+                    operationContext.SessionId,
+                    new Dictionary<string, object?>
+                    {
+                        { "/status", OperationStatus.Failed },
+                        { "/text", "The completion operation has exceeded the maximum time allowed." }
+                    });
+
+                return new Message
+                {
+                    OperationId = operationId,
+                    Status = OperationStatus.Failed,
+                    Text = "The completion operation has exceeded the maximum time allowed."
+                };
+            }
+
             if (operationStatus.Result is JsonElement jsonElement)
             {
                 var completionResponse = jsonElement.Deserialize<CompletionResponse>();
@@ -545,20 +567,21 @@ public partial class CoreService(
     }
 
     /// <inheritdoc/>
-    public async Task<FileStoreConfiguration> GetFileStoreConfiguration(string instanceId, UnifiedUserIdentity userIdentity)
+    public async Task<CoreConfiguration> GetCoreConfiguration(string instanceId, UnifiedUserIdentity userIdentity)
     {
-        var appConfigurationValue = await _configurationResourceProvider.GetResourceAsync<AppConfigurationKeyBase>(
-            instanceId,
-            AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_MaxUploadsPerMessage,
-            userIdentity);
-
-        var configurationValue = ConfigurationValue<int>.Deserialize(appConfigurationValue.Value!);
-
-        var configuration = new FileStoreConfiguration
+        var configuration = new CoreConfiguration
         {
             FileStoreConnectors = await GetFileStoreConnectors(instanceId, userIdentity),
-            MaxUploadsPerMessage = configurationValue.GetValueForUser(userIdentity.UPN!)
+            MaxUploadsPerMessage = await GetCoreConfigurationValue<int>(
+                instanceId,
+                AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_MaxUploadsPerMessage,
+                userIdentity),
+            CompletionResponsePollingIntervalSeconds = await GetCoreConfigurationValue<int>(
+                instanceId,
+                AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CompletionResponsePollingIntervalSeconds,
+                userIdentity),
         };
+
         return configuration;
     }
 
@@ -771,6 +794,16 @@ public partial class CoreService(
         request.MessageHistory = messageHistoryList;
 
         return request;
+    }
+
+    private async Task<T> GetCoreConfigurationValue<T>(string instanceId, string configurationName, UnifiedUserIdentity userIdentity)
+    {
+        var appConfigurationValue = await _configurationResourceProvider.GetResourceAsync<AppConfigurationKeyBase>(
+            instanceId,
+            configurationName,
+            userIdentity);
+
+        return ConfigurationValue<T>.Deserialize(appConfigurationValue.Value!).GetValueForUser(userIdentity.UPN!);
     }
 
     private static async Task<string> GetBaseUrl(
