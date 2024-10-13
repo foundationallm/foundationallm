@@ -351,7 +351,11 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 image_generation_deployment_model = request.objects[model_object_id]["deployment_name"]
                 api_endpoint_object_id = request.objects[model_object_id]["endpoint_object_id"]
                 image_generation_client = self._get_image_gen_language_model(api_endpoint_object_id=api_endpoint_object_id, objects=request.objects, is_async=True)
-                image_service=ImageService(config=self.config, client=image_generation_client, deployment_name=image_generation_deployment_model)
+                image_service=ImageService(
+                    config=self.config,
+                    client=image_generation_client,
+                    deployment_name=image_generation_deployment_model,
+                    image_generator_tool_description=dalle_tool["description"])
                 
             # invoke/run the service
             assistant_response = assistant_svc.run(
@@ -546,7 +550,11 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 image_generation_deployment_model = request.objects[model_object_id]["deployment_name"]
                 api_endpoint_object_id = request.objects[model_object_id]["endpoint_object_id"]
                 image_generation_client = self._get_image_gen_language_model(api_endpoint_object_id=api_endpoint_object_id, objects=request.objects, is_async=True)
-                image_service=ImageService(config=self.config, client=image_generation_client, deployment_name=image_generation_deployment_model)
+                image_service=ImageService(
+                    config=self.config,
+                    client=image_generation_client,
+                    deployment_name=image_generation_deployment_model,
+                    image_generator_tool_description=dalle_tool["description"])
 
             # invoke/run the service
             assistant_response = await assistant_svc.arun(
