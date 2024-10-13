@@ -82,9 +82,10 @@ export const useAuthStore = defineStore('auth', {
 			}, timeUntilExpirationMS);
 
 			const refreshDate = new Date(tokenExpirationTimeMS);
-			SHOW_LOGS && console.log(
-				`Auth: Set access token timer refresh for ${refreshDate} (in ${timeUntilExpirationMS / 1000} seconds).`,
-			);
+			SHOW_LOGS &&
+				console.log(
+					`Auth: Set access token timer refresh for ${refreshDate} (in ${timeUntilExpirationMS / 1000} seconds).`,
+				);
 		},
 
 		async tryTokenRefresh() {

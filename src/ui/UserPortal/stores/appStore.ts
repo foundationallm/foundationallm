@@ -231,7 +231,10 @@ export const useAppStore = defineStore('app', {
 
 				// For older messages that have a status of "Pending" but no operation id, assume
 				// it is complete and do no initiate polling as it will return empty data
-				if (latestMessage.operation_id && (latestMessage.status === 'InProgress' || latestMessage.status === 'Pending')) {
+				if (
+					latestMessage.operation_id &&
+					(latestMessage.status === 'InProgress' || latestMessage.status === 'Pending')
+				) {
 					this.startPolling(latestMessage);
 				}
 			}
@@ -372,24 +375,25 @@ export const useAppStore = defineStore('app', {
 		async startPolling(message) {
 			if (this.pollingInterval) return;
 
-			this.pollingInterval = setInterval(async () => {
-				try {
-					const updatedMessage = await api.checkProcessStatus(message.operation_id);
-					this.currentMessages[this.currentMessages.length - 1] = {
-						...updatedMessage,
-						renderId: this.currentMessages[this.currentMessages.length - 1].renderId,
-					};
+			this.pollingInterval = setInterval(
+				async () => {
+					try {
+						const updatedMessage = await api.checkProcessStatus(message.operation_id);
+						this.currentMessages[this.currentMessages.length - 1] = {
+							...updatedMessage,
+							renderId: this.currentMessages[this.currentMessages.length - 1].renderId,
+						};
 
-					if (updatedMessage.status === 'Completed' || updatedMessage.status === 'Failed') {
+						if (updatedMessage.status === 'Completed' || updatedMessage.status === 'Failed') {
+							this.stopPolling();
+						}
+					} catch (error) {
+						console.error(error);
 						this.stopPolling();
 					}
-				} catch (error) {
-					console.error(error);
-					this.stopPolling();
-				}
-
-			}, (this.coreConfiguration?.completionResponsePollingIntervalSeconds ?? 5) * 1000 || 5000);
-
+				},
+				(this.coreConfiguration?.completionResponsePollingIntervalSeconds ?? 5) * 1000 || 5000,
+			);
 		},
 
 		stopPolling() {

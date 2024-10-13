@@ -371,9 +371,7 @@ export default {
 	 * @returns {Promise<CoreConfiguration>} A promise that resolves to the core configuration.
 	 */
 	async getCoreConfiguration() {
-		return (await this.fetch(
-			`/instances/${this.instanceId}/configuration`,
-		)) as CoreConfiguration;
+		return (await this.fetch(`/instances/${this.instanceId}/configuration`)) as CoreConfiguration;
 	},
 
 	/**

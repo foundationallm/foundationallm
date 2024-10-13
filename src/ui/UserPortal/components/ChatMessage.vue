@@ -298,7 +298,7 @@ export default {
 		message: {
 			immediate: true,
 			deep: true,
-			async handler(newMessage, oldMessage)  {
+			async handler(newMessage, oldMessage) {
 				// console.log('do it', newMessage.status, newMessage);
 
 				// There is an issue here if a message that is not the latest has an incomplete status
@@ -309,8 +309,13 @@ export default {
 				}
 
 				this.computedAverageTimePerWord({ ...newMessage }, oldMessage ?? {});
-				if (!this.isRenderingMessage && this.showWordAnimation && newMessage.type !== 'LoadingMessage') this.startRenderingMessage();
-			}
+				if (
+					!this.isRenderingMessage &&
+					this.showWordAnimation &&
+					newMessage.type !== 'LoadingMessage'
+				)
+					this.startRenderingMessage();
+			},
 		},
 
 		processedContent() {
@@ -324,7 +329,11 @@ export default {
 		},
 
 		messageDisplayStatus() {
-			if (this.message.status === 'Failed' || (this.message.status === 'Completed' && !this.isRenderingMessage)) return null;
+			if (
+				this.message.status === 'Failed' ||
+				(this.message.status === 'Completed' && !this.isRenderingMessage)
+			)
+				return null;
 
 			if (this.isRenderingMessage && this.messageContent.length > 0) return 'Responding';
 
@@ -427,7 +436,11 @@ export default {
 			// If the processed content block is the same as the current content block,
 			// and there is a new one, then we know to move to the next block
 			// check content !== for files blocks that are still null, but the next block is already generated
-			if (this.messageContent[currentContentIndex + 1] && content === processedContent && !!content) {
+			if (
+				this.messageContent[currentContentIndex + 1] &&
+				content === processedContent &&
+				!!content
+			) {
 				currentContentIndex += 1;
 				this.currentWordIndex = 0;
 
@@ -458,8 +471,11 @@ export default {
 			}
 
 			// If the current block is still rendering, or there is another block, or the message is still processing
-			if ((content !== processedContent && !!content) ||
-				this.messageContent[currentContentIndex + 1] || !this.completed) {
+			if (
+				(content !== processedContent && !!content) ||
+				this.messageContent[currentContentIndex + 1] ||
+				!this.completed
+			) {
 				return setTimeout(() => this.displayWordByWord(), this.averageTimePerWordMS);
 			}
 
@@ -803,9 +819,9 @@ $textColor: var(--accent-text);
 }
 
 .message__body img {
-    max-width: 100% !important;
-    height: auto !important;
-    display: block !important;
+	max-width: 100% !important;
+	height: auto !important;
+	display: block !important;
 }
 
 @media only screen and (max-width: 950px) {
