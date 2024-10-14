@@ -313,6 +313,18 @@ export default {
 
 	computed: {
 		messageContent() {
+			if (this.message.status === 'Failed') {
+				const failedMessage = this.message.text ?? 'Failed to generate a response.';
+				return [
+					{
+						type: 'text',
+						content: failedMessage,
+						value: failedMessage,
+						origValue: failedMessage,
+					}
+				];
+			}
+
 			return this.message.content ?? [];
 		},
 
@@ -343,7 +355,7 @@ export default {
 			deep: true,
 			handler(newMessage, oldMessage) {
 				// There is an issue here if a message that is not the latest has an incomplete status
-				if (newMessage.status === 'Completed') {
+				if (newMessage.status === 'Completed' || newMessage.status === 'Failed') {
 					this.computedAverageTimePerWord({ ...newMessage }, oldMessage ?? {});
 					this.handleMessageCompleted(newMessage);
 					return;
