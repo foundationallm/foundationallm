@@ -211,8 +211,8 @@ Class StateService  <a class="header-action link-secondary" title="View source" 
 
   <a id="FoundationaLLM_State_Services_StateService_CreateLongRunningOperation_" data-uid="FoundationaLLM.State.Services.StateService.CreateLongRunningOperation*"></a>
 
-  <h3 id="FoundationaLLM_State_Services_StateService_CreateLongRunningOperation_System_String_" data-uid="FoundationaLLM.State.Services.StateService.CreateLongRunningOperation(System.String)">
-  CreateLongRunningOperation(string)
+  <h3 id="FoundationaLLM_State_Services_StateService_CreateLongRunningOperation_System_String_System_String_" data-uid="FoundationaLLM.State.Services.StateService.CreateLongRunningOperation(System.String,System.String)">
+  CreateLongRunningOperation(string, string)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/State/Services/StateService.cs/#L50"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -221,13 +221,16 @@ Class StateService  <a class="header-action link-secondary" title="View source" 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;LongRunningOperation&gt; CreateLongRunningOperation(string operationId)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;LongRunningOperation&gt; CreateLongRunningOperation(string operationId, string upn)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>operationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The long-running operation identifier.</p>
+</dd>
+    <dt><code>upn</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The User Principal Name (UPN) of the user who triggered the long-running operation.</p>
 </dd>
   </dl>
 
@@ -397,7 +400,7 @@ Class StateService  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="FoundationaLLM_State_Services_StateService_UpsertLongRunningOperation_FoundationaLLM_Common_Models_Orchestration_LongRunningOperation_" data-uid="FoundationaLLM.State.Services.StateService.UpsertLongRunningOperation(FoundationaLLM.Common.Models.Orchestration.LongRunningOperation)">
   UpsertLongRunningOperation(LongRunningOperation)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/State/Services/StateService.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/State/Services/StateService.cs/#L64"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Inserts or updates a long-running operation and creates a log entry.</p>
@@ -435,7 +438,7 @@ Class StateService  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="FoundationaLLM_State_Services_StateService_UpsertLongRunningOperationResult_System_Object_" data-uid="FoundationaLLM.State.Services.StateService.UpsertLongRunningOperationResult(System.Object)">
   UpsertLongRunningOperationResult(dynamic)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/State/Services/StateService.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/State/Services/StateService.cs/#L71"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Inserts or updates the result of a long-running operation.</p>
