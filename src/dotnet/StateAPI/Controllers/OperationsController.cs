@@ -62,11 +62,23 @@ namespace FoundationaLLM.State.API.Controllers
         /// </summary>
         /// <param name="operationId">The ID of the long running operation.</param>
         /// <param name="instanceId">The FoundationaLLM instance ID.</param>
+        /// <param name="body">The request body, containing the identity of the user who triggered the long-running operation.</param>
         /// <returns></returns>
         [HttpPost("{operationId}")]
-        public async Task<IActionResult> CreateLongRunningOperation(string instanceId, string operationId)
+        public async Task<IActionResult> CreateLongRunningOperation(string instanceId, string operationId, [FromBody] JsonElement body)
         {
-            var createdLongRunningOperation = await stateService.CreateLongRunningOperation(operationId);            
+            var requestBody = JsonSerializer.Deserialize<Dictionary<string, Object>>(body);
+            if (requestBody == null)
+            {
+                return BadRequest("A request body containing the user principal name (UPN) of the user submitting the operation is required.");
+            }
+            var upn = requestBody["upn"].ToString();
+            if (upn == null)
+            {
+                return BadRequest("The user principal name (UPN) of the user submitting the operation was not found in the request body. It is required.");
+            }
+
+            var createdLongRunningOperation = await stateService.CreateLongRunningOperation(operationId, upn);
             return new OkObjectResult(createdLongRunningOperation);
         }
 
