@@ -82,15 +82,15 @@ export interface ChatSessionProperties {
 }
 
 export interface LongRunningOperation {
-    id?: string;
-    type: string;
-    operation_id?: string;
-    status: string;
-    status_message?: string;
-    last_updated?: Date;
-    ttl: number;
-    prompt_tokens: number;
-    result?: Message;
+	id?: string;
+	type: string;
+	operation_id?: string;
+	status: string;
+	status_message?: string;
+	last_updated?: Date;
+	ttl: number;
+	prompt_tokens: number;
+	result?: Message;
 }
 
 export interface CompletionPrompt {
