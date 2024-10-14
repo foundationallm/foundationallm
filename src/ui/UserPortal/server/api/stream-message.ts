@@ -28,7 +28,7 @@ function stopGeneration() {
 	clearInterval(generationInterval);
 }
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(() => {
 	if (!isGenerating) {
 		startGeneration();
 	}

@@ -2,7 +2,6 @@ using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
-using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
@@ -97,8 +96,8 @@ public interface ICoreService
     /// </summary>
     /// <param name="instanceId">The FoundationaLLM instance id.</param>
     /// <param name="operationId">The OperationId for which to retrieve the status.</param>
-    /// <returns>Returns a <see cref="Message"/> object containing the agent's response message.</returns>
-    Task<Message> GetCompletionOperationStatus(string instanceId, string operationId);
+    /// <returns>Returns a <see cref="LongRunningOperation"/> object containing the OperationId, Status, and result.</returns>
+    Task<LongRunningOperation> GetCompletionOperationStatus(string instanceId, string operationId);
 
     /// <summary>
     /// Uploads an attachment.

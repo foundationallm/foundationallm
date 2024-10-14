@@ -197,6 +197,20 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage",
+            "value": "{ 'value': 10, 'value_exceptions': []}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds",
+            "value": "{ 'value': 10, 'value_exceptions': []}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:Instance",
             "value": "https://login.microsoftonline.com/",
             "label": null,
@@ -486,6 +500,13 @@
         {
             "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAccounts",
             "value": "${env:AZURE_OPENAI_ID}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAssistantsMaxVectorizationTimeSeconds",
+            "value": "120",
             "label": null,
             "content_type": "",
             "tags": {}

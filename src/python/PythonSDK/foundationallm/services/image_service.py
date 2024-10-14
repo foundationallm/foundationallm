@@ -5,13 +5,13 @@ from foundationallm.config import Configuration
 from foundationallm.storage import BlobStorageManager
 from openai import AzureOpenAI, AsyncAzureOpenAI
 from openai.types import CompletionUsage
-from typing import List, Union
+from typing import List, Union, Optional
 
 class ImageService:
     """
     Performs image analysis and generation via the Azure OpenAI SDK.
     """
-    def __init__(self, config: Configuration, client: Union[AzureOpenAI, AsyncAzureOpenAI], deployment_name: str):
+    def __init__(self, config: Configuration, client: Union[AzureOpenAI, AsyncAzureOpenAI], deployment_name: str, image_generator_tool_description: Optional[str] = None):
         """
         Initializes an Image Service, which performs image analysis and generation.
 
@@ -23,10 +23,13 @@ class ImageService:
             The Azure OpenAI client to use for image analysis.
         deployment_model : str
             The deployment model to use for the Azure OpenAI client.
+        image_generator_tool_description : str
+            The description of the image generator tool.
         """
         self.config = config
         self.client = client
         self.deployment_name = deployment_name
+        self.image_generator_tool_description = image_generator_tool_description
 
     def _get_as_base64(self, mime_type: str, storage_account_name, file_path: str) -> str:
         """
@@ -218,6 +221,17 @@ class ImageService:
             )
             return json.loads(result.model_dump_json())
         except Exception as e:
+            # Specifically handle content policy violation errors.
+            err = e.message[e.message.find("{"):e.message.rfind("}")+1]            
+            err_json = err.replace("'", '"')
+            err_json = err_json.replace("True", "true").replace("False", "false")
+            obj = json.loads(err_json)            
+            if(obj and obj['error'] and obj['error']['code'] and obj['error']['code'] == "content_policy_violation"):                
+                cfr = obj['error']['inner_error']['content_filter_results']
+                filtered = [k for k, v in cfr.items() if v['filtered']]               
+                error_fmt = f"Error generating image: Content policy violation for the following category: {', '.join(filtered)}"                
+                return error_fmt
+            # Return other messages as-is.
             return f"Error generating image: {e}"
 
     def generate_image(
@@ -250,7 +264,7 @@ class ImageService:
         if function_name == 'generate_image':
             return {
                 "name": "generate_image",
-                "description": "Generates an image based on a prompt.",
+                "description": self.image_generator_tool_description,
                 "parameters": {
                     "type": "object",
                     "properties": {

@@ -74,7 +74,7 @@
 					<!-- Render the html content and any vue components within -->
 					<!-- <component :is="compiledMarkdownComponent" v-else /> -->
 
-					<div v-else v-for="content in processedContent">
+					<div v-for="(content, index) in processedContent" v-else :key="index">
 						<ChatMessageTextBlock v-if="content.type === 'text'" :value="content.value" />
 						<ChatMessageContentBlock v-else :value="content" />
 					</div>
@@ -213,7 +213,7 @@ import 'highlight.js/styles/github-dark-dimmed.css';
 import { marked } from 'marked';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
-import truncate from 'truncate-html';
+// import truncate from 'truncate-html';
 import DOMPurify from 'dompurify';
 import type { PropType } from 'vue';
 import { hideAllPoppers } from 'floating-vue';
@@ -221,8 +221,6 @@ import { hideAllPoppers } from 'floating-vue';
 import type { Message, MessageContent, CompletionPrompt } from '@/js/types';
 import api from '@/js/api';
 import { fetchBlobUrl } from '@/js/fileService';
-import CodeBlockHeader from '@/components/CodeBlockHeader.vue';
-import ChatMessageContentBlock from '@/components/ChatMessageContentBlock.vue';
 
 function processLatex(content) {
 	const blockLatexPattern = /\\\[\s*([\s\S]+?)\s*\\\]/g;
@@ -255,8 +253,27 @@ function trimToWordCount(str, count) {
 	return str.substring(0, index).trim();
 }
 
-const MAX_WORD_SPEED_MS = 35;
-const POLLING_INTERVAL_MS = 1000;
+function getWordCount(str) {
+	let wordCount = 0;
+	let index = 0;
+
+	str = str.trim();
+
+	while (index < str.length) {
+		if (str[index] === ' ' && str[index - 1] !== ' ' && index > 0) {
+			wordCount++;
+		}
+		index++;
+	}
+
+	if (str.length > 0) {
+		wordCount++;
+	}
+
+	return wordCount;
+}
+
+const MAX_WORD_SPEED_MS = 15;
 
 export default {
 	name: 'ChatMessage',
@@ -280,9 +297,6 @@ export default {
 			prompt: {} as CompletionPrompt,
 			viewPrompt: false,
 			currentWordIndex: 0,
-			messageContent: this.message.content
-				? (JSON.parse(JSON.stringify(this.message.content)) as MessageContent[])
-				: [],
 			isAnalysisModalVisible: false,
 			isMobile: window.screen.width < 950,
 			markedRenderer: null,
@@ -297,33 +311,37 @@ export default {
 		};
 	},
 
-	watch: {
-		async message(newMessage) {
-			// There is an issue here if a message that is not the latest has an incomplete status
-			if (newMessage.status === 'Completed') {
-				this.updateMessage({ ...newMessage });
-				this.handleMessageCompleted(newMessage);
-				return;
+	computed: {
+		messageContent() {
+			if (this.message.status === 'Failed') {
+				const failedMessage = this.message.text ?? 'Failed to generate a response.';
+				return [
+					{
+						type: 'text',
+						content: failedMessage,
+						value: failedMessage,
+						origValue: failedMessage,
+					}
+				];
 			}
 
-			this.updateMessage({ ...newMessage });
-			if (!this.isRenderingMessage && this.showWordAnimation) this.displayWordByWord();
+			return this.message.content ?? [];
 		},
 
-		processedContent() {
-			this.markSkippableContent();
-		},
-	},
-
-	computed: {
 		messageDisplayStatus() {
-			if (this.message.status === 'Failed' || (this.message.status === 'Completed' && !this.isRenderingMessage)) return null;
+			if (
+				this.message.status === 'Failed' ||
+				(this.message.status === 'Completed' && !this.isRenderingMessage)
+			)
+				return null;
 
-			if (this.isRenderingMessage && this.messageContent.length > 0) return 'Generating';
+			if (this.isRenderingMessage && this.messageContent.length > 0) return 'Responding';
 
+			// Account for old messages that are complete (status of "Pending" with null operation_id)
+			const isPending = this.message.status === 'Pending' && this.message.operation_id;
 			if (
 				this.showWordAnimation &&
-				(this.message.status === 'Pending' || this.message.status === 'InProgress')
+				(isPending || this.message.status === 'InProgress' || this.message.status === 'Loading')
 			)
 				return 'Thinking';
 
@@ -331,7 +349,38 @@ export default {
 		},
 	},
 
-	async created() {
+	watch: {
+		message: {
+			immediate: true,
+			deep: true,
+			handler(newMessage, oldMessage) {
+				// There is an issue here if a message that is not the latest has an incomplete status
+				if (newMessage.status === 'Completed') {
+					this.computedAverageTimePerWord({ ...newMessage }, oldMessage ?? {});
+					this.handleMessageCompleted(newMessage);
+					return;
+				}
+
+				this.computedAverageTimePerWord({ ...newMessage }, oldMessage ?? {});
+				if (
+					!this.isRenderingMessage &&
+					this.showWordAnimation &&
+					newMessage.type !== 'LoadingMessage' &&
+					newMessage.operation_id
+				)
+					this.startRenderingMessage();
+			},
+		},
+
+		processedContent: {
+			deep: true,
+			handler() {
+				this.markSkippableContent();
+			},
+		},
+	},
+
+	created() {
 		this.createMarkedRenderer();
 
 		if (this.message.text && this.message.sender === 'User') {
@@ -344,8 +393,10 @@ export default {
 			];
 		} else if (this.message.content) {
 			this.processedContent = this.message.content.map((content) => {
+				this.currentWordIndex = getWordCount(content.value);
 				return {
 					type: content.type,
+					content,
 					value: this.processContentBlock(content.value),
 					origValue: content.value,
 				};
@@ -360,21 +411,22 @@ export default {
 			return DOMPurify.sanitize(htmlContent);
 		},
 
-		async updateMessage(newMessage) {
-			if (!newMessage.content) newMessage.content = [];
+		computedAverageTimePerWord(newMessage, oldMessage) {
+			const newContent = newMessage.content ?? [];
+			const oldContent = oldMessage.content ?? [];
 
 			this.pollingIteration += 1;
 
 			// Calculate the number of words in the previous message content
 			let amountOfOldWords = 0;
-			if (this.messageContent) {
-				amountOfOldWords = this.messageContent.reduce((acc, content) => {
+			if (oldContent) {
+				amountOfOldWords = oldContent.reduce((acc, content) => {
 					return acc + (content.value?.match(/[\w'-]+/g) || []).length;
 				}, 0);
 			}
 
 			// Calculate the number of words in the new message content
-			let amountOfNewWords = newMessage.content.reduce((acc, content) => {
+			const amountOfNewWords = newContent.reduce((acc, content) => {
 				return acc + (content.value?.match(/[\w'-]+/g) || []).length;
 			}, 0);
 
@@ -383,7 +435,7 @@ export default {
 
 			if (newWordsGenerated > 0) {
 				this.totalWordsGenerated += newWordsGenerated;
-				this.totalTimeElapsed += POLLING_INTERVAL_MS;
+				this.totalTimeElapsed += this.$appStore.getPollingRateMS();
 			}
 
 			// Calculate the average time per word
@@ -395,17 +447,17 @@ export default {
 						? Number((this.totalTimeElapsed / this.totalWordsGenerated).toFixed(2))
 						: 0;
 			}
-
-			this.messageContent = newMessage.content;
-
-			// if (this.totalWordsGenerated > 0) {
-			// 	this.newMessage.type = newMessage.type;
-			// }
 		},
 
-		handleMessageCompleted(message) {
+		handleMessageCompleted() {
 			this.averageTimePerWordMS = MAX_WORD_SPEED_MS;
 			this.completed = true;
+		},
+
+		startRenderingMessage() {
+			if (this.isRenderingMessage) return;
+
+			this.displayWordByWord();
 		},
 
 		displayWordByWord() {
@@ -418,7 +470,11 @@ export default {
 			// If the processed content block is the same as the current content block,
 			// and there is a new one, then we know to move to the next block
 			// check content !== for files blocks that are still null, but the next block is already generated
-			if (this.messageContent[currentContentIndex + 1] && content === processedContent && content !== null) {
+			if (
+				this.messageContent[currentContentIndex + 1] &&
+				content === processedContent &&
+				!!content
+			) {
 				currentContentIndex += 1;
 				this.currentWordIndex = 0;
 
@@ -436,7 +492,7 @@ export default {
 						type: this.messageContent[currentContentIndex]?.type,
 						content: truncatedContent,
 						value: this.processContentBlock(truncatedContent),
-						origValue: this.message[currentContentIndex]?.value,
+						origValue: this.messageContent[currentContentIndex]?.value,
 					};
 				} else {
 					this.processedContent[currentContentIndex] = {
@@ -450,22 +506,23 @@ export default {
 
 			// If the current block is still rendering, or there is another block, or the message is still processing
 			if (
-				content !== processedContent ||
+				(content !== processedContent && !!content) ||
 				this.messageContent[currentContentIndex + 1] ||
 				!this.completed
 			) {
 				return setTimeout(() => this.displayWordByWord(), this.averageTimePerWordMS);
 			}
 
+			// Trigger after polling rate from message completion to ensure message is always rendered on completion:
 			// Just to make sure the message renders fully in the case the animation fails
-			this.processedContent = this.messageContent.map((content) => {
-				return {
-					type: content.type,
-					content,
-					value: content.type === 'text' ? this.processContentBlock(content.value) : content.value,
-					origValue: content.value,
-				};
-			});
+			// this.processedContent = this.messageContent.map((content) => {
+			// 	return {
+			// 		type: content.type,
+			// 		content,
+			// 		value: content.type === 'text' ? this.processContentBlock(content.value) : content.value,
+			// 		origValue: content.value,
+			// 	};
+			// });
 
 			this.isRenderingMessage = false;
 		},
@@ -793,6 +850,12 @@ $textColor: var(--accent-text);
 }
 .prompt-dialog {
 	width: 50vw;
+}
+
+.message__body img {
+	max-width: 100% !important;
+	height: auto !important;
+	display: block !important;
 }
 
 @media only screen and (max-width: 950px) {

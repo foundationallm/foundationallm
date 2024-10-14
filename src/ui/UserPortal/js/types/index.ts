@@ -81,6 +81,18 @@ export interface ChatSessionProperties {
 	name: string;
 }
 
+export interface LongRunningOperation {
+    id?: string;
+    type: string;
+    operation_id?: string;
+    status: string;
+    status_message?: string;
+    last_updated?: Date;
+    ttl: number;
+    prompt_tokens: number;
+    result?: Message;
+}
+
 export interface CompletionPrompt {
 	id: string;
 	type: string;
@@ -135,17 +147,17 @@ export interface UserProfile {
 	flags: Record<string, boolean>;
 }
 
-export interface CoreConfiguration {
-	maxUploadsPerMessage: number;
-	fileStoreConnectors?: FileStoreConnector[];
-	completionResponsePollingIntervalSeconds: number;
-}
-
 export interface FileStoreConnector {
 	name: string;
 	category: string;
 	subcategory: string;
 	url: string;
+}
+
+export interface CoreConfiguration {
+	maxUploadsPerMessage: number;
+	fileStoreConnectors?: FileStoreConnector[];
+	completionResponsePollingIntervalSeconds: number;
 }
 
 export interface OneDriveWorkSchool {

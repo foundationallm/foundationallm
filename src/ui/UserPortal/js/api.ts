@@ -1,6 +1,7 @@
 import type {
 	Message,
 	Session,
+	LongRunningOperation,
 	UserProfile,
 	CoreConfiguration,
 	OneDriveWorkSchool,
@@ -148,8 +149,7 @@ export default {
 		try {
 			const response = await this.fetch(
 				`/instances/${this.instanceId}/async-completions/${operationId}/status`,
-			);
-
+			) as LongRunningOperation;
 			return response;
 		} catch (error) {
 			throw new Error(formatError(error));
@@ -371,9 +371,7 @@ export default {
 	 * @returns {Promise<CoreConfiguration>} A promise that resolves to the core configuration.
 	 */
 	async getCoreConfiguration() {
-		return (await this.fetch(
-			`/instances/${this.instanceId}/configuration`,
-		)) as CoreConfiguration;
+		return (await this.fetch(`/instances/${this.instanceId}/configuration`)) as CoreConfiguration;
 	},
 
 	/**

@@ -7,6 +7,7 @@ using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Azure.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
@@ -23,16 +24,16 @@ using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Utils;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Azure.Cosmos.Serialization.HybridRow;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using FoundationaLLM.Common.Models.Azure.CosmosDB;
 using Conversation = FoundationaLLM.Common.Models.Conversation.Conversation;
 using LongRunningOperation = FoundationaLLM.Common.Models.Orchestration.LongRunningOperation;
 using Message = FoundationaLLM.Common.Models.Conversation.Message;
-using FoundationaLLM.Common.Models.Orchestration;
 
 namespace FoundationaLLM.Core.Services;
 
@@ -337,6 +338,38 @@ public partial class CoreService(
             // Start the completion operation.
             var result = await GetDownstreamAPIService(agentOption).StartCompletionOperation(instanceId, completionRequest);
 
+            if (result.Status == OperationStatus.Failed)
+            {
+                // In case the completion operation fails to start properly, we need to update the user and agent messages accordingly.
+
+                var patchOperations = new List<IPatchOperationItem>
+                {
+                    new PatchOperationItem<Message>
+                    {
+                        ItemId = conversationItems.UserMessage.Id,
+                        PropertyValues = new Dictionary<string, object?>
+                        {
+                            { "/status", OperationStatus.Failed },
+                            { "/text", result.StatusMessage }
+                        }
+                    },
+                    new PatchOperationItem<Message>
+                    {
+                        ItemId = conversationItems.AgentMessage.Id,
+                        PropertyValues = new Dictionary<string, object?>
+                        {
+                            { "/status", OperationStatus.Failed },
+                            { "/text", result.StatusMessage }
+                        }
+                    }
+                };
+
+                var patchedItems = await _cosmosDBService.PatchMultipleSessionsItemsInTransactionAsync(
+                    completionRequest.SessionId!,
+                    patchOperations
+                );
+            }
+
             return result;
         }
         catch (Exception ex)
@@ -356,7 +389,7 @@ public partial class CoreService(
     }
 
     /// <inheritdoc/>
-    public async Task<Message> GetCompletionOperationStatus(string instanceId, string operationId)
+    public async Task<LongRunningOperation> GetCompletionOperationStatus(string instanceId, string operationId)
     {
         try
         {
@@ -368,20 +401,44 @@ public partial class CoreService(
             {
                 // We've hit the hard stop time for the operation.
 
-                await _cosmosDBService.PatchSessionsItemPropertiesAsync<Message>(
-                    operationContext.AgentMessageId,
-                    operationContext.SessionId,
-                    new Dictionary<string, object?>
+                var patchOperations = new List<IPatchOperationItem>
+                {
+                    new PatchOperationItem<Message>
                     {
-                        { "/status", OperationStatus.Failed },
-                        { "/text", "The completion operation has exceeded the maximum time allowed." }
-                    });
+                        ItemId = operationContext.UserMessageId,
+                        PropertyValues = new Dictionary<string, object?>
+                        {
+                            { "/status", OperationStatus.Failed },
+                            { "/text", "The completion operation has exceeded the maximum time allowed." }
+                        }
+                    },
+                    new PatchOperationItem<Message>
+                    {
+                        ItemId = operationContext.AgentMessageId,
+                        PropertyValues = new Dictionary<string, object?>
+                        {
+                            { "/status", OperationStatus.Failed },
+                            { "/text", "The completion operation has exceeded the maximum time allowed." }
+                        }
+                    }
+                };
 
-                return new Message
+                var patchedItems = await _cosmosDBService.PatchMultipleSessionsItemsInTransactionAsync(
+                    operationContext.SessionId,
+                    patchOperations
+                );
+
+                return new LongRunningOperation
                 {
                     OperationId = operationId,
-                    Status = OperationStatus.Failed,
-                    Text = "The completion operation has exceeded the maximum time allowed."
+                    StatusMessage = "The completion operation has exceeded the maximum time allowed.",
+                    Result = new Message
+                    {
+                        OperationId = operationId,
+                        Status = OperationStatus.Failed,
+                        Text = "The completion operation has exceeded the maximum time allowed."
+                    },
+                    Status = OperationStatus.Failed
                 };
             }
 
@@ -394,25 +451,47 @@ public partial class CoreService(
                     completionResponse!,
                     operationStatus.Status);
 
-                return agentMessage;
+                if (agentMessage.Content is { Count: > 0 })
+                {
+                    foreach (var content in agentMessage.Content)
+                    {
+                        content.Value = ResolveContentDeepLinks(content.Value, _baseUrl);
+                    }
+                }
+
+                operationStatus.Result = agentMessage;
+                if (completionResponse != null)
+                {
+                    operationStatus.PromptTokens = completionResponse.PromptTokens;
+                }
+
+                return operationStatus;
             }
 
-            return new Message
+            operationStatus.Result = new Message
             {
                 OperationId = operationId,
                 Status = operationStatus.Status,
                 Text = operationStatus.StatusMessage ?? "The completion operation is in progress."
             };
+
+            return operationStatus;
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving the status for the operation with id {OperationId}.",
                 operationId);
-            return new Message
+            return new LongRunningOperation
             {
                 OperationId = operationId,
-                Status = OperationStatus.Failed,
-                Text = "Could not retrieve the status of the operation due to an internal error."
+                StatusMessage = "Could not retrieve the status of the operation due to an internal error.",
+                Result = new Message
+                {
+                    OperationId = operationId,
+                    Status = OperationStatus.Failed,
+                    Text = "Could not retrieve the status of the operation due to an internal error."
+                },
+                Status = OperationStatus.Failed
             };
         }
     }
@@ -681,21 +760,21 @@ public partial class CoreService(
                                 {
                                     Type = FileMethods.GetMessageContentFileType(annotation.Text, annotation.Type),
                                     FileName = annotation.Text,
-                                    Value = ResolveContentDeepLinks(annotation.FileUrl, _baseUrl)
+                                    Value = annotation.FileUrl
                                 });
                             }
                         }
                         newContent.Add(new MessageContent
                         {
                             Type = textMessageContent.Type,
-                            Value = ResolveContentDeepLinks(textMessageContent.Value, _baseUrl)
+                            Value = textMessageContent.Value
                         });
                         break;
                     case OpenAIImageFileMessageContentItem imageFileMessageContent:
                         newContent.Add(new MessageContent
                         {
                             Type = imageFileMessageContent.Type,
-                            Value = ResolveContentDeepLinks(imageFileMessageContent.FileUrl, _baseUrl)
+                            Value = imageFileMessageContent.FileUrl
                         });
                         break;
                 }
@@ -713,7 +792,11 @@ public partial class CoreService(
             new PatchOperationItem<Message>
             {
                 ItemId = operationContext.UserMessageId,
-                PropertyValues = new Dictionary<string, object?> { { "/tokens", completionResponse.PromptTokens } }
+                PropertyValues = new Dictionary<string, object?>
+                {
+                    { "/tokens", completionResponse.PromptTokens },
+                    { "/status", operationStatus }
+                }
             },
             new PatchOperationItem<Message>
             {

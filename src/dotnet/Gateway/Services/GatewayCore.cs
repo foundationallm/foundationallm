@@ -324,11 +324,8 @@ namespace FoundationaLLM.Gateway.Services
                 while (vectorizationResult.Value.Status == VectorStoreFileAssociationStatus.InProgress)
                 {
                     await Task.Delay(5000);
-                    if ((DateTimeOffset.UtcNow - startTime).TotalSeconds >= 1000)
+                    if ((DateTimeOffset.UtcNow - startTime).TotalSeconds >= _settings.AzureOpenAIAssistantsMaxVectorizationTimeSeconds)
                     {
-                        // Will not wait more than 1000 seconds for the vectorization to complete.
-                        // The Gateway API clients have a 1200 seconds timeout set for the full operation to complete,
-                        // so we don't want to exceed that while polling.
                         maxPollingTimeExceeded = true;
                         break;
                     }
@@ -336,12 +333,18 @@ namespace FoundationaLLM.Gateway.Services
                 }
 
                 if (maxPollingTimeExceeded)
-                    _logger.LogWarning("The maximum polling time (1000 seconds) was exceeded during the vectorization of file {FileId} in vector store {VectorStoreId}.", fileId, vectorStoreId);
+                {
+                    _logger.LogWarning("The maximum polling time ({MaxPollingTime} seconds) was exceeded during the vectorization of file {FileId} in vector store {VectorStoreId}.",
+                        _settings.AzureOpenAIAssistantsMaxVectorizationTimeSeconds, fileId, vectorStoreId);
+                    result[OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStoreSuccess] = false;
+                }
                 else
-                    _logger.LogInformation("Completed vectorization of file {FileId} in vector store {VectorStoreId} in {TotalSeconds}.",
-                        fileId, vectorStoreId, (DateTimeOffset.UtcNow - startTime).TotalSeconds);
-
-                result[OpenAIAgentCapabilityParameterNames.AssistantFileId] = fileId;
+                {
+                    _logger.LogInformation("Completed vectorization of file {FileId} in vector store {VectorStoreId} in {TotalSeconds} with result {VectorizationResult}.",
+                        fileId, vectorStoreId, (DateTimeOffset.UtcNow - startTime).TotalSeconds, vectorizationResult.Value.Status);
+                    result[OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStoreSuccess] =
+                        (vectorizationResult.Value.Status == VectorStoreFileAssociationStatus.Completed);
+                }
             }
 
             return result;

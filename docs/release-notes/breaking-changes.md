@@ -15,6 +15,7 @@ Name | Default value
 `FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions` | `c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt`
 `FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage` |	`{ "value": 10, "value_exceptions": [] }`
 `FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds` | `{ "value": 5, "value_exceptions": [] }`
+`FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAssistantsMaxVectorizationTimeSeconds` | `120`
 
 >[!NOTE]
 > Here is an example of an override for the `MaxUploadsPerMessage` setting:
@@ -70,6 +71,22 @@ Location | Old name | New name
 
 >[!NOTE]
 > Within each of the renamed files, the `<entity>References` property must be renamed to `ResourceReferences`.
+
+**FoundationaLLM.Agent**
+
+A new property can be added to agent definitions:
+
+```json
+"tools": {
+    "dalle-image-generation": {
+        "name": "dalle-image-generation",
+        "description": "Generates an image based on a prompt.",
+        "ai_model_object_ids": {
+            "main_model": "/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/DALLE3"
+        }
+    }
+}
+```
 
 **FoundationaLLM.Authorization**
 

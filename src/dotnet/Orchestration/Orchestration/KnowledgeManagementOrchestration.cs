@@ -187,7 +187,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     var fileMapping = fileUserContext.Files[attachment.ObjectId!];
                     if (fileMapping.RequiresVectorization)
                     {
-                        _ = await _gatewayClient!.CreateAgentCapability(
+                        if (string.IsNullOrWhiteSpace(_openAIVectorStoreId))
+                            throw new OrchestrationException($"The file {attachment.OriginalFileName} with file id {fileMapping.OpenAIFileId!} requires vectorization but the vector store id is invalid.");
+
+                        var vectorizationResult = await _gatewayClient!.CreateAgentCapability(
                             _instanceId,
                             AgentCapabilityCategoryNames.OpenAIAssistants,
                             fileUserContext.AssistantUserContextName,
@@ -196,9 +199,15 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 { OpenAIAgentCapabilityParameterNames.CreateAssistantFile, false },
                                 { OpenAIAgentCapabilityParameterNames.Endpoint, fileUserContext.Endpoint },
                                 { OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStore, fileMapping.RequiresVectorization },
-                                { OpenAIAgentCapabilityParameterNames.AssistantVectorStoreId, _openAIVectorStoreId ?? string.Empty },
+                                { OpenAIAgentCapabilityParameterNames.AssistantVectorStoreId, _openAIVectorStoreId! },
                                 { OpenAIAgentCapabilityParameterNames.AssistantFileId, fileMapping.OpenAIFileId! }
                             });
+
+                        vectorizationResult.TryGetValue(OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStoreSuccess, out var vectorizationSuccessObject);
+                        var vectorizationSuccess = ((JsonElement)vectorizationSuccessObject!).Deserialize<bool>();
+
+                        if (!vectorizationSuccess)
+                            throw new OrchestrationException($"The vectorization of file {attachment.OriginalFileName} with file id {fileMapping.OpenAIFileId!} into the vector store with id {_openAIVectorStoreId} failed.");
                     }
                 }
 

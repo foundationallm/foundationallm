@@ -58,6 +58,12 @@ namespace FoundationaLLM.Common.Models.Orchestration
         public int TTL { get; set; } = 604800;
 
         /// <summary>
+        /// The number of tokens in the prompt.
+        /// </summary>
+        [JsonPropertyName("prompt_tokens")]
+        public int PromptTokens { get; set; } = 0;
+
+        /// <summary>
         /// The result of the operation.
         /// </summary>
         [Newtonsoft.Json.JsonIgnore]
