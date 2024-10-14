@@ -130,5 +130,8 @@ namespace FoundationaLLM.Orchestration.Core.Services
                 client.Timeout.Subtract(TimeSpan.FromSeconds(1)),
                 _logger);
         }
+
+        /// <inheritdoc/>
+        public Task<LongRunningOperation> UpdateCompletionOperation(string instanceId, string operationId, OperationStatus status, string statusMessage = "") => throw new NotImplementedException();
     }
 }

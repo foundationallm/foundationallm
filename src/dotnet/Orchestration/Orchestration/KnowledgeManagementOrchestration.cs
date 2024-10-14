@@ -14,7 +14,6 @@ using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 using FoundationaLLM.Orchestration.Core.Interfaces;
-using Microsoft.Azure.Cosmos.Serialization.HybridRow;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -152,12 +151,12 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 OperationId = completionRequest.OperationId,
                 UserPrompt = completionRequest.UserPrompt!,
                 MessageHistory = completionRequest.MessageHistory,
-                Attachments = await GetAttachmentPaths(completionRequest.Attachments),
+                Attachments = await GetAttachmentPaths(completionRequest.Attachments, completionRequest.OperationId!),
                 Agent = _agent!,
                 Objects = _explodedObjects!
             };
 
-        private async Task<List<AttachmentProperties>> GetAttachmentPaths(List<string> attachmentObjectIds)
+        private async Task<List<AttachmentProperties>> GetAttachmentPaths(List<string> attachmentObjectIds, string operationId)
         {
             if (attachmentObjectIds.Count == 0)
                 return [];
@@ -207,6 +206,12 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         var vectorizationSuccess = ((JsonElement)vectorizationSuccessObject!).Deserialize<bool>();
 
                         if (!vectorizationSuccess)
+                            await _orchestrationService.UpdateCompletionOperation(
+                                instanceId,
+                                operationId,
+                                OperationStatus.Failed,
+                                $"We were unable to process the file you uploaded named {attachment.OriginalFileName}. Please try uploading the file again."
+                            );                            
                             throw new OrchestrationException($"The vectorization of file {attachment.OriginalFileName} with file id {fileMapping.OpenAIFileId!} into the vector store with id {_openAIVectorStoreId} failed.");
                     }
                 }

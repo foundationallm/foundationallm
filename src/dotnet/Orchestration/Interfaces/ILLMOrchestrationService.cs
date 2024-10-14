@@ -39,6 +39,16 @@ namespace FoundationaLLM.Orchestration.Core.Interfaces
         Task<LongRunningOperation> StartCompletionOperation(string instanceId, LLMCompletionRequest completionRequest);
 
         /// <summary>
+        /// Updates the status and status message of a completion operation.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance id.</param>
+        /// <param name="operationId">The OperationId for which to update the status.</param>
+        /// <param name="status">The status of the operation.</param>
+        /// <param name="statusMessage">The status message of the operation.</param>
+        /// <returns></returns>
+        Task<LongRunningOperation> UpdateCompletionOperation(string instanceId, string operationId, OperationStatus status, string statusMessage = "");
+
+        /// <summary>
         /// Gets the status of a completion operation.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance id.</param>

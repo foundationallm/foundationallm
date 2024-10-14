@@ -78,7 +78,7 @@ async def submit_completion_request(
 
     Returns
     -------
-    CompletionOperation
+    LongRunningOperation
         Object containing the operation ID and status.
     """
     with tracer.start_as_current_span('submit_completion_request') as span:
@@ -223,6 +223,38 @@ async def get_operation_status(
             if operation is None:
                 raise HTTPException(status_code=404, detail=f"An operation with the id '{operation_id}' does not exist.")
 
+            return operation
+        except HTTPException as he:
+            handle_exception(he, he.status_code)
+        except Exception as e:
+            handle_exception(e)
+
+@router.post(
+    '/async-completions/{operation_id}/status',
+    summary = 'Update the status of the completion request operation with the specified operation ID.',
+    responses = {
+        200: {'description': 'The operation status was updated successfully.'}        
+    }
+)
+async def set_operation_status(
+    raw_request: Request,
+    instance_id: str,
+    operation_id: str,
+    long_running_operation: LongRunningOperation
+) -> LongRunningOperation:
+    with tracer.start_as_current_span(f'set_operation_status') as span:
+        # Create an operations manager to update the operation status.
+        operations_manager = OperationsManager(raw_request.app.extra['config'])
+
+        try:
+            span.set_attribute('operation_id', operation_id)
+            span.set_attribute('instance_id', instance_id)
+            operation = await operations_manager.update_operation(
+                operation_id,
+                instance_id,
+                status = long_running_operation.status,
+                status_message = long_running_operation.status_message
+                )            
             return operation
         except HTTPException as he:
             handle_exception(he, he.status_code)

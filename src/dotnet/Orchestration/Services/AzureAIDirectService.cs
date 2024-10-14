@@ -151,5 +151,8 @@ namespace FoundationaLLM.Orchestration.Core.Services
 
         /// <inheritdoc/>
         public Task<LongRunningOperation> GetCompletionOperationStatus(string instanceId, string operationId) => throw new NotImplementedException();
+
+        /// <inheritdoc/>
+        public Task<LongRunningOperation> UpdateCompletionOperation(string instanceId, string operationId, OperationStatus status, string statusMessage = "") => throw new NotImplementedException();
     }
 }

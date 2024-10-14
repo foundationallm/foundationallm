@@ -114,6 +114,48 @@ namespace FoundationaLLM.Common.Clients
         }
 
         /// <summary>
+        /// Update the status of a running operation.
+        /// </summary>
+        /// <param name="operationId">The identifier of the running operation.</param>
+        /// <param name="status">The new status of the operation.</param>
+        /// <param name="statusMessage">The message to include with the status.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> indicating the need to cancel the process.</param>
+        /// <returns>A <see cref="LongRunningOperation"/>object providing details about the running operation.</returns>
+        public async Task<LongRunningOperation> UpdateOperationStatusAsync(string operationId, OperationStatus status, string statusMessage = "", CancellationToken cancellationToken = default)
+        {
+            var operationStatusPath = $"{_operationStarterPath}/{operationId}/status";
+            var body = JsonSerializer.Serialize(new LongRunningOperation
+            {
+                OperationId = operationId,
+                Status = status,
+                StatusMessage = statusMessage
+            }, _jsonSerializerOptions);
+            var responseMessage = await _httpClient.PostAsync(
+                operationStatusPath,
+                new StringContent(
+                    body,
+                    Encoding.UTF8, "application/json"),
+                cancellationToken);
+
+            
+            if (responseMessage.StatusCode != HttpStatusCode.OK)
+            {
+                _logger.LogError("An error occurred while updating the operation. The response status code was {StatusCode}.", responseMessage.StatusCode);
+                return new LongRunningOperation
+                {
+                    OperationId = operationId,
+                    Status = OperationStatus.Failed,
+                    StatusMessage = $"An error occurred while updating the operation. The response status code was {responseMessage.StatusCode}."
+                };
+            }
+
+            var responseContent = await responseMessage.Content.ReadAsStringAsync(cancellationToken);
+            var runningOperation = JsonSerializer.Deserialize<LongRunningOperation>(responseContent, _jsonSerializerOptions)!;
+
+            return runningOperation;
+        }
+
+        /// <summary>
         /// <para>Executes an operation and waits for the response using a polling mechanism.
         /// The polling mechanism is based on the following assumptions:</para>
         /// - The {operationStarterPath} endpoint will accept a POST with a <typeparamref name="TRequest"/> object as payload and will return a 202 Accepted status code when the operation is started.<br/>

@@ -111,6 +111,13 @@ namespace FoundationaLLM.Orchestration.Core.Services
         }
 
         /// <inheritdoc/>
+        public async Task<LongRunningOperation> UpdateCompletionOperation(string instanceId, string operationId, OperationStatus status, string statusMessage="")
+        {
+            var pollingClient = await GetPollingClient(instanceId);
+            return await pollingClient.UpdateOperationStatusAsync(operationId, status, statusMessage);
+        }
+
+        /// <inheritdoc/>
         public async Task<LongRunningOperation> GetCompletionOperationStatus(string instanceId, string operationId)
         {
             var pollingClient = await GetPollingClient(instanceId);
