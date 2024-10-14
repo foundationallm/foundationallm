@@ -396,7 +396,11 @@ export const useAppStore = defineStore('app', {
 					};
 
 					const userMessage = this.currentMessages[this.currentMessages.length - 2];
-					if (userMessage && statusResponse.prompt_tokens && userMessage.tokens !== statusResponse.prompt_tokens) {
+					if (
+						userMessage &&
+						statusResponse.prompt_tokens &&
+						userMessage.tokens !== statusResponse.prompt_tokens
+					) {
 						userMessage.tokens = statusResponse.prompt_tokens;
 					}
 
