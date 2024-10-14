@@ -44,6 +44,7 @@ Param(
     [parameter(Mandatory = $false)][string]$coreClientAppName="FoundationaLLM-Core-Portal",
     [parameter(Mandatory = $false)][string]$mgmtAppName="FoundationaLLM-Management-API",
     [parameter(Mandatory = $false)][string]$mgmtClientAppName="FoundationaLLM-Management-Portal",
+	[parameter(Mandatory = $false)][string]$mgmtReaderAppName = "FoundationaLLM-Reader",
 	[parameter(Mandatory=$false)][bool]$interactiveMode = $true
 )
 
@@ -58,7 +59,8 @@ $AppNames = @(
 	$coreAppName, 
 	$coreClientAppName,
 	$mgmtAppName, 
-	$mgmtClientAppName
+	$mgmtClientAppName,
+	$mgmtReaderAppName
 )
 
 # Function to filter and delete Azure AD applications based on display name
