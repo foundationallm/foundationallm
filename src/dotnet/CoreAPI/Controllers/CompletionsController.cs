@@ -86,9 +86,9 @@ namespace FoundationaLLM.Core.API.Controllers
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance id.</param>
         /// <param name="operationId">The OperationId for which to retrieve the status.</param>
-        /// <returns>Returns an <see cref="LongRunningOperation"/> object containing the OperationId and Status.</returns>
+        /// <returns>Returns a <see cref="LongRunningOperation"/> object containing the OperationId, Status, and result.</returns>
         [HttpGet("async-completions/{operationId}/status")]
-        public async Task<Message> GetCompletionOperationStatus(string instanceId, string operationId) =>
+        public async Task<LongRunningOperation> GetCompletionOperationStatus(string instanceId, string operationId) =>
             await _coreService.GetCompletionOperationStatus(instanceId, operationId);
 
         /// <summary>
