@@ -832,7 +832,7 @@ public Task&lt;IActionResult&gt; GetCompletion(string instanceId, CompletionRequ
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[HttpGet(&quot;async-completions/{operationId}/status&quot;)]
-public Task&lt;Message&gt; GetCompletionOperationStatus(string instanceId, string operationId)</code></pre>
+public Task&lt;LongRunningOperation&gt; GetCompletionOperationStatus(string instanceId, string operationId)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -847,8 +847,8 @@ public Task&lt;Message&gt; GetCompletionOperationStatus(string instanceId, strin
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;</dt>
-    <dd><p>Returns an <a class="xref" href="FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html">LongRunningOperation</a> object containing the OperationId and Status.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html">LongRunningOperation</a>&gt;</dt>
+    <dd><p>Returns a <a class="xref" href="FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html">LongRunningOperation</a> object containing the OperationId, Status, and result.</p>
 </dd>
   </dl>
 

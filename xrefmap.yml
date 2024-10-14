@@ -18037,6 +18037,19 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.OperationId
   nameWithType: LongRunningOperation.OperationId
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.PromptTokens
+  name: PromptTokens
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html#FoundationaLLM_Common_Models_Orchestration_LongRunningOperation_PromptTokens
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.PromptTokens
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.PromptTokens
+  nameWithType: LongRunningOperation.PromptTokens
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.PromptTokens*
+  name: PromptTokens
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html#FoundationaLLM_Common_Models_Orchestration_LongRunningOperation_PromptTokens_
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.PromptTokens
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.PromptTokens
+  nameWithType: LongRunningOperation.PromptTokens
 - uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.Result
   name: Result
   href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html#FoundationaLLM_Common_Models_Orchestration_LongRunningOperation_Result
