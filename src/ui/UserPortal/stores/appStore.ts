@@ -356,6 +356,7 @@ export const useAppStore = defineStore('app', {
 				...tempAssistantMessage,
 				...message,
 				type: 'Message',
+				text: message.status_message,
 			};
 
 			this.attachments = this.attachments.filter(
@@ -364,6 +365,9 @@ export const useAppStore = defineStore('app', {
 
 			// If the session has changed before above completes we need to prevent polling
 			if (initialSession !== this.currentSession.id) return;
+
+			// If the operation failed to start prevent polling
+			if (message.status === 'Failed') return;
 
 			// For older messages that have a status of "Pending" but no operation id, assume
 			// it is complete and do no initiate polling as it will return empty data
