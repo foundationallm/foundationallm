@@ -147,9 +147,9 @@ export default {
 	 */
 	async checkProcessStatus(operationId: string) {
 		try {
-			const response = await this.fetch(
+			const response = (await this.fetch(
 				`/instances/${this.instanceId}/async-completions/${operationId}/status`,
-			) as LongRunningOperation;
+			)) as LongRunningOperation;
 			return response;
 		} catch (error) {
 			throw new Error(formatError(error));
