@@ -537,7 +537,8 @@ export default {
 		handleSend() {
 			this.$emit('send', this.text);
 			this.text = '';
-			this.uploadedFiles = [];
+			const sessionId = this.$appStore.currentSession.sessionId;
+			this.clearFilesForSession(sessionId);
 			this.text = DEFAULT_INPUT_TEXT;
 		},
 
