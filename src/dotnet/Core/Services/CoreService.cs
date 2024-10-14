@@ -356,7 +356,7 @@ public partial class CoreService(
     }
 
     /// <inheritdoc/>
-    public async Task<Message> GetCompletionOperationStatus(string instanceId, string operationId)
+    public async Task<LongRunningOperation> GetCompletionOperationStatus(string instanceId, string operationId)
     {
         try
         {
@@ -377,11 +377,17 @@ public partial class CoreService(
                         { "/text", "The completion operation has exceeded the maximum time allowed." }
                     });
 
-                return new Message
+                return new LongRunningOperation
                 {
                     OperationId = operationId,
-                    Status = OperationStatus.Failed,
-                    Text = "The completion operation has exceeded the maximum time allowed."
+                    StatusMessage = "The completion operation has exceeded the maximum time allowed.",
+                    Result = new Message
+                    {
+                        OperationId = operationId,
+                        Status = OperationStatus.Failed,
+                        Text = "The completion operation has exceeded the maximum time allowed."
+                    },
+                    Status = OperationStatus.Failed
                 };
             }
 
@@ -402,25 +408,39 @@ public partial class CoreService(
                     }
                 }
 
-                return agentMessage;
+                operationStatus.Result = agentMessage;
+                if (completionResponse != null)
+                {
+                    operationStatus.PromptTokens = completionResponse.PromptTokens;
+                }
+
+                return operationStatus;
             }
 
-            return new Message
+            operationStatus.Result = new Message
             {
                 OperationId = operationId,
                 Status = operationStatus.Status,
                 Text = operationStatus.StatusMessage ?? "The completion operation is in progress."
             };
+
+            return operationStatus;
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error retrieving the status for the operation with id {OperationId}.",
                 operationId);
-            return new Message
+            return new LongRunningOperation
             {
                 OperationId = operationId,
-                Status = OperationStatus.Failed,
-                Text = "Could not retrieve the status of the operation due to an internal error."
+                StatusMessage = "Could not retrieve the status of the operation due to an internal error.",
+                Result = new Message
+                {
+                    OperationId = operationId,
+                    Status = OperationStatus.Failed,
+                    Text = "Could not retrieve the status of the operation due to an internal error."
+                },
+                Status = OperationStatus.Failed
             };
         }
     }
