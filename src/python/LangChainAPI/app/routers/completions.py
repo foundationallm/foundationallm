@@ -96,7 +96,7 @@ async def submit_completion_request(
             # Create an operations manager to create the operation.
             operations_manager = OperationsManager(raw_request.app.extra['config'])
             # Submit the completion request operation to the state API.
-            operation = await operations_manager.create_operation(operation_id, instance_id)
+            operation = await operations_manager.create_operation(operation_id, instance_id, x_user_identity)
 
             # Start a background task to perform the completion request.
             background_tasks.add_task(
@@ -137,7 +137,8 @@ async def create_completion_response(
                 operation_id,
                 instance_id,
                 status = OperationStatus.INPROGRESS,
-                status_message = 'Operation state changed to in progress.'
+                status_message = 'Operation state changed to in progress.',
+                user_identity = x_user_identity
             )
 
             # Create the user identity object from the x_user_identity header.            
@@ -165,7 +166,8 @@ async def create_completion_response(
                     operation_id = operation_id,
                     instance_id = instance_id,
                     status = OperationStatus.COMPLETED,
-                    status_message = f'Operation {operation_id} completed successfully.'
+                    status_message = f'Operation {operation_id} completed successfully.',
+                    user_identity = x_user_identity
                 )
             )
         except Exception as e:
@@ -190,7 +192,8 @@ async def create_completion_response(
                     operation_id = operation_id,
                     instance_id = instance_id,
                     status = OperationStatus.FAILED,
-                    status_message = f'Operation failed with error: {e}'
+                    status_message = f'Operation failed with error: {e}',
+                    user_identity = x_user_identity
                 )
             )
 

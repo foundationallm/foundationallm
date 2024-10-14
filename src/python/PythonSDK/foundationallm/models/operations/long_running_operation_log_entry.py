@@ -10,3 +10,4 @@ class LongRunningOperationLogEntry(BaseModel):
     time_stamp: str = Field(description='The timestamp of the log entry.')
     status: str = Field(description='The status of the operation at the time of the log entry.')
     status_message: str = Field(description='The status message of the log entry.')
+    upn: Optional[str] = Field(default=None, description='The user principal name of the user who initiated the operation.')

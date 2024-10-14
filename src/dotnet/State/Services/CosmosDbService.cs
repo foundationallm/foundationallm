@@ -167,7 +167,7 @@ namespace FoundationaLLM.State.Services
                 operation
             );
             batch.CreateItem<LongRunningOperationLogEntry>(
-                new LongRunningOperationLogEntry(operation.OperationId!, operation.Status, operation.StatusMessage)
+                new LongRunningOperationLogEntry(operation.OperationId!, operation.Status, operation.StatusMessage, operation.UPN)
             );
 
             var result = await batch.ExecuteAsync(cancellationToken);
@@ -189,7 +189,7 @@ namespace FoundationaLLM.State.Services
             string operationId;
             if (operationResult.operation_id is JsonElement {ValueKind: JsonValueKind.String} operationIdElement)
             {
-                operationId = operationIdElement.GetString();
+                operationId = operationIdElement.GetString()!;
             }
             else if (operationResult.operation_id is string operationIdStr)
             {
