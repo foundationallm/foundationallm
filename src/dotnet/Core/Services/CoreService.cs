@@ -349,8 +349,7 @@ public partial class CoreService(
                         ItemId = conversationItems.UserMessage.Id,
                         PropertyValues = new Dictionary<string, object?>
                         {
-                            { "/status", OperationStatus.Failed },
-                            { "/text", result.StatusMessage }
+                            { "/status", OperationStatus.Failed }
                         }
                     },
                     new PatchOperationItem<Message>
