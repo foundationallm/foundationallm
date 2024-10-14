@@ -7,6 +7,7 @@ using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Azure.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
@@ -23,16 +24,16 @@ using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Utils;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Azure.Cosmos.Serialization.HybridRow;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using FoundationaLLM.Common.Models.Azure.CosmosDB;
 using Conversation = FoundationaLLM.Common.Models.Conversation.Conversation;
 using LongRunningOperation = FoundationaLLM.Common.Models.Orchestration.LongRunningOperation;
 using Message = FoundationaLLM.Common.Models.Conversation.Message;
-using FoundationaLLM.Common.Models.Orchestration;
 
 namespace FoundationaLLM.Core.Services;
 
@@ -337,6 +338,38 @@ public partial class CoreService(
             // Start the completion operation.
             var result = await GetDownstreamAPIService(agentOption).StartCompletionOperation(instanceId, completionRequest);
 
+            if (result.Status == OperationStatus.Failed)
+            {
+                // In case the completion operation fails to start properly, we need to update the user and agent messages accordingly.
+
+                var patchOperations = new List<IPatchOperationItem>
+                {
+                    new PatchOperationItem<Message>
+                    {
+                        ItemId = conversationItems.UserMessage.Id,
+                        PropertyValues = new Dictionary<string, object?>
+                        {
+                            { "/status", OperationStatus.Failed },
+                            { "/text", result.StatusMessage }
+                        }
+                    },
+                    new PatchOperationItem<Message>
+                    {
+                        ItemId = conversationItems.AgentMessage.Id,
+                        PropertyValues = new Dictionary<string, object?>
+                        {
+                            { "/status", OperationStatus.Failed },
+                            { "/text", result.StatusMessage }
+                        }
+                    }
+                };
+
+                var patchedItems = await _cosmosDBService.PatchMultipleSessionsItemsInTransactionAsync(
+                    completionRequest.SessionId!,
+                    patchOperations
+                );
+            }
+
             return result;
         }
         catch (Exception ex)
@@ -368,14 +401,32 @@ public partial class CoreService(
             {
                 // We've hit the hard stop time for the operation.
 
-                await _cosmosDBService.PatchSessionsItemPropertiesAsync<Message>(
-                    operationContext.AgentMessageId,
-                    operationContext.SessionId,
-                    new Dictionary<string, object?>
+                var patchOperations = new List<IPatchOperationItem>
+                {
+                    new PatchOperationItem<Message>
                     {
-                        { "/status", OperationStatus.Failed },
-                        { "/text", "The completion operation has exceeded the maximum time allowed." }
-                    });
+                        ItemId = operationContext.UserMessageId,
+                        PropertyValues = new Dictionary<string, object?>
+                        {
+                            { "/status", OperationStatus.Failed },
+                            { "/text", "The completion operation has exceeded the maximum time allowed." }
+                        }
+                    },
+                    new PatchOperationItem<Message>
+                    {
+                        ItemId = operationContext.AgentMessageId,
+                        PropertyValues = new Dictionary<string, object?>
+                        {
+                            { "/status", OperationStatus.Failed },
+                            { "/text", "The completion operation has exceeded the maximum time allowed." }
+                        }
+                    }
+                };
+
+                var patchedItems = await _cosmosDBService.PatchMultipleSessionsItemsInTransactionAsync(
+                    operationContext.SessionId,
+                    patchOperations
+                );
 
                 return new LongRunningOperation
                 {
@@ -741,7 +792,11 @@ public partial class CoreService(
             new PatchOperationItem<Message>
             {
                 ItemId = operationContext.UserMessageId,
-                PropertyValues = new Dictionary<string, object?> { { "/tokens", completionResponse.PromptTokens } }
+                PropertyValues = new Dictionary<string, object?>
+                {
+                    { "/tokens", completionResponse.PromptTokens },
+                    { "/status", operationStatus }
+                }
             },
             new PatchOperationItem<Message>
             {
