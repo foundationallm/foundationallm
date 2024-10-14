@@ -321,7 +321,7 @@ export default {
 						content: failedMessage,
 						value: failedMessage,
 						origValue: failedMessage,
-					},
+					}
 				];
 			}
 
@@ -680,7 +680,8 @@ export default {
 }
 
 $shimmerColor: white;
-$textColor: var(--accent-text);
+// $textColor: var(--accent-text);
+$textColor: #131833;
 .loading-shimmer {
 	text-fill-color: transparent;
 	-webkit-text-fill-color: transparent;
