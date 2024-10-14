@@ -384,11 +384,17 @@ export const useAppStore = defineStore('app', {
 
 			this.pollingInterval = setInterval(async () => {
 				try {
-					const updatedMessage = await api.checkProcessStatus(message.operation_id);
+					const statusResponse = await api.checkProcessStatus(message.operation_id);
+					const updatedMessage = statusResponse.result ?? {};
 					this.currentMessages[this.currentMessages.length - 1] = {
 						...updatedMessage,
 						renderId: this.currentMessages[this.currentMessages.length - 1].renderId,
 					};
+
+					const userMessage = this.currentMessages[this.currentMessages.length - 2];
+					if (userMessage && statusResponse.prompt_tokens && userMessage.tokens !== statusResponse.prompt_tokens) {
+						userMessage.tokens = statusResponse.prompt_tokens;
+					}
 
 					if (updatedMessage.status === 'Completed' || updatedMessage.status === 'Failed') {
 						this.stopPolling();

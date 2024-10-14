@@ -313,6 +313,18 @@ export default {
 
 	computed: {
 		messageContent() {
+			if (this.message.status === 'Failed') {
+				const failedMessage = this.message.text ?? 'Failed to generate a response.';
+				return [
+					{
+						type: 'text',
+						content: failedMessage,
+						value: failedMessage,
+						origValue: failedMessage,
+					}
+				];
+			}
+
 			return this.message.content ?? [];
 		},
 

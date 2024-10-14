@@ -1,6 +1,7 @@
 import type {
 	Message,
 	Session,
+	LongRunningOperation,
 	UserProfile,
 	CoreConfiguration,
 	OneDriveWorkSchool,
@@ -148,8 +149,7 @@ export default {
 		try {
 			const response = await this.fetch(
 				`/instances/${this.instanceId}/async-completions/${operationId}/status`,
-			);
-
+			) as LongRunningOperation;
 			return response;
 		} catch (error) {
 			throw new Error(formatError(error));
