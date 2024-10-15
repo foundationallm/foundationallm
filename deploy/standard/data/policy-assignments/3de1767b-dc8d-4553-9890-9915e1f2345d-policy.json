@@ -1,0 +1,34 @@
+{
+  "instance_id": "3de1767b-dc8d-4553-9890-9915e1f2345d",
+  "policy_assignments": [
+		{
+			"name": "807f2b54-0151-4a76-8707-da2a28f101e9",
+			"type": "FoundationaLLM.Authorization/policyAssignments",
+			"object_id": "/providers/FoundationaLLM.Authorization/policyAssignments/807f2b54-0151-4a76-8707-da2a28f101e9",
+			"description": "Ownership on conversation resources managed by the FoundationaLLM.Conversation resource provider.",
+			"policy_definition_id": "/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001",
+			"principal_id": "799be955-a663-46be-8fcd-192d6fc2ec5a",
+			"principal_type": "Group",
+			"scope": "/instances/3de1767b-dc8d-4553-9890-9915e1f2345d/providers/FoundationaLLM.Conversation/conversations",
+			"created_on": "2024-10-15T18:25:55.3863520Z",
+			"updated_on": "2024-10-15T18:25:55.3863520Z",
+			"created_by": "SYSTEM",
+			"updated_by": "SYSTEM"
+		},
+		{
+			"name": "4d45bee4-e4d2-4680-80d2-3900066c4715",
+			"type": "FoundationaLLM.Authorization/policyAssignments",
+			"object_id": "/providers/FoundationaLLM.Authorization/policyAssignments/4d45bee4-e4d2-4680-80d2-3900066c4715",
+			"description": "Ownership on attachment resources managed by the FoundationaLLM.Attachment resource provider.",
+			"policy_definition_id": "/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001",
+			"principal_id": "799be955-a663-46be-8fcd-192d6fc2ec5a",
+			"principal_type": "Group",
+			"scope": "/instances/3de1767b-dc8d-4553-9890-9915e1f2345d/providers/FoundationaLLM.Attachment/attachments",
+			"created_on": "2024-10-15T18:25:55.3863520Z",
+			"updated_on": "2024-10-15T18:25:55.3863520Z",
+			"created_by": "SYSTEM",
+			"updated_by": "SYSTEM"
+		}
+  ]
+}
+

@@ -17,6 +17,9 @@
     "orchestrator": "LangChain",
     "agent_parameters": null
   },
+  "capabilities": [
+    "OpenAI.Assistants"
+  ],
   "ai_model_object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.AIModel/aiModels/DefaultCompletionAIModel",
   "prompt_object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.Prompt/prompts/FoundationaLLM"
 }

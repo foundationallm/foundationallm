@@ -390,6 +390,7 @@ module coreApiosmosRoles './modules/sqlRoleAssignments.bicep' = {
       'Cosmos DB Built-in Data Contributor': '00000000-0000-0000-0000-000000000002'
     }
   }
+  dependsOn: [srCoreApi]
 }
 
 module cosmosRoles './modules/sqlRoleAssignments.bicep' = {
@@ -402,6 +403,7 @@ module cosmosRoles './modules/sqlRoleAssignments.bicep' = {
       'Cosmos DB Built-in Data Contributor': '00000000-0000-0000-0000-000000000002'
     }
   }
+  dependsOn: [srBackend]
 }
 
 module gatewayApiCosmosRoles './modules/sqlRoleAssignments.bicep' = {
@@ -414,6 +416,7 @@ module gatewayApiCosmosRoles './modules/sqlRoleAssignments.bicep' = {
       'Cosmos DB Built-in Data Contributor': '00000000-0000-0000-0000-000000000002'
     }
   }
+  dependsOn: [srBackend]
 }
 
 module managementApiCosmosRoles './modules/sqlRoleAssignments.bicep' = {
@@ -421,11 +424,12 @@ module managementApiCosmosRoles './modules/sqlRoleAssignments.bicep' = {
   name: 'management-api-cosmos-role'
   params: {
     accountName: cosmosDb.name
-    principalId: srBackend[indexOf(backendServiceNames, 'management-api')].outputs.servicePrincipalId
+    principalId: srManagementApi[0].outputs.servicePrincipalId
     roleDefinitionIds: {
       'Cosmos DB Built-in Data Contributor': '00000000-0000-0000-0000-000000000002'
     }
   }
+  dependsOn: [srManagementApi]
 }
 
 module orchestrationApiCosmosRoles './modules/sqlRoleAssignments.bicep' = {
@@ -438,6 +442,7 @@ module orchestrationApiCosmosRoles './modules/sqlRoleAssignments.bicep' = {
       'Cosmos DB Built-in Data Contributor': '00000000-0000-0000-0000-000000000002'
     }
   }
+  dependsOn: [srBackend]
 }
 
 module stateApiCosmosRoles './modules/sqlRoleAssignments.bicep' = {
@@ -450,6 +455,7 @@ module stateApiCosmosRoles './modules/sqlRoleAssignments.bicep' = {
       'Cosmos DB Built-in Data Contributor': '00000000-0000-0000-0000-000000000002'
     }
   }
+  dependsOn: [srBackend]
 }
 
 module searchIndexDataReaderRole 'modules/utility/roleAssignments.bicep' = {
