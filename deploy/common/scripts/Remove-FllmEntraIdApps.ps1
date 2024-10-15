@@ -24,12 +24,15 @@
 .PARAMETER mgmtClientAppName
     The display name of the Management Portal application to be deleted. Default is "FoundationaLLM-Management-Portal".
 
+.PARAMETER mgmtClientAppName
+    The display name of the Reader application to be deleted. Default is "FoundationaLLM-Reader".
+
 .PARAMETER interactiveMode
     Boolean flag to determine if the script should run in interactive mode, prompting for user confirmation before deletion. 
     Default is $true.
 
 .EXAMPLE
-    ./Remove-EntraIdMApps.ps1
+    ./Remove-FllmEntraIdApps.ps1
     This example runs the script to delete the default Entra applications prompting for confirmation.
 
 .NOTES
