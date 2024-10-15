@@ -669,6 +669,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_GatewayAPI_Configuration_AzureOpenAIAccounts =
             "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAccounts";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAssistantsMaxVectorizationTimeSeconds setting.
+        /// <para>Value description:<br/>The maximum time in seconds allowed for an Azure OpenAI Assistants vectorization process to complete.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_GatewayAPI_Configuration_AzureOpenAIAssistantsMaxVectorizationTimeSeconds =
+            "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAssistantsMaxVectorizationTimeSeconds";
 
         #endregion
 

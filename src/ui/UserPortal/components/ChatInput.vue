@@ -524,11 +524,7 @@ export default {
 
 		handleResize() {
 			this.isMobile = window.screen.width < 950;
-			if (this.$refs.menu.visible) {
-				this.$nextTick(() => {
-					this.$refs.menu.alignOverlay();
-				});
-			}
+			this.alignOverlay();
 		},
 
 		adjustTextareaHeight() {
@@ -541,18 +537,15 @@ export default {
 		handleSend() {
 			this.$emit('send', this.text);
 			this.text = '';
-			this.uploadedFiles = [];
+			const sessionId = this.$appStore.currentSession.sessionId;
+			this.clearFilesForSession(sessionId);
 			this.text = DEFAULT_INPUT_TEXT;
 		},
 
 		handleUpload() {
 			this.isUploading = true;
 
-			if (this.$refs.menu.visible) {
-				this.$nextTick(() => {
-					this.$refs.menu.alignOverlay();
-				});
-			}
+			this.alignOverlay();
 
 			// Use session-based file arrays
 			const sessionId = this.$appStore.currentSession.sessionId;
@@ -614,11 +607,7 @@ export default {
 						this.uploadProgress = 0;
 						currentFiles.oneDriveFiles = [];
 						currentFiles.localFiles = [];
-						if (this.$refs.menu.visible) {
-							this.$nextTick(() => {
-								this.$refs.menu.alignOverlay();
-							});
-						}
+						this.alignOverlay();
 						this.toggle();
 						if (filesUploaded > 0) {
 							this.$toast.add({
@@ -662,11 +651,7 @@ export default {
 				(uploadedFile) => uploadedFile.name !== file.name,
 			);
 
-			if (this.$refs.menu.visible) {
-				this.$nextTick(() => {
-					this.$refs.menu.alignOverlay();
-				});
-			}
+			this.alignOverlay();
 		},
 
 		removeLocalFile(currentFiles, file) {
@@ -676,11 +661,7 @@ export default {
 			this.fileToDelete = null;
 			this.deleteFileProcessing = false;
 
-			if (this.$refs.menu.visible) {
-				this.$nextTick(() => {
-					this.$refs.menu.alignOverlay();
-				});
-			}
+			this.alignOverlay();
 		},
 
 		removeOneDriveFile(currentFiles, file) {
@@ -690,11 +671,7 @@ export default {
 			this.fileToDelete = null;
 			this.deleteFileProcessing = false;
 
-			if (this.$refs.menu.visible) {
-				this.$nextTick(() => {
-					this.$refs.menu.alignOverlay();
-				});
-			}
+			this.alignOverlay();
 		},
 
 		browseFiles() {
@@ -799,15 +776,19 @@ export default {
 				this.$refs.fileUpload.clear();
 			}
 
+			this.alignOverlay();
+		},
+
+		hideAllPoppers() {
+			hideAllPoppers();
+		},
+
+		alignOverlay() {
 			if (this.$refs.menu.visible) {
 				this.$nextTick(() => {
 					this.$refs.menu.alignOverlay();
 				});
 			}
-		},
-
-		hideAllPoppers() {
-			hideAllPoppers();
 		},
 
 		handleDrop(files) {
@@ -969,9 +950,7 @@ export default {
 							filteredFiles.push(...this.validateUploadedFiles(command.items, currentFiles));
 							currentFiles.oneDriveFiles.push(...filteredFiles);
 
-							this.$nextTick(() => {
-								this.$refs.menu.alignOverlay();
-							});
+							this.alignOverlay();
 
 							dialogContent = document.getElementById('oneDriveIframeDialogContent');
 							dialogContent.innerHTML = '';

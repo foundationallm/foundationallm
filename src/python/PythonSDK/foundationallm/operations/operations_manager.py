@@ -1,3 +1,4 @@
+import json
 import os
 import requests
 import urllib3
@@ -30,7 +31,8 @@ class OperationsManager():
     async def create_operation(
         self,
         operation_id: str,
-        instance_id: str) -> LongRunningOperation:
+        instance_id: str,
+        user_identity: str) -> LongRunningOperation:
         """
         Creates a background operation by settings its initial state through the State API.
 
@@ -42,6 +44,8 @@ class OperationsManager():
             The unique identifier for the operation.
         instance_id : str
             The unique identifier for the FLLM instance.
+        user_identity : str
+            The user identity object containing the user principal name of the user who initiated the operation.
         
         Returns
         -------
@@ -54,10 +58,18 @@ class OperationsManager():
                 "charset":"utf-8",
                 "Content-Type":"application/json"
             }
-            
+
+            user_identity_dict = json.loads(user_identity)
+            body = {
+                "operation_id": operation_id,
+                "instance_id": instance_id,
+                "upn": user_identity_dict['upn']
+            }
+
             # Call the State API to create a new operation.
             r = requests.post(
                 f'{self.state_api_url}/instances/{instance_id}/operations/{operation_id}',
+                json=body,
                 headers=headers,
                 verify=self.verify_certs
             )
@@ -73,7 +85,8 @@ class OperationsManager():
         operation_id: str,
         instance_id: str,
         status: OperationStatus,
-        status_message: str) -> LongRunningOperation:
+        status_message: str,
+        user_identity: str) -> LongRunningOperation:
         """
         Updates the state of a background operation through the State API.
 
@@ -89,16 +102,21 @@ class OperationsManager():
             The new status to assign to the operation.
         status_message: str
             The message to associate with the new status.
+        user_identity : str
+            The user identity object containing the user principal name of the user who initiated the operation.
         
         Returns
         -------
         LongRunningOperation
             Object representing the operation.
         """
+        user_identity_dict = json.loads(user_identity)
+
         operation = LongRunningOperation(
             operation_id=operation_id,
             status=status,
-            status_message=status_message
+            status_message=status_message,
+            upn=user_identity_dict['upn']
         )
         
         try:

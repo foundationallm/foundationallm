@@ -11,9 +11,14 @@ namespace FoundationaLLM.State.Serializers
     {
         private readonly JsonObjectSerializer systemTextJsonSerializer;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CosmosSystemTextJsonSerializer"/> class.
+        /// </summary>
+        /// <param name="jsonSerializerOptions"></param>
         public CosmosSystemTextJsonSerializer(JsonSerializerOptions jsonSerializerOptions) =>
             this.systemTextJsonSerializer = new JsonObjectSerializer(jsonSerializerOptions);
 
+        /// <inheritdoc/>
         public override T FromStream<T>(Stream stream)
         {
             using (stream)
@@ -21,7 +26,7 @@ namespace FoundationaLLM.State.Serializers
                 if (stream.CanSeek
                     && stream.Length == 0)
                 {
-                    return default;
+                    return default!;
                 }
 
                 if (typeof(Stream).IsAssignableFrom(typeof(T)))
@@ -29,10 +34,11 @@ namespace FoundationaLLM.State.Serializers
                     return (T)(object)stream;
                 }
 
-                return (T)this.systemTextJsonSerializer.Deserialize(stream, typeof(T), default);
+                return (T)this.systemTextJsonSerializer.Deserialize(stream, typeof(T), default)!;
             }
         }
 
+        /// <inheritdoc/>
         public override Stream ToStream<T>(T input)
         {
             MemoryStream streamPayload = new MemoryStream();

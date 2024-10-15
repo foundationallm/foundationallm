@@ -915,6 +915,14 @@
 				"value": "${env:AZURE_OPENAI_ID}",
 				"content_type": "",
 				"first_version": "0.8.0"
+			},
+			{
+				"name": "AzureOpenAIAssistantsMaxVectorizationTimeSeconds",
+				"description": "The maximum time in seconds allowed for an Azure OpenAI Assistants vectorization process to complete.",
+				"secret": "",
+				"value": "120",
+				"content_type": "",
+				"first_version": "0.8.3"
 			}
 		]
 	},
