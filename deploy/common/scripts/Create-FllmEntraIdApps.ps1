@@ -37,6 +37,7 @@
         - foundationallm-core-portal.template.json
         - foundationallm-management-api.template.json
         - foundationallm-management-portal.template.json
+        - foundationallm-reader.template.json
 
 .PARAMETER appPermissionsId
 The GUID of the permission to assign to the client app.
