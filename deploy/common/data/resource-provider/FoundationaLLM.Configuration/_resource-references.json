@@ -13,6 +13,12 @@
 			"Deleted": false
 		},
 		{
+			"Name": "AzureOpenAIDALLE",
+			"Filename": "/FoundationaLLM.Configuration/AzureOpenAIDALLE.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
 			"Name": "GatekeeperAPI",
 			"Filename": "/FoundationaLLM.Configuration/GatekeeperAPI.json",
 			"Type": "api-endpoint",
