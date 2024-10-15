@@ -12,8 +12,21 @@
     - FoundationaLLM-Core-Portal
     - FoundationaLLM-Management-API
     - FoundationaLLM-Management-Portal
+    - FoundationaLLM-Reader
     
-    The script will also assign the required permissions to the client apps and the required API permissions to the API apps.
+    The script will also assign the required permissions to the client apps and the required API permissions to the API apps. 
+
+    Users can be added as Owners of the app registrations by creating an `admins.json` file in the `deploy/common/config` folder
+    with the following JSON array content
+
+    ```json
+    [
+        "user1@example.com",
+        "user2@example.com"
+    ]
+    ```
+    > Note: Only members of the resident tenant will be able to be imported in this manner.  Accounts outside of the tenant will
+      be ignored.
 
 .REQUIREMENTS
     - The user must be a Global Administrator in the Entra ID tenant or have RBAC rights to create App Registrations and Service Principals.
