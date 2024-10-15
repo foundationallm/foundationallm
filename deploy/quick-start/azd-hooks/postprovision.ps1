@@ -150,6 +150,10 @@ $configurations = @{
         template = './data/resource-provider/FoundationaLLM.AIModel/completion-model.template.json'
         render   = '../common/data/resource-provider/FoundationaLLM.AIModel/completion-model.json'
     }
+    "dall-e-3" = @{
+        template = './data/resource-provider/FoundationaLLM.AIModel/dall-e-3.template.json'
+        render   = '../common/data/resource-provider/FoundationaLLM.AIModel/dall-e-3.json'
+    }
     "embedding-model"  = @{
         template = './data/resource-provider/FoundationaLLM.AIModel/embedding-model.template.json'
         render   = '../common/data/resource-provider/FoundationaLLM.AIModel/embedding-model.json'
