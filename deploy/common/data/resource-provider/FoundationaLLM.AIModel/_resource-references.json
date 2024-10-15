@@ -2,7 +2,7 @@
     "ResourceReferences": [
         {
             "Name": "DefaultCompletionAIModel",
-            "Filename": "/FoundationaLLM.AIModel/completion-model.json",
+            "Filename": "/FoundationaLLM.AIModel/completion-4o-model.json",
             "Type": "completion",
             "Deleted": false
         },
