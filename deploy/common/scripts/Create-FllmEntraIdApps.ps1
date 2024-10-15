@@ -169,7 +169,7 @@ function New-FllmEntraIdApps {
                 ## Updates the Client App Registration
                 Write-Host -ForegroundColor Yellow "Preparing updates for the Client App Registration $($fllmAppRegMetaData.Client.Name)"
                 $($fllmAppRegMetaData.Client).Uri = @("api://$($fllmAppRegMetaData.Client.Name)")
-                $apiPermissions = @(@{"resourceAppId" = $($fllmAppRegMetaData.Client.AppId); "resourceAccess" = @(@{"id" = "$($appPermissionsId)"; "type" = "Scope" }) }, @{"resourceAppId" = "00000003-0000-0000-c000-000000000000"; "resourceAccess" = @(@{"id" = "e1fe6dd8-ba31-4d61-89e7-88639da4683d"; "type" = "Scope" }) })
+                $apiPermissions = @(@{"resourceAppId" = $($fllmAppRegMetaData.Api.AppId); "resourceAccess" = @(@{"id" = "$($appPermissionsId)"; "type" = "Scope" }) }, @{"resourceAppId" = "00000003-0000-0000-c000-000000000000"; "resourceAccess" = @(@{"id" = "e1fe6dd8-ba31-4d61-89e7-88639da4683d"; "type" = "Scope" }) })
                 $appConfig = Get-content $fllmClientConfigPath | ConvertFrom-Json -Depth 20
                 $appConfig.identifierUris = @($($fllmAppRegMetaData.Client.Uri))
                 $appConfig.requiredResourceAccess = $apiPermissions

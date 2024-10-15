@@ -271,7 +271,7 @@ $openAiEndpointUri = $env:AZURE_OPENAI_ENDPOINT
 $tokens.openAiEndpointUri = $openAiEndpointUri
 
 $openAiAccountName = $env:AZURE_OPENAI_ID
-$tokens.azureOpenAiAccountName = $openAiAccountName
+$tokens.openAiAccountName = $openAiAccountName
 
 $appConfig = Invoke-AndRequireSuccess "Get AppConfig Instance" {
     az appconfig list `
