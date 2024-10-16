@@ -393,7 +393,7 @@ jobs:
 
       - name: Publish AZD Environment
         uses: actions/upload-artifact@v4
-        if: inputs.enableTeardown
+        if: ${{ (cancelled() && inputs.bypassAndTeardown) || inputs.enableTeardown }}
         with:
           name: azd-env
           path: ./deploy/quick-start/.azure
