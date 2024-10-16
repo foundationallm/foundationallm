@@ -310,12 +310,7 @@ jobs:
               --output json
             }
           }
-          
-          ls
-          
           Pop-Location
-
-          ls
         shell: pwsh
 
       - name: Update AZD Environment
@@ -373,13 +368,6 @@ jobs:
           Pop-Location
         shell: pwsh
 
-      - name: Publish AZD Environment
-        uses: actions/upload-artifact@v4
-        if: ${{ (cancelled() && inputs.bypassAndTeardown) || inputs.enableTeardown }}
-        with:
-          name: azd-env
-          path: ./deploy/quick-start/.azure
-
       - name: Provision Infrastructure
         run: |
           $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable;
@@ -412,7 +400,7 @@ jobs:
         if: ${{ (cancelled() && inputs.bypassAndTeardown) || inputs.enableTeardown }}
         with:
           name: azd-env
-          path: ./deploy/quick-start/.azure
+          path: ./deploy/quick-start/.azure/**/*
 
       - name: Update App Registration OAuth Callbacks
         id: update-app-reg-oauth
