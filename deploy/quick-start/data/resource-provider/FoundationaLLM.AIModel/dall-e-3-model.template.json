@@ -1,7 +1,7 @@
 {
     "type": "image-generation",
-    "name": "dall-e-3",
-    "object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.AIModel/aiModels/dall-e-3",
+    "name": "DALLE3Model",
+    "object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.AIModel/aiModels/DALLE3Model",
     "display_name": null,
     "description": null,
     "cost_center": null,
