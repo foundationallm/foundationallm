@@ -2,6 +2,7 @@ using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
@@ -14,10 +15,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace FoundationaLLM.Core.API.Controllers
 {
     /// <summary>
-    /// Methods for orchestration services exposed by the Gatekeeper API service.
+    /// Provides methods for retrieving and managing completions.
     /// </summary>
     /// <remarks>
-    /// Constructor for the Orchestration Controller.
+    /// Constructor for the Completions Controller.
     /// </remarks>
     [Authorize(Policy = "DefaultPolicy")]
     [ApiController]
@@ -62,12 +63,10 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <param name="instanceId">The instance ID of the current request.</param>
         /// <param name="completionRequest">The user prompt for which to generate a completion.</param>
         [HttpPost("completions", Name = "GetCompletion")]
-        public async Task<IActionResult> GetCompletion(string instanceId, [FromBody] CompletionRequest completionRequest)
-        => !string.IsNullOrWhiteSpace(completionRequest.SessionId) ? Ok(await _coreService.GetChatCompletionAsync(instanceId, completionRequest)) :
-                Ok(await _coreService.GetCompletionAsync(instanceId, completionRequest));
-        
-
-            
+        public async Task<IActionResult> GetCompletion(string instanceId, [FromBody] CompletionRequest completionRequest) =>
+            !string.IsNullOrWhiteSpace(completionRequest.SessionId)
+                ? Ok(await _coreService.GetChatCompletionAsync(instanceId, completionRequest))
+                : Ok(await _coreService.GetCompletionAsync(instanceId, completionRequest));
 
         /// <summary>
         /// Begins a completion operation.
@@ -87,20 +86,10 @@ namespace FoundationaLLM.Core.API.Controllers
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance id.</param>
         /// <param name="operationId">The OperationId for which to retrieve the status.</param>
-        /// <returns>Returns an <see cref="LongRunningOperation"/> object containing the OperationId and Status.</returns>
+        /// <returns>Returns a <see cref="LongRunningOperation"/> object containing the OperationId, Status, and result.</returns>
         [HttpGet("async-completions/{operationId}/status")]
         public async Task<LongRunningOperation> GetCompletionOperationStatus(string instanceId, string operationId) =>
             await _coreService.GetCompletionOperationStatus(instanceId, operationId);
-
-        /// <summary>
-        /// Gets a completion operation from the downstream APIs.
-        /// </summary>
-        /// <param name="instanceId">The FoundationaLLM instance id.</param>
-        /// <param name="operationId">The ID of the operation to retrieve.</param>
-        /// <returns>Returns a completion response</returns>
-        [HttpGet("async-completions/{operationId}/result")]
-        public async Task<CompletionResponse> GetCompletionOperationResult(string instanceId, string operationId) =>
-            await _coreService.GetCompletionOperationResult(instanceId, operationId);
 
         /// <summary>
         /// Retrieves a list of global and private agents.
@@ -115,6 +104,7 @@ namespace FoundationaLLM.Core.API.Controllers
                 new ResourceProviderLoadOptions
                 {
                     IncludeRoles = true,
+                    IncludeActions = true,
                     LoadContent = false
                 });
     }

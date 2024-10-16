@@ -6,6 +6,7 @@ using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.Orchestration.Response.OpenAI;
@@ -13,7 +14,9 @@ using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 using FoundationaLLM.Orchestration.Core.Interfaces;
+using Microsoft.Azure.Cosmos.Serialization.HybridRow;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace FoundationaLLM.Orchestration.Core.Orchestration
@@ -30,26 +33,29 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
     /// <param name="callContext">The call context of the request being handled.</param>
     /// <param name="orchestrationService"></param>
     /// <param name="logger">The logger used for logging.</param>
+    /// <param name="httpClientFactoryService">The <see cref="IHttpClientFactoryService"/> used to create HttpClient instances.</param>
     /// <param name="resourceProviderServices">The dictionary of <see cref="IResourceProviderService"/></param>
     /// <param name="dataSourceAccessDenied">Inidicates that access was denied to all underlying data sources.</param>
+    /// <param name="openAIVectorStoreId">The OpenAI Assistants vector store id.</param>
     public class KnowledgeManagementOrchestration(
         string instanceId,
-        KnowledgeManagementAgent agent,
-        Dictionary<string, object> explodedObjects,
+        KnowledgeManagementAgent? agent,
+        Dictionary<string, object>? explodedObjects,
         ICallContext callContext,
         ILLMOrchestrationService orchestrationService,
         ILogger<OrchestrationBase> logger,
         IHttpClientFactoryService httpClientFactoryService,
         Dictionary<string, IResourceProviderService> resourceProviderServices,
-        bool dataSourceAccessDenied,
+        bool? dataSourceAccessDenied,
         string? openAIVectorStoreId) : OrchestrationBase(orchestrationService)
     {
         private readonly string _instanceId = instanceId;
-        private readonly KnowledgeManagementAgent _agent = agent;
-        private readonly Dictionary<string, object> _explodedObjects = explodedObjects;
+        private readonly KnowledgeManagementAgent? _agent = agent;
+        private readonly Dictionary<string, object>? _explodedObjects = explodedObjects;
         private readonly ICallContext _callContext = callContext;
         private readonly ILogger<OrchestrationBase> _logger = logger;
-        private readonly bool _dataSourceAccessDenied = dataSourceAccessDenied;
+        private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
+        private readonly bool? _dataSourceAccessDenied = dataSourceAccessDenied;
         private readonly string _fileUserContextName = $"{callContext.CurrentUserIdentity!.UPN?.NormalizeUserPrincipalName() ?? callContext.CurrentUserIdentity!.UserId}-file-{instanceId.ToLower()}";
 
         private readonly IResourceProviderService _attachmentResourceProvider =
@@ -60,23 +66,75 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         private GatewayServiceClient _gatewayClient;
 
         /// <inheritdoc/>
+        public override async Task<LongRunningOperation> StartCompletionOperation(CompletionRequest completionRequest)
+        {
+            var validationResponse = await ValidateCompletionRequest(completionRequest);
+            if (validationResponse != null)
+                return new LongRunningOperation
+                {
+                    OperationId = completionRequest.OperationId!,
+                    Status = OperationStatus.Completed,
+                    Result = validationResponse
+                };
+
+            var result = await _orchestrationService.StartCompletionOperation(
+                instanceId,
+                await GetLLMCompletionRequest(completionRequest));
+
+            return result;
+        }
+
+        /// <inheritdoc/>
+        public override async Task<LongRunningOperation> GetCompletionOperationStatus(string operationId)
+        {
+            var operationStatus = await _orchestrationService.GetCompletionOperationStatus(instanceId, operationId);
+
+            if (operationStatus.Status == OperationStatus.Completed)
+            {
+                // parse the LLM Completion response from JsonElement
+                if (operationStatus.Result is JsonElement jsonElement)
+                {
+                    var completionResponse = JsonSerializer.Deserialize<LLMCompletionResponse>(jsonElement.ToString());
+                    if (completionResponse != null)
+                        operationStatus.Result = await GetCompletionResponse(operationId, completionResponse);
+                }               
+            }
+
+            return operationStatus;
+        }
+
+        /// <inheritdoc/>
         public override async Task<CompletionResponse> GetCompletion(CompletionRequest completionRequest)
         {
+            var validationResponse = await ValidateCompletionRequest(completionRequest);
+            if (validationResponse != null)
+                return validationResponse;
+
+            var result = await _orchestrationService.GetCompletion(
+                instanceId,
+                await GetLLMCompletionRequest(completionRequest));
+
+            return await GetCompletionResponse(completionRequest.OperationId!, result);
+        }
+
+        private async Task<CompletionResponse?> ValidateCompletionRequest(CompletionRequest completionRequest)
+        {
             _gatewayClient = new GatewayServiceClient(
-                await httpClientFactoryService
+                await _httpClientFactoryService
                     .CreateClient(HttpClientNames.GatewayAPI, callContext.CurrentUserIdentity!),
                 _logger);
 
-            if (_dataSourceAccessDenied)
+            if (_dataSourceAccessDenied.HasValue
+                && _dataSourceAccessDenied.Value)
                 return new CompletionResponse
                 {
                     OperationId = completionRequest.OperationId!,
                     Completion = "I have no knowledge that can be used to answer this question.",
                     UserPrompt = completionRequest.UserPrompt!,
-                    AgentName = _agent.Name
+                    AgentName = _agent!.Name
                 };
 
-            if (_agent.ExpirationDate.HasValue && _agent.ExpirationDate.Value < DateTime.UtcNow)
+            if (_agent!.ExpirationDate.HasValue && _agent.ExpirationDate.Value < DateTime.UtcNow)
                 return new CompletionResponse
                 {
                     OperationId = completionRequest.OperationId!,
@@ -85,41 +143,19 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     AgentName = _agent.Name
                 };
 
-            var result = await _orchestrationService.GetCompletion(
-                instanceId,
-                new LLMCompletionRequest
-                {
-                    OperationId = completionRequest.OperationId,
-                    UserPrompt = completionRequest.UserPrompt!,
-                    MessageHistory = completionRequest.MessageHistory,
-                    Attachments = await GetAttachmentPaths(completionRequest.Attachments),
-                    Agent = _agent,
-                    Objects = _explodedObjects
-                });
-
-            if (result.Citations != null)
-            {
-                result.Citations = result.Citations
-                    .GroupBy(c => c.Filepath)
-                    .Select(g => g.First())
-                    .ToArray();
-            }
-
-            return new CompletionResponse
-            {
-                OperationId = completionRequest.OperationId!,
-                Completion = result.Completion,
-                Content = result.Content != null ? await TransformContentItems(result.Content) : null,
-                UserPrompt = completionRequest.UserPrompt!,
-                Citations = result.Citations,
-                FullPrompt = result.FullPrompt,
-                PromptTemplate = result.PromptTemplate,
-                AgentName = result.AgentName,
-                PromptTokens = result.PromptTokens,
-                CompletionTokens = result.CompletionTokens,
-                AnalysisResults = result.AnalysisResults
-            };
+            return null;
         }
+
+        private async Task<LLMCompletionRequest> GetLLMCompletionRequest(CompletionRequest completionRequest) =>
+            new LLMCompletionRequest
+            {
+                OperationId = completionRequest.OperationId,
+                UserPrompt = completionRequest.UserPrompt!,
+                MessageHistory = completionRequest.MessageHistory,
+                Attachments = await GetAttachmentPaths(completionRequest.Attachments),
+                Agent = _agent!,
+                Objects = _explodedObjects!
+            };
 
         private async Task<List<AttachmentProperties>> GetAttachmentPaths(List<string> attachmentObjectIds)
         {
@@ -135,28 +171,44 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 _fileUserContextName,
                 _callContext.CurrentUserIdentity!);
 
-            List<AttachmentProperties> result = [];
+            List<AttachmentProperties> result = [];            
             await foreach (var attachment in attachments)
             {
-                var useAttachmentPath =
-                    string.IsNullOrWhiteSpace(attachment.SecondaryProvider)
-                    || (attachment.ContentType ?? string.Empty).StartsWith("image/", StringComparison.OrdinalIgnoreCase);
+                var useAttachmentPath = false;
 
-                var fileMapping = fileUserContext.Files[attachment.ObjectId!];
-                if (fileMapping.RequiresVectorization)
+                if (string.IsNullOrWhiteSpace(attachment.SecondaryProvider))
                 {
-                    _ = await _gatewayClient!.CreateAgentCapability(
-                        _instanceId,
-                        AgentCapabilityCategoryNames.OpenAIAssistants,
-                        fileUserContext.AssistantUserContextName,
-                        new()
-                        {
-                            { OpenAIAgentCapabilityParameterNames.CreateAssistantFile, false },
-                            { OpenAIAgentCapabilityParameterNames.Endpoint, fileUserContext.Endpoint },
-                            { OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStore, fileMapping.RequiresVectorization },
-                            { OpenAIAgentCapabilityParameterNames.AssistantVectorStoreId, _openAIVectorStoreId ?? string.Empty },
-                            { OpenAIAgentCapabilityParameterNames.AssistantFileId, fileMapping.OpenAIFileId! }
-                        });
+                    useAttachmentPath = true;
+                }
+                else
+                {
+                    useAttachmentPath = (attachment.ContentType ?? string.Empty).StartsWith("image/", StringComparison.OrdinalIgnoreCase);
+
+                    var fileMapping = fileUserContext.Files[attachment.ObjectId!];
+                    if (fileMapping.RequiresVectorization)
+                    {
+                        if (string.IsNullOrWhiteSpace(_openAIVectorStoreId))
+                            throw new OrchestrationException($"The file {attachment.OriginalFileName} with file id {fileMapping.OpenAIFileId!} requires vectorization but the vector store id is invalid.");
+
+                        var vectorizationResult = await _gatewayClient!.CreateAgentCapability(
+                            _instanceId,
+                            AgentCapabilityCategoryNames.OpenAIAssistants,
+                            fileUserContext.AssistantUserContextName,
+                            new()
+                            {
+                                { OpenAIAgentCapabilityParameterNames.CreateAssistantFile, false },
+                                { OpenAIAgentCapabilityParameterNames.Endpoint, fileUserContext.Endpoint },
+                                { OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStore, fileMapping.RequiresVectorization },
+                                { OpenAIAgentCapabilityParameterNames.AssistantVectorStoreId, _openAIVectorStoreId! },
+                                { OpenAIAgentCapabilityParameterNames.AssistantFileId, fileMapping.OpenAIFileId! }
+                            });
+
+                        vectorizationResult.TryGetValue(OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStoreSuccess, out var vectorizationSuccessObject);
+                        var vectorizationSuccess = ((JsonElement)vectorizationSuccessObject!).Deserialize<bool>();
+
+                        if (!vectorizationSuccess)
+                            throw new OrchestrationException($"The vectorization of file {attachment.OriginalFileName} with file id {fileMapping.OpenAIFileId!} into the vector store with id {_openAIVectorStoreId} failed.");
+                    }
                 }
 
                 result.Add(new AttachmentProperties
@@ -176,6 +228,32 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             }
 
             return result;
+        }
+
+        private async Task<CompletionResponse> GetCompletionResponse(string operationId, LLMCompletionResponse llmCompletionResponse)
+        {
+            if (llmCompletionResponse.Citations != null)
+            {
+                llmCompletionResponse.Citations = llmCompletionResponse.Citations
+                    .GroupBy(c => c.Filepath)
+                    .Select(g => g.First())
+                    .ToArray();
+            }
+
+            return new CompletionResponse
+            {
+                OperationId = operationId,
+                Completion = llmCompletionResponse.Completion,
+                Content = llmCompletionResponse.Content != null ? await TransformContentItems(llmCompletionResponse.Content) : null,
+                UserPrompt = llmCompletionResponse.UserPrompt!,
+                Citations = llmCompletionResponse.Citations,
+                FullPrompt = llmCompletionResponse.FullPrompt,
+                PromptTemplate = llmCompletionResponse.PromptTemplate,
+                AgentName = llmCompletionResponse.AgentName,
+                PromptTokens = llmCompletionResponse.PromptTokens,
+                CompletionTokens = llmCompletionResponse.CompletionTokens,
+                AnalysisResults = llmCompletionResponse.AnalysisResults
+            };
         }
 
         private async Task<List<MessageContentItemBase>> TransformContentItems(List<MessageContentItemBase> contentItems)

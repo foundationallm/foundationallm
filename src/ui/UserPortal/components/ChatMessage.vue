@@ -73,7 +73,12 @@
 					</template>
 
 					<!-- Render the html content and any vue components within -->
-					<component :is="compiledMarkdownComponent" v-else />
+					<!-- <component :is="compiledMarkdownComponent" v-else /> -->
+
+					<div v-for="(content, index) in processedContent" v-else :key="index">
+						<ChatMessageTextBlock v-if="content.type === 'text'" :value="content.value" />
+						<ChatMessageContentBlock v-else :value="content" />
+					</div>
 
 					<!-- Analysis button -->
 					<Button
@@ -139,6 +144,11 @@
 						</span>
 					</span>
 
+					<!-- Avg MS Per Word: {{ averageTimePerWordMS }} -->
+					<div v-if="messageDisplayStatus" class="loading-shimmer" style="font-weight: 600">
+						{{ messageDisplayStatus }}
+					</div>
+
 					<!-- Right side buttons -->
 					<span>
 						<!-- Copy message button -->
@@ -179,9 +189,9 @@
 							<template #footer>
 								<Button
 									:style="{
-										backgroundColor: primaryButtonBg,
-										borderColor: primaryButtonBg,
-										color: primaryButtonText,
+										backgroundColor: $appConfigStore.primaryButtonBg,
+										borderColor: $appConfigStore.primaryButtonBg,
+										color: $appConfigStore.primaryButtonText,
 									}"
 									label="Close"
 									@click="viewPrompt = false"
@@ -213,17 +223,14 @@ import 'highlight.js/styles/github-dark-dimmed.css';
 import { marked } from 'marked';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
-import truncate from 'truncate-html';
+// import truncate from 'truncate-html';
 import DOMPurify from 'dompurify';
 import type { PropType } from 'vue';
+import { hideAllPoppers } from 'floating-vue';
 
 import type { Message, MessageContent, CompletionPrompt } from '@/js/types';
 import api from '@/js/api';
 import { fetchBlobUrl } from '@/js/fileService';
-import CodeBlockHeader from '@/components/CodeBlockHeader.vue';
-import ChatMessageContentBlock from '@/components/ChatMessageContentBlock.vue';
-
-import { hideAllPoppers } from 'floating-vue';
 
 function processLatex(content) {
 	const blockLatexPattern = /\\\[\s*([\s\S]+?)\s*\\\]/g;
@@ -242,30 +249,41 @@ function processLatex(content) {
 	return content;
 }
 
-function addCodeHeaderComponents(htmlString) {
-	const parser = new DOMParser();
-	const doc = parser.parseFromString(htmlString, 'text/html');
+function trimToWordCount(str, count) {
+	let wordCount = 0;
+	let index = 0;
 
-	doc.querySelectorAll('pre code').forEach((element) => {
-		const languageClass = element.getAttribute('class');
-		const encodedCode = element.getAttribute('data-code');
-		// const autoDetectLanguage = element.getAttribute('data-language');
-		const languageMatch = languageClass.match(/language-(\w+)/);
-		const language = languageMatch ? languageMatch[1] : 'plaintext';
+	while (wordCount < count && index < str.length) {
+		if (str[index] === ' ' && str[index - 1] !== ' ' && index > 0) {
+			wordCount++;
+		}
+		index++;
+	}
 
-		const header = document.createElement('div');
-		header.innerHTML = `<code-block-header language="${language}" codecontent="${encodedCode}"></code-block-header>`;
-
-		element.parentNode.insertBefore(header.firstChild, element);
-	});
-
-	const html = doc.body.innerHTML;
-	const withVueCurlyBracesSanitized = html
-		.replace(/{{/g, '&#123;&#123;')
-		.replace(/}}/g, '&#125;&#125;');
-
-	return withVueCurlyBracesSanitized;
+	return str.substring(0, index).trim();
 }
+
+function getWordCount(str) {
+	let wordCount = 0;
+	let index = 0;
+
+	str = str.trim();
+
+	while (index < str.length) {
+		if (str[index] === ' ' && str[index - 1] !== ' ' && index > 0) {
+			wordCount++;
+		}
+		index++;
+	}
+
+	if (str.length > 0) {
+		wordCount++;
+	}
+
+	return wordCount;
+}
+
+const MAX_WORD_SPEED_MS = 15;
 
 export default {
 	name: 'ChatMessage',
@@ -288,73 +306,237 @@ export default {
 		return {
 			prompt: {} as CompletionPrompt,
 			viewPrompt: false,
-			compiledVueTemplate: '',
 			currentWordIndex: 0,
-			primaryButtonBg: this.$appConfigStore.primaryButtonBg,
-			primaryButtonText: this.$appConfigStore.primaryButtonText,
-			messageContent: this.message.content
-				? (JSON.parse(JSON.stringify(this.message.content)) as MessageContent[])
-				: null,
 			isAnalysisModalVisible: false,
 			isMobile: window.screen.width < 950,
 			markedRenderer: null,
+			pollingInterval: null,
+			pollingIteration: 0,
+			totalTimeElapsed: 0,
+			totalWordsGenerated: 0,
+			averageTimePerWordMS: 50,
+			processedContent: [],
+			completed: false,
+			isRenderingMessage: false,
 		};
 	},
 
 	computed: {
-		compiledMarkdown() {
-			const processContentBlock = (contentToProcess) => {
-				let htmlContent = processLatex(contentToProcess ?? '');
-				htmlContent = marked(htmlContent, { renderer: this.markedRenderer });
-				return DOMPurify.sanitize(htmlContent);
-			};
-
-			let content = '';
-			if (this.messageContent && this.messageContent?.length > 0) {
-				this.messageContent.forEach((contentBlock) => {
-					switch (contentBlock.type) {
-						case 'text': {
-							content += processContentBlock(contentBlock.value);
-							break;
-						}
-						default: {
-							// Maybe just pass invidual values directly as primitives instead of full object
-							const contentBlockEncoded = encodeURIComponent(JSON.stringify(contentBlock));
-							content += `<chat-message-content-block contentencoded="${contentBlockEncoded}"></chat-message-content-block>`;
-							break;
-						}
+		messageContent() {
+			if (this.message.status === 'Failed') {
+				const failedMessage = this.message.text ?? 'Failed to generate a response.';
+				return [
+					{
+						type: 'text',
+						content: failedMessage,
+						value: failedMessage,
+						origValue: failedMessage,
 					}
-				});
-			} else {
-				content = processContentBlock(this.message.text);
+				];
 			}
 
-			return content;
+			return this.message.content ?? [];
 		},
 
-		compiledMarkdownComponent() {
-			return {
-				template: `<div>${this.compiledVueTemplate}</div>`,
-				components: {
-					CodeBlockHeader,
-					ChatMessageContentBlock,
-				},
-			};
+		messageDisplayStatus() {
+			if (
+				this.message.status === 'Failed' ||
+				(this.message.status === 'Completed' && !this.isRenderingMessage)
+			)
+				return null;
+
+			if (this.isRenderingMessage && this.messageContent.length > 0) return 'Responding';
+
+			// Account for old messages that are complete (status of "Pending" with null operation_id)
+			const isPending = this.message.status === 'Pending' && this.message.operation_id;
+			if (
+				this.showWordAnimation &&
+				(isPending || this.message.status === 'InProgress' || this.message.status === 'Loading')
+			)
+				return 'Thinking';
+
+			return null;
+		},
+	},
+
+	watch: {
+		message: {
+			immediate: true,
+			deep: true,
+			handler(newMessage, oldMessage) {
+				// There is an issue here if a message that is not the latest has an incomplete status
+				if (newMessage.status === 'Completed') {
+					this.computedAverageTimePerWord({ ...newMessage }, oldMessage ?? {});
+					this.handleMessageCompleted(newMessage);
+					return;
+				}
+
+				this.computedAverageTimePerWord({ ...newMessage }, oldMessage ?? {});
+				if (
+					!this.isRenderingMessage &&
+					this.showWordAnimation &&
+					newMessage.type !== 'LoadingMessage' &&
+					newMessage.operation_id
+				)
+					this.startRenderingMessage();
+			},
+		},
+
+		processedContent: {
+			deep: true,
+			handler() {
+				this.markSkippableContent();
+			},
 		},
 	},
 
 	created() {
-		this.markSkippableContent();
 		this.createMarkedRenderer();
 
-		if (this.showWordAnimation) {
-			this.displayWordByWord();
-		} else {
-			this.compiledVueTemplate = addCodeHeaderComponents(this.compiledMarkdown);
+		if (this.message.text && this.message.sender === 'User') {
+			this.processedContent = [
+				{
+					type: 'text',
+					value: this.processContentBlock(this.message.text),
+					origValue: this.message.text,
+				},
+			];
+		} else if (this.message.content) {
+			this.processedContent = this.message.content.map((content) => {
+				this.currentWordIndex = getWordCount(content.value);
+				return {
+					type: content.type,
+					content,
+					value: this.processContentBlock(content.value),
+					origValue: content.value,
+				};
+			});
 		}
 	},
 
 	methods: {
+		processContentBlock(contentToProcess) {
+			let htmlContent = processLatex(contentToProcess ?? '');
+			htmlContent = marked(htmlContent, { renderer: this.markedRenderer });
+			return DOMPurify.sanitize(htmlContent);
+		},
+
+		computedAverageTimePerWord(newMessage, oldMessage) {
+			const newContent = newMessage.content ?? [];
+			const oldContent = oldMessage.content ?? [];
+
+			this.pollingIteration += 1;
+
+			// Calculate the number of words in the previous message content
+			let amountOfOldWords = 0;
+			if (oldContent) {
+				amountOfOldWords = oldContent.reduce((acc, content) => {
+					return acc + (content.value?.match(/[\w'-]+/g) || []).length;
+				}, 0);
+			}
+
+			// Calculate the number of words in the new message content
+			const amountOfNewWords = newContent.reduce((acc, content) => {
+				return acc + (content.value?.match(/[\w'-]+/g) || []).length;
+			}, 0);
+
+			// Calculate the number of new words generated since the last request
+			const newWordsGenerated = amountOfNewWords - amountOfOldWords;
+
+			if (newWordsGenerated > 0) {
+				this.totalWordsGenerated += newWordsGenerated;
+				this.totalTimeElapsed += this.$appStore.getPollingRateMS();
+			}
+
+			// Calculate the average time per word
+			if (this.pollingIteration === 1) {
+				this.averageTimePerWordMS = MAX_WORD_SPEED_MS;
+			} else {
+				this.averageTimePerWordMS =
+					this.totalWordsGenerated > 0
+						? Number((this.totalTimeElapsed / this.totalWordsGenerated).toFixed(2))
+						: 0;
+			}
+		},
+
+		handleMessageCompleted() {
+			this.averageTimePerWordMS = MAX_WORD_SPEED_MS;
+			this.completed = true;
+		},
+
+		startRenderingMessage() {
+			if (this.isRenderingMessage) return;
+
+			this.displayWordByWord();
+		},
+
+		displayWordByWord() {
+			this.isRenderingMessage = true;
+
+			let currentContentIndex = Math.max(this.processedContent.length - 1, 0);
+			let content = this.messageContent[currentContentIndex]?.value;
+			let processedContent = this.processedContent[currentContentIndex]?.content;
+
+			// If the processed content block is the same as the current content block,
+			// and there is a new one, then we know to move to the next block
+			// check content !== for files blocks that are still null, but the next block is already generated
+			if (
+				this.messageContent[currentContentIndex + 1] &&
+				content === processedContent &&
+				!!content
+			) {
+				currentContentIndex += 1;
+				this.currentWordIndex = 0;
+
+				content = this.messageContent[currentContentIndex]?.value;
+				processedContent = this.processedContent[currentContentIndex]?.content;
+			}
+
+			if (content !== processedContent) {
+				this.currentWordIndex += 1;
+
+				if (this.messageContent[currentContentIndex]?.type === 'text') {
+					const truncatedContent = trimToWordCount(content, this.currentWordIndex);
+
+					this.processedContent[currentContentIndex] = {
+						type: this.messageContent[currentContentIndex]?.type,
+						content: truncatedContent,
+						value: this.processContentBlock(truncatedContent),
+						origValue: this.messageContent[currentContentIndex]?.value,
+					};
+				} else {
+					this.processedContent[currentContentIndex] = {
+						type: this.messageContent[currentContentIndex]?.type,
+						content,
+						value: content,
+						origValue: this.messageContent[currentContentIndex]?.value,
+					};
+				}
+			}
+
+			// If the current block is still rendering, or there is another block, or the message is still processing
+			if (
+				(content !== processedContent && !!content) ||
+				this.messageContent[currentContentIndex + 1] ||
+				!this.completed
+			) {
+				return setTimeout(() => this.displayWordByWord(), this.averageTimePerWordMS);
+			}
+
+			// Trigger after polling rate from message completion to ensure message is always rendered on completion:
+			// Just to make sure the message renders fully in the case the animation fails
+			// this.processedContent = this.messageContent.map((content) => {
+			// 	return {
+			// 		type: content.type,
+			// 		content,
+			// 		value: content.type === 'text' ? this.processContentBlock(content.value) : content.value,
+			// 		origValue: content.value,
+			// 	};
+			// });
+
+			this.isRenderingMessage = false;
+		},
+
 		createMarkedRenderer() {
 			this.markedRenderer = new marked.Renderer();
 
@@ -394,13 +576,13 @@ export default {
 		},
 
 		markSkippableContent() {
-			if (!this.messageContent) return;
+			if (!this.processedContent) return;
 
-			this.messageContent.forEach((contentBlock) => {
+			this.processedContent.forEach((contentBlock) => {
 				if (contentBlock.type === 'file_path') {
 					// Check for a matching text content that shares the same URL
-					const matchingTextContent = this.messageContent.find(
-						(block) => block.type === 'text' && block.value.includes(contentBlock.value),
+					const matchingTextContent = this.processedContent.find(
+						(block) => block.type === 'text' && block.origValue.includes(contentBlock.origValue),
 					);
 
 					if (matchingTextContent) {
@@ -411,30 +593,6 @@ export default {
 					}
 				}
 			});
-		},
-
-		displayWordByWord() {
-			const words = this.compiledMarkdown.split(/\s+/);
-			if (this.currentWordIndex >= words.length) {
-				this.compiledVueTemplate = addCodeHeaderComponents(this.compiledMarkdown);
-				return;
-			}
-
-			this.currentWordIndex += 1;
-
-			const htmlString = truncate(this.compiledMarkdown, this.currentWordIndex, {
-				byWords: true,
-				stripTags: false,
-				ellipsis: '',
-				decodeEntities: false,
-				excludes: ['code-block-header', 'chat-message-content-block'],
-				reserveLastWord: false,
-				keepWhitespaces: true,
-			});
-
-			this.compiledVueTemplate = addCodeHeaderComponents(htmlString);
-
-			setTimeout(() => this.displayWordByWord(), 10);
 		},
 
 		formatTimeStamp(timeStamp: string) {
@@ -525,6 +683,45 @@ export default {
 	display: none;
 }
 
+@keyframes loading-shimmer {
+	0% {
+		background-position: -100% top;
+	}
+
+	to {
+		background-position: 250% top;
+	}
+}
+
+$shimmerColor: white;
+// $textColor: var(--accent-text);
+$textColor: #131833;
+.loading-shimmer {
+	text-fill-color: transparent;
+	-webkit-text-fill-color: transparent;
+	animation-delay: 0.3s;
+	animation-duration: 3s;
+	animation-iteration-count: infinite;
+	animation-name: loading-shimmer;
+	background: $textColor
+		gradient(linear, 100% 0, 0 0, from($textColor), color-stop(0.5, $shimmerColor), to($textColor));
+	background: $textColor -webkit-gradient(linear, 100% 0, 0 0, from($textColor), color-stop(0.5, $shimmerColor), to($textColor));
+	background-clip: text;
+	-webkit-background-clip: text;
+	background-repeat: no-repeat;
+	background-size: 50% 200%;
+	display: flex;
+	align-items: center;
+}
+
+[dir='ltr'] .loading-shimmer {
+	background-position: -100% top;
+}
+
+[dir='rtl'] .loading-shimmer {
+	background-position: 200% top;
+}
+
 .message-row {
 	display: flex;
 	align-items: flex-end;
@@ -589,7 +786,7 @@ export default {
 }
 
 .message__copy {
-	color: var(--primary-text);
+	color: var(--primary-text) !important;
 	margin-left: 4px;
 }
 
@@ -656,12 +853,6 @@ export default {
 	}
 }
 
-.primary-button {
-	background-color: var(--primary-button-bg) !important;
-	border-color: var(--primary-button-bg) !important;
-	color: var(--primary-button-text) !important;
-}
-
 .message__button {
 	color: #00356b;
 }
@@ -674,6 +865,12 @@ export default {
 }
 .prompt-dialog {
 	width: 50vw;
+}
+
+.message__body img {
+	max-width: 100% !important;
+	height: auto !important;
+	display: block !important;
 }
 
 @media only screen and (max-width: 950px) {

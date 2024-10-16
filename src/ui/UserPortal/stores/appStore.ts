@@ -5,16 +5,20 @@ import type {
 	Session,
 	ChatSessionProperties,
 	Message,
+	UserProfile,
 	Agent,
+	CoreConfiguration,
+	OneDriveWorkSchool,
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
-	// ResourceProviderDeleteResult,
 	ResourceProviderDeleteResults,
 	Attachment,
 	MessageContent,
 } from '@/js/types';
 import api from '@/js/api';
-import eventBus from '@/js/eventBus';
+// import eventBus from '@/js/eventBus';
+
+const DEFAULT_POLLING_INTERVAL_MS = 5000;
 
 export const useAppStore = defineStore('app', {
 	state: () => ({
@@ -28,7 +32,10 @@ export const useAppStore = defineStore('app', {
 		selectedAgents: new Map(),
 		lastSelectedAgent: null as ResourceProviderGetResult<Agent> | null,
 		attachments: [] as Attachment[],
-		longRunningOperations: new Map<string, string>(), // sessionId -> operationId
+		longRunningOperations: new Map<string, string>(), // sessionId -> operation_id
+		coreConfiguration: null as CoreConfiguration | null,
+		oneDriveWorkSchool: null as boolean | null,
+		userProfiles: null as UserProfile | null,
 	}),
 
 	getters: {},
@@ -40,7 +47,7 @@ export const useAppStore = defineStore('app', {
 			// No need to load sessions if in kiosk mode, simply create a new one and skip.
 			if (appConfigStore.isKioskMode) {
 				const newSession = await api.addSession(this.getDefaultChatSessionProperties());
-				await this.changeSession(newSession);
+				this.changeSession(newSession);
 				return;
 			}
 
@@ -48,11 +55,13 @@ export const useAppStore = defineStore('app', {
 
 			if (this.sessions.length === 0) {
 				await this.addSession(this.getDefaultChatSessionProperties());
-				await this.changeSession(this.sessions[0]);
+				this.changeSession(this.sessions[0]);
 			} else {
 				const existingSession = this.sessions.find((session: Session) => session.id === sessionId);
-				await this.changeSession(existingSession || this.sessions[0]);
+				this.changeSession(existingSession || this.sessions[0]);
 			}
+
+			await this.getUserProfiles();
 
 			// if (this.currentSession) {
 			// 	await this.getMessages();
@@ -97,11 +106,11 @@ export const useAppStore = defineStore('app', {
 				this.sessions = sessions;
 			}
 
-			// Handle inconsistencies in displaying the rename session due to potential delays in the backend updating the session name.
+			// Handle inconsistencies in displaying the renamed session due to potential delays in the backend updating the session name.
 			this.renamedSessions.forEach((renamedSession: Session) => {
 				const existingSession = this.sessions.find((s: Session) => s.id === renamedSession.id);
 				if (existingSession) {
-					existingSession.name = renamedSession.name;
+					existingSession.display_name = renamedSession.display_name;
 				}
 			});
 
@@ -137,8 +146,8 @@ export const useAppStore = defineStore('app', {
 			);
 
 			// Preemptively rename the session for responsiveness, and revert the name if the request fails.
-			const previousName = existingSession.name;
-			existingSession.name = newSessionName;
+			const previousName = existingSession.display_name;
+			existingSession.display_name = newSessionName;
 
 			try {
 				await api.renameSession(sessionToRename.id, newSessionName);
@@ -146,15 +155,15 @@ export const useAppStore = defineStore('app', {
 					(session: Session) => session.id === sessionToRename.id,
 				);
 				if (existingRenamedSession) {
-					existingRenamedSession.name = newSessionName;
+					existingRenamedSession.display_name = newSessionName;
 				} else {
 					this.renamedSessions = [
-						{ ...sessionToRename, name: newSessionName },
+						{ ...sessionToRename, display_name: newSessionName },
 						...this.renamedSessions,
 					];
 				}
 			} catch (error) {
-				existingSession.name = previousName;
+				existingSession.display_name = previousName;
 			}
 		},
 
@@ -171,12 +180,12 @@ export const useAppStore = defineStore('app', {
 			if (this.sessions.length === 0) {
 				const newSession = await this.addSession(this.getDefaultChatSessionProperties());
 				this.removeSession(sessionToDelete!.id);
-				await this.changeSession(newSession);
+				this.changeSession(newSession);
 			}
 
 			const firstSession = this.sessions[0];
 			if (firstSession) {
-				await this.changeSession(firstSession);
+				this.changeSession(firstSession);
 			}
 		},
 
@@ -194,17 +203,61 @@ export const useAppStore = defineStore('app', {
 		},
 
 		async getMessages() {
-			const data = await api.getMessages(this.currentSession.id);
-			this.currentMessages = data.map((message) => ({
+			const messagesResponse = await api.getMessages(this.currentSession.id);
+
+			// Temporarily filter out the duplicate streaming message instances
+			// const uniqueMessages = messagesResponse.reduceRight((acc, current) => {
+			// 	const isDuplicate = acc.find(item => {
+			// 		return item.operation_id === current.operation_id && item.sender === current.sender;
+			// 	});
+
+			// 	if (!isDuplicate || current.sender !== 'Agent') {
+			// 		acc.push(current);
+			// 	}
+
+			// 	return acc;
+			// }, []);
+
+			// uniqueMessages.reverse();
+
+			this.currentMessages = messagesResponse.map((message) => ({
 				...message,
 				content: message.content ? message.content.map(this.initializeMessageContent) : [],
 			}));
-			await nextTick();
+
+			// Determine if the latest message needs to be polled
+			if (this.currentMessages.length > 0) {
+				const latestMessage = this.currentMessages[this.currentMessages.length - 1];
+
+				// For older messages that have a status of "Pending" but no operation id, assume
+				// it is complete and do no initiate polling as it will return empty data
+				if (
+					latestMessage.operation_id &&
+					(latestMessage.status === 'InProgress' || latestMessage.status === 'Pending')
+				) {
+					this.startPolling(latestMessage);
+				}
+			}
+		},
+
+		async getMessage(messageId: string) {
+			const data = await api.getMessage(messageId);
+			const existingMessageIndex = this.currentMessages.findIndex(
+				(message) => message.id === messageId,
+			);
+
+			if (existingMessageIndex !== -1) {
+				this.currentMessages[existingMessageIndex] = data;
+				return data;
+			}
+
+			this.currentMessages.push(data);
+			return data;
 		},
 
 		updateSessionAgentFromMessages(session: Session) {
 			const lastAssistantMessage = this.currentMessages
-				.filter((message) => message.sender.toLowerCase() === 'assistant')
+				.filter((message) => message.sender === 'Agent')
 				.pop();
 			if (lastAssistantMessage) {
 				const agent = this.agents.find(
@@ -260,7 +313,7 @@ export const useAppStore = defineStore('app', {
 			const authStore = useAuthStore();
 			const tempUserMessage: Message = {
 				completionPromptId: null,
-				id: '',
+				id: null,
 				rating: null,
 				sender: 'User',
 				senderDisplayName: authStore.currentAccount?.name ?? 'You',
@@ -271,6 +324,7 @@ export const useAppStore = defineStore('app', {
 				type: 'Message',
 				vector: [],
 				attachmentDetails,
+				renderId: Math.random(),
 			};
 			this.currentMessages.push(tempUserMessage);
 
@@ -278,7 +332,7 @@ export const useAppStore = defineStore('app', {
 				completionPromptId: null,
 				id: '',
 				rating: null,
-				sender: 'Assistant',
+				sender: 'Agent',
 				senderDisplayName: agent.name,
 				sessionId: this.currentSession!.id,
 				text: '',
@@ -286,34 +340,83 @@ export const useAppStore = defineStore('app', {
 				tokens: 0,
 				type: 'LoadingMessage',
 				vector: [],
+				status: 'Loading',
+				renderId: Math.random(),
 			};
 			this.currentMessages.push(tempAssistantMessage);
 
-			if (agent.long_running) {
-				// Handle long-running operations
-				const operationId = await api.startLongRunningProcess('/completions', {
-					session_id: this.currentSession!.id,
-					user_prompt: text,
-					agent_name: agent.name,
-					settings: null,
-					attachments: relevantAttachments.map((attachment) => String(attachment.id)),
-				});
+			const initialSession = this.currentSession.id;
+			const message = await api.sendMessage(
+				this.currentSession!.id,
+				text,
+				agent,
+				relevantAttachments.map((attachment) => String(attachment.id)),
+			);
+			this.currentMessages[this.currentMessages.length - 1] = {
+				...tempAssistantMessage,
+				...message,
+				type: 'Message',
+				text: message.status_message,
+			};
 
-				this.longRunningOperations.set(this.currentSession!.id, operationId);
-				this.pollForCompletion(this.currentSession!.id, operationId);
-			} else {
-				await api.sendMessage(
-					this.currentSession!.id,
-					text,
-					agent,
-					relevantAttachments.map((attachment) => String(attachment.id)),
-				);
-				await this.getMessages();
-				// Get rid of the attachments that were just sent.
-				this.attachments = this.attachments.filter((attachment) => {
-					return !relevantAttachments.includes(attachment);
-				});
-			}
+			this.attachments = this.attachments.filter(
+				(attachment) => attachment.sessionId !== sessionId,
+			);
+
+			// If the session has changed before above completes we need to prevent polling
+			if (initialSession !== this.currentSession.id) return;
+
+			// If the operation failed to start prevent polling
+			if (message.status === 'Failed') return;
+
+			// For older messages that have a status of "Pending" but no operation id, assume
+			// it is complete and do no initiate polling as it will return empty data
+			if (message.operation_id) this.startPolling(message);
+
+			// return message;
+		},
+
+		getPollingRateMS() {
+			return (
+				this.coreConfiguration?.completionResponsePollingIntervalSeconds * 1000 ||
+				DEFAULT_POLLING_INTERVAL_MS
+			);
+		},
+
+		startPolling(message) {
+			if (this.pollingInterval) return;
+
+			this.pollingInterval = setInterval(async () => {
+				try {
+					const statusResponse = await api.checkProcessStatus(message.operation_id);
+					const updatedMessage = statusResponse.result ?? {};
+					this.currentMessages[this.currentMessages.length - 1] = {
+						...updatedMessage,
+						renderId: this.currentMessages[this.currentMessages.length - 1].renderId,
+					};
+
+					const userMessage = this.currentMessages[this.currentMessages.length - 2];
+					if (
+						userMessage &&
+						statusResponse.prompt_tokens &&
+						userMessage.tokens !== statusResponse.prompt_tokens
+					) {
+						userMessage.tokens = statusResponse.prompt_tokens;
+					}
+
+					if (updatedMessage.status === 'Completed' || updatedMessage.status === 'Failed') {
+						this.stopPolling();
+					}
+				} catch (error) {
+					console.error(error);
+					this.stopPolling();
+				}
+			}, this.getPollingRateMS());
+		},
+
+		stopPolling() {
+			clearInterval(this.pollingInterval);
+			this.pollingInterval = null;
 		},
 
 		/**
@@ -322,18 +425,18 @@ export const useAppStore = defineStore('app', {
 		 * @param sessionId - The session ID associated with the operation.
 		 * @param operationId - The ID of the operation to check for completion.
 		 */
-		async pollForCompletion(sessionId: string, operationId: string) {
-			while (true) {
-				const status = await api.checkProcessStatus(operationId);
-				if (status.isCompleted) {
-					this.longRunningOperations.delete(sessionId);
-					eventBus.emit('operation-completed', { sessionId, operationId });
-					await this.getMessages();
-					break;
-				}
-				await new Promise((resolve) => setTimeout(resolve, 2000)); // Poll every 2 seconds
-			}
-		},
+		// async pollForCompletion(sessionId: string, operationId: string) {
+		// 	while (true) {
+		// 		const status = await api.checkProcessStatus(operationId);
+		// 		if (status.isCompleted) {
+		// 			this.longRunningOperations.delete(sessionId);
+		// 			eventBus.emit('operation-completed', { sessionId, operationId });
+		// 			await this.getMessages();
+		// 			break;
+		// 		}
+		// 		await new Promise((resolve) => setTimeout(resolve, 2000)); // Poll every 2 seconds
+		// 	}
+		// },
 
 		async rateMessage(messageToRate: Message, isLiked: Message['rating']) {
 			const existingMessage = this.currentMessages.find(
@@ -351,7 +454,9 @@ export const useAppStore = defineStore('app', {
 			}
 		},
 
-		async changeSession(newSession: Session) {
+		changeSession(newSession: Session) {
+			this.stopPolling();
+
 			const nuxtApp = useNuxtApp();
 			const appConfigStore = useAppConfigStore();
 
@@ -363,8 +468,8 @@ export const useAppStore = defineStore('app', {
 			}
 
 			this.currentSession = newSession;
-			await this.getMessages();
-			this.updateSessionAgentFromMessages(newSession);
+			// await this.getMessages();
+			// this.updateSessionAgentFromMessages(newSession);
 		},
 
 		toggleSidebar() {
@@ -374,6 +479,52 @@ export const useAppStore = defineStore('app', {
 		async getAgents() {
 			this.agents = await api.getAllowedAgents();
 			return this.agents;
+		},
+
+		async getCoreConfiguration() {
+			this.coreConfiguration = await api.getCoreConfiguration();
+			return this.coreConfiguration;
+		},
+
+		async oneDriveWorkSchoolConnect() {
+			await api.oneDriveWorkSchoolConnect();
+			this.oneDriveWorkSchool = true;
+		},
+
+		async oneDriveWorkSchoolDisconnect() {
+			await api.oneDriveWorkSchoolDisconnect();
+			this.oneDriveWorkSchool = false;
+		},
+
+		async getUserProfiles() {
+			this.userProfiles = await api.getUserProfile();
+			this.oneDriveWorkSchool = this.userProfiles?.flags.oneDriveWorkSchoolEnabled;
+			return this.userProfiles;
+		},
+
+		async oneDriveWorkSchoolDownload(sessionId: string, oneDriveWorkSchool: OneDriveWorkSchool) {
+			const agent = this.getSessionAgent(this.currentSession!).resource;
+			// If the agent is not found, do not upload the attachment and display an error message.
+			if (!agent) {
+				throw new Error('No agent selected.');
+			}
+
+			const item = (await api.oneDriveWorkSchoolDownload(
+				sessionId,
+				agent.name,
+				oneDriveWorkSchool,
+			)) as OneDriveWorkSchool;
+			const newAttachment: Attachment = {
+				id: item.objectId!,
+				fileName: item.name!,
+				sessionId,
+				contentType: item.mimeType!,
+				source: 'OneDrive Work/School',
+			};
+
+			this.attachments.push(newAttachment);
+
+			return item.objectId;
 		},
 
 		async uploadAttachment(file: FormData, sessionId: string, progressCallback: Function) {
@@ -396,6 +547,7 @@ export const useAppStore = defineStore('app', {
 				fileName,
 				sessionId,
 				contentType,
+				source: 'Local Computer',
 			};
 
 			this.attachments.push(newAttachment);

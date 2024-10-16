@@ -110,7 +110,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
         #region Resource provider strongly typed operations
 
         /// <inheritdoc/>
-        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) =>
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) =>
             resourcePath.ResourceTypeName switch
             {
                 AzureOpenAIResourceTypeNames.AssistantUserContexts => (await LoadResource<T>(
@@ -124,7 +124,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
             };
 
         /// <inheritdoc/>
-        protected override async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(ResourcePath resourcePath, T resource, UnifiedUserIdentity userIdentity) =>
+        protected override async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, T resource, UnifiedUserIdentity userIdentity) =>
             resource switch
             {
                 AssistantUserContext assistantUserContext => ((await UpdateAssistantUserContext(assistantUserContext, userIdentity)) as TResult)!,

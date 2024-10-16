@@ -60,9 +60,10 @@ import { fetchBlobUrl } from '@/js/fileService';
 
 export default {
 	props: {
-		contentencoded: {
-			type: String,
-			required: true,
+		value: {
+			type: Object,
+			required: false,
+			default: null,
 		},
 	},
 
@@ -74,37 +75,46 @@ export default {
 		};
 	},
 
-	// computed: {
-	// 	content() {
-	// 		return JSON.parse(decodeURIComponent(this.contentencoded));
-	// 	},
-	// },
-
-	async created() {
-		this.content = JSON.parse(decodeURIComponent(this.contentencoded));
-
-		if (['image_file', 'html', 'file_path'].includes(this.content.type)) {
-			this.loading = true;
-			this.content.fileName = this.content.fileName?.split('/').pop();
-			try {
-				if (this.content.type !== 'file_path') {
-					const response = await api.fetchDirect(this.content.value);
-					if (this.content.type === 'html') {
-						const blob = new Blob([response], { type: 'text/html' });
-						this.content.blobUrl = URL.createObjectURL(blob);
-					} else if (this.content.type === 'image_file') {
-						this.content.blobUrl = URL.createObjectURL(response);
-					}
-				}
-			} catch (error) {
-				console.error(`Failed to fetch content from ${this.content.value}`, error);
-				this.error = true;
-			}
-			this.loading = false;
-		}
+	watch: {
+		value: {
+			immediate: true,
+			handler() {
+				this.loadFile();
+			},
+		},
 	},
 
 	methods: {
+		async loadFile() {
+			this.content = this.value;
+
+			// File is still generating
+			if (!this.content.origValue) {
+				this.loading = false;
+				return;
+			}
+
+			if (['image_file', 'html', 'file_path'].includes(this.content.type)) {
+				this.loading = true;
+				this.content.fileName = this.content.fileName?.split('/').pop();
+				try {
+					if (this.content.type !== 'file_path') {
+						const response = await api.fetchDirect(this.content.origValue);
+						if (this.content.type === 'html') {
+							const blob = new Blob([response], { type: 'text/html' });
+							this.content.blobUrl = URL.createObjectURL(blob);
+						} else if (this.content.type === 'image_file') {
+							this.content.blobUrl = URL.createObjectURL(response);
+						}
+					}
+				} catch (error) {
+					console.error(`Failed to fetch content from ${this.content.origValue}`, error);
+					this.error = true;
+				}
+				this.loading = false;
+			}
+		},
+
 		// handleFileDownloadLinkClick(event) {
 		// 	const link = event.target.closest('a.file-download-link');
 		// 	if (link && link.dataset.href) {

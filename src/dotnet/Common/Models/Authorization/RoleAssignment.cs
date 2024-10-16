@@ -1,44 +1,18 @@
-﻿using FoundationaLLM.Common.Models.Authorization;
-using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Common.Utils;
+﻿using FoundationaLLM.Common.Utils;
 using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Common.Models
+namespace FoundationaLLM.Common.Models.Authorization
 {
     /// <summary>
-    /// Represents a security role assignment.
+    /// Represents an RBAC role assignment.
     /// </summary>
-    public class RoleAssignment : ResourceBase
+    public class RoleAssignment : AssignmentBase
     {
         /// <summary>
         /// The unique identifier of the role definition.
         /// </summary>
         [JsonPropertyName("role_definition_id")]
         public required string RoleDefinitionId { get; set; }
-
-        /// <summary>
-        /// The unique identifier of the security principal to which the role is assigned.
-        /// </summary>
-        [JsonPropertyName("principal_id")]
-        public required string PrincipalId { get; set; }
-
-        /// <summary>
-        /// The type of the security principal to which the role is assigned. Can be User, Group, or ServicePrincipal.
-        /// </summary>
-        [JsonPropertyName("principal_type")]
-        public required string PrincipalType { get; set; }
-
-        /// <summary>
-        /// The scope at which the role is assigned.
-        /// </summary>
-        [JsonPropertyName("scope")]
-        public required string Scope { get; set; }
-
-        /// <summary>
-        /// The <see cref="ResourcePath"/> resulting from parsing the scope path.
-        /// </summary>
-        [JsonIgnore]
-        public ResourcePath? ScopeResourcePath { get; set; }
 
         /// <summary>
         /// The <see cref="RoleDefinition"/> referenced by the <see cref="RoleDefinitionId"/> property.
@@ -52,6 +26,14 @@ namespace FoundationaLLM.Common.Models
         [JsonIgnore]
         public HashSet<string> AllowedActions { get; set; } = [];
 
+        /// <summary>
+        /// Enriches the role assignment with additional information.
+        /// </summary>
+        /// <param name="allowedInstanceIds">The list of FoundationaLLM instance identifiers used as context for the enrichment.</param>
+        /// <remarks>
+        /// This method is called when the role assignments are loaded into memory.
+        /// Besides the actual enrichment, it also ensures that the <see cref="AssignmentBase.Scope"/> property is set correctly.
+        /// </remarks>
         public void Enrich(List<string> allowedInstanceIds)
         {
             ScopeResourcePath = ResourcePathUtils.ParseForRoleAssignmentScope(

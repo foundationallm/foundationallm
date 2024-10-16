@@ -72,7 +72,6 @@ try {
     }
 
     # Recursively copy storage account contents
-    $env:AZCOPY_AUTO_LOGIN_TYPE="AZCLI"
     foreach ($container in (az storage container list --account-name $sourceStorageAccountName --query "@[].name" --auth-mode login -o tsv)) {
         azcopy copy "https://$($sourceStorageAccountName).blob.core.windows.net/$container/" "https://$destinationStorageAccount.blob.core.windows.net/backups/$resourceGroup/" --recursive
     }

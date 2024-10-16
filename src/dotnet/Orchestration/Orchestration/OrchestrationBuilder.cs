@@ -18,6 +18,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using Microsoft.Extensions.DependencyInjection;
+using FoundationaLLM.Common.Models.Orchestration;
 
 namespace FoundationaLLM.Orchestration.Core.Orchestration
 {
@@ -27,11 +28,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
     public class OrchestrationBuilder
     {
         /// <summary>
-        /// Builds the orchestration based on the user prompt, the session id, and the call context.
-        /// <para>
-        /// Note that the agent name in <paramref name="agentName"/> can be different from the agent name in <paramref name="originalRequest"/>.
-        /// This happens when the original completion request results in the need to bring in additional agents to the conversation.
-        /// </para>
+        /// Builds the orchestration used to handle a synchronous completion operation or start an asynchronous completion operation.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance ID.</param>
         /// <param name="agentName">The unique name of the agent for which the orchestration is built.</param>
@@ -40,6 +37,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         /// <param name="configuration">The <see cref="IConfiguration"/> used to retrieve app settings from configuration.</param>
         /// <param name="resourceProviderServices">A dictionary of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
         /// <param name="llmOrchestrationServiceManager">The <see cref="ILLMOrchestrationServiceManager"/> that manages internal and external orchestration services.</param>
+        /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> used to interact with the Cosmos DB database.</param>
         /// <param name="serviceProvider">The <see cref="IServiceProvider"/> provding dependency injection services for the current scope.</param>
         /// <param name="loggerFactory">The logger factory used to create new loggers.</param>
         /// <returns></returns>
@@ -52,6 +50,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             IConfiguration configuration,
             Dictionary<string, IResourceProviderService> resourceProviderServices,
             ILLMOrchestrationServiceManager llmOrchestrationServiceManager,
+            IAzureCosmosDBService cosmosDBService,
             IServiceProvider serviceProvider,
             ILoggerFactory loggerFactory)
         {
@@ -77,13 +76,24 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 callContext.CurrentUserIdentity!,
                 logger);
 
-            if (result.Agent.AgentType == typeof(KnowledgeManagementAgent) || result.Agent.AgentType == typeof(AudioClassificationAgent))
+            if (result.Agent.AgentType == typeof(KnowledgeManagementAgent))
             {
-                var orchestrationName = string.IsNullOrWhiteSpace(result.Agent.OrchestrationSettings?.Orchestrator)
+                var orchestrator = string.IsNullOrWhiteSpace(result.Agent.OrchestrationSettings?.Orchestrator)
                     ? LLMOrchestrationServiceNames.LangChain
                     : result.Agent.OrchestrationSettings?.Orchestrator;
 
-                var orchestrationService = llmOrchestrationServiceManager.GetService(instanceId, orchestrationName!, serviceProvider, callContext);
+                if (originalRequest.LongRunningOperation)
+                {
+                    await cosmosDBService.PathcOperationsItemPropertiesAsync<LongRunningOperationContext>(
+                        originalRequest.OperationId!,
+                        originalRequest.OperationId!,
+                        new Dictionary<string, object?>
+                        {
+                            { "/orchestrator", orchestrator! }
+                        });
+                }
+
+                var orchestrationService = llmOrchestrationServiceManager.GetService(instanceId, orchestrator!, serviceProvider, callContext);
 
                 var kmOrchestration = new KnowledgeManagementOrchestration(
                     instanceId,
@@ -101,6 +111,50 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Builds the orchestration used to retrieve the status of an asynchronous completion operation.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="operationId">The asynchronous completion operation identifier.</param>
+        /// <param name="callContext">The call context of the request being handled.</param>
+        /// <param name="configuration">The <see cref="IConfiguration"/> used to retrieve app settings from configuration.</param>
+        /// <param name="resourceProviderServices">A dictionary of <see cref="IResourceProviderService"/> resource providers hashed by resource provider name.</param>
+        /// <param name="llmOrchestrationServiceManager">The <see cref="ILLMOrchestrationServiceManager"/> that manages internal and external orchestration services.</param>
+        /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> used to interact with the Cosmos DB database.</param>
+        /// <param name="serviceProvider">The <see cref="IServiceProvider"/> provding dependency injection services for the current scope.</param>
+        /// <param name="loggerFactory">The logger factory used to create new loggers.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public static async Task<OrchestrationBase?> BuildForStatus(
+            string instanceId,
+            string operationId,
+            ICallContext callContext,
+            IConfiguration configuration,
+            Dictionary<string, IResourceProviderService> resourceProviderServices,
+            ILLMOrchestrationServiceManager llmOrchestrationServiceManager,
+            IAzureCosmosDBService cosmosDBService,
+            IServiceProvider serviceProvider,
+            ILoggerFactory loggerFactory)
+        {
+            var operationContext = await cosmosDBService.GetLongRunningOperationContextAsync(operationId);
+
+            var orchestrationService = llmOrchestrationServiceManager.GetService(instanceId, operationContext.Orchestrator!, serviceProvider, callContext);
+
+            var kmOrchestration = new KnowledgeManagementOrchestration(
+                instanceId,
+                null,
+                null,
+                callContext,
+                orchestrationService,
+                loggerFactory.CreateLogger<OrchestrationBase>(),
+                serviceProvider.GetRequiredService<IHttpClientFactoryService>(),
+                resourceProviderServices,
+                null,
+                null);
+
+            return kmOrchestration;
         }
 
         private static async Task<(AgentBase? Agent, Dictionary<string, object>? ExplodedObjects, bool DataSourceAccessDenied)> LoadAgent(
@@ -144,7 +198,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 aiModel.EndpointObjectId!,
                 currentUserIdentity);
             var gatewayAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
-                $"/{ConfigurationResourceTypeNames.APIEndpointConfigurations}/GatewayAPI",
+                instanceId,
+                "GatewayAPI",
                 currentUserIdentity);
 
             // Merge the model parameter overrides with the existing model parameter values from the AI model.
@@ -173,9 +228,47 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 .ToDictionary(x => x.Name, x => x.Description);
             explodedObjects[CompletionRequestObjectsKeys.AllAgents] = allAgentsDescriptions;
 
+            #region Tools
+
+            List<string> toolNames = [];
+
+            foreach (var toolName in agentBase.Tools.Keys)
+            {
+                toolNames.Add(toolName);
+                explodedObjects[toolName] = agentBase.Tools[toolName];
+
+                foreach (var aiModelObjectId in agentBase.Tools[toolName].AIModelObjectIds.Values)
+                {
+                    var toolAIModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
+                        aiModelObjectId,
+                        currentUserIdentity);
+
+                    explodedObjects[aiModelObjectId] = toolAIModel;
+
+                    var toolAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                        toolAIModel.EndpointObjectId!,
+                        currentUserIdentity);
+
+                    explodedObjects[toolAIModel.EndpointObjectId!] = toolAPIEndpointConfiguration;
+                }
+
+                foreach (var apiEndpointConfigurationObjectId in agentBase.Tools[toolName].APIEndpointConfigurationObjectIds.Values)
+                {
+                    var toolAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                        apiEndpointConfigurationObjectId,
+                        currentUserIdentity);
+
+                    explodedObjects[apiEndpointConfigurationObjectId] = toolAPIEndpointConfiguration;
+                }
+            }
+
+            explodedObjects[CompletionRequestObjectsKeys.ToolNames] = toolNames;
+
+            #endregion
+
             #region Knowledge management processing
 
-            if (agentBase.AgentType == typeof(KnowledgeManagementAgent) || agentBase.AgentType == typeof(AudioClassificationAgent))
+            if (agentBase.AgentType == typeof(KnowledgeManagementAgent))
             {
                 KnowledgeManagementAgent kmAgent = (KnowledgeManagementAgent)agentBase;
 
@@ -270,7 +363,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             {
                 var assistantUserContextName = $"{currentUserIdentity.UPN?.NormalizeUserPrincipalName() ?? currentUserIdentity.UserId}-assistant-{instanceId.ToLower()}";
 
-                var nameCheckResult = await azureOpenAIResourceProvider.ResourceExists<AssistantUserContext>(
+                var nameCheckResult = await azureOpenAIResourceProvider.ResourceExistsAsync<AssistantUserContext>(
                     instanceId,
                     assistantUserContextName,
                     currentUserIdentity);

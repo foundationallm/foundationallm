@@ -1,0 +1,10 @@
+{
+	"ResourceReferences": [
+		{
+			"Name": "FoundationaLLM",
+			"Filename": "/FoundationaLLM.Agent/FoundationaLLM.json",
+			"Type": "knowledge-management",
+			"Deleted": false
+		}
+	]
+}

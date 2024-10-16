@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents the result of an upsert operation for an <see cref="AssistantUserContext"/> object.
     /// </summary>
-    public class AssistantUserContextUpsertResult : ResourceProviderUpsertResult
+    public class AssistantUserContextUpsertResult : ResourceProviderUpsertResult<AssistantUserContext>
     {
         /// <summary>
         /// The identifier of the newly created OpenAI assistant (if any).

@@ -10,7 +10,6 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
     /// </summary>
     [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
     [JsonDerivedType(typeof(KnowledgeManagementAgent), "knowledge-management")]
-    [JsonDerivedType(typeof(AudioClassificationAgent), "audio-classification")]
     public class AgentBase : ResourceBase
     {
         /// <inheritdoc/>
@@ -58,6 +57,15 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public string[]? Capabilities { get; set; }
 
         /// <summary>
+        /// Gets or sets a dictionary of tools that are registered with the agent.
+        /// </summary>
+        /// <remarks>
+        /// The key is the name of the tool, and the value is the <see cref="AgentTool"/> object.
+        /// </remarks>
+        [JsonPropertyName("tools")]
+        public Dictionary<string, AgentTool> Tools { get; set; } = [];
+
+        /// <summary>
         /// The object type of the agent.
         /// </summary>
         [JsonIgnore]
@@ -65,7 +73,6 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
             Type switch
             {
                 AgentTypes.KnowledgeManagement => typeof(KnowledgeManagementAgent),
-                AgentTypes.AudioClassification => typeof(AudioClassificationAgent),
                 _ => throw new ResourceProviderException($"The agent type {Type} is not supported.")
             };
 
@@ -88,6 +95,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// </summary>
         [JsonPropertyName("enabled")]
         public bool Enabled { get; set; }
+
         /// <summary>
         /// The maximum number of turns to store in the conversation history.
         /// </summary>
@@ -105,6 +113,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// </summary>
         [JsonPropertyName("use_system_setting")]
         public bool UseSystemSetting { get; set; }
+
         /// <summary>
         /// If <see cref="UseSystemSetting"/> is false, provides Gatekeeper feature selection.
         /// </summary>

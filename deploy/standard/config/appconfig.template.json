@@ -15,6 +15,20 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:Instance:IdentitySubstitutionSecurityPrincipalId",
+            "value": "",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Instance:IdentitySubstitutionUserPrincipalNamePattern",
+            "value": "",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:Configuration:KeyVaultURI",
             "value": "{{keyvaultUri}}",
             "label": null,
@@ -164,6 +178,20 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:BypassGatekeeper",
             "value": "true",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions",
+            "value": "c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions",
+            "value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
             "label": null,
             "content_type": "",
             "tags": {}
@@ -457,7 +485,7 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAccounts",
-            "value": "",
+            "value": "{{openAiAccountName}}",
             "label": null,
             "content_type": "",
             "tags": {}

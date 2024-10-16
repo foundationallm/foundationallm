@@ -30,7 +30,7 @@ namespace FoundationaLLM.Client.Core.Interfaces
         /// <param name="agentName">The name of the FoundationaLLM agent that will handle the
         /// completion request.</param>
         /// <returns>A completion from the designated FoundationaLLM agent.</returns>
-        Task<Completion> GetCompletionWithSessionAsync(string? sessionId, ChatSessionProperties? sessionProperties,
+        Task<Message> GetCompletionWithSessionAsync(string? sessionId, ChatSessionProperties? sessionProperties,
             string userPrompt, string agentName);
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace FoundationaLLM.Client.Core.Interfaces
         /// <param name="completionRequest">The orchestration request that contains the
         /// SessionID, AgentName, and UserPrompt at a minimum.</param>
         /// <returns>A completion from the designated FoundationaLLM agent.</returns>
-        Task<Completion> GetCompletionWithSessionAsync(CompletionRequest completionRequest);
+        Task<Message> GetCompletionWithSessionAsync(CompletionRequest completionRequest);
 
         /// <summary>
         /// Runs a single completion with an agent using the Core API without a chat session
@@ -52,7 +52,7 @@ namespace FoundationaLLM.Client.Core.Interfaces
         /// <param name="agentName">The name of the FoundationaLLM agent that will handle the
         /// completion request.</param>
         /// <returns>A completion from the designated FoundationaLLM agent.</returns>
-        Task<Completion> GetCompletionAsync(string userPrompt, string agentName);
+        Task<Message> GetCompletionAsync(string userPrompt, string agentName);
 
         /// <summary>
         /// Runs a single completion with an agent using the Core API without a chat session
@@ -63,7 +63,7 @@ namespace FoundationaLLM.Client.Core.Interfaces
         /// <param name="completionRequest">The orchestration request that contains the AgentName
         /// and UserPrompt at a minimum.</param>
         /// <returns>A completion from the designated FoundationaLLM agent.</returns>
-        Task<Completion> GetCompletionAsync(CompletionRequest completionRequest);
+        Task<Message> GetCompletionAsync(CompletionRequest completionRequest);
 
         /// <summary>
         /// Attaches a file to the completion request and sends a question to the agent using the
@@ -86,7 +86,7 @@ namespace FoundationaLLM.Client.Core.Interfaces
         /// <param name="chatSessionProperties">Optional session properties.</param>
         /// <returns>A completion from the designated FoundationaLLM agent.</returns>
         /// <returns>A completion from the designated FoundationaLLM agent.</returns>
-        Task<Completion> AttachFileAndAskQuestionAsync(Stream fileStream, string fileName, string contentType,
+        Task<Message> AttachFileAndAskQuestionAsync(Stream fileStream, string fileName, string contentType,
             string agentName, string question, bool useSession, string? sessionId, ChatSessionProperties? chatSessionProperties);
 
         /// <summary>

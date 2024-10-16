@@ -1,9 +1,9 @@
-﻿using System.Text.Json;
-using FoundationaLLM.Common.Models.Orchestration;
+﻿using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.State.Interfaces;
 using FoundationaLLM.State.Models.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Text.Json;
 
 namespace FoundationaLLM.State.Services
 {
@@ -47,14 +47,15 @@ namespace FoundationaLLM.State.Services
         }
 
         /// <inheritdoc/>
-        public async Task<LongRunningOperation> CreateLongRunningOperation(string operationId)
+        public async Task<LongRunningOperation> CreateLongRunningOperation(string operationId, string upn)
         {
             logger.LogInformation("Creating long running operation.");
             var operation = new LongRunningOperation
             {
                 Status = OperationStatus.Pending,
                 StatusMessage = "Operation was submitted and is pending execution.",
-                OperationId = operationId
+                OperationId = operationId,
+                UPN = upn
             };
             return await cosmosDbService.UpsertLongRunningOperation(operation);
         }

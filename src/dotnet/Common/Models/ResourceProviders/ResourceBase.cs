@@ -36,6 +36,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         public string? CostCenter { get; set; }
 
         /// <summary>
+        /// Gets or sets the property bag for the resource.
+        /// </summary>
+        [JsonPropertyName("properties")]
+        [JsonPropertyOrder(400)]
+        public Dictionary<string, string>? Properties { get; set; }
+
+        /// <summary>
         /// The time at which the resource was created.
         /// </summary>
         [JsonPropertyName("created_on")]

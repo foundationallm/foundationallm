@@ -18,6 +18,7 @@ param existingOpenAiInstanceSub string = ''
 param instanceId string
 param location string
 param networkName string = ''
+param principalType string
 param project string
 param registry string
 param services array
@@ -107,6 +108,7 @@ module app 'app-rg.bicep' = {
     location: location
     logAnalyticsWorkspaceId: ops.outputs.logAnalyticsWorkspaceId
     logAnalyticsWorkspaceResourceId: ops.outputs.logAnalyticsWorkspaceId
+    monitorId: ops.outputs.monitorId
     networkingResourceGroupName: resourceGroups.net
     openAiResourceGroupName: resourceGroups.oai
     openAiName: openai.outputs.azureOpenAiName
@@ -138,6 +140,7 @@ module auth 'auth-rg.bicep' = {
     location: location
     logAnalyticsWorkspaceId: ops.outputs.logAnalyticsWorkspaceId
     opsResourceGroupName: resourceGroups.ops
+    principalType: principalType
     project: project
     vnetId: networking.outputs.vnetId
   }
@@ -200,11 +203,13 @@ module storage 'storage-rg.bicep' = {
   scope: resourceGroup(resourceGroups.storage)
   params: {
     actionGroupId: ops.outputs.actionGroupId
+    administratorObjectId: administratorObjectId
     hubResourceGroup: hubResourceGroup
     hubSubscriptionId: hubSubscriptionId
     environmentName: environmentName
     location: location
     logAnalyticsWorkspaceId: ops.outputs.logAnalyticsWorkspaceId
+    principalType: principalType
     project: project
     vnetId: networking.outputs.vnetId
   }

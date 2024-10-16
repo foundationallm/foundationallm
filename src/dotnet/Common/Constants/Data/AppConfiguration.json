@@ -298,7 +298,9 @@
 	},
 	{
 		"namespace": "ResourceProviders:Vectorization:Storage",
-		"dependency_injection_key": null,
+		"dependency_injection_key": {
+			"description": "Dependency injection key used to inject storage settings for the FoundationaLLM.Vectorization resource provider."
+		},
 		"configuration_section": {
 			"description": "Configuration section used to identify the storage settings for the FoundationaLLM.Vectorization resource provider."
 		},
@@ -406,9 +408,25 @@
 				"name": "AllowedUploadFileExtensions",
 				"description": "The comma-separated list file extensions that users are allowed to upload to a conversation.",
 				"secret": "",
-				"value": "c, cpp, cs, css, csv, doc, docx, git, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
+				"value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
 				"content_type": "",
 				"first_version": "0.8.0"
+			},
+			{
+				"name": "MaxUploadsPerMessage",
+				"description": "The maximum number of files that can be uploaded for a single conversation message.",
+				"secret": "",
+				"value": "{ 'value': 10, 'value_exceptions': []}",
+				"content_type": "application/json",
+				"first_version": "0.8.2"
+			},
+			{
+				"name": "CompletionResponsePollingIntervalSeconds",
+				"description": "The size in seconds of the polling interval used to check for completion responses.",
+				"secret": "",
+				"value": "{ 'value': 10, 'value_exceptions': []}",
+				"content_type": "application/json",
+				"first_version": "0.8.2"
 			}
 		]
 	},
@@ -897,6 +915,14 @@
 				"value": "${env:AZURE_OPENAI_ID}",
 				"content_type": "",
 				"first_version": "0.8.0"
+			},
+			{
+				"name": "AzureOpenAIAssistantsMaxVectorizationTimeSeconds",
+				"description": "The maximum time in seconds allowed for an Azure OpenAI Assistants vectorization process to complete.",
+				"secret": "",
+				"value": "120",
+				"content_type": "",
+				"first_version": "0.8.3"
 			}
 		]
 	},

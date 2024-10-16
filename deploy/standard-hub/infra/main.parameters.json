@@ -13,6 +13,9 @@
       },
       "vpnClientAddressPool": {
         "value": "${VPN_CLIENT_ADDRESS_POOL=192.168.101.0/24}"
+      },
+      "project": {
+        "value": "${FOUNDATIONALLM_PROJECT}"
       }
     }
 }

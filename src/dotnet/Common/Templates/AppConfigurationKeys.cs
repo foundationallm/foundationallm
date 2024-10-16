@@ -293,6 +293,20 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_AllowedUploadFileExtensions =
             "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage setting.
+        /// <para>Value description:<br/>The maximum number of files that can be uploaded for a single conversation message.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_MaxUploadsPerMessage =
+            "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds setting.
+        /// <para>Value description:<br/>The size in seconds of the polling interval used to check for completion responses.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CompletionResponsePollingIntervalSeconds =
+            "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds";
 
         #endregion
 
@@ -655,6 +669,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_GatewayAPI_Configuration_AzureOpenAIAccounts =
             "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAccounts";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAssistantsMaxVectorizationTimeSeconds setting.
+        /// <para>Value description:<br/>The maximum time in seconds allowed for an Azure OpenAI Assistants vectorization process to complete.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_GatewayAPI_Configuration_AzureOpenAIAssistantsMaxVectorizationTimeSeconds =
+            "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAssistantsMaxVectorizationTimeSeconds";
 
         #endregion
 

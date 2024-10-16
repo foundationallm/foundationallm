@@ -1,13 +1,16 @@
 import type {
 	Message,
 	Session,
+	LongRunningOperation,
+	UserProfile,
+	CoreConfiguration,
+	OneDriveWorkSchool,
 	ChatSessionProperties,
 	CompletionPrompt,
 	Agent,
 	CompletionRequest,
 	ResourceProviderGetResult,
 	ResourceProviderUpsertResult,
-	// ResourceProviderDeleteResult,
 	ResourceProviderDeleteResults,
 } from '@/js/types';
 
@@ -120,25 +123,19 @@ export default {
 	 * @returns A Promise that resolves to the operation ID if the process is successfully started.
 	 * @throws An error if the process fails to start.
 	 */
-	async startLongRunningProcess(url: string, requestBody: any) {
-		const options = {
-			method: 'POST',
-			body: JSON.stringify(requestBody),
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${await this.getBearerToken()}`,
-			},
-		};
-
+	async startLongRunningProcess(requestBody: any) {
 		try {
-			const response = await $fetch(`${this.apiUrl}${url}`, options);
+			const response = await this.fetch(`/instances/${this.instanceId}/async-completions`, {
+				method: 'POST',
+				body: requestBody,
+			});
 			if (response.status === 202) {
 				return response.operationId;
 			} else {
 				throw new Error('Failed to start process');
 			}
 		} catch (error) {
-			throw new Error(this.formatError(error));
+			throw new Error(formatError(error));
 		}
 	},
 
@@ -150,19 +147,12 @@ export default {
 	 */
 	async checkProcessStatus(operationId: string) {
 		try {
-			const response = await $fetch(
+			const response = (await this.fetch(
 				`/instances/${this.instanceId}/async-completions/${operationId}/status`,
-				{
-					method: 'GET',
-					headers: {
-						Authorization: `Bearer ${await this.getBearerToken()}`,
-					},
-				},
-			);
-
+			)) as LongRunningOperation;
 			return response;
 		} catch (error) {
-			throw new Error(this.formatError(error));
+			throw new Error(formatError(error));
 		}
 	},
 
@@ -236,6 +226,11 @@ export default {
 		)) as Array<Message>;
 	},
 
+	// Mock polling route
+	// async getMessage(messageId: string) {
+	// 	return await $fetch(`/api/stream-message/`);
+	// },
+
 	/**
 	 * Retrieves a specific prompt for a given session.
 	 * @param sessionId The ID of the session.
@@ -285,18 +280,17 @@ export default {
 			attachments,
 		};
 
-		if (agent.long_running) {
-			const operationId = await this.startLongRunningProcess(
-				`/instances/${this.instanceId}/async-completions`,
-				orchestrationRequest,
-			);
-			return this.pollForCompletion(operationId);
-		} else {
-			return (await this.fetch(`/instances/${this.instanceId}/completions`, {
-				method: 'POST',
-				body: orchestrationRequest,
-			})) as string;
-		}
+		// if (agent.long_running) {
+		return (await this.fetch(`/instances/${this.instanceId}/async-completions`, {
+			method: 'POST',
+			body: orchestrationRequest,
+		})) as string;
+		// } else {
+		// 	return (await this.fetch(`/instances/${this.instanceId}/completions`, {
+		// 		method: 'POST',
+		// 		body: orchestrationRequest,
+		// 	})) as string;
+		// }
 	},
 
 	/**
@@ -369,6 +363,66 @@ export default {
 			method: 'POST',
 			body: JSON.stringify(attachments),
 		})) as ResourceProviderDeleteResults;
+	},
+
+	/**
+	 * Retrieves the core configuration for the current instance.
+	 *
+	 * @returns {Promise<CoreConfiguration>} A promise that resolves to the core configuration.
+	 */
+	async getCoreConfiguration() {
+		return (await this.fetch(`/instances/${this.instanceId}/configuration`)) as CoreConfiguration;
+	},
+
+	/**
+	 * Connects to user's OneDrive work or school account.
+	 * @returns A Promise that resolves to the response from the server.
+	 */
+	async oneDriveWorkSchoolConnect() {
+		return await this.fetch(`/instances/${this.instanceId}/oneDriveWorkSchool/connect`, {
+			method: 'POST',
+			body: null,
+		});
+	},
+
+	/**
+	 * Disconnect to user's OneDrive work or school account.
+	 * @returns A Promise that resolves to the response from the server.
+	 */
+	async oneDriveWorkSchoolDisconnect() {
+		return await this.fetch(`/instances/${this.instanceId}/oneDriveWorkSchool/disconnect`, {
+			method: 'POST',
+			body: null,
+		});
+	},
+
+	/**
+	 * Retrieves user profiles for a given instance.
+	 * @returns An array of user profiles.
+	 */
+	async getUserProfile() {
+		return (await this.fetch(`/instances/${this.instanceId}/userProfiles/`)) as Array<UserProfile>;
+	},
+
+	/**
+	 * Downloads a file from the user's connected OneDrive work or school account.
+	 * @param sessionId - The session ID from which the file is uploaded.
+	 * @param agentName - The agent name.
+	 * @param oneDriveWorkSchool - The OneDrive work or school item.
+	 * @returns A Promise that resolves to the response from the server.
+	 */
+	async oneDriveWorkSchoolDownload(
+		sessionId: string,
+		agentName: string,
+		oneDriveWorkSchool: OneDriveWorkSchool,
+	) {
+		return (await this.fetch(
+			`/instances/${this.instanceId}/oneDriveWorkSchool/download?instanceId=${this.instanceId}&sessionId=${sessionId}&agentName=${agentName}`,
+			{
+				method: 'POST',
+				body: oneDriveWorkSchool,
+			},
+		)) as OneDriveWorkSchool;
 	},
 };
 

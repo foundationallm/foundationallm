@@ -7,6 +7,7 @@ using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.Storage;
 using FoundationaLLM.Common.Services;
+using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Common.Services.Storage;
 using FoundationaLLM.Common.Settings;
@@ -39,8 +40,10 @@ namespace FoundationaLLM.Core.Examples.Setup
 			TestConfiguration.Initialize(configRoot, services);
 
             services.AddOptions<BlobStorageServiceSettings>(
-                    DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization)
-                .Bind(configRoot.GetSection("FoundationaLLM:Vectorization:ResourceProviderService:Storage"));
+                    DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization_Storage)
+                .Bind(configRoot.GetSection("FoundationaLLM:ResourceProviders:Vectorization:Storage"));
+
+            services.AddScoped<IConfiguration>(_ => configRoot);
 
             RegisterInstance(services, configRoot);
             RegisterHttpClients(services, configRoot);
@@ -87,7 +90,7 @@ namespace FoundationaLLM.Core.Examples.Setup
 					.Build();
 			});
 
-			services.AddScoped<ICosmosDBService, AzureCosmosDBService>();
+			services.AddScoped<IAzureCosmosDBService, AzureCosmosDBService>();
 		}
 
 		private static void RegisterAzureAIService(IServiceCollection services, IConfiguration configuration)
@@ -181,6 +184,7 @@ namespace FoundationaLLM.Core.Examples.Setup
             services.AddScoped<IAuthenticationService, MicrosoftEntraIDAuthenticationService>();
             services.AddScoped<IHttpClientManager, HttpClientManager>();
 			services.AddScoped<IAgentConversationTestService, AgentConversationTestService>();
+            services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
             services.AddScoped<IVectorizationTestService, VectorizationTestService>();
         }
     }

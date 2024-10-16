@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia';
 import type { AccountInfo } from '@azure/msal-browser';
 import { PublicClientApplication } from '@azure/msal-browser';
+import { useAppStore } from './appStore';
+
+const SHOW_LOGS = false;
 
 export const useAuthStore = defineStore('auth', {
 	state: () => ({
@@ -25,6 +28,13 @@ export const useAuthStore = defineStore('auth', {
 
 		authConfig() {
 			return useNuxtApp().$appConfigStore.auth;
+		},
+
+		oneDriveWorkSchoolScopes() {
+			const appStore = useAppStore();
+			return appStore.coreConfiguration?.fileStoreConnectors?.find(
+				(connector) => connector.subcategory === 'OneDriveWorkSchool',
+			)?.authentication_parameters.scope;
 		},
 
 		apiScopes() {
@@ -64,7 +74,7 @@ export const useAuthStore = defineStore('auth', {
 				return this.tryTokenRefresh();
 			}
 
-			console.log(`Auth: Cleared previous access token timer.`);
+			SHOW_LOGS && console.log(`Auth: Cleared previous access token timer.`);
 			clearTimeout(this.tokenExpirationTimerId);
 
 			this.tokenExpirationTimerId = setTimeout(() => {
@@ -72,17 +82,18 @@ export const useAuthStore = defineStore('auth', {
 			}, timeUntilExpirationMS);
 
 			const refreshDate = new Date(tokenExpirationTimeMS);
-			console.log(
-				`Auth: Set access token timer refresh for ${refreshDate} (in ${timeUntilExpirationMS / 1000} seconds).`,
-			);
+			SHOW_LOGS &&
+				console.log(
+					`Auth: Set access token timer refresh for ${refreshDate} (in ${timeUntilExpirationMS / 1000} seconds).`,
+				);
 		},
 
 		async tryTokenRefresh() {
 			try {
 				await this.getApiToken();
-				console.log('Auth: Successfully refreshed access token.');
+				SHOW_LOGS && console.log('Auth: Successfully refreshed access token.');
 			} catch (error) {
-				console.error('Auth: Failed to refresh access token:', error);
+				SHOW_LOGS && console.error('Auth: Failed to refresh access token:', error);
 				this.isExpired = true;
 			}
 		},
@@ -103,6 +114,39 @@ export const useAuthStore = defineStore('auth', {
 			}
 		},
 
+		async requestOneDriveWorkSchoolConsent() {
+			let accessToken = '';
+			const oneDriveWorkSchoolAPIScopes: any = {
+				account: this.currentAccount,
+				scopes: [this.oneDriveWorkSchoolScopes],
+			};
+
+			try {
+				const resp = await this.msalInstance.acquireTokenSilent(oneDriveWorkSchoolAPIScopes);
+				accessToken = resp.accessToken;
+			} catch (error) {
+				// Redirect to get token or login
+				localStorage.setItem('oneDriveWorkSchoolConsentRedirect', JSON.stringify(true));
+
+				oneDriveWorkSchoolAPIScopes.state = 'Core API redirect';
+				await this.msalInstance.loginRedirect(oneDriveWorkSchoolAPIScopes);
+			}
+			return accessToken;
+		},
+
+		async getOneDriveWorkSchoolToken(): string | null {
+			const appStore = useAppStore();
+			const oneDriveBaseURL = appStore.coreConfiguration?.fileStoreConnectors?.find(
+				(connector) => connector.subcategory === 'OneDriveWorkSchool',
+			)?.url;
+			const oneDriveToken = await this.msalInstance.acquireTokenSilent({
+				account: this.currentAccount,
+				scopes: [`${oneDriveBaseURL}${this.oneDriveWorkSchoolScopes}`],
+			});
+
+			return oneDriveToken;
+		},
+
 		async getProfilePhoto(): string | null {
 			try {
 				const graphScopes = ['https://graph.microsoft.com/User.Read'];
@@ -114,12 +158,12 @@ export const useAuthStore = defineStore('auth', {
 				const profilePhotoBlob = await $fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
 					method: 'GET',
 					headers: {
-						Authorization: `Bearer ${graphToken.accessToken}`
-					}
+						Authorization: `Bearer ${graphToken.accessToken}`,
+					},
 				});
 
 				return URL.createObjectURL(profilePhotoBlob);
-			} catch(error) {
+			} catch (error) {
 				return null;
 			}
 		},

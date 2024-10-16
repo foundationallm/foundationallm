@@ -28,6 +28,8 @@ param logAnalyticsWorkspaceId string
 @description('Log Analytics Workspace Resource Id to use for diagnostics')
 param logAnalyticsWorkspaceResourceId string
 
+param monitorId string
+
 @description('Networking Resource Group Name')
 param networkingResourceGroupName string
 
@@ -146,6 +148,7 @@ module aksBackend 'modules/aks.bicep' = {
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     logAnalyticWorkspaceResourceId: logAnalyticsWorkspaceResourceId
+    monitorId: monitorId
     networkingResourceGroupName: networkingResourceGroupName
     opsResourceGroupName: opsResourceGroupName
     privateDnsZones: filter(dnsZones.outputs.ids, (zone) => contains([ 'aks' ], zone.key))
@@ -168,6 +171,7 @@ module aksFrontend 'modules/aks.bicep' = {
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     logAnalyticWorkspaceResourceId: logAnalyticsWorkspaceResourceId
+    monitorId: monitorId
     networkingResourceGroupName: networkingResourceGroupName
     opsResourceGroupName: opsResourceGroupName
     privateDnsZones: filter(dnsZones.outputs.ids, (zone) => contains([ 'aks' ], zone.key))
