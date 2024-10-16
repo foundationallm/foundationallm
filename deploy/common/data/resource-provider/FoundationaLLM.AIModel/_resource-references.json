@@ -7,7 +7,7 @@
             "Deleted": false
         },
         {
-            "Name": "dall-e-3-model",
+            "Name": "DALLE3Model",
             "Filename": "/FoundationaLLM.AIModel/dall-e-3-model.json",
             "Type": "completion",
             "Deleted": false
