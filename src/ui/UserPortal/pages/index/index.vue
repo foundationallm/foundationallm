@@ -1,5 +1,13 @@
 <template>
 	<div class="chat-app">
+		<button 
+            class="sr-only"
+			role="link"
+            aria-label="Skip to input" 
+            @click="focusInput"
+        >
+            Skip to input
+        </button>
 		<header role="banner">
 			<NavBar />
 		</header>
@@ -124,17 +132,33 @@ export default {
 			document.removeEventListener('mousemove', this.resizeSidebar);
 			document.removeEventListener('mouseup', this.stopResizing);
 		},
+
+		focusInput() {
+			this.$refs.thread.$refs.chatInput.$refs.inputRef.focus()
+		},
 	},
 };
 </script>
 
 <style lang="scss" scoped>
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
+}
+
 .chat-app {
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
 	background-color: var(--primary-bg);
 }
+
 .chat-content {
 	display: flex;
 	flex-direction: row;
