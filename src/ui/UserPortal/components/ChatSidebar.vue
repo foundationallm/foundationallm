@@ -124,6 +124,9 @@
 							icon="pi pi-cog"
 							severity="secondary"
 							size="small"
+							aria-label="Settings"
+							aria-controls="settings-modal"
+							:aria-expanded="settingsModalVisible"
 							@click="settingsModalVisible = true"
 						/>
 						<template #popper><div role="tooltip">Settings</div></template>
