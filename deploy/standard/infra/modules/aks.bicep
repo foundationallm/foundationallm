@@ -353,16 +353,6 @@ resource diagnostics 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' 
   }
 }
 
-resource aksDce 'Microsoft.Insights/dataCollectionEndpoints@2023-03-11' = {
-  name: 'dce-${resourceSuffix}'
-  location: location
-  properties: {
-    networkAcls: {
-      publicNetworkAccess: 'Disabled'
-    }
-  }
-}
-
 resource aksDcr 'Microsoft.Insights/dataCollectionRules@2023-03-11' = {
   name: 'MSCI-${location}-${name}'
   location: location
@@ -375,8 +365,6 @@ resource aksDcr 'Microsoft.Insights/dataCollectionRules@2023-03-11' = {
         }
       ]
     }
-
-    dataCollectionEndpointId: aksDce.id
 
     dataFlows: [
       {
