@@ -310,7 +310,12 @@ jobs:
               --output json
             }
           }
+          
+          ls
+          
           Pop-Location
+
+          ls
         shell: pwsh
 
       - name: Update AZD Environment
