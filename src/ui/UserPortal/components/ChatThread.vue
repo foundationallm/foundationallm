@@ -26,7 +26,6 @@
 						:key="message.renderId || message.id"
 						:message="message"
 						:show-word-animation="index === 0 && message.sender !== 'User'"
-						role="log"
 						:aria-flowto="
 							index === 0 ? null : `message-${getMessageOrderFromReversedIndex(index) + 1}`
 						"

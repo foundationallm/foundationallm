@@ -78,6 +78,8 @@
 										text
 										class="chat-sidebar__button"
 										aria-label="Rename chat session"
+										aria-controls="rename-session-dialog"
+										:aria-expanded="sessionToRename !== null"
 										@click.stop="openRenameModal(session)"
 										@keydown.esc="hideAllPoppers"
 									/>
@@ -93,6 +95,8 @@
 										text
 										class="chat-sidebar__button"
 										aria-label="Delete chat session"
+										aria-controls="delete-session-dialog"
+										:aria-expanded="sessionToDelete !== null"
 										@click.stop="sessionToDelete = session"
 										@keydown.esc="hideAllPoppers"
 									/>
