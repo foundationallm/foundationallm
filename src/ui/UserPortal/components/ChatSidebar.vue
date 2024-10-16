@@ -109,14 +109,26 @@
 
 			<div>
 				<span class="chat-sidebar__username">{{ $authStore.currentAccount?.name }}</span>
-				<Button
-					class="chat-sidebar__sign-out"
-					icon="pi pi-sign-out"
-					label="Sign Out"
-					severity="secondary"
-					size="small"
-					@click="$authStore.logout()"
-				/>
+				<div class="chat-sidebar__options">
+					<Button
+						class="chat-sidebar__sign-out"
+						icon="pi pi-sign-out"
+						label="Sign Out"
+						severity="secondary"
+						size="small"
+						@click="$authStore.logout()"
+					/>
+					<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+						<Button
+							class="chat-sidebar__settings"
+							icon="pi pi-cog"
+							severity="secondary"
+							size="small"
+							@click="settingsModalVisible = true"
+						/>
+						<template #popper><div role="tooltip">Settings</div></template>
+					</VTooltip>
+				</div>
 			</div>
 		</div>
 
@@ -180,6 +192,22 @@
 				/>
 			</template>
 		</Dialog>
+
+		<Dialog
+			v-focustrap
+			id="settings-modal"
+			v-model:visible="settingsModalVisible"
+			class="sidebar-dialog"
+			modal
+			header="Settings"
+			@keydown.esc="settingsModalVisible = false"
+		>
+			<p>Settings modal content</p>
+			<template #footer>
+				<Button label="Close" text @click="settingsModalVisible = false" />
+			</template>
+		</Dialog>
+
 	</div>
 </template>
 
@@ -200,6 +228,7 @@ export default {
 			isMobile: window.screen.width < 950,
 			createProcessing: false,
 			debounceTimeout: null as NodeJS.Timeout | null,
+			settingsModalVisible: false,
 		};
 	},
 
@@ -464,6 +493,15 @@ export default {
 	text-transform: capitalize;
 	line-height: 0;
 	vertical-align: super;
+}
+
+.chat-sidebar__options {
+	display: flex;
+	align-items: center;
+}
+
+.chat-sidebar__settings {
+	margin-left: 4px;
 }
 
 .p-overlaypanel-content {
