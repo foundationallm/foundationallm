@@ -304,14 +304,14 @@
 					</div>
 				</template>
 			</Mentionable>
+			<Button
+				:disabled="disabled"
+				class="submit"
+				icon="pi pi-send"
+				label="Send"
+				@click="handleSend"
+			/>
 		</div>
-		<Button
-			:disabled="disabled"
-			class="submit"
-			icon="pi pi-send"
-			label="Send"
-			@click="handleSend"
-		/>
 	</div>
 </template>
 
@@ -1001,6 +1001,7 @@ export default {
 <style lang="scss" scoped>
 .chat-input {
 	display: flex;
+	justify-content: center;
 	background-color: white;
 	border-radius: 8px;
 	width: 100%;
@@ -1013,6 +1014,7 @@ export default {
 .chat-input .input-wrapper {
 	display: flex;
 	align-items: stretch;
+	justify-content: center;
 	width: 100%;
 }
 
@@ -1025,6 +1027,7 @@ export default {
 
 .mentionable {
 	width: 100%;
+	max-width: 80ch;
 	height: auto;
 	max-height: 128px;
 	display: flex;
