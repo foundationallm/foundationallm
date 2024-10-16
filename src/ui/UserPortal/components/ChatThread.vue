@@ -95,6 +95,7 @@ export default {
 	watch: {
 		async currentSession(newSession: Session, oldSession: Session) {
 			if (newSession.id === oldSession?.id) return;
+			this.isMessagePending = false;
 			this.isLoading = true;
 			this.userSentMessage = false;
 			await this.$appStore.getMessages();

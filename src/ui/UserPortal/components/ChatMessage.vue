@@ -253,6 +253,26 @@ function trimToWordCount(str, count) {
 	return str.substring(0, index).trim();
 }
 
+function getWordCount(str) {
+	let wordCount = 0;
+	let index = 0;
+
+	str = str.trim();
+
+	while (index < str.length) {
+		if (str[index] === ' ' && str[index - 1] !== ' ' && index > 0) {
+			wordCount++;
+		}
+		index++;
+	}
+
+	if (str.length > 0) {
+		wordCount++;
+	}
+
+	return wordCount;
+}
+
 const MAX_WORD_SPEED_MS = 15;
 
 export default {
@@ -293,6 +313,18 @@ export default {
 
 	computed: {
 		messageContent() {
+			if (this.message.status === 'Failed') {
+				const failedMessage = this.message.text ?? 'Failed to generate a response.';
+				return [
+					{
+						type: 'text',
+						content: failedMessage,
+						value: failedMessage,
+						origValue: failedMessage,
+					}
+				];
+			}
+
 			return this.message.content ?? [];
 		},
 
@@ -305,9 +337,11 @@ export default {
 
 			if (this.isRenderingMessage && this.messageContent.length > 0) return 'Responding';
 
+			// Account for old messages that are complete (status of "Pending" with null operation_id)
+			const isPending = this.message.status === 'Pending' && this.message.operation_id;
 			if (
 				this.showWordAnimation &&
-				(this.message.status === 'Pending' || this.message.status === 'InProgress')
+				(isPending || this.message.status === 'InProgress' || this.message.status === 'Loading')
 			)
 				return 'Thinking';
 
@@ -320,8 +354,6 @@ export default {
 			immediate: true,
 			deep: true,
 			handler(newMessage, oldMessage) {
-				// console.log('do it', newMessage.status, newMessage);
-
 				// There is an issue here if a message that is not the latest has an incomplete status
 				if (newMessage.status === 'Completed') {
 					this.computedAverageTimePerWord({ ...newMessage }, oldMessage ?? {});
@@ -333,7 +365,8 @@ export default {
 				if (
 					!this.isRenderingMessage &&
 					this.showWordAnimation &&
-					newMessage.type !== 'LoadingMessage'
+					newMessage.type !== 'LoadingMessage' &&
+					newMessage.operation_id
 				)
 					this.startRenderingMessage();
 			},
@@ -360,8 +393,10 @@ export default {
 			];
 		} else if (this.message.content) {
 			this.processedContent = this.message.content.map((content) => {
+				this.currentWordIndex = getWordCount(content.value);
 				return {
 					type: content.type,
+					content,
 					value: this.processContentBlock(content.value),
 					origValue: content.value,
 				};
@@ -645,7 +680,8 @@ export default {
 }
 
 $shimmerColor: white;
-$textColor: var(--accent-text);
+// $textColor: var(--accent-text);
+$textColor: #131833;
 .loading-shimmer {
 	text-fill-color: transparent;
 	-webkit-text-fill-color: transparent;

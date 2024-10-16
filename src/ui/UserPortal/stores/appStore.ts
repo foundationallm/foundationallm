@@ -340,7 +340,7 @@ export const useAppStore = defineStore('app', {
 				tokens: 0,
 				type: 'LoadingMessage',
 				vector: [],
-				status: 'Pending',
+				status: 'Loading',
 				renderId: Math.random(),
 			};
 			this.currentMessages.push(tempAssistantMessage);
@@ -356,6 +356,7 @@ export const useAppStore = defineStore('app', {
 				...tempAssistantMessage,
 				...message,
 				type: 'Message',
+				text: message.status_message,
 			};
 
 			this.attachments = this.attachments.filter(
@@ -364,6 +365,9 @@ export const useAppStore = defineStore('app', {
 
 			// If the session has changed before above completes we need to prevent polling
 			if (initialSession !== this.currentSession.id) return;
+
+			// If the operation failed to start prevent polling
+			if (message.status === 'Failed') return;
 
 			// For older messages that have a status of "Pending" but no operation id, assume
 			// it is complete and do no initiate polling as it will return empty data
@@ -384,11 +388,21 @@ export const useAppStore = defineStore('app', {
 
 			this.pollingInterval = setInterval(async () => {
 				try {
-					const updatedMessage = await api.checkProcessStatus(message.operation_id);
+					const statusResponse = await api.checkProcessStatus(message.operation_id);
+					const updatedMessage = statusResponse.result ?? {};
 					this.currentMessages[this.currentMessages.length - 1] = {
 						...updatedMessage,
 						renderId: this.currentMessages[this.currentMessages.length - 1].renderId,
 					};
+
+					const userMessage = this.currentMessages[this.currentMessages.length - 2];
+					if (
+						userMessage &&
+						statusResponse.prompt_tokens &&
+						userMessage.tokens !== statusResponse.prompt_tokens
+					) {
+						userMessage.tokens = statusResponse.prompt_tokens;
+					}
 
 					if (updatedMessage.status === 'Completed' || updatedMessage.status === 'Failed') {
 						this.stopPolling();
@@ -473,15 +487,13 @@ export const useAppStore = defineStore('app', {
 		},
 
 		async oneDriveWorkSchoolConnect() {
-			await api.oneDriveWorkSchoolConnect().then(() => {
-				this.oneDriveWorkSchool = true;
-			});
+			await api.oneDriveWorkSchoolConnect();
+			this.oneDriveWorkSchool = true;
 		},
 
 		async oneDriveWorkSchoolDisconnect() {
-			await api.oneDriveWorkSchoolDisconnect().then(() => {
-				this.oneDriveWorkSchool = false;
-			});
+			await api.oneDriveWorkSchoolDisconnect();
+			this.oneDriveWorkSchool = false;
 		},
 
 		async getUserProfiles() {

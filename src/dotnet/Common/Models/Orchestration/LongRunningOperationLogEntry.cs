@@ -46,6 +46,12 @@ namespace FoundationaLLM.Common.Models.Orchestration
         public string? StatusMessage { get; set; }
 
         /// <summary>
+        /// Gets or sets the User Principal Name (UPN) of the user who triggered the long-running operation.
+        /// </summary>
+        [JsonPropertyName("upn")]
+        public string? UPN { get; set; }
+
+        /// <summary>
         /// The time-to-live (TTL) for the log entry.
         /// </summary>
         [JsonPropertyName("ttl")]
@@ -64,11 +70,13 @@ namespace FoundationaLLM.Common.Models.Orchestration
         /// <param name="operationId">The identifier of the long-running operation.</param>
         /// <param name="status">The status of the long-running operation.</param>
         /// <param name="statusMessage">The message describing the current state of the operation.</param>
-        public LongRunningOperationLogEntry(string operationId, OperationStatus status, string? statusMessage)
+        /// <param name="upn">The user principal name (UPN) of the user who initiated the operation.</param>
+        public LongRunningOperationLogEntry(string operationId, OperationStatus status, string? statusMessage, string? upn)
         {
             OperationId = operationId;
             Status = status;
             StatusMessage = statusMessage;
+            UPN = upn;
         }
     }
 }
