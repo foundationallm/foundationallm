@@ -368,6 +368,13 @@ jobs:
           Pop-Location
         shell: pwsh
 
+      - name: Publish AZD Environment
+        uses: actions/upload-artifact@v4
+        if: ${{ (cancelled() && inputs.bypassAndTeardown) || inputs.enableTeardown }}
+        with:
+          name: azd-env
+          path: ./deploy/quick-start/.azure
+
       - name: Provision Infrastructure
         run: |
           $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable;
