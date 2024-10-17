@@ -51,6 +51,7 @@ export default {
 				'--secondary-button-bg': this.$appConfigStore.secondaryButtonBg,
 				'--secondary-button-text': this.$appConfigStore.secondaryButtonText,
 				'--app-text-size': `${this.$appStore.textSize}rem`,
+				'--app-contrast': this.$appStore.highContrastMode ? '2' : '1',
 			};
 		},
 	},
@@ -78,7 +79,11 @@ export default {
 <style lang="scss">
 html,
 body {
-  font-size: var(--app-text-size, 1rem);
+	font-size: var(--app-text-size, 1rem);
+}
+
+#__nuxt {
+	filter: contrast(var(--app-contrast, 1));
 }
 
 html,
