@@ -20,6 +20,8 @@ import ProgressBar from 'primevue/progressbar';
 import FocusTrap from 'primevue/focustrap';
 import Image from 'primevue/image';
 import Menu from 'primevue/menu';
+import TabView from 'primevue/tabview';
+import TabPanel from 'primevue/tabpanel';
 
 import { defineNuxtPlugin } from '#app';
 
@@ -44,6 +46,8 @@ export default defineNuxtPlugin((nuxtApp) => {
 	nuxtApp.vueApp.directive('focustrap', FocusTrap);
 	nuxtApp.vueApp.component('Image', Image);
 	nuxtApp.vueApp.component('Menu', Menu);
+	nuxtApp.vueApp.component('TabView', TabView);
+	nuxtApp.vueApp.component('TabPanel', TabPanel);
 
 	nuxtApp.vueApp.use(ConfirmationService);
 
