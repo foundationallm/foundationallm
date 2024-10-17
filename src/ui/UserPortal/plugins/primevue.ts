@@ -23,6 +23,7 @@ import Menu from 'primevue/menu';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import InputSwitch from 'primevue/inputswitch';
+import Slider from 'primevue/slider';
 
 import { defineNuxtPlugin } from '#app';
 
@@ -50,6 +51,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 	nuxtApp.vueApp.component('TabView', TabView);
 	nuxtApp.vueApp.component('TabPanel', TabPanel);
 	nuxtApp.vueApp.component('InputSwitch', InputSwitch);
+	nuxtApp.vueApp.component('Slider', Slider);
 
 	nuxtApp.vueApp.use(ConfirmationService);
 

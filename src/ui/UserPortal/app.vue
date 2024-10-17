@@ -50,6 +50,7 @@ export default {
 				'--primary-button-text': this.$appConfigStore.primaryButtonText,
 				'--secondary-button-bg': this.$appConfigStore.secondaryButtonBg,
 				'--secondary-button-text': this.$appConfigStore.secondaryButtonText,
+				'--app-text-size': `${this.$appStore.textSize}rem`,
 			};
 		},
 	},
@@ -75,6 +76,11 @@ export default {
 </script>
 
 <style lang="scss">
+html,
+body {
+  font-size: var(--app-text-size, 1rem);
+}
+
 html,
 body,
 #__nuxt,

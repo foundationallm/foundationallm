@@ -37,6 +37,7 @@ export const useAppStore = defineStore('app', {
 		oneDriveWorkSchool: null as boolean | null,
 		userProfiles: null as UserProfile | null,
 		autoHideToasts: JSON.parse(sessionStorage.getItem('autoHideToasts') || 'true') as boolean,
+		textSize: JSON.parse(sessionStorage.getItem('textSize') || '1') as number,
 	}),
 	
 	getters: {},
@@ -50,6 +51,15 @@ export const useAppStore = defineStore('app', {
 				() => this.autoHideToasts,
 				(newValue: boolean) => {
 					sessionStorage.setItem('autoHideToasts', JSON.stringify(newValue));
+				}
+			);
+
+			// Watch for changes in textSize and update sessionStorage
+			watch(
+				() => this.textSize,
+				(newValue: number) => {
+					sessionStorage.setItem('textSize', JSON.stringify(newValue));
+					document.documentElement.style.setProperty('--app-text-size', `${newValue}rem`);
 				}
 			);
 
