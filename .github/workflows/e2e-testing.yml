@@ -400,7 +400,7 @@ jobs:
         if: ${{ (cancelled() && inputs.bypassAndTeardown) || inputs.enableTeardown }}
         with:
           name: azd-env
-          path: ./deploy/quick-start/.azure/**/*
+          path: ./deploy/quick-start/.azure/
 
       - name: Update App Registration OAuth Callbacks
         id: update-app-reg-oauth
