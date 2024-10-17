@@ -187,7 +187,7 @@ export default {
 			this.$toast.add({
 				severity: 'success',
 				detail: message,
-				life: 5000,
+				life: this.$appStore.autoHideToasts ? 5000 : null,
 			});
 		},
 

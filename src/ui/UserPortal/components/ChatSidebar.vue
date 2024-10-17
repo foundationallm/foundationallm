@@ -205,7 +205,17 @@
 			header="Settings"
 			@keydown.esc="settingsModalVisible = false"
 		>
-			<p>Settings modal content</p>
+			<TabView>
+				<TabPanel header="Accessibility">
+					<div class="setting-option">
+						<h4 id="auto-hide-toasts">Auto hide toast notifications</h4>
+						<InputSwitch
+							v-model="$appStore.autoHideToasts"
+							aria-labelledby="auto-hide-toasts"
+						/>
+					</div>
+				</TabPanel>
+			</TabView>
 			<template #footer>
 				<Button label="Close" text @click="settingsModalVisible = false" />
 			</template>
@@ -278,7 +288,7 @@ export default {
 					severity: 'warn',
 					summary: 'Warning',
 					detail: 'Please wait before creating another session.',
-					life: 3000,
+					life: this.$appStore.autoHideToasts ? 3000 : null,
 				});
 				return;
 			}
@@ -297,7 +307,7 @@ export default {
 					severity: 'error',
 					summary: 'Error',
 					detail: 'Could not create a new session. Please try again.',
-					life: 5000,
+					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 			} finally {
 				this.createProcessing = false; // Re-enable the button
@@ -319,7 +329,7 @@ export default {
 					severity: 'error',
 					summary: 'Error',
 					detail: 'Could not delete the session. Please try again.',
-					life: 5000,
+					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 			} finally {
 				this.deleteProcessing = false;
@@ -470,9 +480,9 @@ export default {
 
 .chat-sidebar__account {
 	display: grid;
-	grid-template-columns: auto auto;
-	padding: 12px 24px;
-	justify-content: flex-start;
+	grid-template-columns: min-content auto;
+	// added extra padding to the right to account for resize handle width
+	padding: 12px 29px 12px 24px;
 	text-transform: inherit;
 }
 
@@ -538,6 +548,15 @@ li.chat-list-item {
 	margin: 0;
 }
 
+.setting-option {
+	margin-bottom: 1rem;
+	display: flex;
+	flex-direction: row;
+    align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
 @media only screen and (max-width: 950px) {
 	.chat-sidebar__section-header--mobile {
 		height: 70px;
@@ -556,6 +575,10 @@ li.chat-list-item {
 </style>
 
 <style lang="scss">
+.sidebar-dialog {
+	max-width: 90vw;
+}
+
 @media only screen and (max-width: 950px) {
 	.sidebar-dialog {
 		width: 95vw;

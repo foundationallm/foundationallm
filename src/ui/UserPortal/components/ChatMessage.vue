@@ -632,7 +632,7 @@ export default {
 			this.$toast.add({
 				severity: 'success',
 				detail: 'Message copied to clipboard!',
-				life: 5000,
+				life: this.$appStore.autoHideToasts ? 5000 : null,
 			});
 		},
 
