@@ -371,6 +371,8 @@ resource aksDcr 'Microsoft.Insights/dataCollectionRules@2023-03-11' = {
       ]
     }
 
+    dataCollectionEndpointId: dce.id
+
     dataFlows: [
       {
         destinations: ['ciworkspace']
@@ -448,7 +450,6 @@ resource aksDcra 'Microsoft.ContainerService/managedClusters/providers/dataColle
   properties: {
     description: 'Association of data collection rule. Deleting this association will break the data collection for this AKS Cluster.'
     dataCollectionRuleId: aksDcr.id
-    dataCollectionEndpointId: dce.id
   }
 }
 
