@@ -157,5 +157,4 @@ module privateEndpoint 'utility/privateEndpoint.bicep' = {
       id: main.id
     }
   }
-  dependsOn: [main]
 }
