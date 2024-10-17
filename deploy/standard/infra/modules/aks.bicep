@@ -445,11 +445,21 @@ resource aksDcr 'Microsoft.Insights/dataCollectionRules@2023-03-11' = {
 
 #disable-next-line BCP174
 resource aksDcra 'Microsoft.ContainerService/managedClusters/providers/dataCollectionRuleAssociations@2022-06-01' = {
-  name: '${name}/microsoft.insights/ContainerInsightsExtension'
+  name: '${name}/microsoft.insights/ContainerInsights'
+  dependsOn: [ main ]
+  properties: {
+    description: 'Association of data collection endpoint. Deleting this association will break the data collection for this AKS Cluster.'
+    dataCollectionRuleId: aksDcr.id
+  }
+}
+
+#disable-next-line BCP174
+resource aksDcera 'Microsoft.ContainerService/managedClusters/providers/dataCollectionRuleAssociations@2022-06-01' = {
+  name: '${name}/microsoft.insights/configurationAccessEndpoint'
   dependsOn: [ main ]
   properties: {
     description: 'Association of data collection rule. Deleting this association will break the data collection for this AKS Cluster.'
-    dataCollectionRuleId: aksDcr.id
+    dataCollectionEndpointId: dce.id
   }
 }
 
