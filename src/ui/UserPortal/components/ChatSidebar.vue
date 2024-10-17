@@ -228,6 +228,13 @@
 							:aria-valuenow="$appStore.textSize"
 						/>
 					</div>
+					<div class="setting-option">
+						<h4 id="contrast">High contrast mode</h4>
+						<InputSwitch
+							v-model="$appStore.highContrastMode"
+							aria-labelledby="contrast"
+						/>
+					</div>
 				</TabPanel>
 			</TabView>
 			<template #footer>

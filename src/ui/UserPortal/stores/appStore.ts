@@ -38,6 +38,7 @@ export const useAppStore = defineStore('app', {
 		userProfiles: null as UserProfile | null,
 		autoHideToasts: JSON.parse(sessionStorage.getItem('autoHideToasts') || 'true') as boolean,
 		textSize: JSON.parse(sessionStorage.getItem('textSize') || '1') as number,
+		highContrastMode: JSON.parse(sessionStorage.getItem('highContrastMode') || 'false') as boolean,
 	}),
 	
 	getters: {},
@@ -60,6 +61,14 @@ export const useAppStore = defineStore('app', {
 				(newValue: number) => {
 					sessionStorage.setItem('textSize', JSON.stringify(newValue));
 					document.documentElement.style.setProperty('--app-text-size', `${newValue}rem`);
+				}
+			);
+
+			// Watch for changes in highContrastMode and update sessionStorage
+			watch(
+				() => this.highContrastMode,
+				(newValue: boolean) => {
+					sessionStorage.setItem('highContrastMode', JSON.stringify(newValue));
 				}
 			);
 
