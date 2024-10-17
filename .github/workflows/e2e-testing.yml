@@ -397,7 +397,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: azd-env
-          path: ./foundationallm/deploy/quick-start/.azure
+          path: /home/runner/work/foundationallm/foundationallm/deploy/quick-start/.azure
       - name: Update App Registration OAuth Callbacks
         id: update-app-reg-oauth
         run: |
