@@ -388,6 +388,8 @@ jobs:
 
           Push-Location ./deploy/quick-start
           azd deploy --no-prompt
+          ls
+          pwd
           Pop-Location
         shell: pwsh
 
@@ -395,8 +397,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: azd-env
-          path: ./deploy/quick-start/.azure
-
+          path: ./foundationallm/deploy/quick-start/.azure
       - name: Update App Registration OAuth Callbacks
         id: update-app-reg-oauth
         run: |
