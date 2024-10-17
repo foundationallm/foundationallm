@@ -36,6 +36,7 @@ export const useAppStore = defineStore('app', {
 		coreConfiguration: null as CoreConfiguration | null,
 		oneDriveWorkSchool: null as boolean | null,
 		userProfiles: null as UserProfile | null,
+		autoHideToasts: true as boolean,
 	}),
 
 	getters: {},

@@ -599,7 +599,7 @@ export default {
 						severity: 'error',
 						summary: 'Error',
 						detail: `File upload failed for "${file.name}". ${error.message || error.title || ''}`,
-						life: 5000,
+						life: this.$appStore.autoHideToasts ? 5000 : null,
 					});
 				} finally {
 					if (totalFiles === filesUploaded + filesFailed) {
@@ -614,7 +614,7 @@ export default {
 								severity: 'success',
 								summary: 'Success',
 								detail: `Successfully uploaded ${filesUploaded} file${totalFiles > 1 ? 's' : ''}.`,
-								life: 5000,
+								life: this.$appStore.autoHideToasts ? 5000 : null,
 							});
 						}
 					}
@@ -717,7 +717,7 @@ export default {
 						severity: 'error',
 						summary: 'Error',
 						detail: 'File size exceeds the limit of 512MB.',
-						life: 5000,
+						life: this.$appStore.autoHideToasts ? 5000 : null,
 					});
 				} else if (allowedFileTypes && allowedFileTypes !== '') {
 					const fileExtension = file.name.split('.').pop()?.toLowerCase();
@@ -731,7 +731,7 @@ export default {
 							severity: 'error',
 							summary: 'Error',
 							detail: `File type not supported. File: ${file.name}`,
-							life: 5000,
+							life: this.$appStore.autoHideToasts ? 5000 : null,
 						});
 					} else {
 						filteredFiles.push(file);
@@ -752,7 +752,7 @@ export default {
 					severity: 'error',
 					summary: 'Error',
 					detail: `You can only upload a maximum of ${this.maxFiles} ${this.maxFiles === 1 ? 'file' : 'files'} at a time.`,
-					life: 5000,
+					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 				filteredFiles.splice(
 					this.maxFiles -
@@ -817,7 +817,7 @@ export default {
 					severity: 'success',
 					summary: 'Success',
 					detail: `Your account is now connected to OneDrive.`,
-					life: 5000,
+					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 				this.connectingOneDrive = false;
 			});
@@ -830,7 +830,7 @@ export default {
 					severity: 'success',
 					summary: 'Success',
 					detail: `Your account is now disconnected from OneDrive.`,
-					life: 5000,
+					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 				this.disconnectingOneDrive = false;
 			});
