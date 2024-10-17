@@ -371,8 +371,6 @@ resource aksDcr 'Microsoft.Insights/dataCollectionRules@2023-03-11' = {
       ]
     }
 
-    dataCollectionEndpointId: dce.id
-
     dataFlows: [
       {
         destinations: ['ciworkspace']
