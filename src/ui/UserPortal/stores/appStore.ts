@@ -36,14 +36,22 @@ export const useAppStore = defineStore('app', {
 		coreConfiguration: null as CoreConfiguration | null,
 		oneDriveWorkSchool: null as boolean | null,
 		userProfiles: null as UserProfile | null,
-		autoHideToasts: true as boolean,
+		autoHideToasts: JSON.parse(sessionStorage.getItem('autoHideToasts') || 'true') as boolean,
 	}),
-
+	
 	getters: {},
 
 	actions: {
 		async init(sessionId: string) {
 			const appConfigStore = useAppConfigStore();
+
+			// Watch for changes in autoHideToasts and update sessionStorage
+			watch(
+				() => this.autoHideToasts,
+				(newValue: boolean) => {
+					sessionStorage.setItem('autoHideToasts', JSON.stringify(newValue));
+				}
+			);
 
 			// No need to load sessions if in kiosk mode, simply create a new one and skip.
 			if (appConfigStore.isKioskMode) {
