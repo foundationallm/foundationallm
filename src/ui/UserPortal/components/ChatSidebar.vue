@@ -214,6 +214,20 @@
 							aria-labelledby="auto-hide-toasts"
 						/>
 					</div>
+					<div class="setting-option">
+						<h4 id="text-size">Text size</h4>
+						<Slider
+							v-model="$appStore.textSize"
+							:style="{ width: '100%' }"
+							:min="0.8"
+							:max="1.5"
+							:step="0.1"
+							aria-labelledby="text-size"
+							aria-valuemin="0.8"
+							aria-valuemax="1.5"
+							:aria-valuenow="$appStore.textSize"
+						/>
+					</div>
 				</TabPanel>
 			</TabView>
 			<template #footer>
@@ -549,7 +563,6 @@ li.chat-list-item {
 }
 
 .setting-option {
-	margin-bottom: 1rem;
 	display: flex;
 	flex-direction: row;
     align-items: center;
