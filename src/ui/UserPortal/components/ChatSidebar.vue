@@ -10,6 +10,7 @@
 			<span v-else>{{ $appConfigStore.logoText }}</span>
 			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
+					class="chat-sidebar__button"
 					:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
 					size="small"
 					severity="secondary"
@@ -111,7 +112,7 @@
 				<span class="chat-sidebar__username">{{ $authStore.currentAccount?.name }}</span>
 				<div class="chat-sidebar__options">
 					<Button
-						class="chat-sidebar__sign-out"
+						class="chat-sidebar__sign-out chat-sidebar__button"
 						icon="pi pi-sign-out"
 						label="Sign Out"
 						severity="secondary"
@@ -120,7 +121,7 @@
 					/>
 					<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 						<Button
-							class="chat-sidebar__settings"
+							class="chat-sidebar__settings chat-sidebar__button"
 							icon="pi pi-cog"
 							severity="secondary"
 							size="small"
@@ -522,6 +523,10 @@ export default {
 }
 .chat-sidebar__button {
 	color: var(--primary-text) !important;
+}
+
+.chat-sidebar__button:focus {
+	box-shadow: 0 0 0 0.1rem #fff;
 }
 
 .chat-sidebar__username {
