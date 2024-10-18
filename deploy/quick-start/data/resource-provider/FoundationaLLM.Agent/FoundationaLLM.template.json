@@ -25,7 +25,7 @@
 			"name": "dalle-image-generation",
 			"description": "Generates an image based on a prompt.",
 			"ai_model_object_ids": {
-				"main_model": "/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/DALLE3Model"
+				"main_model": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.AIModel/aiModels/DALLE3Model"
 			}
 		}
 	},

@@ -10,8 +10,8 @@
               "principal_id": "${env:ADMIN_GROUP_OBJECT_ID}",
               "principal_type": "Group",
               "scope": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.Conversation/conversations",
-              "created_on": "DEPLOY_TIME",
-              "updated_on": "DEPLOY_TIME",
+              "created_on": "${env:DEPLOY_TIME}",
+              "updated_on": "${env:DEPLOY_TIME}",
               "created_by": "SYSTEM",
               "updated_by": "SYSTEM"
           },
@@ -24,8 +24,8 @@
               "principal_id": "${env:ADMIN_GROUP_OBJECT_ID}",
               "principal_type": "Group",
               "scope": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.Attachment/attachments",
-              "created_on": "DEPLOY_TIME",
-              "updated_on": "DEPLOY_TIME",
+              "created_on": "${env:DEPLOY_TIME}",
+              "updated_on": "${env:DEPLOY_TIME}",
               "created_by": "SYSTEM",
               "updated_by": "SYSTEM"
           }

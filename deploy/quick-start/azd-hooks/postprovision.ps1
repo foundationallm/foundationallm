@@ -234,6 +234,9 @@ azcopy cp '../common/data/resource-provider/*' $target --exclude-pattern .git* -
 $target = "https://$env:AZURE_AUTHORIZATION_STORAGE_ACCOUNT_NAME.blob.core.windows.net/role-assignments/"
 
 azcopy cp ./data/role-assignments/$($env:FOUNDATIONALLM_INSTANCE_ID).json $target --recursive=True
+
+$target = "https://$env:AZURE_AUTHORIZATION_STORAGE_ACCOUNT_NAME.blob.core.windows.net/policy-assignments/"
+
 azcopy cp ./data/policy-assignments/$($env:FOUNDATIONALLM_INSTANCE_ID)-policy.json $target --recursive=True
 
 Invoke-AndRequireSuccess "Restarting Container Apps" {
