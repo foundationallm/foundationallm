@@ -3,6 +3,69 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting with 0.8.4
+
+### Resource provider changes
+
+**FoundationaLLM.AzureOpenAI**
+
+When upgrading an existing FoundationaLLM instance, the items from the `resource-provider/FoundationaLLM.AzureOpenAI` directory in storage account must be updated to use the new JSON format:
+
+*Assistant user context*
+```json
+{
+    "name": "example_solliance_net-assistant-00000000-0000-0000-0000-000000000000",
+    "object_id": "/instances/00000000-0000-0000-0000-000000000000/providers/FoundationaLLM.AzureOpenAI/assistantUserContexts/example_solliance_net-assistant-00000000-0000-0000-0000-000000000000",
+    "display_name": null,
+    "description": null,
+    "cost_center": null,
+    "user_principal_name": "example@solliance.net",
+    "agent-assistants": {
+        "/instances/00000000-0000-0000-0000-000000000000/providers/FoundationaLLM.Agent/agents/GPT-4o": {
+            "endpoint": "https://example.openai.azure.com/",
+            "model_name": "completions-gpt-4o",
+            "openai_assistant_id": "",
+            "openai_assistant_created_on": "2024-10-18T00:00:00.0000000\u002B00:00",
+            "conversations": {}
+        }
+    },
+    "properties": null,
+    "created_on": "2024-10-18T00:00:00.0000000\u002B00:00",
+    "updated_on": "2024-10-18T00:00:00.0000000\u002B00:00",
+    "created_by": "example@solliance.net",
+    "updated_by": "example@solliance.net",
+    "deleted": false,
+    "expiration_date": null,
+}
+```
+
+*File user context*
+```json
+{
+    "name": "example_solliance_net-file-00000000-0000-0000-0000-000000000000",
+    "object_id": "/instances/00000000-0000-0000-0000-000000000000/providers/FoundationaLLM.AzureOpenAI/fileUserContexts/example_solliance_net-file-00000000-0000-0000-0000-000000000000",
+    "display_name": null,
+    "description": null,
+    "cost_center": null,
+    "user_principal_name": "example@solliance.net",
+    "agent_files": {
+        "/instances/00000000-0000-0000-0000-000000000000/providers/FoundationaLLM.Agent/agents/GPT-4o": {
+            "endpoint": "https://example.openai.azure.com/",
+            "files": {}
+        }
+    },
+    "assistant_user_context_name": "example_solliance_net-assistant-00000000-0000-0000-0000-000000000000",
+    "created_on": "2024-10-18T00:00:00.0000000+00:00",
+    "updated_on": "2024-10-18T00:00:00.0000000+00:00",
+    "created_by": "example@solliance.net",
+    "updated_by": "example@solliance.net",
+    "deleted": false,
+    "expiration_date": null
+}
+```
+
+Refer to the dedicated upgrade tool for instructions on how to perform this update.
+
 ## Starting with 0.8.2
 
 ### Configuration changes
