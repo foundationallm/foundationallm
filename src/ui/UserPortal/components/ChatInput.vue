@@ -1082,8 +1082,17 @@ export default {
 	flex-basis: auto;
 }
 
+.submit:focus {
+	box-shadow: 0 0 0 0.1rem #000;
+}
+
 .file-upload-button {
 	height: 100%;
+	z-index: 1
+}
+
+.file-upload-button:focus {
+	box-shadow: 0 0 0 0.1rem #000;
 }
 
 .attached-files-container {
@@ -1152,6 +1161,10 @@ export default {
 .file-upload-empty-desktop {
 	text-align: center;
 	margin-bottom: 0.5rem;
+}
+
+.file-upload-container-button:focus {
+	box-shadow: 0 0 0 0.1rem #000;
 }
 
 @media only screen and (max-width: 405px) {

@@ -776,6 +776,10 @@ $textColor: #131833;
 	margin-left: 4px;
 }
 
+.message__copy:focus {
+	box-shadow: 0 0 0 0.1rem #fff;
+}
+
 .header__sender {
 	display: flex;
 	align-items: center;
@@ -841,6 +845,10 @@ $textColor: #131833;
 
 .message__button {
 	color: #00356b;
+}
+
+.message__button:focus {
+	box-shadow: 0 0 0 0.1rem #00356b;
 }
 </style>
 
