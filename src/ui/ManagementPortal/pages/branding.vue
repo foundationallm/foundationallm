@@ -19,10 +19,10 @@
                 </div>
             </div>
             <div style="border-top: 3px solid #bbb;"></div>
-            <div class="step span-2" v-for="brand in branding" :key="brand.resource.key">
-                <div class="step-header mb-2">{{ brand.resource.name }}</div>
-                <div class="mb-2">{{ brand.resource.description }}</div>
-                <InputText v-model="brand.resource.value" />
+            <div class="step span-2" v-for="key in unorderedKeys" :key="key">
+                <div class="step-header mb-2">{{ key }}</div>
+                <div class="mb-2">{{ getBrandingDescription(key) }}</div>
+                <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" />
             </div>
             <div class="button-container column-2 justify-self-end">
                 <Button
@@ -130,6 +130,7 @@ export default {
                 "FoundationaLLM:Branding:SecondaryColor",
                 "FoundationaLLM:Branding:SecondaryTextColor",
             ],
+            unorderedKeys: [] as string[],
         };
     },
 
@@ -143,6 +144,7 @@ export default {
                 this.branding = await api.getBranding();
                 console.log(this.branding);
                 this.brandingOriginal = JSON.parse(JSON.stringify(this.branding));
+                this.getUnorderedKeys();
             } catch (error) {
                 this.$toast.add({
                     severity: 'error',
@@ -150,6 +152,11 @@ export default {
                     life: 5000,
                 });
             }
+        },
+
+        getUnorderedKeys() {
+            const keys = this.branding.map((brand: any) => brand.resource.key);
+            this.unorderedKeys = keys.filter((key: string) => !this.orderedKeys.includes(key) && !this.orderedKeysColors.includes(key));
         },
 
         getBrandingValue(key: string) {
