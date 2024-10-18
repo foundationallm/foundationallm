@@ -77,6 +77,60 @@
 <h5>Note</h5>
 <p>This section is for changes that are not yet released but will affect future releases.</p>
 </div>
+<h2 id="starting-with-084">Starting with 0.8.4</h2>
+<h3 id="resource-provider-changes">Resource provider changes</h3>
+<p><strong>FoundationaLLM.AzureOpenAI</strong></p>
+<p>When upgrading an existing FoundationaLLM instance, the items from the <code>resource-provider/FoundationaLLM.AzureOpenAI</code> directory in storage account must be updated to use the new JSON format:</p>
+<p><em>Assistant user context</em></p>
+<pre><code class="lang-json">{
+    &quot;name&quot;: &quot;example_solliance_net-assistant-00000000-0000-0000-0000-000000000000&quot;,
+    &quot;object_id&quot;: &quot;/instances/00000000-0000-0000-0000-000000000000/providers/FoundationaLLM.AzureOpenAI/assistantUserContexts/example_solliance_net-assistant-00000000-0000-0000-0000-000000000000&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: null,
+    &quot;cost_center&quot;: null,
+    &quot;user_principal_name&quot;: &quot;example@solliance.net&quot;,
+    &quot;agent-assistants&quot;: {
+        &quot;/instances/00000000-0000-0000-0000-000000000000/providers/FoundationaLLM.Agent/agents/GPT-4o&quot;: {
+            &quot;endpoint&quot;: &quot;https://example.openai.azure.com/&quot;,
+            &quot;model_name&quot;: &quot;completions-gpt-4o&quot;,
+            &quot;openai_assistant_id&quot;: &quot;&quot;,
+            &quot;openai_assistant_created_on&quot;: &quot;2024-10-18T00:00:00.0000000\u002B00:00&quot;,
+            &quot;conversations&quot;: {}
+        }
+    },
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;2024-10-18T00:00:00.0000000\u002B00:00&quot;,
+    &quot;updated_on&quot;: &quot;2024-10-18T00:00:00.0000000\u002B00:00&quot;,
+    &quot;created_by&quot;: &quot;example@solliance.net&quot;,
+    &quot;updated_by&quot;: &quot;example@solliance.net&quot;,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null,
+}
+</code></pre>
+<p><em>File user context</em></p>
+<pre><code class="lang-json">{
+    &quot;name&quot;: &quot;example_solliance_net-file-00000000-0000-0000-0000-000000000000&quot;,
+    &quot;object_id&quot;: &quot;/instances/00000000-0000-0000-0000-000000000000/providers/FoundationaLLM.AzureOpenAI/fileUserContexts/example_solliance_net-file-00000000-0000-0000-0000-000000000000&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: null,
+    &quot;cost_center&quot;: null,
+    &quot;user_principal_name&quot;: &quot;example@solliance.net&quot;,
+    &quot;agent_files&quot;: {
+        &quot;/instances/00000000-0000-0000-0000-000000000000/providers/FoundationaLLM.Agent/agents/GPT-4o&quot;: {
+            &quot;endpoint&quot;: &quot;https://example.openai.azure.com/&quot;,
+            &quot;files&quot;: {}
+        }
+    },
+    &quot;assistant_user_context_name&quot;: &quot;example_solliance_net-assistant-00000000-0000-0000-0000-000000000000&quot;,
+    &quot;created_on&quot;: &quot;2024-10-18T00:00:00.0000000+00:00&quot;,
+    &quot;updated_on&quot;: &quot;2024-10-18T00:00:00.0000000+00:00&quot;,
+    &quot;created_by&quot;: &quot;example@solliance.net&quot;,
+    &quot;updated_by&quot;: &quot;example@solliance.net&quot;,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+}
+</code></pre>
+<p>Refer to the dedicated upgrade tool for instructions on how to perform this update.</p>
 <h2 id="starting-with-082">Starting with 0.8.2</h2>
 <h3 id="configuration-changes">Configuration changes</h3>
 <p>The following settings are required:</p>
@@ -164,7 +218,7 @@
 <h5>Note</h5>
 <p>The <code>FoundationaLLM:Instance:IdentitySubstitutionSecurityPrincipalId</code> and <code>FoundationaLLM:Instance:IdentitySubstitutionUserPrincipalNamePattern</code> settings are used for load testing purposes only. If set, their values must be replaced with the appropriate values for the specific Entra ID tenant.</p>
 </div>
-<h3 id="resource-provider-changes">Resource provider changes</h3>
+<h3 id="resource-provider-changes-1">Resource provider changes</h3>
 <p>The following resource provider files must be renamed (if they already exist):</p>
 <table>
 <thead>
