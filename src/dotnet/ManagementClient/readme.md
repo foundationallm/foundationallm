@@ -79,16 +79,18 @@ Rather than manually instantiating the `ManagementRESTClient` and `ManagementCli
 
     ```json
     {
-     "FoundationaLLM": {
-      "APIs": {
-       "ManagementAPI": {
-        "APIUrl": "https://localhost:63267/"
-       }
-      },
-      "Instance": {
-       "Id": "00000000-0000-0000-0000-000000000000"
-      }"
-     }
+        "FoundationaLLM": {
+            "APIEndpoints": {
+		        "ManagementAPI": {
+		            "Essentials": {
+                        "APIUrl": "https://localhost:63267/"
+                    }
+                }
+            },
+            "Instance": {
+                "Id": "00000000-0000-0000-0000-000000000000"
+            }
+        }
     }
     ```
 
@@ -106,7 +108,7 @@ Rather than manually instantiating the `ManagementRESTClient` and `ManagementCli
     var services = new ServiceCollection();
     var credential = new AzureCliCredential(); // Can use any TokenCredential implementation, such as ManagedIdentityCredential or AzureCliCredential.
     services.AddManagementClient(
-        configuration[AppConfigurationKeys.FoundationaLLM_APIs_ManagementAPI_APIUrl]!,
+        configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_ManagementAPI_Essentials_APIUrl]!,
         credential,
         configuration[AppConfigurationKeys.FoundationaLLM_Instance_Id]!);
 
@@ -154,7 +156,7 @@ If you prefer to retrieve the configuration settings from Azure App Configuratio
                 kv.SetCredential(Credentials);
             });
             options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
-            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIs);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ManagementAPI_Essentials);
         })
         .Build();
     ```
@@ -168,7 +170,7 @@ If you prefer to retrieve the configuration settings from Azure App Configuratio
     var credential = new AzureCliCredential(); // Can use any TokenCredential implementation, such as ManagedIdentityCredential or AzureCliCredential.
 
     services.AddManagementClient(
-        configuration[AppConfigurationKeys.FoundationaLLM_APIs_ManagementAPI_APIUrl]!,
+        configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_ManagementAPI_Essentials_APIUrl]!,
         credential,
         configuration[AppConfigurationKeys.FoundationaLLM_Instance_Id]!);
     ```

@@ -2,6 +2,7 @@
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Services;
+using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Configuration.Services;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +18,7 @@ namespace FoundationaLLM
     public static partial class DependencyInjection
     {
         /// <summary>
-        /// Register the FoundatiionaLLM.Configuration resource provider with the dependency injection container.
+        /// Register the FoundationaLLM.Configuration resource provider with the dependency injection container.
         /// </summary>
         /// <param name="builder">Application builder.</param>
         public static void AddConfigurationResourceProvider(this IHostApplicationBuilder builder)

@@ -7,7 +7,7 @@
     "cost_center": null,
     "category": "General",
     "authentication_type": "APIKey",
-    "api_version": "2023-05-15",
+    "api_version": "2024-07-01-preview",
     "authentication_parameters": {
         "api_key_configuration_name": "FoundationaLLM:APIEndpoints:AzureOpenAI:Essentials:APIKey",
         "api_key_header_name": "api-key"

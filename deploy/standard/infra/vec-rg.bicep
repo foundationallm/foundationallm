@@ -29,9 +29,9 @@ var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
 
 @description('Tags for all resources')
 var tags = {
-  Environment: environmentName
-  IaC: 'Bicep'
-  Project: project
+  'azd-env-name': environmentName
+  'iac-type': 'bicep'
+  'project-name': project
   Purpose: 'Vectorization'
 }
 
@@ -56,7 +56,7 @@ module search 'modules/search.bicep' = {
     logAnalyticsWorkspaceId: logAnalyticsWorkspaceId
     resourceSuffix: resourceSuffix
     tags: tags
-    subnetId: '${vnetId}/subnets/Vectorization'
+    subnetId: '${vnetId}/subnets/vectorization'
     privateDnsZones: filter(dnsZones.outputs.ids, (zone) => zone.key == 'search')
   }
 }

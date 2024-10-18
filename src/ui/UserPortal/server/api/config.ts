@@ -12,6 +12,7 @@ const allowedKeys = [
 	'FoundationaLLM:Branding:KioskMode',
 	'FoundationaLLM:Branding:PageTitle',
 	'FoundationaLLM:Branding:FavIconUrl',
+	'FoundationaLLM:Branding:AgentIconUrl',
 	'FoundationaLLM:Branding:LogoUrl',
 	'FoundationaLLM:Branding:LogoText',
 	'FoundationaLLM:Branding:BackgroundColor',
@@ -32,6 +33,7 @@ const allowedKeys = [
 	'FoundationaLLM:UserPortal:Authentication:Entra:TenantId',
 	'FoundationaLLM:UserPortal:Authentication:Entra:Scopes',
 	'FoundationaLLM:UserPortal:Authentication:Entra:CallbackPath',
+	'FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions',
 ];
 
 export default defineEventHandler(async (event) => {

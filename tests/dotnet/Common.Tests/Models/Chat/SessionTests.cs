@@ -1,9 +1,8 @@
-﻿using FoundationaLLM.Common.Models.Chat;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FoundationaLLM.Common.Models.Conversation;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
+using Newtonsoft.Json.Linq;
+using System.Numerics;
+using System.Reflection;
 
 namespace FoundationaLLM.Common.Tests.Models.Chat
 {
@@ -12,11 +11,9 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
         [Fact]
         public void Constructor_ShouldInitializeProperties()
         {
-            var session = new Session();
+            var session = new Conversation { Name = "Test", SessionId = "1" };
 
-            Assert.NotNull(session.Id);
-            Assert.Equal(nameof(Session), session.Type);
-            Assert.Equal(session.Id, session.SessionId);
+            Assert.Equal(nameof(Conversation), session.Type);
             Assert.Equal(0, session.TokensUsed);
             Assert.Equal("New Chat", session.Name);
             Assert.NotNull(session.Messages);
@@ -27,8 +24,17 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
         public void AddMessage_ShouldAddMessageToMessagesList()
         {
             // Arrange
-            var session = new Session();
-            var message = new Message("1", "sender1", null, "The message", null, null, "test@foundationallm.ai");
+            var session = new Conversation { Name = "Test", SessionId = "1" };
+            var message = new Message
+            {
+                SessionId = "1",
+                Sender = "sender1",
+                Tokens = 0,
+                Text = "The message",
+                Vector = null,
+                Rating = null,
+                UPN = "test@foundationallm.ai"
+            };
 
             // Act
             session.AddMessage(message);
@@ -41,11 +47,29 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
         public void UpdateMessage_ShouldUpdateExistingMessageInMessagesList()
         {
             // Arrange
-            var session = new Session();
-            var initialMessage = new Message("1", "sender1", null, "The message", null, null, "test@foundationallm.ai");
+            var session = new Conversation { Name = "Test", SessionId = "1" };
+            var initialMessage = new Message
+            {
+                SessionId = "1",
+                Sender = "sender1",
+                Tokens = 0,
+                Text = "The message",
+                Vector = null,
+                Rating = null,
+                UPN = "test@foundationallm.ai"
+            };
             session.AddMessage(initialMessage);
 
-            var updatedMessage = new Message("1", "sender1", null, "The message updated", null, null, "test@foundationallm.ai");
+            var updatedMessage = new Message
+            {
+                SessionId = "1",
+                Sender = "sender1",
+                Tokens = 0,
+                Text = "The message",
+                Vector = null,
+                Rating = null,
+                UPN = "test@foundationallm.ai"
+            };
             updatedMessage.Id = initialMessage.Id;
 
             // Act

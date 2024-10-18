@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Azure.Core;
+﻿using Azure.Core;
 using FoundationaLLM.Client.Management.Clients.RESTClients;
 using FoundationaLLM.Client.Management.Interfaces;
 using FoundationaLLM.Common.Constants;
@@ -101,9 +96,9 @@ namespace FoundationaLLM.Client.Management
 
         private void InitializeClients(IHttpClientFactory httpClientFactory)
         {
-            Identity = new IdentityRESTClient(httpClientFactory, _credential);
+            Identity = new IdentityRESTClient(httpClientFactory, _credential, _instanceId);
             Resources = new ResourceRESTClient(httpClientFactory, _credential, _instanceId);
-            Status = new StatusRESTClient(httpClientFactory, _credential);
+            Status = new StatusRESTClient(httpClientFactory, _credential, _instanceId);
         }
     }
 }

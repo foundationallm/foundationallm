@@ -7,10 +7,10 @@
       },
       "authAppRegistration": {
         "value": {
-          "instance": "${ENTRA_AUTH_API_INSTANCE}",
+          "instance": "${ENTRA_AUTH_API_INSTANCE=https://login.microsoftonline.com}",
           "clientId": "${ENTRA_AUTH_API_CLIENT_ID}",
           "scopes": "${ENTRA_AUTH_API_SCOPES}",
-          "tenantId": "${ENTRA_AUTH_API_TENANT_ID}"
+          "tenantId": "${ENTRA_AUTH_API_TENANT_ID=''}"
         }
       },
       "authClientSecret": {
@@ -43,10 +43,8 @@
             "tenantId": "${ENTRA_MANAGEMENT_UI_TENANT_ID}"
           },
           {
-            "name": "vectorization-api",
-            "clientId": "${ENTRA_VECTORIZATION_API_CLIENT_ID}",
-            "scopes": "${ENTRA_VECTORIZATION_API_SCOPES}",
-            "tenantId": "${ENTRA_VECTORIZATION_API_TENANT_ID}"
+            "name": "reader",
+            "clientId": "${ENTRA_READER_OBJECT_ID}"
           }
         ]
       },
@@ -216,8 +214,8 @@
             "image": "${SERVICE_LANGCHAINAPI_IMAGE=cropseastus2svinternal.azurecr.io/langchain-api:${FLLM_VERSION}}",
             "appConfigEnvironmentVarName": "FOUNDATIONALLM_APP_CONFIGURATION_URI",
             "apiKeySecretName": "foundationallm-apiendpoints-langchainapi-apikey",
-            "cpu": "${SERVICE_LANGCHAINAPI_CPU=1.0}",
-            "memory": "${SERVICE_LANGCHAINAPI_MEMORY=2.0Gi}",
+            "cpu": "${SERVICE_LANGCHAINAPI_CPU=4.0}",
+            "memory": "${SERVICE_LANGCHAINAPI_MEMORY=8.0Gi}",
             "replicaCount": "${SERVICE_LANGCHAINAPI_REPLICAS}"
           },
           {

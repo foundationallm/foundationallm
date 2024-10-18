@@ -13,5 +13,6 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Vectorization
         [JsonPropertyName("text_embedding")]
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public required TextEmbeddingType TextEmbedding { get; set; }
+
     }
 }

@@ -3,9 +3,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Vectorization.Interfaces;
-using FoundationaLLM.Vectorization.Models.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.Json;
 
@@ -33,7 +31,7 @@ namespace FoundationaLLM.Vectorization.Client
         }
 
         /// <inheritdoc/>
-        public async Task<VectorizationResult> ProcessRequest(VectorizationRequest vectorizationRequest, UnifiedUserIdentity? userIdentity)
+        public async Task<VectorizationResult> ProcessRequest(string instanceId, VectorizationRequest vectorizationRequest, UnifiedUserIdentity? userIdentity)
         {
             var httpClient = await _httpClientFactoryService.CreateClient(HttpClientNames.VectorizationAPI, userIdentity);
 
@@ -41,7 +39,7 @@ namespace FoundationaLLM.Vectorization.Client
 
             try
             {
-                var response = await httpClient.PostAsync("vectorizationrequest", new StringContent(serializedRequest, Encoding.UTF8, "application/json"));
+                var response = await httpClient.PostAsync($"instances/{instanceId}/vectorization-requests", new StringContent(serializedRequest, Encoding.UTF8, "application/json"));
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();

@@ -8,15 +8,17 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
 {
     internal class StatusRESTClient(
         IHttpClientFactory httpClientFactory,
-        TokenCredential credential) : CoreRESTClientBase(httpClientFactory, credential), IStatusRESTClient
+        TokenCredential credential,
+        string instanceId) : CoreRESTClientBase(httpClientFactory, credential), IStatusRESTClient
     {
+        private readonly string _instanceId = instanceId ?? throw new ArgumentNullException(nameof(instanceId));
         private readonly JsonSerializerOptions _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
 
         /// <inheritdoc/>
         public async Task<ServiceStatusInfo> GetServiceStatusAsync()
         {
             var coreClient = await GetCoreClientAsync();
-            var response = await coreClient.GetAsync("status");
+            var response = await coreClient.GetAsync($"instances/{_instanceId}/status");
 
             if (response.IsSuccessStatusCode)
             {
@@ -31,7 +33,7 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
         public async Task<bool> IsAuthenticatedAsync()
         {
             var coreClient = await GetCoreClientAsync();
-            var response = await coreClient.GetAsync("status/auth");
+            var response = await coreClient.GetAsync($"instances/{_instanceId}/status/auth");
 
             return response.IsSuccessStatusCode;
         }

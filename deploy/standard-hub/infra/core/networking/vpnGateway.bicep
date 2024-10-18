@@ -5,7 +5,7 @@ param location string
 param project string
 param subnetId string
 param tags object
-param vpnClientAddressPool string = '192.168.101.0/28'
+param vpnClientAddressPool string
 
 @allowed([
   'VpnGw1'

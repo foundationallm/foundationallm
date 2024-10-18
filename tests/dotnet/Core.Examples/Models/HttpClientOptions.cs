@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FoundationaLLM.Core.Examples.Models
+﻿namespace FoundationaLLM.Core.Examples.Models
 {
     /// <summary>
     /// Configuration options for the HTTP client.

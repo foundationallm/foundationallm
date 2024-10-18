@@ -1,5 +1,5 @@
 ﻿using FoundationaLLM.Common.Models.Authentication;
-using FoundationaLLM.Common.Services;
+using FoundationaLLM.Common.Services.API;
 using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using System.Text.Json;

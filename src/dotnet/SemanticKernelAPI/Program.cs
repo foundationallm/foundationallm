@@ -5,10 +5,11 @@ using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
-using FoundationaLLM.Common.Services.Azure;
+using FoundationaLLM.Common.Services.Security;
 using FoundationaLLM.Common.Validation;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -46,9 +47,12 @@ namespace FoundationaLLM.SemanticKernel.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Events_Profiles_VectorizationAPI);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_SemanticKernelAPI_Configuration);
 
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
+
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AIModel_Storage);
             }));
             if (builder.Environment.IsDevelopment())
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
@@ -66,8 +70,8 @@ namespace FoundationaLLM.SemanticKernel.API
 
             builder.AddSemanticKernelService();
 
-            #region Resource providers (to be removed)
-
+            // Add authorization services.
+            builder.AddGroupMembership();
             builder.Services.AddSingleton<IAuthorizationService, NullAuthorizationService>();
 
             // Resource validation
@@ -79,15 +83,15 @@ namespace FoundationaLLM.SemanticKernel.API
                 AppConfigurationKeySections.FoundationaLLM_Events_Profiles_VectorizationAPI);
 
             // Add Azure ARM services
-            builder.Services.AddAzureResourceManager();
+            builder.AddAzureResourceManager();
 
             // Resource providers
             builder.AddConfigurationResourceProvider();
-
-            #endregion
+            builder.AddAIModelResourceProvider();
 
             builder.AddHttpClientFactoryService();
             builder.Services.AddScoped<ICallContext, CallContext>();
+            builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
 
             builder.Services.AddAuthorization();
             builder.Services.AddControllers();
@@ -143,6 +147,8 @@ namespace FoundationaLLM.SemanticKernel.API
             // Set the CORS policy before other middleware.
             app.UseCors(CorsPolicyNames.AllowAllOrigins);
 
+            // Register the middleware to extract the user identity context and other HTTP request context data required by the downstream services.
+            app.UseMiddleware<CallContextMiddleware>();
             app.UseExceptionHandler();
 
             // Configure the HTTP request pipeline.

@@ -2,13 +2,14 @@
 using FoundationaLLM.Common.Constants.Orchestration;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.State.Exceptions;
 using FoundationaLLM.State.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Dynamic;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 
 namespace FoundationaLLM.State.Services
@@ -60,9 +61,9 @@ namespace FoundationaLLM.State.Services
                 throw new ArgumentException("Unable to connect to existing Azure Cosmos DB database.");
             }
 
-            _state = database?.GetContainer(CosmosDbContainers.State) ??
+            _state = database?.GetContainer(AzureCosmosDBContainers.State) ??
                  throw new ArgumentException(
-                     $"Unable to connect to existing Azure Cosmos DB container ({CosmosDbContainers.State}).");
+                     $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.State}).");
 
             _logger.LogInformation("Cosmos DB service initialized.");
         }
@@ -89,12 +90,32 @@ namespace FoundationaLLM.State.Services
         /// <inheritdoc/>
         public async Task<LongRunningOperation> GetLongRunningOperation(string id, CancellationToken cancellationToken = default)
         {
-            var record = await _state.ReadItemAsync<LongRunningOperation>(
-                id: id,
-                partitionKey: new PartitionKey(id),
-                cancellationToken: cancellationToken);
-            
-            return record;
+            try
+            {
+                var record = await _state.ReadItemAsync<LongRunningOperation>(
+                    id: id,
+                    partitionKey: new PartitionKey(id),
+                    cancellationToken: cancellationToken);
+
+                var result = await GetLongRunningOperationResult(id, cancellationToken);
+                record.Resource.Result = result;
+
+                return record;
+            }
+            catch (Exception ex)
+            {
+                if (ex is CosmosException cosmosException)
+                {
+                    if ((int)cosmosException.StatusCode == StatusCodes.Status404NotFound)
+                    {
+                        throw new StateException(
+                            message: $"An operation with the id '{id}' does not exist.",
+                            statusCode: StatusCodes.Status404NotFound
+                        );
+                    }
+                }
+                throw;
+            }
         }
 
         /// <inheritdoc/>
@@ -107,7 +128,7 @@ namespace FoundationaLLM.State.Services
 
             var results = _state.GetItemQueryIterator<LongRunningOperationLogEntry>(query);
 
-            List<LongRunningOperationLogEntry> output = new();
+            List<LongRunningOperationLogEntry> output = [];
             while (results.HasMoreResults)
             {
                 var response = await results.ReadNextAsync(cancellationToken);
@@ -146,7 +167,7 @@ namespace FoundationaLLM.State.Services
                 operation
             );
             batch.CreateItem<LongRunningOperationLogEntry>(
-                new LongRunningOperationLogEntry(operation.OperationId, operation.Status, operation.StatusMessage)
+                new LongRunningOperationLogEntry(operation.OperationId!, operation.Status, operation.StatusMessage, operation.UPN)
             );
 
             var result = await batch.ExecuteAsync(cancellationToken);
@@ -168,7 +189,7 @@ namespace FoundationaLLM.State.Services
             string operationId;
             if (operationResult.operation_id is JsonElement {ValueKind: JsonValueKind.String} operationIdElement)
             {
-                operationId = operationIdElement.GetString();
+                operationId = operationIdElement.GetString()!;
             }
             else if (operationResult.operation_id is string operationIdStr)
             {

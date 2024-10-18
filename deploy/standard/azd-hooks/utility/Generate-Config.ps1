@@ -227,6 +227,11 @@ $tokens.managementApiRoleAssignmentGuid = $(New-Guid).Guid
 $tokens.coreApiRoleAssignmentGuid = $(New-Guid).Guid
 $tokens.vectorizationApiRoleAssignmentGuid = $(New-Guid).Guid
 $tokens.orchestrationApiRoleAssignmentGuid = $(New-Guid).Guid
+$tokens.gatekeeperApiRoleAssignmentGuid = $(New-Guid).Guid
+$tokens.gatewayApiRoleAssignmentGuid = $(New-Guid).Guid
+$tokens.vectorizationJobRoleAssignmentGuid = $(New-Guid).Guid
+$tokens.conversationPolicyGuid = $(New-Guid).Guid
+$tokens.attachmentPolicyGuid = $(New-Guid).Guid
 $tokens.subscriptionId = $subscriptionId
 $tokens.storageResourceGroup = $resourceGroups.storage
 $tokens.opsResourceGroup = $resourceGroups.ops
@@ -266,7 +271,7 @@ $openAiEndpointUri = $env:AZURE_OPENAI_ENDPOINT
 $tokens.openAiEndpointUri = $openAiEndpointUri
 
 $openAiAccountName = $env:AZURE_OPENAI_ID
-$tokens.azureOpenAiAccountName = $openAiAccountName
+$tokens.openAiAccountName = $openAiAccountName
 
 $appConfig = Invoke-AndRequireSuccess "Get AppConfig Instance" {
     az appconfig list `
@@ -377,7 +382,7 @@ $vnetName = Invoke-AndRequireSuccess "Get VNet Name" {
 
 $subnetBackend = Invoke-AndRequireSuccess "Get Backend Subnet CIDR" {
     az network vnet subnet show `
-        --name "FLLMBackend" `
+        --name "aks-backend" `
         --query addressPrefix `
         --resource-group $resourceGroups.net `
         --vnet-name $vnetName `
@@ -387,7 +392,7 @@ $tokens.privateIpIngressBackend = Get-CIDRHost -baseCidr $subnetBackend -hostNum
 
 $subnetFrontend = Invoke-AndRequireSuccess "Get Frontend Subnet CIDR" {
     az network vnet subnet show `
-        --name "FLLMFrontend" `
+        --name "aks-frontend" `
         --query addressPrefix `
         --resource-group $resourceGroups.net `
         --vnet-name $vnetName `
@@ -436,6 +441,8 @@ foreach ($service in $authServices.GetEnumerator()) {
     $service.Value.miClientId = $miClientId
 }
 
+$tokens.oneDriveBaseUrl = $env:ONEDRIVE_BASE_URL
+
 $tokens.orchestrationApiMiClientId = $services["orchestrationapi"].miClientId
 $tokens.orchestrationApiMiObjectId = $services["orchestrationapi"].miObjectId
 $tokens.agentHubApiMiClientId = $services["agenthubapi"].miClientId
@@ -446,8 +453,10 @@ $tokens.coreApiMiObjectId = $services["coreapi"].miObjectId
 $tokens.coreJobMiClientId = $services["corejob"].miClientId
 $tokens.dataSourceHubApiMiClientId = $services["datasourcehubapi"].miClientId
 $tokens.gatekeeperApiMiClientId = $services["gatekeeperapi"].miClientId
+$tokens.gatekeeperApiMiObjectId = $services["gatekeeperapi"].miObjectId
 $tokens.gatekeeperIntegrationApiMiClientId = $services["gatekeeperintegrationapi"].miClientId
 $tokens.gatewayApiMiClientId = $services["gatewayapi"].miClientId
+$tokens.gatewayApiMiObjectId = $services["gatewayapi"].miObjectId
 $tokens.gatewayAdapterApiMiClientId = $services["gatewayadapterapi"].miClientId
 $tokens.langChainApiMiClientId = $services["langchainapi"].miClientId
 $tokens.managementApiMiClientId = $services["managementapi"].miClientId
@@ -459,14 +468,17 @@ $tokens.stateApiMiClientId = $services["stateapi"].miClientId
 $tokens.vectorizationApiMiClientId = $services["vectorizationapi"].miClientId
 $tokens.vectorizationApiMiObjectId = $services["vectorizationapi"].miObjectId
 $tokens.vectorizationJobMiClientId = $services["vectorizationjob"].miClientId
+$tokens.vectorizationJobMiObjectId = $services["vectorizationjob"].miObjectId
 
 $eventGridProfiles = @{}
 $eventGridProfileNames = @(
-    "orchestration-api-event-profile"
     "core-api-event-profile"
+    "gatekeeper-api-event-profile"
+    "gateway-api-event-profile"
+    "orchestration-api-event-profile"
+    "management-api-event-profile"
     "vectorization-api-event-profile"
     "vectorization-worker-event-profile"
-    "management-api-event-profile"
 )
 foreach ($profileName in $eventGridProfileNames) {
     Write-Host "Populating $profileName..." -ForegroundColor Blue
@@ -482,11 +494,13 @@ foreach ($profileName in $eventGridProfileNames) {
     ).Replace('"', '\"')
 }
 
-$tokens.orchestrationApiEventGridProfile = $eventGridProfiles["orchestration-api-event-profile"]
 $tokens.coreApiEventGridProfile = $eventGridProfiles["core-api-event-profile"]
+$tokens.gatekeeperApiEventGridProfile = $eventGridProfiles["gatekeeper-api-event-profile"]
+$tokens.gatewayApiEventGridProfile = $eventGridProfiles["gateway-api-event-profile"]
+$tokens.managementApiEventGridProfile = $eventGridProfiles["management-api-event-profile"]
+$tokens.orchestrationApiEventGridProfile = $eventGridProfiles["orchestration-api-event-profile"]
 $tokens.vectorizationApiEventGridProfile = $eventGridProfiles["vectorization-api-event-profile"]
 $tokens.vectorizationWorkerEventGridProfile = $eventGridProfiles["vectorization-worker-event-profile"]
-$tokens.managementApiEventGridProfile = $eventGridProfiles["management-api-event-profile"]
 $tokens.authKeyvaultUri = $authKeyvault.uri
 
 PopulateTemplate $tokens "..,config,appconfig.template.json" "..,config,appconfig.json"
@@ -523,16 +537,22 @@ $($ingress.frontendIngress).PSBase.Keys | ForEach-Object {
 
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Agent,FoundationaLLM.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Agent,FoundationaLLM.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.AIModel,completion-model.template.json" "..,..,common,data,resource-provider,FoundationaLLM.AIModel,completion-model.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.AIModel,completion-4-model.template.json" "..,..,common,data,resource-provider,FoundationaLLM.AIModel,completion-4-model.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.AIModel,completion-4o-model.template.json" "..,..,common,data,resource-provider,FoundationaLLM.AIModel,completion-4o-model.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.AIModel,embedding-model.template.json" "..,..,common,data,resource-provider,FoundationaLLM.AIModel,embedding-model.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.AIModel,dall-e-3-model.template.json" "..,..,common,data,resource-provider,FoundationaLLM.AIModel,dall-e-3-model.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,AzureAISearch.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,AzureAISearch.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,AzureContentSafety.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,AzureContentSafety.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,AzureEventGrid.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,AzureEventGrid.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,AzureOpenAI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,AzureOpenAI.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,AzureOpenAIDALLE.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,AzureOpenAIDALLE.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,CoreAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,CoreAPI.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,GatekeeperAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,GatekeeperAPI.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,GatekeeperIntegrationAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,GatekeeperIntegrationAPI.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,GatewayAdapterAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,GatewayAdapterAPI.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,GatewayAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,GatewayAPI.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,LangChainAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,LangChainAPI.json"
+PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,OneDriveFileStoreConnector.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,OneDriveFileStoreConnector.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,OrchestrationAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,OrchestrationAPI.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,SemanticKernelAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,SemanticKernelAPI.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,StateAPI.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,StateAPI.json"
@@ -540,5 +560,6 @@ PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Configuration,VectorizationWorker.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Configuration,VectorizationWorker.json"
 PopulateTemplate $tokens "..,data,resource-provider,FoundationaLLM.Prompt,FoundationaLLM.template.json" "..,..,common,data,resource-provider,FoundationaLLM.Prompt,FoundationaLLM.json"
 PopulateTemplate $tokens "..,data,role-assignments,DefaultRoleAssignments.template.json" "..,data,role-assignments,$($instanceId).json"
+PopulateTemplate $tokens "..,data,policy-assignments,DefaultPolicyAssignments.template.json" "..,data,policy-assignments,$($instanceId)-policy.json"
 
 exit 0

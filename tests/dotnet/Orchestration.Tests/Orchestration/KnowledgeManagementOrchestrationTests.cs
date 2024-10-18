@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Models.Orchestration.Request;
+using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using FoundationaLLM.Orchestration.Core.Orchestration;
@@ -21,13 +22,16 @@ namespace FoundationaLLM.Orchestration.Tests.Orchestration
         public KnowledgeManagementOrchestrationTests()
         {
             _knowledgeManagementOrchestration = new KnowledgeManagementOrchestration(
+                _instanceId,
                 _agent,
                 null,
                 _callContext,
                 _orchestrationService,
                 _logger,
                 null,
-                false);
+                null,
+                false,
+                string.Empty);
         }
 
         [Fact]
@@ -40,7 +44,7 @@ namespace FoundationaLLM.Orchestration.Tests.Orchestration
                 .Returns(Task.FromResult(orchestrationResult));
 
             // Act
-            var completionResponse = await _knowledgeManagementOrchestration.GetCompletion(_instanceId, completionRequest);
+            var completionResponse = await _knowledgeManagementOrchestration.GetCompletion(completionRequest);
 
             // Assert
             Assert.Equal(orchestrationResult.Completion, completionResponse.Completion);

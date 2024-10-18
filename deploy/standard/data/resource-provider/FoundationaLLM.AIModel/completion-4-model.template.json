@@ -1,0 +1,14 @@
+{
+    "type": "completion",
+    "name": "GPT4CompletionAIModel",
+    "object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.AIModel/aiModels/GPT4CompletionAIModel",
+    "display_name": null,
+    "description": null,
+    "cost_center": null,
+    "endpoint_object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI",
+    "version": "0.0",
+    "deployment_name": "completions4",
+    "model_parameters": {
+        "temperature": 0
+    }
+}

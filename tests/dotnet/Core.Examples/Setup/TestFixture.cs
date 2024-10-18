@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.Configuration;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.DependencyInjection;
 using Environment = FoundationaLLM.Core.Examples.Utils.Environment;
 
@@ -23,7 +24,7 @@ namespace FoundationaLLM.Core.Examples.Setup
 				.AddJsonFile("testsettings.e2e.json", true)
 				.AddEnvironmentVariables()
 				.AddUserSecrets<Environment>()
-				.AddAzureAppConfiguration((Action<Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions>)(options =>
+				.AddAzureAppConfiguration((Action<AzureAppConfigurationOptions>)(options =>
 				{
 					var connectionString = Environment.Variable(EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString);
 					if (string.IsNullOrEmpty(connectionString))

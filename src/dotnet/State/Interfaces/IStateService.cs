@@ -47,8 +47,9 @@ namespace FoundationaLLM.State.Interfaces
         /// Creates a new long-running operation with default values.
         /// </summary>
         /// <param name="operationId">The long-running operation identifier.</param>
+        /// <param name="upn">The User Principal Name (UPN) of the user who triggered the long-running operation.</param>
         /// <returns></returns>
-        Task<LongRunningOperation> CreateLongRunningOperation(string operationId);
+        Task<LongRunningOperation> CreateLongRunningOperation(string operationId, string upn);
 
         /// <summary>
         /// Inserts or updates the result of a long-running operation.

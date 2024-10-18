@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FoundationaLLM.Common.Models.Configuration.Authentication
+﻿namespace FoundationaLLM.Common.Models.Configuration.Authentication
 {
     /// <summary>
     /// Represents settings specific to Entra.

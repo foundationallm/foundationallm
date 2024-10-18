@@ -6,6 +6,7 @@ param environmentName string
 param location string
 param project string
 param timestamp string = utcNow()
+param vpnClientAddressPool string
 
 // Locals
 var abbrs = loadJsonContent('./abbreviations.json')
@@ -130,6 +131,7 @@ module vpn './core/networking/vpnGateway.bicep' = {
     project: project
     subnetId: '${vnet.outputs.vnetId}/subnets/GatewaySubnet'
     tags: tags
+    vpnClientAddressPool: vpnClientAddressPool
   }
   scope: rg
 }

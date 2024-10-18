@@ -24,6 +24,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Configuration
         public required APIEndpointCategory Category { get; set; }
 
         /// <summary>
+        /// The api endpoint subcategory.
+        /// </summary>
+        [JsonPropertyName("subcategory")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public APIEndpointSubcategory? Subcategory { get; set; }
+
+        /// <summary>
         /// The type of authentication required for accessing the API.
         /// </summary>
         [JsonPropertyName("authentication_type")]
@@ -35,6 +42,12 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Configuration
         /// </summary>
         [JsonPropertyName("url")]
         public required string Url { get; set; }
+
+        /// <summary>
+        /// The status URL of the API endpoint, if available.
+        /// </summary>
+        [JsonPropertyName("status_url")]
+        public string? StatusUrl { get; set; }
 
         /// <summary>
         /// A list of URL exceptions.
@@ -104,5 +117,11 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Configuration
         /// </summary>
         [JsonPropertyName("url")]
         public required string Url { get; set; }
+
+        /// <summary>
+        /// Indicates whether the exception is enabled.
+        /// </summary>
+        [JsonPropertyName("enabled")]
+        public required bool Enabled { get; set; }
     }
 }

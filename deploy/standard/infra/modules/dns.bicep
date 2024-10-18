@@ -1,6 +1,7 @@
 param key string
 param tags object
 param vnetId string
+param vnetName string
 param zone string
 
 output id string = main.id
@@ -21,7 +22,7 @@ resource main 'Microsoft.Network/privateDnsZones@2018-09-01' existing = {
 */
 resource link 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = {
   parent: main
-  name: 'foundationallm'
+  name: vnetName
   location: 'global'
   tags: tags
 

@@ -1,10 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Constants.Authentication;
-using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
-using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
-using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
-using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Core.Examples.Constants;
 
 namespace FoundationaLLM.Core.Examples.Catalogs
@@ -47,7 +42,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 {
                     Orchestrator = LLMOrchestrationServiceNames.LangChain
                 },
-                AIModelObjectId = TestAIModelNames.Completions_Default
+                AIModelObjectId = TestAIModelNames.Completions_Deployed_Default
             },
             new KnowledgeManagementAgent
             {
@@ -74,7 +69,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 {
                     Orchestrator = LLMOrchestrationServiceNames.SemanticKernel,
                 },
-                AIModelObjectId = TestAIModelNames.Completions_Default
+                AIModelObjectId = TestAIModelNames.Completions_Deployed_Default
             },
             new KnowledgeManagementAgent
             {
@@ -102,7 +97,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 {
                     Orchestrator = LLMOrchestrationServiceNames.SemanticKernel
                 },
-                AIModelObjectId = TestAIModelNames.Completions_Default
+                AIModelObjectId = TestAIModelNames.Completions_Deployed_Default
             },
             new KnowledgeManagementAgent
             {
@@ -130,7 +125,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 {
                     Orchestrator = LLMOrchestrationServiceNames.LangChain
                 },
-                AIModelObjectId = TestAIModelNames.Completions_Default
+                AIModelObjectId = TestAIModelNames.Completions_Deployed_Default
             },
             new KnowledgeManagementAgent
             {
@@ -157,7 +152,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 {
                     Orchestrator = LLMOrchestrationServiceNames.SemanticKernel
                 },
-                AIModelObjectId = TestAIModelNames.Completions_Default
+                AIModelObjectId = TestAIModelNames.Completions_Deployed_Default
             },
             new KnowledgeManagementAgent
             {
@@ -184,7 +179,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 {
                     Orchestrator = LLMOrchestrationServiceNames.LangChain
                 },
-                AIModelObjectId = TestAIModelNames.Completions_Default
+                AIModelObjectId = TestAIModelNames.Completions_Deployed_Default
             },
             new KnowledgeManagementAgent
             {
@@ -211,7 +206,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 {
                     Orchestrator = LLMOrchestrationServiceNames.LangChain
                 },
-                AIModelObjectId = TestAIModelNames.Completions_GPT4_32K
+                AIModelObjectId = TestAIModelNames.Completions_GPT4o
             },
             new KnowledgeManagementAgent
             {
@@ -238,7 +233,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 {
                     Orchestrator = LLMOrchestrationServiceNames.SemanticKernel
                 },
-                AIModelObjectId = TestAIModelNames.Completions_Default
+                AIModelObjectId = TestAIModelNames.Completions_Deployed_Default
             },
             new KnowledgeManagementAgent
             {
@@ -265,7 +260,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 {
                     Orchestrator = LLMOrchestrationServiceNames.SemanticKernel
                 },
-                AIModelObjectId = TestAIModelNames.Completions_Default
+                AIModelObjectId = TestAIModelNames.Completions_Deployed_Default
             },
             new KnowledgeManagementAgent
             {
@@ -292,7 +287,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 {
                     Orchestrator = LLMOrchestrationServiceNames.SemanticKernel
                 },
-                AIModelObjectId = TestAIModelNames.Completions_Default
+                AIModelObjectId = TestAIModelNames.Completions_Deployed_Default
             },
             new KnowledgeManagementAgent
             {
@@ -319,7 +314,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 {
                     Orchestrator = LLMOrchestrationServiceNames.LangChain
                 },
-                AIModelObjectId = TestAIModelNames.Completions_Default
+                AIModelObjectId = TestAIModelNames.Completions_Deployed_Default
             },
 
         ];

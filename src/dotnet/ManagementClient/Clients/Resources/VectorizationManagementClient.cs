@@ -151,7 +151,7 @@ namespace FoundationaLLM.Client.Management.Clients.Resources
 
             return await managementRestClient.Resources.ExecuteResourceActionAsync<ResourceProviderActionResult>(
                 ResourceProviderNames.FoundationaLLM_Vectorization,
-                $"{VectorizationResourceTypeNames.VectorizationPipelines}/{pipelineName}/{VectorizationResourceProviderActions.Purge}",
+                $"{VectorizationResourceTypeNames.VectorizationPipelines}/{pipelineName}/{ResourceProviderActions.Purge}",
                 new { }
             );
         }
@@ -181,7 +181,7 @@ namespace FoundationaLLM.Client.Management.Clients.Resources
 
             return await managementRestClient.Resources.ExecuteResourceActionAsync<ResourceProviderActionResult>(
                 ResourceProviderNames.FoundationaLLM_Vectorization,
-                $"{VectorizationResourceTypeNames.TextPartitioningProfiles}/{textPartitioningProfileName}/{VectorizationResourceProviderActions.Purge}",
+                $"{VectorizationResourceTypeNames.TextPartitioningProfiles}/{textPartitioningProfileName}/{ResourceProviderActions.Purge}",
                 new { }
             );
         }
@@ -211,7 +211,7 @@ namespace FoundationaLLM.Client.Management.Clients.Resources
 
             return await managementRestClient.Resources.ExecuteResourceActionAsync<ResourceProviderActionResult>(
                 ResourceProviderNames.FoundationaLLM_Vectorization,
-                $"{VectorizationResourceTypeNames.TextEmbeddingProfiles}/{textEmbeddingProfileName}/{VectorizationResourceProviderActions.Purge}",
+                $"{VectorizationResourceTypeNames.TextEmbeddingProfiles}/{textEmbeddingProfileName}/{ResourceProviderActions.Purge}",
                 new { }
             );
         }
@@ -226,7 +226,7 @@ namespace FoundationaLLM.Client.Management.Clients.Resources
 
             return await managementRestClient.Resources.ExecuteResourceActionAsync<ResourceNameCheckResult>(
                 ResourceProviderNames.FoundationaLLM_Vectorization,
-                $"{VectorizationResourceTypeNames.IndexingProfiles}/{VectorizationResourceProviderActions.CheckName}",
+                $"{VectorizationResourceTypeNames.IndexingProfiles}/{ResourceProviderActions.CheckName}",
                 resourceName
             );
         }
@@ -235,7 +235,7 @@ namespace FoundationaLLM.Client.Management.Clients.Resources
         public async Task<List<IndexingProfile>> FilterIndexingProfileAsync(ResourceFilter resourceFilter) =>
             await managementRestClient.Resources.ExecuteResourceActionAsync<List<IndexingProfile>>(
                 ResourceProviderNames.FoundationaLLM_Vectorization,
-                $"{VectorizationResourceTypeNames.IndexingProfiles}/{VectorizationResourceProviderActions.Filter}",
+                $"{VectorizationResourceTypeNames.IndexingProfiles}/{ResourceProviderActions.Filter}",
                 resourceFilter
             );
 
@@ -249,7 +249,7 @@ namespace FoundationaLLM.Client.Management.Clients.Resources
 
             return await managementRestClient.Resources.ExecuteResourceActionAsync<ResourceProviderActionResult>(
                 ResourceProviderNames.FoundationaLLM_Vectorization,
-                $"{VectorizationResourceTypeNames.IndexingProfiles}/{indexingProfileName}/{VectorizationResourceProviderActions.Purge}",
+                $"{VectorizationResourceTypeNames.IndexingProfiles}/{indexingProfileName}/{ResourceProviderActions.Purge}",
                 new { }
             );
         }

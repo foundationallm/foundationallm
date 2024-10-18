@@ -35,9 +35,9 @@ var openAiInstance = {
 var deploymentConfigurations = loadJsonContent('../../common/config/openAiDeploymentConfig.json')
 
 var tags = {
-  Environment: environmentName
-  IaC: 'Bicep'
-  Project: project
+  'azd-env-name': environmentName
+  'iac-type': 'bicep'
+  'project-name': project
   Purpose: 'OpenAI'
 }
 
@@ -61,7 +61,7 @@ module contentSafety 'modules/contentSaftey.bicep' = {
     opsResourceGroupName: opsResourceGroupName
     privateDnsZones: filter(dnsZones.outputs.ids, (zone) => zone.key == 'cognitiveservices')
     resourceSuffix: resourceSuffix
-    subnetId: '${vnetId}/subnets/FLLMOpenAI'
+    subnetId: '${vnetId}/subnets/openai'
     tags: tags
   }
 }
@@ -76,7 +76,7 @@ module openai './modules/openai.bicep' = if (deployOpenAi) {
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     privateDnsZones: filter(dnsZones.outputs.ids, (zone) => zone.key == 'openai')
     resourceSuffix: resourceSuffix
-    subnetId: '${vnetId}/subnets/FLLMOpenAI'
+    subnetId: '${vnetId}/subnets/openai'
     tags: tags
   }
 }
@@ -111,4 +111,5 @@ output azureContentSafetyEndpoint string = contentSafety.outputs.endpoint
 output azureOpenAiEndpoint string = azureOpenAiEndpoint
 output azureOpenAiId string = azureOpenAiId
 output azureOpenAiResourceGroup string = openAiInstance.resourceGroup
+output azureOpenAiName string = openAiInstance.name
   

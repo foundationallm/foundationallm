@@ -4,8 +4,6 @@ Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable)
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
-$env:AZCOPY_AUTO_LOGIN_TYPE="AZCLI"
-
 # Load utility functions
 Push-Location $($MyInvocation.InvocationName | Split-Path)
 try {
@@ -60,6 +58,7 @@ try {
             }
         }
 
+        # TODO this needs to be in its own try-finally block
         Push-Location ..
         azd env set EXTENSIONS_INSTALLED 1
         Pop-Location
@@ -80,11 +79,11 @@ try {
     }
 
     $entraClientIds = @{
-        authorization = $env:FLLM_AUTHORIZATION_CLIENT_ID
-        chat          = $env:FLLM_USER_PORTAL_CLIENT_ID
-        core          = $env:FLLM_CORE_API_CLIENT_ID
-        managementapi = $env:FLLM_MANAGEMENT_API_CLIENT_ID
-        managementui  = $env:FLLM_MANAGEMENT_PORTAL_CLIENT_ID
+        authorization = $env:ENTRA_AUTH_API_CLIENT_ID
+        chat          = $env:ENTRA_CHAT_UI_CLIENT_ID
+        core          = $env:ENTRA_CORE_API_CLIENT_ID
+        managementapi = $env:ENTRA_MANAGEMENT_API_CLIENT_ID
+        managementui  = $env:ENTRA_MANAGEMENT_UI_CLIENT_ID
     }
 
     $entraScopes = @{
@@ -103,7 +102,7 @@ try {
 
     $frontEndHosts = @()
     if ($env:FLLM_USER_PORTAL_HOSTNAME) {
-        $frontEndHosts += $env:FLLM_USER_PORTAL_HOSTNAME 
+        $frontEndHosts += $env:FLLM_USER_PORTAL_HOSTNAME
         $($ingress.frontendIngress).chatui = @{
             host = $env:FLLM_USER_PORTAL_HOSTNAME
             path = "/"
@@ -113,8 +112,8 @@ try {
         }
     }
 
-    if ($env:FLLM_MGMT_PORTAL_HOSTNAME) { 
-        $frontEndHosts += $env:FLLM_MGMT_PORTAL_HOSTNAME 
+    if ($env:FLLM_MGMT_PORTAL_HOSTNAME) {
+        $frontEndHosts += $env:FLLM_MGMT_PORTAL_HOSTNAME
         $($ingress.frontendIngress).managementui = @{
             host = $env:FLLM_MGMT_PORTAL_HOSTNAME
             path = "/"
@@ -125,8 +124,8 @@ try {
     }
 
     $backendHosts = @()
-    if ($env:FLLM_CORE_API_HOSTNAME) { 
-        $backendHosts += $env:FLLM_CORE_API_HOSTNAME 
+    if ($env:FLLM_CORE_API_HOSTNAME) {
+        $backendHosts += $env:FLLM_CORE_API_HOSTNAME
         $($ingress.apiIngress).coreapi = @{
             host = $env:FLLM_CORE_API_HOSTNAME
             path = "/core/"
@@ -136,8 +135,8 @@ try {
         }
     }
 
-    if ($env:FLLM_MGMT_API_HOSTNAME) { 
-        $backendHosts += $env:FLLM_MGMT_API_HOSTNAME 
+    if ($env:FLLM_MGMT_API_HOSTNAME) {
+        $backendHosts += $env:FLLM_MGMT_API_HOSTNAME
         $($ingress.apiIngress).managementapi = @{
             host = $env:FLLM_MGMT_API_HOSTNAME
             path = "/management/"
@@ -246,4 +245,3 @@ try {
 finally {
     Pop-Location
 }
-

@@ -73,29 +73,44 @@ public static class HttpClientNames
     public const string ManagementAPI = "ManagementAPI";
 
     /// <summary>
-    /// Name client with matching configuration for the Gateway API.
+    /// Named client with matching configuration for the Gateway API.
     /// </summary>
     public const string GatewayAPI = "GatewayAPI";
 
     /// <summary>
-    /// Name client with matching configuration for the Gateway Adapter API.
+    /// Named client with matching configuration for the Gateway Adapter API.
     /// </summary>
     public const string GatewayAdapterAPI = "GatewayAdapterAPI";
 
     /// <summary>
-    /// Name client with matching configuration for the Azure Content Safety.
+    /// Named client with matching configuration for the Azure Content Safety service.
     /// </summary>
     public const string AzureContentSafety = "AzureContentSafety";
 
     /// <summary>
-    /// Name client with matching configuration for the Enkrypt Guardrails.
+    /// Named client with matching configuration for the Enkrypt Guardrails service.
     /// </summary>
     public const string EnkryptGuardrails = "EnkryptGuardrails";
 
     /// <summary>
-    /// Name client with matching configuration for the Lakera Guard.
+    /// Named client with matching configuration for the Lakera Guard service.
     /// </summary>
     public const string LakeraGuard = "LakeraGuard";
+
+    /// <summary>
+    /// Named client with matching configuration for the Azure Event Grid service.
+    /// </summary>
+    public const string AzureEventGrid = "AzureEventGrid";
+
+    /// <summary>
+    /// Named client with matching configuration for the State API.
+    /// </summary>
+    public const string StateAPI = "StateAPI";
+
+    /// <summary>
+    /// Named client with matching configuration for the OneDriveWorkSchool API.
+    /// </summary>
+    public const string OneDriveWorkSchoolAPI = "OneDriveWorkSchoolAPI";
 
     /// <summary>
     /// All HTTP client names.
@@ -118,7 +133,9 @@ public static class HttpClientNames
         GatewayAdapterAPI,
         AzureContentSafety,
         EnkryptGuardrails,
-        LakeraGuard
+        LakeraGuard,
+        AzureEventGrid,
+        StateAPI
     ];
 
     /// <summary>

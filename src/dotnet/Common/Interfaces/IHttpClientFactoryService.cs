@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Models.Authentication;
+﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 
 namespace FoundationaLLM.Common.Interfaces
@@ -11,20 +12,30 @@ namespace FoundationaLLM.Common.Interfaces
     public interface IHttpClientFactoryService
     {
         /// <summary>
-        /// Creates a <see cref="HttpClient"/> instance from the provided client name.
+        /// Creates a <see cref="HttpClient"/> instance based on the client name.
         /// The client name must be registered in the <see cref="IHttpClientFactory"/> configuration.
         /// </summary>
-        /// <param name="clientName">The named <see cref="HttpClient"/> client configuration.</param>
-        /// <param name="userIdentity">The user identity.</param>
-        /// <returns></returns>
-        Task<HttpClient> CreateClient(string clientName, UnifiedUserIdentity? userIdentity);
+        /// <param name="clientName">The name of the HTTP client to create. This name must be registered as an <see cref="APIEndpointConfiguration"/> resource in the FoundationaLLM.Configuration resource provider.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> of the caller requesting the client.</param>
+        /// <returns>An <see cref="HttpClient"/> instance.</returns>
+        Task<HttpClient> CreateClient(string clientName, UnifiedUserIdentity userIdentity);
 
         /// <summary>
-        /// Creates a <see cref="HttpClient"/> instance from the provided endpoint configuration.
+        /// Creates a <typeparamref name="T"/> client instance based on the client name and a client builder delegate.
         /// </summary>
-        /// <param name="endpointConfiguration">The endpoint configuration.</param>
-        /// <param name="userIdentity">The user identity.</param>
-        /// <returns></returns>
+        /// <typeparam name="T">The type of the client to create.</typeparam>
+        /// <param name="clientName">The name of the HTTP client to create. This name must be registered as an <see cref="APIEndpointConfiguration"/> resource in the FoundationaLLM.Configuration resource provider.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> of the caller requesting the client.</param>
+        /// <param name="clientBuilder">A delegate that creates the <typeparamref name="T"/> client instance based on a dictionary of values. The keys available in the dictionary are defined in <see cref="HttpClientFactoryServiceKeyNames"/>.</param>
+        /// <returns>A <typeparamref name="T"/> client instance.</returns>
+        Task<T> CreateClient<T>(string clientName, UnifiedUserIdentity userIdentity, Func<Dictionary<string, object>, T> clientBuilder);
+
+        /// <summary>
+        /// Creates a <see cref="HttpClient"/> instance based on the endpoint configuration.
+        /// </summary>
+        /// <param name="endpointConfiguration">The <see cref="APIEndpointConfiguration"/> resource used to create the client.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> of the caller requesting the client.</param>
+        /// <returns>An <see cref="HttpClient"/> instance.</returns>
         Task<HttpClient> CreateClient(APIEndpointConfiguration endpointConfiguration, UnifiedUserIdentity? userIdentity);
 
         /// <summary>
@@ -33,7 +44,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="timeout">The timeout for the <see cref="HttpClient"/>.
         /// If not specified, the default timeout in seconds is applied.
         /// For an infinite waiting period, use <see cref="Timeout.InfiniteTimeSpan"/></param>
-        /// <returns></returns>
+        /// <returns>An <see cref="HttpClient"/> instance.</returns>
         HttpClient CreateUnregisteredClient(TimeSpan? timeout = null);
     }
 }

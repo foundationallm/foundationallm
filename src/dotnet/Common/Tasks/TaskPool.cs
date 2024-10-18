@@ -5,6 +5,9 @@ namespace FoundationaLLM.Common.Tasks
     /// <summary>
     /// Represents a pool of active tasks with a predefined capacity.
     /// </summary>
+    /// <remarks>
+    /// This class is not thread safe, it assumes the taks pool is managed from a single thread.
+    /// </remarks>
     public class TaskPool
     {
         private readonly int _maxConcurrentTasks;
@@ -31,7 +34,7 @@ namespace FoundationaLLM.Common.Tasks
         /// <param name="maxConcurrentTasks">Indicates the maximum number of tasks accepted by the task pool.</param>
         /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
         public TaskPool(int maxConcurrentTasks,
-            ILogger<TaskPool> logger)
+            ILogger logger)
         {
             _maxConcurrentTasks = maxConcurrentTasks;
             _taskInfo = new TaskInfo[maxConcurrentTasks];

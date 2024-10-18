@@ -10,7 +10,7 @@ resource main 'Microsoft.Network/virtualNetworks@2024-01-01' existing = {
 }
 
 resource destinationToSourcePeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2024-01-01' = {
-  name: 'hub-to-vnet'
+  name: vnetName
   parent: main
   properties: {
     allowVirtualNetworkAccess: allowVirtualNetworkAccess

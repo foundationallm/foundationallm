@@ -1,12 +1,12 @@
 ﻿using FakeItEasy;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Vectorization.Handlers;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Models;
-using FoundationaLLM.Vectorization.Models.Resources;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -29,14 +29,14 @@ namespace Vectorization.Tests.Handlers
 
     internal class IndexingMockServiceFactory : IVectorizationServiceFactory<IIndexingService>
     {
-        IIndexingService IVectorizationServiceFactory<IIndexingService>.GetService(string serviceName)
+        Task<IIndexingService> IVectorizationServiceFactory<IIndexingService>.GetService(string serviceName, UnifiedUserIdentity userIdentity)
         {
             throw new NotImplementedException();
         }
 
-        (IIndexingService Service, ResourceBase Resource) IVectorizationServiceFactory<IIndexingService>.GetServiceWithResource(string serviceName)
+        async Task<(IIndexingService Service, ResourceBase Resource)> IVectorizationServiceFactory<IIndexingService>.GetServiceWithResource(string serviceName, UnifiedUserIdentity userIdentity)
         {
-            return (
+            return await Task.FromResult((
                 new IndexingMockService(),
                 new VectorizationProfileBase {
                     Name = "IndexingMockService",
@@ -44,7 +44,7 @@ namespace Vectorization.Tests.Handlers
                         { "IndexName", "test-001-index" } 
                     } 
                 }
-            );
+            ));
         }
     }
 
@@ -62,6 +62,7 @@ namespace Vectorization.Tests.Handlers
             serviceCollection.AddSingleton<IVectorizationServiceFactory<IIndexingService>, IndexingMockServiceFactory>();
 
             ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            UnifiedUserIdentity userIdentity = new();
 
             IndexingHandler handler = new IndexingHandler(
                 "Queue-Message-1",
@@ -103,7 +104,7 @@ namespace Vectorization.Tests.Handlers
             CancellationTokenSource tokenSource = new CancellationTokenSource();
 
             // No text embedding artifacts
-            Assert.False(await handler.Invoke(request, state, tokenSource.Token));
+            Assert.False(await handler.Invoke(request, state, userIdentity, tokenSource.Token));
 
             Embedding sampleEmbedding = new Embedding();
 
@@ -120,13 +121,13 @@ namespace Vectorization.Tests.Handlers
             );
 
             // No text partition artifacts
-            Assert.False(await handler.Invoke(request, state, tokenSource.Token));
+            Assert.False(await handler.Invoke(request, state, userIdentity, tokenSource.Token));
 
             // Even though there are two partitions, only one embedding vector should be indexed
             state.Artifacts.Add(new VectorizationArtifact { Type = VectorizationArtifactType.TextPartition, Position = 2, Content = "This is the first line in a paragraph." });
             state.Artifacts.Add(new VectorizationArtifact { Type = VectorizationArtifactType.TextPartition, Position = 3, Content = "This is the second line in a paragraph." });
 
-            await handler.Invoke(request, state, tokenSource.Token);
+            await handler.Invoke(request, state, userIdentity, tokenSource.Token);
 
             Assert.True(IndexingMockService.IndexEmbeddingsAsyncEmbeddedContentArgument.ContentParts.Count == 1);
             EmbeddedContentPart embeddedContentPart = IndexingMockService.IndexEmbeddingsAsyncEmbeddedContentArgument.ContentParts[0];

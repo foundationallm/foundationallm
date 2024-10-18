@@ -2,7 +2,6 @@
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
-using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 
 namespace FoundationaLLM.Client.Management.Clients.Resources
 {
@@ -43,7 +42,7 @@ namespace FoundationaLLM.Client.Management.Clients.Resources
 
             return await managementRestClient.Resources.ExecuteResourceActionAsync<ResourceNameCheckResult>(
                 ResourceProviderNames.FoundationaLLM_Agent,
-                $"{AgentResourceTypeNames.Agents}/{AgentResourceProviderActions.CheckName}",
+                $"{AgentResourceTypeNames.Agents}/{ResourceProviderActions.CheckName}",
                 resourceName
             );
         }
@@ -58,7 +57,7 @@ namespace FoundationaLLM.Client.Management.Clients.Resources
 
             return await managementRestClient.Resources.ExecuteResourceActionAsync<ResourceProviderActionResult>(
                 ResourceProviderNames.FoundationaLLM_Agent,
-                $"{AgentResourceTypeNames.Agents}/{agentName}/{AgentResourceProviderActions.Purge}",
+                $"{AgentResourceTypeNames.Agents}/{agentName}/{ResourceProviderActions.Purge}",
                 new { }
             );
         }

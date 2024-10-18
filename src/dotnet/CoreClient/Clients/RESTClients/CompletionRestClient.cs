@@ -1,11 +1,11 @@
-﻿using System.Text;
-using System.Text.Json;
-using Azure.Core;
+﻿using Azure.Core;
 using FoundationaLLM.Client.Core.Interfaces;
-using FoundationaLLM.Common.Models.Chat;
-using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Models.Conversation;
+using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using System.Text;
+using System.Text.Json;
 
 namespace FoundationaLLM.Client.Core.Clients.RESTClients
 {
@@ -14,15 +14,18 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
     /// </summary>
     internal class CompletionRESTClient(
         IHttpClientFactory httpClientFactory,
-        TokenCredential credential) : CoreRESTClientBase(httpClientFactory, credential), ICompletionRESTClient
+        TokenCredential credential,
+        string instanceId) : CoreRESTClientBase(httpClientFactory, credential), ICompletionRESTClient
     {
+        private readonly string _instanceId = instanceId ?? throw new ArgumentNullException(nameof(instanceId));
+
         /// <inheritdoc/>
-        public async Task<Completion> GetChatCompletionAsync(CompletionRequest completionRequest)
+        public async Task<Message> GetChatCompletionAsync(CompletionRequest completionRequest)
         {
             var coreClient = await GetCoreClientAsync();
             var serializedRequest = JsonSerializer.Serialize(completionRequest, SerializerOptions);
 
-            var responseMessage = await coreClient.PostAsync("completions",
+            var responseMessage = await coreClient.PostAsync($"instances/{_instanceId}/completions",
                 new StringContent(
                     serializedRequest,
                     Encoding.UTF8, "application/json"));
@@ -31,7 +34,7 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
                 var completionResponse =
-                    JsonSerializer.Deserialize<Completion>(responseContent, SerializerOptions);
+                    JsonSerializer.Deserialize<Message>(responseContent, SerializerOptions);
                 return completionResponse ?? throw new InvalidOperationException("The returned completion response is invalid.");
             }
 
@@ -42,7 +45,7 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
         public async Task<IEnumerable<ResourceProviderGetResult<AgentBase>>> GetAgentsAsync()
         {
             var coreClient = await GetCoreClientAsync();
-            var responseMessage = await coreClient.GetAsync("completions/agents");
+            var responseMessage = await coreClient.GetAsync($"instances/{_instanceId}/completions/agents");
 
             if (responseMessage.IsSuccessStatusCode)
             {

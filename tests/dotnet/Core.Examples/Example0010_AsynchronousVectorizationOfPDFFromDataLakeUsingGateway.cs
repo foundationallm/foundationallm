@@ -2,6 +2,7 @@
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.Storage;
+using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Core.Examples.Interfaces;
@@ -37,16 +38,20 @@ namespace FoundationaLLM.Core.Examples
         private string dataSourceObjectId;
         private string id = String.Empty;
         private BlobStorageServiceSettings? _settings;
+        private string accountNameAppConfigKey;
+        private string authenticationTypeAppConfigKey;
 
         public Example0010_AsynchronousVectorizationOfPDFFromDataLakeUsingGateway(ITestOutputHelper output, TestFixture fixture)
-			: base(output, fixture.ServiceProvider)
+			: base(output, [fixture.ServiceProvider])
 		{
             _vectorizationTestService = GetService<IVectorizationTestService>();
             _instanceSettings = _vectorizationTestService.InstanceSettings;
             dataSourceObjectId = $"/instances/{_instanceSettings.Id}/providers/FoundationaLLM.DataSource/dataSources/{dataSourceName}";
             id = Guid.NewGuid().ToString();
             _settings = ServiceProvider.GetRequiredService<IOptionsMonitor<BlobStorageServiceSettings>>()
-                    .Get(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization);
+                    .Get(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization_Storage);
+            accountNameAppConfigKey = $"FoundationaLLM:DataSources:{dataSourceName}:AccountName";
+            authenticationTypeAppConfigKey = $"FoundationaLLM:DataSources:{dataSourceName}:AuthenticationType";
         }
         
         [Fact]
@@ -65,7 +70,29 @@ namespace FoundationaLLM.Core.Examples
 		}
 
         private async Task PreExecute()
-        { 
+        {
+            WriteLine($"Create the App Configuration key {accountNameAppConfigKey}");
+            await _vectorizationTestService.CreateAppConfiguration(
+                new AppConfigurationKeyValue
+                {
+                    Name = accountNameAppConfigKey,
+                    Key = accountNameAppConfigKey,
+                    Value = _settings!.AccountName,
+                    ContentType = ""
+                }
+            );
+
+            WriteLine($"Create the App Configuration key {authenticationTypeAppConfigKey}");
+            await _vectorizationTestService.CreateAppConfiguration(
+                new AppConfigurationKeyValue
+                {
+                    Name = authenticationTypeAppConfigKey,
+                    Key = authenticationTypeAppConfigKey,
+                    Value = "AzureIdentity",
+                    ContentType = ""
+                }
+            );
+
             WriteLine($"Setup: Create the data source: {dataSourceName} via the Management API");
             await _vectorizationTestService.CreateDataSource(dataSourceName);
 
@@ -170,6 +197,12 @@ namespace FoundationaLLM.Core.Examples
 
         private async Task PostExecute()
         {
+            WriteLine($"Delete the App Configuration key {accountNameAppConfigKey}");
+            await _vectorizationTestService.DeleteAppConfiguration(accountNameAppConfigKey);
+
+            WriteLine($"Delete the App Configuration key {authenticationTypeAppConfigKey}");
+            await _vectorizationTestService.DeleteAppConfiguration(authenticationTypeAppConfigKey);
+
             WriteLine($"Teardown: Delete data source {dataSourceName} via the Management API");
             await _vectorizationTestService.DeleteDataSource(dataSourceName);
 

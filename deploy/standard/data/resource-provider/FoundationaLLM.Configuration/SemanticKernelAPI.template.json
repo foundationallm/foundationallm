@@ -12,8 +12,9 @@
     "api_key_header_name": "X-API-KEY"
   },
   "url": "http://semantic-kernel-api/semantickernel",
+  "status_url": "http://semantic-kernel-api/semantickernel/instances/{{instanceId}}/status",
   "url_exceptions": [],
-  "timeout_seconds": 60,
+  "timeout_seconds": 1800,
   "retry_strategy_name": "ExponentialBackoff",
   "created_on": "0001-01-01T00:00:00+00:00",
   "updated_on": "0001-01-01T00:00:00+00:00",

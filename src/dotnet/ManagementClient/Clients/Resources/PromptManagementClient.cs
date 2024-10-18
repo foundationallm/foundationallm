@@ -42,7 +42,7 @@ namespace FoundationaLLM.Client.Management.Clients.Resources
 
             return await managementRestClient.Resources.ExecuteResourceActionAsync<ResourceNameCheckResult>(
                 ResourceProviderNames.FoundationaLLM_Prompt,
-                $"{PromptResourceTypeNames.Prompts}/{PromptResourceProviderActions.CheckName}",
+                $"{PromptResourceTypeNames.Prompts}/{ResourceProviderActions.CheckName}",
                 resourceName
             );
         }
@@ -57,7 +57,7 @@ namespace FoundationaLLM.Client.Management.Clients.Resources
 
             return await managementRestClient.Resources.ExecuteResourceActionAsync<ResourceProviderActionResult>(
                 ResourceProviderNames.FoundationaLLM_Prompt,
-                $"{PromptResourceTypeNames.Prompts}/{promptName}/{PromptResourceProviderActions.Purge}",
+                $"{PromptResourceTypeNames.Prompts}/{promptName}/{ResourceProviderActions.Purge}",
                 new { }
             );
         }

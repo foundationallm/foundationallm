@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Models.Orchestration;
+﻿using FoundationaLLM.Common.Models.Orchestration.Response;
 
 namespace FoundationaLLM.Common.Tests.Models.Orchestration
 {

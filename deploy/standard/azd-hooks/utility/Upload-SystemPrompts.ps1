@@ -56,5 +56,6 @@ $target = "https://$storageAccount.blob.core.windows.net/resource-provider/"
 $azcopy = "../../common/tools/azcopy/azcopy" | Get-AbsolutePath
 $sourcePath = '../../common/data/resource-provider' | Get-AbsolutePath
 
+Write-Host "$azcopy copy `"$($sourcePath)/*`" $target --exclude-pattern .git* --recursive=True --overwrite=True"
 & $azcopy copy "$($sourcePath)/*" $target `
     --exclude-pattern .git* --recursive=True --overwrite=True

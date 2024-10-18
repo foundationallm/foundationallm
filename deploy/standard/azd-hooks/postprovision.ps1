@@ -16,6 +16,46 @@ finally {
 # Navigate to the script directory so that we can use relative paths.
 Push-Location $($MyInvocation.InvocationName | Split-Path)
 try {
+    # Create VNET peerings
+    Invoke-AndRequireSuccess "Provision VNET Peering to Hub" {
+        $peerings = @(az network vnet peering list `
+                        --resource-group $env:FLLM_NET_RG `
+                        --vnet-name $env:FOUNDATIONALLM_VNET_NAME)
+
+        if ($peerings.Contains("$($env:FOUNDATIONALLM_VNET_NAME)-to-$($env:FOUNDATIONALLM_HUB_VNET_NAME)")) {
+            Write-Host "Peering for $($env:FOUNDATIONALLM_VNET_NAME)-to-$($env:FOUNDATIONALLM_HUB_VNET_NAME) exists..."
+        } else {
+            az network vnet peering create `
+                --name "$($env:FOUNDATIONALLM_VNET_NAME)-to-$($env:FOUNDATIONALLM_HUB_VNET_NAME)" `
+                --remote-vnet $env:FOUNDATIONALLM_HUB_VNET_ID `
+                --resource-group $env:FLLM_NET_RG `
+                --vnet-name $env:FOUNDATIONALLM_VNET_NAME `
+                --allow-forwarded-traffic 1 `
+                --allow-gateway-transit 0 `
+                --allow-vnet-access 1 `
+                --use-remote-gateways 1
+        }
+
+        $peerings = @(az network vnet peering list `
+                        --resource-group $env:FOUNDATIONALLM_HUB_RESOURCE_GROUP `
+                        --vnet-name $env:FOUNDATIONALLM_HUB_VNET_NAME)
+
+        if ($peerings.Contains("$($env:FOUNDATIONALLM_HUB_VNET_NAME)-to-$($env:FOUNDATIONALLM_VNET_NAME)")) {
+            Write-Host "Peering for $($env:FOUNDATIONALLM_HUB_VNET_NAME)-to-$($env:FOUNDATIONALLM_VNET_NAME) exists..."
+        } else {
+            az network vnet peering create `
+                --name "$($env:FOUNDATIONALLM_HUB_VNET_NAME)-to-$($env:FOUNDATIONALLM_VNET_NAME)" `
+                --remote-vnet $env:FOUNDATIONALLM_VNET_ID `
+                --resource-group $env:FOUNDATIONALLM_HUB_RESOURCE_GROUP `
+                --vnet-name $env:FOUNDATIONALLM_HUB_VNET_NAME `
+                --allow-forwarded-traffic 1 `
+                --allow-gateway-transit 1 `
+                --allow-vnet-access 1 `
+                --use-remote-gateways 0
+        }
+    }
+
+
     # Convert the manifest resource groups to a hashtable for easier access
     $resourceGroup = @{
         app     = $env:FLLM_APP_RG

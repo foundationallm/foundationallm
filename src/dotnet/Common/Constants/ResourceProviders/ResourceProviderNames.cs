@@ -48,6 +48,16 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
         public const string FoundationaLLM_AIModel = "FoundationaLLM.AIModel";
 
         /// <summary>
+        /// The name of the FoundationaLLM.AzureOpenAI resource provider.
+        /// </summary>
+        public const string FoundationaLLM_AzureOpenAI = "FoundationaLLM.AzureOpenAI";
+
+        /// <summary>
+        /// The name of the FoundationaLLM.Conversation resource provider.
+        /// </summary>
+        public const string FoundationaLLM_Conversation = "FoundationaLLM.Conversation";
+
+        /// <summary>
         /// Contains all the resource provider names.
         /// </summary>
         public readonly static ImmutableList<string> All = [
@@ -58,6 +68,9 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             FoundationaLLM_DataSource,
             FoundationaLLM_Attachment,
             FoundationaLLM_Authorization,
-            FoundationaLLM_AIModel];
+            FoundationaLLM_AIModel,
+            FoundationaLLM_AzureOpenAI,
+            FoundationaLLM_Conversation
+        ];
     }
 }

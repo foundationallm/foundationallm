@@ -7,7 +7,10 @@
 		</Head>
 
 		<!-- Page to render -->
-		<NuxtPage :style="style" />
+		<NuxtPage />
+
+		<!-- Session expiration dialog -->
+		<SessionExpirationDialog v-if="!$authStore.isExpired" />
 
 		<!-- Session expired dialog -->
 		<Dialog
@@ -51,9 +54,20 @@ export default {
 		},
 	},
 
+	watch: {
+		style: {
+			immediate: true,
+			handler() {
+				for (const cssVar in this.style) {
+					document.documentElement.style.setProperty(cssVar, this.style[cssVar]);
+				}
+			},
+		},
+	},
+
 	methods: {
 		async handleRefreshLogin() {
-			await this.$authStore.logoutSilent();
+			await this.$authStore.clearLocalSession();
 			this.$router.push({ name: 'auth/login' });
 		},
 	},
@@ -71,7 +85,35 @@ main {
 	font-family: 'Poppins', sans-serif;
 }
 
+.text--danger {
+	color: red;
+}
+
+.d-flex {
+	display: flex;
+}
+
+.justify-center {
+	justify-content: center;
+}
+
 .p-component {
 	border-radius: 0px;
+}
+
+.p-button-text {
+	color: var(--primary-button-bg) !important;
+}
+
+.p-button:not(.p-button-text) {
+	background-color: var(--primary-button-bg) !important;
+	border-color: var(--primary-button-bg) !important;
+	color: var(--primary-button-text) !important;
+}
+
+.p-button-secondary:not(.p-button-text) {
+	background-color: var(--secondary-button-bg) !important;
+	border-color: var(--secondary-button-bg) !important;
+	color: var(--secondary-button-text) !important;
 }
 </style>

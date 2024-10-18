@@ -1,5 +1,4 @@
 ﻿using FoundationaLLM.Common.Models.Vectorization;
-using Microsoft.Graph.Privacy;
 
 namespace FoundationaLLM.Gateway.Models
 {
@@ -19,6 +18,12 @@ namespace FoundationaLLM.Gateway.Models
         /// The <see cref="TextEmbeddingResult"/> holding the result of the embedding operation.
         /// </summary>
         public required TextEmbeddingResult Result { get; set; }
+
+        /// <summary>
+        /// Indicates whether the requests associated with the context should be prioritized.
+        /// Example: Synchronous vectorization and user prompt embedding for completions.
+        /// </summary>        
+        public bool Prioritized { get; set; } = false;
 
         /// <summary>
         /// Sets a specified error message on the context of the embedding operation.

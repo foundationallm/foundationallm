@@ -21,6 +21,22 @@
 				"value": "IdentityManagementService",
 				"content_type": "",
 				"first_version": "0.8.0"
+			},
+			{
+				"name": "IdentitySubstitutionSecurityPrincipalId",
+				"description": "The object identifier of the security principal who is allowed to substitute its identity with a value provided in the X-USER-IDENTITY header.",
+				"secret": "",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "IdentitySubstitutionUserPrincipalNamePattern",
+				"description": "The Regex pattern used to validate the values allowed as User Principal Name (UPN) substitutes in the X-USER-IDENTITY header.",
+				"secret": "",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
 			}
 		]
 	},
@@ -141,6 +157,39 @@
 		]
 	},
 	{
+		"namespace": "ResourceProviders:AzureOpenAI",
+		"dependency_injection_key": {
+			"description": "Dependency injection key used by the FoundationaLLM.AzureOpenAI resource provider."
+		},
+		"configuration_section": null,
+		"configuration_keys": []
+	},
+	{
+		"namespace": "ResourceProviders:AzureOpenAI:Storage",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the storage settings for the FoundationaLLM.AzureOpenAI resource provider."
+		},
+		"configuration_keys": [
+			{
+				"name": "AuthenticationType",
+				"description": "The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM.AzureOpenAI resource provider. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
+				"secret": "",
+				"value": "AzureIdentity",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AccountName",
+				"description": "The name of the Azure Blob Storage account used by the FoundationaLLM.AzureOpenAI resource provider.",
+				"secret": "",
+				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
 		"namespace": "ResourceProviders:Configuration",
 		"dependency_injection_key": {
 			"description": "Dependency injection key used by the FoundationaLLM.Configuration resource provider."
@@ -249,7 +298,9 @@
 	},
 	{
 		"namespace": "ResourceProviders:Vectorization:Storage",
-		"dependency_injection_key": null,
+		"dependency_injection_key": {
+			"description": "Dependency injection key used to inject storage settings for the FoundationaLLM.Vectorization resource provider."
+		},
 		"configuration_section": {
 			"description": "Configuration section used to identify the storage settings for the FoundationaLLM.Vectorization resource provider."
 		},
@@ -344,6 +395,38 @@
 				"value": "true",
 				"content_type": "",
 				"first_version": "0.8.0"
+			},
+			{
+				"name": "AzureOpenAIAssistantsFileSearchFileExtensions",
+				"description": "The comma-separated list file extensions that are supported by the Azure OpenAI Assistants file search tool.",
+				"secret": "",
+				"value": "c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AllowedUploadFileExtensions",
+				"description": "The comma-separated list file extensions that users are allowed to upload to a conversation.",
+				"secret": "",
+				"value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "MaxUploadsPerMessage",
+				"description": "The maximum number of files that can be uploaded for a single conversation message.",
+				"secret": "",
+				"value": "{ 'value': 10, 'value_exceptions': []}",
+				"content_type": "application/json",
+				"first_version": "0.8.2"
+			},
+			{
+				"name": "CompletionResponsePollingIntervalSeconds",
+				"description": "The size in seconds of the polling interval used to check for completion responses.",
+				"secret": "",
+				"value": "{ 'value': 10, 'value_exceptions': []}",
+				"content_type": "application/json",
+				"first_version": "0.8.2"
 			}
 		]
 	},
@@ -658,7 +741,16 @@
 		"configuration_section": {
 			"description": "Configuration section used to identify the main Semantic Kernel API settings."
 		},
-		"configuration_keys": []
+		"configuration_keys": [
+			{
+				"name": "MaxConcurrentCompletions",
+				"description": "The maximum number of background completion operations allowed to run in parallel. If a new completion request comes in and the maximum number is already reached, the request will generate an error.",
+				"secret": "",
+				"value": "20",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
 	},
 	{
 		"namespace": "APIEndpoints:ManagementAPI:Essentials",
@@ -820,9 +912,17 @@
 				"name": "AzureOpenAIAccounts",
 				"description": "The comma-separated list of Azure OpenAI account names used by the Gateway API.",
 				"secret": "",
-				"value": "",
+				"value": "${env:AZURE_OPENAI_ID}",
 				"content_type": "",
 				"first_version": "0.8.0"
+			},
+			{
+				"name": "AzureOpenAIAssistantsMaxVectorizationTimeSeconds",
+				"description": "The maximum time in seconds allowed for an Azure OpenAI Assistants vectorization process to complete.",
+				"secret": "",
+				"value": "120",
+				"content_type": "",
+				"first_version": "0.8.3"
 			}
 		]
 	},
@@ -933,16 +1033,6 @@
 				"first_version": "0.8.0"
 			}
 		]
-	},
-	{
-		"namespace": "APIEndpoints:AzureAISearchVectorStore:Configuration",
-		"dependency_injection_key": {
-			"description": "Dependency injection key used to inject the implementation of IIndexingService based on Azure AI Search."
-		},
-		"configuration_section": {
-			"description": "Configuration section used to identify the settings for the Azure AI Search vector store service."
-		},
-		"configuration_keys": []
 	},
 	{
 		"namespace": "APIEndpoints:AzureCosmosDBNoSQLVectorStore:Configuration",
@@ -1130,6 +1220,14 @@
 				"description": "Fav icon url.",
 				"secret": "",
 				"value": "favicon.ico",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AgentIconUrl",
+				"description": "The agent icon that displays next to the agent select list and agent responses. Can be an absolute URL, relative path, or base64string value.",
+				"secret": "",
+				"value": "",
 				"content_type": "",
 				"first_version": "0.8.0"
 			},
@@ -1496,6 +1594,14 @@
 				"value": "${env:FOUNDATIONALLM_GATEKEEPER_API_EVENT_GRID_PROFILE}",
 				"content_type": "application/json",
 				"first_version": "0.8.0"
+			},
+			{
+				"name": "GatewayAPI",
+				"description": "The settings used by the Gateway API to process Azure Event Grid events.",
+				"secret": "",
+				"value": "${env:FOUNDATIONALLM_GATEWAY_API_EVENT_GRID_PROFILE}",
+				"content_type": "application/json",
+				"first_version": "0.8.0"
 			}
 		]
 	},
@@ -1544,6 +1650,14 @@
 		"dependency_injection_key": null,
 		"configuration_section": {
 			"description": "Configuration section used to identify the settings for the events infrastructure used by the Gatekeeper API."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "Events:Profiles:GatewayAPI",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the events infrastructure used by the Gateway API."
 		},
 		"configuration_keys": []
 	}

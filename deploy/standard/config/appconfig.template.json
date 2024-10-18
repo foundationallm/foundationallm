@@ -1,830 +1,928 @@
 {
-  "items": [
-      {
-          "key": "FoundationaLLM:Instance:Id",
-          "value": "{{instanceId}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Configuration:KeyVaultURI",
-          "value": "{{keyvaultUri}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:ResourceProviders:AIModel:Storage:AuthenticationType",
-          "value": "AzureIdentity",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:ResourceProviders:AIModel:Storage:AccountName",
-          "value": "{{storageAccountAdlsName}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:ResourceProviders:Agent:Storage:AuthenticationType",
-          "value": "AzureIdentity",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:ResourceProviders:Agent:Storage:AccountName",
-          "value": "{{storageAccountAdlsName}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:ResourceProviders:Attachment:Storage:AuthenticationType",
-          "value": "AzureIdentity",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:ResourceProviders:Attachment:Storage:AccountName",
-          "value": "{{storageAccountAdlsName}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:ResourceProviders:Configuration:Storage:AuthenticationType",
-          "value": "AzureIdentity",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:ResourceProviders:Configuration:Storage:AccountName",
-          "value": "{{storageAccountAdlsName}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:ResourceProviders:DataSource:Storage:AuthenticationType",
-          "value": "AzureIdentity",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:ResourceProviders:DataSource:Storage:AccountName",
-          "value": "{{storageAccountAdlsName}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:ResourceProviders:Prompt:Storage:AuthenticationType",
-          "value": "AzureIdentity",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:ResourceProviders:Prompt:Storage:AccountName",
-          "value": "{{storageAccountAdlsName}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:ResourceProviders:Vectorization:Storage:AuthenticationType",
-          "value": "AzureIdentity",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:ResourceProviders:Vectorization:Storage:AccountName",
-          "value": "{{storageAccountAdlsName}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
+    "items": [
+        {
+            "key": "FoundationaLLM:Instance:Id",
+            "value": "{{instanceId}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Instance:SecurityGroupRetrievalStrategy",
+            "value": "IdentityManagementService",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Instance:IdentitySubstitutionSecurityPrincipalId",
+            "value": "",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Instance:IdentitySubstitutionUserPrincipalNamePattern",
+            "value": "",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Configuration:KeyVaultURI",
+            "value": "{{keyvaultUri}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProviders:AIModel:Storage:AuthenticationType",
+            "value": "AzureIdentity",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProviders:AIModel:Storage:AccountName",
+            "value": "{{storageAccountAdlsName}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProviders:Agent:Storage:AuthenticationType",
+            "value": "AzureIdentity",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProviders:Agent:Storage:AccountName",
+            "value": "{{storageAccountAdlsName}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProviders:Attachment:Storage:AuthenticationType",
+            "value": "AzureIdentity",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProviders:Attachment:Storage:AccountName",
+            "value": "{{storageAccountAdlsName}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProviders:AzureOpenAI:Storage:AuthenticationType",
+            "value": "AzureIdentity",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProviders:AzureOpenAI:Storage:AccountName",
+            "value": "{{storageAccountAdlsName}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProviders:Configuration:Storage:AuthenticationType",
+            "value": "AzureIdentity",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProviders:Configuration:Storage:AccountName",
+            "value": "{{storageAccountAdlsName}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProviders:DataSource:Storage:AuthenticationType",
+            "value": "AzureIdentity",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProviders:DataSource:Storage:AccountName",
+            "value": "{{storageAccountAdlsName}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProviders:Prompt:Storage:AuthenticationType",
+            "value": "AzureIdentity",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProviders:Prompt:Storage:AccountName",
+            "value": "{{storageAccountAdlsName}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProviders:Vectorization:Storage:AuthenticationType",
+            "value": "AzureIdentity",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProviders:Vectorization:Storage:AccountName",
+            "value": "{{storageAccountAdlsName}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:APIUrl",
-          "value": "http://authorization-api/authorization",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
+            "value": "http://authorization-api/authorization",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:APIScope",
-          "value": "{{authorizationApiScope}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
+            "value": "{{authorizationApiScope}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Essentials:APIUrl",
-          "value": "https://{{coreApiHostname}}/core",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
+            "value": "https://{{coreApiHostname}}/core",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Essentials:AppInsightsConnectionString",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:BypassGatekeeper",
-          "value": "true",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:Instance",
-          "value": "https://login.microsoftonline.com/",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:TenantId",
-          "value": "{{tenantId}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:Scopes",
-          "value": "Data.Read",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:CallbackPath",
-          "value": "/signin-oidc",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:ClientId",
-          "value": "{{coreEntraClientId}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CosmosDB:Endpoint",
-          "value": "{{cosmosEndpoint}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CosmosDB:Database",
-          "value": "database",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CosmosDB:Containers",
-          "value": "Sessions, UserSessions, UserProfiles",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CosmosDB:MonitoredContainers",
-          "value": "Sessions",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CosmosDB:ChangeFeedLeaseContainer",
-          "value": "leases",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:BypassGatekeeper",
+            "value": "true",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions",
+            "value": "c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions",
+            "value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds",
+            "value": "{ \"value\": 5, \"value_exceptions\": [] }",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage",
+            "value": "{ \"value\": 10, \"value_exceptions\": [] }",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:Instance",
+            "value": "https://login.microsoftonline.com/",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:TenantId",
+            "value": "{{tenantId}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:Scopes",
+            "value": "Data.Read",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:CallbackPath",
+            "value": "/signin-oidc",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:ClientId",
+            "value": "{{coreEntraClientId}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CosmosDB:Endpoint",
+            "value": "{{cosmosEndpoint}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CosmosDB:Database",
+            "value": "database",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CosmosDB:Containers",
+            "value": "Sessions, UserSessions, UserProfiles",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CosmosDB:MonitoredContainers",
+            "value": "Sessions",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CosmosDB:ChangeFeedLeaseContainer",
+            "value": "leases",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:CoreWorker:Essentials:APIKey",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-coreworker-apikey\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-coreworker-apikey\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:CoreWorker:Essentials:AppInsightsConnectionString",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:GatekeeperAPI:Essentials:APIKey",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-gatekeeperapi-apikey\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-gatekeeperapi-apikey\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:GatekeeperAPI:Essentials:AppInsightsConnectionString",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:GatekeeperAPI:Configuration:EnableLakeraGuard",
-          "value": "false",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:GatekeeperAPI:Configuration:EnableEnkryptGuardrails",
-          "value": "false",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:GatekeeperAPI:Configuration:EnableAzureContentSafety",
-          "value": "false",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:GatekeeperAPI:Configuration:EnableAzureContentSafetyPromptShields",
-          "value": "false",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:GatekeeperAPI:Configuration:EnableMicrosoftPresidio",
-          "value": "false",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:GatekeeperAPI:Configuration:EnableLakeraGuard",
+            "value": "false",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:GatekeeperAPI:Configuration:EnableEnkryptGuardrails",
+            "value": "false",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:GatekeeperAPI:Configuration:EnableAzureContentSafety",
+            "value": "false",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:GatekeeperAPI:Configuration:EnableAzureContentSafetyPromptShields",
+            "value": "false",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:GatekeeperAPI:Configuration:EnableMicrosoftPresidio",
+            "value": "false",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:GatekeeperIntegrationAPI:Essentials:APIKey",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-gatekeeperintergrationapi-apikey\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-gatekeeperintegrationapi-apikey\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:GatekeeperIntegrationAPI:Essentials:AppInsightsConnectionString",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:OrchestrationAPI:Essentials:APIKey",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-orchestrationapi-apikey\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-orchestrationapi-apikey\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:OrchestrationAPI:Essentials:AppInsightsConnectionString",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Essentials:APIKey",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-langchainapi-apikey\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-langchainapi-apikey\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Essentials:AppInsightsConnectionString",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:SemanticKernelAPI:Essentials:APIKey",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-semantickernelapi-apikey\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-semantickernelapi-apikey\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:SemanticKernelAPI:Essentials:AppInsightsConnectionString",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:SemanticKernelAPI:Configuration:MaxConcurrentCompletions",
+            "value": "20",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Essentials:APIUrl",
-          "value": "https://{{managementApiHostname}}/management",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
+            "value": "https://{{managementApiHostname}}/management",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Essentials:AppInsightsConnectionString",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:Instance",
-          "value": "https://login.microsoftonline.com/",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:TenantId",
-          "value": "{{tenantId}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:Scopes",
-          "value": "{{managementEntraScopes}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:CallbackPath",
-          "value": "/signin-oidc",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:ClientId",
-          "value": "{{managementApiEntraClientId}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:Instance",
+            "value": "https://login.microsoftonline.com/",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:TenantId",
+            "value": "{{tenantId}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:Scopes",
+            "value": "{{managementEntraScopes}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:CallbackPath",
+            "value": "/signin-oidc",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:ClientId",
+            "value": "{{managementApiEntraClientId}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:VectorizationAPI:Essentials:APIKey",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-vectorizationapi-apikey\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-vectorizationapi-apikey\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:VectorizationAPI:Essentials:AppInsightsConnectionString",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:VectorizationWorker:Essentials:APIKey",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-vectorizationworker-apikey\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-vectorizationworker-apikey\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:VectorizationWorker:Essentials:AppInsightsConnectionString",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAssistantsMaxVectorizationTimeSeconds",
+            "value": "120",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Essentials:APIKey",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-gatewayapi-apikey\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-gatewayapi-apikey\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Essentials:AppInsightsConnectionString",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAccounts",
-          "value": "",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAccounts",
+            "value": "{{openAiAccountName}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:GatewayAdapterAPI:Essentials:APIKey",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-gatewayadapterapi-apikey\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-gatewayadapterapi-apikey\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:GatewayAdapterAPI:Essentials:AppInsightsConnectionString",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIUrl",
-            "value": "http://state-api/state",
+            "value": "http://state-api",
             "label": null,
             "content_type": "",
             "tags": {}
         },
         {
             "key": "FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIKey",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apinedpoints-stateapi-apikey\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-stateapi-apikey\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:StateAPI:Essentials:AppInsightsConnectionString",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:StateAPI:Configuration:CosmosDB:Endpoint",
-          "value": "{{cosmosEndpoint}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:StateAPI:Configuration:CosmosDB:Database",
-          "value": "database",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:StateAPI:Configuration:CosmosDB:Containers",
-          "value": "State",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-appinsights-connectionstring\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:StateAPI:Configuration:CosmosDB:Endpoint",
+            "value": "{{cosmosEndpoint}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:StateAPI:Configuration:CosmosDB:Database",
+            "value": "database",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:StateAPI:Configuration:CosmosDB:Containers",
+            "value": "State",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:AzureOpenAI:Essentials:APIKey",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-azureopenai-apikey\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-azureopenai-apikey\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:AzureEventGrid:Essentials:APIKey",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-azureeventgrid-apikey\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:AzureEventGrid:Configuration:NamespaceId",
-          "value": "{{eventGridNamespaceId}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-azureeventgrid-apikey\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:AzureEventGrid:Configuration:NamespaceId",
+            "value": "{{eventGridNamespaceId}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:AzureContentSafety:Essentials:APIKey",
-          "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-azurecontentsafety-apikey\"}",
-          "label": null,
-          "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:AzureContentSafety:Configuration:HateSeverity",
-          "value": "2",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:AzureContentSafety:Configuration:SelfHarmSeverity",
-          "value": "2",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:AzureContentSafety:Configuration:SexualSeverity",
-          "value": "2",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:APIEndpoints:AzureContentSafety:Configuration:ViolenceSeverity",
-          "value": "2",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Branding:AccentColor",
-          "value": "#fff",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Branding:AccentTextColor",
-          "value": "#131833",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Branding:BackgroundColor",
-          "value": "#fff",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Branding:CompanyName",
-          "value": "FoundationaLLM",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Branding:FavIconUrl",
-          "value": "favicon.ico",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Branding:KioskMode",
-          "value": "false",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Branding:LogoText",
-          "value": "FoundationaLLM",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Branding:LogoUrl",
-          "value": "foundationallm-logo-white.svg",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Branding:PageTitle",
-          "value": "FoundationaLLM User Portal",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Branding:PrimaryColor",
-          "value": "#131833",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Branding:PrimaryTextColor",
-          "value": "#fff",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Branding:SecondaryColor",
-          "value": "#334581",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Branding:SecondaryTextColor",
-          "value": "#fff",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Branding:PrimaryButtonBackgroundColor",
-          "value": "#5472d4",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Branding:PrimaryButtonTextColor",
-          "value": "#fff",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Branding:SecondaryButtonBackgroundColor",
-          "value": "#70829a",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Branding:SecondaryButtonTextColor",
-          "value": "#fff",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Branding:FooterText",
-          "value": "FoundationaLLM (c) 2024",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:UserPortal:Authentication:Entra:Instance",
-          "value": "https://login.microsoftonline.com/",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:UserPortal:Authentication:Entra:TenantId",
-          "value": "{{tenantId}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:UserPortal:Authentication:Entra:Scopes",
-          "value": "{{chatEntraScopes}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:UserPortal:Authentication:Entra:CallbackPath",
-          "value": "/signin-oidc",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:UserPortal:Authentication:Entra:ClientId",
-          "value": "{{chatEntraClientId}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:ManagementPortal:Authentication:Entra:Instance",
-          "value": "https://login.microsoftonline.com/",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:ManagementPortal:Authentication:Entra:TenantId",
-          "value": "{{tenantId}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:ManagementPortal:Authentication:Entra:Scopes",
-          "value": "{{managementEntraScopes}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:ManagementPortal:Authentication:Entra:CallbackPath",
-          "value": "/signin-oidc",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:ManagementPortal:Authentication:Entra:ClientId",
-          "value": "{{managementEntraClientId}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Vectorization:Worker",
-          "value": "{{vectorizationConfig}}",
-          "label": null,
-          "content_type": "application/json",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Vectorization:Queues:Extract:AccountName",
-          "value": "{{storageAccountAdlsName}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Vectorization:Queues:Partition:AccountName",
-          "value": "{{storageAccountAdlsName}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Vectorization:Queues:Embed:AccountName",
-          "value": "{{storageAccountAdlsName}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Vectorization:Queues:Index:AccountName",
-          "value": "{{storageAccountAdlsName}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Vectorization:StateService:Storage:AuthenticationType",
-          "value": "AzureIdentity",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Vectorization:StateService:Storage:AccountName",
-          "value": "{{storageAccountAdlsName}}",
-          "label": null,
-          "content_type": "",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Events:Profiles:CoreAPI",
-          "value": "{{coreApiEventGridProfile}}",
-          "label": null,
-          "content_type": "application/json",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Events:Profiles:OrchestrationAPI",
-          "value": "{{orchestrationApiEventGridProfile}}",
-          "label": null,
-          "content_type": "application/json",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Events:Profiles:ManagementAPI",
-          "value": "{{managementApiEventGridProfile}}",
-          "label": null,
-          "content_type": "application/json",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Events:Profiles:VectorizationAPI",
-          "value": "{{vectorizationApiEventGridProfile}}",
-          "label": null,
-          "content_type": "application/json",
-          "tags": {}
-      },
-      {
-          "key": "FoundationaLLM:Events:Profiles:VectorizationWorker",
-          "value": "{{vectorizationWorkerEventGridProfile}}",
-          "label": null,
-          "content_type": "application/json",
-          "tags": {}
-      }
-  ]
+            "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-azurecontentsafety-apikey\"}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:AzureContentSafety:Configuration:HateSeverity",
+            "value": "2",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:AzureContentSafety:Configuration:SelfHarmSeverity",
+            "value": "2",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:AzureContentSafety:Configuration:SexualSeverity",
+            "value": "2",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:AzureContentSafety:Configuration:ViolenceSeverity",
+            "value": "2",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:AccentColor",
+            "value": "#fff",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:AccentTextColor",
+            "value": "#131833",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:BackgroundColor",
+            "value": "#fff",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:CompanyName",
+            "value": "FoundationaLLM",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:FavIconUrl",
+            "value": "favicon.ico",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:AgentIconUrl",
+            "value": "",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:KioskMode",
+            "value": "false",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:LogoText",
+            "value": "FoundationaLLM",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:LogoUrl",
+            "value": "foundationallm-logo-white.svg",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:PageTitle",
+            "value": "FoundationaLLM User Portal",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:PrimaryColor",
+            "value": "#131833",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:PrimaryTextColor",
+            "value": "#fff",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:SecondaryColor",
+            "value": "#334581",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:SecondaryTextColor",
+            "value": "#fff",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:PrimaryButtonBackgroundColor",
+            "value": "#5472d4",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:PrimaryButtonTextColor",
+            "value": "#fff",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:SecondaryButtonBackgroundColor",
+            "value": "#70829a",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:SecondaryButtonTextColor",
+            "value": "#fff",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:FooterText",
+            "value": "FoundationaLLM © 2024",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:UserPortal:Authentication:Entra:Instance",
+            "value": "https://login.microsoftonline.com/",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:UserPortal:Authentication:Entra:TenantId",
+            "value": "{{tenantId}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:UserPortal:Authentication:Entra:Scopes",
+            "value": "{{chatEntraScopes}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:UserPortal:Authentication:Entra:CallbackPath",
+            "value": "/signin-oidc",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:UserPortal:Authentication:Entra:ClientId",
+            "value": "{{chatEntraClientId}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ManagementPortal:Authentication:Entra:Instance",
+            "value": "https://login.microsoftonline.com/",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ManagementPortal:Authentication:Entra:TenantId",
+            "value": "{{tenantId}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ManagementPortal:Authentication:Entra:Scopes",
+            "value": "{{managementEntraScopes}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ManagementPortal:Authentication:Entra:CallbackPath",
+            "value": "/signin-oidc",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ManagementPortal:Authentication:Entra:ClientId",
+            "value": "{{managementEntraClientId}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Vectorization:Worker",
+            "value": "{{vectorizationConfig}}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Vectorization:Queues:Extract:AccountName",
+            "value": "{{storageAccountAdlsName}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Vectorization:Queues:Partition:AccountName",
+            "value": "{{storageAccountAdlsName}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Vectorization:Queues:Embed:AccountName",
+            "value": "{{storageAccountAdlsName}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Vectorization:Queues:Index:AccountName",
+            "value": "{{storageAccountAdlsName}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Vectorization:StateService:Storage:AuthenticationType",
+            "value": "AzureIdentity",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Vectorization:StateService:Storage:AccountName",
+            "value": "{{storageAccountAdlsName}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Events:Profiles:CoreAPI",
+            "value": "{{coreApiEventGridProfile}}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Events:Profiles:OrchestrationAPI",
+            "value": "{{orchestrationApiEventGridProfile}}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Events:Profiles:ManagementAPI",
+            "value": "{{managementApiEventGridProfile}}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Events:Profiles:VectorizationAPI",
+            "value": "{{vectorizationApiEventGridProfile}}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Events:Profiles:VectorizationWorker",
+            "value": "{{vectorizationWorkerEventGridProfile}}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Events:Profiles:GatekeeperAPI",
+            "value": "{{gatekeeperApiEventGridProfile}}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Events:Profiles:GatewayAPI",
+            "value": "{{gatewayApiEventGridProfile}}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        }
+    ]
 }

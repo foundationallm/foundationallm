@@ -10,13 +10,16 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
     /// </summary>
     internal class BrandingRESTClient(
         IHttpClientFactory httpClientFactory,
-        TokenCredential credential) : CoreRESTClientBase(httpClientFactory, credential), IBrandingRESTClient
+        TokenCredential credential,
+        string instanceId) : CoreRESTClientBase(httpClientFactory, credential), IBrandingRESTClient
     {
+        private readonly string _instanceId = instanceId ?? throw new ArgumentNullException(nameof(instanceId));
+
         /// <inheritdoc/>
         public async Task<ClientBrandingConfiguration> GetBrandingAsync()
         {
             var coreClient = await GetCoreClientAsync();
-            var responseMessage = await coreClient.GetAsync("branding");
+            var responseMessage = await coreClient.GetAsync($"instances/{_instanceId}/branding");
 
             if (responseMessage.IsSuccessStatusCode)
             {

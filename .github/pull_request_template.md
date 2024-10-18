@@ -12,6 +12,7 @@ Fixes #{bug number} (in this specific format)
 
 - [ ]  I started this PR by branching from the head of the default branch
 - [ ]  I have targeted the PR to merge into the default branch
+- [ ]  This PR needs to be cherry-picked into at least one release branch
 - [ ]  I have included unit tests for the issue/feature
 - [ ]  I have included inline docs for my changes, where applicable
 - [ ]  I have successfully run a local build

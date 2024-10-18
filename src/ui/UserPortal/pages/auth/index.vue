@@ -1,14 +1,8 @@
 <template>
 	<div class="login-page">
 		<div class="login-container">
-			<img :src="$appConfigStore.logoUrl" class="login__logo" alt="Logo" />
-			<Button
-				class="primary-button"
-				icon="pi pi-microsoft"
-				label="Sign in"
-				size="large"
-				@click="signIn"
-			></Button>
+			<img :src="$appConfigStore.logoUrl" class="login__logo" :alt="$appConfigStore.logoText" />
+			<Button icon="pi pi-microsoft" label="Sign in" size="large" @click="signIn"></Button>
 			<div v-if="$route.query.message" class="login__message">{{ $route.query.message }}</div>
 		</div>
 	</div>
@@ -69,11 +63,5 @@ export default {
 	padding: 16px;
 	color: var(--primary-text);
 	font-size: 1rem;
-}
-
-.primary-button {
-	background-color: var(--primary-button-bg) !important;
-	border-color: var(--primary-button-bg) !important;
-	color: var(--primary-button-text) !important;
 }
 </style>

@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-
-namespace FoundationaLLM.Core.Examples.Models
+﻿namespace FoundationaLLM.Core.Examples.Models
 {
-	/// <summary>
-	/// Agent configurations used for agent completion samples.
-	/// </summary>
-	public class CompletionQualityMeasurementConfiguration
+    /// <summary>
+    /// Agent configurations used for agent completion samples.
+    /// </summary>
+    public class CompletionQualityMeasurementConfiguration
 	{
 		/// <summary>
 		/// The agent prompts to use for completions.

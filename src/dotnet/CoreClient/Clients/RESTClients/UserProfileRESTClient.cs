@@ -10,13 +10,16 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
     /// </summary>
     internal class UserProfileRESTClient(
         IHttpClientFactory httpClientFactory,
-        TokenCredential credential) : CoreRESTClientBase(httpClientFactory, credential), IUserProfileRESTClient
+        TokenCredential credential,
+        string instanceId) : CoreRESTClientBase(httpClientFactory, credential), IUserProfileRESTClient
     {
+        private readonly string _instanceId = instanceId ?? throw new ArgumentNullException(nameof(instanceId));
+
         /// <inheritdoc/>
         public async Task<IEnumerable<UserProfile>> GetUserProfilesAsync()
         {
             var coreClient = await GetCoreClientAsync();
-            var responseMessage = await coreClient.GetAsync("userprofiles");
+            var responseMessage = await coreClient.GetAsync($"instances/{_instanceId}/userprofiles");
 
             if (responseMessage.IsSuccessStatusCode)
             {

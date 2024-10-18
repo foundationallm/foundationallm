@@ -14,7 +14,7 @@ namespace FoundationaLLM.Core.Examples
         private readonly IManagementAPITestManager _managementAPITestManager;
 
 		public Example0003_KnowledgeManagementInlineContextAgentWithLangChain(ITestOutputHelper output, TestFixture fixture)
-			: base(output, fixture.ServiceProvider)
+			: base(output, [fixture.ServiceProvider])
 		{
             _agentConversationTestService = GetService<IAgentConversationTestService>();
             _managementAPITestManager = GetService<IManagementAPITestManager>();
@@ -57,6 +57,11 @@ namespace FoundationaLLM.Core.Examples
                     }
                 }
                 Assert.True(invalidAgentResponsesFound == 0, $"{invalidAgentResponsesFound} invalid agent responses found.");
+            }
+            catch (Exception ex)
+            {
+                WriteLine($"Exception: {ex.Message}");
+                throw;
             }
             finally
             {

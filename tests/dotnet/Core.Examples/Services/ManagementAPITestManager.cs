@@ -66,6 +66,9 @@ namespace FoundationaLLM.Core.Examples.Services
                 throw new InvalidOperationException($"The indexing profile {indexingProfileName} was not found.");
             }
 
+            var aiSearchConfigurationResource = indexingProfile.Settings![VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId];
+            indexingProfile.Settings![VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId] = $"/instances/{instanceSettings.Value.Id}/providers/{ResourceProviderNames.FoundationaLLM_Configuration}/{ConfigurationResourceTypeNames.APIEndpointConfigurations}/{aiSearchConfigurationResource}";
+
             var response = await managementClient.Vectorization.UpsertIndexingProfileAsync(indexingProfile);
 
             if (!string.IsNullOrWhiteSpace(GetObjectId(response)))
@@ -146,8 +149,13 @@ namespace FoundationaLLM.Core.Examples.Services
 
         public async Task<VectorizationRequest> GetVectorizationRequest(VectorizationRequest vectorizationRequest)
         {
-            return await managementRestClient.Resources.GetResourcesAsync<VectorizationRequest>(
-                    ResourceProviderNames.FoundationaLLM_Vectorization, vectorizationRequest.ObjectId!);
+            return (await managementRestClient.Resources.GetResourcesAsync<List<ResourceProviderGetResult<VectorizationRequest>>>(
+                    ResourceProviderNames.FoundationaLLM_Vectorization, $"{VectorizationResourceTypeNames.VectorizationRequests}/{vectorizationRequest.ObjectId!.Split("/").Last()}")).First().Resource;
+        }
+
+        public async Task<APIEndpointConfiguration> GetAPIEndpointConfiguration(string apiEndpointObjectId)
+        {
+            return (await managementRestClient.Resources.GetResourcesAsync<List<ResourceProviderGetResult<APIEndpointConfiguration>>>(ResourceProviderNames.FoundationaLLM_Configuration, apiEndpointObjectId)).First().Resource;
         }
 
         public async Task<string> CreateVectorizationRequest(VectorizationRequest vectorizationRequest)
@@ -270,6 +278,24 @@ namespace FoundationaLLM.Core.Examples.Services
             // Add the prompt ObjectId to the agent.
             agent.PromptObjectId = agentPrompt.ObjectId;
 
+            // Create APIEndpointConfiguration and AIModel object.
+            if (!string.IsNullOrWhiteSpace(apiEndpointName)
+                && !string.IsNullOrWhiteSpace(apiEndpointUrl)
+                && !string.IsNullOrWhiteSpace(aiModelName))
+            {
+                var endpointObjectId = await CreateAPIEndpointConfiguration(apiEndpointName, apiEndpointUrl);
+                agent.AIModelObjectId = await CreateAIModel(aiModelName, endpointObjectId);
+            }
+            else
+            {
+                // Attempt to lookup the AIModel to retrieve its ObjectId.
+                var aiModel = await managementClient.AIModels.GetAIModelAsync(agent.AIModelObjectId!);
+                if (aiModel is {Resource: not null})
+                {
+                    agent.AIModelObjectId = aiModel.Resource.ObjectId;
+                }
+            }
+
             // TODO: Create any other dependencies for the agent here.
 
             bool inlineContext = ((KnowledgeManagementAgent)agent).InlineContext;
@@ -289,15 +315,6 @@ namespace FoundationaLLM.Core.Examples.Services
             var response = await managementClient.Agents.UpsertAgentAsync(agent);
 
             agent.ObjectId = GetObjectId(response);
-
-            // Create APIEndpointConfiguration and AIModel object
-            if(!string.IsNullOrWhiteSpace(apiEndpointName) 
-                && !string.IsNullOrWhiteSpace(apiEndpointUrl)
-                && !string.IsNullOrWhiteSpace(aiModelName))
-            {
-                var endpointObjectId = await CreateAPIEndpointConfiguration(apiEndpointName, apiEndpointUrl);
-                agent.AIModelObjectId = await CreateAIModel(aiModelName, endpointObjectId);
-            }
 
             return agent;
         }

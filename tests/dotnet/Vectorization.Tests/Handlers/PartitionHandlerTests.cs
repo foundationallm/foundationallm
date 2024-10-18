@@ -1,5 +1,6 @@
 ﻿using FakeItEasy;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Common.Models.Vectorization;
@@ -27,12 +28,12 @@ namespace Vectorization.Tests.Handlers
 
     internal class PartitionMockServiceFactory : IVectorizationServiceFactory<ITextSplitterService>
     {
-        public ITextSplitterService GetService(string serviceName)
+        public async Task<ITextSplitterService> GetService(string serviceName, UnifiedUserIdentity userIdentity)
         {
             return new Partition();
         }
 
-        public (ITextSplitterService Service, ResourceBase Resource) GetServiceWithResource(string serviceName)
+        public Task<(ITextSplitterService Service, ResourceBase Resource)> GetServiceWithResource(string serviceName, UnifiedUserIdentity userIdentity)
         {
             throw new NotImplementedException();
         }
@@ -52,6 +53,8 @@ namespace Vectorization.Tests.Handlers
             serviceCollection.AddSingleton<IVectorizationServiceFactory<ITextSplitterService>, PartitionMockServiceFactory>();
 
             ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+
+            UnifiedUserIdentity userIdentity = new();
 
             PartitionHandler handler = new PartitionHandler(
                 "Queue-Message-1",
@@ -99,11 +102,11 @@ namespace Vectorization.Tests.Handlers
             CancellationTokenSource tokenSource = new CancellationTokenSource();
 
             // Nothing to partition
-            Assert.False(await handler.Invoke(request, state, tokenSource.Token));
+            Assert.False(await handler.Invoke(request, state, userIdentity, tokenSource.Token));
 
             // Content to partition
             vectorizationArtifacts.Add(new VectorizationArtifact { Type = VectorizationArtifactType.ExtractedText, Position = 1, Content = "This is an extracted document.\nWith newlines." });
-            await handler.Invoke(request, state, tokenSource.Token);
+            await handler.Invoke(request, state, userIdentity, tokenSource.Token);
             Assert.True(state.Artifacts.Count(artifact => artifact.Type == VectorizationArtifactType.TextPartition) == 2);
         }
     }

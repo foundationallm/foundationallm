@@ -40,6 +40,12 @@ namespace FoundationaLLM.Common.Models.Orchestration
         public string? StatusMessage { get; set; }
 
         /// <summary>
+        /// Gets or sets the User Principal Name (UPN) of the user who triggered the long-running operation.
+        /// </summary>
+        [JsonPropertyName("upn")]
+        public string? UPN { get; set; }
+
+        /// <summary>
         /// The time stamp of the last update to the operation.
         /// </summary>
         [JsonPropertyName("last_updated")]
@@ -50,5 +56,18 @@ namespace FoundationaLLM.Common.Models.Orchestration
         /// </summary>
         [JsonPropertyName("ttl")]
         public int TTL { get; set; } = 604800;
+
+        /// <summary>
+        /// The number of tokens in the prompt.
+        /// </summary>
+        [JsonPropertyName("prompt_tokens")]
+        public int PromptTokens { get; set; } = 0;
+
+        /// <summary>
+        /// The result of the operation.
+        /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
+        [JsonPropertyName("result")]
+        public object? Result { get; set; }
     }
 }

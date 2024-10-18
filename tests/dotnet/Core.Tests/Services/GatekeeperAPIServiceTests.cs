@@ -1,6 +1,5 @@
 ﻿using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Chat;
-using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Core.Services;
 using FoundationaLLM.TestUtils.Helpers;
 using NSubstitute;
@@ -13,11 +12,12 @@ namespace FoundationaLLM.Core.Tests.Services
         private readonly string _instanceId = "00000000-0000-0000-0000-000000000000";
         private readonly GatekeeperAPIService _testedService;
 
+        private readonly ICallContext _callContext = Substitute.For<ICallContext>();
         private readonly IHttpClientFactoryService _httpClientFactoryService = Substitute.For<IHttpClientFactoryService>();
 
         public GatekeeperAPIServiceTests()
         {
-            _testedService = new GatekeeperAPIService(_httpClientFactoryService);
+            _testedService = new GatekeeperAPIService(_callContext, _httpClientFactoryService);
         }
 
         #region GetCompletion
@@ -35,7 +35,7 @@ namespace FoundationaLLM.Core.Tests.Services
             {
                 BaseAddress = new Uri("http://nsubstitute.io")
             };
-            _httpClientFactoryService.CreateClient(Arg.Any<string>()).Returns(httpClient);
+            _httpClientFactoryService.CreateClient(Arg.Any<string>(), _callContext.CurrentUserIdentity).Returns(httpClient);
 
             // Act
             var actual = await _testedService.GetCompletion(_instanceId, completionRequest);
@@ -58,7 +58,7 @@ namespace FoundationaLLM.Core.Tests.Services
             {
                 BaseAddress = new Uri("http://nsubstitute.io")
             };
-            _httpClientFactoryService.CreateClient(Arg.Any<string>()).Returns(httpClient);
+            _httpClientFactoryService.CreateClient(Arg.Any<string>(), _callContext.CurrentUserIdentity).Returns(httpClient);
 
             // Act
             var actual = await _testedService.GetCompletion(_instanceId, completionRequest);

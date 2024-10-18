@@ -1,5 +1,4 @@
-﻿using Azure.ResourceManager;
-using FoundationaLLM.Common.Exceptions;
+﻿using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Vectorization;
@@ -9,9 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.SemanticKernel.Connectors.AzureCosmosDBNoSQL;
 using Microsoft.SemanticKernel.Memory;
-using System.Collections.ObjectModel;
 using System.Text.Json;
-using Embedding = Microsoft.Azure.Cosmos.Embedding;
 
 #pragma warning disable SKEXP0001, SKEXP0020
 

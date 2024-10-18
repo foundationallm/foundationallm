@@ -15,12 +15,13 @@ namespace FoundationaLLM.AIModel.Models
         /// The object type of the data source.
         /// </summary>
         [JsonIgnore]
-        public Type AIModelType =>
+        public override Type ResourceType =>
             Type switch
             {
                 AIModelTypes.Basic => typeof(AIModelBase),
                 AIModelTypes.Completion => typeof(CompletionAIModel),
                 AIModelTypes.Embedding => typeof(EmbeddingAIModel),
+                AIModelTypes.ImageGeneration => typeof(ImageGenerationAIModel),
                 _ => throw new ResourceProviderException($"The data source type {Type} is not supported.")
             };
     }

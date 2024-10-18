@@ -3,9 +3,173 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
-## Breaking changes that will affect future releases
+## Starting with 0.8.2
 
-### Starting with 0.8.0
+### Configuration changes
+
+The following settings are required:
+
+Name | Default value
+--- | ---
+`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions` | `c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip`
+`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions` | `c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt`
+`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage` |	`{ "value": 10, "value_exceptions": [] }`
+`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds` | `{ "value": 5, "value_exceptions": [] }`
+`FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAssistantsMaxVectorizationTimeSeconds` | `120`
+
+>[!NOTE]
+> Here is an example of an override for the `MaxUploadsPerMessage` setting:
+> ```json
+>{
+>   "value": 10,
+>   "value_exceptions": [
+>       {
+>           "user_principal_name": "ciprian@solliance.net",
+>           "value": 5,
+>           "enabled": true
+>       }
+>   ]
+>}
+> ```
+
+>[!NOTE]
+> Here is an example of an override for the `CompletionResponsePollingIntervalSeconds` setting:
+> ```json
+>{
+>   "value": 5,
+>   "value_exceptions": [
+>       {
+>           "user_principal_name": "ciprian@solliance.net",
+>           "value": 3,
+>           "enabled": true
+>       }
+>   ]
+>}
+>
+
+The following settings are optional (they should not be set by default):
+
+Name | Default value
+--- | ---
+`FoundationaLLM:Instance:IdentitySubstitutionSecurityPrincipalId` | <security_principal_id>
+`FoundationaLLM:Instance:IdentitySubstitutionUserPrincipalNamePattern` | `^fllm_load_test_user_\d{5}_\d{3}@solliance\.net$`
+
+>[!NOTE]
+> The `FoundationaLLM:Instance:IdentitySubstitutionSecurityPrincipalId` and `FoundationaLLM:Instance:IdentitySubstitutionUserPrincipalNamePattern` settings are used for load testing purposes only. If set, their values must be replaced with the appropriate values for the specific Entra ID tenant.
+
+### Resource provider changes
+
+The following resource provider files must be renamed (if they already exist):
+
+Location | Old name | New name
+--- | --- | ---
+`resource-provider/FoundationaLLM.Agent` | `_agent-references.json` | `_resource-references.json`
+`resource-provider/FoundationaLLM.AIModel` | `_ai-model-references.json` | `_resource-references.json`
+`resource-provider/FoundationaLLM.Configuration` | `_api-endpoint-references.json` | `_resource-references.json`
+`resource-provider/FoundationaLLM.DataSource` | `_data-source-references.json` | `_resource-references.json`
+`resource-provider/FoundationaLLM.Prompt` | `_prompt-references.json` | `_resource-references.json`
+
+>[!NOTE]
+> Within each of the renamed files, the `<entity>References` property must be renamed to `ResourceReferences`.
+
+**FoundationaLLM.Agent**
+
+A new property can be added to agent definitions:
+
+```json
+"tools": {
+    "dalle-image-generation": {
+        "name": "dalle-image-generation",
+        "description": "Generates an image based on a prompt.",
+        "ai_model_object_ids": {
+            "main_model": "/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/DALLE3"
+        }
+    }
+}
+```
+
+**FoundationaLLM.Authorization**
+
+A new storage container named `policy-assignments` is required. The `FoundationaLLM.Authorization` resource provider will use this container to store policy assignments.
+
+Within the container, the `<instance_id>-policy.json` must be deployed with the default policy assignments. The template for the default policy assignments is available in `Common/Constants/Data/DefaultPolicyAssignments.json`.
+
+**FoundationaLLM.Conversation**
+
+When upgrading an existing FoundationaLLM instance, the items in the `Sessions` collection in Cosmos DB must be updated according to the following rules:
+
+```
+if Object is of type Session of KioskSession:
+    If the property DisplayName exists and is set to a non-empty string:
+        Don't touch the item
+    else:
+        Set DisplayName to the value of Name
+        Set Name to the value of SessionId
+else:
+    No action needed
+```
+
+Refer to the dedicated upgrade tool for instruction on how to perform this update.
+
+**FoundationaLLM.Configuration**
+
+The OneDrive (Work or School) integration requires the following API Endpoint Configuration entry in the storage account:
+
+`FoundationaLLM.Configuration/OneDriveFileStoreConnector.json`
+```json
+{
+    "type": "api-endpoint",
+    "name": "OneDriveFileStoreConnector",
+    "object_id": "/instances/{{instance_id}}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/OneDriveFileStoreConnector",
+    "display_name": null,
+    "description": null,
+    "cost_center": null,
+    "category": "FileStoreConnector",
+    "subcategory": "OneDriveWorkSchool",
+    "authentication_type": "AzureIdentity",
+    "authentication_parameters": {
+      "scope": "Files.Read.All"
+    },
+    "url": "{{onedrive_base_url}}",
+    "status_url": "",
+    "url_exceptions": [],
+    "timeout_seconds": 2400,
+    "retry_strategy_name": "ExponentialBackoff",
+    "created_on": "0001-01-01T00:00:00+00:00",
+    "updated_on": "0001-01-01T00:00:00+00:00",
+    "created_by": null,
+    "updated_by": "SYSTEM",
+    "deleted": false
+  }
+```
+
+Update `FoundationaLLM.Configuration/_resource-references_.json` with the reference to the file above.
+```json
+{
+	"Name": "OneDriveFileStoreConnector",
+	"Filename": "/FoundationaLLM.Configuration/OneDriveFileStoreConnector.json",
+	"Type": "api-endpoint",
+	"Deleted": false
+}
+```
+
+**FoundationaLLM.Attachment**
+
+The Attachment resource provider now saves the attachment references to Cosmos DB, instead of Data Lake storage.
+A new Cosmos DB container must be created, named `Attachments`, with the following partition key: `/upn`.
+
+The following MSIs require a Cosmos DB role assigned:
+1. Gateway API
+2. Orchestration API
+3. Management API
+
+### Long-Running Operations
+
+The context for a long-running operation is now stored in Cosmos DB.
+A new Cosmos DB container must be created, named `Operations`, with a partition key `/id`.
+
+
+## Starting with 0.8.0
 
 Core API changes:
 
@@ -19,6 +183,9 @@ Core API changes:
 7. `Status` controllers `\status` action in the .NET API projects return value has renamed the `Instance` property to `InstanceName`.
 8. The `CompletionController.cs` file under `dotnet/CoreApi/controllers` has introduced the `Async-Completions` endpoint to handle asynchronous completions.
 9. With the introduction of `Async-Completions`, long running operations can now report on completion status based on `Pending`, `InProgress`, `Completed` and `Failed` states.
+10. Vectorization Embedding Profile introduces a required key in the `Settings` property named `model_name`. Every embedding request now flows through the Gateway API.
+11. Vectorization Indexing Profile introduces a required key `api_endpoint_configuration_object_id` in the `Settings` property.
+12. Retirement of `SemanticKernel` embedding type. All embedding requests now flow through the Gateway API.
 
 Gatekeeper API changes:
 1. All Gatekeeper API endpoints have been moved to the `/instances/{instanceId}` path. For example, the `/status` endpoint is now `/instances/{instanceId}/status`.
@@ -28,7 +195,7 @@ Orchestration API changes:
 1. All Gatekeeper API endpoints have been moved to the `/instances/{instanceId}` path. For example, the `/status` endpoint is now `/instances/{instanceId}/status`.
 2. The `/orchestration/*` endpoints have been moved to `/instances/{instanceId}/completions/*`.
 =======
-#### New APIs
+### New APIs
 
 **Gateway Adapter API** - requires the following configuration settings:
 
@@ -36,7 +203,7 @@ Orchestration API changes:
 - `FoundationaLLM:APIs:GatewayAdapterAPI:APIKey` (mapped to the `foundationallm-apis-gatewayadapterapi-apikey` secret)
 - `FoundationaLLM:APIs:GatewayAdapterAPI:APIAppInsightsConnectionString` (mapped to the `foundationallm-app-insights-connection-string` secret)
 - 
-**Stater API** - requires the following configuration settings:
+**State API** - requires the following configuration settings:
 
 - `FoundationaLLM:APIs:StateAPI:APIUrl`
 - `FoundationaLLM:APIs:StateAPI:APIKey` (mapped to the `foundationallm-apis-stateapi-apikey` secret)
@@ -45,7 +212,7 @@ Orchestration API changes:
 > [!NOTE]
 > These new APIs will be converted to use the new `APIEndpoint` artifacts.
 
-#### Changes in app registration names
+### Changes in app registration names
 
 API Name | Entra ID app registration name | Application ID URI | Scope name
 --- | --- | --- | ---
@@ -55,7 +222,7 @@ Authorization API | `FoundationaLLM-Authorization-API` | `api://FoundationaLLM-A
 User Portal | `FoundationaLLM-Core-Portal` | `api://FoundationaLLM-Core-Portal` | N/A
 Management Portal | `FoundationaLLM-Management-Portal` | `api://FoundationaLLM-Management-Portal` | N/A
 
-#### Changes in app configuration settings
+### Changes in app configuration settings
 
 The `FoundationaLLM:APIs` and `FoundationaLLM:ExternalAPIs` configuration namespaces have been replaced with the `FoundationaLLM:APIEndpoints` configuration namespace.
 
@@ -67,7 +234,13 @@ The `FoundationaLLM:APIs` and `FoundationaLLM:ExternalAPIs` configuration namesp
 
 The `FoundationaLLM:AzureAIStudio` configuration namespace expects an `APIEndpointConfigurationName` property instead of `BaseUrl`.
 
-### Pre-0.8.0
+A new configuration setting named `FoundationaLLM:Instance:SecurityGroupRetrievalStrategy` with a value of `IdentityManagementService` must exist in the app configuration. It will be added by default in new deployments.
+
+Two new configuration settings required by the new `FoundationaLLM.AzureOpenAI` resource provider:
+- `FoundationaLLM:ResourceProviders:AzureOpenAI:Storage:AuthenticationType`
+- `FoundationaLLM:ResourceProviders:AzureOpenAI:Storage:AccountName`
+
+## Pre-0.8.0
 
 1. Vectorization resource stores use a unique collection name, `Resources`. They also add a new top-level property named `DefaultResourceName`.
 2. The items in the `index_references` collection have a property incorrectly named `type` which was renamed to `index_entry_id`.

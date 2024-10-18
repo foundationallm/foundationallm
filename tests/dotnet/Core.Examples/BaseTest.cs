@@ -5,10 +5,11 @@ using Xunit.Abstractions;
 
 namespace FoundationaLLM.Core.Examples
 {
-    public abstract class BaseTest(ITestOutputHelper output, IServiceProvider serviceProvider)
+    public abstract class BaseTest(ITestOutputHelper output, List<IServiceProvider> serviceProviders)
     {
 		protected ITestOutputHelper Output { get; } = output;
-		protected IServiceProvider ServiceProvider { get; } = serviceProvider;
+		protected List<IServiceProvider> ServiceProviders { get; } = serviceProviders;
+        protected IServiceProvider ServiceProvider { get; } = serviceProviders.First();
 		protected ILoggerFactory LoggerFactory { get; } = new XunitLogger(output);
 
 		/// <summary>

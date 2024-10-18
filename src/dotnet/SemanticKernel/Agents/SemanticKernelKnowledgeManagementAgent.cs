@@ -1,10 +1,6 @@
-﻿using System.ComponentModel;
 using Azure.AI.OpenAI;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Orchestration;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent;
-using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.SemanticKernel.Core.Exceptions;
 using FoundationaLLM.SemanticKernel.Core.Filters;
@@ -18,14 +14,24 @@ using Microsoft.SemanticKernel.Connectors.AzureAISearch;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.Memory;
 using System.Net;
-using System.Text.Json;
-using FoundationaLLM.Common.Settings;
 using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
-using Microsoft.Azure.Cosmos;
 using Microsoft.SemanticKernel.Connectors.AzureCosmosDBNoSQL;
 using Microsoft.SemanticKernel.Connectors.Postgres;
-using System.Runtime;
 using FoundationaLLM.Common.Constants.Authentication;
+using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
+using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
+using FoundationaLLM.Common.Models.Orchestration.Request;
+using FoundationaLLM.Common.Models.Orchestration.Response;
+using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
+using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
+using FoundationaLLM.Common.Models.Orchestration.Request;
+using FoundationaLLM.Common.Models.Orchestration.Response;
+using System.Text.Json;
+using FoundationaLLM.Common.Constants.ResourceProviders;
+using System.Text.Json;
+using FoundationaLLM.Common.Constants.ResourceProviders;
 
 #pragma warning disable SKEXP0001, SKEXP0010, SKEXP0020, SKEXP0050, SKEXP0060
 
@@ -45,8 +51,8 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
     {
         private readonly ILoggerFactory _loggerFactory = loggerFactory;
 
-        private string _textEmbeddingDeploymentName = string.Empty;
-        private string _textEmbeddingEndpoint = string.Empty;
+        //private string _textEmbeddingDeploymentName = string.Empty;
+        //private string _textEmbeddingEndpoint = string.Empty;
         private string _indexerName = string.Empty;
         private IndexerType _indexerType = IndexerType.AzureAISearchIndexer;
         private string _indexName = string.Empty;
@@ -68,12 +74,14 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
 
             if (textEmbeddingProfile != null)
             {
-                _textEmbeddingDeploymentName = textEmbeddingProfile.Settings != null
-                    && textEmbeddingProfile.Settings.TryGetValue("deployment_name", out string? deploymentNameOverride)
-                    && !string.IsNullOrWhiteSpace(deploymentNameOverride)
-                    ? deploymentNameOverride
-                    : await GetConfigurationValue(textEmbeddingProfile.ConfigurationReferences!["DeploymentName"]);
-                _textEmbeddingEndpoint = await GetConfigurationValue(textEmbeddingProfile.ConfigurationReferences!["EndpointUrl"]);
+                // Get the text embedding ai model for deployment name and endpoint URL from its API endpoint configuration.
+                if (textEmbeddingProfile.Settings==null)
+                    throw new SemanticKernelException("The text embedding profile settings cannot be null. Requires: model_name", StatusCodes.Status400BadRequest);
+
+                if (!textEmbeddingProfile.Settings.ContainsKey(VectorizationSettingsNames.EmbeddingProfileModelName))
+                    throw new SemanticKernelException("The text embedding profile settings must contain the 'model_name' key.", StatusCodes.Status400BadRequest);
+               
+                
             }
 
             if ((indexingProfiles ?? []).Count > 0)
@@ -111,22 +119,25 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
             switch (indexingProfile.Indexer)
             {
                 case IndexerType.AzureAISearchIndexer:
-                    valid = indexingProfile.ConfigurationReferences != null
-                       && indexingProfile.ConfigurationReferences.TryGetValue("EndpointUrl",
-                               out indexingEndpointConfigurationItem)
-                       && !string.IsNullOrWhiteSpace(indexingEndpointConfigurationItem)
-                       && indexingProfile.ConfigurationReferences.TryGetValue("AuthenticationType",
-                                                       out authenticationType)
-                       && !string.IsNullOrWhiteSpace(authenticationType);
-                    if (valid)
+                    if (!_request.Objects.TryGetValue(
+                        indexingProfile.Settings!["api_endpoint_configuration_object_id"], out var endpointConfigurationObjectId))
+                        throw new SemanticKernelException($"The indexing profile api endpoint configuraition object ID is missing from the indexing profile settings.");
+
+                    var endpointConfiguration = endpointConfigurationObjectId is JsonElement endpointConfigurationJsonElement
+                        ? endpointConfigurationJsonElement.Deserialize<APIEndpointConfiguration>()
+                        : endpointConfigurationObjectId as APIEndpointConfiguration;
+
+                    if(endpointConfiguration == null)
+                        throw new SemanticKernelException($"The indexing profile endpoint object with id {endpointConfigurationObjectId} provided in the request's objects is invalid.");
+
+                    // URL and Authentication type is already required on the APIEndpointConfiguration, no further validation required.                                        
+                    _azureAISearchIndexingServiceSettings = new AzureAISearchIndexingServiceSettings
                     {
-                        _azureAISearchIndexingServiceSettings = new AzureAISearchIndexingServiceSettings
-                        {
-                            Endpoint = await GetConfigurationValue(indexingEndpointConfigurationItem!),
-                            AuthenticationType = Enum.Parse<AuthenticationTypes>(await GetConfigurationValue(authenticationType!))
-                        };
-                    }
-                    break;
+                        Endpoint = endpointConfiguration.Url,
+                        AuthenticationType = endpointConfiguration.AuthenticationType
+                    };
+                    
+                    break;                
                 case IndexerType.AzureCosmosDBNoSQLIndexer:
                     valid = indexingProfile.ConfigurationReferences != null
                         && indexingProfile.ConfigurationReferences.TryGetValue("ConnectionString",
@@ -160,7 +171,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
                             VectorSize = await GetConfigurationValue(vectorSizeConfigurationItem!)
                         };
                     }
-                    break;
+                    break;                
             }
 
             return valid;
@@ -185,7 +196,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
                 var result = await kernel.InvokePromptAsync(_prompt, arguments);
 
                 var completion = result.GetValue<string>()!;
-                var completionUsage = (result.Metadata!["Usage"] as CompletionsUsage)!;
+                //var completionUsage = (result.Metadata!["Usage"] as CompletionsUsage)!;
 
                 return new LLMCompletionResponse
                 {
@@ -194,8 +205,8 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
                     UserPrompt = _request.UserPrompt!,
                     FullPrompt = promptFilter.RenderedPrompt,
                     AgentName = _request.Agent.Name,
-                    PromptTokens = completionUsage!.PromptTokens,
-                    CompletionTokens = completionUsage.CompletionTokens,
+                    //PromptTokens = completionUsage!.PromptTokens,
+                    //CompletionTokens = completionUsage.CompletionTokens,
                 };
             }
             catch (Exception ex)
@@ -243,7 +254,8 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
                     {
                         var memory = new MemoryBuilder()
                             .WithMemoryStore(new AzureAISearchMemoryStore(_azureAISearchIndexingServiceSettings.Endpoint, credential))
-                            .WithAzureOpenAITextEmbeddingGeneration(_textEmbeddingDeploymentName, _textEmbeddingEndpoint, credential)
+                            //TODO: IMPLEMENT GATEWAY
+                            //       .WithAzureOpenAITextEmbeddingGeneration(_textEmbeddingDeploymentName, _textEmbeddingEndpoint, credential)
                             .Build();
 
                         kernel.ImportPluginFromObject(new KnowledgeManagementContextPlugin(memory, _indexName));
@@ -259,7 +271,8 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
                                 _azureCosmosDBNoSQLIndexingServiceSettings.VectorDatabase!,
                                 _azureCosmosDBNoSQLIndexingServiceSettings.VectorEmbeddingPolicy,
                                 _azureCosmosDBNoSQLIndexingServiceSettings.IndexingPolicy))
-                            .WithAzureOpenAITextEmbeddingGeneration(_textEmbeddingDeploymentName, _textEmbeddingEndpoint, credential)
+                       // TODO: IMPLEMENT GATEWAY
+                       //     .WithAzureOpenAITextEmbeddingGeneration(_textEmbeddingDeploymentName, _textEmbeddingEndpoint, credential)
                             .Build();
 
                         kernel.ImportPluginFromObject(new KnowledgeManagementContextPlugin(memory, _indexName));
@@ -274,7 +287,8 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
                             .WithMemoryStore(new PostgresMemoryStore(
                                 _postgresIndexingServiceSettings.ConnectionString,
                                 vectorSize))
-                            .WithAzureOpenAITextEmbeddingGeneration(_textEmbeddingDeploymentName, _textEmbeddingEndpoint, credential)
+                         //TODO: IMPLEMENT GATEWAY
+                         //   .WithAzureOpenAITextEmbeddingGeneration(_textEmbeddingDeploymentName, _textEmbeddingEndpoint, credential)
                             .Build();
 
                         kernel.ImportPluginFromObject(new KnowledgeManagementContextPlugin(memory, _indexName));

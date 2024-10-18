@@ -18,7 +18,7 @@ namespace FoundationaLLM.Core.Examples
         private string indexingProfileName = "indexing_profile_sdzwa";
 
         public Example0011_KnowledgeManagementAgentWithSemanticKernel(ITestOutputHelper output, TestFixture fixture)
-            : base(output, fixture.ServiceProvider)
+            : base(output, [fixture.ServiceProvider])
         {
             _agentConversationTestService = GetService<IAgentConversationTestService>();
             _vectorizationTestService = GetService<IVectorizationTestService>();
@@ -68,6 +68,11 @@ namespace FoundationaLLM.Core.Examples
                 }
 
                 Assert.True(invalidAgentResponsesFound == 0, $"{invalidAgentResponsesFound} invalid agent responses found.");
+            }
+            catch (Exception ex)
+            {
+                WriteLine($"Exception: {ex.Message}");
+                throw;
             }
             finally
             {
