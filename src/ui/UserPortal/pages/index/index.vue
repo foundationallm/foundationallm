@@ -164,6 +164,7 @@ export default {
 .chat-main {
 	width: 100%;
 	height: 100%;
+	overflow: hidden;
 }
 
 @media only screen and (max-width: 620px) {

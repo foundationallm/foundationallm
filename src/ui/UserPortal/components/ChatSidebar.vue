@@ -505,6 +505,7 @@ export default {
 	// added extra padding to the right to account for resize handle width
 	padding: 12px 29px 12px 24px;
 	text-transform: inherit;
+	align-items: center;
 }
 
 .chat-sidebar__avatar {
@@ -531,11 +532,12 @@ export default {
 
 .chat-sidebar__options {
 	display: flex;
-	align-items: center;
+	align-items: stretch;
 }
 
 .chat-sidebar__settings {
 	margin-left: 4px;
+	height: 100%;
 }
 
 .p-overlaypanel-content {
