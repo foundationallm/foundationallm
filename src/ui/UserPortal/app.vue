@@ -82,7 +82,7 @@ body {
 	font-size: var(--app-text-size, 1rem);
 }
 
-#__nuxt {
+html {
 	filter: contrast(var(--app-contrast, 1));
 }
 
