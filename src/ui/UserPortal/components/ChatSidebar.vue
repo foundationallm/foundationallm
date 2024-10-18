@@ -208,28 +208,31 @@
 			<TabView>
 				<TabPanel header="Accessibility">
 					<div class="setting-option">
-						<h4 id="auto-hide-toasts">Auto hide toast notifications</h4>
+						<h4 class="setting-option-label" id="auto-hide-toasts">Auto hide toast notifications</h4>
 						<InputSwitch
 							v-model="$appStore.autoHideToasts"
 							aria-labelledby="auto-hide-toasts"
 						/>
 					</div>
 					<div class="setting-option">
-						<h4 id="text-size">Text size</h4>
-						<Slider
-							v-model="$appStore.textSize"
-							:style="{ width: '100%' }"
-							:min="0.8"
-							:max="1.5"
-							:step="0.1"
-							aria-labelledby="text-size"
-							aria-valuemin="0.8"
-							aria-valuemax="1.5"
-							:aria-valuenow="$appStore.textSize"
-						/>
+						<h4 class="setting-option-label" id="text-size">Text size</h4>
+						<div class="text-size-slider-container">
+							<Slider
+								v-model="$appStore.textSize"
+								:style="{ width: '100%', marginRight: '1rem' }"
+								:min="0.8"
+								:max="1.5"
+								:step="0.1"
+								aria-labelledby="text-size"
+								aria-valuemin="80%"
+								aria-valuemax="150%"
+								:aria-valuenow="Math.round(($appStore.textSize / 1) * 100) + '%'"
+							/>
+							<p>{{ Math.round(($appStore.textSize / 1) * 100) }}%</p>
+						</div>
 					</div>
 					<div class="setting-option">
-						<h4 id="contrast">High contrast mode</h4>
+						<h4 class="setting-option-label" id="contrast">High contrast mode</h4>
 						<InputSwitch
 							v-model="$appStore.highContrastMode"
 							aria-labelledby="contrast"
@@ -577,6 +580,17 @@ li.chat-list-item {
     align-items: center;
 	justify-content: space-between;
 	gap: 1rem;
+}
+
+.text-size-slider-container {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	max-width: 300px;
+}
+
+#text-size {
+	text-wrap: nowrap;
 }
 
 @media only screen and (max-width: 950px) {
