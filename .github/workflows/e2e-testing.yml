@@ -398,7 +398,7 @@ jobs:
         with:
           name: azd-env
           include-hidden-files: true
-          path: /home/runner/work/foundationallm/foundationallm/deploy/quick-start/.azure
+          path: ./deploy/quick-start/.azure
       - name: Update App Registration OAuth Callbacks
         id: update-app-reg-oauth
         run: |
