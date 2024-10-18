@@ -15,7 +15,7 @@
                 <div class="mb-2">{{ getBrandingDescription(key) }}</div>
                 <div class="color-input-container">
                     <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" />
-                    <ColorPicker :modelValue="getBrandingValue(key)" class="color-picker" @change="updateBrandingValue(key, $event.value)" />
+                    <ColorPicker :modelValue="getColorBrandingValue(key)" class="color-picker" @change="updateBrandingValue(key, $event.value)" />
                 </div>
             </div>
             <div style="border-top: 3px solid #bbb;"></div>
@@ -162,6 +162,27 @@ export default {
         getBrandingValue(key: string) {
             const brand = this.branding?.find((item: any) => item.resource.key === key);
             return brand ? brand.resource.value : '';
+        },
+
+        getColorBrandingValue(key: string) {
+            let color = null;
+            const brand = this.branding?.find((item: any) => item.resource.key === key);
+            if (brand && brand.resource.value) {
+                let hex = brand.resource.value;
+                // Check if the hex color is 3 digits
+                if (/^#[0-9A-F]{3}$/i.test(hex)) {
+                    // Convert 3-digit hex to 6-digit hex
+                    hex = `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}`;
+
+                    color = hex;
+                } else {
+                    color = hex;
+                }
+            } else {
+                color = brand ? brand.resource.value : '';
+            }
+            console.log(color);
+            return color ? color : '';
         },
 
         getBrandingDescription(key: string) {
