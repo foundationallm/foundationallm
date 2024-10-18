@@ -29,7 +29,7 @@
 					@click="toggle"
 					@keydown.esc="hideAllPoppers"
 				/>
-				<OverlayPanel ref="menu" :dismissable="false" style="max-width: 98%">
+				<OverlayPanel ref="menu" :dismissable="isMobile" style="max-width: 98%">
 					<div class="file-upload-header">
 						<Button
 							:icon="!isMobile ? 'pi pi-times' : undefined"
