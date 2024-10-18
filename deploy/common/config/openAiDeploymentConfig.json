@@ -88,6 +88,24 @@
         }
       },
       {
+        "name": "dall-e-3",
+        "locations": [
+          "austrailiaeast",
+          "eastus",
+          "swedencentral"
+        ],
+        "raiPolicyName": "",
+        "model": {
+          "format": "OpenAI",
+          "name": "dall-e-3",
+          "version": "3.0"
+        },
+        "sku": {
+          "capacity": 1,
+          "name": "Standard"
+        }
+      },
+      {
         "name": "embeddings",
         "locations": [
           "austrailiaeast",
