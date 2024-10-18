@@ -183,6 +183,7 @@
 										borderColor: $appConfigStore.primaryButtonBg,
 										color: $appConfigStore.primaryButtonText,
 									}"
+									class="prompt-dialog__button"
 									label="Close"
 									@click="viewPrompt = false"
 								/>
@@ -844,11 +845,15 @@ $textColor: #131833;
 }
 
 .message__button {
-	color: #00356b;
+	color: var(--primary-button-bg);
 }
 
 .message__button:focus {
-	box-shadow: 0 0 0 0.1rem #00356b;
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+}
+
+.prompt-dialog__button:focus {
+	box-shadow: 0 0 0 0.1rem #000;
 }
 </style>
 
