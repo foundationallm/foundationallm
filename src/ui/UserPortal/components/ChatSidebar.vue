@@ -156,8 +156,8 @@
 				@keydown="renameSessionInputKeydown"
 			></InputText>
 			<template #footer>
-				<Button label="Cancel" text @click="closeRenameModal" />
-				<Button label="Rename" @click="handleRenameSession" />
+				<Button class="sidebar-dialog__button" label="Cancel" text @click="closeRenameModal" />
+				<Button class="sidebar-dialog__button" label="Rename" @click="handleRenameSession" />
 			</template>
 		</Dialog>
 
@@ -186,8 +186,9 @@
 				<p>Do you want to delete the chat "{{ sessionToDelete.display_name }}" ?</p>
 			</div>
 			<template #footer>
-				<Button label="Cancel" text :disabled="deleteProcessing" @click="sessionToDelete = null" />
+				<Button class="sidebar-dialog__button" label="Cancel" text :disabled="deleteProcessing" @click="sessionToDelete = null" />
 				<Button
+					class="sidebar-dialog__button"
 					label="Delete"
 					severity="danger"
 					autofocus
@@ -242,7 +243,7 @@
 				</TabPanel>
 			</TabView>
 			<template #footer>
-				<Button label="Close" text @click="settingsModalVisible = false" />
+				<Button class="sidebar-dialog__button" label="Close" text @click="settingsModalVisible = false" />
 			</template>
 		</Dialog>
 
@@ -469,6 +470,7 @@ export default {
 .chat:hover {
 	background-color: rgba(217, 217, 217, 0.05);
 }
+
 .chat--selected {
 	color: var(--secondary-text);
 	background-color: var(--secondary-color);
@@ -518,11 +520,21 @@ export default {
 	height: 61px;
 	width: 61px;
 }
+
 .chat-sidebar__sign-out {
 	width: 100%;
 }
+
 .chat-sidebar__button {
 	color: var(--primary-text) !important;
+}
+
+.p-button-text.sidebar-dialog__button:focus {
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+}
+
+.sidebar-dialog__button:focus {
+	box-shadow: 0 0 0 0.1rem #000;
 }
 
 .chat-sidebar__button:focus {
@@ -616,6 +628,38 @@ li.chat-list-item {
 </style>
 
 <style lang="scss">
+.p-inputswitch:not(.p-disabled):has(.p-inputswitch-input:focus-visible) .p-inputswitch-slider {	
+    box-shadow: 0 0 0 0.1rem var(--primary-button-bg);				
+}
+
+.p-inputswitch.p-highlight:not(.p-disabled):has(.p-inputswitch-input:focus-visible) .p-inputswitch-slider {
+    box-shadow: 0 0 0 0.1rem #000; /* Black box-shadow when p-highlight is also present */
+}
+
+.p-inputswitch:not(.p-disabled):has(.p-inputswitch-input:focus-visible) .p-inputswitch-slider {
+    box-shadow: 0 0 0 0.1rem var(--primary-button-bg);				
+}
+
+.p-slider .p-slider-handle:focus-visible {
+    box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+}
+
+.p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus-visible {
+    box-shadow: inset 0 0 0 0.1rem var(--primary-button-bg);
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon:focus-visible {
+	    box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+}
+
+.p-inputtext:focus:not(.p-dropdown-label) {
+    box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+}
+
+.p-dropdown:not(.p-disabled).p-focus {
+	border-color: var(--primary-button-bg);
+}
+
 .sidebar-dialog {
 	max-width: 90vw;
 }
