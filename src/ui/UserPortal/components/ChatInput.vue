@@ -34,6 +34,7 @@
 						<Button
 							:icon="!isMobile ? 'pi pi-times' : undefined"
 							label="Close"
+							ref="fileUploadCloseButton"
 							class="file-upload-container-button"
 							@click="toggle"
 						/>
@@ -514,6 +515,13 @@ export default {
 
 		toggle(event: any) {
 			this.$refs.menu.toggle(event);
+			this.$nextTick(() => {
+				if (this.$refs.menu.visible) {
+					this.$refs.fileUploadCloseButton.$el.focus();
+				} else {
+					this.$refs.fileUploadButton.$el.focus();
+				}
+			});
 		},
 
 		handleKeydown(event: KeyboardEvent) {
