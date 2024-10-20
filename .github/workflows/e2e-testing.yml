@@ -388,8 +388,6 @@ jobs:
 
           Push-Location ./deploy/quick-start
           azd deploy --no-prompt
-          ls
-          pwd
           Pop-Location
         shell: pwsh
 
