@@ -135,6 +135,17 @@
 								@click.stop="handleRate(message, false)"
 							/>
 						</span>
+
+						<span>
+							<Button
+								class="message__button"
+								:disabled="message.type === 'LoadingMessage'"
+								size="small"
+								text
+								:icon="isReadingMessage ? 'pi pi-stop-circle' : 'pi pi pi-volume-up'"
+								@click.stop="toggleReadingMessage"
+							/>
+						</span>
 					</span>
 
 					<!-- Avg MS Per Word: {{ averageTimePerWordMS }} -->
@@ -308,6 +319,9 @@ export default {
 			processedContent: [],
 			completed: false,
 			isRenderingMessage: false,
+
+			speechSynthesis: new SpeechSynthesisUtterance(),
+			isReadingMessage: false,
 		};
 	},
 
@@ -402,6 +416,14 @@ export default {
 				};
 			});
 		}
+
+		window.onbeforeunload = () => {
+			speechSynthesis.cancel();
+		};
+	},
+
+	beforeUnmount() {
+		this.stopReadingMessage();
 	},
 
 	methods: {
@@ -663,6 +685,38 @@ export default {
 
 				fetchBlobUrl(content, this.$toast);
 			}
+		},
+
+		toggleReadingMessage() {
+			if (this.isReadingMessage) return this.stopReadingMessage();
+			this.readMessage();
+		},
+
+		readMessage() {
+			let contentAsString = '';
+			if (this.messageContent && this.messageContent?.length > 0) {
+				this.messageContent.forEach((contentBlock) => {
+					switch (contentBlock.type) {
+						case 'text':
+							contentAsString += contentBlock.value;
+							break;
+						// default:
+						// 	contentAsString += `![${contentBlock.fileName || 'image'}](${contentBlock.value})`;
+						// 	break;
+					}
+				});
+			} else {
+				contentAsString = this.message.text;
+			}
+
+			this.speechSynthesis.text = contentAsString;
+			window.speechSynthesis.speak(this.speechSynthesis);
+			this.isReadingMessage = true;
+		},
+
+		stopReadingMessage() {
+			window.speechSynthesis.cancel();
+			this.isReadingMessage = false;
 		},
 	},
 };
