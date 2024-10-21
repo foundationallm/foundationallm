@@ -469,7 +469,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         if len(image_attachments) > 0:
             image_client = self._get_language_model(override_operation_type=OperationTypes.IMAGE_SERVICES, is_async=True)
             image_svc = ImageService(config=self.config, client=image_client, deployment_name=self.ai_model.deployment_name)
-            image_analysis_results, usage = await image_svc.aanalyze_images(image_attachments)
+            image_analysis_results, usage = await image_svc.analyze_images_async(image_attachments)
             image_analysis_token_usage.prompt_tokens += usage.prompt_tokens
             image_analysis_token_usage.completion_tokens += usage.completion_tokens
             image_analysis_token_usage.total_tokens += usage.total_tokens

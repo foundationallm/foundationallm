@@ -87,7 +87,7 @@ class OpenAIAssistantAsyncEventHandler(AsyncAssistantEventHandler):
                             if call.type == "function":
                                 if call.function.name == "generate_image":
                                     try:                                        
-                                        tool_response = await self.image_service.agenerate_image(**json.loads(call.function.arguments))                                       
+                                        tool_response = await self.image_service.generate_image_async(**json.loads(call.function.arguments))                                       
                                         tool_responses.append(
                                             {
                                                 "tool_call_id": call.id,
