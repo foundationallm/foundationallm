@@ -1,5 +1,4 @@
 from abc import abstractmethod
-from re import A
 from typing import List
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 
