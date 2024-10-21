@@ -64,5 +64,5 @@ class OrchestrationManager:
         CompletionResponse
             Object containing the completion response and token usage details.
         """        
-        completion_response = await self.agent.ainvoke(request)
+        completion_response = await self.agent.invoke_async(request)
         return completion_response
