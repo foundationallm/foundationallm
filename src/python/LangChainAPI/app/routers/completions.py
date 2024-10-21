@@ -153,7 +153,7 @@ async def create_completion_response(
                 user_identity = user_identity
             )
             # Await the completion response from the orchestration manager.
-            completion_response = await orchestration_manager.ainvoke(completion_request)
+            completion_response = await orchestration_manager.invoke_async(completion_request)
 
             # Send the completion response to the State API and mark the operation as completed.
             await asyncio.gather(

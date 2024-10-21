@@ -49,24 +49,7 @@ class OrchestrationManager:
         """Creates an agent for executing completion requests."""
         return AgentFactory().get_agent(completion_request.agent.type, config, operations_manager, instance_id, user_identity)
 
-    def invoke(self, request: CompletionRequestBase) -> CompletionResponse:
-        """
-        Executes a completion request against the LanguageModel using 
-        the LangChain agent assembled by the OrchestrationManager.
-        
-        Parameters
-        ----------
-        request : CompletionRequestBase
-            The completion request to execute.
-            
-        Returns
-        -------
-        CompletionResponse
-            Object containing the completion response and token usage details.
-        """
-        return self.agent.invoke(request)
-
-    async def ainvoke(self, request: CompletionRequestBase) -> CompletionResponse:
+    async def invoke_async(self, request: CompletionRequestBase) -> CompletionResponse:
         """
         Executes an async completion request against the LanguageModel using 
         the LangChain agent assembled by the OrchestrationManager.
