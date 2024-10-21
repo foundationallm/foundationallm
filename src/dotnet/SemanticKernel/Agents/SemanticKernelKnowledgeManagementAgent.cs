@@ -68,8 +68,6 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
 
                 if (!textEmbeddingProfile.Settings.ContainsKey(VectorizationSettingsNames.EmbeddingProfileModelName))
                     throw new SemanticKernelException("The text embedding profile settings must contain the 'model_name' key.", StatusCodes.Status400BadRequest);
-               
-                
             }
 
             if ((indexingProfiles ?? []).Count > 0)
@@ -188,7 +186,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
 
                 return new LLMCompletionResponse
                 {
-                    OperationId = _request.OperationId,
+                    OperationId = _request.OperationId!,
                     Completion = completion,
                     UserPrompt = _request.UserPrompt!,
                     FullPrompt = promptFilter.RenderedPrompt,
@@ -218,7 +216,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
             builder.AddAzureOpenAIChatCompletion(
                 _deploymentName,
                 _endpointUrl,
-                credential,
+                credential!,
                 null,
                 null,
                 httpClient
@@ -241,7 +239,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
                         !string.IsNullOrWhiteSpace(_azureAISearchIndexingServiceSettings.Endpoint))
                     {
                         var memory = new MemoryBuilder()
-                            .WithMemoryStore(new AzureAISearchMemoryStore(_azureAISearchIndexingServiceSettings.Endpoint, credential))
+                            .WithMemoryStore(new AzureAISearchMemoryStore(_azureAISearchIndexingServiceSettings.Endpoint, credential!))
                             //TODO: IMPLEMENT GATEWAY
                             //       .WithAzureOpenAITextEmbeddingGeneration(_textEmbeddingDeploymentName, _textEmbeddingEndpoint, credential)
                             .Build();
