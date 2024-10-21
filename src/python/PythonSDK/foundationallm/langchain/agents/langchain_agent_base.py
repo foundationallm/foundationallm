@@ -194,7 +194,6 @@ class LangChainAgentBase():
 
         scope = self.api_endpoint.authentication_parameters.get('scope', 'https://cognitiveservices.azure.com/.default')
         # Set up a Azure AD token provider.
-        # TODO: Determine if there is a more efficient way to get the token provider than making the request for every call.
         token_provider = get_bearer_token_provider(
             DefaultAzureCredential(exclude_environment_credential=True),
             scope
@@ -233,7 +232,6 @@ class LangChainAgentBase():
                 try:
                     scope = self.api_endpoint.authentication_parameters.get('scope', 'https://cognitiveservices.azure.com/.default')
                     # Set up a Azure AD token provider.
-                    # TODO: Determine if there is a more efficient way to get the token provider than making the request for every call.
                     token_provider = get_bearer_token_provider(
                         DefaultAzureCredential(exclude_environment_credential=True),
                         scope
