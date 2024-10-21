@@ -5,6 +5,9 @@
       "adminGroupObjectId": {
         "value": "${ADMIN_GROUP_OBJECT_ID}"
       },
+      "adminGroupName": {
+        "value": "${FOUNDATIONALLM_ADMIN_GROUP_NAME=FLLM-Admins}"
+      },
       "authAppRegistration": {
         "value": {
           "instance": "${ENTRA_AUTH_API_INSTANCE=https://login.microsoftonline.com}",
