@@ -25,7 +25,6 @@
     <Compile Include="foundationallm\config\context.py" />
     <Compile Include="foundationallm\config\environment_variables.py" />
     <Compile Include="foundationallm\config\user_identity.py" />
-    <Compile Include="foundationallm\event_handlers\openai_assistant_event_handler.py" />
     <Compile Include="foundationallm\event_handlers\__init__.py" />
     <Compile Include="foundationallm\langchain\agents\langchain_knowledge_management_agent.py" />
     <Compile Include="foundationallm\models\agents\agent_tool.py" />
