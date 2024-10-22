@@ -198,14 +198,14 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage",
-            "value": "{ 'value': 10, 'value_exceptions': []}",
+            "value": "{ \"value\": 10, \"value_exceptions\": []}",
             "label": null,
             "content_type": "application/json",
             "tags": {}
         },
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds",
-            "value": "{ 'value': 10, 'value_exceptions': []}",
+            "value": "{ \"value\": 10, \"value_exceptions\": []}",
             "label": null,
             "content_type": "application/json",
             "tags": {}
