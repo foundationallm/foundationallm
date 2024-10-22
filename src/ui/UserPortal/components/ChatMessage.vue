@@ -331,7 +331,7 @@ export default {
 						content: failedMessage,
 						value: failedMessage,
 						origValue: failedMessage,
-					}
+					},
 				];
 			}
 

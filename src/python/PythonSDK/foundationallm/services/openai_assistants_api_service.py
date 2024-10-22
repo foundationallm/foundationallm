@@ -176,7 +176,7 @@ class OpenAIAssistantsApiService:
             thread_id = request.thread_id,
             assistant_id = request.assistant_id,
             event_handler = OpenAIAssistantAsyncEventHandler(self.client, self.operations_manager, request, image_service),
-            additional_instructions="If you generate an image, return the image inline using markdown. Always provide a detailed description of the image as part of your response, and provide a link to download it."
+            additional_instructions = "If you generate an image, return the image inline using markdown, along with a detailed description of it.\n\nIMPORTANT: Never display the image more than once in your response!"
         ) as stream:
             await stream.until_done()
             run = await stream.get_final_run()
