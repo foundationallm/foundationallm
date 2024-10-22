@@ -3,11 +3,10 @@
 		<Button 
             class="sr-only skip-to-input-button"
 			role="link"
+			label="Skip to input"
             aria-label="Skip to input" 
             @click="focusInput"
-        >
-            Skip to input
-        </Button>
+        />
 		<header role="banner">
 			<NavBar />
 		</header>
