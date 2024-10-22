@@ -15,9 +15,7 @@ from fastapi import (
     Response,
     status
 )
-from foundationallm.models.constants import AgentCapabilityCategories
 from foundationallm.config import Configuration, UserIdentity
-from foundationallm.models.constants import AgentCapabilityCategories
 from foundationallm.models.operations import (
     LongRunningOperation,
     LongRunningOperationLogEntry,
@@ -25,8 +23,7 @@ from foundationallm.models.operations import (
 )
 from foundationallm.models.orchestration import (
     CompletionRequestBase,
-    CompletionResponse,
-    OpenAITextMessageContentItem
+    CompletionResponse
 )
 from foundationallm.models.agents import KnowledgeManagementCompletionRequest
 from foundationallm.operations import OperationsManager
@@ -173,15 +170,13 @@ async def create_completion_response(
         except Exception as e:
             # Send the completion response to the State API and mark the operation as failed.
             print(f'Operation {operation_id} failed with error: {e}')
-            error_content = OpenAITextMessageContentItem(
-                value = f'{e}',
-                agent_capability_category = AgentCapabilityCategories.OPENAI_ASSISTANTS if AgentCapabilityCategories.OPENAI_ASSISTANTS in completion_request.agent.capabilities else AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
-            )
             completion_response = CompletionResponse(
                 operation_id = operation_id,
                 user_prompt = completion_request.user_prompt,
-                content = [error_content]
+                content = [],
+                errors=[f'{e}']
             )
+            print(f'Completion response: {completion_response}')
             await asyncio.gather(
                 operations_manager.set_operation_result(
                     operation_id = operation_id,
@@ -191,7 +186,7 @@ async def create_completion_response(
                     operation_id = operation_id,
                     instance_id = instance_id,
                     status = OperationStatus.FAILED,
-                    status_message = f'Operation failed with error: {e}',
+                    status_message = f'{e}',
                     user_identity = x_user_identity
                 )
             )
