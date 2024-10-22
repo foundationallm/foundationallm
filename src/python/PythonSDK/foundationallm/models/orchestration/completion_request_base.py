@@ -1,7 +1,7 @@
 from typing import List, Optional
 from pydantic import BaseModel, Field
 from foundationallm.models.attachments import AttachmentProperties
-from foundationallm.models.orchestration import MessageHistoryItem
+from foundationallm.models.messages import MessageHistoryItem
 
 class CompletionRequestBase(BaseModel):
     """
