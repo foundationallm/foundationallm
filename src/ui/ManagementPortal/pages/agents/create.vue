@@ -411,7 +411,7 @@
 			<!-- Agent configuration -->
 			<div class="step-section-header span-2">Agent Configuration</div>
 
-			<div class="step-header">Should conversations included in the context?</div>
+			<div class="step-header">Should conversations be included in the context?</div>
 			<div class="step-header">How should user-agent interactions be gated?</div>
 
 			<!-- Conversation history -->
