@@ -131,6 +131,53 @@
 }
 </code></pre>
 <p>Refer to the dedicated upgrade tool for instructions on how to perform this update.</p>
+<h2 id="starting-with-083">Starting with 0.8.3</h2>
+<h3 id="resource-provider-changes-1">Resource provider changes</h3>
+<p>If a user/group is not assigned to the instance-level Contributor role, then they will not be able to create new Conversations or upload Attachments. To adjust their permissions, the following changes are required:</p>
+<p><strong>FoundationaLLM.Conversation</strong></p>
+<p>In addition to assigning users/groups to the <code>policy-assignments/&lt;instance_id&gt;-policy.json</code> file within the <code>FoundationaLLM.Authorization</code> resource provider to assign them to the Conversation policy, we must now add them to the new <strong>Conversation contributor role</strong> (<code>role_definition_id</code>: <code>d0d21b90-5317-499a-9208-3a6cb71b84f9</code>) within the <code>role-assignments/&lt;instance_id&gt;-role.json</code> file within the <code>FoundationaLLM.Authorization</code> resource provider if the user/group is not assigned to the Contributor role on the FoundationaLLM instance (<code>role_definition_id</code>: <code>a9f0020f-6e3a-49bf-8d1d-35fd53058edf</code>). Here is an example entry:</p>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;a40b15f1-75ce-4a40-a857-1093ac9adf4d&quot;,
+    &quot;object_id&quot;: &quot;/instances/0a1840df-71b6-496d-905a-145d93d827f3/providers/FoundationaLLM.Authorization/roleAssignments/a40b15f1-75ce-4a40-a857-1093ac9adf4d&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Conversation contributor role for FLLM Users&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/d0d21b90-5317-499a-9208-3a6cb71b84f9&quot;,
+    &quot;principal_id&quot;: &quot;aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/0a1840df-71b6-496d-905a-145d93d827f3&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+}
+</code></pre>
+<p><strong>FoundationaLLM.Attachment</strong></p>
+<p>In addition to assigning users/groups to the <code>policy-assignments/&lt;instance_id&gt;-policy.json</code> file within the <code>FoundationaLLM.Authorization</code> resource provider to assign them to the Attachment policy, we must now add them to the new <strong>Attachment contributor role</strong> (<code>role_definition_id</code>: <code>8e77fb6a-7a78-43e1-b628-d9e2285fe25a</code>) within the <code>role-assignments/&lt;instance_id&gt;-role.json</code> file within the <code>FoundationaLLM.Authorization</code> resource provider if the user/group is not assigned to the Contributor role on the FoundationaLLM instance (<code>role_definition_id</code>: <code>a9f0020f-6e3a-49bf-8d1d-35fd53058edf</code>). Here is an example entry:</p>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;891ca947-e648-46cf-a12a-774b52ded886&quot;,
+    &quot;object_id&quot;: &quot;/instances/0a1840df-71b6-496d-905a-145d93d827f3/providers/FoundationaLLM.Authorization/roleAssignments/891ca947-e648-46cf-a12a-774b52ded886&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Attachment contributor role for FLLM Users&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/8e77fb6a-7a78-43e1-b628-d9e2285fe25a&quot;,
+    &quot;principal_id&quot;: &quot;aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/0a1840df-71b6-496d-905a-145d93d827f3&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+}
+</code></pre>
 <h2 id="starting-with-082">Starting with 0.8.2</h2>
 <h3 id="configuration-changes">Configuration changes</h3>
 <p>The following settings are required:</p>
@@ -218,7 +265,7 @@
 <h5>Note</h5>
 <p>The <code>FoundationaLLM:Instance:IdentitySubstitutionSecurityPrincipalId</code> and <code>FoundationaLLM:Instance:IdentitySubstitutionUserPrincipalNamePattern</code> settings are used for load testing purposes only. If set, their values must be replaced with the appropriate values for the specific Entra ID tenant.</p>
 </div>
-<h3 id="resource-provider-changes-1">Resource provider changes</h3>
+<h3 id="resource-provider-changes-2">Resource provider changes</h3>
 <p>The following resource provider files must be renamed (if they already exist):</p>
 <table>
 <thead>
