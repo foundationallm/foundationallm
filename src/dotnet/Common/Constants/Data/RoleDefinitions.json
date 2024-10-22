@@ -156,5 +156,34 @@
 		"updated_on": "2024-03-07T00:00:00.0000000Z",
 		"created_by": null,
 		"updated_by": null
+	},
+	{
+		"type": "FoundationaLLM.Authorization/roleDefinitions",
+		"name": "d0d21b90-5317-499a-9208-3a6cb71b84f9",
+		"object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/d0d21b90-5317-499a-9208-3a6cb71b84f9",
+		"display_name": "Conversations Contributor",
+		"description": "Create and update conversations, including Azure OpenAI Assistants threads.",
+		"assignable_scopes": [
+			"/"
+		],
+		"permissions": [
+			{
+				"actions": [
+					"FoundationaLLM.Conversation/conversations/read",
+					"FoundationaLLM.Conversation/conversations/write",
+					"FoundationaLLM.AzureOpenAI/assistantUserContexts/read",
+					"FoundationaLLM.AzureOpenAI/assistantUserContexts/write",
+					"FoundationaLLM.Configuration/apiEndpointConfigurations/read",
+					"FoundationaLLM.AIModel/aiModels/read"
+				],
+				"not_actions": [],
+				"data_actions": [],
+				"not_data_actions": []
+			}
+		],
+		"created_on": "2024-10-22T00:00:00.0000000Z",
+		"updated_on": "2024-10-22T00:00:00.0000000Z",
+		"created_by": null,
+		"updated_by": null
 	}
 ]
