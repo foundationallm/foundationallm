@@ -94,14 +94,12 @@ class OpenAIAssistantAsyncEventHandler(AsyncAssistantEventHandler):
                                 if call.function.name == "generate_image":
                                     try:                                        
                                         tool_response = await self.image_service.agenerate_image(**json.loads(call.function.arguments))
-                                        print(f'Tool response: {tool_response}')
                                         tool_responses.append(
                                             {
                                                 "tool_call_id": call.id,
                                                 "output": json.dumps(tool_response)
                                             }
                                         )
-                                        print(f'Tool responses: {tool_responses}')
                                     except Exception as ex:                                       
                                         print(f'Error getting tool response: {ex}')
                                         break
