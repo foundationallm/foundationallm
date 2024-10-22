@@ -179,6 +179,37 @@ namespace FoundationaLLM.Common.Models.Authorization
                         UpdatedBy = null
                     }
                 },
+                {
+                    "/providers/FoundationaLLM.Authorization/roleDefinitions/d0d21b90-5317-499a-9208-3a6cb71b84f9",
+                    new RoleDefinition
+                    {
+                        Name = "d0d21b90-5317-499a-9208-3a6cb71b84f9",
+                        Type = "FoundationaLLM.Authorization/roleDefinitions",
+                        ObjectId = "/providers/FoundationaLLM.Authorization/roleDefinitions/d0d21b90-5317-499a-9208-3a6cb71b84f9",
+                        DisplayName = "Conversations Contributor",
+                        Description = "Create and update conversations, including Azure OpenAI Assistants threads.",
+                        AssignableScopes = [
+                            "/",],
+                        Permissions = [                            
+                            new RoleDefinitionPermissions
+                            {
+                                Actions = [
+                                    "FoundationaLLM.Conversation/conversations/read",
+                                    "FoundationaLLM.Conversation/conversations/write",
+                                    "FoundationaLLM.AzureOpenAI/assistantUserContexts/read",
+                                    "FoundationaLLM.AzureOpenAI/assistantUserContexts/write",
+                                    "FoundationaLLM.Configuration/apiEndpointConfigurations/read",
+                                    "FoundationaLLM.AIModel/aiModels/read",],
+                                NotActions = [],
+                                DataActions = [],
+                                NotDataActions = [],
+                            },],
+                        CreatedOn = DateTimeOffset.Parse("2024-10-22T00:00:00.0000000Z"),
+                        UpdatedOn = DateTimeOffset.Parse("2024-10-22T00:00:00.0000000Z"),
+                        CreatedBy = null,
+                        UpdatedBy = null
+                    }
+                },
             });
     }
 }
