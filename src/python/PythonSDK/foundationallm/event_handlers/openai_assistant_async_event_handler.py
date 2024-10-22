@@ -12,7 +12,9 @@ from foundationallm.services import ImageService
 from foundationallm.utils import OpenAIAssistantsHelpers
 
 class OpenAIAssistantAsyncEventHandler(AsyncAssistantEventHandler):
-
+    """
+    Event handler for streaming asynchronous OpenAI Assistant events.
+    """
     def __init__(self, client: AsyncAzureOpenAI, operations_manager: OperationsManager, request: OpenAIAssistantsAPIRequest, image_service: ImageService):
         super().__init__()
         self.operations_manager = operations_manager
@@ -57,12 +59,9 @@ class OpenAIAssistantAsyncEventHandler(AsyncAssistantEventHandler):
             self.messages[event.data.id] = event.data # Overwrite the message with the final version.
             await self.update_state_api_content()
         elif "failed" in event.event:
-            print(f'{event.event} ({event.data.id}): {event.data.last_error.message}')
+            print(f'{event.event} ({event.data.id}): {event.data.last_error}')
             if event.event == "thread.run.failed":
                 raise Exception(event.data.last_error.message)
-            elif event.event == "thread.run.step.failed":
-                pass
-                # Don't end the run, but print out the error for the logs.
 
     @override
     async def on_text_delta(self, delta: TextDelta, snapshot: Text) -> None:
@@ -79,12 +78,12 @@ class OpenAIAssistantAsyncEventHandler(AsyncAssistantEventHandler):
                     await self.update_state_api_analysis_results()
 
     async def on_requires_action(self, run_id: str):
-        max_steps = 20
+        max_steps = 15
         count = 0
         while count < max_steps:
             run = await self.client.beta.threads.runs.retrieve(run_id = run_id, thread_id = self.thread_id)
             count += 1
-            print(f'Poll {count} run status: {run.status}')
+            print(f'\nPoll {count} run status: {run.status}')
             if run.status == "requires_action":
                 tool_responses = []
                 if (run.required_action.type == "submit_tool_outputs" and run.required_action.submit_tool_outputs.tool_calls is not None):
@@ -94,13 +93,15 @@ class OpenAIAssistantAsyncEventHandler(AsyncAssistantEventHandler):
                             if call.type == "function":
                                 if call.function.name == "generate_image":
                                     try:                                        
-                                        tool_response = await self.image_service.agenerate_image(**json.loads(call.function.arguments))                                       
+                                        tool_response = await self.image_service.agenerate_image(**json.loads(call.function.arguments))
+                                        print(f'Tool response: {tool_response}')
                                         tool_responses.append(
                                             {
                                                 "tool_call_id": call.id,
                                                 "output": json.dumps(tool_response)
                                             }
-                                        )                                        
+                                        )
+                                        print(f'Tool responses: {tool_responses}')
                                     except Exception as ex:                                       
                                         print(f'Error getting tool response: {ex}')
                                         break
@@ -119,7 +120,7 @@ class OpenAIAssistantAsyncEventHandler(AsyncAssistantEventHandler):
                 break
             if run.status == "completed":
                 break
-            time.sleep(3)
+            time.sleep(2)
 
     async def update_state_api_analysis_results(self):
         self.interim_result.analysis_results = [] # Clear the analysis results list before adding new results.
