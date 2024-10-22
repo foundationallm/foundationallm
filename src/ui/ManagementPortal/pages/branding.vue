@@ -15,7 +15,7 @@
                 <div class="mb-2">{{ getBrandingDescription(key) }}</div>
                 <div class="color-input-container">
                     <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" />
-                    <ColorPicker :modelValue="getColorBrandingValue(key)" class="color-picker" @change="updateBrandingValue(key, $event.value)" />
+                    <ColorPicker :modelValue="getColorBrandingValue(key)" class="color-picker" :format="getColorBrandingFormat(key)" @change="updateBrandingValue(key, $event.value)" />
                 </div>
             </div>
             <div style="border-top: 3px solid #bbb;"></div>
@@ -175,14 +175,34 @@ export default {
                     hex = `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}`;
 
                     color = hex;
-                } else {
+                } else if (/^#[0-9A-F]{6}$/i.test(hex)) {
                     color = hex;
+                } else if (/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.test(hex)) {
+                    // Convert rgb to object with r, g, b properties
+                    const rgb = hex.match(/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i);
+                    color = {
+                        r: parseInt(rgb[1]),
+                        g: parseInt(rgb[2]),
+                        b: parseInt(rgb[3]),
+                    };
                 }
             } else {
                 color = brand ? brand.resource.value : '';
             }
-            console.log(color);
             return color ? color : '';
+        },
+
+        getColorBrandingFormat(key: string) {
+            const brand = this.branding?.find((item: any) => item.resource.key === key);
+            if (brand && brand.resource.value) {
+                let hex = brand.resource.value;
+                if (/^#[0-9A-F]{3}$/i.test(hex) || /^#[0-9A-F]{6}$/i.test(hex)) {
+                    return 'hex';
+                } else if (/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.test(hex)) {
+                    return 'rgb';
+                }
+            }
+            return 'hex';
         },
 
         getBrandingDescription(key: string) {
@@ -192,10 +212,12 @@ export default {
 
         updateBrandingValue(key: string, newValue: string) {
             // if newValue equals regular expression of hex color code \b[0-9a-fA-F]{6}\b
-            if (newValue.match(/\b[0-9a-fA-F]{6}\b/)) {
+            if (/^[0-9a-fA-F]{6}$/.test(newValue)) {
                 if (!newValue.startsWith("#")) {
                     newValue = "#" + newValue;
                 }
+            } else if (typeof newValue === 'object' && newValue !== null && 'r' in newValue && 'g' in newValue && 'b' in newValue) {
+                newValue = `rgb(${newValue.r}, ${newValue.g}, ${newValue.b})`;
             }
             const brand = this.branding?.find((item: any) => item.resource.key === key);
             if (brand) {
