@@ -6,6 +6,7 @@
 					<i
 						class="pi pi-info-circle"
 						tabindex="0"
+						role="img"
 						aria-label="info icon"
 						@keydown.esc="hideAllPoppers"
 					></i>
