@@ -39,7 +39,7 @@ The following screenshot shows the role assignment management form:
 
 Use the **Browse** button to search for users, groups, service principals, and managed identities. Selecting a user, group, service principal, or managed identity will populate the **Principal Type**, **Principal Name**, **Principal Email**, and **Principal ID** fields with the selected identity's information.
 
-![Screenshot of the role assignment management form with the identity selection dialog displayed.](media/role-assignment-management-form-identity-selection.png)
+![Screenshot of the role assignment management form with the identity selection dialog displayed.](../media/role-assignment-management-form-identity-selection.png)
 
 ### Assign access control to a specific resource
 
