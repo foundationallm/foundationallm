@@ -6,12 +6,12 @@
         </div>
         <div class="steps">
             <div class="step span-2" v-for="key in orderedKeys" :key="key">
-                <div class="step-header mb-2">{{ key }}</div>
+                <div class="step-header mb-2">{{ getFriendlyName(key) }}</div>
                 <div class="mb-2">{{ getBrandingDescription(key) }}</div>
                 <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" />
             </div>
             <div class="step span-2" v-for="key in orderedKeysColors" :key="key">
-                <div class="step-header mb-2">{{ key }}</div>
+                <div class="step-header mb-2">{{ getFriendlyName(key) }}</div>
                 <div class="mb-2">{{ getBrandingDescription(key) }}</div>
                 <div class="color-input-container">
                     <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" />
@@ -20,7 +20,7 @@
             </div>
             <div style="border-top: 3px solid #bbb;"></div>
             <div class="step span-2" v-for="key in unorderedKeys" :key="key">
-                <div class="step-header mb-2">{{ key }}</div>
+                <div class="step-header mb-2">{{ getFriendlyName(key) }}</div>
                 <div class="mb-2">{{ getBrandingDescription(key) }}</div>
                 <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" />
             </div>
@@ -208,6 +208,10 @@ export default {
         getBrandingDescription(key: string) {
             const brand = this.branding?.find((item: any) => item.resource.key === key);
             return brand ? brand.resource.description : '';
+        },
+
+        getFriendlyName(key: string) {
+            return key.split(':').pop()?.replace(/([A-Z])/g, ' $1').trim() || '';
         },
 
         updateBrandingValue(key: string, newValue: string) {
