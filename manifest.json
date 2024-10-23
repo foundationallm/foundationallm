@@ -10444,6 +10444,46 @@
       "version": ""
     },
     {
+      "type": "Resource",
+      "source_relative_path": "media/role-assignment-access-control-dialog.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/role-assignment-access-control-dialog.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/role-assignment-management-form-identity-selection.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/role-assignment-management-form-identity-selection.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/role-assignment-management-form.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/role-assignment-management-form.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "media/role-assignment-management-instance.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/role-assignment-management-instance.png"
+        }
+      },
+      "version": ""
+    },
+    {
       "type": "Conceptual",
       "source_relative_path": "operations/backups.md",
       "output": {
