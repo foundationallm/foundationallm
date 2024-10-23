@@ -463,6 +463,13 @@ export default {
 }
 .chat-sidebar__button {
 	color: var(--primary-text) !important;
+	min-width: 44px;
+	min-height: 44px;
+}
+
+.sidebar-dialog__button {
+	min-width: 44px;
+	min-height: 44px;
 }
 
 .chat-sidebar__username {

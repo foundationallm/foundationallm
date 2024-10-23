@@ -258,6 +258,11 @@ export default {
 	}
 }
 
+.navbar__header__button {
+	min-width: 44px;
+	min-height: 44px;
+}
+
 .navbar__content {
 	flex: 1;
 	display: flex;
@@ -318,6 +323,10 @@ export default {
 </style>
 
 <style>
+.dropdown--agent {
+	min-width: 44px;
+	min-height: 44px;
+}
 @media only screen and (max-width: 545px) {
 	.dropdown--agent .p-dropdown-label {
 		/* display: none; */

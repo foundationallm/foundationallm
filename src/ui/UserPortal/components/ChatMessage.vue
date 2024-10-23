@@ -788,6 +788,8 @@ $textColor: #131833;
 .message__copy {
 	color: var(--primary-text) !important;
 	margin-left: 4px;
+	min-width: 44px;
+	min-height: 44px;
 }
 
 .header__sender {
@@ -853,8 +855,15 @@ $textColor: #131833;
 	}
 }
 
+.prompt-dialog__button {
+	min-width: 44px;
+	min-height: 44px;
+}
+
 .message__button {
 	color: #00356b;
+	min-width: 44px;
+	min-height: 44px;
 }
 </style>
 
