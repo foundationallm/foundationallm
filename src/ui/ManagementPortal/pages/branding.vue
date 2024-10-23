@@ -6,18 +6,18 @@
         </div>
         <div class="steps">
             <div class="step span-2" v-for="key in orderedKeys" :key="key">
-                <div class="step-header mb-2">{{ getFriendlyName(key) }}</div>
+                <div class="step-header mb-2" :id="key.split(':').pop()">{{ getFriendlyName(key) }}</div>
                 <div class="mb-2">{{ getBrandingDescription(key) }}</div>
-                <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" />
+                <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" :aria-labelledby="key.split(':').pop()" />
             </div>
             <div style="border-top: 3px solid #bbb;" />
             <div class="step span-2 color-group-container" v-for="group in orderedKeyColorsGrouped" :key="group.label">
                 <div class="color-group">
                     <div class="step span-2" v-for="key in group.keys" :key="key.key">
-                        <div class="step-header mb-2">{{ getFriendlyName(key.key) }}</div>
+                        <div class="step-header mb-2" :id="key.key.split(':').pop()">{{ getFriendlyName(key.key) }}</div>
                         <div class="mb-2">{{ getBrandingDescription(key.key) }}</div>
                         <div class="color-input-container">
-                            <InputText :value="getBrandingValue(key.key)" @input="updateBrandingValue(key.key, $event.target.value)" />
+                            <InputText :value="getBrandingValue(key.key)" @input="updateBrandingValue(key.key, $event.target.value)" :aria-labelledby="key.key.split(':').pop()" />
                             <ColorPicker :modelValue="getColorBrandingValue(key.key)" class="color-picker" :format="getColorBrandingFormat(key.key)" @change="updateBrandingValue(key.key, $event.value)" />
                         </div>
                     </div>
@@ -28,9 +28,9 @@
             </div>
             <div style="border-top: 3px solid #bbb;" />
             <div class="step span-2" v-for="key in unorderedKeys" :key="key">
-                <div class="step-header mb-2">{{ getFriendlyName(key) }}</div>
+                <div class="step-header mb-2" :id="key.split(':').pop()">{{ getFriendlyName(key) }}</div>
                 <div class="mb-2">{{ getBrandingDescription(key) }}</div>
-                <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" />
+                <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" :aria-labelledby="key.split(':').pop()" />
             </div>
             <div class="button-container column-2 justify-self-end">
                 <Button
