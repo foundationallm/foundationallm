@@ -74,7 +74,13 @@
 <h1 id="manage-role-assignments">Manage role assignments</h1>
 
 <p>FoundationaLLM roles are assigned to users, groups, service principals, and managed identities through the Management API. As described in the <a href="role-definitions.html">role definitions</a> article, administrators can apply fine-grained access control to features and resources to ensure the deployment adheres to least-privilege best practices when properly assigned.</p>
-<h2 id="role-management-endpoints">Role management endpoints</h2>
+<h2 id="management-api">Management API</h2>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>The authenticated user must be assigned to the <code>User Access Administrator</code> role (<code>/providers/FoundationaLLM.Authorization/roleDefinitions/fb8e0fd0-f7e2-4957-89d6-19f44f7d6618</code>) on the FoundationaLLM instance to manage role assignments and call the identity endpoints through the Management API.</p>
+</div>
+<p>The Management API provides endpoints for managing role assignments and retrieving identities. The API is secured with Microsoft Entra ID and requires a valid access token to access the endpoints. The access token must be obtained by authenticating with Entra ID and acquiring the required permissions to call the Management API endpoints.</p>
+<h3 id="role-management-endpoints">Role management endpoints</h3>
 <p>The Management API provides the following role management endpoints:</p>
 <table>
 <thead>
@@ -107,7 +113,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="identity-endpoints">Identity endpoints</h2>
+<h3 id="identity-endpoints">Identity endpoints</h3>
 <p>The Management API provides the following identity endpoints:</p>
 <table>
 <thead>
@@ -135,15 +141,25 @@
 </tr>
 </tbody>
 </table>
-<h2 id="role-assignment-management">Role assignment management</h2>
-<p>The Management Portal provides a graphical user interface over the Management API for managing roles and role assignments, among other FLLM configuration settings.</p>
+<h2 id="management-portal">Management Portal</h2>
+<p>The Management Portal provides a graphical user interface over the Management API for managing role assignments, among other FLLM configuration settings.</p>
+<h3 id="role-assignment-management">Role assignment management</h3>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>The authenticated user must be assigned to the <code>User Access Administrator</code> role (<code>/providers/FoundationaLLM.Authorization/roleDefinitions/fb8e0fd0-f7e2-4957-89d6-19f44f7d6618</code>) on the FoundationaLLM instance to manage role assignments and call the identity endpoints through the Management Portal.</p>
+</div>
 <p>All role assignment changes are audited and can be viewed in the Management Portal. Auditing ensures that all changes to role assignments are tracked and can be reviewed at a later time, which is often required for compliance purposes.</p>
-<p>The following screenshot shows the role assignment management page in the Management Portal for the FoundationaLLM instance:</p>
-<p><img src="../media/role-assignment-management-instance.png" alt="Screenshot of the role assignment management page for the FoundationaLLM instance."></p>
+<p>The following screenshot shows the role assignment management page in the Management Portal:</p>
+<p><img src="../media/role-assignment-management.png" alt="Screenshot of the role assignment management page."></p>
+<p>You can expand and contract each role assignment name to view the role assignment details. Each role assignment name has an info icon next to it that displays a description within a tooltip. The role assignment details include the role assignment name, type (user or group), and scope (instance or resource). You can sort by each of these columns. The <strong>Delete</strong> column provides an option to delete the role assignment. Please note that you cannot edit a role assignment. You must delete the role assignment and create a new one to make changes.</p>
 <p>The following screenshot shows the role assignment management form:</p>
 <p><img src="../media/role-assignment-management-form.png" alt="Screenshot of the role assignment management form."></p>
 <p>Use the <strong>Browse</strong> button to search for users, groups, service principals, and managed identities. Selecting a user, group, service principal, or managed identity will populate the <strong>Principal Type</strong>, <strong>Principal Name</strong>, <strong>Principal Email</strong>, and <strong>Principal ID</strong> fields with the selected identity's information.</p>
 <p><img src="../media/role-assignment-management-form-identity-selection.png" alt="Screenshot of the role assignment management form with the identity selection dialog displayed."></p>
+<h3 id="assign-access-control-to-the-foundationallm-instance">Assign access control to the FoundationaLLM instance</h3>
+<p>There are two levels of access control in FoundationaLLM: instance level and resource level. The instance level is the highest level of access control and applies to all resources within the instance. The resource level is a more granular level of access control and applies to specific resources within the instance. When you assign a role to a user, group, service principal, or managed identity at the instance level, the role is inherited by all resources within the instance.</p>
+<p>To assign access control to the FoundationaLLM instance, select the <strong>Instance Access Control</strong> item under the <strong>Security</strong> group within the left-hand navigation menu of the Management Portal:</p>
+<p><img src="../media/role-assignment-instance-access-control.png" alt="Screenshot of the instance access control link in the Management Portal."></p>
 <h3 id="assign-access-control-to-a-specific-resource">Assign access control to a specific resource</h3>
 <p>Most resources, such as Agents, provide an option to directly assign role-based access control to the resource. The following screenshot shows an <strong>Access Control</strong> button on top of a selected agent's form with the access control dialog displayed after selecting the button:</p>
 <p><img src="../media/role-assignment-access-control-dialog.png" alt="Screenshot of the access control dialog for a specific resource."></p>
