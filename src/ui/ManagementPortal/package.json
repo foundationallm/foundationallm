@@ -43,6 +43,7 @@
 		"pinia": "^2.2.2",
 		"primeicons": "^7.0.0",
 		"primevue": "^3.53.0",
+		"quill": "^2.0.2",
 		"uuid": "^10.0.0"
 	},
 	"optionalDependencies": {

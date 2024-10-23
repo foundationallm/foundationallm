@@ -20,6 +20,8 @@ import ToggleButton from 'primevue/togglebutton';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import ColorPicker from 'primevue/colorpicker';
+import Editor from 'primevue/editor';
+import Quill from 'quill'
 
 import { defineNuxtPlugin } from '#app';
 
@@ -44,6 +46,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 	nuxtApp.vueApp.component('DataTable', DataTable);
 	nuxtApp.vueApp.component('Column', Column);
 	nuxtApp.vueApp.component('ColorPicker', ColorPicker);
+	nuxtApp.vueApp.component('Editor', Editor);
 
 	nuxtApp.vueApp.use(ToastService);
 	nuxtApp.vueApp.directive('tooltip', Tooltip);

@@ -8,7 +8,8 @@
             <div class="step span-2" v-for="key in orderedKeys" :key="key">
                 <div class="step-header mb-2" :id="key.split(':').pop()">{{ getFriendlyName(key) }}</div>
                 <div class="mb-2">{{ getBrandingDescription(key) }}</div>
-                <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" :aria-labelledby="key.split(':').pop()" />
+                <Editor v-model="footerText" editorStyle="height: 320px" v-if="key === 'FoundationaLLM:Branding:FooterText'" />
+                <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" :aria-labelledby="key.split(':').pop()" v-else />
             </div>
             <div style="border-top: 3px solid #bbb;" />
             <div class="step span-2 color-group-container" v-for="group in orderedKeyColorsGrouped" :key="group.label">
@@ -130,19 +131,6 @@ export default {
                 "FoundationaLLM:Branding:LogoUrl",
                 "FoundationaLLM:Branding:PageTitle",
             ],
-            orderedKeysColors: [
-                "FoundationaLLM:Branding:AccentColor",
-                "FoundationaLLM:Branding:AccentTextColor",
-                "FoundationaLLM:Branding:BackgroundColor",
-                "FoundationaLLM:Branding:PrimaryButtonBackgroundColor",
-                "FoundationaLLM:Branding:PrimaryButtonTextColor",
-                "FoundationaLLM:Branding:PrimaryColor",
-                "FoundationaLLM:Branding:PrimaryTextColor",
-                "FoundationaLLM:Branding:SecondaryButtonBackgroundColor",
-                "FoundationaLLM:Branding:SecondaryButtonTextColor",
-                "FoundationaLLM:Branding:SecondaryColor",
-                "FoundationaLLM:Branding:SecondaryTextColor",
-            ],
             orderedKeyColorsGrouped: [
                 {
                     label: 'Accent',
@@ -220,18 +208,20 @@ export default {
                 },
             ],
             unorderedKeys: [] as string[],
+            footerText: '',
         };
     },
 
     async created() {
         await this.getBranding();
+        this.footerText = this.getBrandingValue('FoundationaLLM:Branding:FooterText');
+        console.log(this.footerText);
     },
 
     methods: {
         async getBranding() {
             try {
                 this.branding = await api.getBranding();
-                console.log(this.branding);
                 this.brandingOriginal = JSON.parse(JSON.stringify(this.branding));
                 this.getUnorderedKeys();
             } catch (error) {
@@ -245,7 +235,8 @@ export default {
 
         getUnorderedKeys() {
             const keys = this.branding.map((brand: any) => brand.resource.key);
-            this.unorderedKeys = keys.filter((key: string) => !this.orderedKeys.includes(key) && !this.orderedKeysColors.includes(key));
+            const groupedKeys = this.orderedKeyColorsGrouped.flatMap(group => group.keys.map(k => k.key));
+            this.unorderedKeys = keys.filter((key: string) => !this.orderedKeys.includes(key) && !groupedKeys.includes(key));
         },
 
         getBrandingValue(key: string) {
@@ -342,7 +333,6 @@ export default {
         },
 
         updateBrandingValue(key: string, newValue: string) {
-            // if newValue equals regular expression of hex color code \b[0-9a-fA-F]{6}\b
             if (/^[0-9a-fA-F]{6}$/.test(newValue)) {
                 if (!newValue.startsWith("#")) {
                     newValue = "#" + newValue;
@@ -366,6 +356,7 @@ export default {
         },
 
         cancelBrandingChanges() {
+            console.log(this.footerText);
             this.branding = JSON.parse(JSON.stringify(this.brandingOriginal));
         },
 
