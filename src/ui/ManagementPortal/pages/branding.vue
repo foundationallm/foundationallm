@@ -22,8 +22,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="color-preview-background" :style="{ backgroundColor: getBrandingValue(group.keys.find(k => k.type === 'background').key) }">
-                    <div class="color-preview-foreground" :style="{ color: getBrandingValue(group.keys.find(k => k.type === 'foreground')?.key) || 'transparent' }">TEST</div>
+                <div>
+                    <div class="color-ratio" v-if="group.keys.find(k => k.type === 'background').key && group.keys.find(k => k.type === 'foreground')?.key">
+                        {{ getContrastRatio(getBrandingValue(group.keys.find(k => k.type === 'background').key), getBrandingValue(group.keys.find(k => k.type === 'foreground')?.key) || 'transparent') }} : 1
+                    </div>
+                    <div class="color-preview-background" :style="{ backgroundColor: getBrandingValue(group.keys.find(k => k.type === 'background').key) }">
+                        <div class="color-preview-foreground" :style="{ color: getBrandingValue(group.keys.find(k => k.type === 'foreground')?.key) || 'transparent' }">TEST</div>
+                    </div>
                 </div>
             </div>
             <div style="border-top: 3px solid #bbb;" />
@@ -289,6 +294,44 @@ export default {
             return 'hex';
         },
 
+        getLuminance(color: string) {
+            let r, g, b;
+            if (/^#[0-9A-F]{3}$/i.test(color)) {
+                const rgb = color.match(/^#([0-9A-F]{3})$/i);
+                r = parseInt(rgb[1][0] + rgb[1][0], 16);
+                g = parseInt(rgb[1][1] + rgb[1][1], 16);
+                b = parseInt(rgb[1][2] + rgb[1][2], 16);
+            } else if (/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.test(color)) {
+                const rgb = color.match(/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i);
+                r = parseInt(rgb[1]);
+                g = parseInt(rgb[2]);
+                b = parseInt(rgb[3]);
+            } else if (/^#[0-9A-F]{6}$/i.test(color)) {
+                r = parseInt(color.substr(1, 2), 16);
+                g = parseInt(color.substr(3, 2), 16);
+                b = parseInt(color.substr(5, 2), 16);
+            }
+
+            const srgbToLinear = (channel) => {
+                const c = channel / 255;
+                return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+            };
+
+            const linearR = srgbToLinear(r);
+            const linearG = srgbToLinear(g);
+            const linearB = srgbToLinear(b);
+
+            return 0.2126 * linearR + 0.7152 * linearG + 0.0722 * linearB;
+        },
+
+        getContrastRatio(color1: string, color2: string) {
+            const lum1 = this.getLuminance(color1);
+            const lum2 = this.getLuminance(color2);
+            const ratio = lum1 > lum2 ? (lum1 + 0.05) / (lum2 + 0.05) : (lum2 + 0.05) / (lum1 + 0.05);
+
+            return Math.round(ratio * 100) / 100;
+        },
+
         getBrandingDescription(key: string) {
             const brand = this.branding?.find((item: any) => item.resource.key === key);
             return brand ? brand.resource.description : '';
@@ -413,5 +456,10 @@ export default {
     border-radius: 0px;
     height: 100%;
     border-left: 0px;
+}
+
+.color-ratio {
+    text-align: center;
+    font-weight: bold;
 }
 </style>
