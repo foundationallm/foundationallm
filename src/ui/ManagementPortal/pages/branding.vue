@@ -10,15 +10,23 @@
                 <div class="mb-2">{{ getBrandingDescription(key) }}</div>
                 <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" />
             </div>
-            <div class="step span-2" v-for="key in orderedKeysColors" :key="key">
-                <div class="step-header mb-2">{{ getFriendlyName(key) }}</div>
-                <div class="mb-2">{{ getBrandingDescription(key) }}</div>
-                <div class="color-input-container">
-                    <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" />
-                    <ColorPicker :modelValue="getColorBrandingValue(key)" class="color-picker" :format="getColorBrandingFormat(key)" @change="updateBrandingValue(key, $event.value)" />
+            <div style="border-top: 3px solid #bbb;" />
+            <div class="step span-2 color-group-container" v-for="group in orderedKeyColorsGrouped" :key="group.label">
+                <div class="color-group">
+                    <div class="step span-2" v-for="key in group.keys" :key="key.key">
+                        <div class="step-header mb-2">{{ getFriendlyName(key.key) }}</div>
+                        <div class="mb-2">{{ getBrandingDescription(key.key) }}</div>
+                        <div class="color-input-container">
+                            <InputText :value="getBrandingValue(key.key)" @input="updateBrandingValue(key.key, $event.target.value)" />
+                            <ColorPicker :modelValue="getColorBrandingValue(key.key)" class="color-picker" :format="getColorBrandingFormat(key.key)" @change="updateBrandingValue(key.key, $event.value)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="color-preview-background" :style="{ backgroundColor: getBrandingValue(group.keys.find(k => k.type === 'background').key) }">
+                    <div class="color-preview-foreground" :style="{ color: getBrandingValue(group.keys.find(k => k.type === 'foreground')?.key) || 'transparent' }">TEST</div>
                 </div>
             </div>
-            <div style="border-top: 3px solid #bbb;"></div>
+            <div style="border-top: 3px solid #bbb;" />
             <div class="step span-2" v-for="key in unorderedKeys" :key="key">
                 <div class="step-header mb-2">{{ getFriendlyName(key) }}</div>
                 <div class="mb-2">{{ getBrandingDescription(key) }}</div>
@@ -129,6 +137,82 @@ export default {
                 "FoundationaLLM:Branding:SecondaryButtonTextColor",
                 "FoundationaLLM:Branding:SecondaryColor",
                 "FoundationaLLM:Branding:SecondaryTextColor",
+            ],
+            orderedKeyColorsGrouped: [
+                {
+                    label: 'Accent',
+                    keys: [
+                        {
+                            key: "FoundationaLLM:Branding:AccentColor",
+                            type: 'background',
+                        },
+                        {
+                            key: "FoundationaLLM:Branding:AccentTextColor",
+                            type: 'foreground',
+                        }
+                    ]
+                },
+                {
+                    label: 'Background',
+                    keys: [
+                        {
+                            key: "FoundationaLLM:Branding:BackgroundColor",
+                            type: 'background',
+                        }
+                    ]
+                },
+                {
+                    label: 'Primary Button',
+                    keys: [
+                        {
+                            key: "FoundationaLLM:Branding:PrimaryButtonBackgroundColor",
+                            type: 'background',
+                        },
+                        {
+                            key: "FoundationaLLM:Branding:PrimaryButtonTextColor",
+                            type: 'foreground',
+                        }
+                    ]
+                },
+                {
+                    label: 'Primary',
+                    keys: [
+                        {
+                            key: "FoundationaLLM:Branding:PrimaryColor",
+                            type: 'background',
+                        },
+                        {
+                            key: "FoundationaLLM:Branding:PrimaryTextColor",
+                            type: 'foreground',
+                        }
+                    ]
+                },
+                {
+                    label: 'Secondary Button',
+                    keys: [
+                        {
+                            key: "FoundationaLLM:Branding:SecondaryButtonBackgroundColor",
+                            type: 'background',
+                        },
+                        {
+                            key: "FoundationaLLM:Branding:SecondaryButtonTextColor",
+                            type: 'foreground',
+                        }
+                    ]
+                },
+                {
+                    label: 'Secondary',
+                    keys: [
+                        {
+                            key: "FoundationaLLM:Branding:SecondaryColor",
+                            type: 'background',
+                        },
+                        {
+                            key: "FoundationaLLM:Branding:SecondaryTextColor",
+                            type: 'foreground',
+                        }
+                    ]
+                },
             ],
             unorderedKeys: [] as string[],
         };
@@ -289,6 +373,31 @@ export default {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 14px;
+}
+
+.color-group-container {
+    flex-direction: row !important;
+    align-items: center;
+    gap: 24px;
+    border: 2px solid #000;
+    padding: 10px;
+}
+
+.color-group {
+    flex: 1;
+}
+
+.color-preview-background {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #000;
+}
+
+.color-preview-foreground {
+    padding: 10px;
+    font-weight: bold;
 }
 
 .color-input-container {
