@@ -13,6 +13,11 @@
 				</div>
 			</div>
 
+			<!-- Private storage -->
+			<PrivateStorage
+				:agentName="`${agentName}`"
+			/>
+
 			<!-- Edit access control -->
 			<AccessControl
 				v-if="editAgent"

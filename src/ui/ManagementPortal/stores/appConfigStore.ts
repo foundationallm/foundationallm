@@ -35,6 +35,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 		secondaryButtonBg: null,
 		secondaryButtonText: null,
 		footerText: null,
+		allowedUploadFileExtensions: null,
 
 		// Auth: These settings configure the MSAL authentication.
 		auth: {
@@ -86,6 +87,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				secondaryButtonText,
 				footerText,
 				instanceId,
+				allowedUploadFileExtensions,
 				authClientId,
 				authInstance,
 				authTenantId,
@@ -120,6 +122,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				getConfigValueSafe('FoundationaLLM:Branding:SecondaryButtonTextColor', '#fff'),
 				getConfigValueSafe('FoundationaLLM:Branding:FooterText'),
 				getConfigValueSafe('FoundationaLLM:Instance:Id', '00000000-0000-0000-0000-000000000000'),
+				getConfigValueSafe('FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions', 'pdf'),
 
 				api.getConfigValue('FoundationaLLM:ManagementPortal:Authentication:Entra:ClientId'),
 				api.getConfigValue('FoundationaLLM:ManagementPortal:Authentication:Entra:Instance'),
@@ -158,6 +161,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.secondaryButtonBg = secondaryButtonBg;
 			this.secondaryButtonText = secondaryButtonText;
 			this.footerText = footerText;
+			this.allowedUploadFileExtensions = allowedUploadFileExtensions;
 
 			this.auth.clientId = authClientId;
 			this.auth.instance = authInstance;
