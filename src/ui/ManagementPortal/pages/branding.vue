@@ -24,6 +24,9 @@
                     </Dialog>
                 </div>
                 <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" class="branding-input" :aria-labelledby="key.split(':').pop()" v-else />
+                <div class="logo-preview" :style="{ backgroundColor: getBrandingValue('FoundationaLLM:Branding:PrimaryColor') }" v-if="key === 'FoundationaLLM:Branding:LogoUrl'">
+                    <img :src="$filters.publicDirectory(getBrandingValue(key))" class="logo-image" />
+                </div>
             </div>
             <div class="divider" />
             <div class="step span-2 color-group-container" v-for="group in orderedKeyColorsGrouped" :key="group.label">
@@ -498,8 +501,19 @@ export default {
     width: 30ch;
 }
 
+.logo-preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    border: 2px solid #000;
+    margin-top: 10px;
+    max-width: 300px;
+}
+
 .logo-image {
     max-width: 148px;
+    max-height: 100%;
 }
 
 .color-wcag-results-container {
