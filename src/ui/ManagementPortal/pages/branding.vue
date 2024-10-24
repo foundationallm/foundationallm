@@ -8,35 +8,49 @@
             <div class="step span-2" v-for="key in orderedKeys" :key="key">
                 <div class="step-header mb-2" :id="key.split(':').pop()">{{ getFriendlyName(key) }}</div>
                 <div class="mb-2">{{ getBrandingDescription(key) }}</div>
-                <QuillEditor v-model:content="footerText" contentType="html" @update:content="updateBrandingValue(key, $event)" v-if="key === 'FoundationaLLM:Branding:FooterText'" />
-                <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" :aria-labelledby="key.split(':').pop()" v-else />
+                <div class="quill-container" v-if="key === 'FoundationaLLM:Branding:FooterText'">
+                    <QuillEditor v-model:content="footerText" contentType="html" @update:content="updateBrandingValue(key, $event)" />
+                </div>
+                <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" class="branding-input" :aria-labelledby="key.split(':').pop()" v-else />
             </div>
-            <div style="border-top: 3px solid #bbb;" />
+            <div class="divider" />
             <div class="step span-2 color-group-container" v-for="group in orderedKeyColorsGrouped" :key="group.label">
                 <div class="color-group">
                     <div class="step span-2" v-for="key in group.keys" :key="key.key">
                         <div class="step-header mb-2" :id="key.key.split(':').pop()">{{ getFriendlyName(key.key) }}</div>
                         <div class="mb-2">{{ getBrandingDescription(key.key) }}</div>
                         <div class="color-input-container">
-                            <InputText :value="getBrandingValue(key.key)" @input="updateBrandingValue(key.key, $event.target.value)" :aria-labelledby="key.key.split(':').pop()" />
+                            <InputText :value="getBrandingValue(key.key)" @input="updateBrandingValue(key.key, $event.target.value)" class="branding-input branding-color-input" :aria-labelledby="key.key.split(':').pop()" />
                             <ColorPicker :modelValue="getColorBrandingValue(key.key)" class="color-picker" :format="getColorBrandingFormat(key.key)" @change="updateBrandingValue(key.key, $event.value)" />
                         </div>
                     </div>
                 </div>
-                <div>
+                <div class="color-preview-container">
                     <div class="color-ratio" v-if="group.keys.find(k => k.type === 'background').key && group.keys.find(k => k.type === 'foreground')?.key">
                         {{ getContrastRatio(getBrandingValue(group.keys.find(k => k.type === 'background').key), getBrandingValue(group.keys.find(k => k.type === 'foreground')?.key) || 'transparent') }} : 1
                     </div>
                     <div class="color-preview-background" :style="{ backgroundColor: getBrandingValue(group.keys.find(k => k.type === 'background').key) }">
                         <div class="color-preview-foreground" :style="{ color: getBrandingValue(group.keys.find(k => k.type === 'foreground')?.key) || 'transparent' }">TEST</div>
                     </div>
+                    <div class="color-wcag-results-container" v-if="group.keys.find(k => k.type === 'background').key && group.keys.find(k => k.type === 'foreground')?.key">
+                        <div class="color-wcag-results">
+                            <div class="color-wcag-result">
+                                <div class="color-wcag-result-label">AA</div>
+                                <div class="color-wcag-result-value">{{ getContrastRatio(getBrandingValue(group.keys.find(k => k.type === 'background').key), getBrandingValue(group.keys.find(k => k.type === 'foreground')?.key) || 'transparent') >= 4.5 ? 'Pass' : 'Fail' }}</div>
+                            </div>
+                            <div class="color-wcag-result">
+                                <div class="color-wcag-result-label">AAA</div>
+                                <div class="color-wcag-result-value">{{ getContrastRatio(getBrandingValue(group.keys.find(k => k.type === 'background').key), getBrandingValue(group.keys.find(k => k.type === 'foreground')?.key) || 'transparent') >= 7 ? 'Pass' : 'Fail' }}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div style="border-top: 3px solid #bbb;" />
+            <div class="divider" />
             <div class="step span-2" v-for="key in unorderedKeys" :key="key">
                 <div class="step-header mb-2" :id="key.split(':').pop()">{{ getFriendlyName(key) }}</div>
                 <div class="mb-2">{{ getBrandingDescription(key) }}</div>
-                <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" :aria-labelledby="key.split(':').pop()" />
+                <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" class="branding-input" :aria-labelledby="key.split(':').pop()" />
             </div>
             <div class="button-container column-2 justify-self-end">
                 <Button
@@ -408,6 +422,15 @@ export default {
 	margin-bottom: -10px;
 }
 
+.quill-container {
+    max-width: 80ch;
+}
+
+.divider {
+    border-top: 3px solid #bbb;
+    grid-column: span 2;
+}
+
 .button-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -423,7 +446,14 @@ export default {
 }
 
 .color-group {
+    // flex: 1;
+}
+
+.color-preview-container {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .color-preview-background {
@@ -432,11 +462,46 @@ export default {
     justify-content: center;
     align-items: center;
     border: 2px solid #000;
+    min-width: 100px;
 }
 
 .color-preview-foreground {
     padding: 10px;
     font-weight: bold;
+}
+
+.branding-input {
+    max-width: 80ch;
+}
+
+.branding-color-input {
+    width: 80ch;
+}
+
+.color-wcag-results-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.color-wcag-results {
+    display: flex;
+    justify-content: space-between;
+    min-width: 100px;
+}
+
+.color-wcag-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.color-wcag-result-label {
+    font-weight: bold;
+}
+
+.color-wcag-result-value {
+    color: #000;
 }
 
 .color-input-container {
@@ -457,5 +522,15 @@ export default {
 .color-ratio {
     text-align: center;
     font-weight: bold;
+}
+</style>
+
+<style lang="scss">
+.ql-container {
+    height: auto;
+}
+.ql-editor {
+    height: auto;
+    max-height: 200px;
 }
 </style>
