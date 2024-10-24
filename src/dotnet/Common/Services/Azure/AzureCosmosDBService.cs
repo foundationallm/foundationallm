@@ -430,7 +430,7 @@ namespace FoundationaLLM.Common.Services
         }
 
         /// <inheritdoc/>
-        public async Task<T> PathcOperationsItemPropertiesAsync<T>(string itemId, string partitionKey, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default)
+        public async Task<T> PatchOperationsItemPropertiesAsync<T>(string itemId, string partitionKey, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default)
         {
             var result = await _operations.PatchItemAsync<T>(
                 id: itemId,

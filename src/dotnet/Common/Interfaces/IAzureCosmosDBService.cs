@@ -178,7 +178,7 @@ public interface IAzureCosmosDBService
     /// <param name="propertyValues">The dictionary containing property names and updated values.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns></returns>
-    Task<T> PathcOperationsItemPropertiesAsync<T>(string itemId, string partitionKey, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default);
+    Task<T> PatchOperationsItemPropertiesAsync<T>(string itemId, string partitionKey, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gets an attachment.

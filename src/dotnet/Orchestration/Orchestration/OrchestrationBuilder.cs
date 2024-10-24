@@ -86,7 +86,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                 if (originalRequest.LongRunningOperation)
                 {
-                    await cosmosDBService.PathcOperationsItemPropertiesAsync<LongRunningOperationContext>(
+                    await cosmosDBService.PatchOperationsItemPropertiesAsync<LongRunningOperationContext>(
                         originalRequest.OperationId!,
                         originalRequest.OperationId!,
                         new Dictionary<string, object?>
@@ -99,6 +99,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                 var kmOrchestration = new KnowledgeManagementOrchestration(
                     instanceId,
+                    result.Agent.ObjectId!,
                     (KnowledgeManagementAgent)result.Agent,
                     result.ExplodedObjects ?? [],
                     callContext,
@@ -146,6 +147,11 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             var kmOrchestration = new KnowledgeManagementOrchestration(
                 instanceId,
+                ResourcePath.GetObjectId(
+                    instanceId,
+                    ResourceProviderNames.FoundationaLLM_Agent,
+                    AgentResourceTypeNames.Agents,
+                    operationContext.AgentName),
                 null,
                 null,
                 callContext,

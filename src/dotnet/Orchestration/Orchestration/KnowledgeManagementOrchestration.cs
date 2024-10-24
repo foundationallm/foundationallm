@@ -14,7 +14,6 @@ using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 using FoundationaLLM.Orchestration.Core.Interfaces;
-using Microsoft.Azure.Cosmos.Serialization.HybridRow;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -27,7 +26,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
     /// <remarks>
     /// Constructor for default agent.
     /// </remarks>
-    /// <param name="instanceId">The FoundationaLLM instance ID.</param>
+    /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+    /// <param name="agentObjectId">The FoundationaLLM object identifier of the agent.</param>
     /// <param name="agent">The <see cref="KnowledgeManagementAgent"/> agent.</param>
     /// <param name="explodedObjects">A dictionary of objects retrieved from various object ids related to the agent. For more details see <see cref="LLMCompletionRequest.Objects"/> .</param>
     /// <param name="callContext">The call context of the request being handled.</param>
@@ -39,6 +39,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
     /// <param name="openAIVectorStoreId">The OpenAI Assistants vector store id.</param>
     public class KnowledgeManagementOrchestration(
         string instanceId,
+        string agentObjectId,
         KnowledgeManagementAgent? agent,
         Dictionary<string, object>? explodedObjects,
         ICallContext callContext,
@@ -50,6 +51,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         string? openAIVectorStoreId) : OrchestrationBase(orchestrationService)
     {
         private readonly string _instanceId = instanceId;
+        private readonly string _agentObjectId = agentObjectId;
         private readonly KnowledgeManagementAgent? _agent = agent;
         private readonly Dictionary<string, object>? _explodedObjects = explodedObjects;
         private readonly ICallContext _callContext = callContext;
@@ -78,7 +80,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 };
 
             var result = await _orchestrationService.StartCompletionOperation(
-                instanceId,
+                _instanceId,
                 await GetLLMCompletionRequest(completionRequest));
 
             return result;
@@ -87,7 +89,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         /// <inheritdoc/>
         public override async Task<LongRunningOperation> GetCompletionOperationStatus(string operationId)
         {
-            var operationStatus = await _orchestrationService.GetCompletionOperationStatus(instanceId, operationId);
+            var operationStatus = await _orchestrationService.GetCompletionOperationStatus(_instanceId, operationId);
 
             if (operationStatus.Status == OperationStatus.Completed)
             {
@@ -111,7 +113,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 return validationResponse;
 
             var result = await _orchestrationService.GetCompletion(
-                instanceId,
+                _instanceId,
                 await GetLLMCompletionRequest(completionRequest));
 
             return await GetCompletionResponse(completionRequest.OperationId!, result);
@@ -121,7 +123,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         {
             _gatewayClient = new GatewayServiceClient(
                 await _httpClientFactoryService
-                    .CreateClient(HttpClientNames.GatewayAPI, callContext.CurrentUserIdentity!),
+                    .CreateClient(HttpClientNames.GatewayAPI, _callContext.CurrentUserIdentity!),
                 _logger);
 
             if (_dataSourceAccessDenied.HasValue
@@ -171,6 +173,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 _fileUserContextName,
                 _callContext.CurrentUserIdentity!);
 
+            if (!fileUserContext.AgentFiles.TryGetValue(_agentObjectId, out var agentFileUserContext))
+                throw new OrchestrationException(
+                    $"The file user context {fileUserContext.Name} does not contain data for the {_agentObjectId} agent.");
+
             List<AttachmentProperties> result = [];            
             await foreach (var attachment in attachments)
             {
@@ -184,7 +190,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 {
                     useAttachmentPath = (attachment.ContentType ?? string.Empty).StartsWith("image/", StringComparison.OrdinalIgnoreCase);
 
-                    var fileMapping = fileUserContext.Files[attachment.ObjectId!];
+                    var fileMapping = agentFileUserContext.Files[attachment.ObjectId!];
                     if (fileMapping.RequiresVectorization)
                     {
                         if (string.IsNullOrWhiteSpace(_openAIVectorStoreId))
@@ -197,7 +203,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             new()
                             {
                                 { OpenAIAgentCapabilityParameterNames.CreateAssistantFile, false },
-                                { OpenAIAgentCapabilityParameterNames.Endpoint, fileUserContext.Endpoint },
+                                { OpenAIAgentCapabilityParameterNames.Endpoint, agentFileUserContext.Endpoint },
                                 { OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStore, fileMapping.RequiresVectorization },
                                 { OpenAIAgentCapabilityParameterNames.AssistantVectorStoreId, _openAIVectorStoreId! },
                                 { OpenAIAgentCapabilityParameterNames.AssistantFileId, fileMapping.OpenAIFileId! }
@@ -220,7 +226,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         : attachment.SecondaryProvider!,
                     ProviderFileName = useAttachmentPath
                         ? attachment.Path
-                        : fileUserContext.Files[attachment.ObjectId!].OpenAIFileId!,
+                        : agentFileUserContext.Files[attachment.ObjectId!].OpenAIFileId!,
                     ProviderStorageAccountName = useAttachmentPath
                         ? _attachmentResourceProvider.StorageAccountName
                         : null
@@ -276,7 +282,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                 foreach (var fileMapping in newFileMappings)
                 {
-                    fileUserContext.Files.TryAdd(fileMapping.FoundationaLLMObjectId, fileMapping);
+                    if (!fileUserContext.AgentFiles.TryGetValue(_agentObjectId, out var agentFileUserContext))
+                        throw new OrchestrationException(
+                            $"The file user context {fileUserContext.Name} does not contain data for the {_agentObjectId} agent.");
+                    agentFileUserContext.Files.TryAdd(fileMapping.FoundationaLLMObjectId, fileMapping);
                 }
 
                 await _azureOpenAIResourceProvider.UpsertResourceAsync<FileUserContext, FileUserContextUpsertResult>(

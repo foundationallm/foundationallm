@@ -8,6 +8,6 @@
         /// <summary>
         /// The identifier of the newly created OpenAI assistant file.
         /// </summary>
-        public required string NewOpenAIFileId { get; set; }
+        public string? NewOpenAIFileId { get; set; }
     }
 }

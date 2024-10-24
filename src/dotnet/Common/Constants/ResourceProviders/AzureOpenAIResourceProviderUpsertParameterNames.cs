@@ -24,5 +24,15 @@
         /// Indicates whether the assistant thread associated with the <see cref="ConversationId"/> must be created.
         /// </summary>
         public const string MustCreateAssistantThread = "must-create-assistant-thread";
+
+        /// <summary>
+        /// The FoundationaLLM identifier of the attachment.
+        /// </summary>
+        public const string AttachmentObjectId = "attachment-object-id";
+
+        /// <summary>
+        /// Indicates whether the attachment identified by <see cref="AttachmentObjectId"/> must be added to the assistant file store.
+        /// </summary>
+        public const string MustCreateAssistantFile = "must-create-assistant-file";
     }
 }

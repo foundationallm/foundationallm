@@ -217,7 +217,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
             #endregion
 
-            // The assistant user object must always contain:
+            // The assistant user context must always contain:
             // - An agent assistant user context for the agent.
             // - A conversation mapping for the conversation.
 
@@ -316,6 +316,12 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     Deleted = false
                 };
 
+                assistantUserContext.ObjectId = ResourcePath.GetObjectId(
+                    _instanceSettings.Id,
+                    _name,
+                    AzureOpenAIResourceTypeNames.AssistantUserContexts,
+                    assistantUserContext.Name);
+
                 try
                 {
                     // Ensure that only one thread can create the resource at a time.
@@ -327,12 +333,6 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     if (existingResourceReference == null)
                     {
                         #region Persist new assistant user context
-
-                        assistantUserContext.ObjectId = ResourcePath.GetObjectId(
-                           _instanceSettings.Id,
-                           _name,
-                           AzureOpenAIResourceTypeNames.AssistantUserContexts,
-                           assistantUserContext.Name);
 
                         UpdateBaseProperties(assistantUserContext, userIdentity, isNew: true);
 
@@ -382,7 +382,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
                         return new AssistantUserContextUpsertResult
                         {
-                            ObjectId = assistantUserContext.ObjectId!,
+                            ObjectId = assistantUserContext.ObjectId,
                             ResourceExists = false,
                             NewOpenAIAssistantId = newOpenAIAssistantId!,
                             NewOpenAIAssistantThreadId = newOpenAIAssistantThreadId!,
@@ -392,7 +392,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
                     return new AssistantUserContextUpsertResult
                     {
-                        ObjectId = assistantUserContext.ObjectId!,
+                        ObjectId = assistantUserContext.ObjectId,
                         ResourceExists = true
                     };
                 }
@@ -434,19 +434,91 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
             UnifiedUserIdentity userIdentity,
             ResourceProviderUpsertOptions? options = null)
         {
-            var gatewayClient = new GatewayServiceClient(
-               await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
-                   .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
-               _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
-
+            var mustCreateAssistantFile = false;
             var newOpenAIFileId = default(string);
 
-            var incompleteFiles = fileUserContext.Files.Values
-                    .Where(c => string.IsNullOrWhiteSpace(c.OpenAIFileId))
-                    .ToList();
+            if (options != null)
+            {
+                var optionResult =
+                    options.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.MustCreateAssistantFile) as bool?;
+                if (optionResult.HasValue)
+                    mustCreateAssistantFile = optionResult.Value;
+            }
 
-            if (incompleteFiles.Count > 1)
-                throw new ResourceProviderException($"The File user context {fileUserContext.Name} contains an incorrect number of incomplete files (must be at most 1). This indicates an inconsistent approach in the resource management flow.");
+            if (mustCreateAssistantFile)
+            {
+                #region Load and validate upsert options
+
+                var agentObjectId = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId) as string
+                    ?? throw new ResourceProviderException(
+                        $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId} parameter to update the {fileUserContext.Name} file user context.",
+                        StatusCodes.Status400BadRequest);
+
+                var conversationId = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.ConversationId) as string
+                    ?? throw new ResourceProviderException(
+                        $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.ConversationId} parameter to update the {fileUserContext.Name} file user context.",
+                        StatusCodes.Status400BadRequest);
+
+                var attachmentObjectId = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.AttachmentObjectId) as string
+                    ?? throw new ResourceProviderException(
+                        $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.AttachmentObjectId} parameter to update the {fileUserContext.Name} file user context.",
+                        StatusCodes.Status400BadRequest);
+
+                #endregion
+
+                // The file user context must always contain:
+                // - An agent file user context for the agent.
+                // - A file mapping for the attachment.
+
+                if (!fileUserContext.AgentFiles.TryGetValue(agentObjectId, out var agentFileUserContext))
+                    throw new ResourceProviderException(
+                        $"The file user context {fileUserContext.Name} is missing the agent file user context for the agent {agentObjectId}.",
+                        StatusCodes.Status400BadRequest);
+
+                if (!agentFileUserContext.Files.TryGetValue(attachmentObjectId, out var fileMapping))
+                    throw new ResourceProviderException(
+                        $"The existing file user context {fileUserContext.Name} is missing the file mapping for the attachment {attachmentObjectId} and agent {agentObjectId}.",
+                        StatusCodes.Status400BadRequest);
+
+                #region Create the OpenAI Assistant file
+
+                var gatewayClient = new GatewayServiceClient(
+                   await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
+                       .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
+                   _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
+
+                Dictionary<string, object> parameters = new()
+                    {
+                        { OpenAIAgentCapabilityParameterNames.CreateAssistantFile, true },
+                        { OpenAIAgentCapabilityParameterNames.Endpoint, agentFileUserContext.Endpoint },
+                        { OpenAIAgentCapabilityParameterNames.AttachmentObjectId,  attachmentObjectId }
+                    };
+
+                var agentCapabilityResult = await gatewayClient!.CreateAgentCapability(
+                        _instanceSettings.Id,
+                        AgentCapabilityCategoryNames.OpenAIAssistants,
+                        fileUserContext.AssistantUserContextName,
+                        parameters);
+
+                var referenceTime = DateTime.UtcNow;
+
+                if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantFileId, out var newOpenAIFileIdObject)
+                    && newOpenAIFileIdObject != null)
+                        newOpenAIFileId = ((JsonElement)newOpenAIFileIdObject!).Deserialize<string>();
+
+                if (mustCreateAssistantFile)
+                {
+                    if (string.IsNullOrWhiteSpace(newOpenAIFileId))
+                        throw new ResourceProviderException(
+                            $"The OpenAI assistant file was not created for the agent {agentObjectId}.",
+                            StatusCodes.Status500InternalServerError);
+
+                    fileMapping.OpenAIFileId = newOpenAIFileId;
+                    fileMapping.OpenAIFileUploadedOn = referenceTime;
+                }
+
+                #endregion
+            }
 
             var resourceReference = await _resourceReferenceStore!.GetResourceReference(fileUserContext.Name);
             
@@ -460,182 +532,64 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     Deleted = false
                 };
 
-                #region Ensure that only one thread can create the resource at a time.
+                fileUserContext.ObjectId = ResourcePath.GetObjectId(
+                    _instanceSettings.Id,
+                    _name,
+                    AzureOpenAIResourceTypeNames.FileUserContexts,
+                    fileUserContext.Name);
 
                 try
                 {
+                    // Ensure that only one thread can create the resource at a time.
                     await _localLock.WaitAsync();
 
+                    // Ensure the file user context was not created by another thread in the resource provider instance or
+                    // by another resource provider instance in the meantime (since we last checked before acquiring the lock).
                     var existingResourceReference = await _resourceReferenceStore!.GetResourceReference(fileUserContext.Name);
                     if (existingResourceReference == null)
                     {
-                        fileUserContext.ObjectId = ResourcePath.GetObjectId(
-                            _instanceSettings.Id,
-                            _name,
-                            AzureOpenAIResourceTypeNames.FileUserContexts,
-                            fileUserContext.Name);
-
-                        // Always create the assistant user context associated with the file user context.
-                        //var newAssistantUserContextName = $"{fileUserContext.UserPrincipalName.NormalizeUserPrincipalName()}-assistant-{_instanceSettings.Id.ToLower()}";
-                        //var newAssistantUserContext = new AssistantUserContext()
-                        //{
-                        //    Name = newAssistantUserContextName,
-                        //    UserPrincipalName = fileUserContext.UserPrincipalName,
-                        //    Endpoint = "not_initialized",
-                        //    ModelDeploymentName = "not_initialized",
-                        //    Prompt = "not_initialized",
-                        //};
-
-                        //var newAssistantContextResourceReference = new AzureOpenAIResourceReference
-                        //{
-                        //    Name = newAssistantUserContextName,
-                        //    Type = AzureOpenAITypes.AssistantUserContext,
-                        //    Filename = $"/{_name}/{newAssistantUserContextName}.json",
-                        //    Deleted = false
-                        //};
+                        #region Persist new file user context
 
                         UpdateBaseProperties(fileUserContext, userIdentity, isNew: true);
-                        //await CreateResources<FileUserContext, AssistantUserContext>(
-                        //    fileUserContextResourceReference, fileUserContext,
-                        //    newAssistantContextResourceReference, newAssistantUserContext);
+
                         await CreateResource<FileUserContext>(fileUserContextResourceReference, fileUserContext);
-                    }
-                }
-                finally
-                {
-                    _localLock.Release();
-                }
 
-                #endregion
+                        #endregion
 
-                if (incompleteFiles.Count == 1)
-                {
-                    var result = await gatewayClient!.CreateAgentCapability(
-                        _instanceSettings.Id,
-                        AgentCapabilityCategoryNames.OpenAIAssistants,
-                        fileUserContext.AssistantUserContextName,
-                        new()
+                        return new FileUserContextUpsertResult
                         {
-                            { OpenAIAgentCapabilityParameterNames.CreateAssistantFile, true },
-                            { OpenAIAgentCapabilityParameterNames.Endpoint, fileUserContext.Endpoint },
-                            { OpenAIAgentCapabilityParameterNames.AttachmentObjectId,  incompleteFiles[0].FoundationaLLMObjectId }
-                        });
-
-                    result.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantFileId, out var newOpenAIFileIdObject);
-                    newOpenAIFileId = ((JsonElement)newOpenAIFileIdObject!).Deserialize<string>();
-                }
-
-                #region Ensure that only one thread can update the Files collection at a time.
-
-                try
-                {
-                    await _localLock.WaitAsync();
-
-                    var existingFileUserContext = await LoadResource<FileUserContext>(fileUserContextResourceReference)
-                        ?? throw new ResourceProviderException(
-                            $"Could not load the {fileUserContext.Name} file user context.");
-
-                    if (incompleteFiles.Count == 1)
-                    {
-                        if (existingFileUserContext.Files.TryGetValue(incompleteFiles[0].FoundationaLLMObjectId,
-                                out var existingFileMapping))
-                        {
-                            existingFileMapping.OpenAIFileId = newOpenAIFileId;
-                            existingFileMapping.OpenAIFileUploadedOn = DateTimeOffset.UtcNow;
-                        }
-                        else
-                        {
-                            incompleteFiles[0].OpenAIFileId = newOpenAIFileId;
-                            incompleteFiles[0].OpenAIFileUploadedOn = DateTimeOffset.UtcNow;
-                            existingFileUserContext.Files.Add(incompleteFiles[0].FoundationaLLMObjectId, incompleteFiles[0]);
-                        }
+                            ObjectId = fileUserContext.ObjectId,
+                            ResourceExists = false,
+                            NewOpenAIFileId = newOpenAIFileId
+                        };
                     }
-
-                    // Merge the new file mappings into the existing file user context.
-                    foreach (var mapping in fileUserContext.Files.Where(f =>
-                        !existingFileUserContext.Files.ContainsKey(f.Key)))
-                    {
-                        existingFileUserContext.Files.Add(mapping.Key, mapping.Value);
-                    }
-
-                    UpdateBaseProperties(existingFileUserContext, userIdentity, isNew: false);
-                    await SaveResource<FileUserContext>(fileUserContextResourceReference, existingFileUserContext);
 
                     return new FileUserContextUpsertResult
                     {
-                        ObjectId = existingFileUserContext.ObjectId,
-                        ResourceExists = false,
-                        NewOpenAIFileId = newOpenAIFileId!
+                        ObjectId = fileUserContext.ObjectId,
+                        ResourceExists = true,
                     };
                 }
                 finally
                 {
                     _localLock.Release();
                 }
-
-                #endregion
             }
             else
             {
-                if (incompleteFiles.Count == 1)
-                {
-                    var result = await gatewayClient!.CreateAgentCapability(
-                        _instanceSettings.Id,
-                        AgentCapabilityCategoryNames.OpenAIAssistants,
-                        fileUserContext.AssistantUserContextName,
-                        new()
-                        {
-                            { OpenAIAgentCapabilityParameterNames.CreateAssistantFile, true},
-                            { OpenAIAgentCapabilityParameterNames.Endpoint, fileUserContext.Endpoint},
-                            {
-                                OpenAIAgentCapabilityParameterNames.AttachmentObjectId,
-                                incompleteFiles[0].FoundationaLLMObjectId
-                            }
-                        });
-
-                    result.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantFileId,
-                        out var newOpenAIFileIdObject);
-                    newOpenAIFileId = ((JsonElement)newOpenAIFileIdObject!).Deserialize<string>();
-                }
-
-                #region Ensure that only one thread can update the Files collection at a time.
+                #region 
 
                 try
                 {
+                    // Ensure that only one thread can update the Files collection at a time.
                     await _localLock.WaitAsync();
 
-                    var existingFileUserContext = await LoadResource<FileUserContext>(resourceReference)
-                        ?? throw new ResourceProviderException(
-                            $"Could not load the {resourceReference.Name} file user context.");
-
-                    if (incompleteFiles.Count == 1)
-                    {
-                        if (existingFileUserContext.Files.ContainsKey(incompleteFiles[0].FoundationaLLMObjectId))
-                            throw new ResourceProviderException(
-                                $"An OpenAI file was already created for the FoundationaLLM attachment {incompleteFiles[0].FoundationaLLMObjectId}.",
-                                StatusCodes.Status400BadRequest);
-
-                        incompleteFiles[0].OpenAIFileId = newOpenAIFileId;
-                        incompleteFiles[0].OpenAIFileUploadedOn = DateTimeOffset.UtcNow;
-
-                        existingFileUserContext.Files.Add(
-                            incompleteFiles[0].FoundationaLLMObjectId,
-                            incompleteFiles[0]);
-                    }
-
-                    // Merge the new file mappings into the existing file user context.
-                    foreach (var mapping in fileUserContext.Files.Where(f =>
-                        !existingFileUserContext.Files.ContainsKey(f.Key)))
-                    {
-                        existingFileUserContext.Files.Add(mapping.Key, mapping.Value);
-                    }
-
-                    UpdateBaseProperties(existingFileUserContext, userIdentity, isNew: false);
-                    await SaveResource<FileUserContext>(resourceReference, existingFileUserContext);
+                    UpdateBaseProperties(fileUserContext, userIdentity, isNew: false);
+                    await SaveResource<FileUserContext>(resourceReference, fileUserContext);
 
                     return new FileUserContextUpsertResult
                     {
-                        ObjectId = existingFileUserContext.ObjectId,
+                        ObjectId = fileUserContext.ObjectId!,
                         ResourceExists = true,
                         NewOpenAIFileId = newOpenAIFileId!
                     };

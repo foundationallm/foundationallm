@@ -23,6 +23,7 @@ namespace FoundationaLLM.Orchestration.Tests.Orchestration
         {
             _knowledgeManagementOrchestration = new KnowledgeManagementOrchestration(
                 _instanceId,
+                _agent.ObjectId,
                 _agent,
                 null,
                 _callContext,

@@ -24,8 +24,6 @@ using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Utils;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.Azure.Cosmos.Serialization.HybridRow;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -498,17 +496,32 @@ public partial class CoreService(
                 }
             };
 
+            var resourceProviderUpsertOptions = new ResourceProviderUpsertOptions
+            {
+                Parameters = new()
+                    {
+                        { AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId, agentBase.ObjectId! },
+                        { AzureOpenAIResourceProviderUpsertParameterNames.ConversationId, sessionId },
+                        { AzureOpenAIResourceProviderUpsertParameterNames.AttachmentObjectId, result.ObjectId },
+                        { AzureOpenAIResourceProviderUpsertParameterNames.MustCreateAssistantFile, false }
+                    }
+            };
+
             var extension = Path.GetExtension(attachmentFile.OriginalFileName).ToLowerInvariant().Replace(".", string.Empty);
             if (_azureOpenAIFileSearchFileExtensions.Contains(extension))
             {
                 // The file also needs to be vectorized for the OpenAI assistant.
                 fileMapping.RequiresVectorization = true;
+
+                resourceProviderUpsertOptions
+                    .Parameters[AzureOpenAIResourceProviderUpsertParameterNames.MustCreateAssistantFile] = true;
             }
 
             _ = await _azureOpenAIResourceProvider.UpsertResourceAsync<FileUserContext, ResourceProviderUpsertResult<FileUserContext>>(
                 instanceId,
                 fileUserContext,
-                userIdentity);
+                userIdentity,
+                resourceProviderUpsertOptions);
         }
 
         return result;
