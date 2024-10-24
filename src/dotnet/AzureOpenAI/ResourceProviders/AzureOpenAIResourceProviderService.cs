@@ -167,7 +167,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                         StatusCodes.Status404NotFound);
 
             var azureOpenAIClient = new AzureOpenAIClient(new Uri(fileUserContext!.Endpoint), DefaultAuthentication.AzureCredential);
-            var fileClient = azureOpenAIClient.GetFileClient();
+            var fileClient = azureOpenAIClient.GetOpenAIFileClient();
 
             var result = await fileClient.DownloadFileAsync(openAIFileId);
 

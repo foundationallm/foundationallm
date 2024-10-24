@@ -44,6 +44,7 @@ export type Agent = ResourceBase & {
 	};
 
 	capabilities: string[];
+	tools: { [key: string]: AgentTool };
 
 	sessions_enabled: boolean;
 	orchestration_settings: {
@@ -84,6 +85,14 @@ export type AgentDataSource = ResourceBase & {
 	name: string;
 	content_source: string;
 	object_id: string;
+};
+
+export type AgentTool = {
+	name: string;
+	description: string;
+	ai_model_object_ids: { [key: string]: string };
+	api_endpoint_configuration_object_ids: { [key: string]: string };
+	properties: { [key: string]: any };
 };
 
 export type ExternalOrchestrationService = ResourceBase & {
@@ -320,6 +329,7 @@ export type CreateAgentRequest = ResourceBase & {
 	};
 
 	capabilities: string[];
+	tools: { [key: string]: AgentTool };
 
 	vectorization: {
 		dedicated_pipeline: boolean;

@@ -1331,7 +1331,7 @@
 				"name": "FooterText",
 				"description": "Footer text.",
 				"secret": "",
-				"value": "FoundationaLLM (c) 2024",
+				"value": "FoundationaLLM © 2024",
 				"content_type": "",
 				"first_version": "0.8.0"
 			}
