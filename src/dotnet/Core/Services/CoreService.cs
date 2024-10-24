@@ -264,8 +264,8 @@ public partial class CoreService(
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error getting completion in conversation {SessionId} for user prompt [{UserPrompt}].",
-                completionRequest.SessionId, completionRequest.UserPrompt);
+            _logger.LogError(ex, "Error getting completion in conversation {SessionId}.",
+                completionRequest.SessionId);
             return new Message
             {
                 OperationId = completionRequest.OperationId,
@@ -298,7 +298,7 @@ public partial class CoreService(
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error getting completion for user prompt [{directCompletionRequest.UserPrompt}].");
+            _logger.LogError(ex, "Error getting direct completion Operation ID: {OperationId}.", directCompletionRequest.OperationId);
             return new Message
             {
                 OperationId = directCompletionRequest.OperationId,
@@ -373,8 +373,8 @@ public partial class CoreService(
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error starting completion operation in conversation {SessionId} for user prompt [{UserPrompt}].",
-                completionRequest.SessionId, completionRequest.UserPrompt);
+            _logger.LogError(ex, "Error starting completion operation in conversation {SessionId}.",
+                completionRequest.SessionId);
 
             // TODO: Depending on the type of failure, we should update the agent message to reflect the failure.
 
