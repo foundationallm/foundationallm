@@ -4,7 +4,6 @@ from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 
 from langchain_core.language_models import BaseLanguageModel
 from langchain_openai import AzureChatOpenAI, ChatOpenAI, OpenAI
-from openai import AzureOpenAI as aoi
 from openai import AsyncAzureOpenAI as async_aoi
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.exceptions import LangChainException
@@ -47,24 +46,7 @@ class LangChainAgentBase():
         self.operations_manager = operations_manager
 
     @abstractmethod
-    def invoke(self, request: CompletionRequestBase) -> CompletionResponse:
-        """
-        Gets the completion for the request.
-        
-        Parameters
-        ----------
-        request : CompletionRequestBase
-            The completion request to execute.
-
-        Returns
-        -------
-        CompletionResponse
-            Returns a completion response.
-        """
-        raise NotImplementedError()
-
-    @abstractmethod
-    async def ainvoke(self, request: CompletionRequestBase) -> CompletionResponse:
+    async def invoke_async(self, request: CompletionRequestBase) -> CompletionResponse:
         """
         Gets the completion for the request using an async request.
         
@@ -207,32 +189,23 @@ class LangChainAgentBase():
         self.full_prompt = prompt
         return prompt
 
-    def _get_image_gen_language_model(self, api_endpoint_object_id, objects: dict, is_async: bool = True) -> BaseLanguageModel:
+    def _get_image_gen_language_model(self, api_endpoint_object_id, objects: dict) -> BaseLanguageModel:
         api_endpoint = self._get_api_endpoint_from_object_id(api_endpoint_object_id, objects)
 
         scope = self.api_endpoint.authentication_parameters.get('scope', 'https://cognitiveservices.azure.com/.default')
         # Set up a Azure AD token provider.
-        # TODO: Determine if there is a more efficient way to get the token provider than making the request for every call.
         token_provider = get_bearer_token_provider(
             DefaultAzureCredential(exclude_environment_credential=True),
             scope
         )
-        if is_async:
-            # create async client
-            language_model = async_aoi(
-                azure_endpoint=api_endpoint.url,
-                api_version=api_endpoint.api_version,
-                azure_ad_token_provider=token_provider,
-            )
-        else:
-            language_model = aoi(
-                azure_endpoint=api_endpoint.url,
-                api_version=api_endpoint.api_version,
-                azure_ad_token_provider=token_provider,
-            )
-        return language_model
 
-    def _get_language_model(self, override_operation_type: OperationTypes = None, is_async: bool=False) -> BaseLanguageModel:
+        return async_aoi(
+            azure_endpoint=api_endpoint.url,
+            api_version=api_endpoint.api_version,
+            azure_ad_token_provider=token_provider,
+        )
+
+    def _get_language_model(self, override_operation_type: OperationTypes = None) -> BaseLanguageModel:
         """
         Create a language model using the specified endpoint settings.
 
@@ -259,7 +232,6 @@ class LangChainAgentBase():
                 try:
                     scope = self.api_endpoint.authentication_parameters.get('scope', 'https://cognitiveservices.azure.com/.default')
                     # Set up a Azure AD token provider.
-                    # TODO: Determine if there is a more efficient way to get the token provider than making the request for every call.
                     token_provider = get_bearer_token_provider(
                         DefaultAzureCredential(exclude_environment_credential=True),
                         scope
@@ -275,21 +247,12 @@ class LangChainAgentBase():
                         )
                     elif op_type == OperationTypes.ASSISTANTS_API or op_type == OperationTypes.IMAGE_SERVICES:
                         # Assistants API clients can't have deployment as that is assigned at the assistant level.
-                        if is_async:
-                            # create async client
-                            language_model = async_aoi(
-                                azure_endpoint=self.api_endpoint.url,
-                                api_version=self.api_endpoint.api_version,
-                                openai_api_type='azure_ad',
-                                azure_ad_token_provider=token_provider,
-                            )
-                        else:
-                            language_model = aoi(
-                                azure_endpoint=self.api_endpoint.url,
-                                api_version=self.api_endpoint.api_version,
-                                openai_api_type='azure_ad',
-                                azure_ad_token_provider=token_provider,
-                            )
+                        language_model = async_aoi(
+                            azure_endpoint=self.api_endpoint.url,
+                            api_version=self.api_endpoint.api_version,
+                            openai_api_type='azure_ad',
+                            azure_ad_token_provider=token_provider,
+                        )
                     else:
                         raise LangChainException(f"Unsupported operation type: {op_type}", 400)
 
@@ -313,22 +276,13 @@ class LangChainAgentBase():
                     )
                 elif op_type == OperationTypes.ASSISTANTS_API or op_type == OperationTypes.IMAGE_SERVICES:
                     # Assistants API clients can't have deployment as that is assigned at the assistant level.
-                    if is_async:
-                        # create async client
-                        language_model = async_aoi(
-                            azure_endpoint=self.api_endpoint.url,
-                            api_key=api_key,
-                            api_version=self.api_endpoint.api_version,
-                        )
-                    else:
-                        language_model = aoi(
-                            azure_endpoint=self.api_endpoint.url,
-                            api_key=api_key,
-                            api_version=self.api_endpoint.api_version,
-                        )
+                    language_model = async_aoi(
+                        azure_endpoint=self.api_endpoint.url,
+                        api_key=api_key,
+                        api_version=self.api_endpoint.api_version,
+                    )
                 else:
                     raise LangChainException(f"Unsupported operation type: {op_type}", 400)
-
         else:
             try:
                 api_key = self.config.get_value(self.api_endpoint.authentication_parameters.get('api_key_configuration_name'))

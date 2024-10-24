@@ -98,7 +98,7 @@ class ImageService:
             formatted_results += f"- Analysis: {image_analyses[key]}\n\n"
         return formatted_results
 
-    async def aanalyze_images(self, image_attachments: List[AttachmentProperties]) -> tuple:
+    async def analyze_images_async(self, image_attachments: List[AttachmentProperties]) -> tuple:
         """
         Get the image analysis results from Azure OpenAI.
 
@@ -149,58 +149,7 @@ class ImageService:
 
         return image_analyses, usage
 
-    def analyze_images(self, image_attachments: List[AttachmentProperties]) -> tuple:
-        """
-        Get the image analysis results from Azure OpenAI.
-
-        Parameters
-        ----------
-        image_attachments : List[AttachmentProperties]
-            The list containing properties of the images to analyze.
-        """
-        image_analyses = {}
-        usage = CompletionUsage(completion_tokens=0, prompt_tokens=0, total_tokens=0)
-
-        for attachment in image_attachments:
-            if attachment.content_type.startswith('image/'):
-                image_base64 = self._get_as_base64(mime_type=attachment.content_type, storage_account_name=attachment.provider_storage_account_name, file_path=attachment.provider_file_name)
-                if image_base64 is not None and image_base64 != '':
-                    response = self.client.chat.completions.create(
-                        model=self.deployment_name,
-                        messages=[
-                            {
-                                "role": "system",
-                                "content": "You are a helpful assistant who analyzes and describes images. Provide as many key insights and analysis about the data in the image as possible. Output the results in a markdown formatted table."
-                            },
-                            {
-                                "role": "user",
-                                "content": [
-                                    {
-                                        "type": "text",
-                                        "content": "Analyze the image:"
-                                    },
-                                    {
-                                        "type": "image_url",
-                                        "image_url": {
-                                            "url": f"data:{attachment.content_type};base64,{image_base64}"
-                                        }
-                                    }
-                                ]
-                            }
-                        ],
-                        max_tokens=4000,
-                        temperature=0.5
-                    )
-                    image_analyses[attachment.original_file_name] = response.choices[0].message.content
-                    usage.prompt_tokens += response.usage.prompt_tokens
-                    usage.completion_tokens += response.usage.completion_tokens
-                    usage.total_tokens += response.usage.total_tokens
-                else:
-                    image_analyses[attachment.original_file_name] = f"The image {attachment.original_file_name} was either invalid or inaccessible and could not be analyzed."
-
-        return image_analyses, usage
-
-    async def agenerate_image(
+    async def generate_image_async(
         self,
         prompt: str,
         n: int = 1,
@@ -238,29 +187,6 @@ class ImageService:
                 return f'The image generation request is invalid: {e.message}'
             else:
                 return f"An {e.code} error occurred while attempting to generate the requested image: {e.message}"
-
-    def generate_image(
-        self,
-        prompt: str,
-        n: int = 1,
-        quality: str = 'hd',
-        style: str = 'natural',
-        size: str='1024x1024') -> str:
-        """
-        Generate an image using the Azure OpenAI client.
-        """
-        try:
-            result = self.client.images.generate(
-                model = self.deployment_name,
-                prompt = prompt,
-                n = n,
-                quality = quality,
-                style = style,
-                size = size
-            )
-            return json.loads(result.model_dump_json())
-        except Exception as e:
-            return f"Error generating image: {e}"
 
     def get_function_definition(self, function_name: str):
         """

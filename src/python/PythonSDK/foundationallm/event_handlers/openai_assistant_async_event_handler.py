@@ -49,24 +49,25 @@ class OpenAIAssistantAsyncEventHandler(AsyncAssistantEventHandler):
                 for tool in details.tool_calls or []:
                     if tool.type == "code_interpreter" and tool.code_interpreter and tool.code_interpreter.input and tool.code_interpreter.input.endswith(tuple(self.stop_tokens)):
                         self.run_steps[event.data.id] = event.data # Overwrite the run step with the final version.    
-                        await self.update_state_api_analysis_results()
+                        await self.update_state_api_analysis_results_async()
                     if tool.type ==  "function":
                         self.run_steps[event.data.id] = event.data
-                        await self.update_state_api_analysis_results()
+                        await self.update_state_api_analysis_results_async()
         elif event.event == "thread.message.created":
             self.messages[event.data.id] = event.data
         elif event.event == "thread.message.completed":
             self.messages[event.data.id] = event.data # Overwrite the message with the final version.
-            await self.update_state_api_content()
+            await self.update_state_api_content_async()
         elif "failed" in event.event:
             print(f'{event.event} ({event.data.id}): {event.data.last_error}')
             if event.event == "thread.run.failed":
                 raise Exception(event.data.last_error.message)
+            
 
     @override
     async def on_text_delta(self, delta: TextDelta, snapshot: Text) -> None:
         if snapshot.value.endswith(tuple(self.stop_tokens)): # Use stop tokens to determine when to write to State API.
-            await self.update_state_api_content()
+            await self.update_state_api_content_async()
 
     @override
     async def on_run_step_delta(self, delta: RunStepDelta, snapshot: RunStep) -> None:
@@ -75,7 +76,7 @@ class OpenAIAssistantAsyncEventHandler(AsyncAssistantEventHandler):
             for tool in details.tool_calls or []:
                 if tool.type == "code_interpreter" and tool.code_interpreter and tool.code_interpreter.input and tool.code_interpreter.input.endswith(tuple(self.stop_tokens)):
                     self.run_steps[snapshot.id] = snapshot
-                    await self.update_state_api_analysis_results()
+                    await self.update_state_api_analysis_results_async()
 
     async def on_requires_action(self, run_id: str):
         max_steps = 15
@@ -93,7 +94,7 @@ class OpenAIAssistantAsyncEventHandler(AsyncAssistantEventHandler):
                             if call.type == "function":
                                 if call.function.name == "generate_image":
                                     try:                                        
-                                        tool_response = await self.image_service.agenerate_image(**json.loads(call.function.arguments))
+                                        tool_response = await self.image_service.generate_image_async(**json.loads(call.function.arguments))                                       
                                         tool_responses.append(
                                             {
                                                 "tool_call_id": call.id,
@@ -120,7 +121,7 @@ class OpenAIAssistantAsyncEventHandler(AsyncAssistantEventHandler):
                 break
             time.sleep(2)
 
-    async def update_state_api_analysis_results(self):
+    async def update_state_api_analysis_results_async(self):
         self.interim_result.analysis_results = [] # Clear the analysis results list before adding new results.
         for k, v in self.run_steps.items():
             if not v:
@@ -128,12 +129,12 @@ class OpenAIAssistantAsyncEventHandler(AsyncAssistantEventHandler):
             analysis_result = OpenAIAssistantsHelpers.parse_run_step(v)
             if analysis_result:
                 self.interim_result.analysis_results.append(analysis_result)
-        await self.operations_manager.set_operation_result(self.request.operation_id, self.request.instance_id, self.interim_result)
+        await self.operations_manager.set_operation_result_async(self.request.operation_id, self.request.instance_id, self.interim_result)
         
-    async def update_state_api_content(self):
+    async def update_state_api_content_async(self):
         self.interim_result.content = [] # Clear the content list before adding new messages.
         for k, v in self.messages.items():
             content_items = OpenAIAssistantsHelpers.parse_message(v)
             self.interim_result.content.extend(content_items)
 
-        await self.operations_manager.set_operation_result(self.request.operation_id, self.request.instance_id, self.interim_result)
+        await self.operations_manager.set_operation_result_async(self.request.operation_id, self.request.instance_id, self.interim_result)

@@ -93,7 +93,7 @@ async def submit_completion_request(
             # Create an operations manager to create the operation.
             operations_manager = OperationsManager(raw_request.app.extra['config'])
             # Submit the completion request operation to the state API.
-            operation = await operations_manager.create_operation(operation_id, instance_id, x_user_identity)
+            operation = await operations_manager.create_operation_async(operation_id, instance_id, x_user_identity)
 
             # Start a background task to perform the completion request.
             background_tasks.add_task(
@@ -130,7 +130,7 @@ async def create_completion_response(
             span.set_attribute('user_identity', x_user_identity)
 
             # Change the operation status to 'InProgress' using an async task.
-            await operations_manager.update_operation(
+            await operations_manager.update_operation_async(
                 operation_id,
                 instance_id,
                 status = OperationStatus.INPROGRESS,
@@ -151,15 +151,15 @@ async def create_completion_response(
                 user_identity = user_identity
             )
             # Await the completion response from the orchestration manager.
-            completion_response = await orchestration_manager.ainvoke(completion_request)
+            completion_response = await orchestration_manager.invoke_async(completion_request)
 
             # Send the completion response to the State API and mark the operation as completed.
             await asyncio.gather(
-                operations_manager.set_operation_result(
+                operations_manager.set_operation_result_async(
                     operation_id = operation_id,
                     instance_id = instance_id,
                     completion_response = completion_response),
-                operations_manager.update_operation(
+                operations_manager.update_operation_async(
                     operation_id = operation_id,
                     instance_id = instance_id,
                     status = OperationStatus.COMPLETED,
@@ -176,11 +176,11 @@ async def create_completion_response(
                 errors=[f'{e}']
             )
             await asyncio.gather(
-                operations_manager.set_operation_result(
+                operations_manager.set_operation_result_async(
                     operation_id = operation_id,
                     instance_id = instance_id,
                     completion_response = completion_response),
-                operations_manager.update_operation(
+                operations_manager.update_operation_async(
                     operation_id = operation_id,
                     instance_id = instance_id,
                     status = OperationStatus.FAILED,
@@ -210,7 +210,7 @@ async def get_operation_status(
             span.set_attribute('operation_id', operation_id)
             span.set_attribute('instance_id', instance_id)
 
-            operation = await operations_manager.get_operation(
+            operation = await operations_manager.get_operation_async(
                 operation_id,
                 instance_id
             )
@@ -245,7 +245,7 @@ async def get_operation_result(
             span.set_attribute('operation_id', operation_id)
             span.set_attribute('instance_id', instance_id)
 
-            completion_response = await operations_manager.get_operation_result(
+            completion_response = await operations_manager.get_operation_result_async(
                 operation_id,
                 instance_id
             )
@@ -278,7 +278,7 @@ async def get_operation_logs(
             span.set_attribute('operation_id', operation_id)
             span.set_attribute('instance_id', instance_id)
 
-            log = await operations_manager.get_operation_logs(
+            log = await operations_manager.get_operation_logs_async(
                 operation_id,
                 instance_id
             )
