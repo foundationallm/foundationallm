@@ -72,7 +72,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
-            ResourceProviderLoadOptions? options = null) =>
+            ResourceProviderGetOptions? options = null) =>
             resourcePath.MainResourceTypeName switch
             {
                 AzureOpenAIResourceTypeNames.AssistantUserContexts => await LoadResources<AssistantUserContext>(
@@ -110,7 +110,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
         #region Resource provider strongly typed operations
 
         /// <inheritdoc/>
-        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) =>
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null) =>
             resourcePath.ResourceTypeName switch
             {
                 AzureOpenAIResourceTypeNames.AssistantUserContexts => (await LoadResource<T>(
@@ -124,11 +124,16 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
             };
 
         /// <inheritdoc/>
-        protected override async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, T resource, UnifiedUserIdentity userIdentity) =>
+        protected override async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            T resource,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderUpsertOptions? options = null) =>
             resource switch
             {
-                AssistantUserContext assistantUserContext => ((await UpdateAssistantUserContext(assistantUserContext, userIdentity)) as TResult)!,
-                FileUserContext fileUserContext => ((await UpdateFileUserContext(fileUserContext, userIdentity)) as TResult)!,
+                AssistantUserContext assistantUserContext => ((await UpdateAssistantUserContext(assistantUserContext, userIdentity, options)) as TResult)!,
+                FileUserContext fileUserContext => ((await UpdateFileUserContext(fileUserContext, userIdentity, options)) as TResult)!,
                 _ => throw new ResourceProviderException(
                     $"The type {nameof(T)} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
@@ -160,13 +165,12 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
         private async Task<FileContent> LoadFileContent(string fileUserContextName, string openAIFileId)
         {
             var fileUserContext = await LoadFileUserContext(fileUserContextName);
-            var fileMapping = fileUserContext.Files.Values
-                .SingleOrDefault(f => f.Generated && f.OpenAIFileId == openAIFileId)
-                    ?? throw new ResourceProviderException(
-                        $"Could not find the file {openAIFileId} in the {fileUserContextName} file user context.",
-                        StatusCodes.Status404NotFound);
+            if(!fileUserContext.TryGetFileMapping(openAIFileId, out var agentFileUserContext, out var fileMapping))
+                throw new ResourceProviderException(
+                    $"Could not find the agent files mapping for file {openAIFileId} in the {fileUserContextName} file user context.",
+                    StatusCodes.Status404NotFound);
 
-            var azureOpenAIClient = new AzureOpenAIClient(new Uri(fileUserContext!.Endpoint), DefaultAuthentication.AzureCredential);
+            var azureOpenAIClient = new AzureOpenAIClient(new Uri(agentFileUserContext!.Endpoint), DefaultAuthentication.AzureCredential);
             var fileClient = azureOpenAIClient.GetFileClient();
 
             var result = await fileClient.DownloadFileAsync(openAIFileId);
@@ -174,7 +178,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
             return new FileContent
             {
                 Name = openAIFileId,
-                OriginalFileName = fileMapping.OriginalFileName,
+                OriginalFileName = fileMapping!.OriginalFileName,
                 ContentType = fileMapping.ContentType,
                 BinaryContent = result.Value.ToMemory()
             };
@@ -184,23 +188,121 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
         #region Resource management
 
-        private async Task<AssistantUserContextUpsertResult> UpdateAssistantUserContext(AssistantUserContext assistantUserContext, UnifiedUserIdentity userIdentity)
+        private async Task<AssistantUserContextUpsertResult> UpdateAssistantUserContext(
+            AssistantUserContext assistantUserContext,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderUpsertOptions? options = null)
         {
-            var gatewayClient = new GatewayServiceClient(
-               await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
-                   .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
-               _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
+            #region Load and validate upsert options
+
+            var agentObjectId = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId) as string
+                ?? throw new ResourceProviderException(
+                    $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId} parameter to update the {assistantUserContext.Name} assistant user context.",
+                    StatusCodes.Status400BadRequest);
+
+            var conversationId = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.ConversationId) as string
+                ?? throw new ResourceProviderException(
+                    $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.ConversationId} parameter to update the {assistantUserContext.Name} assistant user context.",
+                    StatusCodes.Status400BadRequest);
+
+            var mustCreateAssistant = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.MustCreateAssistant) as bool?
+                ?? throw new ResourceProviderException(
+                    $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.MustCreateAssistant} parameter to update the {assistantUserContext.Name} assistant user context.",
+                    StatusCodes.Status400BadRequest);
+
+            var mustCreateAssistantThread = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.MustCreateAssistantThread) as bool?
+                ?? throw new ResourceProviderException(
+                    $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.MustCreateAssistantThread} parameter to update the {assistantUserContext.Name} assistant user context.",
+                    StatusCodes.Status400BadRequest);
+
+            #endregion
+
+            // The assistant user object must always contain:
+            // - An agent assistant user context for the agent.
+            // - A conversation mapping for the conversation.
+
+            if (!assistantUserContext.AgentAssistants.TryGetValue(agentObjectId, out var agentAssistantUserContext))
+                throw new ResourceProviderException(
+                    $"The Assistant user context {assistantUserContext.Name} is missing the agent assistant user context for the agent {agentObjectId}.",
+                    StatusCodes.Status400BadRequest);
+
+            if (!agentAssistantUserContext.Conversations.TryGetValue(conversationId, out var conversationMapping))
+                throw new ResourceProviderException(
+                    $"The existing assistant user context {assistantUserContext.Name} is missing the conversation mapping for the conversation {conversationId} and agent {agentObjectId}.",
+                    StatusCodes.Status400BadRequest);
+
+            #region Create the OpenAI assistant and thread
 
             var newOpenAIAssistantId = default(string);
             var newOpenAIAssistantThreadId = default(string);
             var newOpenAIAssistantVectorStoreId = default(string);
 
-            var incompleteConversations = assistantUserContext.Conversations.Values
-                    .Where(c => string.IsNullOrWhiteSpace(c.OpenAIThreadId))
-                    .ToList();
+            var gatewayClient = new GatewayServiceClient(
+               await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
+                   .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
+               _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
 
-            if (incompleteConversations.Count != 1)
-                throw new ResourceProviderException($"The Assistant user context {assistantUserContext.Name} contains an incorrect number of incomplete conversations (must be 1). This indicates an inconsistent approach in the resource management flow.");
+            Dictionary<string, object> parameters = new()
+                {
+                    { OpenAIAgentCapabilityParameterNames.CreateAssistant, mustCreateAssistant },
+                    { OpenAIAgentCapabilityParameterNames.CreateAssistantThread, mustCreateAssistantThread },
+                    { OpenAIAgentCapabilityParameterNames.Endpoint, agentAssistantUserContext.Endpoint },
+                    { OpenAIAgentCapabilityParameterNames.ModelDeploymentName, agentAssistantUserContext.ModelDeploymentName },
+                    { OpenAIAgentCapabilityParameterNames.AssistantPrompt, agentAssistantUserContext.Prompt }
+                };
+
+            if (!string.IsNullOrWhiteSpace(agentAssistantUserContext.OpenAIAssistantId))
+                parameters.Add(OpenAIAgentCapabilityParameterNames.AssistantId, agentAssistantUserContext.OpenAIAssistantId);
+
+            var agentCapabilityResult = await gatewayClient!.CreateAgentCapability(
+                _instanceSettings.Id,
+                AgentCapabilityCategoryNames.OpenAIAssistants,
+                assistantUserContext.Name,
+                parameters);
+
+            var referenceTime = DateTime.UtcNow;
+
+            if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantId, out var newOpenAIAssistantIdObject)
+                && newOpenAIAssistantIdObject != null)
+                newOpenAIAssistantId = ((JsonElement)newOpenAIAssistantIdObject!).Deserialize<string>();
+
+            if (mustCreateAssistant)
+            {
+                if(string.IsNullOrWhiteSpace(newOpenAIAssistantId))
+                    throw new ResourceProviderException(
+                        $"The OpenAI assistant was not created for the agent {agentObjectId}.",
+                        StatusCodes.Status500InternalServerError);
+
+                agentAssistantUserContext.OpenAIAssistantId = newOpenAIAssistantId;
+                agentAssistantUserContext.OpenAIAssistantCreatedOn = referenceTime;
+            }
+
+            if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantThreadId, out var newOpenAIAssistantThreadIdObject)
+                && newOpenAIAssistantThreadIdObject != null)
+                newOpenAIAssistantThreadId = ((JsonElement)newOpenAIAssistantThreadIdObject!).Deserialize<string>();
+
+            if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantVectorStoreId, out var newOpenAIAssistantVectorStoreIdObject)
+                && newOpenAIAssistantVectorStoreIdObject != null)
+                newOpenAIAssistantVectorStoreId = ((JsonElement)newOpenAIAssistantVectorStoreIdObject!).Deserialize<string>();
+
+            if (mustCreateAssistantThread)
+            {
+                if (string.IsNullOrWhiteSpace(newOpenAIAssistantVectorStoreId))
+                    throw new ResourceProviderException(
+                        $"The OpenAI assistant vector store was not created for the agent {agentObjectId} and conversation {conversationId}.",
+                        StatusCodes.Status500InternalServerError);
+
+                if (string.IsNullOrWhiteSpace(newOpenAIAssistantThreadId))
+                    throw new ResourceProviderException(
+                        $"The OpenAI assistant thread was not created for the agent {agentObjectId} and conversation {conversationId}.",
+                        StatusCodes.Status500InternalServerError);
+
+                conversationMapping.OpenAIThreadId = newOpenAIAssistantThreadId;
+                conversationMapping.OpenAIThreadCreatedOn = referenceTime;
+                conversationMapping.OpenAIVectorStoreId = newOpenAIAssistantVectorStoreId;
+            }
+
+            #endregion
 
             var resourceReference = await _resourceReferenceStore!.GetResourceReference(assistantUserContext.Name);
 
@@ -214,35 +316,48 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     Deleted = false
                 };
 
-                #region Ensure that only one thread can create the resource at a time.
-
                 try
                 {
+                    // Ensure that only one thread can create the resource at a time.
                     await _localLock.WaitAsync();
 
+                    // Ensure the assistant user context was not created by another thread in the resource provider instance or
+                    // by another resource provider instance in the meantime (since we last checked before acquiring the lock).
                     var existingResourceReference = await _resourceReferenceStore!.GetResourceReference(assistantUserContext.Name);
                     if (existingResourceReference == null)
                     {
+                        #region Persist new assistant user context
+
                         assistantUserContext.ObjectId = ResourcePath.GetObjectId(
                            _instanceSettings.Id,
                            _name,
                            AzureOpenAIResourceTypeNames.AssistantUserContexts,
                            assistantUserContext.Name);
 
-                        // Always create the file user context associated with the assistant user context.
-                        var newFileUserContextName = $"{assistantUserContext.UserPrincipalName.NormalizeUserPrincipalName()}-file-{_instanceSettings.Id.ToLower()}";
-
                         UpdateBaseProperties(assistantUserContext, userIdentity, isNew: true);
 
+                        // Ensure the file user context is also created if it does not exist already.
+                        var newFileUserContextName = $"{assistantUserContext.UserPrincipalName.NormalizeUserPrincipalName()}-file-{_instanceSettings.Id.ToLower()}";
                         var existingFileUserContextReference = await _resourceReferenceStore!.GetResourceReference(newFileUserContextName);
                         if (existingFileUserContextReference == null)
                         {
+                            // We need to create the file user context as well.
                             var newFileUserContext = new FileUserContext()
                             {
-                                UserPrincipalName = assistantUserContext.UserPrincipalName,
-                                Endpoint = assistantUserContext.Endpoint,
                                 Name = newFileUserContextName,
-                                AssistantUserContextName = assistantUserContext.Name
+                                AssistantUserContextName = assistantUserContext.Name,
+                                UserPrincipalName = assistantUserContext.UserPrincipalName,
+                                AgentFiles = new()
+                                {
+                                    {
+                                        agentObjectId!,
+                                        new ()
+                                        {
+                                            Endpoint = agentAssistantUserContext!.Endpoint
+                                        }
+                                    }
+                                }
+                                
                             };
                             var newUserFileContextResourceReference = new AzureOpenAIResourceReference
                             {
@@ -258,131 +373,52 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                         }
                         else
                         {
+                            // The file user context already exists, so we only need to create the assistant user context.
+
                             await CreateResource<AssistantUserContext>(assistantUserContextResourceReference, assistantUserContext);
                         }
+
+                        #endregion
+
+                        return new AssistantUserContextUpsertResult
+                        {
+                            ObjectId = assistantUserContext.ObjectId!,
+                            ResourceExists = false,
+                            NewOpenAIAssistantId = newOpenAIAssistantId!,
+                            NewOpenAIAssistantThreadId = newOpenAIAssistantThreadId!,
+                            NewOpenAIAssistantVectorStoreId = newOpenAIAssistantVectorStoreId
+                        };
                     }
-                }
-                finally
-                {
-                    _localLock.Release();
-                }
-
-                #endregion
-
-                var result = await gatewayClient!.CreateAgentCapability(
-                    _instanceSettings.Id,
-                    AgentCapabilityCategoryNames.OpenAIAssistants,
-                    assistantUserContextResourceReference.Name,
-                    new()
-                    {
-                    { OpenAIAgentCapabilityParameterNames.CreateAssistant, true },
-                    { OpenAIAgentCapabilityParameterNames.CreateAssistantThread, true },
-                    { OpenAIAgentCapabilityParameterNames.Endpoint, assistantUserContext.Endpoint },
-                    { OpenAIAgentCapabilityParameterNames.ModelDeploymentName , assistantUserContext.ModelDeploymentName },
-                    { OpenAIAgentCapabilityParameterNames.AssistantPrompt, assistantUserContext.Prompt }
-                    });
-
-                result.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantId, out var newOpenAIAssistantIdObject);
-                newOpenAIAssistantId = ((JsonElement)newOpenAIAssistantIdObject!).Deserialize<string>();
-
-                result.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantThreadId, out var newOpenAIAssistantThreadIdObject);
-                newOpenAIAssistantThreadId = ((JsonElement)newOpenAIAssistantThreadIdObject!).Deserialize<string>();
-
-                result.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantVectorStoreId, out var newOpenAIAssistantVectorStoreIdObject);
-                newOpenAIAssistantVectorStoreId = ((JsonElement)newOpenAIAssistantVectorStoreIdObject!).Deserialize<string>();
-
-                #region Ensure that only one thread can update the assistant user context at a time.
-
-                try
-                {
-                    await _localLock.WaitAsync();
-
-                    var existingAssistantUserContext = await LoadResource<AssistantUserContext>(assistantUserContextResourceReference)
-                        ?? throw new ResourceProviderException(
-                            $"Could not load the {assistantUserContext.Name} assistant user context.");
-
-                    existingAssistantUserContext.OpenAIAssistantId = newOpenAIAssistantId;
-                    existingAssistantUserContext.OpenAIAssistantCreatedOn = DateTimeOffset.UtcNow;
-
-                    var conversation = existingAssistantUserContext.Conversations.Values
-                        .SingleOrDefault(c => string.IsNullOrWhiteSpace(c.OpenAIThreadId))
-                        ?? throw new ResourceProviderException("Could not find a conversation with an empty assistant thread id.");
-
-                    conversation.OpenAIThreadId = newOpenAIAssistantThreadId;
-                    conversation.OpenAIThreadCreatedOn = assistantUserContext.OpenAIAssistantCreatedOn;
-                    conversation.OpenAIVectorStoreId = newOpenAIAssistantVectorStoreId;
-
-                    UpdateBaseProperties(existingAssistantUserContext, userIdentity, isNew: false);
-                    await SaveResource<AssistantUserContext>(assistantUserContextResourceReference, existingAssistantUserContext);
 
                     return new AssistantUserContextUpsertResult
                     {
-                        ObjectId = assistantUserContext.ObjectId,
-                        ResourceExists = false,
-                        NewOpenAIAssistantId = newOpenAIAssistantId,
-                        NewOpenAIAssistantThreadId = newOpenAIAssistantThreadId,
-                        NewOpenAIAssistantVectorStoreId = newOpenAIAssistantVectorStoreId
+                        ObjectId = assistantUserContext.ObjectId!,
+                        ResourceExists = true
                     };
                 }
                 finally
                 {
                     _localLock.Release();
                 }
-
-                #endregion
             }
             else
             {
-                var result = await gatewayClient!.CreateAgentCapability(
-                    _instanceSettings.Id,
-                    AgentCapabilityCategoryNames.OpenAIAssistants,
-                    resourceReference.Name,
-                    new()
-                    {
-                        { OpenAIAgentCapabilityParameterNames.AssistantId, assistantUserContext.OpenAIAssistantId! },
-                        { OpenAIAgentCapabilityParameterNames.CreateAssistantThread, true },
-                        { OpenAIAgentCapabilityParameterNames.Endpoint, assistantUserContext.Endpoint }
-                    });
-
-                result.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantThreadId, out var newOpenAIAssistantThreadIdObject);
-                newOpenAIAssistantThreadId = ((JsonElement)newOpenAIAssistantThreadIdObject!).Deserialize<string>();
-
-                result.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantVectorStoreId, out var newOpenAIAssistantVectorStoreIdObject);
-                newOpenAIAssistantVectorStoreId = ((JsonElement)newOpenAIAssistantVectorStoreIdObject!).Deserialize<string>();
-
-                incompleteConversations[0].OpenAIThreadId = newOpenAIAssistantThreadId;
-                incompleteConversations[0].OpenAIThreadCreatedOn = DateTimeOffset.UtcNow;
-                incompleteConversations[0].OpenAIVectorStoreId = newOpenAIAssistantVectorStoreId;
-
-                #region Ensure that only one thread can update the assistant user context at a time.
-
                 try
                 {
+                    // Ensure that only one thread can update the assistant user context at a time.
                     await _localLock.WaitAsync();
 
-                    var existingAssistantUserContext = await LoadResource<AssistantUserContext>(resourceReference)
-                        ?? throw new ResourceProviderException(
-                            $"Could not load the {resourceReference.Name} assistant user context.");
+                    #region Update the assistant user context
 
-                    if (existingAssistantUserContext.Conversations.ContainsKey(incompleteConversations[0].FoundationaLLMSessionId))
-                        throw new ResourceProviderException(
-                            $"An OpenAI thread was already created for the FoundationaLLM session {incompleteConversations[0].FoundationaLLMSessionId}.",
-                            StatusCodes.Status400BadRequest);
+                    UpdateBaseProperties(assistantUserContext, userIdentity, isNew: false);
+                    await SaveResource<AssistantUserContext>(resourceReference, assistantUserContext);
 
-                    existingAssistantUserContext.Conversations.Add(
-                        incompleteConversations[0].FoundationaLLMSessionId,
-                        incompleteConversations[0]);
-
-                    UpdateBaseProperties(existingAssistantUserContext, userIdentity, isNew: false);
-                    await SaveResource<AssistantUserContext>(resourceReference, existingAssistantUserContext);
+                    #endregion
 
                     return new AssistantUserContextUpsertResult
                     {
-                        ObjectId = existingAssistantUserContext.ObjectId,
-                        ResourceExists = true,
-                        NewOpenAIAssistantId = newOpenAIAssistantId,
-                        NewOpenAIAssistantThreadId = newOpenAIAssistantThreadId,
-                        NewOpenAIAssistantVectorStoreId = newOpenAIAssistantVectorStoreId
+                        ObjectId = assistantUserContext.ObjectId!,
+                        ResourceExists = true
                     };
 
                 }
@@ -390,12 +426,13 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                 {
                     _localLock.Release();
                 }
-
-                #endregion
             }
         }
 
-        private async Task<FileUserContextUpsertResult> UpdateFileUserContext(FileUserContext fileUserContext, UnifiedUserIdentity userIdentity)
+        private async Task<FileUserContextUpsertResult> UpdateFileUserContext(
+            FileUserContext fileUserContext,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderUpsertOptions? options = null)
         {
             var gatewayClient = new GatewayServiceClient(
                await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()

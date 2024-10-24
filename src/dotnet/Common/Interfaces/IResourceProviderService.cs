@@ -39,11 +39,11 @@ namespace FoundationaLLM.Common.Interfaces
         /// <typeparam name="T">The type of resource to return.</typeparam>
         /// <param name="instanceId">The FoundationaLLM instance id.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
-        /// <param name="options">The <see cref="ResourceProviderLoadOptions"/> which provides operation parameters.</param>
+        /// <param name="options">The <see cref="ResourceProviderGetOptions"/> which provides operation parameters.</param>
         /// <returns>A list of <see cref="ResourceProviderGetResult{T}"/> containing the loaded resources.</returns>
         /// <returns></returns>
         Task<List<ResourceProviderGetResult<T>>> GetResourcesAsync<T>(
-           string instanceId, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
+           string instanceId, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
            where T : ResourceBase;
 
         /// <summary>
@@ -52,9 +52,9 @@ namespace FoundationaLLM.Common.Interfaces
         /// <typeparam name="T">The type of the resource.</typeparam>
         /// <param name="resourcePath">The logical path of the resource.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
-        /// <param name="options">The <see cref="ResourceProviderLoadOptions"/> which provides operation parameters.</param>
+        /// <param name="options">The <see cref="ResourceProviderGetOptions"/> which provides operation parameters.</param>
         /// <returns>The instance of the resource corresponding to the specified logical path.</returns>
-       Task<T> GetResourceAsync<T>(string resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
+       Task<T> GetResourceAsync<T>(string resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
             where T : ResourceBase;
 
         /// <summary>
@@ -64,9 +64,9 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="instanceId">The FoundationaLLM instance id.</param>
         /// <param name="resourceName">The logical path of the resource.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
-        /// <param name="options">The <see cref="ResourceProviderLoadOptions"/> which provides operation parameters.</param>
+        /// <param name="options">The <see cref="ResourceProviderGetOptions"/> which provides operation parameters.</param>
         /// <returns>The instance of the resource corresponding to the specified logical path.</returns>
-        Task<T> GetResourceAsync<T>(string instanceId, string resourceName, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
+        Task<T> GetResourceAsync<T>(string instanceId, string resourceName, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
             where T : ResourceBase;
 
         /// <summary>
@@ -77,8 +77,9 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="instanceId">The FoundationaLLM instance id.</param>
         /// <param name="resource">The instance of the resource being created or updated.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
+        /// <param name="options">The <see cref="ResourceProviderUpsertOptions"/> which provides operation parameters.</param>
         /// <returns>The object id of the resource.</returns>
-        Task<TResult> UpsertResourceAsync<T, TResult>(string instanceId, T resource, UnifiedUserIdentity userIdentity)
+        Task<TResult> UpsertResourceAsync<T, TResult>(string instanceId, T resource, UnifiedUserIdentity userIdentity, ResourceProviderUpsertOptions? options = null)
             where T : ResourceBase
             where TResult : ResourceProviderUpsertResult<T>;
 

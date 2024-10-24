@@ -235,7 +235,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         #region IManagementProviderService
 
         /// <inheritdoc/>
-        public async Task<object> HandleGetAsync(string resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
+        public async Task<object> HandleGetAsync(string resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
         {
             EnsureServiceInitialization();
             var (ParsedResourcePath, AuthorizableOperation) = ParseAndValidateResourcePath(resourcePath, HttpMethod.Get, false, requireResource: false);
@@ -310,7 +310,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="resourcePath">A <see cref="ResourcePath"/> containing information about the resource path.</param>
         /// <param name="authorizationResult">The <see cref="ResourcePathAuthorizationResult"/> containing the result of the resource path authorization request.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
-        /// <param name="options">The <see cref="ResourceProviderLoadOptions"/> which provides operation parameters.</param>
+        /// <param name="options">The <see cref="ResourceProviderGetOptions"/> which provides operation parameters.</param>
         /// <returns></returns>
         /// <remarks>
         /// The override implementation should return a list of resources or a single resource, depending on the resource path.
@@ -328,7 +328,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
-            ResourceProviderLoadOptions? options = null)
+            ResourceProviderGetOptions? options = null)
         {
             await Task.CompletedTask;
             throw new NotImplementedException();
@@ -396,7 +396,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         #region IResourceProviderService
 
         /// <inheritdoc/>
-        public async Task<List<ResourceProviderGetResult<T>>> GetResourcesAsync<T>(string instanceId, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
+        public async Task<List<ResourceProviderGetResult<T>>> GetResourcesAsync<T>(string instanceId, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
             where T : ResourceBase
         {
             EnsureServiceInitialization();
@@ -410,7 +410,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         }
 
         /// <inheritdoc/>
-        public async Task<T> GetResourceAsync<T>(string resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
+        public async Task<T> GetResourceAsync<T>(string resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
             where T : ResourceBase
         {
             EnsureServiceInitialization();
@@ -425,7 +425,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         }
 
         /// <inheritdoc/>
-        public async Task<T> GetResourceAsync<T>(string instanceId, string resourceName, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
+        public async Task<T> GetResourceAsync<T>(string instanceId, string resourceName, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
             where T : ResourceBase
         {
             EnsureServiceInitialization();
@@ -440,7 +440,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         }
 
         /// <inheritdoc/>
-        public async Task<TResult> UpsertResourceAsync<T, TResult>(string instanceId, T resource, UnifiedUserIdentity userIdentity)
+        public async Task<TResult> UpsertResourceAsync<T, TResult>(string instanceId, T resource, UnifiedUserIdentity userIdentity, ResourceProviderUpsertOptions? options = null)
             where T : ResourceBase
             where TResult : ResourceProviderUpsertResult<T>
         {
@@ -450,7 +450,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             // Authorize access to the resource path.
             var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
 
-            var upsertResult = await UpsertResourceAsyncInternal<T, TResult>(ParsedResourcePath, authorizationResult, resource, userIdentity);
+            var upsertResult = await UpsertResourceAsyncInternal<T, TResult>(ParsedResourcePath, authorizationResult, resource, userIdentity, options);
 
             await UpsertResourcePostProcess(ParsedResourcePath.InstanceId!, upsertResult, authorizationResult, userIdentity);
 
@@ -519,12 +519,12 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="resourcePath">A <see cref="ResourcePath"/> containing information about the resource path.</param>
         /// <param name="authorizationResult">The <see cref="ResourcePathAuthorizationResult"/> containing the result of the resource path authorization request.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
-        /// <param name="options">The <see cref="ResourceProviderLoadOptions"/> which provides operation parameters.</param>
+        /// <param name="options">The <see cref="ResourceProviderGetOptions"/> which provides operation parameters.</param>
         /// <returns></returns>
         protected virtual async Task<T> GetResourceAsyncInternal<T>(
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
-            UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
+            UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
             where T : ResourceBase
         {
             await Task.CompletedTask;
@@ -540,11 +540,14 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="authorizationResult">The <see cref="ResourcePathAuthorizationResult"/> containing the result of the resource path authorization request.</param>
         /// <param name="resource">The instance of the resource being created or updated.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
+        /// <param name="options">The <see cref="ResourceProviderUpsertOptions"/> which provides operation parameters.</param>
         /// <returns></returns>
         protected virtual async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
-            T resource, UnifiedUserIdentity userIdentity)
+            T resource,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderUpsertOptions? options = null)
             where T : ResourceBase
             where TResult : ResourceProviderUpsertResult<T>
         {
@@ -790,14 +793,14 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <typeparam name="T">The type of resources to load.</typeparam>
         /// <param name="instance">The <see cref="ResourceTypeInstance"/> that indicates a specific resource to load.</param>
         /// <param name="authorizationResult">The <see cref="ResourcePathAuthorizationResult"/> containing the result of the resource path authorization request.</param>
-        /// <param name="options">The <see cref="ResourceProviderLoadOptions"/> which provides operation parameters.</param>
+        /// <param name="options">The <see cref="ResourceProviderGetOptions"/> which provides operation parameters.</param>
         /// <param name="customResourceLoader">An optional function that loads the resource used to override
         /// the default resource loading mechanism.</param>
         /// <returns>A list of <see cref="ResourceProviderGetResult{T}"/> objects.</returns>
         protected async Task<List<ResourceProviderGetResult<T>>> LoadResources<T>(
             ResourceTypeInstance instance,
             ResourcePathAuthorizationResult authorizationResult,
-            ResourceProviderLoadOptions? options = null,
+            ResourceProviderGetOptions? options = null,
             Func<TResourceReference, bool, Task<T>>? customResourceLoader = null) where T : ResourceBase
         {
             Func<TResourceReference, Task<T>> resourceLoader =
@@ -1238,7 +1241,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="resourcePath">The <see cref="ResourcePath"/> resource type path to filter.</param>
         /// <param name="filter"`>The <see cref="ResourceFilter"/> used to filter the resources.</param>
         /// <param name="authorizationResult">The <see cref="ResourcePathAuthorizationResult"/> containing the result of the resource path authorization request.</param>
-        /// <param name="options">The <see cref="ResourceProviderLoadOptions"/> which provides operation parameters.</param>
+        /// <param name="options">The <see cref="ResourceProviderGetOptions"/> which provides operation parameters.</param>
         /// <param name="customResourceLoader">An optional function that loads the resource used to override
         /// the default resource loading mechanism.</param>
         /// <returns>A list of objects of type <typeparamref name="T"/>.</returns>
@@ -1246,7 +1249,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             ResourcePath resourcePath,
             ResourceFilter filter,
             ResourcePathAuthorizationResult authorizationResult,
-            ResourceProviderLoadOptions? options = null,
+            ResourceProviderGetOptions? options = null,
             Func<TResourceReference, bool, Task<T>>? customResourceLoader = null)
             where T : ResourceBase
         {
@@ -1332,7 +1335,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             IEnumerable<TResourceReference> resourceReferences,
             ResourcePathAuthorizationResult authorizationResult,
             Func<TResourceReference, Task<T>> resourceLoader,
-            ResourceProviderLoadOptions? options = null) where T : ResourceBase
+            ResourceProviderGetOptions? options = null) where T : ResourceBase
         {
             List<ResourceProviderGetResult<T>> results = [];
 

@@ -45,7 +45,7 @@ namespace FoundationaLLM.Management.API.Controllers
                     var result = await resourceProviderService.HandleGetAsync(
                         $"instances/{instanceId}/providers/{resourceProvider}/{resourcePath}",
                         _callContext.CurrentUserIdentity!,
-                        new ResourceProviderLoadOptions
+                        new ResourceProviderGetOptions
                         {
                             IncludeActions = true,
                             IncludeRoles = true

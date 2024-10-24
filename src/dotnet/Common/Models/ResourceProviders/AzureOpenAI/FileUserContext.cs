@@ -22,27 +22,43 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
         public required string UserPrincipalName { get; set; }
 
         /// <summary>
-        /// The Azure OpenAI endpoint used to manage the assistant.
-        /// </summary>
-        [JsonPropertyName("endpoint")]
-        [JsonPropertyOrder(101)]
-        public required string Endpoint { get; set; }
-
-        /// <summary>
-        /// The dictionary of <see cref="FileMapping"/> objects providing information about the files uploaded to the OpenAI assistant. 
-        /// </summary>
-        /// <remarks>
-        /// The keys of the dictionary are the FoundationaLLM attachment identifiers.
-        /// </remarks>
-        [JsonPropertyName("files")]
-        [JsonPropertyOrder(102)]
-        public Dictionary<string, FileMapping> Files { get; set; } = [];
-
-        /// <summary>
         /// The name of the assistant user context name.
         /// </summary>
         [JsonPropertyName("assistant_user_context_name")]
-        [JsonPropertyOrder(103)]
+        [JsonPropertyOrder(101)]
         public required string AssistantUserContextName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the dictionary of <see cref="AzureOpenAI.AgentFileUserContext"/> objects providing information about the OpenAI files associated with the user.
+        /// </summary>
+        /// <remarks>
+        /// The keys in the dictionary are the object identifiers of the FoundationaLLM agents that are backed by Azure OpenAI Assistants capabilities.
+        /// </remarks>
+        [JsonPropertyName("agent_files")]
+        [JsonPropertyOrder(102)]
+        public Dictionary<string, AgentFileUserContext> AgentFiles { get; set; } = [];
+
+        /// <summary>
+        /// Gets the <see cref="FileMapping"/> associated with the specified file identifier.
+        /// </summary>
+        /// <param name="fileId">The Azure OpenAI Assistants file identifier whose mapping is being retrieved.</param>
+        /// <param name="agentFileUserContext">The <see cref="AgentFileUserContext"/> object where the file mapping was found.</param>
+        /// <param name="fileMapping">The <see cref="FileMapping"/> object containing the file mapping.</param>
+        /// <returns> if</returns>
+        public bool TryGetFileMapping(string fileId, out AgentFileUserContext? agentFileUserContext, out FileMapping? fileMapping)
+        {
+            foreach (var internalAgentFileUserContext in AgentFiles.Values)
+            {
+                if (internalAgentFileUserContext.Files.TryGetValue(fileId, out fileMapping))
+                {
+                    agentFileUserContext = internalAgentFileUserContext;
+                    return true;
+                }
+            }
+
+            agentFileUserContext = null;
+            fileMapping = null;
+            return false;
+        }
     }
 }

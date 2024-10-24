@@ -19,6 +19,8 @@ using Microsoft.Extensions.Logging;
 using System.Net;
 using Microsoft.Extensions.DependencyInjection;
 using FoundationaLLM.Common.Models.Orchestration;
+using Microsoft.Azure.Cosmos.Serialization.HybridRow;
+using FoundationaLLM.Common.Models.ResourceProviders;
 
 namespace FoundationaLLM.Orchestration.Core.Orchestration
 {
@@ -345,22 +347,20 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         private static async Task<string?> EnsureAgentCapabilities(
             string instanceId,
             AgentBase agent,
-            string sessionId,
+            string conversationId,
             Dictionary<string, object> explodedObjects,
             Dictionary<string, IResourceProviderService> resourceProviderServices,
             UnifiedUserIdentity currentUserIdentity,
             ILogger<OrchestrationBuilder> logger)
         {
-            if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_AzureOpenAI, out var azureOpenAIResourceProvider))
-                throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_AzureOpenAI} was not loaded.");
-
-            string? vectorStoreId = null;
-            var prompt = explodedObjects[agent.PromptObjectId!] as MultipartPrompt;
-            var aiModel = explodedObjects[agent.AIModelObjectId!] as AIModelBase;
-            var apiEndpointConfiguration = explodedObjects[aiModel!.EndpointObjectId!] as APIEndpointConfiguration;
-
             if (agent.HasCapability(AgentCapabilityCategoryNames.OpenAIAssistants))
             {
+                if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_AzureOpenAI, out var azureOpenAIResourceProvider))
+                    throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_AzureOpenAI} was not loaded.");
+                var prompt = explodedObjects[agent.PromptObjectId!] as MultipartPrompt;
+                var aiModel = explodedObjects[agent.AIModelObjectId!] as AIModelBase;
+                var apiEndpointConfiguration = explodedObjects[aiModel!.EndpointObjectId!] as APIEndpointConfiguration;
+
                 var assistantUserContextName = $"{currentUserIdentity.UPN?.NormalizeUserPrincipalName() ?? currentUserIdentity.UserId}-assistant-{instanceId.ToLower()}";
 
                 var nameCheckResult = await azureOpenAIResourceProvider.ResourceExistsAsync<AssistantUserContext>(
@@ -368,82 +368,125 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     assistantUserContextName,
                     currentUserIdentity);
 
-                if (!nameCheckResult.Exists)
+                if (nameCheckResult.Exists && nameCheckResult.Deleted)
+                    throw new OrchestrationException($"The assistant user context {assistantUserContextName} was logically deleted but not purged.");
+
+                bool mustUpdate = !nameCheckResult.Exists;
+                var resourceProviderUpsertOptions = new ResourceProviderUpsertOptions
                 {
-                    var result = await azureOpenAIResourceProvider.UpsertResourceAsync<AssistantUserContext, AssistantUserContextUpsertResult>(
+                    Parameters = new()
+                    {
+                        { AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId, agent.ObjectId! },
+                        { AzureOpenAIResourceProviderUpsertParameterNames.ConversationId, conversationId },
+                        { AzureOpenAIResourceProviderUpsertParameterNames.MustCreateAssistant, false },
+                        { AzureOpenAIResourceProviderUpsertParameterNames.MustCreateAssistantThread, false }
+                    }
+                };
+
+                var assistantUserContextToUpdate = nameCheckResult.Exists
+                    ? await azureOpenAIResourceProvider.GetResourceAsync<AssistantUserContext>(
                         instanceId,
-                        new AssistantUserContext
+                        assistantUserContextName,
+                        currentUserIdentity)
+                    : new AssistantUserContext
                         {
                             Name = assistantUserContextName,
-                            UserPrincipalName = currentUserIdentity.UPN ?? currentUserIdentity.UserId!,
-                            Endpoint = apiEndpointConfiguration!.Url,
-                            ModelDeploymentName = aiModel.DeploymentName!,
-                            Prompt = prompt!.Prefix!,
-                            Conversations = new()
-                            {
-                                {
-                                    sessionId!,
-                                    new ConversationMapping
-                                    {
-                                        FoundationaLLMSessionId = sessionId!
-                                    }
-                                }
-                            }
-                        },
-                        currentUserIdentity);
+                            UserPrincipalName = currentUserIdentity.UPN ?? currentUserIdentity.UserId!
+                        };
 
-                    if (!string.IsNullOrWhiteSpace(result.NewOpenAIAssistantId))
+                // Identify the assistant user context for the agent.
+
+                AgentAssistantUserContext agentAssistantUserContext;
+                if (!assistantUserContextToUpdate.AgentAssistants.TryGetValue(agent.ObjectId!, out agentAssistantUserContext!))
+                {
+                    // We need to create a new agent assistant user context.
+                    agentAssistantUserContext = new AgentAssistantUserContext
+                    {
+                        Endpoint = apiEndpointConfiguration!.Url,
+                        ModelDeploymentName = aiModel.DeploymentName!,
+                        Prompt = prompt!.Prefix!
+                    };
+
+                    assistantUserContextToUpdate.AgentAssistants.Add(agent.ObjectId!, agentAssistantUserContext);
+
+                    // We need to update the assistant user context because we added a new agent assistant user context.
+                    mustUpdate = true;
+                }
+
+                if (string.IsNullOrWhiteSpace(agentAssistantUserContext.OpenAIAssistantId))
+                {
+                    // We're either in the case of creating a new agent assistant user context or the OpenAI assistant identifier is missing is missing.
+                    // This can happen if previous attempts of creating the OpenAI assistant failed.
+                    // Either way we need to force an update to ensure we're attempting to create the OpenAI assistant.
+                    mustUpdate = true;
+
+                    resourceProviderUpsertOptions.Parameters[AzureOpenAIResourceProviderUpsertParameterNames.MustCreateAssistant] = true;
+                }
+
+                // Identify the assistant conversation for the session.
+
+                ConversationMapping conversationMapping;
+                if (!agentAssistantUserContext.Conversations.TryGetValue(conversationId, out conversationMapping!))
+                {
+                    // We need to create a new conversation mapping.
+                    conversationMapping = new ConversationMapping
+                    {
+                        FoundationaLLMSessionId = conversationId
+                    };
+
+                    agentAssistantUserContext.Conversations.Add(conversationId, conversationMapping);
+
+                    // We need to update the assistant user context because we added a new conversation mapping.
+                    mustUpdate = true;
+                }
+
+                if (string.IsNullOrWhiteSpace(conversationMapping.OpenAIThreadId))
+                {
+                    // We're either in the case of creating a new conversation mapping or the OpenAI thread identifier is missing.
+                    // This can happen if previous attempts of creating the OpenAI thread failed.
+                    // Either way we need to force an update to ensure we're attempting to create the OpenAI thread.
+                    mustUpdate = true;
+
+                    resourceProviderUpsertOptions.Parameters[AzureOpenAIResourceProviderUpsertParameterNames.MustCreateAssistantThread] = true;
+                }
+
+                string? vectorStoreId;
+
+                if (mustUpdate)
+                {
+                    // We need to update the assistant user context.
+                    // We will rely on the upsert operation result to fill in the OpenAI assistant-related properties.
+                    // We expect to get back valid values for the OpenAI assistant identifier and the OpenAI assistant thread identifier.
+
+                    var result = await azureOpenAIResourceProvider.UpsertResourceAsync<AssistantUserContext, AssistantUserContextUpsertResult>(
+                        instanceId,
+                        assistantUserContextToUpdate,
+                        currentUserIdentity,
+                        resourceProviderUpsertOptions);
+
+                    if (string.IsNullOrWhiteSpace(result.NewOpenAIAssistantId))
+                        throw new OrchestrationException("The OpenAI assistant ID was not returned.");
+                    else
                         explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantId] = result.NewOpenAIAssistantId;
 
-                    if (!string.IsNullOrWhiteSpace(result.NewOpenAIAssistantThreadId))
+                    if (string.IsNullOrWhiteSpace(result.NewOpenAIAssistantThreadId))
+                        throw new OrchestrationException("The OpenAI assistant thread ID was not returned.");
+                    else
                         explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantThreadId] = result.NewOpenAIAssistantThreadId;
 
                     vectorStoreId = result.NewOpenAIAssistantVectorStoreId;
                 }
                 else
                 {
-                    var assistantUserContext = await azureOpenAIResourceProvider.GetResourceAsync<AssistantUserContext>(
-                        instanceId,
-                        assistantUserContextName,
-                        currentUserIdentity);
-
-                    explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantId] = assistantUserContext.OpenAIAssistantId!;
-
-                    if (!assistantUserContext.Conversations.TryGetValue(sessionId!,
-                            out ConversationMapping? assistantConversation))
-                    {
-                        assistantUserContext.Conversations.Add(
-                            sessionId!,
-                            new ConversationMapping
-                            {
-                                FoundationaLLMSessionId = sessionId!
-                            });
-                    }
-
-                    if (assistantConversation == null ||
-                        string.IsNullOrWhiteSpace(assistantConversation.OpenAIThreadId))
-                    {
-                        var result = await azureOpenAIResourceProvider
-                            .UpsertResourceAsync<AssistantUserContext, AssistantUserContextUpsertResult>(
-                                instanceId,
-                                assistantUserContext,
-                                currentUserIdentity);
-
-                        if (!string.IsNullOrWhiteSpace(result.NewOpenAIAssistantThreadId))
-                            explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantThreadId] =
-                                result.NewOpenAIAssistantThreadId;
-
-                        vectorStoreId = result.NewOpenAIAssistantVectorStoreId;
-                    }
-                    else
-                    {
-                        explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantThreadId] = assistantConversation.OpenAIThreadId;
-                        vectorStoreId = assistantConversation.OpenAIVectorStoreId;
-                    }
+                    explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantId] = agentAssistantUserContext.OpenAIAssistantId!;
+                    explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantThreadId] = conversationMapping.OpenAIThreadId!;
+                    vectorStoreId = conversationMapping.OpenAIVectorStoreId;
                 }
+
+                return vectorStoreId;
             }
 
-            return vectorStoreId;
+            return null;
         }
     }
 }

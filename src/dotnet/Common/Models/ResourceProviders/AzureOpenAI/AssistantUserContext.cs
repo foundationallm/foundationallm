@@ -22,48 +22,67 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
         public required string UserPrincipalName { get; set; }
 
         /// <summary>
-        /// The Azure OpenAI endpoint used to manage the assistant.
-        /// </summary>
-        [JsonPropertyName("endpoint")]
-        [JsonPropertyOrder(101)]
-        public required string Endpoint { get; set; }
-
-        /// <summary>
-        /// The Azure OpenAI model deployment name used by the assistant.
-        /// </summary>
-        [JsonPropertyName("model_name")]
-        [JsonPropertyOrder(102)]
-        public required string ModelDeploymentName { get; set; }
-
-        /// <summary>
-        /// The time at which the assistant was created.
-        /// </summary>
-        [JsonPropertyName("prompt")]
-        [JsonPropertyOrder(103)]
-        public required string Prompt { get; set; }
-
-        /// <summary>
-        /// The OpenAI identifier of the assistant.
-        /// </summary>
-        [JsonPropertyName("openai_assistant_id")]
-        [JsonPropertyOrder(104)]
-        public string? OpenAIAssistantId { get; set; }
-
-        /// <summary>
-        /// The time at which the assistant was created.
-        /// </summary>
-        [JsonPropertyName("openai_assistant_created_on")]
-        [JsonPropertyOrder(105)]
-        public DateTimeOffset? OpenAIAssistantCreatedOn { get; set; }
-
-        /// <summary>
-        /// The dictionary of <see cref="ConversationMapping"/> objects providing information about the conversations driven by the OpenAI assistant. 
+        /// Gets or sets the dictionary of <see cref="AgentAssistantUserContext"/> objects providing information about the OpenAI assistants associated with the user.
         /// </summary>
         /// <remarks>
-        /// The keys of the dictionary are the FoundationaLLM session identifiers.
+        /// The keys in the dictionary are the object identifiers of the FoundationaLLM agents that are backed by Azure OpenAI Assistants capabilities.
         /// </remarks>
-        [JsonPropertyName("conversations")]
-        [JsonPropertyOrder(106)]
-        public Dictionary<string, ConversationMapping> Conversations { get; set; } = [];
+        [JsonPropertyName("agent_assistants")]
+        [JsonPropertyOrder(101)]
+        public Dictionary<string, AgentAssistantUserContext> AgentAssistants { get; set; } = [];
+
+        /// <summary>
+        /// Gets the Azure OpenAI assistant identifier for the specified agent.
+        /// </summary>
+        /// <param name="agentObjectId">The object identifier of the agent for which were are retrieving the Azure OpenAI assistant.</param>
+        /// <param name="openAIAssistantId">The identifier of the Azure OpenAI assistant associated with the agent.</param>
+        /// <returns>True if a valid Azure OpenAI assistant identifier is found, False otherwise.</returns>
+        public bool TryGetOpenAIAssistantId(string agentObjectId, out string? openAIAssistantId)
+        {
+            if (AgentAssistants.TryGetValue(agentObjectId, out var agentAssistantUserContext))
+            {
+                openAIAssistantId = agentAssistantUserContext.OpenAIAssistantId;
+                return !string.IsNullOrWhiteSpace(openAIAssistantId);
+            }
+
+            openAIAssistantId = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Gets the single <see cref="ConversationMapping"/> that is incomplete (i.e., has no OpenAI thread id).
+        /// </summary>
+        /// <param name="agentAssistantUserContext">The <see cref="AgentAssistantUserContext"/> containing the incomplete conversation mapping.</param>
+        /// <param name="conversationMapping">The <see cref="ConversationMapping"/> that is incomplete.</param>
+        /// <returns>True if the incomplete conversation mapping was retrieved, False otherwise.</returns>
+        /// <remarks>
+        /// The method fails if the assistant user context contains anything else than exactly one incomplete conversation mapping.
+        /// It is the responsibility of the caller to decide whether an exception needs to be thrown in case of failure.
+        /// </remarks>
+        public bool TryGetIncompleteConversation(out AgentAssistantUserContext? agentAssistantUserContext, out ConversationMapping? conversationMapping)
+        {
+            var contextsWithIncompleteConversations =
+                AgentAssistants
+                    .Select(a => new
+                    {
+                        AgentObjectId = a.Key,
+                        AgentAssistantUserContext = a.Value,
+                        IncompleteConversationMappings = a.Value.GetIncompleteConversationMappings()
+                    })
+                    .Where(x => x.IncompleteConversationMappings.Count > 0)
+                    .ToList();
+
+            if (contextsWithIncompleteConversations.Count != 1
+                || contextsWithIncompleteConversations[0].IncompleteConversationMappings.Count != 1)
+            {
+                agentAssistantUserContext = null;
+                conversationMapping = null;
+                return false;
+            }
+
+            agentAssistantUserContext = contextsWithIncompleteConversations[0].AgentAssistantUserContext;
+            conversationMapping = null;
+            return false;
+        }
     }
 }
