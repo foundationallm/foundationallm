@@ -11,7 +11,17 @@
 				role="navigation"
 			>
 				<ChatSidebar class="chat-sidebar" :style="{ width: sidebarWidth + 'px' }" />
-				<div class="resize-handle" @mousedown="startResizing"></div>
+				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']" :skidding="skidding">
+					<div 
+						class="resize-handle" 
+						@mousedown="startResizing" 
+						@keydown.left.prevent="resizeSidebarWithKeyboard(-10)" 
+						@keydown.right.prevent="resizeSidebarWithKeyboard(10)" 
+						tabindex="0"
+						aria-label="Resize sidebar"
+					></div>
+					<template #popper><div role="tooltip">Resize sidebar (Use left and right arrow keys)</div></template>
+				</VTooltip>
 			</aside>
 			<div
 				v-show="!$appStore.isSidebarClosed"
@@ -33,6 +43,8 @@ export default {
 		return {
 			sidebarWidth: 305,
 			isDragging: false,
+			isMobile: window.screen.width < 950,
+			skidding: 0,
 		};
 	},
 
@@ -80,6 +92,22 @@ export default {
 			// Update the sidebar width
 			this.sidebarWidth = newWidth;
 			this.$refs.sidebar.style.width = `${this.sidebarWidth}px`;
+		},
+
+		resizeSidebarWithKeyboard(offset: number) {
+			const newWidth = this.sidebarWidth + offset;
+
+			if (newWidth < 305) {
+				this.sidebarWidth = 305;
+			} else if (newWidth > 600) {
+				this.sidebarWidth = 600;
+			} else {
+				this.sidebarWidth = newWidth;
+			}
+
+			this.$refs.sidebar.style.width = `${this.sidebarWidth}px`;
+			// resets tooltip location
+			this.skidding = this.sidebarWidth * 0.001;
 		},
 
 		showDropZone(event) {
