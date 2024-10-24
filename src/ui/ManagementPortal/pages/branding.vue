@@ -3,6 +3,10 @@
         <h2 class="page-header">Branding</h2>
         <div class="page-subheader">
             <p>Customize the look and feel of your UI.</p>
+            <div style="display: flex; flex-direction: row; align-items: center; gap: 0.5rem;">
+                <p>Show contrast information</p>
+                <InputSwitch v-model="showContrastInfo" />
+            </div>
         </div>
         <div class="steps">
             <div class="step span-2" v-for="key in orderedKeys" :key="key">
@@ -34,13 +38,13 @@
                     </div>
                 </div>
                 <div class="color-preview-container">
-                    <div class="color-ratio" v-if="group.keys.find(k => k.type === 'background').key && group.keys.find(k => k.type === 'foreground')?.key">
+                    <div class="color-ratio" v-if="group.keys.find(k => k.type === 'background').key && group.keys.find(k => k.type === 'foreground')?.key && showContrastInfo">
                         {{ getContrastRatio(getBrandingValue(group.keys.find(k => k.type === 'background').key), getBrandingValue(group.keys.find(k => k.type === 'foreground')?.key) || 'transparent') }} : 1
                     </div>
                     <div class="color-preview-background" :style="{ backgroundColor: getBrandingValue(group.keys.find(k => k.type === 'background').key) }">
                         <div class="color-preview-foreground" :style="{ color: getBrandingValue(group.keys.find(k => k.type === 'foreground')?.key) || 'transparent' }">TEST</div>
                     </div>
-                    <div class="color-wcag-results-container" v-if="group.keys.find(k => k.type === 'background').key && group.keys.find(k => k.type === 'foreground')?.key">
+                    <div class="color-wcag-results-container" v-if="group.keys.find(k => k.type === 'background').key && group.keys.find(k => k.type === 'foreground')?.key && showContrastInfo">
                         <div class="color-wcag-results">
                             <div class="color-wcag-result">
                                 <div class="color-wcag-result-label">AA</div>
@@ -239,6 +243,7 @@ export default {
             unorderedKeys: [] as string[],
             footerText: '',
             rawFooterTextHTML: '',
+            showContrastInfo: false,
         };
     },
 
