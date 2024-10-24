@@ -169,14 +169,12 @@ async def create_completion_response(
             )
         except Exception as e:
             # Send the completion response to the State API and mark the operation as failed.
-            print(f'Operation {operation_id} failed with error: {e}')
             completion_response = CompletionResponse(
                 operation_id = operation_id,
                 user_prompt = completion_request.user_prompt,
                 content = [],
                 errors=[f'{e}']
             )
-            print(f'Completion response: {completion_response}')
             await asyncio.gather(
                 operations_manager.set_operation_result(
                     operation_id = operation_id,
