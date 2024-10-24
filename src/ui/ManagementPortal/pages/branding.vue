@@ -9,7 +9,15 @@
                 <div class="step-header mb-2" :id="key.split(':').pop()">{{ getFriendlyName(key) }}</div>
                 <div class="mb-2">{{ getBrandingDescription(key) }}</div>
                 <div class="quill-container" v-if="key === 'FoundationaLLM:Branding:FooterText'">
-                    <QuillEditor v-model:content="footerText" contentType="html" @update:content="updateBrandingValue(key, $event)" />
+                    <QuillEditor ref="quillEditor" v-model:content="footerText" contentType="html" @update:content="updateBrandingValue(key, $event)" />
+                    <!-- <Button label="RAW HTML" /> -->
+                    <Dialog header="Raw HTML" :visible="false" modal="true" :style="{ width: '50vw' }">
+                        <div class="p-4">
+                            <Textarea v-model="rawFooterTextHTML" autoResize />
+                        </div>
+                        <Button label="WORDS" @click="test" />
+                        <Button label="Save" @click="updateBrandingValue(key, rawFooterTextHTML)" />
+                    </Dialog>
                 </div>
                 <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" class="branding-input" :aria-labelledby="key.split(':').pop()" v-else />
             </div>
@@ -21,7 +29,7 @@
                         <div class="mb-2">{{ getBrandingDescription(key.key) }}</div>
                         <div class="color-input-container">
                             <InputText :value="getBrandingValue(key.key)" @input="updateBrandingValue(key.key, $event.target.value)" class="branding-input branding-color-input" :aria-labelledby="key.key.split(':').pop()" />
-                            <ColorPicker :modelValue="getColorBrandingValue(key.key)" class="color-picker" :format="getColorBrandingFormat(key.key)" @change="updateBrandingValue(key.key, $event.value)" />
+                            <ColorPicker :modelValue="getColorBrandingValue(key.key)" class="color-picker" :format="getColorBrandingFormat(key.key)" @change="updateBrandingValue(key.key, $event.value)" @hide="test" />
                         </div>
                     </div>
                 </div>
@@ -46,7 +54,7 @@
                     </div>
                 </div>
             </div>
-            <div class="divider" />
+            <div class="divider" v-if="unorderedKeys.length > 0" />
             <div class="step span-2" v-for="key in unorderedKeys" :key="key">
                 <div class="step-header mb-2" :id="key.split(':').pop()">{{ getFriendlyName(key) }}</div>
                 <div class="mb-2">{{ getBrandingDescription(key) }}</div>
@@ -150,6 +158,7 @@ export default {
                 "FoundationaLLM:Branding:LogoText",
                 "FoundationaLLM:Branding:LogoUrl",
                 "FoundationaLLM:Branding:PageTitle",
+                "FoundationaLLM:Branding:AgentIconUrl",
             ],
             orderedKeyColorsGrouped: [
                 {
@@ -229,6 +238,7 @@ export default {
             ],
             unorderedKeys: [] as string[],
             footerText: '',
+            rawFooterTextHTML: '',
         };
     },
 
@@ -404,7 +414,12 @@ export default {
 
             const results = await Promise.all(promises);
             console.log(results);
-        }
+        },
+
+        test() {
+            this.rawFooterTextHTML = JSON.parse(JSON.stringify(this.footerText));
+            console.log("TEST");
+        },
     }
 };
 </script>
@@ -475,7 +490,11 @@ export default {
 }
 
 .branding-color-input {
-    width: 80ch;
+    width: 30ch;
+}
+
+.logo-image {
+    max-width: 148px;
 }
 
 .color-wcag-results-container {
