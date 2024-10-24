@@ -61,13 +61,21 @@ class OpenAIAssistantsApiService:
         attachments = await self._get_request_attachments_async(request)
 
         # Add User prompt to the thread
-        message = await self.add_thread_message_async(
-            thread_id = request.thread_id,
-            role = "user",
-            content = request.user_prompt,
-            attachments = attachments
-        )
-
+        try:
+            message = await self.add_thread_message_async(
+                thread_id = request.thread_id,
+                role = "user",
+                content = request.user_prompt,
+                attachments = attachments
+            )
+        except Exception as e:
+            error_message = f"Error adding user prompt message to thread: {e}"
+            print(error_message)
+            return OpenAIAssistantsAPIResponse(
+                document_id = request.document_id,
+                errors = [error_message]
+            )
+        
         # Create an image generation tool for the assistant
         if image_service is not None:
             image_generation_tool = {"type": "function", "function": image_service.get_function_definition(function_name='generate_image')}
@@ -97,6 +105,14 @@ class OpenAIAssistantsApiService:
 
         if run.status != "completed":
             run = await self.client.beta.threads.runs.retrieve(run_id = run.id, thread_id = request.thread_id)
+
+        if run.status == "failed":
+            return OpenAIAssistantsAPIResponse(
+                document_id = request.document_id,
+                errors = [
+                    run.last_error.message
+                ]
+            )
         
         # Retrieve the steps from the run_steps for the analysis
         run_steps = await self.client.beta.threads.runs.steps.list(

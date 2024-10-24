@@ -16,7 +16,6 @@ from fastapi import (
     status
 )
 from foundationallm.config import Configuration, UserIdentity
-from foundationallm.models.constants import AgentCapabilityCategories
 from foundationallm.models.operations import (
     LongRunningOperation,
     LongRunningOperationLogEntry,
@@ -24,8 +23,7 @@ from foundationallm.models.operations import (
 )
 from foundationallm.models.orchestration import (
     CompletionRequestBase,
-    CompletionResponse,
-    OpenAITextMessageContentItem
+    CompletionResponse
 )
 from foundationallm.models.agents import KnowledgeManagementCompletionRequest
 from foundationallm.operations import OperationsManager
@@ -171,16 +169,11 @@ async def create_completion_response(
             )
         except Exception as e:
             # Send the completion response to the State API and mark the operation as failed.
-            error_message = f'Operation {operation_id} failed with error: {e}'
-            print(error_message)
-            error_content = OpenAITextMessageContentItem(
-                value = error_message,
-                agent_capability_category = AgentCapabilityCategories.OPENAI_ASSISTANTS if AgentCapabilityCategories.OPENAI_ASSISTANTS in completion_request.agent.capabilities else AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
-            )
             completion_response = CompletionResponse(
                 operation_id = operation_id,
                 user_prompt = completion_request.user_prompt,
-                content = [error_content]
+                content = [],
+                errors=[f'{e}']
             )
             await asyncio.gather(
                 operations_manager.set_operation_result_async(
@@ -191,7 +184,7 @@ async def create_completion_response(
                     operation_id = operation_id,
                     instance_id = instance_id,
                     status = OperationStatus.FAILED,
-                    status_message = f'Operation failed with error: {e}',
+                    status_message = f'{e}',
                     user_identity = x_user_identity
                 )
             )

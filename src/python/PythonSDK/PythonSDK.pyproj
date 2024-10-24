@@ -26,6 +26,8 @@
     <Compile Include="foundationallm\config\environment_variables.py" />
     <Compile Include="foundationallm\config\user_identity.py" />
     <Compile Include="foundationallm\event_handlers\__init__.py" />
+    <Compile Include="foundationallm\exceptions\foundationallm_exception.py" />
+    <Compile Include="foundationallm\exceptions\__init__.py" />
     <Compile Include="foundationallm\langchain\agents\langchain_knowledge_management_agent.py" />
     <Compile Include="foundationallm\models\agents\agent_tool.py" />
     <Compile Include="foundationallm\models\attachments\attachment_properties.py" />
@@ -34,6 +36,7 @@
     <Compile Include="foundationallm\models\authentication\authentication_parameters_keys.py" />
     <Compile Include="foundationallm\models\constants\agent_capability_categories.py" />
     <Compile Include="foundationallm\models\constants\__init__.py" />
+    <Compile Include="foundationallm\models\messages\__init__.py" />
     <Compile Include="foundationallm\models\orchestration\analysis_result.py" />
     <Compile Include="foundationallm\models\orchestration\completion_request_object_keys.py" />
     <Compile Include="foundationallm\models\orchestration\message_content_item_base.py" />
@@ -76,7 +79,7 @@
     <Compile Include="foundationallm\models\operations\operation_status.py" />
     <Compile Include="foundationallm\models\operations\__init__.py" />
     <Compile Include="foundationallm\models\operations\long_running_operation.py" />
-    <Compile Include="foundationallm\models\orchestration\operation_types.py" />
+    <Compile Include="foundationallm\models\operations\operation_types.py" />
     <Compile Include="foundationallm\models\agents\__init__.py" />
     <Compile Include="foundationallm\models\authentication\authentication_types.py" />
     <Compile Include="foundationallm\models\authentication\__init__.py" />
@@ -106,7 +109,7 @@
     <Compile Include="foundationallm\models\orchestration\citation.py" />
     <Compile Include="foundationallm\models\orchestration\completion_request_base.py" />
     <Compile Include="foundationallm\models\orchestration\completion_response.py" />
-    <Compile Include="foundationallm\models\orchestration\message_history_item.py" />
+    <Compile Include="foundationallm\models\messages\message_history_item.py" />
     <Compile Include="foundationallm\models\orchestration\__init__.py" />
     <Compile Include="foundationallm\models\resource_providers\ai_models\ai_model_base.py" />
     <Compile Include="foundationallm\models\resource_providers\ai_models\ai_model_types.py" />
@@ -162,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="foundationallm\" />
+    <Folder Include="foundationallm\exceptions\" />
     <Folder Include="foundationallm\langchain\" />
     <Folder Include="foundationallm\langchain\agents\" />
     <Folder Include="foundationallm\langchain\language_models\" />
@@ -170,6 +174,7 @@
     <Folder Include="foundationallm\models\attachments\" />
     <Folder Include="foundationallm\models\constants\" />
     <Folder Include="foundationallm\event_handlers\" />
+    <Folder Include="foundationallm\models\messages\" />
     <Folder Include="foundationallm\services\" />
     <Folder Include="foundationallm\langchain\retrievers\" />
     <Folder Include="foundationallm\langchain\orchestration\" />

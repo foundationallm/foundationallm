@@ -134,7 +134,7 @@ export default {
 					summary: 'Could not send message',
 					detail:
 						'Please select an agent and try again. If no agents are available, refresh the page.',
-					life: 8000,
+					life: this.$appStore.autoHideToasts ? 8000 : null,
 				});
 				this.isMessagePending = false;
 				return;

@@ -7,11 +7,11 @@ from foundationallm.langchain.agents import LangChainAgentBase
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.retrievers import RetrieverFactory, CitationRetrievalBase
 from foundationallm.models.constants import AgentCapabilityCategories
+from foundationallm.models.operations import OperationTypes
 from foundationallm.models.orchestration import (
     CompletionRequestObjectKeys,
     CompletionResponse,
-    OpenAITextMessageContentItem,
-    OperationTypes
+    OpenAITextMessageContentItem
 )
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 from foundationallm.models.agents import (
@@ -23,10 +23,6 @@ from foundationallm.models.agents import (
 from foundationallm.models.attachments import AttachmentProviders
 from foundationallm.models.authentication import AuthenticationTypes
 from foundationallm.models.language_models import LanguageModelProvider
-from foundationallm.models.orchestration import (
-    OpenAITextMessageContentItem,
-    OperationTypes
-)
 from foundationallm.models.resource_providers.vectorization import (
     EmbeddingProfileSettingsKeys,
     AzureAISearchIndexingProfile,
@@ -374,7 +370,8 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 completion_tokens = assistant_response.completion_tokens + image_analysis_token_usage.completion_tokens,
                 prompt_tokens = assistant_response.prompt_tokens + image_analysis_token_usage.prompt_tokens,
                 total_tokens = assistant_response.total_tokens + image_analysis_token_usage.total_tokens,
-                user_prompt = request.user_prompt
+                user_prompt = request.user_prompt,
+                errors = assistant_response.errors
             )
 
         with get_openai_callback() as cb:

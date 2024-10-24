@@ -10,11 +10,11 @@ from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.operations import OperationsManager
 from foundationallm.models.authentication import AuthenticationTypes
 from foundationallm.models.language_models import LanguageModelProvider
+from foundationallm.models.messages import MessageHistoryItem
+from foundationallm.models.operations import OperationTypes
 from foundationallm.models.orchestration import (
     CompletionRequestBase,
-    CompletionResponse,
-    MessageHistoryItem,
-    OperationTypes
+    CompletionResponse
 )
 from foundationallm.models.resource_providers.ai_models import AIModelBase
 from foundationallm.models.resource_providers.attachments import Attachment

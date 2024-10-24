@@ -266,7 +266,7 @@ namespace FoundationaLLM.Gateway.Services
                 var assistantClient = GetAzureOpenAIAssistantClient(azureOpenAIAccount.Endpoint);
                 var vectorStoreClient = GetAzureOpenAIVectorStoreClient(azureOpenAIAccount.Endpoint);
 
-                var vectorStoreResult = await vectorStoreClient.CreateVectorStoreAsync(new VectorStoreCreationOptions
+                var vectorStoreResult = await vectorStoreClient.CreateVectorStoreAsync(true, new VectorStoreCreationOptions
                 {
                     ExpirationPolicy = new VectorStoreExpirationPolicy
                     {
@@ -275,14 +275,14 @@ namespace FoundationaLLM.Gateway.Services
                     }
                 });
 
+                var fileSearchTool = new FileSearchToolResources();
+                fileSearchTool.VectorStoreIds.Add(vectorStoreResult.Value!.Id);
+
                 var threadResult = await assistantClient.CreateThreadAsync(new ThreadCreationOptions
                 {
                     ToolResources = new ToolResources()
                     {
-                        FileSearch = new FileSearchToolResources()
-                        {
-                            VectorStoreIds = [vectorStoreResult.Value.Id]
-                        }
+                        FileSearch = fileSearchTool
                     }
                 });
                 var thread = threadResult.Value;
@@ -315,13 +315,14 @@ namespace FoundationaLLM.Gateway.Services
                 var vectorStoreClient = GetAzureOpenAIVectorStoreClient(azureOpenAIAccount.Endpoint);
                 var vectorStoreId = GetRequiredParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.AssistantVectorStoreId);
 
-                var vectorizationResult = await vectorStoreClient.AddFileToVectorStoreAsync(vectorStoreId, fileId);
+                var vectorizationResult = await vectorStoreClient.AddFileToVectorStoreAsync(vectorStoreId, fileId, false);
 
                 var startTime = DateTimeOffset.UtcNow;
                 _logger.LogInformation("Started vectorization of file {FileId} in vector store {VectorStoreId}.", fileId, vectorStoreId);
+                var fileAssociationResult = await vectorStoreClient.GetFileAssociationAsync(vectorStoreId, fileId);
 
                 var maxPollingTimeExceeded = false;
-                while (vectorizationResult.Value.Status == VectorStoreFileAssociationStatus.InProgress)
+                while (fileAssociationResult.Value.Status == VectorStoreFileAssociationStatus.InProgress)
                 {
                     await Task.Delay(5000);
                     if ((DateTimeOffset.UtcNow - startTime).TotalSeconds >= _settings.AzureOpenAIAssistantsMaxVectorizationTimeSeconds)
@@ -329,7 +330,7 @@ namespace FoundationaLLM.Gateway.Services
                         maxPollingTimeExceeded = true;
                         break;
                     }
-                    vectorizationResult = await vectorStoreClient.GetFileAssociationAsync(vectorStoreId, fileId);
+                    fileAssociationResult = await vectorStoreClient.GetFileAssociationAsync(vectorStoreId, fileId);
                 }
 
                 if (maxPollingTimeExceeded)
@@ -341,9 +342,9 @@ namespace FoundationaLLM.Gateway.Services
                 else
                 {
                     _logger.LogInformation("Completed vectorization of file {FileId} in vector store {VectorStoreId} in {TotalSeconds} with result {VectorizationResult}.",
-                        fileId, vectorStoreId, (DateTimeOffset.UtcNow - startTime).TotalSeconds, vectorizationResult.Value.Status);
+                        fileId, vectorStoreId, (DateTimeOffset.UtcNow - startTime).TotalSeconds, fileAssociationResult.Value.Status);
                     result[OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStoreSuccess] =
-                        (vectorizationResult.Value.Status == VectorStoreFileAssociationStatus.Completed);
+                        (fileAssociationResult.Value.Status == VectorStoreFileAssociationStatus.Completed);
                 }
             }
 
@@ -377,7 +378,7 @@ namespace FoundationaLLM.Gateway.Services
         private VectorStoreClient GetAzureOpenAIVectorStoreClient(string endpoint) =>
             GetAzureOpenAIClient(endpoint).GetVectorStoreClient();
 
-        private FileClient GetAzureOpenAIFileClient(string endpoint) =>
-            GetAzureOpenAIClient(endpoint).GetFileClient();
+        private OpenAIFileClient GetAzureOpenAIFileClient(string endpoint) =>
+            GetAzureOpenAIClient(endpoint).GetOpenAIFileClient();
     }
 }
