@@ -130,7 +130,6 @@
 
 <script lang="ts">
 import api from '@/js/api';
-import 'floating-vue/dist/style.css';
 
 export default {
 	props: {
