@@ -8,7 +8,7 @@
             <div class="step span-2" v-for="key in orderedKeys" :key="key">
                 <div class="step-header mb-2" :id="key.split(':').pop()">{{ getFriendlyName(key) }}</div>
                 <div class="mb-2">{{ getBrandingDescription(key) }}</div>
-                <Editor v-model="footerText" editorStyle="height: 320px" v-if="key === 'FoundationaLLM:Branding:FooterText'" />
+                <QuillEditor v-model:content="footerText" contentType="html" @update:content="updateBrandingValue(key, $event)" v-if="key === 'FoundationaLLM:Branding:FooterText'" />
                 <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" :aria-labelledby="key.split(':').pop()" v-else />
             </div>
             <div style="border-top: 3px solid #bbb;" />
@@ -60,9 +60,15 @@
 
 <script lang="ts">
 import api from '@/js/api';
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 export default {
     name: 'Branding',
+
+    components: {
+        QuillEditor,
+    },
 
     data() {
         return {
@@ -215,7 +221,6 @@ export default {
     async created() {
         await this.getBranding();
         this.footerText = this.getBrandingValue('FoundationaLLM:Branding:FooterText');
-        console.log(this.footerText);
     },
 
     methods: {
