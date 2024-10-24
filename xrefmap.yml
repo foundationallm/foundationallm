@@ -19098,6 +19098,19 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.Deleted
   nameWithType: CompletionResponseBase.Deleted
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.Errors
+  name: Errors
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.html#FoundationaLLM_Common_Models_Orchestration_Response_CompletionResponseBase_Errors
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.Errors
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.Errors
+  nameWithType: CompletionResponseBase.Errors
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.Errors*
+  name: Errors
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.html#FoundationaLLM_Common_Models_Orchestration_Response_CompletionResponseBase_Errors_
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.Errors
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.Errors
+  nameWithType: CompletionResponseBase.Errors
 - uid: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.FullPrompt
   name: FullPrompt
   href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.html#FoundationaLLM_Common_Models_Orchestration_Response_CompletionResponseBase_FullPrompt
