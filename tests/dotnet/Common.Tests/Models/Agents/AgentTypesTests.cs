@@ -25,16 +25,6 @@ namespace FoundationaLLM.Common.Tests.Models.Agents
         }
 
         [Fact]
-        public void InternalContextAgentType_IsCorrect()
-        {
-            // Arrange & Act
-            var agentType = AgentTypes.InternalContext;
-
-            // Assert
-            Assert.Equal("internal-context", agentType);
-        }
-
-        [Fact]
         public void AnalyticAgentType_IsCorrect()
         {
             // Arrange & Act

@@ -18,7 +18,7 @@ namespace FoundationaLLM.Core.Examples
         private string indexingProfileSDZWA = "indexing_profile_sdzwa";
 
         public CreateAgentsForLoadTest(ITestOutputHelper output, TestFixture fixture)
-            : base(output, fixture.ServiceProvider)
+            : base(output, [fixture.ServiceProvider])
         {
             _vectorizationTestService = GetService<IVectorizationTestService>();
             _managementAPITestManager = GetService<IManagementAPITestManager>();

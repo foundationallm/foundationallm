@@ -13,12 +13,12 @@ from foundationallm.telemetry import Telemetry
 # Open a connection to the app configuration
 config = get_config()
 # Start collecting telemetry
-Telemetry.configure_monitoring(config, f'FoundationaLLM:APIs:{API_NAME}:AppInsightsConnectionString')
+# Telemetry.configure_monitoring(config, f'FoundationaLLM:APIEndpoints:{API_NAME}:Essentials:AppInsightsConnectionString')
 
 app = FastAPI(
     title=f'FoundationaLLM {API_NAME}',
     summary='API for retrieving Prompt metadata',
-    description="""The FoundationaLLM PromptHubAPI is a wrapper around PromptHub
+    description=f"""The FoundationaLLM {API_NAME} is a wrapper around PromptHub
                 functionality contained in the foundationallm.core Python SDK.""",
     version='1.0.0',
     contact={

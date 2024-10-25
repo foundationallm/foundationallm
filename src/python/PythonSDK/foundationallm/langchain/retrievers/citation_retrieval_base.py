@@ -14,3 +14,4 @@ class CitationRetrievalBase(ABC):
         Returns:
             List of citations from the retrieved documents.
         """
+        raise NotImplementedError()

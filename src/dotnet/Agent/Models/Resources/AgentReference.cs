@@ -14,12 +14,11 @@ namespace FoundationaLLM.Agent.Models.Resources
         /// The object type of the agent.
         /// </summary>
         [JsonIgnore]
-        public Type AgentType =>
+        public override Type ResourceType =>
             Type switch
             {
                 AgentTypes.Basic => typeof(AgentBase),
                 AgentTypes.KnowledgeManagement => typeof(KnowledgeManagementAgent),
-                AgentTypes.InternalContext => typeof(KnowledgeManagementAgent), // Temporary until InternalContextAgent is completely removed.
                 _ => throw new ResourceProviderException($"The agent type {Type} is not supported.")
             };
     }

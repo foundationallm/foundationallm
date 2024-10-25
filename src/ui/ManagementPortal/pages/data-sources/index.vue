@@ -8,7 +8,7 @@
 
 			<div style="display: flex; align-items: center">
 				<NuxtLink to="/data-sources/create">
-					<Button>
+					<Button aria-label="Create data source">
 						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
 						Create Data Source
 					</Button>
@@ -33,10 +33,8 @@
 				table-style="max-width: 100%"
 				size="small"
 			>
-				<template #empty>
-					No data sources found. Please use the menu on the left to create a new data
-					source.</template
-				>
+				<template #empty> No data sources found. </template>
+
 				<template #loading>Loading data sources. Please wait.</template>
 
 				<!-- Name -->
@@ -81,7 +79,7 @@
 				>
 					<template #body="{ data }">
 						<NuxtLink :to="'/data-sources/edit/' + data.resource.name" class="table__button">
-							<Button link>
+							<Button link :aria-label="`Edit ${data.resource.name}`">
 								<i class="pi pi-cog" style="font-size: 1.2rem"></i>
 							</Button>
 						</NuxtLink>
@@ -101,8 +99,12 @@
 					}"
 				>
 					<template #body="{ data }">
-						<Button link @click="dataSourceToDelete = data.resource">
-							<i class="pi pi-trash" style="font-size: 1.2rem; color: var(--red-400)"></i>
+						<Button
+							link
+							:aria-label="`Delete ${data.resource.name}`"
+							@click="dataSourceToDelete = data.resource"
+						>
+							<i class="pi pi-trash" style="font-size: 1.2rem"></i>
 						</Button>
 					</template>
 				</Column>

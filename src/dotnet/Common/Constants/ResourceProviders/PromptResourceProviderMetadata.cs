@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Models.ResourceProviders;
+﻿using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 
 namespace FoundationaLLM.Common.Constants.ResourceProviders
@@ -16,19 +17,20 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             {
                 PromptResourceTypeNames.Prompts,
                 new ResourceTypeDescriptor(
-                        PromptResourceTypeNames.Prompts)
+                        PromptResourceTypeNames.Prompts,
+                        typeof(PromptBase))
                 {
                     AllowedTypes = [
-                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, [], [], [typeof(ResourceProviderGetResult<MultipartPrompt>)]),
-                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, [], [typeof(MultipartPrompt)], [typeof(ResourceProviderUpsertResult)]),
-                        new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, [], [], []),
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<PromptBase>)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(PromptBase)], [typeof(ResourceProviderUpsertResult)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], []),
                     ],
                     Actions = [
-                            new ResourceTypeAction("checkname", false, true, [
-                                new ResourceTypeAllowedTypes(HttpMethod.Post.Method, [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)])
+                            new ResourceTypeAction(ResourceProviderActions.CheckName, false, true, [
+                                new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)])
                             ]),
-                            new ResourceTypeAction(PromptResourceProviderActions.Purge, true, false, [
-                                new ResourceTypeAllowedTypes(HttpMethod.Post.Method, [], [], [typeof(ResourceProviderActionResult)])
+                            new ResourceTypeAction(ResourceProviderActions.Purge, true, false, [
+                                new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Delete, [], [], [typeof(ResourceProviderActionResult)])
                             ])
                         ]
                 }

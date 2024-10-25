@@ -30,5 +30,10 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// </summary>
         public const string Owner = "1301f8d4-3bea-4880-945f-315dbd2ddb46";
 
+        /// <summary>
+        /// Upload attachments including uploading to Azure OpenAI file store.
+        /// </summary>
+        public const string Attachments_Contributor = "8e77fb6a-7a78-43e1-b628-d9e2285fe25a";
+
     }
 }

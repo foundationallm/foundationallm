@@ -9,8 +9,11 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
     /// </summary>
     internal class AttachmentRESTClient(
         IHttpClientFactory httpClientFactory,
-        TokenCredential credential) : CoreRESTClientBase(httpClientFactory, credential), IAttachmentRESTClient
+        TokenCredential credential,
+        string instanceId) : CoreRESTClientBase(httpClientFactory, credential), IAttachmentRESTClient
     {
+        private readonly string _instanceId = instanceId ?? throw new ArgumentNullException(nameof(instanceId));
+
         /// <inheritdoc/>
         public async Task<string> UploadAttachmentAsync(Stream fileStream, string fileName, string contentType)
         {
@@ -26,7 +29,7 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
                 }, "file", fileName }
             };
 
-            var responseMessage = await coreClient.PostAsync("attachments/upload", content);
+            var responseMessage = await coreClient.PostAsync($"instances/{_instanceId}/attachments/upload", content);
 
             if (!responseMessage.IsSuccessStatusCode)
             {

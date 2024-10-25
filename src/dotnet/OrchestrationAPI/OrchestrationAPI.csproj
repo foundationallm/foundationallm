@@ -44,6 +44,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Attachments\Attachment.csproj" />
     <ProjectReference Include="..\Configuration\Configuration.csproj" />
+    <ProjectReference Include="..\DataSource\DataSource.csproj" />
+    <ProjectReference Include="..\Gateway\Gateway.csproj" />
     <ProjectReference Include="..\Orchestration\Orchestration.csproj" />
     <ProjectReference Include="..\Agent\Agent.csproj" />
     <ProjectReference Include="..\Authorization\Authorization.csproj" />

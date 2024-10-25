@@ -1,0 +1,13 @@
+{{- $name := include "state-api.fullname" . -}}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "cfg-{{ $name }}"
+  labels:
+    app: {{ template "state-api.name" . }}
+    chart: {{ template "state-api.chart" .}}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data: 
+  AZURE_CLIENT_ID: {{ .Values.azureWorkloadIdentity.stateApiClientId }}

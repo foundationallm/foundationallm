@@ -1,12 +1,16 @@
 import { defineStore } from 'pinia';
 import type { AccountInfo } from '@azure/msal-browser';
-import { PublicClientApplication, EventType } from '@azure/msal-browser';
+import { PublicClientApplication } from '@azure/msal-browser';
+import { useAppStore } from './appStore';
+
+const SHOW_LOGS = false;
 
 export const useAuthStore = defineStore('auth', {
 	state: () => ({
 		msalInstance: null,
 		tokenExpirationTimerId: null as number | null,
 		isExpired: false,
+		apiToken: null,
 	}),
 
 	getters: {
@@ -25,6 +29,17 @@ export const useAuthStore = defineStore('auth', {
 		authConfig() {
 			return useNuxtApp().$appConfigStore.auth;
 		},
+
+		oneDriveWorkSchoolScopes() {
+			const appStore = useAppStore();
+			return appStore.coreConfiguration?.fileStoreConnectors?.find(
+				(connector) => connector.subcategory === 'OneDriveWorkSchool',
+			)?.authentication_parameters.scope;
+		},
+
+		apiScopes() {
+			return [this.authConfig.scopes];
+		},
 	},
 
 	actions: {
@@ -34,7 +49,7 @@ export const useAuthStore = defineStore('auth', {
 					clientId: this.authConfig.clientId,
 					authority: `${this.authConfig.instance}${this.authConfig.tenantId}`,
 					redirectUri: this.authConfig.callbackPath,
-					scopes: this.authConfig.scopes,
+					scopes: this.apiScopes,
 					// Must be registered as a SPA redirectURI on your app registration.
 					postLogoutRedirectUri: '/',
 				},
@@ -43,86 +58,131 @@ export const useAuthStore = defineStore('auth', {
 				},
 			});
 
-			msalInstance.addEventCallback((event) => {
-				const { eventType } = event;
-				if (
-					eventType === EventType.ACQUIRE_TOKEN_SUCCESS ||
-					eventType === EventType.LOGIN_SUCCESS
-				) {
-					this.createTokenRefreshTimer();
-				}
-			});
-
 			await msalInstance.initialize();
-
 			this.msalInstance = msalInstance;
 
 			return this;
 		},
 
 		createTokenRefreshTimer() {
-			const tokenExpirationTime = this.currentAccount.idTokenClaims.exp * 1000;
+			const tokenExpirationTimeMS = this.apiToken.expiresOn;
 			const currentTime = Date.now();
-			const timeUntilExpirationMS = tokenExpirationTime - currentTime;
+			const timeUntilExpirationMS = tokenExpirationTimeMS - currentTime;
 
-			if (timeUntilExpirationMS <= 0) {
-				console.log(`Auth: Access token expired ${timeUntilExpirationMS / 1000} seconds ago.`);
-				this.isExpired = true;
-				return;
-				// return useNuxtApp().$router.push({
-				// 	name: 'auth/login',
-				// 	query: {
-				// 		message: 'Your login has expired. Please sign in again.',
-				// 	},
-				// });
+			// If the token expires within the next minute, try to refresh it
+			if (timeUntilExpirationMS <= 60 * 1000) {
+				return this.tryTokenRefresh();
 			}
 
+			SHOW_LOGS && console.log(`Auth: Cleared previous access token timer.`);
 			clearTimeout(this.tokenExpirationTimerId);
 
 			this.tokenExpirationTimerId = setTimeout(() => {
-				this.refreshToken();
+				this.tryTokenRefresh();
 			}, timeUntilExpirationMS);
 
-			console.log(
-				`Auth: Set access token timer refresh in ${timeUntilExpirationMS / 1000} seconds.`,
-			);
+			const refreshDate = new Date(tokenExpirationTimeMS);
+			SHOW_LOGS &&
+				console.log(
+					`Auth: Set access token timer refresh for ${refreshDate} (in ${timeUntilExpirationMS / 1000} seconds).`,
+				);
 		},
 
-		async refreshToken() {
+		async tryTokenRefresh() {
 			try {
-				await this.msalInstance.acquireTokenSilent({
-					account: this.currentAccount,
-					scopes: [this.authConfig.scopes],
-				});
-				console.log('Auth: Refreshed access token.');
-				this.createTokenRefreshTimer();
+				await this.getApiToken();
+				SHOW_LOGS && console.log('Auth: Successfully refreshed access token.');
 			} catch (error) {
-				console.error('Auth: Token refresh error:', error);
-				// sessionStorage.clear();
+				SHOW_LOGS && console.error('Auth: Failed to refresh access token:', error);
 				this.isExpired = true;
-				// useNuxtApp().$router.push({ name: 'auth/login' });
 			}
 		},
 
-		async getToken() {
+		async getApiToken() {
 			try {
-				return await this.msalInstance.acquireTokenSilent({
+				this.apiToken = await this.msalInstance.acquireTokenSilent({
 					account: this.currentAccount,
+					scopes: this.apiScopes,
 				});
+
+				this.createTokenRefreshTimer();
+
+				return this.apiToken;
 			} catch (error) {
 				this.isExpired = true;
 				throw error;
 			}
 		},
 
+		async requestOneDriveWorkSchoolConsent() {
+			let accessToken = '';
+			const oneDriveWorkSchoolAPIScopes: any = {
+				account: this.currentAccount,
+				scopes: [this.oneDriveWorkSchoolScopes],
+			};
+
+			try {
+				const resp = await this.msalInstance.acquireTokenSilent(oneDriveWorkSchoolAPIScopes);
+				accessToken = resp.accessToken;
+			} catch (error) {
+				// Redirect to get token or login
+				localStorage.setItem('oneDriveWorkSchoolConsentRedirect', JSON.stringify(true));
+
+				oneDriveWorkSchoolAPIScopes.state = 'Core API redirect';
+				await this.msalInstance.loginRedirect(oneDriveWorkSchoolAPIScopes);
+			}
+			return accessToken;
+		},
+
+		async getOneDriveWorkSchoolToken(): string | null {
+			const appStore = useAppStore();
+			const oneDriveBaseURL = appStore.coreConfiguration?.fileStoreConnectors?.find(
+				(connector) => connector.subcategory === 'OneDriveWorkSchool',
+			)?.url;
+			const oneDriveToken = await this.msalInstance.acquireTokenSilent({
+				account: this.currentAccount,
+				scopes: [`${oneDriveBaseURL}${this.oneDriveWorkSchoolScopes}`],
+			});
+
+			return oneDriveToken;
+		},
+
+		async getProfilePhoto(): string | null {
+			try {
+				const graphScopes = ['https://graph.microsoft.com/User.Read'];
+				const graphToken = await this.msalInstance.acquireTokenSilent({
+					account: this.currentAccount,
+					scopes: graphScopes,
+				});
+
+				const profilePhotoBlob = await $fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
+					method: 'GET',
+					headers: {
+						Authorization: `Bearer ${graphToken.accessToken}`,
+					},
+				});
+
+				return URL.createObjectURL(profilePhotoBlob);
+			} catch (error) {
+				return null;
+			}
+		},
+
 		async login() {
 			return await this.msalInstance.loginRedirect({
-				scopes: [this.authConfig.scopes],
+				scopes: this.apiScopes,
 			});
 		},
 
-		async logoutSilent() {
+		async clearLocalSession() {
 			await this.msalInstance.controller.browserStorage.clear();
+		},
+
+		async logoutSilent() {
+			const logoutHint = this.currentAccount.idTokenClaims.login_hint;
+			await this.msalInstance.logoutRedirect({
+				logoutHint,
+			});
 		},
 
 		async logout() {

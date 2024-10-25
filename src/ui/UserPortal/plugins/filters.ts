@@ -9,7 +9,7 @@ const filters = {
 	},
 
 	enforceLeadingSlash(path: string) {
-		if (!path.startsWith('/') && !path.startsWith('http')) {
+		if (!path.startsWith('/') && !path.startsWith('http') && !path.startsWith('data:')) {
 			return '/' + path;
 		} else {
 			return path;

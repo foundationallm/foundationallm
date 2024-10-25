@@ -1,10 +1,5 @@
-﻿using FoundationaLLM.Common.Settings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using FoundationaLLM.Common.Constants.Authentication;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace FoundationaLLM.SemanticKernel.Core.Models.Configuration
 {
@@ -22,6 +17,6 @@ namespace FoundationaLLM.SemanticKernel.Core.Models.Configuration
         /// The <see cref="AuthenticationType"/> indicating which authentication mechanism to use.
         /// </summary>
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        public required AzureAISearchAuthenticationTypes AuthenticationType { get; set; }
+        public required AuthenticationTypes AuthenticationType { get; set; }
     }
 }

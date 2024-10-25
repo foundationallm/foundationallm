@@ -84,6 +84,48 @@
       "updated_on": "${env:DEPLOY_TIME}",
       "created_by": "SYSTEM",
       "updated_by": "SYSTEM"
+    },
+    {
+      "name": "${env:GUID07}",
+      "type": "FoundationaLLM.Authorization/roleAssignments",
+      "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/${env:GUID07}",
+      "description": "Role assignment reader for the Gatekeeper API managed identity.",
+      "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+      "principal_id": "${env:SERVICE_GATEKEEPER_API_MI_OBJECT_ID}",
+      "principal_type": "User",
+      "scope": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}",
+      "created_on": "${env:DEPLOY_TIME}",
+      "updated_on": "${env:DEPLOY_TIME}",
+      "created_by": "SYSTEM",
+      "updated_by": "SYSTEM"
+    },
+    {
+      "name": "${env:GUID08}",
+      "type": "FoundationaLLM.Authorization/roleAssignments",
+      "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/${env:GUID08}",
+      "description": "Role assignment reader for the Vectorization Worker managed identity.",
+      "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+      "principal_id": "${env:SERVICE_VECTORIZATION_JOB_MI_OBJECT_ID}",
+      "principal_type": "User",
+      "scope": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}",
+      "created_on": "${env:DEPLOY_TIME}",
+      "updated_on": "${env:DEPLOY_TIME}",
+      "created_by": "SYSTEM",
+      "updated_by": "SYSTEM"
+    },
+    {
+      "name": "${env:GUID09}",
+      "type": "FoundationaLLM.Authorization/roleAssignments",
+      "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/${env:GUID09}",
+      "description": "Role assignment reader for the Gateway API managed identity.",
+      "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+      "principal_id": "${env:SERVICE_GATEWAY_API_MI_OBJECT_ID}",
+      "principal_type": "User",
+      "scope": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}",
+      "created_on": "${env:DEPLOY_TIME}",
+      "updated_on": "${env:DEPLOY_TIME}",
+      "created_by": "SYSTEM",
+      "updated_by": "SYSTEM"
     }
   ]
 }

@@ -23,6 +23,7 @@ azureWorkloadIdentity:
 apihost: {{serviceHostname}}
 authKeyvaultUri: {{authKeyvaultUri}}
 baseUrl: {{serviceBaseUrl}}
+instanceId: {{instanceId}}
 
 ingress:
   enabled: false

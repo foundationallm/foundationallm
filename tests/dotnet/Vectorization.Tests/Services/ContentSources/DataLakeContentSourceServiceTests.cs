@@ -1,4 +1,6 @@
-﻿using FoundationaLLM.Common.Models.Configuration.Storage;
+﻿using FoundationaLLM.Common.Constants.Authentication;
+using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Configuration.Storage;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Vectorization.Services.ContentSources;
 using Microsoft.Extensions.Logging;
@@ -12,7 +14,7 @@ namespace Vectorization.Tests.Services.ContentSources
         public DataLakeContentSourceServiceTests() {
             _dataLakeContentSourceService = new DataLakeContentSourceService(
                 new BlobStorageServiceSettings { 
-                    AuthenticationType = BlobStorageAuthenticationTypes.ConnectionString,
+                    AuthenticationType = AuthenticationTypes.ConnectionString,
                     ConnectionString = Environment.GetEnvironmentVariable("DataLakeContentServiceTestsConnectionString")
                 },
                 LoggerFactory.Create(builder => builder.AddConsole())
@@ -22,6 +24,7 @@ namespace Vectorization.Tests.Services.ContentSources
         [Fact]
         public async void TestExtractTextFromFile()
         {
+            UnifiedUserIdentity userIdentity = new();
             // TXT
             Assert.Equal(
                 "This is a test string in the Vectorization Data Lake.",
@@ -36,6 +39,7 @@ namespace Vectorization.Tests.Services.ContentSources
                             "vectorization-content-test.txt"
                         }
                     },
+                    userIdentity,
                     new CancellationTokenSource().Token
                 )
             );
@@ -54,6 +58,7 @@ namespace Vectorization.Tests.Services.ContentSources
                             "vectorization-content-test.docx"
                         }
                     },
+                    userIdentity,
                     new CancellationTokenSource().Token
                 )
             );

@@ -1,10 +1,5 @@
-﻿using FoundationaLLM.Common.Models.Orchestration;
-using Microsoft.AspNetCore.Routing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FoundationaLLM.Common.Models.Orchestration.Request;
+using FoundationaLLM.Common.Models.Orchestration.Response;
 
 namespace FoundationaLLM.Common.Tests.Models.Orchestration
 {
@@ -39,7 +34,7 @@ namespace FoundationaLLM.Common.Tests.Models.Orchestration
         public void Create_CompletionResponse_SucceedsWithValidValues(string completion, string userPrompt, int userPromptTokens, int responseTokens, float[]? userPromptEmbedding)
         {
             //Act
-            var exception = Record.Exception(() => CreateCompletionResponse(completion, userPrompt, userPromptTokens, responseTokens, userPromptEmbedding));
+            var exception = Record.Exception(() => CreateCompletionResponse(Guid.NewGuid().ToString(), completion, userPrompt, userPromptTokens, responseTokens, userPromptEmbedding));
 
             //Assert
             Assert.Null(exception);
@@ -57,6 +52,7 @@ namespace FoundationaLLM.Common.Tests.Models.Orchestration
 
             // Act
             var completionResponse = CreateCompletionResponse(
+                Guid.NewGuid().ToString(),
                 expectedCompletion,
                 expectedUserPrompt,
                 expectedUserPromptTokens,
@@ -76,7 +72,10 @@ namespace FoundationaLLM.Common.Tests.Models.Orchestration
         public void TestTotalTokensCalculation()
         {
             // Arrange
-            var completionResponse = new CompletionResponse();
+            var completionResponse = new CompletionResponse
+            { 
+                OperationId = Guid.NewGuid().ToString()
+            };
             completionResponse.PromptTokens = 5;
             completionResponse.CompletionTokens = 10;
 
@@ -91,7 +90,10 @@ namespace FoundationaLLM.Common.Tests.Models.Orchestration
         public void TestDefaultCompletionResponseInitialization()
         {
             // Arrange
-            var completionResponse = new CompletionResponse();
+            var completionResponse = new CompletionResponse
+            { 
+                OperationId = Guid.NewGuid().ToString() 
+            };
 
             // Act
 
@@ -113,6 +115,7 @@ namespace FoundationaLLM.Common.Tests.Models.Orchestration
             // Act
             var orchestrationRequest = new CompletionRequest
             {
+                OperationId = Guid.NewGuid().ToString(),
                 SessionId = expectedSessionId,
                 UserPrompt = expectedUserPrompt
             };
@@ -122,9 +125,17 @@ namespace FoundationaLLM.Common.Tests.Models.Orchestration
             Assert.Equal(expectedUserPrompt, orchestrationRequest.UserPrompt);
         }
 
-        public CompletionResponse CreateCompletionResponse(string completion, string userPrompt, int userPromptTokens, int responseTokens,float[]? userPromptEmbedding)
+        public CompletionResponse CreateCompletionResponse(string operationId, string completion, string userPrompt, int userPromptTokens, int responseTokens,float[]? userPromptEmbedding)
         {
-            var completionResponse = new CompletionResponse(completion, userPrompt, userPromptTokens, responseTokens, userPromptEmbedding);
+            var completionResponse = new CompletionResponse()
+            {
+                OperationId = operationId,
+                Completion = completion,
+                UserPrompt = userPrompt,
+                PromptTokens = userPromptTokens,
+                CompletionTokens = responseTokens,
+                UserPromptEmbedding = userPromptEmbedding
+            };
             return completionResponse;
         }
     }

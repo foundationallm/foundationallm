@@ -1,25 +1,22 @@
 using Asp.Versioning;
-using Azure.Identity;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
-using FoundationaLLM.Common.Models.Configuration.API;
 using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services;
-using FoundationaLLM.Common.Services.API;
-using FoundationaLLM.Common.Services.Azure;
-using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Common.Validation;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Services;
-using Microsoft.Azure.Cosmos.Fluent;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -45,7 +42,7 @@ namespace FoundationaLLM.Core.API
             builder.Configuration.Sources.Clear();
             builder.Configuration.AddJsonFile("appsettings.json", false, true);
             builder.Configuration.AddEnvironmentVariables();
-            builder.Configuration.AddAzureAppConfiguration(options =>
+            builder.Configuration.AddAzureAppConfiguration((Action<Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions>)(options =>
             {
                 options.Connect(builder.Configuration[EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString]);
                 options.ConfigureKeyVault(options =>
@@ -53,14 +50,27 @@ namespace FoundationaLLM.Core.API
                     options.SetCredential(DefaultAuthentication.AzureCredential);
                 });
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIs);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_CosmosDB);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Branding);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_CoreAPI_Entra);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Agent);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Events);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Attachment);
-            });
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Essentials);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration);
+
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_OrchestrationAPI_Essentials);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatewayAPI_Essentials);
+
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Agent_Storage);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Attachment_Storage);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AIModel_Storage);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AzureOpenAI_Storage);
+
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
+                options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_CoreAPI);
+            }));
             if (builder.Environment.IsDevelopment())
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
 
@@ -73,65 +83,69 @@ namespace FoundationaLLM.Core.API
 
             builder.Services.AddInstanceProperties(builder.Configuration);
 
-            builder.Services.AddOptions<CosmosDbSettings>()
-                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_CosmosDB));
             builder.Services.AddOptions<ClientBrandingConfiguration>()
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Branding));
             builder.Services.AddOptions<CoreServiceSettings>()
-                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIs_CoreAPI));
+                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_CoreAPI_Configuration));
 
             // Add Azure ARM services
-            builder.Services.AddAzureResourceManager();
+            builder.AddAzureResourceManager();
+
+            builder.Services.AddHttpContextAccessor();
 
             // Add event services
             builder.Services.AddAzureEventGridEvents(
                 builder.Configuration,
-                AppConfigurationKeySections.FoundationaLLM_Events_AzureEventGridEventService_Profiles_CoreAPI);
+                AppConfigurationKeySections.FoundationaLLM_Events_Profiles_CoreAPI);
 
             // Add resource providers
             builder.Services.AddSingleton<IResourceValidatorFactory, ResourceValidatorFactory>();
             builder.AddAgentResourceProvider();
             builder.AddAttachmentResourceProvider();
+            builder.AddConfigurationResourceProvider();
+            builder.AddAzureOpenAIResourceProvider();
+            builder.AddAIModelResourceProvider();
+            builder.AddConversationResourceProvider();
 
             // Register the downstream services and HTTP clients.
-            RegisterDownstreamServices(builder);
+            builder.AddHttpClientFactoryService();
+            builder.AddDownstreamAPIService(HttpClientNames.GatekeeperAPI);
+            builder.AddDownstreamAPIService(HttpClientNames.OrchestrationAPI);
 
-            builder.Services.AddSingleton<CosmosClient>(serviceProvider =>
-            {
-                var settings = serviceProvider.GetRequiredService<IOptions<CosmosDbSettings>>().Value;
-                return new CosmosClientBuilder(settings.Endpoint, DefaultAuthentication.AzureCredential)
-                    .WithSerializerOptions(new CosmosSerializationOptions
-                    {
-                        PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
-                    })
-                    .WithConnectionModeGateway()
-                    .Build();
-            });
-
-            builder.Services.AddScoped<ICosmosDbService, CosmosDbService>();
+            builder.AddAzureCosmosDBService();
             builder.Services.AddScoped<ICoreService, CoreService>();
             builder.Services.AddScoped<IUserProfileService, UserProfileService>();
+            builder.Services.AddScoped<IOneDriveWorkSchoolService, OneDriveWorkSchoolService>();
 
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             builder.Services.AddScoped<ICallContext, CallContext>();
-            builder.Services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
 
             // Add authentication configuration.
             var e2ETestEnvironmentValue = Environment.GetEnvironmentVariable(EnvironmentVariables.FoundationaLLM_Environment) ?? string.Empty;
             var isE2ETestEnvironment = e2ETestEnvironmentValue.Equals(EnvironmentTypes.E2ETest, StringComparison.CurrentCultureIgnoreCase);
             builder.AddAuthenticationConfiguration(
-                AppConfigurationKeys.FoundationaLLM_CoreAPI_Entra_Instance,
-                AppConfigurationKeys.FoundationaLLM_CoreAPI_Entra_TenantId,
-                AppConfigurationKeys.FoundationaLLM_CoreAPI_Entra_ClientId,
-                AppConfigurationKeys.FoundationaLLM_CoreAPI_Entra_Scopes,
+                AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_Instance,
+                AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_TenantId,
+                AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_ClientId,
+                AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_Scopes,
                 requireScopes: !isE2ETestEnvironment,
                 allowACLAuthorization: isE2ETestEnvironment
             );
 
             // Add OpenTelemetry.
             builder.AddOpenTelemetry(
-                AppConfigurationKeys.FoundationaLLM_APIs_CoreAPI_AppInsightsConnectionString,
+                AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_AppInsightsConnectionString,
                 ServiceNames.CoreAPI);
+
+            // Increase request size limit to 512 MB.
+            builder.WebHost.ConfigureKestrel(serverOptions =>
+            {
+                serverOptions.Limits.MaxRequestBodySize = 536870912; // 512 MB
+            });
+            builder.Services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 536870912; // 512 MB
+            });
 
             builder.Services.AddControllers();
 
@@ -225,6 +239,12 @@ namespace FoundationaLLM.Core.API
                     => exceptionHandlerApp.Run(async context
                         => await Results.Problem().ExecuteAsync(context)));
 
+            var forwardedHeadersOptions = new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            };
+            app.UseForwardedHeaders(forwardedHeadersOptions);
+
             // Configure the HTTP request pipeline.
             app.UseSwagger();
             app.UseSwaggerUI(
@@ -240,83 +260,13 @@ namespace FoundationaLLM.Core.API
                         options.SwaggerEndpoint(url, name);
                     }
 
-                    options.OAuthAdditionalQueryStringParams(new Dictionary<string, string>() { { "resource", builder.Configuration[AppConfigurationKeys.FoundationaLLM_CoreAPI_Entra_ClientId]! } });
+                    options.OAuthAdditionalQueryStringParams(new Dictionary<string, string>() { { "resource", builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_ClientId]! } });
                 });
 
             app.UseHttpsRedirection();
             app.MapControllers();
 
             app.Run();
-        }
-
-        /// <summary>
-        /// Bind the downstream API settings to the configuration and register the HTTP clients.
-        /// The AddResilienceHandler extension method is used to add the standard Polly resilience
-        /// strategies to the HTTP clients.
-        /// </summary>
-        /// <param name="builder"></param>
-        private static void RegisterDownstreamServices(WebApplicationBuilder builder)
-        {
-            var downstreamAPISettings = new DownstreamAPISettings
-            {
-                DownstreamAPIs = []
-            };
-
-            var gatekeeperAPISettings = new DownstreamAPIClientConfiguration
-            {
-                APIUrl = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_GatekeeperAPI_APIUrl]!,
-                APIKey = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_GatekeeperAPI_APIKey]!,
-                Timeout = TimeSpan.FromMinutes(40)
-            };
-            downstreamAPISettings.DownstreamAPIs[HttpClients.GatekeeperAPI] = gatekeeperAPISettings;
-
-            builder.Services
-                    .AddHttpClient(HttpClients.GatekeeperAPI,
-                        client => {
-                            client.BaseAddress = new Uri(gatekeeperAPISettings.APIUrl);
-                            client.Timeout = gatekeeperAPISettings.Timeout.Value;
-                        })
-                    .AddResilienceHandler(
-                        "DownstreamPipeline",
-                        static strategyBuilder =>
-                        {
-                            CommonHttpRetryStrategyOptions.GetCommonHttpRetryStrategyOptions();
-                        });
-
-            var orchestrationAPISettings = new DownstreamAPIClientConfiguration
-            {
-                APIUrl = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_OrchestrationAPI_APIUrl]!,
-                APIKey = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIs_OrchestrationAPI_APIKey]!,
-                Timeout = TimeSpan.FromMinutes(35)
-            };
-
-            downstreamAPISettings.DownstreamAPIs[HttpClients.OrchestrationAPI] = orchestrationAPISettings;
-
-            builder.Services
-                    .AddHttpClient(HttpClients.OrchestrationAPI,
-                        client => {
-                            client.BaseAddress = new Uri(orchestrationAPISettings.APIUrl);
-                            client.Timeout = orchestrationAPISettings.Timeout.Value;
-                        })
-                    .AddResilienceHandler(
-                        "DownstreamPipeline",
-                        static strategyBuilder =>
-                        {
-                            CommonHttpRetryStrategyOptions.GetCommonHttpRetryStrategyOptions();
-                        });
-
-            builder.Services.AddSingleton<IDownstreamAPISettings>(downstreamAPISettings);
-
-            builder.Services.AddScoped<IDownstreamAPIService, DownstreamAPIService>((serviceProvider)
-                => new DownstreamAPIService(
-                    HttpClients.GatekeeperAPI,
-                    serviceProvider.GetService<IHttpClientFactoryService>()!,
-                    serviceProvider.GetService<ILogger<DownstreamAPIService>>()!));
-            builder.Services.AddScoped<IDownstreamAPIService, DownstreamAPIService>((serviceProvider)
-                => new DownstreamAPIService(
-                    HttpClients.OrchestrationAPI,
-                    serviceProvider.GetService<IHttpClientFactoryService>()!,
-                    serviceProvider.GetService<ILogger<DownstreamAPIService>>()!));
         }
     }
 }

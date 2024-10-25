@@ -1,17 +1,43 @@
 <template>
 	<div class="chat-app">
-		<NavBar />
+		<Button 
+            class="sr-only skip-to-input-button"
+			role="link"
+			label="Skip to input"
+            aria-label="Skip to input" 
+            @click="focusInput"
+        />
+		<header role="banner">
+			<NavBar />
+		</header>
 		<div class="chat-content">
-			<div v-show="!$appStore.isSidebarClosed" ref="sidebar" class="chat-sidebar-wrapper">
+			<aside
+				v-show="!$appStore.isSidebarClosed"
+				ref="sidebar"
+				class="chat-sidebar-wrapper"
+				role="navigation"
+			>
 				<ChatSidebar class="chat-sidebar" :style="{ width: sidebarWidth + 'px' }" />
-				<div class="resize-handle" @mousedown="startResizing"></div>
-			</div>
+				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']" :skidding="skidding">
+					<div 
+						class="resize-handle" 
+						@mousedown="startResizing" 
+						@keydown.left.prevent="resizeSidebarWithKeyboard(-10)" 
+						@keydown.right.prevent="resizeSidebarWithKeyboard(10)" 
+						tabindex="0"
+						aria-label="Resize sidebar"
+					></div>
+					<template #popper><div role="tooltip">Resize sidebar (Use left and right arrow keys)</div></template>
+				</VTooltip>
+			</aside>
 			<div
 				v-show="!$appStore.isSidebarClosed"
 				class="sidebar-blur"
 				@click="$appStore.toggleSidebar"
 			/>
-			<ChatThread />
+			<main role="main" class="chat-main">
+				<ChatThread ref="thread" :is-dragging="isDragging" />
+			</main>
 		</div>
 	</div>
 </template>
@@ -23,6 +49,9 @@ export default {
 	data() {
 		return {
 			sidebarWidth: 305,
+			isDragging: false,
+			isMobile: window.screen.width < 950,
+			skidding: 0,
 		};
 	},
 
@@ -30,6 +59,18 @@ export default {
 		if (window.innerWidth < 950) {
 			this.$appStore.toggleSidebar();
 		}
+
+		window.addEventListener('dragenter', this.showDropZone);
+		window.addEventListener('dragleave', this.hideDropZone);
+		window.addEventListener('dragover', this.handleDragOver);
+		window.addEventListener('drop', this.handleDrop);
+	},
+
+	beforeUnmount() {
+		window.removeEventListener('dragenter', this.showDropZone);
+		window.removeEventListener('dragleave', this.hideDropZone);
+		window.removeEventListener('dragover', this.handleDragOver);
+		window.removeEventListener('drop', this.handleDrop);
 	},
 
 	methods: {
@@ -60,21 +101,107 @@ export default {
 			this.$refs.sidebar.style.width = `${this.sidebarWidth}px`;
 		},
 
+		resizeSidebarWithKeyboard(offset: number) {
+			const newWidth = this.sidebarWidth + offset;
+
+			if (newWidth < 305) {
+				this.sidebarWidth = 305;
+			} else if (newWidth > 600) {
+				this.sidebarWidth = 600;
+			} else {
+				this.sidebarWidth = newWidth;
+			}
+
+			this.$refs.sidebar.style.width = `${this.sidebarWidth}px`;
+			// resets tooltip location
+			this.skidding = this.sidebarWidth * 0.001;
+		},
+
+		showDropZone(event) {
+			if (event.dataTransfer && event.dataTransfer.types.includes('Files')) {
+				this.isDragging = true;
+			}
+		},
+
+		hideDropZone(event) {
+			if (!event.relatedTarget) {
+				this.isDragging = false;
+			}
+		},
+
+		handleDragOver(event) {
+			event.preventDefault();
+		},
+
+		handleDrop(event) {
+			if (event.dataTransfer && event.dataTransfer.types.includes('Files')) {
+				event.preventDefault();
+
+				this.isDragging = false;
+
+				const dropZone = this.$refs.thread.$refs.dropZone;
+
+				const dropZoneRect = dropZone.getBoundingClientRect();
+
+				const isInDropZone =
+					event.clientX >= dropZoneRect.left &&
+					event.clientX <= dropZoneRect.right &&
+					event.clientY >= dropZoneRect.top &&
+					event.clientY <= dropZoneRect.bottom;
+
+				if (isInDropZone) {
+					this.$refs.thread.handleParentDrop(event);
+				}
+			}
+		},
+
 		stopResizing() {
 			document.removeEventListener('mousemove', this.resizeSidebar);
 			document.removeEventListener('mouseup', this.stopResizing);
+		},
+
+		focusInput() {
+			this.$refs.thread.$refs.chatInput.$refs.inputRef.focus()
 		},
 	},
 };
 </script>
 
 <style lang="scss" scoped>
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
+}
+
+.skip-to-input-button:focus {
+    position: fixed !important; /* Override sr-only */
+    top: 10px !important;        /* Ensure visibility */
+    left: 10px !important;
+    width: auto !important;
+    height: auto !important;
+    z-index: 100 !important;
+    padding: 10px !important;
+    border: 2px solid #fff !important;
+    outline: none !important;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) !important;
+    clip: auto !important;        /* Remove clip hiding */
+    width: auto !important;
+    height: auto !important;
+}
+
 .chat-app {
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
 	background-color: var(--primary-bg);
 }
+
 .chat-content {
 	display: flex;
 	flex-direction: row;
@@ -99,6 +226,12 @@ export default {
 	width: 5px;
 	background-color: #ccc;
 	height: 100%;
+}
+
+.chat-main {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
 }
 
 @media only screen and (max-width: 620px) {

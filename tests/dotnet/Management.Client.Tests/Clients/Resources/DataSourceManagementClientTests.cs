@@ -37,8 +37,8 @@ namespace Management.Client.Tests.Clients.Resources
                         },
                         Folders = ["/folder1", "/folder2"],
                     },
-                    Actions = [],
-                    Roles = []
+                    Roles = [],
+                    Actions = []
                 },
                 new ResourceProviderGetResult<DataSourceBase>()
                 {
@@ -53,8 +53,8 @@ namespace Management.Client.Tests.Clients.Resources
                         },
                         Tables = ["Customers", "Orders"],
                     },
-                    Actions = [],
-                    Roles = []
+                    Roles = [],
+                    Actions = []
                 }
             };
 
@@ -94,8 +94,8 @@ namespace Management.Client.Tests.Clients.Resources
                      },
                     Folders = ["/folder1", "/folder2"],
                 },
-                Actions = [],
-                Roles = []
+                Roles = [],
+                Actions = []
             };
             var expectedDataSources = new List<ResourceProviderGetResult<DataSourceBase>> { expectedDataSource };
 
@@ -143,13 +143,15 @@ namespace Management.Client.Tests.Clients.Resources
             { 
                 Name = resourceName.Name,
                 Status = NameCheckResultType.Allowed,
-                Message = "Name is allowed"
+                Message = "Name is allowed",
+                Exists = false,
+                Deleted = false
             };
 
             _mockRestClient.Resources
                 .ExecuteResourceActionAsync<ResourceNameCheckResult>(
                     ResourceProviderNames.FoundationaLLM_DataSource,
-                    $"{DataSourceResourceTypeNames.DataSources}/{DataSourceResourceProviderActions.CheckName}",
+                    $"{DataSourceResourceTypeNames.DataSources}/{ResourceProviderActions.CheckName}",
                     resourceName
                 )
                 .Returns(Task.FromResult(expectedCheckResult));
@@ -161,7 +163,7 @@ namespace Management.Client.Tests.Clients.Resources
             Assert.Equal(expectedCheckResult, result);
             await _mockRestClient.Resources.Received(1).ExecuteResourceActionAsync<ResourceNameCheckResult>(
                 ResourceProviderNames.FoundationaLLM_DataSource,
-                $"{DataSourceResourceTypeNames.DataSources}/{DataSourceResourceProviderActions.CheckName}",
+                $"{DataSourceResourceTypeNames.DataSources}/{ResourceProviderActions.CheckName}",
                 resourceName
             );
         }
@@ -186,7 +188,7 @@ namespace Management.Client.Tests.Clients.Resources
             _mockRestClient.Resources
                 .ExecuteResourceActionAsync<ResourceProviderActionResult>(
                     ResourceProviderNames.FoundationaLLM_DataSource,
-                    $"{DataSourceResourceTypeNames.DataSources}/{dataSourceName}/{DataSourceResourceProviderActions.Purge}",
+                    $"{DataSourceResourceTypeNames.DataSources}/{dataSourceName}/{ResourceProviderActions.Purge}",
                     Arg.Any<object>()
                 )
                 .Returns(Task.FromResult(expectedPurgeResult));
@@ -198,7 +200,7 @@ namespace Management.Client.Tests.Clients.Resources
             Assert.Equal(expectedPurgeResult, result);
             await _mockRestClient.Resources.Received(1).ExecuteResourceActionAsync<ResourceProviderActionResult>(
                 ResourceProviderNames.FoundationaLLM_DataSource,
-                $"{DataSourceResourceTypeNames.DataSources}/{dataSourceName}/{DataSourceResourceProviderActions.Purge}",
+                $"{DataSourceResourceTypeNames.DataSources}/{dataSourceName}/{ResourceProviderActions.Purge}",
                 Arg.Any<object>()
             );
         }
@@ -219,7 +221,7 @@ namespace Management.Client.Tests.Clients.Resources
             // Arrange
             var resourceFilter = new ResourceFilter
             {
-                Default = true
+                DefaultResource = true
             };
             var expectedDataSources = new List<DataSourceBase>
             {
@@ -233,7 +235,7 @@ namespace Management.Client.Tests.Clients.Resources
             _mockRestClient.Resources
                 .ExecuteResourceActionAsync<List<DataSourceBase>>(
                     ResourceProviderNames.FoundationaLLM_DataSource,
-                    $"{DataSourceResourceTypeNames.DataSources}/{DataSourceResourceProviderActions.Filter}",
+                    $"{DataSourceResourceTypeNames.DataSources}/{ResourceProviderActions.Filter}",
                     resourceFilter
                 )
                 .Returns(Task.FromResult(expectedDataSources));
@@ -245,7 +247,7 @@ namespace Management.Client.Tests.Clients.Resources
             Assert.Equal(expectedDataSources, result);
             await _mockRestClient.Resources.Received(1).ExecuteResourceActionAsync<List<DataSourceBase>>(
                 ResourceProviderNames.FoundationaLLM_DataSource,
-                $"{DataSourceResourceTypeNames.DataSources}/{DataSourceResourceProviderActions.Filter}",
+                $"{DataSourceResourceTypeNames.DataSources}/{ResourceProviderActions.Filter}",
                 resourceFilter
             );
         }
@@ -257,7 +259,8 @@ namespace Management.Client.Tests.Clients.Resources
             var dataSource = new DataSourceBase { Name = "test-dataSource" };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {
-                ObjectId = "test-object-id"
+                ObjectId = "test-object-id",
+                ResourceExists = false
             };
 
             _mockRestClient.Resources

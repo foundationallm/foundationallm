@@ -8,6 +8,8 @@
 			auto-resize
 			rows="5"
 			type="text"
+			:placeholder="placeholder"
+			:aria-labelledby="ariaLabelledby"
 			@update:model-value="handleUpdate"
 		/>
 
@@ -17,6 +19,8 @@
 			:readonly="isHidden"
 			class="w-100"
 			type="text"
+			:placeholder="placeholder"
+			:aria-labelledby="ariaLabelledby"
 			@update:model-value="handleUpdate"
 		/>
 
@@ -41,6 +45,18 @@ export default {
 			type: Boolean,
 			required: false,
 			default: false,
+		},
+
+		placeholder: {
+			type: String,
+			required: false,
+			default: '',
+		},
+
+		ariaLabelledby: {
+			type: String,
+			required: false,
+			default: '',
 		},
 	},
 

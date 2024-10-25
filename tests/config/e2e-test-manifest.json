@@ -65,6 +65,13 @@
             "azd_env_key": "SERVICE_GATEWAYAPI_IMAGE"
         },
         {
+            "name": "gateway-adapter-api",
+            "context": "./src",
+            "dockerfile": "./src/dotnet/GatewayAdapterAPI/Dockerfile",
+            "helm_chart": "./deploy/common/helm/gateway-adapter-api", 
+            "azd_env_key": "SERVICE_GATEWAYADAPTERAPI_IMAGE"
+        },
+        {
             "name": "langchain-api",
             "context": "./src/python",
             "dockerfile": "./src/python/LangChainAPI/Dockerfile",
@@ -105,6 +112,13 @@
             "dockerfile": "./src/dotnet/SemanticKernelAPI/Dockerfile",
             "helm_chart": "./deploy/common/helm/semantic-kernel-api",
             "azd_env_key": "SERVICE_SEMANTICKERNELAPI_IMAGE"
+        },
+        {
+            "name": "state-api",
+            "context": "./src",
+            "dockerfile": "./src/dotnet/StateAPI/Dockerfile",
+            "helm_chart": "./deploy/common/helm/state-api",
+            "azd_env_key": "SERVICE_STATEAPI_IMAGE"
         },
         {
             "name": "vectorization-api",

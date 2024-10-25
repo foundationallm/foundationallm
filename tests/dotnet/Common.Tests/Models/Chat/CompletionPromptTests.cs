@@ -1,5 +1,5 @@
-﻿using FoundationaLLM.Common.Models.Chat;
-using FoundationaLLM.Common.Models.Orchestration;
+﻿using FoundationaLLM.Common.Models.Conversation;
+using FoundationaLLM.Common.Models.Orchestration.Response;
 
 namespace FoundationaLLM.Common.Tests.Models.Chat
 {
@@ -56,7 +56,13 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
 
         public CompletionPrompt CreateCompletionPrompt(string sessionId, string messageId, string prompt, Citation[]? citations = null)
         {
-            return new CompletionPrompt(sessionId, messageId, prompt, citations);
+            return new CompletionPrompt
+            {
+                SessionId = sessionId,
+                MessageId = messageId,
+                Prompt = prompt,
+                Citations = citations
+            };
         }
     }
 }

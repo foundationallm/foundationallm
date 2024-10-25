@@ -1,0 +1,23 @@
+{
+  "type": "api-endpoint",
+  "name": "VectorizationWorker",
+  "object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/VectorizationWorker",
+  "display_name": null,
+  "description": null,
+  "cost_center": null,
+  "category": "General",
+  "authentication_type": "APIKey",
+  "authentication_parameters": {
+    "api_key_configuration_name": "FoundationaLLM:APIEndpoints:VectorizationWorker:Essentials:APIKey",
+    "api_key_header_name": "X-API-KEY"
+  },
+  "url": "http://vectorization-job/vectorization",
+  "url_exceptions": [],
+  "timeout_seconds": 60,
+  "retry_strategy_name": "ExponentialBackoff",
+  "created_on": "0001-01-01T00:00:00+00:00",
+  "updated_on": "0001-01-01T00:00:00+00:00",
+  "created_by": "SYSTEM",
+  "updated_by": null,
+  "deleted": false
+}

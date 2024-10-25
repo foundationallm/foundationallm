@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 
 namespace FoundationaLLM.Attachment.Validation

@@ -1,5 +1,4 @@
 ﻿using FoundationaLLM.Authorization.Interfaces;
-using FoundationaLLM.Common.Constants;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Identity.Web;
 using System.Security.Claims;

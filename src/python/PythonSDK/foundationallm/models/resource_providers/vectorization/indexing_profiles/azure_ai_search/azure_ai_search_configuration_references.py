@@ -3,10 +3,10 @@ Class: AzureAISearchConfigurationReferences
 Description:
     Configuration references for an Azure AI Search indexing profile.
 """
+from pydantic import BaseModel
 from typing import Optional
-from foundationallm.models.resource_providers.vectorization import ConfigurationReferencesBase
 
-class AzureAISearchConfigurationReferences(ConfigurationReferencesBase):
+class AzureAISearchConfigurationReferences(BaseModel):
     """
     Configuration references for an Azure AI Search indexing profile.
     """

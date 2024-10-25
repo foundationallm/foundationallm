@@ -8,10 +8,23 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
     public class ResourceFilter
     {
         /// <summary>
-        /// Specify whether to filter by resources designated as default.
-        /// If null, the filter will not be applied. If true, only default resources will be returned.
+        /// Gets or sets a value that specifies whether the default resource should be retrieved or not.
         /// </summary>
+        /// <remarks>
+        /// If set, this value has precedence over the <see cref="ObjectIDs"/> property.
+        /// If not set, the <see cref="ObjectIDs"/> property is used to filter resources.
+        /// </remarks>
         [JsonPropertyName("default")]
-        public bool? Default { get; set; }
+        public bool? DefaultResource { get; set; }
+
+        /// <summary>
+        /// Gets or sets a list of object IDs to filter resources.
+        /// </summary>
+        /// <remarks>
+        /// The <see cref="DefaultResource"/> property has precendece over this property.
+        /// If the <see cref="DefaultResource"/> property is set, this property is ignored.
+        /// </remarks>
+        [JsonPropertyName("object_ids")]
+        public List<string>? ObjectIDs { get; set; }
     }
 }

@@ -1,13 +1,8 @@
 ﻿using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Orchestration.Core.Interfaces;
-using FoundationaLLM.Orchestration.Core.Orchestration;
-using FoundationaLLM.Orchestration.Core.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using System.Reflection;
-using Xunit;
 
 namespace FoundationaLLM.Orchestration.Tests.Orchestration
 {
@@ -35,7 +30,7 @@ namespace FoundationaLLM.Orchestration.Tests.Orchestration
         //public async Task Build_AgentHintNotNull_KnowledgeManagementAgent()
         //{
         //    // Arrange
-        //    var completionRequest = new CompletionRequest()
+        //    var completionRequest = new ClientCompletionRequest()
         //    {
         //        UserPrompt = "Test_Userprompt",
         //        AgentName = "knowledge-management"
@@ -78,7 +73,7 @@ namespace FoundationaLLM.Orchestration.Tests.Orchestration
         //    // Act & Assert
         //    await Assert.ThrowsAsync<ArgumentException>(async () =>
         //        await OrchestrationBuilder.Build(
-        //        new CompletionRequest() { UserPrompt = userPrompt },
+        //        new ClientCompletionRequest() { UserPrompt = userPrompt },
         //        _callContext,
         //        _configuration,
         //        _resourceProviderServices,

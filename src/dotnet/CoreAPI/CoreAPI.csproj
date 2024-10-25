@@ -35,8 +35,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.4" />
     <PackageReference Include="Microsoft.Azure.AppConfiguration.AspNetCore" Version="7.1.0" />
     <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="8.4.0" />
-    <PackageReference Include="Microsoft.Identity.Web.DownstreamApi" Version="2.17.4" />
-    <PackageReference Include="Microsoft.Identity.Web" Version="2.17.4" />
+    <PackageReference Include="Microsoft.Identity.Web.DownstreamApi" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="3.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.5.0" />
@@ -54,9 +54,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Agent\Agent.csproj" />
+    <ProjectReference Include="..\AIModel\AIModel.csproj" />
     <ProjectReference Include="..\Attachments\Attachment.csproj" />
     <ProjectReference Include="..\Authorization\Authorization.csproj" />
+    <ProjectReference Include="..\AzureOpenAI\AzureOpenAI.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Configuration\Configuration.csproj" />
+    <ProjectReference Include="..\Conversation\Conversation.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 

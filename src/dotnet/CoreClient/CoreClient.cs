@@ -1,8 +1,8 @@
 ﻿using Azure.Core;
 using FoundationaLLM.Client.Core.Interfaces;
-using FoundationaLLM.Common.Models.Chat;
 using FoundationaLLM.Common.Models.Configuration.API;
-using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Models.Conversation;
+using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 
@@ -26,8 +26,14 @@ namespace FoundationaLLM.Client.Core
         /// <param name="coreUri">The base URI of the Core API.</param>
         /// <param name="credential">A <see cref="TokenCredential"/> of an authenticated
         /// user or service principle from which the client library can generate auth tokens.</param>
-        public CoreClient(string coreUri, TokenCredential credential)
-            : this(coreUri, credential, new APIClientSettings()) { }
+        /// <param name="instanceId">The unique (GUID) ID for the FoundationaLLM deployment.
+        /// Locate this value in the FoundationaLLM Management Portal or in Azure App Config
+        /// (FoundationaLLM:Instance:Id key)</param>
+        public CoreClient(
+            string coreUri,
+            TokenCredential credential,
+            string instanceId)
+            : this(coreUri, credential, instanceId,  new APIClientSettings()) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CoreClient"/> class with
@@ -36,42 +42,56 @@ namespace FoundationaLLM.Client.Core
         /// <param name="coreUri">The base URI of the Core API.</param>
         /// <param name="credential">A <see cref="TokenCredential"/> of an authenticated
         /// user or service principle from which the client library can generate auth tokens.</param>
+        /// <param name="instanceId">The unique (GUID) ID for the FoundationaLLM deployment.
+        /// Locate this value in the FoundationaLLM Management Portal or in Azure App Config
+        /// (FoundationaLLM:Instance:Id key)</param>
         /// <param name="options">Additional options to configure the HTTP Client.</param>
-        public CoreClient(string coreUri, TokenCredential credential, APIClientSettings options) =>
-            _coreRestClient = new CoreRESTClient(coreUri, credential, options);
+        public CoreClient(
+            string coreUri,
+            TokenCredential credential,
+            string instanceId,
+            APIClientSettings options) =>
+            _coreRestClient = new CoreRESTClient(coreUri, credential, instanceId, options);
 
         /// <inheritdoc/>
-        public async Task<string> CreateChatSessionAsync(string? sessionName)
+        public async Task<string> CreateChatSessionAsync(ChatSessionProperties chatSessionProperties)
         {
-            var sessionId = await _coreRestClient.Sessions.CreateSessionAsync();
-            if (!string.IsNullOrWhiteSpace(sessionName))
-            {
-                await _coreRestClient.Sessions.RenameChatSession(sessionId, sessionName);
-            }
+            if (string.IsNullOrWhiteSpace(chatSessionProperties.Name))
+                throw new ArgumentException("A session name must be provided when creating a new session.");
 
+            var sessionId = await _coreRestClient.Sessions.CreateSessionAsync(chatSessionProperties);
             return sessionId;
         }
 
         /// <inheritdoc/>
-        public async Task<Completion> GetCompletionWithSessionAsync(string? sessionId, string? sessionName,
+        public async Task<Message> GetCompletionWithSessionAsync(string? sessionId, ChatSessionProperties? chatSessionProperties,
             string userPrompt, string agentName)
         {
             if (string.IsNullOrWhiteSpace(sessionId))
             {
-                sessionId = await CreateChatSessionAsync(sessionName);
+                if (chatSessionProperties == null)
+                {
+                    throw new ArgumentException(
+                        "The completion request must contain a session name if no session Id is provided. " +
+                        "A new session will be created with the provided session name.");
+                }
+
+                sessionId = await CreateChatSessionAsync(chatSessionProperties);
             }
 
             var orchestrationRequest = new CompletionRequest
             {
+                OperationId = Guid.NewGuid().ToString(),
                 AgentName = agentName,
                 SessionId = sessionId,
                 UserPrompt = userPrompt
             };
+
             return await GetCompletionWithSessionAsync(orchestrationRequest);
         }
 
         /// <inheritdoc/>
-        public async Task<Completion> GetCompletionWithSessionAsync(CompletionRequest completionRequest)
+        public async Task<Message> GetCompletionWithSessionAsync(CompletionRequest completionRequest)
         {
             if (string.IsNullOrWhiteSpace(completionRequest.SessionId) ||
                 string.IsNullOrWhiteSpace(completionRequest.AgentName) ||
@@ -85,10 +105,11 @@ namespace FoundationaLLM.Client.Core
         }
 
         /// <inheritdoc/>
-        public async Task<Completion> GetCompletionAsync(string userPrompt, string agentName)
+        public async Task<Message> GetCompletionAsync(string userPrompt, string agentName)
         {
             var completionRequest = new CompletionRequest
             {
+                OperationId = Guid.NewGuid().ToString(),
                 AgentName = agentName,
                 UserPrompt = userPrompt
             };
@@ -97,7 +118,7 @@ namespace FoundationaLLM.Client.Core
         }
 
         /// <inheritdoc/>
-        public async Task<Completion> GetCompletionAsync(CompletionRequest completionRequest)
+        public async Task<Message> GetCompletionAsync(CompletionRequest completionRequest)
         {
             if (string.IsNullOrWhiteSpace(completionRequest.AgentName) ||
                 string.IsNullOrWhiteSpace(completionRequest.UserPrompt))
@@ -110,8 +131,8 @@ namespace FoundationaLLM.Client.Core
         }
 
         /// <inheritdoc/>
-        public async Task<Completion> AttachFileAndAskQuestionAsync(Stream fileStream, string fileName, string contentType,
-            string agentName, string question, bool useSession, string? sessionId, string? sessionName)
+        public async Task<Message> AttachFileAndAskQuestionAsync(Stream fileStream, string fileName, string contentType,
+            string agentName, string question, bool useSession, string? sessionId, ChatSessionProperties? chatSessionProperties)
         {
             if (fileStream == null)
             {
@@ -124,11 +145,19 @@ namespace FoundationaLLM.Client.Core
             {
                 if (string.IsNullOrWhiteSpace(sessionId))
                 {
-                    sessionId = await CreateChatSessionAsync(sessionName);
+                    if (chatSessionProperties == null)
+                    {
+                        throw new ArgumentException(
+                            "The completion request must contain a session name if no session Id is provided. " +
+                            "A new session will be created with the provided session name.");
+                    }
+
+                    sessionId = await CreateChatSessionAsync(chatSessionProperties);
                 }
 
                 var orchestrationRequest = new CompletionRequest
                 {
+                    OperationId = Guid.NewGuid().ToString(),
                     AgentName = agentName,
                     SessionId = sessionId,
                     UserPrompt = question,
@@ -142,6 +171,7 @@ namespace FoundationaLLM.Client.Core
             // Use the orchestrated completion request to ask a question about the file.
             var completionRequest = new CompletionRequest
             {
+                OperationId = Guid.NewGuid().ToString(),
                 AgentName = agentName,
                 UserPrompt = question,
                 Attachments = [objectId]

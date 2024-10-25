@@ -1,8 +1,8 @@
 ﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Vectorization;
-using FoundationaLLM.Common.Settings;
 using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -28,13 +28,13 @@ namespace FoundationaLLM.SemanticKernel.Core.Services.Indexing
         /// <summary>
         /// Creates a new <see cref="AzureAISearchIndexingService"/> instance.
         /// </summary>
-        /// <param name="options">The <see cref="IOptions{TOptions}"/> providing configuration settings.</param>
+        /// <param name="settings">The <see cref="AzureAISearchIndexingServiceSettings"/> providing configuration settings.</param>
         /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
         public AzureAISearchIndexingService(
-            IOptions<AzureAISearchIndexingServiceSettings> options,
+            AzureAISearchIndexingServiceSettings settings,
             ILogger<AzureAISearchIndexingService> logger)
         {
-            _settings = options.Value;
+            _settings = settings;
             _logger = logger;
             _memoryStore = CreateMemoryStore();
         }
@@ -76,7 +76,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Services.Indexing
         /// <param name="endpoint">The endpoint of the Azure AI Search deployment.</param>
         /// <returns>The <see cref="Kernel"/> instance.</returns>
         private AzureAISearchMemoryStore CreateMemoryStoreFromIdentity(string endpoint) =>
-            new(endpoint, DefaultAuthentication.AzureCredential);
+            new(endpoint, DefaultAuthentication.AzureCredential!);
 
         private void ValidateEndpoint(string? value)
         {
@@ -91,7 +91,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Services.Indexing
         {
             switch (_settings.AuthenticationType)
             {
-                case AzureAISearchAuthenticationTypes.AzureIdentity:
+                case AuthenticationTypes.AzureIdentity:
                     ValidateEndpoint(_settings.Endpoint);
                     return CreateMemoryStoreFromIdentity(_settings.Endpoint);
                 default:

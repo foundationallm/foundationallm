@@ -15,10 +15,10 @@ namespace FoundationaLLM.Configuration.Models
         /// The object type of the agent.
         /// </summary>
         [JsonIgnore]
-        public Type ResourceType =>
+        public override Type ResourceType =>
             Type switch
             {
-                ConfigurationTypes.APIEndpoint => typeof(APIEndpoint),
+                ConfigurationTypes.APIEndpointConfiguration => typeof(APIEndpointConfiguration),
                 _ => throw new ResourceProviderException($"The resource type {Type} is not supported.")
             };
     }

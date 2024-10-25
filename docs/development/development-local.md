@@ -337,11 +337,15 @@ The `CoreWorker` project is a .NET worker service that acts as the Cosmos DB cha
 
 ### Python Environment Variables
 
-Create a local environment variable named `FOUNDATIONALLM_APP_CONFIGURATION_URI`. The value should be the URI of the Azure App Configuration service and _not_ the connection string. We use role-based access controls (RBAC) to access the Azure App Configuration service, so the connection string is not required.
+Create local environment variables named:
+
+- `FOUNDATIONALLM_APP_CONFIGURATION_URI`. The value should be the URI of the Azure App Configuration service and _not_ the connection string. We use role-based access controls (RBAC) to access the Azure App Configuration service, so the connection string is not required.
+- `FOUNDATIONALLM_ENV`: This is required by the `OperationsManager` to disable the `verify` setting on requests. By setting the value to `dev`, it allows calls to the State API from LangChain and other Python-based APIs when running locally (`FOUNDATIONALLM_ENV` = `dev`) by disabling the check for a valid SSL cert on requests. This is only necessary when running the State API locally. Otherwise, the setting should be set to `prod`.
 
 | Name | Value | Description |
 | ---- | ----- | ----------- |
 | FOUNDATIONALLM_APP_CONFIGURATION_URI | REDACTED | Azure App Configuration URI |
+| FOUNDATIONALLM_ENV | `dev` or `prod` | Environment specification. Acceptable values are `dev` and `prod`. Defaults to `prod` if not set. |
 
 ## Running the solution locally
 

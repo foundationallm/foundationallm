@@ -7,7 +7,6 @@ import Toast from 'primevue/toast';
 import Chip from 'primevue/chip';
 import Textarea from 'primevue/textarea';
 import ToastService from 'primevue/toastservice';
-import Tooltip from 'primevue/tooltip';
 import Divider from 'primevue/divider';
 import Dropdown from 'primevue/dropdown';
 import Avatar from 'primevue/avatar';
@@ -15,6 +14,16 @@ import FileUpload from 'primevue/fileupload';
 import OverlayPanel from 'primevue/overlaypanel';
 import Badge from 'primevue/badge';
 import BadgeDirective from 'primevue/badgedirective';
+import ConfirmDialog from 'primevue/confirmdialog';
+import ConfirmationService from 'primevue/confirmationservice';
+import ProgressBar from 'primevue/progressbar';
+import FocusTrap from 'primevue/focustrap';
+import Image from 'primevue/image';
+import Menu from 'primevue/menu';
+import TabView from 'primevue/tabview';
+import TabPanel from 'primevue/tabpanel';
+import InputSwitch from 'primevue/inputswitch';
+import Slider from 'primevue/slider';
 
 import { defineNuxtPlugin } from '#app';
 
@@ -34,7 +43,17 @@ export default defineNuxtPlugin((nuxtApp) => {
 	nuxtApp.vueApp.component('OverlayPanel', OverlayPanel);
 	nuxtApp.vueApp.component('Badge', Badge);
 	nuxtApp.vueApp.directive('badge', BadgeDirective);
+	nuxtApp.vueApp.component('ConfirmDialog', ConfirmDialog);
+	nuxtApp.vueApp.component('ProgressBar', ProgressBar);
+	nuxtApp.vueApp.directive('focustrap', FocusTrap);
+	nuxtApp.vueApp.component('Image', Image);
+	nuxtApp.vueApp.component('Menu', Menu);
+	nuxtApp.vueApp.component('TabView', TabView);
+	nuxtApp.vueApp.component('TabPanel', TabPanel);
+	nuxtApp.vueApp.component('InputSwitch', InputSwitch);
+	nuxtApp.vueApp.component('Slider', Slider);
+
+	nuxtApp.vueApp.use(ConfirmationService);
 
 	nuxtApp.vueApp.use(ToastService);
-	nuxtApp.vueApp.directive('tooltip', Tooltip);
 });

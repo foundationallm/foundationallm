@@ -1,9 +1,11 @@
-﻿using FoundationaLLM.Common.Interfaces;
+﻿using FoundationaLLM.Common.Constants.Instance;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace FoundationaLLM.Common.Middleware
 {
@@ -42,15 +44,53 @@ namespace FoundationaLLM.Common.Middleware
             if (context.User is { Identity.IsAuthenticated: true })
             {
                 // Extract from ClaimsPrincipal if available:
-                callContext.CurrentUserIdentity = claimsProviderService.GetUserIdentity(context.User);
+                var userIdentity = claimsProviderService.GetUserIdentity(context.User);
 
-                if (callContext.CurrentUserIdentity != null
+                // We are only expanding group membership for User objects
+                // Service Principal permissions must be assigned directly and not over group membership.
+                if (userIdentity != null
                     && !claimsProviderService.IsServicePrincipal(context.User))
                 {
-                    // We are only expanding group membership for User objects
-                    // Service Principal permissions must be assigned directly and not over group membership.
-                    callContext.CurrentUserIdentity.GroupIds = await identityManagementService.GetGroupsForPrincipal(
-                        callContext.CurrentUserIdentity.UserId!);
+                    switch(instanceSettings.Value.SecurityGroupRetrievalStrategy)
+                    {
+                        case SecurityGroupRetrievalStrategies.IdentityManagementService:
+                            userIdentity.GroupIds = await identityManagementService.GetGroupsForPrincipal(
+                                userIdentity.UserId!);
+                            break;
+                        case SecurityGroupRetrievalStrategies.AccessToken:
+                            userIdentity.GroupIds = claimsProviderService.GetSecurityGroupIds(context.User) ?? [];
+                            break;
+                        case SecurityGroupRetrievalStrategies.None:
+                        default:
+                            break;
+                    }
+                }
+
+                callContext.CurrentUserIdentity = userIdentity;
+
+                // Check if the conditions for identity substitution are met.
+                if (string.Compare(
+                        userIdentity!.UserId,
+                        instanceSettings.Value.IdentitySubstitutionSecurityPrincipalId,
+                        StringComparison.OrdinalIgnoreCase) == 0
+                    && !string.IsNullOrWhiteSpace(instanceSettings.Value.IdentitySubstitutionUserPrincipalNamePattern)
+                    && context.Request.Headers.TryGetValue(Constants.HttpHeaders.UserIdentity, out var serializedIdentity))
+                {
+                    // The user identity is allowed to substitute its identity with a value provided in the X-USER-IDENTITY header.
+                    try
+                    {
+                        var substitutedIdentity = JsonSerializer.Deserialize<UnifiedUserIdentity>(serializedIdentity!);
+                        if (substitutedIdentity != null
+                            && !string.IsNullOrWhiteSpace(substitutedIdentity.UPN)
+                            && Regex.IsMatch(substitutedIdentity.UPN, instanceSettings.Value.IdentitySubstitutionUserPrincipalNamePattern))
+                        {
+                            callContext.CurrentUserIdentity = substitutedIdentity;
+                        }
+                    }
+                    catch
+                    {
+                        // Ignored.
+                    }
                 }
             }
             else

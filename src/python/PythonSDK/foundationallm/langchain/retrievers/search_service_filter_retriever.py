@@ -4,7 +4,7 @@ Description: LangChain retriever for Azure AI Search.
 """
 from typing import List, Optional
 
-from langchain_openai import OpenAIEmbeddings , AzureOpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from langchain_core.callbacks import (
     AsyncCallbackManagerForRetrieverRun,
     CallbackManagerForRetrieverRun,

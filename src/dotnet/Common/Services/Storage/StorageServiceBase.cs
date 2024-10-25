@@ -1,17 +1,9 @@
-﻿using Azure.Identity;
-using Azure.Storage.Files.DataLake;
-using Azure.Storage;
-using Azure;
-using FoundationaLLM.Common.Exceptions;
+﻿using FoundationaLLM.Common.Exceptions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FoundationaLLM.Common.Models.Configuration.Storage;
+using FoundationaLLM.Common.Constants.Authentication;
 
 namespace FoundationaLLM.Common.Services.Storage
 {
@@ -111,16 +103,16 @@ namespace FoundationaLLM.Common.Services.Storage
         {
             switch (_settings.AuthenticationType)
             {
-                case BlobStorageAuthenticationTypes.ConnectionString:
+                case AuthenticationTypes.ConnectionString:
                     ValidateConnectionString(_settings.ConnectionString);
                     CreateClientFromConnectionString(_settings.ConnectionString!);
                     break;
-                case BlobStorageAuthenticationTypes.AccountKey:
+                case AuthenticationTypes.AccountKey:
                     ValidateAccountName(_settings.AccountName);
                     ValidateAccountKey(_settings.AccountKey);
                     CreateClientFromAccountKey(_settings.AccountName!, _settings.AccountKey!);
                     break;
-                case BlobStorageAuthenticationTypes.AzureIdentity:
+                case AuthenticationTypes.AzureIdentity:
                     ValidateAccountName(_settings.AccountName);
                     CreateClientFromIdentity(_settings.AccountName!);
                     break;

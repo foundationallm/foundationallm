@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FoundationaLLM.Common.Interfaces
+﻿namespace FoundationaLLM.Common.Interfaces
 {
     /// <summary>
     /// Provides services to interact with a storage.
@@ -15,6 +9,11 @@ namespace FoundationaLLM.Common.Interfaces
         /// The optional instance name of the storage service.
         /// </summary>
         string? InstanceName { get; set; }
+
+        /// <summary>
+        /// The name of the storage account.
+        /// </summary>
+        string StorageAccountName { get; }
 
         /// <summary>
         /// Reads the binary content of a specified file from the storage.

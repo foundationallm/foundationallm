@@ -23,7 +23,7 @@ namespace FoundationaLLM
             string eventGridProfileSection)
         {
             services.AddOptions<AzureEventGridEventServiceSettings>()
-                .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Events_AzureEventGridEventService));
+                .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration));
 
             services.AddOptions<AzureEventGridEventServiceProfile>()
                 .Bind(configuration.GetSection(eventGridProfileSection));

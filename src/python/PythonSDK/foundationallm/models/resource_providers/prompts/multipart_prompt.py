@@ -1,17 +1,12 @@
-"""
-Class: Prompt
-Description: Prompt model from resource provider.
-"""
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import Field
+from foundationallm.models.resource_providers import ResourceBase
+from foundationallm.models.resource_providers.prompts import PromptTypes
 
-class MultipartPrompt(BaseModel):
+class MultipartPrompt(ResourceBase):
     """
-    Encapsulates the prompt model from resource provider.
+    Encapsulates a multipart prompt composed of a prefix and a suffix.
     """
-    name: str
-    type: Optional[str] = None
-    object_id: Optional[str] = None
-    description: str
-    prefix: Optional[str] = ""
-    suffix: Optional[str] = "" 
+    type: str = Field(default=PromptTypes.MULTIPART, description='The type of the prompt.')
+    prefix: Optional[str] = Field(default='', description='The prefix of the prompt.')
+    suffix: Optional[str] = Field(default='', description='The suffix of the prompt.')

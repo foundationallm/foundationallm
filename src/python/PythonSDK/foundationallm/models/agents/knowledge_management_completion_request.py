@@ -8,6 +8,7 @@ from foundationallm.models.orchestration import CompletionRequestBase
 
 class KnowledgeManagementCompletionRequest(CompletionRequestBase):
     """
-    Orchestration completion request.
+    The completion request received from the Orchestration API.
     """    
     agent: Optional[KnowledgeManagementAgent] = None
+    objects: dict = {}

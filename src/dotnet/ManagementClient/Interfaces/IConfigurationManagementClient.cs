@@ -28,7 +28,7 @@ namespace FoundationaLLM.Client.Management.Interfaces
         /// Retrieves all external orchestration services.
         /// </summary>
         /// <returns></returns>
-        Task<List<ResourceProviderGetResult<APIEndpoint>>> GetExternalOrchestrationServicesAsync();
+        Task<List<ResourceProviderGetResult<APIEndpointConfiguration>>> GetExternalOrchestrationServicesAsync();
 
         /// <summary>
         /// Returns a specific external orchestration service by name.
@@ -36,7 +36,7 @@ namespace FoundationaLLM.Client.Management.Interfaces
         /// <param name="externalOrchestrationServiceName">The name of the external orchestration
         /// service to retrieve.</param>
         /// <returns></returns>
-        Task<ResourceProviderGetResult<APIEndpoint>> GetExternalOrchestrationServiceAsync(string externalOrchestrationServiceName);
+        Task<ResourceProviderGetResult<APIEndpointConfiguration>> GetExternalOrchestrationServiceAsync(string externalOrchestrationServiceName);
 
         /// <summary>
         /// Upserts an app configuration value. If the value does not exist, it will be created.
@@ -51,10 +51,21 @@ namespace FoundationaLLM.Client.Management.Interfaces
         Task<ResourceProviderUpsertResult> UpsertAppConfigurationAsync(AppConfigurationKeyBase appConfiguration);
 
         /// <summary>
+        /// Upserts an api endpoint configuration resource. If an api endpoint configuration does not exist, it will be created.
+        /// If an api endpoint configuration does exist, it will be updated.
+        /// </summary>
+        /// <param name="apiEndpointConfiguration">The api endpoint configuration resource to create or update.</param>
+        /// <returns>Returns a <see cref="ResourceProviderUpsertResult"/>, which contains the
+        /// Object ID of the resource.</returns>
+        Task<ResourceProviderUpsertResult> UpsertAPIEndpointConfiguration(APIEndpointConfiguration apiEndpointConfiguration);
+
+
+        /// <summary>
         /// Deletes an Azure App Configuration key and associated Azure Key Vault secret.
         /// </summary>
         /// <param name="key">The name of the Azure App Configuration key to delete.</param>
         /// <returns></returns>
         Task DeleteAppConfigurationAsync(string key);
+
     }
 }

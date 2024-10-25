@@ -8,4 +8,4 @@ class EmbeddingProfileBase(ProfileBase):
     """
     Base class to hold indexing profile information.
     """
-    text_embedding : str
+    text_embedding: str

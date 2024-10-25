@@ -17,7 +17,8 @@ public interface IManagementAPITestManager
     /// </summary>
     /// <param name="agentName">The name of the agent and its dependencies to retrieve from the test catalog and create.</param>
     /// <returns>The created agent.</returns>
-    Task<AgentBase> CreateAgent(string agentName, string? indexingProfileName = null, string? textEmbeddingProfileName = null, string? textPartitioningProfileName = null);
+    Task<AgentBase> CreateAgent(string agentName, string? indexingProfileName = null, string? textEmbeddingProfileName = null, 
+        string? textPartitioningProfileName = null, string? apiEndpointName = null, string? apiEndpointUrl = null, string? aiModelName = null);
 
     /// <summary>
     /// Deletes an agent and its dependencies.
@@ -87,4 +88,6 @@ public interface IManagementAPITestManager
     Task<TextEmbeddingProfile> GetTextEmbeddingProfile(string name);
 
     Task<TextPartitioningProfile> GetTextPartitioningProfile(string name);
+
+    Task<APIEndpointConfiguration> GetAPIEndpointConfiguration(string apiEndpointObjectId);
 }

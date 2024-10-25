@@ -1,14 +1,15 @@
-﻿using FoundationaLLM.Common.Constants.Agents;
+﻿using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
-using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Models.Orchestration.Request;
+using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.SemanticKernel.Core.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.SemanticKernel;
 
 namespace FoundationaLLM.SemanticKernel.Core.Agents
 {
@@ -30,7 +31,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
         protected readonly ILogger _logger = logger;
 
         protected string _llmProvider = string.Empty;
-        protected string _endpoint = string.Empty;
+        protected string _endpointUrl = string.Empty;
         protected string _deploymentName = string.Empty;
 
         /// <summary>
@@ -39,13 +40,25 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
         /// <returns>A <see cref="LLMCompletionResponse"/> object containing the completion response.</returns>
         public async Task<LLMCompletionResponse> GetCompletion()
         {
-            ValidateRequest();
+            try
+            {
+                _request.Validate();
+                _deploymentName = _request.AIModel.DeploymentName!;
+                _llmProvider = _request.AIModelEndpointConfiguration.Provider!;
+                _endpointUrl = _request.AIModelEndpointConfiguration.Url!;
+
+            }
+            catch (OrchestrationException ex)
+            {
+                throw new SemanticKernelException(ex.Message, StatusCodes.Status400BadRequest);
+            }
+
             await ExpandAndValidateAgent();
 
             return _llmProvider switch
             {
-                LanguageModelProviders.MICROSOFT => await BuildResponseWithAzureOpenAI(),
-                LanguageModelProviders.OPENAI => await BuildResponseWithOpenAI(),
+                APIEndpointProviders.MICROSOFT => await BuildResponseWithAzureOpenAI(),
+                APIEndpointProviders.OPENAI => await BuildResponseWithOpenAI(),
                 _ => throw new SemanticKernelException($"The LLM provider '{_llmProvider}' is not supported.")
             };
         }
@@ -100,40 +113,6 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
                 });
             var resource = (result as List<ResourceProviderGetResult<T>>)!.First().Resource;
             return resource;
-        }
-
-        private void ValidateRequest()
-        {
-            if (_request.Agent == null)
-                throw new SemanticKernelException("The Agent property of the completion request cannot be null.", StatusCodes.Status400BadRequest);
-
-            if (_request.Agent.OrchestrationSettings == null)
-                throw new SemanticKernelException("The OrchestrationSettings property of the agent cannot be null.", StatusCodes.Status400BadRequest);
-
-            if (_request.Agent.OrchestrationSettings.EndpointConfiguration == null)
-                throw new SemanticKernelException("The EndpointConfiguration property of the agent's OrchestrationSettings property cannot be null.", StatusCodes.Status400BadRequest);
-
-            if (!_request.Agent.OrchestrationSettings.EndpointConfiguration.TryGetValue(EndpointConfigurationKeys.Provider, out var llmProvider)
-                || string.IsNullOrWhiteSpace(llmProvider.ToString()))
-                throw new SemanticKernelException("The Provider property of the agent's OrchestrationSettings.EndpointConfiguration property cannot be null.", StatusCodes.Status400BadRequest);
-
-            if (!LanguageModelProviders.All.Contains(llmProvider.ToString()))
-                throw new SemanticKernelException($"The LLM provider '{llmProvider}' is not supported.", StatusCodes.Status400BadRequest);
-
-            if (!_request.Agent.OrchestrationSettings.EndpointConfiguration.TryGetValue(EndpointConfigurationKeys.Endpoint, out var endpoint)
-                || string.IsNullOrWhiteSpace(endpoint.ToString()))
-                throw new SemanticKernelException("The Endpoint property of the agent's OrchestrationSettings.EndpointConfiguration property cannot be null.", StatusCodes.Status400BadRequest);
-
-            if (_request.Agent.OrchestrationSettings.ModelParameters == null)
-                throw new SemanticKernelException("The ModelParameters property of the agent's OrchestrationSettings property cannot be null.", StatusCodes.Status400BadRequest);
-
-            if (!_request.Agent.OrchestrationSettings.ModelParameters.TryGetValue(ModelParameterKeys.DeploymentName, out var deploymentName)
-                || string.IsNullOrWhiteSpace(deploymentName.ToString()))
-                throw new SemanticKernelException("The DeploymentName property of the agent's OrchestrationSettings.ModelParameters property cannot be null.", StatusCodes.Status400BadRequest);
-
-            _llmProvider = llmProvider.ToString()!;
-            _endpoint = endpoint.ToString()!;
-            _deploymentName = deploymentName.ToString()!;
         }
     }
 }

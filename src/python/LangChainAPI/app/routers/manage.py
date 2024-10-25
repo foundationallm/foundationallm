@@ -16,14 +16,14 @@ tracer = Telemetry.get_tracer(__name__)
 
 # Initialize API routing
 router = APIRouter(
-    prefix = '/manage',
+    prefix = '/instances/{instance_id}/manage',
     tags = ['manage'],
     dependencies=[Depends(validate_api_key_header)],
     responses={404: {'description':'Not found'}}
 )
 
 @router.post('/cache/{name}/refresh')
-async def refresh_cache(name: str):
+async def refresh_cache(instance_id: str, name: str):
     """
     Refreshes the cache for the named object.
 
@@ -34,6 +34,7 @@ async def refresh_cache(name: str):
         "config", for example.
     """
     with tracer.start_as_current_span('refresh_cache') as span:
+        span.set_attribute('instance_id', instance_id)
         span.set_attribute('cache_name', name)
         span.add_event(f'{API_NAME} {name} cache refresh requested.')
 
@@ -50,6 +51,6 @@ async def refresh_cache(name: str):
 
         end = time.time()
 
-        detail = f'The {API_NAME} {name} cache was refreshed in {round(end-start, 3)} seconds.'
+        detail = f'The {API_NAME} {name} cache for instance {instance_id} was refreshed in {round(end-start, 3)} seconds.'
         span.add_event(detail)
         return {'detail':detail}

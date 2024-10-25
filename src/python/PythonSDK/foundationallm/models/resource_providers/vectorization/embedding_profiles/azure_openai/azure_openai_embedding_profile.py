@@ -5,18 +5,17 @@ Description:
     Settings specific to the Azure AI Search Indexes
 """
 from typing import Any, Self, Optional
-from foundationallm.models.resource_providers.vectorization import SettingsBase, EmbeddingProfileBase
-from .azure_openai_configuration_references import AzureOpenAIConfigurationReferences
-from foundationallm.models.utils import ObjectUtils
+from foundationallm.models.resource_providers.vectorization import EmbeddingProfileBase
+from foundationallm.utils import ObjectUtils
 from foundationallm.langchain.exceptions import LangChainException
 
 class AzureOpenAIEmbeddingProfile(EmbeddingProfileBase):
     """
     An Azure AI Search indexing profile.
     """
-    settings: Optional[SettingsBase] = None
-    configuration_references: AzureOpenAIConfigurationReferences
-
+    settings: Optional[dict] = None
+    configuration_references: Optional[dict] = None
+    
     @staticmethod
     def from_object(obj: Any) -> Self:
 

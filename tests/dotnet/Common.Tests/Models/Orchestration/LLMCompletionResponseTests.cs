@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Models.Orchestration;
+﻿using FoundationaLLM.Common.Models.Orchestration.Response;
 
 namespace FoundationaLLM.Common.Tests.Models.Orchestration
 {
@@ -10,6 +10,7 @@ namespace FoundationaLLM.Common.Tests.Models.Orchestration
             // Arrange
             var response = new LLMCompletionResponse
             {
+                OperationId = Guid.NewGuid().ToString(),
                 Completion = "Completed response",
                 UserPrompt = "User prompt",
                 FullPrompt = "Full prompt",
@@ -17,7 +18,6 @@ namespace FoundationaLLM.Common.Tests.Models.Orchestration
                 AgentName = "Agent name",
                 PromptTokens = 10,
                 CompletionTokens = 20,
-                TotalTokens = 30,
                 TotalCost = 15.5f
             };
 

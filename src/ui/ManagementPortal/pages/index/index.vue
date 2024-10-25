@@ -15,20 +15,21 @@
 </template>
 
 <script lang="ts">
-import NavigationBox from '@/components/NavigationBox.vue';
+// import NavigationBox from '@/components/NavigationBox.vue';
 
 export default {
 	name: 'ManagementPortal',
+
 	components: {
-		NavigationBox,
+		// NavigationBox,
 	},
 };
 </script>
 
 <style lang="scss">
 .navigation-boxes {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
 }
 </style>

@@ -1,6 +1,7 @@
 param adminGroupObjectId string
 param containers array = [
   'role-assignments'
+  'policy-assignments'
 ]
 
 param location string = resourceGroup().location
@@ -31,6 +32,17 @@ resource contributorRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = 
   properties: {
     roleDefinitionId: subscriptionResourceId(
       'Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
+    principalType: 'Group'
+    principalId: adminGroupObjectId
+  }
+}
+
+resource blobContributorRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: storage
+  name: guid(subscription().id, resourceGroup().id, adminGroupObjectId, 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
+  properties: {
+    roleDefinitionId: subscriptionResourceId(
+      'Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
     principalType: 'Group'
     principalId: adminGroupObjectId
   }

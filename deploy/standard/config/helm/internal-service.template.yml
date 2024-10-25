@@ -11,12 +11,14 @@ azureWorkloadIdentity:
   gatekeeperApiClientId: {{gatekeeperApiMiClientId}}
   gatekeeperIntegrationApiClientId: {{gatekeeperIntegrationApiMiClientId}}
   gatewayApiClientId: {{gatewayApiMiClientId}}
+  gatewayAdapterApiClientId: {{gatewayAdapterApiMiClientId}}
   langChainApiClientId: {{langChainApiMiClientId}}
   managementApiClientId: {{managementApiMiClientId}}
   managementUiClientId: {{managementUiMiClientId}}
   orchestrationApiClientId: {{orchestrationApiMiClientId}}
   promptHubApiClientId: {{promptHubApiMiClientId}}
   semanticKernelApiClientId: {{semanticKernelApiMiClientId}}
+  stateApiClientId: {{stateApiMiClientId}}
   vectorizationApiClientId: {{vectorizationApiMiClientId}}
   vectorizationJobClientId: {{vectorizationJobMiClientId}}
   authorizationApiClientId: {{authorizationApiMiClientId}}

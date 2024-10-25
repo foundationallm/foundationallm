@@ -14,12 +14,16 @@ const buildLoadingTemplate = (() => {
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+	compatibilityDate: '2024-08-27',
 	ssr: false,
 	devtools: { enabled: true },
 	modules: ['@pinia/nuxt', '@nuxtjs/eslint-module'],
 	components: true,
 	app: {
 		head: {
+			htmlAttrs: {
+				lang: 'en',
+			},
 			title: process.env.BRANDING_PAGE_TITLE ?? 'FoundationaLLM Management Portal',
 			link: [
 				{

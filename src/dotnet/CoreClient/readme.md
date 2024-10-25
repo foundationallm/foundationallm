@@ -29,6 +29,8 @@ Complete the following steps if you do not want to use dependency injection:
 
     ```csharp
     var coreUri = "<YOUR_CORE_API_URL>"; // e.g., "https://myfoundationallmcoreapi.com"
+    var instanceId = "<YOUR_INSTANCE_ID>"; // Each FoundationaLLM deployment has a unique (GUID) ID. Locate this value in the FoundationaLLM Management Portal or in Azure App Config (FoundationaLLM:Instance:Id key)
+
     var credential = new AzureCliCredential(); // Can use any TokenCredential implementation, such as ManagedIdentityCredential or AzureCliCredential.
     var options = new APIClientSettings // Optional settings parameter. Default timeout is 900 seconds.
     {
@@ -38,10 +40,12 @@ Complete the following steps if you do not want to use dependency injection:
     var coreRestClient = new CoreRESTClient(
         coreUri,
         credential,
+        instanceId,
         options);
     var coreClient = new CoreClient(
         coreUri,
         credential,
+        instanceId,
         options);
     ```
 
@@ -73,13 +77,18 @@ Rather than manually instantiating the `CoreRESTClient` and `CoreClient` classes
 
     ```json
     {
-     "FoundationaLLM": {
-      "APIs": {
-       "CoreAPI": {
-        "APIUrl": "https://localhost:63279/"
-       }
-      }
-     }
+        "FoundationaLLM": {
+            "APIEndpoints": {
+		        "CoreAPI": {
+		            "Essentials": {
+		                "APIUrl": "https://localhost:63279/"
+                    }
+			    },
+            },
+            "Instance": {
+                "Id": "00000000-0000-0000-0000-000000000000"
+            }
+        }
     }
     ```
 
@@ -96,7 +105,10 @@ Rather than manually instantiating the `CoreRESTClient` and `CoreClient` classes
     ```csharp
     var services = new ServiceCollection();
     var credential = new AzureCliCredential(); // Can use any TokenCredential implementation, such as ManagedIdentityCredential or AzureCliCredential.
-    services.AddCoreClient(configuration[AppConfigurationKeys.FoundationaLLM_APIs_CoreAPI_APIUrl]!, credential);
+    services.AddCoreClient(
+        configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl]!,
+        credential,
+        configuration[AppConfigurationKeys.FoundationaLLM_Instance_Id]!);
 
     var serviceProvider = services.BuildServiceProvider();
     ```
@@ -142,7 +154,7 @@ If you prefer to retrieve the configuration settings from Azure App Configuratio
                 kv.SetCredential(Credentials);
             });
             options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
-            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIs);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Essentials);
         })
         .Build();
     ```
@@ -155,7 +167,10 @@ If you prefer to retrieve the configuration settings from Azure App Configuratio
     var services = new ServiceCollection();
     var credential = new AzureCliCredential(); // Can use any TokenCredential implementation, such as ManagedIdentityCredential or AzureCliCredential.
 
-    services.AddCoreClient(configuration[AppConfigurationKeys.FoundationaLLM_APIs_CoreAPI_APIUrl]!, credential);
+    services.AddCoreClient(
+        configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl]!,
+        credential,
+        configuration[AppConfigurationKeys.FoundationaLLM_Instance_Id]!);
     ```
 
 3. Retrieve the `CoreClient` and `CoreRESTClient` instances from the service provider:

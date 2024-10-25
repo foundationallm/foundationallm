@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Models.Orchestration.Request;
+using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Gatekeeper.Core.Interfaces;
 using FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions;
 using FoundationaLLM.Gatekeeper.Core.Models.ContentSafety;
@@ -15,6 +16,7 @@ namespace Gatekeeper.Tests.Services
         private readonly GatekeeperService _testedService;
 
         private readonly IContentSafetyService _contentSafetyService = Substitute.For<IContentSafetyService>();
+        private readonly IAzureCosmosDBService _azureCosmosDBService = Substitute.For<IAzureCosmosDBService>();
         private readonly ILakeraGuardService _lakeraGuardService = Substitute.For<ILakeraGuardService>();
         private readonly IEnkryptGuardrailsService _enkryptGuardrailsService = Substitute.For<IEnkryptGuardrailsService>();
         private readonly IDownstreamAPIService _orchestrationAPIService = Substitute.For<IDownstreamAPIService>();
@@ -34,6 +36,7 @@ namespace Gatekeeper.Tests.Services
 
             _testedService = new GatekeeperService(
                 _orchestrationAPIService,
+                _azureCosmosDBService,
                 _contentSafetyService,
                 _lakeraGuardService,
                 _enkryptGuardrailsService,
@@ -47,10 +50,11 @@ namespace Gatekeeper.Tests.Services
             // Arrange
             var completionRequest = new CompletionRequest
             {
+                OperationId = Guid.NewGuid().ToString(),
                 UserPrompt = "Safe content."
             };
 
-            var expectedResult = new CompletionResponse { Completion = "Completion from Orchestration API Service." };
+            var expectedResult = new CompletionResponse { OperationId=completionRequest.OperationId, Completion = "Completion from Orchestration API Service." };
 
             var safeContentResult = new AnalyzeTextFilterResult { Safe = true, Reason = string.Empty };
             _contentSafetyService.AnalyzeText(completionRequest.UserPrompt).Returns(safeContentResult);

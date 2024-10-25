@@ -23,6 +23,6 @@
         /// <summary>
         /// Api endpoint resource.
         /// </summary>
-        public const string APIEndpoint = "api-endpoint";
+        public const string APIEndpointConfiguration = "api-endpoint";
     }
 }

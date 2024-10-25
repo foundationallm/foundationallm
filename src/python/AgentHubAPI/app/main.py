@@ -13,12 +13,12 @@ from foundationallm.telemetry import Telemetry
 # Open a connection to the app configuration
 config = get_config()
 # Start collecting telemetry
-Telemetry.configure_monitoring(config, f'FoundationaLLM:APIs:{API_NAME}:AppInsightsConnectionString')
+# Telemetry.configure_monitoring(config, f'FoundationaLLM:APIEndpoints:{API_NAME}:Essentials:AppInsightsConnectionString')
 
 app = FastAPI(
     title=f'FoundationaLLM {API_NAME}',
     summary='API for retrieving Agent metadata',
-    description="""The FoundationaLLM AgentHubAPI is a wrapper around AgentHub
+    description=f"""The FoundationaLLM {API_NAME} is a wrapper around AgentHub
         functionality contained in the foundationallm Python SDK.""",
     version='1.0.0',
     contact={

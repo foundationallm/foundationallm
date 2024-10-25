@@ -1,35 +1,31 @@
-import re
 from abc import abstractmethod
-from typing import List, Optional
+from typing import List
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 
 from langchain_core.language_models import BaseLanguageModel
-from langchain_openai import AzureChatOpenAI, AzureOpenAI, ChatOpenAI, OpenAI
-from foundationallm.config.configuration import Configuration
+from langchain_openai import AzureChatOpenAI, ChatOpenAI, OpenAI
+from openai import AsyncAzureOpenAI as async_aoi
+from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.exceptions import LangChainException
-from foundationallm.models.orchestration import OperationTypes
-from foundationallm.models.agents import AgentBase
+from foundationallm.operations import OperationsManager
 from foundationallm.models.authentication import AuthenticationTypes
 from foundationallm.models.language_models import LanguageModelProvider
+from foundationallm.models.messages import MessageHistoryItem
+from foundationallm.models.operations import OperationTypes
 from foundationallm.models.orchestration import (
     CompletionRequestBase,
-    CompletionResponse,
-    EndpointSettings,
-    MessageHistoryItem,
-    OrchestrationSettings
+    CompletionResponse
 )
+from foundationallm.models.resource_providers.ai_models import AIModelBase
 from foundationallm.models.resource_providers.attachments import Attachment
+from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 from foundationallm.models.resource_providers.prompts import MultipartPrompt
-from foundationallm.models.resource_providers.vectorization import (
-    AzureAISearchIndexingProfile,
-    AzureOpenAIEmbeddingProfile
-)
 
 class LangChainAgentBase():
     """
     Implements the base functionality for a LangChain agent.
     """
-    def __init__(self, config: Configuration):
+    def __init__(self, instance_id: str, user_identity: UserIdentity, config: Configuration, operations_manager: OperationsManager):
         """
         Initializes a knowledge management agent.
 
@@ -38,13 +34,21 @@ class LangChainAgentBase():
         config : Configuration
             Application configuration class for retrieving configuration settings.
         """
+        self.instance_id = instance_id
+        self.user_identity = user_identity
         self.config = config
-        self.full_prompt = ""
+        self.ai_model = None
+        self.api_endpoint = None
+        self.prompt = ''
+        self.full_prompt = ''
+        self.has_indexing_profiles = False
+        self.has_retriever = False
+        self.operations_manager = operations_manager
 
     @abstractmethod
-    def invoke(self, request: CompletionRequestBase) -> CompletionResponse:
+    async def invoke_async(self, request: CompletionRequestBase) -> CompletionResponse:
         """
-        Gets the completion for the request.
+        Gets the completion for the request using an async request.
         
         Parameters
         ----------
@@ -58,7 +62,19 @@ class LangChainAgentBase():
         """
         raise NotImplementedError()
 
-    def _get_prompt_from_object_id(self, prompt_object_id: str, agent_parameters: dict) -> MultipartPrompt:
+    @abstractmethod
+    def _validate_request(self, request: CompletionRequestBase):
+        """
+        Validates that the completion request contains all required properties.
+
+        Parameters
+        ----------
+        request : CompletionRequestBase
+            The completion request to validate.
+        """
+        raise NotImplementedError()
+
+    def _get_prompt_from_object_id(self, prompt_object_id: str, objects: dict) -> MultipartPrompt:
         """
         Get the prompt from the object id.
         """
@@ -68,18 +84,56 @@ class LangChainAgentBase():
             raise LangChainException("Invalid prompt object id.", 400)
         
         try:
-            prompt = MultipartPrompt(**agent_parameters.get(prompt_object_id))
+            prompt = MultipartPrompt(**objects.get(prompt_object_id))
         except Exception as e:
-            raise LangChainException(f"The prompt object provided in the agent parameters is invalid. {str(e)}", 400)
+            raise LangChainException(f"The prompt object provided in the request.objects dictionary is invalid. {str(e)}", 400)
         
         if prompt is None:
-            raise LangChainException("The prompt object is missing in the agent parameters.", 400)
+            raise LangChainException("The prompt object is missing in the request.objects dictionary.", 400)
 
         return prompt
 
+    def _get_ai_model_from_object_id(self, ai_model_object_id: str, objects: dict) -> AIModelBase:
+        """
+        Get the AI model from its object id.
+        """
+        ai_model: AIModelBase = None
+
+        if ai_model_object_id is None or ai_model_object_id == '':
+            raise LangChainException("Invalid AI model object id.", 400)
+        
+        try:
+            ai_model = AIModelBase(**objects.get(ai_model_object_id))
+        except Exception as e:
+            raise LangChainException(f"The AI model object provided in the request.objects dictionary is invalid. {str(e)}", 400)
+        
+        if ai_model is None:
+            raise LangChainException("The AI model object is missing in the request.objects dictionary.", 400)
+
+        return ai_model
+
+    def _get_api_endpoint_from_object_id(self, api_endpoint_object_id: str, objects: dict) -> APIEndpointConfiguration:
+        """
+        Get the API endpoint from its object id.
+        """
+        api_endpoint: APIEndpointConfiguration = None
+
+        if api_endpoint_object_id is None or api_endpoint_object_id == '':
+            raise LangChainException("Invalid API endpoint object id.", 400)
+        
+        try:
+            api_endpoint = APIEndpointConfiguration(**objects.get(api_endpoint_object_id))
+        except Exception as e:
+            raise LangChainException(f"The API endpoint object provided in the request.objects dictionary is invalid. {str(e)}", 400)
+        
+        if api_endpoint is None:
+            raise LangChainException("The API endpoint object is missing in the request.objects dictionary.", 400)
+
+        return api_endpoint
+
     def _get_attachment_from_object_id(self, attachment_object_id: str, agent_parameters: dict) -> Attachment:
         """
-        Get the prompt from the object id.
+        Get the attachment from its object id.
         """
         attachment: Attachment = None
 
@@ -95,58 +149,6 @@ class LangChainAgentBase():
             raise LangChainException("The attachment object is missing in the agent parameters.", 400)
 
         return attachment        
-
-    def _validate_request(self, request: CompletionRequestBase):
-        """
-        Validates that the completion request's agent contains all require properties.
-
-        Parameters
-        ----------
-        request : CompletionRequestBase
-            The completion request to validate.
-        """
-        if request.agent is None:
-            raise LangChainException("The Agent property of the completion request cannot be null.", 400)
-        
-        if request.agent.orchestration_settings is None:
-            raise LangChainException("The OrchestrationSettings property of the agent cannot be null.", 400)
-        
-        if request.agent.orchestration_settings.endpoint_configuration is None:
-            raise LangChainException("The EndpointConfiguration property of the OrchestrationSettings cannot be null.", 400)
-        
-        if request.agent.orchestration_settings.endpoint_configuration.get('endpoint') is None:
-            raise LangChainException("The Endpoint property of the agent's OrchestrationSettings.EndpointConfiguration property cannot be null.", 400)
-
-        autentication_type = request.agent.orchestration_settings.endpoint_configuration.get('auth_type')
-        if autentication_type is None:
-            raise LangChainException("The AuthType property of the agent's OrchestrationSettings.EndpointConfiguration property cannot be null.", 400)
-
-        try:
-            AuthenticationTypes(autentication_type)
-        except ValueError:
-            raise LangChainException(f"The authentication type {autentication_type} is not supported.", 400)
-        
-        provider = request.agent.orchestration_settings.endpoint_configuration.get('provider')
-        if provider is None:
-            raise LangChainException("The Provider property of the agent's OrchestrationSettings.EndpointConfiguration property cannot be null.", 400)
-
-        try:
-            LanguageModelProvider(provider)
-        except ValueError:
-            raise LangChainException(f"The LLM provider {provider} is not supported.", 400)
-
-        if provider == LanguageModelProvider.MICROSOFT:
-            # Verify the endpoint_configuration inludes the api_version property for Azure OpenAI models.
-            if request.agent.orchestration_settings.endpoint_configuration.get('api_version') is None:
-                raise LangChainException("The ApiVersion property of the agent's OrchestrationSettings.EndpointConfiguration property cannot be null.", 400)
-            
-            # model_parameters is required to provide the deployment_name for Azure OpenAI models.
-            if request.agent.orchestration_settings.model_parameters is None:
-                raise LangChainException("The ModelParameters property of the OrchestrationSettings cannot be null.", 400)
-
-            # Verify that the deployment_name is provided for Azure OpenAI models.
-            if request.agent.orchestration_settings.model_parameters.get('deployment_name') is None:
-                raise LangChainException("The DeploymentName property of the agent's OrchestrationSettings.ModelParameters property cannot be null.", 400)
 
     def _build_conversation_history(self, messages:List[MessageHistoryItem]=None, message_count:int=None) -> str:
         """
@@ -187,136 +189,118 @@ class LangChainAgentBase():
         self.full_prompt = prompt
         return prompt
 
-    def __extract_endpoint_configuration(
-            self,
-            endpoint_configuration: dict) -> EndpointSettings:
-        """
-        Extracts the endpoint configuration settings from the agent's orchestration settings.
+    def _get_image_gen_language_model(self, api_endpoint_object_id, objects: dict) -> BaseLanguageModel:
+        api_endpoint = self._get_api_endpoint_from_object_id(api_endpoint_object_id, objects)
 
-        Parameters
-        ----------
-        config : Configuration
-            Application configuration class for retrieving configuration settings.
-        endpoint_configuration : dict
-            The endpoint configuration settings to extract.
-
-        Returns
-        -------
-        EndpointSettings
-            Returns the endpoint settings for the completion request.
-        """
-        # TODO: Also allow for the override of the endpoint configuration?
-        endpoint_settings = EndpointSettings(
-            endpoint=endpoint_configuration.get('endpoint'),
-            authentication_type=endpoint_configuration.get('auth_type'),
-            provider=endpoint_configuration.get('provider'),
-            api_version=endpoint_configuration.get('api_version'),
-            operation_type=endpoint_configuration.get('operation_type') or 'chat'
+        scope = self.api_endpoint.authentication_parameters.get('scope', 'https://cognitiveservices.azure.com/.default')
+        # Set up a Azure AD token provider.
+        token_provider = get_bearer_token_provider(
+            DefaultAzureCredential(exclude_environment_credential=True),
+            scope
         )
 
-        endpoint_settings.api_type = 'azure_ad' if endpoint_settings.authentication_type == 'token' else 'azure'
+        return async_aoi(
+            azure_endpoint=api_endpoint.url,
+            api_version=api_endpoint.api_version,
+            azure_ad_token_provider=token_provider,
+        )
 
-        if endpoint_settings.authentication_type == AuthenticationTypes.KEY:
-            endpoint_settings.api_key = self.config.get_value(endpoint_configuration.get('api_key'))
-            if endpoint_settings.api_key is None:
-                raise ValueError(f"API Key is required for completion requests using {endpoint_settings.authentication_type}-based authentication.")
-
-        return endpoint_settings
-        
-
-    def _get_language_model(
-            self,
-            agent_orchestration_settings: OrchestrationSettings,
-            model_override_settings: Optional[OrchestrationSettings] = None) -> BaseLanguageModel:
+    def _get_language_model(self, override_operation_type: OperationTypes = None) -> BaseLanguageModel:
         """
         Create a language model using the specified endpoint settings.
 
-        Parameters
-        ----------
-        config : Configuration
-            Application configuration class for retrieving configuration settings.
-        agent_orchestration_settings : OrchestrationSettings
-            The settings for the completion request configured on the agent.
-        model_override_settings : Optional[OrchestrationSettings]
-            Any settings specified on the completion request for overriding the model's settings.
+        override_operation_type : OperationTypes - internally override the operation type for the API endpoint.
 
         Returns
         -------
         BaseLanguageModel
             Returns an API connector for a chat completion model.
-        """
-        endpoint_settings = self.__extract_endpoint_configuration(agent_orchestration_settings.endpoint_configuration)
-                
-        langauge_model:BaseLanguageModel = None
+        """                
+        language_model:BaseLanguageModel = None
+        api_key = None
 
-        if endpoint_settings.provider == LanguageModelProvider.MICROSOFT:
-            # Get Azure OpenAI Chat model settings
-            deployment_name = (model_override_settings.model_parameters.get('deployment_name')
-                                if model_override_settings is not None
-                                    and model_override_settings.model_parameters is not None
-                                    and model_override_settings.model_parameters.get('deployment_name') is not None
-                                else agent_orchestration_settings.model_parameters.get('deployment_name'))
-            if deployment_name is None:
-                raise ValueError("Deployment name is required for Azure OpenAI completion requests.")
+        if self.ai_model is None:
+            raise LangChainException("AI model configuration settings are missing.", 400)
+        if self.api_endpoint is None:
+            raise LangChainException("API endpoint configuration settings are missing.", 400)
 
-            if endpoint_settings.authentication_type == AuthenticationTypes.TOKEN:
+        if self.api_endpoint.provider == LanguageModelProvider.MICROSOFT:
+            op_type = self.api_endpoint.operation_type
+            if override_operation_type is not None:
+                op_type = override_operation_type
+            if self.api_endpoint.authentication_type == AuthenticationTypes.AZURE_IDENTITY:
                 try:
+                    scope = self.api_endpoint.authentication_parameters.get('scope', 'https://cognitiveservices.azure.com/.default')
                     # Set up a Azure AD token provider.
-                    # TODO: Determine if there is a more efficient way to get the token provider than making the request for every call.
                     token_provider = get_bearer_token_provider(
                         DefaultAzureCredential(exclude_environment_credential=True),
-                        'https://cognitiveservices.azure.com/.default'
+                        scope
                     )
-                
-                    langauge_model = (
-                        AzureChatOpenAI(
-                            azure_endpoint=endpoint_settings.endpoint,
-                            api_version=endpoint_settings.api_version,
-                            openai_api_type=endpoint_settings.api_type,
+                    
+                    if op_type == OperationTypes.CHAT:
+                        language_model = AzureChatOpenAI(
+                            azure_endpoint=self.api_endpoint.url,
+                            api_version=self.api_endpoint.api_version,
+                            openai_api_type='azure_ad',
                             azure_ad_token_provider=token_provider,
-                            azure_deployment=deployment_name
-                        ) if endpoint_settings.operation_type == OperationTypes.CHAT
-                        else AzureOpenAI(
-                            azure_endpoint=endpoint_settings.endpoint,
-                            api_version=endpoint_settings.api_version,
-                            openai_api_type=endpoint_settings.api_type,
-                            azure_ad_token_provider=token_provider,
-                            azure_deployment=deployment_name
+                            azure_deployment=self.ai_model.deployment_name
                         )
-                    )
+                    elif op_type == OperationTypes.ASSISTANTS_API or op_type == OperationTypes.IMAGE_SERVICES:
+                        # Assistants API clients can't have deployment as that is assigned at the assistant level.
+                        language_model = async_aoi(
+                            azure_endpoint=self.api_endpoint.url,
+                            api_version=self.api_endpoint.api_version,
+                            openai_api_type='azure_ad',
+                            azure_ad_token_provider=token_provider,
+                        )
+                    else:
+                        raise LangChainException(f"Unsupported operation type: {op_type}", 400)
+
                 except Exception as e:
                     raise LangChainException(f"Failed to create Azure OpenAI API connector: {str(e)}", 500)
             else: # Key-based authentication
-                langauge_model = (
-                    AzureChatOpenAI(
-                        azure_endpoint=endpoint_settings.endpoint,
-                        api_key=endpoint_settings.api_key,
-                        api_version=endpoint_settings.api_version,
-                        azure_deployment=deployment_name
-                    ) if endpoint_settings.operation_type == OperationTypes.CHAT
-                    else AzureOpenAI(
-                        azure_endpoint=endpoint_settings.endpoint,
-                        api_key=endpoint_settings.api_key,
-                        api_version=endpoint_settings.api_version,
-                        azure_deployment=deployment_name
+                try:
+                    api_key = self.config.get_value(self.api_endpoint.authentication_parameters.get('api_key_configuration_name'))
+                except Exception as e:
+                    raise LangChainException(f"Failed to retrieve API key: {str(e)}", 500)
+
+                if api_key is None:
+                    raise LangChainException("API key is missing from the configuration settings.", 400)
+                        
+                if op_type == OperationTypes.CHAT:
+                    language_model = AzureChatOpenAI(
+                        azure_endpoint=self.api_endpoint.url,
+                        api_key=api_key,
+                        api_version=self.api_endpoint.api_version,
+                        azure_deployment=self.ai_model.deployment_name
                     )
-                )
+                elif op_type == OperationTypes.ASSISTANTS_API or op_type == OperationTypes.IMAGE_SERVICES:
+                    # Assistants API clients can't have deployment as that is assigned at the assistant level.
+                    language_model = async_aoi(
+                        azure_endpoint=self.api_endpoint.url,
+                        api_key=api_key,
+                        api_version=self.api_endpoint.api_version,
+                    )
+                else:
+                    raise LangChainException(f"Unsupported operation type: {op_type}", 400)
         else:
-            langauge_model = (
-                ChatOpenAI(base_url=endpoint_settings.endpoint, api_key=endpoint_settings.api_key)
-                if endpoint_settings.operation_type == OperationTypes.CHAT
-                else OpenAI(base_url=endpoint_settings.endpoint, api_key=endpoint_settings.api_key)
+            try:
+                api_key = self.config.get_value(self.api_endpoint.authentication_parameters.get('api_key_configuration_name'))
+            except Exception as e:
+                raise LangChainException(f"Failed to retrieve API key: {str(e)}", 500)
+
+            if api_key is None:
+                raise LangChainException("API key is missing from the configuration settings.", 400)
+                
+            language_model = (
+                ChatOpenAI(base_url=self.api_endpoint.url, api_key=api_key)
+                if self.api_endpoint.operation_type == OperationTypes.CHAT
+                else OpenAI(base_url=self.api_endpoint.url, api_key=api_key)
             )
 
-        # Set model parameters from agent orchestration settings.
-        for key, value in agent_orchestration_settings.model_parameters.items():
-            if hasattr(langauge_model, key):
-                setattr(langauge_model, key, value)
+        # Set model parameters.
+        for key, value in self.ai_model.model_parameters.items():
+            if hasattr(language_model, key):
+                setattr(language_model, key, value)
 
-        # Override model parameters from completion request settings, if any exist.
-        if model_override_settings is not None and model_override_settings.model_parameters is not None:            
-            for key, value in model_override_settings.model_parameters.items():
-                if hasattr(langauge_model, key):
-                    setattr(langauge_model, key, value)
-
-        return langauge_model
+        return language_model

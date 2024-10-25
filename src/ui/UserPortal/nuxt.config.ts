@@ -14,9 +14,10 @@ const buildLoadingTemplate = (() => {
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+	compatibilityDate: '2024-08-27',
 	ssr: false,
 	devtools: { enabled: true },
-	modules: ['@pinia/nuxt', '@nuxtjs/eslint-module'],
+	modules: ['@pinia/nuxt', '@nuxtjs/eslint-module', 'floating-vue/nuxt'],
 	components: true,
 	app: {
 		head: {
@@ -45,7 +46,7 @@ export default defineNuxtConfig({
 		transpile: ['primevue'],
 	},
 	hooks: {
-		'vite:extendConfig': (config, { isClient, isServer }) => {
+		'vite:extendConfig': (config, { isClient /*, isServer */ }) => {
 			if (isClient) {
 				config.resolve.alias.vue = 'vue/dist/vue.esm-bundler.js';
 			}
@@ -54,6 +55,7 @@ export default defineNuxtConfig({
 	devServer: {
 		...(buildLoadingTemplate ? { loadingTemplate: () => buildLoadingTemplate } : {}),
 		port: 3000,
+		host: '0.0.0.0'
 	},
 	runtimeConfig: {
 		APP_CONFIG_ENDPOINT: process.env.APP_CONFIG_ENDPOINT,

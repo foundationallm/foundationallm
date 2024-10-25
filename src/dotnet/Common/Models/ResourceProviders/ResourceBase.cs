@@ -36,28 +36,35 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         public string? CostCenter { get; set; }
 
         /// <summary>
-        /// The time at which the security role definition was created.
+        /// Gets or sets the property bag for the resource.
+        /// </summary>
+        [JsonPropertyName("properties")]
+        [JsonPropertyOrder(400)]
+        public Dictionary<string, string>? Properties { get; set; }
+
+        /// <summary>
+        /// The time at which the resource was created.
         /// </summary>
         [JsonPropertyName("created_on")]
         [JsonPropertyOrder(500)]
         public DateTimeOffset CreatedOn { get; set; }
 
         /// <summary>
-        /// The time at which the security role definition was last updated.
+        /// The time at which the resource was last updated.
         /// </summary>
         [JsonPropertyName("updated_on")]
         [JsonPropertyOrder(501)]
         public DateTimeOffset UpdatedOn { get; set; }
 
         /// <summary>
-        /// The entity who created the security role definition.
+        /// The entity who created the resource.
         /// </summary>
         [JsonPropertyName("created_by")]
         [JsonPropertyOrder(502)]
         public string? CreatedBy { get; set; }
 
         /// <summary>
-        /// The entity who last updated the security role definition.
+        /// The entity who last updated the resource.
         /// </summary>
         [JsonPropertyName("updated_by")]
         [JsonPropertyOrder(503)]

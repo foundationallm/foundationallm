@@ -1,0 +1,112 @@
+{
+	"ResourceReferences": [
+		{
+			"Name": "AzureContentSafety",
+			"Filename": "/FoundationaLLM.Configuration/AzureContentSafety.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "CoreAPI",
+			"Filename": "/FoundationaLLM.Configuration/CoreAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "AzureOpenAIDALLE",
+			"Filename": "/FoundationaLLM.Configuration/AzureOpenAIDALLE.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "GatekeeperAPI",
+			"Filename": "/FoundationaLLM.Configuration/GatekeeperAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "GatekeeperIntegrationAPI",
+			"Filename": "/FoundationaLLM.Configuration/GatekeeperIntegrationAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "GatewayAPI",
+			"Filename": "/FoundationaLLM.Configuration/GatewayAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "LangChainAPI",
+			"Filename": "/FoundationaLLM.Configuration/LangChainAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "OneDriveFileStoreConnector",
+			"Filename": "/FoundationaLLM.Configuration/OneDriveFileStoreConnector.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "OrchestrationAPI",
+			"Filename": "/FoundationaLLM.Configuration/OrchestrationAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "OneDriveFileStoreConnector",
+			"Filename": "/FoundationaLLM.Configuration/OneDriveFileStoreConnector.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "SemanticKernelAPI",
+			"Filename": "/FoundationaLLM.Configuration/SemanticKernelAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "VectorizationAPI",
+			"Filename": "/FoundationaLLM.Configuration/VectorizationAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "GatewayAdapterAPI",
+			"Filename": "/FoundationaLLM.Configuration/GatewayAdapterAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "StateAPI",
+			"Filename": "/FoundationaLLM.Configuration/StateAPI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "VectorizationWorker",
+			"Filename": "/FoundationaLLM.Configuration/VectorizationWorker.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "AzureOpenAI",
+			"Filename": "/FoundationaLLM.Configuration/AzureOpenAI.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "AzureAISearch",
+			"Filename": "/FoundationaLLM.Configuration/AzureAISearch.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		},
+		{
+			"Name": "AzureEventGrid",
+			"Filename": "/FoundationaLLM.Configuration/AzureEventGrid.json",
+			"Type": "api-endpoint",
+			"Deleted": false
+		}
+	]
+}

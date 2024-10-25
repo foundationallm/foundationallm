@@ -1,0 +1,79 @@
+[
+  {
+    "namespace": "ResourceProviders:Authorization",
+    "dependency_injection_key": {
+      "description": "Dependency injection key used by the FoundationaLLM.Authorization resource provider."
+    },
+    "configuration_section": null,
+    "configuration_keys": []
+  },
+  {
+    "namespace": "ResourceProviders:Authorization:Storage",
+    "dependency_injection_key": null,
+    "configuration_section": null,
+    "configuration_keys": [
+      {
+        "name": "AccountName",
+        "description": "The name of the Azure Key Vault secret providing the name of the Azure Blob Storage account used by the FoundationaLLM.Authorization resource provider.",
+        "secret": "authorizationapi-storage-accountname",
+        "value": "",
+        "content_type": "",
+        "first_version": "0.8.0"
+      }
+    ]
+  },
+  {
+    "namespace": "APIEndpoints:AuthorizationAPI",
+    "dependency_injection_key": null,
+    "configuration_section": null,
+    "configuration_keys": [
+      {
+        "name": "AppInsightsConnectionString",
+        "description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Authorization API.",
+        "secret": "authorizationapi-appinsights-connectionstring",
+        "value": "",
+        "content_type": "",
+        "first_version": "0.8.0"
+      }
+    ]
+  },
+  {
+    "namespace": "APIEndpoints:AuthorizationAPI:Configuration",
+    "dependency_injection_key": null,
+    "configuration_section": null,
+    "configuration_keys": [
+      {
+        "name": "InstanceIds",
+        "description": "The name of the Azure Key Vault secret holding the comma-separated list of FoundationaLLM instance ids that are serviced by the Authorization API.",
+        "secret": "authorizationapi-instanceids",
+        "value": "",
+        "content_type": "",
+        "first_version": "0.8.0"
+      },
+      {
+        "name": "Entra:Instance",
+        "description": "The name of the Azure Key Vault secret holding the URL of the Entra ID instance used for authentication.",
+        "secret": "authorizationapi-entra-instance",
+        "value": "",
+        "content_type": "",
+        "first_version": "0.8.0"
+      },
+      {
+        "name": "Entra:TenantId",
+        "description": "The name of the Azure Key Vault secret holding the unique identifier of the Entra ID tenant used for authentication.",
+        "secret": "authorizationapi-entra-tenantid",
+        "value": "",
+        "content_type": "",
+        "first_version": "0.8.0"
+      },
+      {
+        "name": "Entra:ClientId",
+        "description": "The name of the Azure Key Vault secret holding the unique identifier of the Entra ID app registration used by the Authorization API to authenticate.",
+        "secret": "authorizationapi-entra-clientid",
+        "value": "",
+        "content_type": "",
+        "first_version": "0.8.0"
+      }
+    ]
+  }
+]

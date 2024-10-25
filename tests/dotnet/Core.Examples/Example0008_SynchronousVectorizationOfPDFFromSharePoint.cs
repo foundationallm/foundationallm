@@ -33,7 +33,7 @@ namespace FoundationaLLM.Core.Examples
         private SharePointVectorizationConfiguration _sharePointVectorizationConfiguration;
 
         public Example0008_SynchronousVectorizationOfPDFFromSharePoint(ITestOutputHelper output, TestFixture fixture)
-            : base(output, fixture.ServiceProvider)
+            : base(output, [fixture.ServiceProvider])
         {
             _vectorizationTestService = GetService<IVectorizationTestService>();
             _instanceSettings = _vectorizationTestService.InstanceSettings;
@@ -131,6 +131,11 @@ namespace FoundationaLLM.Core.Examples
                     throw new Exception($"Query did not return the expected number of query results. Expected: 27, Retrieved: {result.QueryResult.TotalCount}");
                 if (result.VectorResults.TotalCount != 27)
                     throw new Exception($"Query did not return the expected number of vector results. Expected: 27, Retrieved: {result.VectorResults.TotalCount}");
+            }
+            catch (Exception ex)
+            {
+                WriteLine($"Exception: {ex.Message}");
+                throw;
             }
             finally
             {

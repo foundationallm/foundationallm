@@ -44,7 +44,7 @@ $ErrorActionPreference = "Stop"
 # Import azd env variables
 (azd env get-values) | foreach {
     $name, $value = $_.split('=')
-    set-content env:\$name $value
+    set-content env:\$name $value.Trim('"')
 }
 
 # Set the environment values
@@ -74,7 +74,7 @@ foreach ($uri in $uris.GetEnumerator()) {
         --query $uri.Value.query `
         -o json | ConvertFrom-Json)
 
-    $redirect = ($uri.Value.endpoint | ConvertFrom-Json) + "/signin-oidc"
+    $redirect = ($uri.Value.endpoint) + "/signin-oidc"
 
     if ($redirects -eq $null)
     {

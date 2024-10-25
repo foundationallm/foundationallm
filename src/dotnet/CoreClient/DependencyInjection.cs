@@ -1,14 +1,8 @@
 ﻿using Azure.Core;
 using FoundationaLLM.Client.Core;
 using FoundationaLLM.Client.Core.Interfaces;
-using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Models.Configuration.API;
-using FoundationaLLM.Common.Settings;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 
 namespace FoundationaLLM
 {
@@ -24,17 +18,21 @@ namespace FoundationaLLM
         /// <param name="coreUri">The base URI of the Core API.</param>
         /// <param name="credential">A <see cref="TokenCredential"/> of an authenticated
         /// user or service principle from which the client library can generate auth tokens.</param>
+        /// <param name="instanceId">The unique (GUID) ID for the FoundationaLLM deployment.
+        /// Locate this value in the FoundationaLLM Management Portal or in Azure App Config
+        /// (FoundationaLLM:Instance:Id key)</param>
         /// <param name="options">Additional options to configure the HTTP Client.</param>
         public static void AddCoreClient(
             this IServiceCollection services,
             string coreUri,
             TokenCredential credential,
+            string instanceId,
             APIClientSettings? options = null)
         {
             options ??= new APIClientSettings();
 
-            services.AddSingleton<ICoreRESTClient>(serviceProvider => new CoreRESTClient(coreUri, credential, options));
-            services.AddSingleton<ICoreClient>(serviceProvider => new CoreClient(coreUri, credential, options));
+            services.AddSingleton<ICoreRESTClient>(serviceProvider => new CoreRESTClient(coreUri, credential, instanceId, options));
+            services.AddSingleton<ICoreClient>(serviceProvider => new CoreClient(coreUri, credential, instanceId,options));
         }
     }
 }

@@ -1,5 +1,5 @@
 <template>
-	<main :style="style">
+	<main>
 		<Head>
 			<Title>{{ pageTitle }}</Title>
 			<Meta name="description" :content="pageTitle" />
@@ -40,6 +40,17 @@ export default {
 			};
 		},
 	},
+
+	watch: {
+		style: {
+			immediate: true,
+			handler() {
+				for (const cssVar in this.style) {
+					document.documentElement.style.setProperty(cssVar, this.style[cssVar]);
+				}
+			},
+		},
+	},
 };
 </script>
 
@@ -52,10 +63,6 @@ main {
 	height: 100%;
 	margin: 0;
 	font-family: 'Poppins', sans-serif;
-}
-
-.p-component {
-	border-radius: 0px;
 }
 
 .wrapper {
@@ -143,5 +150,25 @@ main {
 
 .cursor-pointer {
 	cursor: pointer;
+}
+
+.p-component {
+	border-radius: 0px;
+}
+
+.p-button-text {
+	color: var(--primary-button-bg) !important;
+}
+
+.p-button:not(.p-button-text) {
+	background-color: var(--primary-button-bg) !important;
+	border-color: var(--primary-button-bg) !important;
+	color: var(--primary-button-text) !important;
+}
+
+.p-button-secondary:not(.p-button-text) {
+	background-color: var(--secondary-button-bg) !important;
+	border-color: var(--secondary-button-bg) !important;
+	color: var(--secondary-button-text) !important;
 }
 </style>

@@ -46,7 +46,7 @@ def validate_api_key_header(x_api_key: str = Depends(APIKeyHeader(name='X-API-Ke
         Otherwise, returns False.
     """
 
-    result = x_api_key == get_config().get_value(f'FoundationaLLM:APIs:{API_NAME}:APIKey')
+    result = x_api_key == get_config().get_value(f'FoundationaLLM:APIEndpoints:{API_NAME}:APIKey')
 
     if not result:
         logging.error('Invalid API key. You must provide a valid API key in the X-API-KEY header.')

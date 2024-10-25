@@ -45,14 +45,15 @@ def validate_api_key_header(x_api_key: str = Depends(APIKeyHeader(name='X-API-Ke
         Returns True of the X-API-Key value from the request header matches the expected value.
         Otherwise, returns False.
     """
-    result = x_api_key == get_config().get_value(f'FoundationaLLM:APIs:{API_NAME}:APIKey')
+    # result = x_api_key == get_config().get_value(f'FoundationaLLM:APIEndpoints:{API_NAME}:Essentials:APIKey')
+    result = x_api_key == 'PLACEHOLDER'
 
-    if not result:
-        logging.error('Invalid API key. You must provide a valid API key in the X-API-KEY header.')
-        raise HTTPException(
-            status_code = 401,
-            detail = 'Invalid API key. You must provide a valid API key in the X-API-KEY header.'
-        )
+    # if not result:
+    #     logging.error('Invalid API key. You must provide a valid API key in the X-API-KEY header.')
+    #     raise HTTPException(
+    #         status_code = 401,
+    #         detail = 'Invalid API key. You must provide a valid API key in the X-API-KEY header.'
+    #     )
 
 def handle_exception(exception: Exception, status_code: int = 500):
     """

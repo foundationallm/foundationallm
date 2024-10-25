@@ -1,0 +1,15 @@
+{
+    "type": "api-endpoint",
+    "name": "AzureAISearch",
+    "object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.Configuration/apiEndpoints/AzureAISearch",
+    "display_name": null,
+    "description": null,
+    "cost_center": null,
+    "category": "General",
+    "authentication_type": "AzureIdentity",
+    "authentication_parameters": {},
+    "url": "${env:AZURE_COGNITIVE_SEARCH_ENDPOINT}",
+    "url_exceptions": [],
+    "timeout_seconds": 60,
+    "retry_strategy_name": "ExponentialBackoff"
+}

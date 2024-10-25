@@ -1,5 +1,6 @@
-from foundationallm.config import Configuration, Context
+from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.agents import AgentFactory, LangChainAgentBase
+from foundationallm.operations import OperationsManager
 from foundationallm.models.orchestration import (
     CompletionRequestBase,
     CompletionResponse
@@ -9,9 +10,11 @@ class OrchestrationManager:
     """Client that acts as the entry point for interacting with the FoundationaLLM Python SDK."""
 
     def __init__(self,
-                 completion_request: CompletionRequestBase,
-                 configuration: Configuration,
-                 context: Context):
+        completion_request: CompletionRequestBase,
+        instance_id: str,
+        user_identity: UserIdentity,
+        configuration: Configuration,
+        operations_manager: OperationsManager):
         """
         Initializes an instance of the OrchestrationManager.
         
@@ -19,42 +22,47 @@ class OrchestrationManager:
         ----------
         completion_request : CompletionRequest
             The CompletionRequest is the metadata object containing the details needed for
-            the OrchestrationManager to assemble an agent with a language model and data source.
-        context : Context
+            the OrchestrationManager to assemble an agent.
+        instance_id : str
+            The unique identifier of the FoundationaLLM instance.
+        user_identity : UserIdentity
             The user context under which to execution completion requests.
+        configuration : Configuration
+            The configuration object containing the details needed for the OrchestrationManager to assemble an agent.
+        operations_manager : OperationsManager
+            The operations manager object for allowing an agent to interact with the State API.
         """
         self.agent = self.__create_agent(
             completion_request = completion_request,
             config = configuration,
-            context = context
+            operations_manager = operations_manager,
+            instance_id = instance_id,
+            user_identity = user_identity
         )
 
-    def __create_agent(
-            self,
-            config: Configuration,
-            completion_request: CompletionRequestBase,
-            context: Context) -> LangChainAgentBase:
+    def __create_agent(self,
+                       completion_request: CompletionRequestBase,
+                       config: Configuration,
+                       operations_manager: OperationsManager,
+                       instance_id: str,
+                       user_identity: UserIdentity) -> LangChainAgentBase:
         """Creates an agent for executing completion requests."""
-        agent_factory = AgentFactory(
-            completion_request=completion_request,
-            config=config,
-            context=context
-        )
-        return agent_factory.get_agent()
+        return AgentFactory().get_agent(completion_request.agent.type, config, operations_manager, instance_id, user_identity)
 
-    def invoke(self, request: CompletionRequestBase) -> CompletionResponse:
+    async def invoke_async(self, request: CompletionRequestBase) -> CompletionResponse:
         """
-        Executes a completion request against the LanguageModel using 
+        Executes an async completion request against the LanguageModel using 
         the LangChain agent assembled by the OrchestrationManager.
         
         Parameters
         ----------
-        prompt : str
-            The prompt for which a completion is being generated.
+        request : CompletionRequestBase
+            The completion request to execute.
             
         Returns
         -------
         CompletionResponse
             Object containing the completion response and token usage details.
-        """
-        return self.agent.invoke(request)
+        """        
+        completion_response = await self.agent.invoke_async(request)
+        return completion_response

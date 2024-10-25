@@ -20,3 +20,5 @@ controller:
     loadBalancerIP: {{privateIpIngressBackend}}
     ports:
       https: 443
+  config:
+    proxy-body-size: 512m

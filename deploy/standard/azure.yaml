@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: foundationallm
+metadata:
+    template: azd-init@1.5.1
+hooks:
+  preprovision:
+    shell: pwsh
+    continueOnError: false
+    interactive: true
+    run: azd-hooks/preprovision.ps1
+  postprovision:
+    shell: pwsh
+    continueOnError: false
+    interactive: true
+    run: azd-hooks/postprovision.ps1
+  predeploy:
+    shell: pwsh
+    continueOnError: false
+    interactive: true
+    run: azd-hooks/predeploy.ps1

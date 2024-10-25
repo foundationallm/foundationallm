@@ -11,7 +11,7 @@ namespace FoundationaLLM.Management.API.Controllers
     /// </summary>
     [Authorize(Policy = "DefaultPolicy")]
     [ApiController]
-    [Route("status")]
+    [Route("instances/{instanceId}/[controller]")]
     [Consumes("application/json")]
     [Produces("application/json")]
     public class StatusController : ControllerBase

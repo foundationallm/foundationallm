@@ -15,16 +15,6 @@ namespace FoundationaLLM.Common.Tests.Models.Agents
         }
 
         [Fact]
-        public void AgentType_InternalContext_ReturnsCorrectType()
-        {
-            // Arrange
-            _agentBase.Type = AgentTypes.InternalContext;
-
-            // Assert
-            Assert.Equal(typeof(KnowledgeManagementAgent), _agentBase.AgentType);
-        }
-
-        [Fact]
         public void AgentType_UnsupportedType_ThrowsException()
         {
             // Arrange
@@ -38,22 +28,22 @@ namespace FoundationaLLM.Common.Tests.Models.Agents
         public void ConversationHistory_SetAndGet_ReturnsCorrectValue()
         {
             // Arrange
-            var conversationHistory = new ConversationHistory { Enabled = true, MaxHistory = 100 };
-            _agentBase.ConversationHistory = conversationHistory;
+            var conversationHistory = new ConversationHistorySettings { Enabled = true, MaxHistory = 100 };
+            _agentBase.ConversationHistorySettings = conversationHistory;
 
             // Assert
-            Assert.Equal(conversationHistory, _agentBase.ConversationHistory);
+            Assert.Equal(conversationHistory, _agentBase.ConversationHistorySettings);
         }
 
         [Fact]
         public void Gatekeeper_SetAndGet_ReturnsCorrectValue()
         {
             // Arrange
-            var gatekeeper = new Gatekeeper { UseSystemSetting = false, Options = new string[] { "Option1", "Option2" } };
-            _agentBase.Gatekeeper = gatekeeper;
+            var gatekeeper = new GatekeeperSettings { UseSystemSetting = false, Options = new string[] { "Option1", "Option2" } };
+            _agentBase.GatekeeperSettings = gatekeeper;
 
             // Assert
-            Assert.Equal(gatekeeper, _agentBase.Gatekeeper);
+            Assert.Equal(gatekeeper, _agentBase.GatekeeperSettings);
         }
 
     }

@@ -12,21 +12,25 @@ namespace FoundationaLLM.Common.Models.AzureAIService
         /// </summary>
         [JsonPropertyName("dataContainerName")]
         public string DataContainerName { get; set; }
+
         /// <summary>
         /// The data type of the data.
         /// </summary>
         [JsonPropertyName("dataType")]
         public string DataType { get; set; }
+
         /// <summary>
         /// The uri to the data set.
         /// </summary>
         [JsonPropertyName("dataUri")]
         public string DataUri { get; set; }
-        [JsonPropertyName("mutableProps")]
+
         /// <summary>
         /// Any mutable properties to pass to the data
         /// </summary>
+        [JsonPropertyName("mutableProps")]
         public Dictionary<string, string>? MutableProps { get; set; }
+
         /// <summary>
         /// Using registered data.
         /// </summary>

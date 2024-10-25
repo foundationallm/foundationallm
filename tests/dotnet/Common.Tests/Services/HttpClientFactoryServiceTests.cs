@@ -1,7 +1,6 @@
-﻿using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Authentication;
-using FoundationaLLM.Common.Models.Configuration.API;
-using FoundationaLLM.Common.Services;
+﻿using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Services.API;
+using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using System.Text.Json;
 
@@ -9,19 +8,19 @@ namespace FoundationaLLM.Common.Tests.Services
 {
     public class HttpClientFactoryServiceTests
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ICallContext _callContext;
-        private readonly IDownstreamAPISettings _apiSettings;
+        private readonly IConfiguration _configuration;
 
         public HttpClientFactoryServiceTests()
         {
+            _serviceProvider = Substitute.For<IServiceProvider>();
             _httpClientFactory = Substitute.For<IHttpClientFactory>();
-            _callContext = Substitute.For<ICallContext>();
-            _apiSettings = Substitute.For<IDownstreamAPISettings>();
+            _configuration = Substitute.For<IConfiguration>();
         }
 
         [Fact]
-        public void CreateClient_WithValidClientName_ReturnsHttpClientWithHeaders()
+        public async void CreateClient_WithValidClientName_ReturnsHttpClientWithHeaders()
         {
             // Arrange
             var clientName = "TestClient";
@@ -33,26 +32,13 @@ namespace FoundationaLLM.Common.Tests.Services
                 Name = "TestName"
             };
 
-            _apiSettings.DownstreamAPIs.Returns(new System.Collections.Generic.Dictionary<string, DownstreamAPIClientConfiguration>
-            {
-                { 
-                    clientName, new DownstreamAPIClientConfiguration
-                    {
-                        APIUrl = "TestAPIUrl",
-                        APIKey = "TestAPIKey"
-                    }
-                }
-            });
-
-            _callContext.CurrentUserIdentity.Returns(userContext);
-
             var httpClient = new HttpClient();
             _httpClientFactory.CreateClient(clientName).Returns(httpClient);
 
-            var service = new HttpClientFactoryService(_httpClientFactory, _callContext, _apiSettings);
+            var service = new HttpClientFactoryService(_serviceProvider, _configuration, _httpClientFactory);
 
             // Act
-            var result = service.CreateClient(clientName);
+            var result = await service.CreateClient(clientName, userContext);
 
             // Assert
             Assert.NotNull(result);

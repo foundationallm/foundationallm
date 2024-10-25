@@ -32,6 +32,9 @@ spec:
         - name: {{ .name }}
       {{- end -}}
       {{- end }}
+      volumes:
+        - name: tmpfs
+          emptyDir: {}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -61,13 +64,16 @@ spec:
                   key: {{ .name }}
           {{- end -}}
           {{- end }}
+          volumeMounts:
+            - name: tmpfs
+              mountPath: /tmp
           ports:
             - name: http
               containerPort: 80
               protocol: TCP
           readinessProbe:
             httpGet:
-              path: /status
+              path: /instances/{{ .Values.instanceId }}/status
               port: 80
             periodSeconds: 3
             timeoutSeconds: 1

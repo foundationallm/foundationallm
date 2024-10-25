@@ -1,8 +1,8 @@
 using FoundationaLLM.Client.Core.Interfaces;
-using FoundationaLLM.Common.Models.Chat;
-using FoundationaLLM.Common.Models.Orchestration;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using FoundationaLLM.Common.Models.Conversation;
+using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using NSubstitute;
 
 namespace FoundationaLLM.Client.Core.Tests
@@ -24,17 +24,16 @@ namespace FoundationaLLM.Client.Core.Tests
         public async Task CreateChatSessionAsync_WithName_CreatesAndRenamesSession()
         {
             // Arrange
-            var sessionName = "TestSession";
+            var chatSessionProperties = new ChatSessionProperties() { Name = "TestSession" };
             var sessionId = "session-id";
-            _coreRestClient.Sessions.CreateSessionAsync().Returns(Task.FromResult(sessionId));
+            _coreRestClient.Sessions.CreateSessionAsync(chatSessionProperties).Returns(Task.FromResult(sessionId));
 
             // Act
-            var result = await _coreClient.CreateChatSessionAsync(sessionName);
+            var result = await _coreClient.CreateChatSessionAsync(chatSessionProperties);
 
             // Assert
             Assert.Equal(sessionId, result);
-            await _coreRestClient.Sessions.Received(1).CreateSessionAsync();
-            await _coreRestClient.Sessions.Received(1).RenameChatSession(sessionId, sessionName);
+            await _coreRestClient.Sessions.Received(1).CreateSessionAsync(chatSessionProperties);
         }
 
         [Fact]
@@ -43,17 +42,18 @@ namespace FoundationaLLM.Client.Core.Tests
             // Arrange
             var userPrompt = "Hello, World!";
             var agentName = "TestAgent";
+            var chatSessionProperties = new ChatSessionProperties() { Name = "TestSession" };
             var sessionId = "new-session-id";
-            var completion = new Completion();
-            _coreRestClient.Sessions.CreateSessionAsync().Returns(Task.FromResult(sessionId));
+            var completion = new Message();
+            _coreRestClient.Sessions.CreateSessionAsync(chatSessionProperties).Returns(Task.FromResult(sessionId));
             _coreRestClient.Completions.GetChatCompletionAsync(Arg.Any<CompletionRequest>()).Returns(Task.FromResult(completion));
 
             // Act
-            var result = await _coreClient.GetCompletionWithSessionAsync(null, "NewSession", userPrompt, agentName);
+            var result = await _coreClient.GetCompletionWithSessionAsync(null, chatSessionProperties, userPrompt, agentName);
 
             // Assert
             Assert.Equal(completion, result);
-            await _coreRestClient.Sessions.Received(1).CreateSessionAsync();
+            await _coreRestClient.Sessions.Received(1).CreateSessionAsync(chatSessionProperties);
             await _coreRestClient.Completions.GetChatCompletionAsync(Arg.Is<CompletionRequest>(
                 r => r.SessionId == sessionId && r.AgentName == agentName && r.UserPrompt == userPrompt));
         }
@@ -64,7 +64,7 @@ namespace FoundationaLLM.Client.Core.Tests
             // Arrange
             var userPrompt = "Hello, World!";
             var agentName = "TestAgent";
-            var completion = new Completion();
+            var completion = new Message();
             _coreRestClient.Completions.GetChatCompletionAsync(Arg.Any<CompletionRequest>()).Returns(Task.FromResult(completion));
 
             // Act
@@ -82,6 +82,7 @@ namespace FoundationaLLM.Client.Core.Tests
             // Arrange
             var completionRequest = new CompletionRequest
             {
+                OperationId = Guid.NewGuid().ToString(),
                 UserPrompt = string.Empty
             };
 
@@ -99,20 +100,21 @@ namespace FoundationaLLM.Client.Core.Tests
             var contentType = "text/plain";
             var agentName = "TestAgent";
             var question = "What is this file about?";
+            var chatSessionProperties = new ChatSessionProperties() { Name = "TestSession" };
             var sessionId = "session-id";
             var objectId = "object-id";
-            var completion = new Completion();
+            var completion = new Message();
             _coreRestClient.Attachments.UploadAttachmentAsync(fileStream, fileName, contentType).Returns(Task.FromResult(objectId));
-            _coreRestClient.Sessions.CreateSessionAsync().Returns(Task.FromResult(sessionId));
+            _coreRestClient.Sessions.CreateSessionAsync(chatSessionProperties).Returns(Task.FromResult(sessionId));
             _coreRestClient.Completions.GetChatCompletionAsync(Arg.Any<CompletionRequest>()).Returns(Task.FromResult(completion));
 
             // Act
-            var result = await _coreClient.AttachFileAndAskQuestionAsync(fileStream, fileName, contentType, agentName, question, true, null, "NewSession");
+            var result = await _coreClient.AttachFileAndAskQuestionAsync(fileStream, fileName, contentType, agentName, question, true, null, chatSessionProperties);
 
             // Assert
             Assert.Equal(completion, result);
             await _coreRestClient.Attachments.Received(1).UploadAttachmentAsync(fileStream, fileName, contentType);
-            await _coreRestClient.Sessions.Received(1).CreateSessionAsync();
+            await _coreRestClient.Sessions.Received(1).CreateSessionAsync(chatSessionProperties);
             await _coreRestClient.Completions.GetChatCompletionAsync(Arg.Is<CompletionRequest>(
                 r => r.AgentName == agentName && r.SessionId == sessionId && r.UserPrompt == question && r.Attachments.Contains(objectId)));
         }
@@ -122,7 +124,9 @@ namespace FoundationaLLM.Client.Core.Tests
         {
             // Arrange & Act & Assert
             await Assert.ThrowsAsync<ArgumentNullException>(() =>
-                _coreClient.AttachFileAndAskQuestionAsync(null!, "file.txt", "text/plain", "agent", "question", true, "session-id", "session-name"));
+                _coreClient.AttachFileAndAskQuestionAsync(
+                    null!, "file.txt", "text/plain", "agent", "question", true, "session-id", 
+                    new ChatSessionProperties() { Name = "session-name" }));
         }
 
         [Fact]
@@ -130,7 +134,16 @@ namespace FoundationaLLM.Client.Core.Tests
         {
             // Arrange
             var sessionId = "session-id";
-            var messages = new List<Message> { new Message(sessionId, "TestSender", null, "Hello", null, null, "test@foundationallm.ai") };
+            var messages = new List<Message>
+            { 
+                new()
+                {
+                    SessionId = sessionId,
+                    Sender = "TestSender",
+                    Text = "Hello",
+                    UPN = "test@foundationallm.ai"
+                }
+            };
             _coreRestClient.Sessions.GetChatSessionMessagesAsync(sessionId).Returns(Task.FromResult<IEnumerable<Message>>(messages));
 
             // Act
@@ -152,8 +165,8 @@ namespace FoundationaLLM.Client.Core.Tests
                         Name = "TestAgent",
                         Description = "Test Agent Description"
                     },
-                    Actions = [],
-                    Roles = []
+                    Roles = [],
+                    Actions = []
                 }
             };
             _coreRestClient.Completions.GetAgentsAsync().Returns(Task.FromResult<IEnumerable<ResourceProviderGetResult<AgentBase>>>(agents));

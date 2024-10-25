@@ -7,8 +7,8 @@ const filters = {
 	 */
 	publicDirectory(path: string) {
 		const config = useRuntimeConfig();
-		// Only append the base URL if the path is not an absolute URL.
-		if (path.startsWith('http')) {
+		// Only append the base URL if the path is not an absolute URL or base64string.
+		if (path.startsWith('http') || path.startsWith('data:')) {
 			return path;
 		}
 		return config.app.baseURL + path;
@@ -30,6 +30,17 @@ const filters = {
 		}
 		event.target.value = sanitizedValue;
 		return sanitizedValue;
+	},
+
+	/**
+	 * Formats a date string
+	 *
+	 * @param dateString - The date string to parse.
+	 * @returns A formatted date string or "Never", ex: Thu Aug 15 2024 00:00:00 GMT-0700 (Pacific Daylight Time)
+	 */
+	formatDate(dateString: string) {
+		if (!dateString) return 'Never';
+		return new Date(dateString).toString();
 	},
 };
 

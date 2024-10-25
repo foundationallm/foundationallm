@@ -2,40 +2,37 @@
 	<div>
 		<h1>Deployment Information</h1>
 		<p>This page provides information about the FoundationaLLM deployment.</p>
-		<p>
-			<strong>Instance ID:</strong> {{ $appConfigStore.instanceId }}
-				</p>
+		<p><strong>Instance ID:</strong> {{ $appConfigStore.instanceId }}</p>
 		<h3>API Status</h3>
 		<div class="api-cards">
 			<ApiStatusCard
 				v-for="api in apiUrls"
 				:key="api.name"
-				:apiName="api.displayName"
-				:apiUrl="api.url"
-								:description="api.description"
+				:api-name="api.displayName"
+				:api-url="api.url"
+				:status-url="api.statusUrl"
+				:description="api.description"
 			/>
 		</div>
 
-				<h3>External Orchestration Service Status</h3>
+		<h3>Orchestration and External Services</h3>
 		<div class="api-cards">
 			<ApiStatusCard
 				v-for="api in externalOrchestrationServices"
 				:key="api.name"
-				:apiName="api.name"
-				:apiUrl="api.resolved_api_url"
-								:description="api.description"
+				:api-name="api.name"
+				:api-url="api.url"
+				:status-url="api.status_url"
+				:description="api.description"
 			/>
 		</div>
-
 	</div>
 </template>
 
 <script lang="ts">
 import ApiStatusCard from '@/components/ApiStatusCard.vue';
 import api from '@/js/api';
-import type {
-	ExternalOrchestrationService,
-} from '@/js/types';
+import type { ExternalOrchestrationService } from '@/js/types';
 
 export default {
 	components: {
@@ -44,7 +41,7 @@ export default {
 
 	data() {
 		return {
-			apiUrls: [],
+			apiUrls: [] as Array<any>,
 			externalOrchestrationServices: [] as ExternalOrchestrationService[],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
@@ -58,62 +55,52 @@ export default {
 	methods: {
 		async fetchApiUrls() {
 			this.loading = true;
+			const instancePart = `/instances/${this.$appConfigStore.instanceId}`;
 
 			this.apiUrls = [
 				{
 					name: 'coreApiUrl',
 					displayName: 'Core API',
-					description: 'The Core API is the main user-based API for the FoundationaLLM platform. It is accessed by the User Portal.',
-					url: this.$appConfigStore.coreApiUrl
+					description:
+						'The Core API is the main user-based API for the FoundationaLLM platform. It is accessed by the User Portal.',
+					url: this.$appConfigStore.coreApiUrl,
+					statusUrl: `${this.$appConfigStore.coreApiUrl}${instancePart}/status`,
 				},
 				{
 					name: 'apiUrl',
 					displayName: 'Management API',
-					description: 'The Management API is used by the Management Portal to manage the FoundationaLLM platform.',
-					url: this.$appConfigStore.apiUrl
-					},
-				{
-					name: 'gatekeeperApiUrl',
-					displayName: 'Gatekeeper API',
-					description: 'The Gatekeeper API adds an additional layer of security to the FoundationaLLM platform. It is accessed by the Core API.',
-					url: this.$appConfigStore.gatekeeperApiUrl,
+					description:
+						'The Management API is used by the Management Portal to manage the FoundationaLLM platform.',
+					url: this.$appConfigStore.apiUrl,
+					statusUrl: `${this.$appConfigStore.apiUrl}${instancePart}/status`,
 				},
 				{
-					name: 'gatekeeperIntegrationApiUrl',
-					displayName: 'Gatekeeper Integration API',
-					description: 'The Gatekeeper Integration API is used to integrate additional filtering and safety services into the Gatekeeper API.',
-					url: this.$appConfigStore.gatekeeperIntegrationApiUrl,
+					name: 'authorizationApiUrl',
+					displayName: 'Authorization API',
+					description:
+						'The Authorization API manages role-based access control (RBAC) and other auth-related functions for the FoundationaLLM platform.',
+					url: this.$appConfigStore.authorizationApiUrl,
+					statusUrl: `${this.$appConfigStore.authorizationApiUrl}/status`,
 				},
 				{
-					name: 'gatewayApiUrl',
-					displayName: 'Gateway API',
-					description: 'The Gateway API is used to manage the connection between the FoundationaLLM platform and LLMs.',
-					url: this.$appConfigStore.gatewayApiUrl,
+					name: 'stateApiUrl',
+					displayName: 'State API',
+					description:
+						'The State API manages background task and long-running operation state information for the FoundationaLLM platform.',
+					url: this.$appConfigStore.stateApiUrl,
+					statusUrl: `${this.$appConfigStore.stateApiUrl}/status`,
 				},
-				{
-					name: 'orchestrationApiUrl',
-					displayName: 'Orchestration API',
-					description: 'The Orchestration API is used to manage the orchestration of LLMs and other services in the FoundationaLLM platform.',
-					url: this.$appConfigStore.orchestrationApiUrl,
-				},
-				{
-					name: 'vectorizationApiUrl',
-					displayName: 'Vectorization API',
-					description: 'The Vectorization API is used to manage vectorization requests for the Vectorization Worker service.',
-					url: this.$appConfigStore.vectorizationApiUrl,
-				},
-				{
-					name: 'vectorizationWorkerApiUrl',
-					displayName: 'Vectorization Worker API',
-					description: 'The Vectorization Worker API provides access to the internal state of the vectorization workers.',
-					url: this.$appConfigStore.vectorizationWorkerApiUrl,
-				},
-			];
+			] as Array<any>;
 
 			try {
 				this.loadingStatusText = 'Retrieving external orchestration services...';
 				const externalOrchestrationServicesResult = await api.getExternalOrchestrationServices();
-				this.externalOrchestrationServices = externalOrchestrationServicesResult.map(result => result.resource);
+				this.externalOrchestrationServices = externalOrchestrationServicesResult?.map(
+					(result) => result?.resource,
+				);
+				this.externalOrchestrationServices = this.externalOrchestrationServices.filter(
+					(service) => service.url,
+				);
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',

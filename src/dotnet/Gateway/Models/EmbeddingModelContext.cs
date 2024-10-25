@@ -1,6 +1,4 @@
-﻿using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Metadata;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
 
 namespace FoundationaLLM.Gateway.Models
@@ -42,7 +40,16 @@ namespace FoundationaLLM.Gateway.Models
 
             lock (_syncRoot)
             {
-                _embeddingOperationIds.Add(embeddingOperationContext.Result.OperationId!);
+                if (embeddingOperationContext.Prioritized)
+                {
+                    // Prioritized contexts get added to the front of the queue.
+                    _embeddingOperationIds.Insert(0, embeddingOperationContext.Result.OperationId!);
+                }
+                else
+                {
+                    // Queue normally.
+                    _embeddingOperationIds.Add(embeddingOperationContext.Result.OperationId!);
+                }
             }
         }
 

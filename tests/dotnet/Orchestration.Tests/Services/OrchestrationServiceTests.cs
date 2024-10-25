@@ -1,5 +1,5 @@
 ﻿using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using FoundationaLLM.Orchestration.Core.Services;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +19,7 @@ namespace FoundationaLLM.Orchestration.Tests.Services
         ];
         private readonly ILogger<OrchestrationService> _logger = Substitute.For<ILogger<OrchestrationService>>();
         private readonly OrchestrationService _orchestrationService;
+        private readonly IAzureCosmosDBService _cosmosDBService = Substitute.For<IAzureCosmosDBService>();
         private IEnumerable<IResourceProviderService> _resourceProviderServices = new List<IResourceProviderService>
         {
             Substitute.For<IResourceProviderService>()
@@ -33,6 +34,7 @@ namespace FoundationaLLM.Orchestration.Tests.Services
             _orchestrationService = new OrchestrationService(
                 _resourceProviderServices,
                 null,
+                _cosmosDBService,
                 _callContext,
                 _configuration,
                 null,
@@ -46,6 +48,7 @@ namespace FoundationaLLM.Orchestration.Tests.Services
             // Arrange
             var completionRequest = new CompletionRequest
             {
+                OperationId = "TestOperationId",
                 UserPrompt = "TestPrompt"
             };
 
@@ -61,7 +64,7 @@ namespace FoundationaLLM.Orchestration.Tests.Services
         public async Task GetCompletion_ExceptionThrown_ReturnsErrorResponse()
         {
             // Act 
-            var result = await _orchestrationService.GetCompletion(_instanceId, new CompletionRequest() { UserPrompt = "Error" });
+            var result = await _orchestrationService.GetCompletion(_instanceId, new CompletionRequest() { OperationId=Guid.NewGuid().ToString(),  UserPrompt = "Error" });
 
             // Assert
             Assert.NotNull(result);

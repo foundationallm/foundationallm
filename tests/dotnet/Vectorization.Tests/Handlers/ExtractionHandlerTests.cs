@@ -1,4 +1,5 @@
 using FakeItEasy;
+using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Common.Models.Vectorization;
@@ -14,20 +15,20 @@ namespace Vectorization.Tests.Handlers
 {
     internal class MockContentSourceService : ContentSourceServiceBase, IContentSourceService
     {
-        public Task<string> ExtractTextAsync(ContentIdentifier contentId, CancellationToken cancellationToken)
+        public async Task<string> ExtractTextAsync(ContentIdentifier contentId, UnifiedUserIdentity userIdentity, CancellationToken cancellationToken)
         {
-            return Task.FromResult("This is the PDF document data.");
+            return await Task.FromResult("This is the PDF document data.");
         }
     }
 
     internal class MockServiceFactory : IVectorizationServiceFactory<IContentSourceService>
     {
-        public IContentSourceService GetService(string serviceName)
+        public async Task<IContentSourceService> GetService(string serviceName, UnifiedUserIdentity userIdentity)
         {
             return new MockContentSourceService();
         }
 
-        public (IContentSourceService Service, ResourceBase Resource) GetServiceWithResource(string serviceName)
+        public async Task<(IContentSourceService Service, ResourceBase Resource)> GetServiceWithResource(string serviceName, UnifiedUserIdentity userIdentity)
         {
             throw new NotImplementedException();
         }
@@ -53,6 +54,8 @@ namespace Vectorization.Tests.Handlers
             serviceCollection.AddSingleton<IVectorizationServiceFactory<IContentSourceService>, MockServiceFactory>();
 
             ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+
+            UnifiedUserIdentity userIdentity = new();
 
             ExtractionHandler handler = new ExtractionHandler(
                 "Queue-Message-1",
@@ -92,7 +95,7 @@ namespace Vectorization.Tests.Handlers
             };
             CancellationTokenSource tokenSource = new CancellationTokenSource();
 
-            await handler.Invoke(request, state, tokenSource.Token);
+            await handler.Invoke(request, state, userIdentity, tokenSource.Token);
 
             Assert.True(state.Artifacts.First(artifact => artifact.Type == VectorizationArtifactType.ExtractedText).Content == "This is the PDF document data.");
         }

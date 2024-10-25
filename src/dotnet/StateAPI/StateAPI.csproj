@@ -4,6 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <EnableSdkContainerSupport>true</EnableSdkContainerSupport>
     <AssemblyName>FoundationaLLM.State.API</AssemblyName>
     <RootNamespace>FoundationaLLM.State.API</RootNamespace>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>

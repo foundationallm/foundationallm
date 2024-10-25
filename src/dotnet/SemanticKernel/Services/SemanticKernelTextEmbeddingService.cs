@@ -1,8 +1,8 @@
 ﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Vectorization;
-using FoundationaLLM.Common.Settings;
 using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http.Resilience;
@@ -44,7 +44,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Services
         }
 
         /// <inheritdoc/>
-        public async Task<TextEmbeddingResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string modelName = "text-embedding-ada-002")
+        public async Task<TextEmbeddingResult> GetEmbeddingsAsync(IList<TextChunk> textChunks, string modelName = "text-embedding-ada-002", bool Prioritized=false)
         {
             try
             {
@@ -77,16 +77,17 @@ namespace FoundationaLLM.SemanticKernel.Core.Services
 
         private Kernel CreateKernel()
         {
+
             ValidateDeploymentName(_settings.DeploymentName);
             ValidateEndpoint(_settings.Endpoint);
 
             var builder = Kernel.CreateBuilder();
-            if (_settings.AuthenticationType == AzureOpenAIAuthenticationTypes.AzureIdentity)
+            if (_settings.AuthenticationType == AuthenticationTypes.AzureIdentity)
             {
                 builder.AddAzureOpenAITextEmbeddingGeneration(
                     _settings.DeploymentName,
                     _settings.Endpoint,
-                    DefaultAuthentication.AzureCredential);
+                    DefaultAuthentication.AzureCredential!);
             }
             else
             {

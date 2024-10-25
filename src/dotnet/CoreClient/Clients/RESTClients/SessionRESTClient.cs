@@ -1,8 +1,8 @@
-﻿using System.Text.Encodings.Web;
-using System.Text.Json;
-using Azure.Core;
+﻿using Azure.Core;
 using FoundationaLLM.Client.Core.Interfaces;
-using FoundationaLLM.Common.Models.Chat;
+using FoundationaLLM.Common.Models.Conversation;
+using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace FoundationaLLM.Client.Core.Clients.RESTClients
 {
@@ -11,18 +11,23 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
     /// </summary>
     internal class SessionRESTClient(
         IHttpClientFactory httpClientFactory,
-        TokenCredential credential) : CoreRESTClientBase(httpClientFactory, credential), ISessionRESTClient
+        TokenCredential credential,
+        string instanceId) : CoreRESTClientBase(httpClientFactory, credential), ISessionRESTClient
     {
+        private readonly string _instanceId = instanceId ?? throw new ArgumentNullException(nameof(instanceId));
+
         /// <inheritdoc/>
-        public async Task<string> CreateSessionAsync()
+        public async Task<string> CreateSessionAsync(ChatSessionProperties chatSessionProperties)
         {
             var coreClient = await GetCoreClientAsync();
-            var responseSession = await coreClient.PostAsync("sessions", null);
+            var responseSession = await coreClient.PostAsync(
+                $"instances/{_instanceId}/sessions",
+                JsonContent.Create(chatSessionProperties));
 
             if (responseSession.IsSuccessStatusCode)
             {
                 var responseContent = await responseSession.Content.ReadAsStringAsync();
-                var sessionResponse = JsonSerializer.Deserialize<Session>(responseContent, SerializerOptions);
+                var sessionResponse = JsonSerializer.Deserialize<Conversation>(responseContent, SerializerOptions);
                 if (sessionResponse?.SessionId != null)
                 {
                     return sessionResponse.SessionId;
@@ -33,14 +38,16 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
         }
 
         /// <inheritdoc/>
-        public async Task<string> RenameChatSession(string sessionId, string sessionName)
+        public async Task<string> RenameChatSession(string sessionId, ChatSessionProperties chatSessionProperties)
         {
             var coreClient = await GetCoreClientAsync();
-            var response = await coreClient.PostAsync($"sessions/{sessionId}/rename?newChatSessionName={UrlEncoder.Default.Encode(sessionName)}", null);
+            var response = await coreClient.PostAsync(
+                $"instances/{_instanceId}/sessions/{sessionId}/rename",
+                JsonContent.Create(chatSessionProperties));
 
             if (response.IsSuccessStatusCode)
             {
-                return sessionName;
+                return chatSessionProperties.Name;
             }
 
             throw new Exception($"Failed to rename chat session. Status code: {response.StatusCode}. Reason: {response.ReasonPhrase}");
@@ -50,7 +57,7 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
         public async Task<CompletionPrompt> GetCompletionPromptAsync(string sessionId, string completionPromptId)
         {
             var coreClient = await GetCoreClientAsync();
-            var responseMessage = await coreClient.GetAsync($"sessions/{sessionId}/completionprompts/{completionPromptId}");
+            var responseMessage = await coreClient.GetAsync($"instances/{_instanceId}/sessions/{sessionId}/completionprompts/{completionPromptId}");
 
             if (responseMessage.IsSuccessStatusCode)
             {
@@ -67,12 +74,19 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
         public async Task<IEnumerable<Message>> GetChatSessionMessagesAsync(string sessionId)
         {
             var coreClient = await GetCoreClientAsync();
-            var responseMessage = await coreClient.GetAsync($"sessions/{sessionId}/messages");
+            var responseMessage = await coreClient.GetAsync($"instances/{_instanceId}/sessions/{sessionId}/messages");
 
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
                 var messages = JsonSerializer.Deserialize<IEnumerable<Message>>(responseContent, SerializerOptions);
+                foreach (Message message in messages!)
+                {
+                    if (message.Text == null && message.Content != null && message.Content.Count > 0)
+                    {
+                        message.Text = message.Content.First().Value!;
+                    }
+                }
                 return messages ?? throw new InvalidOperationException("The returned messages are invalid.");
             }
 
@@ -80,15 +94,15 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<Session>> GetAllChatSessionsAsync()
+        public async Task<IEnumerable<Conversation>> GetAllChatSessionsAsync()
         {
             var coreClient = await GetCoreClientAsync();
-            var responseMessage = await coreClient.GetAsync("sessions");
+            var responseMessage = await coreClient.GetAsync($"instances/{_instanceId}/sessions");
 
             if (responseMessage.IsSuccessStatusCode)
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                var sessions = JsonSerializer.Deserialize<IEnumerable<Session>>(responseContent, SerializerOptions);
+                var sessions = JsonSerializer.Deserialize<IEnumerable<Conversation>>(responseContent, SerializerOptions);
                 return sessions ?? throw new InvalidOperationException("The returned sessions are invalid.");
             }
 
@@ -99,7 +113,7 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
         public async Task RateMessageAsync(string sessionId, string messageId, bool rating)
         {
             var coreClient = await GetCoreClientAsync();
-            var responseMessage = await coreClient.PostAsync($"sessions/{sessionId}/message/{messageId}/rate?rating={rating}", null);
+            var responseMessage = await coreClient.PostAsync($"instances/{_instanceId}/sessions/{sessionId}/message/{messageId}/rate?rating={rating}", null);
 
             if (!responseMessage.IsSuccessStatusCode)
             {
@@ -111,7 +125,7 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
         public async Task DeleteSessionAsync(string sessionId)
         {
             var coreClient = await GetCoreClientAsync();
-            await coreClient.DeleteAsync($"sessions/{sessionId}");
+            await coreClient.DeleteAsync($"instances/{_instanceId}/sessions/{sessionId}");
         }
     }
 }

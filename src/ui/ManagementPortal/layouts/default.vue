@@ -21,6 +21,7 @@
 			</Dialog>
 
 			<footer v-if="$appConfigStore.footerText">
+				<!-- eslint-disable-next-line vue/no-v-html -->
 				<div class="footer-item" v-html="$appConfigStore.footerText"></div>
 			</footer>
 		</div>
@@ -52,7 +53,7 @@ export default {
 footer {
 	text-align: right;
 	font-size: 0.85rem;
-    margin-top: 24px;
+	margin-top: 24px;
 	padding-right: 24px;
 }
 </style>

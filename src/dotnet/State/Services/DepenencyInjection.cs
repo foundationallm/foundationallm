@@ -16,10 +16,10 @@ namespace FoundationaLLM
         /// Adds the core Gateway service the the dependency injection container.
         /// </summary>
         /// <param name="builder">The host application builder.</param>
-        public static void AddState(this IHostApplicationBuilder builder)
+        public static void AddStateService(this IHostApplicationBuilder builder)
         {
             builder.Services.AddOptions<StateServiceSettings>()
-                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_State));
+                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_StateAPI_Configuration_CosmosDB));
 
             builder.Services.AddScoped<IStateService, StateService>();
         }

@@ -37,7 +37,7 @@ resource database 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2023-04-15
 }
 
 resource cosmosContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = [
-  for container in containers: {
+  for container in containers: if (container.defaultTtl == null) {
     parent: database
     name: container.name
     properties: {
@@ -50,6 +50,32 @@ resource cosmosContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/con
           kind: 'Hash'
           version: 2
         }
+      }
+      options: {
+        autoscaleSettings: {
+          maxThroughput: container.maxThroughput
+        }
+      }
+    }
+    tags: tags
+  }
+]
+
+resource cosmosContainerWithTtl 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = [
+  for container in containers: if (container.defaultTtl != null) {
+    parent: database
+    name: container.name
+    properties: {
+      resource: {
+        id: container.name
+        partitionKey: {
+          paths: [
+            container.partitionKeyPath
+          ]
+          kind: 'Hash'
+          version: 2
+        }
+        defaultTtl: container.defaultTtl
       }
       options: {
         autoscaleSettings: {

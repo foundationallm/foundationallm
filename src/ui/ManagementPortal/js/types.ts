@@ -5,7 +5,8 @@ interface ResourceBase {
 	display_name: string;
 	description: string;
 	cost_center: string;
-};
+	expiration_date: string;
+}
 
 export type ResourceProviderGetResult<T> = {
 	/**
@@ -29,6 +30,8 @@ export type Agent = ResourceBase & {
 	type: 'knowledge-management' | 'analytics';
 	inline_context: boolean;
 
+	ai_model_object_id: string;
+
 	vectorization: {
 		dedicated_pipeline: boolean;
 		indexing_profile_object_ids: string[];
@@ -40,25 +43,18 @@ export type Agent = ResourceBase & {
 		trigger_cron_schedule: string;
 	};
 
+	capabilities: string[];
+	tools: { [key: string]: AgentTool };
+
 	sessions_enabled: boolean;
 	orchestration_settings: {
 		orchestrator: string;
-		endpoint_configuration: {
-			endpoint: string;
-			api_key: string;
-			api_version: string;
-			operation_type: string;
-		};
-		model_parameters: {
-			temperature: number;
-			deployment_name: string;
-		};
 	};
-	conversation_history: {
+	conversation_history_settings: {
 		enabled: boolean;
 		max_history: number;
 	};
-	gatekeeper: {
+	gatekeeper_settings: {
 		use_system_setting: boolean;
 		options: string[];
 	};
@@ -91,15 +87,37 @@ export type AgentDataSource = ResourceBase & {
 	object_id: string;
 };
 
+export type AgentTool = {
+	name: string;
+	description: string;
+	ai_model_object_ids: { [key: string]: string };
+	api_endpoint_configuration_object_ids: { [key: string]: string };
+	properties: { [key: string]: any };
+};
+
 export type ExternalOrchestrationService = ResourceBase & {
 	type: string;
 	name: string;
+	category: string;
 	api_url_configuration_name: string;
 	api_key_configuration_name: string;
-	// The resolved value of the API URL configuration reference for displaying in the UI and updating the configuration.
-	resolved_api_url: string;
+	url: string;
+	status_url?: string | null;
 	// The resolved value of the API key configuration reference for displaying in the UI and updating the configuration.
 	resolved_api_key: string;
+};
+
+export type AIModel = ResourceBase & {
+	name: string;
+	type: string;
+	// The object id of the APIEndpointConfiguration object providing the configuration for the API endpoint used to interact with the model.
+	endpoint_object_id: string;
+	// The version of the AI model.
+	version?: string | null;
+	// The name of the deployment corresponding to the AI model.
+	deployment_name?: string | null;
+	// Dictionary with default values for the model parameters.
+	model_parameters: { [key: string]: any };
 };
 
 export interface ConfigurationReferenceMetadata {
@@ -239,7 +257,7 @@ export type TextEmbeddingProfile = ResourceBase & {
 	};
 	settings: {
 		model_name: string;
-	}
+	};
 	// The resolved configuration references are used to store the resolved values for displaying in the UI and updating the configuration.
 	resolved_configuration_references: {
 		APIKey: string;
@@ -247,10 +265,10 @@ export type TextEmbeddingProfile = ResourceBase & {
 		AuthenticationType: string;
 		DeploymentName: string;
 		Endpoint: string;
-	 };
-	 resolved_settings: {
+	};
+	resolved_settings: {
 		model_name: string;
-	}
+	};
 };
 
 export type CheckNameResponse = {
@@ -296,6 +314,8 @@ export type CreateAgentRequest = ResourceBase & {
 	name: string;
 	inline_context: boolean;
 
+	ai_model_object_id: string;
+
 	language_model: {
 		type: string;
 		provider: string;
@@ -307,6 +327,9 @@ export type CreateAgentRequest = ResourceBase & {
 		version: string;
 		deployment: string;
 	};
+
+	capabilities: string[];
+	tools: { [key: string]: AgentTool };
 
 	vectorization: {
 		dedicated_pipeline: boolean;
@@ -322,22 +345,12 @@ export type CreateAgentRequest = ResourceBase & {
 	sessions_enabled: boolean;
 	orchestration_settings: {
 		orchestrator: string;
-		endpoint_configuration: {
-			endpoint: string;
-			api_key: string;
-			api_version: string;
-			operation_type: string;
-		};
-		model_parameters: {
-			temperature: number;
-			deployment_name: string;
-		};
 	};
-	conversation_history: {
+	conversation_history_settings: {
 		enabled: boolean;
 		max_history: number;
 	};
-	gatekeeper: {
+	gatekeeper_settings: {
 		use_system_setting: boolean;
 		options: string[];
 	};
@@ -362,6 +375,10 @@ export type CreateTextPartitioningProfileRequest = ResourceBase & {
 	};
 };
 
+export type Role = {};
+
+export type RoleAssignment = {};
+
 // Type guards
 export function isAzureDataLakeDataSource(
 	dataSource: DataSource,
@@ -369,9 +386,7 @@ export function isAzureDataLakeDataSource(
 	return dataSource.type === 'azure-data-lake';
 }
 
-export function isOneLakeDataSource(
-	dataSource: DataSource,
-): dataSource is OneLakeDataSource {
+export function isOneLakeDataSource(dataSource: DataSource): dataSource is OneLakeDataSource {
 	return dataSource.type === 'onelake';
 }
 

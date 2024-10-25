@@ -1,0 +1,1664 @@
+[
+	{
+		"namespace": "Instance",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings related to the FoundationaLLM instance."
+		},
+		"configuration_keys": [
+			{
+				"name": "Id",
+				"description": "The unique identifier of the FoundationaLLM instance.",
+				"secret": "",
+				"value": "${env:FOUNDATIONALLM_INSTANCE_ID}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "SecurityGroupRetrievalStrategy",
+				"description": "The security group retrieval strategy of the FoundationaLLM instance.",
+				"secret": "",
+				"value": "IdentityManagementService",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "IdentitySubstitutionSecurityPrincipalId",
+				"description": "The object identifier of the security principal who is allowed to substitute its identity with a value provided in the X-USER-IDENTITY header.",
+				"secret": "",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "IdentitySubstitutionUserPrincipalNamePattern",
+				"description": "The Regex pattern used to validate the values allowed as User Principal Name (UPN) substitutes in the X-USER-IDENTITY header.",
+				"secret": "",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the Azure Key Vault settings related to the FoundationaLLM instance."
+		},
+		"configuration_keys": [
+			{
+				"name": "KeyVaultURI",
+				"description": "The URL of the Azure Key Vault providing the secrets.",
+				"secret": "",
+				"value": "${env:AZURE_KEY_VAULT_ENDPOINT}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "ResourceProviders:AIModel",
+		"dependency_injection_key": {
+			"description": "Dependency injection key used by the FoundationaLLM.AIModel resource provider."
+		},
+		"configuration_section": null,
+		"configuration_keys": []
+	},
+	{
+		"namespace": "ResourceProviders:AIModel:Storage",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the storage settings for the FoundationaLLM.AIModel resource provider."
+		},
+		"configuration_keys": [
+			{
+				"name": "AuthenticationType",
+				"description": "The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM.AIModel resource provider. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
+				"secret": "",
+				"value": "AzureIdentity",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AccountName",
+				"description": "The name of the Azure Blob Storage account used by the FoundationaLLM.AIModel resource provider.",
+				"secret": "",
+				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "ResourceProviders:Agent",
+		"dependency_injection_key": {
+			"description": "Dependency injection key used by the FoundationaLLM.Agent resource provider."
+		},
+		"configuration_section": null,
+		"configuration_keys": []
+	},
+	{
+		"namespace": "ResourceProviders:Agent:Storage",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the storage settings for the FoundationaLLM.Agent resource provider."
+		},
+		"configuration_keys": [
+			{
+				"name": "AuthenticationType",
+				"description": "The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM.Agent resource provider. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
+				"secret": "",
+				"value": "AzureIdentity",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AccountName",
+				"description": "The name of the Azure Blob Storage account used by the FoundationaLLM.Agent resource provider.",
+				"secret": "",
+				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "ResourceProviders:Attachment",
+		"dependency_injection_key": {
+			"description": "Dependency injection key used by the FoundationaLLM.Attachment resource provider."
+		},
+		"configuration_section": null,
+		"configuration_keys": []
+	},
+	{
+		"namespace": "ResourceProviders:Attachment:Storage",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the storage settings for the FoundationaLLM.Attachment resource provider."
+		},
+		"configuration_keys": [
+			{
+				"name": "AuthenticationType",
+				"description": "The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM.Attachment resource provider. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
+				"secret": "",
+				"value": "AzureIdentity",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AccountName",
+				"description": "The name of the Azure Blob Storage account used by the FoundationaLLM.Attachment resource provider.",
+				"secret": "",
+				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "ResourceProviders:AzureOpenAI",
+		"dependency_injection_key": {
+			"description": "Dependency injection key used by the FoundationaLLM.AzureOpenAI resource provider."
+		},
+		"configuration_section": null,
+		"configuration_keys": []
+	},
+	{
+		"namespace": "ResourceProviders:AzureOpenAI:Storage",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the storage settings for the FoundationaLLM.AzureOpenAI resource provider."
+		},
+		"configuration_keys": [
+			{
+				"name": "AuthenticationType",
+				"description": "The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM.AzureOpenAI resource provider. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
+				"secret": "",
+				"value": "AzureIdentity",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AccountName",
+				"description": "The name of the Azure Blob Storage account used by the FoundationaLLM.AzureOpenAI resource provider.",
+				"secret": "",
+				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "ResourceProviders:Configuration",
+		"dependency_injection_key": {
+			"description": "Dependency injection key used by the FoundationaLLM.Configuration resource provider."
+		},
+		"configuration_section": null,
+		"configuration_keys": []
+	},
+	{
+		"namespace": "ResourceProviders:Configuration:Storage",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the storage settings for the FoundationaLLM.Configuration resource provider."
+		},
+		"configuration_keys": [
+			{
+				"name": "AuthenticationType",
+				"description": "The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM.Configuration resource provider. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
+				"secret": "",
+				"value": "AzureIdentity",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AccountName",
+				"description": "The name of the Azure Blob Storage account used by the FoundationaLLM.Configuration resource provider.",
+				"secret": "",
+				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "ResourceProviders:DataSource",
+		"dependency_injection_key": {
+			"description": "Dependency injection key used by the FoundationaLLM.DataSource resource provider."
+		},
+		"configuration_section": null,
+		"configuration_keys": []
+	},
+	{
+		"namespace": "ResourceProviders:DataSource:Storage",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the storage settings for the FoundationaLLM.DataSource resource provider."
+		},
+		"configuration_keys": [
+			{
+				"name": "AuthenticationType",
+				"description": "The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM.DataSource resource provider. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
+				"secret": "",
+				"value": "AzureIdentity",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AccountName",
+				"description": "The name of the Azure Blob Storage account used by the FoundationaLLM.DataSource resource provider.",
+				"secret": "",
+				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "ResourceProviders:Prompt",
+		"dependency_injection_key": {
+			"description": "Dependency injection key used by the FoundationaLLM.Prompt resource provider."
+		},
+		"configuration_section": null,
+		"configuration_keys": []
+	},
+	{
+		"namespace": "ResourceProviders:Prompt:Storage",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the storage settings for the FoundationaLLM.Prompt resource provider."
+		},
+		"configuration_keys": [
+			{
+				"name": "AuthenticationType",
+				"description": "The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM.Prompt resource provider. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
+				"secret": "",
+				"value": "AzureIdentity",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AccountName",
+				"description": "The name of the Azure Blob Storage account used by the FoundationaLLM.Prompt resource provider.",
+				"secret": "",
+				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "ResourceProviders:Vectorization",
+		"dependency_injection_key": {
+			"description": "Dependency injection key used by the FoundationaLLM.Vectorization resource provider."
+		},
+		"configuration_section": null,
+		"configuration_keys": []
+	},
+	{
+		"namespace": "ResourceProviders:Vectorization:Storage",
+		"dependency_injection_key": {
+			"description": "Dependency injection key used to inject storage settings for the FoundationaLLM.Vectorization resource provider."
+		},
+		"configuration_section": {
+			"description": "Configuration section used to identify the storage settings for the FoundationaLLM.Vectorization resource provider."
+		},
+		"configuration_keys": [
+			{
+				"name": "AuthenticationType",
+				"description": "The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM.Vectorization resource provider. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
+				"secret": "",
+				"value": "AzureIdentity",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AccountName",
+				"description": "The name of the Azure Blob Storage account used by the FoundationaLLM.Vectorization resource provider.",
+				"secret": "",
+				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for all API endpoints."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "APIEndpoints:AuthorizationAPI:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the authentication settings for the Authorization API. Due to its special nature, the Authorization API does not have a corresponding APIEndpointConfiguration resource."
+		},
+		"configuration_keys": [
+			{
+				"name": "APIUrl",
+				"description": "The URL of the Authorization API. Due to its special nature, the Authorization API does not have a corresponding APIEndpointConfiguration resource and thus the URL must be kept as a configuration setting.",
+				"secret": "",
+				"value": "${env:SERVICE_AUTH_API_ENDPOINT_URL}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "APIScope",
+				"description": "The scope required to get an access token for the Authorization API.",
+				"secret": "",
+				"value": "${env:ENTRA_AUTH_API_SCOPES}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:CoreAPI:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for Core API."
+		},
+		"configuration_keys": [
+			{
+				"name": "APIUrl",
+				"description": "The URL of the Core API. Since it's an entry point API, the Core API does not have a corresponding APIEndpointConfiguration resource and thus the URL must be kept as a configuration setting.",
+				"secret": "",
+				"value": "${env:SERVICE_CORE_API_ENDPOINT_URL}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AppInsightsConnectionString",
+				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Core API.",
+				"secret": "appinsights-connectionstring",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:CoreAPI:Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the main Core API settings."
+		},
+		"configuration_keys": [
+			{
+				"name": "BypassGatekeeper",
+				"description": "The flag that indicates whether the Core API should bypass or not the Gatekeeper API.",
+				"secret": "",
+				"value": "true",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AzureOpenAIAssistantsFileSearchFileExtensions",
+				"description": "The comma-separated list file extensions that are supported by the Azure OpenAI Assistants file search tool.",
+				"secret": "",
+				"value": "c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AllowedUploadFileExtensions",
+				"description": "The comma-separated list file extensions that users are allowed to upload to a conversation.",
+				"secret": "",
+				"value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "MaxUploadsPerMessage",
+				"description": "The maximum number of files that can be uploaded for a single conversation message.",
+				"secret": "",
+				"value": "{ \\\"value\\\": 10, \\\"value_exceptions\\\": []}",
+				"content_type": "application/json",
+				"first_version": "0.8.2"
+			},
+			{
+				"name": "CompletionResponsePollingIntervalSeconds",
+				"description": "The size in seconds of the polling interval used to check for completion responses.",
+				"secret": "",
+				"value": "{ \\\"value\\\": 10, \\\"value_exceptions\\\": []}",
+				"content_type": "application/json",
+				"first_version": "0.8.2"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:CoreAPI:Configuration:Entra",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the Entra ID authentication settings for Core API."
+		},
+		"configuration_keys": [
+			{
+				"name": "Instance",
+				"description": "The URL of the Entra ID instance used for authentication.",
+				"secret": "",
+				"value": "https://login.microsoftonline.com/",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "TenantId",
+				"description": "The unique identifier of the Entra ID tenant used for authentication.",
+				"secret": "",
+				"value": "${env:ENTRA_CORE_API_TENANT_ID}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "Scopes",
+				"description": "The list of scopes exposed by the Core API.",
+				"secret": "",
+				"value": "Data.Read",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "CallbackPath",
+				"description": "The path where the Entra ID instance will redirect during authentication.",
+				"secret": "",
+				"value": "/signin-oidc",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "ClientId",
+				"description": "The unique identifier of the Entra ID app registration used by the Core API to authenticate.",
+				"secret": "",
+				"value": "${env:ENTRA_CORE_API_CLIENT_ID}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:CoreAPI:Configuration:CosmosDB",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the Cosmos DB settings for the Core API."
+		},
+		"configuration_keys": [
+			{
+				"name": "Endpoint",
+				"description": "The URL of the Azure Cosmos DB service used by the Core API.",
+				"secret": "",
+				"value": "${env:AZURE_COSMOS_DB_ENDPOINT}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "Database",
+				"description": "The name of the Azure Cosmos DB database used by the Core API.",
+				"secret": "",
+				"value": "database",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "Containers",
+				"description": "The comma-separated list of database containers used by the Core API.",
+				"secret": "",
+				"value": "Sessions, UserSessions, UserProfiles",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "MonitoredContainers",
+				"description": "The comma-separated list of database containers that are monitored for changes using the change feed.",
+				"secret": "",
+				"value": "Sessions",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "ChangeFeedLeaseContainer",
+				"description": "The name of the container used by Azure Cosmos DB to manage the change feed leases.",
+				"secret": "",
+				"value": "leases",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:CoreWorker:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for the Core Worker service."
+		},
+		"configuration_keys": [
+			{
+				"name": "APIKey",
+				"description": "The name of the Azure Key Vault secret holding the API key for the Core Worker service.",
+				"secret": "apiendpoints-coreworker-apikey",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AppInsightsConnectionString",
+				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Core Worker service.",
+				"secret": "appinsights-connectionstring",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:GatekeeperAPI:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the esential settings for the Gatekeeper API."
+		},
+		"configuration_keys": [
+			{
+				"name": "APIKey",
+				"description": "The name of the Azure Key Vault secret holding the API key for the Gatekeeper API.",
+				"secret": "apiendpoints-gatekeeperapi-apikey",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AppInsightsConnectionString",
+				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Gatekeeper API.",
+				"secret": "appinsights-connectionstring",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:GatekeeperAPI:Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the Gatekeeper API."
+		},
+		"configuration_keys": [
+			{
+				"name": "EnableLakeraGuard",
+				"description": "Indicates whether Lakera Guard is available for use by the Gatekeeper API.",
+				"secret": "",
+				"value": "false",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "EnableEnkryptGuardrails",
+				"description": "Indicates whether Enkrypt Guardrails is available for use by the Gatekeeper API.",
+				"secret": "",
+				"value": "false",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "EnableAzureContentSafety",
+				"description": "Indicates whether Azure Content Safety is available for use by the Gatekeeper API.",
+				"secret": "",
+				"value": "false",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "EnableAzureContentSafetyPromptShields",
+				"description": "Indicates whether Azure Content Safety Prompt Shields is available for use by the Gatekeeper API.",
+				"secret": "",
+				"value": "false",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "EnableMicrosoftPresidio",
+				"description": "Indicates whether Microsoft Presidio is available for use by the Gatekeeper API.",
+				"secret": "",
+				"value": "false",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:GatekeeperIntegrationAPI:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for the Gatekeeper Integration API."
+		},
+		"configuration_keys": [
+			{
+				"name": "APIKey",
+				"description": "The name of the Azure Key Vault secret holding the API key for the Gatekeeper Integration API.",
+				"secret": "apiendpoints-gatekeeperintegrationapi-apikey",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AppInsightsConnectionString",
+				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Gatekeeper Integration API.",
+				"secret": "appinsights-connectionstring",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:OrchestrationAPI:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for the Orchestration API."
+		},
+		"configuration_keys": [
+			{
+				"name": "APIKey",
+				"description": "The name of the Azure Key Vault secret holding the API key for the Orchestration API.",
+				"secret": "apiendpoints-orchestrationapi-apikey",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AppInsightsConnectionString",
+				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Orchestration API.",
+				"secret": "appinsights-connectionstring",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:LangChainAPI:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for the LangChain API."
+		},
+		"configuration_keys": [
+			{
+				"name": "APIKey",
+				"description": "The name of the Azure Key Vault secret holding the API key for the LangChain API.",
+				"secret": "apiendpoints-langchainapi-apikey",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AppInsightsConnectionString",
+				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the LangChain API.",
+				"secret": "appinsights-connectionstring",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:LangChainAPI:Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the main LangChain API settings."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "APIEndpoints:SemanticKernelAPI:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for the Semantic Kernel API."
+		},
+		"configuration_keys": [
+			{
+				"name": "APIKey",
+				"description": "The name of the Azure Key Vault secret holding the API key for the Semantic Kernel API.",
+				"secret": "apiendpoints-semantickernelapi-apikey",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AppInsightsConnectionString",
+				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Semantic Kernel API.",
+				"secret": "appinsights-connectionstring",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:SemanticKernelAPI:Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the main Semantic Kernel API settings."
+		},
+		"configuration_keys": [
+			{
+				"name": "MaxConcurrentCompletions",
+				"description": "The maximum number of background completion operations allowed to run in parallel. If a new completion request comes in and the maximum number is already reached, the request will generate an error.",
+				"secret": "",
+				"value": "20",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:ManagementAPI:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for the Management API."
+		},
+		"configuration_keys": [
+			{
+				"name": "APIUrl",
+				"description": "The URL of the Management API. Since it's an entry point API, the Management API does not have a corresponding APIEndpointConfiguration resource and thus the URL must be kept as a configuration setting.",
+				"secret": "",
+				"value": "${env:SERVICE_MANAGEMENT_API_ENDPOINT_URL}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AppInsightsConnectionString",
+				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Management API.",
+				"secret": "appinsights-connectionstring",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:ManagementAPI:Configuration:Entra",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the Entra ID authentication settings for Management API."
+		},
+		"configuration_keys": [
+			{
+				"name": "Instance",
+				"description": "The URL of the Entra ID instance used for authentication.",
+				"secret": "",
+				"value": "https://login.microsoftonline.com/",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "TenantId",
+				"description": "The unique identifier of the Entra ID tenant used for authentication.",
+				"secret": "",
+				"value": "${env:ENTRA_MANAGEMENT_API_TENANT_ID}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "Scopes",
+				"description": "The list of scopes exposed by the Management API.",
+				"secret": "",
+				"value": "${env:ENTRA_MANAGEMENT_API_SCOPES}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "CallbackPath",
+				"description": "The path where the Entra ID instance will redirect during authentication.",
+				"secret": "",
+				"value": "/signin-oidc",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "ClientId",
+				"description": "The unique identifier of the Entra ID app registration used by the Management API to authenticate.",
+				"secret": "",
+				"value": "${env:ENTRA_MANAGEMENT_API_CLIENT_ID}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:VectorizationAPI:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for the Vectorization API."
+		},
+		"configuration_keys": [
+			{
+				"name": "APIKey",
+				"description": "The name of the Azure Key Vault secret holding the API key for the Vectorization API.",
+				"secret": "apiendpoints-vectorizationapi-apikey",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AppInsightsConnectionString",
+				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Vectorization API.",
+				"secret": "appinsights-connectionstring",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:VectorizationWorker:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for the Vectorization Worker service."
+		},
+		"configuration_keys": [
+			{
+				"name": "APIKey",
+				"description": "The name of the Azure Key Vault secret holding the API key for the Vectorization Worker service.",
+				"secret": "apiendpoints-vectorizationworker-apikey",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AppInsightsConnectionString",
+				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Vectorization worker service.",
+				"secret": "appinsights-connectionstring",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:GatewayAPI:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for the Gateway API."
+		},
+		"configuration_keys": [
+			{
+				"name": "APIKey",
+				"description": "The name of the Azure Key Vault secret holding the API key for the Gateway API.",
+				"secret": "apiendpoints-gatewayapi-apikey",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AppInsightsConnectionString",
+				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Gateway API.",
+				"secret": "appinsights-connectionstring",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:GatewayAPI:Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the Gateway API."
+		},
+		"configuration_keys": [
+			{
+				"name": "AzureOpenAIAccounts",
+				"description": "The comma-separated list of Azure OpenAI account names used by the Gateway API.",
+				"secret": "",
+				"value": "${env:AZURE_OPENAI_ID}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AzureOpenAIAssistantsMaxVectorizationTimeSeconds",
+				"description": "The maximum time in seconds allowed for an Azure OpenAI Assistants vectorization process to complete.",
+				"secret": "",
+				"value": "120",
+				"content_type": "",
+				"first_version": "0.8.3"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:GatewayAdapterAPI:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for the Gateway Adapter API."
+		},
+		"configuration_keys": [
+			{
+				"name": "APIKey",
+				"description": "The name of the Azure Key Vault secret holding the API key for the Gateway Adapter API.",
+				"secret": "apiendpoints-gatewayadapterapi-apikey",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AppInsightsConnectionString",
+				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Gateway Adapter API.",
+				"secret": "appinsights-connectionstring",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:StateAPI:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for the State API."
+		},
+		"configuration_keys": [
+			{
+				"name": "APIUrl",
+				"description": "The URL of the State API. This entry supports the dependency of the Orchestration implementations to retrieve the URL. Python APIs do not have a resource provider implementation to retrieve the details.",
+				"secret": "",
+				"value": "${env:SERVICE_STATE_API_ENDPOINT_URL}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "APIKey",
+				"description": "The name of the Azure Key Vault secret holding the API key for the State API.",
+				"secret": "apiendpoints-stateapi-apikey",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AppInsightsConnectionString",
+				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the State API.",
+				"secret": "appinsights-connectionstring",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:StateAPI:Configuration:CosmosDB",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the Cosmos DB settings for the State API."
+		},
+		"configuration_keys": [
+			{
+				"name": "Endpoint",
+				"description": "The URL of the Azure Cosmos DB service used by the State API.",
+				"secret": "",
+				"value": "${env:AZURE_COSMOS_DB_ENDPOINT}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "Database",
+				"description": "The name of the Azure Cosmos DB database used by the State API.",
+				"secret": "",
+				"value": "database",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "Containers",
+				"description": "The comma-separated list of database containers used by the State API.",
+				"secret": "",
+				"value": "State",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:AzureOpenAI:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for the Azure OpenAI service."
+		},
+		"configuration_keys": [
+			{
+				"name": "APIKey",
+				"description": "The name of the Azure Key Vault secret holding the API key for the Azure OpenAI service.",
+				"secret": "apiendpoints-azureopenai-apikey",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:AzureCosmosDBNoSQLVectorStore:Configuration",
+		"dependency_injection_key": {
+			"description": "Dependency injection key used to inject the implementation of IIndexingService based on Azure Cosmos DB NoSQL."
+		},
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the Azure Cosmos DB NoSQL vector store service."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "APIEndpoints:AzurePostgreSQLVectorStore:Configuration",
+		"dependency_injection_key": {
+			"description": "Dependency injection key used to inject the implementation of IIndexingService based on Azure PostgreSQL."
+		},
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the Azure PostgreSQL vector store service."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "APIEndpoints:AzureEventGrid:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for the Azure Event Grid service."
+		},
+		"configuration_keys": [
+			{
+				"name": "APIKey",
+				"description": "The name of the Azure Key Vault secret holding the API key for the Azure Event Grid service.",
+				"secret": "apiendpoints-azureeventgrid-apikey",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:AzureEventGrid:Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the Azure Event Grid service."
+		},
+		"configuration_keys": [
+			{
+				"name": "NamespaceId",
+				"description": "The object identifier of the Azure Event Grid Namespace object used by the Azure Event Grid event service.",
+				"secret": "",
+				"value": "${env:AZURE_EVENT_GRID_ID}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:AzureAIStudio:Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the Azure AI Studio service."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "APIEndpoints:AzureAIStudio:Configuration:Storage",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for storage account used by the Azure AI Studio service."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "APIEndpoints:AzureContentSafety:Essentials",
+		"dependency_injection_key": null,
+		"configuration_section": null,
+		"configuration_keys": [
+			{
+				"name": "APIKey",
+				"description": "The name of the Azure Key Vault secret holding the API key for the Azure Content Safety service.",
+				"secret": "apiendpoints-azurecontentsafety-apikey",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:AzureContentSafety:Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the Azure Content Safety service."
+		},
+		"configuration_keys": [
+			{
+				"name": "HateSeverity",
+				"description": "The maximum level of hate language that is allowed by the Azure Content Safety service (higher value means that a more severe language is allowed).",
+				"secret": "",
+				"value": "2",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "SelfHarmSeverity",
+				"description": "The maximum level of self-harm language that is allowed by the Azure Content Safety service (higher value means that a more severe language is allowed).",
+				"secret": "",
+				"value": "2",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "SexualSeverity",
+				"description": "The maximum level of sexual language that is allowed by the Azure Content Safety service (higher value means that a more severe language is allowed).",
+				"secret": "",
+				"value": "2",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "ViolenceSeverity",
+				"description": "The maximum level of violent language that is allowed by the Azure Content Safety service (higher value means that a more severe language is allowed).",
+				"secret": "",
+				"value": "2",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:LakeraGuard:Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the Lakera Guard service."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "APIEndpoints:EnkryptGuardrails:Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the Encrypt Guardrails service."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "Branding",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the branding settings for the User Portal."
+		},
+		"configuration_keys": [
+			{
+				"name": "AccentColor",
+				"description": "Accent color.",
+				"secret": "",
+				"value": "#fff",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AccentTextColor",
+				"description": "Accent text color.",
+				"secret": "",
+				"value": "#131833",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "BackgroundColor",
+				"description": "BackgroundColor.",
+				"secret": "",
+				"value": "#fff",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "CompanyName",
+				"description": "Company name.",
+				"secret": "",
+				"value": "FoundationaLLM",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "FavIconUrl",
+				"description": "Fav icon url.",
+				"secret": "",
+				"value": "favicon.ico",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AgentIconUrl",
+				"description": "The agent icon that displays next to the agent select list and agent responses. Can be an absolute URL, relative path, or base64string value.",
+				"secret": "",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "KioskMode",
+				"description": "Kiosk mode.",
+				"secret": "",
+				"value": "false",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "LogoText",
+				"description": "Logo text.",
+				"secret": "",
+				"value": "FoundationaLLM",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "LogoUrl",
+				"description": "Logo url.",
+				"secret": "",
+				"value": "foundationallm-logo-white.svg",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "PageTitle",
+				"description": "Page title.",
+				"secret": "",
+				"value": "FoundationaLLM User Portal",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "PrimaryColor",
+				"description": "Primary color.",
+				"secret": "",
+				"value": "#131833",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "PrimaryTextColor",
+				"description": "Primary text color.",
+				"secret": "",
+				"value": "#fff",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "SecondaryColor",
+				"description": "Secondary color.",
+				"secret": "",
+				"value": "#334581",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "SecondaryTextColor",
+				"description": "Secondary text color.",
+				"secret": "",
+				"value": "#fff",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "PrimaryButtonBackgroundColor",
+				"description": "Primary button background color.",
+				"secret": "",
+				"value": "#5472d4",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "PrimaryButtonTextColor",
+				"description": "Primary button text color.",
+				"secret": "",
+				"value": "#fff",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "SecondaryButtonBackgroundColor",
+				"description": "Secondary button background color.",
+				"secret": "",
+				"value": "#70829a",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "SecondaryButtonTextColor",
+				"description": "Secondary button text color.",
+				"secret": "",
+				"value": "#fff",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "FooterText",
+				"description": "Footer text.",
+				"secret": "",
+				"value": "FoundationaLLM © 2024",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "UserPortal:Authentication:Entra",
+		"dependency_injection_key": null,
+		"configuration_section": null,
+		"configuration_keys": [
+			{
+				"name": "Instance",
+				"description": "The URL of the Entra ID instance used for authentication.",
+				"secret": "",
+				"value": "https://login.microsoftonline.com/",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "TenantId",
+				"description": "The unique identifier of the Entra ID tenant used for authentication.",
+				"secret": "",
+				"value": "${env:ENTRA_CHAT_UI_TENANT_ID}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "Scopes",
+				"description": "The list of scopes used to get the authentication token for the Core API.",
+				"secret": "",
+				"value": "${env:ENTRA_CHAT_UI_SCOPES}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "CallbackPath",
+				"description": "The path where the Entra ID instance will redirect during authentication.",
+				"secret": "",
+				"value": "/signin-oidc",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "ClientId",
+				"description": "The unique identifier of the Entra ID app registration used by the User Portal to authenticate.",
+				"secret": "",
+				"value": "${env:ENTRA_CHAT_UI_CLIENT_ID}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "ManagementPortal:Authentication:Entra",
+		"dependency_injection_key": null,
+		"configuration_section": null,
+		"configuration_keys": [
+			{
+				"name": "Instance",
+				"description": "The URL of the Entra ID instance used for authentication.",
+				"secret": "",
+				"value": "https://login.microsoftonline.com/",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "TenantId",
+				"description": "The unique identifier of the Entra ID tenant used for authentication.",
+				"secret": "",
+				"value": "${env:ENTRA_MANAGEMENT_UI_TENANT_ID}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "Scopes",
+				"description": "The list of scopes used to get the authentication token for the Management API.",
+				"secret": "",
+				"value": "${env:ENTRA_MANAGEMENT_UI_SCOPES}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "CallbackPath",
+				"description": "The path where the Entra ID instance will redirect during authentication.",
+				"secret": "",
+				"value": "/signin-oidc",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "ClientId",
+				"description": "The unique identifier of the Entra ID app registration used by the Management Portal to authenticate.",
+				"secret": "",
+				"value": "${env:ENTRA_MANAGEMENT_UI_CLIENT_ID}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "Vectorization",
+		"dependency_injection_key": null,
+		"configuration_section": null,
+		"configuration_keys": [
+			{
+				"name": "Worker",
+				"description": "The processing configuration used by the Vectorization Worker service.",
+				"secret": "",
+				"value": "${env:VECTORIZATION_WORKER_CONFIG}",
+				"content_type": "application/json",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "Vectorization:Steps",
+		"dependency_injection_key": {
+			"description": "Dependency injection key used to inject the IConfiguration section for vectorization steps."
+		},
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for vectorization steps."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "Vectorization:Queues",
+		"dependency_injection_key": {
+			"description": "Dependency injection key used to inject the IConfiguration section for vectorization queues."
+		},
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for vectorization queues."
+		},
+		"configuration_keys": [
+			{
+				"name": "Extract:AccountName",
+				"description": "The Azure Queue Storage account providing the Extract queue.",
+				"secret": "",
+				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "Partition:AccountName",
+				"description": "The Azure Queue Storage account providing the Partition queue.",
+				"secret": "",
+				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "Embed:AccountName",
+				"description": "The Azure Queue Storage account providing the Embed queue.",
+				"secret": "",
+				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "Index:AccountName",
+				"description": "The Azure Queue Storage account providing the Index queue.",
+				"secret": "",
+				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "Vectorization:StateService:Storage",
+		"dependency_injection_key": {
+			"description": "Dependency injection key used to inject storage settings for the Vectorization state service."
+		},
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the storage account used by the vectorization state service."
+		},
+		"configuration_keys": [
+			{
+				"name": "AuthenticationType",
+				"description": "The type of authentication used to connect to the Azure Blob Storage account used by the Vectorization State service. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
+				"secret": "",
+				"value": "AzureIdentity",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "AccountName",
+				"description": "The name of the Azure Blob Storage account used by the Vectorization State service.",
+				"secret": "",
+				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "Vectorization:TextEmbedding:Gateway",
+		"dependency_injection_key": {
+			"description": "Dependency injection key used to inject the ITextEmbeddingService implementation that uses the FoundationaLLM Gateway for embedding."
+		},
+		"configuration_section": null,
+		"configuration_keys": []
+	},
+	{
+		"namespace": "DataSources",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for data sources resources managed by the FoundationaLLM.DataSource resource provider."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "Events:Profiles",
+		"dependency_injection_key": null,
+		"configuration_section": null,
+		"configuration_keys": [
+			{
+				"name": "CoreAPI",
+				"description": "The settings used by the Core API to process Azure Event Grid events.",
+				"secret": "",
+				"value": "${env:FOUNDATIONALLM_CORE_API_EVENT_GRID_PROFILE}",
+				"content_type": "application/json",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "OrchestrationAPI",
+				"description": "The settings used by the Orchestration API to process Azure Event Grid events.",
+				"secret": "",
+				"value": "${env:FOUNDATIONALLM_ORCHESTRATION_API_EVENT_GRID_PROFILE}",
+				"content_type": "application/json",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "ManagementAPI",
+				"description": "The settings used by the Management API to process Azure Event Grid events.",
+				"secret": "",
+				"value": "${env:FOUNDATIONALLM_MANAGEMENT_API_EVENT_GRID_PROFILE}",
+				"content_type": "application/json",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "VectorizationAPI",
+				"description": "The settings used by the Vectorization API to process Azure Event Grid events.",
+				"secret": "",
+				"value": "${env:FOUNDATIONALLM_VECTORIZATION_API_EVENT_GRID_PROFILE}",
+				"content_type": "application/json",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "VectorizationWorker",
+				"description": "The settings used by the Vectorization Worker to process Azure Event Grid events.",
+				"secret": "",
+				"value": "${env:FOUNDATIONALLM_VECTORIZATION_WORKER_EVENT_GRID_PROFILE}",
+				"content_type": "application/json",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "GatekeeperAPI",
+				"description": "The settings used by the Gatekeeper API to process Azure Event Grid events.",
+				"secret": "",
+				"value": "${env:FOUNDATIONALLM_GATEKEEPER_API_EVENT_GRID_PROFILE}",
+				"content_type": "application/json",
+				"first_version": "0.8.0"
+			},
+			{
+				"name": "GatewayAPI",
+				"description": "The settings used by the Gateway API to process Azure Event Grid events.",
+				"secret": "",
+				"value": "${env:FOUNDATIONALLM_GATEWAY_API_EVENT_GRID_PROFILE}",
+				"content_type": "application/json",
+				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "Events:Profiles:CoreAPI",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the events infrastructure used by the Core API."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "Events:Profiles:OrchestrationAPI",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the events infrastructure used by the Orchestration API."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "Events:Profiles:ManagementAPI",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the events infrastructure used by the Management API."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "Events:Profiles:VectorizationAPI",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the events infrastructure used by the Vectorization API."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "Events:Profiles:VectorizationWorker",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the events infrastructure used by the Vectorization Worker service."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "Events:Profiles:GatekeeperAPI",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the events infrastructure used by the Gatekeeper API."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "Events:Profiles:GatewayAPI",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the events infrastructure used by the Gateway API."
+		},
+		"configuration_keys": []
+	}
+]

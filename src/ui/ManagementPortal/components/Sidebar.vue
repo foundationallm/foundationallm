@@ -4,7 +4,10 @@
 		<div class="sidebar__header">
 			<template v-if="$appConfigStore.logoUrl">
 				<NuxtLink to="/">
-					<img :src="$filters.publicDirectory($appConfigStore.logoUrl)"
+					<img
+						:src="$filters.publicDirectory($appConfigStore.logoUrl)"
+						aria-label="Logo as link to home"
+						alt="Logo"
 					/>
 				</NuxtLink>
 			</template>
@@ -22,7 +25,7 @@
 		<NuxtLink to="/agents/create" class="sidebar__item">Create New Agent</NuxtLink>
 		<NuxtLink to="/agents/public" class="sidebar__item">All Agents</NuxtLink>
 		<NuxtLink to="/agents/private" class="sidebar__item">My Agents</NuxtLink>
-		<div class="sidebar__item">Performance</div>
+		<!-- <div class="sidebar__item">Performance</div> -->
 
 		<!-- Data Catalog -->
 		<div class="sidebar__section-header">
@@ -31,18 +34,18 @@
 		</div>
 
 		<NuxtLink to="/data-sources" class="sidebar__item">Data Sources</NuxtLink>
-		<div class="sidebar__item">Vector Stores</div>
+		<!-- <div class="sidebar__item">Vector Stores</div> -->
 
 		<!-- Quotas -->
-		<div class="sidebar__section-header">
+		<!-- <div class="sidebar__section-header">
 			<span class="pi pi-calculator"></span>
 			<span>Quotas</span>
 		</div>
 
-		<div class="sidebar__item">Policies</div>
+		<div class="sidebar__item">Policies</div> -->
 
 		<!-- LLM's -->
-		<div class="sidebar__section-header">
+		<!-- <div class="sidebar__section-header">
 			<span class="pi pi-sitemap"></span>
 			<span>LLM's</span>
 		</div>
@@ -57,7 +60,9 @@
 			<span>Security</span>
 		</div>
 
-		<div class="sidebar__item">Identity & Access Management (IAM)</div>
+		<NuxtLink to="/security/role-assignments" class="sidebar__item">
+			Instance Access Control
+		</NuxtLink>
 
 		<!-- FLLM Deployment -->
 		<div class="sidebar__section-header">
@@ -69,11 +74,12 @@
 
 		<!-- Logged in user -->
 		<div v-if="$authStore.currentAccount?.name" class="sidebar__account">
-			<Avatar icon="pi pi-user" class="sidebar__avatar" size="large" />
+			<UserAvatar class="sidebar__avatar" size="large" />
+
 			<div>
 				<span class="sidebar__username">{{ $authStore.currentAccount?.name }}</span>
 				<Button
-					class="sidebar__sign-out-button secondary-button"
+					class="sidebar__sign-out-button"
 					icon="pi pi-sign-out"
 					label="Sign Out"
 					severity="secondary"

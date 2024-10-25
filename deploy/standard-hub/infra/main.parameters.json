@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "cidrVnet": {
+        "value": "${FLLM_HUB_CIDR_VNET=192.168.100.0/24}"
+      },
+      "environmentName": {
+        "value": "${AZURE_ENV_NAME}"
+      },
+      "location": {
+        "value": "${AZURE_LOCATION}"
+      },
+      "vpnClientAddressPool": {
+        "value": "${VPN_CLIENT_ADDRESS_POOL=192.168.101.0/24}"
+      },
+      "project": {
+        "value": "${FOUNDATIONALLM_PROJECT}"
+      }
+    }
+}

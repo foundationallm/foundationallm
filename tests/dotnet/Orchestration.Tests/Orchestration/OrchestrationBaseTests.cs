@@ -1,5 +1,4 @@
-﻿using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Orchestration;
+﻿using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using FoundationaLLM.Orchestration.Core.Orchestration;
 using NSubstitute;
@@ -22,10 +21,10 @@ namespace FoundationaLLM.Orchestration.Tests.Orchestration
         public async Task GetCompletion_ShouldReturnNullCompletionResponse()
         {
             // Arrange
-            var completionRequest = new CompletionRequest(){ UserPrompt = ""};
+            var completionRequest = new CompletionRequest(){OperationId = Guid.NewGuid().ToString(), UserPrompt = ""};
 
             // Act
-            var result = await _orchestrationBase.GetCompletion(_instanceId, completionRequest);
+            var result = await _orchestrationBase.GetCompletion(completionRequest);
 
             // Assert
             Assert.Null(result);

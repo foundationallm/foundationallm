@@ -9,7 +9,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Exceptions
     public class SemanticKernelException : HttpStatusCodeException
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="GatewayException"/> class with a default message.
+        /// Initializes a new instance of the <see cref="SemanticKernelException"/> class with a default message.
         /// </summary>
         public SemanticKernelException() : this(null, StatusCodes.Status500InternalServerError)
         {

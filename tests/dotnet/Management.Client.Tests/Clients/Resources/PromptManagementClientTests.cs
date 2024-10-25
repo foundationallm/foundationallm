@@ -31,8 +31,8 @@ namespace Management.Client.Tests.Clients.Resources
                         Name = "agent-norman",
                         Prefix = "YOu are an analytic agent named Norman. You can answer questions about Norman Rockwell's life and work."
                     },
-                    Actions = [],
-                    Roles = []
+                    Roles = [],
+                    Actions = []
                 },
                 new ResourceProviderGetResult<PromptBase>
                 {
@@ -41,8 +41,8 @@ namespace Management.Client.Tests.Clients.Resources
                         Name = "agent-bernice",
                         Prefix = "YOu are an analytic agent named Bernice. You can answer questions about all duck breeds and what they eat."
                     },
-                    Actions = [],
-                    Roles = []
+                    Roles = [],
+                    Actions = []
                 }
             };
 
@@ -76,8 +76,8 @@ namespace Management.Client.Tests.Clients.Resources
                     Name = promptName,
                     Prefix = "YOu are an analytic agent named Bernice. You can answer questions about all duck breeds and what they eat."
                 },
-                Actions = [],
-                Roles = []
+                Roles = [],
+                Actions = []
             };
             var expectedPrompts = new List<ResourceProviderGetResult<PromptBase>> { expectedPrompt };
 
@@ -125,13 +125,15 @@ namespace Management.Client.Tests.Clients.Resources
             {
                 Name = resourceName.Name,
                 Status = NameCheckResultType.Allowed,
-                Message = "Name is allowed"
+                Message = "Name is allowed",
+                Exists = false,
+                Deleted = false
             };
 
             _mockRestClient.Resources
                 .ExecuteResourceActionAsync<ResourceNameCheckResult>(
                     ResourceProviderNames.FoundationaLLM_Prompt,
-                    $"{PromptResourceTypeNames.Prompts}/{PromptResourceProviderActions.CheckName}",
+                    $"{PromptResourceTypeNames.Prompts}/{ResourceProviderActions.CheckName}",
                     resourceName
                 )
                 .Returns(Task.FromResult(expectedCheckResult));
@@ -143,7 +145,7 @@ namespace Management.Client.Tests.Clients.Resources
             Assert.Equal(expectedCheckResult, result);
             await _mockRestClient.Resources.Received(1).ExecuteResourceActionAsync<ResourceNameCheckResult>(
                 ResourceProviderNames.FoundationaLLM_Prompt,
-                $"{PromptResourceTypeNames.Prompts}/{PromptResourceProviderActions.CheckName}",
+                $"{PromptResourceTypeNames.Prompts}/{ResourceProviderActions.CheckName}",
                 resourceName
             );
         }
@@ -168,7 +170,7 @@ namespace Management.Client.Tests.Clients.Resources
             _mockRestClient.Resources
                 .ExecuteResourceActionAsync<ResourceProviderActionResult>(
                     ResourceProviderNames.FoundationaLLM_Prompt,
-                    $"{PromptResourceTypeNames.Prompts}/{promptName}/{PromptResourceProviderActions.Purge}",
+                    $"{PromptResourceTypeNames.Prompts}/{promptName}/{ResourceProviderActions.Purge}",
                     Arg.Any<object>()
                 )
                 .Returns(Task.FromResult(expectedPurgeResult));
@@ -180,7 +182,7 @@ namespace Management.Client.Tests.Clients.Resources
             Assert.Equal(expectedPurgeResult, result);
             await _mockRestClient.Resources.Received(1).ExecuteResourceActionAsync<ResourceProviderActionResult>(
                 ResourceProviderNames.FoundationaLLM_Prompt,
-                $"{PromptResourceTypeNames.Prompts}/{promptName}/{PromptResourceProviderActions.Purge}",
+                $"{PromptResourceTypeNames.Prompts}/{promptName}/{ResourceProviderActions.Purge}",
                 Arg.Any<object>()
             );
         }
@@ -202,7 +204,8 @@ namespace Management.Client.Tests.Clients.Resources
             var prompt = new PromptBase { Name = "test-prompt" };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {
-                ObjectId = "test-object-id"
+                ObjectId = "test-object-id",
+                ResourceExists = false
             };
 
             _mockRestClient.Resources

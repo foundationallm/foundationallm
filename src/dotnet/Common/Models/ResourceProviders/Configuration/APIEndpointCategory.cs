@@ -1,4 +1,4 @@
-﻿namespace FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+﻿namespace FoundationaLLM.Common.Models.ResourceProviders.Configuration
 {
     /// <summary>
     /// The category for api endpoint class.
@@ -6,12 +6,17 @@
     public enum APIEndpointCategory
     {
         /// <summary>
-        /// Endpoints related to orchestration.
+        /// Endpoints for internal orchestration services (e.g. LangChain API, SemanticKernel API).
         /// </summary>
         Orchestration,
 
         /// <summary>
-        /// Endpoints related to LLM.
+        /// Endpoints for external orchestration services.
+        /// </summary>
+        ExternalOrchestration,
+
+        /// <summary>
+        /// Endpoints for Large Language Models.
         /// </summary>
         LLM,
 
@@ -26,12 +31,17 @@
         AzureAIDirect,
 
         /// <summary>
-        /// Endpoints for direct interactions with Microsoft Azure open AI services.
+        /// Endpoints for direct interactions with Microsoft Azure OpenAI services.
         /// </summary>
         AzureOpenAIDirect,
 
         /// <summary>
-        /// General endpoints.
+        /// Endpoints for connecting to external file stores, such as OneDrive.
+        /// </summary>
+        FileStoreConnector,
+
+        /// <summary>
+        /// General endpoints (internal APIs other than Orchestration, ExternalOrchestration, LLM, Gatekeeper, AzureAIDirect, or AzureOpenAIDirect.
         /// </summary>
         General
     }

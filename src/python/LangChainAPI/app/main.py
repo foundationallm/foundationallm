@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from app.dependencies import API_NAME, get_config
 from app.routers import (
     manage,
-    orchestration,
+    completions,
     status
 )
 from foundationallm.telemetry import Telemetry
@@ -14,12 +14,12 @@ from foundationallm.telemetry import Telemetry
 # Open a connection to the app configuration
 config = get_config()
 # Start collecting telemetry
-Telemetry.configure_monitoring(config, f'FoundationaLLM:APIs:{API_NAME}:AppInsightsConnectionString')
+Telemetry.configure_monitoring(config, f'FoundationaLLM:APIEndpoints:{API_NAME}:Essentials:AppInsightsConnectionString')
 
 app = FastAPI(
     title=f'FoundationaLLM {API_NAME}',
     summary='API for interacting with large language models using the LangChain orchestrator.',
-    description="""The FoundationaLLM LangChainAPI is a wrapper around LangChain functionality
+    description=f"""The FoundationaLLM {API_NAME} is a wrapper around LangChain functionality
                 contained in the foundationallm.core Python SDK.""",
     version='1.0.0',
     contact={
@@ -38,7 +38,7 @@ app = FastAPI(
 )
 
 app.include_router(manage.router)
-app.include_router(orchestration.router)
+app.include_router(completions.router)
 app.include_router(status.router)
 
 @app.get('/')

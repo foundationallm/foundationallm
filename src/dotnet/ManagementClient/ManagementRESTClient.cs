@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Azure.Core;
+﻿using Azure.Core;
 using FoundationaLLM.Client.Management.Clients.RESTClients;
 using FoundationaLLM.Client.Management.Interfaces;
 using FoundationaLLM.Common.Constants;
@@ -35,7 +30,7 @@ namespace FoundationaLLM.Client.Management
         /// <summary>
         /// Initializes a new instance of the <see cref="ManagementRESTClient"/> class and
         /// configures <see cref="IHttpClientFactory"/> with a named instance for the
-        /// CoreAPI (<see cref="HttpClients.CoreAPI"/>) based on the passed in URL.
+        /// CoreAPI (<see cref="HttpClientNames.CoreAPI"/>) based on the passed in URL.
         /// </summary>
         /// <param name="managementUri">The base URI of the Core API.</param>
         /// <param name="credential">A <see cref="TokenCredential"/> of an authenticated
@@ -52,7 +47,7 @@ namespace FoundationaLLM.Client.Management
         /// <summary>
         /// Initializes a new instance of the <see cref="ManagementRESTClient"/> class and
         /// configures <see cref="IHttpClientFactory"/> with a named instance for the
-        /// CoreAPI (<see cref="HttpClients.CoreAPI"/>) based on the passed in URL
+        /// CoreAPI (<see cref="HttpClientNames.CoreAPI"/>) based on the passed in URL
         /// and optional client settings.
         /// </summary>
         /// <param name="managementUri">The base URI of the Core API.</param>
@@ -90,7 +85,7 @@ namespace FoundationaLLM.Client.Management
         public IStatusRESTClient Status { get; private set; } = null!;
 
         private static void ConfigureHttpClient(IServiceCollection services, string managementUri, APIClientSettings options) =>
-            services.AddHttpClient(HttpClients.ManagementAPI, client =>
+            services.AddHttpClient(HttpClientNames.ManagementAPI, client =>
             {
                 client.BaseAddress = new Uri(managementUri);
                 client.Timeout = options.Timeout ?? TimeSpan.FromSeconds(900);
@@ -101,9 +96,9 @@ namespace FoundationaLLM.Client.Management
 
         private void InitializeClients(IHttpClientFactory httpClientFactory)
         {
-            Identity = new IdentityRESTClient(httpClientFactory, _credential);
+            Identity = new IdentityRESTClient(httpClientFactory, _credential, _instanceId);
             Resources = new ResourceRESTClient(httpClientFactory, _credential, _instanceId);
-            Status = new StatusRESTClient(httpClientFactory, _credential);
+            Status = new StatusRESTClient(httpClientFactory, _credential, _instanceId);
         }
     }
 }

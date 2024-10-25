@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Core.Examples.Interfaces;
@@ -35,7 +36,7 @@ namespace FoundationaLLM.Core.Examples
         private string id = String.Empty;
         
         public Example0006_SynchronousVectorizationOfPDFFromOneLake(ITestOutputHelper output, TestFixture fixture)
-            : base(output, fixture.ServiceProvider)
+            : base(output, [fixture.ServiceProvider])
         {
             _vectorizationTestService = GetService<IVectorizationTestService>();
             _instanceSettings = _vectorizationTestService.InstanceSettings;
@@ -52,8 +53,33 @@ namespace FoundationaLLM.Core.Examples
 
         private async Task RunExampleAsync()
         {
+            string accountNameAppConfigKey = $"FoundationaLLM:DataSources:{dataSourceName}:AccountName";
+            string authenticationTypeAppConfigKey = $"FoundationaLLM:DataSources:{dataSourceName}:AuthenticationType";
+
             try
             {
+                WriteLine($"Create the App Configuration key {accountNameAppConfigKey}");
+                await _vectorizationTestService.CreateAppConfiguration(
+                    new AppConfigurationKeyValue
+                    {
+                        Name = accountNameAppConfigKey,
+                        Key = accountNameAppConfigKey,
+                        Value = "onelake",
+                        ContentType = ""
+                    }
+                );
+
+                WriteLine($"Create the App Configuration key {authenticationTypeAppConfigKey}");
+                await _vectorizationTestService.CreateAppConfiguration(
+                    new AppConfigurationKeyValue
+                    {
+                        Name = authenticationTypeAppConfigKey,
+                        Key = authenticationTypeAppConfigKey,
+                        Value = "AzureIdentity",
+                        ContentType = ""
+                    }
+                );
+
                 WriteLine($"Create the data source: {dataSourceName} via the Management API");
                 await _vectorizationTestService.CreateDataSource(dataSourceName);
 
@@ -130,8 +156,19 @@ namespace FoundationaLLM.Core.Examples
                 if (result.VectorResults.TotalCount != 27)
                     throw new Exception($"Query did not return the expected number of vector results. Expected: 27, Retrieved: {result.VectorResults.TotalCount}");
             }
+            catch (Exception ex)
+            {
+                WriteLine($"Exception: {ex.Message}");
+                throw;
+            }
             finally
             {
+                WriteLine($"Delete the App Configuration key {authenticationTypeAppConfigKey}");
+                await _vectorizationTestService.DeleteAppConfiguration(authenticationTypeAppConfigKey);
+
+                WriteLine($"Delete the App Configuration key {accountNameAppConfigKey}");
+                await _vectorizationTestService.DeleteAppConfiguration(accountNameAppConfigKey);
+
                 WriteLine($"Delete the data source: {dataSourceName} via the Management API");
                 await _vectorizationTestService.DeleteDataSource(dataSourceName);
 

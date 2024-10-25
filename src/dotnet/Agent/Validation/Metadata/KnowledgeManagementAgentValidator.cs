@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
-using Microsoft.Extensions.Configuration;
 
 namespace FoundationaLLM.Agent.Validation.Metadata
 {

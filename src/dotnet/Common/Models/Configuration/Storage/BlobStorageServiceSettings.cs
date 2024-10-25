@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using FoundationaLLM.Common.Constants.Authentication;
+using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Configuration.Storage
 {
@@ -8,10 +9,10 @@ namespace FoundationaLLM.Common.Models.Configuration.Storage
     public record BlobStorageServiceSettings
     {
         /// <summary>
-        /// A <see cref="BlobStorageAuthenticationTypes"/> value indicating the type of authentication used.
+        /// A <see cref="AuthenticationTypes"/> value indicating the type of authentication used.
         /// </summary>
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        public required BlobStorageAuthenticationTypes AuthenticationType { get; set; }
+        public required AuthenticationTypes AuthenticationType { get; set; }
 
         /// <summary>
         /// The name of the blob storage account.

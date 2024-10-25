@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Settings;
+﻿using FoundationaLLM.Common.Constants.Authentication;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.SemanticKernel.Core.Models.Configuration
@@ -27,6 +27,6 @@ namespace FoundationaLLM.SemanticKernel.Core.Models.Configuration
         /// The <see cref="AuthenticationType"/> indicating which authentication mechanism to use.
         /// </summary>
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        public required AzureOpenAIAuthenticationTypes AuthenticationType {  get; set; } 
+        public required AuthenticationTypes AuthenticationType {  get; set; } 
     }
 }

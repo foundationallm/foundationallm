@@ -1,6 +1,6 @@
 ﻿using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Models.Chat;
-using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Models.Conversation;
+using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Core.Examples.Exceptions;
 using FoundationaLLM.Core.Examples.Interfaces;
@@ -18,13 +18,13 @@ namespace FoundationaLLM.Core.Examples.Services
         /// <inheritdoc/>
         public async Task<string> CreateSessionAsync()
         {
-            var coreClient = await httpClientManager.GetHttpClientAsync(HttpClients.CoreAPI);
+            var coreClient = await httpClientManager.GetHttpClientAsync(HttpClientNames.CoreAPI);
             var responseSession = await coreClient.PostAsync("sessions", null);
 
             if (responseSession.IsSuccessStatusCode)
             {
                 var responseContent = await responseSession.Content.ReadAsStringAsync();
-                var sessionResponse = JsonSerializer.Deserialize<Session>(responseContent, _jsonSerializerOptions);
+                var sessionResponse = JsonSerializer.Deserialize<Conversation>(responseContent, _jsonSerializerOptions);
                 var sessionId = string.Empty;
                 if (sessionResponse?.SessionId != null)
                 {
@@ -41,9 +41,9 @@ namespace FoundationaLLM.Core.Examples.Services
         }
 
         /// <inheritdoc/>
-        public async Task<Completion> SendSessionCompletionRequestAsync(CompletionRequest completionRequest)
+        public async Task<Message> SendSessionCompletionRequestAsync(CompletionRequest completionRequest)
         {
-            var coreClient = await httpClientManager.GetHttpClientAsync(HttpClients.CoreAPI);
+            var coreClient = await httpClientManager.GetHttpClientAsync(HttpClientNames.CoreAPI);
             var serializedRequest = JsonSerializer.Serialize(completionRequest, _jsonSerializerOptions);
 
             var sessionUrl = $"sessions/{completionRequest.SessionId}/completion"; // Session-based - message history and data is retained in Cosmos DB. Must create a session if it does not exist.
@@ -56,7 +56,7 @@ namespace FoundationaLLM.Core.Examples.Services
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
                 var completionResponse =
-                    JsonSerializer.Deserialize<Completion>(responseContent, _jsonSerializerOptions);
+                    JsonSerializer.Deserialize<Message>(responseContent, _jsonSerializerOptions);
                 return completionResponse ?? throw new InvalidOperationException("The returned completion response is invalid.");
             }
 
@@ -66,7 +66,7 @@ namespace FoundationaLLM.Core.Examples.Services
         /// <inheritdoc/>
         public async Task<CompletionPrompt> GetCompletionPromptAsync(string sessionId, string completionPromptId)
         {
-            var coreClient = await httpClientManager.GetHttpClientAsync(HttpClients.CoreAPI);
+            var coreClient = await httpClientManager.GetHttpClientAsync(HttpClientNames.CoreAPI);
             var responseMessage = await coreClient.GetAsync($"sessions/{sessionId}/completionprompts/{completionPromptId}");
 
             if (responseMessage.IsSuccessStatusCode)
@@ -83,7 +83,7 @@ namespace FoundationaLLM.Core.Examples.Services
         /// <inheritdoc/>
         public async Task<IEnumerable<Message>> GetChatSessionMessagesAsync(string sessionId)
         {
-            var coreClient = await httpClientManager.GetHttpClientAsync(HttpClients.CoreAPI);
+            var coreClient = await httpClientManager.GetHttpClientAsync(HttpClientNames.CoreAPI);
             var responseMessage = await coreClient.GetAsync($"sessions/{sessionId}/messages");
 
             if (responseMessage.IsSuccessStatusCode)
@@ -97,9 +97,9 @@ namespace FoundationaLLM.Core.Examples.Services
         }
 
         /// <inheritdoc/>
-        public async Task<Completion> SendOrchestrationCompletionRequestAsync(CompletionRequest completionRequest)
+        public async Task<Message> SendOrchestrationCompletionRequestAsync(CompletionRequest completionRequest)
         {
-            var coreClient = await httpClientManager.GetHttpClientAsync(HttpClients.CoreAPI);
+            var coreClient = await httpClientManager.GetHttpClientAsync(HttpClientNames.CoreAPI);
             var serializedRequest = JsonSerializer.Serialize(completionRequest, _jsonSerializerOptions);
 
             var responseMessage = await coreClient.PostAsync("orchestration/completion", // Session-less - no message history or data retention in Cosmos DB.
@@ -111,7 +111,7 @@ namespace FoundationaLLM.Core.Examples.Services
             {
                 var responseContent = await responseMessage.Content.ReadAsStringAsync();
                 var completionResponse =
-                    JsonSerializer.Deserialize<Completion>(responseContent, _jsonSerializerOptions);
+                    JsonSerializer.Deserialize<Message>(responseContent, _jsonSerializerOptions);
                 return completionResponse ?? throw new InvalidOperationException("The returned completion response is invalid.");
             }
 
@@ -121,7 +121,7 @@ namespace FoundationaLLM.Core.Examples.Services
         /// <inheritdoc/>
         public async Task DeleteSessionAsync(string sessionId)
         {
-            var coreClient = await httpClientManager.GetHttpClientAsync(HttpClients.CoreAPI);
+            var coreClient = await httpClientManager.GetHttpClientAsync(HttpClientNames.CoreAPI);
             await coreClient.DeleteAsync($"sessions/{sessionId}");
         }
     }

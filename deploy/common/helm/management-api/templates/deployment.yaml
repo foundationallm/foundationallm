@@ -67,7 +67,7 @@ spec:
               protocol: TCP
           readinessProbe:
             httpGet:
-              path: /status
+              path: /instances/{{ .Values.instanceId }}/status
               port: 80
             periodSeconds: 3
             timeoutSeconds: 1

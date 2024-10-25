@@ -10,17 +10,22 @@ namespace FoundationaLLM.Client.Management.Clients.RESTClients
 {
     internal class IdentityRESTClient : ManagementRESTClientBase, IIdentityRESTClient
     {
+        private readonly string _instanceId;
         private readonly JsonSerializerOptions _jsonSerializerOptions = CommonJsonSerializerOptions.GetJsonSerializerOptions();
 
-        public IdentityRESTClient(IHttpClientFactory httpClientFactory, TokenCredential credential)
-            : base(httpClientFactory, credential) { }
+        internal IdentityRESTClient(
+            IHttpClientFactory httpClientFactory,
+            TokenCredential credential,
+            string instanceId)
+            : base(httpClientFactory, credential) =>
+            _instanceId = instanceId ?? throw new ArgumentNullException(nameof(instanceId));
 
         /// <inheritdoc/>
         public async Task<IEnumerable<Group>> RetrieveGroupsAsync(ObjectQueryParameters parameters)
         {
             var managementClient = await GetManagementClientAsync();
             var content = new StringContent(JsonSerializer.Serialize(parameters), Encoding.UTF8, "application/json");
-            var response = await managementClient.PostAsync("groups/retrieve", content);
+            var response = await managementClient.PostAsync($"instances/{_instanceId}/groups/retrieve", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -35,7 +40,7 @@ namespace FoundationaLLM.Client.Management.Clients.RESTClients
         public async Task<Group> GetGroupAsync(string groupId)
         {
             var managementClient = await GetManagementClientAsync();
-            var response = await managementClient.GetAsync($"groups/{groupId}");
+            var response = await managementClient.GetAsync($"instances/{_instanceId}/groups/{groupId}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -51,7 +56,7 @@ namespace FoundationaLLM.Client.Management.Clients.RESTClients
         {
             var managementClient = await GetManagementClientAsync();
             var content = new StringContent(JsonSerializer.Serialize(parameters), Encoding.UTF8, "application/json");
-            var response = await managementClient.PostAsync("users/retrieve", content);
+            var response = await managementClient.PostAsync($"instances/{_instanceId}/users/retrieve", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -66,7 +71,7 @@ namespace FoundationaLLM.Client.Management.Clients.RESTClients
         public async Task<User> GetUserAsync(string userId)
         {
             var managementClient = await GetManagementClientAsync();
-            var response = await managementClient.GetAsync($"users/{userId}");
+            var response = await managementClient.GetAsync($"instances/{_instanceId}/users/{userId}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -82,7 +87,7 @@ namespace FoundationaLLM.Client.Management.Clients.RESTClients
         {
             var managementClient = await GetManagementClientAsync();
             var content = new StringContent(JsonSerializer.Serialize(parameters), Encoding.UTF8, "application/json");
-            var response = await managementClient.PostAsync("objects/retrievebyids", content);
+            var response = await managementClient.PostAsync($"instances/{_instanceId}/objects/retrievebyids", content);
 
             if (response.IsSuccessStatusCode)
             {

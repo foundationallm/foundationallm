@@ -1,14 +1,15 @@
 using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
+using FoundationaLLM.Common.Services;
 using FoundationaLLM.Core.Interfaces;
-using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Services;
 using FoundationaLLM.Core.Worker;
-using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Options;
-using FoundationaLLM.Common.Constants;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -27,14 +28,14 @@ builder.Configuration.AddAzureAppConfiguration(options =>
     {
         options.SetCredential(DefaultAuthentication.AzureCredential);
     });
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_CoreWorker);
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_CosmosDB);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreWorker_Essentials);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB);
 });
 if (builder.Environment.IsDevelopment())
     builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
 
 builder.Services.AddOptions<CosmosDbSettings>()
-    .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_CosmosDB));
+    .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB));
 
 builder.Services.AddSingleton<CosmosClient>(serviceProvider =>
 {
@@ -48,12 +49,12 @@ builder.Services.AddSingleton<CosmosClient>(serviceProvider =>
         .Build();
 });
 
-builder.Services.AddSingleton<ICosmosDbService, CosmosDbService>();
-builder.Services.AddSingleton<ICosmosDbChangeFeedService, CosmosDbChangeFeedService>();
+builder.Services.AddSingleton<IAzureCosmosDBService, AzureCosmosDBService>();
+builder.Services.AddSingleton<ICosmosDbChangeFeedService, AzureCosmosDBChangeFeedService>();
 builder.Services.AddHostedService<ChangeFeedWorker>();
 builder.Services.AddApplicationInsightsTelemetryWorkerService(options =>
 {
-    options.ConnectionString = builder.Configuration[AppConfigurationKeys.FoundationaLLM_CoreWorker_AppInsightsConnectionString];
+    options.ConnectionString = builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreWorker_Essentials_AppInsightsConnectionString];
 });
 
 var host = builder.Build();

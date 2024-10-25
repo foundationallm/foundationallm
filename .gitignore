@@ -38,6 +38,7 @@ bld/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
+.cr/
 # Uncomment if you have tasks that create the project's static files in wwwroot
 #wwwroot/
 
@@ -382,11 +383,14 @@ log
 **/Deployment-Manifest.json
 **/Deployment-Manifest.*.json
 .azure
+**/gatekeeper-api-event-profile.json
+**/gateway-api-event-profile.json
 **/orchestration-api-event-profile.json
 **/core-api-event-profile.json
 **/vectorization-api-event-profile.json
 **/vectorization-worker-event-profile.json
 deploy/quick-start/.env
+deploy/quick-start/tools
 **/management-api-event-profile.json
 **/testsettings.json
 
@@ -395,3 +399,4 @@ deploy/quick-start/.env
 
 *.lutconfig
 dist
+**/foundationallm-certificates.SecretProviderClass.json

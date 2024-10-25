@@ -24,6 +24,7 @@ namespace Management.Client.Tests
         {
             // Assert
             Assert.NotNull(_managementClient.Agents);
+            Assert.NotNull(_managementClient.AIModels);
             Assert.NotNull(_managementClient.Attachments);
             Assert.NotNull(_managementClient.Configuration);
             Assert.NotNull(_managementClient.DataSources);
@@ -50,8 +51,8 @@ namespace Management.Client.Tests
                     TextEmbeddingProfileObjectId = "test-text-embedding-profile",
                     IndexingProfileObjectId = "test-indexing-profile",
                 },
-                Actions = [],
-                Roles = []
+                Roles = [],
+                Actions = []
             };
             var expectedResources = new List<ResourceProviderGetResult<VectorizationPipeline>> { expectedResource };
 
@@ -102,8 +103,8 @@ namespace Management.Client.Tests
                     TextEmbeddingProfileObjectId = "test-text-embedding-profile",
                     IndexingProfileObjectId = "test-indexing-profile",
                 },
-                Actions = [],
-                Roles = []
+                Roles = [],
+                Actions = []
             };
             var expectedResources = new List<ResourceProviderGetResult<VectorizationPipeline>> { expectedResource };
 

@@ -2,8 +2,8 @@
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.Storage;
-using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
+using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Core.Examples.Interfaces;
 using FoundationaLLM.Core.Examples.Models;
@@ -40,14 +40,14 @@ namespace FoundationaLLM.Core.Examples
         private BlobStorageServiceSettings? _settings;
 
         public Example0004_SynchronousVectorizationOfPDFFromDataLake(ITestOutputHelper output, TestFixture fixture)
-            : base(output, fixture.ServiceProvider)
+            : base(output, [fixture.ServiceProvider])
         {
             _vectorizationTestService = GetService<IVectorizationTestService>();
             _instanceSettings = _vectorizationTestService.InstanceSettings;
             dataSourceObjectId = $"/instances/{_instanceSettings.Id}/providers/FoundationaLLM.DataSource/dataSources/{dataSourceName}";
             id = Guid.NewGuid().ToString();
             _settings = ServiceProvider.GetRequiredService<IOptionsMonitor<BlobStorageServiceSettings>>()
-                    .Get(DependencyInjectionKeys.FoundationaLLM_ResourceProvider_Vectorization);
+                    .Get(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization_Storage);
             
         }
 
@@ -71,7 +71,7 @@ namespace FoundationaLLM.Core.Examples
                     {
                         Name = accountNameAppConfigKey,
                         Key = accountNameAppConfigKey,
-                        Value = Environment.GetEnvironmentVariable("AZURE_STORAGE_ACCOUNT_NAME"),
+                        Value = _settings!.AccountName,
                         ContentType = ""
                     }
                 );
@@ -86,9 +86,6 @@ namespace FoundationaLLM.Core.Examples
                         ContentType = ""
                     }
                 );
-
-                WriteLine($"Create the data source: {dataSourceName} via the Management API");
-                await _vectorizationTestService.CreateDataSource(dataSourceName);
 
                 WriteLine($"Create the data source: {dataSourceName} via the Management API");
                 await _vectorizationTestService.CreateDataSource(dataSourceName);
@@ -165,6 +162,11 @@ namespace FoundationaLLM.Core.Examples
                     throw new Exception($"Query did not return the expected number of query results. Expected: 27, Retrieved: {result.QueryResult.TotalCount}");
                 if (result.VectorResults.TotalCount != 27)
                     throw new Exception($"Query did not return the expected number of vector results. Expected: 27, Retrieved: {result.VectorResults.TotalCount}");
+            }
+            catch(Exception ex)
+            {
+                WriteLine($"Exception: {ex.Message}");
+                throw;
             }
             finally
             {

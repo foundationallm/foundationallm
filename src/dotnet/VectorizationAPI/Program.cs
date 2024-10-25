@@ -5,14 +5,19 @@ using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Configuration.Storage;
+using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
-using FoundationaLLM.Common.Services.Azure;
+using FoundationaLLM.Common.Services.Storage;
 using FoundationaLLM.Common.Services.Tokenizers;
 using FoundationaLLM.Common.Validation;
 using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
+using FoundationaLLM.SemanticKernel.Core.Services.Indexing;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Models.Configuration;
+using FoundationaLLM.Vectorization.Serializers;
 using FoundationaLLM.Vectorization.Services.ContentSources;
+using FoundationaLLM.Vectorization.Services.RequestProcessors;
 using FoundationaLLM.Vectorization.Services.RequestSources;
 using FoundationaLLM.Vectorization.Services.Text;
 using FoundationaLLM.Vectorization.Services.VectorizationServices;
@@ -23,9 +28,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text.Json;
-using FoundationaLLM.Vectorization.Serializers;
-using FoundationaLLM.SemanticKernel.Core.Services.Indexing;
-using FoundationaLLM.Vectorization.Services.RequestProcessors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,13 +46,21 @@ builder.Configuration.AddAzureAppConfiguration(options =>
         options.SetCredential(DefaultAuthentication.AzureCredential);
     });
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_Vectorization);
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIs_VectorizationAPI);
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIs_GatewayAPI);
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_Events);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_DataSource); //resource provider settings
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_Vectorization_Queues);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_Vectorization_Steps);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_Vectorization_StateService_Storage);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_VectorizationAPI_Essentials);
+    options.Select(AppConfigurationKeys.FoundationaLLM_Vectorization_Worker);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AIModel_Storage);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_DataSource_Storage); //resource provider settings
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Vectorization_Storage);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_DataSources); //data source settings
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatewayAPI_Essentials);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
+    options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_VectorizationAPI);
 });
 if (builder.Environment.IsDevelopment())
     builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
@@ -61,7 +71,7 @@ builder.Services.AddSingleton<IAuthorizationService, NullAuthorizationService>()
 
 // Add OpenTelemetry.
 builder.AddOpenTelemetry(
-    AppConfigurationKeys.FoundationaLLM_APIs_VectorizationAPI_AppInsightsConnectionString,
+    AppConfigurationKeys.FoundationaLLM_APIEndpoints_VectorizationAPI_Essentials_AppInsightsConnectionString,
     ServiceNames.VectorizationAPI);
 
 // CORS policies
@@ -71,27 +81,25 @@ builder.AddCorsPolicies();
 builder.Services.AddInstanceProperties(builder.Configuration);
 
 // Add Azure ARM services
-builder.Services.AddAzureResourceManager();
+builder.AddAzureResourceManager();
 
 // Add event services
 builder.Services.AddAzureEventGridEvents(
     builder.Configuration,
-    AppConfigurationKeySections.FoundationaLLM_Events_AzureEventGridEventService_Profiles_VectorizationAPI);
+    AppConfigurationKeySections.FoundationaLLM_Events_Profiles_VectorizationAPI);
 
 builder.Services.AddOptions<VectorizationWorkerSettings>()
-    .Bind(builder.Configuration.GetSection(AppConfigurationKeys.FoundationaLLM_Vectorization_VectorizationWorker));
+    .Bind(builder.Configuration.GetSection(AppConfigurationKeys.FoundationaLLM_Vectorization_Worker));
 
-builder.Services.AddOptions<SemanticKernelTextEmbeddingServiceSettings>()
-    .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Vectorization_SemanticKernelTextEmbeddingService));
-
-builder.Services.AddOptions<AzureAISearchIndexingServiceSettings>()
-    .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Vectorization_AzureAISearchIndexingService));
+builder.Services.AddOptions<BlobStorageServiceSettings>(
+    DependencyInjectionKeys.FoundationaLLM_Vectorization_StateService_Storage)
+    .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Vectorization_StateService_Storage));
 
 builder.Services.AddOptions<AzureCosmosDBNoSQLIndexingServiceSettings>()
-    .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Vectorization_AzureCosmosDBNoSQLIndexingService));
+    .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AzureCosmosDBNoSQLVectorStore_Configuration));
 
 builder.Services.AddOptions<PostgresIndexingServiceSettings>()
-    .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Vectorization_PostgresIndexingService));
+    .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AzurePostgreSQLVectorStore_Configuration));
 
 // Add queue and step configurations
 builder.Services.AddKeyedSingleton(
@@ -117,6 +125,18 @@ builder.Services.AddSingleton<CosmosClient>(serviceProvider =>
 builder.Services.AddSingleton<IRequestSourcesCache, RequestSourcesCache>();
 builder.Services.ActivateSingleton<IRequestSourcesCache>();
 
+builder.Services.AddKeyedSingleton<IStorageService, BlobStorageService>(
+    DependencyInjectionKeys.FoundationaLLM_Vectorization_StateService_Storage, (sp, obj) =>
+    {
+        var settings = sp.GetRequiredService<IOptionsMonitor<BlobStorageServiceSettings>>()
+            .Get(DependencyInjectionKeys.FoundationaLLM_Vectorization_StateService_Storage);
+        var logger = sp.GetRequiredService<ILogger<BlobStorageService>>();
+
+        return new BlobStorageService(
+            Options.Create<BlobStorageServiceSettings>(settings),
+            logger);
+    });
+
 // Vectorization state
 builder.Services.AddSingleton<MemoryVectorizationStateService, MemoryVectorizationStateService>(); //for sync requests
 builder.Services.AddSingleton<IVectorizationStateService, BlobStorageVectorizationStateService>(); //for async requests
@@ -134,6 +154,7 @@ builder.Services.AddSingleton<IResourceValidatorFactory, ResourceValidatorFactor
 builder.AddConfigurationResourceProvider();
 builder.AddDataSourceResourceProvider();
 builder.AddVectorizationResourceProvider();
+builder.AddAIModelResourceProvider();
 
 builder.AddPipelineExecution();
 
@@ -149,22 +170,18 @@ builder.Services.ActivateKeyedSingleton<ITokenizerService>(TokenizerServiceNames
 
 // Gateway text embedding
 builder.Services.AddKeyedScoped<ITextEmbeddingService, GatewayTextEmbeddingService>(
-    DependencyInjectionKeys.FoundationaLLM_Vectorization_GatewayTextEmbeddingService);
-builder.AddGatewayService();
-builder.Services.AddHttpClient();
+    DependencyInjectionKeys.FoundationaLLM_Vectorization_TextEmbedding_Gateway);
+
+builder.Services.AddScoped<ICallContext, CallContext>();
+builder.AddHttpClientFactoryService();
 
 // Indexing
-builder.Services.AddKeyedSingleton<IIndexingService, AzureAISearchIndexingService>(
-    DependencyInjectionKeys.FoundationaLLM_Vectorization_AzureAISearchIndexingService);
 builder.Services.AddKeyedSingleton<IIndexingService, AzureCosmosDBNoSQLIndexingService>(
-    DependencyInjectionKeys.FoundationaLLM_Vectorization_AzureCosmosDBNoSQLIndexingService);
+    DependencyInjectionKeys.FoundationaLLM_APIEndpoints_AzureCosmosDBNoSQLVectorStore_Configuration);
 builder.Services.AddKeyedSingleton<IIndexingService, PostgresIndexingService>(
-    DependencyInjectionKeys.FoundationaLLM_Vectorization_PostgresIndexingService);
-
-
+    DependencyInjectionKeys.FoundationaLLM_APIEndpoints_AzurePostgreSQLVectorStore_Configuration);
 
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
-
 builder.Services.AddTransient<IAPIKeyValidationService, APIKeyValidationService>();
 builder.Services.AddControllers();
 
@@ -172,7 +189,7 @@ builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<APIKeyAuthenticationFilter>();
 builder.Services.AddOptions<APIKeyValidationSettings>()
-    .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIs_VectorizationAPI));
+    .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_VectorizationAPI_Essentials));
 
 builder.Services
     .AddApiVersioning(options =>

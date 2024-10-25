@@ -48,7 +48,7 @@ Follow the steps below to deploy the solution to your Azure subscription.
 ```powershell
   git clone https://github.com/solliancenet/foundationallm.git
   cd foundationallm/deploy/standard
-  git checkout release/0.7.0
+  git checkout release/0.8.2
 ```
 3. Create your deployment manifest:
 
@@ -82,13 +82,12 @@ Follow the steps below to deploy the solution to your Azure subscription.
 
 Create certificates for the appropriate domains and package them in PFX format.  Place the PFX files in `foundationallm/deploy/standard/config/certbot/certs` following the naming convention below.  The values for `Host Name` and `Domain Name` should match the values you provided in your deployment manifest:
 
-    | Service Name      | Host Name         | Domain Name | File Name                         |
-    | ----------------- | ----------------- | ----------- | --------------------------------- |
-    | core-api          | api               | example.com | api.example.com.pfx               |
-    | management-api    | management-api    | example.com | management-api.example.com.pfx    |
-    | vectorization-api | vectorization-api | example.com | vectorization-api.example.com.pfx |
-    | chat-ui           | chat              | example.com | chat.example.com.pfx              |
-    | management-ui     | management        | example.com | management.example.com.pfx        |
+| Service Name      | Host Name         | Domain Name | File Name                         |
+| ----------------- | ----------------- | ----------- | --------------------------------- |
+| core-api          | api               | example.com | api.example.com.pfx               |
+| management-api    | management-api    | example.com | management-api.example.com.pfx    |
+| chat-ui           | chat              | example.com | chat.example.com.pfx              |
+| management-ui     | management        | example.com | management.example.com.pfx        |
 
 ## Provision Infrastructure
 

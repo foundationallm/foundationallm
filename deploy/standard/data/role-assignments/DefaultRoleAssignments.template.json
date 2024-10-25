@@ -84,6 +84,48 @@
       "updated_on": "{{deployTime}}",
       "created_by": "SYSTEM",
       "updated_by": "SYSTEM"
+    },
+    {
+      "name": "{{gatekeeperApiRoleAssignmentGuid}}",
+      "type": "FoundationaLLM.Authorization/roleAssignments",
+      "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/{{gatekeeperApiRoleAssignmentGuid}}",
+      "description": "Role assignment reader for the Gatekeeper API managed identity.",
+      "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+      "principal_id": "{{gatekeeperApiMiObjectId}}",
+      "principal_type": "User",
+      "scope": "/instances/{{instanceId}}",
+      "created_on": "{{deployTime}}",
+      "updated_on": "{{deployTime}}",
+      "created_by": "SYSTEM",
+      "updated_by": "SYSTEM"
+    },
+    {
+      "name": "{{vectorizationJobRoleAssignmentGuid}}",
+      "type": "FoundationaLLM.Authorization/roleAssignments",
+      "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/{{vectorizationJobRoleAssignmentGuid}}",
+      "description": "Role assignment reader for the Vectorization Worker managed identity.",
+      "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+      "principal_id": "{{vectorizationJobMiObjectId}}",
+      "principal_type": "User",
+      "scope": "/instances/{{instanceId}}",
+      "created_on": "{{deployTime}}",
+      "updated_on": "{{deployTime}}",
+      "created_by": "SYSTEM",
+      "updated_by": "SYSTEM"
+    },
+    {
+      "name": "{{gatewayApiRoleAssignmentGuid}}",
+      "type": "FoundationaLLM.Authorization/roleAssignments",
+      "object_id": "/providers/FoundationaLLM.Authorization/roleAssignments/{{gatewayApiRoleAssignmentGuid}}",
+      "description": "Role assignment reader for the Gateway API managed identity.",
+      "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+      "principal_id": "{{gatewayApiMiObjectId}}",
+      "principal_type": "User",
+      "scope": "/instances/{{instanceId}}",
+      "created_on": "{{deployTime}}",
+      "updated_on": "{{deployTime}}",
+      "created_by": "SYSTEM",
+      "updated_by": "SYSTEM"
     }
   ]
 }

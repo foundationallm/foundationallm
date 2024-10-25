@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Interfaces;
+﻿using FoundationaLLM.Common.Constants.Authentication;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using Microsoft.Identity.Web;
 using System.Security.Claims;
@@ -25,6 +26,16 @@ namespace FoundationaLLM.Common.Services.Security
                 UPN = ResolveUsername(userPrincipal),
                 UserId = userPrincipal.FindFirstValue(ClaimConstants.Oid) ?? userPrincipal.FindFirstValue(ClaimConstants.ObjectId)
             };
+        }
+
+        /// <inheritdoc/>
+        public List<string>? GetSecurityGroupIds(ClaimsPrincipal? userPrincipal)
+        {
+            if (userPrincipal == null)
+            {
+                return null;
+            }
+            return userPrincipal.Claims.Where(c => c.Type == EntraUserClaimConstants.Groups).Select(x => x?.Value).ToList()!;
         }
 
         /// <inheritdoc/>

@@ -11,7 +11,6 @@ using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Core.Examples.Catalogs;
 using FoundationaLLM.Core.Examples.Exceptions;
 using FoundationaLLM.Core.Examples.Interfaces;
-using FoundationaLLM.Core.Examples.Setup;
 using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.Json;
@@ -67,6 +66,9 @@ namespace FoundationaLLM.Core.Examples.Services
                 throw new InvalidOperationException($"The indexing profile {indexingProfileName} was not found.");
             }
 
+            var aiSearchConfigurationResource = indexingProfile.Settings![VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId];
+            indexingProfile.Settings![VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId] = $"/instances/{instanceSettings.Value.Id}/providers/{ResourceProviderNames.FoundationaLLM_Configuration}/{ConfigurationResourceTypeNames.APIEndpointConfigurations}/{aiSearchConfigurationResource}";
+
             var response = await managementClient.Vectorization.UpsertIndexingProfileAsync(indexingProfile);
 
             if (!string.IsNullOrWhiteSpace(GetObjectId(response)))
@@ -115,10 +117,45 @@ namespace FoundationaLLM.Core.Examples.Services
             throw new FoundationaLLMException($"Failed to create text partitioning profile: {textPartitioningProfileName}.");
         }
 
+        public async Task<string> CreateAPIEndpointConfiguration(string apiEndpointName, string apiEndpointUrl)
+        {
+            var apiEndpointProfile = APIEndpointConfigurationCatalog.GetAllAPIEndpointConfigurations().FirstOrDefault(a => a.Name == apiEndpointName);
+
+            if (apiEndpointProfile == null)
+            {
+                throw new InvalidOperationException($"The api endpoint profile {apiEndpointName} was not found.");
+            }
+
+            apiEndpointProfile.Url = apiEndpointUrl;
+            var response = await managementClient.Configuration.UpsertAPIEndpointConfiguration(apiEndpointProfile);
+
+            return GetObjectId(response); 
+        }
+
+        public async Task<string> CreateAIModel(string aiModelName, string endpointObjectId)
+        {
+            var aiModelProfile = AIModelCatalog.GetAllAIModels().FirstOrDefault(a => a.Name == aiModelName);
+
+            if (aiModelProfile == null)
+            {
+                throw new InvalidOperationException($"The AI model profile {aiModelName} was not found.");
+            }
+
+            aiModelProfile.EndpointObjectId = endpointObjectId;
+            var response = await managementClient.AIModels.UpsertAIModel(aiModelProfile);
+
+            return GetObjectId(response);
+        }
+
         public async Task<VectorizationRequest> GetVectorizationRequest(VectorizationRequest vectorizationRequest)
         {
-            return await managementRestClient.Resources.GetResourcesAsync<VectorizationRequest>(
-                    ResourceProviderNames.FoundationaLLM_Vectorization, vectorizationRequest.ObjectId!);
+            return (await managementRestClient.Resources.GetResourcesAsync<List<ResourceProviderGetResult<VectorizationRequest>>>(
+                    ResourceProviderNames.FoundationaLLM_Vectorization, $"{VectorizationResourceTypeNames.VectorizationRequests}/{vectorizationRequest.ObjectId!.Split("/").Last()}")).First().Resource;
+        }
+
+        public async Task<APIEndpointConfiguration> GetAPIEndpointConfiguration(string apiEndpointObjectId)
+        {
+            return (await managementRestClient.Resources.GetResourcesAsync<List<ResourceProviderGetResult<APIEndpointConfiguration>>>(ResourceProviderNames.FoundationaLLM_Configuration, apiEndpointObjectId)).First().Resource;
         }
 
         public async Task<string> CreateVectorizationRequest(VectorizationRequest vectorizationRequest)
@@ -136,7 +173,7 @@ namespace FoundationaLLM.Core.Examples.Services
             var resourceId = vectorizationRequest.ObjectId!.Split("/").Last();
             var fullPath = $"instances/{instanceSettings.Value.Id}/providers/{ResourceProviderNames.FoundationaLLM_Vectorization}/{VectorizationResourceTypeNames.VectorizationRequests}/{resourceId}/process";
 
-            var managementClient = await httpClientManager.GetHttpClientAsync(HttpClients.ManagementAPI);            
+            var managementClient = await httpClientManager.GetHttpClientAsync(HttpClientNames.ManagementAPI);            
             var response = await managementClient.PostAsync(fullPath, new StringContent("{}", Encoding.UTF8, "application/json"));
             if (response.IsSuccessStatusCode)
             {
@@ -211,7 +248,8 @@ namespace FoundationaLLM.Core.Examples.Services
 
         /// <inheritdoc/>
         public async Task<AgentBase> CreateAgent(string agentName, string? indexingProfileName, 
-                string? textEmbeddingProfileName, string? textPartitioningProfileName)
+                string? textEmbeddingProfileName, string? textPartitioningProfileName,
+                string? apiEndpointName, string? apiEndpointUrl, string? aiModelName)
         {
             // All test agents should have a corresponding prompt in the catalog.
             // Retrieve the agent and prompt from the test catalog.
@@ -222,22 +260,41 @@ namespace FoundationaLLM.Core.Examples.Services
                 throw new InvalidOperationException($"The agent {agentName} was not found.");
             }
 
+            // TODO: we need support for creating APIEndpointConfiguration and AIModel object in ManagementClient
+            // This will break everything in the E2E tests.
+
             // Resolve App Config values for the endpoint configuration as necessary.
             // Note: This is a temporary workaround until we have the Models and Endpoints resource provider in place.
-            if (agent.OrchestrationSettings is {EndpointConfiguration: not null})
-            {
-                foreach (var (key, value) in agent.OrchestrationSettings.EndpointConfiguration)
-                {
-                    if (key.ToLower() == "api_key") continue;
-                    if (value is not string stringValue || !stringValue.StartsWith("FoundationaLLM:")) continue;
-                    var appConfigValue = await TestConfiguration.GetAppConfigValueAsync(value.ToString()!);
-                    agent.OrchestrationSettings.EndpointConfiguration[key] = appConfigValue;
-                }
-            }
+            //var endpoint = agent.OrchestrationSettings?.AIModel?.Endpoint;
+            //if (endpoint != null)
+            //{
+            //    if (endpoint.Url != null && endpoint.Url.StartsWith("FoundationaLLM:"))
+            //        endpoint.Url = await TestConfiguration.GetAppConfigValueAsync(endpoint.Url!);
+            //    if (endpoint.APIVersion != null && endpoint.APIVersion.StartsWith("FoundationaLLM:"))
+            //        endpoint.APIVersion = await TestConfiguration.GetAppConfigValueAsync(endpoint.APIVersion!);
+            //}
 
             var agentPrompt = await CreatePrompt(agentName);
             // Add the prompt ObjectId to the agent.
             agent.PromptObjectId = agentPrompt.ObjectId;
+
+            // Create APIEndpointConfiguration and AIModel object.
+            if (!string.IsNullOrWhiteSpace(apiEndpointName)
+                && !string.IsNullOrWhiteSpace(apiEndpointUrl)
+                && !string.IsNullOrWhiteSpace(aiModelName))
+            {
+                var endpointObjectId = await CreateAPIEndpointConfiguration(apiEndpointName, apiEndpointUrl);
+                agent.AIModelObjectId = await CreateAIModel(aiModelName, endpointObjectId);
+            }
+            else
+            {
+                // Attempt to lookup the AIModel to retrieve its ObjectId.
+                var aiModel = await managementClient.AIModels.GetAIModelAsync(agent.AIModelObjectId!);
+                if (aiModel is {Resource: not null})
+                {
+                    agent.AIModelObjectId = aiModel.Resource.ObjectId;
+                }
+            }
 
             // TODO: Create any other dependencies for the agent here.
 

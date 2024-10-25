@@ -1,5 +1,4 @@
 ﻿using Azure;
-using Azure.Identity;
 using Azure.Storage;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
@@ -31,7 +30,12 @@ namespace FoundationaLLM.Common.Services.Storage
         ILogger<BlobStorageService> logger) : StorageServiceBase(storageOptions, logger), IStorageService
     {
         private BlobServiceClient _blobServiceClient;
-        
+
+        /// <summary>
+        /// The name of the storage account.
+        /// </summary>
+        public string StorageAccountName => _blobServiceClient.AccountName;
+
         /// <inheritdoc/>
         public async Task<BinaryData> ReadFileAsync(
             string containerName,

@@ -17,6 +17,7 @@ namespace FoundationaLLM.Common.Authentication
         /// Initializes the default authentication.
         /// </summary>
         /// <param name="production">Indicates whether the environment is production or not.</param>
+        /// <param name="serviceName">The service name.</param>
         public static void Initialize(bool production, string serviceName)
         {
             Production = production;
@@ -39,8 +40,16 @@ namespace FoundationaLLM.Common.Authentication
             {
                 Name = serviceName,
                 UserId = id,
+                UPN = $"{serviceName}-{id}",
                 GroupIds = []
             };
+
+            // Used when debugging locally, set UPN for URLException overrides.
+            if(!Production)
+            {
+                var upn = token.Claims.First(c => c.Type == ClaimConstants.PreferredUserName)?.Value;
+                ServiceIdentity.UPN = upn;
+            }
         }
 
         /// <summary>

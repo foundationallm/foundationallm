@@ -4,11 +4,6 @@ param name string
 param tags object = {}
 param keyvaultName string
 
-var secretNames = [
-  'event-grid-key'
-  'foundationallm-events-azureeventgrid-apikey'
-]
-
 resource namespace 'Microsoft.EventGrid/namespaces@2023-12-15-preview' = {
   name: name
   location: location
@@ -44,21 +39,19 @@ resource keyvault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
   name: keyvaultName
 }
 
-resource eventGridKey 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = [
-  for secretName in secretNames: {
-    name: secretName
-    parent: keyvault
-    tags: tags
-    properties: {
-      value: namespace.listKeys().key1
-    }
+resource eventGridKey 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
+  name: 'foundationallm-apiendpoints-azureeventgrid-apikey'
+  parent: keyvault
+  tags: tags
+  properties: {
+    value: namespace.listKeys().key1
   }
-]
+}
 
 output endpoint string = 'https://${namespace.properties.topicsConfiguration.hostname}'
 output id string = namespace.id
-output keySecretName string = eventGridKey[0].name
-output keySecretRef string = eventGridKey[0].properties.secretUri
+output keySecretName string = eventGridKey.name
+output keySecretRef string = eventGridKey.properties.secretUri
 output name string = namespace.name
 output topicNames array = topicNames
 output topicIds array = [for (topicName,i) in topicNames: egTopics[i].id]

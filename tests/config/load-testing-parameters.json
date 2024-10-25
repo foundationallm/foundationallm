@@ -4,5 +4,19 @@
     "question_bank_file": "QuestionBank.csv",
     "jmeter_file": "Load-Testing.jmx",
     "resource_group_name": "E2E-Testing-Resources",
-    "load_test_resource": "fllm-loadtest"
+    "load_test_resource": "fllm-loadtest",
+    "resources": {
+        "core_api_replica_count": 2,
+        "core_api_cpu": 1.0,
+        "core_api_mem": "2.0Gi",
+        "orchestration_api_replica_count": 0,
+        "orchestration_api_cpu": 1.0,
+        "orchestration_api_mem": "2.0Gi",
+        "langchain_api_replica_count": 0,
+        "langchain_api_cpu": 2.0,
+        "langchain_api_mem": "4.0Gi",
+        "semantickernel_api_replica_count": 0,
+        "semantickernel_api_cpu": 1.0,
+        "semantickernel_api_mem": "2.0Gi"
+    }
 }

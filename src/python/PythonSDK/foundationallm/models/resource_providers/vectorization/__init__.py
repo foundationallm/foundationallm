@@ -1,5 +1,3 @@
-from .settings_base import SettingsBase
-from .configuration_references_base import ConfigurationReferencesBase
 from .profile_base import ProfileBase
 
 from .indexing_profiles.indexing_profile_base import IndexingProfileBase
@@ -8,5 +6,5 @@ from .indexing_profiles.azure_ai_search.azure_ai_search_configuration_references
 from .indexing_profiles.azure_ai_search.azure_ai_search_indexing_profile import AzureAISearchIndexingProfile
 
 from .embedding_profiles.embedding_profile_base import EmbeddingProfileBase
-from .embedding_profiles.azure_openai.azure_openai_configuration_references import AzureOpenAIConfigurationReferences
+from .embedding_profiles.embedding_profile_settings_keys import EmbeddingProfileSettingsKeys
 from .embedding_profiles.azure_openai.azure_openai_embedding_profile import AzureOpenAIEmbeddingProfile

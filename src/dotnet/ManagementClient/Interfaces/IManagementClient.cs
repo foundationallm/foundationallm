@@ -12,6 +12,10 @@ namespace FoundationaLLM.Client.Management.Interfaces
         /// </summary>
         IAgentManagementClient Agents { get; }
         /// <summary>
+        /// Contains methods to interact with AIModel resources.
+        /// </summary>
+        IAIModelManagementClient AIModels { get; }
+        /// <summary>
         /// Contains methods to interact with Attachment resources.
         /// </summary>
         IAttachmentManagementClient Attachments { get; }
