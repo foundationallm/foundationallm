@@ -68,6 +68,7 @@
 			<span>FLLM Platform</span>
 		</div>
 
+		<NuxtLink to="/branding" class="sidebar__item">Branding</NuxtLink>
 		<NuxtLink to="/info" class="sidebar__item">Deployment Information</NuxtLink>
 
 		<!-- Logged in user -->
