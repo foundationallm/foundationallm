@@ -19,8 +19,8 @@ namespace FoundationaLLM.Core.Examples.Catalogs
         [
             new KnowledgeManagementAgent
             {
-                Name = TestAgentNames.GenericInlineContextAgentName,
-                Description = "A generic agent that can handle inline context completions.",
+                Name = TestAgentNames.GenericAgentName,
+                Description = "A generic agent that can handle completions.",
                 SessionsEnabled = true,
                 Vectorization = new AgentVectorizationSettings
                 {
@@ -45,8 +45,8 @@ namespace FoundationaLLM.Core.Examples.Catalogs
             },
             new KnowledgeManagementAgent
             {
-                Name = TestAgentNames.SemanticKernelInlineContextAgentName,
-                Description = "SemanticKernel agent that can handle inline context completions.",
+                Name = TestAgentNames.SemanticKernelAgentName,
+                Description = "SemanticKernel agent that can handle completions.",
                 SessionsEnabled = true,
                 Vectorization = new AgentVectorizationSettings
                 {
@@ -203,7 +203,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
             new KnowledgeManagementAgent
             {
                 Name = TestAgentNames.Dune02,
-                Description = "Inline Context Agent that writes poems about Dune suitable for being used in wartime songs.",
+                Description = "Agent that writes poems about Dune suitable for being used in wartime songs.",
                 SessionsEnabled = true,
                 Vectorization = new AgentVectorizationSettings
                 {
