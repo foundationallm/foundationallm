@@ -37,6 +37,7 @@
                         <div class="color-input-container">
                             <InputText :value="getBrandingValue(key.key)" @input="updateBrandingValue(key.key, $event.target.value)" class="branding-input branding-color-input" :aria-labelledby="key.key.split(':').pop()" />
                             <ColorPicker :modelValue="getColorBrandingValue(key.key)" class="color-picker" :format="getColorBrandingFormat(key.key)" @change="updateBrandingValue(key.key, $event.value)" @hide="test" />
+                            <Button icon="pi pi-undo" />
                         </div>
                     </div>
                 </div>
