@@ -118,20 +118,32 @@ export default {
                     "value": "#fff",
                 },
                 {
+                    "key": "FoundationaLLM:Branding:CompanyName",
+                    "value": "FoundationaLLM",
+                },
+                {
                     "key": "FoundationaLLM:Branding:FavIconUrl",
                     "value": "favicon.ico",
+                },
+                {
+                    "key": "FoundationaLLM:Branding:AgentIconUrl",
+                    "value": "",
+                },
+                {
+                    "key": "FoundationaLLM:Branding:KioskMode",
+                    "value": "false",
+                },
+                {
+                    "key": "FoundationaLLM:Branding:LogoText",
+                    "value": "FoundationaLLM",
                 },
                 {
                     "key": "FoundationaLLM:Branding:LogoUrl",
                     "value": "foundationallm-logo-white.svg",
                 },
                 {
-                    "key": "FoundationaLLM:Branding:PrimaryButtonBackgroundColor",
-                    "value": "#5472d4",
-                },
-                {
-                    "key": "FoundationaLLM:Branding:PrimaryButtonTextColor",
-                    "value": "#fff",
+                    "key": "FoundationaLLM:Branding:PageTitle",
+                    "value": "FoundationaLLM User Portal",
                 },
                 {
                     "key": "FoundationaLLM:Branding:PrimaryColor",
@@ -139,6 +151,22 @@ export default {
                 },
                 {
                     "key": "FoundationaLLM:Branding:PrimaryTextColor",
+                    "value": "#fff",
+                },
+                {
+                    "key": "FoundationaLLM:Branding:SecondaryColor",
+                    "value": "#334581",
+                },
+                {
+                    "key": "FoundationaLLM:Branding:SecondaryTextColor",
+                    "value": "#fff",
+                },
+                {
+                    "key": "FoundationaLLM:Branding:PrimaryButtonBackgroundColor",
+                    "value": "#5472d4",
+                },
+                {
+                    "key": "FoundationaLLM:Branding:PrimaryButtonTextColor",
                     "value": "#fff",
                 },
                 {
@@ -150,12 +178,8 @@ export default {
                     "value": "#fff",
                 },
                 {
-                    "key": "FoundationaLLM:Branding:SecondaryColor",
-                    "value": "#334581",
-                },
-                {
-                    "key": "FoundationaLLM:Branding:SecondaryTextColor",
-                    "value": "#fff",
+                    "key": "FoundationaLLM:Branding:FooterText",
+                    "value": "FoundationaLLM (c) 2024",
                 }
             ],
             orderedKeys: [
