@@ -12,6 +12,7 @@
             <div class="step span-2" v-for="key in orderedKeys" :key="key">
                 <div class="step-header mb-2" :id="key.split(':').pop()">{{ getFriendlyName(key) }}</div>
                 <div class="mb-2">{{ getBrandingDescription(key) }}</div>
+                <InputSwitch v-if="key === 'FoundationaLLM:Branding:KioskMode'" v-model:modelValue="kioskMode" @change="updateBrandingValue(key, JSON.stringify(kioskMode))" />
                 <div class="quill-container" v-if="key === 'FoundationaLLM:Branding:FooterText'">
                     <QuillEditor ref="quillEditor" v-model:content="footerText" contentType="html" @update:content="updateBrandingValue(key, $event)" />
                     <!-- <Button label="RAW HTML" /> -->
@@ -23,7 +24,7 @@
                         <Button label="Save" @click="updateBrandingValue(key, rawFooterTextHTML)" />
                     </Dialog>
                 </div>
-                <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" class="branding-input" :aria-labelledby="key.split(':').pop()" v-else />
+                <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" class="branding-input" :aria-labelledby="key.split(':').pop()" v-if="key !== 'FoundationaLLM:Branding:FooterText' && key !== 'FoundationaLLM:Branding:KioskMode'" />
                 <div class="logo-preview" :style="{ backgroundColor: getBrandingValue('FoundationaLLM:Branding:PrimaryColor') }" v-if="key === 'FoundationaLLM:Branding:LogoUrl'">
                     <img :src="$filters.publicDirectory(getBrandingValue(key))" class="logo-image" />
                 </div>
@@ -272,12 +273,14 @@ export default {
             footerText: '',
             rawFooterTextHTML: '',
             showContrastInfo: false,
+            kioskMode: false,
         };
     },
 
     async created() {
         await this.getBranding();
         this.footerText = this.getBrandingValue('FoundationaLLM:Branding:FooterText');
+        this.kioskMode = this.getBrandingValue('FoundationaLLM:Branding:KioskMode') === 'true';
     },
 
     methods: {
