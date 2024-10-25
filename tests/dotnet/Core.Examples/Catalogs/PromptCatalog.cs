@@ -48,13 +48,6 @@ namespace FoundationaLLM.Core.Examples.Catalogs
             },
             new MultipartPrompt
             {
-                Name = TestAgentNames.SemanticKernelAgentName,
-                Description = $"Prompt template for the {TestAgentNames.SemanticKernelAgentName} agent.",
-                Prefix = @"You are an analytic agent named Omar that helps people understand the history of the Rosetta Stone.
-                    Provide concise answers that are polite and professional."
-            },
-            new MultipartPrompt
-            {
                 Name = TestAgentNames.SemanticKernelSDZWA,
                 Description = $"Prompt template for the {TestAgentNames.SemanticKernelSDZWA} agent.",
                 Prefix = @"You are the San Diego Zoo assistant named Sandy. 

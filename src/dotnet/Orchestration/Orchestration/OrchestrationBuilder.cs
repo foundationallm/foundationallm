@@ -272,68 +272,64 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             {
                 KnowledgeManagementAgent kmAgent = (KnowledgeManagementAgent)agentBase;
 
-                // Check for inline-context agents, they are valid KM agents that do not have a vectorization section.
-                if (kmAgent is { Vectorization: not null, InlineContext: false })
+                if (!string.IsNullOrWhiteSpace(kmAgent.Vectorization.DataSourceObjectId))
                 {
-                    if (!string.IsNullOrWhiteSpace(kmAgent.Vectorization.DataSourceObjectId))
+                    try
                     {
-                        try
-                        {
-                            var dataSource = await dataSourceResourceProvider.GetResourceAsync<DataSourceBase>(
-                                kmAgent.Vectorization.DataSourceObjectId,
-                                currentUserIdentity);
-
-                            if (dataSource == null)
-                                return (null, null, false);
-                        }
-                        catch (ResourceProviderException ex) when (ex.StatusCode == (int)HttpStatusCode.Forbidden)
-                        {
-                            // Access is denied to the underlying data source.
-                            return (agentBase, null, true);
-                        }
-                    }
-
-                    foreach (var indexingProfileName in kmAgent.Vectorization.IndexingProfileObjectIds ?? [])
-                    {
-                        if (string.IsNullOrWhiteSpace(indexingProfileName))
-                        {
-                            continue;
-                        }
-
-                        var indexingProfile = await vectorizationResourceProvider.GetResourceAsync<IndexingProfile>(
-                            indexingProfileName,
-                            currentUserIdentity);
-                       
-                        if (indexingProfile == null)
-                            throw new OrchestrationException($"The indexing profile {indexingProfileName} is not a valid indexing profile.");
-
-                        explodedObjects[indexingProfileName] = indexingProfile;
-                                               
-                        // Provide the indexing profile API endpoint configuration.
-                        if (indexingProfile.Settings == null)
-                            throw new OrchestrationException($"The settings for the indexing profile {indexingProfileName} were not found. Must include \"{VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId}\" setting.");
-
-                        if(indexingProfile.Settings.TryGetValue(VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, out var apiEndpointConfigurationObjectId) == false)
-                            throw new OrchestrationException($"The API endpoint configuration object ID was not found in the settings of the indexing profile.");
-
-                        var indexingProfileAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
-                            apiEndpointConfigurationObjectId,
+                        var dataSource = await dataSourceResourceProvider.GetResourceAsync<DataSourceBase>(
+                            kmAgent.Vectorization.DataSourceObjectId,
                             currentUserIdentity);
 
-                        explodedObjects[apiEndpointConfigurationObjectId] = indexingProfileAPIEndpointConfiguration;
+                        if (dataSource == null)
+                            return (null, null, false);
                     }
-
-                    if (!string.IsNullOrWhiteSpace(kmAgent.Vectorization.TextEmbeddingProfileObjectId))
+                    catch (ResourceProviderException ex) when (ex.StatusCode == (int)HttpStatusCode.Forbidden)
                     {
-                        var textEmbeddingProfile = await vectorizationResourceProvider.GetResourceAsync<TextEmbeddingProfile>(
-                            kmAgent.Vectorization.TextEmbeddingProfileObjectId,
-                            currentUserIdentity);                                               
-                                           
-                        if (textEmbeddingProfile == null)
-                            throw new OrchestrationException($"The text embedding profile {kmAgent.Vectorization.TextEmbeddingProfileObjectId} is not a valid text embedding profile.");
-
-                        explodedObjects[kmAgent.Vectorization.TextEmbeddingProfileObjectId!] = textEmbeddingProfile;
+                        // Access is denied to the underlying data source.
+                        return (agentBase, null, true);
                     }
+                }
+
+                foreach (var indexingProfileName in kmAgent.Vectorization.IndexingProfileObjectIds ?? [])
+                {
+                    if (string.IsNullOrWhiteSpace(indexingProfileName))
+                    {
+                        continue;
+                    }
+
+                    var indexingProfile = await vectorizationResourceProvider.GetResourceAsync<IndexingProfile>(
+                        indexingProfileName,
+                        currentUserIdentity);
+
+                    if (indexingProfile == null)
+                        throw new OrchestrationException($"The indexing profile {indexingProfileName} is not a valid indexing profile.");
+
+                    explodedObjects[indexingProfileName] = indexingProfile;
+
+                    // Provide the indexing profile API endpoint configuration.
+                    if (indexingProfile.Settings == null)
+                        throw new OrchestrationException($"The settings for the indexing profile {indexingProfileName} were not found. Must include \"{VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId}\" setting.");
+
+                    if (indexingProfile.Settings.TryGetValue(VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, out var apiEndpointConfigurationObjectId) == false)
+                        throw new OrchestrationException($"The API endpoint configuration object ID was not found in the settings of the indexing profile.");
+
+                    var indexingProfileAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                        apiEndpointConfigurationObjectId,
+                        currentUserIdentity);
+
+                    explodedObjects[apiEndpointConfigurationObjectId] = indexingProfileAPIEndpointConfiguration;
+                }
+
+                if (!string.IsNullOrWhiteSpace(kmAgent.Vectorization.TextEmbeddingProfileObjectId))
+                {
+                    var textEmbeddingProfile = await vectorizationResourceProvider.GetResourceAsync<TextEmbeddingProfile>(
+                        kmAgent.Vectorization.TextEmbeddingProfileObjectId,
+                        currentUserIdentity);
+
+                    if (textEmbeddingProfile == null)
+                        throw new OrchestrationException($"The text embedding profile {kmAgent.Vectorization.TextEmbeddingProfileObjectId} is not a valid text embedding profile.");
+
+                    explodedObjects[kmAgent.Vectorization.TextEmbeddingProfileObjectId!] = textEmbeddingProfile;
                 }
             }
 
