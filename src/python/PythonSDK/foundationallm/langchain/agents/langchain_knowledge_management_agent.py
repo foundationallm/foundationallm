@@ -55,7 +55,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         """
         retriever = None
 
-        if agent.vectorization is not None and not agent.inline_context:
+        if agent.vectorization is not None:
             text_embedding_profile = AzureOpenAIEmbeddingProfile.from_object(
                 request.objects[agent.vectorization.text_embedding_profile_object_id]
             )
@@ -210,7 +210,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         if self.prompt.prefix is None or self.prompt.prefix == '':
             raise LangChainException("The Prompt object provided in the request's objects dictionary is invalid because it is missing a prefix value.", 400)
 
-        if request.agent.vectorization is not None and not request.agent.inline_context:
+        if request.agent.vectorization is not None:
             if request.agent.vectorization.text_embedding_profile_object_id is None or request.agent.vectorization.text_embedding_profile_object_id == '':
                 raise LangChainException("The TextEmbeddingProfileObjectId property of the agent's Vectorization property cannot be null or empty.", 400)
 
