@@ -90,5 +90,11 @@ namespace FoundationaLLM.Common.Models.Orchestration.Response
         /// </summary>
         [JsonPropertyName("deleted")]
         public bool Deleted { get; set; }
+
+        /// <summary>
+        /// An array of error messages that occurred during the completion operation.
+        /// </summary>
+        [JsonPropertyName("errors")]
+        public string[]? Errors { get; set; }
     }
 }

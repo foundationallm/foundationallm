@@ -29,11 +29,12 @@
 					@click="toggle"
 					@keydown.esc="hideAllPoppers"
 				/>
-				<OverlayPanel ref="menu" :dismissable="false" style="max-width: 98%">
+				<OverlayPanel ref="menu" :dismissable="isMobile" style="max-width: 98%">
 					<div class="file-upload-header">
 						<Button
 							:icon="!isMobile ? 'pi pi-times' : undefined"
 							label="Close"
+							ref="fileUploadCloseButton"
 							class="file-upload-container-button"
 							@click="toggle"
 						/>
@@ -514,6 +515,13 @@ export default {
 
 		toggle(event: any) {
 			this.$refs.menu.toggle(event);
+			this.$nextTick(() => {
+				if (this.$refs.menu.visible) {
+					this.$refs.fileUploadCloseButton.$el.focus();
+				} else {
+					this.$refs.fileUploadButton.$el.focus();
+				}
+			});
 		},
 
 		handleKeydown(event: KeyboardEvent) {
@@ -600,7 +608,7 @@ export default {
 						severity: 'error',
 						summary: 'Error',
 						detail: `File upload failed for "${file.name}". ${error.message || error.title || ''}`,
-						life: 5000,
+						life: this.$appStore.autoHideToasts ? 5000 : null,
 					});
 				} finally {
 					if (totalFiles === filesUploaded + filesFailed) {
@@ -615,7 +623,7 @@ export default {
 								severity: 'success',
 								summary: 'Success',
 								detail: `Successfully uploaded ${filesUploaded} file${totalFiles > 1 ? 's' : ''}.`,
-								life: 5000,
+								life: this.$appStore.autoHideToasts ? 5000 : null,
 							});
 						}
 					}
@@ -718,7 +726,7 @@ export default {
 						severity: 'error',
 						summary: 'Error',
 						detail: 'File size exceeds the limit of 512MB.',
-						life: 5000,
+						life: this.$appStore.autoHideToasts ? 5000 : null,
 					});
 				} else if (allowedFileTypes && allowedFileTypes !== '') {
 					const fileExtension = file.name.split('.').pop()?.toLowerCase();
@@ -732,7 +740,7 @@ export default {
 							severity: 'error',
 							summary: 'Error',
 							detail: `File type not supported. File: ${file.name}`,
-							life: 5000,
+							life: this.$appStore.autoHideToasts ? 5000 : null,
 						});
 					} else {
 						filteredFiles.push(file);
@@ -753,7 +761,7 @@ export default {
 					severity: 'error',
 					summary: 'Error',
 					detail: `You can only upload a maximum of ${this.maxFiles} ${this.maxFiles === 1 ? 'file' : 'files'} at a time.`,
-					life: 5000,
+					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 				filteredFiles.splice(
 					this.maxFiles -
@@ -818,7 +826,7 @@ export default {
 					severity: 'success',
 					summary: 'Success',
 					detail: `Your account is now connected to OneDrive.`,
-					life: 5000,
+					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 				this.connectingOneDrive = false;
 			});
@@ -831,7 +839,7 @@ export default {
 					severity: 'success',
 					summary: 'Success',
 					detail: `Your account is now disconnected from OneDrive.`,
-					life: 5000,
+					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 				this.disconnectingOneDrive = false;
 			});
@@ -1083,8 +1091,17 @@ export default {
 	flex-basis: auto;
 }
 
+.submit:focus {
+	box-shadow: 0 0 0 0.1rem #000;
+}
+
 .file-upload-button {
 	height: 100%;
+	z-index: 1
+}
+
+.file-upload-button:focus {
+	box-shadow: 0 0 0 0.1rem #000;
 }
 
 .attached-files-container {
@@ -1153,6 +1170,10 @@ export default {
 .file-upload-empty-desktop {
 	text-align: center;
 	margin-bottom: 0.5rem;
+}
+
+.file-upload-container-button:focus {
+	box-shadow: 0 0 0 0.1rem #000;
 }
 
 @media only screen and (max-width: 405px) {

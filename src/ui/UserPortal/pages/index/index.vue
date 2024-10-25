@@ -1,5 +1,12 @@
 <template>
 	<div class="chat-app">
+		<Button 
+            class="sr-only skip-to-input-button"
+			role="link"
+			label="Skip to input"
+            aria-label="Skip to input" 
+            @click="focusInput"
+        />
 		<header role="banner">
 			<NavBar />
 		</header>
@@ -11,7 +18,17 @@
 				role="navigation"
 			>
 				<ChatSidebar class="chat-sidebar" :style="{ width: sidebarWidth + 'px' }" />
-				<div class="resize-handle" @mousedown="startResizing"></div>
+				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']" :skidding="skidding">
+					<div 
+						class="resize-handle" 
+						@mousedown="startResizing" 
+						@keydown.left.prevent="resizeSidebarWithKeyboard(-10)" 
+						@keydown.right.prevent="resizeSidebarWithKeyboard(10)" 
+						tabindex="0"
+						aria-label="Resize sidebar"
+					></div>
+					<template #popper><div role="tooltip">Resize sidebar (Use left and right arrow keys)</div></template>
+				</VTooltip>
 			</aside>
 			<div
 				v-show="!$appStore.isSidebarClosed"
@@ -33,6 +50,8 @@ export default {
 		return {
 			sidebarWidth: 305,
 			isDragging: false,
+			isMobile: window.screen.width < 950,
+			skidding: 0,
 		};
 	},
 
@@ -82,6 +101,22 @@ export default {
 			this.$refs.sidebar.style.width = `${this.sidebarWidth}px`;
 		},
 
+		resizeSidebarWithKeyboard(offset: number) {
+			const newWidth = this.sidebarWidth + offset;
+
+			if (newWidth < 305) {
+				this.sidebarWidth = 305;
+			} else if (newWidth > 600) {
+				this.sidebarWidth = 600;
+			} else {
+				this.sidebarWidth = newWidth;
+			}
+
+			this.$refs.sidebar.style.width = `${this.sidebarWidth}px`;
+			// resets tooltip location
+			this.skidding = this.sidebarWidth * 0.001;
+		},
+
 		showDropZone(event) {
 			if (event.dataTransfer && event.dataTransfer.types.includes('Files')) {
 				this.isDragging = true;
@@ -124,17 +159,49 @@ export default {
 			document.removeEventListener('mousemove', this.resizeSidebar);
 			document.removeEventListener('mouseup', this.stopResizing);
 		},
+
+		focusInput() {
+			this.$refs.thread.$refs.chatInput.$refs.inputRef.focus()
+		},
 	},
 };
 </script>
 
 <style lang="scss" scoped>
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
+}
+
+.skip-to-input-button:focus {
+    position: fixed !important; /* Override sr-only */
+    top: 10px !important;        /* Ensure visibility */
+    left: 10px !important;
+    width: auto !important;
+    height: auto !important;
+    z-index: 100 !important;
+    padding: 10px !important;
+    border: 2px solid #fff !important;
+    outline: none !important;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) !important;
+    clip: auto !important;        /* Remove clip hiding */
+    width: auto !important;
+    height: auto !important;
+}
+
 .chat-app {
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
 	background-color: var(--primary-bg);
 }
+
 .chat-content {
 	display: flex;
 	flex-direction: row;
@@ -164,6 +231,7 @@ export default {
 .chat-main {
 	width: 100%;
 	height: 100%;
+	overflow: hidden;
 }
 
 @media only screen and (max-width: 620px) {
