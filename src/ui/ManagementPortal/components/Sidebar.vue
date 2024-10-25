@@ -48,7 +48,7 @@
 		<!-- <div class="sidebar__section-header">
 			<span class="pi pi-sitemap"></span>
 			<span>LLM's</span>
-		</div>
+		</div> -->
 
 		<NuxtLink to="/models-and-endpoints" class="sidebar__item">
 			Language Models & Endpoints
