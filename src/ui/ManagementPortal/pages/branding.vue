@@ -37,7 +37,7 @@
                         <div class="color-input-container">
                             <InputText :value="getBrandingValue(key.key)" @input="updateBrandingValue(key.key, $event.target.value)" class="branding-input branding-color-input" :aria-labelledby="key.key.split(':').pop()" />
                             <ColorPicker :modelValue="getColorBrandingValue(key.key)" class="color-picker" :format="getColorBrandingFormat(key.key)" @change="updateBrandingValue(key.key, $event.value)" @hide="test" />
-                            <Button icon="pi pi-undo" />
+                            <Button class="color-undo-button" icon="pi pi-undo" @click="updateBrandingValue(key.key, getOriginalBrandingValue(key.key))" :disabled="getBrandingValue(key.key) === getOriginalBrandingValue(key.key)" />
                         </div>
                     </div>
                 </div>
@@ -50,11 +50,11 @@
                     </div>
                     <div class="color-wcag-results-container" v-if="group.keys.find(k => k.type === 'background').key && group.keys.find(k => k.type === 'foreground')?.key && showContrastInfo">
                         <div class="color-wcag-results">
-                            <div class="color-wcag-result">
+                            <div class="color-wcag-result" :style="{ color: getContrastRatio(getBrandingValue(group.keys.find(k => k.type === 'background').key), getBrandingValue(group.keys.find(k => k.type === 'foreground')?.key) || 'transparent') >= 4.5 ? '#1a784c' : '#9e054a' }">
                                 <div class="color-wcag-result-label">AA</div>
                                 <div class="color-wcag-result-value">{{ getContrastRatio(getBrandingValue(group.keys.find(k => k.type === 'background').key), getBrandingValue(group.keys.find(k => k.type === 'foreground')?.key) || 'transparent') >= 4.5 ? 'Pass' : 'Fail' }}</div>
                             </div>
-                            <div class="color-wcag-result">
+                            <div class="color-wcag-result" :style="{ color: getContrastRatio(getBrandingValue(group.keys.find(k => k.type === 'background').key), getBrandingValue(group.keys.find(k => k.type === 'foreground')?.key) || 'transparent') >= 7 ? '#1a784c' : '#9e054a' }">
                                 <div class="color-wcag-result-label">AAA</div>
                                 <div class="color-wcag-result-value">{{ getContrastRatio(getBrandingValue(group.keys.find(k => k.type === 'background').key), getBrandingValue(group.keys.find(k => k.type === 'foreground')?.key) || 'transparent') >= 7 ? 'Pass' : 'Fail' }}</div>
                             </div>
@@ -279,6 +279,11 @@ export default {
 
         getBrandingValue(key: string) {
             const brand = this.branding?.find((item: any) => item.resource.key === key);
+            return brand ? brand.resource.value : '';
+        },
+
+        getOriginalBrandingValue(key: string) {
+            const brand = this.brandingOriginal?.find((item: any) => item.resource.key === key);
             return brand ? brand.resource.value : '';
         },
 
@@ -510,6 +515,7 @@ export default {
     border: 2px solid #000;
     margin-top: 10px;
     max-width: 300px;
+    padding: 10px;
 }
 
 .logo-image {
@@ -533,6 +539,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex: 1;
 }
 
 .color-wcag-result-label {
@@ -550,6 +557,12 @@ export default {
 
 .color-picker {
     width: 50px;
+}
+
+.color-undo-button {
+    border: 2px solid #e1e1e1;
+    border-width: 2px 2px 2px 0;
+    width: 50px
 }
 
 .p-colorpicker-preview {
