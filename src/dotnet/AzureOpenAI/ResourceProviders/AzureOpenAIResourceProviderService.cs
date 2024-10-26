@@ -117,7 +117,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     resourcePath.MainResourceId!))!,
                 AzureOpenAIResourceTypeNames.FilesContent => ((await LoadFileContent(
                     resourcePath.MainResourceId!,
-                    resourcePath.ResourceId!)) as T)!,
+                    resourcePath.RawResourcePath!)) as T)!,
                 AzureOpenAIResourceTypeNames.FileUserContexts => ((await LoadFileUserContext(resourcePath.MainResourceId!)) as T)!,
                 _ => throw new ResourceProviderException(
                     $"The {resourcePath.MainResourceTypeName} resource type is not supported by the {_name} resource provider.")
@@ -162,22 +162,23 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
             }
         }
 
-        private async Task<FileContent> LoadFileContent(string fileUserContextName, string openAIFileId)
+        private async Task<FileContent> LoadFileContent(string fileUserContextName, string openAIFileIdObjectId)
         {
             var fileUserContext = await LoadFileUserContext(fileUserContextName);
-            if(!fileUserContext.TryGetFileMapping(openAIFileId, out var agentFileUserContext, out var fileMapping))
+            if(!fileUserContext.TryGetFileMapping(openAIFileIdObjectId, out var agentFileUserContext, out var fileMapping))
                 throw new ResourceProviderException(
-                    $"Could not find the agent files mapping for file {openAIFileId} in the {fileUserContextName} file user context.",
+                    $"Could not find the agent files mapping for file {openAIFileIdObjectId} in the {fileUserContextName} file user context.",
                     StatusCodes.Status404NotFound);
 
             var azureOpenAIClient = new AzureOpenAIClient(new Uri(agentFileUserContext!.Endpoint), DefaultAuthentication.AzureCredential);
             var fileClient = azureOpenAIClient.GetFileClient();
 
-            var result = await fileClient.DownloadFileAsync(openAIFileId);
+            // Retrieve using the OpenAI file ID.           
+            var result = await fileClient.DownloadFileAsync(fileMapping!.OpenAIFileId);
 
             return new FileContent
             {
-                Name = openAIFileId,
+                Name = fileMapping!.OpenAIFileId!,
                 OriginalFileName = fileMapping!.OriginalFileName,
                 ContentType = fileMapping.ContentType,
                 BinaryContent = result.Value.ToMemory()
