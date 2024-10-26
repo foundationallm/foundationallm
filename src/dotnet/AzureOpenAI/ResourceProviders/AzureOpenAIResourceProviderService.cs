@@ -414,24 +414,59 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     await SaveResource<AssistantUserContext>(resourceReference, assistantUserContext);
 
                     #endregion
-
-                    // If this is a new assistant, add the agent_file entry to the file user context.
-                   
-
-                    return new AssistantUserContextUpsertResult
-                    {
-                        ObjectId = assistantUserContext.ObjectId!,
-                        ResourceExists = true,
-                        NewOpenAIAssistantId = agentAssistantUserContext.OpenAIAssistantId,
-                        NewOpenAIAssistantThreadId = newOpenAIAssistantThreadId,
-                        NewOpenAIAssistantVectorStoreId = newOpenAIAssistantVectorStoreId
-                    };
-
                 }
                 finally
                 {
                     _localLock.Release();
                 }
+
+                // Ensure the agent has a key in the AgentFiles property of the file user context.
+                // Safely check the existence of the file user context.
+                var fileUserContextReference = await _resourceReferenceStore!.GetResourceReference(fileUserContextName);
+                if (fileUserContextReference != null)
+                {
+                    var fileUserContext = await LoadFileUserContext(fileUserContextName);
+                    if (!fileUserContext.AgentFiles.ContainsKey(agentObjectId))
+                    {
+                        fileUserContext.AgentFiles.Add(agentObjectId, new ()
+                        {
+                            Endpoint = agentAssistantUserContext.Endpoint
+                        });
+                        await UpdateFileUserContext(fileUserContext, userIdentity);
+                    }                    
+                }
+                else
+                {
+                    // Create the file user context with the current agent entry in AgentFiles.
+                    var newFileUserContext = new FileUserContext()
+                    {
+                        Name = fileUserContextName,
+                        AssistantUserContextName = assistantUserContext.Name,
+                        UserPrincipalName = assistantUserContext.UserPrincipalName,
+                        AgentFiles = new()
+                            {
+                                {
+                                    agentObjectId!,
+                                    new ()
+                                    {
+                                        Endpoint = agentAssistantUserContext!.Endpoint
+                                    }
+                                }
+                            }
+
+                    };
+                    await UpdateFileUserContext(newFileUserContext, userIdentity);
+                }
+                  
+                return new AssistantUserContextUpsertResult
+                {
+                    ObjectId = assistantUserContext.ObjectId!,
+                    ResourceExists = true,
+                    NewOpenAIAssistantId = agentAssistantUserContext.OpenAIAssistantId,
+                    NewOpenAIAssistantThreadId = newOpenAIAssistantThreadId,
+                    NewOpenAIAssistantVectorStoreId = newOpenAIAssistantVectorStoreId
+                };
+               
             }
         }
 
