@@ -418,7 +418,10 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     return new AssistantUserContextUpsertResult
                     {
                         ObjectId = assistantUserContext.ObjectId!,
-                        ResourceExists = true
+                        ResourceExists = true,
+                        NewOpenAIAssistantId = newOpenAIAssistantId!,
+                        NewOpenAIAssistantThreadId = newOpenAIAssistantThreadId!,
+                        NewOpenAIAssistantVectorStoreId = newOpenAIAssistantVectorStoreId
                     };
 
                 }
