@@ -215,6 +215,8 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.MustCreateAssistantThread} parameter to update the {assistantUserContext.Name} assistant user context.",
                     StatusCodes.Status400BadRequest);
 
+            var fileUserContextName = $"{assistantUserContext.UserPrincipalName.NormalizeUserPrincipalName()}-file-{_instanceSettings.Id.ToLower()}";
+
             #endregion
 
             // The assistant user context must always contain:
@@ -336,15 +338,14 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
                         UpdateBaseProperties(assistantUserContext, userIdentity, isNew: true);
 
-                        // Ensure the file user context is also created if it does not exist already.
-                        var newFileUserContextName = $"{assistantUserContext.UserPrincipalName.NormalizeUserPrincipalName()}-file-{_instanceSettings.Id.ToLower()}";
-                        var existingFileUserContextReference = await _resourceReferenceStore!.GetResourceReference(newFileUserContextName);
+                        // Ensure the file user context is also created if it does not exist already.                        
+                        var existingFileUserContextReference = await _resourceReferenceStore!.GetResourceReference(fileUserContextName);
                         if (existingFileUserContextReference == null)
                         {
                             // We need to create the file user context as well.
                             var newFileUserContext = new FileUserContext()
                             {
-                                Name = newFileUserContextName,
+                                Name = fileUserContextName,
                                 AssistantUserContextName = assistantUserContext.Name,
                                 UserPrincipalName = assistantUserContext.UserPrincipalName,
                                 AgentFiles = new()
@@ -361,9 +362,9 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                             };
                             var newUserFileContextResourceReference = new AzureOpenAIResourceReference
                             {
-                                Name = newFileUserContextName,
+                                Name = fileUserContextName,
                                 Type = AzureOpenAITypes.FileUserContext,
-                                Filename = $"/{_name}/{newFileUserContextName}.json",
+                                Filename = $"/{_name}/{fileUserContextName}.json",
                                 Deleted = false
                             };
 
@@ -374,7 +375,6 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                         else
                         {
                             // The file user context already exists, so we only need to create the assistant user context.
-
                             await CreateResource<AssistantUserContext>(assistantUserContextResourceReference, assistantUserContext);
                         }
 
@@ -415,12 +415,15 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
                     #endregion
 
+                    // If this is a new assistant, add the agent_file entry to the file user context.
+                   
+
                     return new AssistantUserContextUpsertResult
                     {
                         ObjectId = assistantUserContext.ObjectId!,
                         ResourceExists = true,
-                        NewOpenAIAssistantId = newOpenAIAssistantId!,
-                        NewOpenAIAssistantThreadId = newOpenAIAssistantThreadId!,
+                        NewOpenAIAssistantId = agentAssistantUserContext.OpenAIAssistantId,
+                        NewOpenAIAssistantThreadId = newOpenAIAssistantThreadId,
                         NewOpenAIAssistantVectorStoreId = newOpenAIAssistantVectorStoreId
                     };
 
