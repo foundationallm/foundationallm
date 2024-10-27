@@ -14,14 +14,34 @@
                 <div class="mb-2">{{ getBrandingDescription(key) }}</div>
                 <InputSwitch v-if="key === 'FoundationaLLM:Branding:KioskMode'" v-model:modelValue="kioskMode" @change="updateBrandingValue(key, JSON.stringify(kioskMode))" />
                 <div class="quill-container" v-if="key === 'FoundationaLLM:Branding:FooterText'">
-                    <QuillEditor ref="quillEditor" v-model:content="footerText" contentType="html" @update:content="updateBrandingValue(key, $event)" />
-                    <!-- <Button label="RAW HTML" /> -->
-                    <Dialog header="Raw HTML" :visible="false" modal="true" :style="{ width: '50vw' }">
-                        <div class="p-4">
-                            <Textarea v-model="rawFooterTextHTML" autoResize />
-                        </div>
-                        <Button label="WORDS" @click="test" />
-                        <Button label="Save" @click="updateBrandingValue(key, rawFooterTextHTML)" />
+                    <QuillEditor ref="quillEditor" v-model:content="footerText" contentType="html" toolbar="#custom-toolbar" @update:content="updateBrandingValue(key, $event)">
+                        <template #toolbar>
+                            <div id="custom-toolbar">
+                                <select class="ql-size">
+                                    <option value="small"></option>
+                                    <option selected></option>
+                                    <option value="large"></option>
+                                    <option value="huge"></option>
+                                </select>
+                                <button class="ql-bold" aria-label="Bold"></button>
+                                <button class="ql-italic" aria-label="Italic"></button>
+                                <button class="ql-underline" aria-label="Underline"></button>
+                                <button class="ql-strike" aria-label="Strike"></button>
+                                <button class="ql-link" aria-label="Link"></button>
+                                <button class="ql-image" aria-label="Image"></button>
+                                <button class="ql-list" value="ordered" aria-label="Ordered List"></button>
+                                <button class="ql-list" value="bullet" aria-label="Unordered List"></button>
+                                <button class="ql-clean" aria-label="Remove Styles"></button>
+                                <button class="quill-view-html" aria-label="Edit HTML" @click="toggleQuillDialog">Edit HTML</button>
+                            </div>
+                        </template>
+                    </QuillEditor>
+                    <Dialog v-model:visible="showQuillrawHTMLDialog" :modal="true" :closable="false" :style="{ width: '50vw' }">
+                        <Textarea v-model="rawFooterTextHTML" style="width: 100%; height: 100%;" autoResize />
+                        <template #footer>
+                            <Button label="Save" @click="saveFooterTextRawHTML" />
+                            <Button label="Cancel" @click="toggleQuillDialog" />
+                        </template>
                     </Dialog>
                 </div>
                 <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" class="branding-input" :aria-labelledby="key.split(':').pop()" v-if="key !== 'FoundationaLLM:Branding:FooterText' && key !== 'FoundationaLLM:Branding:KioskMode'" />
@@ -37,7 +57,7 @@
                         <div class="mb-2">{{ getBrandingDescription(key.key) }}</div>
                         <div class="color-input-container">
                             <InputText :value="getBrandingValue(key.key)" @input="updateBrandingValue(key.key, $event.target.value)" class="branding-input branding-color-input" :aria-labelledby="key.key.split(':').pop()" />
-                            <ColorPicker :modelValue="getColorBrandingValue(key.key)" class="color-picker" :format="getColorBrandingFormat(key.key)" @change="updateBrandingValue(key.key, $event.value)" @hide="test" />
+                            <ColorPicker :modelValue="getColorBrandingValue(key.key)" class="color-picker" :format="getColorBrandingFormat(key.key)" @change="updateBrandingValue(key.key, $event.value)" />
                             <Button class="color-undo-button" icon="pi pi-undo" @click="updateBrandingValue(key.key, getOriginalBrandingValue(key.key))" :disabled="getBrandingValue(key.key) === getOriginalBrandingValue(key.key)" />
                         </div>
                     </div>
@@ -274,6 +294,7 @@ export default {
             rawFooterTextHTML: '',
             showContrastInfo: false,
             kioskMode: false,
+            showQuillrawHTMLDialog: false,
         };
     },
 
@@ -402,14 +423,43 @@ export default {
             return key.split(':').pop()?.replace(/([A-Z])/g, ' $1').trim() || '';
         },
 
+        toggleQuillDialog() {
+            this.rawFooterTextHTML = JSON.parse(JSON.stringify(this.footerText
+                    .replace(/(<p><br><\/p>)+/g, match => '<br>'.repeat((match.split('<p><br></p>').length))) // Handle multiple consecutive <p><br></p> tags accurately
+                    .replace(/<\/p><p>/g, '<br>') // Replace </p><p> with <br> between paragraphs
+                    .replace(/<\/?p[^>]*>/g, ''))); // Remove any remaining <p> tags
+            this.showQuillrawHTMLDialog = !this.showQuillrawHTMLDialog;
+        },
+
+        saveFooterTextRawHTML() {
+            const paragraphs = this.rawFooterTextHTML.split('<br>').map(line => `<p>${line}</p>`).join('');
+            console.log(paragraphs);
+            this.rawFooterTextHTML = paragraphs;
+            this.footerText = this.rawFooterTextHTML;
+            this.updateBrandingValue('FoundationaLLM:Branding:FooterText', this.footerText);
+            this.showQuillrawHTMLDialog = false;
+        },
+
         updateBrandingValue(key: string, newValue: string) {
-            if (/^[0-9a-fA-F]{6}$/.test(newValue)) {
-                if (!newValue.startsWith("#")) {
-                    newValue = "#" + newValue;
+            console.log(key, newValue);
+            const isColorKey = this.orderedKeyColorsGrouped.some(group => group.keys.some(k => k.key === key));
+            if (isColorKey) {
+                if (/^[0-9a-fA-F]{6}$/.test(newValue)) {
+                    if (!newValue.startsWith("#")) {
+                        newValue = "#" + newValue;
+                    }
+                } else if (typeof newValue === 'object' && newValue !== null && 'r' in newValue && 'g' in newValue && 'b' in newValue) {
+                    newValue = `rgb(${newValue.r}, ${newValue.g}, ${newValue.b})`;
                 }
-            } else if (typeof newValue === 'object' && newValue !== null && 'r' in newValue && 'g' in newValue && 'b' in newValue) {
-                newValue = `rgb(${newValue.r}, ${newValue.g}, ${newValue.b})`;
             }
+            if (key === 'FoundationaLLM:Branding:FooterText') {
+                newValue = newValue
+                    .replace(/(<p><br><\/p>)+/g, match => '<br>'.repeat((match.split('<p><br></p>').length))) // Handle multiple consecutive <p><br></p> tags accurately
+                    .replace(/<\/p><p>/g, '<br>') // Replace </p><p> with <br> between paragraphs
+                    .replace(/<\/?p[^>]*>/g, ''); // Remove any remaining <p> tags
+                console.log(newValue);
+            }
+
             const brand = this.branding?.find((item: any) => item.resource.key === key);
             if (brand) {
                 brand.resource.value = newValue;
@@ -455,11 +505,6 @@ export default {
 
             const results = await Promise.all(promises);
             console.log(results);
-        },
-
-        test() {
-            this.rawFooterTextHTML = JSON.parse(JSON.stringify(this.footerText));
-            console.log("TEST");
         },
     }
 };
@@ -601,6 +646,16 @@ export default {
 .color-ratio {
     text-align: center;
     font-weight: bold;
+}
+
+.quill-view-html {
+    font-size: 1rem;
+    color: #4b5563;
+    font-weight: 550;
+    border-radius: 4px;
+    padding: 0.5rem;
+    cursor: pointer;
+    width: auto !important;
 }
 </style>
 
