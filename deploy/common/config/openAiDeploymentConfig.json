@@ -91,6 +91,7 @@
         "name": "dall-e-3",
         "locations": [
           "austrailiaeast",
+          "eastus",
           "swedencentral"
         ],
         "raiPolicyName": "",
