@@ -770,28 +770,28 @@ export default {
 	/*
 		Private Storage
 	 */
-	async getPrivateStorageFiles(agentName){
+	async getPrivateStorageFiles(agentName) {
 		return (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/files?api-version=${this.apiVersion}`,
 		)) as Object[];
 	},
 
-	async uploadToPrivateStorage(file: FormData, agentName): Promise<any>{
-		return (await this.fetch(
+	async uploadToPrivateStorage(file: FormData, agentName): Promise<any> {
+		return await this.fetch(
 			`/instances/${this.instanceId}/files/upload?agentName=${agentName}&api-version=${this.apiVersion}`,
 			{
 				method: 'POST',
-				body: file
+				body: file,
 			},
-		));
+		);
 	},
 
-	async deleteFileFromPrivateStorage(agentName, fileName): Promise<any>{
+	async deleteFileFromPrivateStorage(agentName, fileName): Promise<any> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/files/${fileName}?api-version=${this.apiVersion}`,
 			{
 				method: 'DELETE',
 			},
 		);
-	}
+	},
 };

@@ -14,9 +14,7 @@
 			</div>
 
 			<!-- Private storage -->
-			<PrivateStorage
-				:agentName="`${agentName}`"
-			/>
+			<PrivateStorage v-if="hasOpenAIAssistantCapability" :agent-name="`${agentName}`" />
 
 			<!-- Edit access control -->
 			<AccessControl
@@ -812,6 +810,7 @@ export default {
 			loadingStatusText: 'Retrieving data...' as string,
 
 			editable: false as boolean,
+			hasOpenAIAssistantCapability: false as boolean,
 
 			nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
 			validationMessage: '' as string,
@@ -996,6 +995,7 @@ export default {
 			this.object_id = agent.object_id || this.object_id;
 			this.inline_context = agent.inline_context || this.inline_context;
 			this.cost_center = agent.cost_center || this.cost_center;
+			this.hasOpenAIAssistantCapability = agent.capabilities.includes('OpenAI.Assistants');
 			this.expirationDate = agent.expiration_date
 				? new Date(agent.expiration_date)
 				: this.expirationDate;

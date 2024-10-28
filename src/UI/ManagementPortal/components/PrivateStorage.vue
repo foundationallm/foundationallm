@@ -30,12 +30,20 @@
 			</div>
 		</template>
 		<div class="card">
-			<FileUpload customUpload ref="fileUpload" class="p-button-outlined" :auto="false"  :multiple="true" @upload="handleUpload($event)" @select="fileSelected">
+			<FileUpload
+				ref="fileUpload"
+				customUpload
+				class="p-button-outlined"
+				:auto="false"
+				:multiple="true"
+				@upload="handleUpload($event)"
+				@select="fileSelected"
+			>
 				<template #header="{ chooseCallback }">
 					<div>
 						<div>
 							<Button @click="chooseCallback()">
-								<i class="pi pi-plus" style="font-size: 1.2rem; margin-right: 8px"></i>
+								<i class="pi pi-file-plus" style="font-size: 1.2rem; margin-right: 8px"></i>
 								Select file from Computer
 							</Button>
 							<Button
@@ -43,25 +51,15 @@
 								label="Upload"
 								class="file-upload-container-button"
 								style="margin-top: 0.5rem; margin-left: 2px; margin-right: 2px"
-								:disabled="isUploading || agentFiles.localFiles.length === 0"
+								:disabled="agentFiles.localFiles.length === 0"
 								@click="handleUpload"
 							/>
 						</div>
 					</div>
 				</template>
 				<template #content>
-					<!-- Progress bar -->
-					<div v-if="isUploading" style="padding: 60px 10px">
-						<ProgressBar
-							:value="uploadProgress"
-							:show-value="false"
-							style="display: flex; width: 95%; margin: 10px 2.5%"
-						/>
-						<p style="text-align: center">Uploading...</p>
-					</div>
-
 					<!-- File list -->
-					<div v-else class="file-upload-file-container">
+					<div class="file-upload-file-container">
 						<div
 							v-for="file of agentFiles.localFiles"
 							:key="file.name + file.type + file.size"
@@ -70,20 +68,18 @@
 							<div class="file-upload-file_info">
 								<span style="font-weight: 600">{{ file.name }}</span>
 							</div>
-							<div style="display: flex; align-items: center; margin-left: 10px; gap: 0.5rem">
+							<div class="file-info-right">
 								<Badge v-if="!isMobile" value="Local Computer" />
 								<Badge value="Pending" />
-								<Button
-									icon="pi pi-times"
-									text
-									severity="danger"
-									aria-label="Remove file"
-									@click="removeLocalFile(file.name)"
-								/>
+								<Button text aria-label="Remove file" @click="removeLocalFile(file.name)">
+									<i class="pi pi-times"></i>
+								</Button>
 							</div>
 						</div>
 					</div>
-					<span v-if="agentFiles.localFiles.length == 0">Drag and drop files to here to upload.</span>
+					<span v-if="agentFiles.localFiles.length == 0">
+						Drag and drop files to here to upload.
+					</span>
 				</template>
 			</FileUpload>
 		</div>
@@ -141,15 +137,12 @@ export default {
 	data() {
 		return {
 			privateStorageDialogOpen: false,
-			isUploading: false,
-			uploadProgress: 0,
 			maxFiles: 10,
 			isMobile: window.screen.width < 950,
 			loading: false as boolean,
 			modalLoading: false as boolean,
 			loadingStatusText: 'Retrieving private storage files...' as string,
 			loadingModalStatusText: '' as string,
-			fileToDelete: null as any,
 			agentFiles: {
 				localFiles: [] as any[],
 				uploadedFiles: [] as any[],
@@ -158,7 +151,6 @@ export default {
 	},
 
 	mounted() {
-		this.adjustTextareaHeight();
 		window.addEventListener('resize', this.handleResize);
 	},
 
@@ -171,13 +163,6 @@ export default {
 			this.privateStorageDialogOpen = false;
 		},
 
-		adjustTextareaHeight() {
-			this.$nextTick(() => {
-				this.$refs.inputRef.style.height = 'auto';
-				this.$refs.inputRef.style.height = this.$refs.inputRef.scrollHeight + 'px';
-			});
-		},
-		
 		browseFiles() {
 			this.$refs.fileUpload.$el.querySelector('input[type="file"]').click();
 		},
@@ -189,10 +174,8 @@ export default {
 				});
 			}
 		},
-
-		removeLocalFile(fileName){
-			const fileIndex = this.agentFiles.localFiles.findIndex(file => file.name === fileName);
-  
+		removeLocalFile(fileName) {
+			const fileIndex = this.agentFiles.localFiles.findIndex((file) => file.name === fileName);
 			if (fileIndex !== -1) {
 				this.agentFiles.localFiles.splice(fileIndex, 1);
 			}
@@ -207,10 +190,9 @@ export default {
 					(existingFile) => existingFile.name === file.name && existingFile.size === file.size,
 				);
 				const uploadedFileAlreadyExists = currentFiles.uploadedFiles.some(
-					(existingFile) => existingFile.name === file.name && existingFile.size === file.size,
+					(existingFile) => existingFile.name === file.name,
 				);
-				const fileAlreadyExists =
-					localFileAlreadyExists  || uploadedFileAlreadyExists;
+				const fileAlreadyExists = localFileAlreadyExists || uploadedFileAlreadyExists;
 
 				if (fileAlreadyExists) return;
 
@@ -244,21 +226,19 @@ export default {
 			});
 
 			if (
-				currentFiles.localFiles.length +
-					currentFiles.uploadedFiles.length +
-					filteredFiles.length >
+				currentFiles.localFiles.length + currentFiles.uploadedFiles.length + filteredFiles.length >
 				this.maxFiles
 			) {
 				this.$toast.add({
 					severity: 'error',
 					summary: 'Error',
-					detail: `You can only upload a maximum of ${this.maxFiles} ${this.maxFiles === 1 ? 'file' : 'files'} at a time.`,
+					detail: `You can only upload a maximum of ${this.maxFiles} ${
+						this.maxFiles === 1 ? 'file' : 'files'
+					} at a time.`,
 					life: 5000,
 				});
 				filteredFiles.splice(
-					this.maxFiles -
-						(currentFiles.localFiles.length +
-							currentFiles.uploadedFiles.length),
+					this.maxFiles - (currentFiles.localFiles.length + currentFiles.uploadedFiles.length),
 				);
 			}
 
@@ -266,8 +246,7 @@ export default {
 		},
 
 		fileSelected(event: any) {
-			const filteredFiles = this.validateUploadedFiles(event.files, this.agentFiles); 
-			console.log(filteredFiles, this.agentfiles)
+			const filteredFiles = this.validateUploadedFiles(event.files, this.agentFiles);
 			this.agentFiles.localFiles = [...this.agentFiles.localFiles, ...filteredFiles];
 
 			if (this.$refs.fileUpload) {
@@ -275,16 +254,16 @@ export default {
 			}
 		},
 
-		async openPrivateStorageDialog(){
+		async openPrivateStorageDialog() {
 			this.loading = true;
 			await this.getPrivateAgentFiles();
 			this.loading = false;
-			this.privateStorageDialogOpen = true
+			this.privateStorageDialogOpen = true;
 		},
 
-		async deletePrivateStorageFile(fileName: string){
-			this.loadingModalStatusText = "Deleting file...";
-			this.modalLoading=true;
+		async deletePrivateStorageFile(fileName: string) {
+			this.loadingModalStatusText = 'Deleting file...';
+			this.modalLoading = true;
 			await api.deleteFileFromPrivateStorage(this.agentName, fileName);
 			await this.getPrivateAgentFiles();
 			this.$toast.add({
@@ -293,56 +272,43 @@ export default {
 				detail: `File successfully deleted.`,
 				life: 5000,
 			});
-			this.modalLoading=false;
+			this.modalLoading = false;
 		},
 
-		async getPrivateAgentFiles(){
+		async getPrivateAgentFiles() {
 			this.agentFiles.localFiles = [];
 			this.agentFiles.uploadedFiles = await api.getPrivateStorageFiles(this.agentName);
-			console.log('files=',this.agentFiles)
 		},
 
 		async handleUpload() {
-			this.isUploading = true;
+			this.loadingModalStatusText =
+				this.agentFiles.localFiles.length === 1 ? 'Uploading file...' : 'Uploading files...';
+			this.modalLoading = true;
 
-			console.log(this.agentFiles)
 			const totalFiles = this.agentFiles.localFiles.length;
 			const combinedFiles = [...this.agentFiles.localFiles];
 
 			combinedFiles.forEach((file) => {
 				if (file instanceof File) {
 					file.source = 'local';
-				} 
+				}
 			});
 
 			let filesUploaded = 0;
 			let filesFailed = 0;
-			const filesProgress = [];
 
-			combinedFiles.forEach(async (file, index) => {
+			combinedFiles.forEach(async (file) => {
 				try {
 					if (file.source === 'local') {
 						const formData = new FormData();
 						formData.append('file', file);
 
-						const onProgress = (event) => {
-							if (event.lengthComputable) {
-								filesProgress[index] = (event.loaded / event.total) * 100;
-
-								let totalUploadProgress = 0;
-								filesProgress.forEach((fileProgress) => {
-									totalUploadProgress += fileProgress / totalFiles;
-								});
-
-								this.uploadProgress = totalUploadProgress;
-							}
-						};
-						await api.uploadToPrivateStorage(formData, this.agentName)
+						await api.uploadToPrivateStorage(formData, this.agentName);
 					}
 					filesUploaded += 1;
-					//this.agentFiles.uploadedFiles.push(file);
 				} catch (error) {
 					filesFailed += 1;
+					this.modalLoading = false;
 					this.$toast.add({
 						severity: 'error',
 						summary: 'Error',
@@ -351,11 +317,10 @@ export default {
 					});
 				} finally {
 					if (totalFiles === filesUploaded + filesFailed) {
-						this.isUploading = false;
-						this.uploadProgress = 0;
 						this.agentFiles.localFiles = [];
 						if (filesUploaded > 0) {
 							await this.getPrivateAgentFiles();
+							this.modalLoading = false;
 							this.$toast.add({
 								severity: 'success',
 								summary: 'Success',
@@ -435,7 +400,10 @@ export default {
 	border: none;
 }
 
-.p-button-icon{
-	color: var(--primary-button-text)
+.file-info-right {
+	display: flex;
+	align-items: center;
+	margin-left: 10px;
+	gap: 0.5rem;
 }
 </style>
