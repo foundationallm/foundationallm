@@ -122,7 +122,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				getConfigValueSafe('FoundationaLLM:Branding:SecondaryButtonTextColor', '#fff'),
 				getConfigValueSafe('FoundationaLLM:Branding:FooterText'),
 				getConfigValueSafe('FoundationaLLM:Instance:Id', '00000000-0000-0000-0000-000000000000'),
-				getConfigValueSafe('FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions', 'pdf'),
+				getConfigValueSafe('FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions', 'pdf'),
 
 				api.getConfigValue('FoundationaLLM:ManagementPortal:Authentication:Entra:ClientId'),
 				api.getConfigValue('FoundationaLLM:ManagementPortal:Authentication:Entra:Instance'),
