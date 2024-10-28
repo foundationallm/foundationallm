@@ -37,6 +37,34 @@ Invoke-AndRequireSuccess "Retrieving credentials for AKS cluster ${aksName}" {
 }
 Write-Host "Successfully retrieved credentials for AKS cluster ${aksName}" -ForegroundColor Green
 
+# **** Gateway Namespace ****
+$gatewayNamespace = "gateway-system"
+$gatewayNamespaceYaml = @"
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ${gatewayNamespace}
+"@
+Invoke-AndRequireSuccess "Create ${gatewayNamespace} namespace" {
+    $gatewayNamespaceYaml | kubectl apply --filename -
+}
+
+Invoke-AndRequireSuccess "Deploying secret provider class" {
+    kubectl apply `
+        --filename=${secretProviderClassManifest} `
+        --namespace=${gatewayNamespace}
+}
+
+Invoke-AndRequireSuccess "Deploy ingress-nginx" {
+    helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+    helm repo update
+    helm upgrade `
+        --install gateway ingress-nginx/ingress-nginx `
+        --namespace ${gatewayNamespace} `
+        --values ${ingressNginxValues} `
+        --version 4.10.0
+}
+
 # **** Service Namespace ****
 $serviceNamespaceYaml = @"
 apiVersion: v1
@@ -83,36 +111,6 @@ foreach ($chart in $chartsToInstall.GetEnumerator()) {
             --set controller.config.proxy-body-size=512m
     }
 }
-
-# **** Gateway Namespace ****
-$gatewayNamespace = "gateway-system"
-$gatewayNamespaceYaml = @"
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: ${gatewayNamespace}
-"@
-Invoke-AndRequireSuccess "Create ${gatewayNamespace} namespace" {
-    $gatewayNamespaceYaml | kubectl apply --filename -
-}
-
-Invoke-AndRequireSuccess "Deploying secret provider class" {
-    kubectl apply `
-        --filename=${secretProviderClassManifest} `
-        --namespace=${gatewayNamespace}
-}
-
-Invoke-AndRequireSuccess "Deploy ingress-nginx" {
-    helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-    helm repo update
-    helm upgrade `
-        --install gateway ingress-nginx/ingress-nginx `
-        --namespace ${gatewayNamespace} `
-        --values ${ingressNginxValues} `
-        --version 4.10.0
-}
-
-Start-Sleep -Seconds 60
 
 $ingressNames = @{
     "core-api"          = "../config/helm/coreapi-ingress.yml"
