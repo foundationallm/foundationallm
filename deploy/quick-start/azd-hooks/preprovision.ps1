@@ -31,7 +31,7 @@ if ($LastExitCode -eq 0)
     az role assignment create --assignee $($readerClientId) --role Reader --scope /subscriptions/$($env:AZURE_SUBSCRIPTION_ID)
 
     $pal = $(azd env get-value FOUNDATIONALLM_PAL)
-    if ($pal -ne "") {
+    if ($LastExitCode -eq 0) {
         az extension add --name managementpartner
         az managementpartner update --partner-id $pal
     }
