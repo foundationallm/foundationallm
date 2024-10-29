@@ -623,7 +623,9 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                         foreach (var agentFile in fileUserContext.AgentFiles)
                         {
                             if (!existingUserContext.AgentFiles.ContainsKey(agentFile.Key))
+                            {
                                 existingUserContext.AgentFiles.Add(agentFile.Key, agentFile.Value);
+                            }
                             else
                             {
                                 //merge the Files property of existing agent files
