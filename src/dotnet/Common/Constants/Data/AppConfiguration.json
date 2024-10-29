@@ -1334,6 +1334,14 @@
 				"value": "FoundationaLLM © 2024",
 				"content_type": "",
 				"first_version": "0.8.0"
+			},
+			{
+				"name": "NoAgentsMessage",
+				"description": "Message to display to users when their agent list is empty.",
+				"secret": "",
+				"value": "No agents available. Please check with your system administrator for assistance.",
+				"content_type": "",
+				"first_version": "0.8.4"
 			}
 		]
 	},
