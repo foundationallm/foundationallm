@@ -13,37 +13,11 @@
                 <div class="step-header mb-2" :id="key.split(':').pop()">{{ getFriendlyName(key) }}</div>
                 <div class="mb-2">{{ getBrandingDescription(key) }}</div>
                 <InputSwitch v-if="key === 'FoundationaLLM:Branding:KioskMode'" v-model:modelValue="kioskMode" @change="updateBrandingValue(key, JSON.stringify(kioskMode))" />
-                <div class="quill-container" v-if="key === 'FoundationaLLM:Branding:FooterText'">
-                    <QuillEditor ref="quillEditor" v-model:content="footerText" contentType="html" toolbar="#custom-toolbar" @update:content="updateBrandingValue(key, $event)">
-                        <template #toolbar>
-                            <div id="custom-toolbar">
-                                <select class="ql-size">
-                                    <option value="small"></option>
-                                    <option selected></option>
-                                    <option value="large"></option>
-                                    <option value="huge"></option>
-                                </select>
-                                <button class="ql-bold" aria-label="Bold"></button>
-                                <button class="ql-italic" aria-label="Italic"></button>
-                                <button class="ql-underline" aria-label="Underline"></button>
-                                <button class="ql-strike" aria-label="Strike"></button>
-                                <button class="ql-link" aria-label="Link"></button>
-                                <button class="ql-image" aria-label="Image"></button>
-                                <button class="ql-list" value="ordered" aria-label="Ordered List"></button>
-                                <button class="ql-list" value="bullet" aria-label="Unordered List"></button>
-                                <button class="ql-clean" aria-label="Remove Styles"></button>
-                                <button class="quill-view-html" aria-label="Edit HTML" @click="toggleQuillDialog">Edit HTML</button>
-                            </div>
-                        </template>
-                    </QuillEditor>
-                    <Dialog v-model:visible="showQuillrawHTMLDialog" :modal="true" :closable="false" :style="{ width: '50vw' }">
-                        <Textarea v-model="rawFooterTextHTML" style="width: 100%; height: 100%;" autoResize />
-                        <template #footer>
-                            <Button label="Save" @click="saveFooterTextRawHTML" />
-                            <Button label="Cancel" @click="toggleQuillDialog" />
-                        </template>
-                    </Dialog>
-                </div>
+                <CustomQuillEditor
+                    v-if="key === 'FoundationaLLM:Branding:FooterText'"
+                    :initialContent="footerText"
+                    @contentUpdate="updateFooterText"
+                />
                 <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" class="branding-input" :aria-labelledby="key.split(':').pop()" v-if="key !== 'FoundationaLLM:Branding:FooterText' && key !== 'FoundationaLLM:Branding:KioskMode'" />
                 <div class="logo-preview" :style="{ backgroundColor: getBrandingValue('FoundationaLLM:Branding:PrimaryColor') }" v-if="key === 'FoundationaLLM:Branding:LogoUrl'">
                     <img :src="$filters.publicDirectory(getBrandingValue(key))" class="logo-image" />
@@ -58,7 +32,7 @@
                         <div class="color-input-container">
                             <InputText :value="getBrandingValue(key.key)" @input="updateBrandingValue(key.key, $event.target.value)" class="branding-input branding-color-input" :aria-labelledby="key.key.split(':').pop()" />
                             <ColorPicker :modelValue="getColorBrandingValue(key.key)" class="color-picker" :format="getColorBrandingFormat(key.key)" @change="updateBrandingValue(key.key, $event.value)" />
-                            <Button class="color-undo-button" icon="pi pi-undo" @click="updateBrandingValue(key.key, getOriginalBrandingValue(key.key))" :disabled="getBrandingValue(key.key) === getOriginalBrandingValue(key.key)" />
+                            <Button class="color-undo-button" icon="pi pi-undo" @click="resetBrandingValue(key.key, getOriginalBrandingValue(key.key))" :disabled="getBrandingValue(key.key) === getOriginalBrandingValue(key.key)" />
                         </div>
                     </div>
                 </div>
@@ -111,15 +85,16 @@
 
 <script lang="ts">
 import api from '@/js/api';
-import { QuillEditor } from '@vueup/vue-quill'
-import '@vueup/vue-quill/dist/vue-quill.snow.css';
+
+function filterQuillHTML(html: string) {
+    return html
+        .replace(/(<p><br><\/p>)+/g, match => '<br>'.repeat((match.split('<p><br></p>').length))) // Handle multiple consecutive <p><br></p> tags accurately
+        .replace(/<\/p><p>/g, '<br>') // Replace </p><p> with <br> between paragraphs
+        .replace(/<\/?p[^>]*>/g, ''); // Remove any remaining <p> tags
+}
 
 export default {
     name: 'Branding',
-
-    components: {
-        QuillEditor,
-    },
 
     data() {
         return {
@@ -300,7 +275,7 @@ export default {
 
     async created() {
         await this.getBranding();
-        this.footerText = this.getBrandingValue('FoundationaLLM:Branding:FooterText');
+        this.footerText = JSON.parse(JSON.stringify(this.getBrandingValue('FoundationaLLM:Branding:FooterText')));
         this.kioskMode = this.getBrandingValue('FoundationaLLM:Branding:KioskMode') === 'true';
     },
 
@@ -423,21 +398,16 @@ export default {
             return key.split(':').pop()?.replace(/([A-Z])/g, ' $1').trim() || '';
         },
 
-        toggleQuillDialog() {
-            this.rawFooterTextHTML = JSON.parse(JSON.stringify(this.footerText
-                    .replace(/(<p><br><\/p>)+/g, match => '<br>'.repeat((match.split('<p><br></p>').length))) // Handle multiple consecutive <p><br></p> tags accurately
-                    .replace(/<\/p><p>/g, '<br>') // Replace </p><p> with <br> between paragraphs
-                    .replace(/<\/?p[^>]*>/g, ''))); // Remove any remaining <p> tags
-            this.showQuillrawHTMLDialog = !this.showQuillrawHTMLDialog;
+        updateFooterText(newContent: string) {
+            if (newContent === this.footerText) {
+                return;
+            }
+            this.footerText = newContent;
+            this.updateBrandingValue('FoundationaLLM:Branding:FooterText', this.footerText);
         },
 
-        saveFooterTextRawHTML() {
-            const paragraphs = this.rawFooterTextHTML.split('<br>').map(line => `<p>${line}</p>`).join('');
-            console.log(paragraphs);
-            this.rawFooterTextHTML = paragraphs;
-            this.footerText = this.rawFooterTextHTML;
-            this.updateBrandingValue('FoundationaLLM:Branding:FooterText', this.footerText);
-            this.showQuillrawHTMLDialog = false;
+        resetBrandingValue(key: string, value: string) {
+            this.updateBrandingValue(key, value);
         },
 
         updateBrandingValue(key: string, newValue: string) {
@@ -453,10 +423,7 @@ export default {
                 }
             }
             if (key === 'FoundationaLLM:Branding:FooterText') {
-                newValue = newValue
-                    .replace(/(<p><br><\/p>)+/g, match => '<br>'.repeat((match.split('<p><br></p>').length))) // Handle multiple consecutive <p><br></p> tags accurately
-                    .replace(/<\/p><p>/g, '<br>') // Replace </p><p> with <br> between paragraphs
-                    .replace(/<\/?p[^>]*>/g, ''); // Remove any remaining <p> tags
+                newValue = filterQuillHTML(newValue)
                 console.log(newValue);
             }
 
@@ -542,7 +509,7 @@ export default {
     flex-direction: row !important;
     align-items: center;
     gap: 24px;
-    border: 2px solid #000;
+    border: 2px solid var(--primary-color);
     padding: 10px;
 }
 
