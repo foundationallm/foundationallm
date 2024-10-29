@@ -30,9 +30,21 @@
                         <div class="step-header mb-2" :id="key.key.split(':').pop()">{{ getFriendlyName(key.key) }}</div>
                         <div class="mb-2">{{ getBrandingDescription(key.key) }}</div>
                         <div class="color-input-container">
-                            <InputText :value="getBrandingValue(key.key)" @input="updateBrandingValue(key.key, $event.target.value)" class="branding-input branding-color-input" :aria-labelledby="key.key.split(':').pop()" />
-                            <ColorPicker :modelValue="getColorBrandingValue(key.key)" class="color-picker" :format="getColorBrandingFormat(key.key)" @change="updateBrandingValue(key.key, $event.value)" />
-                            <Button class="color-undo-button" icon="pi pi-undo" @click="resetBrandingValue(key.key, getOriginalBrandingValue(key.key))" :disabled="getBrandingValue(key.key) === getOriginalBrandingValue(key.key)" />
+                            <InputText :value="colors[key.key].value" @input="updateBrandingValue(key.key, $event.target.value)" class="branding-input branding-color-input" :aria-labelledby="key.key.split(':').pop()" />
+                            <ColorPicker 
+                                :modelValue="colors[key.key].colorPickerValue"
+                                class="color-picker" :format="colors[key.key].format"
+                                defaultColor="ffffff"
+                                @change="updateBrandingValue(key.key, $event.value)"
+                                :pt="{
+                                    input: {
+                                        style: {
+                                            backgroundColor: colors[key.key].value,
+                                        }
+                                    }
+                                }"
+                            />
+                            <Button class="color-undo-button" icon="pi pi-undo" @click="updateBrandingValue(key.key, getOriginalBrandingValue(key.key))" :disabled="getBrandingValue(key.key) === getOriginalBrandingValue(key.key)" />
                         </div>
                     </div>
                 </div>
@@ -91,6 +103,68 @@ function filterQuillHTML(html: string) {
         .replace(/(<p><br><\/p>)+/g, match => '<br>'.repeat((match.split('<p><br></p>').length))) // Handle multiple consecutive <p><br></p> tags accurately
         .replace(/<\/p><p>/g, '<br>') // Replace </p><p> with <br> between paragraphs
         .replace(/<\/?p[^>]*>/g, ''); // Remove any remaining <p> tags
+}
+
+ function colorToColorPicker(color: string) {
+    let hex = color;
+    // Check if the hex color is 3 digits
+    if (/^#[0-9A-F]{3}$/i.test(hex)) {
+        // Convert 3-digit hex to 6-digit hex
+        hex = `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}`;
+
+        color = hex;
+    } else if (/^#[0-9A-F]{6}$/i.test(hex)) {
+        color = hex;
+    } else if (/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.test(hex)) {
+        // Convert rgb to object with r, g, b properties
+        const rgb = hex.match(/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i);
+        color = {
+            r: parseInt(rgb[1]),
+            g: parseInt(rgb[2]),
+            b: parseInt(rgb[3]),
+        };
+    }
+    return color ? color : '';
+}
+
+function colorToColorFormat(color: string) {
+    let hex = color;
+    if (/^#[0-9A-F]{3}$/i.test(hex) || /^#[0-9A-F]{6}$/i.test(hex)) {
+        return 'hex';
+    } else if (/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.test(hex)) {
+        return 'rgb';
+    }
+    return 'hex';
+}
+
+function getLuminance(color: string) {
+    let r, g, b;
+    if (/^#[0-9A-F]{3}$/i.test(color)) {
+        const rgb = color.match(/^#([0-9A-F]{3})$/i);
+        r = parseInt(rgb[1][0] + rgb[1][0], 16);
+        g = parseInt(rgb[1][1] + rgb[1][1], 16);
+        b = parseInt(rgb[1][2] + rgb[1][2], 16);
+    } else if (/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.test(color)) {
+        const rgb = color.match(/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i);
+        r = parseInt(rgb[1]);
+        g = parseInt(rgb[2]);
+        b = parseInt(rgb[3]);
+    } else if (/^#[0-9A-F]{6}$/i.test(color)) {
+        r = parseInt(color.substr(1, 2), 16);
+        g = parseInt(color.substr(3, 2), 16);
+        b = parseInt(color.substr(5, 2), 16);
+    }
+
+    const srgbToLinear = (channel) => {
+        const c = channel / 255;
+        return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+    };
+
+    const linearR = srgbToLinear(r);
+    const linearG = srgbToLinear(g);
+    const linearB = srgbToLinear(b);
+
+    return 0.2126 * linearR + 0.7152 * linearG + 0.0722 * linearB;
 }
 
 export default {
@@ -265,6 +339,63 @@ export default {
                 },
             ],
             unorderedKeys: [] as string[],
+            colors: {
+                "FoundationaLLM:Branding:AccentColor": {
+                    value: "#fff",
+                    colorPickerValue: null,
+                    format: null,
+                },
+                "FoundationaLLM:Branding:AccentTextColor": {
+                    value: "#131833",
+                    colorPickerValue: null,
+                    format: null,
+                },
+                "FoundationaLLM:Branding:BackgroundColor": {
+                    value: "#fff",
+                    colorPickerValue: null,
+                    format: null,
+                },
+                "FoundationaLLM:Branding:PrimaryColor": {
+                    value: "#131833",
+                    colorPickerValue: null,
+                    format: null,
+                },
+                "FoundationaLLM:Branding:PrimaryTextColor": {
+                    value: "#fff",
+                    colorPickerValue: null,
+                    format: null,
+                },
+                "FoundationaLLM:Branding:SecondaryColor": {
+                    value: "#334581",
+                    colorPickerValue: null,
+                    format: null,
+                },
+                "FoundationaLLM:Branding:SecondaryTextColor": {
+                    value: "#fff",
+                    colorPickerValue: null,
+                    format: null,
+                },
+                "FoundationaLLM:Branding:PrimaryButtonBackgroundColor": {
+                    value: "#5472d4",
+                    colorPickerValue: null,
+                    format: null,
+                },
+                "FoundationaLLM:Branding:PrimaryButtonTextColor": {
+                    value: "#fff",
+                    colorPickerValue: null,
+                    format: null,
+                },
+                "FoundationaLLM:Branding:SecondaryButtonBackgroundColor": {
+                    value: "#70829a",
+                    colorPickerValue: null,
+                    format: null,
+                },
+                "FoundationaLLM:Branding:SecondaryButtonTextColor": {
+                    value: "#fff",
+                    colorPickerValue: null,
+                    format: null,
+                },
+            },
             footerText: '',
             rawFooterTextHTML: '',
             showContrastInfo: false,
@@ -283,6 +414,15 @@ export default {
         async getBranding() {
             try {
                 this.branding = await api.getBranding();
+                console.log(this.branding);
+                this.branding.forEach((brand: any) => {
+                    if (brand.resource.key in this.colors) {
+                        this.colors[brand.resource.key].value = brand.resource.value;
+                        this.colors[brand.resource.key].colorPickerValue = colorToColorPicker(brand.resource.value);
+                        this.colors[brand.resource.key].format = colorToColorFormat(brand.resource.value);
+                    }
+                });
+                console.log(this.colors);
                 this.brandingOriginal = JSON.parse(JSON.stringify(this.branding));
                 this.getUnorderedKeys();
             } catch (error) {
@@ -310,80 +450,9 @@ export default {
             return brand ? brand.resource.value : '';
         },
 
-        getColorBrandingValue(key: string) {
-            let color = null;
-            const brand = this.branding?.find((item: any) => item.resource.key === key);
-            if (brand && brand.resource.value) {
-                let hex = brand.resource.value;
-                // Check if the hex color is 3 digits
-                if (/^#[0-9A-F]{3}$/i.test(hex)) {
-                    // Convert 3-digit hex to 6-digit hex
-                    hex = `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}`;
-
-                    color = hex;
-                } else if (/^#[0-9A-F]{6}$/i.test(hex)) {
-                    color = hex;
-                } else if (/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.test(hex)) {
-                    // Convert rgb to object with r, g, b properties
-                    const rgb = hex.match(/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i);
-                    color = {
-                        r: parseInt(rgb[1]),
-                        g: parseInt(rgb[2]),
-                        b: parseInt(rgb[3]),
-                    };
-                }
-            } else {
-                color = brand ? brand.resource.value : '';
-            }
-            return color ? color : '';
-        },
-
-        getColorBrandingFormat(key: string) {
-            const brand = this.branding?.find((item: any) => item.resource.key === key);
-            if (brand && brand.resource.value) {
-                let hex = brand.resource.value;
-                if (/^#[0-9A-F]{3}$/i.test(hex) || /^#[0-9A-F]{6}$/i.test(hex)) {
-                    return 'hex';
-                } else if (/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.test(hex)) {
-                    return 'rgb';
-                }
-            }
-            return 'hex';
-        },
-
-        getLuminance(color: string) {
-            let r, g, b;
-            if (/^#[0-9A-F]{3}$/i.test(color)) {
-                const rgb = color.match(/^#([0-9A-F]{3})$/i);
-                r = parseInt(rgb[1][0] + rgb[1][0], 16);
-                g = parseInt(rgb[1][1] + rgb[1][1], 16);
-                b = parseInt(rgb[1][2] + rgb[1][2], 16);
-            } else if (/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.test(color)) {
-                const rgb = color.match(/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i);
-                r = parseInt(rgb[1]);
-                g = parseInt(rgb[2]);
-                b = parseInt(rgb[3]);
-            } else if (/^#[0-9A-F]{6}$/i.test(color)) {
-                r = parseInt(color.substr(1, 2), 16);
-                g = parseInt(color.substr(3, 2), 16);
-                b = parseInt(color.substr(5, 2), 16);
-            }
-
-            const srgbToLinear = (channel) => {
-                const c = channel / 255;
-                return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-            };
-
-            const linearR = srgbToLinear(r);
-            const linearG = srgbToLinear(g);
-            const linearB = srgbToLinear(b);
-
-            return 0.2126 * linearR + 0.7152 * linearG + 0.0722 * linearB;
-        },
-
         getContrastRatio(color1: string, color2: string) {
-            const lum1 = this.getLuminance(color1);
-            const lum2 = this.getLuminance(color2);
+            const lum1 = getLuminance(color1);
+            const lum2 = getLuminance(color2);
             const ratio = lum1 > lum2 ? (lum1 + 0.05) / (lum2 + 0.05) : (lum2 + 0.05) / (lum1 + 0.05);
 
             return Math.round(ratio * 100) / 100;
@@ -406,10 +475,6 @@ export default {
             this.updateBrandingValue('FoundationaLLM:Branding:FooterText', this.footerText);
         },
 
-        resetBrandingValue(key: string, value: string) {
-            this.updateBrandingValue(key, value);
-        },
-
         updateBrandingValue(key: string, newValue: string) {
             console.log(key, newValue);
             const isColorKey = this.orderedKeyColorsGrouped.some(group => group.keys.some(k => k.key === key));
@@ -421,6 +486,9 @@ export default {
                 } else if (typeof newValue === 'object' && newValue !== null && 'r' in newValue && 'g' in newValue && 'b' in newValue) {
                     newValue = `rgb(${newValue.r}, ${newValue.g}, ${newValue.b})`;
                 }
+                this.colors[key].value = newValue;
+                this.colors[key].colorPickerValue = colorToColorPicker(newValue);
+                this.colors[key].format = colorToColorFormat(newValue);
             }
             if (key === 'FoundationaLLM:Branding:FooterText') {
                 newValue = filterQuillHTML(newValue)
