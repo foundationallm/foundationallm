@@ -141,25 +141,15 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
         private async Task<FileUserContext> LoadFileUserContext(string fileUserContextName)
         {
-            try
-            {
-                await _localLock.WaitAsync();
+            var resourceReference = await _resourceReferenceStore!.GetResourceReference(fileUserContextName)
+                ?? throw new ResourceProviderException(
+                    $"The resource {fileUserContextName} was not found.",
+                    StatusCodes.Status404NotFound);
 
-                var resourceReference = await _resourceReferenceStore!.GetResourceReference(fileUserContextName)
-                    ?? throw new ResourceProviderException(
-                        $"The resource {fileUserContextName} was not found.",
-                        StatusCodes.Status404NotFound);
-
-                return await LoadResource<FileUserContext>(resourceReference)
-                    ?? throw new ResourceProviderException(
-                        $"The resource {fileUserContextName} has a valid resource reference but cannot be loaded from the storage. This might indicate a missing resource file.",
-                        StatusCodes.Status500InternalServerError);
-
-            }
-            finally
-            {
-                _localLock.Release();
-            }
+            return await LoadResource<FileUserContext>(resourceReference)
+                ?? throw new ResourceProviderException(
+                    $"The resource {fileUserContextName} has a valid resource reference but cannot be loaded from the storage. This might indicate a missing resource file.",
+                    StatusCodes.Status500InternalServerError);
         }
 
         private async Task<FileContent> LoadFileContent(string fileUserContextName, string openAIFileIdObjectId)
@@ -478,6 +468,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
         {
             var mustCreateAssistantFile = false;
             var newOpenAIFileId = default(string);
+            AgentFileUserContext agentFileUserContext = null;
 
             if (options != null)
             {
@@ -512,7 +503,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                 // - An agent file user context for the agent.
                 // - A file mapping for the attachment.
 
-                if (!fileUserContext.AgentFiles.TryGetValue(agentObjectId, out var agentFileUserContext))
+                if (!fileUserContext.AgentFiles.TryGetValue(agentObjectId, out agentFileUserContext))
                     throw new ResourceProviderException(
                         $"The file user context {fileUserContext.Name} is missing the agent file user context for the agent {agentObjectId}.",
                         StatusCodes.Status400BadRequest);
@@ -625,9 +616,28 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                 {
                     // Ensure that only one thread can update the Files collection at a time.
                     await _localLock.WaitAsync();
+                    var existingUserContext = await LoadFileUserContext(fileUserContext.Name);
+                    if (agentFileUserContext != null)
+                    {
+                        
+                        foreach (var agentFile in fileUserContext.AgentFiles)
+                        {
+                            if (!existingUserContext.AgentFiles.ContainsKey(agentFile.Key))
+                                existingUserContext.AgentFiles.Add(agentFile.Key, agentFile.Value);
+                            else
+                            {
+                                //merge the Files property of existing agent files
+                                foreach (var file in agentFile.Value.Files)
+                                {
+                                    if (!existingUserContext.AgentFiles[agentFile.Key].Files.ContainsKey(file.Key))
+                                        existingUserContext.AgentFiles[agentFile.Key].Files.Add(file.Key, file.Value);
+                                }
+                            }
+                        }
+                    }                   
 
                     UpdateBaseProperties(fileUserContext, userIdentity, isNew: false);
-                    await SaveResource<FileUserContext>(resourceReference, fileUserContext);
+                    await SaveResource<FileUserContext>(resourceReference, existingUserContext);
 
                     return new FileUserContextUpsertResult
                     {
