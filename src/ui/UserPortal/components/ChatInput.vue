@@ -1097,7 +1097,7 @@ export default {
 
 .file-upload-button {
 	height: 100%;
-	z-index: 1
+	z-index: 1;
 }
 
 .file-upload-button:focus {

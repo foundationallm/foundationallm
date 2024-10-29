@@ -1,12 +1,12 @@
 <template>
 	<div class="chat-app">
-		<Button 
-            class="sr-only skip-to-input-button"
+		<Button
+			class="sr-only skip-to-input-button"
 			role="link"
 			label="Skip to input"
-            aria-label="Skip to input" 
-            @click="focusInput"
-        />
+			aria-label="Skip to input"
+			@click="focusInput"
+		/>
 		<header role="banner">
 			<NavBar />
 		</header>
@@ -18,16 +18,22 @@
 				role="navigation"
 			>
 				<ChatSidebar class="chat-sidebar" :style="{ width: sidebarWidth + 'px' }" />
-				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']" :skidding="skidding">
-					<div 
-						class="resize-handle" 
-						@mousedown="startResizing" 
-						@keydown.left.prevent="resizeSidebarWithKeyboard(-10)" 
-						@keydown.right.prevent="resizeSidebarWithKeyboard(10)" 
+				<VTooltip
+					:auto-hide="isMobile"
+					:popper-triggers="isMobile ? [] : ['hover']"
+					:skidding="skidding"
+				>
+					<div
+						class="resize-handle"
+						@mousedown="startResizing"
+						@keydown.left.prevent="resizeSidebarWithKeyboard(-10)"
+						@keydown.right.prevent="resizeSidebarWithKeyboard(10)"
 						tabindex="0"
 						aria-label="Resize sidebar"
 					></div>
-					<template #popper><div role="tooltip">Resize sidebar (Use left and right arrow keys)</div></template>
+					<template #popper
+						><div role="tooltip">Resize sidebar (Use left and right arrow keys)</div></template
+					>
 				</VTooltip>
 			</aside>
 			<div
@@ -161,7 +167,7 @@ export default {
 		},
 
 		focusInput() {
-			this.$refs.thread.$refs.chatInput.$refs.inputRef.focus()
+			this.$refs.thread.$refs.chatInput.$refs.inputRef.focus();
 		},
 	},
 };
@@ -180,19 +186,19 @@ export default {
 }
 
 .skip-to-input-button:focus {
-    position: fixed !important; /* Override sr-only */
-    top: 10px !important;        /* Ensure visibility */
-    left: 10px !important;
-    width: auto !important;
-    height: auto !important;
-    z-index: 100 !important;
-    padding: 10px !important;
-    border: 2px solid #fff !important;
-    outline: none !important;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) !important;
-    clip: auto !important;        /* Remove clip hiding */
-    width: auto !important;
-    height: auto !important;
+	position: fixed !important; /* Override sr-only */
+	top: 10px !important; /* Ensure visibility */
+	left: 10px !important;
+	width: auto !important;
+	height: auto !important;
+	z-index: 100 !important;
+	padding: 10px !important;
+	border: 2px solid #fff !important;
+	outline: none !important;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) !important;
+	clip: auto !important; /* Remove clip hiding */
+	width: auto !important;
+	height: auto !important;
 }
 
 .chat-app {
