@@ -749,13 +749,13 @@
             "content_type": "",
             "tags": {}
         },
-        {
-            "key": "FoundationaLLM:Branding:FooterText",
-            "value": "FoundationaLLM � 2024",
-            "label": null,
-            "content_type": "",
-            "tags": {}
-        },
+				{
+					"key": "FoundationaLLM:Branding:FooterText",
+					"value": "FoundationaLLM © 2024",
+					"label": null,
+					"content_type": "",
+					"tags": {}
+				},
         {
             "key": "FoundationaLLM:Branding:NoAgentsMessage",
             "value": "No agents available. Please check with your system administrator for assistance.",
