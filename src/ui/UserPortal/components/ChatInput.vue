@@ -32,9 +32,9 @@
 				<OverlayPanel ref="menu" :dismissable="isMobile" style="max-width: 98%">
 					<div class="file-upload-header">
 						<Button
+							ref="fileUploadCloseButton"
 							:icon="!isMobile ? 'pi pi-times' : undefined"
 							label="Close"
-							ref="fileUploadCloseButton"
 							class="file-upload-container-button"
 							@click="toggle"
 						/>
@@ -215,13 +215,14 @@
 					</div>
 				</template>
 			</VTooltip>
+
 			<Dialog
 				v-if="fileToDelete !== null"
 				v-focustrap
 				:visible="fileToDelete !== null"
 				:closable="false"
 				modal
-				:header="(fileToDelete.type === 'local') | 'oneDrive' ? 'Remove a file' : 'Delete a file'"
+				header="Remove file"
 				@keydown="deleteFileKeydown"
 			>
 				<div v-if="deleteFileProcessing" class="delete-dialog-content">
@@ -235,12 +236,7 @@
 					</div>
 				</div>
 				<div v-else>
-					<p>
-						Do you want to
-						{{ (fileToDelete.type === 'local') | 'oneDrive' ? 'remove' : 'delete' }} the file "{{
-							fileToDelete.name
-						}}" ?
-					</p>
+					<p>Do you want to remove the file "{{ fileToDelete.name }}"?</p>
 				</div>
 				<template #footer>
 					<Button
@@ -250,7 +246,7 @@
 						@click="fileToDelete = null"
 					/>
 					<Button
-						:label="(fileToDelete.type === 'local') | 'oneDrive' ? 'Remove' : 'Delete'"
+						label="Remove"
 						severity="danger"
 						autofocus
 						:disabled="deleteFileProcessing"
@@ -258,6 +254,7 @@
 					/>
 				</template>
 			</Dialog>
+
 			<Dialog
 				v-model:visible="showOneDriveIframeDialog"
 				modal
