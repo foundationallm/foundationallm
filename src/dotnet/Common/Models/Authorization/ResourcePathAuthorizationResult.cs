@@ -61,6 +61,7 @@ namespace FoundationaLLM.Common.Models.Authorization
         /// <summary>
         /// Gets or sets a value indicating whether an owner role assignment must be set for the resource.
         /// </summary>
+        [JsonPropertyName("must_set_owner_role_assignment")]
         public bool MustSetOwnerRoleAssignment { get; set; } = true;
     }
 }

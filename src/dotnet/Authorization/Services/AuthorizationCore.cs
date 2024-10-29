@@ -5,7 +5,6 @@ using FoundationaLLM.Authorization.Models.Configuration;
 using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Utils;
@@ -368,7 +367,7 @@ namespace FoundationaLLM.Authorization.Services
                 .Where(ra => resourcePath.IncludesResourcePath(ra.ScopeResourcePath!))
                 .ToList();
         }
-        
+
         private ResourcePathAuthorizationResult ProcessAuthorizationRequestForResourcePath(
             ResourcePath resourcePath,
             ActionAuthorizationRequest authorizationRequest)
@@ -380,7 +379,8 @@ namespace FoundationaLLM.Authorization.Services
                 Authorized = false,
                 Roles = [],
                 PolicyDefinitionIds = [],
-                SubordinateResourcePathsAuthorizationResults = []
+                SubordinateResourcePathsAuthorizationResults = [],
+                MustSetOwnerRoleAssignment = MustSetOwnerRoleAssignment(resourcePath)
             };
 
             // Combine the principal id and security group ids into one list.
@@ -522,5 +522,17 @@ namespace FoundationaLLM.Authorization.Services
 
             return result;
         }
+
+        private bool MustSetOwnerRoleAssignment(ResourcePath resourcePath) =>
+            resourcePath.MainResourceTypeName switch
+            {
+                AgentResourceTypeNames.Agents =>
+                            resourcePath.ResourceTypeName switch
+                        {
+                            AgentResourceTypeNames.Files => false,
+                            _ => true
+                        },
+                _ => true
+            };
     }
 }
