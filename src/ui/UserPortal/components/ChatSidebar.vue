@@ -42,64 +42,69 @@
 		<!-- Chats -->
 		<div class="chat-sidebar__chats">
 			<nav>
-				<ul role="list" class="chat-list">
+				<ul role="list" class="chat-groups">
 					<li v-if="!sessions" role="listitem" class="chat-list-item">No sessions</li>
-					<li
-						v-for="session in sessions"
-						:key="session.id"
-						class="chat-sidebar__chat chat-list-item"
-						role="listitem"
-						@click="handleSessionSelected(session)"
-						@keydown.enter="handleSessionSelected(session)"
-					>
-						<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
-							<!-- Chat name -->
 
-							<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-								<span class="chat__name" tabindex="0" @keydown.esc="hideAllPoppers">{{
-									session.display_name
-								}}</span>
-								<template #popper>
-									<div role="tooltip">
-										{{ session.display_name }}
-									</div>
-								</template>
-							</VTooltip>
+					<ul v-for="(sessions, label) in groupedSessions" :key="label" class="chat-list">
+						<h2 class="chat__time-label">{{ label }}</h2>
 
-							<!-- Chat icons -->
-							<span v-if="currentSession?.id === session.id" class="chat__icons">
-								<!-- Rename session -->
+						<li
+							v-for="session in sessions"
+							:key="session.id"
+							class="chat-sidebar__chat chat-list-item"
+							role="listitem"
+							@click="handleSessionSelected(session)"
+							@keydown.enter="handleSessionSelected(session)"
+						>
+							<div class="chat" :class="{ 'chat--selected': currentSession?.id === session.id }">
+								<!-- Chat name -->
+
 								<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-									<Button
-										icon="pi pi-pencil"
-										size="small"
-										severity="secondary"
-										text
-										class="chat-sidebar__button"
-										aria-label="Rename chat session"
-										@click.stop="openRenameModal(session)"
-										@keydown.esc="hideAllPoppers"
-									/>
-									<template #popper><div role="tooltip">Rename chat session</div></template>
+									<span class="chat__name" tabindex="0" @keydown.esc="hideAllPoppers">{{
+										session.display_name
+									}}</span>
+									<template #popper>
+										<div role="tooltip">
+											{{ session.display_name }}
+										</div>
+									</template>
 								</VTooltip>
 
-								<!-- Delete session -->
-								<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-									<Button
-										icon="pi pi-trash"
-										size="small"
-										severity="danger"
-										text
-										class="chat-sidebar__button"
-										aria-label="Delete chat session"
-										@click.stop="sessionToDelete = session"
-										@keydown.esc="hideAllPoppers"
-									/>
-									<template #popper><div role="tooltip">Delete chat session</div></template>
-								</VTooltip>
-							</span>
-						</div>
-					</li>
+								<!-- Chat icons -->
+								<span v-if="currentSession?.id === session.id" class="chat__icons">
+									<!-- Rename session -->
+									<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+										<Button
+											icon="pi pi-pencil"
+											size="small"
+											severity="secondary"
+											text
+											class="chat-sidebar__button"
+											aria-label="Rename chat session"
+											@click.stop="openRenameModal(session)"
+											@keydown.esc="hideAllPoppers"
+										/>
+										<template #popper><div role="tooltip">Rename chat session</div></template>
+									</VTooltip>
+
+									<!-- Delete session -->
+									<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+										<Button
+											icon="pi pi-trash"
+											size="small"
+											severity="danger"
+											text
+											class="chat-sidebar__button"
+											aria-label="Delete chat session"
+											@click.stop="sessionToDelete = session"
+											@keydown.esc="hideAllPoppers"
+										/>
+										<template #popper><div role="tooltip">Delete chat session</div></template>
+									</VTooltip>
+								</span>
+							</div>
+						</li>
+					</ul>
 				</ul>
 			</nav>
 		</div>
@@ -279,6 +284,35 @@ export default {
 		currentSession() {
 			return this.$appStore.currentSession;
 		},
+
+		groupedSessions() {
+			const today = new Date();
+
+			// Create a new sorted array and handle invalid dates
+			const sortedSessions = [...this.sessions]
+				.filter(session => !isNaN(new Date(session.created_on)))
+				.sort((a, b) => new Date(b.created_on) - new Date(a.created_on));
+
+			return sortedSessions.reduce((groups, session) => {
+				const sessionDate = new Date(session.created_on);
+				const diffInTime = today.getTime() - sessionDate.getTime();
+				const diffInDays = Math.floor(diffInTime / (1000 * 3600 * 24));
+
+				let label;
+				if (isNaN(sessionDate)) {
+					label = 'Unknown Date';
+				} else if (diffInDays === 0) label = 'Today';
+				else if (diffInDays === 1) label = 'Yesterday';
+				else if (diffInDays <= 7) label = 'Last 7 Days';
+				else if (diffInDays <= 30) label = 'Last 30 Days';
+				else label = sessionDate.toLocaleString('default', { month: 'long' });
+
+				if (!groups[label]) groups[label] = [];
+				groups[label].push(session);
+
+				return groups;
+			}, {});
+		},
 	},
 
 	async created() {
@@ -454,6 +488,13 @@ export default {
 	height: 72px;
 }
 
+.chat__time-label {
+	color: var(--primary-text);
+	font-size: 0.8125rem;
+	padding-left: 20px;
+	margin-top: 12px;
+}
+
 .chat__name {
 	white-space: nowrap;
 	overflow: hidden;
@@ -580,13 +621,18 @@ export default {
 	padding: 20px 150px;
 }
 
-ul.chat-list {
+.chat-groups {
+	padding-left: 0;
+	margin: 0;
+}
+
+.chat-list {
 	list-style-type: none;
 	padding-left: 0;
 	margin: 0;
 }
 
-li.chat-list-item {
+.chat-list-item {
 	padding: 0;
 	margin: 0;
 }
@@ -594,7 +640,7 @@ li.chat-list-item {
 .setting-option {
 	display: flex;
 	flex-direction: row;
-    align-items: center;
+	align-items: center;
 	justify-content: space-between;
 	gap: 1rem;
 }
@@ -629,31 +675,31 @@ li.chat-list-item {
 
 <style lang="scss">
 .p-inputswitch:not(.p-disabled):has(.p-inputswitch-input:focus-visible) .p-inputswitch-slider {	
-    box-shadow: 0 0 0 0.1rem var(--primary-button-bg);				
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);				
 }
 
 .p-inputswitch.p-highlight:not(.p-disabled):has(.p-inputswitch-input:focus-visible) .p-inputswitch-slider {
-    box-shadow: 0 0 0 0.1rem #000; /* Black box-shadow when p-highlight is also present */
+	box-shadow: 0 0 0 0.1rem #000; /* Black box-shadow when p-highlight is also present */
 }
 
 .p-inputswitch:not(.p-disabled):has(.p-inputswitch-input:focus-visible) .p-inputswitch-slider {
-    box-shadow: 0 0 0 0.1rem var(--primary-button-bg);				
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);				
 }
 
 .p-slider .p-slider-handle:focus-visible {
-    box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
 }
 
 .p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus-visible {
-    box-shadow: inset 0 0 0 0.1rem var(--primary-button-bg);
+	box-shadow: inset 0 0 0 0.1rem var(--primary-button-bg);
 }
 
 .p-dialog .p-dialog-header .p-dialog-header-icon:focus-visible {
-	    box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
 }
 
 .p-inputtext:focus:not(.p-dropdown-label) {
-    box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
 }
 
 .p-dropdown:not(.p-disabled).p-focus {
