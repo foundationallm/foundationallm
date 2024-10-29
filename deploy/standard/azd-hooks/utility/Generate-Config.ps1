@@ -2,6 +2,7 @@
 
 Param (
     [parameter(Mandatory = $true)][object]$adminGroupObjectId,
+    [parameter(Mandatory = $true)][object]$userGroupObjectId,
     [parameter(Mandatory = $true)][object]$entraClientIds,
     [parameter(Mandatory = $true)][object]$entraScopes,
     [parameter(Mandatory = $true)][object]$ingress,
@@ -232,11 +233,16 @@ $tokens.gatewayApiRoleAssignmentGuid = $(New-Guid).Guid
 $tokens.vectorizationJobRoleAssignmentGuid = $(New-Guid).Guid
 $tokens.conversationPolicyGuid = $(New-Guid).Guid
 $tokens.attachmentPolicyGuid = $(New-Guid).Guid
+$tokens.configReadAccessGuid1 = $(New-Guid).Guid
+$tokens.configReadAccessGuid2 = $(New-Guid).Guid
+$tokens.attachmentContributorGuid = $(New-Guid).Guid
+$tokens.conversationContributorGuid = $(New-Guid).Guid
 $tokens.subscriptionId = $subscriptionId
 $tokens.storageResourceGroup = $resourceGroups.storage
 $tokens.opsResourceGroup = $resourceGroups.ops
 
 $tokens.adminGroupObjectId = $adminGroupObjectId
+$tokens.userGroupObjectId = $userGroupObjectId
 
 $tokens.chatEntraClientId = $entraClientIds.chat
 $tokens.chatEntraScopes = $entraScopes.chat
