@@ -205,24 +205,24 @@
 		</Dialog>
 
 		<Dialog
-			v-focustrap
 			id="settings-modal"
 			v-model:visible="settingsModalVisible"
-			class="sidebar-dialog"
+			v-focustrap
 			modal
+			class="sidebar-dialog"
 			header="Settings"
 			@keydown.esc="settingsModalVisible = false"
 		>
 			<TabView>
 				<TabPanel header="Accessibility">
 					<div class="setting-option">
-						<h4 class="setting-option-label" id="auto-hide-toasts">
+						<h4 id="auto-hide-toasts" class="setting-option-label">
 							Auto hide toast notifications
 						</h4>
 						<InputSwitch v-model="$appStore.autoHideToasts" aria-labelledby="auto-hide-toasts" />
 					</div>
 					<div class="setting-option">
-						<h4 class="setting-option-label" id="text-size">Text size</h4>
+						<h4 id="text-size" class="setting-option-label">Text size</h4>
 						<div class="text-size-slider-container">
 							<Slider
 								v-model="$appStore.textSize"
@@ -239,7 +239,7 @@
 						</div>
 					</div>
 					<div class="setting-option">
-						<h4 class="setting-option-label" id="contrast">High contrast mode</h4>
+						<h4 id="contrast" class="setting-option-label">High contrast mode</h4>
 						<InputSwitch v-model="$appStore.highContrastMode" aria-labelledby="contrast" />
 					</div>
 				</TabPanel>

@@ -25,15 +25,15 @@
 				>
 					<div
 						class="resize-handle"
+						tabindex="0"
+						aria-label="Resize sidebar"
 						@mousedown="startResizing"
 						@keydown.left.prevent="resizeSidebarWithKeyboard(-10)"
 						@keydown.right.prevent="resizeSidebarWithKeyboard(10)"
-						tabindex="0"
-						aria-label="Resize sidebar"
-					></div>
-					<template #popper
-						><div role="tooltip">Resize sidebar (Use left and right arrow keys)</div></template
-					>
+					/>
+					<template #popper>
+						<div role="tooltip">Resize sidebar (Use left and right arrow keys)</div>
+					</template>
 				</VTooltip>
 			</aside>
 			<div
