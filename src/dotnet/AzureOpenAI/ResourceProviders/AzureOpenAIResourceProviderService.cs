@@ -117,8 +117,8 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     resourcePath.MainResourceId!))!,
                 AzureOpenAIResourceTypeNames.FilesContent => ((await LoadFileContent(
                     resourcePath.MainResourceId!,
-                    resourcePath.RawResourcePath!)) as T)!,
-                AzureOpenAIResourceTypeNames.FileUserContexts => (await LoadResource<T>(resourcePath.MainResourceId!) as T)!,
+                    resourcePath.ResourceId!)) as T)!,
+                AzureOpenAIResourceTypeNames.FileUserContexts => (await LoadResource<T>(resourcePath.MainResourceId!))!,
                 _ => throw new ResourceProviderException(
                     $"The {resourcePath.MainResourceTypeName} resource type is not supported by the {_name} resource provider.")
             };
@@ -139,12 +139,12 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     StatusCodes.Status400BadRequest)
             };
 
-        private async Task<FileContent> LoadFileContent(string fileUserContextName, string openAIFileIdObjectId)
+        private async Task<FileContent> LoadFileContent(string fileUserContextName, string openAIFileId)
         {
             var fileUserContext = await LoadResource<FileUserContext>(fileUserContextName);
-            if (!fileUserContext!.TryGetFileMapping(openAIFileIdObjectId, out var agentFileUserContext, out var fileMapping))
+            if (!fileUserContext!.TryGetFileMapping(openAIFileId, out var agentFileUserContext, out var fileMapping))
                 throw new ResourceProviderException(
-                    $"Could not find the agent files mapping for file {openAIFileIdObjectId} in the {fileUserContextName} file user context.",
+                    $"Could not find the agent files mapping for file {openAIFileId} in the {fileUserContextName} file user context.",
                     StatusCodes.Status404NotFound);
 
             var azureOpenAIClient = new AzureOpenAIClient(new Uri(agentFileUserContext!.Endpoint), DefaultAuthentication.AzureCredential);
@@ -603,27 +603,24 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                 {
                     // Ensure that only one thread can update the Files collection at a time.
                     await _localLock.WaitAsync();
-                    var existingUserContext = await LoadResource<FileUserContext>(fileUserContext.Name);
-                    if (agentFileUserContext != null)
-                    {
+                    var existingUserContext = await LoadResource<FileUserContext>(fileUserContext.Name);                   
                         
-                        foreach (var agentFile in fileUserContext.AgentFiles)
+                    foreach (var agentFile in fileUserContext.AgentFiles)
+                    {
+                        if (!existingUserContext!.AgentFiles.ContainsKey(agentFile.Key))
                         {
-                            if (!existingUserContext!.AgentFiles.ContainsKey(agentFile.Key))
+                            existingUserContext.AgentFiles.Add(agentFile.Key, agentFile.Value);
+                        }
+                        else
+                        {
+                            //merge the Files property of existing agent files
+                            foreach (var file in agentFile.Value.Files)
                             {
-                                existingUserContext.AgentFiles.Add(agentFile.Key, agentFile.Value);
-                            }
-                            else
-                            {
-                                //merge the Files property of existing agent files
-                                foreach (var file in agentFile.Value.Files)
-                                {
-                                    if (!existingUserContext.AgentFiles[agentFile.Key].Files.ContainsKey(file.Key))
-                                        existingUserContext.AgentFiles[agentFile.Key].Files.Add(file.Key, file.Value);
-                                }
+                                if (!existingUserContext.AgentFiles[agentFile.Key].Files.ContainsKey(file.Key))
+                                    existingUserContext.AgentFiles[agentFile.Key].Files.Add(file.Key, file.Value);
                             }
                         }
-                    }                   
+                    }                                       
 
                     UpdateBaseProperties(fileUserContext, userIdentity, isNew: false);
                     await SaveResource<FileUserContext>(resourceReference, existingUserContext!);
