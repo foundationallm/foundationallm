@@ -49,7 +49,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
         {
             foreach (var internalAgentFileUserContext in AgentFiles.Values)
             {
-                fileMapping = internalAgentFileUserContext.Files.FirstOrDefault(file => file.Value.OpenAIFileId == fileId).Value;
+                fileMapping = internalAgentFileUserContext.Files.Values.FirstOrDefault(fm => fm.OpenAIFileId == fileId);
                 if(fileMapping is not null)
                 {
                     agentFileUserContext = internalAgentFileUserContext;
