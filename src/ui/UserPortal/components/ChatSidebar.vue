@@ -191,7 +191,13 @@
 				<p>Do you want to delete the chat "{{ sessionToDelete.display_name }}" ?</p>
 			</div>
 			<template #footer>
-				<Button class="sidebar-dialog__button" label="Cancel" text :disabled="deleteProcessing" @click="sessionToDelete = null" />
+				<Button
+					class="sidebar-dialog__button"
+					label="Cancel"
+					text
+					:disabled="deleteProcessing"
+					@click="sessionToDelete = null"
+				/>
 				<Button
 					class="sidebar-dialog__button"
 					label="Delete"
@@ -215,11 +221,10 @@
 			<TabView>
 				<TabPanel header="Accessibility">
 					<div class="setting-option">
-						<h4 class="setting-option-label" id="auto-hide-toasts">Auto hide toast notifications</h4>
-						<InputSwitch
-							v-model="$appStore.autoHideToasts"
-							aria-labelledby="auto-hide-toasts"
-						/>
+						<h4 class="setting-option-label" id="auto-hide-toasts">
+							Auto hide toast notifications
+						</h4>
+						<InputSwitch v-model="$appStore.autoHideToasts" aria-labelledby="auto-hide-toasts" />
 					</div>
 					<div class="setting-option">
 						<h4 class="setting-option-label" id="text-size">Text size</h4>
@@ -240,18 +245,19 @@
 					</div>
 					<div class="setting-option">
 						<h4 class="setting-option-label" id="contrast">High contrast mode</h4>
-						<InputSwitch
-							v-model="$appStore.highContrastMode"
-							aria-labelledby="contrast"
-						/>
+						<InputSwitch v-model="$appStore.highContrastMode" aria-labelledby="contrast" />
 					</div>
 				</TabPanel>
 			</TabView>
 			<template #footer>
-				<Button class="sidebar-dialog__button" label="Close" text @click="settingsModalVisible = false" />
+				<Button
+					class="sidebar-dialog__button"
+					label="Close"
+					text
+					@click="settingsModalVisible = false"
+				/>
 			</template>
 		</Dialog>
-
 	</div>
 </template>
 
@@ -290,7 +296,7 @@ export default {
 
 			// Create a new sorted array and handle invalid dates
 			const sortedSessions = [...this.sessions]
-				.filter(session => !isNaN(new Date(session.created_on)))
+				.filter((session) => !isNaN(new Date(session.created_on)))
 				.sort((a, b) => new Date(b.created_on) - new Date(a.created_on));
 
 			return sortedSessions.reduce((groups, session) => {
@@ -674,16 +680,17 @@ export default {
 </style>
 
 <style lang="scss">
-.p-inputswitch:not(.p-disabled):has(.p-inputswitch-input:focus-visible) .p-inputswitch-slider {	
-	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);				
+.p-inputswitch:not(.p-disabled):has(.p-inputswitch-input:focus-visible) .p-inputswitch-slider {
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
 }
 
-.p-inputswitch.p-highlight:not(.p-disabled):has(.p-inputswitch-input:focus-visible) .p-inputswitch-slider {
+.p-inputswitch.p-highlight:not(.p-disabled):has(.p-inputswitch-input:focus-visible)
+	.p-inputswitch-slider {
 	box-shadow: 0 0 0 0.1rem #000; /* Black box-shadow when p-highlight is also present */
 }
 
 .p-inputswitch:not(.p-disabled):has(.p-inputswitch-input:focus-visible) .p-inputswitch-slider {
-	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);				
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
 }
 
 .p-slider .p-slider-handle:focus-visible {
