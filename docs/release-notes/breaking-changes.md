@@ -3,6 +3,134 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting with 0.8.4
+
+### Resource provider changes
+
+**FoundationaLLM.AzureOpenAI**
+
+When upgrading an existing FoundationaLLM instance, the items from the `resource-provider/FoundationaLLM.AzureOpenAI` directory in storage account must be updated to use the new JSON format:
+
+*Assistant user context*
+```json
+{
+    "name": "example_solliance_net-assistant-00000000-0000-0000-0000-000000000000",
+    "object_id": "/instances/00000000-0000-0000-0000-000000000000/providers/FoundationaLLM.AzureOpenAI/assistantUserContexts/example_solliance_net-assistant-00000000-0000-0000-0000-000000000000",
+    "display_name": null,
+    "description": null,
+    "cost_center": null,
+    "user_principal_name": "example@solliance.net",
+    "agent-assistants": {
+        "/instances/00000000-0000-0000-0000-000000000000/providers/FoundationaLLM.Agent/agents/GPT-4o": {
+            "endpoint": "https://example.openai.azure.com/",
+            "model_name": "completions-gpt-4o",
+            "openai_assistant_id": "",
+            "openai_assistant_created_on": "2024-10-18T00:00:00.0000000\u002B00:00",
+            "conversations": {}
+        }
+    },
+    "properties": null,
+    "created_on": "2024-10-18T00:00:00.0000000\u002B00:00",
+    "updated_on": "2024-10-18T00:00:00.0000000\u002B00:00",
+    "created_by": "example@solliance.net",
+    "updated_by": "example@solliance.net",
+    "deleted": false,
+    "expiration_date": null,
+}
+```
+
+*File user context*
+```json
+{
+    "name": "example_solliance_net-file-00000000-0000-0000-0000-000000000000",
+    "object_id": "/instances/00000000-0000-0000-0000-000000000000/providers/FoundationaLLM.AzureOpenAI/fileUserContexts/example_solliance_net-file-00000000-0000-0000-0000-000000000000",
+    "display_name": null,
+    "description": null,
+    "cost_center": null,
+    "user_principal_name": "example@solliance.net",
+    "agent_files": {
+        "/instances/00000000-0000-0000-0000-000000000000/providers/FoundationaLLM.Agent/agents/GPT-4o": {
+            "endpoint": "https://example.openai.azure.com/",
+            "files": {}
+        }
+    },
+    "assistant_user_context_name": "example_solliance_net-assistant-00000000-0000-0000-0000-000000000000",
+    "created_on": "2024-10-18T00:00:00.0000000+00:00",
+    "updated_on": "2024-10-18T00:00:00.0000000+00:00",
+    "created_by": "example@solliance.net",
+    "updated_by": "example@solliance.net",
+    "deleted": false,
+    "expiration_date": null
+}
+```
+
+Refer to the dedicated upgrade tool for instructions on how to perform this update.
+
+### Configuration changes
+
+This release adds a new App Config setting that should be added to existing environments that are upgrading to 0.8.4 and beyond:
+
+- App Config key: `FoundationaLLM:Branding:NoAgentsMessage`
+- App Config value: `No agents available. Please check with your system administrator for assistance.`
+
+## Starting with 0.8.3
+
+### Resource provider changes
+
+If a user/group is not assigned to the instance-level Contributor role, then they will not be able to create new Conversations or upload Attachments. To adjust their permissions, the following changes are required:
+
+**FoundationaLLM.Conversation**
+
+In addition to assigning users/groups to the `policy-assignments/<instance_id>-policy.json` file within the `FoundationaLLM.Authorization` resource provider to assign them to the Conversation policy, we must now add them to the new **Conversation contributor role** (`role_definition_id`: `d0d21b90-5317-499a-9208-3a6cb71b84f9`) within the `role-assignments/<instance_id>-role.json` file within the `FoundationaLLM.Authorization` resource provider if the user/group is not assigned to the Contributor role on the FoundationaLLM instance (`role_definition_id`: `a9f0020f-6e3a-49bf-8d1d-35fd53058edf`). Here is an example entry:
+
+```json
+{
+    "type": "FoundationaLLM.Authorization/roleAssignments",
+    "name": "a40b15f1-75ce-4a40-a857-1093ac9adf4d",
+    "object_id": "/instances/0a1840df-71b6-496d-905a-145d93d827f3/providers/FoundationaLLM.Authorization/roleAssignments/a40b15f1-75ce-4a40-a857-1093ac9adf4d",
+    "display_name": null,
+    "description": "Conversation contributor role for FLLM Users",
+    "cost_center": null,
+    "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/d0d21b90-5317-499a-9208-3a6cb71b84f9",
+    "principal_id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+    "principal_type": "Group",
+    "scope": "/instances/0a1840df-71b6-496d-905a-145d93d827f3",
+    "properties": null,
+    "created_on": "0001-01-01T00:00:00+00:00",
+    "updated_on": "0001-01-01T00:00:00+00:00",
+    "created_by": null,
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+}
+```
+
+**FoundationaLLM.Attachment**
+
+In addition to assigning users/groups to the `policy-assignments/<instance_id>-policy.json` file within the `FoundationaLLM.Authorization` resource provider to assign them to the Attachment policy, we must now add them to the new **Attachment contributor role** (`role_definition_id`: `8e77fb6a-7a78-43e1-b628-d9e2285fe25a`) within the `role-assignments/<instance_id>-role.json` file within the `FoundationaLLM.Authorization` resource provider if the user/group is not assigned to the Contributor role on the FoundationaLLM instance (`role_definition_id`: `a9f0020f-6e3a-49bf-8d1d-35fd53058edf`). Here is an example entry:
+
+```json
+{
+    "type": "FoundationaLLM.Authorization/roleAssignments",
+    "name": "891ca947-e648-46cf-a12a-774b52ded886",
+    "object_id": "/instances/0a1840df-71b6-496d-905a-145d93d827f3/providers/FoundationaLLM.Authorization/roleAssignments/891ca947-e648-46cf-a12a-774b52ded886",
+    "display_name": null,
+    "description": "Attachment contributor role for FLLM Users",
+    "cost_center": null,
+    "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/8e77fb6a-7a78-43e1-b628-d9e2285fe25a",
+    "principal_id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+    "principal_type": "Group",
+    "scope": "/instances/0a1840df-71b6-496d-905a-145d93d827f3",
+    "properties": null,
+    "created_on": "0001-01-01T00:00:00+00:00",
+    "updated_on": "0001-01-01T00:00:00+00:00",
+    "created_by": null,
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+}
+```
+
 ## Starting with 0.8.2
 
 ### Configuration changes

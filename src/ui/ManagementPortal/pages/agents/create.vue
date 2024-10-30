@@ -715,6 +715,7 @@ import type {
 	Agent,
 	AgentIndex,
 	AgentDataSource,
+	AgentTool,
 	AIModel,
 	DataSource,
 	CreateAgentRequest,
@@ -816,6 +817,7 @@ export default {
 			textEmbeddingProfileSources: [] as TextEmbeddingProfile[],
 			externalOrchestratorOptions: [] as ExternalOrchestrationService[],
 			aiModelOptions: [] as AIModel[],
+			tools: {} as { [key: string]: AgentTool },
 
 			orchestratorOptions: [
 				{
@@ -974,6 +976,7 @@ export default {
 			}
 			this.loadingStatusText = `Mapping agent values to form...`;
 			this.mapAgentToForm(agent);
+			this.tools = agent.tools;
 		} else {
 			this.editable = true;
 		}
@@ -1281,6 +1284,8 @@ export default {
 					prompt_object_id: promptObjectId,
 					orchestration_settings: this.orchestration_settings,
 					ai_model_object_id: this.selectedAIModel.object_id,
+
+					tools: this.tools,
 				};
 
 				if (this.editAgent) {

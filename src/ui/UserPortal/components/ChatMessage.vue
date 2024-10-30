@@ -183,6 +183,7 @@
 										borderColor: $appConfigStore.primaryButtonBg,
 										color: $appConfigStore.primaryButtonText,
 									}"
+									class="prompt-dialog__button"
 									label="Close"
 									@click="viewPrompt = false"
 								/>
@@ -321,7 +322,7 @@ export default {
 						content: failedMessage,
 						value: failedMessage,
 						origValue: failedMessage,
-					}
+					},
 				];
 			}
 
@@ -632,7 +633,7 @@ export default {
 			this.$toast.add({
 				severity: 'success',
 				detail: 'Message copied to clipboard!',
-				life: 5000,
+				life: this.$appStore.autoHideToasts ? 5000 : null,
 			});
 		},
 
@@ -776,6 +777,10 @@ $textColor: #131833;
 	margin-left: 4px;
 }
 
+.message__copy:focus {
+	box-shadow: 0 0 0 0.1rem #fff;
+}
+
 .header__sender {
 	display: flex;
 	align-items: center;
@@ -840,7 +845,15 @@ $textColor: #131833;
 }
 
 .message__button {
-	color: #00356b;
+	color: var(--primary-button-bg);
+}
+
+.message__button:focus {
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+}
+
+.prompt-dialog__button:focus {
+	box-shadow: 0 0 0 0.1rem #000;
 }
 </style>
 

@@ -111,8 +111,8 @@ public class OrchestrationService : IOrchestrationService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving completion from the orchestration service for {UserPrompt}.",
-                completionRequest.UserPrompt);
+            _logger.LogError(ex, "Error retrieving completion from the orchestration service for operation {OperationId}.",
+                completionRequest.OperationId);
             return new CompletionResponse
             {
                 OperationId = completionRequest.OperationId!,
@@ -150,8 +150,8 @@ public class OrchestrationService : IOrchestrationService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error starting the completion operation from the orchestration service for {UserPrompt}.",
-                completionRequest.UserPrompt);
+            _logger.LogError(ex, "Error starting the completion operation from the orchestration service for Operation Id: {OperationId}.",
+                completionRequest.OperationId);
             return new LongRunningOperation
             {
                 OperationId = completionRequest.OperationId!,

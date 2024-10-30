@@ -1,10 +1,12 @@
 from typing import List, Optional, Union
 from pydantic import BaseModel
 
-from .analysis_result import AnalysisResult
-from .citation import Citation
-from .openai_image_file_message_content_item import OpenAIImageFileMessageContentItem
-from .openai_text_message_content_item import OpenAITextMessageContentItem
+from foundationallm.models.orchestration import (
+    AnalysisResult,
+    Citation,
+    OpenAIImageFileMessageContentItem,
+    OpenAITextMessageContentItem
+)
 
 class CompletionResponse(BaseModel):
     """
@@ -14,7 +16,6 @@ class CompletionResponse(BaseModel):
     operation_id: str
     user_prompt: str
     full_prompt: Optional[str] = None
-    completion: Optional[Union[str, set, List[str]]] = None
     content: Optional[
         List[
             Union[
@@ -30,3 +31,4 @@ class CompletionResponse(BaseModel):
     completion_tokens: int = 0
     total_tokens: int = 0
     total_cost: float = 0.0
+    errors: Optional[List[str]] = []
