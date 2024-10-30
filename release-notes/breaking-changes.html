@@ -131,6 +131,12 @@
 }
 </code></pre>
 <p>Refer to the dedicated upgrade tool for instructions on how to perform this update.</p>
+<h3 id="configuration-changes">Configuration changes</h3>
+<p>This release adds a new App Config setting that should be added to existing environments that are upgrading to 0.8.4 and beyond:</p>
+<ul>
+<li>App Config key: <code>FoundationaLLM:Branding:NoAgentsMessage</code></li>
+<li>App Config value: <code>No agents available. Please check with your system administrator for assistance.</code></li>
+</ul>
 <h2 id="starting-with-083">Starting with 0.8.3</h2>
 <h3 id="resource-provider-changes-1">Resource provider changes</h3>
 <p>If a user/group is not assigned to the instance-level Contributor role, then they will not be able to create new Conversations or upload Attachments. To adjust their permissions, the following changes are required:</p>
@@ -179,7 +185,7 @@
 }
 </code></pre>
 <h2 id="starting-with-082">Starting with 0.8.2</h2>
-<h3 id="configuration-changes">Configuration changes</h3>
+<h3 id="configuration-changes-1">Configuration changes</h3>
 <p>The following settings are required:</p>
 <table>
 <thead>
