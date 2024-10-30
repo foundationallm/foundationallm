@@ -186,7 +186,13 @@
 				<p>Do you want to delete the chat "{{ sessionToDelete.display_name }}" ?</p>
 			</div>
 			<template #footer>
-				<Button class="sidebar-dialog__button" label="Cancel" text :disabled="deleteProcessing" @click="sessionToDelete = null" />
+				<Button
+					class="sidebar-dialog__button"
+					label="Cancel"
+					text
+					:disabled="deleteProcessing"
+					@click="sessionToDelete = null"
+				/>
 				<Button
 					class="sidebar-dialog__button"
 					label="Delete"
@@ -199,25 +205,24 @@
 		</Dialog>
 
 		<Dialog
-			v-focustrap
 			id="settings-modal"
 			v-model:visible="settingsModalVisible"
-			class="sidebar-dialog"
+			v-focustrap
 			modal
+			class="sidebar-dialog"
 			header="Settings"
 			@keydown.esc="settingsModalVisible = false"
 		>
 			<TabView>
 				<TabPanel header="Accessibility">
 					<div class="setting-option">
-						<h4 class="setting-option-label" id="auto-hide-toasts">Auto hide toast notifications</h4>
-						<InputSwitch
-							v-model="$appStore.autoHideToasts"
-							aria-labelledby="auto-hide-toasts"
-						/>
+						<h4 id="auto-hide-toasts" class="setting-option-label">
+							Auto hide toast notifications
+						</h4>
+						<InputSwitch v-model="$appStore.autoHideToasts" aria-labelledby="auto-hide-toasts" />
 					</div>
 					<div class="setting-option">
-						<h4 class="setting-option-label" id="text-size">Text size</h4>
+						<h4 id="text-size" class="setting-option-label">Text size</h4>
 						<div class="text-size-slider-container">
 							<Slider
 								v-model="$appStore.textSize"
@@ -234,19 +239,20 @@
 						</div>
 					</div>
 					<div class="setting-option">
-						<h4 class="setting-option-label" id="contrast">High contrast mode</h4>
-						<InputSwitch
-							v-model="$appStore.highContrastMode"
-							aria-labelledby="contrast"
-						/>
+						<h4 id="contrast" class="setting-option-label">High contrast mode</h4>
+						<InputSwitch v-model="$appStore.highContrastMode" aria-labelledby="contrast" />
 					</div>
 				</TabPanel>
 			</TabView>
 			<template #footer>
-				<Button class="sidebar-dialog__button" label="Close" text @click="settingsModalVisible = false" />
+				<Button
+					class="sidebar-dialog__button"
+					label="Close"
+					text
+					@click="settingsModalVisible = false"
+				/>
 			</template>
 		</Dialog>
-
 	</div>
 </template>
 
@@ -594,7 +600,7 @@ li.chat-list-item {
 .setting-option {
 	display: flex;
 	flex-direction: row;
-    align-items: center;
+	align-items: center;
 	justify-content: space-between;
 	gap: 1rem;
 }
@@ -628,32 +634,33 @@ li.chat-list-item {
 </style>
 
 <style lang="scss">
-.p-inputswitch:not(.p-disabled):has(.p-inputswitch-input:focus-visible) .p-inputswitch-slider {	
-    box-shadow: 0 0 0 0.1rem var(--primary-button-bg);				
+.p-inputswitch:not(.p-disabled):has(.p-inputswitch-input:focus-visible) .p-inputswitch-slider {
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
 }
 
-.p-inputswitch.p-highlight:not(.p-disabled):has(.p-inputswitch-input:focus-visible) .p-inputswitch-slider {
-    box-shadow: 0 0 0 0.1rem #000; /* Black box-shadow when p-highlight is also present */
+.p-inputswitch.p-highlight:not(.p-disabled):has(.p-inputswitch-input:focus-visible)
+	.p-inputswitch-slider {
+	box-shadow: 0 0 0 0.1rem #000; /* Black box-shadow when p-highlight is also present */
 }
 
 .p-inputswitch:not(.p-disabled):has(.p-inputswitch-input:focus-visible) .p-inputswitch-slider {
-    box-shadow: 0 0 0 0.1rem var(--primary-button-bg);				
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
 }
 
 .p-slider .p-slider-handle:focus-visible {
-    box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
 }
 
 .p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus-visible {
-    box-shadow: inset 0 0 0 0.1rem var(--primary-button-bg);
+	box-shadow: inset 0 0 0 0.1rem var(--primary-button-bg);
 }
 
 .p-dialog .p-dialog-header .p-dialog-header-icon:focus-visible {
-	    box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
 }
 
 .p-inputtext:focus:not(.p-dropdown-label) {
-    box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
 }
 
 .p-dropdown:not(.p-disabled).p-focus {

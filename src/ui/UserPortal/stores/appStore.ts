@@ -40,7 +40,7 @@ export const useAppStore = defineStore('app', {
 		textSize: JSON.parse(sessionStorage.getItem('textSize') || '1') as number,
 		highContrastMode: JSON.parse(sessionStorage.getItem('highContrastMode') || 'false') as boolean,
 	}),
-	
+
 	getters: {},
 
 	actions: {
@@ -52,7 +52,7 @@ export const useAppStore = defineStore('app', {
 				() => this.autoHideToasts,
 				(newValue: boolean) => {
 					sessionStorage.setItem('autoHideToasts', JSON.stringify(newValue));
-				}
+				},
 			);
 
 			// Watch for changes in textSize and update sessionStorage
@@ -61,7 +61,7 @@ export const useAppStore = defineStore('app', {
 				(newValue: number) => {
 					sessionStorage.setItem('textSize', JSON.stringify(newValue));
 					document.documentElement.style.setProperty('--app-text-size', `${newValue}rem`);
-				}
+				},
 			);
 
 			// Watch for changes in highContrastMode and update sessionStorage
@@ -69,7 +69,7 @@ export const useAppStore = defineStore('app', {
 				() => this.highContrastMode,
 				(newValue: boolean) => {
 					sessionStorage.setItem('highContrastMode', JSON.stringify(newValue));
-				}
+				},
 			);
 
 			// No need to load sessions if in kiosk mode, simply create a new one and skip.

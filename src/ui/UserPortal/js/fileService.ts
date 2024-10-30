@@ -1,6 +1,6 @@
+import { useAppStore } from '@/stores/appStore';
 import api from '@/js/api';
 import type { MessageContent } from '@/js/types';
-import { useAppStore } from '../stores/appStore';
 
 export async function fetchBlobUrl(content: MessageContent, toast: any) {
 	const appStore = useAppStore();
