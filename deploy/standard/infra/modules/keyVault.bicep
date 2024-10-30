@@ -177,6 +177,7 @@ module adminRole 'utility/roleAssignments.bicep' = {
     principalType: administratorPrincipalType
     roleDefinitionIds: {
       'Key Vault Secrets Officer': 'b86a8fe4-44ce-4948-aee5-eccb2c155cd7'
+      'Key Vault Certificates Officer': 'a4417e6f-fecd-4de8-b567-7b0420556985'
     }
   }
 }
