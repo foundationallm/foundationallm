@@ -5,6 +5,7 @@
 			ref="messageContainer"
 			class="chat-thread__messages"
 			:class="messages.length === 0 && 'empty'"
+			role="log"
 		>
 			<template v-if="isLoading">
 				<div class="chat-thread__loading" role="status">

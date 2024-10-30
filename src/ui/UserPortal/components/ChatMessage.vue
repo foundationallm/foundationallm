@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="message-row" :class="message.sender === 'User' ? 'message--out' : 'message--in'">
-			<div class="message" role="log" aria-live="polite" tabindex="0">
+			<div class="message" aria-live="polite" tabindex="0">
 				<div class="message__header">
 					<!-- Sender -->
 					<span class="header__sender">
