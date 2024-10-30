@@ -66,6 +66,13 @@ When upgrading an existing FoundationaLLM instance, the items from the `resource
 
 Refer to the dedicated upgrade tool for instructions on how to perform this update.
 
+### Configuration changes
+
+This release adds a new App Config setting that should be added to existing environments that are upgrading to 0.8.4 and beyond:
+
+- App Config key: `FoundationaLLM:Branding:NoAgentsMessage`
+- App Config value: `No agents available. Please check with your system administrator for assistance.`
+
 ## Starting with 0.8.3
 
 ### Resource provider changes

@@ -10,7 +10,6 @@ using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Graph.Models.CallRecords;
 using Polly;
 using Polly.Retry;
 using System.Diagnostics;
@@ -163,6 +162,18 @@ namespace FoundationaLLM.Common.Services
         /// <inheritdoc/>
         public async Task<Conversation> PatchConversationPropertiesAsync(string id, string upn, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default)
         {
+            // Append audit patch operations.
+            const string updatedBy = "/updatedBy";
+            const string updatedOn = "/updatedOn";
+            if (!propertyValues.ContainsKey(updatedBy))
+            {
+                propertyValues.Add(updatedBy, !string.IsNullOrWhiteSpace(upn) ? upn : "N/A");
+            }
+            if (!propertyValues.ContainsKey(updatedOn))
+            {
+                propertyValues.Add(updatedOn, DateTimeOffset.UtcNow);
+            }
+            
             var response = await _sessions.PatchItemAsync<Conversation>(
                 id: id,
                 partitionKey: new PartitionKey(id),
@@ -319,7 +330,7 @@ namespace FoundationaLLM.Common.Services
 
             var resultDictionary = new Dictionary<string, object>();
 
-            for (int i = 0; i < response.Count; i++)
+            for (var i = 0; i < response.Count; i++)
             {
                 var patchOperation = patchOperations[i];
 
