@@ -478,7 +478,21 @@ export default {
                 return api.saveBranding(brand.resource.key, params);
             });
 
-            const results = await Promise.all(promises);
+            try {
+                const results = await Promise.all(promises);
+                this.brandingOriginal = JSON.parse(JSON.stringify(this.branding));
+                this.$toast.add({
+                    severity: 'success',
+                    detail: 'Branding has been successfully updated.',
+                    life: 5000,
+                });
+            } catch (error) {
+                this.$toast.add({
+                    severity: 'error',
+                    detail: error?.response?._data || error,
+                    life: 5000,
+                });
+            }
         },
 
         contrastColorAA(backgroundKey, foregroundKey) {
