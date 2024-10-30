@@ -73,6 +73,7 @@
           "northcentralus",
           "southcentralus",
           "southindia",
+          "swedencentral",
           "westus",
           "westus3"
         ],
@@ -83,7 +84,7 @@
           "version": "2024-05-13"
         },
         "sku": {
-          "capacity": 100,
+          "capacity": 8,
           "name": "Standard"
         }
       },

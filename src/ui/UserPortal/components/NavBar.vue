@@ -13,6 +13,7 @@
 			<template v-if="!$appConfigStore.isKioskMode">
 				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 					<Button
+						class="navbar__header__button"
 						:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
 						size="small"
 						severity="secondary"
@@ -186,7 +187,7 @@ export default {
 			this.$toast.add({
 				severity: 'success',
 				detail: message,
-				life: 5000,
+				life: this.$appStore.autoHideToasts ? 5000 : null,
 			});
 		},
 
@@ -310,6 +311,10 @@ export default {
 	margin-right: 12px;
 }
 
+.navbar__header__button:focus {
+	box-shadow: 0 0 0 0.1rem #fff;
+}
+
 @media only screen and (max-width: 620px) {
 	.navbar__header {
 		width: 95px;
@@ -327,6 +332,11 @@ export default {
 	min-width: 44px;
 	min-height: 44px;
 }
+
+.dropdown--agent:focus {
+	box-shadow: 0 0 0 0.1rem #000;
+}
+
 @media only screen and (max-width: 545px) {
 	.dropdown--agent .p-dropdown-label {
 		/* display: none; */

@@ -1,7 +1,9 @@
+import { useAppStore } from '@/stores/appStore';
 import api from '@/js/api';
 import type { MessageContent } from '@/js/types';
 
 export async function fetchBlobUrl(content: MessageContent, toast: any) {
+	const appStore = useAppStore();
 	if (!content.blobUrl) {
 		content.loading = true;
 		try {
@@ -14,7 +16,7 @@ export async function fetchBlobUrl(content: MessageContent, toast: any) {
 				severity: 'error',
 				summary: 'Error downloading file',
 				detail: `Failed to download "${content.fileName}". ${error.message || error}`,
-				life: 5000,
+				life: appStore.autoHideToasts ? 5000 : null,
 			});
 			content.error = true;
 		} finally {
