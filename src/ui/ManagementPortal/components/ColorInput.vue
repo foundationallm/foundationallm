@@ -26,6 +26,7 @@
             icon="pi pi-undo" 
             @click="$emit('reset', originalValue)" 
             :disabled="value === originalValue" 
+            aria-label="Reset to default color"
         />
     </div>
 </template>
@@ -45,14 +46,6 @@ export default {
             this.$emit('updateValue', event.value);
         }
     },
-    created() {
-        console.log('ColorInputContainer created');
-        console.log('value:', this.value);
-        console.log('color:', this.color);
-        console.log('format:', this.format);
-        console.log('originalValue:', this.originalValue);
-        console.log('ariaLabel:', this.ariaLabel);
-    }
 };
 </script>
 

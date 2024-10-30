@@ -47,21 +47,21 @@
                     </div>
                 </div>
                 <div class="color-preview-container">
-                    <div class="color-ratio" v-if="group.keys.find(k => k.type === 'background').key && group.keys.find(k => k.type === 'foreground')?.key && showContrastInfo">
-                        {{ getContrastRatio(getBrandingValue(group.keys.find(k => k.type === 'background').key), getBrandingValue(group.keys.find(k => k.type === 'foreground')?.key) || 'transparent') }} : 1
+                    <div class="color-ratio" v-if="showContrastInfo">
+                        {{ contrastRatioText(group.keys.find(k => k.type === 'background').key, group.keys.find(k => k.type === 'foreground')?.key) }}
                     </div>
                     <div class="color-preview-background" :style="{ backgroundColor: getBrandingValue(group.keys.find(k => k.type === 'background').key) }">
                         <div class="color-preview-foreground" :style="{ color: getBrandingValue(group.keys.find(k => k.type === 'foreground')?.key) || 'transparent' }">TEST</div>
                     </div>
                     <div class="color-wcag-results-container" v-if="group.keys.find(k => k.type === 'background').key && group.keys.find(k => k.type === 'foreground')?.key && showContrastInfo">
                         <div class="color-wcag-results">
-                            <div class="color-wcag-result" :style="{ color: getContrastRatio(getBrandingValue(group.keys.find(k => k.type === 'background').key), getBrandingValue(group.keys.find(k => k.type === 'foreground')?.key) || 'transparent') >= 4.5 ? '#1a784c' : '#9e054a' }">
+                            <div class="color-wcag-result" :style="{ color: contrastColorAA(group.keys.find(k => k.type === 'background').key, group.keys.find(k => k.type === 'foreground')?.key) }">
                                 <div class="color-wcag-result-label">AA</div>
-                                <div class="color-wcag-result-value">{{ getContrastRatio(getBrandingValue(group.keys.find(k => k.type === 'background').key), getBrandingValue(group.keys.find(k => k.type === 'foreground')?.key) || 'transparent') >= 4.5 ? 'Pass' : 'Fail' }}</div>
+                                <div class="color-wcag-result-value">{{ contrastCompliance(group.keys.find(k => k.type === 'background').key, group.keys.find(k => k.type === 'foreground')?.key, 4.5) }}</div>
                             </div>
-                            <div class="color-wcag-result" :style="{ color: getContrastRatio(getBrandingValue(group.keys.find(k => k.type === 'background').key), getBrandingValue(group.keys.find(k => k.type === 'foreground')?.key) || 'transparent') >= 7 ? '#1a784c' : '#9e054a' }">
+                            <div class="color-wcag-result" :style="{ color: contrastColorAAA(group.keys.find(k => k.type === 'background').key, group.keys.find(k => k.type === 'foreground')?.key) }">
                                 <div class="color-wcag-result-label">AAA</div>
-                                <div class="color-wcag-result-value">{{ getContrastRatio(getBrandingValue(group.keys.find(k => k.type === 'background').key), getBrandingValue(group.keys.find(k => k.type === 'foreground')?.key) || 'transparent') >= 7 ? 'Pass' : 'Fail' }}</div>
+                                <div class="color-wcag-result-value">{{ contrastCompliance(group.keys.find(k => k.type === 'background').key, group.keys.find(k => k.type === 'foreground')?.key, 7) }}</div>
                             </div>
                         </div>
                     </div>
@@ -328,7 +328,6 @@ export default {
                 this.loading = true;
                 this.branding = await api.getBranding();
                 this.loading = false;
-                console.log(this.branding);
                 this.brandingOriginal = JSON.parse(JSON.stringify(this.branding));
                 this.getUnorderedKeys();
             } catch (error) {
@@ -427,7 +426,6 @@ export default {
         },
 
         updateBrandingValue(key: string, newValue: string) {
-            console.log(key, newValue);
             const isColorKey = this.orderedKeyColorsGrouped.some(group => group.keys.some(k => k.key === key));
             if (isColorKey) {
                 if (/^[0-9a-fA-F]{6}$/.test(newValue)) {
@@ -440,7 +438,6 @@ export default {
             }
             if (key === 'FoundationaLLM:Branding:FooterText') {
                 newValue = filterQuillHTML(newValue)
-                console.log(newValue);
             }
 
             const brand = this.branding?.find((item: any) => item.resource.key === key);
@@ -459,19 +456,14 @@ export default {
         },
 
         cancelBrandingChanges() {
-            console.log(this.footerText);
             this.branding = JSON.parse(JSON.stringify(this.brandingOriginal));
         },
 
         async saveBranding() {
-            console.log(this.branding);
-            console.log(this.brandingOriginal);
             const changedBranding = this.branding.filter((brand: any) => {
                 const originalBrand = this.brandingOriginal.find((original: any) => original.resource.key === brand.resource.key);
                 return originalBrand.resource.value !== brand.resource.value;
             });
-
-            console.log(changedBranding);
 
             const promises = changedBranding.map((brand: any) => {
                 const params = {
@@ -487,6 +479,43 @@ export default {
             });
 
             const results = await Promise.all(promises);
+        },
+
+        contrastColorAA(backgroundKey, foregroundKey) {
+            return this.getContrastRatio(
+                this.getBrandingValue(backgroundKey),
+                this.getBrandingValue(foregroundKey) || 'transparent'
+            ) >= 4.5
+                ? '#1a784c'
+                : '#9e054a';
+        },
+
+        contrastColorAAA(backgroundKey, foregroundKey) {
+            return this.getContrastRatio(
+                this.getBrandingValue(backgroundKey),
+                this.getBrandingValue(foregroundKey) || 'transparent'
+            ) >= 7
+                ? '#1a784c'
+                : '#9e054a';
+        },
+
+        contrastRatioText(backgroundKey, foregroundKey) {
+            if (!backgroundKey || !foregroundKey) {
+                return;
+            }
+            const ratio = this.getContrastRatio(
+                this.getBrandingValue(backgroundKey),
+                this.getBrandingValue(foregroundKey) || 'transparent'
+            );
+            return `${ratio} : 1`;
+        },
+
+        contrastCompliance(backgroundKey, foregroundKey, requiredRatio) {
+            const ratio = this.getContrastRatio(
+                this.getBrandingValue(backgroundKey),
+                this.getBrandingValue(foregroundKey) || 'transparent'
+            );
+            return ratio >= requiredRatio ? 'Pass' : 'Fail';
         },
     }
 };
