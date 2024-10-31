@@ -454,46 +454,26 @@ public partial class CoreService(
         attachmentFile.SecondaryProvider = agentRequiresOpenAIAssistants
             ? ResourceProviderNames.FoundationaLLM_AzureOpenAI
             : null;
-        var result = await _attachmentResourceProvider.UpsertResourceAsync<AttachmentFile, ResourceProviderUpsertResult<AttachmentFile>>(
+        var attachmentUpsertResult = await _attachmentResourceProvider.UpsertResourceAsync<AttachmentFile, ResourceProviderUpsertResult<AttachmentFile>>(
                 instanceId,
                 attachmentFile,
                 _userIdentity);
 
+        // TODO: Improve the logic of setting MustCreateAssistantFile to avoid unnecessary uploads to the Azure OpenAI file store.
+
         if (agentRequiresOpenAIAssistants)
         {
-            var userName = userIdentity.UPN?.NormalizeUserPrincipalName() ?? userIdentity.UserId;
-            var assistantUserContextName = $"{userName}-assistant-{instanceId.ToLower()}";
-            var fileUserContextName = $"{userName}-file-{instanceId.ToLower()}";
-
-            var fileMapping = new FileMapping
+            var fileMapping = new AzureOpenAIFileMapping
             {
-                FoundationaLLMObjectId = result.ObjectId!,
+                Name = string.Empty,
+                Id = string.Empty,
+                UPN = userIdentity.UPN!,
+                InstanceId = instanceId,
+                FileObjectId = attachmentUpsertResult.ObjectId!,
                 OriginalFileName = attachmentFile.OriginalFileName,
-                ContentType = attachmentFile.ContentType!
-            };
-
-            var fileUserContext = new FileUserContext
-            {
-                Name = fileUserContextName,
-                UserPrincipalName = userName!,
-                AssistantUserContextName = assistantUserContextName,
-                AgentFiles =
-                {
-                    {
-                        agentBase.ObjectId!,
-                        new()
-                        {
-                            Endpoint = apiEndpointConfiguration.Url,
-                            Files = new()
-                            {
-                                {
-                                    result.ObjectId!,
-                                    fileMapping
-                                }
-                            }
-                        }
-                    }
-                }
+                FileContentType = attachmentFile.ContentType!,
+                OpenAIEndpoint = apiEndpointConfiguration.Url,
+                OpenAIFileId = string.Empty
             };
 
             var resourceProviderUpsertOptions = new ResourceProviderUpsertOptions
@@ -502,8 +482,8 @@ public partial class CoreService(
                     {
                         { AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId, agentBase.ObjectId! },
                         { AzureOpenAIResourceProviderUpsertParameterNames.ConversationId, sessionId },
-                        { AzureOpenAIResourceProviderUpsertParameterNames.AttachmentObjectId, result.ObjectId },
-                        { AzureOpenAIResourceProviderUpsertParameterNames.MustCreateAssistantFile, false }
+                        { AzureOpenAIResourceProviderUpsertParameterNames.AttachmentObjectId, attachmentUpsertResult.ObjectId },
+                        { AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIFile, true }
                     }
             };
 
@@ -511,20 +491,26 @@ public partial class CoreService(
             if (_azureOpenAIFileSearchFileExtensions.Contains(extension))
             {
                 // The file also needs to be vectorized for the OpenAI assistant.
-                fileMapping.RequiresVectorization = true;
-
-                resourceProviderUpsertOptions
-                    .Parameters[AzureOpenAIResourceProviderUpsertParameterNames.MustCreateAssistantFile] = true;
+                fileMapping.FileRequiresVectorization = true;
             }
 
-            _ = await _azureOpenAIResourceProvider.UpsertResourceAsync<FileUserContext, ResourceProviderUpsertResult<FileUserContext>>(
+            var fileMappingUpsertResult = await _azureOpenAIResourceProvider.UpsertResourceAsync<AzureOpenAIFileMapping, ResourceProviderUpsertResult<AzureOpenAIFileMapping>>(
                 instanceId,
-                fileUserContext,
+                fileMapping,
                 userIdentity,
                 resourceProviderUpsertOptions);
+
+            await _attachmentResourceProvider.UpdateResourcePropertiesAsync<AttachmentFile, ResourceProviderUpsertResult<AttachmentFile>>(
+                instanceId,
+                attachmentUpsertResult.ObjectId!,
+                new Dictionary<string, object?>
+                {
+                    { "/secondaryProviderObjectId", fileMappingUpsertResult.Resource!.OpenAIFileId }
+                },
+                userIdentity);
         }
 
-        return result;
+        return attachmentUpsertResult;
     }
 
     /// <inheritdoc/>
@@ -534,19 +520,19 @@ public partial class CoreService(
         {
             if (fileProvider == ResourceProviderNames.FoundationaLLM_AzureOpenAI)
             {
-                var userName = userIdentity.UPN?.NormalizeUserPrincipalName() ?? userIdentity.UserId;
-                var fileUserContextName = $"{userName}-file-{instanceId.ToLower()}";
-
-                var result = await _azureOpenAIResourceProvider.GetResourceAsync<FileContent>(
-                    $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileUserContexts}/{fileUserContextName}/{AzureOpenAIResourceTypeNames.FilesContent}/{fileId}",
+                var result = await _azureOpenAIResourceProvider.ExecuteResourceActionAsync<FileContent, object?, ResourceProviderActionResult<FileContent>>(
+                    instanceId,
+                    fileId,
+                    ResourceProviderActions.LoadFileContent,
+                    null,
                     userIdentity);
 
                 return new AttachmentFile
                 {
-                    Name = result.Name,
-                    OriginalFileName = result.OriginalFileName,
-                    ContentType = result.ContentType,
-                    Content = result.BinaryContent!.Value.ToArray()
+                    Name = result.Resource!.Name,
+                    OriginalFileName = result.Resource!.OriginalFileName,
+                    ContentType = result.Resource!.ContentType,
+                    Content = result.Resource!.BinaryContent!.Value.ToArray()
                 };
             }
         }

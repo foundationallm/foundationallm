@@ -166,7 +166,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
         #region Resource management
 
-        private async Task<AssistantUserContextUpsertResult> UpdateAssistantUserContext(
+        private async Task<AzureOpenAIConversationMappingUpsertResult> UpdateAssistantUserContext(
             AssistantUserContext assistantUserContext,
             UnifiedUserIdentity userIdentity,
             ResourceProviderUpsertOptions? options = null)
@@ -183,14 +183,14 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.ConversationId} parameter to update the {assistantUserContext.Name} assistant user context.",
                     StatusCodes.Status400BadRequest);
 
-            var mustCreateAssistant = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.MustCreateAssistant) as bool?
+            var mustCreateAssistant = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIAssistant) as bool?
                 ?? throw new ResourceProviderException(
-                    $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.MustCreateAssistant} parameter to update the {assistantUserContext.Name} assistant user context.",
+                    $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIAssistant} parameter to update the {assistantUserContext.Name} assistant user context.",
                     StatusCodes.Status400BadRequest);
 
-            var mustCreateAssistantThread = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.MustCreateAssistantThread) as bool?
+            var mustCreateAssistantThread = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIAssistantThread) as bool?
                 ?? throw new ResourceProviderException(
-                    $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.MustCreateAssistantThread} parameter to update the {assistantUserContext.Name} assistant user context.",
+                    $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIAssistantThread} parameter to update the {assistantUserContext.Name} assistant user context.",
                     StatusCodes.Status400BadRequest);
 
             var fileUserContextName = $"{assistantUserContext.UserPrincipalName.NormalizeUserPrincipalName()}-file-{_instanceSettings.Id.ToLower()}";
@@ -224,15 +224,15 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
             Dictionary<string, object> parameters = new()
                 {
-                    { OpenAIAgentCapabilityParameterNames.CreateAssistant, mustCreateAssistant },
-                    { OpenAIAgentCapabilityParameterNames.CreateAssistantThread, mustCreateAssistantThread },
-                    { OpenAIAgentCapabilityParameterNames.Endpoint, agentAssistantUserContext.Endpoint },
-                    { OpenAIAgentCapabilityParameterNames.ModelDeploymentName, agentAssistantUserContext.ModelDeploymentName },
-                    { OpenAIAgentCapabilityParameterNames.AssistantPrompt, agentAssistantUserContext.Prompt }
+                    { OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistant, mustCreateAssistant },
+                    { OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantThread, mustCreateAssistantThread },
+                    { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, agentAssistantUserContext.Endpoint },
+                    { OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName, agentAssistantUserContext.ModelDeploymentName },
+                    { OpenAIAgentCapabilityParameterNames.OpenAIAssistantPrompt, agentAssistantUserContext.Prompt }
                 };
 
             if (!string.IsNullOrWhiteSpace(agentAssistantUserContext.OpenAIAssistantId))
-                parameters.Add(OpenAIAgentCapabilityParameterNames.AssistantId, agentAssistantUserContext.OpenAIAssistantId);
+                parameters.Add(OpenAIAgentCapabilityParameterNames.OpenAIAssistantId, agentAssistantUserContext.OpenAIAssistantId);
 
             var agentCapabilityResult = await gatewayClient!.CreateAgentCapability(
                 _instanceSettings.Id,
@@ -242,7 +242,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
             var referenceTime = DateTime.UtcNow;
 
-            if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantId, out var newOpenAIAssistantIdObject)
+            if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIAssistantId, out var newOpenAIAssistantIdObject)
                 && newOpenAIAssistantIdObject != null)
                 newOpenAIAssistantId = ((JsonElement)newOpenAIAssistantIdObject!).Deserialize<string>();
 
@@ -257,11 +257,11 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                 agentAssistantUserContext.OpenAIAssistantCreatedOn = referenceTime;
             }
 
-            if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantThreadId, out var newOpenAIAssistantThreadIdObject)
+            if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIAssistantThreadId, out var newOpenAIAssistantThreadIdObject)
                 && newOpenAIAssistantThreadIdObject != null)
                 newOpenAIAssistantThreadId = ((JsonElement)newOpenAIAssistantThreadIdObject!).Deserialize<string>();
 
-            if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantVectorStoreId, out var newOpenAIAssistantVectorStoreIdObject)
+            if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId, out var newOpenAIAssistantVectorStoreIdObject)
                 && newOpenAIAssistantVectorStoreIdObject != null)
                 newOpenAIAssistantVectorStoreId = ((JsonElement)newOpenAIAssistantVectorStoreIdObject!).Deserialize<string>();
 
@@ -358,7 +358,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
                         #endregion
 
-                        return new AssistantUserContextUpsertResult
+                        return new AzureOpenAIConversationMappingUpsertResult
                         {
                             ObjectId = assistantUserContext.ObjectId,
                             ResourceExists = false,
@@ -368,7 +368,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                         };
                     }
 
-                    return new AssistantUserContextUpsertResult
+                    return new AzureOpenAIConversationMappingUpsertResult
                     {
                         ObjectId = assistantUserContext.ObjectId,
                         ResourceExists = true
@@ -436,7 +436,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     await UpdateFileUserContext(newFileUserContext, userIdentity);
                 }
                   
-                return new AssistantUserContextUpsertResult
+                return new AzureOpenAIConversationMappingUpsertResult
                 {
                     ObjectId = assistantUserContext.ObjectId!,
                     ResourceExists = true,
@@ -448,7 +448,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
             }
         }
 
-        private async Task<FileUserContextUpsertResult> UpdateFileUserContext(
+        private async Task<AzureOpenAIFileMappingUpsertResult> UpdateFileUserContext(
             FileUserContext fileUserContext,
             UnifiedUserIdentity userIdentity,
             ResourceProviderUpsertOptions? options = null)
@@ -460,7 +460,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
             if (options != null)
             {
                 var optionResult =
-                    options.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.MustCreateAssistantFile) as bool?;
+                    options.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIFile) as bool?;
                 if (optionResult.HasValue)
                     mustCreateAssistantFile = optionResult.Value;
             }
@@ -509,8 +509,8 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
                 Dictionary<string, object> parameters = new()
                     {
-                        { OpenAIAgentCapabilityParameterNames.CreateAssistantFile, true },
-                        { OpenAIAgentCapabilityParameterNames.Endpoint, agentFileUserContext.Endpoint },
+                        { OpenAIAgentCapabilityParameterNames.CreateOpenAIFile, true },
+                        { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, agentFileUserContext.Endpoint },
                         { OpenAIAgentCapabilityParameterNames.AttachmentObjectId,  attachmentObjectId }
                     };
 
@@ -522,7 +522,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
                 var referenceTime = DateTime.UtcNow;
 
-                if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantFileId, out var newOpenAIFileIdObject)
+                if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIFileId, out var newOpenAIFileIdObject)
                     && newOpenAIFileIdObject != null)
                         newOpenAIFileId = ((JsonElement)newOpenAIFileIdObject!).Deserialize<string>();
 
@@ -576,7 +576,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
                         #endregion
 
-                        return new FileUserContextUpsertResult
+                        return new AzureOpenAIFileMappingUpsertResult
                         {
                             ObjectId = fileUserContext.ObjectId,
                             ResourceExists = false,
@@ -584,7 +584,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                         };
                     }
 
-                    return new FileUserContextUpsertResult
+                    return new AzureOpenAIFileMappingUpsertResult
                     {
                         ObjectId = fileUserContext.ObjectId,
                         ResourceExists = true,
@@ -625,7 +625,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     UpdateBaseProperties(fileUserContext, userIdentity, isNew: false);
                     await SaveResource<FileUserContext>(resourceReference, existingUserContext!);
 
-                    return new FileUserContextUpsertResult
+                    return new AzureOpenAIFileMappingUpsertResult
                     {
                         ObjectId = fileUserContext.ObjectId!,
                         ResourceExists = true,

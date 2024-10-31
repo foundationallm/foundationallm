@@ -475,6 +475,24 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         }
 
         /// <inheritdoc/>
+        public async Task<TResult> ExecuteResourceActionAsync<T, TAction, TResult>(string instanceId, string resourceName, string actionName, TAction actionPayload, UnifiedUserIdentity userIdentity)
+            where T : ResourceBase
+            where TAction : class?
+            where TResult : ResourceProviderActionResult<T>
+        {
+            EnsureServiceInitialization();
+            var (ParsedResourcePath, AuthorizableOperation) = CreateAndValidateResourcePath(instanceId, HttpMethod.Post, typeof(T), resourceName: resourceName, actionName: actionName);
+
+            var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation,
+                actionName == ResourceProviderActions.Filter, false, false);
+
+            var actionResult =
+                await ExecuteResourceActionAsyncInternal<T, TAction, TResult>(ParsedResourcePath, authorizationResult, actionPayload, userIdentity);
+
+            return actionResult;
+        }
+
+        /// <inheritdoc/>
         public async Task<(bool Exists, bool Deleted)> ResourceExistsAsync<T>(string instanceId, string resourceName, UnifiedUserIdentity userIdentity)
             where T : ResourceBase
         {
@@ -571,6 +589,38 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             UnifiedUserIdentity userIdentity)
             where T : ResourceBase
             where TResult : ResourceProviderUpsertResult<T>
+        {
+            await Task.CompletedTask;
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// The internal implementation of ExecuteResourceActionAsync. Must be overridden in derived classes.
+        /// </summary>
+        /// <param name="resourcePath">A <see cref="ResourcePath"/> containing information about the resource path.</param>
+        /// <param name="authorizationResult">The <see cref="ResourcePathAuthorizationResult"/> containing the result of the resource path authorization request.</param>
+        /// <param name="actionPayload">The <typeparamref name="TAction"/> object containing details about the action to be executed.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
+        /// <returns>A <typeparamref name="TResult"/> object with the result of the action.</returns>
+        /// <remarks>
+        /// In the special case of the <c>filter</c> action, the override must handle the authorization result and return
+        /// the appropriate response as follows:
+        /// <list type="number">
+        /// <item>The read action is authorized for the resource path itself.
+        /// In this case, all matching resources must be returned according to the PBAC policies specified by the authorization result (if any).</item>
+        /// <item>The read action is denied for the resource path itself.
+        /// In this case, only the matching resources specified in the subordinate authorized resource paths list
+        /// of the authorization result should be returned (if any).</item>
+        /// </list>
+        /// </remarks>
+        protected virtual async Task<TResult> ExecuteResourceActionAsyncInternal<T, TAction, TResult>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            TAction actionPayload,
+            UnifiedUserIdentity userIdentity)
+            where T : ResourceBase
+            where TAction : class?
+            where TResult : ResourceProviderActionResult<T>
         {
             await Task.CompletedTask;
             throw new NotImplementedException();
@@ -690,14 +740,32 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             string instanceId,
             HttpMethod operationType,
             Type resourceType,
-            string? resourceName = null)
+            string? resourceName = null,
+            string? actionName = null)
         {
+            var hasAction = !string.IsNullOrWhiteSpace(actionName);
             var result = GetResourcePath(instanceId, resourceType, resourceName);
             var parsedResourcePath = new ResourcePath(
                 result.ResourcePath,
                 _allowedResourceProviders,
                 _allowedResourceTypes,
-                allowAction: false);
+                allowAction: hasAction);
+
+            if (hasAction)
+            {
+                var allowedTypes = result.ResourceTypeDescriptor.Actions?
+                    .SingleOrDefault(a => a.Name == actionName)?
+                    .AllowedTypes?
+                    .SingleOrDefault(at => at.HttpMethod == operationType.Method)
+                    ?? throw new ResourceProviderException(
+                        $"The resource path {result.ResourcePath} does not support operation {operationType.Method}.",
+                        StatusCodes.Status400BadRequest);
+                return
+                    (
+                        parsedResourcePath,
+                        allowedTypes.AuthorizableOperation
+                    );
+            }
 
             var resourceAllowedTypes =
                 result.ResourceTypeDescriptor.AllowedTypes.SingleOrDefault(at => at.HttpMethod == operationType.Method)
@@ -1425,8 +1493,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="resourceType">The type of the resource.</param>
         /// <param name="resourceName">The name of the resource.</param>
+        /// <param name="actionName">The name of the action.</param>
         /// <returns></returns>
-        protected (string ResourcePath, ResourceTypeDescriptor ResourceTypeDescriptor) GetResourcePath(string instanceId, Type resourceType, string? resourceName = null)
+        protected (string ResourcePath, ResourceTypeDescriptor ResourceTypeDescriptor) GetResourcePath(string instanceId, Type resourceType, string? resourceName = null, string? actionName = null)
         {
             if (string.IsNullOrWhiteSpace(instanceId))
                 throw new ResourceProviderException(
@@ -1442,8 +1511,12 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             return
                 (
                     string.IsNullOrWhiteSpace(resourceName)
-                        ? $"/instances/{instanceId}/providers/{this.Name}/{resourceTypeDescriptor.ResourceTypeName}"
-                        : $"/instances/{instanceId}/providers/{this.Name}/{resourceTypeDescriptor.ResourceTypeName}/{resourceName}",
+                        ? (string.IsNullOrWhiteSpace(actionName)
+                            ? $"/instances/{instanceId}/providers/{Name}/{resourceTypeDescriptor.ResourceTypeName}"
+                            : $"/instances/{instanceId}/providers/{Name}/{resourceTypeDescriptor.ResourceTypeName}/{actionName}")
+                        : (string.IsNullOrWhiteSpace(actionName)
+                            ? $"/instances/{instanceId}/providers/{this.Name}/{resourceTypeDescriptor.ResourceTypeName}/{resourceName}"
+                            : $"/instances/{instanceId}/providers/{this.Name}/{resourceTypeDescriptor.ResourceTypeName}/{resourceName}/{actionName}"),
                     resourceTypeDescriptor
                 );
         }

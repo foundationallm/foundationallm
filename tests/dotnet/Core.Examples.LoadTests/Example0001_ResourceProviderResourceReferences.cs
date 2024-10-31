@@ -98,7 +98,7 @@ namespace FoundationaLLM.Core.Examples.LoadTests
                 }
             };
 
-            await resourceProvider.UpsertResourceAsync<AssistantUserContext, AssistantUserContextUpsertResult>(
+            await resourceProvider.UpsertResourceAsync<AssistantUserContext, AzureOpenAIConversationMappingUpsertResult>(
                 instanceId,
                 assistantUserContext,
                 userIdentity);
