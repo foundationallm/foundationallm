@@ -9,6 +9,7 @@ from openai.types.beta.threads import Message
 from openai.types.beta.threads.message import Attachment
 from openai.types.beta.threads.runs import RunStep
 from foundationallm.event_handlers import OpenAIAssistantAsyncEventHandler
+from foundationallm.models.orchestration import OpenAITextMessageContentItem
 from foundationallm.operations import OperationsManager
 from foundationallm.models.services import OpenAIAssistantsAPIRequest, OpenAIAssistantsAPIResponse
 from foundationallm.services import ImageService
@@ -70,9 +71,13 @@ class OpenAIAssistantsApiService:
             )
         except Exception as e:
             error_message = f"Error adding user prompt message to thread: {e}"
-            print(error_message)
             return OpenAIAssistantsAPIResponse(
                 document_id = request.document_id,
+                content = [
+                    OpenAITextMessageContentItem(
+                        text = "A problem on my side prevented me from responding."
+                    )
+                ],
                 errors = [error_message]
             )
         
@@ -109,6 +114,11 @@ class OpenAIAssistantsApiService:
         if run.status == "failed":
             return OpenAIAssistantsAPIResponse(
                 document_id = request.document_id,
+                content = [
+                    OpenAITextMessageContentItem(
+                        text = "A problem on my side prevented me from responding."
+                    )
+                ],
                 errors = [
                     run.last_error.message
                 ]
