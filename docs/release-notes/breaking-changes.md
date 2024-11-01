@@ -68,10 +68,18 @@ Refer to the dedicated upgrade tool for instructions on how to perform this upda
 
 ### Configuration changes
 
+#### App Config settings
+
 This release adds a new App Config setting that should be added to existing environments that are upgrading to 0.8.4 and beyond:
 
 - App Config key: `FoundationaLLM:Branding:NoAgentsMessage`
 - App Config value: `No agents available. Please check with your system administrator for assistance.`
+
+#### Resource provider templates
+
+The `AzureOpenAI.template.json` files within `deploy/quick-start/data/resource-provider/FoundationaLLM.Configuration` and `deploy/standard/data/resource-provider/FoundationaLLM.Configuration` have been updated to set the `category` field to the value `LLM`. This discriminator allows the Management Portal to filter the list of API endpoints by category and provide options to add AI Models to endpoints with the `LLM` category.
+
+The existing `category` property needs to be set to `LLM` on existing API endpoint configurations in the `FoundationaLLM.Configuration` resource provider that fit this description, including the `AzureOpenAI` endpoint configuration.
 
 ## Starting with 0.8.3
 
