@@ -38,7 +38,7 @@ class Configuration:
             exclude_environment_credential=True)
         # Connect to Azure App Configuration with key filter
         selectors = [SettingSelector(
-            key_filter="FoundationaLLM:APIs:GatekeeperIntegrationAPI:*")]
+            key_filter="FoundationaLLM:APIEndpoints:GatekeeperIntegrationAPI:*")]
         app_config = load(endpoint=app_config_uri, credential=credential, selects=selectors,
                             key_vault_options=
                             AzureAppConfigurationKeyVaultOptions(credential=credential))

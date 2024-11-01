@@ -3,9 +3,11 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
+using FoundationaLLM.Common.Models.Orchestration.Response.OpenAI;
 using FoundationaLLM.Gatekeeper.Core.Interfaces;
 using FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions;
 using Microsoft.Extensions.Options;
+using System.Text.Json;
 
 namespace FoundationaLLM.Gatekeeper.Core.Services
 {
@@ -161,13 +163,33 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
 
             _gatekeeperServiceSettings.EnableMicrosoftPresidio = operationContext.GatekeeperOptions.Any(x => x == GatekeeperOptionNames.MicrosoftPresidio);
 
-            if (operationStatus.Status == OperationStatus.Completed
-                && operationStatus.Result != null
-                && operationStatus.Result is CompletionResponse completionResponse
+            if ( operationStatus.Result != null               
                 && _gatekeeperServiceSettings.EnableMicrosoftPresidio)
             {
-                completionResponse.Completion = await _gatekeeperIntegrationAPIService.AnonymizeText(completionResponse.Completion);
-                operationStatus.Result = completionResponse;
+                if (operationStatus.Result is JsonElement jsonElement)
+                {
+                    var completionResponse = jsonElement.Deserialize<CompletionResponse>();
+
+                    if (completionResponse != null)
+                    {
+                        if(!string.IsNullOrWhiteSpace(completionResponse.Completion))
+                        {
+                            completionResponse.Completion = await _gatekeeperIntegrationAPIService.AnonymizeText(completionResponse.Completion);
+                        }                        
+                        if(completionResponse.Content!=null)
+                        {
+                            foreach(var contentItem in completionResponse.Content)
+                            {
+                                if (contentItem is OpenAITextMessageContentItem openAITextMessageContentItem)
+                                {
+                                    (contentItem as OpenAITextMessageContentItem)!.Value = await _gatekeeperIntegrationAPIService.AnonymizeText(openAITextMessageContentItem.Value!);                                    
+                                }                                
+                            }
+                        }
+
+                        operationStatus.Result = completionResponse;
+                    }
+                }
             }
 
             return operationStatus;
