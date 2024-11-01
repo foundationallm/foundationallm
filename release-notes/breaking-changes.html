@@ -132,11 +132,15 @@
 </code></pre>
 <p>Refer to the dedicated upgrade tool for instructions on how to perform this update.</p>
 <h3 id="configuration-changes">Configuration changes</h3>
+<h4 id="app-config-settings">App Config settings</h4>
 <p>This release adds a new App Config setting that should be added to existing environments that are upgrading to 0.8.4 and beyond:</p>
 <ul>
 <li>App Config key: <code>FoundationaLLM:Branding:NoAgentsMessage</code></li>
 <li>App Config value: <code>No agents available. Please check with your system administrator for assistance.</code></li>
 </ul>
+<h4 id="resource-provider-templates">Resource provider templates</h4>
+<p>The <code>AzureOpenAI.template.json</code> files within <code>deploy/quick-start/data/resource-provider/FoundationaLLM.Configuration</code> and <code>deploy/standard/data/resource-provider/FoundationaLLM.Configuration</code> have been updated to set the <code>category</code> field to the value <code>LLM</code>. This discriminator allows the Management Portal to filter the list of API endpoints by category and provide options to add AI Models to endpoints with the <code>LLM</code> category.</p>
+<p>The existing <code>category</code> property needs to be set to <code>LLM</code> on existing API endpoint configurations in the <code>FoundationaLLM.Configuration</code> resource provider that fit this description, including the <code>AzureOpenAI</code> endpoint configuration.</p>
 <h2 id="starting-with-083">Starting with 0.8.3</h2>
 <h3 id="resource-provider-changes-1">Resource provider changes</h3>
 <p>If a user/group is not assigned to the instance-level Contributor role, then they will not be able to create new Conversations or upload Attachments. To adjust their permissions, the following changes are required:</p>
