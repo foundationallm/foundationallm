@@ -111,7 +111,7 @@ namespace FoundationaLLM.Common.Interfaces
         Task<TResult> ExecuteResourceActionAsync<T, TAction, TResult>(string instanceId, string resourceName, string actionName, TAction actionPayload, UnifiedUserIdentity userIdentity)
             where T : ResourceBase
             where TAction : class?
-            where TResult : ResourceProviderActionResult<T>;
+            where TResult : ResourceProviderActionResult;
 
         /// <summary>
         /// Checks if a resource exists.

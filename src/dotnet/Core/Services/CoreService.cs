@@ -4,7 +4,6 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Orchestration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
-using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Azure.CosmosDB;
@@ -520,7 +519,7 @@ public partial class CoreService(
         {
             if (fileProvider == ResourceProviderNames.FoundationaLLM_AzureOpenAI)
             {
-                var result = await _azureOpenAIResourceProvider.ExecuteResourceActionAsync<FileContent, object?, ResourceProviderActionResult<FileContent>>(
+                var result = await _azureOpenAIResourceProvider.ExecuteResourceActionAsync<AzureOpenAIFileMapping, object?, ResourceProviderActionResult<FileContent>>(
                     instanceId,
                     fileId,
                     ResourceProviderActions.LoadFileContent,
@@ -531,7 +530,7 @@ public partial class CoreService(
                 {
                     Name = result.Resource!.Name,
                     OriginalFileName = result.Resource!.OriginalFileName,
-                    ContentType = result.Resource!.ContentType,
+                    ContentType = result.Resource!.ContentType,  
                     Content = result.Resource!.BinaryContent!.Value.ToArray()
                 };
             }

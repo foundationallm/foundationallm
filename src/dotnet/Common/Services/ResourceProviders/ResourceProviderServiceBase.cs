@@ -478,7 +478,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         public async Task<TResult> ExecuteResourceActionAsync<T, TAction, TResult>(string instanceId, string resourceName, string actionName, TAction actionPayload, UnifiedUserIdentity userIdentity)
             where T : ResourceBase
             where TAction : class?
-            where TResult : ResourceProviderActionResult<T>
+            where TResult : ResourceProviderActionResult
         {
             EnsureServiceInitialization();
             var (ParsedResourcePath, AuthorizableOperation) = CreateAndValidateResourcePath(instanceId, HttpMethod.Post, typeof(T), resourceName: resourceName, actionName: actionName);
@@ -620,7 +620,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             UnifiedUserIdentity userIdentity)
             where T : ResourceBase
             where TAction : class?
-            where TResult : ResourceProviderActionResult<T>
+            where TResult : ResourceProviderActionResult
         {
             await Task.CompletedTask;
             throw new NotImplementedException();

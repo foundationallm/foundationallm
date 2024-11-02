@@ -14,10 +14,5 @@
         /// Azure OpenAI to FoundationaLLM file mappings.
         /// </summary>
         public const string FileMappings = "fileMappings";
-
-        /// <summary>
-        /// OpenAI files content.
-        /// </summary>
-        public const string FilesContent = "filesContent";
     }
 }
