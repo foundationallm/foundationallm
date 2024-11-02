@@ -21,8 +21,8 @@
                 <InputSwitch v-if="key === 'FoundationaLLM:Branding:KioskMode'" v-model:modelValue="kioskMode" @change="updateBrandingValue(key, JSON.stringify(kioskMode))" />
                 <CustomQuillEditor
                     v-if="key === 'FoundationaLLM:Branding:FooterText'"
-                    :initialContent="footerText"
-                    @contentUpdate="updateFooterText"
+                    :initialContent="JSON.parse(JSON.stringify(getBrandingValue(key)))"
+                    @contentUpdate="updateFooterText(key, $event)"
                 />
                 <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" class="branding-input" :aria-labelledby="key.split(':').pop()" v-if="key !== 'FoundationaLLM:Branding:FooterText' && key !== 'FoundationaLLM:Branding:KioskMode'" />
                 <div class="logo-preview" :style="{ backgroundColor: getBrandingValue('FoundationaLLM:Branding:PrimaryColor') }" v-if="key === 'FoundationaLLM:Branding:LogoUrl'">
@@ -217,7 +217,11 @@ export default {
                 {
                     "key": "FoundationaLLM:Branding:FooterText",
                     "value": "FoundationaLLM (c) 2024",
-                }
+                },
+                {
+                    "key": "FoundationaLLM:Branding:NoAgentsMessage",
+                    "value": "No agents available. Please check with your system administrator for assistance.",
+                },
             ],
             orderedKeys: [
                 "FoundationaLLM:Branding:CompanyName",
@@ -228,6 +232,7 @@ export default {
                 "FoundationaLLM:Branding:LogoUrl",
                 "FoundationaLLM:Branding:PageTitle",
                 "FoundationaLLM:Branding:AgentIconUrl",
+                "FoundationaLLM:Branding:NoAgentsMessage",
             ],
             orderedKeyColorsGrouped: [
                 {
@@ -417,12 +422,12 @@ export default {
             return key.split(':').pop()?.replace(/([A-Z])/g, ' $1').trim() || '';
         },
 
-        updateFooterText(newContent: string) {
-            if (newContent === this.footerText) {
+        updateFooterText(key: string, newContent: string) {
+            if (newContent === this.getBrandingValue(key)) {
                 return;
             }
-            this.footerText = newContent;
-            this.updateBrandingValue('FoundationaLLM:Branding:FooterText', this.footerText);
+            console.log('updateFooterText', key, newContent);
+            this.updateBrandingValue(key, newContent);
         },
 
         updateBrandingValue(key: string, newValue: string) {
