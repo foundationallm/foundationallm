@@ -1,8 +1,11 @@
 ﻿using Azure.Messaging;
 using FluentValidation;
 using FoundationaLLM.Agent.Models.Resources;
+using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.Configuration;
+using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
@@ -250,7 +253,60 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         StatusCodes.Status500InternalServerError);
             }
 
-            var validator = _resourceValidatorFactory.GetValidator(agentReference.ResourceType);
+            if (agent.HasCapability(AgentCapabilityCategoryNames.OpenAIAssistants))
+            {
+                var openAIAssistantId = agent.Properties?.GetValueOrDefault(
+                    AgentPropertyNames.AzureOpenAIAssistantId);
+
+                if (string.IsNullOrWhiteSpace(openAIAssistantId))
+                {
+                    // The agent uses the Azure OpenAI Assistants workflow
+                    // but it does not have an associated assistant.
+                    // Proceed to create the Azure OpenAI Assistants assistant.
+
+                    #region Resolve various agent properties
+
+                    var aiModelResourceProvider = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel);
+
+                    #endregion
+
+                    #region Create Azure OpenAI Assistants assistant
+
+                    var gatewayClient = new GatewayServiceClient(
+                       await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
+                           .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
+                       _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
+
+                    Dictionary<string, object> parameters = new()
+                        {
+                            { OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistant, mustCreateAssistant },
+                            { OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantThread, mustCreateAssistantThread },
+                            { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, agentAssistantUserContext.Endpoint },
+                            { OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName, agentAssistantUserContext.ModelDeploymentName },
+                            { OpenAIAgentCapabilityParameterNames.OpenAIAssistantPrompt, agentAssistantUserContext.Prompt }
+                        };
+
+                    if (!string.IsNullOrWhiteSpace(agentAssistantUserContext.OpenAIAssistantId))
+                        parameters.Add(OpenAIAgentCapabilityParameterNames.OpenAIAssistantId, agentAssistantUserContext.OpenAIAssistantId);
+
+                    var agentCapabilityResult = await gatewayClient!.CreateAgentCapability(
+                        _instanceSettings.Id,
+                        AgentCapabilityCategoryNames.OpenAIAssistants,
+                        assistantUserContext.Name,
+                        parameters);
+
+                    var referenceTime = DateTime.UtcNow;
+
+                    if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIAssistantId, out var newOpenAIAssistantIdObject)
+                        && newOpenAIAssistantIdObject != null)
+                        newOpenAIAssistantId = ((JsonElement)newOpenAIAssistantIdObject!).Deserialize<string>();
+
+
+                    #endregion
+                }
+            }
+
+                var validator = _resourceValidatorFactory.GetValidator(agentReference.ResourceType);
             if (validator is IValidator agentValidator)
             {
                 var context = new ValidationContext<object>(agent);
