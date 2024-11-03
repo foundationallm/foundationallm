@@ -15,6 +15,9 @@ using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
+using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
+using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using Microsoft.AspNetCore.Http;
@@ -255,7 +258,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
             if (agent.HasCapability(AgentCapabilityCategoryNames.OpenAIAssistants))
             {
-                var openAIAssistantId = agent.Properties?.GetValueOrDefault(
+                agent.Properties ??= [];
+
+                var openAIAssistantId = agent.Properties.GetValueOrDefault(
                     AgentPropertyNames.AzureOpenAIAssistantId);
 
                 if (string.IsNullOrWhiteSpace(openAIAssistantId))
@@ -264,9 +269,18 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     // but it does not have an associated assistant.
                     // Proceed to create the Azure OpenAI Assistants assistant.
 
+                    _logger.LogInformation(
+                        "Starting to create the Azure OpenAI assistant for agent {AgentName}",
+                        agent.Name);
+
                     #region Resolve various agent properties
 
-                    var aiModelResourceProvider = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel);
+                    var agentAIModel = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel)
+                        .GetResourceAsync<AIModelBase>(agent.AIModelObjectId!, userIdentity);
+                    var agentAIModelAPIEndpoint = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Configuration)
+                        .GetResourceAsync<APIEndpointConfiguration>(agentAIModel.EndpointObjectId!, userIdentity);
+                    var agentPrompt = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Prompt)
+                        .GetResourceAsync<MultipartPrompt>(agent.PromptObjectId!, userIdentity);
 
                     #endregion
 
@@ -279,28 +293,32 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
                     Dictionary<string, object> parameters = new()
                         {
-                            { OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistant, mustCreateAssistant },
-                            { OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantThread, mustCreateAssistantThread },
-                            { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, agentAssistantUserContext.Endpoint },
-                            { OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName, agentAssistantUserContext.ModelDeploymentName },
-                            { OpenAIAgentCapabilityParameterNames.OpenAIAssistantPrompt, agentAssistantUserContext.Prompt }
+                            { OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistant, true },
+                            { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, agentAIModelAPIEndpoint.Url },
+                            { OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName, agentAIModel.DeploymentName! },
+                            { OpenAIAgentCapabilityParameterNames.OpenAIAssistantPrompt, agentPrompt.Prefix! }
                         };
-
-                    if (!string.IsNullOrWhiteSpace(agentAssistantUserContext.OpenAIAssistantId))
-                        parameters.Add(OpenAIAgentCapabilityParameterNames.OpenAIAssistantId, agentAssistantUserContext.OpenAIAssistantId);
 
                     var agentCapabilityResult = await gatewayClient!.CreateAgentCapability(
                         _instanceSettings.Id,
                         AgentCapabilityCategoryNames.OpenAIAssistants,
-                        assistantUserContext.Name,
+                        $"FoundationaLLM - {agent.Name}",
                         parameters);
 
-                    var referenceTime = DateTime.UtcNow;
+                    var newOpenAIAssistantId = default(string);
 
                     if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIAssistantId, out var newOpenAIAssistantIdObject)
                         && newOpenAIAssistantIdObject != null)
                         newOpenAIAssistantId = ((JsonElement)newOpenAIAssistantIdObject!).Deserialize<string>();
 
+                    if (string.IsNullOrWhiteSpace(newOpenAIAssistantId))
+                        throw new ResourceProviderException($"Could not create an Azure OpenAI assistant for the agent {agent} which requires it.",
+                            StatusCodes.Status500InternalServerError);
+
+                    _logger.LogInformation(
+                        "The Azure OpenAI assistant {AssistantId} for agent {AgentName} was created successfuly.",
+                        newOpenAIAssistantId, agent.Name);
+                    agent.Properties[AgentPropertyNames.AzureOpenAIAssistantId] = newOpenAIAssistantId;
 
                     #endregion
                 }
