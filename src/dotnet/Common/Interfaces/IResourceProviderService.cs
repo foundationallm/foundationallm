@@ -37,7 +37,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// Gets resources of a specific type.
         /// </summary>
         /// <typeparam name="T">The type of resource to return.</typeparam>
-        /// <param name="instanceId">The FoundationaLLM instance id.</param>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
         /// <param name="options">The <see cref="ResourceProviderGetOptions"/> which provides operation parameters.</param>
         /// <returns>A list of <see cref="ResourceProviderGetResult{T}"/> containing the loaded resources.</returns>
@@ -61,7 +61,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// Gets a resource based on its name.
         /// </summary>
         /// <typeparam name="T">The type of the resource.</typeparam>
-        /// <param name="instanceId">The FoundationaLLM instance id.</param>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="resourceName">The logical path of the resource.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
         /// <param name="options">The <see cref="ResourceProviderGetOptions"/> which provides operation parameters.</param>
@@ -74,7 +74,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// </summary>
         /// <typeparam name="T">The type of the resource.</typeparam>
         /// <typeparam name="TResult">The type of the result returned</typeparam>
-        /// <param name="instanceId">The FoundationaLLM instance id.</param>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="resource">The instance of the resource being created or updated.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
         /// <param name="options">The <see cref="ResourceProviderUpsertOptions"/> which provides operation parameters.</param>
@@ -88,7 +88,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// </summary>
         /// <typeparam name="T">The type of the resource.</typeparam>
         /// <typeparam name="TResult">The type of the result returned.</typeparam>
-        /// <param name="instanceId">The FoundationaLLM instance id.</param>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="resourceName">The name of the resource being updated.</param>
         /// <param name="propertyValues">The dictionary with propery names and values to update.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
@@ -97,10 +97,27 @@ namespace FoundationaLLM.Common.Interfaces
             where TResult : ResourceProviderUpsertResult<T>;
 
         /// <summary>
+        /// Executes an action on a resource.
+        /// </summary>
+        /// <typeparam name="T">The type of the resource.</typeparam>
+        /// <typeparam name="TAction">The type of the action payload providing details about the action to be executed.</typeparam>
+        /// <typeparam name="TResult">The type of the result returned.</typeparam>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="resourceName">The name of the resource on which the action is executed.</param>
+        /// <param name="actionName">The name of the action being executed.</param>
+        /// <param name="actionPayload">The payload of the action providing details about it.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
+        /// <returns></returns>
+        Task<TResult> ExecuteResourceActionAsync<T, TAction, TResult>(string instanceId, string resourceName, string actionName, TAction actionPayload, UnifiedUserIdentity userIdentity)
+            where T : ResourceBase
+            where TAction : class?
+            where TResult : ResourceProviderActionResult;
+
+        /// <summary>
         /// Checks if a resource exists.
         /// </summary>
         /// <typeparam name="T">The type of the resource.</typeparam>
-        /// <param name="instanceId">The FoundationaLLM instance ID.</param>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="resourceName">The resource name being checked.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
         /// <returns>A tuple indicating whether the resource exists or not and whether it is logically deleted or not.</returns>
@@ -114,7 +131,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// Deletes logically a resource based on its logical path.
         /// </summary>
         /// <typeparam name="T">The type of the resource.</typeparam>
-        /// <param name="instanceId">The FoundationaLLM instance ID.</param>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="resourceName">The name of the resource being logically deleted.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
         /// <returns></returns>

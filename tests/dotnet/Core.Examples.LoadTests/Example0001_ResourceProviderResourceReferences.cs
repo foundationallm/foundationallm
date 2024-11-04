@@ -80,28 +80,28 @@ namespace FoundationaLLM.Core.Examples.LoadTests
             UnifiedUserIdentity userIdentity)
         {
             var assistantUserContextName = $"{userIdentity.UPN!.NormalizeUserPrincipalName()}-assistant-{instanceId.ToLower()}";
-            var assistantUserContext = new AssistantUserContext
-            {
-                Name = assistantUserContextName,
-                UserPrincipalName = userIdentity.UPN!,
-                AgentAssistants = new()
-                {
-                    {
-                        agentObjectId,
-                        new()
-                        {
-                            Endpoint = "endpoint_placeholder",
-                            ModelDeploymentName = "model_placeholder",
-                            Prompt = "prompt_placeholder",
-                        }
-                    }
-                }
-            };
+            //var assistantUserContext = new AssistantUserContext
+            //{
+            //    Name = assistantUserContextName,
+            //    UserPrincipalName = userIdentity.UPN!,
+            //    AgentAssistants = new()
+            //    {
+            //        {
+            //            agentObjectId,
+            //            new()
+            //            {
+            //                Endpoint = "endpoint_placeholder",
+            //                ModelDeploymentName = "model_placeholder",
+            //                Prompt = "prompt_placeholder",
+            //            }
+            //        }
+            //    }
+            //};
 
-            await resourceProvider.UpsertResourceAsync<AssistantUserContext, AssistantUserContextUpsertResult>(
-                instanceId,
-                assistantUserContext,
-                userIdentity);
+            //await resourceProvider.UpsertResourceAsync<AssistantUserContext, AzureOpenAIConversationMappingUpsertResult>(
+            //    instanceId,
+            //    assistantUserContext,
+            //    userIdentity);
         }
 
         private List<UnifiedUserIdentity> GetUserIdentities(

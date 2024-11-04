@@ -16,14 +16,14 @@
         public const string ConversationId = "conversation-id";
 
         /// <summary>
-        /// Indicates whether the assistant associated with the <see cref="AgentObjectId"/> must be created.
+        /// The identifier of the OpenAI assistant.
         /// </summary>
-        public const string MustCreateAssistant = "must-create-assistant";
+        public const string OpenAIAssistantId = "openai-assistant-id";
 
         /// <summary>
         /// Indicates whether the assistant thread associated with the <see cref="ConversationId"/> must be created.
         /// </summary>
-        public const string MustCreateAssistantThread = "must-create-assistant-thread";
+        public const string MustCreateOpenAIAssistantThread = "must-create-openai-assistant-thread";
 
         /// <summary>
         /// The FoundationaLLM identifier of the attachment.
@@ -33,6 +33,6 @@
         /// <summary>
         /// Indicates whether the attachment identified by <see cref="AttachmentObjectId"/> must be added to the assistant file store.
         /// </summary>
-        public const string MustCreateAssistantFile = "must-create-assistant-file";
+        public const string MustCreateOpenAIFile = "must-create-openai-file";
     }
 }

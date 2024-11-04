@@ -51,34 +51,34 @@ namespace FoundationaLLM.Common.Constants.Authorization
         #region AzureOpenAI
 
         /// <summary>
-        /// Read assistant user contexts.
+        /// Read Azure OpenAI conversation mappings.
         /// </summary>
-        public const string FoundationaLLM_AzureOpenAI_AssistantUserContexts_Read = "FoundationaLLM.AzureOpenAI/assistantUserContexts/read";
+        public const string FoundationaLLM_AzureOpenAI_ConversationMappings_Read = "FoundationaLLM.AzureOpenAI/conversationMappings/read";
 
         /// <summary>
-        /// Create or update assistant user contexts.
+        /// Create or update Azure OpenAI conversation mappings.
         /// </summary>
-        public const string FoundationaLLM_AzureOpenAI_AssistantUserContexts_Write = "FoundationaLLM.AzureOpenAI/assistantUserContexts/write";
+        public const string FoundationaLLM_AzureOpenAI_ConversationMappings_Write = "FoundationaLLM.AzureOpenAI/conversationMappings/write";
 
         /// <summary>
-        /// Delete assistant user contexts.
+        /// Delete Azure OpenAI conversation mappings.
         /// </summary>
-        public const string FoundationaLLM_AzureOpenAI_AssistantUserContexts_Delete = "FoundationaLLM.AzureOpenAI/assistantUserContexts/delete";
+        public const string FoundationaLLM_AzureOpenAI_ConversationMappings_Delete = "FoundationaLLM.AzureOpenAI/conversationMappings/delete";
 
         /// <summary>
-        /// Read file user contexts.
+        /// Read Azure OpenAI file mappings.
         /// </summary>
-        public const string FoundationaLLM_AzureOpenAI_FileUserContexts_Read = "FoundationaLLM.AzureOpenAI/fileUserContexts/read";
+        public const string FoundationaLLM_AzureOpenAI_FileMappings_Read = "FoundationaLLM.AzureOpenAI/fileMappings/read";
 
         /// <summary>
-        /// Create or update file user contexts.
+        /// Create or update Azure OpenAI file mappings.
         /// </summary>
-        public const string FoundationaLLM_AzureOpenAI_FileUserContexts_Write = "FoundationaLLM.AzureOpenAI/fileUserContexts/write";
+        public const string FoundationaLLM_AzureOpenAI_FileMappings_Write = "FoundationaLLM.AzureOpenAI/fileMappings/write";
 
         /// <summary>
-        /// Delete file user contexts.
+        /// Delete Azure OpenAI file mappings.
         /// </summary>
-        public const string FoundationaLLM_AzureOpenAI_FileUserContexts_Delete = "FoundationaLLM.AzureOpenAI/fileUserContexts/delete";
+        public const string FoundationaLLM_AzureOpenAI_FileMappings_Delete = "FoundationaLLM.AzureOpenAI/fileMappings/delete";
 
         #endregion
 

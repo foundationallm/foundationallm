@@ -13,6 +13,28 @@ namespace FoundationaLLM.Common.Interfaces;
 public interface IAzureCosmosDBService
 {
     /// <summary>
+    /// Gets a single item by its identifier and partition key.
+    /// </summary>
+    /// <typeparam name="T">The type of the item to retrieve.</typeparam>
+    /// <param name="containerName">The name of the container storing the item.</param>
+    /// <param name="id">The identifier of the item.</param>
+    /// <param name="partitionKey">The partition key of the item.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>The retrieved object of type <typeparamref name="T"/>.</returns>
+    Task<T?> GetItemAsync<T>(string containerName, string id, string partitionKey, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Creates or updates an item in the specified container.
+    /// </summary>
+    /// <typeparam name="T">The type of the item to create or update.</typeparam>
+    /// <param name="containerName">The name of the container storing the item.</param>
+    /// <param name="item">The item to be created or updated.</param>
+    /// <param name="partitionKey">The partition key of the item.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>The created or updated object of type <typeparamref name="T"/>.</returns>
+    Task<T?> UpsertItemAsync<T>(string containerName, string partitionKey, T item, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Gets a list of all current conversations.
     /// </summary>
     /// <param name="type">The conversation type to return.</param>
