@@ -30,6 +30,8 @@ const allowedKeys = [
 	'FoundationaLLM:Branding:SecondaryButtonBackgroundColor',
 	'FoundationaLLM:Branding:SecondaryButtonTextColor',
 	'FoundationaLLM:Branding:FooterText',
+	'FoundationaLLM:Branding:NoAgentsMessage',
+	'FoundationaLLM:Branding:DefaultAgentWelcomeMessage',
 	'FoundationaLLM:Instance:Id',
 	// 'FoundationaLLM:APIEndpoints:AgentHubAPI:Essentials:APIUrl',
 	'FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:APIUrl',
