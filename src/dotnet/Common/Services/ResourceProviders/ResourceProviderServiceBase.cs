@@ -501,18 +501,10 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 CreateAndValidateResourcePath(instanceId, HttpMethod.Get, typeof(T), resourceName: resourceName);
 
             // Authorize access to the resource path.
-            await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
+            var authorizationResult =
+                await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
 
-            var resourceNameCheckResult = await CheckResourceName<T>(new ResourceName
-                {
-                    Name= resourceName
-                });
-
-            return
-                (
-                    resourceNameCheckResult.Exists,
-                    resourceNameCheckResult.Deleted
-                );
+            return await ResourceExistsAsyncInternal<T>(ParsedResourcePath, authorizationResult, userIdentity);
         }
 
         /// <inheritdoc/>
@@ -592,6 +584,35 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         {
             await Task.CompletedTask;
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// The internal implementation of ResourceExistsAsync. Must be overridden in derived classes.
+        /// </summary>
+        /// <typeparam name="T">The type of resource being checked.</typeparam>
+        /// <param name="resourcePath">The <see cref="ResourcePath"/> containing information about the resource path.</param>
+        /// <param name="authorizationResult">The <see cref="ResourcePathAuthorizationResult"/> containing the result of the resource path authorization request.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
+        /// <returns>A tuple indicating whether the resource exists or not and whether it is logically deleted or not.</returns>
+        /// <remarks>
+        /// If a resource was logically deleted but not purged, this method will return True, indicating the existence of the resource.
+        /// </remarks>
+        protected virtual async Task<(bool Exists, bool Deleted)> ResourceExistsAsyncInternal<T>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity)
+            where T : ResourceBase
+        {
+            var resourceNameCheckResult = await CheckResourceName<T>(new ResourceName
+            {
+                Name = resourcePath.MainResourceId!
+            });
+
+            return
+                (
+                    resourceNameCheckResult.Exists,
+                    resourceNameCheckResult.Deleted
+                );
         }
 
         /// <summary>

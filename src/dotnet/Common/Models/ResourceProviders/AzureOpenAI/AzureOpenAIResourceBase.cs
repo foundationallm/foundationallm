@@ -10,16 +10,11 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
     [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
     [JsonDerivedType(typeof(AzureOpenAIConversationMapping), AzureOpenAITypes.ConversationMapping)]
     [JsonDerivedType(typeof(AzureOpenAIFileMapping), AzureOpenAITypes.FileMapping)]
-    public class AzureOpenAIResourceBase : ResourceBase
+    public class AzureOpenAIResourceBase : AzureCosmosDBResource
     {
         /// <inheritdoc/>
         [JsonIgnore]
         public override string? Type { get; set; }
-
-        /// <summary>
-        /// The unique identifier of the conversation mapping.
-        /// </summary>
-        public required string Id { get; set; }
 
         /// <summary>
         /// The logical partition key for the conversation mapping.
@@ -29,16 +24,6 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
         /// </remarks>
         public string PartitionKey =>
             $"{UPN.NormalizeUserPrincipalName()}-{InstanceId}";
-
-        /// <summary>
-        /// The user principal name (UPN) of the user who created the conversation mapping.
-        /// </summary>
-        public required string UPN { get; set; }
-
-        /// <summary>
-        /// The FoundationaLLM instance identifier
-        /// </summary>
-        public required string InstanceId { get; set; }
 
         /// <summary>
         /// The Azure OpenAI endpoint.

@@ -296,12 +296,12 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 currentUserIdentity);
 
                             if (dataSource == null)
-                                return (null, null, false);
+                                return (null, null, null, null, false);
                         }
                         catch (ResourceProviderException ex) when (ex.StatusCode == (int)HttpStatusCode.Forbidden)
                         {
                             // Access is denied to the underlying data source.
-                            return (agentBase, null, true);
+                            return (agentBase, null, null, null, true);
                         }
                     }
 

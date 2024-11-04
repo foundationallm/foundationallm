@@ -26,7 +26,6 @@ namespace FoundationaLLM.Orchestration.Tests.Orchestration
                 _agent.ObjectId,
                 _agent,
                 string.Empty,
-                string.Empty,
                 null,
                 _callContext,
                 _orchestrationService,
