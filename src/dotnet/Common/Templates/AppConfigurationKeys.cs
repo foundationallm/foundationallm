@@ -988,6 +988,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_Branding_NoAgentsMessage =
             "FoundationaLLM:Branding:NoAgentsMessage";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Branding:DefaultAgentWelcomeMessage setting.
+        /// <para>Value description:<br/>Message to display when starting a new conversation with an agent. This is displayed when the agent is not selected or if the selected agent does not have a configured welcome message.</para>
+        /// </summary>
+        public const string FoundationaLLM_Branding_DefaultAgentWelcomeMessage =
+            "FoundationaLLM:Branding:DefaultAgentWelcomeMessage";
 
         #endregion
 
