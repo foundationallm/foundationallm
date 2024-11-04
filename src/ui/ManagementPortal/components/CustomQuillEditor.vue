@@ -4,29 +4,27 @@
             ref="quillEditor"
             :content="content"
             contentType="html"
-            toolbar="#custom-toolbar"
+            :toolbar="`#${toolbarId}`"
             @update:content="handleContentUpdate"
         >
             <template #toolbar>
-                <div id="custom-toolbar">
-                    <div id="custom-toolbar">
-                        <select class="ql-size">
-                            <option value="small"></option>
-                            <option selected></option>
-                            <option value="large"></option>
-                            <option value="huge"></option>
-                        </select>
-                        <button class="ql-bold" aria-label="Bold"></button>
-                        <button class="ql-italic" aria-label="Italic"></button>
-                        <button class="ql-underline" aria-label="Underline"></button>
-                        <button class="ql-strike" aria-label="Strike"></button>
-                        <button class="ql-link" aria-label="Link"></button>
-                        <button class="ql-image" aria-label="Image"></button>
-                        <button class="ql-list" value="ordered" aria-label="Ordered List"></button>
-                        <button class="ql-list" value="bullet" aria-label="Unordered List"></button>
-                        <button class="ql-clean" aria-label="Remove Styles"></button>
-                        <button class="quill-view-html" aria-label="Edit HTML" @click="toggleHtmlDialog">Edit HTML</button>
-                    </div>
+                <div :id="toolbarId">
+                    <select class="ql-size">
+                        <option value="small"></option>
+                        <option selected></option>
+                        <option value="large"></option>
+                        <option value="huge"></option>
+                    </select>
+                    <button class="ql-bold" aria-label="Bold"></button>
+                    <button class="ql-italic" aria-label="Italic"></button>
+                    <button class="ql-underline" aria-label="Underline"></button>
+                    <button class="ql-strike" aria-label="Strike"></button>
+                    <button class="ql-link" aria-label="Link"></button>
+                    <button class="ql-image" aria-label="Image"></button>
+                    <button class="ql-list" value="ordered" aria-label="Ordered List"></button>
+                    <button class="ql-list" value="bullet" aria-label="Unordered List"></button>
+                    <button class="ql-clean" aria-label="Remove Styles"></button>
+                    <button class="quill-view-html" aria-label="Edit HTML" @click="toggleHtmlDialog">Edit HTML</button>
                 </div>
             </template>
         </QuillEditor>
@@ -43,12 +41,13 @@
 <script lang="ts">
 import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import { v4 as uuidv4 } from 'uuid';
 
 function filterQuillHTML(html: string) {
     return html
-        .replace(/(<p><br><\/p>)+/g, match => '<br>'.repeat((match.split('<p><br></p>').length))) // Handle multiple consecutive <p><br></p> tags accurately
-        .replace(/<\/p><p>/g, '<br>') // Replace </p><p> with <br> between paragraphs
-        .replace(/<\/?p[^>]*>/g, ''); // Remove any remaining <p> tags
+        .replace(/(<p><br><\/p>)+/g, match => '<br>'.repeat((match.split('<p><br></p>').length)))
+        .replace(/<\/p><p>/g, '<br>')
+        .replace(/<\/?p[^>]*>/g, '');
 }
 
 export default {
@@ -59,14 +58,15 @@ export default {
             type: String,
             required: true,
             default: ''
-        }
+        },
     },
-    
+
     data() {
         return {
             content: this.initialContent,
             rawHtml: '',
-            showHtmlDialog: false
+            showHtmlDialog: false,
+            toolbarId: `toolbar-${uuidv4()}`, // Generate unique toolbar ID
         };
     },
 
