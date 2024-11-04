@@ -751,7 +751,7 @@
         },
         {
             "key": "FoundationaLLM:Branding:FooterText",
-            "value": "FoundationaLLM &copy; 2024",
+            "value": "FoundationaLLM &copy; All rights reserved",
             "label": null,
             "content_type": "",
             "tags": {}
