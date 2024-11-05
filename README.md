@@ -4,7 +4,7 @@
 [![Open Issues](https://img.shields.io/github/issues-raw/solliancenet/foundationallm)](https://github.com/solliancenet/foundationallm/issues)
 
 > [!IMPORTANT]
-> The deployment of FoundationaLLM is not intended to be run by anyone other than `Certified FoundationaLLM Partners`. All the scripts and code are available in this repository for reviewing and transperency purposes only.
+> The deployment of FoundationaLLM is not intended to be run by anyone other than `Certified FoundationaLLM Partners`. All the scripts and code are available in this repository for reviewing and Transparency purposes only.
 
 Foundationa**LLM** provides the platform for deploying, scaling, securing and governing generative AI in the enterprise. With Foundationa**LLM** you can:
 - Create AI agents that are grounded in your enterprise data, be that text, semi-structured or structured data. 
