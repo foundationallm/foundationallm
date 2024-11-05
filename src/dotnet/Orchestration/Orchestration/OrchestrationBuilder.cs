@@ -225,9 +225,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             explodedObjects[agentBase.AIModelObjectId!] = aiModel;
             explodedObjects[aiModel.EndpointObjectId!] = apiEndpointConfiguration;
             explodedObjects[CompletionRequestObjectsKeys.GatewayAPIEndpointConfiguration] = gatewayAPIEndpointConfiguration;
-            explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantsAssistantId] =
-                agentBase.Properties?.GetValueOrDefault(AgentPropertyNames.AzureOpenAIAssistantId)
-                ?? throw new OrchestrationException("The OpenAI Assistants assistant identifier was not found in the agent properties.");
+
+            if (agentBase.HasCapability(AgentCapabilityCategoryNames.OpenAIAssistants))
+            {
+                explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantsAssistantId] =
+                    agentBase.Properties?.GetValueOrDefault(AgentPropertyNames.AzureOpenAIAssistantId)
+                    ?? throw new OrchestrationException("The OpenAI Assistants assistant identifier was not found in the agent properties.");
+            }
 
             var allAgents = await agentResourceProvider.GetResourcesAsync<AgentBase>(instanceId, currentUserIdentity);
             var allAgentsDescriptions = allAgents
@@ -390,7 +394,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     throw new OrchestrationException($"The conversation mapping for conversation {conversationId} was deleted but not purged. It cannot be used for active conversations.");
 
                 var conversationMapping = existsResult.Exists
-                    ? await azureOpenAIResourceProvider.GetResourceAsync<AzureOpenAIConversationMapping>(conversationId, currentUserIdentity)
+                    ? await azureOpenAIResourceProvider.GetResourceAsync<AzureOpenAIConversationMapping>(instanceId, conversationId, currentUserIdentity)
                     : new AzureOpenAIConversationMapping
                     {
                         Name = conversationId,

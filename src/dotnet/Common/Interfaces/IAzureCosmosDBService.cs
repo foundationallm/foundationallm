@@ -35,11 +35,25 @@ public interface IAzureCosmosDBService
     Task<T?> UpsertItemAsync<T>(string containerName, string partitionKey, T item, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Patches an item in the specified container.
+    /// </summary>
+    /// <typeparam name="T">The type of the item to patch.</typeparam>
+    /// <param name="containerName">The name of the container storing the item.</param>
+    /// <param name="partitionKey">The partition key of the item.</param>
+    /// <param name="id">The item ID.</param>
+    /// <param name="upn">The user principal name used for matching the UPN of the item.</param>
+    /// <param name="propertyValues">Dictionary of the property names and values to patch.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>The patched object of type <typeparam name="T"></typeparam>.</returns>
+    Task<T> PatchItemPropertiesAsync<T>(string containerName, string partitionKey, string id,
+        string upn, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Gets a list of all current conversations.
     /// </summary>
     /// <param name="type">The conversation type to return.</param>
     /// <param name="upn">The user principal name used for retrieving
-    /// conversations for the signed in user.</param>
+    /// conversations for the signed-in user.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns>List of distinct conversation items.</returns>
     Task<List<Conversation>> GetConversationsAsync(string type, string upn, CancellationToken cancellationToken = default);

@@ -1,4 +1,5 @@
-﻿using Azure.Messaging;
+﻿using System.Diagnostics;
+using Azure.Messaging;
 using FluentValidation;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
@@ -193,6 +194,39 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                     $"The type {nameof(T)} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
+
+        protected override async Task<TResult> UpdateResourcePropertiesAsyncInternal<T, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, Dictionary<string, object?> propertyValues, UnifiedUserIdentity userIdentity)
+        {
+            _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
+
+            // This is the PEP (Policy Enforcement Point) where the resource provider enforces the policy definition to update the resource properties.
+            // The implementation relies on using a filter predicate to ensure that the user identity is authorized to update the resource properties.
+
+            if (typeof(T) == typeof(AttachmentFile))
+            {
+                var result = await _cosmosDBService.PatchItemPropertiesAsync<AttachmentFile>(
+                        AzureCosmosDBContainers.Attachments,
+                        userIdentity.UPN!,
+                        resourcePath.MainResourceId!,
+                        userIdentity.UPN!,
+                        propertyValues,
+                        default)
+                    ?? throw new ResourceProviderException(
+                        $"The {_name} resource provider did not find the {resourcePath.RawResourcePath} resource. "
+                        + "This indicates that either the resource does not exist or existing policies do not allow the user to update it.",
+                        StatusCodes.Status404NotFound);
+                return (new ResourceProviderUpsertResult<T>
+                {
+                    ObjectId = resourcePath.RawResourcePath,
+                    ResourceExists = true,
+                    Resource = result as T
+                } as TResult)!;
+            }
+
+            throw new ResourceProviderException(
+                $"The upsert properties operation is not supported by the {_name} resource provider for type {typeof(T).Name}.",
+                StatusCodes.Status400BadRequest);
+        }
 
         #endregion
 

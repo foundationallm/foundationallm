@@ -267,6 +267,24 @@ namespace FoundationaLLM.Common.Services
         }
 
         /// <inheritdoc/>
+        public async Task<T> PatchItemPropertiesAsync<T>(string containerName, string partitionKey, string id,
+            string upn, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default)
+        {
+            var response = await _containers[containerName].PatchItemAsync<T>(
+                id: id,
+                partitionKey: new PartitionKey(partitionKey),
+                patchOperations: propertyValues.Keys
+                    .Select(key => PatchOperation.Set(key, propertyValues[key])).ToArray(),
+                requestOptions: new PatchItemRequestOptions
+                {
+                    FilterPredicate = $"FROM c WHERE c.upn = '{upn}'"
+                },
+                cancellationToken: cancellationToken
+            );
+            return response.Resource;
+        }
+
+        /// <inheritdoc/>
         public async Task<List<Message>> GetSessionMessagesAsync(string sessionId, string upn, CancellationToken cancellationToken = default)
         {
             var query =

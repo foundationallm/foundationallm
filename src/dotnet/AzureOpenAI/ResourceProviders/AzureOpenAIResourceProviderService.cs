@@ -1,4 +1,5 @@
 ﻿using Azure.AI.OpenAI;
+using Azure.Search.Documents.Indexes.Models;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
@@ -165,17 +166,24 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     $"The user {userIdentity.UPN} is not authorized to use the provided resource to update the {resourcePath.RawResourcePath} resource path.",
                     StatusCodes.Status403Forbidden);
 
-            var existingResource = await _cosmosDBService.GetItemAsync<T>(
-                AzureCosmosDBContainers.ExternalResources,
-                resourcePath.MainResourceId!,
-                $"{userIdentity.UPN!.NormalizeUserPrincipalName()}-{_instanceSettings.Id}");
+            var existingResource = default(T);
+            if (!string.IsNullOrWhiteSpace(resourcePath.MainResourceId))
+            {
+                existingResource = await _cosmosDBService.GetItemAsync<T>(
+                    AzureCosmosDBContainers.ExternalResources,
+                    resourcePath.MainResourceId!,
+                    $"{userIdentity.UPN!.NormalizeUserPrincipalName()}-{_instanceSettings.Id}");
+            }
 
             if (existingResource != null)
             {
-                if(!StringComparer.Ordinal.Equals((existingResource as AzureOpenAIResourceBase)!.UPN, userIdentity.UPN))
-                throw new ResourceProviderException(
-                    $"The user {userIdentity.UPN} is not authorized to access the {resourcePath.RawResourcePath} resource path.",
-                    StatusCodes.Status403Forbidden);
+                if (!StringComparer.Ordinal.Equals((existingResource as AzureOpenAIResourceBase)!.UPN,
+                        userIdentity.UPN))
+                {
+                    throw new ResourceProviderException(
+                        $"The user {userIdentity.UPN} is not authorized to access the {resourcePath.RawResourcePath} resource path.",
+                        StatusCodes.Status403Forbidden);
+                }
 
                 if (existingResource is AzureOpenAIResourceBase resource1
                     && updatedResource is AzureOpenAIResourceBase resource2
@@ -189,10 +197,6 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     throw new ResourceProviderException(
                         $"Updating one or more properties is not allowed because their values are immutable.",
                         StatusCodes.Status400BadRequest);
-            }
-            else
-            {
-                updatedResource.ObjectId = resourcePath.RawResourcePath;
             }
 
             return updatedResource switch
@@ -271,6 +275,12 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
             var newOpenAIAssistantThreadId = default(string);
             var newOpenAIVectorStoreId = default(string);
+
+            if (isNew)
+            {
+                conversationMapping.ObjectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name,
+                    AzureOpenAIResourceTypeNames.ConversationMappings, conversationMapping.Name);
+            }
 
             if (mustCreateAssistantThread)
             {
@@ -401,6 +411,10 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                         $"The OpenAI assistant file was not created for the agent {agentObjectId}.",
                         StatusCodes.Status500InternalServerError);
 
+                fileMapping.Id = newOpenAIFileId;
+                fileMapping.Name = newOpenAIFileId;
+                fileMapping.ObjectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name,
+                    AzureOpenAIResourceTypeNames.FileMappings, newOpenAIFileId);
                 fileMapping.OpenAIFileId = newOpenAIFileId;
                 fileMapping.OpenAIFileUploadedOn = referenceTime;
             }

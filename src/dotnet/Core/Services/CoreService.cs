@@ -501,7 +501,7 @@ public partial class CoreService(
 
             await _attachmentResourceProvider.UpdateResourcePropertiesAsync<AttachmentFile, ResourceProviderUpsertResult<AttachmentFile>>(
                 instanceId,
-                attachmentUpsertResult.ObjectId!,
+                attachmentFile.Name!,
                 new Dictionary<string, object?>
                 {
                     { "/secondaryProviderObjectId", fileMappingUpsertResult.Resource!.OpenAIFileId }
