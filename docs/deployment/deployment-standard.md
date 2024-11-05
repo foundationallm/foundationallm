@@ -1,5 +1,8 @@
 # Deployment - Standard with AKS
 
+> [!IMPORTANT]
+> This deployment is not intended to be run by anyone other than `Certified FoundationaLLM Partners`. All the scripts and code are available in this repository for reviewing and transperency purposes only.
+
 Compared to the quick start deployment using Azure Container Apps (ACA), the Foundationa**LLM** Standard Deployment with AKS is tailored for scaling up to production environments. It leverages Azure Kubernetes Service (AKS) for robust scalability and management, requiring an Azure Subscription with Azure OpenAI access.
 
 Be mindful of the [Azure OpenaAI regional quota limits](https://learn.microsoft.com/en-us/azure/ai-services/openai/quotas-limits) on the number of Azure OpenAI Service instances.

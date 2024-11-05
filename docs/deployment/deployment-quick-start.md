@@ -1,5 +1,8 @@
 # Deployment - Quick Start
 
+> [!IMPORTANT]
+> This deployment is not intended to be run by anyone other than `Certified FoundationaLLM Partners`. All the scripts and code are available in this repository for reviewing and transperency purposes only.
+
 Foundationa**LLM** is designed for seamless deployment within your Azure Subscription. It initially utilizes Azure Container Apps (ACA) for rapid deployment and streamlined development. For scaling up to production environments, FoundationaLLM also supports deployment on Azure Kubernetes Service (AKS), offering robust scalability and management features.
 
 Be mindful of the [Azure OpenAI regional quota limits](https://learn.microsoft.com/azure/ai-services/openai/quotas-limits) on the number of Azure OpenAI Service instances. To optimize resource usage, FoundationaLLM offers the flexibility to connect to an existing Azure OpenAI Service resource, thereby avoiding the creation of additional instances during deployment. This feature is particularly useful for managing resource allocation and ensuring efficient Azure OpenAI Service quota utilization.
