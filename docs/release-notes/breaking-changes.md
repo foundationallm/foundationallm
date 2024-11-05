@@ -7,6 +7,46 @@
 
 ### Resource provider changes
 
+**FoundationaLLM.Authorization**
+
+The following entries need to be added to the policy store file:
+
+```json
+{
+    "name": "GUID03",
+    "type": "FoundationaLLM.Authorization/policyAssignments",
+    "object_id": "/providers/FoundationaLLM.Authorization/policyAssignments/GUID03",
+    "description": "Ownership on conversation mapping resources managed by the FoundationaLLM.AzureOpenAI resource provider.",
+    "policy_definition_id": "/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001",
+    "principal_id": "SECURITY_GROUP_ID",
+    "principal_type": "Group",
+    "scope": "/instances/FOUNDATIONALLM_INSTANCEID/providers/FoundationaLLM.AzureOpenAI/conversationMappings",
+    "created_on": "DEPLOY_TIME",
+    "updated_on": "DEPLOY_TIME",
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+},
+{
+    "name": "GUID04",
+    "type": "FoundationaLLM.Authorization/policyAssignments",
+    "object_id": "/providers/FoundationaLLM.Authorization/policyAssignments/GUID04",
+    "description": "Ownership on file mapping resources managed by the FoundationaLLM.AzureOpenAI resource provider.",
+    "policy_definition_id": "/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001",
+    "principal_id": "SECURITY_GROUP_ID",
+    "principal_type": "Group",
+    "scope": "/instances/FOUNDATIONALLM_INSTANCEID/providers/FoundationaLLM.AzureOpenAI/fileMappings",
+    "created_on": "DEPLOY_TIME",
+    "updated_on": "DEPLOY_TIME",
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+}
+```
+The following placehoders need to be replaced with the actual values:
+- `SECURITY_GROUP_ID` - the ID of the security group that needs to be assigned to the policy
+- `FOUNDATIONALLM_INSTANCEID` - the ID of the FoundationaLLM instance
+- `DEPLOY_TIME` - the time when the policy was deployed
+- `GUID03` and `GUID04` - unique identifiers for the policy assignments
+
 **FoundationaLLM.AzureOpenAI**
 
 When upgrading an existing FoundationaLLM instance, the items from the `resource-provider/FoundationaLLM.AzureOpenAI` directory in storage account must be updated to use the new JSON format:
