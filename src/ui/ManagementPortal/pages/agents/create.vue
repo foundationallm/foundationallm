@@ -73,6 +73,21 @@
 					aria-labelledby="aria-description"
 				/>
 			</div>
+			<div class="span-2">
+				<div class="step-header mb-2">Welcome message:</div>
+				<div id="aria-welcome-message-desc" class="mb-2">
+					Provide a message to display when a user starts a new conversation with the agent.
+					If a message is not provided, the default welcome message will be displayed.
+				</div>
+				<CustomQuillEditor
+                    v-model="agentWelcomeMessage"
+					:initialContent="JSON.parse(JSON.stringify(agentWelcomeMessage))"
+                    @contentUpdate="updateAgentWelcomeMessage($event)"
+					class="w-100"
+					placeholder="Enter agent welcome message"
+					aria-labelledby="aria-welcome-message-desc"
+                />
+			</div>
 
 			<!-- Knowledge source -->
 			<div class="step-section-header span-2">Knowledge Source</div>
@@ -732,6 +747,7 @@ const getDefaultFormValues = () => {
 
 		agentName: '',
 		agentDescription: '',
+		agentWelcomeMessage: '',
 		object_id: '',
 		text_partitioning_profile_object_id: '',
 		text_embedding_profile_object_id: '',
@@ -990,6 +1006,7 @@ export default {
 		mapAgentToForm(agent: Agent) {
 			this.agentName = agent.name || this.agentName;
 			this.agentDescription = agent.description || this.agentDescription;
+			this.agentWelcomeMessage = agent.properties?.['welcome_message'] || this.agentWelcomeMessage;
 			this.agentType = agent.type || this.agentType;
 			this.object_id = agent.object_id || this.object_id;
 			this.inline_context = agent.inline_context || this.inline_context;
@@ -1061,6 +1078,10 @@ export default {
 					) || this.selectedAgentCapabilities;
 			}
 		},
+
+		updateAgentWelcomeMessage(newContent: string) {
+            this.agentWelcomeMessage = newContent;
+        },
 
 		async checkName() {
 			try {
@@ -1248,6 +1269,7 @@ export default {
 					type: this.agentType,
 					name: this.agentName,
 					description: this.agentDescription,
+					properties: { 'welcome_message': this.agentWelcomeMessage },
 					object_id: this.object_id,
 					inline_context: this.inline_context,
 					cost_center: this.cost_center,

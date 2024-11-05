@@ -37,6 +37,7 @@ export type Agent = ResourceBase & {
 	name: string;
 	type: 'knowledge-management' | 'analytics';
 	inline_context: boolean;
+	properties?: { [key: string]: string | null };
 
 	ai_model_object_id: string;
 
@@ -313,6 +314,7 @@ export type CreateAgentRequest = ResourceBase & {
 	type: 'knowledge-management' | 'analytics';
 	name: string;
 	inline_context: boolean;
+	properties?: { [key: string]: string | null };
 
 	ai_model_object_id: string;
 
