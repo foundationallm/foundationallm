@@ -51,7 +51,7 @@ If you are upgrading from a previous version, like `0.5.0`, please refer to the 
     ```cmd
     git clone https://github.com/solliancenet/foundationallm.git
     cd foundationallm/deploy/quick-start
-    git checkout release/0.8.0
+    git checkout release/0.8.3
     ```
 
 3. **For release 0.7.0+:** Run the following script to install the deployment utilities, including `AzCopy`, locally.
