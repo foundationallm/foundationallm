@@ -280,7 +280,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     var agentAIModelAPIEndpoint = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Configuration)
                         .GetResourceAsync<APIEndpointConfiguration>(agentAIModel.EndpointObjectId!, userIdentity);
                     var agentPrompt = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Prompt)
-                        .GetResourceAsync<MultipartPrompt>(agent.PromptObjectId!, userIdentity);
+                        .GetResourceAsync<PromptBase>(agent.PromptObjectId!, userIdentity);
 
                     #endregion
 
@@ -296,7 +296,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                             { OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistant, true },
                             { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, agentAIModelAPIEndpoint.Url },
                             { OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName, agentAIModel.DeploymentName! },
-                            { OpenAIAgentCapabilityParameterNames.OpenAIAssistantPrompt, agentPrompt.Prefix! }
+                            { OpenAIAgentCapabilityParameterNames.OpenAIAssistantPrompt, (agentPrompt as MultipartPrompt)!.Prefix! }
                         };
 
                     var agentCapabilityResult = await gatewayClient!.CreateAgentCapability(

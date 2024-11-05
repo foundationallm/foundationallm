@@ -226,7 +226,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             explodedObjects[aiModel.EndpointObjectId!] = apiEndpointConfiguration;
             explodedObjects[CompletionRequestObjectsKeys.GatewayAPIEndpointConfiguration] = gatewayAPIEndpointConfiguration;
             explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantsAssistantId] =
-                agentBase.Properties?.GetValueOrDefault(CompletionRequestObjectsKeys.OpenAIAssistantsAssistantId)
+                agentBase.Properties?.GetValueOrDefault(AgentPropertyNames.AzureOpenAIAssistantId)
                 ?? throw new OrchestrationException("The OpenAI Assistants assistant identifier was not found in the agent properties.");
 
             var allAgents = await agentResourceProvider.GetResourcesAsync<AgentBase>(instanceId, currentUserIdentity);
