@@ -36,6 +36,9 @@ export const useAppStore = defineStore('app', {
 		coreConfiguration: null as CoreConfiguration | null,
 		oneDriveWorkSchool: null as boolean | null,
 		userProfiles: null as UserProfile | null,
+		autoHideToasts: JSON.parse(sessionStorage.getItem('autoHideToasts') || 'true') as boolean,
+		textSize: JSON.parse(sessionStorage.getItem('textSize') || '1') as number,
+		highContrastMode: JSON.parse(sessionStorage.getItem('highContrastMode') || 'false') as boolean,
 	}),
 
 	getters: {},
@@ -43,6 +46,31 @@ export const useAppStore = defineStore('app', {
 	actions: {
 		async init(sessionId: string) {
 			const appConfigStore = useAppConfigStore();
+
+			// Watch for changes in autoHideToasts and update sessionStorage
+			watch(
+				() => this.autoHideToasts,
+				(newValue: boolean) => {
+					sessionStorage.setItem('autoHideToasts', JSON.stringify(newValue));
+				},
+			);
+
+			// Watch for changes in textSize and update sessionStorage
+			watch(
+				() => this.textSize,
+				(newValue: number) => {
+					sessionStorage.setItem('textSize', JSON.stringify(newValue));
+					document.documentElement.style.setProperty('--app-text-size', `${newValue}rem`);
+				},
+			);
+
+			// Watch for changes in highContrastMode and update sessionStorage
+			watch(
+				() => this.highContrastMode,
+				(newValue: boolean) => {
+					sessionStorage.setItem('highContrastMode', JSON.stringify(newValue));
+				},
+			);
 
 			// No need to load sessions if in kiosk mode, simply create a new one and skip.
 			if (appConfigStore.isKioskMode) {

@@ -78,7 +78,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 };
 
             var result = await _orchestrationService.StartCompletionOperation(
-                instanceId,
+                _instanceId,
                 await GetLLMCompletionRequest(completionRequest));
 
             return result;
@@ -87,7 +87,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         /// <inheritdoc/>
         public override async Task<LongRunningOperation> GetCompletionOperationStatus(string operationId)
         {
-            var operationStatus = await _orchestrationService.GetCompletionOperationStatus(instanceId, operationId);
+            var operationStatus = await _orchestrationService.GetCompletionOperationStatus(_instanceId, operationId);
 
             if (operationStatus.Status == OperationStatus.Completed)
             {
@@ -111,7 +111,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 return validationResponse;
 
             var result = await _orchestrationService.GetCompletion(
-                instanceId,
+                _instanceId,
                 await GetLLMCompletionRequest(completionRequest));
 
             return await GetCompletionResponse(completionRequest.OperationId!, result);
@@ -121,7 +121,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         {
             _gatewayClient = new GatewayServiceClient(
                 await _httpClientFactoryService
-                    .CreateClient(HttpClientNames.GatewayAPI, callContext.CurrentUserIdentity!),
+                    .CreateClient(HttpClientNames.GatewayAPI, _callContext.CurrentUserIdentity!),
                 _logger);
 
             if (_dataSourceAccessDenied.HasValue

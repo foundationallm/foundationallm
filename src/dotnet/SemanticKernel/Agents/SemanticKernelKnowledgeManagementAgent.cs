@@ -1,9 +1,13 @@
-using Azure.AI.OpenAI;
 using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Orchestration.Request;
+using FoundationaLLM.Common.Models.Orchestration.Response;
+using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.SemanticKernel.Core.Exceptions;
 using FoundationaLLM.SemanticKernel.Core.Filters;
+using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
 using FoundationaLLM.SemanticKernel.Core.Plugins;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,27 +15,11 @@ using Microsoft.Extensions.Http.Resilience;
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.AzureAISearch;
-using Microsoft.SemanticKernel.Connectors.OpenAI;
-using Microsoft.SemanticKernel.Memory;
-using System.Net;
-using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
 using Microsoft.SemanticKernel.Connectors.AzureCosmosDBNoSQL;
 using Microsoft.SemanticKernel.Connectors.Postgres;
-using FoundationaLLM.Common.Constants.Authentication;
-using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
-using FoundationaLLM.Common.Exceptions;
-using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
-using FoundationaLLM.Common.Models.Orchestration.Request;
-using FoundationaLLM.Common.Models.Orchestration.Response;
-using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
-using FoundationaLLM.Common.Exceptions;
-using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
-using FoundationaLLM.Common.Models.Orchestration.Request;
-using FoundationaLLM.Common.Models.Orchestration.Response;
+using Microsoft.SemanticKernel.Memory;
+using System.Net;
 using System.Text.Json;
-using FoundationaLLM.Common.Constants.ResourceProviders;
-using System.Text.Json;
-using FoundationaLLM.Common.Constants.ResourceProviders;
 
 #pragma warning disable SKEXP0001, SKEXP0010, SKEXP0020, SKEXP0050, SKEXP0060
 
@@ -80,8 +68,6 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
 
                 if (!textEmbeddingProfile.Settings.ContainsKey(VectorizationSettingsNames.EmbeddingProfileModelName))
                     throw new SemanticKernelException("The text embedding profile settings must contain the 'model_name' key.", StatusCodes.Status400BadRequest);
-               
-                
             }
 
             if ((indexingProfiles ?? []).Count > 0)
@@ -200,7 +186,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
 
                 return new LLMCompletionResponse
                 {
-                    OperationId = _request.OperationId,
+                    OperationId = _request.OperationId!,
                     Completion = completion,
                     UserPrompt = _request.UserPrompt!,
                     FullPrompt = promptFilter.RenderedPrompt,
@@ -230,7 +216,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
             builder.AddAzureOpenAIChatCompletion(
                 _deploymentName,
                 _endpointUrl,
-                credential,
+                credential!,
                 null,
                 null,
                 httpClient
@@ -253,7 +239,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
                         !string.IsNullOrWhiteSpace(_azureAISearchIndexingServiceSettings.Endpoint))
                     {
                         var memory = new MemoryBuilder()
-                            .WithMemoryStore(new AzureAISearchMemoryStore(_azureAISearchIndexingServiceSettings.Endpoint, credential))
+                            .WithMemoryStore(new AzureAISearchMemoryStore(_azureAISearchIndexingServiceSettings.Endpoint, credential!))
                             //TODO: IMPLEMENT GATEWAY
                             //       .WithAzureOpenAITextEmbeddingGeneration(_textEmbeddingDeploymentName, _textEmbeddingEndpoint, credential)
                             .Build();

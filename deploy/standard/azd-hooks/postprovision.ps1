@@ -20,16 +20,21 @@ try {
     Invoke-AndRequireSuccess "Provision VNET Peering to Hub" {
         $peerings = @(az network vnet peering list `
                         --resource-group $env:FLLM_NET_RG `
-                        --vnet-name $env:FOUNDATIONALLM_VNET_NAME)
+                        --subscription $env:AZURE_SUBSCRIPTION_ID `
+                        --vnet-name $env:FOUNDATIONALLM_VNET_NAME `
+                        --query "[].name" `
+                        --output json | ConvertFrom-Json)
 
         if ($peerings.Contains("$($env:FOUNDATIONALLM_VNET_NAME)-to-$($env:FOUNDATIONALLM_HUB_VNET_NAME)")) {
             Write-Host "Peering for $($env:FOUNDATIONALLM_VNET_NAME)-to-$($env:FOUNDATIONALLM_HUB_VNET_NAME) exists..."
         } else {
+            Write-Host "Creating peering for $($env:FOUNDATIONALLM_VNET_NAME)-to-$($env:FOUNDATIONALLM_HUB_VNET_NAME)"
             az network vnet peering create `
                 --name "$($env:FOUNDATIONALLM_VNET_NAME)-to-$($env:FOUNDATIONALLM_HUB_VNET_NAME)" `
                 --remote-vnet $env:FOUNDATIONALLM_HUB_VNET_ID `
                 --resource-group $env:FLLM_NET_RG `
                 --vnet-name $env:FOUNDATIONALLM_VNET_NAME `
+                --subscription $env:AZURE_SUBSCRIPTION_ID `
                 --allow-forwarded-traffic 1 `
                 --allow-gateway-transit 0 `
                 --allow-vnet-access 1 `
@@ -38,16 +43,21 @@ try {
 
         $peerings = @(az network vnet peering list `
                         --resource-group $env:FOUNDATIONALLM_HUB_RESOURCE_GROUP `
-                        --vnet-name $env:FOUNDATIONALLM_HUB_VNET_NAME)
+                        --subscription $env:FOUNDATIONALLM_HUB_SUBSCRIPTION_ID `
+                        --vnet-name $env:FOUNDATIONALLM_HUB_VNET_NAME `
+                        --query "[].name" `
+                        --output json | ConvertFrom-Json)
 
         if ($peerings.Contains("$($env:FOUNDATIONALLM_HUB_VNET_NAME)-to-$($env:FOUNDATIONALLM_VNET_NAME)")) {
             Write-Host "Peering for $($env:FOUNDATIONALLM_HUB_VNET_NAME)-to-$($env:FOUNDATIONALLM_VNET_NAME) exists..."
         } else {
+            Write-Host "Creating peering for $($env:FOUNDATIONALLM_HUB_VNET_NAME)-to-$($env:FOUNDATIONALLM_VNET_NAME)"
             az network vnet peering create `
                 --name "$($env:FOUNDATIONALLM_HUB_VNET_NAME)-to-$($env:FOUNDATIONALLM_VNET_NAME)" `
                 --remote-vnet $env:FOUNDATIONALLM_VNET_ID `
                 --resource-group $env:FOUNDATIONALLM_HUB_RESOURCE_GROUP `
                 --vnet-name $env:FOUNDATIONALLM_HUB_VNET_NAME `
+                --subscription $env:FOUNDATIONALLM_HUB_SUBSCRIPTION_ID `
                 --allow-forwarded-traffic 1 `
                 --allow-gateway-transit 1 `
                 --allow-vnet-access 1 `

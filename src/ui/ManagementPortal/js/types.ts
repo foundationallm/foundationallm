@@ -25,6 +25,14 @@ export type ResourceProviderGetResult<T> = {
 	roles: string[];
 };
 
+export type AgentTool = {
+	name: string;
+	description: string;
+	ai_model_object_ids: { [key: string]: string };
+	api_endpoint_configuration_object_ids: { [key: string]: string };
+	properties: { [key: string]: any };
+};
+
 export type Agent = ResourceBase & {
 	name: string;
 	type: 'knowledge-management' | 'analytics';
@@ -44,6 +52,7 @@ export type Agent = ResourceBase & {
 	};
 
 	capabilities: string[];
+	tools: { [key: string]: AgentTool };
 
 	sessions_enabled: boolean;
 	orchestration_settings: {
@@ -320,6 +329,7 @@ export type CreateAgentRequest = ResourceBase & {
 	};
 
 	capabilities: string[];
+	tools: { [key: string]: AgentTool };
 
 	vectorization: {
 		dedicated_pipeline: boolean;

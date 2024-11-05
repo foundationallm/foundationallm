@@ -15,6 +15,46 @@ Name | Default value
 
 ### Resource provider changes
 
+**FoundationaLLM.Authorization**
+
+The following entries need to be added to the policy store file:
+
+```json
+{
+    "name": "GUID03",
+    "type": "FoundationaLLM.Authorization/policyAssignments",
+    "object_id": "/providers/FoundationaLLM.Authorization/policyAssignments/GUID03",
+    "description": "Ownership on conversation mapping resources managed by the FoundationaLLM.AzureOpenAI resource provider.",
+    "policy_definition_id": "/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001",
+    "principal_id": "SECURITY_GROUP_ID",
+    "principal_type": "Group",
+    "scope": "/instances/FOUNDATIONALLM_INSTANCEID/providers/FoundationaLLM.AzureOpenAI/conversationMappings",
+    "created_on": "DEPLOY_TIME",
+    "updated_on": "DEPLOY_TIME",
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+},
+{
+    "name": "GUID04",
+    "type": "FoundationaLLM.Authorization/policyAssignments",
+    "object_id": "/providers/FoundationaLLM.Authorization/policyAssignments/GUID04",
+    "description": "Ownership on file mapping resources managed by the FoundationaLLM.AzureOpenAI resource provider.",
+    "policy_definition_id": "/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001",
+    "principal_id": "SECURITY_GROUP_ID",
+    "principal_type": "Group",
+    "scope": "/instances/FOUNDATIONALLM_INSTANCEID/providers/FoundationaLLM.AzureOpenAI/fileMappings",
+    "created_on": "DEPLOY_TIME",
+    "updated_on": "DEPLOY_TIME",
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+}
+```
+The following placehoders need to be replaced with the actual values:
+- `SECURITY_GROUP_ID` - the ID of the security group that needs to be assigned to the policy
+- `FOUNDATIONALLM_INSTANCEID` - the ID of the FoundationaLLM instance
+- `DEPLOY_TIME` - the time when the policy was deployed
+- `GUID03` and `GUID04` - unique identifiers for the policy assignments
+
 **FoundationaLLM.AzureOpenAI**
 
 When upgrading an existing FoundationaLLM instance, the items from the `resource-provider/FoundationaLLM.AzureOpenAI` directory in storage account must be updated to use the new JSON format:
@@ -73,6 +113,79 @@ When upgrading an existing FoundationaLLM instance, the items from the `resource
 ```
 
 Refer to the dedicated upgrade tool for instructions on how to perform this update.
+
+### Configuration changes
+
+#### App Config settings
+
+This release adds a new App Config setting that should be added to existing environments that are upgrading to 0.8.4 and beyond:
+
+- App Config key: `FoundationaLLM:Branding:NoAgentsMessage`
+- App Config value: `No agents available. Please check with your system administrator for assistance.`
+
+#### Resource provider templates
+
+The `AzureOpenAI.template.json` files within `deploy/quick-start/data/resource-provider/FoundationaLLM.Configuration` and `deploy/standard/data/resource-provider/FoundationaLLM.Configuration` have been updated to set the `category` field to the value `LLM`. This discriminator allows the Management Portal to filter the list of API endpoints by category and provide options to add AI Models to endpoints with the `LLM` category.
+
+The existing `category` property needs to be set to `LLM` on existing API endpoint configurations in the `FoundationaLLM.Configuration` resource provider that fit this description, including the `AzureOpenAI` endpoint configuration.
+
+## Starting with 0.8.3
+
+### Resource provider changes
+
+If a user/group is not assigned to the instance-level Contributor role, then they will not be able to create new Conversations or upload Attachments. To adjust their permissions, the following changes are required:
+
+**FoundationaLLM.Conversation**
+
+In addition to assigning users/groups to the `policy-assignments/<instance_id>-policy.json` file within the `FoundationaLLM.Authorization` resource provider to assign them to the Conversation policy, we must now add them to the new **Conversation contributor role** (`role_definition_id`: `d0d21b90-5317-499a-9208-3a6cb71b84f9`) within the `role-assignments/<instance_id>-role.json` file within the `FoundationaLLM.Authorization` resource provider if the user/group is not assigned to the Contributor role on the FoundationaLLM instance (`role_definition_id`: `a9f0020f-6e3a-49bf-8d1d-35fd53058edf`). Here is an example entry:
+
+```json
+{
+    "type": "FoundationaLLM.Authorization/roleAssignments",
+    "name": "a40b15f1-75ce-4a40-a857-1093ac9adf4d",
+    "object_id": "/instances/0a1840df-71b6-496d-905a-145d93d827f3/providers/FoundationaLLM.Authorization/roleAssignments/a40b15f1-75ce-4a40-a857-1093ac9adf4d",
+    "display_name": null,
+    "description": "Conversation contributor role for FLLM Users",
+    "cost_center": null,
+    "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/d0d21b90-5317-499a-9208-3a6cb71b84f9",
+    "principal_id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+    "principal_type": "Group",
+    "scope": "/instances/0a1840df-71b6-496d-905a-145d93d827f3",
+    "properties": null,
+    "created_on": "0001-01-01T00:00:00+00:00",
+    "updated_on": "0001-01-01T00:00:00+00:00",
+    "created_by": null,
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+}
+```
+
+**FoundationaLLM.Attachment**
+
+In addition to assigning users/groups to the `policy-assignments/<instance_id>-policy.json` file within the `FoundationaLLM.Authorization` resource provider to assign them to the Attachment policy, we must now add them to the new **Attachment contributor role** (`role_definition_id`: `8e77fb6a-7a78-43e1-b628-d9e2285fe25a`) within the `role-assignments/<instance_id>-role.json` file within the `FoundationaLLM.Authorization` resource provider if the user/group is not assigned to the Contributor role on the FoundationaLLM instance (`role_definition_id`: `a9f0020f-6e3a-49bf-8d1d-35fd53058edf`). Here is an example entry:
+
+```json
+{
+    "type": "FoundationaLLM.Authorization/roleAssignments",
+    "name": "891ca947-e648-46cf-a12a-774b52ded886",
+    "object_id": "/instances/0a1840df-71b6-496d-905a-145d93d827f3/providers/FoundationaLLM.Authorization/roleAssignments/891ca947-e648-46cf-a12a-774b52ded886",
+    "display_name": null,
+    "description": "Attachment contributor role for FLLM Users",
+    "cost_center": null,
+    "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/8e77fb6a-7a78-43e1-b628-d9e2285fe25a",
+    "principal_id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+    "principal_type": "Group",
+    "scope": "/instances/0a1840df-71b6-496d-905a-145d93d827f3",
+    "properties": null,
+    "created_on": "0001-01-01T00:00:00+00:00",
+    "updated_on": "0001-01-01T00:00:00+00:00",
+    "created_by": null,
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+}
+```
 
 ## Starting with 0.8.2
 

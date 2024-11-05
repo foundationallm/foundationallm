@@ -183,6 +183,7 @@
 										borderColor: $appConfigStore.primaryButtonBg,
 										color: $appConfigStore.primaryButtonText,
 									}"
+									class="prompt-dialog__button"
 									label="Close"
 									@click="viewPrompt = false"
 								/>
@@ -560,7 +561,9 @@ export default {
 						: `<i class="pi pi-file" class="attachment-icon"></i>`;
 					return `${fileIcon} &nbsp;<a href="#" data-href="${href}" data-filename="${fileName}" title="${title || ''}" class="file-download-link">${text}</a>`;
 				} else {
-					return `<a href="${href}" title="${title || ''}" target="_blank">${text}</a>`;
+					const linkHTML = `<a href="${href}" title="${title || ''}" target="_blank">${text}</a>`;
+					// Process link html again in case it contains nested markdown content
+					return marked(linkHTML, { renderer: this.markedRenderer });
 				}
 			};
 		},
@@ -632,7 +635,7 @@ export default {
 			this.$toast.add({
 				severity: 'success',
 				detail: 'Message copied to clipboard!',
-				life: 5000,
+				life: this.$appStore.autoHideToasts ? 5000 : null,
 			});
 		},
 
@@ -776,6 +779,10 @@ $textColor: #131833;
 	margin-left: 4px;
 }
 
+.message__copy:focus {
+	box-shadow: 0 0 0 0.1rem #fff;
+}
+
 .header__sender {
 	display: flex;
 	align-items: center;
@@ -840,7 +847,15 @@ $textColor: #131833;
 }
 
 .message__button {
-	color: #00356b;
+	color: var(--primary-button-bg);
+}
+
+.message__button:focus {
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+}
+
+.prompt-dialog__button:focus {
+	box-shadow: 0 0 0 0.1rem #000;
 }
 </style>
 

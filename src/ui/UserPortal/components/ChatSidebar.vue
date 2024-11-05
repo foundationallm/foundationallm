@@ -10,6 +10,7 @@
 			<span v-else>{{ $appConfigStore.logoText }}</span>
 			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
+					class="chat-sidebar__button"
 					:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
 					size="small"
 					severity="secondary"
@@ -109,14 +110,29 @@
 
 			<div>
 				<span class="chat-sidebar__username">{{ $authStore.currentAccount?.name }}</span>
-				<Button
-					class="chat-sidebar__sign-out"
-					icon="pi pi-sign-out"
-					label="Sign Out"
-					severity="secondary"
-					size="small"
-					@click="$authStore.logout()"
-				/>
+				<div class="chat-sidebar__options">
+					<Button
+						class="chat-sidebar__sign-out chat-sidebar__button"
+						icon="pi pi-sign-out"
+						label="Sign Out"
+						severity="secondary"
+						size="small"
+						@click="$authStore.logout()"
+					/>
+					<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+						<Button
+							class="chat-sidebar__settings chat-sidebar__button"
+							icon="pi pi-cog"
+							severity="secondary"
+							size="small"
+							aria-label="Settings"
+							aria-controls="settings-modal"
+							:aria-expanded="settingsModalVisible"
+							@click="settingsModalVisible = true"
+						/>
+						<template #popper><div role="tooltip">Settings</div></template>
+					</VTooltip>
+				</div>
 			</div>
 		</div>
 
@@ -140,8 +156,8 @@
 				@keydown="renameSessionInputKeydown"
 			></InputText>
 			<template #footer>
-				<Button label="Cancel" text @click="closeRenameModal" />
-				<Button label="Rename" @click="handleRenameSession" />
+				<Button class="sidebar-dialog__button" label="Cancel" text @click="closeRenameModal" />
+				<Button class="sidebar-dialog__button" label="Rename" @click="handleRenameSession" />
 			</template>
 		</Dialog>
 
@@ -170,13 +186,70 @@
 				<p>Do you want to delete the chat "{{ sessionToDelete.display_name }}" ?</p>
 			</div>
 			<template #footer>
-				<Button label="Cancel" text :disabled="deleteProcessing" @click="sessionToDelete = null" />
 				<Button
+					class="sidebar-dialog__button"
+					label="Cancel"
+					text
+					:disabled="deleteProcessing"
+					@click="sessionToDelete = null"
+				/>
+				<Button
+					class="sidebar-dialog__button"
 					label="Delete"
 					severity="danger"
 					autofocus
 					:disabled="deleteProcessing"
 					@click="handleDeleteSession"
+				/>
+			</template>
+		</Dialog>
+
+		<Dialog
+			id="settings-modal"
+			v-model:visible="settingsModalVisible"
+			v-focustrap
+			modal
+			class="sidebar-dialog"
+			header="Settings"
+			@keydown.esc="settingsModalVisible = false"
+		>
+			<TabView>
+				<TabPanel header="Accessibility">
+					<div class="setting-option">
+						<h4 id="auto-hide-toasts" class="setting-option-label">
+							Auto hide toast notifications
+						</h4>
+						<InputSwitch v-model="$appStore.autoHideToasts" aria-labelledby="auto-hide-toasts" />
+					</div>
+					<div class="setting-option">
+						<h4 id="text-size" class="setting-option-label">Text size</h4>
+						<div class="text-size-slider-container">
+							<Slider
+								v-model="$appStore.textSize"
+								:style="{ width: '100%', marginRight: '1rem' }"
+								:min="0.8"
+								:max="1.5"
+								:step="0.1"
+								aria-labelledby="text-size"
+								aria-valuemin="80%"
+								aria-valuemax="150%"
+								:aria-valuenow="Math.round(($appStore.textSize / 1) * 100) + '%'"
+							/>
+							<p>{{ Math.round(($appStore.textSize / 1) * 100) }}%</p>
+						</div>
+					</div>
+					<div class="setting-option">
+						<h4 id="contrast" class="setting-option-label">High contrast mode</h4>
+						<InputSwitch v-model="$appStore.highContrastMode" aria-labelledby="contrast" />
+					</div>
+				</TabPanel>
+			</TabView>
+			<template #footer>
+				<Button
+					class="sidebar-dialog__button"
+					label="Close"
+					text
+					@click="settingsModalVisible = false"
 				/>
 			</template>
 		</Dialog>
@@ -200,6 +273,7 @@ export default {
 			isMobile: window.screen.width < 950,
 			createProcessing: false,
 			debounceTimeout: null as NodeJS.Timeout | null,
+			settingsModalVisible: false,
 		};
 	},
 
@@ -246,7 +320,7 @@ export default {
 					severity: 'warn',
 					summary: 'Warning',
 					detail: 'Please wait before creating another session.',
-					life: 3000,
+					life: this.$appStore.autoHideToasts ? 3000 : null,
 				});
 				return;
 			}
@@ -265,7 +339,7 @@ export default {
 					severity: 'error',
 					summary: 'Error',
 					detail: 'Could not create a new session. Please try again.',
-					life: 5000,
+					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 			} finally {
 				this.createProcessing = false; // Re-enable the button
@@ -287,7 +361,7 @@ export default {
 					severity: 'error',
 					summary: 'Error',
 					detail: 'Could not delete the session. Please try again.',
-					life: 5000,
+					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 			} finally {
 				this.deleteProcessing = false;
@@ -402,6 +476,7 @@ export default {
 .chat:hover {
 	background-color: rgba(217, 217, 217, 0.05);
 }
+
 .chat--selected {
 	color: var(--secondary-text);
 	background-color: var(--secondary-color);
@@ -438,10 +513,11 @@ export default {
 
 .chat-sidebar__account {
 	display: grid;
-	grid-template-columns: auto auto;
-	padding: 12px 24px;
-	justify-content: flex-start;
+	grid-template-columns: min-content auto;
+	// added extra padding to the right to account for resize handle width
+	padding: 12px 29px 12px 24px;
 	text-transform: inherit;
+	align-items: center;
 }
 
 .chat-sidebar__avatar {
@@ -450,11 +526,25 @@ export default {
 	height: 61px;
 	width: 61px;
 }
+
 .chat-sidebar__sign-out {
 	width: 100%;
 }
+
 .chat-sidebar__button {
 	color: var(--primary-text) !important;
+}
+
+.p-button-text.sidebar-dialog__button:focus {
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+}
+
+.sidebar-dialog__button:focus {
+	box-shadow: 0 0 0 0.1rem #000;
+}
+
+.chat-sidebar__button:focus {
+	box-shadow: 0 0 0 0.1rem #fff;
 }
 
 .chat-sidebar__username {
@@ -464,6 +554,16 @@ export default {
 	text-transform: capitalize;
 	line-height: 0;
 	vertical-align: super;
+}
+
+.chat-sidebar__options {
+	display: flex;
+	align-items: stretch;
+}
+
+.chat-sidebar__settings {
+	margin-left: 4px;
+	height: 100%;
 }
 
 .p-overlaypanel-content {
@@ -497,6 +597,25 @@ li.chat-list-item {
 	margin: 0;
 }
 
+.setting-option {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.text-size-slider-container {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	max-width: 300px;
+}
+
+#text-size {
+	text-wrap: nowrap;
+}
+
 @media only screen and (max-width: 950px) {
 	.chat-sidebar__section-header--mobile {
 		height: 70px;
@@ -515,6 +634,43 @@ li.chat-list-item {
 </style>
 
 <style lang="scss">
+.p-inputswitch:not(.p-disabled):has(.p-inputswitch-input:focus-visible) .p-inputswitch-slider {
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+}
+
+.p-inputswitch.p-highlight:not(.p-disabled):has(.p-inputswitch-input:focus-visible)
+	.p-inputswitch-slider {
+	box-shadow: 0 0 0 0.1rem #000; /* Black box-shadow when p-highlight is also present */
+}
+
+.p-inputswitch:not(.p-disabled):has(.p-inputswitch-input:focus-visible) .p-inputswitch-slider {
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+}
+
+.p-slider .p-slider-handle:focus-visible {
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+}
+
+.p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus-visible {
+	box-shadow: inset 0 0 0 0.1rem var(--primary-button-bg);
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon:focus-visible {
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+}
+
+.p-inputtext:focus:not(.p-dropdown-label) {
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+}
+
+.p-dropdown:not(.p-disabled).p-focus {
+	border-color: var(--primary-button-bg);
+}
+
+.sidebar-dialog {
+	max-width: 90vw;
+}
+
 @media only screen and (max-width: 950px) {
 	.sidebar-dialog {
 		width: 95vw;

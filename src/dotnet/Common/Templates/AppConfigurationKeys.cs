@@ -992,6 +992,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_Branding_FooterText =
             "FoundationaLLM:Branding:FooterText";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Branding:NoAgentsMessage setting.
+        /// <para>Value description:<br/>Message to display to users when their agent list is empty.</para>
+        /// </summary>
+        public const string FoundationaLLM_Branding_NoAgentsMessage =
+            "FoundationaLLM:Branding:NoAgentsMessage";
 
         #endregion
 

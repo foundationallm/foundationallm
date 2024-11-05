@@ -23,6 +23,8 @@ import FileUpload from 'primevue/fileupload';
 import Badge from 'primevue/badge';
 import BadgeDirective from 'primevue/badgedirective';
 import ProgressBar from 'primevue/progressbar';
+import ColorPicker from 'primevue/colorpicker';
+import InputSwitch from 'primevue/inputswitch';
 
 import { defineNuxtPlugin } from '#app';
 
@@ -50,6 +52,8 @@ export default defineNuxtPlugin((nuxtApp) => {
 	nuxtApp.vueApp.component('Badge', Badge);
 	nuxtApp.vueApp.directive('badge', BadgeDirective);
 	nuxtApp.vueApp.component('ProgressBar', ProgressBar);
+	nuxtApp.vueApp.component('ColorPicker', ColorPicker);
+	nuxtApp.vueApp.component('InputSwitch', InputSwitch);
 
 	nuxtApp.vueApp.use(ToastService);
 	nuxtApp.vueApp.directive('tooltip', Tooltip);
