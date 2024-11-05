@@ -57,13 +57,6 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public string[]? Capabilities { get; set; }
 
         /// <summary>
-        /// Profiles the agent's welcome message to display to end users. If the value is null, the default
-        /// welcome message defined in App Config is displayed.
-        /// </summary>
-        [JsonPropertyName("welcome_message")]
-        public string? WelcomeMessage { get; set; }
-
-        /// <summary>
         /// Gets or sets a dictionary of tools that are registered with the agent.
         /// </summary>
         /// <remarks>

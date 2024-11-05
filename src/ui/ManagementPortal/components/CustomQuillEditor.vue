@@ -9,7 +9,9 @@
         >
             <template #toolbar>
                 <div :id="toolbarId">
-                    <select class="ql-size">
+                    <select class="ql-size"
+                        aria-label="Text Size"
+                        title="Text Size">
                         <option value="small"></option>
                         <option selected></option>
                         <option value="large"></option>
@@ -24,7 +26,9 @@
                     <button class="ql-list" value="ordered" aria-label="Ordered List"></button>
                     <button class="ql-list" value="bullet" aria-label="Unordered List"></button>
                     <button class="ql-clean" aria-label="Remove Styles"></button>
-                    <button class="quill-view-html" aria-label="Edit HTML" @click="toggleHtmlDialog">Edit HTML</button>
+                    <button class="quill-view-html" aria-label="Edit HTML"
+                        style="width: 100px;"
+                        @click="toggleHtmlDialog">Edit HTML</button>
                 </div>
             </template>
         </QuillEditor>

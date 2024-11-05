@@ -1006,7 +1006,7 @@ export default {
 		mapAgentToForm(agent: Agent) {
 			this.agentName = agent.name || this.agentName;
 			this.agentDescription = agent.description || this.agentDescription;
-			this.agentWelcomeMessage = agent.welcome_message || this.agentWelcomeMessage;
+			this.agentWelcomeMessage = agent.properties?.['welcome_message'] || this.agentWelcomeMessage;
 			this.agentType = agent.type || this.agentType;
 			this.object_id = agent.object_id || this.object_id;
 			this.inline_context = agent.inline_context || this.inline_context;
@@ -1269,7 +1269,7 @@ export default {
 					type: this.agentType,
 					name: this.agentName,
 					description: this.agentDescription,
-					welcome_message: this.agentWelcomeMessage,
+					properties: { 'welcome_message': this.agentWelcomeMessage },
 					object_id: this.object_id,
 					inline_context: this.inline_context,
 					cost_center: this.cost_center,

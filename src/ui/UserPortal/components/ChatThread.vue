@@ -104,7 +104,7 @@ export default {
 			this.userSentMessage = false;
 			await this.$appStore.getMessages();
 			this.$appStore.updateSessionAgentFromMessages(newSession);
-			this.welcomeMessage = this.$appStore.getSessionAgent(newSession)?.resource?.welcome_message ??
+			this.welcomeMessage = this.$appStore.getSessionAgent(newSession)?.resource?.properties?.['welcome_message'] ??
 				this.$appConfigStore.defaultAgentWelcomeMessage ??
 				'Start the conversation using the text box below.';
 			this.isLoading = false;
@@ -112,7 +112,7 @@ export default {
 
 		async lastSelectedAgent(newAgent, oldAgent) {
 			if (newAgent === oldAgent) return;
-			this.welcomeMessage = newAgent?.resource?.welcome_message ??
+			this.welcomeMessage = newAgent?.resource?.properties?.['welcome_message'] ??
 				this.$appConfigStore.defaultAgentWelcomeMessage ??
 				'Start the conversation using the text box below.';
 		},
