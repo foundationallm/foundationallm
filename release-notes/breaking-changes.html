@@ -79,6 +79,44 @@
 </div>
 <h2 id="starting-with-084">Starting with 0.8.4</h2>
 <h3 id="resource-provider-changes">Resource provider changes</h3>
+<p><strong>FoundationaLLM.Authorization</strong></p>
+<p>The following entries need to be added to the policy store file:</p>
+<pre><code class="lang-json">{
+    &quot;name&quot;: &quot;GUID03&quot;,
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/policyAssignments&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyAssignments/GUID03&quot;,
+    &quot;description&quot;: &quot;Ownership on conversation mapping resources managed by the FoundationaLLM.AzureOpenAI resource provider.&quot;,
+    &quot;policy_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001&quot;,
+    &quot;principal_id&quot;: &quot;SECURITY_GROUP_ID&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/FOUNDATIONALLM_INSTANCEID/providers/FoundationaLLM.AzureOpenAI/conversationMappings&quot;,
+    &quot;created_on&quot;: &quot;DEPLOY_TIME&quot;,
+    &quot;updated_on&quot;: &quot;DEPLOY_TIME&quot;,
+    &quot;created_by&quot;: &quot;SYSTEM&quot;,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;
+},
+{
+    &quot;name&quot;: &quot;GUID04&quot;,
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/policyAssignments&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyAssignments/GUID04&quot;,
+    &quot;description&quot;: &quot;Ownership on file mapping resources managed by the FoundationaLLM.AzureOpenAI resource provider.&quot;,
+    &quot;policy_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001&quot;,
+    &quot;principal_id&quot;: &quot;SECURITY_GROUP_ID&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/FOUNDATIONALLM_INSTANCEID/providers/FoundationaLLM.AzureOpenAI/fileMappings&quot;,
+    &quot;created_on&quot;: &quot;DEPLOY_TIME&quot;,
+    &quot;updated_on&quot;: &quot;DEPLOY_TIME&quot;,
+    &quot;created_by&quot;: &quot;SYSTEM&quot;,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;
+}
+</code></pre>
+<p>The following placehoders need to be replaced with the actual values:</p>
+<ul>
+<li><code>SECURITY_GROUP_ID</code> - the ID of the security group that needs to be assigned to the policy</li>
+<li><code>FOUNDATIONALLM_INSTANCEID</code> - the ID of the FoundationaLLM instance</li>
+<li><code>DEPLOY_TIME</code> - the time when the policy was deployed</li>
+<li><code>GUID03</code> and <code>GUID04</code> - unique identifiers for the policy assignments</li>
+</ul>
 <p><strong>FoundationaLLM.AzureOpenAI</strong></p>
 <p>When upgrading an existing FoundationaLLM instance, the items from the <code>resource-provider/FoundationaLLM.AzureOpenAI</code> directory in storage account must be updated to use the new JSON format:</p>
 <p><em>Assistant user context</em></p>
