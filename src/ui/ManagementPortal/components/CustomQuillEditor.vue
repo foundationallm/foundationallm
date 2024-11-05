@@ -1,32 +1,30 @@
 <template>
     <div class="quill-container">
         <QuillEditor
-            ref="quillEditor"
             :content="content"
             contentType="html"
-            toolbar="#custom-toolbar"
+            :toolbar="'#custom-toolbar' + index"
             @update:content="handleContentUpdate"
+            :style="{ minHeight: minHeight }"
         >
             <template #toolbar>
-                <div id="custom-toolbar">
-                    <div id="custom-toolbar">
-                        <select class="ql-size">
-                            <option value="small"></option>
-                            <option selected></option>
-                            <option value="large"></option>
-                            <option value="huge"></option>
-                        </select>
-                        <button class="ql-bold" aria-label="Bold"></button>
-                        <button class="ql-italic" aria-label="Italic"></button>
-                        <button class="ql-underline" aria-label="Underline"></button>
-                        <button class="ql-strike" aria-label="Strike"></button>
-                        <button class="ql-link" aria-label="Link"></button>
-                        <button class="ql-image" aria-label="Image"></button>
-                        <button class="ql-list" value="ordered" aria-label="Ordered List"></button>
-                        <button class="ql-list" value="bullet" aria-label="Unordered List"></button>
-                        <button class="ql-clean" aria-label="Remove Styles"></button>
-                        <button class="quill-view-html" aria-label="Edit HTML" @click="toggleHtmlDialog">Edit HTML</button>
-                    </div>
+                <div :id="'custom-toolbar' + index">
+                    <select class="ql-size">
+                        <option value="small"></option>
+                        <option selected></option>
+                        <option value="large"></option>
+                        <option value="huge"></option>
+                    </select>
+                    <button class="ql-bold" aria-label="Bold"></button>
+                    <button class="ql-italic" aria-label="Italic"></button>
+                    <button class="ql-underline" aria-label="Underline"></button>
+                    <button class="ql-strike" aria-label="Strike"></button>
+                    <button class="ql-link" aria-label="Link"></button>
+                    <button class="ql-image" aria-label="Image"></button>
+                    <button class="ql-list" value="ordered" aria-label="Ordered List"></button>
+                    <button class="ql-list" value="bullet" aria-label="Unordered List"></button>
+                    <button class="ql-clean" aria-label="Remove Styles"></button>
+                    <button class="quill-view-html" aria-label="Edit HTML" @click="toggleHtmlDialog">Edit HTML</button>
                 </div>
             </template>
         </QuillEditor>
@@ -58,7 +56,16 @@ export default {
         initialContent: {
             type: String,
             required: true,
-            default: ''
+            default: '',
+        },
+        index: {
+            type: Number,
+            required: true,
+            default: 0,
+        },
+        minHeight: {
+            type: String,
+            default: 'auto',
         }
     },
     
@@ -85,7 +92,7 @@ export default {
         },
 
         saveRawHtml() {
-            this.rawHtml = this.rawHtml.replace(/<br>/g, '<br>');
+            // this.rawHtml = this.rawHtml.replace(/<br>/g, '<br>');
             this.content = this.rawHtml.split('<br>').map(line => `<p>${line}</p>`).join('');
             this.$emit('contentUpdate', this.content);
             this.showHtmlDialog = false;

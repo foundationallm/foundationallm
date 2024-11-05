@@ -15,16 +15,18 @@
             </div>
         </div>
         <div class="steps">
-            <div class="step span-2" v-for="key in orderedKeys" :key="key">
+            <div class="step span-2" v-for="(key, index) in orderedKeys" :key="key">
                 <div class="step-header mb-2" :id="key.split(':').pop()">{{ getFriendlyName(key) }}</div>
                 <div class="mb-2">{{ getBrandingDescription(key) }}</div>
                 <InputSwitch v-if="key === 'FoundationaLLM:Branding:KioskMode'" v-model:modelValue="kioskMode" @change="updateBrandingValue(key, JSON.stringify(kioskMode))" />
                 <CustomQuillEditor
-                    v-if="key === 'FoundationaLLM:Branding:FooterText'"
-                    :initialContent="JSON.parse(JSON.stringify(getBrandingValue(key)))"
-                    @contentUpdate="updateFooterText(key, $event)"
+                    v-if="key === 'FoundationaLLM:Branding:FooterText' || key === 'FoundationaLLM:Branding:NoAgentsMessage'"
+                    :index="index"
+                    :minHeight="key === 'FoundationaLLM:Branding:NoAgentsMessage' ? '150px' : 'auto'"
+                    :initialContent="quillContent[key]"
+                    @contentUpdate="updateQuillContent(key, $event)"
                 />
-                <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" class="branding-input" :aria-labelledby="key.split(':').pop()" v-if="key !== 'FoundationaLLM:Branding:FooterText' && key !== 'FoundationaLLM:Branding:KioskMode'" />
+                <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" class="branding-input" :aria-labelledby="key.split(':').pop()" v-if="key !== 'FoundationaLLM:Branding:FooterText' && key !== 'FoundationaLLM:Branding:KioskMode' && key !== 'FoundationaLLM:Branding:NoAgentsMessage'" />
                 <div class="logo-preview" :style="{ backgroundColor: getBrandingValue('FoundationaLLM:Branding:PrimaryColor') }" v-if="key === 'FoundationaLLM:Branding:LogoUrl'">
                     <img :src="$filters.publicDirectory(getBrandingValue(key))" class="logo-image" />
                 </div>
@@ -310,8 +312,11 @@ export default {
                     ]
                 },
             ],
+            quillContent: {
+                'FoundationaLLM:Branding:FooterText': '',
+                'FoundationaLLM:Branding:NoAgentsMessage': '',
+            },
             unorderedKeys: [] as string[],
-            footerText: '',
             rawFooterTextHTML: '',
             showContrastInfo: false,
             kioskMode: false,
@@ -323,7 +328,6 @@ export default {
 
     async created() {
         await this.getBranding();
-        this.footerText = JSON.parse(JSON.stringify(this.getBrandingValue('FoundationaLLM:Branding:FooterText')));
         this.kioskMode = this.getBrandingValue('FoundationaLLM:Branding:KioskMode') === 'true';
     },
 
@@ -334,6 +338,9 @@ export default {
                 this.branding = await api.getBranding();
                 this.loading = false;
                 this.brandingOriginal = JSON.parse(JSON.stringify(this.branding));
+                Object.keys(this.quillContent).forEach((key: string) => {
+                    this.quillContent[key] = this.getBrandingValue(key);
+                });
                 this.getUnorderedKeys();
             } catch (error) {
                 this.$toast.add({
@@ -422,11 +429,11 @@ export default {
             return key.split(':').pop()?.replace(/([A-Z])/g, ' $1').trim() || '';
         },
 
-        updateFooterText(key: string, newContent: string) {
+        updateQuillContent(key: string, newContent: string) {
             if (newContent === this.getBrandingValue(key)) {
                 return;
             }
-            console.log('updateFooterText', key, newContent);
+            this.quillContent[key] = newContent;
             this.updateBrandingValue(key, newContent);
         },
 
