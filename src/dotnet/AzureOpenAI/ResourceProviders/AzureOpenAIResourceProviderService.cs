@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Graph.Drives.Item.Items.Item.Workbook.Functions.False;
 using System.Text.Json;
 
 namespace FoundationaLLM.AzureOpenAI.ResourceProviders
@@ -344,25 +345,12 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
         {
             #region Load and validate upsert options
 
-            var agentObjectId = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId) as string
-                ?? throw new ResourceProviderException(
-                    $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId} parameter to update the {fileMapping.Name} file user context.",
-                    StatusCodes.Status400BadRequest);
+            var agentObjectId = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId) as string;
 
-            var conversationId = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.ConversationId) as string
-                ?? throw new ResourceProviderException(
-                    $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.ConversationId} parameter to update the {fileMapping.Name} file user context.",
-                    StatusCodes.Status400BadRequest);
-
-            var attachmentObjectId = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.AttachmentObjectId) as string
-                ?? throw new ResourceProviderException(
-                    $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.AttachmentObjectId} parameter to update the {fileMapping.Name} file user context.",
-                    StatusCodes.Status400BadRequest);
+            var attachmentObjectId = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.AttachmentObjectId) as string;
 
             var mustCreateOpenAIFile = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIFile) as bool?
-                ?? throw new ResourceProviderException(
-                    $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.AttachmentObjectId} parameter to update the {fileMapping.Name} file user context.",
-                    StatusCodes.Status400BadRequest);
+                ?? false;
 
             #endregion
 
