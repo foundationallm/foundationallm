@@ -765,7 +765,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             string? actionName = null)
         {
             var hasAction = !string.IsNullOrWhiteSpace(actionName);
-            var result = GetResourcePath(instanceId, resourceType, resourceName);
+            var result = GetResourcePath(instanceId, resourceType, resourceName, actionName);
             var parsedResourcePath = new ResourcePath(
                 result.ResourcePath,
                 _allowedResourceProviders,

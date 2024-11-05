@@ -274,13 +274,20 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 return contentItems;
 
             var result = contentItems.Select(ci => TransformContentItem(ci, newFileMappings)).ToList();
+            var upsertOptions = new ResourceProviderUpsertOptions
+            {
+                Parameters = {
+                    [AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId] = _agentObjectId                    
+                }
+            };
 
             foreach (var fileMapping in newFileMappings)
             {
                 await _azureOpenAIResourceProvider.UpsertResourceAsync<AzureOpenAIFileMapping, ResourceProviderUpsertResult<AzureOpenAIFileMapping>>(
                 _instanceId,
                 fileMapping,
-                _callContext.CurrentUserIdentity!);
+                _callContext.CurrentUserIdentity!,
+                upsertOptions);
             }
 
             return result;
