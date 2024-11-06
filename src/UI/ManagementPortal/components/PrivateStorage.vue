@@ -262,6 +262,10 @@ export default {
 		},
 
 		async deletePrivateStorageFile(fileName: string) {
+			if (!confirm('Are you sure you want to delete this file?')) {
+                return;
+            }
+			
 			this.loadingModalStatusText = 'Deleting file...';
 			this.modalLoading = true;
 			await api.deleteFileFromPrivateStorage(this.agentName, fileName);
