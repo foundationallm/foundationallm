@@ -78,7 +78,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
-            ResourceProviderLoadOptions? options = null) =>
+            ResourceProviderGetOptions? options = null) =>
             resourcePath.ResourceTypeName switch
             {
                 AgentResourceTypeNames.Agents => await LoadResources<AgentBase>(
