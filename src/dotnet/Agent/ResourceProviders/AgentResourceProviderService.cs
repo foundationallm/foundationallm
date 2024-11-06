@@ -419,9 +419,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
             {
                 await _resourceReferenceStore!.DeleteResourceReference(result.ResourceReference!);
 
-                var filePath = $"{_name}/{_instanceSettings.Id}/{resourcePath.MainResourceId!}/private-file-store/{resourcePath.ResourceId!}";
+                //var filePath = $"{_name}/{_instanceSettings.Id}/{resourcePath.MainResourceId!}/private-file-store/{resourcePath.ResourceId!}";
 
-                await _storageService.DeleteFileAsync(_storageContainerName, filePath);
+                //await _storageService.DeleteFileAsync(_storageContainerName, filePath);
             }
             else
             {
