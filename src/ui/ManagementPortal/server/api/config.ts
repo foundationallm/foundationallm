@@ -48,6 +48,8 @@ const allowedKeys = [
 	// 'FoundationaLLM:APIEndpoints:VectorizationAPI:Essentials:APIUrl',
 	// 'FoundationaLLM:APIEndpoints:VectorizationWorker:Essentials:APIUrl',
 	'FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIUrl',
+
+	'.appconfig.featureflag/FoundationaLLM.Agent.PrivateStore',
 ];
 
 export default defineEventHandler(async (event) => {

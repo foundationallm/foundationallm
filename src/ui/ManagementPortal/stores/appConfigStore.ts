@@ -39,6 +39,8 @@ export const useAppConfigStore = defineStore('appConfig', {
 		noAgentsMessage: null,
 		defaultAgentWelcomeMessage: null,
 
+		agentPrivateStoreFeatureFlag: false,
+
 		// Auth: These settings configure the MSAL authentication.
 		auth: {
 			clientId: null,
@@ -90,6 +92,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				footerText,
 				noAgentsMessage,
 				defaultAgentWelcomeMessage,
+				agentPrivateStoreFeatureFlag,
 				instanceId,
 				allowedUploadFileExtensions,
 				authClientId,
@@ -127,6 +130,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				getConfigValueSafe('FoundationaLLM:Branding:FooterText'),
 				getConfigValueSafe('FoundationaLLM:Branding:NoAgentsMessage', 'No agents available. Please check with your system administrator for assistance.'),
 				getConfigValueSafe('FoundationaLLM:Branding:DefaultAgentWelcomeMessage', 'Start the conversation using the text box below.'),
+				getConfigValueSafe('.appconfig.featureflag/FoundationaLLM.Agent.PrivateStore', '{"enabled": false}'),
 				getConfigValueSafe('FoundationaLLM:Instance:Id', '00000000-0000-0000-0000-000000000000'),
 				getConfigValueSafe('FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions', 'pdf'),
 
@@ -170,6 +174,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.allowedUploadFileExtensions = allowedUploadFileExtensions;
 			this.noAgentsMessage = noAgentsMessage;
 			this.defaultAgentWelcomeMessage = defaultAgentWelcomeMessage;
+			this.agentPrivateStoreFeatureFlag = JSON.parse(agentPrivateStoreFeatureFlag)?.enabled;;
 
 			this.auth.clientId = authClientId;
 			this.auth.instance = authInstance;
