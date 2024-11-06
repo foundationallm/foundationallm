@@ -42,8 +42,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                                 typeof(FileContent))
                             {
                                 AllowedTypes = [
-                                    new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<ResourceBase>)]),
-                                    new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(ResourceBase)], [typeof(ResourceProviderUpsertResult)]),
+                                    new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Write, [], [], [typeof(ResourceProviderGetResult<AgentFile>)]),
+                                    new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [], [typeof(ResourceProviderUpsertResult)]),
                                     new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], []),
                                 ]
                             }

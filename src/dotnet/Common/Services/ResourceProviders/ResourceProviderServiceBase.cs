@@ -249,7 +249,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         }
 
         /// <inheritdoc/>
-        public async Task<object> HandlePostAsync(string resourcePath, string serializedResource, UnifiedUserIdentity userIdentity)
+        public async Task<object> HandlePostAsync(string resourcePath, string? serializedResource, ResourceProviderFormFile? formFile, UnifiedUserIdentity userIdentity)
         {
             EnsureServiceInitialization();
             var (ParsedResourcePath, AuthorizableOperation) = ParseAndValidateResourcePath(resourcePath, HttpMethod.Post, true, requireResource: false);
@@ -257,6 +257,10 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             if (ParsedResourcePath.HasAction)
             {
                 // Handle the action.
+                if (string.IsNullOrWhiteSpace(serializedResource) || formFile != null)
+                    throw new ResourceProviderException(
+                        "Empty payloads or attached files are not allowed on resource provider action requests.",
+                        StatusCodes.Status400BadRequest);
 
                 // Some actions require a resource identifier.
                 if (ParsedResourcePath.Action! == ResourceProviderActions.Purge
@@ -271,7 +275,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 var actionAuthorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation,
                     ParsedResourcePath.Action! == ResourceProviderActions.Filter, false, false);
 
-                return await ExecuteActionAsync(ParsedResourcePath, actionAuthorizationResult, serializedResource, userIdentity);
+                return await ExecuteActionAsync(ParsedResourcePath, actionAuthorizationResult, serializedResource!, userIdentity);
             }
 
             // All resource upserts require a resource identifier.
@@ -283,7 +287,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             // Authorize access to the resource path.
             var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizableOperation, false, false, false);
 
-            var upsertResult = await UpsertResourceAsync(ParsedResourcePath, serializedResource, userIdentity);
+            var upsertResult = await UpsertResourceAsync(ParsedResourcePath, serializedResource, formFile, userIdentity);
 
             await UpsertResourcePostProcess(ParsedResourcePath.InstanceId!, (upsertResult as ResourceProviderUpsertResult)!, authorizationResult, userIdentity);
 
@@ -338,10 +342,12 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// The internal implementation of UpsertResourceAsync. Must be overridden in derived classes.
         /// </summary>
         /// <param name="resourcePath">A <see cref="ResourcePath"/> containing information about the resource path.</param>
-        /// <param name="serializedResource">The serialized resource being created or updated.</param>
+        /// <param name="serializedResource">The optional serialized resource being created or updated.</param>
+        /// <param name="formFile">The optional file attached to the request.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
         /// <returns></returns>
-        protected virtual async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string serializedResource, UnifiedUserIdentity userIdentity)
+        protected virtual async Task<object> UpsertResourceAsync(
+            ResourcePath resourcePath, string? serializedResource, ResourceProviderFormFile? formFile, UnifiedUserIdentity userIdentity)
         {
             await Task.CompletedTask;
             throw new NotImplementedException();

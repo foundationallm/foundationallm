@@ -21,10 +21,11 @@ namespace FoundationaLLM.Common.Interfaces
         /// Handles a HTTP POST request for a specified resource path.
         /// </summary>
         /// <param name="resourcePath">The resource path.</param>
-        /// <param name="requestPayload">The request payload.</param>
+        /// <param name="requestPayload">The optional request payload.</param>
+        /// <param name="formFile">The optional file attached to the request.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
         /// <returns>The serialized form of the result of handling the request.</returns>
-        Task<object> HandlePostAsync(string resourcePath, string requestPayload, UnifiedUserIdentity userIdentity);
+        Task<object> HandlePostAsync(string resourcePath, string? requestPayload, ResourceProviderFormFile? formFile, UnifiedUserIdentity userIdentity);
 
         /// <summary>
         /// Handles a HTTP DELETE request for a specified resource path.

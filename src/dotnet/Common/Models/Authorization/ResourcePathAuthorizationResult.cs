@@ -59,9 +59,12 @@ namespace FoundationaLLM.Common.Models.Authorization
         public Dictionary<string, ResourcePathAuthorizationResult> SubordinateResourcePathsAuthorizationResults { get; set; } = [];
 
         /// <summary>
-        /// Gets or sets a value indicating whether an owner role assignment must be set for the resource.
+        /// Gets a value indicating whether an owner role assignment must be set for the resource.
         /// </summary>
-        [JsonPropertyName("must_set_owner_role_assignment")]
-        public bool MustSetOwnerRoleAssignment { get; set; } = true;
+        /// <remarks>
+        /// Owner role assignment is not required when at least one policy is assigned to the resource path.
+        /// </remarks>
+        [JsonIgnore]
+        public bool MustSetOwnerRoleAssignment => PolicyDefinitionIds.Count > 0;
     }
 }

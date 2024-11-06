@@ -379,8 +379,7 @@ namespace FoundationaLLM.Authorization.Services
                 Authorized = false,
                 Roles = [],
                 PolicyDefinitionIds = [],
-                SubordinateResourcePathsAuthorizationResults = [],
-                MustSetOwnerRoleAssignment = MustSetOwnerRoleAssignment(resourcePath)
+                SubordinateResourcePathsAuthorizationResults = []
             };
 
             // Combine the principal id and security group ids into one list.
@@ -522,17 +521,5 @@ namespace FoundationaLLM.Authorization.Services
 
             return result;
         }
-
-        private bool MustSetOwnerRoleAssignment(ResourcePath resourcePath) =>
-            resourcePath.MainResourceTypeName switch
-            {
-                AgentResourceTypeNames.Agents =>
-                            resourcePath.ResourceTypeName switch
-                        {
-                            AgentResourceTypeNames.Files => false,
-                            _ => true
-                        },
-                _ => true
-            };
     }
 }

@@ -277,7 +277,7 @@ export default {
 
 		async getPrivateAgentFiles() {
 			this.agentFiles.localFiles = [];
-			this.agentFiles.uploadedFiles = await api.getPrivateStorageFiles(this.agentName);
+			this.agentFiles.uploadedFiles = (await api.getPrivateStorageFiles(this.agentName)).map(r => r.resource);
 		},
 
 		async handleUpload() {
@@ -303,7 +303,7 @@ export default {
 						const formData = new FormData();
 						formData.append('file', file);
 
-						await api.uploadToPrivateStorage(formData, this.agentName);
+						await api.uploadToPrivateStorage(this.agentName, file.name, formData);
 					}
 					filesUploaded += 1;
 				} catch (error) {
