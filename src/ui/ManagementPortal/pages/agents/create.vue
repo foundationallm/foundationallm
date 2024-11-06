@@ -13,14 +13,16 @@
 				</div>
 			</div>
 
-			<!-- Private storage -->
-			<PrivateStorage v-if="hasOpenAIAssistantCapability" :agent-name="`${agentName}`" />
+			<div style="display: flex;align-items: center;">
+				<!-- Private storage -->
+				<PrivateStorage v-if="hasOpenAIAssistantCapability" :agent-name="`${agentName}`" />
 
-			<!-- Edit access control -->
-			<AccessControl
-				v-if="editAgent"
-				:scope="`providers/FoundationaLLM.Agent/agents/${agentName}`"
-			/>
+				<!-- Edit access control -->
+				<AccessControl
+					v-if="editAgent"
+					:scope="`providers/FoundationaLLM.Agent/agents/${agentName}`"
+				/>
+			</div>
 		</div>
 
 		<div class="steps" :class="{ 'steps--loading': loading }">

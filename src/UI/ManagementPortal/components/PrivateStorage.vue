@@ -1,127 +1,130 @@
 <template>
-	<!-- Loading overlay -->
-	<template v-if="loading">
-		<div class="grid__loading-overlay">
-			<LoadingGrid />
-			<div>{{ loadingStatusText }}</div>
-		</div>
-	</template>
+	<div>
+		<!-- Loading overlay -->
+		<template v-if="loading">
+			<div class="grid__loading-overlay">
+				<LoadingGrid />
+				<div>{{ loadingStatusText }}</div>
+			</div>
+		</template>
 
-	<!-- Trigger button -->
-	<div style="display: flex; align-items: center; margin-right: 8px">
-		<Button @click="openPrivateStorageDialog">
+		<!-- Trigger button -->
+		<Button
+			v-if="isButtonVisible"
+			@click="openPrivateStorageDialog"
+			style="margin-right: 8px;">
 			<i class="pi pi-box" style="font-size: 1.2rem; margin-right: 8px"></i>
 			Private Storage
 		</Button>
-	</div>
 
-	<!-- Private Storage dialog -->
-	<Dialog
-		v-model:visible="privateStorageDialogOpen"
-		modal
-		:header="'Private Storage'"
-		:style="{ minWidth: '70%' }"
-		@hide="handleClosePrivateStorage"
-	>
-		<template v-if="modalLoading">
-			<div class="grid__loading-overlay">
-				<LoadingGrid />
-				<div>{{ loadingModalStatusText }}</div>
-			</div>
-		</template>
-		<div class="card">
-			<FileUpload
-				ref="fileUpload"
-				customUpload
-				class="p-button-outlined"
-				:auto="false"
-				:multiple="true"
-				@upload="handleUpload($event)"
-				@select="fileSelected"
-			>
-				<template #header="{ chooseCallback }">
-					<div>
+		<!-- Private Storage dialog -->
+		<Dialog
+			:visible="privateStorageDialogOpen"
+			modal
+			:header="'Private Storage'"
+			:style="{ minWidth: '70%' }"
+			@hide="handleClosePrivateStorage"
+		>
+			<template v-if="modalLoading">
+				<div class="grid__loading-overlay">
+					<LoadingGrid />
+					<div>{{ loadingModalStatusText }}</div>
+				</div>
+			</template>
+			<div class="card">
+				<FileUpload
+					ref="fileUpload"
+					customUpload
+					class="p-button-outlined"
+					:auto="false"
+					:multiple="true"
+					@upload="handleUpload($event)"
+					@select="fileSelected"
+				>
+					<template #header="{ chooseCallback }">
 						<div>
-							<Button @click="chooseCallback()">
-								<i class="pi pi-file-plus" style="font-size: 1.2rem; margin-right: 8px"></i>
-								Select file from Computer
-							</Button>
-							<Button
-								icon="pi pi-upload"
-								label="Upload"
-								class="file-upload-container-button"
-								style="margin-top: 0.5rem; margin-left: 2px; margin-right: 2px"
-								:disabled="agentFiles.localFiles.length === 0"
-								@click="handleUpload"
-							/>
-						</div>
-					</div>
-				</template>
-				<template #content>
-					<!-- File list -->
-					<div class="file-upload-file-container">
-						<div
-							v-for="file of agentFiles.localFiles"
-							:key="file.name + file.type + file.size"
-							class="file-upload-file"
-						>
-							<div class="file-upload-file_info">
-								<span style="font-weight: 600">{{ file.name }}</span>
-							</div>
-							<div class="file-info-right">
-								<Badge v-if="!isMobile" value="Local Computer" />
-								<Badge value="Pending" />
-								<Button text aria-label="Remove file" @click="removeLocalFile(file.name)">
-									<i class="pi pi-times"></i>
+							<div>
+								<Button @click="chooseCallback()">
+									<i class="pi pi-file-plus" style="font-size: 1.2rem; margin-right: 8px"></i>
+									Select file from Computer
 								</Button>
+								<Button
+									icon="pi pi-upload"
+									label="Upload"
+									class="file-upload-container-button"
+									style="margin-top: 0.5rem; margin-left: 2px; margin-right: 2px"
+									:disabled="agentFiles.localFiles.length === 0"
+									@click="handleUpload"
+								/>
 							</div>
 						</div>
-					</div>
-					<span v-if="agentFiles.localFiles.length == 0">
-						Drag and drop files to here to upload.
-					</span>
-				</template>
-			</FileUpload>
-		</div>
-		<Divider />
-		<!-- Table -->
-		<DataTable :value="agentFiles.uploadedFiles">
-			<!-- Name -->
-			<Column
-				field="display_name"
-				header="Name"
-				:pt="{
-					headerCell: {
-						style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
-					},
-					sortIcon: { style: { color: 'var(--primary-text)' } },
-				}"
-			></Column>
+					</template>
+					<template #content>
+						<!-- File list -->
+						<div class="file-upload-file-container">
+							<div
+								v-for="file of agentFiles.localFiles"
+								:key="file.name + file.type + file.size"
+								class="file-upload-file"
+							>
+								<div class="file-upload-file_info">
+									<span style="font-weight: 600">{{ file.name }}</span>
+								</div>
+								<div class="file-info-right">
+									<Badge v-if="!isMobile" value="Local Computer" />
+									<Badge value="Pending" />
+									<Button text aria-label="Remove file" @click="removeLocalFile(file.name)">
+										<i class="pi pi-times"></i>
+									</Button>
+								</div>
+							</div>
+						</div>
+						<span v-if="agentFiles.localFiles.length == 0">
+							Drag and drop files to here to upload.
+						</span>
+					</template>
+				</FileUpload>
+			</div>
+			<Divider />
+			<!-- Table -->
+			<DataTable :value="agentFiles.uploadedFiles">
+				<!-- Name -->
+				<Column
+					field="display_name"
+					header="Name"
+					:pt="{
+						headerCell: {
+							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+						},
+						sortIcon: { style: { color: 'var(--primary-text)' } },
+					}"
+				></Column>
 
-			<!-- Delete -->
-			<Column
-				header="Delete"
-				header-style="width:6rem"
-				style="text-align: center"
-				:pt="{
-					headerCell: {
-						style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
-					},
-					headerContent: { style: { justifyContent: 'center' } },
-				}"
-			>
-				<template #body="{ data }">
-					<Button link @click="deletePrivateStorageFile(data.name)">
-						<i class="pi pi-trash" style="font-size: 1.2rem"></i>
-					</Button>
-				</template>
-			</Column>
-			<template #empty>There are no private storage files uploaded for this agent.</template>
-		</DataTable>
-		<template #footer>
-			<Button label="Close" text @click="handleClosePrivateStorage" />
-		</template>
-	</Dialog>
+				<!-- Delete -->
+				<Column
+					header="Delete"
+					header-style="width:6rem"
+					style="text-align: center"
+					:pt="{
+						headerCell: {
+							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+						},
+						headerContent: { style: { justifyContent: 'center' } },
+					}"
+				>
+					<template #body="{ data }">
+						<Button link @click="deletePrivateStorageFile(data.name)">
+							<i class="pi pi-trash" style="font-size: 1.2rem"></i>
+						</Button>
+					</template>
+				</Column>
+				<template #empty>There are no private storage files uploaded for this agent.</template>
+			</DataTable>
+			<template #footer>
+				<Button label="Close" text @click="handleClosePrivateStorage" />
+			</template>
+		</Dialog>
+	</div>
 </template>
 
 <script lang="ts">
@@ -156,6 +159,12 @@ export default {
 
 	beforeUnmount() {
 		window.removeEventListener('resize', this.handleResize);
+	},
+
+	computed: {
+		isButtonVisible: function () {
+			return this.$appConfigStore.agentPrivateStoreFeatureFlag;
+		},
 	},
 
 	methods: {
