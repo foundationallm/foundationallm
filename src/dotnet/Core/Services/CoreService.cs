@@ -507,6 +507,7 @@ public partial class CoreService(
                     { "/secondaryProviderObjectId", fileMappingUpsertResult.Resource!.OpenAIFileId }
                 },
                 userIdentity);
+            attachmentUpsertResult.Resource!.SecondaryProviderObjectId = fileMappingUpsertResult.Resource!.OpenAIFileId;
         }
 
         return attachmentUpsertResult;

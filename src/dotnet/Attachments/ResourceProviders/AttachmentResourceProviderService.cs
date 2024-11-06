@@ -204,7 +204,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
 
             if (typeof(T) == typeof(AttachmentFile))
             {
-                var result = await _cosmosDBService.PatchItemPropertiesAsync<AttachmentFile>(
+                var result = await _cosmosDBService.PatchItemPropertiesAsync<AttachmentReference>(
                         AzureCosmosDBContainers.Attachments,
                         userIdentity.UPN!,
                         resourcePath.MainResourceId!,
@@ -219,7 +219,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                 {
                     ObjectId = resourcePath.RawResourcePath,
                     ResourceExists = true,
-                    Resource = result as T
+                    Resource = await LoadAttachment(result, false) as T
                 } as TResult)!;
             }
 
@@ -268,7 +268,8 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                 Type = attachment.Type,
                 Path = $"{_storageContainerName}{attachment.Filename}",
                 ContentType = attachment.ContentType,
-                SecondaryProvider = attachment.SecondaryProvider
+                SecondaryProvider = attachment.SecondaryProvider,
+                SecondaryProviderObjectId = attachment.SecondaryProviderObjectId
             };
 
             if (loadContent)
