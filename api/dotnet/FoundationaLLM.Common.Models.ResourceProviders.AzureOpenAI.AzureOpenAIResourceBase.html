@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Models_ResourceProviders_AzureOpenAI_AzureOpenAIResourceBase" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIResourceBase" class="text-break">
-Class AzureOpenAIResourceBase  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIResourceBase.cs/#L9"><i class="bi bi-code-slash"></i></a>
+Class AzureOpenAIResourceBase  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIResourceBase.cs/#L10"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -103,9 +103,9 @@ Class AzureOpenAIResourceBase  <a class="header-action link-secondary" title="Vi
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPolymorphic(TypeDiscriminatorPropertyName = &quot;type&quot;)]
-[JsonDerivedType(typeof(AssistantUserContext), &quot;assistant-user-context&quot;)]
-[JsonDerivedType(typeof(FileUserContext), &quot;file-user-context&quot;)]
-public class AzureOpenAIResourceBase : ResourceBase</code></pre>
+[JsonDerivedType(typeof(AzureOpenAIConversationMapping), &quot;AzureOpenAIConversationMapping&quot;)]
+[JsonDerivedType(typeof(AzureOpenAIFileMapping), &quot;AzureOpenAIFileMapping&quot;)]
+public class AzureOpenAIResourceBase : AzureCosmosDBResource</code></pre>
   </div>
 
 
@@ -117,6 +117,7 @@ public class AzureOpenAIResourceBase : ResourceBase</code></pre>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
       <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceName.html">ResourceName</a></div>
       <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html">ResourceBase</a></div>
+      <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource.html">AzureCosmosDBResource</a></div>
       <div><span class="xref">AzureOpenAIResourceBase</span></div>
     </dd>
   </dl>
@@ -125,14 +126,23 @@ public class AzureOpenAIResourceBase : ResourceBase</code></pre>
   <dl class="typelist derived">
     <dt>Derived</dt>
     <dd>
-      <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AssistantUserContext.html">AssistantUserContext</a></div>
-      <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.FileUserContext.html">FileUserContext</a></div>
+      <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIConversationMapping.html">AzureOpenAIConversationMapping</a></div>
+      <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIFileMapping.html">AzureOpenAIFileMapping</a></div>
     </dd>
   </dl>
 
   <dl class="typelist inheritedMembers">
     <dt>Inherited Members</dt>
     <dd>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource.html#FoundationaLLM_Common_Models_ResourceProviders_AzureCosmosDBResource_Id">AzureCosmosDBResource.Id</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource.html#FoundationaLLM_Common_Models_ResourceProviders_AzureCosmosDBResource_UPN">AzureCosmosDBResource.UPN</a>
+    </div>
+    <div>
+      <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource.html#FoundationaLLM_Common_Models_ResourceProviders_AzureCosmosDBResource_InstanceId">AzureCosmosDBResource.InstanceId</a>
+    </div>
     <div>
       <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_ObjectId">ResourceBase.ObjectId</a>
     </div>
@@ -208,11 +218,78 @@ public class AzureOpenAIResourceBase : ResourceBase</code></pre>
 </h2>
 
 
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_AzureOpenAI_AzureOpenAIResourceBase_OpenAIEndpoint_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIResourceBase.OpenAIEndpoint*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_AzureOpenAI_AzureOpenAIResourceBase_OpenAIEndpoint" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIResourceBase.OpenAIEndpoint">
+  OpenAIEndpoint
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIResourceBase.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The Azure OpenAI endpoint.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public required string OpenAIEndpoint { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_AzureOpenAI_AzureOpenAIResourceBase_PartitionKey_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIResourceBase.PartitionKey*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_AzureOpenAI_AzureOpenAIResourceBase_PartitionKey" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIResourceBase.PartitionKey">
+  PartitionKey
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIResourceBase.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The logical partition key for the conversation mapping.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string PartitionKey { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="FoundationaLLM_Common_Models_ResourceProviders_AzureOpenAI_AzureOpenAIResourceBase_PartitionKey_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This property is used by storage providers that support partitioning of data (e.g. Azure Cosmos DB).</p>
+</div>
+
+
+
+
   <a id="FoundationaLLM_Common_Models_ResourceProviders_AzureOpenAI_AzureOpenAIResourceBase_Type_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIResourceBase.Type*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_AzureOpenAI_AzureOpenAIResourceBase_Type" data-uid="FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIResourceBase.Type">
   Type
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIResourceBase.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIResourceBase.cs/#L16"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The type of the resource.</p>
@@ -245,7 +322,7 @@ public override string? Type { get; set; }</code></pre>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIResourceBase.cs/#L9" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/AzureOpenAI/AzureOpenAIResourceBase.cs/#L10" class="edit-link">Edit this page</a>
         </div>
 
 

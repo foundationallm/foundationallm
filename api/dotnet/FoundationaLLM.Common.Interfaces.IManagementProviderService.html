@@ -171,8 +171,8 @@ Interface IManagementProviderService  <a class="header-action link-secondary" ti
 
   <a id="FoundationaLLM_Common_Interfaces_IManagementProviderService_HandleGetAsync_" data-uid="FoundationaLLM.Common.Interfaces.IManagementProviderService.HandleGetAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Interfaces_IManagementProviderService_HandleGetAsync_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderLoadOptions_" data-uid="FoundationaLLM.Common.Interfaces.IManagementProviderService.HandleGetAsync(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderLoadOptions)">
-  HandleGetAsync(string, UnifiedUserIdentity, ResourceProviderLoadOptions?)
+  <h3 id="FoundationaLLM_Common_Interfaces_IManagementProviderService_HandleGetAsync_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_" data-uid="FoundationaLLM.Common.Interfaces.IManagementProviderService.HandleGetAsync(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions)">
+  HandleGetAsync(string, UnifiedUserIdentity, ResourceProviderGetOptions?)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Interfaces/IManagementProviderService.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -181,7 +181,7 @@ Interface IManagementProviderService  <a class="header-action link-secondary" ti
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;object&gt; HandleGetAsync(string resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;object&gt; HandleGetAsync(string resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -192,8 +192,8 @@ Interface IManagementProviderService  <a class="header-action link-secondary" ti
     <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
     <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a> with details about the identity of the user.</p>
 </dd>
-    <dt><code>options</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderLoadOptions.html">ResourceProviderLoadOptions</a></dt>
-    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderLoadOptions.html">ResourceProviderLoadOptions</a> which provides operation parameters.</p>
+    <dt><code>options</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions.html">ResourceProviderGetOptions</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions.html">ResourceProviderGetOptions</a> which provides operation parameters.</p>
 </dd>
   </dl>
 
