@@ -1,5 +1,5 @@
 import pytest
-from foundationallm.models.orchestration import MessageHistoryItem
+from foundationallm.models.messages import MessageHistoryItem
 from foundationallm.langchain.message_history import build_message_history
 
 @pytest.fixture  

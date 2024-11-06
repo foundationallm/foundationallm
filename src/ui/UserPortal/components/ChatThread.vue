@@ -37,7 +37,7 @@
 				<!-- New chat alert -->
 				<div v-else class="new-chat-alert">
 					<div class="alert-body">
-						<div class="alert-body-text">Start the conversation using the text box below.</div>
+						<div class="alert-body-text" v-html="welcomeMessage"></div>
 					</div>
 				</div>
 			</template>
@@ -78,13 +78,17 @@ export default {
 			isLoading: true,
 			userSentMessage: false,
 			isMessagePending: false,
-			// longRunningOperations: new Map<string, boolean>(), // sessionId -> isPending
+			welcomeMessage: '',
 		};
 	},
 
 	computed: {
 		currentSession() {
 			return this.$appStore.currentSession;
+		},
+
+		lastSelectedAgent() {
+			return this.$appStore.lastSelectedAgent;
 		},
 
 		messages() {
@@ -100,7 +104,17 @@ export default {
 			this.userSentMessage = false;
 			await this.$appStore.getMessages();
 			this.$appStore.updateSessionAgentFromMessages(newSession);
+			this.welcomeMessage = this.$appStore.getSessionAgent(newSession)?.resource?.properties?.['welcome_message'] ??
+				this.$appConfigStore.defaultAgentWelcomeMessage ??
+				'Start the conversation using the text box below.';
 			this.isLoading = false;
+		},
+
+		async lastSelectedAgent(newAgent, oldAgent) {
+			if (newAgent === oldAgent) return;
+			this.welcomeMessage = newAgent?.resource?.properties?.['welcome_message'] ??
+				this.$appConfigStore.defaultAgentWelcomeMessage ??
+				'Start the conversation using the text box below.';
 		},
 	},
 
@@ -134,7 +148,7 @@ export default {
 					summary: 'Could not send message',
 					detail:
 						'Please select an agent and try again. If no agents are available, refresh the page.',
-					life: 8000,
+					life: this.$appStore.autoHideToasts ? 8000 : null,
 				});
 				this.isMessagePending = false;
 				return;
@@ -236,8 +250,9 @@ export default {
 	color: #000;
 	margin-left: auto;
 	margin-right: auto;
-	text-align: center;
-	font-style: italic;
+	padding: 10px 14px 10px 14px;
+	// text-align: center;
+	// font-style: italic;
 }
 
 footer {

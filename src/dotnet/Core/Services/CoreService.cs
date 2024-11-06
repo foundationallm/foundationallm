@@ -231,8 +231,8 @@ public partial class CoreService(
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error starting completion operation in conversation {SessionId} for user prompt [{UserPrompt}].",
-                completionRequest.SessionId, completionRequest.UserPrompt);
+            _logger.LogError(ex, "Error starting completion operation in conversation {SessionId}.",
+                completionRequest.SessionId);
 
             // TODO: Depending on the type of failure, we should update the agent message to reflect the failure.
 

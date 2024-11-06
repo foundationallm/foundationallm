@@ -137,7 +137,7 @@
 			>
 				<template #body="{ data }">
 					<Button link @click="roleAssignmentToDelete = data">
-						<i class="pi pi-trash" style="font-size: 1.2rem;"></i>
+						<i class="pi pi-trash" style="font-size: 1.2rem"></i>
 					</Button>
 				</template>
 			</Column>

@@ -135,6 +135,8 @@ namespace FoundationaLLM.Conversation.ResourceProviders
                     $"The user {userIdentity.UPN} is not authorized to use the provided resource to update the {resourcePath.RawResourcePath} resource path.",
                     StatusCodes.Status403Forbidden);
 
+            UpdateBaseProperties(updatedConversation, userIdentity, existingConversation == null);
+
             if (existingConversation == null
                 || string.IsNullOrWhiteSpace(updatedConversation.ObjectId))
                 updatedConversation.ObjectId = resourcePath.RawResourcePath;

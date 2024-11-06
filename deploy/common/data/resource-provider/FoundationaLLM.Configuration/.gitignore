@@ -13,5 +13,7 @@ VectorizationWorker.json
 StateAPI.json
 GatewayAdapterAPI.json
 AzureOpenAI.json
+AzureOpenAIDALLE.json
 AzureAISearch.json
 AzureEventGrid.json
+OneDriveFileStoreConnector.json
