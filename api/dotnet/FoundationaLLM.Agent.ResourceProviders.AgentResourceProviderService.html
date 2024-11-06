@@ -184,7 +184,7 @@ Class AgentResourceProviderService  <a class="header-action link-secondary" titl
       <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_HandleGetAsync_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_">ResourceProviderServiceBase&lt;AgentReference&gt;.HandleGetAsync(string, UnifiedUserIdentity, ResourceProviderGetOptions)</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_HandlePostAsync_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;AgentReference&gt;.HandlePostAsync(string, string, UnifiedUserIdentity)</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_HandlePostAsync_System_String_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;AgentReference&gt;.HandlePostAsync(string, string, ResourceProviderFormFile, UnifiedUserIdentity)</a>
     </div>
     <div>
       <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_HandleDeleteAsync_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_">ResourceProviderServiceBase&lt;AgentReference&gt;.HandleDeleteAsync(string, UnifiedUserIdentity)</a>
@@ -410,7 +410,7 @@ Class AgentResourceProviderService  <a class="header-action link-secondary" titl
 
   <h3 id="FoundationaLLM_Agent_ResourceProviders_AgentResourceProviderService_DeleteResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.DeleteResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   DeleteResourceAsync(ResourcePath, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Agent/ResourceProviders/AgentResourceProviderService.cs/#L124"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Agent/ResourceProviders/AgentResourceProviderService.cs/#L127"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of DeleteResourceAsync. Must be overridden in derived classes.</p>
@@ -451,7 +451,7 @@ Class AgentResourceProviderService  <a class="header-action link-secondary" titl
 
   <h3 id="FoundationaLLM_Agent_ResourceProviders_AgentResourceProviderService_ExecuteActionAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.ExecuteActionAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   ExecuteActionAsync(ResourcePath, ResourcePathAuthorizationResult, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Agent/ResourceProviders/AgentResourceProviderService.cs/#L105"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Agent/ResourceProviders/AgentResourceProviderService.cs/#L108"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of ExecuteActionAsync. Must be overriden in derived classes.</p>
@@ -507,7 +507,7 @@ of the authorization result should be returned (if any).</li></ol>
 
   <h3 id="FoundationaLLM_Agent_ResourceProviders_AgentResourceProviderService_GetResourceAsyncInternal__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_" data-uid="FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.GetResourceAsyncInternal``1(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions)">
   GetResourceAsyncInternal&lt;T&gt;(ResourcePath, ResourcePathAuthorizationResult, UnifiedUserIdentity, ResourceProviderGetOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Agent/ResourceProviders/AgentResourceProviderService.cs/#L143"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Agent/ResourceProviders/AgentResourceProviderService.cs/#L149"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of GetResource. Must be overridden in derived classes.</p>
@@ -647,7 +647,7 @@ In this case, only the resources specified in the subordinate authorized resourc
 
   <h3 id="FoundationaLLM_Agent_ResourceProviders_AgentResourceProviderService_HandleEvents_FoundationaLLM_Common_Models_Events_EventSetEventArgs_" data-uid="FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.HandleEvents(FoundationaLLM.Common.Models.Events.EventSetEventArgs)">
   HandleEvents(EventSetEventArgs)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Agent/ResourceProviders/AgentResourceProviderService.cs/#L151"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Agent/ResourceProviders/AgentResourceProviderService.cs/#L157"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Handles events received from the <a class="xref" href="FoundationaLLM.Common.Interfaces.IEventService.html">IEventService</a> when they are dequeued locally.</p>
@@ -715,9 +715,9 @@ In this case, only the resources specified in the subordinate authorized resourc
 
   <a id="FoundationaLLM_Agent_ResourceProviders_AgentResourceProviderService_UpsertResourceAsync_" data-uid="FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.UpsertResourceAsync*"></a>
 
-  <h3 id="FoundationaLLM_Agent_ResourceProviders_AgentResourceProviderService_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
-  UpsertResourceAsync(ResourcePath, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Agent/ResourceProviders/AgentResourceProviderService.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Agent_ResourceProviders_AgentResourceProviderService_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
+  UpsertResourceAsync(ResourcePath, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Agent/ResourceProviders/AgentResourceProviderService.cs/#L98"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of UpsertResourceAsync. Must be overridden in derived classes.</p>
@@ -725,7 +725,7 @@ In this case, only the resources specified in the subordinate authorized resourc
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override Task&lt;object&gt; UpsertResourceAsync(ResourcePath resourcePath, string serializedResource, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">protected override Task&lt;object&gt; UpsertResourceAsync(ResourcePath resourcePath, string? serializedResource, ResourceProviderFormFile? formFile, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -734,7 +734,10 @@ In this case, only the resources specified in the subordinate authorized resourc
     <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a> containing information about the resource path.</p>
 </dd>
     <dt><code>serializedResource</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The serialized resource being created or updated.</p>
+    <dd><p>The optional serialized resource being created or updated.</p>
+</dd>
+    <dt><code>formFile</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.html">ResourceProviderFormFile</a></dt>
+    <dd><p>The optional file attached to the request.</p>
 </dd>
     <dt><code>userIdentity</code> <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a></dt>
     <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html">UnifiedUserIdentity</a> with details about the identity of the user.</p>

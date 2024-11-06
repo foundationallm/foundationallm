@@ -830,6 +830,60 @@ Otherwise, it will be the resource type name of the main resource (and hence ide
 
 
 
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_GetObjectId_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.GetObjectId*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_GetObjectId_System_String_System_String_System_String_System_String_System_String_System_String_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.GetObjectId(System.String,System.String,System.String,System.String,System.String,System.String)">
+  GetObjectId(string, string, string, string, string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L317"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Computes the object id of the resource identifier.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string GetObjectId(string instanceId, string resourceProviderName, string mainResourceTypeName, string mainResourceName, string resourceTypeName, string resourceName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance id.</p>
+</dd>
+    <dt><code>resourceProviderName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the resource provider.</p>
+</dd>
+    <dt><code>mainResourceTypeName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the main resource type.</p>
+</dd>
+    <dt><code>mainResourceName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the main resource.</p>
+</dd>
+    <dt><code>resourceTypeName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the resource type.</p>
+</dd>
+    <dt><code>resourceName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the resource.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The object id.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_GetResourceTypeObjectId_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.GetResourceTypeObjectId*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_GetResourceTypeObjectId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.GetResourceTypeObjectId">
@@ -872,7 +926,7 @@ Otherwise, it will be the resource type name of the main resource (and hence ide
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_IncludesResourcePath_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_Boolean_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.IncludesResourcePath(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.Boolean)">
   IncludesResourcePath(ResourcePath, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L313"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L332"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Determines whether the resource path includes another specified resource path.</p>
@@ -914,7 +968,7 @@ Otherwise, it will be the resource type name of the main resource (and hence ide
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_MatchesResourceTypes_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.MatchesResourceTypes(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath)">
   MatchesResourceTypes(ResourcePath)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L355"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourcePath.cs/#L374"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Determines whether the resource path matches exactly (including order) the resource types of another specified resource path.</p>

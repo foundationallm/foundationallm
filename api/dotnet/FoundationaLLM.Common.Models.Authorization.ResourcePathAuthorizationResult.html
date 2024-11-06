@@ -230,15 +230,16 @@ public bool Authorized { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_MustSetOwnerRoleAssignment" data-uid="FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult.MustSetOwnerRoleAssignment">
   MustSetOwnerRoleAssignment
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Authorization/ResourcePathAuthorizationResult.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/Authorization/ResourcePathAuthorizationResult.cs/#L67"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether an owner role assignment must be set for the resource.</p>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether an owner role assignment must be set for the resource.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool MustSetOwnerRoleAssignment { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonIgnore]
+public bool MustSetOwnerRoleAssignment { get; }</code></pre>
   </div>
 
 
@@ -254,6 +255,9 @@ public bool Authorized { get; set; }</code></pre>
 
 
 
+  <h4 class="section" id="FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_MustSetOwnerRoleAssignment_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Owner role assignment is not required when at least one policy is assigned to the resource path.</p>
+</div>
 
 
 

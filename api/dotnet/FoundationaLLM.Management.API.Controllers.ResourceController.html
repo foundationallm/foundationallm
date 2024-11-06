@@ -104,7 +104,7 @@ Class ResourceController  <a class="header-action link-secondary" title="View so
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Authorize(Policy = &quot;DefaultPolicy&quot;)]
 [ApiController]
-[Consumes(&quot;application/json&quot;, new string[] { })]
+[Consumes(&quot;application/json&quot;, new string[] { &quot;multipart/form-data&quot; })]
 [Produces(&quot;application/json&quot;, new string[] { })]
 [Route(&quot;instances/{instanceId}/providers/{resourceProvider}&quot;)]
 public class ResourceController : Controller, IActionFilter, IAsyncActionFilter, IFilterMetadata, IDisposable</code></pre>
@@ -808,7 +808,7 @@ public class ResourceController : Controller, IActionFilter, IAsyncActionFilter,
 
   <h3 id="FoundationaLLM_Management_API_Controllers_ResourceController_DeleteResource_System_String_System_String_System_String_" data-uid="FoundationaLLM.Management.API.Controllers.ResourceController.DeleteResource(System.String,System.String,System.String)">
   DeleteResource(string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/ResourceController.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/ResourceController.cs/#L110"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes a resource.</p>
@@ -896,9 +896,9 @@ public Task&lt;IActionResult&gt; GetResources(string instanceId, string resource
 
   <a id="FoundationaLLM_Management_API_Controllers_ResourceController_UpsertResource_" data-uid="FoundationaLLM.Management.API.Controllers.ResourceController.UpsertResource*"></a>
 
-  <h3 id="FoundationaLLM_Management_API_Controllers_ResourceController_UpsertResource_System_String_System_String_System_String_System_Object_" data-uid="FoundationaLLM.Management.API.Controllers.ResourceController.UpsertResource(System.String,System.String,System.String,System.Object)">
-  UpsertResource(string, string, string, object)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/ResourceController.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Management_API_Controllers_ResourceController_UpsertResource_System_String_System_String_System_String_" data-uid="FoundationaLLM.Management.API.Controllers.ResourceController.UpsertResource(System.String,System.String,System.String)">
+  UpsertResource(string, string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/ResourceController.cs/#L65"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates or updates resources.</p>
@@ -907,7 +907,7 @@ public Task&lt;IActionResult&gt; GetResources(string instanceId, string resource
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[HttpPost(&quot;{*resourcePath}&quot;, Name = &quot;UpsertResource&quot;)]
-public Task&lt;IActionResult&gt; UpsertResource(string instanceId, string resourceProvider, string resourcePath, object serializedResource)</code></pre>
+public Task&lt;IActionResult&gt; UpsertResource(string instanceId, string resourceProvider, string resourcePath)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -920,9 +920,6 @@ public Task&lt;IActionResult&gt; UpsertResource(string instanceId, string resour
 </dd>
     <dt><code>resourcePath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The logical path of the resource type.</p>
-</dd>
-    <dt><code>serializedResource</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
-    <dd><p>The serialized resource to be created or updated.</p>
 </dd>
   </dl>
 

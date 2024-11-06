@@ -166,15 +166,15 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.AIModel.ResourceProviders.AIModelResourceProviderService.InitializeInternal
   nameWithType: AIModelResourceProviderService.InitializeInternal
-- uid: FoundationaLLM.AIModel.ResourceProviders.AIModelResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name: UpsertResourceAsync(ResourcePath, string, UnifiedUserIdentity)
-  href: api/dotnet/FoundationaLLM.AIModel.ResourceProviders.AIModelResourceProviderService.html#FoundationaLLM_AIModel_ResourceProviders_AIModelResourceProviderService_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
-  commentId: M:FoundationaLLM.AIModel.ResourceProviders.AIModelResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name.vb: UpsertResourceAsync(ResourcePath, String, UnifiedUserIdentity)
-  fullName: FoundationaLLM.AIModel.ResourceProviders.AIModelResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  fullName.vb: FoundationaLLM.AIModel.ResourceProviders.AIModelResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  nameWithType: AIModelResourceProviderService.UpsertResourceAsync(ResourcePath, string, UnifiedUserIdentity)
-  nameWithType.vb: AIModelResourceProviderService.UpsertResourceAsync(ResourcePath, String, UnifiedUserIdentity)
+- uid: FoundationaLLM.AIModel.ResourceProviders.AIModelResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name: UpsertResourceAsync(ResourcePath, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  href: api/dotnet/FoundationaLLM.AIModel.ResourceProviders.AIModelResourceProviderService.html#FoundationaLLM_AIModel_ResourceProviders_AIModelResourceProviderService_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  commentId: M:FoundationaLLM.AIModel.ResourceProviders.AIModelResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: UpsertResourceAsync(ResourcePath, String, ResourceProviderFormFile, UnifiedUserIdentity)
+  fullName: FoundationaLLM.AIModel.ResourceProviders.AIModelResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, string?, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile?, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.AIModel.ResourceProviders.AIModelResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, String, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType: AIModelResourceProviderService.UpsertResourceAsync(ResourcePath, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  nameWithType.vb: AIModelResourceProviderService.UpsertResourceAsync(ResourcePath, String, ResourceProviderFormFile, UnifiedUserIdentity)
 - uid: FoundationaLLM.AIModel.ResourceProviders.AIModelResourceProviderService.UpsertResourceAsync*
   name: UpsertResourceAsync
   href: api/dotnet/FoundationaLLM.AIModel.ResourceProviders.AIModelResourceProviderService.html#FoundationaLLM_AIModel_ResourceProviders_AIModelResourceProviderService_UpsertResourceAsync_
@@ -385,15 +385,15 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.InitializeInternal
   nameWithType: AgentResourceProviderService.InitializeInternal
-- uid: FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name: UpsertResourceAsync(ResourcePath, string, UnifiedUserIdentity)
-  href: api/dotnet/FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.html#FoundationaLLM_Agent_ResourceProviders_AgentResourceProviderService_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
-  commentId: M:FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name.vb: UpsertResourceAsync(ResourcePath, String, UnifiedUserIdentity)
-  fullName: FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  fullName.vb: FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  nameWithType: AgentResourceProviderService.UpsertResourceAsync(ResourcePath, string, UnifiedUserIdentity)
-  nameWithType.vb: AgentResourceProviderService.UpsertResourceAsync(ResourcePath, String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name: UpsertResourceAsync(ResourcePath, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  href: api/dotnet/FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.html#FoundationaLLM_Agent_ResourceProviders_AgentResourceProviderService_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  commentId: M:FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: UpsertResourceAsync(ResourcePath, String, ResourceProviderFormFile, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, string?, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile?, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, String, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType: AgentResourceProviderService.UpsertResourceAsync(ResourcePath, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  nameWithType.vb: AgentResourceProviderService.UpsertResourceAsync(ResourcePath, String, ResourceProviderFormFile, UnifiedUserIdentity)
 - uid: FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.UpsertResourceAsync*
   name: UpsertResourceAsync
   href: api/dotnet/FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.html#FoundationaLLM_Agent_ResourceProviders_AgentResourceProviderService_UpsertResourceAsync_
@@ -1265,15 +1265,15 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Authorization.ResourceProviders.AuthorizationResourceProviderService.InitializeInternal
   nameWithType: AuthorizationResourceProviderService.InitializeInternal
-- uid: FoundationaLLM.Authorization.ResourceProviders.AuthorizationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name: UpsertResourceAsync(ResourcePath, string, UnifiedUserIdentity)
-  href: api/dotnet/FoundationaLLM.Authorization.ResourceProviders.AuthorizationResourceProviderService.html#FoundationaLLM_Authorization_ResourceProviders_AuthorizationResourceProviderService_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
-  commentId: M:FoundationaLLM.Authorization.ResourceProviders.AuthorizationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name.vb: UpsertResourceAsync(ResourcePath, String, UnifiedUserIdentity)
-  fullName: FoundationaLLM.Authorization.ResourceProviders.AuthorizationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  fullName.vb: FoundationaLLM.Authorization.ResourceProviders.AuthorizationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  nameWithType: AuthorizationResourceProviderService.UpsertResourceAsync(ResourcePath, string, UnifiedUserIdentity)
-  nameWithType.vb: AuthorizationResourceProviderService.UpsertResourceAsync(ResourcePath, String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Authorization.ResourceProviders.AuthorizationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name: UpsertResourceAsync(ResourcePath, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  href: api/dotnet/FoundationaLLM.Authorization.ResourceProviders.AuthorizationResourceProviderService.html#FoundationaLLM_Authorization_ResourceProviders_AuthorizationResourceProviderService_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  commentId: M:FoundationaLLM.Authorization.ResourceProviders.AuthorizationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: UpsertResourceAsync(ResourcePath, String, ResourceProviderFormFile, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Authorization.ResourceProviders.AuthorizationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, string?, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile?, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Authorization.ResourceProviders.AuthorizationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, String, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType: AuthorizationResourceProviderService.UpsertResourceAsync(ResourcePath, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  nameWithType.vb: AuthorizationResourceProviderService.UpsertResourceAsync(ResourcePath, String, ResourceProviderFormFile, UnifiedUserIdentity)
 - uid: FoundationaLLM.Authorization.ResourceProviders.AuthorizationResourceProviderService.UpsertResourceAsync*
   name: UpsertResourceAsync
   href: api/dotnet/FoundationaLLM.Authorization.ResourceProviders.AuthorizationResourceProviderService.html#FoundationaLLM_Authorization_ResourceProviders_AuthorizationResourceProviderService_UpsertResourceAsync_
@@ -5512,6 +5512,12 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_LangChainAPI_Essentials
   fullName: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_LangChainAPI_Essentials
   nameWithType: AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_LangChainAPI_Essentials
+- uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ManagementAPI_Configuration
+  name: FoundationaLLM_APIEndpoints_ManagementAPI_Configuration
+  href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeyFilters.html#FoundationaLLM_Common_Constants_Configuration_AppConfigurationKeyFilters_FoundationaLLM_APIEndpoints_ManagementAPI_Configuration
+  commentId: F:FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ManagementAPI_Configuration
+  fullName: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ManagementAPI_Configuration
+  nameWithType: AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ManagementAPI_Configuration
 - uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_Entra
   name: FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_Entra
   href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeyFilters.html#FoundationaLLM_Common_Constants_Configuration_AppConfigurationKeyFilters_FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_Entra
@@ -5854,6 +5860,12 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeySections.FoundationaLLM_APIEndpoints_LangChainAPI_Essentials
   fullName: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeySections.FoundationaLLM_APIEndpoints_LangChainAPI_Essentials
   nameWithType: AppConfigurationKeySections.FoundationaLLM_APIEndpoints_LangChainAPI_Essentials
+- uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeySections.FoundationaLLM_APIEndpoints_ManagementAPI_Configuration
+  name: FoundationaLLM_APIEndpoints_ManagementAPI_Configuration
+  href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeySections.html#FoundationaLLM_Common_Constants_Configuration_AppConfigurationKeySections_FoundationaLLM_APIEndpoints_ManagementAPI_Configuration
+  commentId: F:FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeySections.FoundationaLLM_APIEndpoints_ManagementAPI_Configuration
+  fullName: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeySections.FoundationaLLM_APIEndpoints_ManagementAPI_Configuration
+  nameWithType: AppConfigurationKeySections.FoundationaLLM_APIEndpoints_ManagementAPI_Configuration
 - uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeySections.FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_Entra
   name: FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_Entra
   href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeySections.html#FoundationaLLM_Common_Constants_Configuration_AppConfigurationKeySections_FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_Entra
@@ -6322,6 +6334,12 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_LangChainAPI_Essentials_AppInsightsConnectionString
   fullName: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_LangChainAPI_Essentials_AppInsightsConnectionString
   nameWithType: AppConfigurationKeys.FoundationaLLM_APIEndpoints_LangChainAPI_Essentials_AppInsightsConnectionString
+- uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_AllowedUploadFileExtensions
+  name: FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_AllowedUploadFileExtensions
+  href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.html#FoundationaLLM_Common_Constants_Configuration_AppConfigurationKeys_FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_AllowedUploadFileExtensions
+  commentId: F:FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_AllowedUploadFileExtensions
+  fullName: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_AllowedUploadFileExtensions
+  nameWithType: AppConfigurationKeys.FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_AllowedUploadFileExtensions
 - uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_Entra_CallbackPath
   name: FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_Entra_CallbackPath
   href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.html#FoundationaLLM_Common_Constants_Configuration_AppConfigurationKeys_FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_Entra_CallbackPath
@@ -7978,6 +7996,12 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.AgentResourceTypeNames.Agents
   fullName: FoundationaLLM.Common.Constants.ResourceProviders.AgentResourceTypeNames.Agents
   nameWithType: AgentResourceTypeNames.Agents
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.AgentResourceTypeNames.Files
+  name: Files
+  href: api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.AgentResourceTypeNames.html#FoundationaLLM_Common_Constants_ResourceProviders_AgentResourceTypeNames_Files
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.AgentResourceTypeNames.Files
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.AgentResourceTypeNames.Files
+  nameWithType: AgentResourceTypeNames.Files
 - uid: FoundationaLLM.Common.Constants.ResourceProviders.AttachmentResourceProviderMetadata
   name: AttachmentResourceProviderMetadata
   href: api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.AttachmentResourceProviderMetadata.html
@@ -10785,15 +10809,15 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Interfaces.IManagementProviderService.HandleGetAsync
   nameWithType: IManagementProviderService.HandleGetAsync
-- uid: FoundationaLLM.Common.Interfaces.IManagementProviderService.HandlePostAsync(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name: HandlePostAsync(string, string, UnifiedUserIdentity)
-  href: api/dotnet/FoundationaLLM.Common.Interfaces.IManagementProviderService.html#FoundationaLLM_Common_Interfaces_IManagementProviderService_HandlePostAsync_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
-  commentId: M:FoundationaLLM.Common.Interfaces.IManagementProviderService.HandlePostAsync(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name.vb: HandlePostAsync(String, String, UnifiedUserIdentity)
-  fullName: FoundationaLLM.Common.Interfaces.IManagementProviderService.HandlePostAsync(string, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  fullName.vb: FoundationaLLM.Common.Interfaces.IManagementProviderService.HandlePostAsync(String, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  nameWithType: IManagementProviderService.HandlePostAsync(string, string, UnifiedUserIdentity)
-  nameWithType.vb: IManagementProviderService.HandlePostAsync(String, String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Common.Interfaces.IManagementProviderService.HandlePostAsync(System.String,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name: HandlePostAsync(string, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  href: api/dotnet/FoundationaLLM.Common.Interfaces.IManagementProviderService.html#FoundationaLLM_Common_Interfaces_IManagementProviderService_HandlePostAsync_System_String_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  commentId: M:FoundationaLLM.Common.Interfaces.IManagementProviderService.HandlePostAsync(System.String,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: HandlePostAsync(String, String, ResourceProviderFormFile, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Common.Interfaces.IManagementProviderService.HandlePostAsync(string, string?, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile?, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IManagementProviderService.HandlePostAsync(String, String, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType: IManagementProviderService.HandlePostAsync(string, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  nameWithType.vb: IManagementProviderService.HandlePostAsync(String, String, ResourceProviderFormFile, UnifiedUserIdentity)
 - uid: FoundationaLLM.Common.Interfaces.IManagementProviderService.HandlePostAsync*
   name: HandlePostAsync
   href: api/dotnet/FoundationaLLM.Common.Interfaces.IManagementProviderService.html#FoundationaLLM_Common_Interfaces_IManagementProviderService_HandlePostAsync_
@@ -19955,6 +19979,51 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.Type
   nameWithType: AgentBase.Type
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile
+  name: AgentFile
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.html
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile
+  nameWithType: AgentFile
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.Content
+  name: Content
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentFile_Content
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.Content
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.Content
+  nameWithType: AgentFile.Content
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.Content*
+  name: Content
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentFile_Content_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.Content
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.Content
+  nameWithType: AgentFile.Content
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.ContentType
+  name: ContentType
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentFile_ContentType
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.ContentType
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.ContentType
+  nameWithType: AgentFile.ContentType
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.ContentType*
+  name: ContentType
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentFile_ContentType_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.ContentType
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.ContentType
+  nameWithType: AgentFile.ContentType
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.Type
+  name: Type
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentFile_Type
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.Type
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.Type
+  nameWithType: AgentFile.Type
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.Type*
+  name: Type
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentFile_Type_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.Type
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.Type
+  nameWithType: AgentFile.Type
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOrchestrationSettings
   name: AgentOrchestrationSettings
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOrchestrationSettings.html
@@ -20064,12 +20133,12 @@ references:
   commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes
   nameWithType: AgentTypes
-- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.Analytic
-  name: Analytic
-  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTypes_Analytic
-  commentId: F:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.Analytic
-  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.Analytic
-  nameWithType: AgentTypes.Analytic
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.AgentFile
+  name: AgentFile
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTypes_AgentFile
+  commentId: F:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.AgentFile
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.AgentFile
+  nameWithType: AgentTypes.AgentFile
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.Basic
   name: Basic
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTypes_Basic
@@ -22126,6 +22195,15 @@ references:
   fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.GetObjectId(String, String, String, String)
   nameWithType: ResourcePath.GetObjectId(string, string, string, string)
   nameWithType.vb: ResourcePath.GetObjectId(String, String, String, String)
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.GetObjectId(System.String,System.String,System.String,System.String,System.String,System.String)
+  name: GetObjectId(string, string, string, string, string, string)
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html#FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_GetObjectId_System_String_System_String_System_String_System_String_System_String_System_String_
+  commentId: M:FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.GetObjectId(System.String,System.String,System.String,System.String,System.String,System.String)
+  name.vb: GetObjectId(String, String, String, String, String, String)
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.GetObjectId(string, string, string, string, string, string)
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.GetObjectId(String, String, String, String, String, String)
+  nameWithType: ResourcePath.GetObjectId(string, string, string, string, string, string)
+  nameWithType.vb: ResourcePath.GetObjectId(String, String, String, String, String, String)
 - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.GetObjectId*
   name: GetObjectId
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html#FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_GetObjectId_
@@ -22533,6 +22611,51 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderDeleteResult.Reason
   nameWithType: ResourceProviderDeleteResult.Reason
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile
+  name: ResourceProviderFormFile
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.html
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile
+  nameWithType: ResourceProviderFormFile
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.BinaryContent
+  name: BinaryContent
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_BinaryContent
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.BinaryContent
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.BinaryContent
+  nameWithType: ResourceProviderFormFile.BinaryContent
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.BinaryContent*
+  name: BinaryContent
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_BinaryContent_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.BinaryContent
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.BinaryContent
+  nameWithType: ResourceProviderFormFile.BinaryContent
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.ContentType
+  name: ContentType
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_ContentType
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.ContentType
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.ContentType
+  nameWithType: ResourceProviderFormFile.ContentType
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.ContentType*
+  name: ContentType
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_ContentType_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.ContentType
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.ContentType
+  nameWithType: ResourceProviderFormFile.ContentType
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.FileName
+  name: FileName
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FileName
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.FileName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.FileName
+  nameWithType: ResourceProviderFormFile.FileName
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.FileName*
+  name: FileName
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FileName_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.FileName
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.FileName
+  nameWithType: ResourceProviderFormFile.FileName
 - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions
   name: ResourceProviderGetOptions
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions.html
@@ -26405,14 +26528,6 @@ references:
   fullName.vb: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore(Of T).DeleteResourceReference
   nameWithType: ResourceProviderResourceReferenceStore<T>.DeleteResourceReference
   nameWithType.vb: ResourceProviderResourceReferenceStore(Of T).DeleteResourceReference
-- uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1.GetAllResourceReferences
-  name: GetAllResourceReferences()
-  href: api/dotnet/FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderResourceReferenceStore_1_GetAllResourceReferences
-  commentId: M:FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1.GetAllResourceReferences
-  fullName: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore<T>.GetAllResourceReferences()
-  fullName.vb: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore(Of T).GetAllResourceReferences()
-  nameWithType: ResourceProviderResourceReferenceStore<T>.GetAllResourceReferences()
-  nameWithType.vb: ResourceProviderResourceReferenceStore(Of T).GetAllResourceReferences()
 - uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1.GetAllResourceReferences*
   name: GetAllResourceReferences
   href: api/dotnet/FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderResourceReferenceStore_1_GetAllResourceReferences_
@@ -26422,6 +26537,15 @@ references:
   fullName.vb: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore(Of T).GetAllResourceReferences
   nameWithType: ResourceProviderResourceReferenceStore<T>.GetAllResourceReferences
   nameWithType.vb: ResourceProviderResourceReferenceStore(Of T).GetAllResourceReferences
+- uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1.GetAllResourceReferences``1
+  name: GetAllResourceReferences<T1>()
+  href: api/dotnet/FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderResourceReferenceStore_1_GetAllResourceReferences__1
+  commentId: M:FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1.GetAllResourceReferences``1
+  name.vb: GetAllResourceReferences(Of T1)()
+  fullName: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore<T>.GetAllResourceReferences<T1>()
+  fullName.vb: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore(Of T).GetAllResourceReferences(Of T1)()
+  nameWithType: ResourceProviderResourceReferenceStore<T>.GetAllResourceReferences<T1>()
+  nameWithType.vb: ResourceProviderResourceReferenceStore(Of T).GetAllResourceReferences(Of T1)()
 - uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1.GetResourceReference(System.String)
   name: GetResourceReference(string)
   href: api/dotnet/FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderResourceReferenceStore_1_GetResourceReference_System_String_
@@ -26974,15 +27098,15 @@ references:
   fullName.vb: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase(Of TResourceReference).HandleGetAsync
   nameWithType: ResourceProviderServiceBase<TResourceReference>.HandleGetAsync
   nameWithType.vb: ResourceProviderServiceBase(Of TResourceReference).HandleGetAsync
-- uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.HandlePostAsync(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name: HandlePostAsync(string, string, UnifiedUserIdentity)
-  href: api/dotnet/FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_HandlePostAsync_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
-  commentId: M:FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.HandlePostAsync(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name.vb: HandlePostAsync(String, String, UnifiedUserIdentity)
-  fullName: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase<TResourceReference>.HandlePostAsync(string, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  fullName.vb: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase(Of TResourceReference).HandlePostAsync(String, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  nameWithType: ResourceProviderServiceBase<TResourceReference>.HandlePostAsync(string, string, UnifiedUserIdentity)
-  nameWithType.vb: ResourceProviderServiceBase(Of TResourceReference).HandlePostAsync(String, String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.HandlePostAsync(System.String,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name: HandlePostAsync(string, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  href: api/dotnet/FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_HandlePostAsync_System_String_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  commentId: M:FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.HandlePostAsync(System.String,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: HandlePostAsync(String, String, ResourceProviderFormFile, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase<TResourceReference>.HandlePostAsync(string, string?, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile?, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase(Of TResourceReference).HandlePostAsync(String, String, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType: ResourceProviderServiceBase<TResourceReference>.HandlePostAsync(string, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  nameWithType.vb: ResourceProviderServiceBase(Of TResourceReference).HandlePostAsync(String, String, ResourceProviderFormFile, UnifiedUserIdentity)
 - uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.HandlePostAsync*
   name: HandlePostAsync
   href: api/dotnet/FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_HandlePostAsync_
@@ -27265,15 +27389,15 @@ references:
   fullName.vb: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase(Of TResourceReference).UpdateResourcePropertiesAsync(Of T, TResult)(String, String, System.Collections.Generic.Dictionary(Of String, Object), FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
   nameWithType: ResourceProviderServiceBase<TResourceReference>.UpdateResourcePropertiesAsync<T, TResult>(string, string, Dictionary<string, object?>, UnifiedUserIdentity)
   nameWithType.vb: ResourceProviderServiceBase(Of TResourceReference).UpdateResourcePropertiesAsync(Of T, TResult)(String, String, Dictionary(Of String, Object), UnifiedUserIdentity)
-- uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name: UpsertResourceAsync(ResourcePath, string, UnifiedUserIdentity)
-  href: api/dotnet/FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
-  commentId: M:FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name.vb: UpsertResourceAsync(ResourcePath, String, UnifiedUserIdentity)
-  fullName: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase<TResourceReference>.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  fullName.vb: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase(Of TResourceReference).UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  nameWithType: ResourceProviderServiceBase<TResourceReference>.UpsertResourceAsync(ResourcePath, string, UnifiedUserIdentity)
-  nameWithType.vb: ResourceProviderServiceBase(Of TResourceReference).UpsertResourceAsync(ResourcePath, String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name: UpsertResourceAsync(ResourcePath, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  href: api/dotnet/FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  commentId: M:FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: UpsertResourceAsync(ResourcePath, String, ResourceProviderFormFile, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase<TResourceReference>.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, string?, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile?, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase(Of TResourceReference).UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, String, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType: ResourceProviderServiceBase<TResourceReference>.UpsertResourceAsync(ResourcePath, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  nameWithType.vb: ResourceProviderServiceBase(Of TResourceReference).UpsertResourceAsync(ResourcePath, String, ResourceProviderFormFile, UnifiedUserIdentity)
 - uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.UpsertResourceAsync*
   name: UpsertResourceAsync
   href: api/dotnet/FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_UpsertResourceAsync_
@@ -29384,15 +29508,15 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.InitializeInternal
   nameWithType: ConfigurationResourceProviderService.InitializeInternal
-- uid: FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name: UpsertResourceAsync(ResourcePath, string, UnifiedUserIdentity)
-  href: api/dotnet/FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.html#FoundationaLLM_Configuration_Services_ConfigurationResourceProviderService_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
-  commentId: M:FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name.vb: UpsertResourceAsync(ResourcePath, String, UnifiedUserIdentity)
-  fullName: FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  fullName.vb: FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  nameWithType: ConfigurationResourceProviderService.UpsertResourceAsync(ResourcePath, string, UnifiedUserIdentity)
-  nameWithType.vb: ConfigurationResourceProviderService.UpsertResourceAsync(ResourcePath, String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name: UpsertResourceAsync(ResourcePath, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  href: api/dotnet/FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.html#FoundationaLLM_Configuration_Services_ConfigurationResourceProviderService_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  commentId: M:FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: UpsertResourceAsync(ResourcePath, String, ResourceProviderFormFile, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, string?, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile?, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, String, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType: ConfigurationResourceProviderService.UpsertResourceAsync(ResourcePath, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  nameWithType.vb: ConfigurationResourceProviderService.UpsertResourceAsync(ResourcePath, String, ResourceProviderFormFile, UnifiedUserIdentity)
 - uid: FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.UpsertResourceAsync*
   name: UpsertResourceAsync
   href: api/dotnet/FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.html#FoundationaLLM_Configuration_Services_ConfigurationResourceProviderService_UpsertResourceAsync_
@@ -31647,15 +31771,15 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.DataSource.ResourceProviders.DataSourceResourceProviderService.InitializeInternal
   nameWithType: DataSourceResourceProviderService.InitializeInternal
-- uid: FoundationaLLM.DataSource.ResourceProviders.DataSourceResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name: UpsertResourceAsync(ResourcePath, string, UnifiedUserIdentity)
-  href: api/dotnet/FoundationaLLM.DataSource.ResourceProviders.DataSourceResourceProviderService.html#FoundationaLLM_DataSource_ResourceProviders_DataSourceResourceProviderService_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
-  commentId: M:FoundationaLLM.DataSource.ResourceProviders.DataSourceResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name.vb: UpsertResourceAsync(ResourcePath, String, UnifiedUserIdentity)
-  fullName: FoundationaLLM.DataSource.ResourceProviders.DataSourceResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  fullName.vb: FoundationaLLM.DataSource.ResourceProviders.DataSourceResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  nameWithType: DataSourceResourceProviderService.UpsertResourceAsync(ResourcePath, string, UnifiedUserIdentity)
-  nameWithType.vb: DataSourceResourceProviderService.UpsertResourceAsync(ResourcePath, String, UnifiedUserIdentity)
+- uid: FoundationaLLM.DataSource.ResourceProviders.DataSourceResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name: UpsertResourceAsync(ResourcePath, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  href: api/dotnet/FoundationaLLM.DataSource.ResourceProviders.DataSourceResourceProviderService.html#FoundationaLLM_DataSource_ResourceProviders_DataSourceResourceProviderService_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  commentId: M:FoundationaLLM.DataSource.ResourceProviders.DataSourceResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: UpsertResourceAsync(ResourcePath, String, ResourceProviderFormFile, UnifiedUserIdentity)
+  fullName: FoundationaLLM.DataSource.ResourceProviders.DataSourceResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, string?, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile?, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.DataSource.ResourceProviders.DataSourceResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, String, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType: DataSourceResourceProviderService.UpsertResourceAsync(ResourcePath, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  nameWithType.vb: DataSourceResourceProviderService.UpsertResourceAsync(ResourcePath, String, ResourceProviderFormFile, UnifiedUserIdentity)
 - uid: FoundationaLLM.DataSource.ResourceProviders.DataSourceResourceProviderService.UpsertResourceAsync*
   name: UpsertResourceAsync
   href: api/dotnet/FoundationaLLM.DataSource.ResourceProviders.DataSourceResourceProviderService.html#FoundationaLLM_DataSource_ResourceProviders_DataSourceResourceProviderService_UpsertResourceAsync_
@@ -34789,15 +34913,15 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Management.API.Controllers.ResourceController.GetResources
   nameWithType: ResourceController.GetResources
-- uid: FoundationaLLM.Management.API.Controllers.ResourceController.UpsertResource(System.String,System.String,System.String,System.Object)
-  name: UpsertResource(string, string, string, object)
-  href: api/dotnet/FoundationaLLM.Management.API.Controllers.ResourceController.html#FoundationaLLM_Management_API_Controllers_ResourceController_UpsertResource_System_String_System_String_System_String_System_Object_
-  commentId: M:FoundationaLLM.Management.API.Controllers.ResourceController.UpsertResource(System.String,System.String,System.String,System.Object)
-  name.vb: UpsertResource(String, String, String, Object)
-  fullName: FoundationaLLM.Management.API.Controllers.ResourceController.UpsertResource(string, string, string, object)
-  fullName.vb: FoundationaLLM.Management.API.Controllers.ResourceController.UpsertResource(String, String, String, Object)
-  nameWithType: ResourceController.UpsertResource(string, string, string, object)
-  nameWithType.vb: ResourceController.UpsertResource(String, String, String, Object)
+- uid: FoundationaLLM.Management.API.Controllers.ResourceController.UpsertResource(System.String,System.String,System.String)
+  name: UpsertResource(string, string, string)
+  href: api/dotnet/FoundationaLLM.Management.API.Controllers.ResourceController.html#FoundationaLLM_Management_API_Controllers_ResourceController_UpsertResource_System_String_System_String_System_String_
+  commentId: M:FoundationaLLM.Management.API.Controllers.ResourceController.UpsertResource(System.String,System.String,System.String)
+  name.vb: UpsertResource(String, String, String)
+  fullName: FoundationaLLM.Management.API.Controllers.ResourceController.UpsertResource(string, string, string)
+  fullName.vb: FoundationaLLM.Management.API.Controllers.ResourceController.UpsertResource(String, String, String)
+  nameWithType: ResourceController.UpsertResource(string, string, string)
+  nameWithType.vb: ResourceController.UpsertResource(String, String, String)
 - uid: FoundationaLLM.Management.API.Controllers.ResourceController.UpsertResource*
   name: UpsertResource
   href: api/dotnet/FoundationaLLM.Management.API.Controllers.ResourceController.html#FoundationaLLM_Management_API_Controllers_ResourceController_UpsertResource_
@@ -36308,15 +36432,15 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Prompt.ResourceProviders.PromptResourceProviderService.InitializeInternal
   nameWithType: PromptResourceProviderService.InitializeInternal
-- uid: FoundationaLLM.Prompt.ResourceProviders.PromptResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name: UpsertResourceAsync(ResourcePath, string, UnifiedUserIdentity)
-  href: api/dotnet/FoundationaLLM.Prompt.ResourceProviders.PromptResourceProviderService.html#FoundationaLLM_Prompt_ResourceProviders_PromptResourceProviderService_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
-  commentId: M:FoundationaLLM.Prompt.ResourceProviders.PromptResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name.vb: UpsertResourceAsync(ResourcePath, String, UnifiedUserIdentity)
-  fullName: FoundationaLLM.Prompt.ResourceProviders.PromptResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  fullName.vb: FoundationaLLM.Prompt.ResourceProviders.PromptResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  nameWithType: PromptResourceProviderService.UpsertResourceAsync(ResourcePath, string, UnifiedUserIdentity)
-  nameWithType.vb: PromptResourceProviderService.UpsertResourceAsync(ResourcePath, String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Prompt.ResourceProviders.PromptResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name: UpsertResourceAsync(ResourcePath, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  href: api/dotnet/FoundationaLLM.Prompt.ResourceProviders.PromptResourceProviderService.html#FoundationaLLM_Prompt_ResourceProviders_PromptResourceProviderService_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  commentId: M:FoundationaLLM.Prompt.ResourceProviders.PromptResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: UpsertResourceAsync(ResourcePath, String, ResourceProviderFormFile, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Prompt.ResourceProviders.PromptResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, string?, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile?, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Prompt.ResourceProviders.PromptResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, String, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType: PromptResourceProviderService.UpsertResourceAsync(ResourcePath, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  nameWithType.vb: PromptResourceProviderService.UpsertResourceAsync(ResourcePath, String, ResourceProviderFormFile, UnifiedUserIdentity)
 - uid: FoundationaLLM.Prompt.ResourceProviders.PromptResourceProviderService.UpsertResourceAsync*
   name: UpsertResourceAsync
   href: api/dotnet/FoundationaLLM.Prompt.ResourceProviders.PromptResourceProviderService.html#FoundationaLLM_Prompt_ResourceProviders_PromptResourceProviderService_UpsertResourceAsync_
@@ -40544,15 +40668,15 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.InitializeInternal
   nameWithType: VectorizationResourceProviderService.InitializeInternal
-- uid: FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name: UpsertResourceAsync(ResourcePath, string, UnifiedUserIdentity)
-  href: api/dotnet/FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.html#FoundationaLLM_Vectorization_ResourceProviders_VectorizationResourceProviderService_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
-  commentId: M:FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  name.vb: UpsertResourceAsync(ResourcePath, String, UnifiedUserIdentity)
-  fullName: FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  fullName.vb: FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
-  nameWithType: VectorizationResourceProviderService.UpsertResourceAsync(ResourcePath, string, UnifiedUserIdentity)
-  nameWithType.vb: VectorizationResourceProviderService.UpsertResourceAsync(ResourcePath, String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name: UpsertResourceAsync(ResourcePath, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  href: api/dotnet/FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.html#FoundationaLLM_Vectorization_ResourceProviders_VectorizationResourceProviderService_UpsertResourceAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  commentId: M:FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: UpsertResourceAsync(ResourcePath, String, ResourceProviderFormFile, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, string?, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile?, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.UpsertResourceAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath, String, FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType: VectorizationResourceProviderService.UpsertResourceAsync(ResourcePath, string?, ResourceProviderFormFile?, UnifiedUserIdentity)
+  nameWithType.vb: VectorizationResourceProviderService.UpsertResourceAsync(ResourcePath, String, ResourceProviderFormFile, UnifiedUserIdentity)
 - uid: FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.UpsertResourceAsync*
   name: UpsertResourceAsync
   href: api/dotnet/FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.html#FoundationaLLM_Vectorization_ResourceProviders_VectorizationResourceProviderService_UpsertResourceAsync_
