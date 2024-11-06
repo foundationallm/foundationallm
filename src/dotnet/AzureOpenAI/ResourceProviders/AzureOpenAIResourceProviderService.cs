@@ -225,7 +225,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
         private async Task<ResourceProviderActionResult<FileContent>> LoadFileContent(AzureOpenAIFileMapping fileMapping)
         {
             var azureOpenAIClient = new AzureOpenAIClient(new Uri(fileMapping.OpenAIEndpoint), DefaultAuthentication.AzureCredential);
-            var fileClient = azureOpenAIClient.GetFileClient();
+            var fileClient = azureOpenAIClient.GetOpenAIFileClient();
 
             // Retrieve using the OpenAI file ID.           
             var result = await fileClient.DownloadFileAsync(fileMapping!.OpenAIFileId);
