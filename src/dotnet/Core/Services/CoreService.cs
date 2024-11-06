@@ -616,6 +616,7 @@ public partial class CoreService(
             var result = await _attachmentResourceProvider!.HandlePostAsync(
                 $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Attachment}/{AttachmentResourceTypeNames.Attachments}/{ResourceProviderActions.Filter}",
                 JsonSerializer.Serialize(filter),
+                null,
                 _userIdentity);
             //var list = result as IEnumerator<AttachmentFile>;
             var attachmentReferences = new List<AttachmentDetail>();
