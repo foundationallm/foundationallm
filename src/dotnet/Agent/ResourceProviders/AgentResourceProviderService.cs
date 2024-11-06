@@ -1,8 +1,11 @@
 ﻿using Azure.Messaging;
 using FluentValidation;
 using FoundationaLLM.Agent.Models.Resources;
+using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.Configuration;
+using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
@@ -12,6 +15,9 @@ using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
+using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
+using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using Microsoft.AspNetCore.Http;
@@ -72,13 +78,13 @@ namespace FoundationaLLM.Agent.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
-            ResourceProviderLoadOptions? options = null) =>
+            ResourceProviderGetOptions? options = null) =>
             resourcePath.MainResourceTypeName switch
             {
                 AgentResourceTypeNames.Agents => await LoadResources<AgentBase>(
                     resourcePath.ResourceTypeInstances[0],
                     authorizationResult,
-                    options ?? new ResourceProviderLoadOptions
+                    options ?? new ResourceProviderGetOptions
                     {
                         IncludeRoles = resourcePath.IsResourceTypePath,
                     }),
@@ -134,7 +140,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
         #region Resource provider strongly typed operations
 
         /// <inheritdoc/>
-        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) =>
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null) =>
             (await LoadResource<T>(resourcePath.ResourceId!))!;
 
         #endregion
@@ -250,7 +256,75 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         StatusCodes.Status500InternalServerError);
             }
 
-            var validator = _resourceValidatorFactory.GetValidator(agentReference.ResourceType);
+            if (agent.HasCapability(AgentCapabilityCategoryNames.OpenAIAssistants))
+            {
+                agent.Properties ??= [];
+
+                var openAIAssistantId = agent.Properties.GetValueOrDefault(
+                    AgentPropertyNames.AzureOpenAIAssistantId);
+
+                if (string.IsNullOrWhiteSpace(openAIAssistantId))
+                {
+                    // The agent uses the Azure OpenAI Assistants workflow
+                    // but it does not have an associated assistant.
+                    // Proceed to create the Azure OpenAI Assistants assistant.
+
+                    _logger.LogInformation(
+                        "Starting to create the Azure OpenAI assistant for agent {AgentName}",
+                        agent.Name);
+
+                    #region Resolve various agent properties
+
+                    var agentAIModel = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel)
+                        .GetResourceAsync<AIModelBase>(agent.AIModelObjectId!, userIdentity);
+                    var agentAIModelAPIEndpoint = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Configuration)
+                        .GetResourceAsync<APIEndpointConfiguration>(agentAIModel.EndpointObjectId!, userIdentity);
+                    var agentPrompt = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Prompt)
+                        .GetResourceAsync<PromptBase>(agent.PromptObjectId!, userIdentity);
+
+                    #endregion
+
+                    #region Create Azure OpenAI Assistants assistant
+
+                    var gatewayClient = new GatewayServiceClient(
+                       await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
+                           .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
+                       _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
+
+                    Dictionary<string, object> parameters = new()
+                        {
+                            { OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistant, true },
+                            { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, agentAIModelAPIEndpoint.Url },
+                            { OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName, agentAIModel.DeploymentName! },
+                            { OpenAIAgentCapabilityParameterNames.OpenAIAssistantPrompt, (agentPrompt as MultipartPrompt)!.Prefix! }
+                        };
+
+                    var agentCapabilityResult = await gatewayClient!.CreateAgentCapability(
+                        _instanceSettings.Id,
+                        AgentCapabilityCategoryNames.OpenAIAssistants,
+                        $"FoundationaLLM - {agent.Name}",
+                        parameters);
+
+                    var newOpenAIAssistantId = default(string);
+
+                    if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIAssistantId, out var newOpenAIAssistantIdObject)
+                        && newOpenAIAssistantIdObject != null)
+                        newOpenAIAssistantId = ((JsonElement)newOpenAIAssistantIdObject!).Deserialize<string>();
+
+                    if (string.IsNullOrWhiteSpace(newOpenAIAssistantId))
+                        throw new ResourceProviderException($"Could not create an Azure OpenAI assistant for the agent {agent} which requires it.",
+                            StatusCodes.Status500InternalServerError);
+
+                    _logger.LogInformation(
+                        "The Azure OpenAI assistant {AssistantId} for agent {AgentName} was created successfuly.",
+                        newOpenAIAssistantId, agent.Name);
+                    agent.Properties[AgentPropertyNames.AzureOpenAIAssistantId] = newOpenAIAssistantId;
+
+                    #endregion
+                }
+            }
+
+                var validator = _resourceValidatorFactory.GetValidator(agentReference.ResourceType);
             if (validator is IValidator agentValidator)
             {
                 var context = new ValidationContext<object>(agent);

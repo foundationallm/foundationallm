@@ -103,7 +103,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         {
             if (completionRequest.GatekeeperOptions != null && completionRequest.GatekeeperOptions.Length > 0)
             {
-                await _cosmosDBService.PathcOperationsItemPropertiesAsync<LongRunningOperationContext>(
+                await _cosmosDBService.PatchOperationsItemPropertiesAsync<LongRunningOperationContext>(
                     completionRequest.OperationId!,
                     completionRequest.OperationId!,
                     new Dictionary<string, object?>

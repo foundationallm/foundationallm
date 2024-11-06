@@ -4,7 +4,6 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Orchestration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
-using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Azure.CosmosDB;
@@ -24,8 +23,6 @@ using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Utils;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.Azure.Cosmos.Serialization.HybridRow;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -93,7 +90,7 @@ public partial class CoreService(
             .Select(s => s.ToLowerInvariant())
             .ToHashSet();
 
-    #region Implemented using the FoundationaLLM.Conversation resource provider
+    #region Conversation management - FoundationaLLM.Conversation resource provider
 
     /// <inheritdoc/>
     public async Task<List<Conversation>> GetAllConversationsAsync(string instanceId)
@@ -101,11 +98,11 @@ public partial class CoreService(
         var result = await _conversationResourceProvider.GetResourcesAsync<Conversation>(
             instanceId,
             _userIdentity,
-            new ResourceProviderLoadOptions
+            new ()
             {
-                Parameters = new Dictionary<string, object>
+                Parameters = new ()
                 {
-                    { ConversationResourceProviderLoadParameterNames.ConversationType, _sessionType }
+                    { ConversationResourceProviderGetParameterNames.ConversationType, _sessionType }
                 }
             });
 
@@ -145,7 +142,7 @@ public partial class CoreService(
         var result = await _conversationResourceProvider.UpdateResourcePropertiesAsync<Conversation, ResourceProviderUpsertResult<Conversation>>(
             instanceId,
             sessionId,
-            new Dictionary<string, object>
+            new Dictionary<string, object?>
                                              {
                 { "/displayName", chatSessionProperties.Name }
             },
@@ -167,146 +164,7 @@ public partial class CoreService(
 
     #endregion
 
-    /// <inheritdoc/>
-    public async Task<List<Message>> GetChatSessionMessagesAsync(string instanceId, string sessionId)
-    {
-        ArgumentNullException.ThrowIfNull(sessionId);
-        var messages = await _cosmosDBService.GetSessionMessagesAsync(sessionId, _userIdentity.UPN ??
-            throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat messages."));
-
-        // Get a list of all attachment IDs in the messages.
-        var attachmentIds = messages.SelectMany(m => m.Attachments ?? Enumerable.Empty<string>()).Distinct().ToList();
-        if (attachmentIds.Count > 0)
-        {
-            var filter = new ResourceFilter
-            {
-                ObjectIDs = attachmentIds
-            };
-            // Get the attachment details from the attachment resource provider.
-            var result = await _attachmentResourceProvider!.HandlePostAsync(
-                $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Attachment}/{AttachmentResourceTypeNames.Attachments}/{ResourceProviderActions.Filter}",
-                JsonSerializer.Serialize(filter),
-                _userIdentity);
-            //var list = result as IEnumerator<AttachmentFile>;
-            var attachmentReferences = new List<AttachmentDetail>();
-
-            attachmentReferences.AddRange(from attachment in (IEnumerable<AttachmentFile>)result select AttachmentDetail.FromAttachmentFile(attachment));
-
-            if (attachmentReferences.Count > 0)
-            {
-                // Add the attachment details to the messages.
-                foreach (var message in messages)
-                {
-                    if (message.Attachments is { Count: > 0 })
-                    {
-                        var messageAttachmentDetails = new List<AttachmentDetail>();
-                        foreach (var attachment in message.Attachments)
-                        {
-                            var attachmentDetail = attachmentReferences.FirstOrDefault(ad => ad.ObjectId == attachment);
-                            if (attachmentDetail != null)
-                            {
-                                messageAttachmentDetails.Add(attachmentDetail);
-                            }
-                        }
-                        message.AttachmentDetails = messageAttachmentDetails;
-                    }
-                }
-            }
-        }
-
-        foreach (var message in messages)
-        {
-            if (message.Content is { Count: > 0 })
-            {
-                foreach (var content in message.Content)
-                {
-                    content.Value = ResolveContentDeepLinks(content.Value, _baseUrl);
-                }
-            }
-        }
-
-        return messages.ToList();
-    }
-
-    /// <inheritdoc/>
-    public async Task<Message> GetChatCompletionAsync(string instanceId, CompletionRequest completionRequest)
-    {
-        try
-        {
-            ArgumentNullException.ThrowIfNull(completionRequest.SessionId);
-            var operationStartTime = DateTime.UtcNow;
-
-            completionRequest = await PrepareCompletionRequest(completionRequest);
-
-            var conversationItems = await CreateConversationItemsAsync(instanceId, completionRequest, _userIdentity);
-
-            var agentOption = await ProcessGatekeeperOptions(instanceId, completionRequest);
-
-            // Generate the completion to return to the user.
-            var completionResponse = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, completionRequest);
-
-            var agentMessage = await ProcessCompletionResponse(
-                new LongRunningOperationContext
-                {
-                    AgentName = completionRequest.AgentName!,
-                    SessionId = completionRequest.SessionId!,
-                    OperationId = completionRequest.OperationId!,
-                    UserMessageId = conversationItems.UserMessage.Id,
-                    AgentMessageId = conversationItems.AgentMessage.Id,
-                    CompletionPromptId = conversationItems.CompletionPrompt.Id,
-                    StartTime = operationStartTime,
-                    UPN = _userIdentity.UPN!
-                },
-                completionResponse,
-                OperationStatus.Completed);
-
-            return agentMessage;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error getting completion in conversation {SessionId}.",
-                completionRequest.SessionId);
-            return new Message
-            {
-                OperationId = completionRequest.OperationId,
-                Status = OperationStatus.Failed,
-                Text = "Could not generate a completion due to an internal error."
-            };
-        }
-    }
-
-    /// <inheritdoc/>
-    public async Task<Message> GetCompletionAsync(string instanceId, CompletionRequest directCompletionRequest)
-    {
-        try
-        {
-            directCompletionRequest = await PrepareCompletionRequest(directCompletionRequest);
-
-            var agentOption = await ProcessGatekeeperOptions(instanceId, directCompletionRequest);
-
-            // Generate the completion to return to the user.
-            var result = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, directCompletionRequest);
-
-            return new Message
-            {
-                OperationId = directCompletionRequest.OperationId,
-                Status = OperationStatus.Completed,
-                Text = result.Completion
-                    ?? (result.Content?.Where(c => c.Type == MessageContentItemTypes.Text).FirstOrDefault() as OpenAITextMessageContentItem)?.Value
-                        ?? "Could not generate a completion due to an internal error."
-            };
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error getting direct completion Operation ID: {OperationId}.", directCompletionRequest.OperationId);
-            return new Message
-            {
-                OperationId = directCompletionRequest.OperationId,
-                Status = OperationStatus.Failed,
-                Text = "Could not generate a completion due to an internal error."
-            };
-        }
-    }
+    #region Asynchronous completion operations
 
     /// <inheritdoc/>
     public async Task<LongRunningOperation> StartCompletionOperation(string instanceId, CompletionRequest completionRequest)
@@ -495,6 +353,94 @@ public partial class CoreService(
         }
     }
 
+    #endregion
+
+    #region Synchronous completion operations
+
+    /// <inheritdoc/>
+    public async Task<Message> GetChatCompletionAsync(string instanceId, CompletionRequest completionRequest)
+    {
+        try
+        {
+            ArgumentNullException.ThrowIfNull(completionRequest.SessionId);
+            var operationStartTime = DateTime.UtcNow;
+
+            completionRequest = await PrepareCompletionRequest(completionRequest);
+
+            var conversationItems = await CreateConversationItemsAsync(instanceId, completionRequest, _userIdentity);
+
+            var agentOption = await ProcessGatekeeperOptions(instanceId, completionRequest);
+
+            // Generate the completion to return to the user.
+            var completionResponse = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, completionRequest);
+
+            var agentMessage = await ProcessCompletionResponse(
+                new LongRunningOperationContext
+                {
+                    AgentName = completionRequest.AgentName!,
+                    SessionId = completionRequest.SessionId!,
+                    OperationId = completionRequest.OperationId!,
+                    UserMessageId = conversationItems.UserMessage.Id,
+                    AgentMessageId = conversationItems.AgentMessage.Id,
+                    CompletionPromptId = conversationItems.CompletionPrompt.Id,
+                    StartTime = operationStartTime,
+                    UPN = _userIdentity.UPN!
+                },
+                completionResponse,
+                OperationStatus.Completed);
+
+            return agentMessage;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting completion in conversation {SessionId} for user prompt [{UserPrompt}].",
+                completionRequest.SessionId, completionRequest.UserPrompt);
+            return new Message
+            {
+                OperationId = completionRequest.OperationId,
+                Status = OperationStatus.Failed,
+                Text = "Could not generate a completion due to an internal error."
+            };
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task<Message> GetCompletionAsync(string instanceId, CompletionRequest directCompletionRequest)
+    {
+        try
+        {
+            directCompletionRequest = await PrepareCompletionRequest(directCompletionRequest);
+
+            var agentOption = await ProcessGatekeeperOptions(instanceId, directCompletionRequest);
+
+            // Generate the completion to return to the user.
+            var result = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, directCompletionRequest);
+
+            return new Message
+            {
+                OperationId = directCompletionRequest.OperationId,
+                Status = OperationStatus.Completed,
+                Text = result.Completion
+                    ?? (result.Content?.Where(c => c.Type == MessageContentItemTypes.Text).FirstOrDefault() as OpenAITextMessageContentItem)?.Value
+                        ?? "Could not generate a completion due to an internal error."
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error getting completion for user prompt [{directCompletionRequest.UserPrompt}].");
+            return new Message
+            {
+                OperationId = directCompletionRequest.OperationId,
+                Status = OperationStatus.Failed,
+                Text = "Could not generate a completion due to an internal error."
+            };
+        }
+    }
+
+    #endregion
+
+    #region Attachments
+
     /// <inheritdoc/>
     public async Task<ResourceProviderUpsertResult<AttachmentFile>> UploadAttachment(string instanceId, string sessionId, AttachmentFile attachmentFile, string agentName, UnifiedUserIdentity userIdentity)
     {
@@ -507,53 +453,64 @@ public partial class CoreService(
         attachmentFile.SecondaryProvider = agentRequiresOpenAIAssistants
             ? ResourceProviderNames.FoundationaLLM_AzureOpenAI
             : null;
-        var result = await _attachmentResourceProvider.UpsertResourceAsync<AttachmentFile, ResourceProviderUpsertResult<AttachmentFile>>(
+        var attachmentUpsertResult = await _attachmentResourceProvider.UpsertResourceAsync<AttachmentFile, ResourceProviderUpsertResult<AttachmentFile>>(
                 instanceId,
                 attachmentFile,
                 _userIdentity);
 
+        // TODO: Improve the logic of setting MustCreateAssistantFile to avoid unnecessary uploads to the Azure OpenAI file store.
+
         if (agentRequiresOpenAIAssistants)
         {
-            var userName = userIdentity.UPN?.NormalizeUserPrincipalName() ?? userIdentity.UserId;
-            var assistantUserContextName = $"{userName}-assistant-{instanceId.ToLower()}";
-            var fileUserContextName = $"{userName}-file-{instanceId.ToLower()}";
-
-            var fileMapping = new FileMapping
+            var fileMapping = new AzureOpenAIFileMapping
             {
-                FoundationaLLMObjectId = result.ObjectId!,
+                Name = string.Empty,
+                Id = string.Empty,
+                UPN = userIdentity.UPN!,
+                InstanceId = instanceId,
+                FileObjectId = attachmentUpsertResult.ObjectId!,
                 OriginalFileName = attachmentFile.OriginalFileName,
-                ContentType = attachmentFile.ContentType!
+                FileContentType = attachmentFile.ContentType!,
+                OpenAIEndpoint = apiEndpointConfiguration.Url,
+                OpenAIFileId = string.Empty
             };
 
-            var fileUserContext = new FileUserContext
+            var resourceProviderUpsertOptions = new ResourceProviderUpsertOptions
             {
-                Name = fileUserContextName,
-                UserPrincipalName = userName!,
-                Endpoint = apiEndpointConfiguration.Url,
-                AssistantUserContextName = assistantUserContextName,
-                Files = new()
-                {
+                Parameters = new()
                     {
-                        result.ObjectId!,
-                        fileMapping
+                        { AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId, agentBase.ObjectId! },
+                        { AzureOpenAIResourceProviderUpsertParameterNames.ConversationId, sessionId },
+                        { AzureOpenAIResourceProviderUpsertParameterNames.AttachmentObjectId, attachmentUpsertResult.ObjectId },
+                        { AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIFile, true }
                     }
-                }
             };
 
             var extension = Path.GetExtension(attachmentFile.OriginalFileName).ToLowerInvariant().Replace(".", string.Empty);
             if (_azureOpenAIFileSearchFileExtensions.Contains(extension))
             {
                 // The file also needs to be vectorized for the OpenAI assistant.
-                fileMapping.RequiresVectorization = true;
+                fileMapping.FileRequiresVectorization = true;
             }
 
-            _ = await _azureOpenAIResourceProvider.UpsertResourceAsync<FileUserContext, ResourceProviderUpsertResult<FileUserContext>>(
+            var fileMappingUpsertResult = await _azureOpenAIResourceProvider.UpsertResourceAsync<AzureOpenAIFileMapping, ResourceProviderUpsertResult<AzureOpenAIFileMapping>>(
                 instanceId,
-                fileUserContext,
+                fileMapping,
+                userIdentity,
+                resourceProviderUpsertOptions);
+
+            await _attachmentResourceProvider.UpdateResourcePropertiesAsync<AttachmentFile, ResourceProviderUpsertResult<AttachmentFile>>(
+                instanceId,
+                attachmentFile.Name!,
+                new Dictionary<string, object?>
+                {
+                    { "/secondaryProviderObjectId", fileMappingUpsertResult.Resource!.OpenAIFileId }
+                },
                 userIdentity);
+            attachmentUpsertResult.Resource!.SecondaryProviderObjectId = fileMappingUpsertResult.Resource!.OpenAIFileId;
         }
 
-        return result;
+        return attachmentUpsertResult;
     }
 
     /// <inheritdoc/>
@@ -563,19 +520,19 @@ public partial class CoreService(
         {
             if (fileProvider == ResourceProviderNames.FoundationaLLM_AzureOpenAI)
             {
-                var userName = userIdentity.UPN?.NormalizeUserPrincipalName() ?? userIdentity.UserId;
-                var fileUserContextName = $"{userName}-file-{instanceId.ToLower()}";
-
-                var result = await _azureOpenAIResourceProvider.GetResourceAsync<FileContent>(
-                    $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileUserContexts}/{fileUserContextName}/{AzureOpenAIResourceTypeNames.FilesContent}/{fileId}",
+                var result = await _azureOpenAIResourceProvider.ExecuteResourceActionAsync<AzureOpenAIFileMapping, object?, ResourceProviderActionResult<FileContent>>(
+                    instanceId,
+                    fileId,
+                    ResourceProviderActions.LoadFileContent,
+                    null,
                     userIdentity);
 
                 return new AttachmentFile
                 {
-                    Name = result.Name,
-                    OriginalFileName = result.OriginalFileName,
-                    ContentType = result.ContentType,
-                    Content = result.BinaryContent!.Value.ToArray()
+                    Name = result.Resource!.Name,
+                    OriginalFileName = result.Resource!.OriginalFileName,
+                    ContentType = result.Resource!.ContentType,  
+                    Content = result.Resource!.BinaryContent!.Value.ToArray()
                 };
             }
         }
@@ -636,13 +593,98 @@ public partial class CoreService(
         return results;
     }
 
+    #endregion
+
+    #region Conversation messages
+
     /// <inheritdoc/>
-    public async Task<IEnumerable<APIEndpointConfiguration>> GetFileStoreConnectors(string instanceId, UnifiedUserIdentity userIdentity)
+    public async Task<List<Message>> GetChatSessionMessagesAsync(string instanceId, string sessionId)
     {
-        var apiEndpointConfigurations = await _configurationResourceProvider.GetResourcesAsync<APIEndpointConfiguration>(instanceId, userIdentity);
-        var resources = apiEndpointConfigurations.Select(c => c.Resource).ToList();
-        return resources.Where(c => c.Category == APIEndpointCategory.FileStoreConnector);
+        ArgumentNullException.ThrowIfNull(sessionId);
+        var messages = await _cosmosDBService.GetSessionMessagesAsync(sessionId, _userIdentity.UPN ??
+            throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat messages."));
+
+        // Get a list of all attachment IDs in the messages.
+        var attachmentIds = messages.SelectMany(m => m.Attachments ?? Enumerable.Empty<string>()).Distinct().ToList();
+        if (attachmentIds.Count > 0)
+        {
+            var filter = new ResourceFilter
+            {
+                ObjectIDs = attachmentIds
+            };
+            // Get the attachment details from the attachment resource provider.
+            var result = await _attachmentResourceProvider!.HandlePostAsync(
+                $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Attachment}/{AttachmentResourceTypeNames.Attachments}/{ResourceProviderActions.Filter}",
+                JsonSerializer.Serialize(filter),
+                _userIdentity);
+            //var list = result as IEnumerator<AttachmentFile>;
+            var attachmentReferences = new List<AttachmentDetail>();
+
+            attachmentReferences.AddRange(from attachment in (IEnumerable<AttachmentFile>)result select AttachmentDetail.FromAttachmentFile(attachment));
+
+            if (attachmentReferences.Count > 0)
+            {
+                // Add the attachment details to the messages.
+                foreach (var message in messages)
+                {
+                    if (message.Attachments is { Count: > 0 })
+                    {
+                        var messageAttachmentDetails = new List<AttachmentDetail>();
+                        foreach (var attachment in message.Attachments)
+                        {
+                            var attachmentDetail = attachmentReferences.FirstOrDefault(ad => ad.ObjectId == attachment);
+                            if (attachmentDetail != null)
+                            {
+                                messageAttachmentDetails.Add(attachmentDetail);
+                            }
+                        }
+                        message.AttachmentDetails = messageAttachmentDetails;
+                    }
+                }
+            }
+        }
+
+        foreach (var message in messages)
+        {
+            if (message.Content is { Count: > 0 })
+            {
+                foreach (var content in message.Content)
+                {
+                    content.Value = ResolveContentDeepLinks(content.Value, _baseUrl);
+                }
+            }
+        }
+
+        return messages.ToList();
     }
+
+    /// <inheritdoc/>
+    public async Task<Message> RateMessageAsync(string instanceId, string id, string sessionId, bool? rating)
+    {
+        ArgumentNullException.ThrowIfNull(id);
+        ArgumentNullException.ThrowIfNull(sessionId);
+
+        return await _cosmosDBService.PatchSessionsItemPropertiesAsync<Message>(
+            id,
+            sessionId,
+            new Dictionary<string, object?>
+            {
+                { "/rating", rating }
+            });
+    }
+
+    /// <inheritdoc/>
+    public async Task<CompletionPrompt> GetCompletionPrompt(string instanceId, string sessionId, string completionPromptId)
+    {
+        ArgumentNullException.ThrowIfNullOrEmpty(sessionId);
+        ArgumentNullException.ThrowIfNullOrEmpty(completionPromptId);
+
+        return await _cosmosDBService.GetCompletionPromptAsync(sessionId, completionPromptId);
+    }
+
+    #endregion
+
+    #region Configuration
 
     /// <inheritdoc/>
     public async Task<CoreConfiguration> GetCoreConfiguration(string instanceId, UnifiedUserIdentity userIdentity)
@@ -661,6 +703,18 @@ public partial class CoreService(
         };
 
         return configuration;
+    }
+
+    #endregion
+
+    #region Private helper methods
+
+    /// <inheritdoc/>
+    private async Task<IEnumerable<APIEndpointConfiguration>> GetFileStoreConnectors(string instanceId, UnifiedUserIdentity userIdentity)
+    {
+        var apiEndpointConfigurations = await _configurationResourceProvider.GetResourcesAsync<APIEndpointConfiguration>(instanceId, userIdentity);
+        var resources = apiEndpointConfigurations.Select(c => c.Resource).ToList();
+        return resources.Where(c => c.Category == APIEndpointCategory.FileStoreConnector);
     }
 
     private IDownstreamAPIService GetDownstreamAPIService(AgentGatekeeperOverrideOption agentOption) =>
@@ -831,31 +885,7 @@ public partial class CoreService(
             Text = "Could not retrieve the status of the operation due to an internal error."
         };
     }
-
-    /// <inheritdoc/>
-    public async Task<Message> RateMessageAsync(string instanceId, string id, string sessionId, bool? rating)
-    {
-        ArgumentNullException.ThrowIfNull(id);
-        ArgumentNullException.ThrowIfNull(sessionId);
-
-        return await _cosmosDBService.PatchSessionsItemPropertiesAsync<Message>(
-            id,
-            sessionId,
-            new Dictionary<string, object?>
-            {
-                { "/rating", rating }
-            });
-    }
-
-    /// <inheritdoc/>
-    public async Task<CompletionPrompt> GetCompletionPrompt(string instanceId, string sessionId, string completionPromptId)
-    {
-        ArgumentNullException.ThrowIfNullOrEmpty(sessionId);
-        ArgumentNullException.ThrowIfNullOrEmpty(completionPromptId);
-
-        return await _cosmosDBService.GetCompletionPromptAsync(sessionId, completionPromptId);
-    }
-
+    
     /// <summary>
     /// Pre-processing of incoming completion request.
     /// </summary>
@@ -945,4 +975,6 @@ public partial class CoreService(
 
         return userIdentity;
     }
+
+    #endregion
 }

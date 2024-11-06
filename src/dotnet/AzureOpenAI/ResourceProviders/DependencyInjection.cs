@@ -45,6 +45,7 @@ namespace FoundationaLLM
                         .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_ResourceProviders_AzureOpenAI),
                     sp.GetRequiredService<IEventService>(),
                     sp.GetRequiredService<IResourceValidatorFactory>(),
+                    sp.GetRequiredService<IAzureCosmosDBService>(),
                     sp,
                     sp.GetRequiredService<ILogger<AzureOpenAIResourceProviderService>>()));
 

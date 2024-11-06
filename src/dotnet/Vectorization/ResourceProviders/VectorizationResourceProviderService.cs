@@ -137,7 +137,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
-            ResourceProviderLoadOptions? options = null) =>
+            ResourceProviderGetOptions? options = null) =>
             resourcePath.MainResourceTypeName switch
             {
                 VectorizationResourceTypeNames.TextPartitioningProfiles =>
@@ -606,7 +606,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         #endregion
 
         /// <inheritdoc/>
-        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) where T : class =>
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null) where T : class =>
             resourcePath.MainResourceTypeName switch
             {
                 VectorizationResourceTypeNames.TextPartitioningProfiles => await GetTextPartitioningProfile<T>(resourcePath),
@@ -701,7 +701,12 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
         #endregion
 
         /// <inheritdoc/>
-        protected override async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, T resource, UnifiedUserIdentity userIdentity) =>
+        protected override async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            T resource,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderUpsertOptions? options = null) =>
             resource switch
             {
                 VectorizationRequest vectorizationRequest => (TResult) await UpdateVectorizationRequest(resourcePath, vectorizationRequest, userIdentity),

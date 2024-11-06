@@ -13,11 +13,47 @@ namespace FoundationaLLM.Common.Interfaces;
 public interface IAzureCosmosDBService
 {
     /// <summary>
+    /// Gets a single item by its identifier and partition key.
+    /// </summary>
+    /// <typeparam name="T">The type of the item to retrieve.</typeparam>
+    /// <param name="containerName">The name of the container storing the item.</param>
+    /// <param name="id">The identifier of the item.</param>
+    /// <param name="partitionKey">The partition key of the item.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>The retrieved object of type <typeparamref name="T"/>.</returns>
+    Task<T?> GetItemAsync<T>(string containerName, string id, string partitionKey, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Creates or updates an item in the specified container.
+    /// </summary>
+    /// <typeparam name="T">The type of the item to create or update.</typeparam>
+    /// <param name="containerName">The name of the container storing the item.</param>
+    /// <param name="item">The item to be created or updated.</param>
+    /// <param name="partitionKey">The partition key of the item.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>The created or updated object of type <typeparamref name="T"/>.</returns>
+    Task<T?> UpsertItemAsync<T>(string containerName, string partitionKey, T item, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Patches an item in the specified container.
+    /// </summary>
+    /// <typeparam name="T">The type of the item to patch.</typeparam>
+    /// <param name="containerName">The name of the container storing the item.</param>
+    /// <param name="partitionKey">The partition key of the item.</param>
+    /// <param name="id">The item ID.</param>
+    /// <param name="upn">The user principal name used for matching the UPN of the item.</param>
+    /// <param name="propertyValues">Dictionary of the property names and values to patch.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>The patched object of type <typeparam name="T"></typeparam>.</returns>
+    Task<T> PatchItemPropertiesAsync<T>(string containerName, string partitionKey, string id,
+        string upn, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Gets a list of all current conversations.
     /// </summary>
     /// <param name="type">The conversation type to return.</param>
     /// <param name="upn">The user principal name used for retrieving
-    /// conversations for the signed in user.</param>
+    /// conversations for the signed-in user.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns>List of distinct conversation items.</returns>
     Task<List<Conversation>> GetConversationsAsync(string type, string upn, CancellationToken cancellationToken = default);
@@ -178,7 +214,7 @@ public interface IAzureCosmosDBService
     /// <param name="propertyValues">The dictionary containing property names and updated values.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns></returns>
-    Task<T> PathcOperationsItemPropertiesAsync<T>(string itemId, string partitionKey, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default);
+    Task<T> PatchOperationsItemPropertiesAsync<T>(string itemId, string partitionKey, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gets an attachment.

@@ -35,5 +35,10 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// </summary>
         public const string Attachments_Contributor = "8e77fb6a-7a78-43e1-b628-d9e2285fe25a";
 
+        /// <summary>
+        /// Create and update conversations, including Azure OpenAI Assistants threads.
+        /// </summary>
+        public const string Conversations_Contributor = "d0d21b90-5317-499a-9208-3a6cb71b84f9";
+
     }
 }

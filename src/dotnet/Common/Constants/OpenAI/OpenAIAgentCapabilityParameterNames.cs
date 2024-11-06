@@ -13,22 +13,22 @@
         /// <summary>
         /// Indicates the need to create a new OpenAI assistant.
         /// </summary>
-        public const string CreateAssistant = "OpenAI.Assistants.CreateAssistant";
+        public const string CreateOpenAIAssistant = "OpenAI.Assistants.Assistant.Create";
 
         /// <summary>
         /// Indicates the need to create a new OpenAI assistant thread.
         /// </summary>
-        public const string CreateAssistantThread = "OpenAI.Assistants.CreateAssistantThread";
+        public const string CreateOpenAIAssistantThread = "OpenAI.Assistants.Thread.Create";
 
         /// <summary>
         /// Indicates the need to create a new OpenAI assistant file.
         /// </summary>
-        public const string CreateAssistantFile = "OpenAI.Assistants.CreateAssistantFile";
+        public const string CreateOpenAIFile = "OpenAI.File.Create";
 
         /// <summary>
         /// Indicates the need to add an existing OpenAI assistant file to the OpenAI assistant vector store.
         /// </summary>
-        public const string AddAssistantFileToVectorStore = "OpenAI.Assistants.AddAssistantFileToVectorStore";
+        public const string AddOpenAIFileToVectorStore = "OpenAI.File.AddToVectorStore";
 
         #endregion
 
@@ -37,22 +37,22 @@
         /// <summary>
         /// Provides the prompt used by the OpenAI assistant.
         /// </summary>
-        public const string AssistantPrompt = "OpenAI.Assistants.AssistantPrompt";
+        public const string OpenAIAssistantPrompt = "OpenAI.Assistants.Assistant.Prompt";
 
         /// <summary>
         /// Provides the Azure OpenAI endpoint used to manage Open AI assistants.
         /// </summary>
-        public const string Endpoint = "OpenAI.Assistants.Endpoint";
+        public const string OpenAIEndpoint = "OpenAI.Endpoint";
 
         /// <summary>
         /// Provides the model deployment name used by the OpenAI assistant.
         /// </summary>
-        public const string ModelDeploymentName = "OpenAI.Assistants.ModelDeploymentName";
+        public const string OpenAIModelDeploymentName = "OpenAI.ModelDeploymentName";
 
         /// <summary>
         /// The object identifier of the FoundationaLLM attachment resource.
         /// </summary>
-        public const string AttachmentObjectId = "OpenAI.Assistants.AttachmentObjectId";
+        public const string AttachmentObjectId = "FoundationaLLM.Attachment.ObjectId";
 
         #endregion
 
@@ -61,27 +61,27 @@
         /// <summary>
         /// Provides the identifier of an existing OpenAI assistant.
         /// </summary>
-        public const string AssistantId = "OpenAI.Assistants.AssistantId";
+        public const string OpenAIAssistantId = "OpenAI.Assistants.Assistant.Id";
 
         /// <summary>
         /// Provides the identifier of an existing OpenAI assistant thread.
         /// </summary>
-        public const string AssistantThreadId = "OpenAI.Assistants.AssistantThreadId";
+        public const string OpenAIAssistantThreadId = "OpenAI.Assistants.Thread.Id";
 
         /// <summary>
         /// Provides the identifier of an existing OpenAI assistant file.
         /// </summary>
-        public const string AssistantFileId = "OpenAI.Assistants.AssistantFileId";
+        public const string OpenAIFileId = "OpenAI.Files.Id";
 
         /// <summary>
         /// Provides the identifier of an existing OpenAI assistant vector store.
         /// </summary>
-        public const string AssistantVectorStoreId = "OpenAI.Assistants.AssistantVectorStoreId";
+        public const string OpenAIVectorStoreId = "OpenAI.VectorStore.Id";
 
         /// <summary>
         /// Indicates whether the Open AI assistant file vectorization process completed successfully.
         /// </summary>
-        public const string AddAssistantFileToVectorStoreSuccess = "OpenAI.Assistants.AddAssistantFileToVectorStoreSuccess";
+        public const string AddOpenAIFileToVectorStoreSuccess = "OpenAI.File.AddToVectorStoreSuccess";
 
         #endregion
     }
