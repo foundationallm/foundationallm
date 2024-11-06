@@ -19,6 +19,7 @@ namespace FoundationaLLM.Agent.Models.Resources
             {
                 AgentTypes.Basic => typeof(AgentBase),
                 AgentTypes.KnowledgeManagement => typeof(KnowledgeManagementAgent),
+                AgentTypes.AgentFile => typeof(AgentFile),
                 _ => throw new ResourceProviderException($"The agent type {Type} is not supported.")
             };
     }

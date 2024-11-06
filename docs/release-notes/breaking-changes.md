@@ -5,6 +5,14 @@
 
 ## Starting with 0.8.4
 
+### Configuration changes
+
+The following settings are required:
+
+Name | Default value
+--- | ---
+`FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions` | `c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip`
+
 ### Resource provider changes
 
 **FoundationaLLM.Authorization**

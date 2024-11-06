@@ -98,9 +98,9 @@ public partial class CoreService(
         var result = await _conversationResourceProvider.GetResourcesAsync<Conversation>(
             instanceId,
             _userIdentity,
-            new ()
+            new()
             {
-                Parameters = new ()
+                Parameters = new()
                 {
                     { ConversationResourceProviderGetParameterNames.ConversationType, _sessionType }
                 }
@@ -531,7 +531,7 @@ public partial class CoreService(
                 {
                     Name = result.Resource!.Name,
                     OriginalFileName = result.Resource!.OriginalFileName,
-                    ContentType = result.Resource!.ContentType,  
+                    ContentType = result.Resource!.ContentType,
                     Content = result.Resource!.BinaryContent!.Value.ToArray()
                 };
             }
@@ -616,6 +616,7 @@ public partial class CoreService(
             var result = await _attachmentResourceProvider!.HandlePostAsync(
                 $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Attachment}/{AttachmentResourceTypeNames.Attachments}/{ResourceProviderActions.Filter}",
                 JsonSerializer.Serialize(filter),
+                null,
                 _userIdentity);
             //var list = result as IEnumerator<AttachmentFile>;
             var attachmentReferences = new List<AttachmentDetail>();
@@ -795,7 +796,7 @@ public partial class CoreService(
         OperationStatus operationStatus)
     {
         #region Process content
-        
+
         var newContent = new List<MessageContent>();
 
         if (completionResponse.Content is { Count: > 0 })
@@ -885,7 +886,7 @@ public partial class CoreService(
             Text = "Could not retrieve the status of the operation due to an internal error."
         };
     }
-    
+
     /// <summary>
     /// Pre-processing of incoming completion request.
     /// </summary>
@@ -940,7 +941,7 @@ public partial class CoreService(
             Console.WriteLine(e);
             // Ignore the exception since we should always fall back to the configured value.
         }
-        
+
         return baseUrl;
     }
 

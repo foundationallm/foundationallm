@@ -827,6 +827,23 @@
 		]
 	},
 	{
+		"namespace": "APIEndpoints:ManagementAPI:Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section for Management API."
+		},
+		"configuration_keys": [
+			{
+				"name": "AllowedUploadFileExtensions",
+				"description": "The comma-separated list file extensions that users are allowed to upload to a conversation.",
+				"secret": "",
+				"value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
+				"content_type": "",
+				"first_version": "0.8.4"
+			}
+		]
+	},
+	{
 		"namespace": "APIEndpoints:VectorizationAPI:Essentials",
 		"dependency_injection_key": null,
 		"configuration_section": {

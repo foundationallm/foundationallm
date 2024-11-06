@@ -456,6 +456,13 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions",
+            "value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:VectorizationAPI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-vectorizationapi-apikey\"}",
             "label": null,

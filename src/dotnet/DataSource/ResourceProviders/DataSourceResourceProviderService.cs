@@ -86,10 +86,10 @@ namespace FoundationaLLM.DataSource.ResourceProviders
             };
 
         /// <inheritdoc/>
-        protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string serializedResource, UnifiedUserIdentity userIdentity) =>
+        protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string? serializedResource, ResourceProviderFormFile? formFile, UnifiedUserIdentity userIdentity) =>
             resourcePath.MainResourceTypeName switch
             {
-                DataSourceResourceTypeNames.DataSources => await UpdateDataSource(resourcePath, serializedResource, userIdentity),
+                DataSourceResourceTypeNames.DataSources => await UpdateDataSource(resourcePath, serializedResource!, userIdentity),
                 _ => throw new ResourceProviderException(
                         $"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)

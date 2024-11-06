@@ -782,4 +782,32 @@ export default {
 			},
 		);
 	},
+
+	/*
+		Private Storage
+	 */
+	async getPrivateStorageFiles(agentName) {
+		return (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/files?api-version=${this.apiVersion}`,
+		)) as Object[];
+	},
+
+	async uploadToPrivateStorage(agentName, fileName, file: FormData): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/files/${fileName}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: file,
+			},
+		);
+	},
+
+	async deleteFileFromPrivateStorage(agentName, fileName): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/files/${fileName}?api-version=${this.apiVersion}`,
+			{
+				method: 'DELETE',
+			},
+		);
+	},
 };

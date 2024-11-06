@@ -35,6 +35,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 		secondaryButtonBg: null,
 		secondaryButtonText: null,
 		footerText: null,
+		allowedUploadFileExtensions: null,
 		noAgentsMessage: null,
 		defaultAgentWelcomeMessage: null,
 
@@ -90,6 +91,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				noAgentsMessage,
 				defaultAgentWelcomeMessage,
 				instanceId,
+				allowedUploadFileExtensions,
 				authClientId,
 				authInstance,
 				authTenantId,
@@ -126,6 +128,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				getConfigValueSafe('FoundationaLLM:Branding:NoAgentsMessage', 'No agents available. Please check with your system administrator for assistance.'),
 				getConfigValueSafe('FoundationaLLM:Branding:DefaultAgentWelcomeMessage', 'Start the conversation using the text box below.'),
 				getConfigValueSafe('FoundationaLLM:Instance:Id', '00000000-0000-0000-0000-000000000000'),
+				getConfigValueSafe('FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions', 'pdf'),
 
 				api.getConfigValue('FoundationaLLM:ManagementPortal:Authentication:Entra:ClientId'),
 				api.getConfigValue('FoundationaLLM:ManagementPortal:Authentication:Entra:Instance'),
@@ -164,6 +167,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.secondaryButtonBg = secondaryButtonBg;
 			this.secondaryButtonText = secondaryButtonText;
 			this.footerText = footerText;
+			this.allowedUploadFileExtensions = allowedUploadFileExtensions;
 			this.noAgentsMessage = noAgentsMessage;
 			this.defaultAgentWelcomeMessage = defaultAgentWelcomeMessage;
 

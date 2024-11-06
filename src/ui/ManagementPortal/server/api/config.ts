@@ -33,6 +33,7 @@ const allowedKeys = [
 	'FoundationaLLM:Branding:NoAgentsMessage',
 	'FoundationaLLM:Branding:DefaultAgentWelcomeMessage',
 	'FoundationaLLM:Instance:Id',
+	'FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions',
 	// 'FoundationaLLM:APIEndpoints:AgentHubAPI:Essentials:APIUrl',
 	'FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:APIUrl',
 	'FoundationaLLM:APIEndpoints:CoreAPI:Essentials:APIUrl',

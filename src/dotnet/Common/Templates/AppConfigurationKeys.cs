@@ -607,6 +607,17 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:APIEndpoints:ManagementAPI:Configuration
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions setting.
+        /// <para>Value description:<br/>The comma-separated list file extensions that users are allowed to upload to a conversation.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_AllowedUploadFileExtensions =
+            "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions";
+
+        #endregion
+
         #region FoundationaLLM:APIEndpoints:VectorizationAPI:Essentials
         
         /// <summary>

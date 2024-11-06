@@ -14,7 +14,7 @@ namespace FoundationaLLM.Management.API.Controllers
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
     [Authorize(Policy = "DefaultPolicy")]
     [ApiController]
-    [Consumes("application/json")]
+    [Consumes("application/json","multipart/form-data")]
     [Produces("application/json")]
     [Route($"instances/{{instanceId}}/providers/{{resourceProvider}}")]
     public class ResourceController(
@@ -59,19 +59,44 @@ namespace FoundationaLLM.Management.API.Controllers
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="resourceProvider">The name of the resource provider that should handle the request.</param>
         /// <param name="resourcePath">The logical path of the resource type.</param>
-        /// <param name="serializedResource">The serialized resource to be created or updated.</param>
+        /// <param name="serializedResource">The optional serialized resource to be created or updated.</param>
+        /// <param name="formFile">The optional file attached to the request.</param>
         /// <returns>The ObjectId of the created or updated resource.</returns>
         [HttpPost("{*resourcePath}", Name = "UpsertResource")]
-        public async Task<IActionResult> UpsertResource(string instanceId, string resourceProvider, string resourcePath, [FromBody] object serializedResource) =>
+        public async Task<IActionResult> UpsertResource(string instanceId, string resourceProvider, string resourcePath) =>
             await HandleRequest(
                 resourceProvider,
                 resourcePath,
                 async (resourceProviderService) =>
                 {
+                    var formFiles = HttpContext.Request.HasFormContentType ? HttpContext.Request.Form?.Files : null;
+                    IFormFile? formFile = (formFiles != null && formFiles.Count > 0) ? formFiles[0] : null;
+
+                    var bodyContent = await (new StreamReader(HttpContext.Request.Body)).ReadToEndAsync();
+                    string? serializedResource = !string.IsNullOrWhiteSpace(bodyContent) ? bodyContent : null;
+
+                    if ((formFile == null || formFile.Length == 0) && serializedResource == null)
+                        throw new ResourceProviderException("The serialized resource and the attached file cannot be null at the same time.", StatusCodes.Status400BadRequest);
+
+                    ResourceProviderFormFile? resourceProviderFormFile = default;
+                    if (formFile != null && formFile.Length > 0)
+                    {
+                        await using var stream = formFile.OpenReadStream();
+                        using var memoryStream = new MemoryStream();
+                        await stream.CopyToAsync(memoryStream);
+                        resourceProviderFormFile = new()
+                        {
+                            FileName = formFile.FileName,
+                            ContentType = formFile.ContentType,
+                            BinaryContent = new ReadOnlyMemory<byte>(memoryStream.ToArray())
+                        };
+                    }
+
                     var result = await resourceProviderService.HandlePostAsync(
                         $"instances/{instanceId}/providers/{resourceProvider}/{resourcePath}",
-                        serializedResource.ToString()!,
-                        _callContext.CurrentUserIdentity);
+                        serializedResource?.ToString(),
+                        resourceProviderFormFile,
+                        _callContext.CurrentUserIdentity!);
                     return new OkObjectResult(result);
                 });
 
