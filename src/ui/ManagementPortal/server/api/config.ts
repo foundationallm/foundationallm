@@ -31,6 +31,7 @@ const allowedKeys = [
 	'FoundationaLLM:Branding:SecondaryButtonTextColor',
 	'FoundationaLLM:Branding:FooterText',
 	'FoundationaLLM:Instance:Id',
+	'FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions',
 	// 'FoundationaLLM:APIEndpoints:AgentHubAPI:Essentials:APIUrl',
 	'FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:APIUrl',
 	'FoundationaLLM:APIEndpoints:CoreAPI:Essentials:APIUrl',
