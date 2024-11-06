@@ -343,9 +343,9 @@ namespace FoundationaLLM.Gateway.Services
                 else
                 {
                     _logger.LogInformation("Completed vectorization of file {FileId} in vector store {VectorStoreId} in {TotalSeconds} with result {VectorizationResult}.",
-                        fileId, vectorStoreId, (DateTimeOffset.UtcNow - startTime).TotalSeconds, vectorizationResult.Value.Status);
+                        fileId, vectorStoreId, (DateTimeOffset.UtcNow - startTime).TotalSeconds, fileAssociationResult.Value.Status);
                     result[OpenAIAgentCapabilityParameterNames.AddOpenAIFileToVectorStoreSuccess] =
-                        (vectorizationResult.Value.Status == VectorStoreFileAssociationStatus.Completed);
+                        (fileAssociationResult.Value.Status == VectorStoreFileAssociationStatus.Completed);
                 }
             }
 
