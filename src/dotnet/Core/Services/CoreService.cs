@@ -98,9 +98,9 @@ public partial class CoreService(
         var result = await _conversationResourceProvider.GetResourcesAsync<Conversation>(
             instanceId,
             _userIdentity,
-            new ()
+            new()
             {
-                Parameters = new ()
+                Parameters = new()
                 {
                     { ConversationResourceProviderGetParameterNames.ConversationType, _sessionType }
                 }
@@ -164,149 +164,8 @@ public partial class CoreService(
 
     #endregion
 
-    /// <inheritdoc/>
-    public async Task<List<Message>> GetChatSessionMessagesAsync(string instanceId, string sessionId)
-    {
-        ArgumentNullException.ThrowIfNull(sessionId);
-        var messages = await _cosmosDBService.GetSessionMessagesAsync(sessionId, _userIdentity.UPN ??
-            throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat messages."));
-
-        // Get a list of all attachment IDs in the messages.
-        var attachmentIds = messages.SelectMany(m => m.Attachments ?? Enumerable.Empty<string>()).Distinct().ToList();
-        if (attachmentIds.Count > 0)
-        {
-            var filter = new ResourceFilter
-            {
-                ObjectIDs = attachmentIds
-            };
-            // Get the attachment details from the attachment resource provider.
-            var result = await _attachmentResourceProvider!.HandlePostAsync(
-                $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Attachment}/{AttachmentResourceTypeNames.Attachments}/{ResourceProviderActions.Filter}",
-                JsonSerializer.Serialize(filter),
-                null,
-                _userIdentity);
-            //var list = result as IEnumerator<AttachmentFile>;
-            var attachmentReferences = new List<AttachmentDetail>();
-
-            attachmentReferences.AddRange(from attachment in (IEnumerable<AttachmentFile>)result select AttachmentDetail.FromAttachmentFile(attachment));
-
-            if (attachmentReferences.Count > 0)
-            {
-                // Add the attachment details to the messages.
-                foreach (var message in messages)
-                {
-                    if (message.Attachments is { Count: > 0 })
-                    {
-                        var messageAttachmentDetails = new List<AttachmentDetail>();
-                        foreach (var attachment in message.Attachments)
-                        {
-                            var attachmentDetail = attachmentReferences.FirstOrDefault(ad => ad.ObjectId == attachment);
-                            if (attachmentDetail != null)
-                            {
-                                messageAttachmentDetails.Add(attachmentDetail);
-                            }
-                        }
-                        message.AttachmentDetails = messageAttachmentDetails;
-                    }
-                }
-            }
-        }
-
-        foreach (var message in messages)
-        {
-            if (message.Content is { Count: > 0 })
-            {
-                foreach (var content in message.Content)
-                {
-                    content.Value = ResolveContentDeepLinks(content.Value, _baseUrl);
-                }
-            }
-        }
-
-        return messages.ToList();
-    }
-
-    /// <inheritdoc/>
-    public async Task<Message> GetChatCompletionAsync(string instanceId, CompletionRequest completionRequest)
-    {
-        try
-        {
-            ArgumentNullException.ThrowIfNull(completionRequest.SessionId);
-            var operationStartTime = DateTime.UtcNow;
-
-            completionRequest = await PrepareCompletionRequest(completionRequest);
-
-            var conversationItems = await CreateConversationItemsAsync(instanceId, completionRequest, _userIdentity);
-
-            var agentOption = await ProcessGatekeeperOptions(instanceId, completionRequest);
-
-            // Generate the completion to return to the user.
-            var completionResponse = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, completionRequest);
-
-            var agentMessage = await ProcessCompletionResponse(
-                new LongRunningOperationContext
-                {
-                    AgentName = completionRequest.AgentName!,
-                    SessionId = completionRequest.SessionId!,
-                    OperationId = completionRequest.OperationId!,
-                    UserMessageId = conversationItems.UserMessage.Id,
-                    AgentMessageId = conversationItems.AgentMessage.Id,
-                    CompletionPromptId = conversationItems.CompletionPrompt.Id,
-                    StartTime = operationStartTime,
-                    UPN = _userIdentity.UPN!
-                },
-                completionResponse,
-                OperationStatus.Completed);
-
-            return agentMessage;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error getting completion in conversation {SessionId}.",
-                completionRequest.SessionId);
-            return new Message
-            {
-                OperationId = completionRequest.OperationId,
-                Status = OperationStatus.Failed,
-                Text = "Could not generate a completion due to an internal error."
-            };
-        }
-    }
-
-    /// <inheritdoc/>
-    public async Task<Message> GetCompletionAsync(string instanceId, CompletionRequest directCompletionRequest)
-    {
-        try
-        {
-            directCompletionRequest = await PrepareCompletionRequest(directCompletionRequest);
-
-            var agentOption = await ProcessGatekeeperOptions(instanceId, directCompletionRequest);
-
-            // Generate the completion to return to the user.
-            var result = await GetDownstreamAPIService(agentOption).GetCompletion(instanceId, directCompletionRequest);
-
-            return new Message
-            {
-                OperationId = directCompletionRequest.OperationId,
-                Status = OperationStatus.Completed,
-                Text = result.Completion
-                    ?? (result.Content?.Where(c => c.Type == MessageContentItemTypes.Text).FirstOrDefault() as OpenAITextMessageContentItem)?.Value
-                        ?? "Could not generate a completion due to an internal error."
-            };
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error getting direct completion Operation ID: {OperationId}.", directCompletionRequest.OperationId);
-            return new Message
-            {
-                OperationId = directCompletionRequest.OperationId,
-                Status = OperationStatus.Failed,
-                Text = "Could not generate a completion due to an internal error."
-            };
-        }
-    }
-    
     #region Asynchronous completion operations
+
     /// <inheritdoc/>
     public async Task<LongRunningOperation> StartCompletionOperation(string instanceId, CompletionRequest completionRequest)
     {
@@ -672,7 +531,7 @@ public partial class CoreService(
                 {
                     Name = result.Resource!.Name,
                     OriginalFileName = result.Resource!.OriginalFileName,
-                    ContentType = result.Resource!.ContentType,  
+                    ContentType = result.Resource!.ContentType,
                     Content = result.Resource!.BinaryContent!.Value.ToArray()
                 };
             }
@@ -936,7 +795,7 @@ public partial class CoreService(
         OperationStatus operationStatus)
     {
         #region Process content
-        
+
         var newContent = new List<MessageContent>();
 
         if (completionResponse.Content is { Count: > 0 })
@@ -1026,7 +885,7 @@ public partial class CoreService(
             Text = "Could not retrieve the status of the operation due to an internal error."
         };
     }
-    
+
     /// <summary>
     /// Pre-processing of incoming completion request.
     /// </summary>
@@ -1081,7 +940,7 @@ public partial class CoreService(
             Console.WriteLine(e);
             // Ignore the exception since we should always fall back to the configured value.
         }
-        
+
         return baseUrl;
     }
 
