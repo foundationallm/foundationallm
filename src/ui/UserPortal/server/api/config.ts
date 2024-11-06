@@ -27,6 +27,8 @@ const allowedKeys = [
 	'FoundationaLLM:Branding:SecondaryButtonBackgroundColor',
 	'FoundationaLLM:Branding:SecondaryButtonTextColor',
 	'FoundationaLLM:Branding:FooterText',
+	'FoundationaLLM:Branding:NoAgentsMessage',
+	'FoundationaLLM:Branding:DefaultAgentWelcomeMessage',
 	'FoundationaLLM:Instance:Id',
 	'FoundationaLLM:UserPortal:Authentication:Entra:ClientId',
 	'FoundationaLLM:UserPortal:Authentication:Entra:Instance',

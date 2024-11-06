@@ -1348,7 +1348,7 @@
 				"name": "FooterText",
 				"description": "Footer text.",
 				"secret": "",
-				"value": "FoundationaLLM © 2024",
+				"value": "FoundationaLLM &copy; All rights reserved",
 				"content_type": "",
 				"first_version": "0.8.0"
 			},
@@ -1357,6 +1357,14 @@
 				"description": "Message to display to users when their agent list is empty.",
 				"secret": "",
 				"value": "No agents available. Please check with your system administrator for assistance.",
+				"content_type": "",
+				"first_version": "0.8.4"
+			},
+			{
+				"name": "DefaultAgentWelcomeMessage",
+				"description": "Message to display when starting a new conversation with an agent. This is displayed when the agent is not selected or if the selected agent does not have a configured welcome message.",
+				"secret": "",
+				"value": "Start the conversation using the text box below.",
 				"content_type": "",
 				"first_version": "0.8.4"
 			}

@@ -756,16 +756,23 @@
             "content_type": "",
             "tags": {}
         },
-				{
-						"key": "FoundationaLLM:Branding:FooterText",
-						"value": "FoundationaLLM © 2024",
-						"label": null,
-						"content_type": "",
-						"tags": {}
-				},
+        {
+            "key": "FoundationaLLM:Branding:FooterText",
+            "value": "FoundationaLLM &copy; All rights reserved",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
         {
             "key": "FoundationaLLM:Branding:NoAgentsMessage",
             "value": "No agents available. Please check with your system administrator for assistance.",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:DefaultAgentWelcomeMessage",
+            "value": "Start the conversation using the text box below.",
             "label": null,
             "content_type": "",
             "tags": {}

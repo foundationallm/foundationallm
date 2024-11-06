@@ -13,9 +13,9 @@
         public static string NormalizeUserPrincipalName(
             this string upn) =>
             upn
-                .Replace('.', '_')
-                .Replace("#", ".")
-                .Replace("@", "_")
+                .Replace('.', '-')
+                .Replace("#", "-")
+                .Replace("@", "-")
                 .ToLower();
     }
 }

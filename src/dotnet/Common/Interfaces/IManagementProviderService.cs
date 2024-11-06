@@ -13,9 +13,9 @@ namespace FoundationaLLM.Common.Interfaces
         /// </summary>
         /// <param name="resourcePath">The resource path.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
-        /// <param name="options">The <see cref="ResourceProviderLoadOptions"/> which provides operation parameters.</param>
+        /// <param name="options">The <see cref="ResourceProviderGetOptions"/> which provides operation parameters.</param>
         /// <returns>The serialized form of the result of handling the request.</returns>
-        Task<object> HandleGetAsync(string resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null);
+        Task<object> HandleGetAsync(string resourcePath, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null);
 
         /// <summary>
         /// Handles a HTTP POST request for a specified resource path.

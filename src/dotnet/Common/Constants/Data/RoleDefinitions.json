@@ -140,10 +140,10 @@
 				"actions": [
 					"FoundationaLLM.Attachment/attachments/read",
 					"FoundationaLLM.Attachment/attachments/write",
-					"FoundationaLLM.AzureOpenAI/assistantUserContexts/read",
-					"FoundationaLLM.AzureOpenAI/assistantUserContexts/write",
-					"FoundationaLLM.AzureOpenAI/fileUserContexts/read",
-					"FoundationaLLM.AzureOpenAI/fileUserContexts/write",
+					"FoundationaLLM.AzureOpenAI/conversationMappings/read",
+					"FoundationaLLM.AzureOpenAI/conversationMappings/write",
+					"FoundationaLLM.AzureOpenAI/fileMappings/read",
+					"FoundationaLLM.AzureOpenAI/fileMappings/write",
 					"FoundationaLLM.Configuration/apiEndpointConfigurations/read",
 					"FoundationaLLM.AIModel/aiModels/read"
 				],
@@ -171,8 +171,8 @@
 				"actions": [
 					"FoundationaLLM.Conversation/conversations/read",
 					"FoundationaLLM.Conversation/conversations/write",
-					"FoundationaLLM.AzureOpenAI/assistantUserContexts/read",
-					"FoundationaLLM.AzureOpenAI/assistantUserContexts/write",
+					"FoundationaLLM.AzureOpenAI/conversationMappings/read",
+					"FoundationaLLM.AzureOpenAI/conversationMappings/write",
 					"FoundationaLLM.Configuration/apiEndpointConfigurations/read",
 					"FoundationaLLM.AIModel/aiModels/read"
 				],

@@ -1,9 +1,9 @@
 ﻿namespace FoundationaLLM.Common.Constants.ResourceProviders
 {
     /// <summary>
-    /// Provides the parameter names for loading resources using the FoundationaLLM.Conversation resource provider.
+    /// Provides the parameter names for the FoundationaLLM.Conversation resource provider get operations.
     /// </summary>
-    public static class ConversationResourceProviderLoadParameterNames
+    public static class ConversationResourceProviderGetParameterNames
     {
         /// <summary>
         /// The name of the parameter that specifies the conversation type.

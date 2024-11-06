@@ -20,11 +20,22 @@
                 <div class="mb-2">{{ getBrandingDescription(key) }}</div>
                 <InputSwitch v-if="key === 'FoundationaLLM:Branding:KioskMode'" v-model:modelValue="kioskMode" @change="updateBrandingValue(key, JSON.stringify(kioskMode))" />
                 <CustomQuillEditor
-                    v-if="key === 'FoundationaLLM:Branding:FooterText'"
+                    v-if="key === 'FoundationaLLM:Branding:FooterText' ||
+                        key === 'FoundationaLLM:Branding:NoAgentsMessage' ||
+                        key === 'FoundationaLLM:Branding:DefaultAgentWelcomeMessage'"
+                    :id="key.split(':').pop()"
                     :initialContent="JSON.parse(JSON.stringify(getBrandingValue(key)))"
-                    @contentUpdate="updateFooterText(key, $event)"
+                    @contentUpdate="updateHtmlText(key, $event)"
                 />
-                <InputText :value="getBrandingValue(key)" @input="updateBrandingValue(key, $event.target.value)" class="branding-input" :aria-labelledby="key.split(':').pop()" v-if="key !== 'FoundationaLLM:Branding:FooterText' && key !== 'FoundationaLLM:Branding:KioskMode'" />
+                <InputText
+                    :value="getBrandingValue(key)"
+                    @input="updateBrandingValue(key, $event.target.value)"
+                    class="branding-input"
+                    :aria-labelledby="key.split(':').pop()"
+                    v-if="key !== 'FoundationaLLM:Branding:FooterText' &&
+                        key !== 'FoundationaLLM:Branding:KioskMode' &&
+                        key !== 'FoundationaLLM:Branding:NoAgentsMessage' &&
+                        key !== 'FoundationaLLM:Branding:DefaultAgentWelcomeMessage'" />
                 <div class="logo-preview" :style="{ backgroundColor: getBrandingValue('FoundationaLLM:Branding:PrimaryColor') }" v-if="key === 'FoundationaLLM:Branding:LogoUrl'">
                     <img :src="$filters.publicDirectory(getBrandingValue(key))" class="logo-image" />
                 </div>
@@ -216,12 +227,16 @@ export default {
                 },
                 {
                     "key": "FoundationaLLM:Branding:FooterText",
-                    "value": "FoundationaLLM (c) 2024",
+                    "value": "FoundationaLLM &copy; All rights reserved.",
                 },
                 {
                     "key": "FoundationaLLM:Branding:NoAgentsMessage",
                     "value": "No agents available. Please check with your system administrator for assistance.",
                 },
+                {
+                    "key": "FoundationaLLM:Branding:DefaultAgentWelcomeMessage",
+                    "value": "Start the conversation using the text box below.",
+                }
             ],
             orderedKeys: [
                 "FoundationaLLM:Branding:CompanyName",
@@ -233,6 +248,7 @@ export default {
                 "FoundationaLLM:Branding:PageTitle",
                 "FoundationaLLM:Branding:AgentIconUrl",
                 "FoundationaLLM:Branding:NoAgentsMessage",
+                "FoundationaLLM:Branding:DefaultAgentWelcomeMessage",
             ],
             orderedKeyColorsGrouped: [
                 {
@@ -422,11 +438,10 @@ export default {
             return key.split(':').pop()?.replace(/([A-Z])/g, ' $1').trim() || '';
         },
 
-        updateFooterText(key: string, newContent: string) {
+        updateHtmlText(key: string, newContent: string) {
             if (newContent === this.getBrandingValue(key)) {
                 return;
             }
-            console.log('updateFooterText', key, newContent);
             this.updateBrandingValue(key, newContent);
         },
 
@@ -484,6 +499,8 @@ export default {
             });
 
             try {
+                this.loading = true;
+			    this.loadingStatusText = 'Applying branding changes...';
                 const results = await Promise.all(promises);
                 this.brandingOriginal = JSON.parse(JSON.stringify(this.branding));
                 this.$toast.add({
@@ -497,6 +514,9 @@ export default {
                     detail: error?.response?._data || error,
                     life: 5000,
                 });
+            }
+            finally {
+                this.loading = false;
             }
         },
 
@@ -712,5 +732,6 @@ export default {
 .ql-editor {
     height: auto;
     max-height: 200px;
+    font-family: 'Poppins', sans-serif;
 }
 </style>

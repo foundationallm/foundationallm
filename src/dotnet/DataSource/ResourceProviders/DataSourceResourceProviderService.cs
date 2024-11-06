@@ -70,13 +70,13 @@ namespace FoundationaLLM.DataSource.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
-            ResourceProviderLoadOptions? options = null) =>
+            ResourceProviderGetOptions? options = null) =>
             resourcePath.MainResourceTypeName switch
             {
                 DataSourceResourceTypeNames.DataSources => await LoadResources<DataSourceBase>(
                     resourcePath.ResourceTypeInstances[0],
                     authorizationResult,
-                    options ?? new ResourceProviderLoadOptions
+                    options ?? new ResourceProviderGetOptions
                     {
                         IncludeRoles = resourcePath.IsResourceTypePath
                     }),
@@ -111,7 +111,7 @@ namespace FoundationaLLM.DataSource.ResourceProviders
                         resourcePath,
                         JsonSerializer.Deserialize<ResourceFilter>(serializedAction)!,
                         authorizationResult,
-                        new ResourceProviderLoadOptions
+                        new ResourceProviderGetOptions
                         {
                             LoadContent = false,
                             IncludeRoles = false
@@ -143,7 +143,7 @@ namespace FoundationaLLM.DataSource.ResourceProviders
         #region Resource provider strongly typed operations
 
         /// <inheritdoc/>
-        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
         {
             switch (typeof(T))
             {

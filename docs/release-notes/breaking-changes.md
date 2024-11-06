@@ -118,10 +118,12 @@ Refer to the dedicated upgrade tool for instructions on how to perform this upda
 
 #### App Config settings
 
-This release adds a new App Config setting that should be added to existing environments that are upgrading to 0.8.4 and beyond:
+This release adds new App Config settings that should be added to existing environments that are upgrading to 0.8.4 and beyond:
 
-- App Config key: `FoundationaLLM:Branding:NoAgentsMessage`
-- App Config value: `No agents available. Please check with your system administrator for assistance.`
+1. App Config key: `FoundationaLLM:Branding:NoAgentsMessage`
+   - App Config value: `No agents available. Please check with your system administrator for assistance.`
+2. App Config key: `FoundationaLLM:Branding:DefaultAgentWelcomeMessage`
+   - App Config value: `Start the conversation using the text box below.`
 
 #### Resource provider templates
 

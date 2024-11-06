@@ -71,13 +71,13 @@ namespace FoundationaLLM.AIModel.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
-            ResourceProviderLoadOptions? options = null) =>
+            ResourceProviderGetOptions? options = null) =>
             resourcePath.MainResourceTypeName switch
             {
                 AIModelResourceTypeNames.AIModels => await LoadResources<AIModelBase>(
                     resourcePath.ResourceTypeInstances[0],
                     authorizationResult,
-                    options ?? new ResourceProviderLoadOptions
+                    options ?? new ResourceProviderGetOptions
                     {
                         IncludeRoles = resourcePath.IsResourceTypePath,
                     }),
@@ -184,7 +184,7 @@ namespace FoundationaLLM.AIModel.ResourceProviders
         #region Resource provider strongly typed operations
 
         /// <inheritdoc/>
-        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) =>
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null) =>
             (await LoadResource<T>(resourcePath.ResourceId!))!;
 
         #endregion
