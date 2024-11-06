@@ -283,8 +283,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
         }
 
         private async Task<List<ResourceProviderGetResult<AgentFile>>> LoadAgentFiles(string agentName) =>
-             (await _resourceReferenceStore!.GetAllResourceReferences())
-                .Where(r => r.Name.StartsWith(agentName) && r.Type == AgentTypes.AgentFile)
+             (await _resourceReferenceStore!.GetAllResourceReferences<AgentFile>())
+                .Where(r => r.Name.StartsWith(agentName))
                 .Select(r => (r, r.Name.Split("|").Last()))
                 .Select(x => new ResourceProviderGetResult<AgentFile>()
                 {

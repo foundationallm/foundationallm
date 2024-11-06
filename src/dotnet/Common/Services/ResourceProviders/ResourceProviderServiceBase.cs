@@ -839,7 +839,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 else
                 {
                     resourceReferencesToLoad = authorizationResult.Authorized
-                        ? await _resourceReferenceStore!.GetAllResourceReferences()
+                        ? await _resourceReferenceStore!.GetAllResourceReferences<T>()
                         : await _resourceReferenceStore!.GetResourceReferences(
                             authorizationResult.SubordinateResourcePathsAuthorizationResults.Values
                                 .Where(sarp => !string.IsNullOrWhiteSpace(sarp.ResourceName))
