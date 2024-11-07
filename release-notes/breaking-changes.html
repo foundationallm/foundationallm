@@ -79,7 +79,7 @@
 </div>
 <h2 id="starting-with-084">Starting with 0.8.4</h2>
 <h3 id="configuration-changes">Configuration changes</h3>
-<p>The following settings are required:</p>
+<p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
 <tr>
@@ -91,6 +91,29 @@
 <tr>
 <td><code>FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions</code></td>
 <td><code>c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:NoAgentsMessage</code></td>
+<td><code>No agents available. Please check with your system administrator for assistance.</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:DefaultAgentWelcomeMessage</code></td>
+<td><code>Start the conversation using the text box below.</code></td>
+</tr>
+</tbody>
+</table>
+<p>The following new App Configuration feature flags are required:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.Agent.PrivateStore</code></td>
+<td><code>Not enabled</code></td>
 </tr>
 </tbody>
 </table>
@@ -134,72 +157,105 @@
 <li><code>GUID03</code> and <code>GUID04</code> - unique identifiers for the policy assignments</li>
 </ul>
 <p><strong>FoundationaLLM.AzureOpenAI</strong></p>
-<p>When upgrading an existing FoundationaLLM instance, the items from the <code>resource-provider/FoundationaLLM.AzureOpenAI</code> directory in storage account must be updated to use the new JSON format:</p>
-<p><em>Assistant user context</em></p>
+<p>The assistant and file user context artifacts are now simplified and stored in a new Cosmos DB container. Here are the configuration parameters for the new Cosmos DB container:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td><code>ExternalResources</code></td>
+</tr>
+<tr>
+<td>Maximum RU/s</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>Time to live</td>
+<td>Off</td>
+</tr>
+<tr>
+<td>Partition key</td>
+<td><code>/partitionKey</code></td>
+</tr>
+</tbody>
+</table>
+<p>Part of the upgrade to this version is to migrate the existing assistant and file user context artifacts to the new Cosmos DB container.
+Refer to the dedicated upgrade tool for instructions on how to perform this update.</p>
+<p>As a result of the migration, the newly created <code>ExternalResources</code> container will contain two types of items: <code>AzureOpenAIConversationMapping</code> and <code>AzureOpenAIFileMapping</code>.</p>
+<p>This is an example of an <code>AzureOpenAIConversationMapping</code> item:</p>
 <pre><code class="lang-json">{
-    &quot;name&quot;: &quot;example_solliance_net-assistant-00000000-0000-0000-0000-000000000000&quot;,
-    &quot;object_id&quot;: &quot;/instances/00000000-0000-0000-0000-000000000000/providers/FoundationaLLM.AzureOpenAI/assistantUserContexts/example_solliance_net-assistant-00000000-0000-0000-0000-000000000000&quot;,
-    &quot;display_name&quot;: null,
+    &quot;conversationId&quot;: &quot;0e56a170-5355-...&quot;,
+    &quot;openAIAssistantsAssistantId&quot;: &quot;asst_kc...&quot;,
+    &quot;openAIAssistantsThreadId&quot;: &quot;thread_73...&quot;,
+    &quot;openAIAssistantsThreadCreatedOn&quot;: &quot;2024-10-14T17:57:10.510345+00:00&quot;,
+    &quot;openAIVectorStoreId&quot;: &quot;vs_X6...&quot;,
+    &quot;openAIVectorStoreCreatedOn&quot;: null,
+    &quot;type&quot;: &quot;AzureOpenAIConversationMapping&quot;,
+    &quot;id&quot;: &quot;0e56a170-5355-...&quot;,
+    &quot;partitionKey&quot;: &quot;...-73fad442-f614-4510-811f-414cb3a3d34b&quot;,
+    &quot;upn&quot;: &quot;jackthecat@foundationaLLM.ai&quot;,
+    &quot;instanceId&quot;: &quot;73fad442-f614-4510-811f-414cb3a3d34b&quot;,
+    &quot;openAIEndpoint&quot;: &quot;https://openai-....openai.azure.com/&quot;,
+    &quot;objectId&quot;: null,
+    &quot;displayName&quot;: null,
     &quot;description&quot;: null,
-    &quot;cost_center&quot;: null,
-    &quot;user_principal_name&quot;: &quot;example@solliance.net&quot;,
-    &quot;agent-assistants&quot;: {
-        &quot;/instances/00000000-0000-0000-0000-000000000000/providers/FoundationaLLM.Agent/agents/GPT-4o&quot;: {
-            &quot;endpoint&quot;: &quot;https://example.openai.azure.com/&quot;,
-            &quot;model_name&quot;: &quot;completions-gpt-4o&quot;,
-            &quot;openai_assistant_id&quot;: &quot;&quot;,
-            &quot;openai_assistant_created_on&quot;: &quot;2024-10-18T00:00:00.0000000\u002B00:00&quot;,
-            &quot;conversations&quot;: {}
-        }
-    },
+    &quot;costCenter&quot;: null,
     &quot;properties&quot;: null,
-    &quot;created_on&quot;: &quot;2024-10-18T00:00:00.0000000\u002B00:00&quot;,
-    &quot;updated_on&quot;: &quot;2024-10-18T00:00:00.0000000\u002B00:00&quot;,
-    &quot;created_by&quot;: &quot;example@solliance.net&quot;,
-    &quot;updated_by&quot;: &quot;example@solliance.net&quot;,
+    &quot;createdOn&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;updatedOn&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;createdBy&quot;: null,
+    &quot;updatedBy&quot;: null,
     &quot;deleted&quot;: false,
-    &quot;expiration_date&quot;: null,
+    &quot;expirationDate&quot;: null,
+    &quot;name&quot;: &quot;0e56a170-5355-...&quot;,
+    &quot;_rid&quot;: &quot;J2BUAKktW41bAAAAAAAAAA==&quot;,
+    &quot;_self&quot;: &quot;dbs/J2BUAA==/colls/J2BUAKktW40=/docs/J2BUAKktW41bAAAAAAAAAA==/&quot;,
+    &quot;_etag&quot;: &quot;\&quot;8702b793-0000-0200-0000-672a60b90000\&quot;&quot;,
+    &quot;_attachments&quot;: &quot;attachments/&quot;,
+    &quot;_ts&quot;: 1730830521
 }
 </code></pre>
-<p><em>File user context</em></p>
+<p>This is an example of an <code>AzureOpenAIFileMapping</code> item:</p>
 <pre><code class="lang-json">{
-    &quot;name&quot;: &quot;example_solliance_net-file-00000000-0000-0000-0000-000000000000&quot;,
-    &quot;object_id&quot;: &quot;/instances/00000000-0000-0000-0000-000000000000/providers/FoundationaLLM.AzureOpenAI/fileUserContexts/example_solliance_net-file-00000000-0000-0000-0000-000000000000&quot;,
-    &quot;display_name&quot;: null,
+    &quot;fileObjectId&quot;: &quot;/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Attachment/attachments/a-f8...&quot;,
+    &quot;originalFileName&quot;: &quot;some_file.csv&quot;,
+    &quot;fileContentType&quot;: &quot;text/csv&quot;,
+    &quot;fileRequiresVectorization&quot;: false,
+    &quot;openAIFileId&quot;: &quot;assistant-8G...&quot;,
+    &quot;openAIFileUploadedOn&quot;: &quot;2024-10-14T23:01:02.3075592+00:00&quot;,
+    &quot;openAIAssistantsFileGeneratedOn&quot;: null,
+    &quot;openAIVectorStoreId&quot;: null,
+    &quot;type&quot;: &quot;AzureOpenAIFileMapping&quot;,
+    &quot;id&quot;: &quot;assistant-8G...&quot;,
+    &quot;partitionKey&quot;: &quot;...-73fad442-f614-4510-811f-414cb3a3d34b&quot;,
+    &quot;upn&quot;: &quot;jackthecat@foundationaLLM.ai&quot;,
+    &quot;instanceId&quot;: &quot;73fad442-f614-4510-811f-414cb3a3d34b&quot;,
+    &quot;openAIEndpoint&quot;: &quot;https://openai-....openai.azure.com/&quot;,
+    &quot;objectId&quot;: null,
+    &quot;displayName&quot;: null,
     &quot;description&quot;: null,
-    &quot;cost_center&quot;: null,
-    &quot;user_principal_name&quot;: &quot;example@solliance.net&quot;,
-    &quot;agent_files&quot;: {
-        &quot;/instances/00000000-0000-0000-0000-000000000000/providers/FoundationaLLM.Agent/agents/GPT-4o&quot;: {
-            &quot;endpoint&quot;: &quot;https://example.openai.azure.com/&quot;,
-            &quot;files&quot;: {}
-        }
-    },
-    &quot;assistant_user_context_name&quot;: &quot;example_solliance_net-assistant-00000000-0000-0000-0000-000000000000&quot;,
-    &quot;created_on&quot;: &quot;2024-10-18T00:00:00.0000000+00:00&quot;,
-    &quot;updated_on&quot;: &quot;2024-10-18T00:00:00.0000000+00:00&quot;,
-    &quot;created_by&quot;: &quot;example@solliance.net&quot;,
-    &quot;updated_by&quot;: &quot;example@solliance.net&quot;,
+    &quot;costCenter&quot;: null,
+    &quot;properties&quot;: null,
+    &quot;createdOn&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;updatedOn&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;createdBy&quot;: null,
+    &quot;updatedBy&quot;: null,
     &quot;deleted&quot;: false,
-    &quot;expiration_date&quot;: null
+    &quot;expirationDate&quot;: null,
+    &quot;name&quot;: &quot;assistant-8G...&quot;,
+    &quot;_rid&quot;: &quot;J2BUAKktW40yAAAAAAAAAA==&quot;,
+    &quot;_self&quot;: &quot;dbs/J2BUAA==/colls/J2BUAKktW40=/docs/J2BUAKktW40yAAAAAAAAAA==/&quot;,
+    &quot;_etag&quot;: &quot;\&quot;87025e93-0000-0200-0000-672a60b70000\&quot;&quot;,
+    &quot;_attachments&quot;: &quot;attachments/&quot;,
+    &quot;_ts&quot;: 1730830519
 }
 </code></pre>
-<p>Refer to the dedicated upgrade tool for instructions on how to perform this update.</p>
 <h3 id="configuration-changes-1">Configuration changes</h3>
-<h4 id="app-config-settings">App Config settings</h4>
-<p>This release adds new App Config settings that should be added to existing environments that are upgrading to 0.8.4 and beyond:</p>
-<ol>
-<li>App Config key: <code>FoundationaLLM:Branding:NoAgentsMessage</code>
-<ul>
-<li>App Config value: <code>No agents available. Please check with your system administrator for assistance.</code></li>
-</ul>
-</li>
-<li>App Config key: <code>FoundationaLLM:Branding:DefaultAgentWelcomeMessage</code>
-<ul>
-<li>App Config value: <code>Start the conversation using the text box below.</code></li>
-</ul>
-</li>
-</ol>
 <h4 id="resource-provider-templates">Resource provider templates</h4>
 <p>The <code>AzureOpenAI.template.json</code> files within <code>deploy/quick-start/data/resource-provider/FoundationaLLM.Configuration</code> and <code>deploy/standard/data/resource-provider/FoundationaLLM.Configuration</code> have been updated to set the <code>category</code> field to the value <code>LLM</code>. This discriminator allows the Management Portal to filter the list of API endpoints by category and provide options to add AI Models to endpoints with the <code>LLM</code> category.</p>
 <p>The existing <code>category</code> property needs to be set to <code>LLM</code> on existing API endpoint configurations in the <code>FoundationaLLM.Configuration</code> resource provider that fit this description, including the <code>AzureOpenAI</code> endpoint configuration.</p>
