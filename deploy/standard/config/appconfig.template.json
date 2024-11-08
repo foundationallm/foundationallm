@@ -450,7 +450,7 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:Scopes",
-            "value": "{{managementEntraScopes}}",
+            "value": "{{managementApiEntraScopes}}",
             "label": null,
             "content_type": "",
             "tags": {}
