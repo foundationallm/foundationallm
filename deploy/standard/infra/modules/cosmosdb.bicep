@@ -110,8 +110,8 @@ var containers = [
       paths: [
         '/partitionKey'
       ]
-      defaultTtl: null
     }
+    defaultTtl: null
   }
 ]
 
