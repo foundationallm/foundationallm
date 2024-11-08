@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Agent.Models.Resources
@@ -20,6 +21,7 @@ namespace FoundationaLLM.Agent.Models.Resources
                 AgentTypes.Basic => typeof(AgentBase),
                 AgentTypes.KnowledgeManagement => typeof(KnowledgeManagementAgent),
                 AgentTypes.AgentFile => typeof(AgentFile),
+                AgentTypes.Workflow => typeof(Workflow),
                 _ => throw new ResourceProviderException($"The agent type {Type} is not supported.")
             };
     }

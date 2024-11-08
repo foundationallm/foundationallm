@@ -5,6 +5,7 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -28,6 +29,7 @@ namespace FoundationaLLM
             // Register validators.
             builder.Services.AddSingleton<IValidator<AgentBase>, AgentBaseValidator>();
             builder.Services.AddSingleton<IValidator<KnowledgeManagementAgent>, KnowledgeManagementAgentValidator>();
+            builder.Services.AddSingleton<IValidator<Workflow>, WorkflowValidator>();
 
             builder.Services.AddSingleton<IResourceProviderService, AgentResourceProviderService>(sp =>
                 new AgentResourceProviderService(

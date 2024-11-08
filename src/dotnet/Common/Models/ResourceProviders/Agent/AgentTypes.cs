@@ -19,5 +19,10 @@
         /// File stored in the agent private store.
         /// </summary>
         public const string AgentFile = "agent-file";
+
+        /// <summary>
+        /// Workflow.
+        /// </summary>
+        public const string Workflow = "workflow";
     }
 }

@@ -15,6 +15,7 @@ using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
 using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
@@ -88,6 +89,13 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     {
                         IncludeRoles = resourcePath.IsResourceTypePath,
                     }),
+                AgentResourceTypeNames.Workflows => await LoadResources<Workflow>(
+                    resourcePath.ResourceTypeInstances[0],
+                    authorizationResult,
+                    options ?? new ResourceProviderGetOptions
+                    {
+                        IncludeRoles = resourcePath.IsResourceTypePath,
+                    }),
                 AgentResourceTypeNames.Files => await LoadAgentFiles(
                     resourcePath.MainResourceId!)!,
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
@@ -99,6 +107,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             resourcePath.ResourceTypeName switch
             {
                 AgentResourceTypeNames.Agents => await UpdateAgent(resourcePath, serializedResource!, userIdentity),
+                AgentResourceTypeNames.Workflows => await UpdateWorkflow(resourcePath, serializedResource!, userIdentity),
                 AgentResourceTypeNames.Files => await UpdateAgentFile(resourcePath, formFile!, userIdentity),
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
@@ -120,6 +129,14 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
+                AgentResourceTypeNames.Workflows => resourcePath.Action switch
+                {
+                    ResourceProviderActions.CheckName => await CheckResourceName<Workflow>(
+                        JsonSerializer.Deserialize<ResourceName>(serializedAction)!),
+                    ResourceProviderActions.Purge => await PurgeResource<Workflow>(resourcePath),
+                    _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest)
+                },
                 _ => throw new ResourceProviderException()
             };
 
@@ -130,6 +147,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
             {
                 case AgentResourceTypeNames.Agents:
                     await DeleteResource<AgentBase>(resourcePath);
+                    break;
+                case AgentResourceTypeNames.Workflows:
+                    await DeleteResource<Workflow>(resourcePath);
                     break;
                 case AgentResourceTypeNames.Files:
                     await DeleteAgentFile(resourcePath);
@@ -331,7 +351,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 }
             }
 
-                var validator = _resourceValidatorFactory.GetValidator(agentReference.ResourceType);
+            var validator = _resourceValidatorFactory.GetValidator(agentReference.ResourceType);
             if (validator is IValidator agentValidator)
             {
                 var context = new ValidationContext<object>(agent);
@@ -356,21 +376,68 @@ namespace FoundationaLLM.Agent.ResourceProviders
             };
         }
 
-        private async Task<List<ResourceProviderGetResult<AgentFile>>> LoadAgentFiles(string agentName) =>
-             (await _resourceReferenceStore!.GetAllResourceReferences<AgentFile>())
-                .Where(r => r.Name.StartsWith(agentName))
-                .Select(r => (r, r.Name.Split("|").Last()))
-                .Select(x => new ResourceProviderGetResult<AgentFile>()
+        private async Task<ResourceProviderUpsertResult> UpdateWorkflow(ResourcePath resourcePath, string serializedWorkflow, UnifiedUserIdentity userIdentity)
+        {
+            var workflow = JsonSerializer.Deserialize<Workflow>(serializedWorkflow)
+                ?? throw new ResourceProviderException("The object definition is invalid.",
+                    StatusCodes.Status400BadRequest);
+
+            var existingReference = await _resourceReferenceStore!.GetResourceReference(workflow.Name);
+
+            if (resourcePath.ResourceTypeInstances[0].ResourceId != workflow.Name)
+                throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
+                    StatusCodes.Status400BadRequest);
+
+            var newReference = new AgentReference
+            {
+                Name = workflow.Name!,
+                Type = workflow.Type!,
+                Filename = $"/{_name}/{workflow.Name}.json",
+                Deleted = false
+            };
+
+            workflow.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
+
+            var validator = _resourceValidatorFactory.GetValidator(newReference.ResourceType);
+            if (validator is IValidator workflowValidator)
+            {
+                var context = new ValidationContext<object>(workflow);
+                var validationResult = await workflowValidator.ValidateAsync(context);
+                if (!validationResult.IsValid)
                 {
-                    Actions = [],
-                    Roles = [],
-                    Resource = new AgentFile()
-                    {
-                        Name = x.Item2,
-                        DisplayName = x.Item2,
-                        ObjectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, agentName, AgentResourceTypeNames.Files, x.Item2)
-                    }
-                }).ToList();
+                    throw new ResourceProviderException($"Validation failed: {string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage))}",
+                        StatusCodes.Status400BadRequest);
+                }
+            }
+
+            UpdateBaseProperties(workflow, userIdentity, isNew: existingReference == null);
+            if (existingReference == null)
+                await CreateResource<Workflow>(newReference, workflow);
+            else
+                await SaveResource<Workflow>(existingReference, workflow);
+
+            return new ResourceProviderUpsertResult
+            {
+                ObjectId = workflow!.ObjectId,
+                ResourceExists = existingReference != null
+            };
+        }
+
+        private async Task<List<ResourceProviderGetResult<AgentFile>>> LoadAgentFiles(string agentName) =>
+            (await _resourceReferenceStore!.GetAllResourceReferences<AgentFile>())
+            .Where(r => r.Name.StartsWith(agentName))
+            .Select(r => (r, r.Name.Split("|").Last()))
+            .Select(x => new ResourceProviderGetResult<AgentFile>()
+            {
+                Actions = [],
+                Roles = [],
+                Resource = new AgentFile()
+                {
+                    Name = x.Item2,
+                    DisplayName = x.Item2,
+                    ObjectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, agentName, AgentResourceTypeNames.Files, x.Item2)
+                }
+            }).ToList();
 
         private async Task<ResourceProviderUpsertResult> UpdateAgentFile(ResourcePath resourcePath, ResourceProviderFormFile formFile, UnifiedUserIdentity userIdentity)
         {

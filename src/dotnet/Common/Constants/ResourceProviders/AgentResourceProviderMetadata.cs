@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
 
 namespace FoundationaLLM.Common.Constants.ResourceProviders
 {
@@ -24,7 +25,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<AgentBase>)]),
                         new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(AgentBase)], [typeof(ResourceProviderUpsertResult)]),
                         new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], []),
-                ],
+                    ],
                     Actions = [
                         new ResourceTypeAction(ResourceProviderActions.CheckName, false, true, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)])
@@ -49,6 +50,27 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                             }
                         }
                     }
+                }
+            },
+            {
+                AgentResourceTypeNames.Workflows,
+                new ResourceTypeDescriptor(
+                        AgentResourceTypeNames.Workflows,
+                        typeof(AgentBase))
+                {
+                    AllowedTypes = [
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<Workflow>)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(Workflow)], [typeof(ResourceProviderUpsertResult)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], []),
+                    ],
+                    Actions = [
+                        new ResourceTypeAction(ResourceProviderActions.CheckName, false, true, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)])
+                        ]),
+                        new ResourceTypeAction(ResourceProviderActions.Purge, true, false, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Delete, [], [], [typeof(ResourceProviderActionResult)])
+                        ])
+                    ]
                 }
             }
         };

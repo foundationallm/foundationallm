@@ -41,6 +41,21 @@
 				"name": "FoundationaLLM.Agent/agents/delete",
 				"description": "Delete agents.",
 				"field_name": "FoundationaLLM_Agent_Agents_Delete"
+			},
+			{
+				"name": "FoundationaLLM.Agent/workflows/read",
+				"description": "Read workflows.",
+				"field_name": "FoundationaLLM_Agent_Workflows_Read"
+			},
+			{
+				"name": "FoundationaLLM.Agent/workflows/write",
+				"description": "Create or update workflows.",
+				"field_name": "FoundationaLLM_Agent_Workflows_Write"
+			},
+			{
+				"name": "FoundationaLLM.Agent/workflows/delete",
+				"description": "Delete workflows.",
+				"field_name": "FoundationaLLM_Agent_Workflows_Delete"
 			}
 		]
 	},
