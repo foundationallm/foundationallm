@@ -778,23 +778,6 @@
 		]
 	},
 	{
-		"namespace": "APIEndpoints:ManagementAPI:Configuration",
-		"dependency_injection_key": null,
-		"configuration_section": {
-			"description": "Configuration section used to identify the main Management API settings."
-		},
-		"configuration_keys": [
-			{
-				"name": "AllowedUploadFileExtensions",
-				"description": "The comma-separated list file extensions that users are allowed to upload to a conversation.",
-				"secret": "",
-				"value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
-				"content_type": "",
-				"first_version": "0.8.4"
-			}
-		]
-	},
-	{
 		"namespace": "APIEndpoints:ManagementAPI:Configuration:Entra",
 		"dependency_injection_key": null,
 		"configuration_section": {
@@ -1250,14 +1233,6 @@
 				"first_version": "0.8.0"
 			},
 			{
-				"name": "DefaultAgentWelcomeMessage",
-				"description": "Default agent welcome message.",
-				"secret": "",
-				"value": "Start the conversation using the text box below.",
-				"content_type": "",
-				"first_version": "0.8.4"
-			},
-			{
 				"name": "FavIconUrl",
 				"description": "Fav icon url.",
 				"secret": "",
@@ -1296,14 +1271,6 @@
 				"value": "foundationallm-logo-white.svg",
 				"content_type": "",
 				"first_version": "0.8.0"
-			},
-			{
-				"name": "NoAgentsMessage",
-				"description": "No available agents message.",
-				"secret": "",
-				"value": "No agents available. Please check with your system administrator for assistance.",
-				"content_type": "",
-				"first_version": "0.8.4"
 			},
 			{
 				"name": "PageTitle",
