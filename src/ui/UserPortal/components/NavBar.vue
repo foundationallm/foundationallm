@@ -169,9 +169,10 @@ export default {
 			this.emptyAgentsMessage = this.$appConfigStore.noAgentsMessage ?? null;
 		}
 
-		const publicAgentOptions = this.agentOptions;
+		const publicAgentOptions = this.agentOptions.filter((agent) => !agent.my_agent);
 		const privateAgentOptions = this.agentOptions.filter((agent) => agent.my_agent);
 		const noAgentOptions = [{ label: 'None', value: null, disabled: true }];
+		let allAgentsLabel = 'All Agents';
 		this.virtualUser = await this.$appStore.getVirtualUser();
 
 		this.agentOptionsGroup.push({
@@ -179,14 +180,25 @@ export default {
 			items: [{ label: '--select--', value: null }],
 		});
 
-		this.agentOptionsGroup.push({
-			label: 'All Agents',
-			items: publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions,
-		});
+		if (this.agentOptions.length === 0) {
+			this.agentOptionsGroup.push({
+				label: allAgentsLabel,
+				items: noAgentOptions,
+			});
+			return;
+		}
+
+		if (privateAgentOptions.length > 0) {
+			this.agentOptionsGroup.push({
+				label: 'My Agents',
+				items: privateAgentOptions,
+			});
+			allAgentsLabel = 'Other Agents';
+		}
 
 		this.agentOptionsGroup.push({
-			label: 'My Agents',
-			items: privateAgentOptions.length > 0 ? privateAgentOptions : noAgentOptions,
+			label: allAgentsLabel,
+			items: publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions,
 		});
 	},
 
