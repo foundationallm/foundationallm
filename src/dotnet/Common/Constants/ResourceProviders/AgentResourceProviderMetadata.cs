@@ -1,7 +1,6 @@
 ﻿using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
 
 namespace FoundationaLLM.Common.Constants.ResourceProviders
 {

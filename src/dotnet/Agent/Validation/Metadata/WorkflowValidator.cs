@@ -1,5 +1,5 @@
-﻿using FluentValidation;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
+﻿ using FluentValidation;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Validation.ResourceProvider;
 
 namespace FoundationaLLM.Agent.Validation.Metadata

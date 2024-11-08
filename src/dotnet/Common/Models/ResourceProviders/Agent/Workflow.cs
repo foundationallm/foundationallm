@@ -1,4 +1,4 @@
-﻿namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
+﻿namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
 {
     /// <summary>
     /// Workflow resource.
