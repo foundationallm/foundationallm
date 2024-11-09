@@ -1017,7 +1017,7 @@ export default {
 			this.object_id = agent.object_id || this.object_id;
 			this.inline_context = agent.inline_context || this.inline_context;
 			this.cost_center = agent.cost_center || this.cost_center;
-			this.hasOpenAIAssistantCapability = agent.capabilities.includes('OpenAI.Assistants');
+			this.hasOpenAIAssistantCapability = agent.capabilities?.includes('OpenAI.Assistants');
 			this.expirationDate = agent.expiration_date
 				? new Date(agent.expiration_date)
 				: this.expirationDate;
