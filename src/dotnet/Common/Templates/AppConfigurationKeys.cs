@@ -896,13 +896,6 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:Branding:CompanyName";
         
         /// <summary>
-        /// The app configuration key for the FoundationaLLM:Branding:DefaultAgentWelcomeMessage setting.
-        /// <para>Value description:<br/>Default agent welcome message.</para>
-        /// </summary>
-        public const string FoundationaLLM_Branding_DefaultAgentWelcomeMessage =
-            "FoundationaLLM:Branding:DefaultAgentWelcomeMessage";
-        
-        /// <summary>
         /// The app configuration key for the FoundationaLLM:Branding:FavIconUrl setting.
         /// <para>Value description:<br/>Fav icon url.</para>
         /// </summary>
@@ -936,13 +929,6 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_Branding_LogoUrl =
             "FoundationaLLM:Branding:LogoUrl";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:Branding:NoAgentsMessage setting.
-        /// <para>Value description:<br/>No available agents message.</para>
-        /// </summary>
-        public const string FoundationaLLM_Branding_NoAgentsMessage =
-            "FoundationaLLM:Branding:NoAgentsMessage";
         
         /// <summary>
         /// The app configuration key for the FoundationaLLM:Branding:PageTitle setting.
