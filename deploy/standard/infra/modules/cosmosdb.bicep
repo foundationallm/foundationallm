@@ -104,6 +104,15 @@ var containers = [
     }
     defaultTtl: null
   }
+  {
+    name: 'ExternalResources'
+    partitionKey: {
+      paths: [
+        '/partitionKey'
+      ]
+    }
+    defaultTtl: null
+  }
 ]
 
 @description('The Resource logs to enable')

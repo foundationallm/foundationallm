@@ -66,6 +66,8 @@ $env:GUID13 = $($(New-Guid).Guid)
 
 $env:POLICYGUID01 = $($(New-Guid).Guid)
 $env:POLICYGUID02 = $($(New-Guid).Guid)
+$env:POLICYGUID03 = $($(New-Guid).Guid)
+$env:POLICYGUID04 = $($(New-Guid).Guid)
 
 $envConfiguraitons = @{
     "core-api-event-profile"             = @{
