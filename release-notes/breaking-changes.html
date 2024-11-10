@@ -117,6 +117,11 @@
 </tr>
 </tbody>
 </table>
+<h3 id="assistants-api-enabled-agents">Assistants API enabled Agent(s)</h3>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Any existing agent that has the Assistants API enabled needs to be saved from the Management UI to update itself.</p>
+</div>
 <h3 id="resource-provider-changes">Resource provider changes</h3>
 <p><strong>FoundationaLLM.Authorization</strong></p>
 <p>The following entries need to be added to the policy store file:</p>
@@ -255,6 +260,15 @@ Refer to the dedicated upgrade tool for instructions on how to perform this upda
     &quot;_ts&quot;: 1730830519
 }
 </code></pre>
+<h3 id="cleanup-role-assignments">Cleanup role assignments</h3>
+<p>As a result of migrated resources from storage account to Cosmos DB, as well as the new <code>policy-assignments</code> mentioned above, the <code>role-assignments</code> store will have obsolete <code>Owner</code> role assignments on those objects. Please refer to the dedicated tool for instructions on how to perform this cleanup.</p>
+<p>The dedicated tool will cleanup role assignments for the following resources:</p>
+<ul>
+<li><code>FoundationaLLM.Attachment/attachments</code></li>
+<li><code>FoundationaLLM.AzureOpenAI/fileUserContexts</code></li>
+<li><code>FoundationaLLM.AzureOpenAI/assistantUserContexts</code></li>
+<li><code>FoundationaLLM.Conversation/conversations</code></li>
+</ul>
 <h3 id="configuration-changes-1">Configuration changes</h3>
 <h4 id="resource-provider-templates">Resource provider templates</h4>
 <p>The <code>AzureOpenAI.template.json</code> files within <code>deploy/quick-start/data/resource-provider/FoundationaLLM.Configuration</code> and <code>deploy/standard/data/resource-provider/FoundationaLLM.Configuration</code> have been updated to set the <code>category</code> field to the value <code>LLM</code>. This discriminator allows the Management Portal to filter the list of API endpoints by category and provide options to add AI Models to endpoints with the <code>LLM</code> category.</p>
