@@ -103,8 +103,8 @@ class OpenAIAssistantsApiService:
             await stream.until_done()
             run = await stream.get_final_run()
 
-        if run.status != "completed":
-            run = await self.client.beta.threads.runs.retrieve(run_id = run.id, thread_id = request.thread_id)
+        #if run.status != "completed":
+        #    run = await self.client.beta.threads.runs.retrieve(run_id = run.id, thread_id = request.thread_id)
 
         if run.status == "failed":
             print(run.last_error.message)
@@ -128,14 +128,18 @@ class OpenAIAssistantsApiService:
 
         content = await self._parse_messages_async(messages)
 
-        return OpenAIAssistantsAPIResponse(
+        result = OpenAIAssistantsAPIResponse(
             document_id = request.document_id,
             content = content,
-            analysis_results = analysis_results,
-            completion_tokens = run.usage.completion_tokens,
-            prompt_tokens = run.usage.prompt_tokens,
-            total_tokens = run.usage.total_tokens
+            analysis_results = analysis_results           
         )
+        
+        if run.usage is not None:
+            result.completion_tokens = run.usage.completion_tokens,
+            result.prompt_tokens = run.usage.prompt_tokens,
+            result.total_tokens = run.usage.total_tokens
+
+        return result
 
     def _create_attachment_from_fileobject(self, file:FileObject):
         """
