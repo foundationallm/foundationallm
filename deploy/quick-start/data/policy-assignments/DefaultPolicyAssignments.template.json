@@ -28,7 +28,35 @@
               "updated_on": "${env:DEPLOY_TIME}",
               "created_by": "SYSTEM",
               "updated_by": "SYSTEM"
-          }
+          },
+          {
+            "name": "${env:POLICYGUID03}",
+            "type": "FoundationaLLM.Authorization/policyAssignments",
+            "object_id": "/providers/FoundationaLLM.Authorization/policyAssignments/${env:POLICYGUID03}",
+            "description": "Ownership on conversation mapping resources managed by the FoundationaLLM.AzureOpenAI resource provider.",
+            "policy_definition_id": "/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001",
+            "principal_id": "${env:USER_GROUP_OBJECT_ID}",
+            "principal_type": "Group",
+            "scope": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.AzureOpenAI/conversationMappings",
+            "created_on": "${env:DEPLOY_TIME}",
+            "updated_on": "${env:DEPLOY_TIME}",
+            "created_by": "SYSTEM",
+            "updated_by": "SYSTEM"
+        },
+        {
+            "name": "${env:POLICYGUID04}",
+            "type": "FoundationaLLM.Authorization/policyAssignments",
+            "object_id": "/providers/FoundationaLLM.Authorization/policyAssignments/${env:POLICYGUID04}",
+            "description": "Ownership on file mapping resources managed by the FoundationaLLM.AzureOpenAI resource provider.",
+            "policy_definition_id": "/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001",
+            "principal_id": "${env:USER_GROUP_OBJECT_ID}",
+            "principal_type": "Group",
+            "scope": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.AzureOpenAI/fileMappings",
+            "created_on": "${env:DEPLOY_TIME}",
+            "updated_on": "${env:DEPLOY_TIME}",
+            "created_by": "SYSTEM",
+            "updated_by": "SYSTEM"
+        }
     ]
   }
   

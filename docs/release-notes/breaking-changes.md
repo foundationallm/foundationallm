@@ -21,6 +21,11 @@ Name | Default value
 --- | ---
 `FoundationaLLM.Agent.PrivateStore` | `Not enabled`
 
+### Assistants API enabled Agent(s)
+> [!IMPORTANT]
+> 
+> Any existing agent that has the Assistants API enabled needs to be saved from the Management UI to update itself.
+
 ### Resource provider changes
 
 **FoundationaLLM.Authorization**
@@ -152,6 +157,15 @@ This is an example of an `AzureOpenAIFileMapping` item:
     "_ts": 1730830519
 }
 ```
+
+### Cleanup role assignments
+As a result of migrated resources from storage account to Cosmos DB, as well as the new `policy-assignments` mentioned above, the `role-assignments` store will have obsolete `Owner` role assignments on those objects. Please refer to the dedicated tool for instructions on how to perform this cleanup.
+
+The dedicated tool will cleanup role assignments for the following resources:
+- `FoundationaLLM.Attachment/attachments`
+- `FoundationaLLM.AzureOpenAI/fileUserContexts`
+- `FoundationaLLM.AzureOpenAI/assistantUserContexts`
+- `FoundationaLLM.Conversation/conversations`
 
 ### Configuration changes
 

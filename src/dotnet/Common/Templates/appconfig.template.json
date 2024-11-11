@@ -1,6 +1,13 @@
 {
     "items": [
         {
+            "key": ".appconfig.featureflag/FoundationaLLM.Agent.PrivateStore",
+            "value": "{\"id\":\"FoundationaLLM.Agent.PrivateStore\",\"description\":\"\",\"enabled\":false,\"conditions\":{\"client_filters\":[]}}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:Instance:Id",
             "value": "${env:FOUNDATIONALLM_INSTANCE_ID}",
             "label": null,
@@ -421,6 +428,13 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions",
+            "value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:Instance",
             "value": "https://login.microsoftonline.com/",
             "label": null,
@@ -659,6 +673,13 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:Branding:DefaultAgentWelcomeMessage",
+            "value": "Start the conversation using the text box below.",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:Branding:FavIconUrl",
             "value": "favicon.ico",
             "label": null,
@@ -689,6 +710,13 @@
         {
             "key": "FoundationaLLM:Branding:LogoUrl",
             "value": "foundationallm-logo-white.svg",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:NoAgentsMessage",
+            "value": "No agents available. Please check with your system administrator for assistance.",
             "label": null,
             "content_type": "",
             "tags": {}

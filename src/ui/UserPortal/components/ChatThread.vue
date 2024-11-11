@@ -87,6 +87,10 @@ export default {
 			return this.$appStore.currentSession;
 		},
 
+		pollingSession() {
+			return this.$appStore.pollingSession;
+		},
+
 		lastSelectedAgent() {
 			return this.$appStore.lastSelectedAgent;
 		},
@@ -102,23 +106,38 @@ export default {
 			this.isMessagePending = false;
 			this.isLoading = true;
 			this.userSentMessage = false;
+			
 			await this.$appStore.getMessages();
 			this.$appStore.updateSessionAgentFromMessages(newSession);
-			this.welcomeMessage = this.$appStore.getSessionAgent(newSession)?.resource?.properties?.['welcome_message'] ??
-				this.$appConfigStore.defaultAgentWelcomeMessage ??
-				'Start the conversation using the text box below.';
+			let sessionAgent = this.$appStore.getSessionAgent(newSession);
+			this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
 			this.isLoading = false;
+		},
+
+		async pollingSession(newPollingSession, oldPollingSession) {
+			if (newPollingSession === oldPollingSession) return;
+			if (newPollingSession === this.currentSession.id) {
+				this.isMessagePending = true;
+			}
+			else {
+				this.isMessagePending = false;
+			}
 		},
 
 		async lastSelectedAgent(newAgent, oldAgent) {
 			if (newAgent === oldAgent) return;
-			this.welcomeMessage = newAgent?.resource?.properties?.['welcome_message'] ??
-				this.$appConfigStore.defaultAgentWelcomeMessage ??
-				'Start the conversation using the text box below.';
+			this.welcomeMessage = this.getWelcomeMessage(newAgent);
 		},
 	},
 
 	methods: {
+		getWelcomeMessage(agent) {
+			let welcomeMessage = agent?.resource?.properties?.['welcome_message'];
+			return welcomeMessage && welcomeMessage.trim() !== '' ? welcomeMessage :
+				this.$appConfigStore.defaultAgentWelcomeMessage ?? 
+				'Start the conversation using the text box below.';
+		},
+
 		getMessageOrderFromReversedIndex(index) {
 			return this.messages.length - 1 - index;
 		},
@@ -172,7 +191,7 @@ export default {
 			// await this.$appStore.getMessages();
 			// }
 
-			this.isMessagePending = false;
+			//this.isMessagePending = false;
 		},
 	},
 };

@@ -169,25 +169,52 @@ export default {
 			this.emptyAgentsMessage = this.$appConfigStore.noAgentsMessage ?? null;
 		}
 
-		const publicAgentOptions = this.agentOptions;
+		const publicAgentOptions = this.agentOptions.filter((agent) => !agent.my_agent);
 		const privateAgentOptions = this.agentOptions.filter((agent) => agent.my_agent);
-		const noAgentOptions = [{ label: 'None', value: null, disabled: true }];
+		const noAgentOptions = [{
+			label: 'None',
+			value: null,
+			disabled: true,
+			type: '',
+			object_id: '',
+			description: ''
+		}];
+		let allAgentsLabel = '';
 		this.virtualUser = await this.$appStore.getVirtualUser();
 
 		this.agentOptionsGroup.push({
 			label: '',
-			items: [{ label: '--select--', value: null }],
+			items: [{
+				label: '--select--', value: null,
+				type: '',
+				object_id: '',
+				description: ''
+			}],
 		});
 
-		this.agentOptionsGroup.push({
-			label: 'All Agents',
-			items: publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions,
-		});
+		if (this.agentOptions.length === 0) {
+			// Append noAgentOptions to the last entry in the agentOptionsGroup
+			this.agentOptionsGroup[this.agentOptionsGroup.length - 1].items
+				.push(...noAgentOptions);
+			return;
+		}
 
-		this.agentOptionsGroup.push({
-			label: 'My Agents',
-			items: privateAgentOptions.length > 0 ? privateAgentOptions : noAgentOptions,
-		});
+		if (privateAgentOptions.length > 0) {
+			this.agentOptionsGroup.push({
+				label: 'My Agents',
+				items: privateAgentOptions,
+			});
+			allAgentsLabel = 'Other Agents';
+			this.agentOptionsGroup.push({
+				label: 'Other Agents',
+				items: publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions,
+			});
+		}
+		else {
+			this.agentOptionsGroup[this.agentOptionsGroup.length - 1].items
+				.push(...publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions);
+		}
+		
 	},
 
 	mounted() {

@@ -243,6 +243,12 @@ module cosmosDb './shared/cosmosdb.bicep' = {
         maxThroughput: 1000
         defaultTtl: null
       }
+      {
+        name: 'ExternalResources'
+        partitionKeyPath: '/partitionKey'
+        maxThroughput: 1000
+        defaultTtl: null
+      }
     ]
     databaseName: 'database'
     location: location
