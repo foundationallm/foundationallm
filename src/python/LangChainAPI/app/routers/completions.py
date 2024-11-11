@@ -16,6 +16,7 @@ from fastapi import (
     status
 )
 from foundationallm.config import Configuration, UserIdentity
+from foundationallm.models.constants import Messages
 from foundationallm.models.operations import (
     LongRunningOperation,
     LongRunningOperationLogEntry,
@@ -169,11 +170,12 @@ async def create_completion_response(
             )
         except Exception as e:
             # Send the completion response to the State API and mark the operation as failed.
+            print (f'Error: {e}')
             completion_response = CompletionResponse(
                 operation_id = operation_id,
                 user_prompt = completion_request.user_prompt,
                 content = [],
-                errors=[f'{e}']
+                errors=[ Messages.GENERIC_ERROR ]
             )
             await asyncio.gather(
                 operations_manager.set_operation_result_async(
