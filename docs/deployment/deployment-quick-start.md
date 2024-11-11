@@ -89,7 +89,7 @@ If you are upgrading from a previous version, like `0.5.0`, please refer to the 
 
 ## Optional: Bring Your Own Azure OpenAI Instance
 
-    If you have an existing Azure OpenAI instance, you can use it by setting the following environment variables:
+If you have an existing Azure OpenAI instance, you can use it by setting the following environment variables:
 
 ```azurecli
     azd env set OPENAI_NAME <OpenAI Name>
