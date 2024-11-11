@@ -35,6 +35,15 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Attachment
         public string? SecondaryProvider { get; set; }
 
         /// <summary>
+        /// Gets or sets the object identifier of the secondary provider of the attachment.
+        /// </summary>
+        /// <remarks>
+        /// The only secondary provider currently supported is FoundationaLLM.AzureOpenAI.
+        /// In this case, the object identifier is the Azure OpenAI file identifier.
+        /// </remarks>
+        public string? SecondaryProviderObjectId { get; set; }
+
+        /// <summary>
         /// The UPN of the user who created the attachment.
         /// </summary>
         [JsonPropertyName("upn")]
@@ -50,6 +59,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Attachment
         /// The object type of the resource.
         /// </summary>
         [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public override Type ResourceType =>
             Type switch
             {

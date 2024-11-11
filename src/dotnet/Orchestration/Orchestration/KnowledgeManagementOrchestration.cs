@@ -4,17 +4,16 @@ using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
-using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.Orchestration.Response.OpenAI;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 using FoundationaLLM.Orchestration.Core.Interfaces;
-using Microsoft.Azure.Cosmos.Serialization.HybridRow;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -27,8 +26,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
     /// <remarks>
     /// Constructor for default agent.
     /// </remarks>
-    /// <param name="instanceId">The FoundationaLLM instance ID.</param>
+    /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+    /// <param name="agentObjectId">The FoundationaLLM object identifier of the agent.</param>
     /// <param name="agent">The <see cref="KnowledgeManagementAgent"/> agent.</param>
+    /// <param name="agentWorkflowMainAIModelAPIEndpoint">The URL of the API endpoint of the main AI model used by the agent workflow.</param>
     /// <param name="explodedObjects">A dictionary of objects retrieved from various object ids related to the agent. For more details see <see cref="LLMCompletionRequest.Objects"/> .</param>
     /// <param name="callContext">The call context of the request being handled.</param>
     /// <param name="orchestrationService"></param>
@@ -39,7 +40,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
     /// <param name="openAIVectorStoreId">The OpenAI Assistants vector store id.</param>
     public class KnowledgeManagementOrchestration(
         string instanceId,
+        string agentObjectId,
         KnowledgeManagementAgent? agent,
+        string agentWorkflowMainAIModelAPIEndpoint,
         Dictionary<string, object>? explodedObjects,
         ICallContext callContext,
         ILLMOrchestrationService orchestrationService,
@@ -50,13 +53,14 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         string? openAIVectorStoreId) : OrchestrationBase(orchestrationService)
     {
         private readonly string _instanceId = instanceId;
+        private readonly string _agentObjectId = agentObjectId;
         private readonly KnowledgeManagementAgent? _agent = agent;
+        private readonly string _agentWorkflowMainAIModelAPIEndpoint = agentWorkflowMainAIModelAPIEndpoint;
         private readonly Dictionary<string, object>? _explodedObjects = explodedObjects;
         private readonly ICallContext _callContext = callContext;
         private readonly ILogger<OrchestrationBase> _logger = logger;
         private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactoryService;
         private readonly bool? _dataSourceAccessDenied = dataSourceAccessDenied;
-        private readonly string _fileUserContextName = $"{callContext.CurrentUserIdentity!.UPN?.NormalizeUserPrincipalName() ?? callContext.CurrentUserIdentity!.UserId}-file-{instanceId.ToLower()}";
 
         private readonly IResourceProviderService _attachmentResourceProvider =
             resourceProviderServices[ResourceProviderNames.FoundationaLLM_Attachment];
@@ -166,26 +170,30 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 .ToAsyncEnumerable()
                 .SelectAwait(async x => await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(x, _callContext.CurrentUserIdentity!));
 
-            var fileUserContext = await _azureOpenAIResourceProvider.GetResourceAsync<FileUserContext>(
-                _instanceId,
-                _fileUserContextName,
-                _callContext.CurrentUserIdentity!);
-
             List<AttachmentProperties> result = [];            
             await foreach (var attachment in attachments)
             {
-                var useAttachmentPath = false;
-
                 if (string.IsNullOrWhiteSpace(attachment.SecondaryProvider))
                 {
-                    useAttachmentPath = true;
+                    result.Add(new AttachmentProperties
+                    {
+                        OriginalFileName = attachment.OriginalFileName,
+                        ContentType = attachment.ContentType!,
+                        Provider = ResourceProviderNames.FoundationaLLM_Attachment,
+                        ProviderFileName = attachment.Path,
+                        ProviderStorageAccountName = _attachmentResourceProvider.StorageAccountName
+                    });
                 }
                 else
                 {
-                    useAttachmentPath = (attachment.ContentType ?? string.Empty).StartsWith("image/", StringComparison.OrdinalIgnoreCase);
+                    var useAttachmentPath = (attachment.ContentType ?? string.Empty).StartsWith("image/", StringComparison.OrdinalIgnoreCase);
 
-                    var fileMapping = fileUserContext.Files[attachment.ObjectId!];
-                    if (fileMapping.RequiresVectorization)
+                    var fileMapping = await _azureOpenAIResourceProvider.GetResourceAsync<AzureOpenAIFileMapping>(
+                        _instanceId,
+                        attachment.SecondaryProviderObjectId!,
+                        _callContext.CurrentUserIdentity!);
+
+                    if (fileMapping.FileRequiresVectorization)
                     {
                         if (string.IsNullOrWhiteSpace(_openAIVectorStoreId))
                             throw new OrchestrationException($"The file {attachment.OriginalFileName} with file id {fileMapping.OpenAIFileId!} requires vectorization but the vector store id is invalid.");
@@ -193,38 +201,38 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         var vectorizationResult = await _gatewayClient!.CreateAgentCapability(
                             _instanceId,
                             AgentCapabilityCategoryNames.OpenAIAssistants,
-                            fileUserContext.AssistantUserContextName,
+                            string.Empty,
                             new()
                             {
-                                { OpenAIAgentCapabilityParameterNames.CreateAssistantFile, false },
-                                { OpenAIAgentCapabilityParameterNames.Endpoint, fileUserContext.Endpoint },
-                                { OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStore, fileMapping.RequiresVectorization },
-                                { OpenAIAgentCapabilityParameterNames.AssistantVectorStoreId, _openAIVectorStoreId! },
-                                { OpenAIAgentCapabilityParameterNames.AssistantFileId, fileMapping.OpenAIFileId! }
+                                { OpenAIAgentCapabilityParameterNames.CreateOpenAIFile, false },
+                                { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, fileMapping.OpenAIEndpoint },
+                                { OpenAIAgentCapabilityParameterNames.AddOpenAIFileToVectorStore, fileMapping.FileRequiresVectorization },
+                                { OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId, _openAIVectorStoreId! },
+                                { OpenAIAgentCapabilityParameterNames.OpenAIFileId, fileMapping.OpenAIFileId! }
                             });
 
-                        vectorizationResult.TryGetValue(OpenAIAgentCapabilityParameterNames.AddAssistantFileToVectorStoreSuccess, out var vectorizationSuccessObject);
+                        vectorizationResult.TryGetValue(OpenAIAgentCapabilityParameterNames.AddOpenAIFileToVectorStoreSuccess, out var vectorizationSuccessObject);
                         var vectorizationSuccess = ((JsonElement)vectorizationSuccessObject!).Deserialize<bool>();
 
                         if (!vectorizationSuccess)
                             throw new OrchestrationException($"The vectorization of file {attachment.OriginalFileName} with file id {fileMapping.OpenAIFileId!} into the vector store with id {_openAIVectorStoreId} failed.");
                     }
-                }
 
-                result.Add(new AttachmentProperties
-                {
-                    OriginalFileName = attachment.OriginalFileName,
-                    ContentType = attachment.ContentType!,
-                    Provider = useAttachmentPath
-                        ? ResourceProviderNames.FoundationaLLM_Attachment
-                        : attachment.SecondaryProvider!,
-                    ProviderFileName = useAttachmentPath
-                        ? attachment.Path
-                        : fileUserContext.Files[attachment.ObjectId!].OpenAIFileId!,
-                    ProviderStorageAccountName = useAttachmentPath
-                        ? _attachmentResourceProvider.StorageAccountName
-                        : null
-                });
+                    result.Add(new AttachmentProperties
+                    {
+                        OriginalFileName = attachment.OriginalFileName,
+                        ContentType = attachment.ContentType!,
+                        Provider = useAttachmentPath
+                            ? ResourceProviderNames.FoundationaLLM_Attachment
+                            : attachment.SecondaryProvider!,
+                        ProviderFileName = useAttachmentPath
+                            ? attachment.Path
+                            : fileMapping.OpenAIFileId!,
+                        ProviderStorageAccountName = useAttachmentPath
+                            ? _attachmentResourceProvider.StorageAccountName
+                            : null
+                    });
+                }
             }
 
             return result;
@@ -258,7 +266,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
         private async Task<List<MessageContentItemBase>> TransformContentItems(List<MessageContentItemBase> contentItems)
         {
-            List<FileMapping> newFileMappings = [];
+            List<AzureOpenAIFileMapping> newFileMappings = [];
             if (contentItems == null || contentItems.Count == 0)
                 return [];
 
@@ -266,29 +274,26 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 return contentItems;
 
             var result = contentItems.Select(ci => TransformContentItem(ci, newFileMappings)).ToList();
-
-            if (newFileMappings.Count > 0)
+            var upsertOptions = new ResourceProviderUpsertOptions
             {
-                var fileUserContext = await _azureOpenAIResourceProvider.GetResourceAsync<FileUserContext>(
-                    _instanceId,
-                    _fileUserContextName,
-                    _callContext.CurrentUserIdentity!);
-
-                foreach (var fileMapping in newFileMappings)
-                {
-                    fileUserContext.Files.TryAdd(fileMapping.FoundationaLLMObjectId, fileMapping);
+                Parameters = {
+                    [AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId] = _agentObjectId                    
                 }
+            };
 
-                await _azureOpenAIResourceProvider.UpsertResourceAsync<FileUserContext, FileUserContextUpsertResult>(
-                    _instanceId,
-                    fileUserContext,
-                    _callContext.CurrentUserIdentity!);
+            foreach (var fileMapping in newFileMappings)
+            {
+                await _azureOpenAIResourceProvider.UpsertResourceAsync<AzureOpenAIFileMapping, ResourceProviderUpsertResult<AzureOpenAIFileMapping>>(
+                _instanceId,
+                fileMapping,
+                _callContext.CurrentUserIdentity!,
+                upsertOptions);
             }
 
             return result;
         }
 
-        private MessageContentItemBase TransformContentItem(MessageContentItemBase contentItem, List<FileMapping> newFileMappings) =>
+        private MessageContentItemBase TransformContentItem(MessageContentItemBase contentItem, List<AzureOpenAIFileMapping> newFileMappings) =>
             contentItem.AgentCapabilityCategory switch
             {
                 AgentCapabilityCategoryNames.OpenAIAssistants => TransformOpenAIAssistantsContentItem(contentItem, newFileMappings),
@@ -298,7 +303,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
         #region OpenAI Assistants content items
 
-        private MessageContentItemBase TransformOpenAIAssistantsContentItem(MessageContentItemBase contentItem, List<FileMapping> newFileMappings) =>
+        private MessageContentItemBase TransformOpenAIAssistantsContentItem(MessageContentItemBase contentItem, List<AzureOpenAIFileMapping> newFileMappings) =>
             contentItem switch
             {
                 OpenAIImageFileMessageContentItem openAIImageFile => TransformOpenAIAssistantsImageFile(openAIImageFile, newFileMappings),
@@ -306,36 +311,44 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 _ => throw new OrchestrationException($"The content item type {contentItem.GetType().Name} is not supported.")
             };
 
-        private OpenAIImageFileMessageContentItem TransformOpenAIAssistantsImageFile(OpenAIImageFileMessageContentItem openAIImageFile, List<FileMapping> newFileMappings)
+        private OpenAIImageFileMessageContentItem TransformOpenAIAssistantsImageFile(OpenAIImageFileMessageContentItem openAIImageFile, List<AzureOpenAIFileMapping> newFileMappings)
         {
-            newFileMappings.Add(new FileMapping
+            newFileMappings.Add(new AzureOpenAIFileMapping
             {
-                FoundationaLLMObjectId = $"/instances/{_instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileUserContexts}/{_fileUserContextName}/{AzureOpenAIResourceTypeNames.FilesContent}/{openAIImageFile.FileId}",
+                Name = openAIImageFile.FileId!,
+                Id = openAIImageFile.FileId!,
+                UPN = callContext.CurrentUserIdentity!.UPN!,
+                InstanceId = _instanceId,
+                FileObjectId = $"/instances/{_instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileMappings}/{openAIImageFile.FileId}",
                 OriginalFileName = openAIImageFile.FileId!,
-                ContentType = "image/png",
+                FileContentType = "image/png",
+                OpenAIEndpoint = _agentWorkflowMainAIModelAPIEndpoint,
                 OpenAIFileId = openAIImageFile.FileId!,
-                Generated = true,
-                OpenAIFileGeneratedOn = DateTimeOffset.UtcNow
+                OpenAIAssistantsFileGeneratedOn = DateTimeOffset.UtcNow
             });
             openAIImageFile.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{openAIImageFile.FileId}";
             return openAIImageFile;
         }
 
-        private OpenAIFilePathContentItem TransformOpenAIAssistantsFilePath(OpenAIFilePathContentItem openAIFilePath, List<FileMapping> newFileMappings)
+        private OpenAIFilePathContentItem TransformOpenAIAssistantsFilePath(OpenAIFilePathContentItem openAIFilePath, List<AzureOpenAIFileMapping> newFileMappings)
         {
             if (!string.IsNullOrWhiteSpace(openAIFilePath.FileId))
             {
                 // Empty file ids occur when dealing with file search annotations.
                 // Looks like the assistant is providing "internal" RAG pattern references to vectorized text chunks that were included in the context.
                 // In this case, we should not generate a file mapping as it will result in invalid file urls.
-                newFileMappings.Add(new FileMapping
+                newFileMappings.Add(new AzureOpenAIFileMapping
                 {
-                    FoundationaLLMObjectId = $"/instances/{_instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileUserContexts}/{_fileUserContextName}/{AzureOpenAIResourceTypeNames.FilesContent}/{openAIFilePath.FileId}",
+                    Name = openAIFilePath.FileId!,
+                    Id = openAIFilePath.FileId!,
+                    UPN = callContext.CurrentUserIdentity!.UPN!,
+                    InstanceId = _instanceId,
+                    FileObjectId = $"/instances/{_instanceId}/providers/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{AzureOpenAIResourceTypeNames.FileMappings}/{openAIFilePath.FileId}",
                     OriginalFileName = openAIFilePath.FileId!,
-                    ContentType = "application/octet-stream",
+                    FileContentType = "application/octet-stream",
+                    OpenAIEndpoint = _agentWorkflowMainAIModelAPIEndpoint,
                     OpenAIFileId = openAIFilePath.FileId!,
-                    Generated = true,
-                    OpenAIFileGeneratedOn = DateTimeOffset.UtcNow
+                    OpenAIAssistantsFileGeneratedOn = DateTimeOffset.UtcNow
                 });
                 openAIFilePath.FileUrl = $"{{{{fllm_base_url}}}}/instances/{_instanceId}/files/{ResourceProviderNames.FoundationaLLM_AzureOpenAI}/{openAIFilePath.FileId}";
             }
@@ -345,7 +358,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             return openAIFilePath;
         }
 
-        private OpenAITextMessageContentItem TransformOpenAIAssistantsTextMessage(OpenAITextMessageContentItem openAITextMessage, List<FileMapping> newFileMappings)
+        private OpenAITextMessageContentItem TransformOpenAIAssistantsTextMessage(OpenAITextMessageContentItem openAITextMessage, List<AzureOpenAIFileMapping> newFileMappings)
         {
             var pattern = new Regex(@"\【[0-9:]+†.+?\】");
 

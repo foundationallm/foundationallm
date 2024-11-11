@@ -6,13 +6,13 @@
     public static class AzureOpenAITypes
     {
         /// <summary>
-        /// OpenAI assistant resources associated with a FoundationaLLM user.
+        /// Defines a mapping between Azure OpenAI and FoundationaLLM conversation-related resources.
         /// </summary>
-        public const string AssistantUserContext = "assistant-user-context";
+        public const string ConversationMapping = "AzureOpenAIConversationMapping";
 
         /// <summary>
-        /// OpenAI assistant files associated with a FoundationaLLM user.
+        /// Defines a mapping between Azure OpenAI and FoundationaLLM file-related resources.
         /// </summary>
-        public const string FileUserContext = "file-user-context";
+        public const string FileMapping = "AzureOpenAIFileMapping";
     }
 }

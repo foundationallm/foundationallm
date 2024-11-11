@@ -171,6 +171,7 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
   }
 
   properties: {
+    kubernetesVersion: '1.30.5'
     enableRBAC: true
     fqdnSubdomain: name
     nodeResourceGroup: 'mrg-${name}'
@@ -214,7 +215,7 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
       {
         count: 1
         enableAutoScaling: true
-        maxCount: 10
+        maxCount: 3
         minCount: 1
         mode: 'System'
         name: 'system'
@@ -318,10 +319,10 @@ resource userPool 'Microsoft.ContainerService/managedClusters/agentPools@2024-04
   name: 'fllm'
   parent: main
   properties: {
-    count: 1
+    count: 4
     enableAutoScaling: true
-    maxCount: 5
-    minCount: 1
+    maxCount: 10
+    minCount: 3
     mode: 'User'
     osDiskSizeGB: 1024
     tags: tags

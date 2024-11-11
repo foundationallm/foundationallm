@@ -82,7 +82,8 @@ namespace FoundationaLLM.Authorization.Services
                 return new ActionAuthorizationResult { AuthorizationResults = defaultResults };
             }
             catch (Exception ex)
-            { _logger.LogError(ex, "There was an error calling the Authorization API");
+            {
+                _logger.LogError(ex, "There was an error calling the Authorization API");
                 return new ActionAuthorizationResult { AuthorizationResults = defaultResults };
             }
         }

@@ -23,15 +23,5 @@ namespace FoundationaLLM.Common.Tests.Models.Agents
             // Assert
             Assert.Equal("knowledge-management", agentType);
         }
-
-        [Fact]
-        public void AnalyticAgentType_IsCorrect()
-        {
-            // Arrange & Act
-            var agentType = AgentTypes.Analytic;
-
-            // Assert
-            Assert.Equal("analytic", agentType);
-        }
     }
 }

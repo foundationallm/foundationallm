@@ -233,7 +233,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         #   AssistantId, AssistantThreadId
 
         if "OpenAI.Assistants" in request.agent.capabilities:
-            required_fields = ["OpenAI.AssistantId", "OpenAI.AssistantThreadId"]
+            required_fields = [CompletionRequestObjectKeys.OPENAI_ASSISTANT_ID, CompletionRequestObjectKeys.OPENAI_THREAD_ID]
             for field in required_fields:
                 if not request.objects.get(field):
                     raise LangChainException(f"The {field} property is required when the OpenAI.Assistants capability is present.", 400)
@@ -292,8 +292,8 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 document_id=str(uuid.uuid4()),
                 operation_id=request.operation_id,
                 instance_id=self.config.get_value("FoundationaLLM:Instance:Id"),
-                assistant_id=request.objects["OpenAI.AssistantId"],
-                thread_id=request.objects["OpenAI.AssistantThreadId"],
+                assistant_id=request.objects[CompletionRequestObjectKeys.OPENAI_ASSISTANT_ID],
+                thread_id=request.objects[CompletionRequestObjectKeys.OPENAI_THREAD_ID],
                 attachments=[attachment.provider_file_name for attachment in request.attachments if attachment.provider == AttachmentProviders.FOUNDATIONALLM_AZURE_OPENAI],
                 user_prompt=request.user_prompt
             )

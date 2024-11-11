@@ -10,7 +10,6 @@ using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Graph.Models.CallRecords;
 using Polly;
 using Polly.Retry;
 using System.Diagnostics;
@@ -27,12 +26,15 @@ namespace FoundationaLLM.Common.Services
         private Container _userSessions;
         private Container _operations;
         private Container _attachments;
+        private Container _externalResources;
         private readonly Lazy<Task<Container>> _userProfiles;
         private Task<Container> _userProfilesTask => _userProfiles.Value;
         private readonly Database _database;
         private readonly CosmosDbSettings _settings;
         private readonly ResiliencePipeline _resiliencePipeline;
         private readonly ILogger _logger;
+
+        private readonly Dictionary<string, Container> _containers = [];
 
         private const string SoftDeleteQueryRestriction = " (not IS_DEFINED(c.deleted) OR c.deleted = false)";
 
@@ -103,6 +105,16 @@ namespace FoundationaLLM.Common.Services
                            throw new ArgumentException(
                                $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.Attachments}).");
 
+            _externalResources = database?.GetContainer(AzureCosmosDBContainers.ExternalResources) ??
+                           throw new ArgumentException(
+                               $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.ExternalResources}).");
+
+            _containers[AzureCosmosDBContainers.Sessions] = _sessions;
+            _containers[AzureCosmosDBContainers.UserSessions] = _userSessions;
+            _containers[AzureCosmosDBContainers.Operations] = _operations;
+            _containers[AzureCosmosDBContainers.Attachments] = _attachments;
+            _containers[AzureCosmosDBContainers.ExternalResources] = _externalResources;
+
             _logger.LogInformation("Cosmos DB service initialized.");
         }
 
@@ -163,6 +175,18 @@ namespace FoundationaLLM.Common.Services
         /// <inheritdoc/>
         public async Task<Conversation> PatchConversationPropertiesAsync(string id, string upn, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default)
         {
+            // Append audit patch operations.
+            const string updatedBy = "/updatedBy";
+            const string updatedOn = "/updatedOn";
+            if (!propertyValues.ContainsKey(updatedBy))
+            {
+                propertyValues.Add(updatedBy, !string.IsNullOrWhiteSpace(upn) ? upn : "N/A");
+            }
+            if (!propertyValues.ContainsKey(updatedOn))
+            {
+                propertyValues.Add(updatedOn, DateTimeOffset.UtcNow);
+            }
+            
             var response = await _sessions.PatchItemAsync<Conversation>(
                 id: id,
                 partitionKey: new PartitionKey(id),
@@ -222,6 +246,54 @@ namespace FoundationaLLM.Common.Services
         }
 
         #endregion
+
+        /// <inheritdoc/>
+        public async Task<T?> GetItemAsync<T>(string containerName, string id, string partitionKey, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var response = await _containers[containerName].ReadItemAsync<T>(
+                    id: id,
+                    partitionKey: new PartitionKey(partitionKey),
+                    cancellationToken: cancellationToken);
+
+                return response.Resource;
+            }
+            catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                return default;
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<T?> UpsertItemAsync<T>(string containerName, string partitionKey, T item, CancellationToken cancellationToken = default)
+        {
+            var response = await _containers[containerName].UpsertItemAsync(
+                item: item,
+                partitionKey: new PartitionKey(partitionKey),
+                cancellationToken: cancellationToken
+            );
+
+            return response.Resource;
+        }
+
+        /// <inheritdoc/>
+        public async Task<T> PatchItemPropertiesAsync<T>(string containerName, string partitionKey, string id,
+            string upn, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default)
+        {
+            var response = await _containers[containerName].PatchItemAsync<T>(
+                id: id,
+                partitionKey: new PartitionKey(partitionKey),
+                patchOperations: propertyValues.Keys
+                    .Select(key => PatchOperation.Set(key, propertyValues[key])).ToArray(),
+                requestOptions: new PatchItemRequestOptions
+                {
+                    FilterPredicate = $"FROM c WHERE c.upn = '{upn}'"
+                },
+                cancellationToken: cancellationToken
+            );
+            return response.Resource;
+        }
 
         /// <inheritdoc/>
         public async Task<List<Message>> GetSessionMessagesAsync(string sessionId, string upn, CancellationToken cancellationToken = default)
@@ -319,7 +391,7 @@ namespace FoundationaLLM.Common.Services
 
             var resultDictionary = new Dictionary<string, object>();
 
-            for (int i = 0; i < response.Count; i++)
+            for (var i = 0; i < response.Count; i++)
             {
                 var patchOperation = patchOperations[i];
 
@@ -430,7 +502,7 @@ namespace FoundationaLLM.Common.Services
         }
 
         /// <inheritdoc/>
-        public async Task<T> PathcOperationsItemPropertiesAsync<T>(string itemId, string partitionKey, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default)
+        public async Task<T> PatchOperationsItemPropertiesAsync<T>(string itemId, string partitionKey, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default)
         {
             var result = await _operations.PatchItemAsync<T>(
                 id: itemId,

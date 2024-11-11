@@ -5,7 +5,7 @@
     "display_name": null,
     "description": null,
     "cost_center": null,
-    "category": "General",
+    "category": "LLM",
     "authentication_type": "APIKey",
     "api_version": "2024-07-01-preview",
     "authentication_parameters": {

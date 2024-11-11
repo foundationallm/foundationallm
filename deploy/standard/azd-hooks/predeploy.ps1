@@ -149,6 +149,7 @@ try {
     Invoke-AndRequireSuccess "Generate Configuration" {
         ./utility/Generate-Config.ps1 `
             -adminGroupObjectId $env:ADMIN_GROUP_OBJECT_ID `
+            -userGroupObjectId $env:USER_GROUP_OBJECT_ID `
             -entraClientIds $entraClientIds `
             -entraScopes $entraScopes `
             -instanceId $env:FOUNDATIONALLM_INSTANCE_ID `

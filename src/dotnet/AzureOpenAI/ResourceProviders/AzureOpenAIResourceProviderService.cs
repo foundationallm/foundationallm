@@ -1,5 +1,5 @@
 ﻿using Azure.AI.OpenAI;
-using FoundationaLLM.AzureOpenAI.Models;
+using Azure.Search.Documents.Indexes.Models;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Graph.Drives.Item.Items.Item.Workbook.Functions.False;
 using System.Text.Json;
 
 namespace FoundationaLLM.AzureOpenAI.ResourceProviders
@@ -32,6 +33,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="eventService">The <see cref="IEventService"/> providing event services.</param>
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
+    /// <param name="cosmosDBService">The <see cref="IAzureCosmosDBService"/> providing Cosmos DB services.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
     public class AzureOpenAIResourceProviderService(
@@ -40,9 +42,10 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
         [FromKeyedServices(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_AzureOpenAI)] IStorageService storageService,
         IEventService eventService,
         IResourceValidatorFactory resourceValidatorFactory,
+        IAzureCosmosDBService cosmosDBService,
         IServiceProvider serviceProvider,
         ILogger<AzureOpenAIResourceProviderService> logger)
-        : ResourceProviderServiceBase<AzureOpenAIResourceReference>(
+        : ResourceProviderServiceBase<ResourceReference>(
             instanceOptions.Value,
             authorizationService,
             storageService,
@@ -51,9 +54,9 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
             serviceProvider,
             logger,
             eventNamespacesToSubscribe: null,
-            useInternalReferencesStore: true)
+            useInternalReferencesStore: false)
     {
-        private readonly SemaphoreSlim _localLock = new(1, 1);
+        private readonly IAzureCosmosDBService _cosmosDBService = cosmosDBService;
 
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
@@ -67,116 +70,151 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
         #region Resource provider support for Management API
 
-        /// <inheritdoc/>
-        protected override async Task<object> GetResourcesAsync(
-            ResourcePath resourcePath,
-            ResourcePathAuthorizationResult authorizationResult,
-            UnifiedUserIdentity userIdentity,
-            ResourceProviderLoadOptions? options = null) =>
-            resourcePath.MainResourceTypeName switch
-            {
-                AzureOpenAIResourceTypeNames.AssistantUserContexts => await LoadResources<AssistantUserContext>(
-                    resourcePath.ResourceTypeInstances[0],
-                    authorizationResult),
-                AzureOpenAIResourceTypeNames.FileUserContexts => await LoadResources<FileUserContext>(
-                    resourcePath.ResourceTypeInstances[0],
-                    authorizationResult),
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
-                    StatusCodes.Status400BadRequest)
-            };
-
-        /// <inheritdoc/>
-        protected override async Task<object> ExecuteActionAsync(
-            ResourcePath resourcePath,
-            ResourcePathAuthorizationResult authorizationResult,
-            string serializedAction,
-            UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeName switch
-            {
-                AzureOpenAIResourceTypeNames.AssistantUserContexts => resourcePath.Action switch
-                {
-                    ResourceProviderActions.CheckName => await CheckResourceName<AssistantUserContext>(
-                        JsonSerializer.Deserialize<ResourceName>(serializedAction)!),
-                    ResourceProviderActions.Purge => await PurgeResource<AssistantUserContext>(resourcePath),
-                    _ => throw new ResourceProviderException(
-                        $"The action {resourcePath.Action} is not supported for the resource type {AzureOpenAIResourceTypeNames.AssistantUserContexts} by the {_name} resource provider.",
-                        StatusCodes.Status400BadRequest)
-                },
-                _ => throw new ResourceProviderException()
-            };
+        // This resource provider does not support the Management API.
 
         #endregion
 
         #region Resource provider strongly typed operations
 
         /// <inheritdoc/>
-        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) =>
-            resourcePath.ResourceTypeName switch
-            {
-                AzureOpenAIResourceTypeNames.AssistantUserContexts => (await LoadResource<T>(
-                    resourcePath.MainResourceId!))!,
-                AzureOpenAIResourceTypeNames.FilesContent => ((await LoadFileContent(
-                    resourcePath.MainResourceId!,
-                    resourcePath.ResourceId!)) as T)!,
-                AzureOpenAIResourceTypeNames.FileUserContexts => ((await LoadFileUserContext(resourcePath.MainResourceId!)) as T)!,
-                _ => throw new ResourceProviderException(
-                    $"The {resourcePath.MainResourceTypeName} resource type is not supported by the {_name} resource provider.")
-            };
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
+        {
+            _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
+
+            // This is the PEP (Policy Enforcement Point) where the resource provider enforces the policy definition to load the resource.
+            // The implementation of the PEP is straightforward: the resource provider loads the resource and validates the UPN of the user identity.
+
+            var result = await _cosmosDBService.GetItemAsync<T>(
+                AzureCosmosDBContainers.ExternalResources,
+                resourcePath.MainResourceId!,
+                $"{userIdentity.UPN!.NormalizeUserPrincipalName()}-{_instanceSettings.Id}")
+                ?? throw new ResourceProviderException(
+                    $"The {_name} resource provider did not find the {resourcePath.RawResourcePath} resource.",
+                    StatusCodes.Status404NotFound);
+
+            if (!StringComparer.Ordinal.Equals((result as AzureCosmosDBResource)!.UPN, userIdentity.UPN))
+                throw new ResourceProviderException(
+                    $"The user {userIdentity.UPN} is not authorized to access the {resourcePath.RawResourcePath} resource path.",
+                    StatusCodes.Status403Forbidden);
+
+            return result;
+        }
 
         /// <inheritdoc/>
-        protected override async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, T resource, UnifiedUserIdentity userIdentity) =>
-            resource switch
+        protected override async Task<(bool Exists, bool Deleted)> ResourceExistsAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity)
+        {
+            _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
+
+            // This is the PEP (Policy Enforcement Point) where the resource provider enforces the policy definition to load the resource.
+            // The implementation of the PEP is straightforward: the resource provider checks for the existence of the resource considering
+            // only resources that are matching the UPN of the user identity.
+
+            var result = await _cosmosDBService.GetItemAsync<T>(
+                AzureCosmosDBContainers.ExternalResources,
+                resourcePath.MainResourceId!,
+                $"{userIdentity.UPN!.NormalizeUserPrincipalName()}-{_instanceSettings.Id}");
+
+            return (result != null, result?.Deleted ?? false);
+        }
+
+        /// <inheritdoc/>
+        protected override async Task<TResult> ExecuteResourceActionAsyncInternal<T, TAction, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, TAction actionPayload, UnifiedUserIdentity userIdentity)
+        {
+            _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
+
+            // This is the PEP (Policy Enforcement Point) where the resource provider enforces the policy definition to load the resource.
+            // The implementation of the PEP is straightforward: the resource provider loads the resource and validates the UPN of the user identity.
+
+            var result = await _cosmosDBService.GetItemAsync<T>(
+                AzureCosmosDBContainers.ExternalResources,
+                resourcePath.MainResourceId!,
+                $"{userIdentity.UPN!.NormalizeUserPrincipalName()}-{_instanceSettings.Id}")
+                ?? throw new ResourceProviderException(
+                        $"The {_name} resource provider did not find the {resourcePath.RawResourcePath} resource.",
+                        StatusCodes.Status404NotFound);
+
+            if (!StringComparer.Ordinal.Equals((result as AzureCosmosDBResource)!.UPN, userIdentity.UPN))
+                throw new ResourceProviderException(
+                    $"The user {userIdentity.UPN} is not authorized to access the {resourcePath.RawResourcePath} resource path.",
+                    StatusCodes.Status403Forbidden);
+
+            return resourcePath.Action switch
             {
-                AssistantUserContext assistantUserContext => ((await UpdateAssistantUserContext(assistantUserContext, userIdentity)) as TResult)!,
-                FileUserContext fileUserContext => ((await UpdateFileUserContext(fileUserContext, userIdentity)) as TResult)!,
+                ResourceProviderActions.LoadFileContent => ((await LoadFileContent((result as AzureOpenAIFileMapping)!)) as TResult)!,
+                _ => throw new ResourceProviderException(
+                    $"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
+                    StatusCodes.Status400BadRequest)
+            };
+        }
+
+        /// <inheritdoc/>
+        protected override async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            T resource,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderUpsertOptions? options = null)
+        {
+            _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
+
+            // This is the PEP (Policy Enforcement Point) where the resource provider enforces the policy definition to upsert the resource.
+            // The implementation of the PEP is straightforward: the resource provider validates the UPN of the user identity.
+
+            var updatedResource = (resource as AzureOpenAIResourceBase)!;
+
+            if (!StringComparer.Ordinal.Equals(updatedResource.UPN, userIdentity.UPN))
+                throw new ResourceProviderException(
+                    $"The user {userIdentity.UPN} is not authorized to use the provided resource to update the {resourcePath.RawResourcePath} resource path.",
+                    StatusCodes.Status403Forbidden);
+
+            var existingResource = default(T);
+            if (!string.IsNullOrWhiteSpace(resourcePath.MainResourceId))
+            {
+                existingResource = await _cosmosDBService.GetItemAsync<T>(
+                    AzureCosmosDBContainers.ExternalResources,
+                    resourcePath.MainResourceId!,
+                    $"{userIdentity.UPN!.NormalizeUserPrincipalName()}-{_instanceSettings.Id}");
+            }
+
+            if (existingResource != null)
+            {
+                if (!StringComparer.Ordinal.Equals((existingResource as AzureOpenAIResourceBase)!.UPN,
+                        userIdentity.UPN))
+                {
+                    throw new ResourceProviderException(
+                        $"The user {userIdentity.UPN} is not authorized to access the {resourcePath.RawResourcePath} resource path.",
+                        StatusCodes.Status403Forbidden);
+                }
+
+                if (existingResource is AzureOpenAIResourceBase resource1
+                    && updatedResource is AzureOpenAIResourceBase resource2
+                    && (
+                        !StringComparer.Ordinal.Equals(resource1.Id, resource2.Id)
+                        || !StringComparer.Ordinal.Equals(resource1.Name, resource2.Name)
+                        || !StringComparer.Ordinal.Equals(resource1.Type, resource2.Type)
+                        || !StringComparer.Ordinal.Equals(resource1.InstanceId, resource2.InstanceId)
+                        || !StringComparer.Ordinal.Equals(resource1.PartitionKey, resource2.PartitionKey)
+                    ))
+                    throw new ResourceProviderException(
+                        $"Updating one or more properties is not allowed because their values are immutable.",
+                        StatusCodes.Status400BadRequest);
+            }
+
+            return updatedResource switch
+            {
+                AzureOpenAIConversationMapping conversationMapping => ((await UpdateConversationMapping(
+                    conversationMapping,
+                    existingResource == null,
+                    userIdentity,
+                    options)) as TResult)!,
+                AzureOpenAIFileMapping fileMapping => ((await UpdateFileMapping(
+                    fileMapping,
+                    existingResource == null,
+                    userIdentity,
+                    options)) as TResult)!,
                 _ => throw new ResourceProviderException(
                     $"The type {nameof(T)} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
-            };
-
-        private async Task<FileUserContext> LoadFileUserContext(string fileUserContextName)
-        {
-            try
-            {
-                await _localLock.WaitAsync();
-
-                var resourceReference = await _resourceReferenceStore!.GetResourceReference(fileUserContextName)
-                    ?? throw new ResourceProviderException(
-                        $"The resource {fileUserContextName} was not found.",
-                        StatusCodes.Status404NotFound);
-
-                return await LoadResource<FileUserContext>(resourceReference)
-                    ?? throw new ResourceProviderException(
-                        $"The resource {fileUserContextName} has a valid resource reference but cannot be loaded from the storage. This might indicate a missing resource file.",
-                        StatusCodes.Status500InternalServerError);
-
-            }
-            finally
-            {
-                _localLock.Release();
-            }
-        }
-
-        private async Task<FileContent> LoadFileContent(string fileUserContextName, string openAIFileId)
-        {
-            var fileUserContext = await LoadFileUserContext(fileUserContextName);
-            var fileMapping = fileUserContext.Files.Values
-                .SingleOrDefault(f => f.Generated && f.OpenAIFileId == openAIFileId)
-                    ?? throw new ResourceProviderException(
-                        $"Could not find the file {openAIFileId} in the {fileUserContextName} file user context.",
-                        StatusCodes.Status404NotFound);
-
-            var azureOpenAIClient = new AzureOpenAIClient(new Uri(fileUserContext!.Endpoint), DefaultAuthentication.AzureCredential);
-            var fileClient = azureOpenAIClient.GetOpenAIFileClient();
-
-            var result = await fileClient.DownloadFileAsync(openAIFileId);
-
-            return new FileContent
-            {
-                Name = openAIFileId,
-                OriginalFileName = fileMapping.OriginalFileName,
-                ContentType = fileMapping.ContentType,
-                BinaryContent = result.Value.ToMemory()
             };
         }
 
@@ -184,432 +222,206 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
 
         #region Resource management
 
-        private async Task<AssistantUserContextUpsertResult> UpdateAssistantUserContext(AssistantUserContext assistantUserContext, UnifiedUserIdentity userIdentity)
+        private async Task<ResourceProviderActionResult<FileContent>> LoadFileContent(AzureOpenAIFileMapping fileMapping)
         {
-            var gatewayClient = new GatewayServiceClient(
-               await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
-                   .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
-               _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
+            var azureOpenAIClient = new AzureOpenAIClient(new Uri(fileMapping.OpenAIEndpoint), DefaultAuthentication.AzureCredential);
+            var fileClient = azureOpenAIClient.GetOpenAIFileClient();
 
-            var newOpenAIAssistantId = default(string);
-            var newOpenAIAssistantThreadId = default(string);
-            var newOpenAIAssistantVectorStoreId = default(string);
+            // Retrieve using the OpenAI file ID.           
+            var result = await fileClient.DownloadFileAsync(fileMapping!.OpenAIFileId);
 
-            var incompleteConversations = assistantUserContext.Conversations.Values
-                    .Where(c => string.IsNullOrWhiteSpace(c.OpenAIThreadId))
-                    .ToList();
-
-            if (incompleteConversations.Count != 1)
-                throw new ResourceProviderException($"The Assistant user context {assistantUserContext.Name} contains an incorrect number of incomplete conversations (must be 1). This indicates an inconsistent approach in the resource management flow.");
-
-            var resourceReference = await _resourceReferenceStore!.GetResourceReference(assistantUserContext.Name);
-
-            if (resourceReference == null)
+            return new ResourceProviderActionResult<FileContent>(true)
             {
-                var assistantUserContextResourceReference = new AzureOpenAIResourceReference
+                Resource = new()
                 {
-                    Name = assistantUserContext.Name!,
-                    Type = assistantUserContext.Type!,
-                    Filename = $"/{_name}/{assistantUserContext.Name}.json",
-                    Deleted = false
-                };
-
-                #region Ensure that only one thread can create the resource at a time.
-
-                try
-                {
-                    await _localLock.WaitAsync();
-
-                    var existingResourceReference = await _resourceReferenceStore!.GetResourceReference(assistantUserContext.Name);
-                    if (existingResourceReference == null)
-                    {
-                        assistantUserContext.ObjectId = ResourcePath.GetObjectId(
-                           _instanceSettings.Id,
-                           _name,
-                           AzureOpenAIResourceTypeNames.AssistantUserContexts,
-                           assistantUserContext.Name);
-
-                        // Always create the file user context associated with the assistant user context.
-                        var newFileUserContextName = $"{assistantUserContext.UserPrincipalName.NormalizeUserPrincipalName()}-file-{_instanceSettings.Id.ToLower()}";
-
-                        UpdateBaseProperties(assistantUserContext, userIdentity, isNew: true);
-
-                        var existingFileUserContextReference = await _resourceReferenceStore!.GetResourceReference(newFileUserContextName);
-                        if (existingFileUserContextReference == null)
-                        {
-                            var newFileUserContext = new FileUserContext()
-                            {
-                                UserPrincipalName = assistantUserContext.UserPrincipalName,
-                                Endpoint = assistantUserContext.Endpoint,
-                                Name = newFileUserContextName,
-                                AssistantUserContextName = assistantUserContext.Name
-                            };
-                            var newUserFileContextResourceReference = new AzureOpenAIResourceReference
-                            {
-                                Name = newFileUserContextName,
-                                Type = AzureOpenAITypes.FileUserContext,
-                                Filename = $"/{_name}/{newFileUserContextName}.json",
-                                Deleted = false
-                            };
-
-                            await CreateResources<AssistantUserContext, FileUserContext>(
-                                assistantUserContextResourceReference, assistantUserContext,
-                                newUserFileContextResourceReference, newFileUserContext);
-                        }
-                        else
-                        {
-                            await CreateResource<AssistantUserContext>(assistantUserContextResourceReference, assistantUserContext);
-                        }
-                    }
+                    Name = fileMapping!.OpenAIFileId!,
+                    OriginalFileName = fileMapping!.OriginalFileName,
+                    ContentType = fileMapping.FileContentType,
+                    BinaryContent = result.Value.ToMemory()
                 }
-                finally
-                {
-                    _localLock.Release();
-                }
-
-                #endregion
-
-                var result = await gatewayClient!.CreateAgentCapability(
-                    _instanceSettings.Id,
-                    AgentCapabilityCategoryNames.OpenAIAssistants,
-                    assistantUserContextResourceReference.Name,
-                    new()
-                    {
-                    { OpenAIAgentCapabilityParameterNames.CreateAssistant, true },
-                    { OpenAIAgentCapabilityParameterNames.CreateAssistantThread, true },
-                    { OpenAIAgentCapabilityParameterNames.Endpoint, assistantUserContext.Endpoint },
-                    { OpenAIAgentCapabilityParameterNames.ModelDeploymentName , assistantUserContext.ModelDeploymentName },
-                    { OpenAIAgentCapabilityParameterNames.AssistantPrompt, assistantUserContext.Prompt }
-                    });
-
-                result.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantId, out var newOpenAIAssistantIdObject);
-                newOpenAIAssistantId = ((JsonElement)newOpenAIAssistantIdObject!).Deserialize<string>();
-
-                result.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantThreadId, out var newOpenAIAssistantThreadIdObject);
-                newOpenAIAssistantThreadId = ((JsonElement)newOpenAIAssistantThreadIdObject!).Deserialize<string>();
-
-                result.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantVectorStoreId, out var newOpenAIAssistantVectorStoreIdObject);
-                newOpenAIAssistantVectorStoreId = ((JsonElement)newOpenAIAssistantVectorStoreIdObject!).Deserialize<string>();
-
-                #region Ensure that only one thread can update the assistant user context at a time.
-
-                try
-                {
-                    await _localLock.WaitAsync();
-
-                    var existingAssistantUserContext = await LoadResource<AssistantUserContext>(assistantUserContextResourceReference)
-                        ?? throw new ResourceProviderException(
-                            $"Could not load the {assistantUserContext.Name} assistant user context.");
-
-                    existingAssistantUserContext.OpenAIAssistantId = newOpenAIAssistantId;
-                    existingAssistantUserContext.OpenAIAssistantCreatedOn = DateTimeOffset.UtcNow;
-
-                    var conversation = existingAssistantUserContext.Conversations.Values
-                        .SingleOrDefault(c => string.IsNullOrWhiteSpace(c.OpenAIThreadId))
-                        ?? throw new ResourceProviderException("Could not find a conversation with an empty assistant thread id.");
-
-                    conversation.OpenAIThreadId = newOpenAIAssistantThreadId;
-                    conversation.OpenAIThreadCreatedOn = assistantUserContext.OpenAIAssistantCreatedOn;
-                    conversation.OpenAIVectorStoreId = newOpenAIAssistantVectorStoreId;
-
-                    UpdateBaseProperties(existingAssistantUserContext, userIdentity, isNew: false);
-                    await SaveResource<AssistantUserContext>(assistantUserContextResourceReference, existingAssistantUserContext);
-
-                    return new AssistantUserContextUpsertResult
-                    {
-                        ObjectId = assistantUserContext.ObjectId,
-                        ResourceExists = false,
-                        NewOpenAIAssistantId = newOpenAIAssistantId,
-                        NewOpenAIAssistantThreadId = newOpenAIAssistantThreadId,
-                        NewOpenAIAssistantVectorStoreId = newOpenAIAssistantVectorStoreId
-                    };
-                }
-                finally
-                {
-                    _localLock.Release();
-                }
-
-                #endregion
-            }
-            else
-            {
-                var result = await gatewayClient!.CreateAgentCapability(
-                    _instanceSettings.Id,
-                    AgentCapabilityCategoryNames.OpenAIAssistants,
-                    resourceReference.Name,
-                    new()
-                    {
-                        { OpenAIAgentCapabilityParameterNames.AssistantId, assistantUserContext.OpenAIAssistantId! },
-                        { OpenAIAgentCapabilityParameterNames.CreateAssistantThread, true },
-                        { OpenAIAgentCapabilityParameterNames.Endpoint, assistantUserContext.Endpoint }
-                    });
-
-                result.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantThreadId, out var newOpenAIAssistantThreadIdObject);
-                newOpenAIAssistantThreadId = ((JsonElement)newOpenAIAssistantThreadIdObject!).Deserialize<string>();
-
-                result.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantVectorStoreId, out var newOpenAIAssistantVectorStoreIdObject);
-                newOpenAIAssistantVectorStoreId = ((JsonElement)newOpenAIAssistantVectorStoreIdObject!).Deserialize<string>();
-
-                incompleteConversations[0].OpenAIThreadId = newOpenAIAssistantThreadId;
-                incompleteConversations[0].OpenAIThreadCreatedOn = DateTimeOffset.UtcNow;
-                incompleteConversations[0].OpenAIVectorStoreId = newOpenAIAssistantVectorStoreId;
-
-                #region Ensure that only one thread can update the assistant user context at a time.
-
-                try
-                {
-                    await _localLock.WaitAsync();
-
-                    var existingAssistantUserContext = await LoadResource<AssistantUserContext>(resourceReference)
-                        ?? throw new ResourceProviderException(
-                            $"Could not load the {resourceReference.Name} assistant user context.");
-
-                    if (existingAssistantUserContext.Conversations.ContainsKey(incompleteConversations[0].FoundationaLLMSessionId))
-                        throw new ResourceProviderException(
-                            $"An OpenAI thread was already created for the FoundationaLLM session {incompleteConversations[0].FoundationaLLMSessionId}.",
-                            StatusCodes.Status400BadRequest);
-
-                    existingAssistantUserContext.Conversations.Add(
-                        incompleteConversations[0].FoundationaLLMSessionId,
-                        incompleteConversations[0]);
-
-                    UpdateBaseProperties(existingAssistantUserContext, userIdentity, isNew: false);
-                    await SaveResource<AssistantUserContext>(resourceReference, existingAssistantUserContext);
-
-                    return new AssistantUserContextUpsertResult
-                    {
-                        ObjectId = existingAssistantUserContext.ObjectId,
-                        ResourceExists = true,
-                        NewOpenAIAssistantId = newOpenAIAssistantId,
-                        NewOpenAIAssistantThreadId = newOpenAIAssistantThreadId,
-                        NewOpenAIAssistantVectorStoreId = newOpenAIAssistantVectorStoreId
-                    };
-
-                }
-                finally
-                {
-                    _localLock.Release();
-                }
-
-                #endregion
-            }
+            };
         }
 
-        private async Task<FileUserContextUpsertResult> UpdateFileUserContext(FileUserContext fileUserContext, UnifiedUserIdentity userIdentity)
+        private async Task<AzureOpenAIConversationMappingUpsertResult> UpdateConversationMapping(
+            AzureOpenAIConversationMapping conversationMapping,
+            bool isNew,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderUpsertOptions? options = null)
         {
-            var gatewayClient = new GatewayServiceClient(
-               await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
-                   .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
-               _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
+            #region Load and validate upsert options
+
+            var agentObjectId = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId) as string
+                ?? throw new ResourceProviderException(
+                    $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId} parameter to update the {conversationMapping.Name} conversation mapping.",
+                    StatusCodes.Status400BadRequest);
+
+            var conversationId = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.ConversationId) as string
+                ?? throw new ResourceProviderException(
+                    $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.ConversationId} parameter to update the {conversationMapping.Name} conversation mapping.",
+                    StatusCodes.Status400BadRequest);
+
+            var openAIAssistantId = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.OpenAIAssistantId) as string
+                ?? throw new ResourceProviderException(
+                    $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.OpenAIAssistantId} parameter to update the {conversationMapping.Name} conversation mapping.",
+                    StatusCodes.Status400BadRequest);
+
+            var mustCreateAssistantThread = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIAssistantThread) as bool?
+                ?? throw new ResourceProviderException(
+                    $"The {_name} resource provider requires the {AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIAssistantThread} parameter to update the {conversationMapping.Name} conversation mapping.",
+                    StatusCodes.Status400BadRequest);
+
+            #endregion
+
+            #region Create the OpenAI assistant thread
+
+            var newOpenAIAssistantThreadId = default(string);
+            var newOpenAIVectorStoreId = default(string);
+
+            if (isNew)
+            {
+                conversationMapping.ObjectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name,
+                    AzureOpenAIResourceTypeNames.ConversationMappings, conversationMapping.Name);
+            }
+
+            if (mustCreateAssistantThread)
+            {
+                var gatewayClient = new GatewayServiceClient(
+                   await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
+                       .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
+                   _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
+
+                Dictionary<string, object> parameters = new()
+                {
+                    { OpenAIAgentCapabilityParameterNames.OpenAIAssistantId, openAIAssistantId },
+                    { OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantThread, mustCreateAssistantThread },
+                    { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, conversationMapping.OpenAIEndpoint }
+                };
+
+                var agentCapabilityResult = await gatewayClient!.CreateAgentCapability(
+                    _instanceSettings.Id,
+                    AgentCapabilityCategoryNames.OpenAIAssistants,
+                    string.Empty,
+                    parameters);
+
+                var referenceTime = DateTime.UtcNow;
+
+                if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIAssistantThreadId, out var newOpenAIAssistantThreadIdObject)
+                    && newOpenAIAssistantThreadIdObject != null)
+                    newOpenAIAssistantThreadId = ((JsonElement)newOpenAIAssistantThreadIdObject!).Deserialize<string>();
+
+                if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId, out var newOpenAIAssistantVectorStoreIdObject)
+                    && newOpenAIAssistantVectorStoreIdObject != null)
+                    newOpenAIVectorStoreId = ((JsonElement)newOpenAIAssistantVectorStoreIdObject!).Deserialize<string>();
+
+                if (string.IsNullOrWhiteSpace(newOpenAIVectorStoreId))
+                    throw new ResourceProviderException(
+                        $"The OpenAI assistant vector store was not created for the agent {agentObjectId} and conversation {conversationId}.",
+                        StatusCodes.Status500InternalServerError);
+
+                if (string.IsNullOrWhiteSpace(newOpenAIAssistantThreadId))
+                    throw new ResourceProviderException(
+                        $"The OpenAI assistant thread was not created for the agent {agentObjectId} and conversation {conversationId}.",
+                        StatusCodes.Status500InternalServerError);
+
+                conversationMapping.OpenAIAssistantsThreadId = newOpenAIAssistantThreadId;
+                conversationMapping.OpenAIAssistantsThreadCreatedOn = referenceTime;
+                conversationMapping.OpenAIVectorStoreId = newOpenAIVectorStoreId;
+                conversationMapping.OpenAIVectorStoreCreatedOn = referenceTime;
+            }
+
+            #endregion
+
+            UpdateBaseProperties(conversationMapping, userIdentity, isNew: isNew);
+
+            await _cosmosDBService.UpsertItemAsync<AzureOpenAIConversationMapping>(
+                AzureCosmosDBContainers.ExternalResources,
+                $"{userIdentity.UPN!.NormalizeUserPrincipalName()}-{_instanceSettings.Id}",
+                conversationMapping);
+
+            return new AzureOpenAIConversationMappingUpsertResult
+            {
+                ObjectId = conversationMapping.ObjectId!,
+                ResourceExists = !isNew,
+                NewOpenAIAssistantThreadId = newOpenAIAssistantThreadId!,
+                NewOpenAIVectorStoreId = newOpenAIVectorStoreId
+            };
+        }
+
+        private async Task<ResourceProviderUpsertResult<AzureOpenAIFileMapping>> UpdateFileMapping(
+            AzureOpenAIFileMapping fileMapping,
+            bool isNew,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderUpsertOptions? options = null)
+        {
+            #region Load and validate upsert options
+
+            var agentObjectId = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId) as string;
+
+            var attachmentObjectId = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.AttachmentObjectId) as string;
+
+            var mustCreateOpenAIFile = options?.Parameters.GetValueOrDefault(AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIFile) as bool?
+                ?? false;
+
+            #endregion
+
+            #region Create the OpenAI file
 
             var newOpenAIFileId = default(string);
 
-            var incompleteFiles = fileUserContext.Files.Values
-                    .Where(c => string.IsNullOrWhiteSpace(c.OpenAIFileId))
-                    .ToList();
-
-            if (incompleteFiles.Count > 1)
-                throw new ResourceProviderException($"The File user context {fileUserContext.Name} contains an incorrect number of incomplete files (must be at most 1). This indicates an inconsistent approach in the resource management flow.");
-
-            var resourceReference = await _resourceReferenceStore!.GetResourceReference(fileUserContext.Name);
-            
-            if (resourceReference == null)
+            if (mustCreateOpenAIFile)
             {
-                var fileUserContextResourceReference = new AzureOpenAIResourceReference
-                {
-                    Name = fileUserContext.Name!,
-                    Type = fileUserContext.Type!,
-                    Filename = $"/{_name}/{fileUserContext.Name}.json",
-                    Deleted = false
-                };
+                var gatewayClient = new GatewayServiceClient(
+                   await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
+                       .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
+                   _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
 
-                #region Ensure that only one thread can create the resource at a time.
-
-                try
-                {
-                    await _localLock.WaitAsync();
-
-                    var existingResourceReference = await _resourceReferenceStore!.GetResourceReference(fileUserContext.Name);
-                    if (existingResourceReference == null)
+                Dictionary<string, object> parameters = new()
                     {
-                        fileUserContext.ObjectId = ResourcePath.GetObjectId(
-                            _instanceSettings.Id,
-                            _name,
-                            AzureOpenAIResourceTypeNames.FileUserContexts,
-                            fileUserContext.Name);
-
-                        // Always create the assistant user context associated with the file user context.
-                        //var newAssistantUserContextName = $"{fileUserContext.UserPrincipalName.NormalizeUserPrincipalName()}-assistant-{_instanceSettings.Id.ToLower()}";
-                        //var newAssistantUserContext = new AssistantUserContext()
-                        //{
-                        //    Name = newAssistantUserContextName,
-                        //    UserPrincipalName = fileUserContext.UserPrincipalName,
-                        //    Endpoint = "not_initialized",
-                        //    ModelDeploymentName = "not_initialized",
-                        //    Prompt = "not_initialized",
-                        //};
-
-                        //var newAssistantContextResourceReference = new AzureOpenAIResourceReference
-                        //{
-                        //    Name = newAssistantUserContextName,
-                        //    Type = AzureOpenAITypes.AssistantUserContext,
-                        //    Filename = $"/{_name}/{newAssistantUserContextName}.json",
-                        //    Deleted = false
-                        //};
-
-                        UpdateBaseProperties(fileUserContext, userIdentity, isNew: true);
-                        //await CreateResources<FileUserContext, AssistantUserContext>(
-                        //    fileUserContextResourceReference, fileUserContext,
-                        //    newAssistantContextResourceReference, newAssistantUserContext);
-                        await CreateResource<FileUserContext>(fileUserContextResourceReference, fileUserContext);
-                    }
-                }
-                finally
-                {
-                    _localLock.Release();
-                }
-
-                #endregion
-
-                if (incompleteFiles.Count == 1)
-                {
-                    var result = await gatewayClient!.CreateAgentCapability(
-                        _instanceSettings.Id,
-                        AgentCapabilityCategoryNames.OpenAIAssistants,
-                        fileUserContext.AssistantUserContextName,
-                        new()
-                        {
-                            { OpenAIAgentCapabilityParameterNames.CreateAssistantFile, true },
-                            { OpenAIAgentCapabilityParameterNames.Endpoint, fileUserContext.Endpoint },
-                            { OpenAIAgentCapabilityParameterNames.AttachmentObjectId,  incompleteFiles[0].FoundationaLLMObjectId }
-                        });
-
-                    result.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantFileId, out var newOpenAIFileIdObject);
-                    newOpenAIFileId = ((JsonElement)newOpenAIFileIdObject!).Deserialize<string>();
-                }
-
-                #region Ensure that only one thread can update the Files collection at a time.
-
-                try
-                {
-                    await _localLock.WaitAsync();
-
-                    var existingFileUserContext = await LoadResource<FileUserContext>(fileUserContextResourceReference)
-                        ?? throw new ResourceProviderException(
-                            $"Could not load the {fileUserContext.Name} file user context.");
-
-                    if (incompleteFiles.Count == 1)
-                    {
-                        if (existingFileUserContext.Files.TryGetValue(incompleteFiles[0].FoundationaLLMObjectId,
-                                out var existingFileMapping))
-                        {
-                            existingFileMapping.OpenAIFileId = newOpenAIFileId;
-                            existingFileMapping.OpenAIFileUploadedOn = DateTimeOffset.UtcNow;
-                        }
-                        else
-                        {
-                            incompleteFiles[0].OpenAIFileId = newOpenAIFileId;
-                            incompleteFiles[0].OpenAIFileUploadedOn = DateTimeOffset.UtcNow;
-                            existingFileUserContext.Files.Add(incompleteFiles[0].FoundationaLLMObjectId, incompleteFiles[0]);
-                        }
-                    }
-
-                    // Merge the new file mappings into the existing file user context.
-                    foreach (var mapping in fileUserContext.Files.Where(f =>
-                        !existingFileUserContext.Files.ContainsKey(f.Key)))
-                    {
-                        existingFileUserContext.Files.Add(mapping.Key, mapping.Value);
-                    }
-
-                    UpdateBaseProperties(existingFileUserContext, userIdentity, isNew: false);
-                    await SaveResource<FileUserContext>(fileUserContextResourceReference, existingFileUserContext);
-
-                    return new FileUserContextUpsertResult
-                    {
-                        ObjectId = existingFileUserContext.ObjectId,
-                        ResourceExists = false,
-                        NewOpenAIFileId = newOpenAIFileId!
+                        { OpenAIAgentCapabilityParameterNames.CreateOpenAIFile, true },
+                        { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, fileMapping.OpenAIEndpoint },
+                        { OpenAIAgentCapabilityParameterNames.AttachmentObjectId,  attachmentObjectId }
                     };
-                }
-                finally
-                {
-                    _localLock.Release();
-                }
 
-                #endregion
+                var agentCapabilityResult = await gatewayClient!.CreateAgentCapability(
+                    _instanceSettings.Id,
+                    AgentCapabilityCategoryNames.OpenAIAssistants,
+                    string.Empty,
+                    parameters);
+
+                var referenceTime = DateTime.UtcNow;
+
+                if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIFileId, out var newOpenAIFileIdObject)
+                    && newOpenAIFileIdObject != null)
+                        newOpenAIFileId = ((JsonElement)newOpenAIFileIdObject!).Deserialize<string>();
+
+                if (string.IsNullOrWhiteSpace(newOpenAIFileId))
+                    throw new ResourceProviderException(
+                        $"The OpenAI assistant file was not created for the agent {agentObjectId}.",
+                        StatusCodes.Status500InternalServerError);
+
+                fileMapping.Id = newOpenAIFileId;
+                fileMapping.Name = newOpenAIFileId;
+                fileMapping.ObjectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name,
+                    AzureOpenAIResourceTypeNames.FileMappings, newOpenAIFileId);
+                fileMapping.OpenAIFileId = newOpenAIFileId;
+                fileMapping.OpenAIFileUploadedOn = referenceTime;
             }
-            else
+
+            #endregion
+
+            UpdateBaseProperties(fileMapping, userIdentity, isNew: isNew);
+
+            await _cosmosDBService.UpsertItemAsync<AzureOpenAIFileMapping>(
+                AzureCosmosDBContainers.ExternalResources,
+                $"{userIdentity.UPN!.NormalizeUserPrincipalName()}-{_instanceSettings.Id}",
+                fileMapping);
+
+            return new ResourceProviderUpsertResult<AzureOpenAIFileMapping>
             {
-                if (incompleteFiles.Count == 1)
-                {
-                    var result = await gatewayClient!.CreateAgentCapability(
-                        _instanceSettings.Id,
-                        AgentCapabilityCategoryNames.OpenAIAssistants,
-                        fileUserContext.AssistantUserContextName,
-                        new()
-                        {
-                            { OpenAIAgentCapabilityParameterNames.CreateAssistantFile, true},
-                            { OpenAIAgentCapabilityParameterNames.Endpoint, fileUserContext.Endpoint},
-                            {
-                                OpenAIAgentCapabilityParameterNames.AttachmentObjectId,
-                                incompleteFiles[0].FoundationaLLMObjectId
-                            }
-                        });
-
-                    result.TryGetValue(OpenAIAgentCapabilityParameterNames.AssistantFileId,
-                        out var newOpenAIFileIdObject);
-                    newOpenAIFileId = ((JsonElement)newOpenAIFileIdObject!).Deserialize<string>();
-                }
-
-                #region Ensure that only one thread can update the Files collection at a time.
-
-                try
-                {
-                    await _localLock.WaitAsync();
-
-                    var existingFileUserContext = await LoadResource<FileUserContext>(resourceReference)
-                        ?? throw new ResourceProviderException(
-                            $"Could not load the {resourceReference.Name} file user context.");
-
-                    if (incompleteFiles.Count == 1)
-                    {
-                        if (existingFileUserContext.Files.ContainsKey(incompleteFiles[0].FoundationaLLMObjectId))
-                            throw new ResourceProviderException(
-                                $"An OpenAI file was already created for the FoundationaLLM attachment {incompleteFiles[0].FoundationaLLMObjectId}.",
-                                StatusCodes.Status400BadRequest);
-
-                        incompleteFiles[0].OpenAIFileId = newOpenAIFileId;
-                        incompleteFiles[0].OpenAIFileUploadedOn = DateTimeOffset.UtcNow;
-
-                        existingFileUserContext.Files.Add(
-                            incompleteFiles[0].FoundationaLLMObjectId,
-                            incompleteFiles[0]);
-                    }
-
-                    // Merge the new file mappings into the existing file user context.
-                    foreach (var mapping in fileUserContext.Files.Where(f =>
-                        !existingFileUserContext.Files.ContainsKey(f.Key)))
-                    {
-                        existingFileUserContext.Files.Add(mapping.Key, mapping.Value);
-                    }
-
-                    UpdateBaseProperties(existingFileUserContext, userIdentity, isNew: false);
-                    await SaveResource<FileUserContext>(resourceReference, existingFileUserContext);
-
-                    return new FileUserContextUpsertResult
-                    {
-                        ObjectId = existingFileUserContext.ObjectId,
-                        ResourceExists = true,
-                        NewOpenAIFileId = newOpenAIFileId!
-                    };
-                }
-                finally
-                {
-                    _localLock.Release();
-                }
-
-                #endregion
-            }
+                ObjectId = fileMapping.ObjectId!,
+                ResourceExists = isNew,
+                Resource = fileMapping
+            };
         }
 
         #endregion

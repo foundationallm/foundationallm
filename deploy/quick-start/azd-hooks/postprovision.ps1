@@ -59,9 +59,15 @@ $env:GUID06 = $($(New-Guid).Guid)
 $env:GUID07 = $($(New-Guid).Guid)
 $env:GUID08 = $($(New-Guid).Guid)
 $env:GUID09 = $($(New-Guid).Guid)
+$env:GUID10 = $($(New-Guid).Guid)
+$env:GUID11 = $($(New-Guid).Guid)
+$env:GUID12 = $($(New-Guid).Guid)
+$env:GUID13 = $($(New-Guid).Guid)
 
 $env:POLICYGUID01 = $($(New-Guid).Guid)
 $env:POLICYGUID02 = $($(New-Guid).Guid)
+$env:POLICYGUID03 = $($(New-Guid).Guid)
+$env:POLICYGUID04 = $($(New-Guid).Guid)
 
 $envConfiguraitons = @{
     "core-api-event-profile"             = @{
