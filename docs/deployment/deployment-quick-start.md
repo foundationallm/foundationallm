@@ -91,11 +91,11 @@ If you are upgrading from a previous version, like `0.5.0`, please refer to the 
 
     If you have an existing Azure OpenAI instance, you can use it by setting the following environment variables:
 
-    ```text
+```azurecli
     azd env set OPENAI_NAME <OpenAI Name>
     azd env set OPENAI_RESOURCE_GROUP <OpenAI Resource Group>
     azd env set OPENAI_SUBSCRIPTION_ID <OpenAI Subscription ID>
-    ```
+```
 > [!IMPORTANT]
 > Deploying with `Bring Your Own Azure OpenAI`, customers need to make sure that the relevant Managed Identities (LangChain API, Semantic Kernel API, and Gateway API) are assigned the `Open AI reader role` on the Azure OpenAI account object.
 
