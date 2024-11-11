@@ -249,6 +249,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     .ToArray();
             }
 
+            if(llmCompletionResponse.Errors!=null && llmCompletionResponse.Errors.Length>0)
+            {
+                string errorString = string.Join(Environment.NewLine, llmCompletionResponse.Errors);
+                _logger.LogError($"Error in completion response: {errorString}");
+                
+            }
+
             return new CompletionResponse
             {
                 OperationId = operationId,
@@ -261,8 +268,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 AgentName = llmCompletionResponse.AgentName,
                 PromptTokens = llmCompletionResponse.PromptTokens,
                 CompletionTokens = llmCompletionResponse.CompletionTokens,
-                AnalysisResults = llmCompletionResponse.AnalysisResults,
-                Errors = llmCompletionResponse.Errors
+                AnalysisResults = llmCompletionResponse.AnalysisResults                
             };
         }
 
