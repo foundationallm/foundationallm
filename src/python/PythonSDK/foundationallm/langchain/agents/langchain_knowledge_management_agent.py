@@ -6,7 +6,7 @@ from langchain_core.output_parsers import StrOutputParser
 from foundationallm.langchain.agents import LangChainAgentBase
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.retrievers import RetrieverFactory, CitationRetrievalBase
-from foundationallm.models.constants import AgentCapabilityCategories, Messages
+from foundationallm.models.constants import AgentCapabilityCategories
 from foundationallm.models.operations import OperationTypes
 from foundationallm.models.orchestration import (
     CompletionRequestObjectKeys,
@@ -368,7 +368,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     operation_id = request.operation_id,
                     full_prompt = self.prompt.prefix,                  
                     user_prompt = request.user_prompt,
-                    errors = [ Messages.GENERIC_ERROR ]
+                    errors = [ "Assistants API response was None." ]
                 )
 
             # create the CompletionResponse object

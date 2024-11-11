@@ -16,7 +16,6 @@ from fastapi import (
     status
 )
 from foundationallm.config import Configuration, UserIdentity
-from foundationallm.models.constants import Messages
 from foundationallm.models.operations import (
     LongRunningOperation,
     LongRunningOperationLogEntry,
@@ -177,7 +176,7 @@ async def create_completion_response(
                 operation_id = operation_id,
                 user_prompt = completion_request.user_prompt,
                 content = [],
-                errors=[ Messages.GENERIC_ERROR ]
+                errors=[f"{e}"]
             )
             await asyncio.gather(
                 operations_manager.set_operation_result_async(
@@ -188,7 +187,7 @@ async def create_completion_response(
                     operation_id = operation_id,
                     instance_id = instance_id,
                     status = OperationStatus.FAILED,
-                    status_message = Messages.GENERIC_ERROR,
+                    status_message = f"{e}",
                     user_identity = x_user_identity
                 )
             )
