@@ -470,6 +470,31 @@ references:
   fullName.vb: FoundationaLLM.Agent.Validation.Metadata.KnowledgeManagementAgentValidator.New
   nameWithType: KnowledgeManagementAgentValidator.KnowledgeManagementAgentValidator
   nameWithType.vb: KnowledgeManagementAgentValidator.New
+- uid: FoundationaLLM.Agent.Validation.Metadata.WorkflowValidator
+  name: WorkflowValidator
+  href: api/dotnet/FoundationaLLM.Agent.Validation.Metadata.WorkflowValidator.html
+  commentId: T:FoundationaLLM.Agent.Validation.Metadata.WorkflowValidator
+  fullName: FoundationaLLM.Agent.Validation.Metadata.WorkflowValidator
+  nameWithType: WorkflowValidator
+- uid: FoundationaLLM.Agent.Validation.Metadata.WorkflowValidator.#ctor
+  name: WorkflowValidator()
+  href: api/dotnet/FoundationaLLM.Agent.Validation.Metadata.WorkflowValidator.html#FoundationaLLM_Agent_Validation_Metadata_WorkflowValidator__ctor
+  commentId: M:FoundationaLLM.Agent.Validation.Metadata.WorkflowValidator.#ctor
+  name.vb: New()
+  fullName: FoundationaLLM.Agent.Validation.Metadata.WorkflowValidator.WorkflowValidator()
+  fullName.vb: FoundationaLLM.Agent.Validation.Metadata.WorkflowValidator.New()
+  nameWithType: WorkflowValidator.WorkflowValidator()
+  nameWithType.vb: WorkflowValidator.New()
+- uid: FoundationaLLM.Agent.Validation.Metadata.WorkflowValidator.#ctor*
+  name: WorkflowValidator
+  href: api/dotnet/FoundationaLLM.Agent.Validation.Metadata.WorkflowValidator.html#FoundationaLLM_Agent_Validation_Metadata_WorkflowValidator__ctor_
+  commentId: Overload:FoundationaLLM.Agent.Validation.Metadata.WorkflowValidator.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: FoundationaLLM.Agent.Validation.Metadata.WorkflowValidator.WorkflowValidator
+  fullName.vb: FoundationaLLM.Agent.Validation.Metadata.WorkflowValidator.New
+  nameWithType: WorkflowValidator.WorkflowValidator
+  nameWithType.vb: WorkflowValidator.New
 - uid: FoundationaLLM.Attachment
   name: FoundationaLLM.Attachment
   href: api/dotnet/FoundationaLLM.Attachment.html
@@ -4846,6 +4871,24 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Agents_Write
   fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Agents_Write
   nameWithType: AuthorizableActionNames.FoundationaLLM_Agent_Agents_Write
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Delete
+  name: FoundationaLLM_Agent_Workflows_Delete
+  href: api/dotnet/FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.html#FoundationaLLM_Common_Constants_Authorization_AuthorizableActionNames_FoundationaLLM_Agent_Workflows_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Delete
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Read
+  name: FoundationaLLM_Agent_Workflows_Read
+  href: api/dotnet/FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.html#FoundationaLLM_Common_Constants_Authorization_AuthorizableActionNames_FoundationaLLM_Agent_Workflows_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Read
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Write
+  name: FoundationaLLM_Agent_Workflows_Write
+  href: api/dotnet/FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.html#FoundationaLLM_Common_Constants_Authorization_AuthorizableActionNames_FoundationaLLM_Agent_Workflows_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Write
 - uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Delete
   name: FoundationaLLM_Attachment_Attachments_Delete
   href: api/dotnet/FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.html#FoundationaLLM_Common_Constants_Authorization_AuthorizableActionNames_FoundationaLLM_Attachment_Attachments_Delete
@@ -8002,6 +8045,12 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.AgentResourceTypeNames.Files
   fullName: FoundationaLLM.Common.Constants.ResourceProviders.AgentResourceTypeNames.Files
   nameWithType: AgentResourceTypeNames.Files
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.AgentResourceTypeNames.Workflows
+  name: Workflows
+  href: api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.AgentResourceTypeNames.html#FoundationaLLM_Common_Constants_ResourceProviders_AgentResourceTypeNames_Workflows
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.AgentResourceTypeNames.Workflows
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.AgentResourceTypeNames.Workflows
+  nameWithType: AgentResourceTypeNames.Workflows
 - uid: FoundationaLLM.Common.Constants.ResourceProviders.AttachmentResourceProviderMetadata
   name: AttachmentResourceProviderMetadata
   href: api/dotnet/FoundationaLLM.Common.Constants.ResourceProviders.AttachmentResourceProviderMetadata.html
@@ -20151,6 +20200,12 @@ references:
   commentId: F:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.KnowledgeManagement
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.KnowledgeManagement
   nameWithType: AgentTypes.KnowledgeManagement
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.Workflow
+  name: Workflow
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTypes_Workflow
+  commentId: F:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.Workflow
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.Workflow
+  nameWithType: AgentTypes.Workflow
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentVectorizationSettings
   name: AgentVectorizationSettings
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentVectorizationSettings.html
@@ -20452,6 +20507,12 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.KnowledgeManagementAgent.Vectorization
   nameWithType: KnowledgeManagementAgent.Vectorization
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.Workflow
+  name: Workflow
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.Workflow.html
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.Workflow
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.Workflow
+  nameWithType: Workflow
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment
   name: FoundationaLLM.Common.Models.ResourceProviders.Attachment
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Attachment.html
