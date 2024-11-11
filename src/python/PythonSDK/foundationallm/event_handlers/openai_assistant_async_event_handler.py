@@ -113,7 +113,7 @@ class OpenAIAssistantAsyncEventHandler(AsyncAssistantEventHandler):
                     )
                 except Exception as e:
                     print(f'Error submitting tool outputs: {e}')
-                    continue
+                    break
             if run.status == "failed":
                 print('Run failed')
                 break
