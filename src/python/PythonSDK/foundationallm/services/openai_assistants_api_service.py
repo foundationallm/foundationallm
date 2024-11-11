@@ -8,6 +8,7 @@ from openai.types import FileObject
 from openai.types.beta.threads import Message
 from openai.types.beta.threads.message import Attachment
 from openai.types.beta.threads.runs import RunStep
+from foundationallm.models.constants import Messages
 from foundationallm.event_handlers import OpenAIAssistantAsyncEventHandler
 from foundationallm.operations import OperationsManager
 from foundationallm.models.services import OpenAIAssistantsAPIRequest, OpenAIAssistantsAPIResponse
@@ -68,12 +69,11 @@ class OpenAIAssistantsApiService:
                 content = request.user_prompt,
                 attachments = attachments
             )
-        except Exception as e:
-            error_message = f"Error adding user prompt message to thread: {e}"
-            print(error_message)
+        except Exception as e:            
+            print(f"Error adding user prompt message to thread: {e}")
             return OpenAIAssistantsAPIResponse(
                 document_id = request.document_id,
-                errors = [error_message]
+                errors = [ Messages.GENERIC_ERROR ]
             )
         
         # Create an image generation tool for the assistant
@@ -107,11 +107,10 @@ class OpenAIAssistantsApiService:
             run = await self.client.beta.threads.runs.retrieve(run_id = run.id, thread_id = request.thread_id)
 
         if run.status == "failed":
+            print(run.last_error.message)
             return OpenAIAssistantsAPIResponse(
                 document_id = request.document_id,
-                errors = [
-                    run.last_error.message
-                ]
+                errors = [ Messages.GENERIC_ERROR ]
             )
         
         # Retrieve the steps from the run_steps for the analysis
