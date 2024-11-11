@@ -134,9 +134,9 @@ class OpenAIAssistantsApiService:
             analysis_results = analysis_results           
         )
         
-        if run.usage is not None:
-            result.completion_tokens = run.usage.completion_tokens,
-            result.prompt_tokens = run.usage.prompt_tokens,
+        if run.usage is not None:            
+            result.completion_tokens = run.usage.completion_tokens
+            result.prompt_tokens = run.usage.prompt_tokens
             result.total_tokens = run.usage.total_tokens
 
         return result
