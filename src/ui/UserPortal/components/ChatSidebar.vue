@@ -217,7 +217,7 @@
 				<TabPanel header="Accessibility">
 					<div class="setting-option">
 						<h4 id="auto-hide-toasts" class="setting-option-label">
-							Auto hide toast notifications
+							Auto hide popup notifications
 						</h4>
 						<InputSwitch v-model="$appStore.autoHideToasts" aria-labelledby="auto-hide-toasts" />
 					</div>
@@ -238,10 +238,10 @@
 							<p>{{ Math.round(($appStore.textSize / 1) * 100) }}%</p>
 						</div>
 					</div>
-					<div class="setting-option">
+					<!-- <div class="setting-option">
 						<h4 id="contrast" class="setting-option-label">High contrast mode</h4>
 						<InputSwitch v-model="$appStore.highContrastMode" aria-labelledby="contrast" />
-					</div>
+					</div> -->
 				</TabPanel>
 			</TabView>
 			<template #footer>
