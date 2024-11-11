@@ -93,7 +93,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         {
             var operationStatus = await _orchestrationService.GetCompletionOperationStatus(_instanceId, operationId);
 
-            if (operationStatus.Status == OperationStatus.Completed)
+            // Determine if the request is an end-state. If status is Failed, the error is located in the LLMCompletionResponse.Errors property.
+            if (operationStatus.Status == OperationStatus.Completed || operationStatus.Status == OperationStatus.Failed)
             {
                 // parse the LLM Completion response from JsonElement
                 if (operationStatus.Result is JsonElement jsonElement)
@@ -248,6 +249,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     .ToArray();
             }
 
+            if(llmCompletionResponse.Errors!=null && llmCompletionResponse.Errors.Length>0)
+            {
+                string errorString = string.Join(Environment.NewLine, llmCompletionResponse.Errors);
+                _logger.LogError($"Error in completion response: {errorString}");
+                
+            }
+
             return new CompletionResponse
             {
                 OperationId = operationId,
@@ -260,7 +268,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 AgentName = llmCompletionResponse.AgentName,
                 PromptTokens = llmCompletionResponse.PromptTokens,
                 CompletionTokens = llmCompletionResponse.CompletionTokens,
-                AnalysisResults = llmCompletionResponse.AnalysisResults
+                AnalysisResults = llmCompletionResponse.AnalysisResults                
             };
         }
 

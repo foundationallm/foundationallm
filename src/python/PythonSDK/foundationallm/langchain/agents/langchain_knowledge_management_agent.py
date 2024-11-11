@@ -268,9 +268,10 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             image_client = self._get_language_model(override_operation_type=OperationTypes.IMAGE_SERVICES)
             image_svc = ImageService(config=self.config, client=image_client, deployment_name=self.ai_model.deployment_name)
             image_analysis_results, usage = await image_svc.analyze_images_async(image_attachments)
-            image_analysis_token_usage.prompt_tokens += usage.prompt_tokens
-            image_analysis_token_usage.completion_tokens += usage.completion_tokens
-            image_analysis_token_usage.total_tokens += usage.total_tokens
+            if usage is not None:
+                image_analysis_token_usage.prompt_tokens += usage.prompt_tokens
+                image_analysis_token_usage.completion_tokens += usage.completion_tokens
+                image_analysis_token_usage.total_tokens += usage.total_tokens
 
         audio_analysis_results = None
         audio_attachments = [attachment for attachment in request.attachments if (attachment.provider == AttachmentProviders.FOUNDATIONALLM_ATTACHMENT and attachment.content_type.startswith('audio/'))] if request.attachments is not None else []
@@ -359,6 +360,16 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 assistant_req,
                 image_service=image_service
             )
+
+            # Verify the Assistants API response
+            if assistant_response is None:
+                print("Assistants API response was None.")
+                return CompletionResponse(                    
+                    operation_id = request.operation_id,
+                    full_prompt = self.prompt.prefix,                  
+                    user_prompt = request.user_prompt,
+                    errors = [ "Assistants API response was None." ]
+                )
 
             # create the CompletionResponse object
             return CompletionResponse(

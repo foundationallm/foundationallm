@@ -80,7 +80,8 @@ namespace FoundationaLLM.Orchestration.Core.Services
                     AgentName = request.Agent.Name,
                     PromptTokens = completionResponse.PromptTokens,
                     CompletionTokens = completionResponse.CompletionTokens,
-                    AnalysisResults = completionResponse.AnalysisResults
+                    AnalysisResults = completionResponse.AnalysisResults,
+                    Errors = completionResponse.Errors
                 };
             }
             catch(Exception ex)
