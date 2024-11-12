@@ -27,6 +27,6 @@ foreach ($certificate in $certificates.GetEnumerator()) {
             --file $pfx.FullName `
             --name $keyName `
             --vault-name $keyVaultName `
-            --password $certificate.Value
+            --password "$($certificate.Value)"
     }
 }
