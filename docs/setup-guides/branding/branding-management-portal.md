@@ -42,42 +42,43 @@ A string value to set the No Agents Message value which is displayed in the chat
 
 ## Default Agent Welcome Message
 A string value to set the Default Agent Welcome Message value which is displayed in the chat window when the agent is connected. HTML allowed in this field.
+Agents can have their own welcome message. If the selected agent does not have a configured welcome message, the Default Agent Welcome Message is displayed. It's also displayed when no agent is selected.
 
 ## Accent Color
-Takes a hexadecimal color value to set the accent color of the chat application which is used for top header and the the token counter in the chat. You can use the color picker to choose a color
+Takes a hexadecimal or RGB color value to set the accent color of the chat application which is used for top header and the the token counter in the chat. You can use the color picker to choose a color
 
 ## Accent Text Color
-Takes a hexadecimal color value to set the accent text color of the chat application which is used for top header and the the token counter in the chat. You can use the color picker to choose a color
+Takes a hexadecimal or RGB color value to set the accent text color of the chat application which is used for top header and the the token counter in the chat. You can use the color picker to choose a color
 
 ## Background Color
-Takes a hexadecimal color value to set the background color of the chat application. You can use the color picker to choose a color
+Takes a hexadecimal or RGB color value to set the background color of the chat application. You can use the color picker to choose a color
 
 ## Primary Button Background Color
-Takes a hexadecimal color value to set the Primary Button Background color of the chat application. It affects the `Send` button in the chat at the bottom right, the `Close` button the `View Prompt` screen and the `login` button in the login screen. You can use the color picker to choose a color
+Takes a hexadecimal or RGB color value to set the Primary Button Background color of the chat application. It affects the `Send` button in the chat at the bottom right, the `Close` button the `View Prompt` screen and the `login` button in the login screen. You can use the color picker to choose a color
 
 ## Primary Button Text Color
-Takes a hexadecimal color value to set the Primary Button Text color of the chat application. It affects the `Send` button in the chat at the bottom right, the `Close` button the `View Prompt` screen and the `login` button in the login screen. You can use the color picker to choose a color
+Takes a hexadecimal or RGB color value to set the Primary Button Text color of the chat application. It affects the `Send` button in the chat at the bottom right, the `Close` button the `View Prompt` screen and the `login` button in the login screen. You can use the color picker to choose a color
 
 ## Primary Color
-Takes a hexadecimal color value to set the Primary color of the chat application. It affects the left navigation panel and the `User Message` panel in the chat. You can use the color picker to choose a color
+Takes a hexadecimal or RGB color value to set the Primary color of the chat application. It affects the left navigation panel and the `User Message` panel in the chat. You can use the color picker to choose a color
 
 ## Primary Text Color
-Takes a hexadecimal color value to set the Primary Text color of the chat application. It affects the left navigation panel and the `User Message` panel in the chat. You can use the color picker to choose a color
+Takes a hexadecimal or RGB color value to set the Primary Text color of the chat application. It affects the left navigation panel and the `User Message` panel in the chat. You can use the color picker to choose a color
 
 ## Secondary Button Background Color
-Takes a hexadecimal color value to set the Secondary Button Background color of the chat application. It affects the `collapsable arrow` in the left navigation panel, the `Sign Out` bottom at the bottom and the `attachment` of files button in the chat window.
+Takes a hexadecimal or RGB color value to set the Secondary Button Background color of the chat application. It affects the `collapsable arrow` in the left navigation panel, the `Sign Out` bottom at the bottom and the `attachment` of files button in the chat window.
 You can use the color picker to choose a color
 
 ## Secondary Button Text Color
-Takes a hexadecimal color value to set the Secondary Button Text color of the chat application. It affects the `collapsable arrow` in the left navigation panel, the `Sign Out` bottom at the bottom and the `attachment` of files button in the chat window.
+Takes a hexadecimal or RGB color value to set the Secondary Button Text color of the chat application. It affects the `collapsable arrow` in the left navigation panel, the `Sign Out` bottom at the bottom and the `attachment` of files button in the chat window.
 You can use the color picker to choose a color
 
 ## Secondary Color
-Takes a hexadecimal color value to set the Secondary color of the chat application. It affects the background color of the `session identifier` in the left navigations panel and the background of the entire `login screen`.
+Takes a hexadecimal or RGB color value to set the Secondary color of the chat application. It affects the background color of the `session identifier` in the left navigations panel and the background of the entire `login screen`.
 You can use the color picker to choose a color
 
 ## Secondary Text Color
-Takes a hexadecimal color value to set the Secondary Text color of the chat application. It affects the background color of the `session identifier` in the left navigations panel.
+Takes a hexadecimal or RGB color value to set the Secondary Text color of the chat application. It affects the background color of the `session identifier` in the left navigations panel.
 You can use the color picker to choose a color
 
 ## Saving, resetting and Setting Default
