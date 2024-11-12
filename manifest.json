@@ -3992,6 +3992,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowAIModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowAIModel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.yml",
       "output": {
         ".html": {
@@ -4022,10 +4032,10 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainLCELAgentWorkflow.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainExpressionLanguageAgentWorkflow.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainLCELAgentWorkflow.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainExpressionLanguageAgentWorkflow.html"
         }
       },
       "version": ""
