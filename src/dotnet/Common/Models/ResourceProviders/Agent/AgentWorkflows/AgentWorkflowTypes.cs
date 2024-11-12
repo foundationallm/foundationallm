@@ -11,8 +11,8 @@
         public const string AzureOpenAIAssistants = "azure-openai-assistants-workflow";
 
         /// <summary>
-        /// The LangChain LCEL agent workflow.
+        /// The LangChain Expression Language agent workflow.
         /// </summary>
-        public const string LangChainLCEL = "langchain-lcel-workflow";
+        public const string LangChainExpressionLanguage = "langchain-expression-language-workflow";
     }
 }

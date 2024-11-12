@@ -7,7 +7,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
     /// </summary>
     [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
     [JsonDerivedType(typeof(AzureOpenAIAssistantsAgentWorkflow), AgentWorkflowTypes.AzureOpenAIAssistants)]
-    [JsonDerivedType(typeof(LangChainLCELAgentWorkflow), AgentWorkflowTypes.LangChainLCEL)]
+    [JsonDerivedType(typeof(LangChainExpressionLanguageAgentWorkflow), AgentWorkflowTypes.LangChainExpressionLanguage)]
     public class AgentWorkflowBase
     {        
         /// <summary>
@@ -32,8 +32,8 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
         /// The collection of AI models available to the workflow.
         /// The well-known key "main-model" is used to specify the model for the main workflow.
         /// </summary>
-        [JsonPropertyName("ai_model_object_ids")]
-        public Dictionary<string, string> AIModelObjectIds { get; set; } = [];
+        [JsonPropertyName("agent_workflow_ai_models")]
+        public Dictionary<string, AgentWorkflowAIModel> AgentWorkflowAIModels { get; set; } = [];
 
         /// <summary>
         /// The collection of prompt resources available to the workflow.
