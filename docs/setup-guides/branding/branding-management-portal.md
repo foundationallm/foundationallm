@@ -9,7 +9,7 @@ A string value to set the FavIcon Url which is displayed in the browser tab.
 > The FavIconUrl can be an SVG or PNG image placed in the Public folder of the application's source code but will require rebuilding of the docker image to reflect the changes. The preferred ways of setting the FavIconUrl is to set it to a relative accessible public URL to an SVG or PNG image or include the full Base64 encoded image in the textbox directly.Any changes to the `Fav Icon Url` will require a restart of the `CoreAPI` image to take effect.
 
 ## Footer Text
-A string value to set the Footer Text value which is displayed at the bottom right of the screen. You can edit the text in the HEML editor as well to include special character like ©.
+A string value to set the Footer Text value which is displayed at the bottom right of the screen. You can edit the text in the HTML editor as well to include special characters like ©.
 
 ## Kiosk Mode
 This is a boolean flag to indicate if the application is running in kiosk mode, if true will remove the sessions panel on the left navigation panel. 
