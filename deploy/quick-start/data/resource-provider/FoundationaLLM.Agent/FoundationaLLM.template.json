@@ -4,6 +4,7 @@
   "object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.Agent/agents/FoundationaLLM",
   "description": "Useful for answering questions about FoundationaLLM.",
   "deleted": false,
+  "inline_context": true,
   "sessions_enabled": true,
   "conversation_history": {
     "enabled": false,
