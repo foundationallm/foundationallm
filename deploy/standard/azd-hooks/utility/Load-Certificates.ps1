@@ -1,8 +1,7 @@
 #! /usr/bin/env pwsh
 
 param(
-    [parameter(Mandatory = $true)][array]$certificates,
-    [parameter(Mandatory = $true)][object]$certPassword,
+    [parameter(Mandatory = $true)][object]$certificates,
     [parameter(Mandatory = $true)][string]$keyVaultName,
     [parameter(Mandatory = $true)][string]$keyVaultResourceGroup # TODO remove unused parameter
 )
