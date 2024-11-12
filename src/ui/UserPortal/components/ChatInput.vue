@@ -450,7 +450,7 @@ export default {
 		}
 
 		await this.$appStore.getCoreConfiguration();
-		await this.$appStore.getAgents();
+		await this.$appStore.ensureAgentsLoaded();
 
 		this.agents = this.$appStore.agents.map((agent) => ({
 			label: agent.resource.name,
