@@ -47,6 +47,7 @@ A string value to set the FavIcon Url which is displayed in the browser tab.
 A string value to set the Footer Text value which is displayed at the bottom right of the screen.
 ## FoundationaLLM:Branding:KioskMode
 This is a boolean flag to indicate if the application is running in kiosk mode, if true will remove the sessions panel on the left navigation panel. 
+Kiosk mode does not store user conversations and is meant to be used within a public kiosk setting
 ## FoundationaLLM:Branding:LogoText
 A string value to set the Logo Text value which is displayed only if the `FoundationaLLM:Branding:LogoUrl` is not set.
 ## FoundationaLLM:Branding:LogoUrl
