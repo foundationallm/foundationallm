@@ -67,6 +67,25 @@ namespace FoundationaLLM.Common.Constants.Authorization
         public const string FoundationaLLM_Agent_Agents_Delete = "FoundationaLLM.Agent/agents/delete";
 
 
+        /// <summary>
+        /// Read workflows.
+        /// </summary>
+        public const string FoundationaLLM_Agent_Workflows_Read = "FoundationaLLM.Agent/workflows/read";
+
+      
+        /// <summary>
+        /// Create or update workflows.
+        /// </summary>
+        public const string FoundationaLLM_Agent_Workflows_Write = "FoundationaLLM.Agent/workflows/write";
+
+      
+        /// <summary>
+        /// Delete workflows.
+        /// </summary>
+        public const string FoundationaLLM_Agent_Workflows_Delete = "FoundationaLLM.Agent/workflows/delete";
+
+
+
         #endregion
 
 

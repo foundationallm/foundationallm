@@ -3,7 +3,7 @@
 // WARNING!
 // This file is auto-generated based on the AppConfiguration.json file.
 // Do not make changes to this file, as they will be automatically overwritten.
-//
+// 
 // -------------------------------------------------------------------------------
 namespace FoundationaLLM.Common.Constants.Configuration
 {

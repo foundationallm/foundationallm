@@ -7,11 +7,24 @@
 
 ### Configuration changes
 
-The following settings are required:
+The following new App Configuration settings are required:
 
 Name | Default value
 --- | ---
 `FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions` | `c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip`
+`FoundationaLLM:Branding:NoAgentsMessage` | `No agents available. Please check with your system administrator for assistance.`
+`FoundationaLLM:Branding:DefaultAgentWelcomeMessage` | `Start the conversation using the text box below.`
+
+The following new App Configuration feature flags are required:
+
+Name | Default value
+--- | ---
+`FoundationaLLM.Agent.PrivateStore` | `Not enabled`
+
+### Assistants API enabled Agent(s)
+> [!IMPORTANT]
+> 
+> Any existing agent that has the Assistants API enabled needs to be saved from the Management UI to update itself.
 
 ### Resource provider changes
 
@@ -57,73 +70,104 @@ The following placehoders need to be replaced with the actual values:
 
 **FoundationaLLM.AzureOpenAI**
 
-When upgrading an existing FoundationaLLM instance, the items from the `resource-provider/FoundationaLLM.AzureOpenAI` directory in storage account must be updated to use the new JSON format:
+The assistant and file user context artifacts are now simplified and stored in a new Cosmos DB container. Here are the configuration parameters for the new Cosmos DB container:
 
-*Assistant user context*
-```json
-{
-    "name": "example_solliance_net-assistant-00000000-0000-0000-0000-000000000000",
-    "object_id": "/instances/00000000-0000-0000-0000-000000000000/providers/FoundationaLLM.AzureOpenAI/assistantUserContexts/example_solliance_net-assistant-00000000-0000-0000-0000-000000000000",
-    "display_name": null,
-    "description": null,
-    "cost_center": null,
-    "user_principal_name": "example@solliance.net",
-    "agent-assistants": {
-        "/instances/00000000-0000-0000-0000-000000000000/providers/FoundationaLLM.Agent/agents/GPT-4o": {
-            "endpoint": "https://example.openai.azure.com/",
-            "model_name": "completions-gpt-4o",
-            "openai_assistant_id": "",
-            "openai_assistant_created_on": "2024-10-18T00:00:00.0000000\u002B00:00",
-            "conversations": {}
-        }
-    },
-    "properties": null,
-    "created_on": "2024-10-18T00:00:00.0000000\u002B00:00",
-    "updated_on": "2024-10-18T00:00:00.0000000\u002B00:00",
-    "created_by": "example@solliance.net",
-    "updated_by": "example@solliance.net",
-    "deleted": false,
-    "expiration_date": null,
-}
-```
+Name | Value
+--- | ---
+Name | `ExternalResources`
+Maximum RU/s | 1000
+Time to live | Off
+Partition key | `/partitionKey`
 
-*File user context*
-```json
-{
-    "name": "example_solliance_net-file-00000000-0000-0000-0000-000000000000",
-    "object_id": "/instances/00000000-0000-0000-0000-000000000000/providers/FoundationaLLM.AzureOpenAI/fileUserContexts/example_solliance_net-file-00000000-0000-0000-0000-000000000000",
-    "display_name": null,
-    "description": null,
-    "cost_center": null,
-    "user_principal_name": "example@solliance.net",
-    "agent_files": {
-        "/instances/00000000-0000-0000-0000-000000000000/providers/FoundationaLLM.Agent/agents/GPT-4o": {
-            "endpoint": "https://example.openai.azure.com/",
-            "files": {}
-        }
-    },
-    "assistant_user_context_name": "example_solliance_net-assistant-00000000-0000-0000-0000-000000000000",
-    "created_on": "2024-10-18T00:00:00.0000000+00:00",
-    "updated_on": "2024-10-18T00:00:00.0000000+00:00",
-    "created_by": "example@solliance.net",
-    "updated_by": "example@solliance.net",
-    "deleted": false,
-    "expiration_date": null
-}
-```
-
+Part of the upgrade to this version is to migrate the existing assistant and file user context artifacts to the new Cosmos DB container.
 Refer to the dedicated upgrade tool for instructions on how to perform this update.
 
+As a result of the migration, the newly created `ExternalResources` container will contain two types of items: `AzureOpenAIConversationMapping` and `AzureOpenAIFileMapping`.
+
+This is an example of an `AzureOpenAIConversationMapping` item:
+
+```json
+{
+    "conversationId": "0e56a170-5355-...",
+    "openAIAssistantsAssistantId": "asst_kc...",
+    "openAIAssistantsThreadId": "thread_73...",
+    "openAIAssistantsThreadCreatedOn": "2024-10-14T17:57:10.510345+00:00",
+    "openAIVectorStoreId": "vs_X6...",
+    "openAIVectorStoreCreatedOn": null,
+    "type": "AzureOpenAIConversationMapping",
+    "id": "0e56a170-5355-...",
+    "partitionKey": "...-73fad442-f614-4510-811f-414cb3a3d34b",
+    "upn": "jackthecat@foundationaLLM.ai",
+    "instanceId": "73fad442-f614-4510-811f-414cb3a3d34b",
+    "openAIEndpoint": "https://openai-....openai.azure.com/",
+    "objectId": null,
+    "displayName": null,
+    "description": null,
+    "costCenter": null,
+    "properties": null,
+    "createdOn": "0001-01-01T00:00:00+00:00",
+    "updatedOn": "0001-01-01T00:00:00+00:00",
+    "createdBy": null,
+    "updatedBy": null,
+    "deleted": false,
+    "expirationDate": null,
+    "name": "0e56a170-5355-...",
+    "_rid": "J2BUAKktW41bAAAAAAAAAA==",
+    "_self": "dbs/J2BUAA==/colls/J2BUAKktW40=/docs/J2BUAKktW41bAAAAAAAAAA==/",
+    "_etag": "\"8702b793-0000-0200-0000-672a60b90000\"",
+    "_attachments": "attachments/",
+    "_ts": 1730830521
+}
+```
+
+This is an example of an `AzureOpenAIFileMapping` item:
+
+```json
+{
+    "fileObjectId": "/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Attachment/attachments/a-f8...",
+    "originalFileName": "some_file.csv",
+    "fileContentType": "text/csv",
+    "fileRequiresVectorization": false,
+    "openAIFileId": "assistant-8G...",
+    "openAIFileUploadedOn": "2024-10-14T23:01:02.3075592+00:00",
+    "openAIAssistantsFileGeneratedOn": null,
+    "openAIVectorStoreId": null,
+    "type": "AzureOpenAIFileMapping",
+    "id": "assistant-8G...",
+    "partitionKey": "...-73fad442-f614-4510-811f-414cb3a3d34b",
+    "upn": "jackthecat@foundationaLLM.ai",
+    "instanceId": "73fad442-f614-4510-811f-414cb3a3d34b",
+    "openAIEndpoint": "https://openai-....openai.azure.com/",
+    "objectId": null,
+    "displayName": null,
+    "description": null,
+    "costCenter": null,
+    "properties": null,
+    "createdOn": "0001-01-01T00:00:00+00:00",
+    "updatedOn": "0001-01-01T00:00:00+00:00",
+    "createdBy": null,
+    "updatedBy": null,
+    "deleted": false,
+    "expirationDate": null,
+    "name": "assistant-8G...",
+    "_rid": "J2BUAKktW40yAAAAAAAAAA==",
+    "_self": "dbs/J2BUAA==/colls/J2BUAKktW40=/docs/J2BUAKktW40yAAAAAAAAAA==/",
+    "_etag": "\"87025e93-0000-0200-0000-672a60b70000\"",
+    "_attachments": "attachments/",
+    "_ts": 1730830519
+}
+```
+
+### Cleanup role assignments
+As a result of migrated resources from storage account to Cosmos DB, as well as the new `policy-assignments` mentioned above, the `role-assignments` store will have obsolete `Owner` role assignments on those objects. Please refer to the dedicated tool for instructions on how to perform this cleanup.
+
+The dedicated tool will cleanup role assignments for the following resources:
+- `FoundationaLLM.Attachment/attachments`
+- `FoundationaLLM.AzureOpenAI/fileUserContexts`
+- `FoundationaLLM.AzureOpenAI/assistantUserContexts`
+- `FoundationaLLM.Conversation/conversations`
+
 ### Configuration changes
-
-#### App Config settings
-
-This release adds new App Config settings that should be added to existing environments that are upgrading to 0.8.4 and beyond:
-
-1. App Config key: `FoundationaLLM:Branding:NoAgentsMessage`
-   - App Config value: `No agents available. Please check with your system administrator for assistance.`
-2. App Config key: `FoundationaLLM:Branding:DefaultAgentWelcomeMessage`
-   - App Config value: `Start the conversation using the text box below.`
 
 #### Resource provider templates
 
