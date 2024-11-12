@@ -2,6 +2,7 @@
 
 param(
     [parameter(Mandatory = $true)][array]$certificates,
+    [parameter(Mandatory = $true)][object]$certPassword,
     [parameter(Mandatory = $true)][string]$keyVaultName,
     [parameter(Mandatory = $true)][string]$keyVaultResourceGroup # TODO remove unused parameter
 )
@@ -16,15 +17,16 @@ $directories = @{
     "certs"  = "../certs"
 }
 
-foreach ($certificateFolder in $certificates) {
-    $pfxPath = Join-Path $directories["certs"] $certificateFolder
+foreach ($certificate in $certificates.GetEnumerator()) {
+    $pfxPath = Join-Path $directories["certs"] $certificate.Key
     $pfx = Get-ChildItem -Path $pfxPath -Filter *.pfx | Select-Object -First 1
-    $keyName = $certificateFolder
+    $keyName = $certificate.Key
 
-    Invoke-AndRequireSuccess "Load PFX Certificate $($certificateFolder) into Azure Key Vault" {
+    Invoke-AndRequireSuccess "Load PFX Certificate $($certificate.Key) into Azure Key Vault" {
         az keyvault certificate import `
             --file $pfx.FullName `
             --name $keyName `
-            --vault-name $keyVaultName
+            --vault-name $keyVaultName `
+            --password $certificate.Value
     }
 }
