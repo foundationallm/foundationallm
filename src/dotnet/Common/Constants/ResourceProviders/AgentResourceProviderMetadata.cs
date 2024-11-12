@@ -55,7 +55,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                 AgentResourceTypeNames.Workflows,
                 new ResourceTypeDescriptor(
                         AgentResourceTypeNames.Workflows,
-                        typeof(AgentBase))
+                        typeof(Workflow))
                 {
                     AllowedTypes = [
                         new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<Workflow>)]),

@@ -1334,7 +1334,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// </summary>
         /// <typeparam name="T">The type of resources to load.</typeparam>
         /// <param name="resourcePath">The <see cref="ResourcePath"/> resource type path to filter.</param>
-        /// <param name="filter"`>The <see cref="ResourceFilter"/> used to filter the resources.</param>
+        /// <param name="filter">The <see cref="ResourceFilter"/> used to filter the resources.</param>
         /// <param name="authorizationResult">The <see cref="ResourcePathAuthorizationResult"/> containing the result of the resource path authorization request.</param>
         /// <param name="options">The <see cref="ResourceProviderGetOptions"/> which provides operation parameters.</param>
         /// <param name="customResourceLoader">An optional function that loads the resource used to override
@@ -1528,7 +1528,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 throw new ResourceProviderException(
                     $"The FoundationaLLM instance identifier is invalid.",
                     StatusCodes.Status400BadRequest);
-
+                       
             var resourceTypeDescriptor =
                 AllowedResourceTypes.Values.SingleOrDefault(art => art.ResourceType == resourceType)
                 ?? throw new ResourceProviderException(
