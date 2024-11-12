@@ -13,6 +13,6 @@
         /// <summary>
         /// The LangChain LCEL agent workflow.
         /// </summary>
-        public const string LangChainLCEL = "lang-chain-lcel-workflow";
+        public const string LangChainLCEL = "langchain-lcel-workflow";
     }
 }
