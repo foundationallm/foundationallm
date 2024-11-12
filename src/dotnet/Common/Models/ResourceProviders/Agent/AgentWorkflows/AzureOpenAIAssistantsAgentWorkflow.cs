@@ -3,7 +3,7 @@
 namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
 {
     /// <summary>
-    /// Provides an agent workflow configuration for an OpenAI Assistants workflow.
+    /// Provides an agent workflow configuration for an Azure OpenAI Assistants workflow.
     /// </summary>
     public class AzureOpenAIAssistantsAgentWorkflow: AgentWorkflowBase
     {
