@@ -13,6 +13,7 @@ A string value to set the Footer Text value which is displayed at the bottom rig
 
 ## Kiosk Mode
 This is a boolean flag to indicate if the application is running in kiosk mode, if true will remove the sessions panel on the left navigation panel. 
+Kiosk mode does not store user conversations and is meant to be used within a public kiosk setting
 
 ## Logo Text
 A string value to set the Logo Text value which is displayed only if the `Logo Url` is not set.
