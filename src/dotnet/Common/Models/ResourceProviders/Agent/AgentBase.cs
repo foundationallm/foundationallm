@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
 using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using System.Text.Json.Serialization;
@@ -32,6 +33,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         [JsonPropertyName("gatekeeper_settings")]
         public GatekeeperSettings? GatekeeperSettings { get; set; }
 
+
         /// <summary>
         /// Settings for the orchestration service.
         /// </summary>
@@ -55,6 +57,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// </summary>
         [JsonPropertyName("capabilities")]
         public string[]? Capabilities { get; set; }
+
+        /// <summary>
+        /// The agent's workflow configuration.
+        /// </summary>
+        [JsonPropertyName("workflow")]
+        public AgentWorkflowBase? Workflow { get; set; }
+
 
         /// <summary>
         /// Gets or sets a dictionary of tools that are registered with the agent.
