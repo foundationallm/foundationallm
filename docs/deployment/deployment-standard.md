@@ -45,16 +45,57 @@ Follow the steps below to deploy the solution to your Azure subscription.
 
 2. From a PowerShell prompt, execute the following to clone the repository:
 
-```powershell
-  git clone https://github.com/solliancenet/foundationallm.git
-  cd foundationallm/deploy/standard
-  git checkout release/0.8.2
-```
-3. Create your deployment manifest:
+    ```pwsh
+      git clone https://github.com/solliancenet/foundationallm.git
+      cd foundationallm/deploy/standard
+      git checkout release/0.8.2
+    ```
 
-```powershell
-  cp Deployment-Manifest.template.json Deployment-Manifest.json
-```
+3. Install AzCopy
+
+    ```pwsh
+      cd .\deploy\common\scripts
+      .\Get-AzCopy.ps1
+    ```
+
+4. Run the following commands to log into Azure CLI, Azure Developer CLI and AzCopy:
+
+    ```pwsh
+    cd .\deploy\standard
+    az login                                   # Log into Azure CLI
+    azd auth login                             # Log into Azure Developer CLI
+    ..\common\tools\azcopy\azcopy login        # Log into AzCopy
+    ```
+
+5. Set up an `azd` environment targeting your Azure subscription and desired deployment region:
+
+    ```pwsh
+    # Set your target Subscription and Location
+    azd env new --location <Supported Azure Region> --subscription <Azure Subscription ID>
+    ```
+
+6. Set FoundationaLLM Entra Parameters
+
+    ```pwsh
+    cd .\deploy\standard
+    ..\common\scripts\Set-AzdEnvEntra.ps1
+    ```
+
+7. Set FoundationaLLM Network Parameters
+
+    ```pwsh
+    cd .\deploy\standard
+    ..\common\scripts\Set-AzdEnvAksVnet.ps1 -fllmAksServiceCidr <aksServiceCidr> -fllmVnetCidr <vnetCidr> -fllmAllowedExternalCidrs <allowedExternalCidrs>
+
+    # aksServiceCidr - CIDR block for the AKS Services - e.g., 10.100.0.0/16
+    # vnetCidr             - CIDR block for the VNet - e.g., 10.220.128.0/20
+    # allowedExternalCidrs - CIDR block for NSGs to allow VPN or HUB VNet
+    #                        e.g., 192.168.101.0/28,10.0.0.0/16
+    #                        comma separated
+    #                        updates allow-vpn nsg rule
+    ```
+
+8. 
 
 4. Fill out all required fields in the `Deployment-Manifest.json` file. Please look at [this guide](./standard/manifest.md) for more information on the manifest contents.
 
