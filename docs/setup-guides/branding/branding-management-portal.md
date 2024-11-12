@@ -1,7 +1,7 @@
 ![Branding Management Portal](media/branding_management_portal.png)
 
-## CompanyName
-Not is use.  Reserved for future enhancements.
+## Company Name
+Not in use.  Reserved for future enhancements.
 
 ## Fav Icon Url
 A string value to set the FavIcon Url which is displayed in the browser tab.
