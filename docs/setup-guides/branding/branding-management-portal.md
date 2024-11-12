@@ -85,7 +85,7 @@ You can use the color picker to choose a color
 ![Save, reset and Default](media/save_reset_default.png)
 At the bottom of the branding page, you will find the  `Reset`, `Set Default` and `Save` buttons.
 - Reset: This will reset all the values to the default values.
-- Set Default: This will set the current values as the default values.
+- Set Default: This sets the branding values to the default out-of-the-box FoundationaLLM branding settings.
 - Save: This will save the current values and apply them to the chat application.
 
 ## Show Contrast Information
