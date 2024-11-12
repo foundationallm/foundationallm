@@ -5,11 +5,11 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
     /// <summary>
     /// Provides an agent workflow configuration for an OpenAI Assistants workflow.
     /// </summary>
-    public class OpenAIAssistantsAgentWorkflow: AgentWorkflowBase
+    public class AzureOpenAIAssistantsAgentWorkflow: AgentWorkflowBase
     {
         /// <inheritdoc/>
         [JsonIgnore]
-        public override string Type => AgentWorkflowTypes.OpenAIAssistants;
+        public override string Type => AgentWorkflowTypes.AzureOpenAIAssistants;
                 
         /// <summary>
         /// The OpenAI Assistant ID for the agent workflow.

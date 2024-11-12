@@ -6,7 +6,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
     /// Provides a workflow configuration for an agent.
     /// </summary>
     [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
-    [JsonDerivedType(typeof(OpenAIAssistantsAgentWorkflow), AgentWorkflowTypes.OpenAIAssistants)]
+    [JsonDerivedType(typeof(AzureOpenAIAssistantsAgentWorkflow), AgentWorkflowTypes.AzureOpenAIAssistants)]
     [JsonDerivedType(typeof(LangChainLCELAgentWorkflow), AgentWorkflowTypes.LangChainLCEL)]
     public class AgentWorkflowBase
     {        
@@ -21,6 +21,12 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
         /// </summary>
         [JsonPropertyName("workflow_object_id")]
         public required string WorkflowObjectId { get; set; }
+
+        /// <summary>
+        /// The name of the workflow resource associated with the agent.
+        /// </summary>
+        [JsonPropertyName("workflow_name")]
+        public required string WorkflowName { get; set; }
 
         /// <summary>
         /// The collection of AI models available to the workflow.

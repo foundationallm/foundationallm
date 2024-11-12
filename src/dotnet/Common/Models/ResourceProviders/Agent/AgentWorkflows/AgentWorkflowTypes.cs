@@ -8,7 +8,7 @@
         /// <summary>
         /// The OpenAI Assistants agent workflow.
         /// </summary>
-        public const string OpenAIAssistants = "openai-assistants-workflow";
+        public const string AzureOpenAIAssistants = "azure-openai-assistants-workflow";
 
         /// <summary>
         /// The LangChain LCEL agent workflow.
