@@ -24,7 +24,9 @@ A string value to set the Logo Url which is displayed in top left header and als
 
 ## Page Title
 A string value to set the Page Title value which is displayed in the browser tab.
+
 ![PageTitle](./media/branding-5.jpg)
+
 > [!IMPORTANT]
 > Any changes to the `Page Title` will require a restart of the `CoreAPI` image to take effect.
 
@@ -85,7 +87,8 @@ At the bottom of the branding page, you will find the  `Reset`, `Set Default` an
 - Save: This will save the current values and apply them to the chat application.
 
 ## Show Contrast Information
-![Show Contrast Information](media/show_contrast_information.png)
+![Show Contrast Information](media/Contrast_info.png)
+
 At the top of the branding page, you will find the `Show Contrast Information` toggle button. This will show the contrast information of the current branding settings. 
 ![Contrast](media/Contrast-AA-AAA.png)
 
