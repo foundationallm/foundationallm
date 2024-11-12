@@ -1,10 +1,10 @@
 # Branding Customization using the App Configurator
 
-The `FoundationaLLM` application provides a way to customize the branding of the applications. The branding customization can be done by setting any of the **19 configuration values** available in the `App Configuration` resource in your Azure Resource Group.  It can also be changed using the REST API calls pertaining to Branding.
+The `FoundationaLLM` application provides a way to customize the branding of the applications. The branding customization can be done by setting any of the **21 configuration values** available in the `App Configuration` resource in your Azure Resource Group.  It can also be changed using the REST API calls pertaining to Branding.
 
 ### Accessing the App Configuration for branding customization
 
-In your Azure Resource Group, navigate to the `App Configuration` resource and select the `Configuration Explorer` option under `Operations`. You will see a list of all configuration settings for `FoundationaLLM `, filter the list on the word `Branding` and you will be able to see the 19 relevant configuration settings pertaining to Branding.
+In your Azure Resource Group, navigate to the `App Configuration` resource and select the `Configuration Explorer` option under `Operations`. You will see a list of all configuration settings for `FoundationaLLM `, filter the list on the word `Branding` and you will be able to see the 21 relevant configuration settings pertaining to Branding.
 
 ![Branding App Configuration](./media/branding-1.jpg)
 
@@ -76,3 +76,7 @@ Takes a hexadecimal color value to set the Secondary Button Text color of the ch
 Takes a hexadecimal color value to set the Secondary color of the chat application. It affects the background color of the `session identifier` in the left navigations panel and the background of the entire `login screen`.
 ## FoundationaLLM:Branding:SecondaryTextColor
 Takes a hexadecimal color value to set the Secondary Text color of the chat application. It affects the background color of the `session identifier` in the left navigations panel.
+## FoundationaLLM:Branding:NoAgentsMessage
+A string value to set the No Agents Message value which is displayed in the chat window when no agents are available. HTML allowed in this field.
+## FoundationaLLM:Branding:DefaultAgentWelcomeMessage
+A string value to set the Default Agent Welcome Message value which is displayed in the chat window when the agent is connected. HTML allowed in this field.
