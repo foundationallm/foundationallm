@@ -20028,6 +20028,19 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.Type
   nameWithType: AgentBase.Type
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.Workflow
+  name: Workflow
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_Workflow
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.Workflow
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.Workflow
+  nameWithType: AgentBase.Workflow
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.Workflow*
+  name: Workflow
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_Workflow_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.Workflow
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.Workflow
+  nameWithType: AgentBase.Workflow
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile
   name: AgentFile
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFile.html
@@ -20354,6 +20367,32 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.PromptObjectIds
   nameWithType: AgentWorkflowBase.PromptObjectIds
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.Type
+  name: Type
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_Type
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.Type
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.Type
+  nameWithType: AgentWorkflowBase.Type
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.Type*
+  name: Type
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_Type_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.Type
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.Type
+  nameWithType: AgentWorkflowBase.Type
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.WorkflowName
+  name: WorkflowName
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_WorkflowName
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.WorkflowName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.WorkflowName
+  nameWithType: AgentWorkflowBase.WorkflowName
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.WorkflowName*
+  name: WorkflowName
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_WorkflowName_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.WorkflowName
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.WorkflowName
+  nameWithType: AgentWorkflowBase.WorkflowName
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.WorkflowObjectId
   name: WorkflowObjectId
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_WorkflowObjectId
@@ -20367,31 +20406,75 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.WorkflowObjectId
   nameWithType: AgentWorkflowBase.WorkflowObjectId
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowTypes
+  name: AgentWorkflowTypes
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowTypes.html
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowTypes
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowTypes
+  nameWithType: AgentWorkflowTypes
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowTypes.AzureOpenAIAssistants
+  name: AzureOpenAIAssistants
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowTypes.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowTypes_AzureOpenAIAssistants
+  commentId: F:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowTypes.AzureOpenAIAssistants
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowTypes.AzureOpenAIAssistants
+  nameWithType: AgentWorkflowTypes.AzureOpenAIAssistants
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowTypes.LangChainLCEL
+  name: LangChainLCEL
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowTypes.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowTypes_LangChainLCEL
+  commentId: F:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowTypes.LangChainLCEL
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowTypes.LangChainLCEL
+  nameWithType: AgentWorkflowTypes.LangChainLCEL
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow
+  name: AzureOpenAIAssistantsAgentWorkflow
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow.html
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow
+  nameWithType: AzureOpenAIAssistantsAgentWorkflow
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow.AssistantId
+  name: AssistantId
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AzureOpenAIAssistantsAgentWorkflow_AssistantId
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow.AssistantId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow.AssistantId
+  nameWithType: AzureOpenAIAssistantsAgentWorkflow.AssistantId
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow.AssistantId*
+  name: AssistantId
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AzureOpenAIAssistantsAgentWorkflow_AssistantId_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow.AssistantId
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow.AssistantId
+  nameWithType: AzureOpenAIAssistantsAgentWorkflow.AssistantId
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow.Type
+  name: Type
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AzureOpenAIAssistantsAgentWorkflow_Type
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow.Type
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow.Type
+  nameWithType: AzureOpenAIAssistantsAgentWorkflow.Type
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow.Type*
+  name: Type
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AzureOpenAIAssistantsAgentWorkflow_Type_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow.Type
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow.Type
+  nameWithType: AzureOpenAIAssistantsAgentWorkflow.Type
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainLCELAgentWorkflow
   name: LangChainLCELAgentWorkflow
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainLCELAgentWorkflow.html
   commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainLCELAgentWorkflow
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainLCELAgentWorkflow
   nameWithType: LangChainLCELAgentWorkflow
-- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.OpenAIAssistantsAgentWorkflow
-  name: OpenAIAssistantsAgentWorkflow
-  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.OpenAIAssistantsAgentWorkflow.html
-  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.OpenAIAssistantsAgentWorkflow
-  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.OpenAIAssistantsAgentWorkflow
-  nameWithType: OpenAIAssistantsAgentWorkflow
-- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.OpenAIAssistantsAgentWorkflow.AssistantId
-  name: AssistantId
-  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.OpenAIAssistantsAgentWorkflow.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_OpenAIAssistantsAgentWorkflow_AssistantId
-  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.OpenAIAssistantsAgentWorkflow.AssistantId
-  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.OpenAIAssistantsAgentWorkflow.AssistantId
-  nameWithType: OpenAIAssistantsAgentWorkflow.AssistantId
-- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.OpenAIAssistantsAgentWorkflow.AssistantId*
-  name: AssistantId
-  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.OpenAIAssistantsAgentWorkflow.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_OpenAIAssistantsAgentWorkflow_AssistantId_
-  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.OpenAIAssistantsAgentWorkflow.AssistantId
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainLCELAgentWorkflow.Type
+  name: Type
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainLCELAgentWorkflow.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_LangChainLCELAgentWorkflow_Type
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainLCELAgentWorkflow.Type
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainLCELAgentWorkflow.Type
+  nameWithType: LangChainLCELAgentWorkflow.Type
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainLCELAgentWorkflow.Type*
+  name: Type
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainLCELAgentWorkflow.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_LangChainLCELAgentWorkflow_Type_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainLCELAgentWorkflow.Type
   isSpec: "True"
-  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.OpenAIAssistantsAgentWorkflow.AssistantId
-  nameWithType: OpenAIAssistantsAgentWorkflow.AssistantId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainLCELAgentWorkflow.Type
+  nameWithType: LangChainLCELAgentWorkflow.Type
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.ConversationHistorySettings
   name: ConversationHistorySettings
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.ConversationHistorySettings.html

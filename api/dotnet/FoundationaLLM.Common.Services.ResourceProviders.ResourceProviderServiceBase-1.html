@@ -1395,7 +1395,8 @@ of the authorization result should be returned (if any).</li></ol>
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderServiceBase.cs/#L1343"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Loads a list of resources filtered based on object IDs.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -1405,27 +1406,35 @@ of the authorization result should be returned (if any).</li></ol>
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>resourcePath</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a></dt>
-    <dd></dd>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html">ResourcePath</a> resource type path to filter.</p>
+</dd>
     <dt><code>filter</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceFilter.html">ResourceFilter</a></dt>
-    <dd></dd>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceFilter.html">ResourceFilter</a> used to filter the resources.</p>
+</dd>
     <dt><code>authorizationResult</code> <a class="xref" href="FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult.html">ResourcePathAuthorizationResult</a></dt>
-    <dd></dd>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult.html">ResourcePathAuthorizationResult</a> containing the result of the resource path authorization request.</p>
+</dd>
     <dt><code>options</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions.html">ResourceProviderGetOptions</a></dt>
-    <dd></dd>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions.html">ResourceProviderGetOptions</a> which provides operation parameters.</p>
+</dd>
     <dt><code>customResourceLoader</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;TResourceReference, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;T&gt;&gt;</dt>
-    <dd></dd>
+    <dd><p>An optional function that loads the resource used to override
+the default resource loading mechanism.</p>
+</dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;T&gt;&gt;</dt>
-    <dd></dd>
+    <dd><p>A list of objects of type <code class="typeparamref">T</code>.</p>
+</dd>
   </dl>
 
   <h4 class="section">Type Parameters</h4>
   <dl class="parameters">
     <dt><code>T</code></dt>
-    <dd></dd>
+    <dd><p>The type of resources to load.</p>
+</dd>
   </dl>
 
 

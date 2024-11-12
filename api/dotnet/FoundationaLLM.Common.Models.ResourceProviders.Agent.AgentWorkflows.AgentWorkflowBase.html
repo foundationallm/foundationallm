@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase" class="text-break">
-Class AgentWorkflowBase  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L6"><i class="bi bi-code-slash"></i></a>
+Class AgentWorkflowBase  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L8"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -102,7 +102,10 @@ Class AgentWorkflowBase  <a class="header-action link-secondary" title="View sou
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class AgentWorkflowBase</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonPolymorphic(TypeDiscriminatorPropertyName = &quot;type&quot;)]
+[JsonDerivedType(typeof(AzureOpenAIAssistantsAgentWorkflow), &quot;azure-openai-assistants-workflow&quot;)]
+[JsonDerivedType(typeof(LangChainLCELAgentWorkflow), &quot;langchain-lcel-workflow&quot;)]
+public class AgentWorkflowBase</code></pre>
   </div>
 
 
@@ -120,8 +123,8 @@ Class AgentWorkflowBase  <a class="header-action link-secondary" title="View sou
   <dl class="typelist derived">
     <dt>Derived</dt>
     <dd>
+      <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow.html">AzureOpenAIAssistantsAgentWorkflow</a></div>
       <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainLCELAgentWorkflow.html">LangChainLCELAgentWorkflow</a></div>
-      <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.OpenAIAssistantsAgentWorkflow.html">OpenAIAssistantsAgentWorkflow</a></div>
     </dd>
   </dl>
 
@@ -171,7 +174,7 @@ Class AgentWorkflowBase  <a class="header-action link-secondary" title="View sou
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_AIModelObjectIds" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.AIModelObjectIds">
   AIModelObjectIds
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L35"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The collection of AI models available to the workflow.
@@ -180,7 +183,8 @@ The well-known key &quot;main-model&quot; is used to specify the model for the m
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, string&gt; AIModelObjectIds { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;ai_model_object_ids&quot;)]
+public Dictionary&lt;string, string&gt; AIModelObjectIds { get; set; }</code></pre>
   </div>
 
 
@@ -204,7 +208,7 @@ The well-known key &quot;main-model&quot; is used to specify the model for the m
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_PromptObjectIds" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.PromptObjectIds">
   PromptObjectIds
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L42"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The collection of prompt resources available to the workflow.
@@ -213,7 +217,8 @@ The well-known key &quot;main-prompt&quot; is used to specify the prompt for the
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, string&gt; PromptObjectIds { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;prompt_object_ids&quot;)]
+public Dictionary&lt;string, string&gt; PromptObjectIds { get; set; }</code></pre>
   </div>
 
 
@@ -233,11 +238,11 @@ The well-known key &quot;main-prompt&quot; is used to specify the prompt for the
 
 
 
-  <a id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_WorkflowObjectId_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.WorkflowObjectId*"></a>
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_Type_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.Type*"></a>
 
-  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_WorkflowObjectId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.WorkflowObjectId">
-  WorkflowObjectId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_Type" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.Type">
+  Type
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L16"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The workflow resource associated with the agent.</p>
@@ -245,7 +250,74 @@ The well-known key &quot;main-prompt&quot; is used to specify the prompt for the
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public required string WorkflowObjectId { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;type&quot;)]
+public virtual string? Type { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_WorkflowName_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.WorkflowName*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_WorkflowName" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.WorkflowName">
+  WorkflowName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The name of the workflow resource associated with the agent.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;workflow_name&quot;)]
+public required string WorkflowName { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_WorkflowObjectId_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.WorkflowObjectId*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_WorkflowObjectId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.WorkflowObjectId">
+  WorkflowObjectId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>The workflow resource associated with the agent.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;workflow_object_id&quot;)]
+public required string WorkflowObjectId { get; set; }</code></pre>
   </div>
 
 
@@ -269,7 +341,7 @@ The well-known key &quot;main-prompt&quot; is used to specify the prompt for the
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L6" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L8" class="edit-link">Edit this page</a>
         </div>
 
 
