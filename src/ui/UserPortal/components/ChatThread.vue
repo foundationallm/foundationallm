@@ -108,6 +108,8 @@ export default {
 			this.userSentMessage = false;
 			
 			await this.$appStore.getMessages();
+			await this.$appStore.ensureAgentsLoaded();
+			
 			this.$appStore.updateSessionAgentFromMessages(newSession);
 			let sessionAgent = this.$appStore.getSessionAgent(newSession);
 			this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
