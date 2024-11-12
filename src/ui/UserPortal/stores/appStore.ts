@@ -526,7 +526,7 @@ export const useAppStore = defineStore('app', {
 
 		async ensureAgentsLoaded() {
 			let retryCount = 0;
-			while(this.agents.length == 0 && retryCount < 10){
+			while(this.agents?.length === 0 && retryCount < 10){
 				await new Promise(resolve => setTimeout(resolve, 500));
 				retryCount+=1;
 			}
