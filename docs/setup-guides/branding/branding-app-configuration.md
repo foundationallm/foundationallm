@@ -21,9 +21,9 @@ In your Azure Resource Group, navigate to the `App Configuration` resource and s
 ![Branding Chat Page](./media/branding-4.jpg)
 
 ## FoundationaLLM:Branding:AccentColor
-Takes a hexadecimal color value to set the accent color of the chat application which is used for top header and the the token counter in the chat.
+Takes a hexadecimal or RGB color value to set the accent color of the chat application which is used for top header and the the token counter in the chat.
 ## FoundationaLLM:Branding:AccentTextColor
-Takes a hexadecimal color value to set the accent text color of the chat application which is used for top header and the the token counter in the chat.
+Takes a hexadecimal or RGB color value to set the accent text color of the chat application which is used for top header and the the token counter in the chat.
 ## FoundationaLLM:Branding:AgentIconUrl
 A string value to set the Agent Icon Url which is displayed in the chat window.
 
@@ -31,7 +31,7 @@ A string value to set the Agent Icon Url which is displayed in the chat window.
 > The AgentIconUrl can be an SVG or PNG image placed in the Public folder of the application's source code but will require rebuilding of the docker image to reflect the changes. The preferred ways of setting the LogoUrl is to set it to a relative accessible public URL to an SVG or PNG image or include the full Base64 encoded image in the configuration value directly.
 
 ## FoundationaLLM:Branding:BackgroundColor
-Takes a hexadecimal color value to set the background color of the chat application.
+Takes a hexadecimal or RGB color value to set the background color of the chat application.
 ## FoundationaLLM:Branding:CompanyName
 Not is use.  Reserved for future enhancements.
 
@@ -62,21 +62,21 @@ A string value to set the Page Title value which is displayed in the browser tab
 > [!IMPORTANT]
 > Any changes to the `FoundationaLLM:Branding:PageTitle` will require a restart of the `CoreAPI` image to take effect.
 ## FoundationaLLM:Branding:PrimaryButtonBackgroundColor
-Takes a hexadecimal color value to set the Primary Button Background color of the chat application. It affects the `Send` button in the chat at the bottom right, the `Close` button the `View Prompt` screen and the `login` button in the login screen.
+Takes a hexadecimal or RGB color value to set the Primary Button Background color of the chat application. It affects the `Send` button in the chat at the bottom right, the `Close` button the `View Prompt` screen and the `login` button in the login screen.
 ## FoundationaLLM:Branding:PrimaryButtonTextColor
-Takes a hexadecimal color value to set the Primary Button Text color of the chat application. It affects the `Send` button in the chat at the bottom right, the `Close` button the `View Prompt` screen and the `login` button in the login screen.
+Takes a hexadecimal or RGB color value to set the Primary Button Text color of the chat application. It affects the `Send` button in the chat at the bottom right, the `Close` button the `View Prompt` screen and the `login` button in the login screen.
 ## FoundationaLLM:Branding:PrimaryColor
-Takes a hexadecimal color value to set the Primary color of the chat application. It affects the left navigation panel and the `User Message` panel in the chat.
+Takes a hexadecimal or RGB color value to set the Primary color of the chat application. It affects the left navigation panel and the `User Message` panel in the chat.
 ## FoundationaLLM:Branding:PrimaryTextColor
-Takes a hexadecimal color value to set the Primary Text color of the chat application. It affects the left navigation panel and the `User Message` panel in the chat.
+Takes a hexadecimal or RGB color value to set the Primary Text color of the chat application. It affects the left navigation panel and the `User Message` panel in the chat.
 ## FoundationaLLM:Branding:SecondaryButtonBackgroundColor
-Takes a hexadecimal color value to set the Secondary Button Background color of the chat application. It affects the `collapsable arrow` in the left navigation panel, the `Sign Out` bottom at the bottom and the `attachment` of files button in the chat window.
+Takes a hexadecimal or RGB color value to set the Secondary Button Background color of the chat application. It affects the `collapsable arrow` in the left navigation panel, the `Sign Out` bottom at the bottom and the `attachment` of files button in the chat window.
 ## FoundationaLLM:Branding:SecondaryButtonTextColor
-Takes a hexadecimal color value to set the Secondary Button Text color of the chat application. It affects the `collapsable arrow` in the left navigation panel, the `Sign Out` bottom at the bottom and the `attachment` of files button in the chat window.
+Takes a hexadecimal or RGB color value to set the Secondary Button Text color of the chat application. It affects the `collapsable arrow` in the left navigation panel, the `Sign Out` bottom at the bottom and the `attachment` of files button in the chat window.
 ## FoundationaLLM:Branding:SecondaryColor
-Takes a hexadecimal color value to set the Secondary color of the chat application. It affects the background color of the `session identifier` in the left navigations panel and the background of the entire `login screen`.
+Takes a hexadecimal or RGB color value to set the Secondary color of the chat application. It affects the background color of the `session identifier` in the left navigations panel and the background of the entire `login screen`.
 ## FoundationaLLM:Branding:SecondaryTextColor
-Takes a hexadecimal color value to set the Secondary Text color of the chat application. It affects the background color of the `session identifier` in the left navigations panel.
+Takes a hexadecimal or RGB color value to set the Secondary Text color of the chat application. It affects the background color of the `session identifier` in the left navigations panel.
 ## FoundationaLLM:Branding:NoAgentsMessage
 A string value to set the No Agents Message value which is displayed in the chat window when no agents are available. HTML allowed in this field.
 ## FoundationaLLM:Branding:DefaultAgentWelcomeMessage
