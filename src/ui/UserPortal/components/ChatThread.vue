@@ -106,10 +106,10 @@ export default {
 			this.isMessagePending = false;
 			this.isLoading = true;
 			this.userSentMessage = false;
-			
+
 			await this.$appStore.getMessages();
 			await this.$appStore.ensureAgentsLoaded();
-			
+
 			this.$appStore.updateSessionAgentFromMessages(newSession);
 			let sessionAgent = this.$appStore.getSessionAgent(newSession);
 			this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
@@ -120,8 +120,7 @@ export default {
 			if (newPollingSession === oldPollingSession) return;
 			if (newPollingSession === this.currentSession.id) {
 				this.isMessagePending = true;
-			}
-			else {
+			} else {
 				this.isMessagePending = false;
 			}
 		},
@@ -135,9 +134,10 @@ export default {
 	methods: {
 		getWelcomeMessage(agent) {
 			let welcomeMessage = agent?.resource?.properties?.['welcome_message'];
-			return welcomeMessage && welcomeMessage.trim() !== '' ? welcomeMessage :
-				this.$appConfigStore.defaultAgentWelcomeMessage ?? 
-				'Start the conversation using the text box below.';
+			return welcomeMessage && welcomeMessage.trim() !== ''
+				? welcomeMessage
+				: (this.$appConfigStore.defaultAgentWelcomeMessage ??
+						'Start the conversation using the text box below.');
 		},
 
 		getMessageOrderFromReversedIndex(index) {
