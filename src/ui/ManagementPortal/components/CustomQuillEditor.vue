@@ -35,16 +35,54 @@
 				</div>
 			</template>
 		</QuillEditor>
+
+		<!-- Raw HTML Dialog -->
 		<Dialog
 			v-model:visible="showHtmlDialog"
 			:modal="true"
 			:closable="false"
-			:style="{ width: '50vw' }"
+			:style="{ width: '90vw' }"
+			header="Edit Footer HTML"
 		>
-			<Textarea v-model="rawHtml" style="width: 100%; height: 100%" auto-resize />
+			<CodeEditor
+				ref="codeEditor"
+				v-model="rawHtml"
+				:languages="[['html', 'HTML']]"
+				:wrap="true"
+				theme="github-dark"
+				style="width: 100%; height: 100%"
+				@update:model-value="handleCodeEditorChange"
+			/>
+
 			<template #footer>
-				<Button label="Save" @click="saveRawHtml" />
+				<Button label="Save" @click="handleSaveRawHTML" />
 				<Button label="Cancel" @click="toggleHtmlDialog" />
+			</template>
+		</Dialog>
+
+		<!-- HTML Correction Dialog -->
+		<Dialog
+			v-model:visible="showHtmlCorrectionDialog"
+			:modal="true"
+			:closable="false"
+			:style="{ width: '90vw' }"
+			header="Footer HTML Correction Required"
+		>
+			<h4 style="margin-top: 0px; margin-bottom: 8px">
+				The inputted html content must be corrected, please verify the corrected value:
+			</h4>
+
+			<Diff
+				mode="split"
+				theme="light"
+				language="html"
+				:prev="rawHtml"
+				:current="processedContent"
+			/>
+
+			<template #footer>
+				<Button label="Save" @click="handleSaveCorrectedHTML" />
+				<Button label="Back" @click="handleHtmlCorrectionBack" />
 			</template>
 		</Dialog>
 	</div>
@@ -53,17 +91,18 @@
 <script lang="ts">
 import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import { Diff } from 'vue-diff';
+import 'vue-diff/dist/index.css';
+import 'highlight.js';
+import CodeEditor from 'simple-code-editor';
 import { v4 as uuidv4 } from 'uuid';
 
-function filterQuillHTML(html: string) {
-	return html
-		.replace(/(<p><br><\/p>)+/g, (match) => '<br>'.repeat(match.split('<p><br></p>').length))
-		.replace(/<\/p><p>/g, '<br>')
-		.replace(/<\/?p[^>]*>/g, '');
-}
-
 export default {
-	components: { QuillEditor },
+	components: {
+		QuillEditor,
+		Diff,
+		CodeEditor,
+	},
 
 	props: {
 		initialContent: {
@@ -79,8 +118,10 @@ export default {
 		return {
 			content: this.initialContent,
 			rawHtml: '',
+			processedContent: '',
 			showHtmlDialog: false,
-			toolbarId: `toolbar-${uuidv4()}`, // Generate unique toolbar ID
+			showHtmlCorrectionDialog: false,
+			toolbarId: `toolbar-${uuidv4()}`,
 		};
 	},
 
@@ -94,24 +135,47 @@ export default {
 
 	methods: {
 		toggleHtmlDialog() {
-			this.rawHtml = filterQuillHTML(JSON.parse(JSON.stringify(this.content)));
-			this.showHtmlDialog = !this.showHtmlDialog;
-		},
+			this.rawHtml = this.content;
 
-		saveRawHtml() {
-			this.rawHtml = this.rawHtml.replace(/<br>/g, '<br>');
-			this.content = this.rawHtml
-				.split('<br>')
-				.map((line) => `<p>${line}</p>`)
-				.join('');
-			this.$emit('content-update', this.content);
-			this.showHtmlDialog = false;
+			this.$refs.quillEditor.pasteHTML(this.rawHtml);
+			this.processedContent = this.$refs.quillEditor.getHTML();
+
+			this.showHtmlDialog = !this.showHtmlDialog;
 		},
 
 		handleContentUpdate(newContent) {
 			if (newContent !== this.content) {
 				this.$emit('content-update', newContent);
 			}
+		},
+
+		handleCodeEditorChange() {
+			// Reset the highlighting state
+			this.$refs.codeEditor.$refs.code.removeAttribute('data-highlighted');
+		},
+
+		handleSaveRawHTML() {
+			this.$refs.quillEditor.pasteHTML(this.rawHtml);
+			this.processedContent = this.$refs.quillEditor.getHTML();
+
+			if (this.rawHtml !== this.processedContent) {
+				this.showHtmlCorrectionDialog = true;
+				return;
+			}
+
+			this.$emit('content-update', this.content);
+			this.showHtmlDialog = false;
+		},
+
+		handleSaveCorrectedHTML() {
+			this.$emit('content-update', this.content);
+			this.showHtmlCorrectionDialog = false;
+			this.showHtmlDialog = false;
+		},
+
+		handleHtmlCorrectionBack() {
+			this.handleCodeEditorChange();
+			this.showHtmlCorrectionDialog = false;
 		},
 	},
 };
@@ -121,6 +185,7 @@ export default {
 .quill-container {
 	max-width: 80ch;
 }
+
 .quill-view-html {
 	font-size: 1rem;
 	color: #4b5563;
