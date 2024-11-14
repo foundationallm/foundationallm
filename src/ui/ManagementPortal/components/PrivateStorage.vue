@@ -9,10 +9,7 @@
 		</template>
 
 		<!-- Trigger button -->
-		<Button
-			v-if="isButtonVisible"
-			@click="openPrivateStorageDialog"
-			style="margin-right: 8px;">
+		<Button v-if="isButtonVisible" @click="openPrivateStorageDialog" style="margin-right: 8px">
 			<i class="pi pi-box" style="font-size: 1.2rem; margin-right: 8px"></i>
 			Private Storage
 		</Button>
@@ -272,9 +269,9 @@ export default {
 
 		async deletePrivateStorageFile(fileName: string) {
 			if (!confirm('Are you sure you want to delete this file?')) {
-                return;
-            }
-			
+				return;
+			}
+
 			this.loadingModalStatusText = 'Deleting file...';
 			this.modalLoading = true;
 			await api.deleteFileFromPrivateStorage(this.agentName, fileName);
@@ -290,7 +287,9 @@ export default {
 
 		async getPrivateAgentFiles() {
 			this.agentFiles.localFiles = [];
-			this.agentFiles.uploadedFiles = (await api.getPrivateStorageFiles(this.agentName)).map(r => r.resource);
+			this.agentFiles.uploadedFiles = (await api.getPrivateStorageFiles(this.agentName)).map(
+				(r) => r.resource,
+			);
 		},
 
 		async handleUpload() {
