@@ -107,8 +107,14 @@ export const useAppConfigStore = defineStore('appConfig', {
 				getConfigValueSafe('FoundationaLLM:Branding:SecondaryButtonBackgroundColor', '#70829a'),
 				getConfigValueSafe('FoundationaLLM:Branding:SecondaryButtonTextColor', '#fff'),
 				getConfigValueSafe('FoundationaLLM:Branding:FooterText'),
-				getConfigValueSafe('FoundationaLLM:Branding:NoAgentsMessage', 'No agents available. Please check with your system administrator for assistance.'),
-				getConfigValueSafe('FoundationaLLM:Branding:DefaultAgentWelcomeMessage', 'Start the conversation using the text box below.'),
+				getConfigValueSafe(
+					'FoundationaLLM:Branding:NoAgentsMessage',
+					'No agents available. Please check with your system administrator for assistance.',
+				),
+				getConfigValueSafe(
+					'FoundationaLLM:Branding:DefaultAgentWelcomeMessage',
+					'Start the conversation using the text box below.',
+				),
 				getConfigValueSafe('FoundationaLLM:Instance:Id', '00000000-0000-0000-0000-000000000000'),
 				getConfigValueSafe('FoundationaLLM:Branding:AgentIconUrl', '~/assets/FLLM-Agent-Light.svg'),
 				getConfigValueSafe(
@@ -143,7 +149,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.footerText = footerText;
 			this.noAgentsMessage = noAgentsMessage;
 			this.defaultAgentWelcomeMessage = defaultAgentWelcomeMessage;
-			
+
 			this.instanceId = instanceId;
 			this.agentIconUrl = agentIconUrl;
 			this.allowedUploadFileExtensions = allowedUploadFileExtensions;
