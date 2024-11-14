@@ -9,7 +9,7 @@
 		</template>
 
 		<!-- Trigger button -->
-		<Button v-if="isButtonVisible" @click="openPrivateStorageDialog" style="margin-right: 8px">
+		<Button v-if="isButtonVisible" style="margin-right: 8px" @click="openPrivateStorageDialog">
 			<i class="pi pi-box" style="font-size: 1.2rem; margin-right: 8px"></i>
 			Private Storage
 		</Button>
@@ -31,10 +31,10 @@
 			<div class="card">
 				<FileUpload
 					ref="fileUpload"
-					customUpload
-					class="p-button-outlined"
 					:auto="false"
 					:multiple="true"
+					custom-upload
+					class="p-button-outlined"
 					@upload="handleUpload($event)"
 					@select="fileSelected"
 				>
@@ -134,6 +134,7 @@ export default {
 			required: true,
 		},
 	},
+
 	data() {
 		return {
 			privateStorageDialogOpen: false,
@@ -150,18 +151,18 @@ export default {
 		};
 	},
 
+	computed: {
+		isButtonVisible: function () {
+			return this.$appConfigStore.agentPrivateStoreFeatureFlag;
+		},
+	},
+
 	mounted() {
 		window.addEventListener('resize', this.handleResize);
 	},
 
 	beforeUnmount() {
 		window.removeEventListener('resize', this.handleResize);
-	},
-
-	computed: {
-		isButtonVisible: function () {
-			return this.$appConfigStore.agentPrivateStoreFeatureFlag;
-		},
 	},
 
 	methods: {
@@ -292,7 +293,7 @@ export default {
 			);
 		},
 
-		async handleUpload() {
+		handleUpload() {
 			this.loadingModalStatusText =
 				this.agentFiles.localFiles.length === 1 ? 'Uploading file...' : 'Uploading files...';
 			this.modalLoading = true;

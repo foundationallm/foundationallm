@@ -86,11 +86,11 @@
 				</div>
 				<CustomQuillEditor
 					v-model="agentWelcomeMessage"
-					:initialContent="JSON.parse(JSON.stringify(agentWelcomeMessage))"
-					@contentUpdate="updateAgentWelcomeMessage($event)"
+					:initial-content="JSON.parse(JSON.stringify(agentWelcomeMessage))"
 					class="w-100"
 					placeholder="Enter agent welcome message"
 					aria-labelledby="aria-welcome-message-desc"
+					@content-update="updateAgentWelcomeMessage($event)"
 				/>
 			</div>
 
@@ -1012,7 +1012,7 @@ export default {
 		mapAgentToForm(agent: Agent) {
 			this.agentName = agent.name || this.agentName;
 			this.agentDescription = agent.description || this.agentDescription;
-			this.agentWelcomeMessage = agent.properties?.['welcome_message'] || this.agentWelcomeMessage;
+			this.agentWelcomeMessage = agent.properties?.welcome_message || this.agentWelcomeMessage;
 			this.agentType = agent.type || this.agentType;
 			this.object_id = agent.object_id || this.object_id;
 			this.inline_context = agent.inline_context || this.inline_context;

@@ -1,18 +1,14 @@
-<!-- ColorInputContainer.vue -->
 <template>
 	<div class="color-input-container">
 		<InputText
 			:value="value"
-			@input="$emit('updateValue', $event.target.value)"
-			class="branding-input branding-color-input"
 			:aria-labelledby="ariaLabel"
+			class="branding-input branding-color-input"
+			@input="$emit('update-value', $event.target.value)"
 		/>
 		<ColorPicker
-			:modelValue="color"
-			class="color-picker"
+			:model-value="color"
 			:format="format"
-			defaultColor="ffffff"
-			@change="onColorChange"
 			:pt="{
 				input: {
 					style: {
@@ -20,13 +16,16 @@
 					},
 				},
 			}"
+			default-color="ffffff"
+			class="color-picker"
+			@change="onColorChange"
 		/>
 		<Button
+			:disabled="value === originalValue"
 			class="color-undo-button"
 			icon="pi pi-undo"
-			@click="$emit('reset', originalValue)"
-			:disabled="value === originalValue"
 			aria-label="Reset to default color"
+			@click="$emit('reset', originalValue)"
 		/>
 	</div>
 </template>
@@ -34,16 +33,37 @@
 <script lang="ts">
 export default {
 	props: {
-		value: String,
-		color: String,
-		format: String,
-		originalValue: String,
-		ariaLabel: String,
+		value: {
+			required: true,
+			type: String,
+		},
+
+		color: {
+			required: true,
+			type: String,
+		},
+
+		format: {
+			required: true,
+			type: String,
+		},
+
+		originalValue: {
+			required: true,
+			type: String,
+		},
+
+		ariaLabel: {
+			required: true,
+			type: String,
+		},
 	},
-	emits: ['updateValue', 'reset', 'colorChange'],
+
+	emits: ['update-value', 'reset'],
+
 	methods: {
 		onColorChange(event: any) {
-			this.$emit('updateValue', event.value);
+			this.$emit('update-value', event.value);
 		},
 	},
 };

@@ -3,8 +3,8 @@
 		<QuillEditor
 			ref="quillEditor"
 			:content="content"
-			contentType="html"
 			:toolbar="`#${toolbarId}`"
+			content-type="html"
 			@update:content="handleContentUpdate"
 		>
 			<template #toolbar>
@@ -41,7 +41,7 @@
 			:closable="false"
 			:style="{ width: '50vw' }"
 		>
-			<Textarea v-model="rawHtml" style="width: 100%; height: 100%" autoResize />
+			<Textarea v-model="rawHtml" style="width: 100%; height: 100%" auto-resize />
 			<template #footer>
 				<Button label="Save" @click="saveRawHtml" />
 				<Button label="Cancel" @click="toggleHtmlDialog" />
@@ -73,6 +73,8 @@ export default {
 		},
 	},
 
+	emits: ['content-update'],
+
 	data() {
 		return {
 			content: this.initialContent,
@@ -102,13 +104,13 @@ export default {
 				.split('<br>')
 				.map((line) => `<p>${line}</p>`)
 				.join('');
-			this.$emit('contentUpdate', this.content);
+			this.$emit('content-update', this.content);
 			this.showHtmlDialog = false;
 		},
 
 		handleContentUpdate(newContent) {
 			if (newContent !== this.content) {
-				this.$emit('contentUpdate', newContent);
+				this.$emit('content-update', newContent);
 			}
 		},
 	},
