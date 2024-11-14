@@ -51,7 +51,11 @@
 
 		<!-- Footer -->
 		<!-- eslint-disable-next-line vue/no-v-html -->
-		<footer v-if="$appConfigStore.footerText" v-html="$appConfigStore.footerText" class="chat-thread__footer" />
+		<footer
+			v-if="$appConfigStore.footerText"
+			class="chat-thread__footer"
+			v-html="$appConfigStore.footerText"
+		/>
 
 		<!-- File drag and drop -->
 		<div v-if="isDragging" ref="dropZone" class="drop-files-here-container">
