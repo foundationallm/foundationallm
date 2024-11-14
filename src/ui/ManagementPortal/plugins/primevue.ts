@@ -56,5 +56,4 @@ export default defineNuxtPlugin((nuxtApp) => {
 	nuxtApp.vueApp.component('InputSwitch', InputSwitch);
 
 	nuxtApp.vueApp.use(ToastService);
-	nuxtApp.vueApp.directive('tooltip', Tooltip);
 });

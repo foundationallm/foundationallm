@@ -17,7 +17,7 @@ export default defineNuxtConfig({
 	compatibilityDate: '2024-08-27',
 	ssr: false,
 	devtools: { enabled: true },
-	modules: ['@pinia/nuxt', '@nuxtjs/eslint-module'],
+	modules: ['@pinia/nuxt', '@nuxtjs/eslint-module', 'floating-vue/nuxt'],
 	components: true,
 	app: {
 		head: {
