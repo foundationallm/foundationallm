@@ -76,7 +76,16 @@
 			<UserAvatar class="sidebar__avatar" size="large" />
 
 			<div>
-				<span class="sidebar__username">{{ $authStore.currentAccount?.name }}</span>
+				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+					<span
+						class="sidebar__username"
+						aria-label="Logged in as {{ $authStore.currentAccount?.username }}">
+						{{ $authStore.currentAccount?.name }}
+					</span>
+					<template #popper>
+						<div role="tooltip">Logged in as {{ $authStore.currentAccount?.username }}</div>
+					</template>
+				</VTooltip>
 				<Button
 					class="sidebar__sign-out-button"
 					icon="pi pi-sign-out"
@@ -93,6 +102,12 @@
 <script lang="ts">
 export default {
 	name: 'Sidebar',
+
+	data() {
+		return {
+			isMobile: window.screen.width < 950,
+		};
+	},
 };
 </script>
 
