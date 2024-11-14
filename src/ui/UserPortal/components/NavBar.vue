@@ -88,9 +88,12 @@
 				</div>
 			</div>
 		</div>
+
+		<!-- No agents message -->
 		<template v-if="showNoAgentsMessage">
 			<div class="no-agents">
-				<div v-html="emptyAgentsMessage" class="body"></div>
+				<!-- eslint-disable-next-line vue/no-v-html -->
+				<div class="body" v-html="emptyAgentsMessage"></div>
 			</div>
 		</template>
 	</div>
@@ -181,7 +184,6 @@ export default {
 				description: '',
 			},
 		];
-		let allAgentsLabel = '';
 		this.virtualUser = await this.$appStore.getVirtualUser();
 
 		this.agentOptionsGroup.push({
@@ -208,7 +210,6 @@ export default {
 				label: 'My Agents',
 				items: privateAgentOptions,
 			});
-			allAgentsLabel = 'Other Agents';
 			this.agentOptionsGroup.push({
 				label: 'Other Agents',
 				items: publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions,

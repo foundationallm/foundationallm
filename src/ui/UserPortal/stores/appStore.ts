@@ -456,7 +456,7 @@ export const useAppStore = defineStore('app', {
 			}, this.getPollingRateMS());
 		},
 
-		stopPolling(sessionId: string) {
+		stopPolling(/* sessionId: string */) {
 			clearInterval(this.pollingInterval);
 			this.pollingInterval = null;
 			this.pollingSession = null;

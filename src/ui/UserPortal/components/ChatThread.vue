@@ -37,6 +37,7 @@
 				<!-- New chat alert -->
 				<div v-else class="new-chat-alert">
 					<div class="alert-body">
+						<!-- eslint-disable-next-line vue/no-v-html -->
 						<div class="alert-body-text" v-html="welcomeMessage"></div>
 					</div>
 				</div>
@@ -111,12 +112,17 @@ export default {
 			await this.$appStore.ensureAgentsLoaded();
 
 			this.$appStore.updateSessionAgentFromMessages(newSession);
-			let sessionAgent = this.$appStore.getSessionAgent(newSession);
+			const sessionAgent = this.$appStore.getSessionAgent(newSession);
 			this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
 			this.isLoading = false;
 		},
 
-		async pollingSession(newPollingSession, oldPollingSession) {
+		lastSelectedAgent(newAgent, oldAgent) {
+			if (newAgent === oldAgent) return;
+			this.welcomeMessage = this.getWelcomeMessage(newAgent);
+		},
+
+		pollingSession(newPollingSession, oldPollingSession) {
 			if (newPollingSession === oldPollingSession) return;
 			if (newPollingSession === this.currentSession.id) {
 				this.isMessagePending = true;
@@ -124,16 +130,11 @@ export default {
 				this.isMessagePending = false;
 			}
 		},
-
-		async lastSelectedAgent(newAgent, oldAgent) {
-			if (newAgent === oldAgent) return;
-			this.welcomeMessage = this.getWelcomeMessage(newAgent);
-		},
 	},
 
 	methods: {
 		getWelcomeMessage(agent) {
-			let welcomeMessage = agent?.resource?.properties?.['welcome_message'];
+			const welcomeMessage = agent?.resource?.properties?.welcome_message;
 			return welcomeMessage && welcomeMessage.trim() !== ''
 				? welcomeMessage
 				: (this.$appConfigStore.defaultAgentWelcomeMessage ??
@@ -193,7 +194,7 @@ export default {
 			// await this.$appStore.getMessages();
 			// }
 
-			//this.isMessagePending = false;
+			// this.isMessagePending = false;
 		},
 	},
 };
