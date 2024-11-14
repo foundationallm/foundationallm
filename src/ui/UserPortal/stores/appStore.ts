@@ -456,7 +456,7 @@ export const useAppStore = defineStore('app', {
 			}, this.getPollingRateMS());
 		},
 
-		stopPolling(sessionId: string) {
+		stopPolling(/* sessionId: string */) {
 			clearInterval(this.pollingInterval);
 			this.pollingInterval = null;
 			this.pollingSession = null;
@@ -519,16 +519,16 @@ export const useAppStore = defineStore('app', {
 			this.isSidebarClosed = !this.isSidebarClosed;
 		},
 
-		async getAgents(){
+		async getAgents() {
 			this.agents = await api.getAllowedAgents();
 			return this.agents;
 		},
 
 		async ensureAgentsLoaded() {
 			let retryCount = 0;
-			while(this.agents?.length === 0 && retryCount < 10){
-				await new Promise(resolve => setTimeout(resolve, 500));
-				retryCount+=1;
+			while (this.agents?.length === 0 && retryCount < 10) {
+				await new Promise((resolve) => setTimeout(resolve, 500));
+				retryCount += 1;
 			}
 		},
 
