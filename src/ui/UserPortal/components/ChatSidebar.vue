@@ -109,7 +109,16 @@
 			<UserAvatar size="large" class="chat-sidebar__avatar" />
 
 			<div>
-				<span class="chat-sidebar__username">{{ $authStore.currentAccount?.name }}</span>
+				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+					<span
+						class="chat-sidebar__username"
+						aria-label="Logged in as {{ $authStore.currentAccount?.username }}">
+						{{ $authStore.currentAccount?.name }}
+					</span>
+					<template #popper>
+						<div role="tooltip">Logged in as {{ $authStore.currentAccount?.username }}</div>
+					</template>
+				</VTooltip>
 				<div class="chat-sidebar__options">
 					<Button
 						class="chat-sidebar__sign-out chat-sidebar__button"
@@ -257,7 +266,7 @@
 </template>
 
 <script lang="ts">
-import { hideAllPoppers } from 'floating-vue';
+import { hideAllPoppers, VTooltip } from 'floating-vue';
 import type { Session } from '@/js/types';
 declare const process: any;
 
