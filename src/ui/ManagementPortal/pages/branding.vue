@@ -15,8 +15,8 @@
 			</div>
 		</div>
 		<div class="steps">
-			<div class="step span-2" v-for="key in orderedKeys" :key="key">
-				<div class="step-header mb-2" :id="key.split(':').pop()">{{ getFriendlyName(key) }}</div>
+			<div v-for="key in orderedKeys" :key="key" class="step span-2">
+				<div :id="key.split(':').pop()" class="step-header mb-2">{{ getFriendlyName(key) }}</div>
 				<div class="mb-2">{{ getBrandingDescription(key) }}</div>
 				<InputSwitch
 					v-if="key === 'FoundationaLLM:Branding:KioskMode'"
@@ -30,38 +30,38 @@
 						key === 'FoundationaLLM:Branding:DefaultAgentWelcomeMessage'
 					"
 					:id="key.split(':').pop()"
-					:initialContent="JSON.parse(JSON.stringify(getBrandingValue(key)))"
-					@contentUpdate="updateHtmlText(key, $event)"
+					:initial-content="JSON.parse(JSON.stringify(getBrandingValue(key)))"
+					@content-update="updateHtmlText(key, $event)"
 				/>
 				<InputText
-					:value="getBrandingValue(key)"
-					@input="updateBrandingValue(key, $event.target.value)"
-					class="branding-input"
-					:aria-labelledby="key.split(':').pop()"
 					v-if="
 						key !== 'FoundationaLLM:Branding:FooterText' &&
 						key !== 'FoundationaLLM:Branding:KioskMode' &&
 						key !== 'FoundationaLLM:Branding:NoAgentsMessage' &&
 						key !== 'FoundationaLLM:Branding:DefaultAgentWelcomeMessage'
 					"
+					:value="getBrandingValue(key)"
+					:aria-labelledby="key.split(':').pop()"
+					class="branding-input"
+					@input="updateBrandingValue(key, $event.target.value)"
 				/>
 				<div
-					class="logo-preview"
-					:style="{ backgroundColor: getBrandingValue('FoundationaLLM:Branding:PrimaryColor') }"
 					v-if="key === 'FoundationaLLM:Branding:LogoUrl'"
+					:style="{ backgroundColor: getBrandingValue('FoundationaLLM:Branding:PrimaryColor') }"
+					class="logo-preview"
 				>
 					<img :src="$filters.publicDirectory(getBrandingValue(key))" class="logo-image" />
 				</div>
 			</div>
 			<div class="divider" />
 			<div
-				class="step span-2 color-group-container"
 				v-for="group in orderedKeyColorsGrouped"
 				:key="group.label"
+				class="step span-2 color-group-container"
 			>
 				<div class="color-group">
-					<div class="step span-2" v-for="key in group.keys" :key="key.key">
-						<div class="step-header mb-2" :id="key.key.split(':').pop()">
+					<div v-for="key in group.keys" :key="key.key" class="step span-2">
+						<div :id="key.key.split(':').pop()" class="step-header mb-2">
 							{{ getFriendlyName(key.key) }}
 						</div>
 						<div class="mb-2">{{ getBrandingDescription(key.key) }}</div>
@@ -69,15 +69,15 @@
 							:value="getBrandingValue(key.key)"
 							:color="getColorBrandingValue(key.key)"
 							:format="getColorBrandingFormat(key.key)"
-							:originalValue="getOriginalBrandingValue(key.key)"
-							:ariaLabel="key.key.split(':').pop()"
-							@updateValue="(newValue) => updateBrandingValue(key.key, newValue)"
+							:original-value="getOriginalBrandingValue(key.key)"
+							:aria-label="key.key.split(':').pop()"
+							@update-value="(newValue) => updateBrandingValue(key.key, newValue)"
 							@reset="resetBrandingValue(key.key, $event)"
 						/>
 					</div>
 				</div>
 				<div class="color-preview-container">
-					<div class="color-ratio" v-if="showContrastInfo">
+					<div v-if="showContrastInfo" class="color-ratio">
 						{{
 							contrastRatioText(
 								group.keys.find((k) => k.type === 'background').key,
@@ -105,12 +105,12 @@
 						</div>
 					</div>
 					<div
-						class="color-wcag-results-container"
 						v-if="
 							group.keys.find((k) => k.type === 'background').key &&
 							group.keys.find((k) => k.type === 'foreground')?.key &&
 							showContrastInfo
 						"
+						class="color-wcag-results-container"
 					>
 						<div class="color-wcag-results">
 							<div
@@ -157,23 +157,23 @@
 					</div>
 				</div>
 			</div>
-			<div class="divider" v-if="unorderedKeys.length > 0" />
-			<div class="step span-2" v-for="key in unorderedKeys" :key="key">
-				<div class="step-header mb-2" :id="key.split(':').pop()">{{ getFriendlyName(key) }}</div>
+			<div v-if="unorderedKeys.length > 0" class="divider" />
+			<div v-for="key in unorderedKeys" :key="key" class="step span-2">
+				<div :id="key.split(':').pop()" class="step-header mb-2">{{ getFriendlyName(key) }}</div>
 				<div class="mb-2">{{ getBrandingDescription(key) }}</div>
 				<InputText
 					:value="getBrandingValue(key)"
-					@input="updateBrandingValue(key, $event.target.value)"
 					class="branding-input"
 					:aria-labelledby="key.split(':').pop()"
+					@input="updateBrandingValue(key, $event.target.value)"
 				/>
 			</div>
 			<div class="button-container column-2 justify-self-end">
 				<Button
-					label="Reset"
-					@click="cancelBrandingChanges"
-					severity="secondary"
 					:disabled="JSON.stringify(branding) === JSON.stringify(brandingOriginal)"
+					label="Reset"
+					severity="secondary"
+					@click="cancelBrandingChanges"
 				/>
 				<Button label="Set Default" @click="setDefaultBranding" />
 				<Button label="Save" severity="primary" @click="saveBranding" />
@@ -479,13 +479,13 @@ export default {
 			} else {
 				color = brand ? brand.resource.value : '';
 			}
-			return color ? color : '';
+			return color ?? '';
 		},
 
 		getColorBrandingFormat(key: string) {
 			const brand = this.branding?.find((item: any) => item.resource.key === key);
 			if (brand && brand.resource.value) {
-				let hex = brand.resource.value;
+				const hex = brand.resource.value;
 				if (/^#[0-9A-F]{3}$/i.test(hex) || /^#[0-9A-F]{6}$/i.test(hex)) {
 					return 'hex';
 				} else if (/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/i.test(hex)) {
@@ -578,7 +578,7 @@ export default {
 			this.branding = JSON.parse(JSON.stringify(this.brandingOriginal));
 		},
 
-		async saveBranding() {
+		saveBranding() {
 			const changedBranding = this.branding.filter((brand: any) => {
 				const originalBrand = this.brandingOriginal.find(
 					(original: any) => original.resource.key === brand.resource.key,
@@ -586,7 +586,7 @@ export default {
 				return originalBrand.resource.value !== brand.resource.value;
 			});
 
-			const promises = changedBranding.map((brand: any) => {
+			changedBranding.forEach((brand: any) => {
 				const params = {
 					type: brand.resource.type,
 					name: brand.resource.name,
@@ -596,13 +596,12 @@ export default {
 					value: brand.resource.value,
 					content_type: brand.resource.content_type,
 				};
-				return api.saveBranding(brand.resource.key, params);
+				return await api.saveBranding(brand.resource.key, params);
 			});
 
 			try {
 				this.loading = true;
 				this.loadingStatusText = 'Applying branding changes...';
-				const results = await Promise.all(promises);
 				this.brandingOriginal = JSON.parse(JSON.stringify(this.branding));
 				this.$toast.add({
 					severity: 'success',
