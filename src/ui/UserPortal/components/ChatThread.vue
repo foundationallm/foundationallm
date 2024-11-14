@@ -49,10 +49,15 @@
 			<ChatInput ref="chatInput" :disabled="isLoading || isMessagePending" @send="handleSend" />
 		</div>
 
-		<footer v-if="$appConfigStore.footerText">
-			<!-- eslint-disable-next-line vue/no-v-html -->
-			<div class="footer-item" v-html="$appConfigStore.footerText"></div>
-		</footer>
+		<!-- Footer -->
+		<!-- eslint-disable-next-line vue/no-v-html -->
+		<footer
+			v-if="$appConfigStore.footerText"
+			class="chat-thread__footer"
+			v-html="$appConfigStore.footerText"
+		/>
+
+		<!-- File drag and drop -->
 		<div v-if="isDragging" ref="dropZone" class="drop-files-here-container">
 			<div class="drop-files-here">
 				<i class="pi pi-upload" style="font-size: 2rem"></i>
@@ -241,6 +246,21 @@ export default {
 	// box-shadow: 0 -5px 10px 0 rgba(27, 29, 33, 0.1);
 }
 
+.chat-thread__footer {
+	text-align: right;
+	font-size: 0.85rem;
+	padding-right: 24px;
+	margin-bottom: 12px;
+
+	:first-child {
+		margin-top: 0px;
+	}
+
+	:last-child {
+		margin-bottom: 0px;
+	}
+}
+
 .empty {
 	flex-direction: column;
 }
@@ -275,12 +295,6 @@ export default {
 	padding: 10px 14px 10px 14px;
 	// text-align: center;
 	// font-style: italic;
-}
-
-footer {
-	text-align: right;
-	font-size: 0.85rem;
-	padding-right: 24px;
 }
 
 .drop-files-here-container {

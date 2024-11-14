@@ -185,13 +185,6 @@
 <script lang="ts">
 import api from '@/js/api';
 
-function filterQuillHTML(html: string) {
-	return html
-		.replace(/(<p><br><\/p>)+/g, (match) => '<br>'.repeat(match.split('<p><br></p>').length)) // Handle multiple consecutive <p><br></p> tags accurately
-		.replace(/<\/p><p>/g, '<br>') // Replace </p><p> with <br> between paragraphs
-		.replace(/<\/?p[^>]*>/g, ''); // Remove any remaining <p> tags
-}
-
 function getLuminance(color: string) {
 	let r, g, b;
 	if (/^#[0-9A-F]{3}$/i.test(color)) {
@@ -553,9 +546,6 @@ export default {
 					newValue = `rgb(${newValue.r}, ${newValue.g}, ${newValue.b})`;
 				}
 			}
-			if (key === 'FoundationaLLM:Branding:FooterText') {
-				newValue = filterQuillHTML(newValue);
-			}
 
 			const brand = this.branding?.find((item: any) => item.resource.key === key);
 			if (brand) {
@@ -828,6 +818,7 @@ export default {
 .ql-container {
 	height: auto;
 }
+
 .ql-editor {
 	height: auto;
 	max-height: 200px;
