@@ -1,5 +1,3 @@
-using DocumentFormat.OpenXml.EMMA;
-using DocumentFormat.OpenXml.Math;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.ResourceProviders;
