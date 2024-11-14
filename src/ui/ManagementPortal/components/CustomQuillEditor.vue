@@ -93,7 +93,7 @@ import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import { Diff } from 'vue-diff';
 import 'vue-diff/dist/index.css';
-// import hljs from 'highlight.js';
+import 'highlight.js';
 import CodeEditor from 'simple-code-editor';
 import { v4 as uuidv4 } from 'uuid';
 
