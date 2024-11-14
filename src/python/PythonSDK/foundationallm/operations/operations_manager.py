@@ -28,7 +28,7 @@ class OperationsManager():
         else:
             self.verify_certs = True
         
-    async def create_operation(
+    async def create_operation_async(
         self,
         operation_id: str,
         instance_id: str,
@@ -81,7 +81,7 @@ class OperationsManager():
         except Exception as e:
             raise e
 
-    async def update_operation(self,
+    async def update_operation_async(self,
         operation_id: str,
         instance_id: str,
         status: OperationStatus,
@@ -144,7 +144,7 @@ class OperationsManager():
         except Exception as e:
             raise e
 
-    async def get_operation(
+    async def get_operation_async(
         self,
         operation_id: str,
         instance_id: str) -> LongRunningOperation:
@@ -189,7 +189,7 @@ class OperationsManager():
         except Exception as e:
             raise e
 
-    async def set_operation_result(
+    async def set_operation_result_async(
         self,
         operation_id: str,
         instance_id: str,
@@ -232,7 +232,7 @@ class OperationsManager():
         except Exception as e:
             raise e
 
-    async def get_operation_result(
+    async def get_operation_result_async(
         self,
         operation_id: str,
         instance_id: str) -> CompletionResponse:
@@ -277,7 +277,7 @@ class OperationsManager():
         except Exception as e:
             raise e
 
-    async def get_operation_logs(
+    async def get_operation_logs_async(
         self,
         operation_id: str,
         instance_id: str) -> List[LongRunningOperationLogEntry]:

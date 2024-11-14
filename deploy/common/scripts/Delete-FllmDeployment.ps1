@@ -181,6 +181,27 @@ $resourceGroups = Get-ResourceGroups `
 	-subscriptionId $subscriptionId `
 	-azdEnvName $azdEnvName
 
+if ($resourceGroups.Count -eq 0) {
+	Write-Host "No resource groups found for the specified AZD environment." -ForegroundColor Yellow
+	Stop-Transcript
+	exit
+}
+
+# Write the resource groups to be deleted to the transcript
+Write-Host "Resource groups to be deleted:" -ForegroundColor Green
+foreach ($rg in $resourceGroups.GetEnumerator()) {
+	Write-Host "- $($rg.Key)" -ForegroundColor Green
+}
+
+# Prompt the user for confirmation before proceeding with deletion
+$confirmation = Read-Host "Are you sure you want to delete the above resource groups? Type 'Yes' to confirm"
+
+if ($confirmation -ne "Yes") {
+	Write-Host "Deletion process aborted by the user." -ForegroundColor Red
+	Stop-Transcript
+	exit
+}
+
 # Loop through each resource group, delete resources, and then delete the
 # resource group
 foreach ($rg in $resourceGroups.GetEnumerator()) {

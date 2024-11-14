@@ -152,7 +152,7 @@ main {
 	color: var(--primary-button-bg) !important;
 }
 
-.p-button:not(.p-button-text) {
+.p-button:not(.p-button-text):not(.color-undo-button) {
 	background-color: var(--primary-button-bg) !important;
 	border-color: var(--primary-button-bg) !important;
 	color: var(--primary-button-text) !important;

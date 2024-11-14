@@ -29,9 +29,10 @@
 					@click="toggle"
 					@keydown.esc="hideAllPoppers"
 				/>
-				<OverlayPanel ref="menu" :dismissable="false" style="max-width: 98%">
+				<OverlayPanel ref="menu" :dismissable="isMobile" style="max-width: 98%">
 					<div class="file-upload-header">
 						<Button
+							ref="fileUploadCloseButton"
 							:icon="!isMobile ? 'pi pi-times' : undefined"
 							label="Close"
 							class="file-upload-container-button"
@@ -214,13 +215,14 @@
 					</div>
 				</template>
 			</VTooltip>
+
 			<Dialog
 				v-if="fileToDelete !== null"
 				v-focustrap
 				:visible="fileToDelete !== null"
 				:closable="false"
 				modal
-				:header="(fileToDelete.type === 'local') | 'oneDrive' ? 'Remove a file' : 'Delete a file'"
+				header="Remove file"
 				@keydown="deleteFileKeydown"
 			>
 				<div v-if="deleteFileProcessing" class="delete-dialog-content">
@@ -234,12 +236,7 @@
 					</div>
 				</div>
 				<div v-else>
-					<p>
-						Do you want to
-						{{ (fileToDelete.type === 'local') | 'oneDrive' ? 'remove' : 'delete' }} the file "{{
-							fileToDelete.name
-						}}" ?
-					</p>
+					<p>Do you want to remove the file "{{ fileToDelete.name }}"?</p>
 				</div>
 				<template #footer>
 					<Button
@@ -249,7 +246,7 @@
 						@click="fileToDelete = null"
 					/>
 					<Button
-						:label="(fileToDelete.type === 'local') | 'oneDrive' ? 'Remove' : 'Delete'"
+						label="Remove"
 						severity="danger"
 						autofocus
 						:disabled="deleteFileProcessing"
@@ -257,9 +254,11 @@
 					/>
 				</template>
 			</Dialog>
+
 			<Dialog
 				v-model:visible="showOneDriveIframeDialog"
 				modal
+				:closable="false"
 				aria-label="OneDrive File Picker Dialog"
 				style="max-width: 98%; min-width: 50%; max-height: 98%"
 				class="onedrive-iframe-dialog"
@@ -451,7 +450,7 @@ export default {
 		}
 
 		await this.$appStore.getCoreConfiguration();
-		await this.$appStore.getAgents();
+		await this.$appStore.ensureAgentsLoaded();
 
 		this.agents = this.$appStore.agents.map((agent) => ({
 			label: agent.resource.name,
@@ -513,6 +512,13 @@ export default {
 
 		toggle(event: any) {
 			this.$refs.menu.toggle(event);
+			this.$nextTick(() => {
+				if (this.$refs.menu.visible) {
+					this.$refs.fileUploadCloseButton.$el.focus();
+				} else {
+					this.$refs.fileUploadButton.$el.focus();
+				}
+			});
 		},
 
 		handleKeydown(event: KeyboardEvent) {
@@ -599,7 +605,7 @@ export default {
 						severity: 'error',
 						summary: 'Error',
 						detail: `File upload failed for "${file.name}". ${error.message || error.title || ''}`,
-						life: 5000,
+						life: this.$appStore.autoHideToasts ? 5000 : null,
 					});
 				} finally {
 					if (totalFiles === filesUploaded + filesFailed) {
@@ -614,7 +620,7 @@ export default {
 								severity: 'success',
 								summary: 'Success',
 								detail: `Successfully uploaded ${filesUploaded} file${totalFiles > 1 ? 's' : ''}.`,
-								life: 5000,
+								life: this.$appStore.autoHideToasts ? 5000 : null,
 							});
 						}
 					}
@@ -717,7 +723,7 @@ export default {
 						severity: 'error',
 						summary: 'Error',
 						detail: 'File size exceeds the limit of 512MB.',
-						life: 5000,
+						life: this.$appStore.autoHideToasts ? 5000 : null,
 					});
 				} else if (allowedFileTypes && allowedFileTypes !== '') {
 					const fileExtension = file.name.split('.').pop()?.toLowerCase();
@@ -731,7 +737,7 @@ export default {
 							severity: 'error',
 							summary: 'Error',
 							detail: `File type not supported. File: ${file.name}`,
-							life: 5000,
+							life: this.$appStore.autoHideToasts ? 5000 : null,
 						});
 					} else {
 						filteredFiles.push(file);
@@ -752,7 +758,7 @@ export default {
 					severity: 'error',
 					summary: 'Error',
 					detail: `You can only upload a maximum of ${this.maxFiles} ${this.maxFiles === 1 ? 'file' : 'files'} at a time.`,
-					life: 5000,
+					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 				filteredFiles.splice(
 					this.maxFiles -
@@ -817,7 +823,7 @@ export default {
 					severity: 'success',
 					summary: 'Success',
 					detail: `Your account is now connected to OneDrive.`,
-					life: 5000,
+					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 				this.connectingOneDrive = false;
 			});
@@ -830,7 +836,7 @@ export default {
 					severity: 'success',
 					summary: 'Success',
 					detail: `Your account is now disconnected from OneDrive.`,
-					life: 5000,
+					life: this.$appStore.autoHideToasts ? 5000 : null,
 				});
 				this.disconnectingOneDrive = false;
 			});
@@ -1082,8 +1088,17 @@ export default {
 	flex-basis: auto;
 }
 
+.submit:focus {
+	box-shadow: 0 0 0 0.1rem #000;
+}
+
 .file-upload-button {
 	height: 100%;
+	z-index: 1;
+}
+
+.file-upload-button:focus {
+	box-shadow: 0 0 0 0.1rem #000;
 }
 
 .attached-files-container {
@@ -1154,6 +1169,10 @@ export default {
 	margin-bottom: 0.5rem;
 }
 
+.file-upload-container-button:focus {
+	box-shadow: 0 0 0 0.1rem #000;
+}
+
 @media only screen and (max-width: 405px) {
 	.upload-files-header button {
 		padding: 0.1rem 0.25rem !important;
@@ -1198,6 +1217,10 @@ export default {
 </style>
 
 <style lang="scss">
+.onedrive-iframe-dialog .p-dialog-header {
+	padding: 5px;
+}
+
 @media only screen and (max-width: 545px) {
 	.submit .p-button-label {
 		display: none;

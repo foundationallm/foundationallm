@@ -1,4 +1,5 @@
-﻿using Azure.Messaging;
+﻿using System.Diagnostics;
+using Azure.Messaging;
 using FluentValidation;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Events;
@@ -71,7 +72,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
-            ResourceProviderLoadOptions? options = null)
+            ResourceProviderGetOptions? options = null)
         {
             var policyDefinition = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
 
@@ -170,7 +171,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
         #region Resource provider strongly typed operations
 
         /// <inheritdoc/>
-        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) where T : class
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null) where T : class
         {
             var attachment = await _cosmosDBService.GetAttachment(userIdentity.UPN!, resourcePath.ResourceTypeInstances[0].ResourceId!)
                 ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.MainResourceTypeName} was not found.");
@@ -180,7 +181,12 @@ namespace FoundationaLLM.Attachment.ResourceProviders
         }
 
         /// <inheritdoc/>
-        protected override async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, T resource, UnifiedUserIdentity userIdentity) =>
+        protected override async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            T resource,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderUpsertOptions? options = null) =>
             resource switch
             {
                 AttachmentFile attachment => (TResult) await UpdateAttachment(resourcePath, attachment, userIdentity),
@@ -188,6 +194,39 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                     $"The type {nameof(T)} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
+
+        protected override async Task<TResult> UpdateResourcePropertiesAsyncInternal<T, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, Dictionary<string, object?> propertyValues, UnifiedUserIdentity userIdentity)
+        {
+            _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
+
+            // This is the PEP (Policy Enforcement Point) where the resource provider enforces the policy definition to update the resource properties.
+            // The implementation relies on using a filter predicate to ensure that the user identity is authorized to update the resource properties.
+
+            if (typeof(T) == typeof(AttachmentFile))
+            {
+                var result = await _cosmosDBService.PatchItemPropertiesAsync<AttachmentReference>(
+                        AzureCosmosDBContainers.Attachments,
+                        userIdentity.UPN!,
+                        resourcePath.MainResourceId!,
+                        userIdentity.UPN!,
+                        propertyValues,
+                        default)
+                    ?? throw new ResourceProviderException(
+                        $"The {_name} resource provider did not find the {resourcePath.RawResourcePath} resource. "
+                        + "This indicates that either the resource does not exist or existing policies do not allow the user to update it.",
+                        StatusCodes.Status404NotFound);
+                return (new ResourceProviderUpsertResult<T>
+                {
+                    ObjectId = resourcePath.RawResourcePath,
+                    ResourceExists = true,
+                    Resource = await LoadAttachment(result, false) as T
+                } as TResult)!;
+            }
+
+            throw new ResourceProviderException(
+                $"The upsert properties operation is not supported by the {_name} resource provider for type {typeof(T).Name}.",
+                StatusCodes.Status400BadRequest);
+        }
 
         #endregion
 
@@ -229,7 +268,8 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                 Type = attachment.Type,
                 Path = $"{_storageContainerName}{attachment.Filename}",
                 ContentType = attachment.ContentType,
-                SecondaryProvider = attachment.SecondaryProvider
+                SecondaryProvider = attachment.SecondaryProvider,
+                SecondaryProviderObjectId = attachment.SecondaryProviderObjectId
             };
 
             if (loadContent)

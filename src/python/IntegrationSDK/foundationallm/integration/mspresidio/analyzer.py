@@ -2,6 +2,7 @@
 The Analyzer is responsible for analyzing textual content and returning
 the PII entities found in the text, optionally anonymizing the text.
 """
+import re
 from typing import List
 from presidio_analyzer import AnalyzerEngine, RecognizerResult
 from presidio_anonymizer import AnonymizerEngine
@@ -28,6 +29,8 @@ class Analyzer:
         self.request = request
         self.analyzer = AnalyzerEngine()
         self.anonymizer = AnonymizerEngine()
+        self.entities = [entity for recognizer in self.analyzer.get_recognizers()
+                                for entity in recognizer.supported_entities]
 
     def analyze(self) -> AnalyzeResponse:
         """
@@ -39,10 +42,10 @@ class Analyzer:
             # anonymize the text results based on the analyzer results
             anonymized_results = self.__anonymize(analyze_results)
             results = [PIIResultAnonymized(entity_type=p.entity_type, start_index=p.start,
-                                           end_index=p.end, anonymized_text=p.text,
+                                           end_index=p.end, anonymized_text=self.__token_replacement(p.text),
                                            operator=p.operator)
                        for p in anonymized_results.items]
-            return AnalyzeResponse(content=anonymized_results.text, results=results)
+            return AnalyzeResponse(content=self.__token_replacement(anonymized_results.text), results=results)
 
         # pii_result response
         results = [PIIResult(entity_type=p.entity_type, start_index=p.start,
@@ -62,3 +65,10 @@ class Analyzer:
         in the text
         """
         return self.anonymizer.anonymize(text=self.request.content, analyzer_results=results)
+
+    def __token_replacement(self, text:str) -> str:
+        """
+        Replaces the Presidio tokens with square bracket syntax
+        """
+        pattern = re.compile(r"<(" + "|".join(map(re.escape, self.entities)) + r")>")
+        return pattern.sub(r"[\1]", text)

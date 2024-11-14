@@ -63,13 +63,13 @@ namespace FoundationaLLM.Conversation.ResourceProviders
 
         #region Resource provider strongly typed operations
 
-        protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
+        protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
         {
             var policyDefinition = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
 
-            var conversationType = options?.Parameters?.GetValueOrDefault(ConversationResourceProviderLoadParameterNames.ConversationType) as string
+            var conversationType = options?.Parameters?.GetValueOrDefault(ConversationResourceProviderGetParameterNames.ConversationType) as string
                 ?? throw new ResourceProviderException(
-                    $"The {_name} resource provider requires the {ConversationResourceProviderLoadParameterNames.ConversationType} parameter to load the {resourcePath.RawResourcePath} resource path.",
+                    $"The {_name} resource provider requires the {ConversationResourceProviderGetParameterNames.ConversationType} parameter to load the {resourcePath.RawResourcePath} resource path.",
                     StatusCodes.Status500InternalServerError);
 
             // This is the PEP (Policy Enforcement Point) where the resource provider enforces the policy definition to load the resources.
@@ -87,7 +87,7 @@ namespace FoundationaLLM.Conversation.ResourceProviders
             }).ToList();
         }
 
-        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
         {
             _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
 
@@ -108,7 +108,12 @@ namespace FoundationaLLM.Conversation.ResourceProviders
             return (result as T)!;
         }
 
-        protected override async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, T resource, UnifiedUserIdentity userIdentity)
+        protected override async Task<TResult> UpsertResourceAsyncInternal<T, TResult>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            T resource,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderUpsertOptions? options = null)
         {
             _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
 
@@ -129,6 +134,8 @@ namespace FoundationaLLM.Conversation.ResourceProviders
                 throw new ResourceProviderException(
                     $"The user {userIdentity.UPN} is not authorized to use the provided resource to update the {resourcePath.RawResourcePath} resource path.",
                     StatusCodes.Status403Forbidden);
+
+            UpdateBaseProperties(updatedConversation, userIdentity, existingConversation == null);
 
             if (existingConversation == null
                 || string.IsNullOrWhiteSpace(updatedConversation.ObjectId))

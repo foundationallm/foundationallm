@@ -62,7 +62,7 @@ namespace FoundationaLLM.Common.Services.API
                 clientBuilderParameters = [];
 
             clientBuilderParameters[HttpClientFactoryServiceKeyNames.Endpoint] =
-                endpointConfiguration.UrlExceptions.SingleOrDefault(x => x.UserPrincipalName == userIdentity.UPN && x.Enabled)?.Url
+                GetUrlExceptionForUserIdentity(endpointConfiguration, userIdentity)?.Url                
                 ?? endpointConfiguration.Url;
             clientBuilderParameters[HttpClientFactoryServiceKeyNames.TimeoutSeconds] = endpointConfiguration.TimeoutSeconds;
             clientBuilderParameters[HttpClientFactoryServiceKeyNames.AuthenticationType] = endpointConfiguration.AuthenticationType;
@@ -94,7 +94,7 @@ namespace FoundationaLLM.Common.Services.API
             // Override the default URL if an exception is provided.
             if (userIdentity != null)
             {
-                var urlException = endpointConfiguration.UrlExceptions.SingleOrDefault(x => x.UserPrincipalName == userIdentity.UPN && x.Enabled);
+                var urlException = GetUrlExceptionForUserIdentity(endpointConfiguration, userIdentity);
                 if (urlException != null)
                     httpClient.BaseAddress = new Uri(urlException.Url);
 
@@ -206,5 +206,15 @@ namespace FoundationaLLM.Common.Services.API
 
             return endpointConfiguration;
         }
+
+        /// <summary>
+        /// Retrieve an enabled URL Exception for the provided user identity if one exists. If not NULL is returned.
+        /// </summary>
+        /// <param name="endpointConfiguration">The endpoint configuration from which to retrieve the URL Exception.</param>
+        /// <param name="userIdentity">The Identity of the user.</param>
+        /// <returns>URLException or NULL</returns>
+        private UrlException? GetUrlExceptionForUserIdentity(APIEndpointConfiguration endpointConfiguration, UnifiedUserIdentity userIdentity)
+        => endpointConfiguration.UrlExceptions.SingleOrDefault(x => x.UserPrincipalName.ToLower() == userIdentity.UPN!.ToLower() && x.Enabled);
+        
     }
 }

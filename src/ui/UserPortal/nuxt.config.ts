@@ -55,6 +55,7 @@ export default defineNuxtConfig({
 	devServer: {
 		...(buildLoadingTemplate ? { loadingTemplate: () => buildLoadingTemplate } : {}),
 		port: 3000,
+		host: '0.0.0.0',
 	},
 	runtimeConfig: {
 		APP_CONFIG_ENDPOINT: process.env.APP_CONFIG_ENDPOINT,

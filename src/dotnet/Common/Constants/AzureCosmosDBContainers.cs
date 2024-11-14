@@ -39,5 +39,10 @@
         /// Stores file attachment references.
         /// </summary>
         public const string Attachments = "Attachments";
+
+        /// <summary>
+        /// Stores information about external resources (e.g., Azure OpenAI assistants threads and files).
+        /// </summary>
+        public const string ExternalResources = "ExternalResources";
     }
 }

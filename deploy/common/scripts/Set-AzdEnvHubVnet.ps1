@@ -42,7 +42,7 @@ Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
 # Retrieve the VNet ID
-$hubVnetId = az network vnet show --resource-group $hubResourceGroupName --name $hubVnetName --query id --output tsv
+$hubVnetId = az network vnet show --resource-group $hubResourceGroupName --name $hubVnetName --subscription $hubSubscriptionId --query id --output tsv
 
 # Set the environment values
 $values = @(

@@ -76,7 +76,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Services.Indexing
         /// <param name="endpoint">The endpoint of the Azure AI Search deployment.</param>
         /// <returns>The <see cref="Kernel"/> instance.</returns>
         private AzureAISearchMemoryStore CreateMemoryStoreFromIdentity(string endpoint) =>
-            new(endpoint, DefaultAuthentication.AzureCredential);
+            new(endpoint, DefaultAuthentication.AzureCredential!);
 
         private void ValidateEndpoint(string? value)
         {

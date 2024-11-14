@@ -76,19 +76,19 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Update="Constants\Authorization\AuthorizableActionNames.tt">
+    <None Update="Templates\AuthorizableActionNames.tt">
       <LastGenOutput>AuthorizableActionNames.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Constants\Authorization\AuthorizationKeyVaultSecretNames.tt">
+    <None Update="Templates\AuthorizationKeyVaultSecretNames.tt">
       <LastGenOutput>AuthorizationKeyVaultSecretNames.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Constants\Authorization\AuthorizationDependencyInjectionKeys.tt">
+    <None Update="Templates\AuthorizationDependencyInjectionKeys.tt">
       <LastGenOutput>AuthorizationDependencyInjectionKeys.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Constants\Authorization\RoleDefinitionNames.tt">
+    <None Update="Templates\RoleDefinitionNames.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>RoleDefinitionNames.cs</LastGenOutput>
     </None>
@@ -162,22 +162,22 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Compile Update="Constants\Authorization\AuthorizableActionNames.cs">
+    <Compile Update="Templates\AuthorizableActionNames.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AuthorizableActionNames.tt</DependentUpon>
     </Compile>
-    <Compile Update="Constants\Authorization\AuthorizationKeyVaultSecretNames.cs">
+    <Compile Update="Templates\AuthorizationKeyVaultSecretNames.cs">
       <DependentUpon>AuthorizationKeyVaultSecretNames.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Constants\Authorization\AuthorizationDependencyInjectionKeys.cs">
+    <Compile Update="Templates\AuthorizationDependencyInjectionKeys.cs">
       <DependentUpon>AuthorizationDependencyInjectionKeys.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Constants\Authorization\RoleDefinitionNames.cs">
+    <Compile Update="Templates\RoleDefinitionNames.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>RoleDefinitionNames.tt</DependentUpon>

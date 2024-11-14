@@ -4,6 +4,7 @@ using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 using FoundationaLLM.Core.Examples.LoadTests.Setup;
 using Microsoft.Extensions.DependencyInjection;
@@ -57,34 +58,50 @@ namespace FoundationaLLM.Core.Examples.LoadTests
             var instanceSettings = serviceProvider.GetRequiredService<IOptions<InstanceSettings>>().Value;
             var instanceId = instanceSettings.Id;
             var userIdentities = GetUserIdentities(hostId, simulatedUsersCount);
+            var agentObjectId = ResourcePath.GetObjectId(
+                instanceId,
+                ResourceProviderNames.FoundationaLLM_Agent,
+                AgentResourceTypeNames.Agents,
+                "MockAgent");
 
             await Task.WhenAll(
                 userIdentities
                 .Select(userIdentity => SimulateAssistantUserContextCreation(
                     instanceId,
+                    agentObjectId,
                     resourceProviders.AzureOpenAIResourceProvider,
                     userIdentity)));
         }
 
         private async Task SimulateAssistantUserContextCreation(
             string instanceId,
+            string agentObjectId,
             IResourceProviderService resourceProvider,
             UnifiedUserIdentity userIdentity)
         {
             var assistantUserContextName = $"{userIdentity.UPN!.NormalizeUserPrincipalName()}-assistant-{instanceId.ToLower()}";
-            var assistantUserContext = new AssistantUserContext
-            {
-                Name = assistantUserContextName,
-                UserPrincipalName = userIdentity.UPN!,
-                Endpoint = "endpoint_placeholder",
-                ModelDeploymentName = "model_placeholder",
-                Prompt = "prompt_placeholder",
-            };
+            //var assistantUserContext = new AssistantUserContext
+            //{
+            //    Name = assistantUserContextName,
+            //    UserPrincipalName = userIdentity.UPN!,
+            //    AgentAssistants = new()
+            //    {
+            //        {
+            //            agentObjectId,
+            //            new()
+            //            {
+            //                Endpoint = "endpoint_placeholder",
+            //                ModelDeploymentName = "model_placeholder",
+            //                Prompt = "prompt_placeholder",
+            //            }
+            //        }
+            //    }
+            //};
 
-            await resourceProvider.UpsertResourceAsync<AssistantUserContext, AssistantUserContextUpsertResult>(
-                instanceId,
-                assistantUserContext,
-                userIdentity);
+            //await resourceProvider.UpsertResourceAsync<AssistantUserContext, AzureOpenAIConversationMappingUpsertResult>(
+            //    instanceId,
+            //    assistantUserContext,
+            //    userIdentity);
         }
 
         private List<UnifiedUserIdentity> GetUserIdentities(

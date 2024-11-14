@@ -416,7 +416,7 @@
 				"name": "MaxUploadsPerMessage",
 				"description": "The maximum number of files that can be uploaded for a single conversation message.",
 				"secret": "",
-				"value": "{ 'value': 10, 'value_exceptions': []}",
+				"value": "{ \\\"value\\\": 10, \\\"value_exceptions\\\": []}",
 				"content_type": "application/json",
 				"first_version": "0.8.2"
 			},
@@ -424,7 +424,7 @@
 				"name": "CompletionResponsePollingIntervalSeconds",
 				"description": "The size in seconds of the polling interval used to check for completion responses.",
 				"secret": "",
-				"value": "{ 'value': 10, 'value_exceptions': []}",
+				"value": "{ \\\"value\\\": 10, \\\"value_exceptions\\\": []}",
 				"content_type": "application/json",
 				"first_version": "0.8.2"
 			}
@@ -823,6 +823,23 @@
 				"value": "${env:ENTRA_MANAGEMENT_API_CLIENT_ID}",
 				"content_type": "",
 				"first_version": "0.8.0"
+			}
+		]
+	},
+	{
+		"namespace": "APIEndpoints:ManagementAPI:Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section for Management API."
+		},
+		"configuration_keys": [
+			{
+				"name": "AllowedUploadFileExtensions",
+				"description": "The comma-separated list file extensions that users are allowed to upload to a conversation.",
+				"secret": "",
+				"value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
+				"content_type": "",
+				"first_version": "0.8.4"
 			}
 		]
 	},
@@ -1331,9 +1348,25 @@
 				"name": "FooterText",
 				"description": "Footer text.",
 				"secret": "",
-				"value": "FoundationaLLM (c) 2024",
+				"value": "FoundationaLLM &copy; All rights reserved",
 				"content_type": "",
 				"first_version": "0.8.0"
+			},
+			{
+				"name": "NoAgentsMessage",
+				"description": "Message to display to users when their agent list is empty.",
+				"secret": "",
+				"value": "No agents available. Please check with your system administrator for assistance.",
+				"content_type": "",
+				"first_version": "0.8.4"
+			},
+			{
+				"name": "DefaultAgentWelcomeMessage",
+				"description": "Message to display when starting a new conversation with an agent. This is displayed when the agent is not selected or if the selected agent does not have a configured welcome message.",
+				"secret": "",
+				"value": "Start the conversation using the text box below.",
+				"content_type": "",
+				"first_version": "0.8.4"
 			}
 		]
 	},

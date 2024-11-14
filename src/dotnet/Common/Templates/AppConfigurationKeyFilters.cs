@@ -175,6 +175,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:*";
         
         /// <summary>
+        /// Filter for the configuration section for Management API.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ManagementAPI_Configuration =
+            "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:*";
+        
+        /// <summary>
         /// Filter for the configuration section used to identify the essential settings for the Vectorization API.
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_VectorizationAPI_Essentials =

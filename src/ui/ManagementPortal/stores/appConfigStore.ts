@@ -35,6 +35,11 @@ export const useAppConfigStore = defineStore('appConfig', {
 		secondaryButtonBg: null,
 		secondaryButtonText: null,
 		footerText: null,
+		allowedUploadFileExtensions: null,
+		noAgentsMessage: null,
+		defaultAgentWelcomeMessage: null,
+
+		agentPrivateStoreFeatureFlag: false,
 
 		// Auth: These settings configure the MSAL authentication.
 		auth: {
@@ -85,7 +90,11 @@ export const useAppConfigStore = defineStore('appConfig', {
 				secondaryButtonBg,
 				secondaryButtonText,
 				footerText,
+				noAgentsMessage,
+				defaultAgentWelcomeMessage,
+				agentPrivateStoreFeatureFlag,
 				instanceId,
+				allowedUploadFileExtensions,
 				authClientId,
 				authInstance,
 				authTenantId,
@@ -119,7 +128,11 @@ export const useAppConfigStore = defineStore('appConfig', {
 				getConfigValueSafe('FoundationaLLM:Branding:SecondaryButtonBackgroundColor', '#70829a'),
 				getConfigValueSafe('FoundationaLLM:Branding:SecondaryButtonTextColor', '#fff'),
 				getConfigValueSafe('FoundationaLLM:Branding:FooterText'),
+				getConfigValueSafe('FoundationaLLM:Branding:NoAgentsMessage', 'No agents available. Please check with your system administrator for assistance.'),
+				getConfigValueSafe('FoundationaLLM:Branding:DefaultAgentWelcomeMessage', 'Start the conversation using the text box below.'),
+				getConfigValueSafe('.appconfig.featureflag/FoundationaLLM.Agent.PrivateStore', '{"enabled": false}'),
 				getConfigValueSafe('FoundationaLLM:Instance:Id', '00000000-0000-0000-0000-000000000000'),
+				getConfigValueSafe('FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions', 'pdf'),
 
 				api.getConfigValue('FoundationaLLM:ManagementPortal:Authentication:Entra:ClientId'),
 				api.getConfigValue('FoundationaLLM:ManagementPortal:Authentication:Entra:Instance'),
@@ -158,6 +171,10 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.secondaryButtonBg = secondaryButtonBg;
 			this.secondaryButtonText = secondaryButtonText;
 			this.footerText = footerText;
+			this.allowedUploadFileExtensions = allowedUploadFileExtensions;
+			this.noAgentsMessage = noAgentsMessage;
+			this.defaultAgentWelcomeMessage = defaultAgentWelcomeMessage;
+			this.agentPrivateStoreFeatureFlag = JSON.parse(agentPrivateStoreFeatureFlag)?.enabled;;
 
 			this.auth.clientId = authClientId;
 			this.auth.instance = authInstance;
