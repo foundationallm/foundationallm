@@ -44,7 +44,9 @@
 		"pinia": "^2.2.2",
 		"primeicons": "^7.0.0",
 		"primevue": "^3.53.0",
-		"uuid": "^10.0.0"
+		"simple-code-editor": "^2.0.9",
+		"uuid": "^10.0.0",
+		"vue-diff": "^1.2.4"
 	},
 	"optionalDependencies": {
 		"@rollup/rollup-linux-x64-gnu": "4.21.0"
