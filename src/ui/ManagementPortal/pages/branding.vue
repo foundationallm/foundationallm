@@ -586,7 +586,7 @@ export default {
 				return originalBrand.resource.value !== brand.resource.value;
 			});
 
-			changedBranding.forEach((brand: any) => {
+			changedBranding.forEach(async (brand: any) => {
 				const params = {
 					type: brand.resource.type,
 					name: brand.resource.name,
