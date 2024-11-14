@@ -625,10 +625,10 @@ export default {
 			{
 				method: 'POST',
 				body: params,
-			}
+			},
 		);
 	},
-	
+
 	async getAIModels(): Promise<ResourceProviderGetResult<AIModel>[]> {
 		const data = (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.AIModel/aiModels?api-version=${this.apiVersion}`,

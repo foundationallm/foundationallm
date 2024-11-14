@@ -13,7 +13,7 @@
 				</div>
 			</div>
 
-			<div style="display: flex;align-items: center;">
+			<div style="display: flex; align-items: center">
 				<!-- Private storage -->
 				<PrivateStorage v-if="hasOpenAIAssistantCapability" :agent-name="`${agentName}`" />
 
@@ -81,17 +81,17 @@
 			<div class="span-2">
 				<div class="step-header mb-2">Welcome message:</div>
 				<div id="aria-welcome-message-desc" class="mb-2">
-					Provide a message to display when a user starts a new conversation with the agent.
-					If a message is not provided, the default welcome message will be displayed.
+					Provide a message to display when a user starts a new conversation with the agent. If a
+					message is not provided, the default welcome message will be displayed.
 				</div>
 				<CustomQuillEditor
-                    v-model="agentWelcomeMessage"
+					v-model="agentWelcomeMessage"
 					:initialContent="JSON.parse(JSON.stringify(agentWelcomeMessage))"
-                    @contentUpdate="updateAgentWelcomeMessage($event)"
+					@contentUpdate="updateAgentWelcomeMessage($event)"
 					class="w-100"
 					placeholder="Enter agent welcome message"
 					aria-labelledby="aria-welcome-message-desc"
-                />
+				/>
 			</div>
 
 			<!-- Knowledge source -->
@@ -1087,8 +1087,8 @@ export default {
 		},
 
 		updateAgentWelcomeMessage(newContent: string) {
-            this.agentWelcomeMessage = newContent;
-        },
+			this.agentWelcomeMessage = newContent;
+		},
 
 		async checkName() {
 			try {
@@ -1276,7 +1276,7 @@ export default {
 					type: this.agentType,
 					name: this.agentName,
 					description: this.agentDescription,
-					properties: { 'welcome_message': this.agentWelcomeMessage },
+					properties: { welcome_message: this.agentWelcomeMessage },
 					object_id: this.object_id,
 					inline_context: this.inline_context,
 					cost_center: this.cost_center,
