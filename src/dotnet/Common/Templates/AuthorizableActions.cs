@@ -62,45 +62,66 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "Agent")
                 },
                 {
-                    AuthorizableActionNames.FoundationaLLM_AzureOpenAI_AssistantUserContexts_Read,
+                    AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Read,
                     new AuthorizableAction(
-                        AuthorizableActionNames.FoundationaLLM_AzureOpenAI_AssistantUserContexts_Read,
-                        "Read assistant user contexts.",
+                        AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Read,
+                        "Read workflows.",
+                        "Agent")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Write,
+                        "Create or update workflows.",
+                        "Agent")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Delete,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Delete,
+                        "Delete workflows.",
+                        "Agent")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Read,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Read,
+                        "Read Azure OpenAI conversation mappings.",
                         "AzureOpenAI")
                 },
                 {
-                    AuthorizableActionNames.FoundationaLLM_AzureOpenAI_AssistantUserContexts_Write,
+                    AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Write,
                     new AuthorizableAction(
-                        AuthorizableActionNames.FoundationaLLM_AzureOpenAI_AssistantUserContexts_Write,
-                        "Create or update assistant user contexts.",
+                        AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Write,
+                        "Create or update Azure OpenAI conversation mappings.",
                         "AzureOpenAI")
                 },
                 {
-                    AuthorizableActionNames.FoundationaLLM_AzureOpenAI_AssistantUserContexts_Delete,
+                    AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Delete,
                     new AuthorizableAction(
-                        AuthorizableActionNames.FoundationaLLM_AzureOpenAI_AssistantUserContexts_Delete,
-                        "Delete assistant user contexts.",
+                        AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Delete,
+                        "Delete Azure OpenAI conversation mappings.",
                         "AzureOpenAI")
                 },
                 {
-                    AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileUserContexts_Read,
+                    AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Read,
                     new AuthorizableAction(
-                        AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileUserContexts_Read,
-                        "Read file user contexts.",
+                        AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Read,
+                        "Read Azure OpenAI file mappings.",
                         "AzureOpenAI")
                 },
                 {
-                    AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileUserContexts_Write,
+                    AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Write,
                     new AuthorizableAction(
-                        AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileUserContexts_Write,
-                        "Create or update file user contexts.",
+                        AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Write,
+                        "Create or update Azure OpenAI file mappings.",
                         "AzureOpenAI")
                 },
                 {
-                    AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileUserContexts_Delete,
+                    AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Delete,
                     new AuthorizableAction(
-                        AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileUserContexts_Delete,
-                        "Delete file user contexts.",
+                        AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Delete,
+                        "Delete Azure OpenAI file mappings.",
                         "AzureOpenAI")
                 },
                 {

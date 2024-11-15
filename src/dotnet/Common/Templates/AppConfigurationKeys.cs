@@ -3,7 +3,7 @@
 // WARNING!
 // This file is auto-generated based on the AppConfiguration.json file.
 // Do not make changes to this file, as they will be automatically overwritten.
-//
+// 
 // -------------------------------------------------------------------------------
 namespace FoundationaLLM.Common.Constants.Configuration
 {
@@ -607,6 +607,17 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:APIEndpoints:ManagementAPI:Configuration
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions setting.
+        /// <para>Value description:<br/>The comma-separated list file extensions that users are allowed to upload to a conversation.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_AllowedUploadFileExtensions =
+            "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions";
+
+        #endregion
+
         #region FoundationaLLM:APIEndpoints:VectorizationAPI:Essentials
         
         /// <summary>
@@ -981,6 +992,20 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_Branding_FooterText =
             "FoundationaLLM:Branding:FooterText";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Branding:NoAgentsMessage setting.
+        /// <para>Value description:<br/>Message to display to users when their agent list is empty.</para>
+        /// </summary>
+        public const string FoundationaLLM_Branding_NoAgentsMessage =
+            "FoundationaLLM:Branding:NoAgentsMessage";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Branding:DefaultAgentWelcomeMessage setting.
+        /// <para>Value description:<br/>Message to display when starting a new conversation with an agent. This is displayed when the agent is not selected or if the selected agent does not have a configured welcome message.</para>
+        /// </summary>
+        public const string FoundationaLLM_Branding_DefaultAgentWelcomeMessage =
+            "FoundationaLLM:Branding:DefaultAgentWelcomeMessage";
 
         #endregion
 

@@ -9,13 +9,13 @@ namespace FoundationaLLM.Core.Utils
     {
         private static readonly Dictionary<string, string> FileTypeMappings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
-            { ".jpg", MessageContentItemTypes.ImageFile },
-            { ".jpeg", MessageContentItemTypes.ImageFile },
-            { ".png", MessageContentItemTypes.ImageFile },
-            { ".gif", MessageContentItemTypes.ImageFile },
-            { ".bmp", MessageContentItemTypes.ImageFile },
-            { ".svg", MessageContentItemTypes.ImageFile },
-            { ".webp", MessageContentItemTypes.ImageFile },
+            //{ ".jpg", MessageContentItemTypes.ImageFile },
+            //{ ".jpeg", MessageContentItemTypes.ImageFile },
+            //{ ".png", MessageContentItemTypes.ImageFile },
+            //{ ".gif", MessageContentItemTypes.ImageFile },
+            //{ ".bmp", MessageContentItemTypes.ImageFile },
+            //{ ".svg", MessageContentItemTypes.ImageFile },
+            //{ ".webp", MessageContentItemTypes.ImageFile },
             { ".html", MessageContentItemTypes.HTML },
             { ".htm", MessageContentItemTypes.HTML }
         };

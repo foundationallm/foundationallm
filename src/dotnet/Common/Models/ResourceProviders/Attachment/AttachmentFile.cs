@@ -38,13 +38,23 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Attachment
         public required string OriginalFileName { get; set; }
 
         /// <summary>
-        /// Indicates if the attachment has a secondary provider.
+        /// Gets or sets the secondary provider of the attachment.
         /// </summary>
         /// <remarks>
         /// The only secondary provider currently supported is FoundationaLLM.AzureOpenAI.
         /// </remarks>
         [JsonPropertyName("secondary_provider")]
         public string? SecondaryProvider { get; set; }
+
+        /// <summary>
+        /// Gets or sets the object identifier of the secondary provider of the attachment.
+        /// </summary>
+        /// <remarks>
+        /// The only secondary provider currently supported is FoundationaLLM.AzureOpenAI.
+        /// In this case, the object identifier is the Azure OpenAI file identifier.
+        /// </remarks>
+        [JsonPropertyName("secondary_provider_object_id")]
+        public string? SecondaryProviderObjectId { get; set; }
 
     }
 }

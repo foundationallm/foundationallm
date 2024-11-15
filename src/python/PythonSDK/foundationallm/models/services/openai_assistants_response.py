@@ -24,8 +24,9 @@ class OpenAIAssistantsAPIResponse(BaseModel):
                 OpenAITextMessageContentItem
             ]
         ]
-    ]
-    analysis_results: Optional[List[AnalysisResult]]
-    completion_tokens: Optional[int]
-    prompt_tokens: Optional[int]
-    total_tokens: Optional[int]
+    ] = []
+    analysis_results: Optional[List[AnalysisResult]] = []
+    completion_tokens: Optional[int] = 0
+    prompt_tokens: Optional[int] = 0
+    total_tokens: Optional[int] = 0
+    errors: Optional[List[str]] = []

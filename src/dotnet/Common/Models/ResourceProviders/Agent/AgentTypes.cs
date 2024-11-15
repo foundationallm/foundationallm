@@ -1,7 +1,7 @@
 ﻿namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
 {
     /// <summary>
-    /// Contains constants for the types of agents.
+    /// Contains constants for the types of resources managed by the FoundationaLLM.Agent resource provider.
     /// </summary>
     public static class AgentTypes
     {
@@ -16,8 +16,13 @@
         public const string KnowledgeManagement = "knowledge-management";
 
         /// <summary>
-        /// Analytic agents are best for querying, analyzing, calculating, and reporting on tabular data.
+        /// File stored in the agent private store.
         /// </summary>
-        public const string Analytic = "analytic";
+        public const string AgentFile = "agent-file";
+
+        /// <summary>
+        /// Workflow.
+        /// </summary>
+        public const string Workflow = "workflow";
     }
 }

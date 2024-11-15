@@ -37,7 +37,7 @@
 				<!-- New chat alert -->
 				<div v-else class="new-chat-alert">
 					<div class="alert-body">
-						<div class="alert-body-text">Start the conversation using the text box below.</div>
+						<div class="alert-body-text" v-html="welcomeMessage"></div>
 					</div>
 				</div>
 			</template>
@@ -78,13 +78,21 @@ export default {
 			isLoading: true,
 			userSentMessage: false,
 			isMessagePending: false,
-			// longRunningOperations: new Map<string, boolean>(), // sessionId -> isPending
+			welcomeMessage: '',
 		};
 	},
 
 	computed: {
 		currentSession() {
 			return this.$appStore.currentSession;
+		},
+
+		pollingSession() {
+			return this.$appStore.pollingSession;
+		},
+
+		lastSelectedAgent() {
+			return this.$appStore.lastSelectedAgent;
 		},
 
 		messages() {
@@ -98,13 +106,40 @@ export default {
 			this.isMessagePending = false;
 			this.isLoading = true;
 			this.userSentMessage = false;
+			
 			await this.$appStore.getMessages();
+			await this.$appStore.ensureAgentsLoaded();
+			
 			this.$appStore.updateSessionAgentFromMessages(newSession);
+			let sessionAgent = this.$appStore.getSessionAgent(newSession);
+			this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
 			this.isLoading = false;
+		},
+
+		async pollingSession(newPollingSession, oldPollingSession) {
+			if (newPollingSession === oldPollingSession) return;
+			if (newPollingSession === this.currentSession.id) {
+				this.isMessagePending = true;
+			}
+			else {
+				this.isMessagePending = false;
+			}
+		},
+
+		async lastSelectedAgent(newAgent, oldAgent) {
+			if (newAgent === oldAgent) return;
+			this.welcomeMessage = this.getWelcomeMessage(newAgent);
 		},
 	},
 
 	methods: {
+		getWelcomeMessage(agent) {
+			let welcomeMessage = agent?.resource?.properties?.['welcome_message'];
+			return welcomeMessage && welcomeMessage.trim() !== '' ? welcomeMessage :
+				this.$appConfigStore.defaultAgentWelcomeMessage ?? 
+				'Start the conversation using the text box below.';
+		},
+
 		getMessageOrderFromReversedIndex(index) {
 			return this.messages.length - 1 - index;
 		},
@@ -134,7 +169,7 @@ export default {
 					summary: 'Could not send message',
 					detail:
 						'Please select an agent and try again. If no agents are available, refresh the page.',
-					life: 8000,
+					life: this.$appStore.autoHideToasts ? 8000 : null,
 				});
 				this.isMessagePending = false;
 				return;
@@ -158,7 +193,7 @@ export default {
 			// await this.$appStore.getMessages();
 			// }
 
-			this.isMessagePending = false;
+			//this.isMessagePending = false;
 		},
 	},
 };
@@ -236,8 +271,9 @@ export default {
 	color: #000;
 	margin-left: auto;
 	margin-right: auto;
-	text-align: center;
-	font-style: italic;
+	padding: 10px 14px 10px 14px;
+	// text-align: center;
+	// font-style: italic;
 }
 
 footer {

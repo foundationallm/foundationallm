@@ -19,5 +19,10 @@
         /// Filter resources.
         /// </summary>
         public const string Filter = "filter";
+
+        /// <summary>
+        /// Load the content of a file.
+        /// </summary>
+        public const string LoadFileContent = "load-file-content";
     }
 }

@@ -16,12 +16,12 @@ namespace FoundationaLLM.Common.Constants.Agents
         /// <summary>
         /// The key name for the OpenAI assistant identifier value.
         /// </summary>
-        public const string OpenAIAssistantId = "OpenAI.AssistantId";
+        public const string OpenAIAssistantsAssistantId = "OpenAI.Assistants.Assistant.Id";
 
         /// <summary>
         /// The key name for the OpenAI assistant thread identifier value.
         /// </summary>
-        public const string OpenAIAssistantThreadId = "OpenAI.AssistantThreadId";
+        public const string OpenAIAssistantsThreadId = "OpenAI.Assistants.Thread.Id";
 
         /// <summary>
         /// The key name for the Gateway API EndpointConfiguration identifier value.

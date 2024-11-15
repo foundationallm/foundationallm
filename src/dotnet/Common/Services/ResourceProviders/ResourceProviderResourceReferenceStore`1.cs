@@ -214,18 +214,18 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         }
 
         /// <summary>
-        /// Gets all resource references in the store.
+        /// Gets all resource references of type T1 in the store.
         /// </summary>
         /// <returns>A <see cref="List{T}"/> contain</returns>
         /// <remarks>
         /// This method is not safe in scenarios where multiple instances of a resource provider are running at the same time.
         /// </remarks>
-        public async Task<IEnumerable<T>> GetAllResourceReferences()
+        public async Task<IEnumerable<T>> GetAllResourceReferences<T1>() where T1 : ResourceBase
         {
             await _lock.WaitAsync();
             try
             {
-                return [.. _resourceReferences.Values.Where(rr => !rr.Deleted)];
+                return [.. _resourceReferences.Values.Where(rr => !rr.Deleted && typeof(T1).IsAssignableFrom(rr.ResourceType))];
             }
             finally
             {

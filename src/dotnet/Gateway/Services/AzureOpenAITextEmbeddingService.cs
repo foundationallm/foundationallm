@@ -44,7 +44,7 @@ namespace FoundationaLLM.Gateway.Services
                     TextChunks = Enumerable.Range(0, result.Value.Count).Select(i =>
                     {
                         var textChunk = textChunks[i];
-                        textChunk.Embedding = new Embedding(result.Value[i].Vector);
+                        textChunk.Embedding = new Embedding(result.Value[i].ToFloats());
                         return textChunk;
                     }).ToList()
                 };

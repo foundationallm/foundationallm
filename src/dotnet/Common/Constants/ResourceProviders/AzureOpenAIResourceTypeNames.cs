@@ -6,18 +6,13 @@
     public class AzureOpenAIResourceTypeNames
     {
         /// <summary>
-        /// OpenAI assistant user contexts.
+        /// Azure OpenAI to FoundationaLLM conversation mappings.
         /// </summary>
-        public const string AssistantUserContexts = "assistantUserContexts";
+        public const string ConversationMappings = "conversationMappings";
 
         /// <summary>
-        /// OpenAI files.
+        /// Azure OpenAI to FoundationaLLM file mappings.
         /// </summary>
-        public const string FileUserContexts = "fileUserContexts";
-
-        /// <summary>
-        /// OpenAI files content.
-        /// </summary>
-        public const string FilesContent = "filesContent";
+        public const string FileMappings = "fileMappings";
     }
 }

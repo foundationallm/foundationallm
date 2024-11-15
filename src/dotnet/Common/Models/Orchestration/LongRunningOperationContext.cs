@@ -22,6 +22,12 @@ namespace FoundationaLLM.Common.Models.Orchestration
         public required string AgentName { get; set; }
 
         /// <summary>
+        /// The API endpoint URL of the main AI model used by the agent workflow.
+        /// </summary>
+        [JsonProperty("agentWorkflowMainAIModelAPIEndpoint")]
+        public string? AgentWorkflowMainAIModelAPIEndpoint { get; set; }
+
+        /// <summary>
         /// Gets or sets the identifier of the session in which the long-running operation runs.
         /// </summary>
         [JsonProperty("sessionId")]

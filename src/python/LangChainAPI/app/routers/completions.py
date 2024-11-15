@@ -15,9 +15,7 @@ from fastapi import (
     Response,
     status
 )
-from foundationallm.models.constants import AgentCapabilityCategories
 from foundationallm.config import Configuration, UserIdentity
-from foundationallm.models.constants import AgentCapabilityCategories
 from foundationallm.models.operations import (
     LongRunningOperation,
     LongRunningOperationLogEntry,
@@ -25,8 +23,7 @@ from foundationallm.models.operations import (
 )
 from foundationallm.models.orchestration import (
     CompletionRequestBase,
-    CompletionResponse,
-    OpenAITextMessageContentItem
+    CompletionResponse
 )
 from foundationallm.models.agents import KnowledgeManagementCompletionRequest
 from foundationallm.operations import OperationsManager
@@ -96,7 +93,7 @@ async def submit_completion_request(
             # Create an operations manager to create the operation.
             operations_manager = OperationsManager(raw_request.app.extra['config'])
             # Submit the completion request operation to the state API.
-            operation = await operations_manager.create_operation(operation_id, instance_id, x_user_identity)
+            operation = await operations_manager.create_operation_async(operation_id, instance_id, x_user_identity)
 
             # Start a background task to perform the completion request.
             background_tasks.add_task(
@@ -133,7 +130,7 @@ async def create_completion_response(
             span.set_attribute('user_identity', x_user_identity)
 
             # Change the operation status to 'InProgress' using an async task.
-            await operations_manager.update_operation(
+            await operations_manager.update_operation_async(
                 operation_id,
                 instance_id,
                 status = OperationStatus.INPROGRESS,
@@ -154,45 +151,43 @@ async def create_completion_response(
                 user_identity = user_identity
             )
             # Await the completion response from the orchestration manager.
-            completion_response = await orchestration_manager.ainvoke(completion_request)
-
+            completion_response = await orchestration_manager.invoke_async(completion_request)
+            completion_status = OperationStatus.COMPLETED if completion_response.errors == [] else OperationStatus.FAILED
+            completion_status_message = "Operation completed successfully." if completion_response.errors == [] else "Operation failed."
+            
             # Send the completion response to the State API and mark the operation as completed.
             await asyncio.gather(
-                operations_manager.set_operation_result(
+                operations_manager.set_operation_result_async(
                     operation_id = operation_id,
                     instance_id = instance_id,
                     completion_response = completion_response),
-                operations_manager.update_operation(
+                operations_manager.update_operation_async(
                     operation_id = operation_id,
                     instance_id = instance_id,
-                    status = OperationStatus.COMPLETED,
-                    status_message = f'Operation {operation_id} completed successfully.',
+                    status = completion_status,
+                    status_message = completion_status_message,
                     user_identity = x_user_identity
                 )
             )
         except Exception as e:
             # Send the completion response to the State API and mark the operation as failed.
-            error_message = f'Operation {operation_id} failed with error: {e}'
-            print(error_message)
-            error_content = OpenAITextMessageContentItem(
-                value = error_message,
-                agent_capability_category = AgentCapabilityCategories.OPENAI_ASSISTANTS if AgentCapabilityCategories.OPENAI_ASSISTANTS in completion_request.agent.capabilities else AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
-            )
+            print (f'Error: {e}')
             completion_response = CompletionResponse(
                 operation_id = operation_id,
                 user_prompt = completion_request.user_prompt,
-                content = [error_content]
+                content = [],
+                errors=[f"{e}"]
             )
             await asyncio.gather(
-                operations_manager.set_operation_result(
+                operations_manager.set_operation_result_async(
                     operation_id = operation_id,
                     instance_id = instance_id,
                     completion_response = completion_response),
-                operations_manager.update_operation(
+                operations_manager.update_operation_async(
                     operation_id = operation_id,
                     instance_id = instance_id,
                     status = OperationStatus.FAILED,
-                    status_message = f'Operation failed with error: {e}',
+                    status_message = f"{e}",
                     user_identity = x_user_identity
                 )
             )
@@ -218,7 +213,7 @@ async def get_operation_status(
             span.set_attribute('operation_id', operation_id)
             span.set_attribute('instance_id', instance_id)
 
-            operation = await operations_manager.get_operation(
+            operation = await operations_manager.get_operation_async(
                 operation_id,
                 instance_id
             )
@@ -253,7 +248,7 @@ async def get_operation_result(
             span.set_attribute('operation_id', operation_id)
             span.set_attribute('instance_id', instance_id)
 
-            completion_response = await operations_manager.get_operation_result(
+            completion_response = await operations_manager.get_operation_result_async(
                 operation_id,
                 instance_id
             )
@@ -286,7 +281,7 @@ async def get_operation_logs(
             span.set_attribute('operation_id', operation_id)
             span.set_attribute('instance_id', instance_id)
 
-            log = await operations_manager.get_operation_logs(
+            log = await operations_manager.get_operation_logs_async(
                 operation_id,
                 instance_id
             )

@@ -10,7 +10,11 @@
   </PropertyGroup>
   
 	<ItemGroup>
-		<PackageReference Include="Azure.AI.OpenAI" Version="2.0.0-beta.5" />
+		<PackageReference Include="Azure.AI.OpenAI" Version="2.1.0-beta.1" />
+		<PackageReference Include="Azure.Search.Documents" Version="11.5.1" />
+		<PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
+		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.39.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
 	</ItemGroup>
 
