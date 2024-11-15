@@ -6,6 +6,7 @@ from langchain_core.output_parsers import StrOutputParser
 from foundationallm.langchain.agents import LangChainAgentBase
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.retrievers import RetrieverFactory, CitationRetrievalBase
+from foundationallm.models.agents.agent_workflows.azure_openai_assistants_agent_workflow import AzureOpenAIAssistantsAgentWorkflow
 from foundationallm.models.constants import AgentCapabilityCategories
 from foundationallm.models.operations import OperationTypes
 from foundationallm.models.orchestration import (
@@ -170,7 +171,18 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         if request.objects is None:
             raise LangChainException("The objects property on the completion request cannot be null.", 400)
 
-        self.ai_model = self._get_ai_model_from_object_id(request.agent.ai_model_object_id, request.objects)
+        if request.agent.workflow is not None:
+            if request.agent.workflow.agent_workflow_ai_models["main_model"] is None:
+                raise LangChainException("The agent's workflow AI models requires a main_model.", 400)
+            if request.agent.workflow.prompt_object_ids["main_prompt"] is None:
+                raise LangChainException("The agent's workflow prompt object dictionary requires a main_prompt.", 400)
+            self.ai_model = self._get_ai_model_from_object_id(request.agent.workflow.agent_workflow_ai_models["main_model"].ai_model_object_id, request.objects)
+            self.prompt = self._get_prompt_from_object_id(request.agent.workflow.prompt_object_ids["main_prompt"], request.objects)
+        else:
+            # Legacy code
+            self.ai_model = self._get_ai_model_from_object_id(request.agent.ai_model_object_id, request.objects)
+            self.prompt = self._get_prompt_from_object_id(request.agent.prompt_object_id, request.objects)
+        
         if self.ai_model.endpoint_object_id is None or self.ai_model.endpoint_object_id == '':
             raise LangChainException("The AI model object provided in the request's objects dictionary is invalid because it is missing an endpoint_object_id value.", 400)
         if self.ai_model.deployment_name is None or self.ai_model.deployment_name == '':
@@ -202,7 +214,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         except ValueError:
             raise LangChainException(f"The authentication_type {self.api_endpoint.authentication_type} is not supported.", 400)
 
-        self.prompt = self._get_prompt_from_object_id(request.agent.prompt_object_id, request.objects)
+        
         if self.prompt.prefix is None or self.prompt.prefix == '':
             raise LangChainException("The Prompt object provided in the request's objects dictionary is invalid because it is missing a prefix value.", 400)
 
@@ -231,12 +243,16 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
         # if the OpenAI.Assistants capability is present, validate the following required fields:
         #   AssistantId, AssistantThreadId
-
-        if "OpenAI.Assistants" in request.agent.capabilities:
-            required_fields = [CompletionRequestObjectKeys.OPENAI_ASSISTANT_ID, CompletionRequestObjectKeys.OPENAI_THREAD_ID]
-            for field in required_fields:
-                if not request.objects.get(field):
-                    raise LangChainException(f"The {field} property is required when the OpenAI.Assistants capability is present.", 400)
+        if request.agent.workflow is not None and isinstance(request.agent.workflow, AzureOpenAIAssistantsAgentWorkflow):
+            if request.agent.workflow.assistant_id is None or request.agent.workflow.assistant_id == '':
+                raise LangChainException("The AzureOpenAIAssistantsAgentWorkflow object provided in the request's agent property is invalid because it is missing an assistant_id value.", 400)            
+        else:
+            # Legacy code
+            if "OpenAI.Assistants" in request.agent.capabilities:
+                required_fields = [CompletionRequestObjectKeys.OPENAI_ASSISTANT_ID, CompletionRequestObjectKeys.OPENAI_THREAD_ID]
+                for field in required_fields:
+                    if not request.objects.get(field):
+                        raise LangChainException(f"The {field} property is required when the OpenAI.Assistants capability is present.", 400)
 
         self._validate_conversation_history(request.agent.conversation_history_settings)
 
@@ -279,8 +295,18 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             audio_service = AudioAnalysisService(config=self.config)
             audio_analysis_results = audio_service.classify(request, audio_attachments)
 
-        # Check for Assistants API capability
-        if AgentCapabilityCategories.OPENAI_ASSISTANTS in agent.capabilities:
+        # Start Assistants API implementation
+        # Check for Assistants API capability   
+        if (agent.workflow is not None and isinstance(agent.workflow, AzureOpenAIAssistantsAgentWorkflow))\
+            or (AgentCapabilityCategories.OPENAI_ASSISTANTS in agent.capabilities): # or condition for legacy code            
+            
+            assistant_id = None
+            if agent.workflow is not None and isinstance(agent.workflow, AzureOpenAIAssistantsAgentWorkflow):
+                assistant_id = agent.workflow.assistant_id                
+            else:
+                # Legacy code
+                assistant_id = request.objects[CompletionRequestObjectKeys.OPENAI_ASSISTANT_ID]
+           
             operation_type_override = OperationTypes.ASSISTANTS_API
             # create the service
             assistant_svc = OpenAIAssistantsApiService(
@@ -293,7 +319,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 document_id=str(uuid.uuid4()),
                 operation_id=request.operation_id,
                 instance_id=self.config.get_value("FoundationaLLM:Instance:Id"),
-                assistant_id=request.objects[CompletionRequestObjectKeys.OPENAI_ASSISTANT_ID],
+                assistant_id=assistant_id,
                 thread_id=request.objects[CompletionRequestObjectKeys.OPENAI_THREAD_ID],
                 attachments=[attachment.provider_file_name for attachment in request.attachments if attachment.provider == AttachmentProviders.FOUNDATIONALLM_AZURE_OPENAI],
                 user_prompt=request.user_prompt
@@ -384,7 +410,9 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 user_prompt = request.user_prompt,
                 errors = assistant_response.errors
             )
+        # End Assistants API implementation
 
+        # Start LangChain Expression Language (LCEL) implementation
         with get_openai_callback() as cb:
             try:
                 # Get the vector document retriever, if it exists.
@@ -456,3 +484,4 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 )
             except Exception as e:
                 raise LangChainException(f"An unexpected exception occurred when executing the completion request: {str(e)}", 500)
+        # End LangChain Expression Language (LCEL) implementation
