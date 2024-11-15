@@ -101,6 +101,7 @@
 
 <script lang="ts">
 import { hideAllPoppers } from 'floating-vue';
+import eventBus from '@/js/eventBus';
 import type { Session } from '@/js/types';
 
 interface AgentDropdownOption {
@@ -237,6 +238,12 @@ export default {
 				detail: message,
 				life: this.$appStore.autoHideToasts ? 5000 : null,
 			});
+
+			if (this.$appStore.currentMessages?.length > 0) {
+				// Emit the event to create a new session.
+				// TODO: Add flag on the agent to determine whether to create a new session.
+				eventBus.emit('agentChanged');
+			}
 		},
 
 		async handleLogout() {
