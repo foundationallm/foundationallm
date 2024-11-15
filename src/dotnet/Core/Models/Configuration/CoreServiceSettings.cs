@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FoundationaLLM.Core.Models.Configuration
+﻿namespace FoundationaLLM.Core.Models.Configuration
 {
     /// <summary>
     /// Provides settings for the CoreService.
@@ -20,5 +14,10 @@ namespace FoundationaLLM.Core.Models.Configuration
         /// Controls whether the Gatekeeper API will be invoked or not.
         /// </summary>
         public required bool BypassGatekeeper {  get; set; }
+
+        /// <summary>
+        /// The comma-separated list file extensions that are supported by the Azure OpenAI Assistants file search tool.
+        /// </summary>
+        public required string AzureOpenAIAssistantsFileSearchFileExtensions { get; set; }
     }
 }

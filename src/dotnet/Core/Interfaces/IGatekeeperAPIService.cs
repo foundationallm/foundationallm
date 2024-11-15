@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Models.Orchestration;
+﻿using FoundationaLLM.Common.Models.Orchestration.Request;
+using FoundationaLLM.Common.Models.Orchestration.Response;
 
 namespace FoundationaLLM.Core.Interfaces;
 

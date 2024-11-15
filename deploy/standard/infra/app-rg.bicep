@@ -5,6 +5,11 @@ param actionGroupId string
 @description('Administrator Object Id')
 param administratorObjectId string
 
+param aksServiceCidr string
+
+param backendAksNodeSku string
+param frontendAksNodeSku string
+
 @description('The environment name token used in naming resources.')
 param environmentName string
 
@@ -23,8 +28,12 @@ param logAnalyticsWorkspaceId string
 @description('Log Analytics Workspace Resource Id to use for diagnostics')
 param logAnalyticsWorkspaceResourceId string
 
+param monitorWorkspaceName string
+
 @description('Networking Resource Group Name')
 param networkingResourceGroupName string
+
+param openAiName string
 
 @description('OPS Resource Group name')
 param opsResourceGroupName string
@@ -58,9 +67,9 @@ var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
 
 @description('Tags for all resources')
 var tags = {
-  Environment: environmentName
-  IaC: 'Bicep'
-  Project: project
+  'azd-env-name': environmentName
+  'iac-type': 'bicep'
+  'project-name': project
   Purpose: 'Services'
 }
 
@@ -106,9 +115,9 @@ module network 'modules/utility/virtualNetworkData.bicep' = {
   params: {
     vnetName: vnetName
     subnetNames: [
-      'FLLMBackend'
-      'FLLMFrontend'
-      'FLLMServices'
+      'aks-backend'
+      'aks-frontend'
+      'services'
     ]
   }
 }
@@ -132,17 +141,20 @@ module aksBackend 'modules/aks.bicep' = {
   params: {
     actionGroupId: actionGroupId
     admnistratorObjectIds: [ administratorObjectId ]
+    aksServiceCidr: aksServiceCidr
+    aksNodeSku: backendAksNodeSku
     hubResourceGroup: hubResourceGroup
     hubSubscriptionId: hubSubscriptionId
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     logAnalyticWorkspaceResourceId: logAnalyticsWorkspaceResourceId
+    monitorWorkspaceName: monitorWorkspaceName
     networkingResourceGroupName: networkingResourceGroupName
     opsResourceGroupName: opsResourceGroupName
     privateDnsZones: filter(dnsZones.outputs.ids, (zone) => contains([ 'aks' ], zone.key))
     resourceSuffix: '${resourceSuffix}-backend'
-    subnetId: subnets.FLLMBackend.id
-    subnetIdPrivateEndpoint: subnets.FLLMServices.id
+    subnetId: subnets['aks-backend'].id
+    subnetIdPrivateEndpoint: subnets.services.id
     tags: tags
   }
 }
@@ -152,17 +164,20 @@ module aksFrontend 'modules/aks.bicep' = {
   params: {
     actionGroupId: actionGroupId
     admnistratorObjectIds: [ administratorObjectId ]
+    aksServiceCidr: aksServiceCidr
+    aksNodeSku: frontendAksNodeSku
     hubResourceGroup: hubResourceGroup
     hubSubscriptionId: hubSubscriptionId
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     logAnalyticWorkspaceResourceId: logAnalyticsWorkspaceResourceId
+    monitorWorkspaceName: monitorWorkspaceName
     networkingResourceGroupName: networkingResourceGroupName
     opsResourceGroupName: opsResourceGroupName
     privateDnsZones: filter(dnsZones.outputs.ids, (zone) => contains([ 'aks' ], zone.key))
     resourceSuffix: '${resourceSuffix}-frontend'
-    subnetId: subnets.FLLMFrontend.id
-    subnetIdPrivateEndpoint: subnets.FLLMServices.id
+    subnetId: subnets['aks-frontend'].id
+    subnetIdPrivateEndpoint: subnets.services.id
     tags: tags
   }
 }
@@ -375,6 +390,7 @@ module coreApiosmosRoles './modules/sqlRoleAssignments.bicep' = {
       'Cosmos DB Built-in Data Contributor': '00000000-0000-0000-0000-000000000002'
     }
   }
+  dependsOn: [srCoreApi]
 }
 
 module cosmosRoles './modules/sqlRoleAssignments.bicep' = {
@@ -387,6 +403,46 @@ module cosmosRoles './modules/sqlRoleAssignments.bicep' = {
       'Cosmos DB Built-in Data Contributor': '00000000-0000-0000-0000-000000000002'
     }
   }
+  dependsOn: [srBackend]
+}
+
+module gatewayApiCosmosRoles './modules/sqlRoleAssignments.bicep' = {
+  scope: resourceGroup(storageResourceGroupName)
+  name: 'gateway-api-cosmos-role'
+  params: {
+    accountName: cosmosDb.name
+    principalId: srBackend[indexOf(backendServiceNames, 'gateway-api')].outputs.servicePrincipalId
+    roleDefinitionIds: {
+      'Cosmos DB Built-in Data Contributor': '00000000-0000-0000-0000-000000000002'
+    }
+  }
+  dependsOn: [srBackend]
+}
+
+module managementApiCosmosRoles './modules/sqlRoleAssignments.bicep' = {
+  scope: resourceGroup(storageResourceGroupName)
+  name: 'management-api-cosmos-role'
+  params: {
+    accountName: cosmosDb.name
+    principalId: srManagementApi[0].outputs.servicePrincipalId
+    roleDefinitionIds: {
+      'Cosmos DB Built-in Data Contributor': '00000000-0000-0000-0000-000000000002'
+    }
+  }
+  dependsOn: [srManagementApi]
+}
+
+module orchestrationApiCosmosRoles './modules/sqlRoleAssignments.bicep' = {
+  scope: resourceGroup(storageResourceGroupName)
+  name: 'orchestration-api-cosmos-role'
+  params: {
+    accountName: cosmosDb.name
+    principalId: srBackend[indexOf(backendServiceNames, 'orchestration-api')].outputs.servicePrincipalId
+    roleDefinitionIds: {
+      'Cosmos DB Built-in Data Contributor': '00000000-0000-0000-0000-000000000002'
+    }
+  }
+  dependsOn: [srBackend]
 }
 
 module stateApiCosmosRoles './modules/sqlRoleAssignments.bicep' = {
@@ -399,6 +455,7 @@ module stateApiCosmosRoles './modules/sqlRoleAssignments.bicep' = {
       'Cosmos DB Built-in Data Contributor': '00000000-0000-0000-0000-000000000002'
     }
   }
+  dependsOn: [srBackend]
 }
 
 module searchIndexDataReaderRole 'modules/utility/roleAssignments.bicep' = {
@@ -425,10 +482,11 @@ module searchIndexDataReaderWorkerRole 'modules/utility/roleAssignments.bicep' =
   }
 }
 
-module cognitiveServicesOpenAiUserRole 'modules/utility/roleAssignments.bicep' = {
+module cognitiveServicesOpenAiUserRole 'modules/utility/openAiRoleAssignments.bicep' = {
   name: 'cognitiveServicesOpenAiUserRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
   params: {
+    targetOpenAiName: openAiName
     principalId: srBackend[indexOf(vecServiceNames, 'vectorization-api')].outputs.servicePrincipalId
     roleDefinitionIds: {
       'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
@@ -436,10 +494,11 @@ module cognitiveServicesOpenAiUserRole 'modules/utility/roleAssignments.bicep' =
   }
 }
 
-module cognitiveServicesOpenAiUserWorkerRole 'modules/utility/roleAssignments.bicep' = {
+module cognitiveServicesOpenAiUserWorkerRole 'modules/utility/openAiRoleAssignments.bicep' = {
   name: 'cognitiveServicesOpenAiUserWorkerRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
   params: {
+    targetOpenAiName: openAiName
     principalId: srBackend[indexOf(backendServiceNames, 'vectorization-job')].outputs.servicePrincipalId
     roleDefinitionIds: {
       'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
@@ -447,21 +506,48 @@ module cognitiveServicesOpenAiUserWorkerRole 'modules/utility/roleAssignments.bi
   }
 }
 
-module cognitiveServicesOpenAiUserGatewayRole 'modules/utility/roleAssignments.bicep' = {
+module cognitiveServicesOpenAiUserGatewayRole 'modules/utility/openAiRoleAssignments.bicep' = {
   name: 'cognitiveServicesOpenAiUserGatewayRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
   params: {
+    targetOpenAiName: openAiName
     principalId: srBackend[indexOf(backendServiceNames, 'gateway-api')].outputs.servicePrincipalId
     roleDefinitionIds: {
-      'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
+      'Cognitive Services OpenAI Contributor': 'a001fd3d-188f-4b5d-821b-7da978bf7442'
     }
   }
 }
 
-module cognitiveServicesOpenAiUserLangChainRole 'modules/utility/roleAssignments.bicep' = {
+module cognitiveServicesOpenAiUserCoreRole 'modules/utility/openAiRoleAssignments.bicep' = {
+  name: 'cognitiveServicesOpenAiUserCoreRole-${timestamp}'
+  scope: resourceGroup(openAiResourceGroupName)
+  params: {
+    targetOpenAiName: openAiName
+    principalId: srCoreApi[0].outputs.servicePrincipalId
+    roleDefinitionIds: {
+      'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
+      'Cognitive Services OpenAI Contributor': 'a001fd3d-188f-4b5d-821b-7da978bf7442'
+    }
+  }
+}
+
+module cognitiveServicesOpenAiUserMgmtRole 'modules/utility/openAiRoleAssignments.bicep' = {
+  name: 'cognitiveServicesOpenAiUserMgmtRole-${timestamp}'
+  scope: resourceGroup(openAiResourceGroupName)
+  params: {
+    targetOpenAiName: openAiName
+    principalId: srManagementApi[0].outputs.servicePrincipalId
+    roleDefinitionIds: {
+      'Cognitive Services OpenAI Contributor': 'a001fd3d-188f-4b5d-821b-7da978bf7442'
+    }
+  }
+}
+
+module cognitiveServicesOpenAiUserLangChainRole 'modules/utility/openAiRoleAssignments.bicep' = {
   name: 'cognitiveServicesOpenAiUserLangChainRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
   params: {
+    targetOpenAiName: openAiName
     principalId: srBackend[indexOf(backendServiceNames, 'langchain-api')].outputs.servicePrincipalId
     roleDefinitionIds: {
       'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
@@ -469,10 +555,11 @@ module cognitiveServicesOpenAiUserLangChainRole 'modules/utility/roleAssignments
   }
 }
 
-module cognitiveServicesOpenAiUserSemanticKernelRole 'modules/utility/roleAssignments.bicep' = {
+module cognitiveServicesOpenAiUserSemanticKernelRole 'modules/utility/openAiRoleAssignments.bicep' = {
   name: 'cognitiveServicesOpenAiUserSemKernelRole-${timestamp}'
   scope: resourceGroup(openAiResourceGroupName)
   params: {
+    targetOpenAiName: openAiName
     principalId: srBackend[indexOf(backendServiceNames, 'semantic-kernel-api')].outputs.servicePrincipalId
     roleDefinitionIds: {
       'Cognitive Services OpenAI User': '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'

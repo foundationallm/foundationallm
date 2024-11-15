@@ -15,7 +15,7 @@ namespace FoundationaLLM.Configuration.Models
         /// The object type of the agent.
         /// </summary>
         [JsonIgnore]
-        public Type ResourceType =>
+        public override Type ResourceType =>
             Type switch
             {
                 ConfigurationTypes.APIEndpointConfiguration => typeof(APIEndpointConfiguration),

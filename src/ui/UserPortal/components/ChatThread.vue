@@ -1,10 +1,19 @@
 <template>
 	<div class="chat-thread">
 		<!-- Message list -->
-		<div class="chat-thread__messages" :class="messages.length === 0 && 'empty'">
+		<div
+			ref="messageContainer"
+			class="chat-thread__messages"
+			:class="messages.length === 0 && 'empty'"
+		>
 			<template v-if="isLoading">
-				<div class="chat-thread__loading">
-					<i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+				<div class="chat-thread__loading" role="status">
+					<i
+						class="pi pi-spin pi-spinner"
+						style="font-size: 2rem"
+						role="img"
+						aria-label="Loading"
+					></i>
 				</div>
 			</template>
 
@@ -13,21 +22,23 @@
 				<template v-if="messages.length !== 0">
 					<ChatMessage
 						v-for="(message, index) in messages.slice().reverse()"
-						:key="message.id"
+						:id="`message-${getMessageOrderFromReversedIndex(index)}`"
+						:key="message.renderId || message.id"
 						:message="message"
-						:show-word-animation="index === 0 && userSentMessage && message.sender === 'Assistant'"
+						:show-word-animation="index === 0 && message.sender !== 'User'"
+						role="log"
+						:aria-flowto="
+							index === 0 ? null : `message-${getMessageOrderFromReversedIndex(index) + 1}`
+						"
 						@rate="handleRateMessage($event.message, $event.isLiked)"
 					/>
 				</template>
 
 				<!-- New chat alert -->
 				<div v-else class="new-chat-alert">
-					<div class="alert-header">
-						<i class="pi pi-exclamation-circle"></i>
-						<span class="alert-header-text">Get Started</span>
-					</div>
 					<div class="alert-body">
-						<span class="alert-body-text">How can I help?</span>
+						<!-- eslint-disable-next-line vue/no-v-html -->
+						<div class="alert-body-text" v-html="welcomeMessage"></div>
 					</div>
 				</div>
 			</template>
@@ -35,22 +46,36 @@
 
 		<!-- Chat input -->
 		<div class="chat-thread__input">
-			<ChatInput :disabled="isLoading || isMessagePending" @send="handleSend" />
+			<ChatInput ref="chatInput" :disabled="isLoading || isMessagePending" @send="handleSend" />
 		</div>
 
-		<footer v-if="$appConfigStore.footerText">
-			<!-- eslint-disable-next-line vue/no-v-html -->
-			<div class="footer-item" v-html="$appConfigStore.footerText"></div>
-		</footer>
+		<!-- Footer -->
+		<!-- eslint-disable-next-line vue/no-v-html -->
+		<footer
+			v-if="$appConfigStore.footerText"
+			class="chat-thread__footer"
+			v-html="$appConfigStore.footerText"
+		/>
+
+		<!-- File drag and drop -->
+		<div v-if="isDragging" ref="dropZone" class="drop-files-here-container">
+			<div class="drop-files-here">
+				<i class="pi pi-upload" style="font-size: 2rem"></i>
+				<div>Drop files here to upload</div>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script lang="ts">
 import type { Message, Session } from '@/js/types';
-import eventBus from '@/js/eventBus';
 
 export default {
 	name: 'ChatThread',
+
+	props: {
+		isDragging: Boolean,
+	},
 
 	emits: ['session-updated'],
 
@@ -59,13 +84,21 @@ export default {
 			isLoading: true,
 			userSentMessage: false,
 			isMessagePending: false,
-			longRunningOperations: new Map<string, boolean>(), // sessionId -> isPending
+			welcomeMessage: '',
 		};
 	},
 
 	computed: {
 		currentSession() {
 			return this.$appStore.currentSession;
+		},
+
+		pollingSession() {
+			return this.$appStore.pollingSession;
+		},
+
+		lastSelectedAgent() {
+			return this.$appStore.lastSelectedAgent;
 		},
 
 		messages() {
@@ -76,24 +109,55 @@ export default {
 	watch: {
 		async currentSession(newSession: Session, oldSession: Session) {
 			if (newSession.id === oldSession?.id) return;
+			this.isMessagePending = false;
 			this.isLoading = true;
 			this.userSentMessage = false;
+
 			await this.$appStore.getMessages();
+			await this.$appStore.ensureAgentsLoaded();
+
+			this.$appStore.updateSessionAgentFromMessages(newSession);
+			const sessionAgent = this.$appStore.getSessionAgent(newSession);
+			this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
 			this.isLoading = false;
+		},
+
+		lastSelectedAgent(newAgent, oldAgent) {
+			if (newAgent === oldAgent) return;
+			this.welcomeMessage = this.getWelcomeMessage(newAgent);
+		},
+
+		pollingSession(newPollingSession, oldPollingSession) {
+			if (newPollingSession === oldPollingSession) return;
+			if (newPollingSession === this.currentSession.id) {
+				this.isMessagePending = true;
+			} else {
+				this.isMessagePending = false;
+			}
 		},
 	},
 
-	beforeUnmount() {
-		eventBus.off('operation-completed', this.handleOperationCompleted);
-	},
-
-	mounted() {
-		eventBus.on('operation-completed', this.handleOperationCompleted);
-	},
-
 	methods: {
+		getWelcomeMessage(agent) {
+			const welcomeMessage = agent?.resource?.properties?.welcome_message;
+			return welcomeMessage && welcomeMessage.trim() !== ''
+				? welcomeMessage
+				: (this.$appConfigStore.defaultAgentWelcomeMessage ??
+						'Start the conversation using the text box below.');
+		},
+
+		getMessageOrderFromReversedIndex(index) {
+			return this.messages.length - 1 - index;
+		},
+
 		async handleRateMessage(message: Message, isLiked: Message['rating']) {
 			await this.$appStore.rateMessage(message, isLiked);
+		},
+
+		handleParentDrop(event) {
+			event.preventDefault();
+			const files = Array.from(event.dataTransfer?.files || []);
+			this.$refs.chatInput.handleDrop(files);
 		},
 
 		async handleSend(text: string) {
@@ -109,48 +173,33 @@ export default {
 				this.$toast.add({
 					severity: 'info',
 					summary: 'Could not send message',
-					detail: 'Please select an agent and try again. If no agents are available, refresh the page.',
-					life: 8000,
+					detail:
+						'Please select an agent and try again. If no agents are available, refresh the page.',
+					life: this.$appStore.autoHideToasts ? 8000 : null,
 				});
 				this.isMessagePending = false;
 				return;
 			}
 
-			if (agent.long_running) {
-				// Handle long-running operations
-				const operationId = await this.$appStore.startLongRunningProcess('/completions', {
-					session_id: this.currentSession.id,
-					user_prompt: text,
-					agent_name: agent.name,
-					settings: null,
-					attachments: this.$appStore.attachments.map((attachment) => String(attachment.id)),
-				});
+			// if (agent.long_running) {
+			// 	// Handle long-running operations
+			// 	const operationId = await this.$appStore.startLongRunningProcess('/async-completions', {
+			// 		session_id: this.currentSession.id,
+			// 		user_prompt: text,
+			// 		agent_name: agent.name,
+			// 		settings: null,
+			// 		attachments: this.$appStore.attachments.map((attachment) => String(attachment.id)),
+			// 	});
 
-				this.longRunningOperations.set(this.currentSession.id, true);
-				await this.pollForCompletion(this.currentSession.id, operationId);
-			} else {
-				await this.$appStore.sendMessage(text);
-			}
+			// 	this.longRunningOperations.set(this.currentSession.id, true);
+			// 	await this.pollForCompletion(this.currentSession.id, operationId);
+			// } else {
+			await this.$appStore.sendMessage(text);
+			// console.log(message);
+			// await this.$appStore.getMessages();
+			// }
 
-			this.isMessagePending = false;
-		},
-
-		async pollForCompletion(sessionId: string, operationId: string) {
-			while (true) {
-				const status = await this.$appStore.checkProcessStatus(operationId);
-				if (status.isCompleted) {
-					this.longRunningOperations.set(sessionId, false);
-					await this.$appStore.getMessages();
-					break;
-				}
-				await new Promise((resolve) => setTimeout(resolve, 2000)); // Poll every 2 seconds
-			}
-		},
-
-		async handleOperationCompleted({ sessionId }: { sessionId: string; operationId: string }) {
-			if (this.currentSession.id === sessionId) {
-				await this.$appStore.getMessages();
-			}
+			// this.isMessagePending = false;
 		},
 	},
 };
@@ -197,14 +246,34 @@ export default {
 	// box-shadow: 0 -5px 10px 0 rgba(27, 29, 33, 0.1);
 }
 
+.chat-thread__footer {
+	text-align: right;
+	font-size: 0.85rem;
+	padding-right: 24px;
+	margin-bottom: 12px;
+
+	:first-child {
+		margin-top: 0px;
+	}
+
+	:last-child {
+		margin-bottom: 0px;
+	}
+}
+
 .empty {
 	flex-direction: column;
 }
+
 .new-chat-alert {
-	background-color: #d9f0d1;
+	background-color: #fafafa;
 	margin: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	box-shadow: 0 5px 10px 0 rgba(27, 29, 33, 0.1);
 	padding: 10px;
 	border-radius: 6px;
+	width: 55%;
 }
 
 .alert-header,
@@ -220,14 +289,32 @@ export default {
 }
 
 .alert-body-text {
-	font-size: 1.2rem;
-	font-weight: 300;
-	font-style: italic;
+	color: #000;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 10px 14px 10px 14px;
+	// text-align: center;
+	// font-style: italic;
 }
 
-footer {
-	text-align: right;
-	font-size: 0.85rem;
-	padding-right: 24px;
+.drop-files-here-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.8);
+	z-index: 9999;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.drop-files-here {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border-radius: 6px;
+	gap: 2rem;
 }
 </style>

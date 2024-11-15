@@ -19,6 +19,12 @@ import RadioButton from 'primevue/radiobutton';
 import ToggleButton from 'primevue/togglebutton';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import FileUpload from 'primevue/fileupload';
+import Badge from 'primevue/badge';
+import BadgeDirective from 'primevue/badgedirective';
+import ProgressBar from 'primevue/progressbar';
+import ColorPicker from 'primevue/colorpicker';
+import InputSwitch from 'primevue/inputswitch';
 
 import { defineNuxtPlugin } from '#app';
 
@@ -42,7 +48,12 @@ export default defineNuxtPlugin((nuxtApp) => {
 	nuxtApp.vueApp.component('ToggleButton', ToggleButton);
 	nuxtApp.vueApp.component('DataTable', DataTable);
 	nuxtApp.vueApp.component('Column', Column);
+	nuxtApp.vueApp.component('FileUpload', FileUpload);
+	nuxtApp.vueApp.component('Badge', Badge);
+	nuxtApp.vueApp.directive('badge', BadgeDirective);
+	nuxtApp.vueApp.component('ProgressBar', ProgressBar);
+	nuxtApp.vueApp.component('ColorPicker', ColorPicker);
+	nuxtApp.vueApp.component('InputSwitch', InputSwitch);
 
 	nuxtApp.vueApp.use(ToastService);
-	nuxtApp.vueApp.directive('tooltip', Tooltip);
 });

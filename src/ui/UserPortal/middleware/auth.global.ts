@@ -4,7 +4,15 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 	if (to.name === 'status') return false;
 
 	const authStore = useNuxtApp().$authStore;
-	await authStore.msalInstance.handleRedirectPromise();
+	try {
+		await authStore.msalInstance.handleRedirectPromise();
+	} catch (ex) {
+		if (ex.name === 'InteractionRequiredAuthError' && ex.message.includes('AADSTS65004')) {
+			localStorage.setItem('oneDriveWorkSchoolConsentRedirect', JSON.stringify(false));
+		} else {
+			throw ex;
+		}
+	}
 
 	if (authStore.isAuthenticated) {
 		if (to.name === 'auth/login') {

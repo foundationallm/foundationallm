@@ -21,6 +21,7 @@ namespace FoundationaLLM.Common.Services.Events
         private readonly AzureEventGridEventServiceSettings _settings;
         private readonly AzureEventGridEventServiceProfile _profile;
         private readonly IAzureResourceManagerService _azureResourceManager;
+        private readonly IHttpClientFactoryService _httpClientFactory;
         private EventGridClient? _eventGridClient;
 
         private readonly TimeSpan _eventProcessingCycle;
@@ -50,6 +51,14 @@ namespace FoundationaLLM.Common.Services.Events
             {
                 EventSetEventNamespaces.FoundationaLLM_ResourceProvider_AIModel,
                 null
+            },
+            {
+                EventSetEventNamespaces.FoundationaLLM_ResourceProvider_AzureOpenAI,
+                null
+            },
+            {
+                EventSetEventNamespaces.FoundationaLLM_ResourceProvider_Conversation,
+                null
             }
         };
 
@@ -59,16 +68,19 @@ namespace FoundationaLLM.Common.Services.Events
         /// <param name="settingsOptions">The options providing the settings for the service.</param>
         /// <param name="profileOptions">The options providing the profile for the service.</param>
         /// <param name="azureResourceManager">The <see cref="IAzureResourceManagerService"/> service providing access to Azure ARM services.</param>
+        /// <param name="httpClientFactory">The <see cref="IHttpClientFactoryService"/> service used to create HTTP clients.</param>
         /// <param name="logger">The logger used for logging.</param>
         public AzureEventGridEventService(
             IOptions<AzureEventGridEventServiceSettings> settingsOptions,
             IOptions<AzureEventGridEventServiceProfile> profileOptions,
             IAzureResourceManagerService azureResourceManager,
+            IHttpClientFactoryService httpClientFactory,
             ILogger<AzureEventGridEventService> logger)
         {
             _settings = settingsOptions.Value;
             _profile = profileOptions.Value;
             _azureResourceManager = azureResourceManager;
+            _httpClientFactory = httpClientFactory;
             _logger = logger;
 
             _eventProcessingCycle = TimeSpan.FromSeconds(_profile.EventProcessingCycleSeconds);
@@ -79,7 +91,7 @@ namespace FoundationaLLM.Common.Services.Events
         {
             try
             {
-                _eventGridClient = GetClient();
+                _eventGridClient = await GetClient();
                 if (_eventGridClient == null)
                     throw new EventException("Cound not create Azure Event Grid client.");
                 else
@@ -312,56 +324,31 @@ namespace FoundationaLLM.Common.Services.Events
 
         #region Create Event Grid client
 
-        private void ValidateEndpoint(string? value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                _logger.LogCritical("The Azure Event Grid namespace endpoint is invalid.");
-                throw new ConfigurationValueException("The Azure Event Grid namespace endpoint is invalid.");
-            }
-        }
+        private async Task<EventGridClient?> GetClient() =>
+            await _httpClientFactory.CreateClient<EventGridClient?>(
+                HttpClientNames.AzureEventGrid,
+                DefaultAuthentication.ServiceIdentity!,
+                BuildClient);
 
-        private void ValidateAPIKey(string? value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                _logger.LogCritical("The Azure Event Grid API key is invalid.");
-                throw new ConfigurationValueException("The Azure Event Grid API key is invalid.");
-            }
-        }
-
-        private EventGridClient? GetClient() =>
-            _settings.AuthenticationType switch
-            {
-                AuthenticationTypes.AzureIdentity => GetClientFromIdentity(),
-                AuthenticationTypes.APIKey => GetClientFromAPIKey(),
-                _ => throw new ConfigurationValueException($"The {_settings.AuthenticationType} authentication type is not supported by the Azure Event Grid events service.")
-            };
-
-        private EventGridClient? GetClientFromIdentity()
-        {
-            EventGridClient? client = default;
-            try
-            {
-                ValidateEndpoint(_settings.Endpoint);
-                client = new EventGridClient(new Uri(_settings.Endpoint!), DefaultAuthentication.AzureCredential);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "There was an error creating the Azure Event Grid client.");
-            }
-
-            return client;
-        }
-
-        private EventGridClient? GetClientFromAPIKey()
+        private EventGridClient? BuildClient(Dictionary<string, object> parameters)
         {
             EventGridClient? client = null;
             try
             {
-                ValidateEndpoint(_settings.Endpoint);
-                ValidateAPIKey(_settings.APIKey);
-                client = new EventGridClient(new Uri(_settings.Endpoint!), new AzureKeyCredential(_settings.APIKey!));
+                var endpoint = parameters[HttpClientFactoryServiceKeyNames.Endpoint].ToString();
+                var authenticationType = (AuthenticationTypes)parameters[HttpClientFactoryServiceKeyNames.AuthenticationType];
+                switch (authenticationType)
+                {
+                    case AuthenticationTypes.AzureIdentity:
+                        client = new EventGridClient(new Uri(endpoint!), DefaultAuthentication.AzureCredential);
+                        break;
+                    case AuthenticationTypes.APIKey:
+                        var apiKey = parameters[HttpClientFactoryServiceKeyNames.APIKey].ToString();
+                        client = new EventGridClient(new Uri(endpoint!), new AzureKeyCredential(apiKey!));
+                        break;
+                    default:
+                        throw new ConfigurationValueException($"The {authenticationType} authentication type is not supported by the Azure Event Grid events service.");
+                }
             }
             catch (Exception ex)
             {
@@ -370,6 +357,7 @@ namespace FoundationaLLM.Common.Services.Events
 
             return client;
         }
+
         #endregion
     }
 }

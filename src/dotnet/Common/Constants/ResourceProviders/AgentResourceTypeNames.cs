@@ -9,5 +9,15 @@
         /// Agents.
         /// </summary>
         public const string Agents = "agents";
+
+        /// <summary>
+        /// Files.
+        /// </summary>
+        public const string Files = "files";
+
+        /// <summary>
+        /// Workflows.
+        /// </summary>
+        public const string Workflows = "workflows";
     }
 }

@@ -8,7 +8,6 @@ using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
-using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Common.Services.Security;
 using FoundationaLLM.Common.Validation;
 using FoundationaLLM.Gatekeeper.Core.Interfaces;
@@ -50,8 +49,12 @@ namespace FoundationaLLM.Gatekeeper.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatekeeperAPI_Configuration);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatekeeperAPI_Essentials);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Events_Profiles_GatekeeperAPI);
+
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
+                options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_GatekeeperAPI);
 
                 //TODO: Replace this with a more granular approach that would only bring in the configuration namespaces that are actually needed.
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints);
@@ -80,7 +83,7 @@ namespace FoundationaLLM.Gatekeeper.API
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Instance));
 
             // Add Azure ARM services
-            builder.Services.AddAzureResourceManager();
+            builder.AddAzureResourceManager();
 
             // Add event services
             builder.Services.AddAzureEventGridEvents(
@@ -114,6 +117,9 @@ namespace FoundationaLLM.Gatekeeper.API
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             builder.Services.AddScoped<ICallContext, CallContext>();
             builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
+
+            // Add Azure Cosmos DB services
+            builder.AddAzureCosmosDBService();
 
             builder.Services.AddOptions<GatekeeperServiceSettings>()
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_GatekeeperAPI_Configuration));

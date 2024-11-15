@@ -1,10 +1,8 @@
 ﻿using FluentValidation;
-using FoundationaLLM.Authorization.Models;
-using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
-using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
@@ -31,7 +29,7 @@ namespace FoundationaLLM.Authorization.ResourceProviders
         IResourceValidatorFactory resourceValidatorFactory,
         IServiceProvider serviceProvider,
         ILoggerFactory loggerFactory)
-        : ResourceProviderServiceBase(
+        : ResourceProviderServiceBase<ResourceReference>(
             instanceOptions.Value,
             authorizationService,
             null,
@@ -51,14 +49,20 @@ namespace FoundationaLLM.Authorization.ResourceProviders
         protected override async Task InitializeInternal() =>
             await Task.CompletedTask;
 
-        #region Support for Management API
+        #region Resource provider support for Management API
 
         /// <inheritdoc/>
-        protected override async Task<object> GetResourcesAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances[0].ResourceType switch
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        protected override async Task<object> GetResourcesAsync(
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderGetOptions? options = null) =>
+            resourcePath.MainResourceTypeName switch
             {
                 AuthorizationResourceTypeNames.RoleDefinitions => LoadRoleDefinitions(resourcePath.ResourceTypeInstances[0]),
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceType} is not supported by the {_name} resource provider.",
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
 
@@ -80,11 +84,11 @@ namespace FoundationaLLM.Authorization.ResourceProviders
         #endregion
 
         /// <inheritdoc/>
-        protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string serializedResource, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances[0].ResourceType switch
+        protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string? serializedResource, ResourceProviderFormFile? formFile, UnifiedUserIdentity userIdentity) =>
+            resourcePath.MainResourceTypeName switch
             {
-                AuthorizationResourceTypeNames.RoleAssignments => await UpdateRoleAssignments(resourcePath, serializedResource, userIdentity),
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances[0].ResourceType} is not supported by the {_name} resource provider.",
+                AuthorizationResourceTypeNames.RoleAssignments => await UpdateRoleAssignments(resourcePath, serializedResource!, userIdentity),
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
 
@@ -111,7 +115,7 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                     StatusCodes.Status400BadRequest);
             }
 
-            var roleAssignmentResult = await _authorizationService.ProcessRoleAssignmentRequest(
+            var roleAssignmentResult = await _authorizationService.CreateRoleAssignment(
                 _instanceSettings.Id,
                 new RoleAssignmentRequest()
                 {
@@ -129,7 +133,8 @@ namespace FoundationaLLM.Authorization.ResourceProviders
             if (roleAssignmentResult.Success)
                 return new ResourceProviderUpsertResult
                 {
-                    ObjectId = roleAssignment.ObjectId
+                    ObjectId = roleAssignment.ObjectId,
+                    ResourceExists = false
                 };
 
             throw new ResourceProviderException("The role assignment failed.");
@@ -140,30 +145,32 @@ namespace FoundationaLLM.Authorization.ResourceProviders
         /// <inheritdoc/>
         protected override async Task DeleteResourceAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
         {
-            switch (resourcePath.ResourceTypeInstances.Last().ResourceType)
+            switch (resourcePath.ResourceTypeName)
             {
                 case AuthorizationResourceTypeNames.RoleAssignments:
-                    await _authorizationService.RevokeRoleAssignment(
+                    await _authorizationService.DeleteRoleAssignment(
                         _instanceSettings.Id,
-                        resourcePath.ResourceTypeInstances.Last().ResourceId!,
+                        resourcePath.ResourceId!,
                         userIdentity);
                     break;
                 default:
-                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeInstances.Last().ResourceType} is not supported by the {_name} resource provider.",
+                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest);
             };
         }
 
-        #endregion
-
         /// <inheritdoc/>
-        protected override async Task<object> ExecuteActionAsync(ResourcePath resourcePath, string serializedAction, UnifiedUserIdentity userIdentity) =>
-            resourcePath.ResourceTypeInstances.Last().ResourceType switch
+        protected override async Task<object> ExecuteActionAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction,
+            UnifiedUserIdentity userIdentity) =>
+            resourcePath.ResourceTypeName switch
             {
-                AuthorizationResourceTypeNames.RoleAssignments => resourcePath.ResourceTypeInstances.Last().Action switch
+                AuthorizationResourceTypeNames.RoleAssignments => resourcePath.Action switch
                 {
-                    AuthorizationResourceProviderActions.Filter => await FilterRoleAssignments(resourcePath.ResourceTypeInstances[0], serializedAction, userIdentity),
-                    _ => throw new ResourceProviderException($"The action {resourcePath.ResourceTypeInstances.Last().Action} is not supported by the {_name} resource provider.",
+                    ResourceProviderActions.Filter => await FilterRoleAssignments(resourcePath.ResourceTypeInstances[0], serializedAction, userIdentity),
+                    _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
                 _ => throw new ResourceProviderException()
@@ -179,16 +186,10 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                 throw new ResourceProviderException("Invalid scope. Unable to retrieve role assignments.");
             else
             {
-                var roleAssignments = new List<RoleAssignment>();
-                var roleAssignmentObjects = await _authorizationService.GetRoleAssignments(
-                    _instanceSettings.Id, queryParameters, userIdentity);
-
-                foreach (var obj in roleAssignmentObjects)
-                {
-                    var roleAssignment = JsonSerializer.Deserialize<RoleAssignment>(obj.ToString()!)!;
-                    if (!roleAssignment.Deleted)
-                        roleAssignments.Add(roleAssignment);
-                }
+                var roleAssignments = (await _authorizationService.GetRoleAssignments(
+                    _instanceSettings.Id, queryParameters, userIdentity))
+                    .Where(ra => !ra.Deleted)
+                    .ToList();
 
                 if (instance.ResourceId != null)
                 {
@@ -201,9 +202,11 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                         roleAssignments = [roleAssignment];
                 }
 
-                return roleAssignments.Select(x => new ResourceProviderGetResult<RoleAssignment>() { Resource = x, Actions = [], Roles = [] }).ToList();
+                return roleAssignments.Select(x => new ResourceProviderGetResult<RoleAssignment>() { Resource = x, Roles = [], Actions = [] }).ToList();
             }
         }
+
+        #endregion
 
         #endregion
     }

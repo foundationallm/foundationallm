@@ -1,19 +1,16 @@
 ﻿using Azure;
-using Azure.Identity;
 using Azure.Storage;
-using Azure.Storage.Blobs.Models;
-using Azure.Storage.Blobs;
 using Azure.Storage.Files.DataLake;
+using Azure.Storage.Files.DataLake.Models;
 using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Storage;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Net;
-using Azure.Storage.Files.DataLake.Models;
 using System.Text;
-using FoundationaLLM.Common.Constants;
 
 namespace FoundationaLLM.Common.Services.Storage
 {
@@ -23,6 +20,11 @@ namespace FoundationaLLM.Common.Services.Storage
     public class DataLakeStorageService : StorageServiceBase, IStorageService
     {
         private DataLakeServiceClient _dataLakeClient;
+
+        /// <summary>
+        /// The name of the storage account.
+        /// </summary>
+        public string StorageAccountName => _dataLakeClient.AccountName;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataLakeStorageService"/> with the specified options and logger.

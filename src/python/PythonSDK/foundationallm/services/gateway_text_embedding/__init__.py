@@ -1,0 +1,1 @@
+from .gateway_text_embedding_service import GatewayTextEmbeddingService

@@ -1,4 +1,6 @@
 ﻿using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Models.Orchestration.Request;
+using FoundationaLLM.Common.Models.Orchestration.Response;
 
 namespace FoundationaLLM.Gatekeeper.Core.Interfaces;
 
@@ -30,12 +32,4 @@ public interface IGatekeeperService
     /// <param name="operationId">The OperationId to retrieve the status for.</param>
     /// <returns>Returns an <see cref="LongRunningOperation"/> object containing the OperationId and Status.</returns>
     Task<LongRunningOperation> GetCompletionOperationStatus(string instanceId, string operationId);
-
-    /// <summary>
-    /// Gets a completion operation from the Gatekeeper service.
-    /// </summary>
-    /// <param name="instanceId">The FoundationaLLM instance id.</param>
-    /// <param name="operationId">The ID of the operation to retrieve.</param>
-    /// <returns>Returns a <see cref="CompletionResponse" /> object.</returns>
-    Task<CompletionResponse> GetCompletionOperationResult(string instanceId, string operationId);
 }

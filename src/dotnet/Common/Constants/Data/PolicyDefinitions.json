@@ -1,0 +1,19 @@
+[
+	{
+		"type": "FoundationaLLM.Authorization/policyDefinitions",
+		"name": "00000000-0000-0000-0001-000000000001",
+		"object_id": "/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001",
+		"display_name": "User Principal Name (UPN) match",
+		"description": "FoundationaLLM PBAC policy definition that defines ownership by a match on the User Principal Name (UPN).",
+		"assignable_scopes": [
+			"/"
+		],
+		"matching_strategy": {
+			"user_identity_properties": ["UPN"]
+		},
+		"created_on": "2024-09-25T00:00:00.0000000Z",
+		"updated_on": "2024-09-25T00:00:00.0000000Z",
+		"created_by": null,
+		"updated_by": null
+	}
+]

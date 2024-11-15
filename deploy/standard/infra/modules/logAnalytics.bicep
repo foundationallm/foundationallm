@@ -10,6 +10,7 @@ param resourceSuffix string
 var name = 'la-${resourceSuffix}'
 
 output id string = main.id
+output monitorWorkspaceName string = monitor.name
 
 var alerts = [
   {
@@ -100,6 +101,11 @@ resource main 'Microsoft.OperationalInsights/workspaces@2021-12-01-preview' = {
       dailyQuotaGb: -1
     }
   }
+}
+
+resource monitor 'Microsoft.Monitor/accounts@2023-04-03' = {
+  name: 'mon-${resourceSuffix}'
+  location: location
 }
 
 /**

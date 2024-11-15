@@ -4,7 +4,6 @@ using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
-using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using NSubstitute;
 
 namespace Management.Client.Tests.Clients.Resources
@@ -35,8 +34,8 @@ namespace Management.Client.Tests.Clients.Resources
                         Value = "TestValue",
                         ContentType = "text/plain",
                     },
-                    Actions = [],
-                    Roles = []
+                    Roles = [],
+                    Actions = []
                 }
             };
 
@@ -74,8 +73,8 @@ namespace Management.Client.Tests.Clients.Resources
                         Value = "TestValue",
                         ContentType = "text/plain",
                     },
-                    Actions = [],
-                    Roles = []
+                    Roles = [],
+                    Actions = []
                 }
             };
 
@@ -119,8 +118,8 @@ namespace Management.Client.Tests.Clients.Resources
                             {AuthenticationParametersKeys.APIKeyHeaderName, "FoundationaLLM:TestAPIKeyHeaderName" }
                         }
                     },
-                    Actions = [],
-                    Roles = []
+                    Roles = [],
+                    Actions = []
                 }
             };
 
@@ -163,8 +162,8 @@ namespace Management.Client.Tests.Clients.Resources
                         {AuthenticationParametersKeys.APIKeyHeaderName, "FoundationaLLM:TestAPIKeyHeaderName" }
                     }
                 },
-                Actions = [],
-                Roles = []
+                Roles = [],
+                Actions = []
             };
             var expectedServices = new List<ResourceProviderGetResult<APIEndpointConfiguration>> { expectedService };
 
@@ -210,7 +209,8 @@ namespace Management.Client.Tests.Clients.Resources
             var appConfiguration = new AppConfigurationKeyBase { Name = "test-configuration" };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {
-                ObjectId = "test-object-id"
+                ObjectId = "test-object-id",
+                ResourceExists = false
             };
 
             _mockRestClient.Resources
@@ -247,7 +247,8 @@ namespace Management.Client.Tests.Clients.Resources
             };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {
-                ObjectId = "test-object-id"
+                ObjectId = "test-object-id",
+                ResourceExists = false
             };
 
             _mockRestClient.Resources

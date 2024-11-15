@@ -1,15 +1,16 @@
-﻿using FoundationaLLM.Common.Models.Chat;
+﻿using ConversationModels = FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using FoundationaLLM.Common.Models.Conversation;
 
 namespace FoundationaLLM.Core.API.Controllers
 {
     /// <summary>
-    /// Provides methods for interacting with the Core service.
+    /// Provides methods for retrieving and managing sessions.
     /// </summary>
     /// <remarks>
-    /// Constructor for the Core Controller.
+    /// Constructor for the Sessions Controller.
     /// </remarks>
     /// <param name="coreService">The Core service provides methods for managing chat
     /// sessions and messages, and for getting completions from the orchestrator.</param>
@@ -29,8 +30,8 @@ namespace FoundationaLLM.Core.API.Controllers
         /// </summary>
         /// <param name="instanceId">The id of the instance.</param>
         [HttpGet(Name = "GetAllChatSessions")]
-        public async Task<IEnumerable<Session>> GetAllChatSessions(string instanceId) =>
-            await _coreService.GetAllChatSessionsAsync(instanceId);
+        public async Task<IEnumerable<ConversationModels.Conversation>> GetAllChatSessions(string instanceId) =>
+            await _coreService.GetAllConversationsAsync(instanceId);
 
         /// <summary>
         /// Returns the chat messages related to an existing session.
@@ -68,19 +69,20 @@ namespace FoundationaLLM.Core.API.Controllers
         /// Creates a new chat session.
         /// </summary>
         /// <param name="instanceId">The id of the instance.</param>
+        /// <param name="chatSessionProperties">The session properties.</param>
         [HttpPost(Name = "CreateNewChatSession")]
-        public async Task<Session> CreateNewChatSession(string instanceId) =>
-            await _coreService.CreateNewChatSessionAsync(instanceId);
+        public async Task<ConversationModels.Conversation> CreateNewChatSession(string instanceId, [FromBody] ChatSessionProperties chatSessionProperties) =>
+            await _coreService.CreateConversationAsync(instanceId, chatSessionProperties);
 
         /// <summary>
         /// Rename the chat session.
         /// </summary>
         /// <param name="instanceId">The id of the instance.</param>
         /// <param name="sessionId">The id of the session to rename.</param>
-        /// <param name="newChatSessionName">The new name for the session.</param>
+        /// <param name="chatSessionProperties">The session properties.</param>
         [HttpPost("{sessionId}/rename", Name = "RenameChatSession")]
-        public async Task<Session> RenameChatSession(string instanceId, string sessionId, string newChatSessionName) =>
-            await _coreService.RenameChatSessionAsync(instanceId, sessionId, newChatSessionName);
+        public async Task<ConversationModels.Conversation> RenameChatSession(string instanceId, string sessionId, [FromBody] ChatSessionProperties chatSessionProperties) =>
+            await _coreService.RenameConversationAsync(instanceId, sessionId, chatSessionProperties);
 
         /// <summary>
         /// Delete a chat session and related messages.
@@ -89,16 +91,6 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <param name="sessionId">The session id to delete.</param>
         [HttpDelete("{sessionId}", Name = "DeleteChatSession")]
         public async Task DeleteChatSession(string instanceId, string sessionId) =>
-            await _coreService.DeleteChatSessionAsync(instanceId, sessionId);
-
-        /// <summary>
-        /// Generate a name for a chat message, based on the passed in prompt.
-        /// </summary>
-        /// <param name="instanceId">The id of the instance.</param>
-        /// <param name="sessionId">The id of the session for which to generate a name.</param>
-        /// <param name="text">The prompt to use to generate the name.</param>
-        [HttpPost("{sessionId}/generate-name", Name = "GenerateChatSessionName")]
-        public async Task<Completion> GenerateChatSessionName(string instanceId, string sessionId, [FromBody] string text) =>
-            await _coreService.GenerateChatSessionNameAsync(instanceId, sessionId, text);
+            await _coreService.DeleteConversationAsync(instanceId, sessionId);
     }
 }

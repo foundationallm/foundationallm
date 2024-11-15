@@ -13,7 +13,7 @@ from app.routers import (
 app = FastAPI(
     title=f'FoundationaLLM {API_NAME}',
     summary='API for extending the FoundationaLLM GatekeeperAPI',
-    description="""The FoundationaLLM GatekeeperIntegrationAPI is a service used to extend the
+    description=f"""The FoundationaLLM {API_NAME} is a service used to extend the
             FoundationaLLM GatekeeperAPI with extra capabilities""",
     version='1.0.0',
     contact={

@@ -24,20 +24,19 @@ Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
 # AzCopy tool version to be downloaded
-$AZCOPY_VERSION = "10.25.0"
-$env:AZCOPY_AUTO_LOGIN_TYPE = "AZCLI"
+$AZCOPY_VERSION = "10.26.0"
 
 # Determine OS and set the download URL and file extension accordingly
 if ($IsWindows) {
-	$url = "https://azcopyvnext.azureedge.net/releases/release-10.25.0-20240522/azcopy_windows_amd64_10.25.0.zip"
+	$url = "https://azcopyvnext.azureedge.net/releases/release-10.26.0-20240731/azcopy_windows_amd64_10.26.0.zip"
 	$os = "windows"
 	$ext = "zip"
 }elseif ($IsMacOS) {
-	$url = "https://azcopyvnext.azureedge.net/releases/release-10.25.0-20240522/azcopy_darwin_amd64_10.25.0.zip"
+	$url = "https://azcopyvnext.azureedge.net/releases/release-10.26.0-20240731/azcopy_darwin_amd64_10.26.0.zip"
 	$os = "darwin"
 	$ext = "zip"
 }elseif ($IsLinux) {
-	$url = "https://azcopyvnext.azureedge.net/releases/release-10.25.0-20240522/azcopy_linux_amd64_10.25.0.tar.gz"
+	$url = "https://azcopyvnext.azureedge.net/releases/release-10.26.0-20240731/azcopy_linux_amd64_10.26.0.tar.gz"
 	$os = "linux"
 	$ext = "tar.gz"
 }
@@ -51,9 +50,10 @@ $toolPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSP
 
 # Check if AzCopy already exists, download and extract if not
 if (Test-Path -Path "../tools/azcopy") {
-	Write-Host "azcopy already exists."
+	Write-Host -ForegroundColor Blue "AzCopy already exists."
 }
 else {
+	Write-Host -ForegroundColor Yellow "Downloading AzCopy version $AZCOPY_VERSION for $os..."
 	Invoke-WebRequest -Uri $url -OutFile $archivePath
 	
 	if ($IsLinux) {
@@ -69,5 +69,6 @@ else {
 		chmod +x $toolPath
 	}
 }
+Write-Host -ForegroundColor Green "AzCopy setup completed successfully."
 
 Exit 0

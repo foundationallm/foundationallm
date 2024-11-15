@@ -52,6 +52,8 @@ param actionGroupId string
 
 @description('The Managed Identity for the AKS Cluster')
 param admnistratorObjectIds array
+param aksServiceCidr string = '10.100.0.0/16'
+param aksNodeSku string
 
 param hubResourceGroup string
 param hubSubscriptionId string = subscription().subscriptionId
@@ -64,6 +66,8 @@ param logAnalyticWorkspaceId string
 
 @description('Log Analytic Workspace Resource Id to use for diagnostics')
 param logAnalyticWorkspaceResourceId string
+
+param monitorWorkspaceName string
 
 @description('Networking resource group name')
 param networkingResourceGroupName string
@@ -151,6 +155,7 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
   tags: tags
   dependsOn: [
     dnsRoleAssignment
+    aksDcr
   ]
 
   identity: {
@@ -166,6 +171,7 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
   }
 
   properties: {
+    kubernetesVersion: '1.30.5'
     enableRBAC: true
     fqdnSubdomain: name
     nodeResourceGroup: 'mrg-${name}'
@@ -209,7 +215,7 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
       {
         count: 1
         enableAutoScaling: true
-        maxCount: 10
+        maxCount: 3
         minCount: 1
         mode: 'System'
         name: 'system'
@@ -222,23 +228,6 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
         nodeTaints: [
           'CriticalAddonsOnly=true:NoSchedule'
         ]
-
-        upgradeSettings: {
-          maxSurge: '200'
-        }
-      }
-      {
-        count: 1
-        enableAutoScaling: true
-        maxCount: 10
-        minCount: 1
-        mode: 'User'
-        name: 'user'
-        osDiskSizeGB: 1024
-        tags: tags
-        type: 'VirtualMachineScaleSets'
-        vmSize: 'Standard_D4s_v3'
-        vnetSubnetID: subnetId
 
         upgradeSettings: {
           maxSurge: '200'
@@ -261,14 +250,14 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
     }
 
     networkProfile: {
-      dnsServiceIP: '10.100.254.1'
+      dnsServiceIP: cidrHost(cidrSubnet(aksServiceCidr, 24, 254), 1)
       ipFamilies: [ 'IPv4' ]
       loadBalancerSku: 'Standard'
       networkPlugin: 'azure'
       networkPolicy: 'azure'
       outboundType: 'loadBalancer'
-      serviceCidr: '10.100.0.0/16'
-      serviceCidrs: [ '10.100.0.0/16' ]
+      serviceCidr: aksServiceCidr
+      serviceCidrs: [ aksServiceCidr ]
 
       loadBalancerProfile: {
         backendPoolType: 'nodeIPConfiguration'
@@ -326,6 +315,27 @@ resource main 'Microsoft.ContainerService/managedClusters@2023-01-02-preview' = 
   }
 }
 
+resource userPool 'Microsoft.ContainerService/managedClusters/agentPools@2024-04-02-preview' = {
+  name: 'fllm'
+  parent: main
+  properties: {
+    count: 4
+    enableAutoScaling: true
+    maxCount: 10
+    minCount: 3
+    mode: 'User'
+    osDiskSizeGB: 1024
+    tags: tags
+    type: 'VirtualMachineScaleSets'
+    vmSize: aksNodeSku
+    vnetSubnetID: subnetId
+
+    upgradeSettings: {
+      maxSurge: '200'
+    }
+  }
+}
+
 resource diagnostics 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = {
   scope: main
   name: 'diag-${serviceType}'
@@ -341,6 +351,116 @@ resource diagnostics 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' 
         enabled: true
       }
     ]
+  }
+}
+
+resource dce 'Microsoft.Insights/dataCollectionEndpoints@2023-03-11' existing = {
+  name: monitorWorkspaceName
+  scope: resourceGroup('MA_${monitorWorkspaceName}_${location}_managed')
+}
+
+resource aksDcr 'Microsoft.Insights/dataCollectionRules@2023-03-11' = {
+  name: 'MSCI-${location}-${name}'
+  location: location
+  properties: {
+    destinations: {
+      logAnalytics: [
+        {
+          name: 'ciworkspace'
+          workspaceResourceId: logAnalyticWorkspaceId
+        }
+      ]
+    }
+
+    dataCollectionEndpointId: dce.id
+
+    dataFlows: [
+      {
+        destinations: ['ciworkspace']
+        streams: ['Microsoft-ContainerInsights-Group-Default']
+      }
+      {
+        streams: [ 'Microsoft-Syslog' ]
+        destinations: [ 'ciworkspace' ]
+      }
+    ]
+
+    dataSources: {
+      syslog: [
+        {
+          streams: [ 'Microsoft-Syslog' ]
+          facilityNames: [
+            'auth'
+            'authpriv'
+            'cron'
+            'daemon'
+            'mark'
+            'kern'
+            'local0'
+            'local1'
+            'local2'
+            'local3'
+            'local4'
+            'local5'
+            'local6'
+            'local7'
+            'lpr'
+            'mail'
+            'news'
+            'syslog'
+            'user'
+            'uucp'  
+          ]
+          logLevels: [
+            'Debug'
+            'Info'
+            'Notice'
+            'Warning'
+            'Error'
+            'Critical'
+            'Alert'
+            'Emergency'  
+          ]
+          name: 'sysLogsDataSource'
+        }
+      ]
+      extensions: [
+        {
+          streams: ['Microsoft-ContainerInsights-Group-Default']
+          extensionName: 'ContainerInsights'
+          extensionSettings: {
+            dataCollectionSettings: {
+              interval: '5m'
+              namespaceFilteringMode: 'Off'
+              enableContainerLogV2: true
+            }
+          }
+          name: 'ContainerInsightsExtension'
+        }
+      ]
+    }
+
+    description: 'DCR for Azure Monitor Container Insights'
+  }
+}
+
+#disable-next-line BCP174
+resource aksDcra 'Microsoft.ContainerService/managedClusters/providers/dataCollectionRuleAssociations@2022-06-01' = {
+  name: '${name}/microsoft.insights/ContainerInsights'
+  dependsOn: [ main ]
+  properties: {
+    description: 'Association of data collection endpoint. Deleting this association will break the data collection for this AKS Cluster.'
+    dataCollectionRuleId: aksDcr.id
+  }
+}
+
+#disable-next-line BCP174
+resource aksDcera 'Microsoft.ContainerService/managedClusters/providers/dataCollectionRuleAssociations@2022-06-01' = {
+  name: '${name}/microsoft.insights/configurationAccessEndpoint'
+  dependsOn: [ main ]
+  properties: {
+    description: 'Association of data collection rule. Deleting this association will break the data collection for this AKS Cluster.'
+    dataCollectionEndpointId: dce.id
   }
 }
 

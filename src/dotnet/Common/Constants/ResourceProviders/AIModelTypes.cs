@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FoundationaLLM.Common.Constants.ResourceProviders
+﻿namespace FoundationaLLM.Common.Constants.ResourceProviders
 {
+    /// <summary>
+    /// AI Model type contants.
+    /// </summary>
     public static class AIModelTypes
     {
         /// <summary>
@@ -20,5 +17,9 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
         /// Completion model type
         /// </summary>
         public const string Completion = "completion";
+        /// <summary>
+        /// Image generation model type
+        /// </summary>
+        public const string ImageGeneration = "image-generation";
     }
 }

@@ -33,7 +33,7 @@ namespace FoundationaLLM.Core.Examples
         private SharePointVectorizationConfiguration _sharePointVectorizationConfiguration;
 
         public Example0008_SynchronousVectorizationOfPDFFromSharePoint(ITestOutputHelper output, TestFixture fixture)
-            : base(output, fixture.ServiceProvider)
+            : base(output, [fixture.ServiceProvider])
         {
             _vectorizationTestService = GetService<IVectorizationTestService>();
             _instanceSettings = _vectorizationTestService.InstanceSettings;

@@ -10,7 +10,7 @@ from typing import Any, Self
 from foundationallm.models.resource_providers.vectorization import IndexingProfileBase
 from .azure_ai_search_settings import AzureAISearchSettings
 from .azure_ai_search_configuration_references import AzureAISearchConfigurationReferences
-from foundationallm.models.utils import ObjectUtils
+from foundationallm.utils import ObjectUtils
 from foundationallm.langchain.exceptions import LangChainException
 
 class AzureAISearchIndexingProfile(IndexingProfileBase):
@@ -19,7 +19,7 @@ class AzureAISearchIndexingProfile(IndexingProfileBase):
     """
     settings: AzureAISearchSettings
     configuration_references: AzureAISearchConfigurationReferences
-
+    
     @staticmethod
     def from_object(obj: Any) -> Self:
 

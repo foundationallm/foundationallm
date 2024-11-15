@@ -37,13 +37,18 @@ export default {
 		this.instanceId = instanceId;
 	},
 
-	bearerToken: null,
+	/**
+	 * Retrieves the bearer token for authentication.
+	 * If the bearer token is already available, it will be returned immediately.
+	 * Otherwise, it will acquire a new bearer token using the MSAL instance.
+	 * @returns The bearer token.
+	 */
 	async getBearerToken() {
-		if (this.bearerToken) return this.bearerToken;
-
-		const token = await useNuxtApp().$authStore.getToken();
-		this.bearerToken = token.accessToken;
-		return this.bearerToken;
+		// When the scope is specific on aquireTokenSilent this seems to be instant
+		// otherwise we would have to store the token and check if it has expired here
+		// to determine if we need to fetch it again
+		const token = await useNuxtApp().$authStore.getApiToken();
+		return token.accessToken;
 	},
 
 	async fetch(url: string, opts: any = {}) {
@@ -608,6 +613,22 @@ export default {
 		return data;
 	},
 
+	async getBranding(): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/appConfigurations/FoundationaLLM:Branding:*`,
+		);
+	},
+
+	async saveBranding(key: String, params: any): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/appConfigurations/${key}`,
+			{
+				method: 'POST',
+				body: params,
+			},
+		);
+	},
+
 	async getAIModels(): Promise<ResourceProviderGetResult<AIModel>[]> {
 		const data = (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.AIModel/aiModels?api-version=${this.apiVersion}`,
@@ -758,6 +779,34 @@ export default {
 			{
 				method: 'POST',
 				body: JSON.stringify(params),
+			},
+		);
+	},
+
+	/*
+		Private Storage
+	 */
+	async getPrivateStorageFiles(agentName) {
+		return (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/files?api-version=${this.apiVersion}`,
+		)) as Object[];
+	},
+
+	async uploadToPrivateStorage(agentName, fileName, file: FormData): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/files/${fileName}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: file,
+			},
+		);
+	},
+
+	async deleteFileFromPrivateStorage(agentName, fileName): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/files/${fileName}?api-version=${this.apiVersion}`,
+			{
+				method: 'DELETE',
 			},
 		);
 	},

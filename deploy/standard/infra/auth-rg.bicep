@@ -29,6 +29,8 @@ param location string
 @description('Log Analytics Workspace Id to use for diagnostics')
 param logAnalyticsWorkspaceId string
 
+param principalType string
+
 @description('Project Name, used in naming resources.')
 param project string
 
@@ -71,9 +73,9 @@ var authSecrets = [
 
 @description('Tags for all resources')
 var tags = {
-  Environment: environmentName
-  IaC: 'Bicep'
-  Project: project
+  'azd-env-name': environmentName
+  'iac-type': 'bicep'
+  'project-name': project
   Purpose: 'Services'
 }
 
@@ -107,16 +109,19 @@ module authStore 'modules/storageAccount.bicep' = {
   name: 'auth-store-${timestamp}'
   params: {
     actionGroupId: actionGroupId
+    adminGroupObjectId: administratorObjectId
     enableHns: true
     isDataLake: true
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
+    principalType: principalType
     privateDnsZones: filter(dnsZones.outputs.ids, (zone) => contains(['blob', 'dfs'], zone.key))
     resourceSuffix: resourceToken
-    subnetId: '${vnetId}/subnets/FLLMAuth'
+    subnetId: '${vnetId}/subnets/auth'
     tags: tags
     containers: [
       'role-assignments'
+      'policy-assignments'
     ]
   }
 }
@@ -132,7 +137,7 @@ module authKeyvault 'modules/keyVault.bicep' = {
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     privateDnsZones: filter(dnsZones.outputs.ids, (zone) => zone.key == 'vault')
     resourceSuffix: resourceSuffix
-    subnetId: '${vnetId}/subnets/FLLMAuth'
+    subnetId: '${vnetId}/subnets/auth'
     tags: tags
   }
 }

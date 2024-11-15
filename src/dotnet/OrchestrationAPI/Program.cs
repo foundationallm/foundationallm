@@ -8,8 +8,7 @@ using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
-using FoundationaLLM.Common.Services;
-using FoundationaLLM.Common.Services.Azure;
+using FoundationaLLM.Common.Services.Cache;
 using FoundationaLLM.Common.Services.Security;
 using FoundationaLLM.Common.Validation;
 using FoundationaLLM.Orchestration.Core.Models.ConfigurationOptions;
@@ -60,8 +59,11 @@ namespace FoundationaLLM.Orchestration.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Attachment_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AIModel_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Prompt_Storage);
-
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Events_Profiles_OrchestrationAPI);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AzureOpenAI_Storage);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
+                options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_OrchestrationAPI);
             }));
             if (builder.Environment.IsDevelopment())
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
@@ -76,7 +78,7 @@ namespace FoundationaLLM.Orchestration.API
             builder.Services.AddInstanceProperties(builder.Configuration);
 
             // Add Azure ARM services.
-            builder.Services.AddAzureResourceManager();
+            builder.AddAzureResourceManager();
 
             // Add event services.
             builder.Services.AddAzureEventGridEvents(
@@ -88,7 +90,6 @@ namespace FoundationaLLM.Orchestration.API
 
             // Add API Key Authorization
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
             builder.Services.AddScoped<APIKeyAuthenticationFilter>();
             builder.Services.AddOptions<APIKeyValidationSettings>()
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_OrchestrationAPI_Essentials));
@@ -126,11 +127,14 @@ namespace FoundationaLLM.Orchestration.API
             builder.AddDataSourceResourceProvider();
             builder.AddAttachmentResourceProvider();
             builder.AddAIModelResourceProvider();
+            builder.AddAzureOpenAIResourceProvider();
 
             // Register the downstream services and HTTP clients.
             builder.AddHttpClientFactoryService();
             builder.AddLLMOrchestrationServices();
             builder.AddOrchestrationService();
+
+            builder.AddAzureCosmosDBService();
 
             builder.Services
                 .AddApiVersioning(options =>

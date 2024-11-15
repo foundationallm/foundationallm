@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
@@ -7,14 +7,14 @@ using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.Storage;
 using FoundationaLLM.Common.Services;
+using FoundationaLLM.Common.Services.API;
+using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Common.Services.Storage;
 using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Core.Examples.Exceptions;
 using FoundationaLLM.Core.Examples.Interfaces;
 using FoundationaLLM.Core.Examples.Models;
 using FoundationaLLM.Core.Examples.Services;
-using FoundationaLLM.Core.Interfaces;
-using FoundationaLLM.Core.Services;
 using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
 using FoundationaLLM.SemanticKernel.Core.Services.Indexing;
 using Microsoft.Azure.Cosmos;
@@ -40,8 +40,10 @@ namespace FoundationaLLM.Core.Examples.Setup
 			TestConfiguration.Initialize(configRoot, services);
 
             services.AddOptions<BlobStorageServiceSettings>(
-                    DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization)
-                .Bind(configRoot.GetSection("FoundationaLLM:Vectorization:ResourceProviderService:Storage"));
+                    DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization_Storage)
+                .Bind(configRoot.GetSection("FoundationaLLM:ResourceProviders:Vectorization:Storage"));
+
+            services.AddScoped<IConfiguration>(_ => configRoot);
 
             RegisterInstance(services, configRoot);
             RegisterHttpClients(services, configRoot);
@@ -50,22 +52,12 @@ namespace FoundationaLLM.Core.Examples.Setup
             RegisterAzureAIService(services, configRoot);
             RegisterLogging(services);
 			RegisterServiceManagers(services);
-            RegisterSearchIndex(services, configRoot);
         }
 
         private static void RegisterInstance(IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions<InstanceSettings>()
                 .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Instance));
-        }
-
-		private static void RegisterSearchIndex(IServiceCollection services, IConfiguration configuration)
-		{
-            services.AddOptions<AzureAISearchIndexingServiceSettings>()
-                .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration));
-
-            services.AddKeyedSingleton<IIndexingService, AzureAISearchIndexingService>(
-                DependencyInjectionKeys.FoundationaLLM_APIEndpoints_AzureAISearchVectorStore_Configuration);
         }
 
         private static void RegisterClientLibraries(IServiceCollection services, IConfiguration configuration)
@@ -98,7 +90,7 @@ namespace FoundationaLLM.Core.Examples.Setup
 					.Build();
 			});
 
-			services.AddScoped<ICosmosDbService, CosmosDbService>();
+			services.AddScoped<IAzureCosmosDBService, AzureCosmosDBService>();
 		}
 
 		private static void RegisterAzureAIService(IServiceCollection services, IConfiguration configuration)
@@ -192,6 +184,7 @@ namespace FoundationaLLM.Core.Examples.Setup
             services.AddScoped<IAuthenticationService, MicrosoftEntraIDAuthenticationService>();
             services.AddScoped<IHttpClientManager, HttpClientManager>();
 			services.AddScoped<IAgentConversationTestService, AgentConversationTestService>();
+            services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
             services.AddScoped<IVectorizationTestService, VectorizationTestService>();
         }
     }

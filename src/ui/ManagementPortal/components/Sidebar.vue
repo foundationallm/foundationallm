@@ -25,7 +25,7 @@
 		<NuxtLink to="/agents/create" class="sidebar__item">Create New Agent</NuxtLink>
 		<NuxtLink to="/agents/public" class="sidebar__item">All Agents</NuxtLink>
 		<NuxtLink to="/agents/private" class="sidebar__item">My Agents</NuxtLink>
-		<div class="sidebar__item">Performance</div>
+		<!-- <div class="sidebar__item">Performance</div> -->
 
 		<!-- Data Catalog -->
 		<div class="sidebar__section-header">
@@ -34,23 +34,23 @@
 		</div>
 
 		<NuxtLink to="/data-sources" class="sidebar__item">Data Sources</NuxtLink>
-		<div class="sidebar__item">Vector Stores</div>
+		<!-- <div class="sidebar__item">Vector Stores</div> -->
 
 		<!-- Quotas -->
-		<div class="sidebar__section-header">
+		<!-- <div class="sidebar__section-header">
 			<span class="pi pi-calculator"></span>
 			<span>Quotas</span>
 		</div>
 
-		<div class="sidebar__item">Policies</div>
+		<div class="sidebar__item">Policies</div> -->
 
 		<!-- LLM's -->
-		<div class="sidebar__section-header">
+		<!-- <div class="sidebar__section-header">
 			<span class="pi pi-sitemap"></span>
 			<span>LLM's</span>
 		</div>
 
-		<div class="sidebar__item">Language Models & Endpoints</div>
+		<div class="sidebar__item">Language Models & Endpoints</div> -->
 
 		<!-- Security -->
 		<div class="sidebar__section-header">
@@ -68,15 +68,26 @@
 			<span>FLLM Platform</span>
 		</div>
 
+		<NuxtLink to="/branding" class="sidebar__item">Branding</NuxtLink>
 		<NuxtLink to="/info" class="sidebar__item">Deployment Information</NuxtLink>
 
 		<!-- Logged in user -->
 		<div v-if="$authStore.currentAccount?.name" class="sidebar__account">
-			<Avatar icon="pi pi-user" class="sidebar__avatar" size="large" />
+			<UserAvatar class="sidebar__avatar" size="large" />
+
 			<div>
-				<span class="sidebar__username">{{ $authStore.currentAccount?.name }}</span>
+				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+					<span
+						class="sidebar__username"
+						aria-label="Logged in as {{ $authStore.currentAccount?.username }}">
+						{{ $authStore.currentAccount?.name }}
+					</span>
+					<template #popper>
+						<div role="tooltip">Logged in as {{ $authStore.currentAccount?.username }}</div>
+					</template>
+				</VTooltip>
 				<Button
-					class="sidebar__sign-out-button secondary-button"
+					class="sidebar__sign-out-button"
 					icon="pi pi-sign-out"
 					label="Sign Out"
 					severity="secondary"
@@ -91,6 +102,12 @@
 <script lang="ts">
 export default {
 	name: 'Sidebar',
+
+	data() {
+		return {
+			isMobile: window.screen.width < 950,
+		};
+	},
 };
 </script>
 

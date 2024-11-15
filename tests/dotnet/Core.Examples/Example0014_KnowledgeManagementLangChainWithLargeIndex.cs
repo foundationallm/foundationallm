@@ -18,7 +18,7 @@ namespace FoundationaLLM.Core.Examples
         private string indexingProfileName = "indexing_profile_dune";
 
         public Example0014_KnowledgeManagementLangChainWithLargeIndex(ITestOutputHelper output, TestFixture fixture)
-            : base(output, fixture.ServiceProvider)
+            : base(output, [fixture.ServiceProvider])
         {
             _agentConversationTestService = GetService<IAgentConversationTestService>();
             _vectorizationTestService = GetService<IVectorizationTestService>();

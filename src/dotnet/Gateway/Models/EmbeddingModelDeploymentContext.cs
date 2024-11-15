@@ -1,12 +1,9 @@
-﻿using FoundationaLLM.Common.Constants.Authentication;
-using FoundationaLLM.Common.Interfaces;
+﻿using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Azure;
 using FoundationaLLM.Common.Models.Gateway;
 using FoundationaLLM.Common.Models.Vectorization;
-using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
-using FoundationaLLM.SemanticKernel.Core.Services;
+using FoundationaLLM.Gateway.Services;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System.Text.Json;
 
 namespace FoundationaLLM.Gateway.Models
@@ -27,14 +24,9 @@ namespace FoundationaLLM.Gateway.Models
         private readonly ILogger<EmbeddingModelDeploymentContext> _logger = loggerFactory.CreateLogger<EmbeddingModelDeploymentContext>();
         private List<TextChunk> _inputTextChunks = [];
 
-        private readonly ITextEmbeddingService _textEmbeddingService = new SemanticKernelTextEmbeddingService(
-                Options.Create(new SemanticKernelTextEmbeddingServiceSettings
-                {
-                    AuthenticationType = AuthenticationTypes.AzureIdentity,
-                    Endpoint = deployment.AccountEndpoint,
-                    DeploymentName = deployment.Name
-                }),
-                loggerFactory);
+        private readonly ITextEmbeddingService _textEmbeddingService = new AzureOpenAITextEmbeddingService(
+                deployment.AccountEndpoint,
+                loggerFactory.CreateLogger<AzureOpenAITextEmbeddingService>());
 
         private readonly JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
 
@@ -107,8 +99,9 @@ namespace FoundationaLLM.Gateway.Models
                     gatewayMetrics.Id,
                     JsonSerializer.Serialize<GatewayTextEmbeddingRequestMetrics>(gatewayMetrics, _jsonSerializerOptions));
 
+                // Priority is false since the embedding operation context is already added to the queue.
                 var embeddingResult =
-                    await _textEmbeddingService.GetEmbeddingsAsync(_inputTextChunks);
+                    await _textEmbeddingService.GetEmbeddingsAsync(_inputTextChunks, _deployment.Name, false);
 
                 if (embeddingResult.Failed)
                     _logger.LogWarning("The text embedding request with id {RequestId} failed with the following error: {ErrorMessage}",

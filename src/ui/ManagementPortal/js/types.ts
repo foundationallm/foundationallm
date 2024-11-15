@@ -25,10 +25,19 @@ export type ResourceProviderGetResult<T> = {
 	roles: string[];
 };
 
+export type AgentTool = {
+	name: string;
+	description: string;
+	ai_model_object_ids: { [key: string]: string };
+	api_endpoint_configuration_object_ids: { [key: string]: string };
+	properties: { [key: string]: any };
+};
+
 export type Agent = ResourceBase & {
 	name: string;
 	type: 'knowledge-management' | 'analytics';
 	inline_context: boolean;
+	properties?: { [key: string]: string | null };
 
 	ai_model_object_id: string;
 
@@ -43,11 +52,14 @@ export type Agent = ResourceBase & {
 		trigger_cron_schedule: string;
 	};
 
+	capabilities: string[];
+	tools: { [key: string]: AgentTool };
+
 	sessions_enabled: boolean;
 	orchestration_settings: {
 		orchestrator: string;
 	};
-	conversation_history: {
+	conversation_history_settings: {
 		enabled: boolean;
 		max_history: number;
 	};
@@ -87,9 +99,11 @@ export type AgentDataSource = ResourceBase & {
 export type ExternalOrchestrationService = ResourceBase & {
 	type: string;
 	name: string;
+	category: string;
 	api_url_configuration_name: string;
 	api_key_configuration_name: string;
 	url: string;
+	status_url?: string | null;
 	// The resolved value of the API key configuration reference for displaying in the UI and updating the configuration.
 	resolved_api_key: string;
 };
@@ -300,6 +314,7 @@ export type CreateAgentRequest = ResourceBase & {
 	type: 'knowledge-management' | 'analytics';
 	name: string;
 	inline_context: boolean;
+	properties?: { [key: string]: string | null };
 
 	ai_model_object_id: string;
 
@@ -314,6 +329,9 @@ export type CreateAgentRequest = ResourceBase & {
 		version: string;
 		deployment: string;
 	};
+
+	capabilities: string[];
+	tools: { [key: string]: AgentTool };
 
 	vectorization: {
 		dedicated_pipeline: boolean;
@@ -330,7 +348,7 @@ export type CreateAgentRequest = ResourceBase & {
 	orchestration_settings: {
 		orchestrator: string;
 	};
-	conversation_history: {
+	conversation_history_settings: {
 		enabled: boolean;
 		max_history: number;
 	};

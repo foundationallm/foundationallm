@@ -21,6 +21,33 @@ export interface Citation {
 	filepath: string;
 }
 
+export interface ResourceProviderUpsertResult {
+	objectId: string;
+	resourceExists: boolean;
+}
+
+export interface MessageContent {
+	type: string;
+	fileName: string;
+	value: string;
+	blobUrl?: string;
+	loading?: boolean;
+	error?: boolean;
+}
+
+export interface AttachmentDetail {
+	objectId: string;
+	displayName: string;
+	contentType: string;
+}
+
+export interface AnalysisResult {
+	tool_input: string;
+	tool_output: string;
+	agent_capability_category: string;
+	tool_name: string;
+}
+
 export interface Message {
 	id: string;
 	type: string;
@@ -34,6 +61,10 @@ export interface Message {
 	vector: Array<Number>;
 	completionPromptId: string | null;
 	citations: Array<Citation>;
+	content: Array<MessageContent>;
+	attachments: Array<string>;
+	attachmentDetails: Array<AttachmentDetail>;
+	analysisResults: Array<AnalysisResult>;
 }
 
 export interface Session {
@@ -42,7 +73,24 @@ export interface Session {
 	sessionId: string;
 	tokensUsed: Number;
 	name: string;
+	display_name: string;
 	messages: Array<Message>;
+}
+
+export interface ChatSessionProperties {
+	name: string;
+}
+
+export interface LongRunningOperation {
+	id?: string;
+	type: string;
+	operation_id?: string;
+	status: string;
+	status_message?: string;
+	last_updated?: Date;
+	ttl: number;
+	prompt_tokens: number;
+	result?: Message;
 }
 
 export interface CompletionPrompt {
@@ -63,6 +111,7 @@ export interface Agent {
 	name: string;
 	object_id: string;
 	description: string;
+	properties?: { [key: string]: string | null };
 	long_running: boolean;
 	orchestration_settings?: OrchestrationSettings;
 }
@@ -79,4 +128,44 @@ export interface Attachment {
 	id: string;
 	fileName: string;
 	sessionId: string;
+	contentType: string;
+	source: string;
+}
+
+export interface ResourceProviderDeleteResult {
+	deleted: boolean;
+	reason?: string;
+}
+
+export interface ResourceProviderDeleteResults {
+	[key: string]: ResourceProviderDeleteResult;
+}
+
+export interface UserProfile {
+	id: string;
+	type: string;
+	upn: string;
+	flags: Record<string, boolean>;
+}
+
+export interface FileStoreConnector {
+	name: string;
+	category: string;
+	subcategory: string;
+	url: string;
+}
+
+export interface CoreConfiguration {
+	maxUploadsPerMessage: number;
+	fileStoreConnectors?: FileStoreConnector[];
+	completionResponsePollingIntervalSeconds: number;
+}
+
+export interface OneDriveWorkSchool {
+	id: string;
+	driveId?: string;
+	objectId?: string;
+	name?: string;
+	mimeType?: string;
+	access_token?: string;
 }

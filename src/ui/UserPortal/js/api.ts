@@ -1,14 +1,36 @@
 import type {
 	Message,
 	Session,
+	LongRunningOperation,
+	UserProfile,
+	CoreConfiguration,
+	OneDriveWorkSchool,
+	ChatSessionProperties,
 	CompletionPrompt,
 	Agent,
 	CompletionRequest,
 	ResourceProviderGetResult,
+	ResourceProviderUpsertResult,
+	ResourceProviderDeleteResults,
 } from '@/js/types';
 
 export default {
 	apiUrl: null as string | null,
+	virtualUser: null as string | null,
+
+	getVirtualUser() {
+		return this.virtualUser;
+	},
+
+	/**
+	 * Checks if the given email is valid.
+	 * @param email - The email to validate.
+	 * @returns True if the email is valid, false otherwise.
+	 */
+	isValidEmail(email: string): boolean {
+		const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		return emailPattern.test(email);
+	},
 
 	setApiUrl(url: string) {
 		// Set the api url and remove a trailing slash if there is one.
@@ -26,13 +48,12 @@ export default {
 	 * Otherwise, it will acquire a new bearer token using the MSAL instance.
 	 * @returns The bearer token.
 	 */
-	bearerToken: null as string | null,
 	async getBearerToken() {
-		if (this.bearerToken) return this.bearerToken;
-
-		const token = await useNuxtApp().$authStore.getToken();
-		this.bearerToken = token.accessToken;
-		return this.bearerToken;
+		// When the scope is specific on aquireTokenSilent this seems to be instant
+		// otherwise we would have to store the token and check if it has expired here
+		// to determine if we need to fetch it again
+		const token = await useNuxtApp().$authStore.getApiToken();
+		return token.accessToken;
 	},
 
 	/**
@@ -55,18 +76,35 @@ export default {
 	 * @returns A promise that resolves to the fetched data.
 	 */
 	async fetch(url: string, opts: any = {}) {
+		const response = await this.fetchDirect(`${this.apiUrl}${url}`, opts);
+		return response;
+	},
+
+	async fetchDirect(url: string, opts: any = {}) {
 		const options = opts;
 		options.headers = opts.headers || {};
-
-		// if (options?.query) {
-		// 	url += '?' + (new URLSearchParams(options.query)).toString();
-		// }
 
 		const bearerToken = await this.getBearerToken();
 		options.headers.Authorization = `Bearer ${bearerToken}`;
 
+		// Add X-USER-IDENTITY header if virtualUser is set.
+		if (!this.virtualUser) {
+			const urlParams = new URLSearchParams(window.location.search);
+			const virtualUser = urlParams.get('virtual_user');
+			this.virtualUser = virtualUser;
+		}
+		if (this.virtualUser && this.isValidEmail(this.virtualUser)) {
+			options.headers['X-USER-IDENTITY'] = JSON.stringify({
+				name: this.virtualUser,
+				user_name: this.virtualUser,
+				upn: this.virtualUser,
+				user_id: '00000000-0000-0000-0001-000000000001',
+				group_ids: ['00000000-0000-0000-0000-000000000001'],
+			});
+		}
+
 		try {
-			const response = await $fetch(`${this.apiUrl}${url}`, options);
+			const response = await $fetch(url, options);
 			if (response.status >= 400) {
 				throw response;
 			}
@@ -85,25 +123,19 @@ export default {
 	 * @returns A Promise that resolves to the operation ID if the process is successfully started.
 	 * @throws An error if the process fails to start.
 	 */
-	async startLongRunningProcess(url: string, requestBody: any) {
-		const options = {
-			method: 'POST',
-			body: JSON.stringify(requestBody),
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${await this.getBearerToken()}`,
-			},
-		};
-
+	async startLongRunningProcess(requestBody: any) {
 		try {
-			const response = await $fetch(`${this.apiUrl}${url}`, options);
+			const response = await this.fetch(`/instances/${this.instanceId}/async-completions`, {
+				method: 'POST',
+				body: requestBody,
+			});
 			if (response.status === 202) {
 				return response.operationId;
 			} else {
 				throw new Error('Failed to start process');
 			}
 		} catch (error) {
-			throw new Error(this.formatError(error));
+			throw new Error(formatError(error));
 		}
 	},
 
@@ -115,19 +147,12 @@ export default {
 	 */
 	async checkProcessStatus(operationId: string) {
 		try {
-			const response = await $fetch(
+			const response = (await this.fetch(
 				`/instances/${this.instanceId}/async-completions/${operationId}/status`,
-				{
-					method: 'GET',
-					headers: {
-						Authorization: `Bearer ${await this.getBearerToken()}`,
-					},
-				},
-			);
-
+			)) as LongRunningOperation;
 			return response;
 		} catch (error) {
-			throw new Error(this.formatError(error));
+			throw new Error(formatError(error));
 		}
 	},
 
@@ -158,9 +183,10 @@ export default {
 	 * Adds a new chat session.
 	 * @returns {Promise<Session>} A promise that resolves to the created session.
 	 */
-	async addSession() {
+	async addSession(properties: ChatSessionProperties) {
 		return (await this.fetch(`/instances/${this.instanceId}/sessions`, {
 			method: 'POST',
+			body: properties,
 		})) as Session;
 	},
 
@@ -171,26 +197,11 @@ export default {
 	 * @returns The renamed session.
 	 */
 	async renameSession(sessionId: string, newChatSessionName: string) {
+		const properties: ChatSessionProperties = { name: newChatSessionName };
 		return (await this.fetch(`/instances/${this.instanceId}/sessions/${sessionId}/rename`, {
 			method: 'POST',
-			params: {
-				newChatSessionName,
-			},
+			body: properties,
 		})) as Session;
-	},
-
-	/**
-	 * Generates the session name.
-	 *
-	 * @param sessionId - The ID of the session.
-	 * @param text - The text to be used when generating a session name.
-	 * @returns The generated text.
-	 */
-	async generateSessionName(sessionId: string, text: string) {
-		return (await this.fetch(`/instances/${this.instanceId}/sessions/${sessionId}/generate-name`, {
-			method: 'POST',
-			body: JSON.stringify(text),
-		})) as { text: string };
 	},
 
 	/**
@@ -214,6 +225,11 @@ export default {
 			`/instances/${this.instanceId}/sessions/${sessionId}/messages`,
 		)) as Array<Message>;
 	},
+
+	// Mock polling route
+	// async getMessage(messageId: string) {
+	// 	return await $fetch(`/api/stream-message/`);
+	// },
 
 	/**
 	 * Retrieves a specific prompt for a given session.
@@ -264,18 +280,17 @@ export default {
 			attachments,
 		};
 
-		if (agent.long_running) {
-			const operationId = await this.startLongRunningProcess(
-				`/instances/${this.instanceId}/async-completions`,
-				orchestrationRequest,
-			);
-			return this.pollForCompletion(operationId);
-		} else {
-			return (await this.fetch(`/instances/${this.instanceId}/completions`, {
-				method: 'POST',
-				body: orchestrationRequest,
-			})) as string;
-		}
+		// if (agent.long_running) {
+		return (await this.fetch(`/instances/${this.instanceId}/async-completions`, {
+			method: 'POST',
+			body: orchestrationRequest,
+		})) as string;
+		// } else {
+		// 	return (await this.fetch(`/instances/${this.instanceId}/completions`, {
+		// 		method: 'POST',
+		// 		body: orchestrationRequest,
+		// 	})) as string;
+		// }
 	},
 
 	/**
@@ -295,13 +310,119 @@ export default {
 	 * @param file The file formData to upload.
 	 * @returns The ObjectID of the uploaded attachment.
 	 */
-	async uploadAttachment(file: FormData) {
-		const response = await this.fetch(`/instances/${this.instanceId}/attachments/upload`, {
-			method: 'POST',
-			body: file,
-		});
+	async uploadAttachment(
+		file: FormData,
+		sessionId: string,
+		agentName: string,
+		progressCallback: Function,
+	) {
+		const bearerToken = await this.getBearerToken();
+
+		const response: ResourceProviderUpsertResult = (await new Promise((resolve, reject) => {
+			const xhr = new XMLHttpRequest();
+
+			xhr.upload.onprogress = function (event) {
+				if (progressCallback) {
+					progressCallback(event);
+				}
+			};
+
+			xhr.onload = () => {
+				if (xhr.status >= 200 && xhr.status < 300) {
+					resolve(JSON.parse(xhr.response));
+				} else {
+					reject(xhr.statusText);
+				}
+			};
+
+			xhr.onerror = () => {
+				// eslint-disable-next-line prefer-promise-reject-errors
+				reject('Error during file upload.');
+			};
+
+			xhr.open(
+				'POST',
+				`${this.apiUrl}/instances/${this.instanceId}/files/upload?sessionId=${sessionId}&agentName=${agentName}`,
+				true,
+			);
+
+			xhr.setRequestHeader('Authorization', `Bearer ${bearerToken}`);
+			xhr.send(file);
+		})) as ResourceProviderUpsertResult;
 
 		return response;
+	},
+
+	/**
+	 * Deletes attachments from the server.
+	 * @param attachments - An array of attachment names to be deleted.
+	 * @returns A promise that resolves to the delete results.
+	 */
+	async deleteAttachments(attachments: string[]) {
+		return (await this.fetch(`/instances/${this.instanceId}/files/delete`, {
+			method: 'POST',
+			body: JSON.stringify(attachments),
+		})) as ResourceProviderDeleteResults;
+	},
+
+	/**
+	 * Retrieves the core configuration for the current instance.
+	 *
+	 * @returns {Promise<CoreConfiguration>} A promise that resolves to the core configuration.
+	 */
+	async getCoreConfiguration() {
+		return (await this.fetch(`/instances/${this.instanceId}/configuration`)) as CoreConfiguration;
+	},
+
+	/**
+	 * Connects to user's OneDrive work or school account.
+	 * @returns A Promise that resolves to the response from the server.
+	 */
+	async oneDriveWorkSchoolConnect() {
+		return await this.fetch(`/instances/${this.instanceId}/oneDriveWorkSchool/connect`, {
+			method: 'POST',
+			body: null,
+		});
+	},
+
+	/**
+	 * Disconnect to user's OneDrive work or school account.
+	 * @returns A Promise that resolves to the response from the server.
+	 */
+	async oneDriveWorkSchoolDisconnect() {
+		return await this.fetch(`/instances/${this.instanceId}/oneDriveWorkSchool/disconnect`, {
+			method: 'POST',
+			body: null,
+		});
+	},
+
+	/**
+	 * Retrieves user profiles for a given instance.
+	 * @returns An array of user profiles.
+	 */
+	async getUserProfile() {
+		return (await this.fetch(`/instances/${this.instanceId}/userProfiles/`)) as Array<UserProfile>;
+	},
+
+	/**
+	 * Downloads a file from the user's connected OneDrive work or school account.
+	 * @param sessionId - The session ID from which the file is uploaded.
+	 * @param agentName - The agent name.
+	 * @param oneDriveWorkSchool - The OneDrive work or school item.
+	 * @returns A Promise that resolves to the response from the server.
+	 */
+	async oneDriveWorkSchoolDownload(
+		sessionId: string,
+		agentName: string,
+		oneDriveWorkSchool: OneDriveWorkSchool,
+	) {
+		return (await this.fetch(
+			`/instances/${this.instanceId}/oneDriveWorkSchool/download?instanceId=${this.instanceId}&sessionId=${sessionId}&agentName=${agentName}`,
+			{
+				method: 'POST',
+				body: oneDriveWorkSchool,
+			},
+		)) as OneDriveWorkSchool;
 	},
 };
 
@@ -312,7 +433,7 @@ function formatError(error: any): string {
 		return Object.values(errors).flat().join(' ');
 	}
 	if (error.data) {
-		return error.data.message || error.data || 'An unknown error occurred';
+		return error.data.message || error.data.title || error.data || 'An unknown error occurred';
 	}
 	if (error.message) {
 		return error.message;

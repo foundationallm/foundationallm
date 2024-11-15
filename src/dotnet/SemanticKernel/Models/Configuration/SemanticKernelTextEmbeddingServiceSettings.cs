@@ -1,5 +1,4 @@
 ﻿using FoundationaLLM.Common.Constants.Authentication;
-using FoundationaLLM.Common.Settings;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.SemanticKernel.Core.Models.Configuration

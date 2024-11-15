@@ -6,12 +6,44 @@
     <Nullable>enable</Nullable>
     <AssemblyName>FoundationaLLM.Common</AssemblyName>
     <RootNamespace>FoundationaLLM.Common</RootNamespace>
+    <ProjectType>Library</ProjectType>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>FoundationaLLM.Common is a .NET library that the FoundationaLLM.Client.Core and FoundationaLLM.Client.Management client libraries share as a common dependency. Do not directly import and use this library.</Description>
+    <PackageTags>FoundationaLLM;LLM;GPT;AI;SDK;Common</PackageTags>
+    <RepositoryUrl>https://github.com/solliancenet/foundationallm</RepositoryUrl>
+    <PackageId>FoundationaLLM.Common</PackageId>
+    <Version>0.0.0</Version> <!-- Placeholder version -->
+    <AssemblyVersion>0.0.0</AssemblyVersion> <!-- Placeholder version -->
+    <FileVersion>0.0.0</FileVersion> <!-- Placeholder version -->
+    <PackageIcon>fllm-icon-128.png</PackageIcon>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <Title>FoundationaLLM Common</Title>
+    <Authors>Solliance</Authors>
+    <RepositoryType>git</RepositoryType>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageProjectUrl>https://foundationallm.ai</PackageProjectUrl>
+    <Copyright>Copyright © Solliance. All rights reserved.</Copyright>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <Content Remove="C:\Users\ciprian.jichici\.nuget\packages\azure.messaging.eventgrid\4.22.0-beta.1\contentFiles\any\netstandard2.0\EventGridClient.xml" />
     <Content Remove="C:\Users\CiprianJichici\.nuget\packages\azure.messaging.eventgrid\4.22.0-beta.1\contentFiles\any\netstandard2.0\EventGridClient.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="fllm-icon-128.png" Pack="true" PackagePath="\" />
+    <None Include="readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   
   <ItemGroup>
@@ -26,56 +58,59 @@
     <PackageReference Include="Azure.Storage.Files.DataLake" Version="12.17.1" />
     <PackageReference Include="FluentValidation" Version="11.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.39.0" />
     <PackageReference Include="Microsoft.DeepDev.TokenizerLib" Version="1.3.3" />
     <PackageReference Include="Microsoft.Extensions.Azure" Version="1.7.2" />
     <PackageReference Include="Microsoft.Graph" Version="5.48.0" />
     <PackageReference Include="Microsoft.Identity.Web" Version="2.17.4" />
+    <PackageReference Include="Mime-Detective" Version="24.7.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="8.4.0" />
+    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
   </ItemGroup>
   
   <ItemGroup>
-    <None Update="Constants\Authorization\AuthorizableActionNames.tt">
+    <None Update="Templates\AuthorizableActionNames.tt">
       <LastGenOutput>AuthorizableActionNames.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Constants\Authorization\AuthorizationKeyVaultSecretNames.tt">
+    <None Update="Templates\AuthorizationKeyVaultSecretNames.tt">
       <LastGenOutput>AuthorizationKeyVaultSecretNames.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Constants\Authorization\AuthorizationDependencyInjectionKeys.tt">
+    <None Update="Templates\AuthorizationDependencyInjectionKeys.tt">
       <LastGenOutput>AuthorizationDependencyInjectionKeys.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Constants\Authorization\RoleDefinitionNames.tt">
+    <None Update="Templates\RoleDefinitionNames.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>RoleDefinitionNames.cs</LastGenOutput>
     </None>
-    <None Update="Constants\Configuration\AppConfigurationKeyFilters.tt">
+    <None Update="Templates\AppConfigurationKeyFilters.tt">
       <LastGenOutput>AppConfigurationKeyFilters.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Constants\Configuration\AppConfigurationKeySections.tt">
+    <None Update="Templates\AppConfigurationKeySections.tt">
       <LastGenOutput>AppConfigurationKeySections.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Constants\Configuration\KeyVaultSecretNames.tt">
+    <None Update="Templates\KeyVaultSecretNames.tt">
       <LastGenOutput>KeyVaultSecretNames.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Constants\Configuration\DependencyInjection.tt">
+    <None Update="Templates\DependencyInjection.tt">
       <LastGenOutput>DependencyInjection.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Constants\Configuration\DependencyInjectionKeys.tt">
+    <None Update="Templates\DependencyInjectionKeys.tt">
       <LastGenOutput>DependencyInjectionKeys.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Constants\Configuration\AppConfigurationKeys.tt">
+    <None Update="Templates\AppConfigurationKeys.tt">
       <LastGenOutput>AppConfigurationKeys.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
@@ -83,6 +118,10 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>appconfig.template.tt</DependentUpon>
+    </None>
+    <None Update="Templates\AuthorizableActions.tt">
+      <LastGenOutput>AuthorizableActions.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
     </None>
     <None Update="Templates\authorization-azure-key-vault-secret-names.json">
       <DependentUpon>authorization-azure-key-vault-secret-names.tt</DependentUpon>
@@ -106,6 +145,14 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>appconfig.template.json</LastGenOutput>
     </None>
+    <None Update="Templates\PolicyDefinitions.tt">
+      <LastGenOutput>PolicyDefinitions.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Templates\RoleDefinitions.tt">
+      <LastGenOutput>RoleDefinitions.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
   </ItemGroup>
   
   <ItemGroup>
@@ -113,55 +160,70 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Compile Update="Constants\Authorization\AuthorizableActionNames.cs">
+    <Compile Update="Templates\AuthorizableActionNames.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AuthorizableActionNames.tt</DependentUpon>
     </Compile>
-    <Compile Update="Constants\Authorization\AuthorizationKeyVaultSecretNames.cs">
+    <Compile Update="Templates\AuthorizationKeyVaultSecretNames.cs">
       <DependentUpon>AuthorizationKeyVaultSecretNames.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Constants\Authorization\AuthorizationDependencyInjectionKeys.cs">
+    <Compile Update="Templates\AuthorizationDependencyInjectionKeys.cs">
       <DependentUpon>AuthorizationDependencyInjectionKeys.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Constants\Authorization\RoleDefinitionNames.cs">
+    <Compile Update="Templates\RoleDefinitionNames.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>RoleDefinitionNames.tt</DependentUpon>
     </Compile>
-    <Compile Update="Constants\Configuration\AppConfigurationKeyFilters.cs">
+    <Compile Update="Templates\AppConfigurationKeyFilters.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>AppConfigurationKeyFilters.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Constants\Configuration\AppConfigurationKeySections.cs">
-      <DependentUpon>AppConfigurationKeySections.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Constants\Configuration\DependencyInjection.cs">
-      <DependentUpon>DependencyInjection.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Constants\Configuration\DependencyInjectionKeys.cs">
-      <DependentUpon>DependencyInjectionKeys.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Constants\Configuration\AppConfigurationKeys.cs">
+    <Compile Update="Templates\AppConfigurationKeys.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AppConfigurationKeys.tt</DependentUpon>
     </Compile>
-    <Compile Update="Constants\Configuration\KeyVaultSecretNames.cs">
+    <Compile Update="Templates\AppConfigurationKeySections.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AppConfigurationKeySections.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\AuthorizableActions.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AuthorizableActions.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\DependencyInjection.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DependencyInjection.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\DependencyInjectionKeys.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DependencyInjectionKeys.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\KeyVaultSecretNames.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>KeyVaultSecretNames.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\PolicyDefinitions.cs">
+      <DependentUpon>PolicyDefinitions.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Templates\RoleDefinitions.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RoleDefinitions.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   

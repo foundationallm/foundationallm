@@ -88,4 +88,6 @@ public interface IManagementAPITestManager
     Task<TextEmbeddingProfile> GetTextEmbeddingProfile(string name);
 
     Task<TextPartitioningProfile> GetTextPartitioningProfile(string name);
+
+    Task<APIEndpointConfiguration> GetAPIEndpointConfiguration(string apiEndpointObjectId);
 }

@@ -9,6 +9,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Storage;
 using FoundationaLLM.Common.Services.Storage;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -22,7 +23,7 @@ namespace FoundationaLLM
     public static partial class DependencyInjection
     {
         /// <summary>
-        /// Add the Authorization Core service to the dependency injection container (used by the Authorization API).
+        /// Adds the Authorization Core service to the dependency injection container (used by the Authorization API).
         /// </summary>
         /// <param name="builder">The host application builder.</param>
         public static void AddAuthorizationCore(this IHostApplicationBuilder builder)
@@ -58,7 +59,7 @@ namespace FoundationaLLM
         }
 
         /// <summary>
-        /// Add the authorization service to the dependency injection container (used by all resource providers).
+        /// Adds the authorization service to the dependency injection container (used by all resource providers).
         /// </summary>
         /// <param name="builder"></param>
         public static void AddAuthorizationService(this IHostApplicationBuilder builder)
@@ -66,6 +67,18 @@ namespace FoundationaLLM
             builder.Services.AddOptions<AuthorizationServiceSettings>()
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials));
             builder.Services.AddSingleton<IAuthorizationService, AuthorizationService>();
+        }
+
+        /// <summary>
+        /// Adds the authorization service to the dependency injection container (used by all resource providers).
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>
+        public static void AddAuthorizationService(this IServiceCollection services, IConfigurationManager configuration)
+        {
+            services.AddOptions<AuthorizationServiceSettings>()
+                .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials));
+            services.AddSingleton<IAuthorizationService, AuthorizationService>();
         }
     }
 }

@@ -1,6 +1,13 @@
 {
     "items": [
         {
+            "key": ".appconfig.featureflag/FoundationaLLM.Agent.PrivateStore",
+            "value": "{\"id\":\"FoundationaLLM.Agent.PrivateStore\",\"description\":\"\",\"enabled\":false,\"conditions\":{\"client_filters\":[]}}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:Instance:Id",
             "value": "${env:FOUNDATIONALLM_INSTANCE_ID}",
             "label": null,
@@ -10,6 +17,20 @@
         {
             "key": "FoundationaLLM:Instance:SecurityGroupRetrievalStrategy",
             "value": "IdentityManagementService",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Instance:IdentitySubstitutionSecurityPrincipalId",
+            "value": "",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Instance:IdentitySubstitutionUserPrincipalNamePattern",
+            "value": "",
             "label": null,
             "content_type": "",
             "tags": {}
@@ -58,6 +79,20 @@
         },
         {
             "key": "FoundationaLLM:ResourceProviders:Attachment:Storage:AccountName",
+            "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProviders:AzureOpenAI:Storage:AuthenticationType",
+            "value": "AzureIdentity",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:ResourceProviders:AzureOpenAI:Storage:AccountName",
             "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
             "label": null,
             "content_type": "",
@@ -152,6 +187,34 @@
             "value": "true",
             "label": null,
             "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions",
+            "value": "c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions",
+            "value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage",
+            "value": "{ \"value\": 10, \"value_exceptions\": []}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds",
+            "value": "{ \"value\": 10, \"value_exceptions\": []}",
+            "label": null,
+            "content_type": "application/json",
             "tags": {}
         },
         {
@@ -344,6 +407,13 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:APIEndpoints:SemanticKernelAPI:Configuration:MaxConcurrentCompletions",
+            "value": "20",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Essentials:APIUrl",
             "value": "${env:SERVICE_MANAGEMENT_API_ENDPOINT_URL}",
             "label": null,
@@ -355,6 +425,13 @@
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions",
+            "value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
+            "label": null,
+            "content_type": "",
             "tags": {}
         },
         {
@@ -388,6 +465,13 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:ClientId",
             "value": "${env:ENTRA_MANAGEMENT_API_CLIENT_ID}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions",
+            "value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
             "label": null,
             "content_type": "",
             "tags": {}
@@ -436,7 +520,14 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAccounts",
-            "value": "",
+            "value": "${env:AZURE_OPENAI_ID}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAssistantsMaxVectorizationTimeSeconds",
+            "value": "120",
             "label": null,
             "content_type": "",
             "tags": {}
@@ -582,8 +673,22 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:Branding:DefaultAgentWelcomeMessage",
+            "value": "Start the conversation using the text box below.",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:Branding:FavIconUrl",
             "value": "favicon.ico",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:AgentIconUrl",
+            "value": "",
             "label": null,
             "content_type": "",
             "tags": {}
@@ -605,6 +710,13 @@
         {
             "key": "FoundationaLLM:Branding:LogoUrl",
             "value": "foundationallm-logo-white.svg",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:NoAgentsMessage",
+            "value": "No agents available. Please check with your system administrator for assistance.",
             "label": null,
             "content_type": "",
             "tags": {}
@@ -674,7 +786,21 @@
         },
         {
             "key": "FoundationaLLM:Branding:FooterText",
-            "value": "FoundationaLLM (c) 2024",
+            "value": "FoundationaLLM &copy; All rights reserved",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:NoAgentsMessage",
+            "value": "No agents available. Please check with your system administrator for assistance.",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:DefaultAgentWelcomeMessage",
+            "value": "Start the conversation using the text box below.",
             "label": null,
             "content_type": "",
             "tags": {}
@@ -836,6 +962,13 @@
         {
             "key": "FoundationaLLM:Events:Profiles:GatekeeperAPI",
             "value": "${env:FOUNDATIONALLM_GATEKEEPER_API_EVENT_GRID_PROFILE}",
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Events:Profiles:GatewayAPI",
+            "value": "${env:FOUNDATIONALLM_GATEWAY_API_EVENT_GRID_PROFILE}",
             "label": null,
             "content_type": "application/json",
             "tags": {}

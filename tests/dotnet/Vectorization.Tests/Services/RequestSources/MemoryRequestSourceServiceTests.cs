@@ -1,5 +1,4 @@
 ﻿using FakeItEasy;
-using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Vectorization.Models.Configuration;
 using FoundationaLLM.Vectorization.Services.RequestSources;
 using Microsoft.Extensions.Logging;

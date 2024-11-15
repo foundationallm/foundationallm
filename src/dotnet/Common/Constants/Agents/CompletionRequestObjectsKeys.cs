@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Models.Orchestration;
+﻿using FoundationaLLM.Common.Models.Orchestration.Request;
 
 namespace FoundationaLLM.Common.Constants.Agents
 {
@@ -12,6 +12,26 @@ namespace FoundationaLLM.Common.Constants.Agents
         /// This value should be a dictionary where keys are agent names and values are agent descriptions.
         /// </summary>
         public const string AllAgents = "AllAgents";
+
+        /// <summary>
+        /// The key name for the OpenAI assistant identifier value.
+        /// </summary>
+        public const string OpenAIAssistantsAssistantId = "OpenAI.Assistants.Assistant.Id";
+
+        /// <summary>
+        /// The key name for the OpenAI assistant thread identifier value.
+        /// </summary>
+        public const string OpenAIAssistantsThreadId = "OpenAI.Assistants.Thread.Id";
+
+        /// <summary>
+        /// The key name for the Gateway API EndpointConfiguration identifier value.
+        /// </summary>
+        public const string GatewayAPIEndpointConfiguration = "GatewayAPIEndpointConfiguration";
+
+        /// <summary>
+        /// The key name for the list of tool names that are registered with the agent.
+        /// </summary>
+        public const string ToolNames = "ToolNames";
 
         /// <summary>
         /// All completion request objects dictionary keys.

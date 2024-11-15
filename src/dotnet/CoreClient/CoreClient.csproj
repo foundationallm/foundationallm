@@ -17,6 +17,8 @@
     <RepositoryUrl>https://github.com/solliancenet/foundationallm</RepositoryUrl>
     <PackageId>FoundationaLLM.Client.Core</PackageId>
     <Version>0.0.0</Version> <!-- Placeholder version -->
+    <AssemblyVersion>0.0.0</AssemblyVersion> <!-- Placeholder version -->
+    <FileVersion>0.0.0</FileVersion> <!-- Placeholder version -->
     <PackageIcon>fllm-icon-128.png</PackageIcon>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <Title>FoundationaLLM Core Client</Title>

@@ -8,11 +8,13 @@ using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
-using FoundationaLLM.Common.Services.Azure;
+using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Validation;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Services;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Options;
@@ -54,13 +56,21 @@ namespace FoundationaLLM.Core.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration);
+
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_OrchestrationAPI_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatewayAPI_Essentials);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatekeeperAPI_Essentials);
+
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Agent_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Attachment_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AIModel_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Events_Profiles_CoreAPI);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AzureOpenAI_Storage);
+
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
+                options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_CoreAPI);
             }));
             if (builder.Environment.IsDevelopment())
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
@@ -74,15 +84,15 @@ namespace FoundationaLLM.Core.API
 
             builder.Services.AddInstanceProperties(builder.Configuration);
 
-            builder.Services.AddOptions<CosmosDbSettings>()
-                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB));
             builder.Services.AddOptions<ClientBrandingConfiguration>()
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Branding));
             builder.Services.AddOptions<CoreServiceSettings>()
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_CoreAPI_Configuration));
 
             // Add Azure ARM services
-            builder.Services.AddAzureResourceManager();
+            builder.AddAzureResourceManager();
+
+            builder.Services.AddHttpContextAccessor();
 
             // Add event services
             builder.Services.AddAzureEventGridEvents(
@@ -94,27 +104,19 @@ namespace FoundationaLLM.Core.API
             builder.AddAgentResourceProvider();
             builder.AddAttachmentResourceProvider();
             builder.AddConfigurationResourceProvider();
+            builder.AddAzureOpenAIResourceProvider();
+            builder.AddAIModelResourceProvider();
+            builder.AddConversationResourceProvider();
 
             // Register the downstream services and HTTP clients.
             builder.AddHttpClientFactoryService();
             builder.AddDownstreamAPIService(HttpClientNames.GatekeeperAPI);
             builder.AddDownstreamAPIService(HttpClientNames.OrchestrationAPI);
 
-            builder.Services.AddSingleton<CosmosClient>(serviceProvider =>
-            {
-                var settings = serviceProvider.GetRequiredService<IOptions<CosmosDbSettings>>().Value;
-                return new CosmosClientBuilder(settings.Endpoint, DefaultAuthentication.AzureCredential)
-                    .WithSerializerOptions(new CosmosSerializationOptions
-                    {
-                        PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
-                    })
-                    .WithConnectionModeGateway()
-                    .Build();
-            });
-
-            builder.Services.AddScoped<ICosmosDbService, CosmosDbService>();
+            builder.AddAzureCosmosDBService();
             builder.Services.AddScoped<ICoreService, CoreService>();
             builder.Services.AddScoped<IUserProfileService, UserProfileService>();
+            builder.Services.AddScoped<IOneDriveWorkSchoolService, OneDriveWorkSchoolService>();
 
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             builder.Services.AddScoped<ICallContext, CallContext>();
@@ -135,6 +137,16 @@ namespace FoundationaLLM.Core.API
             builder.AddOpenTelemetry(
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_AppInsightsConnectionString,
                 ServiceNames.CoreAPI);
+
+            // Increase request size limit to 512 MB.
+            builder.WebHost.ConfigureKestrel(serverOptions =>
+            {
+                serverOptions.Limits.MaxRequestBodySize = 536870912; // 512 MB
+            });
+            builder.Services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 536870912; // 512 MB
+            });
 
             builder.Services.AddControllers();
 
@@ -227,6 +239,12 @@ namespace FoundationaLLM.Core.API
             app.UseExceptionHandler(exceptionHandlerApp
                     => exceptionHandlerApp.Run(async context
                         => await Results.Problem().ExecuteAsync(context)));
+
+            var forwardedHeadersOptions = new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            };
+            app.UseForwardedHeaders(forwardedHeadersOptions);
 
             // Configure the HTTP request pipeline.
             app.UseSwagger();

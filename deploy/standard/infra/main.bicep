@@ -2,9 +2,13 @@ targetScope = 'subscription'
 
 param administratorObjectId string
 param allowedExternalCidr string
+param aksServiceCidr string
 param authAppRegistrationClientId string
 param authAppRegistrationInstance string
 param authAppRegistrationTenantId string
+param backendAksNodeSku string
+param frontendAksNodeSku string
+param cidrVnet string
 param createDate string = utcNow('u')
 param environmentName string
 param externalNetworkingResourceGroupName string = ''
@@ -14,6 +18,8 @@ param existingOpenAiInstanceSub string = ''
 param instanceId string
 param location string
 param networkName string = ''
+param oneDriveBaseUrl string
+param principalType string
 param project string
 param registry string
 param services array
@@ -41,7 +47,7 @@ var existingOpenAiInstance = {
 var tags = {
   'compute-type': 'aks'
   'create-date': createDate
-  'env-name': environmentName
+  'azd-env-name': environmentName
   'iac-type': 'bicep'
   'project-name': project
 }
@@ -93,6 +99,9 @@ module app 'app-rg.bicep' = {
   params: {
     actionGroupId: ops.outputs.actionGroupId
     administratorObjectId: administratorObjectId
+    aksServiceCidr: aksServiceCidr
+    backendAksNodeSku: backendAksNodeSku
+    frontendAksNodeSku: frontendAksNodeSku
     environmentName: environmentName
     hubResourceGroup: hubResourceGroup
     hubSubscriptionId: hubSubscriptionId
@@ -100,8 +109,10 @@ module app 'app-rg.bicep' = {
     location: location
     logAnalyticsWorkspaceId: ops.outputs.logAnalyticsWorkspaceId
     logAnalyticsWorkspaceResourceId: ops.outputs.logAnalyticsWorkspaceId
+    monitorWorkspaceName: ops.outputs.monitorWorkspaceName
     networkingResourceGroupName: resourceGroups.net
     openAiResourceGroupName: resourceGroups.oai
+    openAiName: openai.outputs.azureOpenAiName
     opsResourceGroupName: resourceGroups.ops
     project: project
     services: services
@@ -130,6 +141,7 @@ module auth 'auth-rg.bicep' = {
     location: location
     logAnalyticsWorkspaceId: ops.outputs.logAnalyticsWorkspaceId
     opsResourceGroupName: resourceGroups.ops
+    principalType: principalType
     project: project
     vnetId: networking.outputs.vnetId
   }
@@ -140,6 +152,7 @@ module networking 'networking-rg.bicep' = {
   name: 'networking-${timestamp}'
   scope: resourceGroup(resourceGroups.net)
   params: {
+    cidrVnet: cidrVnet
     allowedExternalCidr: allowedExternalCidr
     environmentName: environmentName
     hubResourceGroup: hubResourceGroup
@@ -191,11 +204,13 @@ module storage 'storage-rg.bicep' = {
   scope: resourceGroup(resourceGroups.storage)
   params: {
     actionGroupId: ops.outputs.actionGroupId
+    administratorObjectId: administratorObjectId
     hubResourceGroup: hubResourceGroup
     hubSubscriptionId: hubSubscriptionId
     environmentName: environmentName
     location: location
     logAnalyticsWorkspaceId: ops.outputs.logAnalyticsWorkspaceId
+    principalType: principalType
     project: project
     vnetId: networking.outputs.vnetId
   }
@@ -245,6 +260,12 @@ output FLLM_MGMT_PORTAL_HOSTNAME string = managementPortalHostname
 output FLLM_CORE_API_HOSTNAME string = coreApiHostname
 output FLLM_MGMT_API_HOSTNAME string = managementApiHostname
 
+output FOUNDATIONALLM_VNET_NAME string = networking.outputs.vnetName
+output FOUNDATIONALLM_VNET_ID string = networking.outputs.vnetId
+output FOUNDATIONALLM_HUB_VNET_ID string = networking.outputs.hubVnetId
+
+output ONEDRIVE_BASE_URL string = oneDriveBaseUrl
+
 output SERVICE_GATEKEEPER_API_ENDPOINT_URL string = 'http://gatekeeper-api/gatekeeper/'
 output SERVICE_GATEKEEPER_INTEGRATION_API_ENDPOINT_URL string = 'http://gatekeeper-integration-api/gatekeeperintegration'
 output SERVICE_GATEWAY_ADAPTER_API_ENDPOINT_URL string = 'http://gateway-adapter-api/gatewayadapter'
@@ -255,3 +276,7 @@ output SERVICE_SEMANTIC_KERNEL_API_ENDPOINT_URL string = 'http://semantic-kernel
 output SERVICE_STATE_API_ENDPOINT_URL string = 'http://state-api/state'
 output SERVICE_VECTORIZATION_API_ENDPOINT_URL string = 'http://vectorization-api/vectorization'
 output SERVICE_VECTORIZATION_JOB_ENDPOINT_URL string = 'http://vectorization-job/vectorization'
+output SERVICE_CHAT_UI_ENDPOINT_URL string = 'https://${userPortalHostname}'
+output SERVICE_CORE_API_ENDPOINT_URL string = 'https://${coreApiHostname}'
+output SERVICE_MANAGEMENT_API_ENDPOINT_URL string = 'https://${managementApiHostname}'
+output SERVICE_MANAGEMENT_UI_ENDPOINT_URL string = 'https://${managementPortalHostname}'

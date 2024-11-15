@@ -2,6 +2,8 @@
 @description('Action Group to use for alerts.')
 param actionGroupId string
 
+param administratorObjectId string
+
 @description('The environment name token used in naming resources.')
 param environmentName string
 
@@ -13,6 +15,8 @@ param logAnalyticsWorkspaceId string
 
 param hubResourceGroup string
 param hubSubscriptionId string = subscription().subscriptionId
+
+param principalType string
 
 @description('Project Name, used in naming resources.')
 param project string
@@ -29,9 +33,9 @@ var resourceSuffix = '${project}-${environmentName}-${location}-${workload}'
 
 @description('Tags for all resources')
 var tags = {
-  Environment: environmentName
-  IaC: 'Bicep'
-  Project: project
+  'azd-env-name': environmentName
+  'iac-type': 'bicep'
+  'project-name': project
   Purpose: 'Storage'
 }
 
@@ -57,7 +61,7 @@ module cosmosdb 'modules/cosmosdb.bicep' = {
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
     privateDnsZones: filter(dnsZones.outputs.ids, (zone) => zone.key == 'cosmosdb')
     resourceSuffix: resourceSuffix
-    subnetId: '${vnetId}/subnets/FLLMStorage'
+    subnetId: '${vnetId}/subnets/storage'
     tags: tags
   }
 }
@@ -67,13 +71,15 @@ module storage 'modules/storageAccount.bicep' = {
   name: 'storage-${timestamp}'
   params: {
     actionGroupId: actionGroupId
+    adminGroupObjectId: administratorObjectId
     enableHns: true
     isDataLake: true
     location: location
     logAnalyticWorkspaceId: logAnalyticsWorkspaceId
+    principalType: principalType
     privateDnsZones: dnsZones.outputs.idsStorage
     resourceSuffix: resourceSuffix
-    subnetId: '${vnetId}/subnets/FLLMStorage'
+    subnetId: '${vnetId}/subnets/storage'
     tags: tags
     containers: [
       'resource-provider'

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FoundationaLLM.Core.Interfaces
+﻿namespace FoundationaLLM.Core.Interfaces
 {
     /// <summary>
     /// Contains Azure Cosmos DB change feed methods.

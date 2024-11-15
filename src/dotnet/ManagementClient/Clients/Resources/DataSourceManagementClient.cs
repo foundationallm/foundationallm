@@ -42,7 +42,7 @@ namespace FoundationaLLM.Client.Management.Clients.Resources
 
             return await managementRestClient.Resources.ExecuteResourceActionAsync<ResourceNameCheckResult>(
                 ResourceProviderNames.FoundationaLLM_DataSource,
-                $"{DataSourceResourceTypeNames.DataSources}/{DataSourceResourceProviderActions.CheckName}",
+                $"{DataSourceResourceTypeNames.DataSources}/{ResourceProviderActions.CheckName}",
                 resourceName
             );
         }
@@ -57,7 +57,7 @@ namespace FoundationaLLM.Client.Management.Clients.Resources
 
             return await managementRestClient.Resources.ExecuteResourceActionAsync<ResourceProviderActionResult>(
                 ResourceProviderNames.FoundationaLLM_DataSource,
-                $"{DataSourceResourceTypeNames.DataSources}/{dataSourceName}/{DataSourceResourceProviderActions.Purge}",
+                $"{DataSourceResourceTypeNames.DataSources}/{dataSourceName}/{ResourceProviderActions.Purge}",
                 new { }
             );
         }
@@ -66,7 +66,7 @@ namespace FoundationaLLM.Client.Management.Clients.Resources
         public async Task<List<DataSourceBase>> FilterDataSourceAsync(ResourceFilter resourceFilter) =>
             await managementRestClient.Resources.ExecuteResourceActionAsync<List<DataSourceBase>>(
                 ResourceProviderNames.FoundationaLLM_DataSource,
-                $"{DataSourceResourceTypeNames.DataSources}/{DataSourceResourceProviderActions.Filter}",
+                $"{DataSourceResourceTypeNames.DataSources}/{ResourceProviderActions.Filter}",
                 resourceFilter
             );
 

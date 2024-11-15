@@ -40,15 +40,14 @@ namespace FoundationaLLM.Core.Examples
         private BlobStorageServiceSettings? _settings;
 
         public Example0005_AsynchronousVectorizationOfPDFFromDataLake(ITestOutputHelper output, TestFixture fixture)
-            : base(output, fixture.ServiceProvider)
+            : base(output, [fixture.ServiceProvider])
         {
             _vectorizationTestService = GetService<IVectorizationTestService>();
             _instanceSettings = _vectorizationTestService.InstanceSettings;
             dataSourceObjectId = $"/instances/{_instanceSettings.Id}/providers/FoundationaLLM.DataSource/dataSources/{dataSourceName}";
             id = Guid.NewGuid().ToString();
             _settings = ServiceProvider.GetRequiredService<IOptionsMonitor<BlobStorageServiceSettings>>()
-                    .Get(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization);
-            
+                    .Get(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization_Storage);
         }
 
         [Fact]
@@ -71,7 +70,7 @@ namespace FoundationaLLM.Core.Examples
                     {
                         Name = accountNameAppConfigKey,
                         Key = accountNameAppConfigKey,
-                        Value = Environment.GetEnvironmentVariable("AZURE_STORAGE_ACCOUNT_NAME"),
+                        Value = _settings!.AccountName,
                         ContentType = ""
                     }
                 );
@@ -125,7 +124,7 @@ namespace FoundationaLLM.Core.Examples
                 {
                     RemainingSteps = new List<string> { "extract", "partition", "embed", "index" },
                     CompletedSteps = new List<string>(),
-                    ProcessingType = VectorizationProcessingType.Synchronous,
+                    ProcessingType = VectorizationProcessingType.Asynchronous,
                     ContentIdentifier = ci,
                     Name = id,
                     Steps = steps,

@@ -1,5 +1,5 @@
 ﻿using FoundationaLLM.Common.Models.Cache;
-using FoundationaLLM.Common.Services;
+using FoundationaLLM.Common.Services.Cache;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 

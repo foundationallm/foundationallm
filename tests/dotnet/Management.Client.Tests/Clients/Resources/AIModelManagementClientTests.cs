@@ -2,7 +2,6 @@
 using FoundationaLLM.Client.Management.Interfaces;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
 using NSubstitute;
 
@@ -33,8 +32,8 @@ namespace Management.Client.Tests.Clients.Resources
                         Type = AIModelTypes.Completion,
                         EndpointObjectId = "endpoint-object-id"
                     },
-                    Actions = [],
-                    Roles = []
+                    Roles = [],
+                    Actions = []
                 }
             };
 
@@ -70,8 +69,8 @@ namespace Management.Client.Tests.Clients.Resources
                     Type = AIModelTypes.Completion,
                     EndpointObjectId = "endpoint-object-id"
                 },
-                Actions = [],
-                Roles = []
+                Roles = [],
+                Actions = []
             };
             var expectedAIModels = new List<ResourceProviderGetResult<AIModelBase>> { expectedAIModel };
 
@@ -121,7 +120,8 @@ namespace Management.Client.Tests.Clients.Resources
             };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {
-                ObjectId = "test-object-id"
+                ObjectId = "test-object-id",
+                ResourceExists = false
             };
 
             _mockRestClient.Resources

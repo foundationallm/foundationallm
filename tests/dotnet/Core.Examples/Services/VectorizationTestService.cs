@@ -1,15 +1,19 @@
 ﻿using Azure;
-using Azure.AI.OpenAI;
 using Azure.Identity;
 using Azure.Search.Documents;
 using Azure.Search.Documents.Indexes;
 using Azure.Search.Documents.Models;
+using FoundationaLLM.Common.Clients;
+using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
+using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Core.Examples.Interfaces;
 using FoundationaLLM.Core.Examples.Models;
 using FoundationaLLM.Core.Examples.Setup;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 #pragma warning disable SKEXP0001, SKEXP0020
@@ -22,10 +26,14 @@ namespace FoundationaLLM.Core.Examples.Services
     /// <param name="managementAPITestManager">Interfacing code with the Management API responsible for resource management.</param>
     /// <param name="instanceSettings">Instance settings for the current environment.</param>
     public class VectorizationTestService(        
-        IManagementAPITestManager managementAPITestManager,       
+        IManagementAPITestManager managementAPITestManager,
+        IHttpClientFactoryService httpClientFactory,
+        ILoggerFactory loggerFactory,
         IOptions<InstanceSettings> instanceSettings) : IVectorizationTestService
     {
-        private IManagementAPITestManager _managementAPITestManager = managementAPITestManager;        
+        private IManagementAPITestManager _managementAPITestManager = managementAPITestManager;
+        private IHttpClientFactoryService _httpClientFactory = httpClientFactory;
+        private ILoggerFactory _loggerFactory = loggerFactory;
         private InstanceSettings _instanceSettings = instanceSettings.Value;
 
         InstanceSettings IVectorizationTestService.InstanceSettings { get { return _instanceSettings; } set { _instanceSettings = value; } }
@@ -78,37 +86,51 @@ namespace FoundationaLLM.Core.Examples.Services
 
         public async Task<ReadOnlyMemory<float>> GetVector(TextEmbeddingProfile embedProfile, string query)
         {
-            //embed the query
-            string oaiEndpoint = await TestConfiguration.GetAppConfigValueAsync(embedProfile.ConfigurationReferences["EndpointUrl"]);
-            string authType = await TestConfiguration.GetAppConfigValueAsync(embedProfile.ConfigurationReferences["AuthenticationType"]);            
-            OpenAIClient openAIClient;
-            switch(authType)
+            var gatewayConfiguration = await _managementAPITestManager.GetAPIEndpointConfiguration($"{ConfigurationResourceTypeNames.APIEndpointConfigurations}/GatewayAPI");
+            var gatewayServiceClient = new GatewayServiceClient(
+                await _httpClientFactory.CreateClient(gatewayConfiguration, null),
+                _loggerFactory.CreateLogger<GatewayServiceClient>()
+            );
+            var request = new TextEmbeddingRequest
             {
-                case "AzureIdentity":
-                    openAIClient = new OpenAIClient(new Uri(oaiEndpoint), new DefaultAzureCredential());
-                    break;
-                case "ApiKey":
-                    openAIClient = new OpenAIClient(new Uri(oaiEndpoint), new AzureKeyCredential(await TestConfiguration.GetAppConfigValueAsync(embedProfile.ConfigurationReferences["APIKey"])));
-                    break;
-                default:
-                    throw new Exception("Invalid authentication type");
-            }    
-
-            EmbeddingsOptions embeddingOptions = new()
-            {
-                DeploymentName = await TestConfiguration.GetAppConfigValueAsync(embedProfile.ConfigurationReferences["DeploymentName"]),
-                Input = { query },
+                TextChunks = new List<TextChunk>
+                {
+                    new TextChunk
+                    {
+                        Position = 1,
+                        Content = query
+                    }
+                },
+                EmbeddingModelName = embedProfile.Settings!["model_name"],
+                Prioritized = true
             };
-
-            var returnValue = openAIClient.GetEmbeddings(embeddingOptions);
-
-            return returnValue.Value.Data[0].Embedding.ToArray();
+            
+            var embeddingResult = await gatewayServiceClient.StartEmbeddingOperation(_instanceSettings.Id, request);
+            
+            int timeRemainingMilliseconds = 30000;
+            var pollDurationMilliseconds = 5000;
+            while (embeddingResult.InProgress && timeRemainingMilliseconds > 0)
+            {
+                Thread.Sleep(pollDurationMilliseconds);
+                timeRemainingMilliseconds -= pollDurationMilliseconds;
+                embeddingResult = await gatewayServiceClient.GetEmbeddingOperationResult(_instanceSettings.Id, embeddingResult.OperationId!);
+            }
+            
+            if (embeddingResult.InProgress)
+                throw new Exception("Embedding operation failed to complete within 30 s");
+            if (embeddingResult.Failed)
+                throw new Exception($"Embedding operation failed: {embeddingResult.ErrorMessage}");
+            if (embeddingResult.TextChunks.Count == 0)
+                throw new Exception("No chunks were founding in the embedding result");
+            return embeddingResult.TextChunks.First().Embedding!.Value.Vector;
         }
 
         async public Task<SearchIndexClient> GetIndexClient(IndexingProfile indexProfile)
         {
-            string searchServiceEndPoint = await TestConfiguration.GetAppConfigValueAsync(indexProfile.ConfigurationReferences["EndpointUrl"]);
-            string authType = await TestConfiguration.GetAppConfigValueAsync(indexProfile.ConfigurationReferences["AuthenticationType"]);
+            var indexEndpointObjectId = indexProfile.Settings![VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId];
+            var endpoint = await _managementAPITestManager.GetAPIEndpointConfiguration($"{ConfigurationResourceTypeNames.APIEndpointConfigurations}/{indexEndpointObjectId.Split("/").Last()}");
+            string searchServiceEndPoint = endpoint.Url;
+            string authType = endpoint.AuthenticationType.ToString();
 
             SearchIndexClient indexClient = null;
 
@@ -118,7 +140,7 @@ namespace FoundationaLLM.Core.Examples.Services
                     indexClient = new SearchIndexClient(new Uri(searchServiceEndPoint), new DefaultAzureCredential());
                     break;
                 case "ApiKey":
-                    string adminApiKey = await TestConfiguration.GetAppConfigValueAsync(indexProfile.ConfigurationReferences["ApiKey"]);
+                    string adminApiKey = await TestConfiguration.GetAppConfigValueAsync(endpoint.AuthenticationParameters["ApiKey"].ToString()!);
                     indexClient = new SearchIndexClient(new Uri(searchServiceEndPoint), new AzureKeyCredential(adminApiKey));
                     break;
 

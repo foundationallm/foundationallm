@@ -4,7 +4,6 @@ using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Vectorization;
-using FoundationaLLM.Common.Settings;
 using FoundationaLLM.SemanticKernel.Core.Models.Configuration;
 using FoundationaLLM.SemanticKernel.Core.Services.Indexing;
 using Microsoft.Extensions.Logging;
@@ -27,13 +26,11 @@ namespace FoundationaLLM.SemanticKernel.Tests.Services
                 DefaultAuthentication.AzureCredential
             );
             _indexingService = new AzureAISearchIndexingService(
-                Options.Create(
-                    new AzureAISearchIndexingServiceSettings
-                    {
-                        Endpoint = endpoint,
-                        AuthenticationType = AuthenticationTypes.AzureIdentity
-                    }
-                ),
+                new AzureAISearchIndexingServiceSettings
+                {
+                    Endpoint = endpoint,
+                    AuthenticationType = AuthenticationTypes.AzureIdentity
+                },
                 LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<AzureAISearchIndexingService>()
             );
         }

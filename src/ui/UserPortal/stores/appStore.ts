@@ -1,21 +1,46 @@
 import { defineStore } from 'pinia';
 import { useAppConfigStore } from './appConfigStore';
 import { useAuthStore } from './authStore';
-import type { Session, Message, Agent, ResourceProviderGetResult, Attachment } from '@/js/types';
+import type {
+	Session,
+	ChatSessionProperties,
+	Message,
+	UserProfile,
+	Agent,
+	CoreConfiguration,
+	OneDriveWorkSchool,
+	ResourceProviderGetResult,
+	ResourceProviderUpsertResult,
+	ResourceProviderDeleteResults,
+	Attachment,
+	MessageContent,
+} from '@/js/types';
 import api from '@/js/api';
-import eventBus from '@/js/eventBus';
+// import eventBus from '@/js/eventBus';
+
+const DEFAULT_POLLING_INTERVAL_MS = 5000;
 
 export const useAppStore = defineStore('app', {
 	state: () => ({
 		sessions: [] as Session[],
 		currentSession: null as Session | null,
+		newSession: null as Session | null, // Used to store the newly created session. Deleted after the first prompt is sent. This is to prevent an unnecessary fetch of its messages.
+		pollingSession: null as string | null, // Contains the ID of a session that is currently being polled for completion.
+		renamedSessions: [] as Session[],
+		deletedSessions: [] as Session[],
 		currentMessages: [] as Message[],
 		isSidebarClosed: false as boolean,
 		agents: [] as ResourceProviderGetResult<Agent>[],
 		selectedAgents: new Map(),
 		lastSelectedAgent: null as ResourceProviderGetResult<Agent> | null,
 		attachments: [] as Attachment[],
-		longRunningOperations: new Map<string, string>(), // sessionId -> operationId
+		longRunningOperations: new Map<string, string>(), // sessionId -> operation_id
+		coreConfiguration: null as CoreConfiguration | null,
+		oneDriveWorkSchool: null as boolean | null,
+		userProfiles: null as UserProfile | null,
+		autoHideToasts: JSON.parse(sessionStorage.getItem('autoHideToasts') || 'true') as boolean,
+		textSize: JSON.parse(sessionStorage.getItem('textSize') || '1') as number,
+		highContrastMode: JSON.parse(sessionStorage.getItem('highContrastMode') || 'false') as boolean,
 	}),
 
 	getters: {},
@@ -24,27 +49,74 @@ export const useAppStore = defineStore('app', {
 		async init(sessionId: string) {
 			const appConfigStore = useAppConfigStore();
 
+			// Watch for changes in autoHideToasts and update sessionStorage
+			watch(
+				() => this.autoHideToasts,
+				(newValue: boolean) => {
+					sessionStorage.setItem('autoHideToasts', JSON.stringify(newValue));
+				},
+			);
+
+			// Watch for changes in textSize and update sessionStorage
+			watch(
+				() => this.textSize,
+				(newValue: number) => {
+					sessionStorage.setItem('textSize', JSON.stringify(newValue));
+					document.documentElement.style.setProperty('--app-text-size', `${newValue}rem`);
+				},
+			);
+
+			// Watch for changes in highContrastMode and update sessionStorage
+			watch(
+				() => this.highContrastMode,
+				(newValue: boolean) => {
+					sessionStorage.setItem('highContrastMode', JSON.stringify(newValue));
+				},
+			);
+
 			// No need to load sessions if in kiosk mode, simply create a new one and skip.
 			if (appConfigStore.isKioskMode) {
-				const newSession = await api.addSession();
-				await this.changeSession(newSession);
+				const newSession = await api.addSession(this.getDefaultChatSessionProperties());
+				this.changeSession(newSession);
 				return;
 			}
 
 			await this.getSessions();
 
 			if (this.sessions.length === 0) {
-				await this.addSession();
-				await this.changeSession(this.sessions[0]);
+				await this.addSession(this.getDefaultChatSessionProperties());
+				this.changeSession(this.sessions[0]);
 			} else {
 				const existingSession = this.sessions.find((session: Session) => session.id === sessionId);
-				await this.changeSession(existingSession || this.sessions[0]);
+				this.changeSession(existingSession || this.sessions[0]);
 			}
 
-			if (this.currentSession) {
-				await this.getMessages();
-				this.updateSessionAgentFromMessages(this.currentSession);
-			}
+			await this.getUserProfiles();
+
+			// if (this.currentSession) {
+			// 	await this.getMessages();
+			// 	this.updateSessionAgentFromMessages(this.currentSession);
+			// }
+		},
+
+		getDefaultChatSessionProperties(): ChatSessionProperties {
+			const now = new Date();
+			// Using the 'sv-SE' locale since it uses the 'YYY-MM-DD' format.
+			const formattedNow = now
+				.toLocaleString('sv-SE', {
+					year: 'numeric',
+					month: '2-digit',
+					day: '2-digit',
+					hour: '2-digit',
+					minute: '2-digit',
+					second: '2-digit',
+					hour12: false,
+				})
+				.replace(' ', 'T')
+				.replace('T', ' ');
+			return {
+				name: formattedNow,
+			};
 		},
 
 		async getSessions(session?: Session) {
@@ -63,11 +135,32 @@ export const useAppStore = defineStore('app', {
 			} else {
 				this.sessions = sessions;
 			}
+
+			// Handle inconsistencies in displaying the renamed session due to potential delays in the backend updating the session name.
+			this.renamedSessions.forEach((renamedSession: Session) => {
+				const existingSession = this.sessions.find((s: Session) => s.id === renamedSession.id);
+				if (existingSession) {
+					existingSession.display_name = renamedSession.display_name;
+				}
+			});
+
+			// Handle inconsistencies in displaying the deleted session due to potential delays in the backend updating the session list.
+			this.deletedSessions.forEach((deletedSession: Session) => {
+				const existingSession = this.sessions.find((s: Session) => s.id === deletedSession.id);
+				if (existingSession) {
+					this.removeSession(deletedSession.id);
+				}
+			});
 		},
 
-		async addSession() {
-			const newSession = await api.addSession();
+		async addSession(properties: ChatSessionProperties) {
+			if (!properties) {
+				properties = this.getDefaultChatSessionProperties();
+			}
+
+			const newSession = await api.addSession(properties);
 			await this.getSessions(newSession);
+			this.newSession = newSession;
 
 			// Only add newSession to the list if it doesn't already exist.
 			// We optionally add it because the backend is sometimes slow to update the session list.
@@ -84,13 +177,24 @@ export const useAppStore = defineStore('app', {
 			);
 
 			// Preemptively rename the session for responsiveness, and revert the name if the request fails.
-			const previousName = existingSession.name;
-			existingSession.name = newSessionName;
+			const previousName = existingSession.display_name;
+			existingSession.display_name = newSessionName;
 
 			try {
 				await api.renameSession(sessionToRename.id, newSessionName);
+				const existingRenamedSession = this.renamedSessions.find(
+					(session: Session) => session.id === sessionToRename.id,
+				);
+				if (existingRenamedSession) {
+					existingRenamedSession.display_name = newSessionName;
+				} else {
+					this.renamedSessions = [
+						{ ...sessionToRename, display_name: newSessionName },
+						...this.renamedSessions,
+					];
+				}
 			} catch (error) {
-				existingSession.name = previousName;
+				existingSession.display_name = previousName;
 			}
 		},
 
@@ -98,31 +202,98 @@ export const useAppStore = defineStore('app', {
 			await api.deleteSession(sessionToDelete!.id);
 			await this.getSessions();
 
-			this.sessions = this.sessions.filter(
-				(session: Session) => session.id !== sessionToDelete!.id,
-			);
+			this.removeSession(sessionToDelete!.id);
+
+			// Add the deleted session to the list of deleted sessions to handle inconsistencies in the backend updating the session list.
+			this.deletedSessions = [sessionToDelete, ...this.deletedSessions];
 
 			// Ensure there is at least always 1 session
 			if (this.sessions.length === 0) {
-				const newSession = await this.addSession();
-				await this.changeSession(newSession);
-				return;
+				const newSession = await this.addSession(this.getDefaultChatSessionProperties());
+				this.removeSession(sessionToDelete!.id);
+				this.changeSession(newSession);
 			}
 
 			const firstSession = this.sessions[0];
 			if (firstSession) {
-				await this.changeSession(firstSession);
+				this.changeSession(firstSession);
 			}
 		},
 
+		removeSession(sessionId: string) {
+			this.sessions = this.sessions.filter((session: Session) => session.id !== sessionId);
+		},
+
+		initializeMessageContent(content: MessageContent) {
+			return reactive({
+				...content,
+				blobUrl: '',
+				loading: true,
+				error: false,
+			});
+		},
+
 		async getMessages() {
-			const data = await api.getMessages(this.currentSession.id);
-			this.currentMessages = data;
+			if (this.newSession && this.newSession.id === this.currentSession!.id) {
+				// This is a new session, no need to fetch messages.
+				this.currentMessages = [];
+				return;
+			}
+			const messagesResponse = await api.getMessages(this.currentSession.id);
+
+			// Temporarily filter out the duplicate streaming message instances
+			// const uniqueMessages = messagesResponse.reduceRight((acc, current) => {
+			// 	const isDuplicate = acc.find(item => {
+			// 		return item.operation_id === current.operation_id && item.sender === current.sender;
+			// 	});
+
+			// 	if (!isDuplicate || current.sender !== 'Agent') {
+			// 		acc.push(current);
+			// 	}
+
+			// 	return acc;
+			// }, []);
+
+			// uniqueMessages.reverse();
+
+			this.currentMessages = messagesResponse.map((message) => ({
+				...message,
+				content: message.content ? message.content.map(this.initializeMessageContent) : [],
+			}));
+
+			// Determine if the latest message needs to be polled
+			if (this.currentMessages.length > 0) {
+				const latestMessage = this.currentMessages[this.currentMessages.length - 1];
+
+				// For older messages that have a status of "Pending" but no operation id, assume
+				// it is complete and do no initiate polling as it will return empty data
+				if (
+					latestMessage.operation_id &&
+					(latestMessage.status === 'InProgress' || latestMessage.status === 'Pending')
+				) {
+					this.startPolling(latestMessage, this.currentSession.id);
+				}
+			}
+		},
+
+		async getMessage(messageId: string) {
+			const data = await api.getMessage(messageId);
+			const existingMessageIndex = this.currentMessages.findIndex(
+				(message) => message.id === messageId,
+			);
+
+			if (existingMessageIndex !== -1) {
+				this.currentMessages[existingMessageIndex] = data;
+				return data;
+			}
+
+			this.currentMessages.push(data);
+			return data;
 		},
 
 		updateSessionAgentFromMessages(session: Session) {
 			const lastAssistantMessage = this.currentMessages
-				.filter((message) => message.sender.toLowerCase() === 'assistant')
+				.filter((message) => message.sender === 'Agent')
 				.pop();
 			if (lastAssistantMessage) {
 				const agent = this.agents.find(
@@ -163,15 +334,22 @@ export const useAppStore = defineStore('app', {
 		async sendMessage(text: string) {
 			if (!text) return;
 
+			const agent = this.getSessionAgent(this.currentSession!).resource;
 			const sessionId = this.currentSession!.id;
 			const relevantAttachments = this.attachments.filter(
 				(attachment) => attachment.sessionId === sessionId,
 			);
 
+			const attachmentDetails = relevantAttachments.map((attachment) => ({
+				objectId: attachment.id,
+				displayName: attachment.fileName,
+				contentType: attachment.contentType,
+			}));
+
 			const authStore = useAuthStore();
 			const tempUserMessage: Message = {
 				completionPromptId: null,
-				id: '',
+				id: null,
 				rating: null,
 				sender: 'User',
 				senderDisplayName: authStore.currentAccount?.name ?? 'You',
@@ -181,6 +359,8 @@ export const useAppStore = defineStore('app', {
 				tokens: 0,
 				type: 'Message',
 				vector: [],
+				attachmentDetails,
+				renderId: Math.random(),
 			};
 			this.currentMessages.push(tempUserMessage);
 
@@ -188,50 +368,98 @@ export const useAppStore = defineStore('app', {
 				completionPromptId: null,
 				id: '',
 				rating: null,
-				sender: 'Assistant',
-				senderDisplayName: 'Assistant',
+				sender: 'Agent',
+				senderDisplayName: agent.name,
 				sessionId: this.currentSession!.id,
 				text: '',
 				timeStamp: new Date().toISOString(),
 				tokens: 0,
 				type: 'LoadingMessage',
 				vector: [],
+				status: 'Loading',
+				renderId: Math.random(),
 			};
 			this.currentMessages.push(tempAssistantMessage);
 
-			const agent = this.getSessionAgent(this.currentSession!).resource;
-			if (agent.long_running) {
-				// Handle long-running operations
-				const operationId = await api.startLongRunningProcess('/completions', {
-					session_id: this.currentSession!.id,
-					user_prompt: text,
-					agent_name: agent.name,
-					settings: null,
-					attachments: relevantAttachments.map((attachment) => String(attachment.id)),
-				});
+			const initialSession = this.currentSession.id;
+			const message = await api.sendMessage(
+				this.currentSession!.id,
+				text,
+				agent,
+				relevantAttachments.map((attachment) => String(attachment.id)),
+			);
+			this.currentMessages[this.currentMessages.length - 1] = {
+				...tempAssistantMessage,
+				...message,
+				type: 'Message',
+				text: message.status_message,
+			};
 
-				this.longRunningOperations.set(this.currentSession!.id, operationId);
-				this.pollForCompletion(this.currentSession!.id, operationId);
-			} else {
-				await api.sendMessage(
-					this.currentSession!.id,
-					text,
-					agent,
-					relevantAttachments.map((attachment) => String(attachment.id)),
-				);
-				await this.getMessages();
-			}
+			this.attachments = this.attachments.filter(
+				(attachment) => attachment.sessionId !== sessionId,
+			);
 
-			// Update the session name based on the message sent.
-			if (this.currentMessages.length === 2) {
-				const sessionFullText = this.currentMessages.map((message) => message.text).join('\n');
-				const { text: newSessionName } = await api.generateSessionName(
-					this.currentSession!.id,
-					sessionFullText,
-				);
-				// the generate session name already renames the session in the backend
-				this.currentSession!.name = newSessionName;
+			// If the session has changed before above completes we need to prevent polling
+			if (initialSession !== this.currentSession.id) return;
+
+			// If the operation failed to start prevent polling
+			if (message.status === 'Failed') return;
+
+			// For older messages that have a status of "Pending" but no operation id, assume
+			// it is complete and do no initiate polling as it will return empty data
+			if (message.operation_id) this.startPolling(message, this.currentSession.id);
+
+			// Remove the new session if matches this one, now that we have sent the first message.
+			if (this.newSession && this.newSession.id === initialSession) {
+				this.newSession = null;
 			}
+		},
+
+		getPollingRateMS() {
+			return (
+				this.coreConfiguration?.completionResponsePollingIntervalSeconds * 1000 ||
+				DEFAULT_POLLING_INTERVAL_MS
+			);
+		},
+
+		startPolling(message, sessionId: string) {
+			if (this.pollingInterval) return;
+
+			// Indicate that a message in this session is being polled for completion.
+			this.pollingSession = sessionId;
+
+			this.pollingInterval = setInterval(async () => {
+				try {
+					const statusResponse = await api.checkProcessStatus(message.operation_id);
+					const updatedMessage = statusResponse.result ?? {};
+					this.currentMessages[this.currentMessages.length - 1] = {
+						...updatedMessage,
+						renderId: this.currentMessages[this.currentMessages.length - 1].renderId,
+					};
+
+					const userMessage = this.currentMessages[this.currentMessages.length - 2];
+					if (
+						userMessage &&
+						statusResponse.prompt_tokens &&
+						userMessage.tokens !== statusResponse.prompt_tokens
+					) {
+						userMessage.tokens = statusResponse.prompt_tokens;
+					}
+
+					if (updatedMessage.status === 'Completed' || updatedMessage.status === 'Failed') {
+						this.stopPolling(sessionId);
+					}
+				} catch (error) {
+					console.error(error);
+					this.stopPolling(sessionId);
+				}
+			}, this.getPollingRateMS());
+		},
+
+		stopPolling(/* sessionId: string */) {
+			clearInterval(this.pollingInterval);
+			this.pollingInterval = null;
+			this.pollingSession = null;
 		},
 
 		/**
@@ -240,18 +468,18 @@ export const useAppStore = defineStore('app', {
 		 * @param sessionId - The session ID associated with the operation.
 		 * @param operationId - The ID of the operation to check for completion.
 		 */
-		async pollForCompletion(sessionId: string, operationId: string) {
-			while (true) {
-				const status = await api.checkProcessStatus(operationId);
-				if (status.isCompleted) {
-					this.longRunningOperations.delete(sessionId);
-					eventBus.emit('operation-completed', { sessionId, operationId });
-					await this.getMessages();
-					break;
-				}
-				await new Promise((resolve) => setTimeout(resolve, 2000)); // Poll every 2 seconds
-			}
-		},
+		// async pollForCompletion(sessionId: string, operationId: string) {
+		// 	while (true) {
+		// 		const status = await api.checkProcessStatus(operationId);
+		// 		if (status.isCompleted) {
+		// 			this.longRunningOperations.delete(sessionId);
+		// 			eventBus.emit('operation-completed', { sessionId, operationId });
+		// 			await this.getMessages();
+		// 			break;
+		// 		}
+		// 		await new Promise((resolve) => setTimeout(resolve, 2000)); // Poll every 2 seconds
+		// 	}
+		// },
 
 		async rateMessage(messageToRate: Message, isLiked: Message['rating']) {
 			const existingMessage = this.currentMessages.find(
@@ -269,7 +497,9 @@ export const useAppStore = defineStore('app', {
 			}
 		},
 
-		async changeSession(newSession: Session) {
+		changeSession(newSession: Session) {
+			this.stopPolling(newSession.id);
+
 			const nuxtApp = useNuxtApp();
 			const appConfigStore = useAppConfigStore();
 
@@ -281,8 +511,8 @@ export const useAppStore = defineStore('app', {
 			}
 
 			this.currentSession = newSession;
-			await this.getMessages();
-			this.updateSessionAgentFromMessages(newSession);
+			// await this.getMessages();
+			// this.updateSessionAgentFromMessages(newSession);
 		},
 
 		toggleSidebar() {
@@ -294,22 +524,105 @@ export const useAppStore = defineStore('app', {
 			return this.agents;
 		},
 
-		async uploadAttachment(file: FormData, sessionId: string) {
-			const id = await api.uploadAttachment(file);
-			const fileName = file.get('file')?.name;
-			const newAttachment = { id, fileName, sessionId };
+		async ensureAgentsLoaded() {
+			let retryCount = 0;
+			while (this.agents?.length === 0 && retryCount < 10) {
+				await new Promise((resolve) => setTimeout(resolve, 500));
+				retryCount += 1;
+			}
+		},
 
-			const existingIndex = this.attachments.findIndex(
-				(attachment) => attachment.sessionId === sessionId,
-			);
+		async getCoreConfiguration() {
+			this.coreConfiguration = await api.getCoreConfiguration();
+			return this.coreConfiguration;
+		},
 
-			if (existingIndex !== -1) {
-				this.attachments.splice(existingIndex, 1, newAttachment);
-			} else {
-				this.attachments.push(newAttachment);
+		async oneDriveWorkSchoolConnect() {
+			await api.oneDriveWorkSchoolConnect();
+			this.oneDriveWorkSchool = true;
+		},
+
+		async oneDriveWorkSchoolDisconnect() {
+			await api.oneDriveWorkSchoolDisconnect();
+			this.oneDriveWorkSchool = false;
+		},
+
+		async getUserProfiles() {
+			this.userProfiles = await api.getUserProfile();
+			this.oneDriveWorkSchool = this.userProfiles?.flags.oneDriveWorkSchoolEnabled;
+			return this.userProfiles;
+		},
+
+		async oneDriveWorkSchoolDownload(sessionId: string, oneDriveWorkSchool: OneDriveWorkSchool) {
+			const agent = this.getSessionAgent(this.currentSession!).resource;
+			// If the agent is not found, do not upload the attachment and display an error message.
+			if (!agent) {
+				throw new Error('No agent selected.');
 			}
 
-			return id;
+			const item = (await api.oneDriveWorkSchoolDownload(
+				sessionId,
+				agent.name,
+				oneDriveWorkSchool,
+			)) as OneDriveWorkSchool;
+			const newAttachment: Attachment = {
+				id: item.objectId!,
+				fileName: item.name!,
+				sessionId,
+				contentType: item.mimeType!,
+				source: 'OneDrive Work/School',
+			};
+
+			this.attachments.push(newAttachment);
+
+			return item.objectId;
+		},
+
+		async uploadAttachment(file: FormData, sessionId: string, progressCallback: Function) {
+			const agent = this.getSessionAgent(this.currentSession!).resource;
+			// If the agent is not found, do not upload the attachment and display an error message.
+			if (!agent) {
+				throw new Error('No agent selected.');
+			}
+
+			const upsertResult = (await api.uploadAttachment(
+				file,
+				sessionId,
+				agent.name,
+				progressCallback,
+			)) as ResourceProviderUpsertResult;
+			const fileName = file.get('file')?.name;
+			const contentType = file.get('file')?.type;
+			const newAttachment: Attachment = {
+				id: upsertResult.objectId,
+				fileName,
+				sessionId,
+				contentType,
+				source: 'Local Computer',
+			};
+
+			this.attachments.push(newAttachment);
+
+			return upsertResult.objectId;
+		},
+
+		async deleteAttachment(attachment: Attachment) {
+			const deleteResults: ResourceProviderDeleteResults = await api.deleteAttachments([
+				attachment.id,
+			]);
+			Object.entries(deleteResults).forEach(([key, value]) => {
+				if (key === attachment.id) {
+					if (value.deleted) {
+						this.attachments = this.attachments.filter((a) => a.id !== attachment.id);
+					} else {
+						throw new Error(`Could not delete the attachment: ${value.reason}`);
+					}
+				}
+			});
+		},
+
+		async getVirtualUser() {
+			return await api.getVirtualUser();
 		},
 	},
 });

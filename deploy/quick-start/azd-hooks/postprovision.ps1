@@ -56,17 +56,39 @@ $env:GUID03 = $($(New-Guid).Guid)
 $env:GUID04 = $($(New-Guid).Guid)
 $env:GUID05 = $($(New-Guid).Guid)
 $env:GUID06 = $($(New-Guid).Guid)
+$env:GUID07 = $($(New-Guid).Guid)
+$env:GUID08 = $($(New-Guid).Guid)
+$env:GUID09 = $($(New-Guid).Guid)
+$env:GUID10 = $($(New-Guid).Guid)
+$env:GUID11 = $($(New-Guid).Guid)
+$env:GUID12 = $($(New-Guid).Guid)
+$env:GUID13 = $($(New-Guid).Guid)
+
+$env:POLICYGUID01 = $($(New-Guid).Guid)
+$env:POLICYGUID02 = $($(New-Guid).Guid)
+$env:POLICYGUID03 = $($(New-Guid).Guid)
+$env:POLICYGUID04 = $($(New-Guid).Guid)
 
 $envConfiguraitons = @{
-    "orchestration-api-event-profile"    = @{
-        template     = './config/orchestration-api-event-profile.template.json'
-        render       = './config/orchestration-api-event-profile.json'
-        variableName = 'FOUNDATIONALLM_ORCHESTRATION_API_EVENT_GRID_PROFILE'
-    }
     "core-api-event-profile"             = @{
         template     = './config/core-api-event-profile.template.json'
         render       = './config/core-api-event-profile.json'
         variableName = 'FOUNDATIONALLM_CORE_API_EVENT_GRID_PROFILE'
+    }
+    "gatekeeper-api-event-profile"             = @{
+        template     = './config/gatekeeper-api-event-profile.template.json'
+        render       = './config/gatekeeper-api-event-profile.json'
+        variableName = 'FOUNDATIONALLM_GATEKEEPER_API_EVENT_GRID_PROFILE'
+    }
+    "gateway-api-event-profile"             = @{
+        template     = './config/gateway-api-event-profile.template.json'
+        render       = './config/gateway-api-event-profile.json'
+        variableName = 'FOUNDATIONALLM_GATEWAY_API_EVENT_GRID_PROFILE'
+    }
+    "orchestration-api-event-profile"    = @{
+        template     = './config/orchestration-api-event-profile.template.json'
+        render       = './config/orchestration-api-event-profile.json'
+        variableName = 'FOUNDATIONALLM_ORCHESTRATION_API_EVENT_GRID_PROFILE'
     }
     "management-api-event-profile"       = @{
         template     = './config/management-api-event-profile.template.json'
@@ -118,9 +140,25 @@ $configurations = @{
         template = './data/role-assignments/DefaultRoleAssignments.template.json'
         render   = "./data/role-assignments/${env:FOUNDATIONALLM_INSTANCE_ID}.json"
     }
+    "policy-assignments" = @{
+        template = './data/policy-assignments/DefaultPolicyAssignments.template.json'
+        render   = "./data/policy-assignments/${env:FOUNDATIONALLM_INSTANCE_ID}-policy.json"
+    }
+    "completion-4-model" = @{
+        template = './data/resource-provider/FoundationaLLM.AIModel/completion-4-model.template.json'
+        render   = '../common/data/resource-provider/FoundationaLLM.AIModel/completion-4-model.json'
+    }
+    "completion-4o-model" = @{
+        template = './data/resource-provider/FoundationaLLM.AIModel/completion-4o-model.template.json'
+        render   = '../common/data/resource-provider/FoundationaLLM.AIModel/completion-4o-model.json'
+    }
     "completion-model" = @{
         template = './data/resource-provider/FoundationaLLM.AIModel/completion-model.template.json'
         render   = '../common/data/resource-provider/FoundationaLLM.AIModel/completion-model.json'
+    }
+    "dall-e-3" = @{
+        template = './data/resource-provider/FoundationaLLM.AIModel/dall-e-3-model.template.json'
+        render   = '../common/data/resource-provider/FoundationaLLM.AIModel/dall-e-3-model.json'
     }
     "embedding-model"  = @{
         template = './data/resource-provider/FoundationaLLM.AIModel/embedding-model.template.json'
@@ -202,6 +240,10 @@ azcopy cp '../common/data/resource-provider/*' $target --exclude-pattern .git* -
 $target = "https://$env:AZURE_AUTHORIZATION_STORAGE_ACCOUNT_NAME.blob.core.windows.net/role-assignments/"
 
 azcopy cp ./data/role-assignments/$($env:FOUNDATIONALLM_INSTANCE_ID).json $target --recursive=True
+
+$target = "https://$env:AZURE_AUTHORIZATION_STORAGE_ACCOUNT_NAME.blob.core.windows.net/policy-assignments/"
+
+azcopy cp ./data/policy-assignments/$($env:FOUNDATIONALLM_INSTANCE_ID)-policy.json $target --recursive=True
 
 Invoke-AndRequireSuccess "Restarting Container Apps" {
 

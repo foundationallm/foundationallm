@@ -1,6 +1,7 @@
 AuthorizationAPI.json
 AzureContentSafety.json
 AzureEventGrid.json
+CoreAPI.json
 GatekeeperAPI.json
 GatekeeperIntegrationAPI.json
 GatewayAPI.json
@@ -12,5 +13,7 @@ VectorizationWorker.json
 StateAPI.json
 GatewayAdapterAPI.json
 AzureOpenAI.json
+AzureOpenAIDALLE.json
 AzureAISearch.json
 AzureEventGrid.json
+OneDriveFileStoreConnector.json

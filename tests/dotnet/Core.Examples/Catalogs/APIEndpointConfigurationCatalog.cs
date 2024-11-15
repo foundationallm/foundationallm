@@ -1,6 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
-using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Core.Examples.Constants;
 
 namespace FoundationaLLM.Core.Examples.Catalogs
@@ -16,6 +15,16 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 Category = APIEndpointCategory.LLM,
                 AuthenticationType = AuthenticationTypes.APIKey,
                 Url = "FoundationaLLM:AzureOpenAI:API:Endpoint", // must be filled in during the test environment setup
+                TimeoutSeconds = 1800,
+                RetryStrategyName = TestRetryStrategyNames.ExponentialBackoff
+            },
+            new APIEndpointConfiguration
+            {
+                Name = TestAPIEndpointConfigurationNames.DefaultAzureAISearch,
+                Description = "The default Azure AI Search endpoint.",
+                Category = APIEndpointCategory.LLM,
+                AuthenticationType = AuthenticationTypes.APIKey,
+                Url = "FoundationaLLM:AzureAISearch:API:Endpoint", // must be filled in during the test environment setup
                 TimeoutSeconds = 1800,
                 RetryStrategyName = TestRetryStrategyNames.ExponentialBackoff
             }

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FoundationaLLM.Core.Examples.Exceptions
+﻿namespace FoundationaLLM.Core.Examples.Exceptions
 {
-	/// <summary>
-	/// Exception thrown when a configuration key is not found.
-	/// </summary>
-	public sealed class ConfigurationNotFoundException : Exception
+    /// <summary>
+    /// Exception thrown when a configuration key is not found.
+    /// </summary>
+    public sealed class ConfigurationNotFoundException : Exception
 	{
 		public string? Section { get; }
 		public string? Key { get; }

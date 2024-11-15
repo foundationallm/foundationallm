@@ -11,7 +11,7 @@ namespace FoundationaLLM.Authorization.API.Controllers
     /// </summary>
     [Authorize(Policy = "RequiredClaims")]
     [ApiController]
-    [Route("status")]
+    [Route("")]
     [Consumes("application/json")]
     [Produces("application/json")]
     public class StatusController : ControllerBase
@@ -20,6 +20,7 @@ namespace FoundationaLLM.Authorization.API.Controllers
         /// Returns the status of the Core API service.
         /// </summary>
         [AllowAnonymous]
+        [Route("status")]
         [HttpGet(Name = "GetServiceStatus")]
         public IActionResult GetServiceStatus() =>
             new OkObjectResult(new ServiceStatusInfo
@@ -34,7 +35,8 @@ namespace FoundationaLLM.Authorization.API.Controllers
         /// Returns OK if the requester is authenticated and allowed to execute
         /// requests against this service.
         /// </summary>
-        [HttpGet("auth", Name = "GetAuthStatus")]
+        [Route($"instances/{{instanceId}}/auth-status")]
+        [HttpGet()]
         public IActionResult GetAuthStatus() =>
             Ok();
 

@@ -22,7 +22,7 @@ namespace Management.Client.Tests.Clients.Resources
         public async Task GetAttachmentsAsync_ShouldReturnAttachments()
         {
             // Arrange
-            var fileStream = new MemoryStream();
+            var bytes = new byte[] { 1, 2, 3, 4, 5 };
             var expectedAttachments = new List<ResourceProviderGetResult<AttachmentFile>>
             {
                 new ResourceProviderGetResult<AttachmentFile>
@@ -30,12 +30,13 @@ namespace Management.Client.Tests.Clients.Resources
                     Resource = new AttachmentFile
                     {
                         Name = "test-attachment",
-                        Content = fileStream,
+                        Content = bytes,
                         ContentType = "application/octet-stream",
-                        Path = "test-attachment.txt"
+                        Path = "test-attachment.txt",
+                        OriginalFileName = "test-attachment.txt"
                     },
-                    Actions = [],
-                    Roles = []
+                    Roles = [],
+                    Actions = []
                 }
             };
 
@@ -62,18 +63,19 @@ namespace Management.Client.Tests.Clients.Resources
         {
             // Arrange
             var attachmentName = "test-attachment";
-            var fileStream = new MemoryStream();
+            var bytes = new byte[] { 1, 2, 3, 4, 5 };
             var expectedAttachment = new ResourceProviderGetResult<AttachmentFile>
             {
                 Resource = new AttachmentFile
                 {
                     Name = attachmentName,
-                    Content = fileStream,
+                    Content = bytes,
                     ContentType = "application/octet-stream",
-                    Path = "test-attachment.txt"
+                    Path = "test-attachment.txt",
+                    OriginalFileName = "test-attachment.txt"
                 },
-                Actions = [],
-                Roles = []
+                Roles = [],
+                Actions = []
             };
             var expectedAttachments = new List<ResourceProviderGetResult<AttachmentFile>> { expectedAttachment };
 
@@ -116,10 +118,11 @@ namespace Management.Client.Tests.Clients.Resources
         public async Task UpsertAttachmentAsync_ShouldReturnUpsertResult()
         {
             // Arrange
-            var attachment = new AttachmentFile { Name = "test-attachment" };
+            var attachment = new AttachmentFile { Name = "test-attachment", OriginalFileName = "test-attachment.txt" };
             var expectedUpsertResult = new ResourceProviderUpsertResult
             {
-                ObjectId = "test-object-id"
+                ObjectId = "test-object-id",
+                ResourceExists = false
             }; ;
 
             _mockRestClient.Resources

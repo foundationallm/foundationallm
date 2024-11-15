@@ -14,7 +14,7 @@ namespace FoundationaLLM.Core.Examples
         private readonly IManagementAPITestManager _managementAPITestManager;
 
 		public Example0003_KnowledgeManagementInlineContextAgentWithLangChain(ITestOutputHelper output, TestFixture fixture)
-			: base(output, fixture.ServiceProvider)
+			: base(output, [fixture.ServiceProvider])
 		{
             _agentConversationTestService = GetService<IAgentConversationTestService>();
             _managementAPITestManager = GetService<IManagementAPITestManager>();

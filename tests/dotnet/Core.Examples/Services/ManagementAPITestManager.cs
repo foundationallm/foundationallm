@@ -1,4 +1,3 @@
-using System.Net;
 using FoundationaLLM.Client.Management.Interfaces;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.ResourceProviders;
@@ -66,6 +65,9 @@ namespace FoundationaLLM.Core.Examples.Services
             {
                 throw new InvalidOperationException($"The indexing profile {indexingProfileName} was not found.");
             }
+
+            var aiSearchConfigurationResource = indexingProfile.Settings![VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId];
+            indexingProfile.Settings![VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId] = $"/instances/{instanceSettings.Value.Id}/providers/{ResourceProviderNames.FoundationaLLM_Configuration}/{ConfigurationResourceTypeNames.APIEndpointConfigurations}/{aiSearchConfigurationResource}";
 
             var response = await managementClient.Vectorization.UpsertIndexingProfileAsync(indexingProfile);
 
@@ -147,8 +149,13 @@ namespace FoundationaLLM.Core.Examples.Services
 
         public async Task<VectorizationRequest> GetVectorizationRequest(VectorizationRequest vectorizationRequest)
         {
-            return await managementRestClient.Resources.GetResourcesAsync<VectorizationRequest>(
-                    ResourceProviderNames.FoundationaLLM_Vectorization, vectorizationRequest.ObjectId!);
+            return (await managementRestClient.Resources.GetResourcesAsync<List<ResourceProviderGetResult<VectorizationRequest>>>(
+                    ResourceProviderNames.FoundationaLLM_Vectorization, $"{VectorizationResourceTypeNames.VectorizationRequests}/{vectorizationRequest.ObjectId!.Split("/").Last()}")).First().Resource;
+        }
+
+        public async Task<APIEndpointConfiguration> GetAPIEndpointConfiguration(string apiEndpointObjectId)
+        {
+            return (await managementRestClient.Resources.GetResourcesAsync<List<ResourceProviderGetResult<APIEndpointConfiguration>>>(ResourceProviderNames.FoundationaLLM_Configuration, apiEndpointObjectId)).First().Resource;
         }
 
         public async Task<string> CreateVectorizationRequest(VectorizationRequest vectorizationRequest)

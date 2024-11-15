@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import type { AuthConfigOptions } from '@js/auth';
 import api from '@/js/api';
 
 export const useAppConfigStore = defineStore('appConfig', {
@@ -27,7 +26,12 @@ export const useAppConfigStore = defineStore('appConfig', {
 		secondaryButtonBg: null,
 		secondaryButtonText: null,
 		footerText: null,
+		noAgentsMessage: null,
+		defaultAgentWelcomeMessage: null,
+
 		instanceId: null,
+		agentIconUrl: null,
+		allowedUploadFileExtensions: null,
 
 		// Auth: These settings configure the MSAL authentication.
 		auth: {
@@ -36,14 +40,18 @@ export const useAppConfigStore = defineStore('appConfig', {
 			tenantId: null,
 			scopes: [],
 			callbackPath: null,
-		} as AuthConfigOptions,
+		},
 	}),
 	getters: {},
 	actions: {
 		async getConfigVariables() {
 			const getConfigValueSafe = async (key: string, defaultValue: any = null) => {
 				try {
-					return await api.getConfigValue(key);
+					const value = await api.getConfigValue(key);
+					if (!value) {
+						return defaultValue;
+					}
+					return value;
 				} catch (error) {
 					console.error(`Failed to get config value for key ${key}:`, error);
 					return defaultValue;
@@ -69,7 +77,11 @@ export const useAppConfigStore = defineStore('appConfig', {
 				secondaryButtonBg,
 				secondaryButtonText,
 				footerText,
+				noAgentsMessage,
+				defaultAgentWelcomeMessage,
 				instanceId,
+				agentIconUrl,
+				allowedUploadFileExtensions,
 				authClientId,
 				authInstance,
 				authTenantId,
@@ -82,7 +94,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				getConfigValueSafe('FoundationaLLM:Branding:PageTitle'),
 				getConfigValueSafe('FoundationaLLM:Branding:FavIconUrl'),
 				getConfigValueSafe('FoundationaLLM:Branding:LogoUrl', 'foundationallm-logo-white.svg'),
-				getConfigValueSafe('FoundationaLLM:Branding:LogoText'),
+				getConfigValueSafe('FoundationaLLM:Branding:LogoText', ''),
 				getConfigValueSafe('FoundationaLLM:Branding:BackgroundColor', '#fff'),
 				getConfigValueSafe('FoundationaLLM:Branding:PrimaryColor', '#131833'),
 				getConfigValueSafe('FoundationaLLM:Branding:SecondaryColor', '#334581'),
@@ -95,7 +107,19 @@ export const useAppConfigStore = defineStore('appConfig', {
 				getConfigValueSafe('FoundationaLLM:Branding:SecondaryButtonBackgroundColor', '#70829a'),
 				getConfigValueSafe('FoundationaLLM:Branding:SecondaryButtonTextColor', '#fff'),
 				getConfigValueSafe('FoundationaLLM:Branding:FooterText'),
+				getConfigValueSafe(
+					'FoundationaLLM:Branding:NoAgentsMessage',
+					'No agents available. Please check with your system administrator for assistance.',
+				),
+				getConfigValueSafe(
+					'FoundationaLLM:Branding:DefaultAgentWelcomeMessage',
+					'Start the conversation using the text box below.',
+				),
 				getConfigValueSafe('FoundationaLLM:Instance:Id', '00000000-0000-0000-0000-000000000000'),
+				getConfigValueSafe('FoundationaLLM:Branding:AgentIconUrl', '~/assets/FLLM-Agent-Light.svg'),
+				getConfigValueSafe(
+					'FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions',
+				),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:ClientId'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:Instance'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:TenantId'),
@@ -123,7 +147,12 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.secondaryButtonBg = secondaryButtonBg;
 			this.secondaryButtonText = secondaryButtonText;
 			this.footerText = footerText;
+			this.noAgentsMessage = noAgentsMessage;
+			this.defaultAgentWelcomeMessage = defaultAgentWelcomeMessage;
+
 			this.instanceId = instanceId;
+			this.agentIconUrl = agentIconUrl;
+			this.allowedUploadFileExtensions = allowedUploadFileExtensions;
 
 			this.auth.clientId = authClientId;
 			this.auth.instance = authInstance;

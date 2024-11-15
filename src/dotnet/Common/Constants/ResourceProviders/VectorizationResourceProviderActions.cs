@@ -6,16 +6,6 @@
     public static class VectorizationResourceProviderActions
     {
         /// <summary>
-        /// Check the validity of a resource name.
-        /// </summary>
-        public const string CheckName = "checkname";
-
-        /// <summary>
-        /// Apply a filter for vectorization resource retrieval.
-        /// </summary>
-        public const string Filter = "filter";
-
-        /// <summary>
         /// Activate a vectorization pipeline.
         /// </summary>
         public const string Activate = "activate";
@@ -29,10 +19,5 @@
         /// Process a vectorization request.
         /// </summary>
         public const string Process = "process";
-
-        /// <summary>
-        /// Purges a soft-deleted resource.
-        /// </summary>
-        public const string Purge = "purge";
     }
 }

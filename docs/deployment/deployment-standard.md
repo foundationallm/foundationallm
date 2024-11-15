@@ -51,7 +51,7 @@ Follow the steps below to deploy the solution to your Azure subscription.
 ```powershell
   git clone https://github.com/solliancenet/foundationallm.git
   cd foundationallm/deploy/standard
-  git checkout release/0.7.0
+  git checkout release/0.8.2
 ```
 3. Create your deployment manifest:
 

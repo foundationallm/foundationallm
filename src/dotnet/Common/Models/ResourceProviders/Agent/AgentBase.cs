@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
 using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using System.Text.Json.Serialization;
@@ -32,6 +33,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         [JsonPropertyName("gatekeeper_settings")]
         public GatekeeperSettings? GatekeeperSettings { get; set; }
 
+
         /// <summary>
         /// Settings for the orchestration service.
         /// </summary>
@@ -51,10 +53,26 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public string? AIModelObjectId { get; set; }
 
         /// <summary>
-        /// Indicates whether the agent is long running and should use the polling pattern.
+        /// List of capabilities that the agent supports.
         /// </summary>
-        [JsonPropertyName("long_running")]
-        public bool LongRunning { get; set; } = false;
+        [JsonPropertyName("capabilities")]
+        public string[]? Capabilities { get; set; }
+
+        /// <summary>
+        /// The agent's workflow configuration.
+        /// </summary>
+        [JsonPropertyName("workflow")]
+        public AgentWorkflowBase? Workflow { get; set; }
+
+
+        /// <summary>
+        /// Gets or sets a dictionary of tools that are registered with the agent.
+        /// </summary>
+        /// <remarks>
+        /// The key is the name of the tool, and the value is the <see cref="AgentTool"/> object.
+        /// </remarks>
+        [JsonPropertyName("tools")]
+        public Dictionary<string, AgentTool> Tools { get; set; } = [];
 
         /// <summary>
         /// The object type of the agent.
@@ -66,6 +84,14 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
                 AgentTypes.KnowledgeManagement => typeof(KnowledgeManagementAgent),
                 _ => throw new ResourceProviderException($"The agent type {Type} is not supported.")
             };
+
+        /// <summary>
+        /// Checks whether the agent has a specified capbability.
+        /// </summary>
+        /// <param name="capabilityName">The name of the capability.</param>
+        /// <returns>True if the agent has the capability, False otherwise.</returns>
+        public bool HasCapability(string capabilityName) =>
+            Capabilities?.Contains(capabilityName) ?? false;
     }
 
     /// <summary>
@@ -78,6 +104,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// </summary>
         [JsonPropertyName("enabled")]
         public bool Enabled { get; set; }
+
         /// <summary>
         /// The maximum number of turns to store in the conversation history.
         /// </summary>
@@ -95,6 +122,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// </summary>
         [JsonPropertyName("use_system_setting")]
         public bool UseSystemSetting { get; set; }
+
         /// <summary>
         /// If <see cref="UseSystemSetting"/> is false, provides Gatekeeper feature selection.
         /// </summary>

@@ -2,8 +2,8 @@
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.AzureAIService;
-using FoundationaLLM.Common.Models.Chat;
-using FoundationaLLM.Common.Models.Orchestration;
+using FoundationaLLM.Common.Models.Conversation;
+using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Core.Examples.Interfaces;
 using FoundationaLLM.Core.Examples.Models;
 
@@ -36,7 +36,7 @@ namespace FoundationaLLM.Core.Examples.Services
             if (string.IsNullOrWhiteSpace(sessionId))
             {
                 // Create a new session since an existing ID was not provided.
-                sessionId = await coreClient.CreateChatSessionAsync((string?) null);
+                sessionId = await coreClient.CreateChatSessionAsync(new ChatSessionProperties() { Name = "Test" });
                 sessionCreated = true;
             }
 
@@ -66,7 +66,7 @@ namespace FoundationaLLM.Core.Examples.Services
         }
 
         /// <inheritdoc/>
-        public async Task<Completion> RunAgentCompletionWithSession(string agentName,
+        public async Task<Message> RunAgentCompletionWithSession(string agentName,
             string userPrompt, string? sessionId = null, bool createAgent = false)
         {
             var sessionCreated = false;
@@ -74,7 +74,7 @@ namespace FoundationaLLM.Core.Examples.Services
             if (string.IsNullOrWhiteSpace(sessionId))
             {
                 // Create a new session since an existing ID was not provided.
-                sessionId = await coreClient.CreateChatSessionAsync((string?) null);
+                sessionId = await coreClient.CreateChatSessionAsync(new ChatSessionProperties() { Name = "Test" });
                 sessionCreated = true;
             }
 
@@ -103,7 +103,7 @@ namespace FoundationaLLM.Core.Examples.Services
         }
 
         /// <inheritdoc/>
-        public async Task<Completion> RunAgentCompletionWithNoSession(string agentName,
+        public async Task<Message> RunAgentCompletionWithNoSession(string agentName,
             string userPrompt, bool createAgent = false)
         {
             if (createAgent)
@@ -148,7 +148,7 @@ namespace FoundationaLLM.Core.Examples.Services
             if (string.IsNullOrWhiteSpace(sessionId))
             {
                 // Create a new session since an existing ID was not provided.
-                sessionId = await coreClient.CreateChatSessionAsync((string?) null);
+                sessionId = await coreClient.CreateChatSessionAsync(new ChatSessionProperties() { Name = "Test" });
                 sessionCreated = true;
             }
 
@@ -175,7 +175,7 @@ namespace FoundationaLLM.Core.Examples.Services
             var messages = await coreClient.GetChatSessionMessagesAsync(sessionId);
 
             // Get the last message where the agent is the sender.
-            var lastAgentMessage = messages.LastOrDefault(m => m.Sender == nameof(Participants.Assistant));
+            var lastAgentMessage = messages.LastOrDefault(m => m.Sender == nameof(Participants.Agent));
             if (lastAgentMessage != null && !string.IsNullOrWhiteSpace(lastAgentMessage.CompletionPromptId))
             {
                 // Get the completion prompt from the last agent message.

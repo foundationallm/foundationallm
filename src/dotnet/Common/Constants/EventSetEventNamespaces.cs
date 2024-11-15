@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FoundationaLLM.Common.Constants
+﻿namespace FoundationaLLM.Common.Constants
 {
     /// <summary>
     /// Namespace names for event set events.
@@ -40,5 +34,15 @@ namespace FoundationaLLM.Common.Constants
         /// The namespace name for events concerning the FoundationaLLM.AIModel resource provider.
         /// </summary>
         public const string FoundationaLLM_ResourceProvider_AIModel = "ResourceProvider.FoundationaLLM.AIModel";
+
+        /// <summary>
+        /// The namespace name for events concerning the FoundationaLLM.AzureOpenAI resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProvider_AzureOpenAI = "ResourceProvider.FoundationaLLM.AzureOpenAI";
+
+        /// <summary>
+        /// The namespace name for events concerning the FoundationaLLM.Conversation resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProvider_Conversation = "ResourceProvider.FoundationaLLM.Conversation";
     }
 }

@@ -7,11 +7,10 @@ using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.OpenAPI;
-using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Common.Validation;
-using FoundationaLLM.Management.Models.Configuration;
 using FoundationaLLM.Vectorization.Interfaces;
 using FoundationaLLM.Vectorization.Services.RequestProcessors;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -50,6 +49,7 @@ namespace FoundationaLLM.Management.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ManagementAPI_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_VectorizationAPI_Essentials);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatewayAPI_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Vectorization_Storage);  
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Agent_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Prompt_Storage);
@@ -58,7 +58,9 @@ namespace FoundationaLLM.Management.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AIModel_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
 
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Events_Profiles_ManagementAPI);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
+                options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_ManagementAPI);
             }));
 
             if (builder.Environment.IsDevelopment())
@@ -70,18 +72,13 @@ namespace FoundationaLLM.Management.API
             // CORS policies
             builder.AddCorsPolicies();
 
-            builder.Services.AddOptions<CosmosDbSettings>()
-                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB));
             builder.Services.AddOptions<ClientBrandingConfiguration>()
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_Branding));
-            builder.Services.AddOptions<AppConfigurationSettings>()
-                .Configure(o =>
-                    o.ConnectionString = builder.Configuration[EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString]!);
 
             builder.Services.AddInstanceProperties(builder.Configuration);
 
             // Add Azure ARM services
-            builder.Services.AddAzureResourceManager();
+            builder.AddAzureResourceManager();
 
             // Add event services
             builder.Services.AddAzureEventGridEvents(
@@ -110,6 +107,8 @@ namespace FoundationaLLM.Management.API
             builder.AddAttachmentResourceProvider();
             builder.AddAIModelResourceProvider();
 
+            builder.AddAzureCosmosDBService();
+
             // Add authentication configuration.
             var e2ETestEnvironmentValue = Environment.GetEnvironmentVariable(EnvironmentVariables.FoundationaLLM_Environment) ?? string.Empty;
             var isE2ETestEnvironment = e2ETestEnvironmentValue.Equals(EnvironmentTypes.E2ETest, StringComparison.CurrentCultureIgnoreCase);
@@ -126,6 +125,16 @@ namespace FoundationaLLM.Management.API
             builder.AddOpenTelemetry(
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_ManagementAPI_Essentials_AppInsightsConnectionString,
                 ServiceNames.ManagementAPI);
+
+            // Increase request size limit to 512 MB.
+            builder.WebHost.ConfigureKestrel(serverOptions =>
+            {
+                serverOptions.Limits.MaxRequestBodySize = 536870912; // 512 MB
+            });
+            builder.Services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 536870912; // 512 MB
+            });
 
             builder.Services.AddControllers();
             builder.Services.AddProblemDetails();

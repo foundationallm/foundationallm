@@ -2,6 +2,8 @@
 @description('Action Group Id for alerts')
 param actionGroupId string
 
+param adminGroupObjectId string
+
 @description('Containers to create')
 param containers array = []
 
@@ -16,6 +18,8 @@ param location string
 
 @description('Log Analytic Workspace Id to use for diagnostics')
 param logAnalyticWorkspaceId string
+
+param principalType string
 
 @description('Private DNS Zones for private endpoint')
 param privateDnsZones array
@@ -289,3 +293,17 @@ module privateEndpoint 'utility/privateEndpoint.bicep' = [for zone in privateDns
     }
   }
 }]
+
+@description('Storage Role assignments for admin group')
+module storageRoleAssignments 'utility/roleAssignments.bicep' = {
+  name: 'storageIAM-${timestamp}'
+  scope: resourceGroup()
+  params: {
+    principalId: adminGroupObjectId
+    principalType: 'Group'
+    roleDefinitionIds: {
+      'Storage Blob Data Contributor': 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
+    }
+  }
+}
+

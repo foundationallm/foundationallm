@@ -1,11 +1,11 @@
 {
     "type": "completion",
     "name": "DefaultCompletionAIModel",
-    "object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.AIModel/aiModels/DefaultCompletionAIModel",
+    "object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.AIModel/aiModels/DefaultCompletionAIModel",
     "display_name": null,
     "description": null,
     "cost_center": null,
-    "endpoint_object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI",
+    "endpoint_object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI",
     "version": "0.0",
     "deployment_name": "completions",
     "model_parameters": {

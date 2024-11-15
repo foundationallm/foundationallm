@@ -13,11 +13,16 @@
 				</div>
 			</div>
 
-			<!-- Edit access control -->
-			<AccessControl
-				v-if="editAgent"
-				:scope="`providers/FoundationaLLM.Agent/agents/${agentName}`"
-			/>
+			<div style="display: flex; align-items: center">
+				<!-- Private storage -->
+				<PrivateStorage v-if="hasOpenAIAssistantCapability" :agent-name="`${agentName}`" />
+
+				<!-- Edit access control -->
+				<AccessControl
+					v-if="editAgent"
+					:scope="`providers/FoundationaLLM.Agent/agents/${agentName}`"
+				/>
+			</div>
 		</div>
 
 		<div class="steps" :class="{ 'steps--loading': loading }">
@@ -73,51 +78,20 @@
 					aria-labelledby="aria-description"
 				/>
 			</div>
-
-			<!-- Type -->
-			<div class="step-section-header span-2">Type</div>
-
-			<div class="step-header span-2">What type of agent?</div>
-
-			<!-- Knowledge management agent -->
-			<div class="step">
-				<div
-					class="step-container cursor-pointer"
-					@click="handleAgentTypeSelect('knowledge-management')"
-				>
-					<div class="step-container__edit__inner">
-						<div class="step__radio">
-							<RadioButton
-								v-model="agentType"
-								name="agentType"
-								value="knowledge-management"
-								aria-labelledby="aria-type-knowledge"
-							/>
-							<div id="aria-type-knowledge" class="step-container__header">
-								Knowledge Management
-							</div>
-						</div>
-						<div>Best for Q&A, summarization and reasoning over textual data.</div>
-					</div>
+			<div class="span-2">
+				<div class="step-header mb-2">Welcome message:</div>
+				<div id="aria-welcome-message-desc" class="mb-2">
+					Provide a message to display when a user starts a new conversation with the agent. If a
+					message is not provided, the default welcome message will be displayed.
 				</div>
-			</div>
-
-			<!-- Analytics agent-->
-			<div class="step step--disabled">
-				<div class="step-container cursor-pointer" @click="handleAgentTypeSelect('analytics')">
-					<div class="step-container__edit__inner">
-						<div class="step__radio">
-							<RadioButton
-								v-model="agentType"
-								name="agentType"
-								value="analytics"
-								aria-labelledby="aria-type-analytics"
-							/>
-							<div id="aria-type-analytics" class="step-container__header">Analytics</div>
-						</div>
-						<div>Best to query, analyze, calculate and report on tabular data.</div>
-					</div>
-				</div>
+				<CustomQuillEditor
+					v-model="agentWelcomeMessage"
+					:initial-content="JSON.parse(JSON.stringify(agentWelcomeMessage))"
+					class="w-100"
+					placeholder="Enter agent welcome message"
+					aria-labelledby="aria-welcome-message-desc"
+					@content-update="updateAgentWelcomeMessage($event)"
+				/>
 			</div>
 
 			<!-- Knowledge source -->
@@ -457,7 +431,7 @@
 			<!-- Agent configuration -->
 			<div class="step-section-header span-2">Agent Configuration</div>
 
-			<div class="step-header">Should conversations be saved?</div>
+			<div class="step-header">Should conversations be included in the context?</div>
 			<div class="step-header">How should user-agent interactions be gated?</div>
 
 			<!-- Conversation history -->
@@ -607,7 +581,7 @@
 
 			<!-- Orchestrator -->
 			<div id="aria-orchestrator" class="step-header span-2">
-				Which orchestrator should the agent use?
+				How should the agent communicate with the AI model?
 			</div>
 			<div class="span-2">
 				<Dropdown
@@ -621,8 +595,10 @@
 				/>
 			</div>
 
+			<div class="step-header">Which AI model should the orchestrator use?</div>
+			<div class="step-header">Which capabilities should the agent have?</div>
+
 			<!-- AI model -->
-			<div class="step-header span-2">Which AI model should the orchestrator use?</div>
 			<CreateAgentStepItem v-model="editAIModel">
 				<template v-if="selectedAIModel">
 					<div v-if="selectedAIModel.object_id !== ''">
@@ -653,6 +629,33 @@
 								<span>{{ aiModel.deployment_name }}</span>
 							</div>
 						</div>
+					</div>
+				</template>
+			</CreateAgentStepItem>
+
+			<!-- Agent capabilities -->
+			<CreateAgentStepItem>
+				<div>
+					<span class="step-option__header">Agent Capabilities:</span>
+					<span>{{
+						Array.isArray(selectedAgentCapabilities)
+							? selectedAgentCapabilities.map((item) => item.name).join(', ')
+							: ''
+					}}</span>
+				</div>
+
+				<template #edit>
+					<div class="mt-2">
+						<span class="step-option__header">Agent Capabilities:</span>
+						<MultiSelect
+							v-model="selectedAgentCapabilities"
+							class="dropdown--agent"
+							:options="agentCapabilitiesOptions"
+							option-label="name"
+							display="chip"
+							placeholder="--Select--"
+							aria-labelledby="aria-content-safety"
+						/>
 					</div>
 				</template>
 			</CreateAgentStepItem>
@@ -732,6 +735,7 @@ import type {
 	Agent,
 	AgentIndex,
 	AgentDataSource,
+	AgentTool,
 	AIModel,
 	DataSource,
 	CreateAgentRequest,
@@ -748,6 +752,7 @@ const getDefaultFormValues = () => {
 
 		agentName: '',
 		agentDescription: '',
+		agentWelcomeMessage: '',
 		object_id: '',
 		text_partitioning_profile_object_id: '',
 		text_embedding_profile_object_id: '',
@@ -790,6 +795,9 @@ const getDefaultFormValues = () => {
 		gatekeeperContentSafety: { label: 'None', value: null },
 		gatekeeperDataProtection: { label: 'None', value: null },
 
+		selectedAgentCapabilities: ref(),
+		agentCapabilities: { label: 'None', value: null },
+
 		systemPrompt: defaultSystemPrompt as string,
 
 		orchestration_settings: {
@@ -821,6 +829,7 @@ export default {
 			loadingStatusText: 'Retrieving data...' as string,
 
 			editable: false as boolean,
+			hasOpenAIAssistantCapability: false as boolean,
 
 			nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
 			validationMessage: '' as string,
@@ -830,6 +839,7 @@ export default {
 			textEmbeddingProfileSources: [] as TextEmbeddingProfile[],
 			externalOrchestratorOptions: [] as ExternalOrchestrationService[],
 			aiModelOptions: [] as AIModel[],
+			tools: {} as { [key: string]: AgentTool },
 
 			orchestratorOptions: [
 				{
@@ -862,10 +872,6 @@ export default {
 
 			gatekeeperContentSafetyOptions: ref([
 				{
-					name: 'None',
-					code: null,
-				},
-				{
 					name: 'Azure Content Safety',
 					code: 'AzureContentSafety',
 				},
@@ -885,12 +891,19 @@ export default {
 
 			gatekeeperDataProtectionOptions: ref([
 				{
-					name: 'None',
-					code: null,
-				},
-				{
 					name: 'Microsoft Presidio',
 					code: 'MicrosoftPresidio',
+				},
+			]),
+
+			agentCapabilitiesOptions: ref([
+				{
+					name: 'OpenAI Assistants',
+					code: 'OpenAI.Assistants',
+				},
+				{
+					name: 'FLLM Knowledge Management',
+					code: 'FoundationaLLM.KnowledgeManagement',
 				},
 			]),
 		};
@@ -935,6 +948,9 @@ export default {
 			const externalOrchestrationServicesResult = await api.getExternalOrchestrationServices();
 			this.externalOrchestratorOptions = externalOrchestrationServicesResult.map(
 				(result) => result.resource,
+			) as ExternalOrchestrationService[];
+			this.externalOrchestratorOptions = this.externalOrchestratorOptions.filter(
+				(service) => service.category === 'ExternalOrchestration',
 			);
 
 			this.loadingStatusText = 'Retrieving AI models...';
@@ -982,6 +998,7 @@ export default {
 			}
 			this.loadingStatusText = `Mapping agent values to form...`;
 			this.mapAgentToForm(agent);
+			this.tools = agent.tools;
 		} else {
 			this.editable = true;
 		}
@@ -995,10 +1012,12 @@ export default {
 		mapAgentToForm(agent: Agent) {
 			this.agentName = agent.name || this.agentName;
 			this.agentDescription = agent.description || this.agentDescription;
+			this.agentWelcomeMessage = agent.properties?.welcome_message || this.agentWelcomeMessage;
 			this.agentType = agent.type || this.agentType;
 			this.object_id = agent.object_id || this.object_id;
 			this.inline_context = agent.inline_context || this.inline_context;
 			this.cost_center = agent.cost_center || this.cost_center;
+			this.hasOpenAIAssistantCapability = agent.capabilities?.includes('OpenAI.Assistants');
 			this.expirationDate = agent.expiration_date
 				? new Date(agent.expiration_date)
 				: this.expirationDate;
@@ -1040,9 +1059,10 @@ export default {
 				this.aiModelOptions.find((aiModel) => aiModel.object_id === agent.ai_model_object_id) ||
 				null;
 
-			this.conversationHistory = agent.conversation_history?.enabled || this.conversationHistory;
+			this.conversationHistory =
+				agent.conversation_history_settings?.enabled || this.conversationHistory;
 			this.conversationMaxMessages =
-				agent.conversation_history?.max_history || this.conversationMaxMessages;
+				agent.conversation_history_settings?.max_history || this.conversationMaxMessages;
 
 			this.gatekeeperEnabled = Boolean(agent.gatekeeper_settings?.use_system_setting);
 
@@ -1057,6 +1077,17 @@ export default {
 						agent.gatekeeper_settings?.options?.includes(localOption.code),
 					) || this.selectedGatekeeperDataProtection;
 			}
+
+			if (agent.capabilities) {
+				this.selectedAgentCapabilities =
+					this.agentCapabilitiesOptions.filter((localOption) =>
+						agent.capabilities?.includes(localOption.code),
+					) || this.selectedAgentCapabilities;
+			}
+		},
+
+		updateAgentWelcomeMessage(newContent: string) {
+			this.agentWelcomeMessage = newContent;
 		},
 
 		async checkName() {
@@ -1245,6 +1276,7 @@ export default {
 					type: this.agentType,
 					name: this.agentName,
 					description: this.agentDescription,
+					properties: { welcome_message: this.agentWelcomeMessage },
 					object_id: this.object_id,
 					inline_context: this.inline_context,
 					cost_center: this.cost_center,
@@ -1261,7 +1293,7 @@ export default {
 						trigger_cron_schedule: this.triggerFrequencyScheduled,
 					},
 
-					conversation_history: {
+					conversation_history_settings: {
 						enabled: this.conversationHistory,
 						max_history: Number(this.conversationMaxMessages),
 					},
@@ -1274,11 +1306,15 @@ export default {
 						].filter((option) => option !== null),
 					},
 
+					capabilities: (this.selectedAgentCapabilities || []).map((option: any) => option.code),
+
 					sessions_enabled: true,
 
 					prompt_object_id: promptObjectId,
 					orchestration_settings: this.orchestration_settings,
 					ai_model_object_id: this.selectedAIModel.object_id,
+
+					tools: this.tools,
 				};
 
 				if (this.editAgent) {
@@ -1495,12 +1531,6 @@ $editStepPadding: 16px;
 	margin-right: 8px;
 }
 
-.primary-button {
-	background-color: var(--primary-button-bg) !important;
-	border-color: var(--primary-button-bg) !important;
-	color: var(--primary-button-text) !important;
-}
-
 .input-wrapper {
 	position: relative;
 	display: flex;
@@ -1516,6 +1546,10 @@ input {
 	position: absolute;
 	right: 10px;
 	cursor: default;
+}
+
+.p-button-icon {
+	color: var(--primary-button-text) !important;
 }
 
 .valid {

@@ -1,5 +1,6 @@
 ﻿using FakeItEasy;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Common.Models.Vectorization;
@@ -14,24 +15,25 @@ namespace Vectorization.Tests.Handlers
 {
     internal class EmbeddingMockServiceFactory : IVectorizationServiceFactory<ITextEmbeddingService>
     {
-        ITextEmbeddingService IVectorizationServiceFactory<ITextEmbeddingService>.GetService(string serviceName)
+        Task<ITextEmbeddingService> IVectorizationServiceFactory<ITextEmbeddingService>.GetService(string serviceName, UnifiedUserIdentity userIdentity)
         {
-            ITextEmbeddingService mockTextEmbeddingService = A.Fake<ITextEmbeddingService>();
+            throw new NotImplementedException();
+            //ITextEmbeddingService mockTextEmbeddingService = A.Fake<ITextEmbeddingService>();
 
-            A.CallTo(() => mockTextEmbeddingService.GetEmbeddingsAsync(A<IList<TextChunk>>._, string.Empty))
-                .Returns(new TextEmbeddingResult
-                {
-                    TextChunks = [
-                        new TextChunk { Position = 1, Embedding = new Embedding(new float[5]) },
-                        new TextChunk { Position = 2, Embedding = new Embedding(new float[5]) }
-                    ],
-                    TokenCount = 10
-                });
+            //A.CallTo(() => mockTextEmbeddingService.GetEmbeddingsAsync(A<IList<TextChunk>>._, string.Empty))
+            //    .Returns(new TextEmbeddingResult
+            //    {
+            //        TextChunks = [
+            //            new TextChunk { Position = 1, Embedding = new Embedding(new float[5]) },
+            //            new TextChunk { Position = 2, Embedding = new Embedding(new float[5]) }
+            //        ],
+            //        TokenCount = 10
+            //    });
 
-            return mockTextEmbeddingService;
+            //return mockTextEmbeddingService;
         }
 
-        (ITextEmbeddingService Service, ResourceBase Resource) IVectorizationServiceFactory<ITextEmbeddingService>.GetServiceWithResource(string serviceName)
+        Task<(ITextEmbeddingService Service, ResourceBase Resource)> IVectorizationServiceFactory<ITextEmbeddingService>.GetServiceWithResource(string serviceName, UnifiedUserIdentity userIdentity)
         {
             throw new NotImplementedException();
         }
@@ -51,6 +53,8 @@ namespace Vectorization.Tests.Handlers
             serviceCollection.AddSingleton<IVectorizationServiceFactory<ITextEmbeddingService>, EmbeddingMockServiceFactory>();
 
             ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+
+            UnifiedUserIdentity userIdentity = new();
 
             EmbeddingHandler handler = new EmbeddingHandler(
                 "Queue-Message-1",
@@ -95,7 +99,7 @@ namespace Vectorization.Tests.Handlers
             };
             CancellationTokenSource tokenSource = new CancellationTokenSource();
 
-            await handler.Invoke(request, state, tokenSource.Token);
+            await handler.Invoke(request, state, userIdentity, tokenSource.Token);
             Assert.True(state.Artifacts.Count(artifact => artifact.Type == VectorizationArtifactType.TextEmbeddingVector) == 2);
         }
     }

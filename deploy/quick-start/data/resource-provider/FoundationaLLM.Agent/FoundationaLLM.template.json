@@ -4,6 +4,7 @@
   "object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.Agent/agents/FoundationaLLM",
   "description": "Useful for answering questions about FoundationaLLM.",
   "deleted": false,
+  "inline_context": true,
   "sessions_enabled": true,
   "conversation_history": {
     "enabled": false,
@@ -17,6 +18,9 @@
     "orchestrator": "LangChain",
     "agent_parameters": null
   },
+	"capabilities": [
+    "OpenAI.Assistants"
+  ],
   "ai_model_object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.AIModel/aiModels/DefaultCompletionAIModel",
   "prompt_object_id": "/instances/${env:FOUNDATIONALLM_INSTANCE_ID}/providers/FoundationaLLM.Prompt/prompts/FoundationaLLM"
 }

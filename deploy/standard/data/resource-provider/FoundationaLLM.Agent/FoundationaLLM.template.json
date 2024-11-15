@@ -4,28 +4,23 @@
   "object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.Agent/agents/FoundationaLLM",
   "description": "Useful for answering questions about FoundationaLLM.",
   "deleted": false,
+  "inline_context": true,
   "sessions_enabled": true,
   "conversation_history": {
     "enabled": false,
     "max_history": 5
   },
-  "gatekeeper": {
+  "gatekeeper_settings": {
     "use_system_setting": true,
     "options": []
   },
   "orchestration_settings": {
     "orchestrator": "LangChain",
-    "agent_parameters": null,
-    "endpoint_configuration": {
-      "auth_type": "token",
-      "provider": "microsoft",
-      "endpoint": "{{openAiEndpointUri}}",
-      "api_version": "2024-02-01"
-    },
-    "model_parameters": {
-      "temperature": 0,
-      "deployment_name": "completions"
-    }
+    "agent_parameters": null
   },
+  "capabilities": [
+    "OpenAI.Assistants"
+  ],
+  "ai_model_object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.AIModel/aiModels/DefaultCompletionAIModel",
   "prompt_object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.Prompt/prompts/FoundationaLLM"
 }
