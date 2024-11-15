@@ -266,9 +266,6 @@ namespace FoundationaLLM.Configuration.Services
             if (string.IsNullOrWhiteSpace(appConfig.Key))
                 throw new ResourceProviderException("The key name is invalid.", StatusCodes.Status400BadRequest);
 
-            if (string.IsNullOrWhiteSpace(appConfig.Value))
-                throw new ResourceProviderException("The key value is invalid.", StatusCodes.Status400BadRequest);
-
             if (appConfig.ContentType == null)
                 throw new ResourceProviderException("The key content type is invalid.", StatusCodes.Status400BadRequest);
 
