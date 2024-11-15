@@ -12,7 +12,6 @@ using FoundationaLLM.Common.Models.Configuration.Events;
 using FoundationaLLM.Common.Models.Events;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using static Microsoft.IO.RecyclableMemoryStreamManager;
 
 namespace FoundationaLLM.Common.Services.Events
 {
