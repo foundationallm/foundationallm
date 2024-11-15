@@ -810,4 +810,13 @@ export default {
 			},
 		);
 	},
+
+	/*
+		Workflows
+	 */
+	async getWorkflows(): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/workflows?api-version=${this.apiVersion}`,
+		);
+	},
 };
