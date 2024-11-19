@@ -1,3 +1,4 @@
+using System.Text;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.Configuration;
@@ -897,12 +898,28 @@ public partial class CoreService(
     {
         request.OperationId = Guid.NewGuid().ToString();
         request.LongRunningOperation = longRunningOperation;
+        List<MessageHistoryItem> messageHistoryList = [];
 
         // Retrieve conversation, including latest prompt.
         var messages = await _cosmosDBService.GetSessionMessagesAsync(request.SessionId!, _userIdentity.UPN!);
-        var messageHistoryList = messages
-            .Select(message => new MessageHistoryItem(message.Sender, string.IsNullOrWhiteSpace(message.Text) ? "" : message.Text))
-            .ToList();
+        foreach (var message in messages)
+        {
+            var messageText = message.Text;
+            if (message.Content is { Count: > 0 })
+            {
+                StringBuilder text = new();
+                foreach (var content in message.Content.Where(content => content.Type == MessageContentItemTypes.Text))
+                {
+                    text.Append(content.Value);
+                }
+                messageText = text.ToString();
+            }
+
+            if (!string.IsNullOrWhiteSpace(messageText))
+            {
+                messageHistoryList.Add(new MessageHistoryItem(message.Sender, messageText));
+            }
+        }
 
         request.MessageHistory = messageHistoryList;
 
