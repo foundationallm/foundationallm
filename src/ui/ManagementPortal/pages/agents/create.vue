@@ -839,6 +839,7 @@ export default {
 			textEmbeddingProfileSources: [] as TextEmbeddingProfile[],
 			externalOrchestratorOptions: [] as ExternalOrchestrationService[],
 			aiModelOptions: [] as AIModel[],
+			workflowOptions: [],
 			tools: {} as { [key: string]: AgentTool },
 
 			orchestratorOptions: [
@@ -958,6 +959,10 @@ export default {
 			this.aiModelOptions = aiModelsResult.map((result) => result.resource);
 			// Filter the AIModels so we only display the ones where the type is 'completion'.
 			this.aiModelOptions = this.aiModelOptions.filter((model) => model.type === 'completion');
+
+			this.loadingStatusText = 'Retrieving workflows...';
+			const workflowOptions = await api.getAgentWorkflows();
+			this.workflowOptions = workflowOptions.map((result) => result.resource);
 
 			// Update the orchestratorOptions with the externalOrchestratorOptions.
 			this.orchestratorOptions = this.orchestratorOptions.concat(
