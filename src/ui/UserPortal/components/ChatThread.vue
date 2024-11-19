@@ -37,7 +37,8 @@
 				<!-- New chat alert -->
 				<div v-else class="new-chat-alert">
 					<div class="alert-body">
-						<div class="alert-body-text">Start the conversation using the text box below.</div>
+						<!-- eslint-disable-next-line vue/no-v-html -->
+						<div class="alert-body-text" v-html="welcomeMessage"></div>
 					</div>
 				</div>
 			</template>
@@ -48,10 +49,15 @@
 			<ChatInput ref="chatInput" :disabled="isLoading || isMessagePending" @send="handleSend" />
 		</div>
 
-		<footer v-if="$appConfigStore.footerText">
-			<!-- eslint-disable-next-line vue/no-v-html -->
-			<div class="footer-item" v-html="$appConfigStore.footerText"></div>
-		</footer>
+		<!-- Footer -->
+		<!-- eslint-disable-next-line vue/no-v-html -->
+		<footer
+			v-if="$appConfigStore.footerText"
+			class="chat-thread__footer"
+			v-html="$appConfigStore.footerText"
+		/>
+
+		<!-- File drag and drop -->
 		<div v-if="isDragging" ref="dropZone" class="drop-files-here-container">
 			<div class="drop-files-here">
 				<i class="pi pi-upload" style="font-size: 2rem"></i>
@@ -78,13 +84,21 @@ export default {
 			isLoading: true,
 			userSentMessage: false,
 			isMessagePending: false,
-			// longRunningOperations: new Map<string, boolean>(), // sessionId -> isPending
+			welcomeMessage: '',
 		};
 	},
 
 	computed: {
 		currentSession() {
 			return this.$appStore.currentSession;
+		},
+
+		pollingSession() {
+			return this.$appStore.pollingSession;
+		},
+
+		lastSelectedAgent() {
+			return this.$appStore.lastSelectedAgent;
 		},
 
 		messages() {
@@ -98,13 +112,40 @@ export default {
 			this.isMessagePending = false;
 			this.isLoading = true;
 			this.userSentMessage = false;
+
 			await this.$appStore.getMessages();
+			await this.$appStore.ensureAgentsLoaded();
+
 			this.$appStore.updateSessionAgentFromMessages(newSession);
+			const sessionAgent = this.$appStore.getSessionAgent(newSession);
+			this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
 			this.isLoading = false;
+		},
+
+		lastSelectedAgent(newAgent, oldAgent) {
+			if (newAgent === oldAgent) return;
+			this.welcomeMessage = this.getWelcomeMessage(newAgent);
+		},
+
+		pollingSession(newPollingSession, oldPollingSession) {
+			if (newPollingSession === oldPollingSession) return;
+			if (newPollingSession === this.currentSession.id) {
+				this.isMessagePending = true;
+			} else {
+				this.isMessagePending = false;
+			}
 		},
 	},
 
 	methods: {
+		getWelcomeMessage(agent) {
+			const welcomeMessage = agent?.resource?.properties?.welcome_message;
+			return welcomeMessage && welcomeMessage.trim() !== ''
+				? welcomeMessage
+				: (this.$appConfigStore.defaultAgentWelcomeMessage ??
+						'Start the conversation using the text box below.');
+		},
+
 		getMessageOrderFromReversedIndex(index) {
 			return this.messages.length - 1 - index;
 		},
@@ -158,7 +199,7 @@ export default {
 			// await this.$appStore.getMessages();
 			// }
 
-			this.isMessagePending = false;
+			// this.isMessagePending = false;
 		},
 	},
 };
@@ -205,6 +246,21 @@ export default {
 	// box-shadow: 0 -5px 10px 0 rgba(27, 29, 33, 0.1);
 }
 
+.chat-thread__footer {
+	text-align: right;
+	font-size: 0.85rem;
+	padding-right: 24px;
+	margin-bottom: 12px;
+
+	:first-child {
+		margin-top: 0px;
+	}
+
+	:last-child {
+		margin-bottom: 0px;
+	}
+}
+
 .empty {
 	flex-direction: column;
 }
@@ -236,14 +292,9 @@ export default {
 	color: #000;
 	margin-left: auto;
 	margin-right: auto;
-	text-align: center;
-	font-style: italic;
-}
-
-footer {
-	text-align: right;
-	font-size: 0.85rem;
-	padding-right: 24px;
+	padding: 10px 14px 10px 14px;
+	// text-align: center;
+	// font-style: italic;
 }
 
 .drop-files-here-container {

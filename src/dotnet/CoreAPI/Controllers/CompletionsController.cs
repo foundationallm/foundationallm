@@ -101,7 +101,7 @@ namespace FoundationaLLM.Core.API.Controllers
             await _agentResourceProvider.GetResourcesAsync<AgentBase>(
                 instanceId,
                 _callContext.CurrentUserIdentity!,
-                new ResourceProviderLoadOptions
+                new ResourceProviderGetOptions
                 {
                     IncludeRoles = true,
                     IncludeActions = true,

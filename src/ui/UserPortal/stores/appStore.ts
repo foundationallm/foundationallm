@@ -24,6 +24,8 @@ export const useAppStore = defineStore('app', {
 	state: () => ({
 		sessions: [] as Session[],
 		currentSession: null as Session | null,
+		newSession: null as Session | null, // Used to store the newly created session. Deleted after the first prompt is sent. This is to prevent an unnecessary fetch of its messages.
+		pollingSession: null as string | null, // Contains the ID of a session that is currently being polled for completion.
 		renamedSessions: [] as Session[],
 		deletedSessions: [] as Session[],
 		currentMessages: [] as Message[],
@@ -40,7 +42,7 @@ export const useAppStore = defineStore('app', {
 		textSize: JSON.parse(sessionStorage.getItem('textSize') || '1') as number,
 		highContrastMode: JSON.parse(sessionStorage.getItem('highContrastMode') || 'false') as boolean,
 	}),
-	
+
 	getters: {},
 
 	actions: {
@@ -52,7 +54,7 @@ export const useAppStore = defineStore('app', {
 				() => this.autoHideToasts,
 				(newValue: boolean) => {
 					sessionStorage.setItem('autoHideToasts', JSON.stringify(newValue));
-				}
+				},
 			);
 
 			// Watch for changes in textSize and update sessionStorage
@@ -61,7 +63,7 @@ export const useAppStore = defineStore('app', {
 				(newValue: number) => {
 					sessionStorage.setItem('textSize', JSON.stringify(newValue));
 					document.documentElement.style.setProperty('--app-text-size', `${newValue}rem`);
-				}
+				},
 			);
 
 			// Watch for changes in highContrastMode and update sessionStorage
@@ -69,7 +71,7 @@ export const useAppStore = defineStore('app', {
 				() => this.highContrastMode,
 				(newValue: boolean) => {
 					sessionStorage.setItem('highContrastMode', JSON.stringify(newValue));
-				}
+				},
 			);
 
 			// No need to load sessions if in kiosk mode, simply create a new one and skip.
@@ -158,6 +160,7 @@ export const useAppStore = defineStore('app', {
 
 			const newSession = await api.addSession(properties);
 			await this.getSessions(newSession);
+			this.newSession = newSession;
 
 			// Only add newSession to the list if it doesn't already exist.
 			// We optionally add it because the backend is sometimes slow to update the session list.
@@ -231,6 +234,11 @@ export const useAppStore = defineStore('app', {
 		},
 
 		async getMessages() {
+			if (this.newSession && this.newSession.id === this.currentSession!.id) {
+				// This is a new session, no need to fetch messages.
+				this.currentMessages = [];
+				return;
+			}
 			const messagesResponse = await api.getMessages(this.currentSession.id);
 
 			// Temporarily filter out the duplicate streaming message instances
@@ -263,7 +271,7 @@ export const useAppStore = defineStore('app', {
 					latestMessage.operation_id &&
 					(latestMessage.status === 'InProgress' || latestMessage.status === 'Pending')
 				) {
-					this.startPolling(latestMessage);
+					this.startPolling(latestMessage, this.currentSession.id);
 				}
 			}
 		},
@@ -399,9 +407,12 @@ export const useAppStore = defineStore('app', {
 
 			// For older messages that have a status of "Pending" but no operation id, assume
 			// it is complete and do no initiate polling as it will return empty data
-			if (message.operation_id) this.startPolling(message);
+			if (message.operation_id) this.startPolling(message, this.currentSession.id);
 
-			// return message;
+			// Remove the new session if matches this one, now that we have sent the first message.
+			if (this.newSession && this.newSession.id === initialSession) {
+				this.newSession = null;
+			}
 		},
 
 		getPollingRateMS() {
@@ -411,8 +422,11 @@ export const useAppStore = defineStore('app', {
 			);
 		},
 
-		startPolling(message) {
+		startPolling(message, sessionId: string) {
 			if (this.pollingInterval) return;
+
+			// Indicate that a message in this session is being polled for completion.
+			this.pollingSession = sessionId;
 
 			this.pollingInterval = setInterval(async () => {
 				try {
@@ -433,18 +447,19 @@ export const useAppStore = defineStore('app', {
 					}
 
 					if (updatedMessage.status === 'Completed' || updatedMessage.status === 'Failed') {
-						this.stopPolling();
+						this.stopPolling(sessionId);
 					}
 				} catch (error) {
 					console.error(error);
-					this.stopPolling();
+					this.stopPolling(sessionId);
 				}
 			}, this.getPollingRateMS());
 		},
 
-		stopPolling() {
+		stopPolling(/* sessionId: string */) {
 			clearInterval(this.pollingInterval);
 			this.pollingInterval = null;
+			this.pollingSession = null;
 		},
 
 		/**
@@ -483,7 +498,7 @@ export const useAppStore = defineStore('app', {
 		},
 
 		changeSession(newSession: Session) {
-			this.stopPolling();
+			this.stopPolling(newSession.id);
 
 			const nuxtApp = useNuxtApp();
 			const appConfigStore = useAppConfigStore();
@@ -507,6 +522,14 @@ export const useAppStore = defineStore('app', {
 		async getAgents() {
 			this.agents = await api.getAllowedAgents();
 			return this.agents;
+		},
+
+		async ensureAgentsLoaded() {
+			let retryCount = 0;
+			while (this.agents?.length === 0 && retryCount < 10) {
+				await new Promise((resolve) => setTimeout(resolve, 500));
+				retryCount += 1;
+			}
 		},
 
 		async getCoreConfiguration() {

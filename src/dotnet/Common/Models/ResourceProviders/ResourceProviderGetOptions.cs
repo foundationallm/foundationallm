@@ -1,9 +1,9 @@
 ﻿namespace FoundationaLLM.Common.Models.ResourceProviders
 {
     /// <summary>
-    /// Options for the resource provider requests.
+    /// Provides options for resource provider get operations.
     /// </summary>
-    public class ResourceProviderLoadOptions
+    public class ResourceProviderGetOptions : ResourceProviderOperationOptionsBase
     {
         /// <summary>
         /// Gets or sets a value indicating whether to load resource content (applicable only to resources that have content).
@@ -29,10 +29,5 @@
         /// the authorizable actions assigned directly or indirectly to the resource.
         /// </remarks>
         public bool IncludeActions { get; set; }
-
-        /// <summary>
-        /// Gets or sets a dictionary of parameters to be used in the resource provider request.
-        /// </summary>
-        public Dictionary<string, object>? Parameters { get; set; }
     }
 }

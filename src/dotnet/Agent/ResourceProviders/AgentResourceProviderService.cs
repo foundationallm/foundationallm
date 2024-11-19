@@ -1,8 +1,11 @@
 ﻿using Azure.Messaging;
 using FluentValidation;
 using FoundationaLLM.Agent.Models.Resources;
+using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.Configuration;
+using FoundationaLLM.Common.Constants.OpenAI;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
@@ -12,6 +15,9 @@ using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
+using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
+using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using Microsoft.AspNetCore.Http;
@@ -72,26 +78,37 @@ namespace FoundationaLLM.Agent.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
-            ResourceProviderLoadOptions? options = null) =>
-            resourcePath.MainResourceTypeName switch
+            ResourceProviderGetOptions? options = null) =>
+            resourcePath.ResourceTypeName switch
             {
                 AgentResourceTypeNames.Agents => await LoadResources<AgentBase>(
                     resourcePath.ResourceTypeInstances[0],
                     authorizationResult,
-                    options ?? new ResourceProviderLoadOptions
+                    options ?? new ResourceProviderGetOptions
                     {
                         IncludeRoles = resourcePath.IsResourceTypePath,
                     }),
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
+                AgentResourceTypeNames.Workflows => await LoadResources<Workflow>(
+                    resourcePath.ResourceTypeInstances[0],
+                    authorizationResult,
+                    options ?? new ResourceProviderGetOptions
+                    {
+                        IncludeRoles = resourcePath.IsResourceTypePath,
+                    }),
+                AgentResourceTypeNames.Files => await LoadAgentFiles(
+                    resourcePath.MainResourceId!)!,
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
 
         /// <inheritdoc/>
-        protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string serializedResource, UnifiedUserIdentity userIdentity) =>
-            resourcePath.MainResourceTypeName switch
+        protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string? serializedResource, ResourceProviderFormFile? formFile, UnifiedUserIdentity userIdentity) =>
+            resourcePath.ResourceTypeName switch
             {
-                AgentResourceTypeNames.Agents => await UpdateAgent(resourcePath, serializedResource, userIdentity),
-                _ => throw new ResourceProviderException($"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
+                AgentResourceTypeNames.Agents => await UpdateAgent(resourcePath, serializedResource!, userIdentity),
+                AgentResourceTypeNames.Workflows => await UpdateWorkflow(resourcePath, serializedResource!, userIdentity),
+                AgentResourceTypeNames.Files => await UpdateAgentFile(resourcePath, formFile!, userIdentity),
+                _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
 
@@ -111,6 +128,14 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
+                AgentResourceTypeNames.Workflows => resourcePath.Action switch
+                {
+                    ResourceProviderActions.CheckName => await CheckResourceName<Workflow>(
+                        JsonSerializer.Deserialize<ResourceName>(serializedAction)!),
+                    ResourceProviderActions.Purge => await PurgeResource<Workflow>(resourcePath),
+                    _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest)
+                },
                 _ => throw new ResourceProviderException()
             };
 
@@ -121,6 +146,12 @@ namespace FoundationaLLM.Agent.ResourceProviders
             {
                 case AgentResourceTypeNames.Agents:
                     await DeleteResource<AgentBase>(resourcePath);
+                    break;
+                case AgentResourceTypeNames.Workflows:
+                    await DeleteResource<Workflow>(resourcePath);
+                    break;
+                case AgentResourceTypeNames.Files:
+                    await DeleteAgentFile(resourcePath);
                     break;
                 default:
                     throw new ResourceProviderException(
@@ -134,7 +165,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
         #region Resource provider strongly typed operations
 
         /// <inheritdoc/>
-        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null) =>
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null) =>
             (await LoadResource<T>(resourcePath.ResourceId!))!;
 
         #endregion
@@ -240,6 +271,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                             TriggerType = (VectorizationPipelineTriggerType)kmAgent.Vectorization.TriggerType!,
                             TriggerCronSchedule = kmAgent.Vectorization.TriggerCronSchedule
                         }),
+                        null,
                         userIdentity);
 
                 if ((result is ResourceProviderUpsertResult resourceProviderResult)
@@ -248,6 +280,74 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 else
                     throw new ResourceProviderException("There was an error attempting to create the associated vectorization pipeline for the agent.",
                         StatusCodes.Status500InternalServerError);
+            }
+
+            if (agent.HasCapability(AgentCapabilityCategoryNames.OpenAIAssistants))
+            {
+                agent.Properties ??= [];
+
+                var openAIAssistantId = agent.Properties.GetValueOrDefault(
+                    AgentPropertyNames.AzureOpenAIAssistantId);
+
+                if (string.IsNullOrWhiteSpace(openAIAssistantId))
+                {
+                    // The agent uses the Azure OpenAI Assistants workflow
+                    // but it does not have an associated assistant.
+                    // Proceed to create the Azure OpenAI Assistants assistant.
+
+                    _logger.LogInformation(
+                        "Starting to create the Azure OpenAI assistant for agent {AgentName}",
+                        agent.Name);
+
+                    #region Resolve various agent properties
+
+                    var agentAIModel = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_AIModel)
+                        .GetResourceAsync<AIModelBase>(agent.AIModelObjectId!, userIdentity);
+                    var agentAIModelAPIEndpoint = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Configuration)
+                        .GetResourceAsync<APIEndpointConfiguration>(agentAIModel.EndpointObjectId!, userIdentity);
+                    var agentPrompt = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Prompt)
+                        .GetResourceAsync<PromptBase>(agent.PromptObjectId!, userIdentity);
+
+                    #endregion
+
+                    #region Create Azure OpenAI Assistants assistant
+
+                    var gatewayClient = new GatewayServiceClient(
+                       await _serviceProvider.GetRequiredService<IHttpClientFactoryService>()
+                           .CreateClient(HttpClientNames.GatewayAPI, userIdentity),
+                       _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
+
+                    Dictionary<string, object> parameters = new()
+                        {
+                            { OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistant, true },
+                            { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, agentAIModelAPIEndpoint.Url },
+                            { OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName, agentAIModel.DeploymentName! },
+                            { OpenAIAgentCapabilityParameterNames.OpenAIAssistantPrompt, (agentPrompt as MultipartPrompt)!.Prefix! }
+                        };
+
+                    var agentCapabilityResult = await gatewayClient!.CreateAgentCapability(
+                        _instanceSettings.Id,
+                        AgentCapabilityCategoryNames.OpenAIAssistants,
+                        $"FoundationaLLM - {agent.Name}",
+                        parameters);
+
+                    var newOpenAIAssistantId = default(string);
+
+                    if (agentCapabilityResult.TryGetValue(OpenAIAgentCapabilityParameterNames.OpenAIAssistantId, out var newOpenAIAssistantIdObject)
+                        && newOpenAIAssistantIdObject != null)
+                        newOpenAIAssistantId = ((JsonElement)newOpenAIAssistantIdObject!).Deserialize<string>();
+
+                    if (string.IsNullOrWhiteSpace(newOpenAIAssistantId))
+                        throw new ResourceProviderException($"Could not create an Azure OpenAI assistant for the agent {agent} which requires it.",
+                            StatusCodes.Status500InternalServerError);
+
+                    _logger.LogInformation(
+                        "The Azure OpenAI assistant {AssistantId} for agent {AgentName} was created successfuly.",
+                        newOpenAIAssistantId, agent.Name);
+                    agent.Properties[AgentPropertyNames.AzureOpenAIAssistantId] = newOpenAIAssistantId;
+
+                    #endregion
+                }
             }
 
             var validator = _resourceValidatorFactory.GetValidator(agentReference.ResourceType);
@@ -273,6 +373,127 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 ObjectId = agent!.ObjectId,
                 ResourceExists = existingAgentReference != null
             };
+        }
+
+        private async Task<ResourceProviderUpsertResult> UpdateWorkflow(ResourcePath resourcePath, string serializedWorkflow, UnifiedUserIdentity userIdentity)
+        {
+            var workflow = JsonSerializer.Deserialize<Workflow>(serializedWorkflow)
+                ?? throw new ResourceProviderException("The object definition is invalid.",
+                    StatusCodes.Status400BadRequest);
+
+            var existingReference = await _resourceReferenceStore!.GetResourceReference(workflow.Name);
+
+            if (resourcePath.ResourceTypeInstances[0].ResourceId != workflow.Name)
+                throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
+                    StatusCodes.Status400BadRequest);
+
+            var newReference = new AgentReference
+            {
+                Name = workflow.Name!,
+                Type = workflow.Type!,
+                Filename = $"/{_name}/{workflow.Name}.json",
+                Deleted = false
+            };
+
+            workflow.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
+
+            var validator = _resourceValidatorFactory.GetValidator(newReference.ResourceType);
+            if (validator is IValidator workflowValidator)
+            {
+                var context = new ValidationContext<object>(workflow);
+                var validationResult = await workflowValidator.ValidateAsync(context);
+                if (!validationResult.IsValid)
+                {
+                    throw new ResourceProviderException($"Validation failed: {string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage))}",
+                        StatusCodes.Status400BadRequest);
+                }
+            }
+
+            UpdateBaseProperties(workflow, userIdentity, isNew: existingReference == null);
+            if (existingReference == null)
+                await CreateResource<Workflow>(newReference, workflow);
+            else
+                await SaveResource<Workflow>(existingReference, workflow);
+
+            return new ResourceProviderUpsertResult
+            {
+                ObjectId = workflow!.ObjectId,
+                ResourceExists = existingReference != null
+            };
+        }
+
+        private async Task<List<ResourceProviderGetResult<AgentFile>>> LoadAgentFiles(string agentName) =>
+            (await _resourceReferenceStore!.GetAllResourceReferences<AgentFile>())
+            .Where(r => r.Name.StartsWith(agentName))
+            .Select(r => (r, r.Name.Split("|").Last()))
+            .Select(x => new ResourceProviderGetResult<AgentFile>()
+            {
+                Actions = [],
+                Roles = [],
+                Resource = new AgentFile()
+                {
+                    Name = x.Item2,
+                    DisplayName = x.Item2,
+                    ObjectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, agentName, AgentResourceTypeNames.Files, x.Item2)
+                }
+            }).ToList();
+
+        private async Task<ResourceProviderUpsertResult> UpdateAgentFile(ResourcePath resourcePath, ResourceProviderFormFile formFile, UnifiedUserIdentity userIdentity)
+        {
+            if (formFile.BinaryContent.Length == 0)
+                throw new ResourceProviderException("The attached file is not valid.",
+                    StatusCodes.Status400BadRequest);
+
+            if (resourcePath.ResourceId != formFile.FileName)
+                throw new ResourceProviderException("The resource path does not match the file name (name mismatch).",
+                    StatusCodes.Status400BadRequest);
+
+            var filePath = $"{_name}/{_instanceSettings.Id}/{resourcePath.MainResourceId!}/private-file-store/{resourcePath.ResourceId!}";
+            var resourceName = $"{resourcePath.MainResourceId!}|{resourcePath.ResourceId}";
+
+            var existingAgentReference = await _resourceReferenceStore!.GetResourceReference(resourceName);
+
+            if (existingAgentReference == null)
+            {
+                var agentFileReference = new AgentReference
+                {
+                    Name = resourceName,
+                    Type = AgentTypes.AgentFile,
+                    Filename = $"/{filePath}",
+                    Deleted = false
+                };
+
+                await _resourceReferenceStore.AddResourceReference(agentFileReference);
+            }
+
+            await _storageService.WriteFileAsync(_storageContainerName, filePath, new MemoryStream(formFile.BinaryContent.ToArray()), formFile.ContentType, CancellationToken.None);
+
+            return new ResourceProviderUpsertResult
+            {
+                ResourceExists = existingAgentReference != null,
+                ObjectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, resourcePath.MainResourceId!, AgentResourceTypeNames.Files, resourcePath.ResourceId!)
+            };
+        }
+
+        private async Task DeleteAgentFile(ResourcePath resourcePath)
+        {
+            var resourceName = $"{resourcePath.MainResourceId!}|{resourcePath.ResourceId}";
+
+            var result = await _resourceReferenceStore!.TryGetResourceReference(resourceName);
+
+            if (result.Success && !result.Deleted)
+            {
+                await _resourceReferenceStore!.DeleteResourceReference(result.ResourceReference!);
+
+                //var filePath = $"{_name}/{_instanceSettings.Id}/{resourcePath.MainResourceId!}/private-file-store/{resourcePath.ResourceId!}";
+
+                //await _storageService.DeleteFileAsync(_storageContainerName, filePath);
+            }
+            else
+            {
+                throw new ResourceProviderException($"The resource {resourceName} cannot be deleted because it was either already deleted or does not exist.",
+                    StatusCodes.Status404NotFound);
+            }
         }
 
         #endregion

@@ -111,6 +111,7 @@ export interface Agent {
 	name: string;
 	object_id: string;
 	description: string;
+	properties?: { [key: string]: string | null };
 	long_running: boolean;
 	orchestration_settings?: OrchestrationSettings;
 }

@@ -13,11 +13,16 @@
 				</div>
 			</div>
 
-			<!-- Edit access control -->
-			<AccessControl
-				v-if="editAgent"
-				:scope="`providers/FoundationaLLM.Agent/agents/${agentName}`"
-			/>
+			<div style="display: flex; align-items: center">
+				<!-- Private storage -->
+				<PrivateStorage v-if="hasOpenAIAssistantCapability" :agent-name="`${agentName}`" />
+
+				<!-- Edit access control -->
+				<AccessControl
+					v-if="editAgent"
+					:scope="`providers/FoundationaLLM.Agent/agents/${agentName}`"
+				/>
+			</div>
 		</div>
 
 		<div class="steps" :class="{ 'steps--loading': loading }">
@@ -71,6 +76,21 @@
 					class="w-100"
 					placeholder="Enter agent description"
 					aria-labelledby="aria-description"
+				/>
+			</div>
+			<div class="span-2">
+				<div class="step-header mb-2">Welcome message:</div>
+				<div id="aria-welcome-message-desc" class="mb-2">
+					Provide a message to display when a user starts a new conversation with the agent. If a
+					message is not provided, the default welcome message will be displayed.
+				</div>
+				<CustomQuillEditor
+					v-model="agentWelcomeMessage"
+					:initial-content="JSON.parse(JSON.stringify(agentWelcomeMessage))"
+					class="w-100"
+					placeholder="Enter agent welcome message"
+					aria-labelledby="aria-welcome-message-desc"
+					@content-update="updateAgentWelcomeMessage($event)"
 				/>
 			</div>
 
@@ -732,6 +752,7 @@ const getDefaultFormValues = () => {
 
 		agentName: '',
 		agentDescription: '',
+		agentWelcomeMessage: '',
 		object_id: '',
 		text_partitioning_profile_object_id: '',
 		text_embedding_profile_object_id: '',
@@ -808,6 +829,7 @@ export default {
 			loadingStatusText: 'Retrieving data...' as string,
 
 			editable: false as boolean,
+			hasOpenAIAssistantCapability: false as boolean,
 
 			nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
 			validationMessage: '' as string,
@@ -990,10 +1012,12 @@ export default {
 		mapAgentToForm(agent: Agent) {
 			this.agentName = agent.name || this.agentName;
 			this.agentDescription = agent.description || this.agentDescription;
+			this.agentWelcomeMessage = agent.properties?.welcome_message || this.agentWelcomeMessage;
 			this.agentType = agent.type || this.agentType;
 			this.object_id = agent.object_id || this.object_id;
 			this.inline_context = agent.inline_context || this.inline_context;
 			this.cost_center = agent.cost_center || this.cost_center;
+			this.hasOpenAIAssistantCapability = agent.capabilities?.includes('OpenAI.Assistants');
 			this.expirationDate = agent.expiration_date
 				? new Date(agent.expiration_date)
 				: this.expirationDate;
@@ -1060,6 +1084,10 @@ export default {
 						agent.capabilities?.includes(localOption.code),
 					) || this.selectedAgentCapabilities;
 			}
+		},
+
+		updateAgentWelcomeMessage(newContent: string) {
+			this.agentWelcomeMessage = newContent;
 		},
 
 		async checkName() {
@@ -1248,6 +1276,7 @@ export default {
 					type: this.agentType,
 					name: this.agentName,
 					description: this.agentDescription,
+					properties: { welcome_message: this.agentWelcomeMessage },
 					object_id: this.object_id,
 					inline_context: this.inline_context,
 					cost_center: this.cost_center,

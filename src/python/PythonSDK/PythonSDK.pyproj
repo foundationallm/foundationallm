@@ -30,6 +30,10 @@
     <Compile Include="foundationallm\exceptions\__init__.py" />
     <Compile Include="foundationallm\langchain\agents\langchain_knowledge_management_agent.py" />
     <Compile Include="foundationallm\models\agents\agent_tool.py" />
+    <Compile Include="foundationallm\models\agents\agent_workflows\agent_workflow_ai_model.py" />
+    <Compile Include="foundationallm\models\agents\agent_workflows\agent_workflow_base.py" />
+    <Compile Include="foundationallm\models\agents\agent_workflows\azure_openai_assistants_agent_workflow.py" />
+    <Compile Include="foundationallm\models\agents\agent_workflows\langchain_expression_language_agent_workflow.py" />
     <Compile Include="foundationallm\models\attachments\attachment_properties.py" />
     <Compile Include="foundationallm\models\attachments\attachment_providers.py" />
     <Compile Include="foundationallm\models\attachments\__init__.py" />
@@ -171,6 +175,7 @@
     <Folder Include="foundationallm\langchain\language_models\" />
     <Folder Include="foundationallm\langchain\language_models\openai\" />
     <Folder Include="foundationallm\langchain\exceptions\" />
+    <Folder Include="foundationallm\models\agents\agent_workflows\" />
     <Folder Include="foundationallm\models\attachments\" />
     <Folder Include="foundationallm\models\constants\" />
     <Folder Include="foundationallm\event_handlers\" />

@@ -4,7 +4,6 @@ using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
-using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Settings;
 
 namespace FoundationaLLM.Core.Interfaces;
@@ -15,18 +14,13 @@ namespace FoundationaLLM.Core.Interfaces;
 /// </summary>
 public interface ICoreService
 {
+    #region Conversation management - FoundationaLLM.Conversation resource provider
+
     /// <summary>
     /// Returns list of chat session ids and names.
     /// </summary>
     /// <param name="instanceId">The instance id for which to retrieve chat sessions.</param>
     Task<List<Conversation>> GetAllConversationsAsync(string instanceId);
-
-    /// <summary>
-    /// Returns the chat messages related to an existing session.
-    /// </summary>
-    /// <param name="instanceId">The instance id for which to retrieve chat messages.</param>
-    /// <param name="sessionId">The session id for which to retrieve chat messages.</param>
-    Task<List<Message>> GetChatSessionMessagesAsync(string instanceId, string sessionId);
 
     /// <summary>
     /// Creates a new chat session.
@@ -50,38 +44,9 @@ public interface ICoreService
     /// <param name="sessionId">The session id to delete.</param>
     Task DeleteConversationAsync(string instanceId, string sessionId);
 
-    /// <summary>
-    /// Receive a prompt from a user, retrieve the message history from the related session,
-    /// generate a completion response, and log full completion results.
-    /// </summary>
-    /// <param name="instanceId">The instance id.</param>
-    /// <param name="completionRequest">The completion request.</param>
-    Task<Message> GetChatCompletionAsync(string instanceId, CompletionRequest completionRequest);
+    #endregion
 
-    /// <summary>
-    /// Provides a completion for a user prompt, without a session.
-    /// </summary>
-    /// <param name="instanceId">The instance id.</param>
-    /// <param name="directCompletionRequest">The completion request.</param>
-    Task<Message> GetCompletionAsync(string instanceId, CompletionRequest directCompletionRequest);
-
-    /// <summary>
-    /// Rate an assistant message. This can be used to discover useful AI responses for training, discoverability, and other benefits down the road.
-    /// </summary>
-    /// <param name="instanceId">The instance id.</param>
-    /// <param name="id">The message id to rate.</param>
-    /// <param name="sessionId">The session id to which the message belongs.</param>
-    /// <param name="rating">The rating to assign to the message.</param>
-    Task<Message> RateMessageAsync(string instanceId, string id, string sessionId, bool? rating);
-
-    /// <summary>
-    /// Returns the completion prompt for a given session and completion prompt id.
-    /// </summary>
-    /// <param name="instanceId">The instance Id.</param>
-    /// <param name="sessionId">The session id from which to retrieve the completion prompt.</param>
-    /// <param name="completionPromptId">The id of the completion prompt to retrieve.</param>
-    /// <returns></returns>
-    Task<CompletionPrompt> GetCompletionPrompt(string instanceId, string sessionId, string completionPromptId);
+    #region Asynchronous completion operations
 
     /// <summary>
     /// Begins a completion operation.
@@ -98,6 +63,29 @@ public interface ICoreService
     /// <param name="operationId">The OperationId for which to retrieve the status.</param>
     /// <returns>Returns a <see cref="LongRunningOperation"/> object containing the OperationId, Status, and result.</returns>
     Task<LongRunningOperation> GetCompletionOperationStatus(string instanceId, string operationId);
+
+    #endregion
+
+    #region Synchronous completion operations
+
+    /// <summary>
+    /// Receive a prompt from a user, retrieve the message history from the related session,
+    /// generate a completion response, and log full completion results.
+    /// </summary>
+    /// <param name="instanceId">The instance id.</param>
+    /// <param name="completionRequest">The completion request.</param>
+    Task<Message> GetChatCompletionAsync(string instanceId, CompletionRequest completionRequest);
+
+    /// <summary>
+    /// Provides a completion for a user prompt, without a session.
+    /// </summary>
+    /// <param name="instanceId">The instance id.</param>
+    /// <param name="directCompletionRequest">The completion request.</param>
+    Task<Message> GetCompletionAsync(string instanceId, CompletionRequest directCompletionRequest);
+
+    #endregion
+
+    #region Attachments
 
     /// <summary>
     /// Uploads an attachment.
@@ -139,14 +127,38 @@ public interface ICoreService
     Task<Dictionary<string, ResourceProviderDeleteResult?>> DeleteAttachments(
         string instanceId, List<string> resourcePaths, UnifiedUserIdentity userIdentity);
 
+    #endregion
+
+    #region Conversation messages
+
     /// <summary>
-    /// Gets the file store connectors for the given instance.
+    /// Returns the chat messages related to an existing session.
     /// </summary>
-    /// <param name="instanceId">The FoundationaLLM instance id.</param>
-    /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
-    /// <returns>A list of API endpoint configurations for file store connectors.</returns>
-    Task<IEnumerable<APIEndpointConfiguration>> GetFileStoreConnectors(string instanceId,
-        UnifiedUserIdentity userIdentity);
+    /// <param name="instanceId">The instance id for which to retrieve chat messages.</param>
+    /// <param name="sessionId">The session id for which to retrieve chat messages.</param>
+    Task<List<Message>> GetChatSessionMessagesAsync(string instanceId, string sessionId);
+
+    /// <summary>
+    /// Rate an assistant message. This can be used to discover useful AI responses for training, discoverability, and other benefits down the road.
+    /// </summary>
+    /// <param name="instanceId">The instance id.</param>
+    /// <param name="id">The message id to rate.</param>
+    /// <param name="sessionId">The session id to which the message belongs.</param>
+    /// <param name="rating">The rating to assign to the message.</param>
+    Task<Message> RateMessageAsync(string instanceId, string id, string sessionId, bool? rating);
+
+    /// <summary>
+    /// Returns the completion prompt for a given session and completion prompt id.
+    /// </summary>
+    /// <param name="instanceId">The instance Id.</param>
+    /// <param name="sessionId">The session id from which to retrieve the completion prompt.</param>
+    /// <param name="completionPromptId">The id of the completion prompt to retrieve.</param>
+    /// <returns></returns>
+    Task<CompletionPrompt> GetCompletionPrompt(string instanceId, string sessionId, string completionPromptId);
+
+    #endregion
+
+    #region Configuration
 
     /// <summary>
     /// Gets the file store configuration for the given instance.
@@ -155,4 +167,6 @@ public interface ICoreService
     /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
     /// <returns>The file store configuration.</returns>
     Task<CoreConfiguration> GetCoreConfiguration(string instanceId, UnifiedUserIdentity userIdentity);
+
+    #endregion
 }

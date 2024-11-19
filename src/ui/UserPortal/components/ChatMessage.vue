@@ -561,7 +561,9 @@ export default {
 						: `<i class="pi pi-file" class="attachment-icon"></i>`;
 					return `${fileIcon} &nbsp;<a href="#" data-href="${href}" data-filename="${fileName}" title="${title || ''}" class="file-download-link">${text}</a>`;
 				} else {
-					return `<a href="${href}" title="${title || ''}" target="_blank">${text}</a>`;
+					const linkHTML = `<a href="${href}" title="${title || ''}" target="_blank">${text}</a>`;
+					// Process link html again in case it contains nested markdown content
+					return marked(linkHTML, { renderer: this.markedRenderer });
 				}
 			};
 		},

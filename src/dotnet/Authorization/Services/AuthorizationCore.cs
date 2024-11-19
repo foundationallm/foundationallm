@@ -5,7 +5,6 @@ using FoundationaLLM.Authorization.Models.Configuration;
 using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Utils;
@@ -368,7 +367,7 @@ namespace FoundationaLLM.Authorization.Services
                 .Where(ra => resourcePath.IncludesResourcePath(ra.ScopeResourcePath!))
                 .ToList();
         }
-        
+
         private ResourcePathAuthorizationResult ProcessAuthorizationRequestForResourcePath(
             ResourcePath resourcePath,
             ActionAuthorizationRequest authorizationRequest)

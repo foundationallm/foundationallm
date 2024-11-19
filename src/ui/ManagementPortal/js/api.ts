@@ -613,6 +613,22 @@ export default {
 		return data;
 	},
 
+	async getBranding(): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/appConfigurations/FoundationaLLM:Branding:*`,
+		);
+	},
+
+	async saveBranding(key: String, params: any): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/appConfigurations/${key}`,
+			{
+				method: 'POST',
+				body: params,
+			},
+		);
+	},
+
 	async getAIModels(): Promise<ResourceProviderGetResult<AIModel>[]> {
 		const data = (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.AIModel/aiModels?api-version=${this.apiVersion}`,
@@ -763,6 +779,34 @@ export default {
 			{
 				method: 'POST',
 				body: JSON.stringify(params),
+			},
+		);
+	},
+
+	/*
+		Private Storage
+	 */
+	async getPrivateStorageFiles(agentName) {
+		return (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/files?api-version=${this.apiVersion}`,
+		)) as Object[];
+	},
+
+	async uploadToPrivateStorage(agentName, fileName, file: FormData): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/files/${fileName}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: file,
+			},
+		);
+	},
+
+	async deleteFileFromPrivateStorage(agentName, fileName): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}/files/${fileName}?api-version=${this.apiVersion}`,
+			{
+				method: 'DELETE',
 			},
 		);
 	},

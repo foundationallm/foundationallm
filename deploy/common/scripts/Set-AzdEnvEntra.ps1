@@ -58,6 +58,7 @@ from the ./foundationallm/deploy/standard directory:
 Param(
    [parameter(Mandatory = $true, HelpMessage = "Azure EntraID Tenant")][string]$tenantID,
    [string]$adminGroupName = 'FLLM-Admins',
+   [string]$userGroupName = 'FLLM-Users',
    [string]$authAppName = 'FoundationaLLM-Authorization-API',
    [string]$coreAppName = 'FoundationaLLM-Core-API',
    [string]$coreClientAppName = 'FoundationaLLM-Core-Portal',
@@ -90,6 +91,14 @@ try {
          --output tsv
    }
 
+   $userGroupId = $null
+   Invoke-CliCommand "Get User Group ID" {
+      $script:userGroupId = az ad group list `
+         --filter "displayName eq '$userGroupName'" `
+         --query "[0].id" `
+         --output tsv
+   }
+
    $appIds = @{}
    $appNames = @{
       auth             = $authAppName
@@ -114,6 +123,7 @@ try {
 
    $values = @{
       "ADMIN_GROUP_OBJECT_ID"          = $adminGroupId
+      "USER_GROUP_OBJECT_ID"           = $userGroupId
       "ENTRA_AUTH_API_CLIENT_ID"       = $appData["auth"].appId
       "ENTRA_AUTH_API_INSTANCE"        = "https://login.microsoftonline.com/"
       "ENTRA_AUTH_API_SCOPES"          = "api://FoundationaLLM-Authorization"

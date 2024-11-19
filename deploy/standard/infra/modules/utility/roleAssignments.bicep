@@ -15,6 +15,7 @@ var roleDefinitions = {
   'Contributor':                           'b24988ac-6180-42a0-ab88-20f7382dd24c'
   'EventGrid Contributor':                 '1e241071-0855-49ea-94dc-649edcd759de'
   'Key Vault Certificate User':            'db79e9a7-68ee-4b58-9aeb-b90e7c24fcba'
+  'Key Vault Certificates Officer':        'a4417e6f-fecd-4de8-b567-7b0420556985'
   'Key Vault Secrets Officer':             'b86a8fe4-44ce-4948-aee5-eccb2c155cd7'
   'Key Vault Secrets User':                '4633458b-17de-408a-b874-0445c86b69e6'
   'Reader':                                'acdd72a7-3385-48ef-bd42-f606fba81ae7'

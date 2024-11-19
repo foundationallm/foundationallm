@@ -41,6 +41,21 @@
 				"name": "FoundationaLLM.Agent/agents/delete",
 				"description": "Delete agents.",
 				"field_name": "FoundationaLLM_Agent_Agents_Delete"
+			},
+			{
+				"name": "FoundationaLLM.Agent/workflows/read",
+				"description": "Read workflows.",
+				"field_name": "FoundationaLLM_Agent_Workflows_Read"
+			},
+			{
+				"name": "FoundationaLLM.Agent/workflows/write",
+				"description": "Create or update workflows.",
+				"field_name": "FoundationaLLM_Agent_Workflows_Write"
+			},
+			{
+				"name": "FoundationaLLM.Agent/workflows/delete",
+				"description": "Delete workflows.",
+				"field_name": "FoundationaLLM_Agent_Workflows_Delete"
 			}
 		]
 	},
@@ -48,34 +63,34 @@
 		"category": "AzureOpenAI",
 		"actions": [
 			{
-				"name": "FoundationaLLM.AzureOpenAI/assistantUserContexts/read",
-				"description": "Read assistant user contexts.",
-				"field_name": "FoundationaLLM_AzureOpenAI_AssistantUserContexts_Read"
+				"name": "FoundationaLLM.AzureOpenAI/conversationMappings/read",
+				"description": "Read Azure OpenAI conversation mappings.",
+				"field_name": "FoundationaLLM_AzureOpenAI_ConversationMappings_Read"
 			},
 			{
-				"name": "FoundationaLLM.AzureOpenAI/assistantUserContexts/write",
-				"description": "Create or update assistant user contexts.",
-				"field_name": "FoundationaLLM_AzureOpenAI_AssistantUserContexts_Write"
+				"name": "FoundationaLLM.AzureOpenAI/conversationMappings/write",
+				"description": "Create or update Azure OpenAI conversation mappings.",
+				"field_name": "FoundationaLLM_AzureOpenAI_ConversationMappings_Write"
 			},
 			{
-				"name": "FoundationaLLM.AzureOpenAI/assistantUserContexts/delete",
-				"description": "Delete assistant user contexts.",
-				"field_name": "FoundationaLLM_AzureOpenAI_AssistantUserContexts_Delete"
+				"name": "FoundationaLLM.AzureOpenAI/conversationMappings/delete",
+				"description": "Delete Azure OpenAI conversation mappings.",
+				"field_name": "FoundationaLLM_AzureOpenAI_ConversationMappings_Delete"
 			},
 			{
-				"name": "FoundationaLLM.AzureOpenAI/fileUserContexts/read",
-				"description": "Read file user contexts.",
-				"field_name": "FoundationaLLM_AzureOpenAI_FileUserContexts_Read"
+				"name": "FoundationaLLM.AzureOpenAI/fileMappings/read",
+				"description": "Read Azure OpenAI file mappings.",
+				"field_name": "FoundationaLLM_AzureOpenAI_FileMappings_Read"
 			},
 			{
-				"name": "FoundationaLLM.AzureOpenAI/fileUserContexts/write",
-				"description": "Create or update file user contexts.",
-				"field_name": "FoundationaLLM_AzureOpenAI_FileUserContexts_Write"
+				"name": "FoundationaLLM.AzureOpenAI/fileMappings/write",
+				"description": "Create or update Azure OpenAI file mappings.",
+				"field_name": "FoundationaLLM_AzureOpenAI_FileMappings_Write"
 			},
 			{
-				"name": "FoundationaLLM.AzureOpenAI/fileUserContexts/delete",
-				"description": "Delete file user contexts.",
-				"field_name": "FoundationaLLM_AzureOpenAI_FileUserContexts_Delete"
+				"name": "FoundationaLLM.AzureOpenAI/fileMappings/delete",
+				"description": "Delete Azure OpenAI file mappings.",
+				"field_name": "FoundationaLLM_AzureOpenAI_FileMappings_Delete"
 			}
 		]
 	},

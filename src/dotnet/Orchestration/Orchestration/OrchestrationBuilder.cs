@@ -2,11 +2,13 @@ using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
-using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
 using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
@@ -15,10 +17,9 @@ using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Models.ResourceProviders.Vectorization;
 using FoundationaLLM.Orchestration.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Net;
-using Microsoft.Extensions.DependencyInjection;
-using FoundationaLLM.Common.Models.Orchestration;
 
 namespace FoundationaLLM.Orchestration.Core.Orchestration
 {
@@ -84,12 +85,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                 if (originalRequest.LongRunningOperation)
                 {
-                    await cosmosDBService.PathcOperationsItemPropertiesAsync<LongRunningOperationContext>(
+                    await cosmosDBService.PatchOperationsItemPropertiesAsync<LongRunningOperationContext>(
                         originalRequest.OperationId!,
                         originalRequest.OperationId!,
                         new Dictionary<string, object?>
                         {
-                            { "/orchestrator", orchestrator! }
+                            { "/orchestrator", orchestrator! },
+                            { "/agentWorkflowMainAIModelAPIEndpoint", result.APIEndpointConfiguration!.Url }
                         });
                 }
 
@@ -97,7 +99,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                 var kmOrchestration = new KnowledgeManagementOrchestration(
                     instanceId,
+                    result.Agent.ObjectId!,
                     (KnowledgeManagementAgent)result.Agent,
+                    result.APIEndpointConfiguration!.Url,
                     result.ExplodedObjects ?? [],
                     callContext,
                     orchestrationService,
@@ -144,7 +148,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             var kmOrchestration = new KnowledgeManagementOrchestration(
                 instanceId,
+                ResourcePath.GetObjectId(
+                    instanceId,
+                    ResourceProviderNames.FoundationaLLM_Agent,
+                    AgentResourceTypeNames.Agents,
+                    operationContext.AgentName),
                 null,
+                operationContext.AgentWorkflowMainAIModelAPIEndpoint!,
                 null,
                 callContext,
                 orchestrationService,
@@ -157,7 +167,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             return kmOrchestration;
         }
 
-        private static async Task<(AgentBase? Agent, Dictionary<string, object>? ExplodedObjects, bool DataSourceAccessDenied)> LoadAgent(
+        private static async Task<(AgentBase? Agent, AIModelBase? AIModel, APIEndpointConfiguration? APIEndpointConfiguration,  Dictionary<string, object>? ExplodedObjects, bool DataSourceAccessDenied)> LoadAgent(
             string instanceId,
             string agentName,
             string? sessionId,
@@ -188,34 +198,113 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 $"/{AgentResourceTypeNames.Agents}/{agentName}",
                 currentUserIdentity);
 
-            var prompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
-                agentBase.PromptObjectId!,
-                currentUserIdentity);
-            var aiModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
-                agentBase.AIModelObjectId!,
-                currentUserIdentity);
-            var apiEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
-                aiModel.EndpointObjectId!,
-                currentUserIdentity);
+            var agentWorkflow = agentBase.Workflow;
+            AIModelBase? mainAIModel = null;
+            APIEndpointConfiguration? mainAIModelAPIEndpointConfiguration = null;
+                      
+            if (agentWorkflow is not null)
+            {
+                foreach (var prompt in agentWorkflow.PromptObjectIds)
+                {
+                    var retrievedPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
+                                           prompt.Value,
+                                           currentUserIdentity);
+                    explodedObjects.Add(retrievedPrompt.ObjectId!, retrievedPrompt);
+                }
+
+                foreach(var agentAIModel in agentWorkflow.AgentWorkflowAIModels)
+                {
+                    var retrievedAIModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
+                                            agentAIModel.Value.AIModelObjectId,
+                                            currentUserIdentity);
+                    var retrievedAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                                            retrievedAIModel.EndpointObjectId!,
+                                            currentUserIdentity);
+
+                    // Check if the AI model is the main model, if so check for overrides.
+                    if (agentAIModel.Key == "main_model")
+                    {
+                        mainAIModel = retrievedAIModel;
+                        mainAIModelAPIEndpointConfiguration = retrievedAPIEndpointConfiguration;
+                        // Agent Workflow AI Model overrides.
+                        if (agentAIModel.Value.ModelParameters != null)
+                        {
+                            // Allowing the override only for the keys that are supported.
+                            foreach (var key in agentAIModel.Value.ModelParameters.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
+                            {
+                                retrievedAIModel.ModelParameters[key] = agentAIModel.Value.ModelParameters[key];
+                            }
+                        }
+
+
+                        // Request overrides for the main model.
+                        if (modelParameterOverrides != null)
+                        {
+                            // Allowing the override only for the keys that are supported.
+                            foreach (var key in modelParameterOverrides.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
+                            {
+                                retrievedAIModel.ModelParameters[key] = modelParameterOverrides[key];
+                            }
+                        }
+                    }
+                  
+                    explodedObjects.Add(retrievedAIModel.ObjectId!, retrievedAIModel);                    
+                    explodedObjects.Add(retrievedAIModel.EndpointObjectId!, retrievedAPIEndpointConfiguration);
+                }
+
+                if (agentWorkflow is AzureOpenAIAssistantsAgentWorkflow)
+                {
+                    explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantsAssistantId] =
+                        ((AzureOpenAIAssistantsAgentWorkflow)agentWorkflow).AssistantId
+                        ?? throw new OrchestrationException("The OpenAI Assistants assistant identifier was not found in the agent workflow.");
+                }
+            }
+            else
+            {
+                /**** LEGACY CODE ****/
+                var prompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
+                    agentBase.PromptObjectId!,
+                    currentUserIdentity);
+                var aiModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
+                    agentBase.AIModelObjectId!,
+                    currentUserIdentity);
+                var apiEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                    aiModel.EndpointObjectId!,
+                    currentUserIdentity);
+
+                mainAIModel = aiModel;
+                mainAIModelAPIEndpointConfiguration = apiEndpointConfiguration;
+                explodedObjects[agentBase.PromptObjectId!] = prompt;
+                explodedObjects[agentBase.AIModelObjectId!] = aiModel;
+                explodedObjects[aiModel.EndpointObjectId!] = apiEndpointConfiguration;
+
+                // Merge the model parameter overrides with the existing model parameter values from the AI model.
+                if (modelParameterOverrides != null)
+                {
+                    // Allowing the override only for the keys that are supported.
+                    foreach (var key in modelParameterOverrides.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
+                    {
+                        aiModel.ModelParameters[key] = modelParameterOverrides[key];
+                    }
+                }
+
+                if (agentBase.HasCapability(AgentCapabilityCategoryNames.OpenAIAssistants))
+                {
+                    explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantsAssistantId] =
+                        agentBase.Properties?.GetValueOrDefault(AgentPropertyNames.AzureOpenAIAssistantId)
+                        ?? throw new OrchestrationException("The OpenAI Assistants assistant identifier was not found in the agent properties.");
+                }
+                /**** END LEGACY CODE ****/
+
+            }
+
             var gatewayAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
                 instanceId,
                 "GatewayAPI",
                 currentUserIdentity);
 
-            // Merge the model parameter overrides with the existing model parameter values from the AI model.
-            if (modelParameterOverrides != null)
-            {
-                // Allowing the override only for the keys that are supported.
-                foreach (var key in modelParameterOverrides.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
-                {
-                    aiModel.ModelParameters[key] = modelParameterOverrides[key];
-                }
-            }
-
-            explodedObjects[agentBase.PromptObjectId!] = prompt;
-            explodedObjects[agentBase.AIModelObjectId!] = aiModel;
-            explodedObjects[aiModel.EndpointObjectId!] = apiEndpointConfiguration;
             explodedObjects[CompletionRequestObjectsKeys.GatewayAPIEndpointConfiguration] = gatewayAPIEndpointConfiguration;
+            
 
             var allAgents = await agentResourceProvider.GetResourcesAsync<AgentBase>(instanceId, currentUserIdentity);
             var allAgentsDescriptions = allAgents
@@ -284,12 +373,12 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 currentUserIdentity);
 
                             if (dataSource == null)
-                                return (null, null, false);
+                                return (null, null, null, null, false);
                         }
                         catch (ResourceProviderException ex) when (ex.StatusCode == (int)HttpStatusCode.Forbidden)
                         {
                             // Access is denied to the underlying data source.
-                            return (agentBase, null, true);
+                            return (agentBase, null, null, null, true);
                         }
                     }
 
@@ -339,111 +428,182 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             #endregion
 
-            return (agentBase, explodedObjects, false);
+            return (agentBase, mainAIModel, mainAIModelAPIEndpointConfiguration, explodedObjects, false);
         }
 
         private static async Task<string?> EnsureAgentCapabilities(
             string instanceId,
             AgentBase agent,
-            string sessionId,
+            string conversationId,
             Dictionary<string, object> explodedObjects,
             Dictionary<string, IResourceProviderService> resourceProviderServices,
             UnifiedUserIdentity currentUserIdentity,
             ILogger<OrchestrationBuilder> logger)
         {
-            if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_AzureOpenAI, out var azureOpenAIResourceProvider))
-                throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_AzureOpenAI} was not loaded.");
-
-            string? vectorStoreId = null;
-            var prompt = explodedObjects[agent.PromptObjectId!] as MultipartPrompt;
-            var aiModel = explodedObjects[agent.AIModelObjectId!] as AIModelBase;
-            var apiEndpointConfiguration = explodedObjects[aiModel!.EndpointObjectId!] as APIEndpointConfiguration;
-
-            if (agent.HasCapability(AgentCapabilityCategoryNames.OpenAIAssistants))
+            if ( agent.Workflow is not null)
             {
-                var assistantUserContextName = $"{currentUserIdentity.UPN?.NormalizeUserPrincipalName() ?? currentUserIdentity.UserId}-assistant-{instanceId.ToLower()}";
-
-                var nameCheckResult = await azureOpenAIResourceProvider.ResourceExistsAsync<AssistantUserContext>(
-                    instanceId,
-                    assistantUserContextName,
-                    currentUserIdentity);
-
-                if (!nameCheckResult.Exists)
+                if (agent.Workflow is AzureOpenAIAssistantsAgentWorkflow)
                 {
-                    var result = await azureOpenAIResourceProvider.UpsertResourceAsync<AssistantUserContext, AssistantUserContextUpsertResult>(
-                        instanceId,
-                        new AssistantUserContext
+                    if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_AzureOpenAI, out var azureOpenAIResourceProvider))
+                        throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_AzureOpenAI} was not loaded.");
+
+                    var mainAIModelObjectId = agent.Workflow.AgentWorkflowAIModels["main_model"].AIModelObjectId;                    
+                    var aiModel = explodedObjects[mainAIModelObjectId] as AIModelBase;
+                    var apiEndpointConfiguration = explodedObjects[aiModel!.EndpointObjectId!] as APIEndpointConfiguration;
+                    var openAIAssistantsAssistantId = explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantsAssistantId] as string;
+
+                    var resourceProviderUpsertOptions = new ResourceProviderUpsertOptions
+                    {
+                        Parameters = new()
                         {
-                            Name = assistantUserContextName,
-                            UserPrincipalName = currentUserIdentity.UPN ?? currentUserIdentity.UserId!,
-                            Endpoint = apiEndpointConfiguration!.Url,
-                            ModelDeploymentName = aiModel.DeploymentName!,
-                            Prompt = prompt!.Prefix!,
-                            Conversations = new()
-                            {
-                                {
-                                    sessionId!,
-                                    new ConversationMapping
-                                    {
-                                        FoundationaLLMSessionId = sessionId!
-                                    }
-                                }
-                            }
-                        },
-                        currentUserIdentity);
+                            { AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId, agent.ObjectId! },
+                            { AzureOpenAIResourceProviderUpsertParameterNames.ConversationId, conversationId },
+                            { AzureOpenAIResourceProviderUpsertParameterNames.OpenAIAssistantId, openAIAssistantsAssistantId! },
+                            { AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIAssistantThread, false }
+                        }
+                    };
 
-                    if (!string.IsNullOrWhiteSpace(result.NewOpenAIAssistantId))
-                        explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantId] = result.NewOpenAIAssistantId;
+                    var existsResult =
+                        await azureOpenAIResourceProvider.ResourceExistsAsync<AzureOpenAIConversationMapping>(instanceId, conversationId, currentUserIdentity);
 
-                    if (!string.IsNullOrWhiteSpace(result.NewOpenAIAssistantThreadId))
-                        explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantThreadId] = result.NewOpenAIAssistantThreadId;
+                    if (existsResult.Exists && existsResult.Deleted)
+                        throw new OrchestrationException($"The conversation mapping for conversation {conversationId} was deleted but not purged. It cannot be used for active conversations.");
 
-                    vectorStoreId = result.NewOpenAIAssistantVectorStoreId;
-                }
-                else
-                {
-                    var assistantUserContext = await azureOpenAIResourceProvider.GetResourceAsync<AssistantUserContext>(
-                        instanceId,
-                        assistantUserContextName,
-                        currentUserIdentity);
+                    var conversationMapping = existsResult.Exists
+                        ? await azureOpenAIResourceProvider.GetResourceAsync<AzureOpenAIConversationMapping>(instanceId, conversationId, currentUserIdentity)
+                        : new AzureOpenAIConversationMapping
+                        {
+                            Name = conversationId,
+                            Id = conversationId,
+                            UPN = currentUserIdentity.UPN!,
+                            InstanceId = instanceId,
+                            ConversationId = conversationId,
+                            OpenAIEndpoint = apiEndpointConfiguration!.Url,
+                            OpenAIAssistantsAssistantId = openAIAssistantsAssistantId!,
 
-                    explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantId] = assistantUserContext.OpenAIAssistantId!;
+                        };
 
-                    if (!assistantUserContext.Conversations.TryGetValue(sessionId!,
-                            out ConversationMapping? assistantConversation))
+                    string? vectorStoreId;
+
+                    if (string.IsNullOrWhiteSpace(conversationMapping.OpenAIAssistantsThreadId))
                     {
-                        assistantUserContext.Conversations.Add(
-                            sessionId!,
-                            new ConversationMapping
-                            {
-                                FoundationaLLMSessionId = sessionId!
-                            });
-                    }
+                        // We're either in the case of creating a new conversation mapping or the OpenAI thread identifier is missing.
+                        // This can happen if previous attempts of creating the OpenAI thread failed.
+                        // Either way we need to force an update to ensure we're attempting to create the OpenAI thread.
 
-                    if (assistantConversation == null ||
-                        string.IsNullOrWhiteSpace(assistantConversation.OpenAIThreadId))
-                    {
-                        var result = await azureOpenAIResourceProvider
-                            .UpsertResourceAsync<AssistantUserContext, AssistantUserContextUpsertResult>(
-                                instanceId,
-                                assistantUserContext,
-                                currentUserIdentity);
+                        resourceProviderUpsertOptions.Parameters[AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIAssistantThread] = true;
 
-                        if (!string.IsNullOrWhiteSpace(result.NewOpenAIAssistantThreadId))
-                            explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantThreadId] =
-                                result.NewOpenAIAssistantThreadId;
+                        // We need to update the conversation mapping.
+                        // We will rely on the upsert operation result to fill in the OpenAI assistant-related properties.
+                        // We expect to get back valid values for the OpenAI Assistants thread identifier and OpenAI vector store identifier.
 
-                        vectorStoreId = result.NewOpenAIAssistantVectorStoreId;
+                        var result = await azureOpenAIResourceProvider.UpsertResourceAsync<AzureOpenAIConversationMapping, AzureOpenAIConversationMappingUpsertResult>(
+                            instanceId,
+                            conversationMapping,
+                            currentUserIdentity,
+                            resourceProviderUpsertOptions);
+
+                        if (string.IsNullOrWhiteSpace(result.NewOpenAIAssistantThreadId))
+                            throw new OrchestrationException("The OpenAI assistant thread ID was not returned.");
+                        else
+                            explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantsThreadId] = result.NewOpenAIAssistantThreadId;
+
+                        vectorStoreId = result.NewOpenAIVectorStoreId;
                     }
                     else
                     {
-                        explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantThreadId] = assistantConversation.OpenAIThreadId;
-                        vectorStoreId = assistantConversation.OpenAIVectorStoreId;
+                        explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantsAssistantId] = conversationMapping.OpenAIAssistantsAssistantId!;
+                        explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantsThreadId] = conversationMapping.OpenAIAssistantsThreadId!;
+                        vectorStoreId = conversationMapping.OpenAIVectorStoreId;
                     }
+
+                    return vectorStoreId;
                 }
             }
+            else
+            {
+                //**** LEGACY CODE ****
+                if (agent.HasCapability(AgentCapabilityCategoryNames.OpenAIAssistants))
+                {
+                    if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_AzureOpenAI, out var azureOpenAIResourceProvider))
+                        throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_AzureOpenAI} was not loaded.");
+                    var prompt = explodedObjects[agent.PromptObjectId!] as MultipartPrompt;
+                    var aiModel = explodedObjects[agent.AIModelObjectId!] as AIModelBase;
+                    var apiEndpointConfiguration = explodedObjects[aiModel!.EndpointObjectId!] as APIEndpointConfiguration;
+                    var openAIAssistantsAssistantId = explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantsAssistantId] as string;
 
-            return vectorStoreId;
+                    var resourceProviderUpsertOptions = new ResourceProviderUpsertOptions
+                    {
+                        Parameters = new()
+                    {
+                        { AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId, agent.ObjectId! },
+                        { AzureOpenAIResourceProviderUpsertParameterNames.ConversationId, conversationId },
+                        { AzureOpenAIResourceProviderUpsertParameterNames.OpenAIAssistantId, openAIAssistantsAssistantId! },
+                        { AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIAssistantThread, false }
+                    }
+                    };
+
+                    var existsResult =
+                        await azureOpenAIResourceProvider.ResourceExistsAsync<AzureOpenAIConversationMapping>(instanceId, conversationId, currentUserIdentity);
+
+                    if (existsResult.Exists && existsResult.Deleted)
+                        throw new OrchestrationException($"The conversation mapping for conversation {conversationId} was deleted but not purged. It cannot be used for active conversations.");
+
+                    var conversationMapping = existsResult.Exists
+                        ? await azureOpenAIResourceProvider.GetResourceAsync<AzureOpenAIConversationMapping>(instanceId, conversationId, currentUserIdentity)
+                        : new AzureOpenAIConversationMapping
+                        {
+                            Name = conversationId,
+                            Id = conversationId,
+                            UPN = currentUserIdentity.UPN!,
+                            InstanceId = instanceId,
+                            ConversationId = conversationId,
+                            OpenAIEndpoint = apiEndpointConfiguration!.Url,
+                            OpenAIAssistantsAssistantId = openAIAssistantsAssistantId!,
+
+                        };
+
+                    string? vectorStoreId;
+
+                    if (string.IsNullOrWhiteSpace(conversationMapping.OpenAIAssistantsThreadId))
+                    {
+                        // We're either in the case of creating a new conversation mapping or the OpenAI thread identifier is missing.
+                        // This can happen if previous attempts of creating the OpenAI thread failed.
+                        // Either way we need to force an update to ensure we're attempting to create the OpenAI thread.
+
+                        resourceProviderUpsertOptions.Parameters[AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIAssistantThread] = true;
+
+                        // We need to update the conversation mapping.
+                        // We will rely on the upsert operation result to fill in the OpenAI assistant-related properties.
+                        // We expect to get back valid values for the OpenAI Assistants thread identifier and OpenAI vector store identifier.
+
+                        var result = await azureOpenAIResourceProvider.UpsertResourceAsync<AzureOpenAIConversationMapping, AzureOpenAIConversationMappingUpsertResult>(
+                            instanceId,
+                            conversationMapping,
+                            currentUserIdentity,
+                            resourceProviderUpsertOptions);
+
+                        if (string.IsNullOrWhiteSpace(result.NewOpenAIAssistantThreadId))
+                            throw new OrchestrationException("The OpenAI assistant thread ID was not returned.");
+                        else
+                            explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantsThreadId] = result.NewOpenAIAssistantThreadId;
+
+                        vectorStoreId = result.NewOpenAIVectorStoreId;
+                    }
+                    else
+                    {
+                        explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantsAssistantId] = conversationMapping.OpenAIAssistantsAssistantId!;
+                        explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantsThreadId] = conversationMapping.OpenAIAssistantsThreadId!;
+                        vectorStoreId = conversationMapping.OpenAIVectorStoreId;
+                    }
+
+                    return vectorStoreId;
+                }
+                //**** END LEGACY CODE ****
+            }
+            
+
+            return null;
         }
     }
 }

@@ -86,14 +86,14 @@ namespace FoundationaLLM.Configuration.Services
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
-            ResourceProviderLoadOptions? options = null) =>
+            ResourceProviderGetOptions? options = null) =>
             resourcePath.MainResourceTypeName switch
             {
                 ConfigurationResourceTypeNames.AppConfigurations => await LoadAppConfigurationKeys(resourcePath.ResourceTypeInstances[0]),
                 ConfigurationResourceTypeNames.APIEndpointConfigurations => await LoadResources<APIEndpointConfiguration>(
                     resourcePath.ResourceTypeInstances[0],
                     authorizationResult,
-                    options ?? new ResourceProviderLoadOptions
+                    options ?? new ResourceProviderGetOptions
                     {
                         IncludeRoles = resourcePath.IsResourceTypePath,
                     }),
@@ -102,11 +102,11 @@ namespace FoundationaLLM.Configuration.Services
             };
 
         /// <inheritdoc/>
-        protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string serializedResource, UnifiedUserIdentity userIdentity) =>
+        protected override async Task<object> UpsertResourceAsync(ResourcePath resourcePath, string? serializedResource, ResourceProviderFormFile? formFile, UnifiedUserIdentity userIdentity) =>
             resourcePath.MainResourceTypeName switch
             {
-                ConfigurationResourceTypeNames.AppConfigurations => await UpdateAppConfigurationKey(resourcePath, serializedResource),
-                ConfigurationResourceTypeNames.APIEndpointConfigurations => await UpdateAPIEndpoints(resourcePath, serializedResource, userIdentity),
+                ConfigurationResourceTypeNames.AppConfigurations => await UpdateAppConfigurationKey(resourcePath, serializedResource!),
+                ConfigurationResourceTypeNames.APIEndpointConfigurations => await UpdateAPIEndpoints(resourcePath, serializedResource!, userIdentity),
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
@@ -134,7 +134,7 @@ namespace FoundationaLLM.Configuration.Services
         #region Resource provider strongly typed operations
 
         /// <inheritdoc/>
-        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderLoadOptions? options = null)
+        protected override async Task<T> GetResourceAsyncInternal<T>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
         {
             switch (typeof(T))
             {
@@ -265,9 +265,6 @@ namespace FoundationaLLM.Configuration.Services
 
             if (string.IsNullOrWhiteSpace(appConfig.Key))
                 throw new ResourceProviderException("The key name is invalid.", StatusCodes.Status400BadRequest);
-
-            if (string.IsNullOrWhiteSpace(appConfig.Value))
-                throw new ResourceProviderException("The key value is invalid.", StatusCodes.Status400BadRequest);
 
             if (appConfig.ContentType == null)
                 throw new ResourceProviderException("The key content type is invalid.", StatusCodes.Status400BadRequest);

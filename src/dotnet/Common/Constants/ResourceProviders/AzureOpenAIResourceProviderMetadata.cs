@@ -15,20 +15,17 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
         public static Dictionary<string, ResourceTypeDescriptor> AllowedResourceTypes => new()
         {
             {
-                AzureOpenAIResourceTypeNames.AssistantUserContexts,
+                AzureOpenAIResourceTypeNames.ConversationMappings,
                 new ResourceTypeDescriptor(
-                    AzureOpenAIResourceTypeNames.AssistantUserContexts,
-                    typeof(AssistantUserContext))
+                    AzureOpenAIResourceTypeNames.ConversationMappings,
+                    typeof(AzureOpenAIConversationMapping))
                 {
                     AllowedTypes = [
-                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<AssistantUserContext>)]),
-                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(AssistantUserContext)], [typeof(AssistantUserContextUpsertResult)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<AzureOpenAIConversationMapping>)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(AzureOpenAIConversationMapping)], [typeof(AzureOpenAIConversationMappingUpsertResult)]),
                         new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], []),
                     ],
                     Actions = [
-                        new ResourceTypeAction(ResourceProviderActions.CheckName, false, true, [
-                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)])
-                        ]),
                         new ResourceTypeAction(ResourceProviderActions.Purge, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Delete, [], [], [typeof(ResourceProviderActionResult)])
                         ])
@@ -36,30 +33,24 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                 }
             },
             {
-                AzureOpenAIResourceTypeNames.FileUserContexts,
+                AzureOpenAIResourceTypeNames.FileMappings,
                 new ResourceTypeDescriptor(
-                    AzureOpenAIResourceTypeNames.FileUserContexts,
-                    typeof(FileUserContext))
+                    AzureOpenAIResourceTypeNames.FileMappings,
+                    typeof(AzureOpenAIFileMapping))
                 {
                     AllowedTypes = [
-                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<FileUserContext>)]),
-                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(FileUserContext)], [typeof(FileUserContextUpsertResult)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<AzureOpenAIFileMapping>)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(AzureOpenAIFileMapping)], [typeof(ResourceProviderUpsertResult<AzureOpenAIFileMapping>)]),
                         new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], [])
                     ],
-                    SubTypes = new()
-                    {
-                        {
-                            AzureOpenAIResourceTypeNames.FilesContent,
-                            new ResourceTypeDescriptor (
-                                AzureOpenAIResourceTypeNames.FilesContent,
-                                typeof(FileContent))
-                            {
-                                AllowedTypes = [
-                                    new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<FileContent>)])
-                                ]
-                            }
-                        }
-                    }
+                    Actions = [
+                        new ResourceTypeAction(ResourceProviderActions.Purge, true, false, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Delete, [], [], [typeof(ResourceProviderActionResult)])
+                        ]),
+                        new ResourceTypeAction(ResourceProviderActions.LoadFileContent, true, false, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderActionResult<FileContent>)])
+                        ])
+                    ]
                 }
             }
         };    

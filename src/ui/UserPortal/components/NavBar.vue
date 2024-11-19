@@ -1,91 +1,101 @@
 <template>
-	<Toast position="top-center" />
-	<div class="navbar">
-		<!-- Sidebar header -->
-		<div class="navbar__header">
-			<img
-				v-if="$appConfigStore.logoUrl !== ''"
-				:src="$appConfigStore.logoUrl"
-				:alt="$appConfigStore.logoText"
-			/>
-			<span v-else>{{ $appConfigStore.logoText }}</span>
+	<div>
+		<Toast position="top-center" />
+		<div class="navbar">
+			<!-- Sidebar header -->
+			<div class="navbar__header">
+				<img
+					v-if="$appConfigStore.logoUrl !== ''"
+					:src="$appConfigStore.logoUrl"
+					:alt="$appConfigStore.logoText"
+				/>
+				<span v-else>{{ $appConfigStore.logoText }}</span>
 
-			<template v-if="!$appConfigStore.isKioskMode">
-				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-					<Button
-						class="navbar__header__button"
-						:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
-						size="small"
-						severity="secondary"
-						aria-label="Toggle sidebar"
-						:aria-expanded="!$appStore.isSidebarClosed"
-						@click="$appStore.toggleSidebar"
-						@keydown.esc="hideAllPoppers"
-					/>
-					<template #popper><div role="tooltip">Toggle sidebar</div></template>
-				</VTooltip>
-			</template>
-		</div>
+				<template v-if="!$appConfigStore.isKioskMode">
+					<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+						<Button
+							class="navbar__header__button"
+							:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
+							size="small"
+							severity="secondary"
+							aria-label="Toggle sidebar"
+							:aria-expanded="!$appStore.isSidebarClosed"
+							@click="$appStore.toggleSidebar"
+							@keydown.esc="hideAllPoppers"
+						/>
+						<template #popper><div role="tooltip">Toggle sidebar</div></template>
+					</VTooltip>
+				</template>
+			</div>
 
-		<!-- Navbar content -->
-		<div class="navbar__content">
-			<div class="navbar__content__left">
-				<div class="navbar__content__left__item">
+			<!-- Navbar content -->
+			<div class="navbar__content">
+				<div class="navbar__content__left">
+					<div class="navbar__content__left__item">
+						<template v-if="currentSession">
+							<span class="current_session_name">{{ currentSession.display_name }}</span>
+							<!-- <VTooltip :auto-hide="false" :popper-triggers="['hover']">
+								<Button
+									v-if="!$appConfigStore.isKioskMode"
+									class="button--share"
+									icon="pi pi-copy"
+									text
+									severity="secondary"
+									aria-label="Copy link to chat session"
+									@click="handleCopySession"
+								/>
+								<template #popper>Copy link to chat session</template>
+							</VTooltip> -->
+						</template>
+						<template v-else>
+							<span>Please select a session</span>
+						</template>
+						<template v-if="virtualUser">
+							<span style="margin-left: 10px">{{ virtualUser }}</span>
+						</template>
+					</div>
+				</div>
+
+				<!-- Right side content -->
+				<div class="navbar__content__right">
 					<template v-if="currentSession">
-						<span class="current_session_name">{{ currentSession.display_name }}</span>
-						<!-- <VTooltip :auto-hide="false" :popper-triggers="['hover']">
-							<Button
-								v-if="!$appConfigStore.isKioskMode"
-								class="button--share"
-								icon="pi pi-copy"
-								text
-								severity="secondary"
-								aria-label="Copy link to chat session"
-								@click="handleCopySession"
+						<span class="header__dropdown">
+							<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+								<AgentIcon
+									:src="$appConfigStore.agentIconUrl || '~/assets/FLLM-Agent-Light.svg'"
+									alt="Select an agent"
+									tabindex="0"
+									@keydown.esc="hideAllPoppers"
+								/>
+								<template #popper><div role="tooltip">Select an agent</div></template>
+							</VTooltip>
+							<Dropdown
+								v-model="agentSelection"
+								:options="agentOptionsGroup"
+								:style="{ maxHeight: '300px' }"
+								class="dropdown--agent"
+								option-group-label="label"
+								option-group-children="items"
+								option-disabled="disabled"
+								option-label="label"
+								placeholder="--Select--"
+								aria-label="Select an agent"
+								aria-activedescendant="selected-agent-{{ agentSelection?.label }}"
+								@change="handleAgentChange"
 							/>
-							<template #popper>Copy link to chat session</template>
-						</VTooltip> -->
-					</template>
-					<template v-else>
-						<span>Please select a session</span>
-					</template>
-					<template v-if="virtualUser">
-						<span style="margin-left: 10px">{{ virtualUser }}</span>
+						</span>
 					</template>
 				</div>
 			</div>
-
-			<!-- Right side content -->
-			<div class="navbar__content__right">
-				<template v-if="currentSession">
-					<span class="header__dropdown">
-						<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-							<AgentIcon
-								:src="$appConfigStore.agentIconUrl || '~/assets/FLLM-Agent-Light.svg'"
-								alt="Select an agent"
-								tabindex="0"
-								@keydown.esc="hideAllPoppers"
-							/>
-							<template #popper><div role="tooltip">Select an agent</div></template>
-						</VTooltip>
-						<Dropdown
-							v-model="agentSelection"
-							:options="agentOptionsGroup"
-							:style="{ maxHeight: '300px' }"
-							class="dropdown--agent"
-							option-group-label="label"
-							option-group-children="items"
-							option-disabled="disabled"
-							option-label="label"
-							placeholder="--Select--"
-							aria-label="Select an agent"
-							aria-activedescendant="selected-agent-{{ agentSelection?.label }}"
-							@change="handleAgentChange"
-						/>
-					</span>
-				</template>
-			</div>
 		</div>
+
+		<!-- No agents message -->
+		<template v-if="showNoAgentsMessage">
+			<div class="no-agents">
+				<!-- eslint-disable-next-line vue/no-v-html -->
+				<div class="body" v-html="emptyAgentsMessage"></div>
+			</div>
+		</template>
 	</div>
 </template>
 
@@ -118,12 +128,17 @@ export default {
 			agentOptionsGroup: [] as AgentDropdownOptionsGroup[],
 			virtualUser: null as string | null,
 			isMobile: window.screen.width < 950,
+			emptyAgentsMessage: null as string | null,
 		};
 	},
 
 	computed: {
 		currentSession() {
 			return this.$appStore.currentSession;
+		},
+
+		showNoAgentsMessage() {
+			return this.agentOptions.length === 0 && this.emptyAgentsMessage !== null;
 		},
 	},
 
@@ -153,25 +168,57 @@ export default {
 			value: agent,
 		}));
 
-		const publicAgentOptions = this.agentOptions;
+		if (this.agentOptions.length === 0) {
+			this.emptyAgentsMessage = this.$appConfigStore.noAgentsMessage ?? null;
+		}
+
+		const publicAgentOptions = this.agentOptions.filter((agent) => !agent.my_agent);
 		const privateAgentOptions = this.agentOptions.filter((agent) => agent.my_agent);
-		const noAgentOptions = [{ label: 'None', value: null, disabled: true }];
+		const noAgentOptions = [
+			{
+				label: 'None',
+				value: null,
+				disabled: true,
+				type: '',
+				object_id: '',
+				description: '',
+			},
+		];
 		this.virtualUser = await this.$appStore.getVirtualUser();
 
 		this.agentOptionsGroup.push({
 			label: '',
-			items: [{ label: '--select--', value: null }],
+			items: [
+				{
+					label: '--select--',
+					value: null,
+					type: '',
+					object_id: '',
+					description: '',
+				},
+			],
 		});
 
-		this.agentOptionsGroup.push({
-			label: 'All Agents',
-			items: publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions,
-		});
+		if (this.agentOptions.length === 0) {
+			// Append noAgentOptions to the last entry in the agentOptionsGroup
+			this.agentOptionsGroup[this.agentOptionsGroup.length - 1].items.push(...noAgentOptions);
+			return;
+		}
 
-		this.agentOptionsGroup.push({
-			label: 'My Agents',
-			items: privateAgentOptions.length > 0 ? privateAgentOptions : noAgentOptions,
-		});
+		if (privateAgentOptions.length > 0) {
+			this.agentOptionsGroup.push({
+				label: 'My Agents',
+				items: privateAgentOptions,
+			});
+			this.agentOptionsGroup.push({
+				label: 'Other Agents',
+				items: publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions,
+			});
+		} else {
+			this.agentOptionsGroup[this.agentOptionsGroup.length - 1].items.push(
+				...(publicAgentOptions.length > 0 ? publicAgentOptions : noAgentOptions),
+			);
+		}
 	},
 
 	mounted() {
@@ -309,6 +356,24 @@ export default {
 
 .navbar__header__button:focus {
 	box-shadow: 0 0 0 0.1rem #fff;
+}
+
+.no-agents {
+	position: fixed;
+	top: 60px;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: #fafafa;
+	box-shadow: 0 5px 10px 0 rgba(27, 29, 33, 0.1);
+	border-radius: 6px;
+	width: 55%;
+	text-align: center;
+	z-index: 1000;
+
+	.body {
+		color: #5f0000;
+		padding: 10px 14px;
+	}
 }
 
 @media only screen and (max-width: 620px) {
