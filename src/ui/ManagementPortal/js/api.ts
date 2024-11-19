@@ -814,7 +814,7 @@ export default {
 	/*
 		Workflows
 	 */
-	async getWorkflows(): Promise<any> {
+	async getAgentWorkflows(): Promise<any> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/workflows?api-version=${this.apiVersion}`,
 		);
