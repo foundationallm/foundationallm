@@ -65,6 +65,6 @@ namespace FoundationaLLM.Common.Models.Authorization
         /// Owner role assignment is not required when at least one policy is assigned to the resource path.
         /// </remarks>
         [JsonIgnore]
-        public bool MustSetOwnerRoleAssignment => PolicyDefinitionIds.Count > 0;
+        public bool MustSetOwnerRoleAssignment => PolicyDefinitionIds.Count == 0;
     }
 }
