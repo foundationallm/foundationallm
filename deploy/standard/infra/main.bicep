@@ -10,6 +10,7 @@ param backendAksNodeSku string
 param frontendAksNodeSku string
 param cidrVnet string
 param createDate string = utcNow('u')
+param deploymentOwner string
 param environmentName string
 param externalNetworkingResourceGroupName string = ''
 param existingOpenAiInstanceName string = ''
@@ -50,6 +51,7 @@ var tags = {
   'azd-env-name': environmentName
   'iac-type': 'bicep'
   'project-name': project
+  'owner': deploymentOwner
 }
 
 // TODO: BYO Resource Groups
@@ -87,7 +89,7 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = [
   for rgName in items(resourceGroups): {
     name: rgName.value
     location: location
-    tags: tags
+    tags: union(tags, {'deployment': split(split(userPortalHostname, '.')[0], '-')[0]})
   }
 ]
 

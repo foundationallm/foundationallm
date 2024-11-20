@@ -51,6 +51,9 @@
           }
         ]
       },
+      "deploymentOwner": {
+        "value": "${FOUNDATIONALLM_OWNER}"
+      },
       "environmentName": {
         "value": "${AZURE_ENV_NAME}"
       },

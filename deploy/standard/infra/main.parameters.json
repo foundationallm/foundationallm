@@ -29,6 +29,9 @@
       "cidrVnet": {
         "value": "${FLLM_VNET_CIDR=10.220.128.0/20}"
       },
+      "deploymentOwner": {
+        "value": "${FOUNDATIONALLM_OWNER}"
+      },
       "environmentName": {
         "value": "${AZURE_ENV_NAME}"
       },
