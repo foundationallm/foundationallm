@@ -406,6 +406,19 @@ module cosmosRoles './modules/sqlRoleAssignments.bicep' = {
   dependsOn: [srBackend]
 }
 
+module gatekeeperApiCosmosRoles './modules/sqlRoleAssignments.bicep' = {
+  scope: resourceGroup(storageResourceGroupName)
+  name: 'gatekeeper-api-cosmos-role'
+  params: {
+    accountName: cosmosDb.name
+    principalId: srBackend[indexOf(backendServiceNames, 'gatekeeper-api')].outputs.servicePrincipalId
+    roleDefinitionIds: {
+      'Cosmos DB Built-in Data Contributor': '00000000-0000-0000-0000-000000000002'
+    }
+  }
+  dependsOn: [srBackend]
+}
+
 module gatewayApiCosmosRoles './modules/sqlRoleAssignments.bicep' = {
   scope: resourceGroup(storageResourceGroupName)
   name: 'gateway-api-cosmos-role'

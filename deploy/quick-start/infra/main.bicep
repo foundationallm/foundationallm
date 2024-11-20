@@ -618,6 +618,7 @@ var cosmosRoleTargets = [
   'core-job'
   'state-api'
   'gateway-api'
+  'gatekeeper-api'
   'orchestration-api'
   'management-api'
 ]
