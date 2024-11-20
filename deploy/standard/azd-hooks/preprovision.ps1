@@ -36,3 +36,7 @@ else
 }
 
 Write-Host "FoundationaLLM Instance ID: $($instanceId)"
+
+Write-Host "Getting Current User UPN..." -ForegroundColor Blue
+$upn = $(az ad signed-in-user show --query userPrincipalName --output tsv)
+azd env set FOUNDATIONALLM_OWNER $upn
