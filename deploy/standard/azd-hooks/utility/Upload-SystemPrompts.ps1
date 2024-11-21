@@ -56,6 +56,23 @@ $target = "https://$storageAccount.blob.core.windows.net/resource-provider/"
 $azcopy = "../../common/tools/azcopy/azcopy" | Get-AbsolutePath
 $sourcePath = '../../common/data/resource-provider' | Get-AbsolutePath
 
+Invoke-AndRequireSuccess "Create New OpenAI Assistant" {
+    $accountInfo = $(az resource show --ids $env:AZURE_OPENAI_ID --query "{resourceGroup:resourceGroup,name:name}" | ConvertFrom-Json)
+    $oaiApiKey = $(az cognitiveservices account keys list --name $accountInfo.name --resource-group $accountInfo.resourceGroup --query "key1" --output tsv)
+    $oaiAssistantId = $(curl "https://$($accountInfo.name).openai.azure.com/openai/assistants?api-version=2024-05-01-preview" `
+        -H "api-key: $oaiApiKey" `
+        -H "Content-Type: application/json" `
+        -d '{
+            "instructions": "\nYou are an analytic agent named Khalil that helps people find information about FoundationaLLM.\nProvide concise answers that are polite and professional.\n\nContext:\nFoundationaLLM simplifies and streamlines building knowledge management (e.g., question/answer agents) and analytic (e.g., self-service business intelligence) copilots over the data sources present across your enterprise.\n\nFoundationaLLM deploys a secure, comprehensive and highly configurable copilot platform to your Azure cloud environment:\n\n- Simplifies integration with enterprise data sources used by agent for in-context learning (e.g., enabling RAG, CoT, ReAct and inner monologue patterns).\n- Provides defense in depth with fine-grain security controls over data used by agent and pre/post completion filters that guard against attack.\n- Hardened solution attacked by an LLM red team from inception.\n- Scalable solution load balances across multiple LLM endpoints.\n- Extensible to new data sources, new LLM orchestrators and LLMs.\n\nYou can learn more about FoundationaLLM at https://foundationallm.ai\n",
+            "name": "FoundationaLLM - FoundationaLLM",
+            "tools": [{"type": "code_interpreter"}, {"type": "file_search"}],
+            "model": "completions4o"
+        }' | ConvertFrom-Json).id
+
+    $agentPath = $('../../common/data/resource-provider/FoundationaLLM.Agent/FoundationaLLM.json' | Get-AbsolutePath)
+    (Get-Content $agentPath).Replace('{{oaiAssistantId}}', $oaiAssistantId) | Set-Content $agentPath
+}
+
 Write-Host "$azcopy copy `"$($sourcePath)/*`" $target --exclude-pattern .git* --recursive=True --overwrite=True"
 & $azcopy copy "$($sourcePath)/*" $target `
     --exclude-pattern .git* --recursive=True --overwrite=True
