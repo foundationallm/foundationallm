@@ -349,6 +349,42 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                     explodedObjects[apiEndpointConfigurationObjectId] = toolAPIEndpointConfiguration;
                 }
+
+                foreach (var fileSearchConfigurationObjectId in agentBase.Tools[toolName].FileSearchConfigurationObjectIds.Values)
+                {
+                    var toolFileSearchConfiguration = await configurationResourceProvider.GetResourceAsync<FileSearchConfiguration>(
+                        fileSearchConfigurationObjectId,
+                        currentUserIdentity);
+
+                    explodedObjects[fileSearchConfigurationObjectId] = toolFileSearchConfiguration;
+                }
+
+                foreach (var codeInterpreterConfigurationObjectId in agentBase.Tools[toolName].CodeInterpreterConfigurationObjectIds.Values)
+                {
+                    var toolCodeInterpreterConfiguration = await configurationResourceProvider.GetResourceAsync<CodeInterpreterConfiguration>(
+                        codeInterpreterConfigurationObjectId,
+                        currentUserIdentity);
+
+                    explodedObjects[codeInterpreterConfigurationObjectId] = toolCodeInterpreterConfiguration;
+                }
+
+                foreach (var dalleImageGenerationConfigurationObjectId in agentBase.Tools[toolName].DalleImageGenerationConfigurationObjectIds.Values)
+                {
+                    var toolDalleConfiguration = await configurationResourceProvider.GetResourceAsync<DalleImageGenerationConfiguration>(
+                        dalleImageGenerationConfigurationObjectId,
+                        currentUserIdentity);
+
+                    explodedObjects[dalleImageGenerationConfigurationObjectId] = toolDalleConfiguration;
+                }
+
+                foreach (var imageAnalysisConfigurationObjectId in agentBase.Tools[toolName].ImageAnalysisConfigurationObjectIds.Values)
+                {
+                    var toolImageAnalysisConfiguration = await configurationResourceProvider.GetResourceAsync<ImageAnalysisConfiguration>(
+                        imageAnalysisConfigurationObjectId,
+                        currentUserIdentity);
+
+                    explodedObjects[imageAnalysisConfigurationObjectId] = toolImageAnalysisConfiguration;
+                }
             }
 
             explodedObjects[CompletionRequestObjectsKeys.ToolNames] = toolNames;
