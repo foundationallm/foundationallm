@@ -10545,6 +10545,16 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "media/management-portal-deployment-information.png",
+      "output": {
+        "resource": {
+          "relative_path": "media/management-portal-deployment-information.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "media/monitoring-traces.png",
       "output": {
         "resource": {
@@ -10719,6 +10729,16 @@
       "output": {
         ".html": {
           "relative_path": "release-notes/breaking-changes.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "role-based-access-control/agent-role-assignments.md",
+      "output": {
+        ".html": {
+          "relative_path": "role-based-access-control/agent-role-assignments.html"
         }
       },
       "version": ""
