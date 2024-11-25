@@ -10865,10 +10865,50 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "setup-guides/branding/branding-app-configuration.md",
+      "output": {
+        ".html": {
+          "relative_path": "setup-guides/branding/branding-app-configuration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "setup-guides/branding/branding-management-portal.md",
+      "output": {
+        ".html": {
+          "relative_path": "setup-guides/branding/branding-management-portal.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "setup-guides/branding/index.md",
       "output": {
         ".html": {
           "relative_path": "setup-guides/branding/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/branding/media/Contrast-AA-AAA.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/branding/media/Contrast-AA-AAA.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/branding/media/Contrast_info.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/branding/media/Contrast_info.png"
         }
       },
       "version": ""
@@ -10919,6 +10959,26 @@
       "output": {
         "resource": {
           "relative_path": "setup-guides/branding/media/branding-5.jpg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/branding/media/branding_management_portal.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/branding/media/branding_management_portal.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "setup-guides/branding/media/save_reset_default.png",
+      "output": {
+        "resource": {
+          "relative_path": "setup-guides/branding/media/save_reset_default.png"
         }
       },
       "version": ""

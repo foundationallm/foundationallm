@@ -75,20 +75,16 @@
 
 <p>FoundationaLLM uses the <a href="https://learn.microsoft.com/entra/fundamentals/whatis">Microsoft Entra ID</a> service to authenticate users and applications. Check back for additional authentication providers in the future.</p>
 <h2 id="microsoft-entra-id">Microsoft Entra ID</h2>
-<p>Starting <code>release 0.8.0</code> there are 2 options of completing the app registrations for the 5 apps required for FoundationaLLM. Option #1 is to run a script that will register all 5 applications for you. Option #2 is to manually register the 5 applications. The steps for both options are below.</p>
-<h2 id="option-1---run-the-script-to-register-all-5-applications">Option #1 - Run the script to register all 5 applications</h2>
-<p>The script is available in the <code>\deploy\common\scripts\</code> folder. The script is called <code>Create-FllmEntraIdApps.ps1</code>. The script will register the 5 required applications in the Entra ID tenant that you are logged into.</p>
+<p>Starting <code>release 0.8.0</code> there are 2 options of completing the app registrations for the 6 apps required for FoundationaLLM. Option #1 is to run a script that will register all 6 applications for you. Option #2 is to manually register the 6 applications. The steps for both options are below.</p>
+<h2 id="option-1---run-the-script-to-register-all-6-applications">Option #1 - Run the script to register all 6 applications</h2>
+<p>The script is available in the <code>\deploy\common\scripts\</code> folder. The script is called <code>Create-FllmEntraIdApps.ps1</code>. The script will register the 6 required applications in the Entra ID tenant that you are logged into.</p>
 <p><img src="../media/EntraIDAppsCreation.png" alt="Entra ID app registration script"></p>
-<p>After the completion of the script execution, you will see the 5 applications registered in the Entra ID tenant under <code>App registrations</code></p>
+<p>After the completion of the script execution, you will see the 6 applications registered in the Entra ID tenant under <code>App registrations</code></p>
 <p><img src="../media/EntraIDRegisteredAppsPortal.png" alt="Entra ID registered apps in Portal"></p>
+<h2 id="option-2---manually-registering-the-6-applications">Option 2 - Manually registering the 6 applications</h2>
 <div class="IMPORTANT">
 <h5>Important</h5>
-<p>Make sure to copy and save the Application (Client) ID of all 5 applications in a text editor as you will need them in the next steps.</p>
-</div>
-<h2 id="option-2---manually-registering-the-5-applications">Option 2 - Manually registering the 5 applications</h2>
-<div class="IMPORTANT">
-<h5>Important</h5>
-<p>The following steps are to set up authentication and authorization for the solution. You will need to create app registrations in the Entra ID tenant in the Azure portal manually if you choose not to run the automatic script for any reason.  There are currently <strong>five</strong> app registrations required for the solution as listed below.  After you complete the 5 app registrations, you will need to finish the deployment process of the solution and revisit these app registrations to fill in some missing values that are generated during the deployment itself.</p>
+<p>The following steps are to set up authentication and authorization for the solution. You will need to create app registrations in the Entra ID tenant in the Azure portal manually if you choose not to run the automatic script for any reason.  There are currently <strong>five</strong> app registrations required for the solution as listed below.  After you complete the 6 app registrations, you will need to finish the deployment process of the solution and revisit these app registrations to fill in some missing values that are generated during the deployment itself.</p>
 </div>
 <h3 id="steps-to-perform-before-the-deployment">Steps to perform before the deployment</h3>
 <ul>

@@ -123,17 +123,19 @@ If you are upgrading from a previous version, like <code>0.5.0</code>, please re
 <li><p>From a PowerShell prompt, execute the following to clone the repository:</p>
 <pre><code class="lang-cmd">git clone https://github.com/solliancenet/foundationallm.git
 cd foundationallm/deploy/quick-start
-git checkout release/0.8.0
+git checkout release/0.8.3
 </code></pre>
 </li>
-<li><p><strong>For release 0.7.0+:</strong> Run the following script to install the deployment utilities, including <code>AzCopy</code>, locally.</p>
-<pre><code class="lang-cmd">./scripts/bootstrap.ps1
+<li><p>Run the following script to install the deployment utilities, including <code>AzCopy</code>, locally.</p>
+<pre><code class="lang-cmd">cd .\deploy\common\scripts
+.\Get-AzCopy.ps1
 </code></pre>
 </li>
-<li><p>Run the following commands to log into Azure CLI, Azure Developer CLI and AzCopy:</p>
-<pre><code class="lang-azurecli">az login            # Log into Azure CLI
-azd auth login      # Log into Azure Developer CLI
-azcopy login        # Log into AzCopy
+<li><p>Run the following commands to log into Azure CLI, Azure Developer CLI and AzCopy (the instance you just installed above):</p>
+<pre><code class="lang-azurecli">cd .\deploy\quick-start
+az login                            # Log into Azure CLI
+azd auth login                      # Log into AZD
+..\common\tools\azcopy\azcopy login # Log into AzCopy
 </code></pre>
 </li>
 <li><p>Set up an <code>azd</code> environment targeting your Azure subscription and desired deployment region:</p>
@@ -142,61 +144,23 @@ azd env new --location &lt;Supported Azure Region&gt; --subscription &lt;Azure S
 </code></pre>
 </li>
 <li><p>Run the following commands to set the appropriate application registration settings for OIDC authentication.</p>
-<pre><code class="lang-text">azd env set ENTRA_AUTH_API_INSTANCE &lt;Auth API Instance&gt;
-azd env set ENTRA_AUTH_API_CLIENT_ID &lt;Auth API Client Id&gt;
-azd env set ENTRA_AUTH_API_SCOPES &lt;Auth API Scope&gt;
-azd env set ENTRA_AUTH_API_TENANT_ID &lt;Auth API Tenant ID&gt;
-
-azd env set ADMIN_GROUP_OBJECT_ID &lt;Admin Group Object Id&gt;
-
-azd env set ENTRA_CHAT_UI_CLIENT_ID &lt;Chat UI Client Id&gt;
-azd env set ENTRA_CHAT_UI_SCOPES &lt;Chat UI Scope&gt;
-azd env set ENTRA_CHAT_UI_TENANT_ID &lt;Chat UI Tenant ID&gt;
-
-azd env set ENTRA_CORE_API_CLIENT_ID &lt;Core API Client Id&gt;
-azd env set ENTRA_CORE_API_SCOPES &lt;Core API Scope&gt;
-azd env set ENTRA_CORE_API_TENANT_ID &lt;Core API Tenant ID&gt;
-
-azd env set ENTRA_MANAGEMENT_API_CLIENT_ID &lt;Management API Client Id&gt;
-azd env set ENTRA_MANAGEMENT_API_SCOPES &lt;Management API Scope&gt;
-azd env set ENTRA_MANAGEMENT_API_TENANT_ID &lt;Management API Tenant ID&gt;
-
-azd env set ENTRA_MANAGEMENT_UI_CLIENT_ID &lt;Management UI Client Id&gt;
-azd env set ENTRA_MANAGEMENT_UI_SCOPES &lt;Management UI Scope&gt;
-azd env set ENTRA_MANAGEMENT_UI_TENANT_ID &lt;Management UI Tenant ID&gt;
-
-azd env set FOUNDATIONALLM_INSTANCE_ID &lt;guid&gt;
+<pre><code class="lang-cmd">cd .\deploy\quick-start
+..\common\scripts\Set-AzdEnvEntra.ps1
 </code></pre>
 </li>
 </ol>
-<div class="NOTE">
-<h5>Note</h5>
-<p>You need to manually generate a GUID for <code>FOUNDATIONALLM_INSTANCE_ID</code>.</p>
-</div>
-<h3 id="in-bash">In Bash:</h3>
-<pre><code class="lang-bash">  uuidgen
+<h2 id="optional-bring-your-own-azure-openai-instance">Optional: Bring Your Own Azure OpenAI Instance</h2>
+<pre><code>If you have an existing Azure OpenAI instance, you can use it by setting the following environment variables:
 </code></pre>
-<h3 id="in-powershell">In PowerShell:</h3>
-<pre><code class="lang-powershell">  [guid]::NewGuid().ToString()
+<pre><code class="lang-azurecli">    azd env set OPENAI_NAME &lt;OpenAI Name&gt;
+    azd env set OPENAI_RESOURCE_GROUP &lt;OpenAI Resource Group&gt;
+    azd env set OPENAI_SUBSCRIPTION_ID &lt;OpenAI Subscription ID&gt;
 </code></pre>
-<div class="IMPORTANT">
-<h5>Important</h5>
-<p>The ADMIN_GROUP_OBJECT_ID in the Entra ID Groups has to be of type <code>security</code> NOT <code>Microsoft 365</code> and you need to at least add yourself to the group and other members that need to be admins.</p>
-</div>
-<ol>
-<li><p><strong>Optional</strong>: Bring Your Own Azure OpenAI Instance</p>
-<p>If you have an existing Azure OpenAI instance, you can use it by setting the following environment variables:</p>
-<pre><code class="lang-text">azd env set OPENAI_NAME &lt;OpenAI Name&gt;
-azd env set OPENAI_RESOURCE_GROUP &lt;OpenAI Resource Group&gt;
-azd env set OPENAI_SUBSCRIPTION_ID &lt;OpenAI Subscription ID&gt;
-</code></pre>
-</li>
-</ol>
 <div class="IMPORTANT">
 <h5>Important</h5>
 <p>Deploying with <code>Bring Your Own Azure OpenAI</code>, customers need to make sure that the relevant Managed Identities (LangChain API, Semantic Kernel API, and Gateway API) are assigned the <code>Open AI reader role</code> on the Azure OpenAI account object.</p>
 </div>
-<ol start="2">
+<ol start="7">
 <li><p>Deploy the solution</p>
 <p>After setting the OIDC-specific settings in the AZD environment above, run <code>azd up</code> in the same folder location to provision the infrastructure, update the App Configuration entries, deploy the API and web app services, and import files into the storage account.</p>
 <pre><code class="lang-pwsh">azd up
@@ -204,25 +168,19 @@ azd env set OPENAI_SUBSCRIPTION_ID &lt;OpenAI Subscription ID&gt;
 </li>
 </ol>
 <h3 id="running-script-to-allow-ms-graph-access-through-role-permissions">Running script to allow MS Graph access through Role Permissions</h3>
-<p>After the deployment is complete, you will need to run the following script to allow MS Graph access through Role Permissions. <a href="https://github.com/solliancenet/foundationallm/blob/main/deploy/common/scripts/Assign-MSGraph-Roles.ps1">Role Permissions Script</a>
-This script will need to be executed twice for the principal IDs of the following:</p>
-<ul>
-<li>Core API Managed Identity</li>
-<li>Management API Managed Identity</li>
-</ul>
-<p>These can be found in the Azure portal in the main resource group for the deployment.</p>
+<p>After the deployment is complete, you will need to run the following script to allow MS Graph access through Role Permissions. (See below)</p>
 <div class="IMPORTANT">
 <h5>Important</h5>
 <p>The user running the script will need to have the appropriate permissions to assign roles to the managed identities. The user will need to be a <code>Global Administrator</code> or have the <code>Privileged Role Administrator</code> role in the Entra ID tenant.</p>
 </div>
-<p>The syntax for running the script from the <code>deploy\common\scripts</code> folder is:</p>
-<pre><code class="lang-pwsh">.\Assign-MSGraph-Roles.ps1 -principalId &lt;GUID of the Core API Managed Identity Principal ID&gt;
-.\Assign-MSGraph-Roles.ps1 -principalId &lt;GUID of the Management API Managed Identity Principal ID&gt;
+<p>The syntax for running the script from the <code>deploy\quick-start\common\scripts</code> folder is:</p>
+<pre><code class="lang-pwsh">    cd .\deploy\quick-start
+    ..\common\scripts\Set-FllmGraphRoles.ps1 -resourceGroupName rg-&lt;azd env name&gt;
 </code></pre>
-<div class="IMPORTANT">
-<h5>Important</h5>
-<p>For this release, you will need to restart the <code>CORE API</code> container and the <code>MANAGEMENT API</code> container in the resource group to allow the changes to take effect.</p>
-</div>
+<p>Finally, you will need to update the Authorization Callbacks in the App Registrations created in the Entra ID tenant by running the following script:</p>
+<pre><code class="lang-pwsh">    cd .\deploy\quick-start
+    ..\common\scripts\Update-OAuthCallbackUris.ps1
+</code></pre>
 <h1 id="teardown">Teardown</h1>
 <p>To tear down the environment, execute <code>azd down</code> in the same folder location.</p>
 <pre><code class="lang-pwsh">azd down --purge
