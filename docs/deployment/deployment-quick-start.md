@@ -51,21 +51,23 @@ If you are upgrading from a previous version, like `0.5.0`, please refer to the 
     ```cmd
     git clone https://github.com/solliancenet/foundationallm.git
     cd foundationallm/deploy/quick-start
-    git checkout release/0.8.0
+    git checkout release/0.8.3
     ```
 
-3. **For release 0.7.0+:** Run the following script to install the deployment utilities, including `AzCopy`, locally.
+3. Run the following script to install the deployment utilities, including `AzCopy`, locally.
 
     ```cmd
-    ./scripts/bootstrap.ps1
+    cd .\deploy\common\scripts
+    .\Get-AzCopy.ps1
     ```
 
-4. Run the following commands to log into Azure CLI, Azure Developer CLI and AzCopy:
+4. Run the following commands to log into Azure CLI, Azure Developer CLI and AzCopy (the instance you just installed above):
 
     ```azurecli
-    az login            # Log into Azure CLI
-    azd auth login      # Log into Azure Developer CLI
-    azcopy login        # Log into AzCopy
+    cd .\deploy\quick-start
+    az login                            # Log into Azure CLI
+    azd auth login                      # Log into AZD
+    ..\common\tools\azcopy\azcopy login # Log into AzCopy
     ```
 
 5. Set up an `azd` environment targeting your Azure subscription and desired deployment region:
@@ -77,61 +79,24 @@ If you are upgrading from a previous version, like `0.5.0`, please refer to the 
 
 6. Run the following commands to set the appropriate application registration settings for OIDC authentication.
 
-    ```text
-    azd env set ENTRA_AUTH_API_INSTANCE <Auth API Instance>
-    azd env set ENTRA_AUTH_API_CLIENT_ID <Auth API Client Id>
-    azd env set ENTRA_AUTH_API_SCOPES <Auth API Scope>
-    azd env set ENTRA_AUTH_API_TENANT_ID <Auth API Tenant ID>
-
-    azd env set ADMIN_GROUP_OBJECT_ID <Admin Group Object Id>
-
-    azd env set ENTRA_CHAT_UI_CLIENT_ID <Chat UI Client Id>
-    azd env set ENTRA_CHAT_UI_SCOPES <Chat UI Scope>
-    azd env set ENTRA_CHAT_UI_TENANT_ID <Chat UI Tenant ID>
-
-    azd env set ENTRA_CORE_API_CLIENT_ID <Core API Client Id>
-    azd env set ENTRA_CORE_API_SCOPES <Core API Scope>
-    azd env set ENTRA_CORE_API_TENANT_ID <Core API Tenant ID>
-
-    azd env set ENTRA_MANAGEMENT_API_CLIENT_ID <Management API Client Id>
-    azd env set ENTRA_MANAGEMENT_API_SCOPES <Management API Scope>
-    azd env set ENTRA_MANAGEMENT_API_TENANT_ID <Management API Tenant ID>
-
-    azd env set ENTRA_MANAGEMENT_UI_CLIENT_ID <Management UI Client Id>
-    azd env set ENTRA_MANAGEMENT_UI_SCOPES <Management UI Scope>
-    azd env set ENTRA_MANAGEMENT_UI_TENANT_ID <Management UI Tenant ID>
-
-    azd env set FOUNDATIONALLM_INSTANCE_ID <guid>
+    ```cmd
+    cd .\deploy\quick-start
+    ..\common\scripts\Set-AzdEnvEntra.ps1
     ```
-> [!NOTE]
-> You need to manually generate a GUID for `FOUNDATIONALLM_INSTANCE_ID`.
-### In Bash:
-```bash
-  uuidgen
-```
 
-### In PowerShell:
-
-```powershell
-  [guid]::NewGuid().ToString()
-```
-
-> [!IMPORTANT]
-> The ADMIN_GROUP_OBJECT_ID in the Entra ID Groups has to be of type `security` NOT `Microsoft 365` and you need to at least add yourself to the group and other members that need to be admins.
-
-1. **Optional**: Bring Your Own Azure OpenAI Instance
+## Optional: Bring Your Own Azure OpenAI Instance
 
     If you have an existing Azure OpenAI instance, you can use it by setting the following environment variables:
 
-    ```text
+```azurecli
     azd env set OPENAI_NAME <OpenAI Name>
     azd env set OPENAI_RESOURCE_GROUP <OpenAI Resource Group>
     azd env set OPENAI_SUBSCRIPTION_ID <OpenAI Subscription ID>
-    ```
+```
 > [!IMPORTANT]
 > Deploying with `Bring Your Own Azure OpenAI`, customers need to make sure that the relevant Managed Identities (LangChain API, Semantic Kernel API, and Gateway API) are assigned the `Open AI reader role` on the Azure OpenAI account object.
 
-2. Deploy the solution
+7. Deploy the solution
 
     After setting the OIDC-specific settings in the AZD environment above, run `azd up` in the same folder location to provision the infrastructure, update the App Configuration entries, deploy the API and web app services, and import files into the storage account.
 
@@ -141,25 +106,23 @@ If you are upgrading from a previous version, like `0.5.0`, please refer to the 
 
 ### Running script to allow MS Graph access through Role Permissions
 
-After the deployment is complete, you will need to run the following script to allow MS Graph access through Role Permissions. [Role Permissions Script](https://github.com/solliancenet/foundationallm/blob/main/deploy/common/scripts/Assign-MSGraph-Roles.ps1)
-This script will need to be executed twice for the principal IDs of the following:
-- Core API Managed Identity
-- Management API Managed Identity
-
-These can be found in the Azure portal in the main resource group for the deployment.
+After the deployment is complete, you will need to run the following script to allow MS Graph access through Role Permissions. (See below)
 
 > [!IMPORTANT]
 > The user running the script will need to have the appropriate permissions to assign roles to the managed identities. The user will need to be a `Global Administrator` or have the `Privileged Role Administrator` role in the Entra ID tenant.
 
-The syntax for running the script from the `deploy\common\scripts` folder is:
+The syntax for running the script from the `deploy\quick-start\common\scripts` folder is:
 
 ```pwsh
-.\Assign-MSGraph-Roles.ps1 -principalId <GUID of the Core API Managed Identity Principal ID>
-.\Assign-MSGraph-Roles.ps1 -principalId <GUID of the Management API Managed Identity Principal ID>
+    cd .\deploy\quick-start
+    ..\common\scripts\Set-FllmGraphRoles.ps1 -resourceGroupName rg-<azd env name>
 ```
+Finally, you will need to update the Authorization Callbacks in the App Registrations created in the Entra ID tenant by running the following script:
 
-> [!IMPORTANT]
-> For this release, you will need to restart the `CORE API` container and the `MANAGEMENT API` container in the resource group to allow the changes to take effect.
+```pwsh
+    cd .\deploy\quick-start
+    ..\common\scripts\Update-OAuthCallbackUris.ps1
+```
 
 # Teardown
 
