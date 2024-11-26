@@ -1,30 +1,30 @@
-﻿using FoundationaLLM.Authorization.Models.Configuration;
-using FoundationaLLM.Common.Authentication;
+﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
+using FoundationaLLM.Common.Models.Configuration.Authorization;
+using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 
-namespace FoundationaLLM.Authorization.Services
+namespace FoundationaLLM.Common.Clients
 {
     /// <summary>
     /// Provides methods for interacting with the Authorization API.
     /// </summary>
-    public class AuthorizationService : IAuthorizationService
+    public class AuthorizationServiceClient : IAuthorizationServiceClient
     {
-        private readonly AuthorizationServiceSettings _settings;
+        private readonly AuthorizationServiceClientSettings _settings;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ILogger<AuthorizationService> _logger;
+        private readonly ILogger<AuthorizationServiceClient> _logger;
 
-        public AuthorizationService(
+        public AuthorizationServiceClient(
             IHttpClientFactory httpClientFactory,
-            IOptions<AuthorizationServiceSettings> options,
-            ILogger<AuthorizationService> logger)
+            IOptions<AuthorizationServiceClientSettings> options,
+            ILogger<AuthorizationServiceClient> logger)
         {
             _settings = options.Value;
             _httpClientFactory = httpClientFactory;

@@ -1,7 +1,7 @@
-﻿using FoundationaLLM.Common.Models;
-using FoundationaLLM.Common.Models.Authorization;
+﻿using FoundationaLLM.Common.Models.Authorization;
+using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
 
-namespace FoundationaLLM.Authorization.Interfaces
+namespace FoundationaLLM.AuthorizationEngine.Interfaces
 {
     /// <summary>
     /// Defines the methods for authorization core.

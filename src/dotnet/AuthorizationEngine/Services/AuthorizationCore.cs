@@ -1,12 +1,13 @@
 ﻿using FluentValidation;
-using FoundationaLLM.Authorization.Interfaces;
-using FoundationaLLM.Authorization.Models;
-using FoundationaLLM.Authorization.Models.Configuration;
+using FoundationaLLM.AuthorizationEngine.Interfaces;
+using FoundationaLLM.AuthorizationEngine.Models;
+using FoundationaLLM.AuthorizationEngine.Models.Configuration;
 using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
 using FoundationaLLM.Common.Utils;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -14,7 +15,7 @@ using System.Collections.Concurrent;
 using System.Text;
 using System.Text.Json;
 
-namespace FoundationaLLM.Authorization.Services
+namespace FoundationaLLM.AuthorizationEngine.Services
 {
     /// <summary>
     /// Implements the core authorization engine.
@@ -35,7 +36,7 @@ namespace FoundationaLLM.Authorization.Services
         private const string POLICY_ASSIGNMENTS_CONTAINER_NAME = "policy-assignments";
 
         private bool _initialized = false;
-        private readonly SemaphoreSlim _syncRoot = new SemaphoreSlim(1, 1);
+        private readonly SemaphoreSlim _syncRoot = new(1, 1);
 
         /// <summary>
         /// Creates a new instance of the <see cref="AuthorizationCore"/> class.

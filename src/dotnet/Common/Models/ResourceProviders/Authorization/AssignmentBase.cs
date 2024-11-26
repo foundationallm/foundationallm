@@ -1,7 +1,7 @@
-﻿using FoundationaLLM.Common.Models.ResourceProviders;
+﻿using FoundationaLLM.Common.Models.Authorization;
 using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Common.Models.Authorization
+namespace FoundationaLLM.Common.Models.ResourceProviders.Authorization
 {
     /// <summary>
     /// Represents an authorization assignment.

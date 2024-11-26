@@ -1,7 +1,7 @@
-﻿using FoundationaLLM.Authorization.Models;
-using FoundationaLLM.Common.Models.Authorization;
+﻿using FoundationaLLM.AuthorizationEngine.Models;
+using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
 
-namespace FoundationaLLM.Authorization.Services
+namespace FoundationaLLM.AuthorizationEngine.Services
 {
     /// <summary>
     /// In-memory cache for role assignments.

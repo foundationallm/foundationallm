@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-using FoundationaLLM.Authorization.Interfaces;
-using FoundationaLLM.Authorization.Models.Configuration;
-using FoundationaLLM.Authorization.Services;
-using FoundationaLLM.Authorization.Validation;
+using FoundationaLLM.AuthorizationEngine.Interfaces;
+using FoundationaLLM.AuthorizationEngine.Models.Configuration;
+using FoundationaLLM.AuthorizationEngine.Services;
+using FoundationaLLM.AuthorizationEngine.Validation;
 using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
@@ -15,7 +15,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
+#pragma warning disable IDE0130 // Use of namespace is intentional to support multiple partial classes for dependency injection extension methods.
 namespace FoundationaLLM
+#pragma warning restore IDE0130 // Use of namespace is intentional to support multiple partial classes for dependency injection extension methods.
 {
     /// <summary>
     /// Provides extension methods used to configure dependency injection.
@@ -56,29 +58,6 @@ namespace FoundationaLLM
                     sp.GetRequiredService<ILogger<AuthorizationCore>>()));
 
             builder.Services.ActivateSingleton<IAuthorizationCore>();
-        }
-
-        /// <summary>
-        /// Adds the authorization service to the dependency injection container (used by all resource providers).
-        /// </summary>
-        /// <param name="builder"></param>
-        public static void AddAuthorizationService(this IHostApplicationBuilder builder)
-        {
-            builder.Services.AddOptions<AuthorizationServiceSettings>()
-                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials));
-            builder.Services.AddSingleton<IAuthorizationService, AuthorizationService>();
-        }
-
-        /// <summary>
-        /// Adds the authorization service to the dependency injection container (used by all resource providers).
-        /// </summary>
-        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
-        /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>
-        public static void AddAuthorizationService(this IServiceCollection services, IConfigurationManager configuration)
-        {
-            services.AddOptions<AuthorizationServiceSettings>()
-                .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials));
-            services.AddSingleton<IAuthorizationService, AuthorizationService>();
         }
     }
 }

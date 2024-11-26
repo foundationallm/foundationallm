@@ -1,7 +1,8 @@
-﻿using FoundationaLLM.Common.Utils;
+﻿using FoundationaLLM.Common.Models.Authorization;
+using FoundationaLLM.Common.Utils;
 using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Common.Models.Authorization
+namespace FoundationaLLM.Common.Models.ResourceProviders.Authorization
 {
     /// <summary>
     /// Represents an RBAC role assignment.

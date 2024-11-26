@@ -1,13 +1,13 @@
-﻿using FoundationaLLM.Common.Models;
-using FoundationaLLM.Common.Models.Authentication;
+﻿using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
+using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
 
 namespace FoundationaLLM.Common.Interfaces
 {
     /// <summary>
     /// Defines methods exposed by the Authorization service.
     /// </summary>
-    public interface IAuthorizationService
+    public interface IAuthorizationServiceClient
     {
         /// <summary>
         /// Processes an action authorization request.

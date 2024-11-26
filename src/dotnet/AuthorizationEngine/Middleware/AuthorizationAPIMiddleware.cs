@@ -1,9 +1,9 @@
-﻿using FoundationaLLM.Authorization.Interfaces;
+﻿using FoundationaLLM.AuthorizationEngine.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Identity.Web;
 using System.Security.Claims;
 
-namespace FoundationaLLM.Authorization.Middleware
+namespace FoundationaLLM.AuthorizationEngine.Middleware
 {
     /// <summary>
     /// Middleware that retrieves context information for the current HTTP request.

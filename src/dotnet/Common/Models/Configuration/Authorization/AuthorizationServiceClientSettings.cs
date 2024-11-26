@@ -1,6 +1,6 @@
-﻿namespace FoundationaLLM.Authorization.Models.Configuration
+﻿namespace FoundationaLLM.Common.Models.Configuration.Authorization
 {
-    public record AuthorizationServiceSettings
+    public record AuthorizationServiceClientSettings
     {
         public required string APIUrl { get; set; }
 

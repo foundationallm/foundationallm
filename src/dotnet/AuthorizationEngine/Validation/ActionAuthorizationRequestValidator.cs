@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using FoundationaLLM.Common.Models.Authorization;
 
-namespace FoundationaLLM.Authorization.Validation
+namespace FoundationaLLM.AuthorizationEngine.Validation
 {
     /// <summary>
     /// Validator for the <see cref="ActionAuthorizationRequest"/> model.

@@ -1,14 +1,14 @@
 ﻿using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
+using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
 
-namespace FoundationaLLM.Authorization.Services
+namespace FoundationaLLM.Common.Clients
 {
     /// <summary>
     /// Implements an authorization service that bypasses the Authorization API and allows all access by default.
     /// </summary>
-    public class NullAuthorizationService : IAuthorizationService
+    public class NullAuthorizationServiceClient : IAuthorizationServiceClient
     {
         /// <inheritdoc/>
         public async Task<ActionAuthorizationResult> ProcessAuthorizationRequest(

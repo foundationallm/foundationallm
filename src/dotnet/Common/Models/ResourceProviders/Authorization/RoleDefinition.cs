@@ -1,7 +1,7 @@
 ﻿using FoundationaLLM.Common.Models.ResourceProviders;
 using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Common.Models.Authorization
+namespace FoundationaLLM.Common.Models.ResourceProviders.Authorization
 {
     /// <summary>
     /// Defines a security role used in FoundationaLLM RBAC

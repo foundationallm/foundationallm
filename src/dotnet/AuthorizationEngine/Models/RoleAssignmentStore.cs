@@ -1,7 +1,7 @@
-﻿using FoundationaLLM.Common.Models.Authorization;
+﻿using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
 using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Authorization.Models
+namespace FoundationaLLM.AuthorizationEngine.Models
 {
     /// <summary>
     /// Models the content of the role assignments store managed by the FoundationaLLM.Authorization resource provider.

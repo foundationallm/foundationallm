@@ -1,4 +1,4 @@
-﻿namespace FoundationaLLM.Authorization.Models.Configuration
+﻿namespace FoundationaLLM.AuthorizationEngine.Models.Configuration
 {
     /// <summary>
     /// Configuration settings for the authorization core.

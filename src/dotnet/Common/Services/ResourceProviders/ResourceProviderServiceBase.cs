@@ -48,9 +48,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         protected readonly IServiceProvider _serviceProvider;
 
         /// <summary>
-        /// The <see cref="IAuthorizationService"/> providing authorization services to the resource provider.
+        /// The <see cref="IAuthorizationServiceClient"/> providing authorization services to the resource provider.
         /// </summary>
-        protected readonly IAuthorizationService _authorizationService;
+        protected readonly IAuthorizationServiceClient _authorizationService;
 
         /// <summary>
         /// The <see cref="IStorageService"/> providing storage services to the resource provider.
@@ -114,7 +114,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// Creates a new instance of the resource provider.
         /// </summary>
         /// <param name="instanceSettings">The <see cref="InstanceSettings"/> that provides instance-wide settings.</param>
-        /// <param name="authorizationService">The <see cref="IAuthorizationService"/> providing authorization services to the resource provider.</param>
+        /// <param name="authorizationService">The <see cref="IAuthorizationServiceClient"/> providing authorization services to the resource provider.</param>
         /// <param name="storageService">The <see cref="IStorageService"/> providing storage services to the resource provider.</param>
         /// <param name="eventService">The <see cref="IEventService"/> providing event services to the resource provider.</param>
         /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing services to instantiate resource validators.</param>
@@ -124,7 +124,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="useInternalReferencesStore">Indicates whether the resource provider should use the internal resource references store or provide one of its own.</param>
         public ResourceProviderServiceBase(
             InstanceSettings instanceSettings,
-            IAuthorizationService authorizationService,
+            IAuthorizationServiceClient authorizationService,
             IStorageService storageService,
             IEventService eventService,
             IResourceValidatorFactory resourceValidatorFactory,
