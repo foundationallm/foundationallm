@@ -5387,6 +5387,12 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.Configuration.APIEndpointProviders.All
   fullName: FoundationaLLM.Common.Constants.Configuration.APIEndpointProviders.All
   nameWithType: APIEndpointProviders.All
+- uid: FoundationaLLM.Common.Constants.Configuration.APIEndpointProviders.BEDROCK
+  name: BEDROCK
+  href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.APIEndpointProviders.html#FoundationaLLM_Common_Constants_Configuration_APIEndpointProviders_BEDROCK
+  commentId: F:FoundationaLLM.Common.Constants.Configuration.APIEndpointProviders.BEDROCK
+  fullName: FoundationaLLM.Common.Constants.Configuration.APIEndpointProviders.BEDROCK
+  nameWithType: APIEndpointProviders.BEDROCK
 - uid: FoundationaLLM.Common.Constants.Configuration.APIEndpointProviders.MICROSOFT
   name: MICROSOFT
   href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.APIEndpointProviders.html#FoundationaLLM_Common_Constants_Configuration_APIEndpointProviders_MICROSOFT
