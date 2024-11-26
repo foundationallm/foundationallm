@@ -12,16 +12,19 @@ public record Message
     /// <summary>
     /// The unique identifier.
     /// </summary>
+    [JsonPropertyName("id")]
     public string Id { get; set; }
 
     /// <summary>
     /// The type of the message.
     /// </summary>
+    [JsonPropertyName("type")]
     public string Type { get; set; } = nameof(Message);
 
     /// <summary>
     /// The Partition key.
     /// </summary>
+    [JsonPropertyName("session_id")]
     public string SessionId { get; set; }
 
     /// <summary>
@@ -56,22 +59,32 @@ public record Message
     /// <summary>
     /// The text content of the message.
     /// </summary>
+    [JsonPropertyName("text")]
     public string Text { get; set; }
 
     /// <summary>
     /// The rating associated with the message, if any.
     /// </summary>
+    [JsonPropertyName("rating")]
     public bool? Rating { get; set; }
 
     /// <summary>
     /// The UPN of the user who created the chat session.
     /// </summary>
+    [JsonPropertyName("upn")]
     public string UPN { get; set; }
 
     /// <summary>
     /// Deleted flag used for soft delete.
     /// </summary>
+    [JsonPropertyName("deleted")]
     public bool Deleted { get; set; }
+
+    /// <summary>
+    /// Error flag.
+    /// </summary>
+    [JsonPropertyName("is_error")]
+    public bool IsError { get; set; }
 
     /// <summary>
     /// The vector associated with the message.
@@ -92,6 +105,7 @@ public record Message
     /// <summary>
     /// The sources associated with the completion prompt.
     /// </summary>
+    [JsonPropertyName("citations")]
     public Citation[]? Citations { get; set; }
 
     /// <summary>
