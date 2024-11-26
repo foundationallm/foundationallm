@@ -14,5 +14,10 @@
         /// The LangChain Expression Language agent workflow.
         /// </summary>
         public const string LangChainExpressionLanguage = "langchain-expression-language-workflow";
+
+        /// <summary>
+        /// The LangGraph React Agent agent workflow.
+        /// </summary>
+        public const string LangGraphReactAgent = "langgraph-react-agent-workflow";
     }
 }
