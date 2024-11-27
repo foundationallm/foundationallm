@@ -124,13 +124,34 @@ namespace FoundationaLLM.Core.API
             // Add authentication configuration.
             var e2ETestEnvironmentValue = Environment.GetEnvironmentVariable(EnvironmentVariables.FoundationaLLM_Environment) ?? string.Empty;
             var isE2ETestEnvironment = e2ETestEnvironmentValue.Equals(EnvironmentTypes.E2ETest, StringComparison.CurrentCultureIgnoreCase);
+            var requireScopes = true;
+            var allowACLAuthorization = false;
+            
+            if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(AppConfigurationKeys
+                    .FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_RequireScopes)))
+            {
+                bool.TryParse(Environment.GetEnvironmentVariable(AppConfigurationKeys
+                    .FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_RequireScopes), out requireScopes);
+            }
+            if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(AppConfigurationKeys
+                    .FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_AllowACLAuthorization)))
+            {
+                bool.TryParse(Environment.GetEnvironmentVariable(AppConfigurationKeys
+                    .FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_AllowACLAuthorization), out allowACLAuthorization);
+            }
+            if (isE2ETestEnvironment)
+            {
+                requireScopes = false;
+                allowACLAuthorization = true;
+            }
+
             builder.AddAuthenticationConfiguration(
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_Instance,
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_TenantId,
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_ClientId,
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_Scopes,
-                requireScopes: !isE2ETestEnvironment,
-                allowACLAuthorization: isE2ETestEnvironment
+                requireScopes: requireScopes,
+                allowACLAuthorization: allowACLAuthorization
             );
 
             // Add OpenTelemetry.
