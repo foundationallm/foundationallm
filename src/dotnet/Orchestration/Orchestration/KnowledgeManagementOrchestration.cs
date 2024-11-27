@@ -241,9 +241,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
         private async Task<CompletionResponse> GetCompletionResponse(string operationId, LLMCompletionResponse llmCompletionResponse)
         {
-            if (llmCompletionResponse.Citations != null)
+            if (llmCompletionResponse.ContentArtifacts != null)
             {
-                llmCompletionResponse.Citations = llmCompletionResponse.Citations
+                llmCompletionResponse.ContentArtifacts = llmCompletionResponse.ContentArtifacts
                     .GroupBy(c => c.Filepath)
                     .Select(g => g.First())
                     .ToArray();
@@ -262,7 +262,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 Completion = llmCompletionResponse.Completion,
                 Content = llmCompletionResponse.Content != null ? await TransformContentItems(llmCompletionResponse.Content) : null,
                 UserPrompt = llmCompletionResponse.UserPrompt!,
-                Citations = llmCompletionResponse.Citations,
+                ContentArtifacts = llmCompletionResponse.ContentArtifacts,
                 FullPrompt = llmCompletionResponse.FullPrompt,
                 PromptTemplate = llmCompletionResponse.PromptTemplate,
                 AgentName = llmCompletionResponse.AgentName,

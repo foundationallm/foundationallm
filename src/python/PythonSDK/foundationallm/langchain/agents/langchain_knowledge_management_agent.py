@@ -7,7 +7,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langgraph.prebuilt import create_react_agent
 from foundationallm.langchain.agents import LangChainAgentBase
 from foundationallm.langchain.exceptions import LangChainException
-from foundationallm.langchain.retrievers import RetrieverFactory, CitationRetrievalBase
+from foundationallm.langchain.retrievers import RetrieverFactory, ContentArtifactRetrievalBase
 from foundationallm.models.agents import AzureOpenAIAssistantsAgentWorkflow, LangGraphReactAgentWorkflow
 from foundationallm.models.constants import AgentCapabilityCategories
 from foundationallm.models.operations import OperationTypes
@@ -450,7 +450,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             return CompletionResponse(
                         operation_id = request.operation_id,
                         content = [response_content],
-                        citations = [],
+                        content_artifacts = [],
                         user_prompt = request.user_prompt,
                         full_prompt = self.prompt.prefix,
                         completion_tokens = final_message.usage_metadata["output_tokens"] or 0,
@@ -550,8 +550,8 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 except Exception as e:
                     raise LangChainException(f"An unexpected exception occurred when executing the completion request: {str(e)}", 500)
 
-        if isinstance(retriever, CitationRetrievalBase):
-            retvalue.citations = retriever.get_document_citations() or []
+        if isinstance(retriever, ContentArtifactRetrievalBase):
+            retvalue.content_artifacts = retriever.get_document_content_artifacts() or []
 
         return retvalue
         # End LangChain Expression Language (LCEL) implementation

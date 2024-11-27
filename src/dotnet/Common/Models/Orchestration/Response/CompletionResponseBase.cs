@@ -32,10 +32,10 @@ namespace FoundationaLLM.Common.Models.Orchestration.Response
         public List<AnalysisResult>? AnalysisResults { get; set; }
 
         /// <summary>
-        /// The citations used in building the completion response.
+        /// The sources used in building the completion response.
         /// </summary>
-        [JsonPropertyName("citations")]
-        public Citation[]? Citations { get; set; }
+        [JsonPropertyName("content_artifacts")]
+        public ContentArtifact[]? ContentArtifacts { get; set; }
 
         /// <summary>
         /// The user prompt the language model responded to.

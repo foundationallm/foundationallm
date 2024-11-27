@@ -14,13 +14,13 @@ from langchain_core.retrievers import BaseRetriever
 from azure.search.documents import SearchClient
 from azure.search.documents.models import VectorizedQuery
 from azure.identity import DefaultAzureCredential
-from foundationallm.models.orchestration import Citation
+from foundationallm.models.orchestration import ContentArtifact
 from foundationallm.models.vectors import VectorDocument
 from foundationallm.services.gateway_text_embedding import GatewayTextEmbeddingService
-from .citation_retrieval_base import CitationRetrievalBase
+from .content_artifact_retrieval_base import ContentArtifactRetrievalBase
 from foundationallm.models.agents import KnowledgeManagementIndexConfiguration
 
-class AzureAISearchServiceRetriever(BaseRetriever, CitationRetrievalBase):
+class AzureAISearchServiceRetriever(BaseRetriever, ContentArtifactRetrievalBase):
     """
     LangChain retriever for Azure AI Search.
     Properties:
@@ -127,14 +127,14 @@ class AzureAISearchServiceRetriever(BaseRetriever, CitationRetrievalBase):
         """
         raise Exception(f"Asynchronous search not supported.")
 
-    def get_document_citations(self) -> List[Citation]:
+    def get_document_content_artifacts(self) -> List[ContentArtifact]:
         """
-        Gets sources from the documents retrieved from the retriever.
+        Gets the content artifacts (sources) from the documents retrieved from the retriever.
 
         Returns:
-            List of citations from the retrieved documents.
+            List of content artifacts (sources) from the retrieved documents.
         """
-        citations = []
+        content_artifacts = []
         added_ids = set()  # Avoid duplicates
         
         for result in self.search_results:  # Unpack the tuple
@@ -144,9 +144,9 @@ class AzureAISearchServiceRetriever(BaseRetriever, CitationRetrievalBase):
                 if result_id not in added_ids:
                     title = (metadata['multipart_id'][-1]).split('/')[-1]
                     filepath = '/'.join(metadata['multipart_id'])
-                    citations.append(Citation(id=result_id, title=title, filepath=filepath))
+                    content_artifacts.append(ContentArtifact(id=result_id, title=title, filepath=filepath))
                     added_ids.add(result_id)
-        return citations
+        return content_artifacts
 
     def format_docs(self, docs:List[Document]) -> str:
         """
