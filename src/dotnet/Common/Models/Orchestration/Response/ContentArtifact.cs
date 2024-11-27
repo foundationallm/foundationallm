@@ -24,4 +24,28 @@ public class ContentArtifact
     /// </summary>
     [JsonPropertyName("filepath")]
     public string? Filepath { get; set; }
+
+    /// <summary>
+    /// The source of the content.
+    /// </summary>
+    [JsonPropertyName("source")]
+    public string? Source { get; set; }
+
+    /// <summary>
+    /// Textual content.
+    /// </summary>
+    [JsonPropertyName("content")]
+    public string? Content { get; set; }
+
+    /// <summary>
+    /// The type of the content.
+    /// </summary>
+    [JsonPropertyName("type")]
+    public string? Type { get; set; }
+
+    /// <summary>
+    /// The metadata associated with the content.
+    /// </summary>
+    [JsonPropertyName("metadata")]
+    public Dictionary<string, object>? Metadata { get; set; }
 }
