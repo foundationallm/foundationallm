@@ -3,6 +3,17 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting with 0.8.5
+
+### Configuration changes
+
+The following new App Configuration settings are required:
+
+Name | Default value
+--- | ---
+`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:RequireScopes` | `true`
+`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:AllowACLAuthorization` | `false`
+
 ## Starting with 0.8.4
 
 ### Configuration changes
