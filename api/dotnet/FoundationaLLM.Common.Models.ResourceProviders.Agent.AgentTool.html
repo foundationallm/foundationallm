@@ -164,7 +164,7 @@ Class AgentTool  <a class="header-action link-secondary" title="View source" hre
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_AIModelObjectIds" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.AIModelObjectIds">
   AIModelObjectIds
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L36"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a dictionary of AI model object identifiers.</p>
@@ -200,7 +200,7 @@ public Dictionary&lt;string, string&gt; AIModelObjectIds { get; set; }</code></p
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_APIEndpointConfigurationObjectIds" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.APIEndpointConfigurationObjectIds">
   APIEndpointConfigurationObjectIds
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L45"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets of sets a dictionary of API endpoint configuration object identifiers.</p>
@@ -298,11 +298,46 @@ public required string Name { get; set; }</code></pre>
 
 
 
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_PackageName_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.PackageName*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_PackageName" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.PackageName">
+  PackageName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the package name of the tool.
+For internal tools, this value will be FoundationaLLM
+For external tools, this value will be the name of the package.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;package_name&quot;)]
+public required string PackageName { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_Properties_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Properties*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_Properties" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Properties">
   Properties
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentTool.cs/#L51"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a dictionary of properties that are specific to the tool.</p>

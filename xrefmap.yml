@@ -20218,6 +20218,19 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Name
   nameWithType: AgentTool.Name
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.PackageName
+  name: PackageName
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_PackageName
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.PackageName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.PackageName
+  nameWithType: AgentTool.PackageName
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.PackageName*
+  name: PackageName
+  href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_PackageName_
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.PackageName
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.PackageName
+  nameWithType: AgentTool.PackageName
 - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.Properties
   name: Properties
   href: api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTool_Properties

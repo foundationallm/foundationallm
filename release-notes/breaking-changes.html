@@ -106,6 +106,8 @@
 </tr>
 </tbody>
 </table>
+<h4 id="agent-tool-configuration-changes">Agent Tool configuration changes</h4>
+<p>When defining tools for an agent, each tool now requires a <code>package_name</code> property. This property is used to identify the package that contains the tool's implementation. If the tool is internal, the <code>package_name</code> should be set to <code>FoundationaLLM</code>, if the tool is external, the <code>package_name</code> should be set to the name of the external package.</p>
 <h2 id="starting-with-084">Starting with 0.8.4</h2>
 <h3 id="configuration-changes-1">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
