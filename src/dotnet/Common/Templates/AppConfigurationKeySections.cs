@@ -151,6 +151,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration";
         
         /// <summary>
+        /// Configuration section used to identify the main LangChain API settings for external modules.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_LangChainAPI_Configuration_ExternalModules =
+            "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules";
+        
+        /// <summary>
         /// Configuration section used to identify the essential settings for the Semantic Kernel API.
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_SemanticKernelAPI_Essentials =
