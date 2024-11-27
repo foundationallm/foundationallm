@@ -9,6 +9,7 @@ using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
 using FoundationaLLM.Common.Utils;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Collections.Concurrent;
@@ -23,6 +24,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
     public class AuthorizationCore : IAuthorizationCore
     {
         private readonly IStorageService _storageService;
+        private readonly IConfiguration _configuration;
         private readonly IResourceValidatorFactory _resourceValidatorFactory;
         private readonly ILogger<AuthorizationCore> _logger;
         private readonly AuthorizationCoreSettings _settings;
@@ -34,6 +36,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
 
         private const string ROLE_ASSIGNMENTS_CONTAINER_NAME = "role-assignments";
         private const string POLICY_ASSIGNMENTS_CONTAINER_NAME = "policy-assignments";
+        private const string SECURE_KEYS_CONTAINER_NAME = "secure-keys";
 
         private bool _initialized = false;
         private readonly SemaphoreSlim _syncRoot = new(1, 1);
@@ -41,17 +44,21 @@ namespace FoundationaLLM.AuthorizationEngine.Services
         /// <summary>
         /// Creates a new instance of the <see cref="AuthorizationCore"/> class.
         /// </summary>
+        /// <param name="options">The options used to configure the authorization core.</param>
         /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
+        /// <param name="configuration">The application configuration values.</param>
         /// <param name="resourceValidatorFactory"> The resource validator factory used to create resource validators.</param>
         /// <param name="logger">The logger used for logging.</param>
         public AuthorizationCore(
             IOptions<AuthorizationCoreSettings> options,
             IStorageService storageService,
+            IConfiguration configuration,
             IResourceValidatorFactory resourceValidatorFactory,
             ILogger<AuthorizationCore> logger)
         {
             _settings = options.Value;
             _storageService = storageService;
+            _configuration = configuration;
             _resourceValidatorFactory = resourceValidatorFactory;
             _logger = logger;
 
@@ -70,6 +77,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                 {
                     var roleAssignmentStoreFile = $"/{instanceId.ToLower()}.json";
                     var policyAssignmentStoreFile = $"/{instanceId.ToLower()}-policy.json";
+                    var secureKeysStoreFile = $"/{instanceId.ToLower()}-secure-keys.json";
                     RoleAssignmentStore? roleAssignmentStore;
                     PolicyAssignmentStore? policyAssignmentStore;
 
@@ -149,6 +157,19 @@ namespace FoundationaLLM.AuthorizationEngine.Services
 
                     #endregion
 
+                    #region Load secure keys
+
+                    if (await _storageService.FileExistsAsync(SECURE_KEYS_CONTAINER_NAME, secureKeysStoreFile, default))
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+
+                    #endregion
+
                     if (roleAssignmentStore != null)
                     {
                         roleAssignmentStore.EnrichRoleAssignments();
@@ -169,6 +190,8 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                 _logger.LogError(ex, "The authorization core failed to initialize.");
             }
         }
+
+        #region Process authorization requests
 
         /// <inheritdoc/>
         public bool AllowAuthorizationRequestsProcessing(string instanceId, string securityPrincipalId)
@@ -272,102 +295,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
             };
         }
 
-        /// <inheritdoc/>
-        public async Task<RoleAssignmentOperationResult> CreateRoleAssignment(string instanceId, RoleAssignmentRequest roleAssignmentRequest)
-        {
-            var roleAssignmentStoreFile = $"/{instanceId.ToLower()}.json";
-
-            if (await _storageService.FileExistsAsync(ROLE_ASSIGNMENTS_CONTAINER_NAME, roleAssignmentStoreFile, default))
-            {
-                try
-                {
-                    await _syncRoot.WaitAsync();
-
-                    var fileContent = await _storageService.ReadFileAsync(ROLE_ASSIGNMENTS_CONTAINER_NAME, roleAssignmentStoreFile, default);
-                    var roleAssignmentStore = JsonSerializer.Deserialize<RoleAssignmentStore>(
-                        Encoding.UTF8.GetString(fileContent.ToArray()));
-                    if (roleAssignmentStore != null)
-                    {
-                        var exists = roleAssignmentStore.RoleAssignments.Any(x => x.PrincipalId == roleAssignmentRequest.PrincipalId
-                                                                               && x.Scope == roleAssignmentRequest.Scope
-                                                                               && x.RoleDefinitionId == roleAssignmentRequest.RoleDefinitionId);
-                        if (!exists)
-                        {
-                            var roleAssignment = new RoleAssignment()
-                            {
-                                Type = $"{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleAssignments}",
-                                Name = roleAssignmentRequest.Name,
-                                Description = roleAssignmentRequest.Description,
-                                ObjectId = roleAssignmentRequest.ObjectId,
-                                PrincipalId = roleAssignmentRequest.PrincipalId,
-                                PrincipalType = roleAssignmentRequest.PrincipalType,
-                                RoleDefinitionId = roleAssignmentRequest.RoleDefinitionId,
-                                Scope = roleAssignmentRequest.Scope,
-                                CreatedBy = roleAssignmentRequest.CreatedBy
-                            };
-
-                            roleAssignmentStore.RoleAssignments.Add(roleAssignment);
-                            _roleAssignmentStores.AddOrUpdate(instanceId, roleAssignmentStore, (k, v) => roleAssignmentStore);
-                            roleAssignmentStore.EnrichRoleAssignments();
-                            _roleAssignmentCaches[instanceId].AddOrUpdateRoleAssignment(roleAssignment);
-
-                            await _storageService.WriteFileAsync(
-                                    ROLE_ASSIGNMENTS_CONTAINER_NAME,
-                                    roleAssignmentStoreFile,
-                                    JsonSerializer.Serialize(roleAssignmentStore),
-                                    default,
-                                    default);
-
-                            return new RoleAssignmentOperationResult() { Success = true };
-                        }
-                    }
-                }
-                finally
-                {
-                    _syncRoot.Release();
-                }
-            }
-
-            return new RoleAssignmentOperationResult() { Success = false };
-        }
-
-        /// <inheritdoc/>
-        public async Task<RoleAssignmentOperationResult> DeleteRoleAssignment(string instanceId, string roleAssignment)
-        {
-            var existingRoleAssignment = _roleAssignmentStores[instanceId].RoleAssignments
-                .SingleOrDefault(x => x.Name == roleAssignment);
-            if (existingRoleAssignment != null)
-            {
-                _roleAssignmentCaches[instanceId].RemoveRoleAssignment(roleAssignment);
-                _roleAssignmentStores[instanceId].RoleAssignments.Remove(existingRoleAssignment);
-
-                await _storageService.WriteFileAsync(
-                   ROLE_ASSIGNMENTS_CONTAINER_NAME,
-                   $"/{instanceId.ToLower()}.json",
-                   JsonSerializer.Serialize(_roleAssignmentStores[instanceId]),
-                   default,
-                   default);
-
-                return new RoleAssignmentOperationResult() { Success = true };
-            }
-            
-            return new RoleAssignmentOperationResult() { Success = false };
-        }
-
-        /// <inheritdoc/>
-        public List<RoleAssignment> GetRoleAssignments(string instanceId, RoleAssignmentQueryParameters queryParameters)
-        {
-            if (string.IsNullOrWhiteSpace(queryParameters?.Scope))
-                return [];
-
-            var resourcePath = ResourcePathUtils.ParseForRoleAssignmentScope(
-                queryParameters.Scope,
-                _settings.InstanceIds);
-
-            return _roleAssignmentStores[instanceId].RoleAssignments
-                .Where(ra => resourcePath.IncludesResourcePath(ra.ScopeResourcePath!))
-                .ToList();
-        }
+        #region Helpers for processing authorization requests
 
         private ResourcePathAuthorizationResult ProcessAuthorizationRequestForResourcePath(
             ResourcePath resourcePath,
@@ -522,5 +450,133 @@ namespace FoundationaLLM.AuthorizationEngine.Services
 
             return result;
         }
+
+        #endregion
+
+        #endregion
+
+        #region Role assignments
+
+        /// <inheritdoc/>
+        public async Task<RoleAssignmentOperationResult> CreateRoleAssignment(string instanceId, RoleAssignmentRequest roleAssignmentRequest)
+        {
+            var roleAssignmentStoreFile = $"/{instanceId.ToLower()}.json";
+
+            if (await _storageService.FileExistsAsync(ROLE_ASSIGNMENTS_CONTAINER_NAME, roleAssignmentStoreFile, default))
+            {
+                try
+                {
+                    await _syncRoot.WaitAsync();
+
+                    var fileContent = await _storageService.ReadFileAsync(ROLE_ASSIGNMENTS_CONTAINER_NAME, roleAssignmentStoreFile, default);
+                    var roleAssignmentStore = JsonSerializer.Deserialize<RoleAssignmentStore>(
+                        Encoding.UTF8.GetString(fileContent.ToArray()));
+                    if (roleAssignmentStore != null)
+                    {
+                        var exists = roleAssignmentStore.RoleAssignments.Any(x => x.PrincipalId == roleAssignmentRequest.PrincipalId
+                                                                               && x.Scope == roleAssignmentRequest.Scope
+                                                                               && x.RoleDefinitionId == roleAssignmentRequest.RoleDefinitionId);
+                        if (!exists)
+                        {
+                            var roleAssignment = new RoleAssignment()
+                            {
+                                Type = $"{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleAssignments}",
+                                Name = roleAssignmentRequest.Name,
+                                Description = roleAssignmentRequest.Description,
+                                ObjectId = roleAssignmentRequest.ObjectId,
+                                PrincipalId = roleAssignmentRequest.PrincipalId,
+                                PrincipalType = roleAssignmentRequest.PrincipalType,
+                                RoleDefinitionId = roleAssignmentRequest.RoleDefinitionId,
+                                Scope = roleAssignmentRequest.Scope,
+                                CreatedBy = roleAssignmentRequest.CreatedBy
+                            };
+
+                            roleAssignmentStore.RoleAssignments.Add(roleAssignment);
+                            _roleAssignmentStores.AddOrUpdate(instanceId, roleAssignmentStore, (k, v) => roleAssignmentStore);
+                            roleAssignmentStore.EnrichRoleAssignments();
+                            _roleAssignmentCaches[instanceId].AddOrUpdateRoleAssignment(roleAssignment);
+
+                            await _storageService.WriteFileAsync(
+                                    ROLE_ASSIGNMENTS_CONTAINER_NAME,
+                                    roleAssignmentStoreFile,
+                                    JsonSerializer.Serialize(roleAssignmentStore),
+                                    default,
+                                    default);
+
+                            return new RoleAssignmentOperationResult() { Success = true };
+                        }
+                    }
+                }
+                finally
+                {
+                    _syncRoot.Release();
+                }
+            }
+
+            return new RoleAssignmentOperationResult() { Success = false };
+        }
+
+        /// <inheritdoc/>
+        public async Task<RoleAssignmentOperationResult> DeleteRoleAssignment(string instanceId, string roleAssignment)
+        {
+            var existingRoleAssignment = _roleAssignmentStores[instanceId].RoleAssignments
+                .SingleOrDefault(x => x.Name == roleAssignment);
+            if (existingRoleAssignment != null)
+            {
+                _roleAssignmentCaches[instanceId].RemoveRoleAssignment(roleAssignment);
+                _roleAssignmentStores[instanceId].RoleAssignments.Remove(existingRoleAssignment);
+
+                await _storageService.WriteFileAsync(
+                   ROLE_ASSIGNMENTS_CONTAINER_NAME,
+                   $"/{instanceId.ToLower()}.json",
+                   JsonSerializer.Serialize(_roleAssignmentStores[instanceId]),
+                   default,
+                   default);
+
+                return new RoleAssignmentOperationResult() { Success = true };
+            }
+            
+            return new RoleAssignmentOperationResult() { Success = false };
+        }
+
+        /// <inheritdoc/>
+        public List<RoleAssignment> GetRoleAssignments(string instanceId, RoleAssignmentQueryParameters queryParameters)
+        {
+            if (string.IsNullOrWhiteSpace(queryParameters?.Scope))
+                return [];
+
+            var resourcePath = ResourcePathUtils.ParseForRoleAssignmentScope(
+                queryParameters.Scope,
+                _settings.InstanceIds);
+
+            return _roleAssignmentStores[instanceId].RoleAssignments
+                .Where(ra => resourcePath.IncludesResourcePath(ra.ScopeResourcePath!))
+                .ToList();
+        }
+
+        #endregion
+
+        #region Manage secret keys
+
+        public List<SecretKey> GetSecretKeys(string instanceId, string contextId)
+        {
+
+        }
+
+        public string? UpsertSecretKey(string instanceId, SecretKey secretKey)
+        {
+
+        }
+
+        public void DeleteSecretKey(string instanceId, string contextId, string secretKeyId)
+        {
+        }
+
+        public SecretKeyValidationResult ValidateSecretKey(string instanceId, string contextId, string secretKeyValue)
+        {
+
+        }
+
+        #endregion
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace FoundationaLLM.Common.Models.Security
+﻿namespace FoundationaLLM.Common.Models.Authorization
 {
     /// <summary>
     /// Represents a secret key.

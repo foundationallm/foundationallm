@@ -1,4 +1,6 @@
-﻿namespace FoundationaLLM.Common.Models.Security
+﻿using FoundationaLLM.Common.Models.Authorization;
+
+namespace FoundationaLLM.Common.Models.Security
 {
     /// <summary>
     /// Represents a persisted secret key.
