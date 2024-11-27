@@ -3,7 +3,7 @@
 // WARNING!
 // This file is auto-generated based on the AppConfiguration.json file.
 // Do not make changes to this file, as they will be automatically overwritten.
-// 
+//
 // -------------------------------------------------------------------------------
 namespace FoundationaLLM.Common.Constants.Configuration
 {
@@ -346,6 +346,20 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_ClientId =
             "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:ClientId";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:RequireScopes setting.
+        /// <para>Value description:<br/>Indicates whether a scope ("scp") claim is required for authorization.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_RequireScopes =
+            "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:RequireScopes";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:AllowACLAuthorization setting.
+        /// <para>Value description:<br/>Indicates whether tokens that do not have either of the "scp" or "roles" claims are accepted (true means they are accepted).</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_AllowACLAuthorization =
+            "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:AllowACLAuthorization";
 
         #endregion
 

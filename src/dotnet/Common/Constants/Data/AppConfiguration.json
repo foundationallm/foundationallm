@@ -476,6 +476,22 @@
 				"value": "${env:ENTRA_CORE_API_CLIENT_ID}",
 				"content_type": "",
 				"first_version": "0.8.0"
+			},
+			{
+				"name": "RequireScopes",
+				"description": "Indicates whether a scope (\"scp\") claim is required for authorization.",
+				"secret": "",
+				"value": "true",
+				"content_type": "",
+				"first_version": "0.8.5"
+			},
+			{
+				"name": "AllowACLAuthorization",
+				"description": "Indicates whether tokens that do not have either of the \"scp\" or \"roles\" claims are accepted (true means they are accepted).",
+				"secret": "",
+				"value": "false",
+				"content_type": "",
+				"first_version": "0.8.5"
 			}
 		]
 	},
