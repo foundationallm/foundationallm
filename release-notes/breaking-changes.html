@@ -77,8 +77,37 @@
 <h5>Note</h5>
 <p>This section is for changes that are not yet released but will affect future releases.</p>
 </div>
-<h2 id="starting-with-084">Starting with 0.8.4</h2>
+<h2 id="starting-with-090">Starting with 0.9.0</h2>
 <h3 id="configuration-changes">Configuration changes</h3>
+<p>The following new App Configuration settings are required:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AccountName</code></td>
+<td><code>-</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AuthenticationType</code></td>
+<td><code>-</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer</code></td>
+<td><code>-</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules</code></td>
+<td><code>-</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="starting-with-084">Starting with 0.8.4</h2>
+<h3 id="configuration-changes-1">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>
 <table>
 <thead>
@@ -269,7 +298,7 @@ Refer to the dedicated upgrade tool for instructions on how to perform this upda
 <li><code>FoundationaLLM.AzureOpenAI/assistantUserContexts</code></li>
 <li><code>FoundationaLLM.Conversation/conversations</code></li>
 </ul>
-<h3 id="configuration-changes-1">Configuration changes</h3>
+<h3 id="configuration-changes-2">Configuration changes</h3>
 <h4 id="resource-provider-templates">Resource provider templates</h4>
 <p>The <code>AzureOpenAI.template.json</code> files within <code>deploy/quick-start/data/resource-provider/FoundationaLLM.Configuration</code> and <code>deploy/standard/data/resource-provider/FoundationaLLM.Configuration</code> have been updated to set the <code>category</code> field to the value <code>LLM</code>. This discriminator allows the Management Portal to filter the list of API endpoints by category and provide options to add AI Models to endpoints with the <code>LLM</code> category.</p>
 <p>The existing <code>category</code> property needs to be set to <code>LLM</code> on existing API endpoint configurations in the <code>FoundationaLLM.Configuration</code> resource provider that fit this description, including the <code>AzureOpenAI</code> endpoint configuration.</p>
@@ -321,7 +350,7 @@ Refer to the dedicated upgrade tool for instructions on how to perform this upda
 }
 </code></pre>
 <h2 id="starting-with-082">Starting with 0.8.2</h2>
-<h3 id="configuration-changes-2">Configuration changes</h3>
+<h3 id="configuration-changes-3">Configuration changes</h3>
 <p>The following settings are required:</p>
 <table>
 <thead>
