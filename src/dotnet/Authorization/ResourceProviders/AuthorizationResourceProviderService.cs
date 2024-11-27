@@ -20,19 +20,19 @@ namespace FoundationaLLM.Authorization.ResourceProviders
     /// Implements the FoundationaLLM.Authorization resource provider.
     /// </summary>
     /// <param name="instanceOptions">The options providing the <see cref="InstanceSettings"/> with instance settings.</param>
-    /// <param name="authorizationService">The <see cref="IAuthorizationServiceClient"/> providing authorization services.</param>
+    /// <param name="authorizationServiceClient">The <see cref="IAuthorizationServiceClient"/> providing authorization services.</param>
     /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing the factory to create resource validators.</param>
     /// <param name="serviceProvider">The <see cref="IServiceProvider"/> of the main dependency injection container.</param>
     /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used to provide loggers for logging.</param>
     public class AuthorizationResourceProviderService(
         IOptions<InstanceSettings> instanceOptions,
-        IAuthorizationServiceClient authorizationService,
+        IAuthorizationServiceClient authorizationServiceClient,
         IResourceValidatorFactory resourceValidatorFactory,
         IServiceProvider serviceProvider,
         ILoggerFactory loggerFactory)
         : ResourceProviderServiceBase<ResourceReference>(
             instanceOptions.Value,
-            authorizationService,
+            authorizationServiceClient,
             null,
             null,
             resourceValidatorFactory,
@@ -116,7 +116,7 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                     StatusCodes.Status400BadRequest);
             }
 
-            var roleAssignmentResult = await _authorizationService.CreateRoleAssignment(
+            var roleAssignmentResult = await _authorizationServiceClient.CreateRoleAssignment(
                 _instanceSettings.Id,
                 new RoleAssignmentRequest()
                 {
@@ -149,7 +149,7 @@ namespace FoundationaLLM.Authorization.ResourceProviders
             switch (resourcePath.ResourceTypeName)
             {
                 case AuthorizationResourceTypeNames.RoleAssignments:
-                    await _authorizationService.DeleteRoleAssignment(
+                    await _authorizationServiceClient.DeleteRoleAssignment(
                         _instanceSettings.Id,
                         resourcePath.ResourceId!,
                         userIdentity);
@@ -187,7 +187,7 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                 throw new ResourceProviderException("Invalid scope. Unable to retrieve role assignments.");
             else
             {
-                var roleAssignments = (await _authorizationService.GetRoleAssignments(
+                var roleAssignments = (await _authorizationServiceClient.GetRoleAssignments(
                     _instanceSettings.Id, queryParameters, userIdentity))
                     .Where(ra => !ra.Deleted)
                     .ToList();

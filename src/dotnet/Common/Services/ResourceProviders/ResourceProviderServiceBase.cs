@@ -50,7 +50,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <summary>
         /// The <see cref="IAuthorizationServiceClient"/> providing authorization services to the resource provider.
         /// </summary>
-        protected readonly IAuthorizationServiceClient _authorizationService;
+        protected readonly IAuthorizationServiceClient _authorizationServiceClient;
 
         /// <summary>
         /// The <see cref="IStorageService"/> providing storage services to the resource provider.
@@ -114,7 +114,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// Creates a new instance of the resource provider.
         /// </summary>
         /// <param name="instanceSettings">The <see cref="InstanceSettings"/> that provides instance-wide settings.</param>
-        /// <param name="authorizationService">The <see cref="IAuthorizationServiceClient"/> providing authorization services to the resource provider.</param>
+        /// <param name="authorizationServiceClient">The <see cref="IAuthorizationServiceClient"/> providing authorization services to the resource provider.</param>
         /// <param name="storageService">The <see cref="IStorageService"/> providing storage services to the resource provider.</param>
         /// <param name="eventService">The <see cref="IEventService"/> providing event services to the resource provider.</param>
         /// <param name="resourceValidatorFactory">The <see cref="IResourceValidatorFactory"/> providing services to instantiate resource validators.</param>
@@ -124,7 +124,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="useInternalReferencesStore">Indicates whether the resource provider should use the internal resource references store or provide one of its own.</param>
         public ResourceProviderServiceBase(
             InstanceSettings instanceSettings,
-            IAuthorizationServiceClient authorizationService,
+            IAuthorizationServiceClient authorizationServiceClient,
             IStorageService storageService,
             IEventService eventService,
             IResourceValidatorFactory resourceValidatorFactory,
@@ -133,7 +133,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             List<string>? eventNamespacesToSubscribe = default,
             bool useInternalReferencesStore = false)
         {
-            _authorizationService = authorizationService;
+            _authorizationServiceClient = authorizationServiceClient;
             _storageService = storageService;
             _eventService = eventService;
             _resourceValidatorFactory = resourceValidatorFactory;
@@ -699,7 +699,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     throw new Exception("The provided user identity information cannot be used for authorization.");
 
                 var rp = resourcePath.GetObjectId(_instanceSettings.Id, _name);
-                var result = await _authorizationService.ProcessAuthorizationRequest(
+                var result = await _authorizationServiceClient.ProcessAuthorizationRequest(
                     _instanceSettings.Id,
                     $"{_name}/{resourcePath.MainResourceTypeName!}/{actionType}",
                     [rp],
@@ -1584,7 +1584,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             {
                 var roleAssignmentName = Guid.NewGuid().ToString();
                 var roleAssignmentDescription = $"Owner role for {userIdentity.Name}";
-                var roleAssignmentResult = await _authorizationService.CreateRoleAssignment(
+                var roleAssignmentResult = await _authorizationServiceClient.CreateRoleAssignment(
                     _instanceSettings.Id,
                     new RoleAssignmentRequest()
                     {
