@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<main>
 		<!-- Header -->
 		<template v-if="!headless">
 			<h2 class="page-header">{{ editId ? 'Edit Role Assignment' : 'Create Role Assignment' }}</h2>
@@ -125,6 +125,7 @@
 					<div id="aria-principal-search-type" class="mb-2">Search type</div>
 					<Dropdown
 						v-model="principalSearchType"
+						id="principal-search-type"
 						:options="principalTypeOptions"
 						placeholder="--Select--"
 						class="mb-2 w-100"
@@ -193,7 +194,7 @@
 				/>
 			</div>
 		</div>
-	</div>
+	</main>
 </template>
 
 <script lang="ts">
@@ -265,6 +266,14 @@ export default {
 	watch: {
 		principalSearchType() {
 			this.dialogPrincipal = null;
+		},
+		selectPrincipalDialogOpen(value) {
+			if (value) {
+				this.$nextTick(() => {
+					const input = document.querySelector('#principal-search-type span');
+					input?.focus();
+				});
+			}
 		},
 	},
 

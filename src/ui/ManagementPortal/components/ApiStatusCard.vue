@@ -1,9 +1,9 @@
 <template>
-	<div class="api-status-card">
+	<div class="api-status-card" role="region">
 		<h2>{{ apiName }}</h2>
 		<div v-if="loading" class="loading" aria-live="polite">Loading...</div>
 		<div v-else-if="error" class="error" aria-live="assertive">{{ error }}</div>
-		<div v-else-if="apiStatus" role="region">
+		<div v-else-if="apiStatus">
 			<div class="api-detail">
 				<p><strong>Name:</strong> {{ apiStatus.name }}</p>
 				<p><strong>Description:</strong> {{ description }}</p>

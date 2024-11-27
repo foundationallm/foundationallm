@@ -151,6 +151,7 @@
 		<Dialog
 			:visible="roleAssignmentToDelete !== null"
 			modal
+			v-focustrap
 			header="Delete Role Assignment"
 			:closable="false"
 		>
@@ -161,7 +162,7 @@
 			</p>
 			<template #footer>
 				<Button label="Cancel" text @click="roleAssignmentToDelete = null" />
-				<Button label="Delete" severity="danger" @click="handleDeleteRoleAssignment" />
+				<Button label="Delete" severity="danger" autofocus @click="handleDeleteRoleAssignment" />
 			</template>
 		</Dialog>
 	</div>

@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<main>
 		<h1>Deployment Information</h1>
 		<p>This page provides information about the FoundationaLLM deployment.</p>
 		<p><strong>Instance ID:</strong> {{ $appConfigStore.instanceId }}</p>
@@ -26,7 +26,7 @@
 				:description="api.description"
 			/>
 		</div>
-	</div>
+	</main>
 </template>
 
 <script lang="ts">

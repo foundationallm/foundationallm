@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<main>
 		<div style="display: flex">
 			<!-- Title -->
 			<div style="flex: 1">
@@ -175,7 +175,8 @@
 						v-create-chip-on-blur:folders
 						class="w-100"
 						separator=","
-						aria-labelledby="aria-folders aria-folders-desc"
+						aria-labelledby="aria-folders"
+						aria-describedby="aria-folders-desc"
 						:pt="{ input: { 'aria-labelledby': 'aria-folders aria-folders-desc' } }"
 					/>
 				</div>
@@ -390,7 +391,7 @@
 				/>
 			</div>
 		</div>
-	</div>
+	</main>
 </template>
 
 <script lang="ts">

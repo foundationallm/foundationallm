@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<main>
 		<div style="display: flex">
 			<div style="flex: 1">
 				<h2 class="page-header">Data Sources</h2>
@@ -7,7 +7,7 @@
 			</div>
 
 			<div style="display: flex; align-items: center">
-				<NuxtLink to="/data-sources/create">
+				<NuxtLink to="/data-sources/create" tabindex="-1">
 					<Button aria-label="Create data source">
 						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
 						Create Data Source
@@ -82,7 +82,7 @@
 					}"
 				>
 					<template #body="{ data }">
-						<NuxtLink :to="'/data-sources/edit/' + data.resource.name" class="table__button">
+						<NuxtLink :to="'/data-sources/edit/' + data.resource.name" class="table__button" tabindex="-1">
 							<Button link :aria-label="`Edit ${data.resource.name}`">
 								<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
 							</Button>
@@ -119,16 +119,17 @@
 		<Dialog
 			:visible="dataSourceToDelete !== null"
 			modal
+			v-focustrap
 			header="Delete Data Source"
 			:closable="false"
 		>
 			<p>Do you want to delete the data source "{{ dataSourceToDelete.name }}" ?</p>
 			<template #footer>
 				<Button label="Cancel" text @click="dataSourceToDelete = null" />
-				<Button label="Delete" severity="danger" @click="handleDeleteDataSource" />
+				<Button label="Delete" severity="danger" autofocus @click="handleDeleteDataSource" />
 			</template>
 		</Dialog>
-	</div>
+	</main>
 </template>
 
 <script lang="ts">

@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<main>
 		<template v-if="loading">
 			<div class="grid__loading-overlay" role="status" aria-live="polite">
 				<LoadingGrid />
@@ -21,6 +21,7 @@
 				<InputSwitch
 					v-if="key === 'FoundationaLLM:Branding:KioskMode'"
 					v-model:modelValue="kioskMode"
+					:aria-labelledby="key.split(':').pop()"
 					@change="updateBrandingValue(key, JSON.stringify(kioskMode))"
 				/>
 				<CustomQuillEditor
@@ -30,6 +31,7 @@
 						key === 'FoundationaLLM:Branding:DefaultAgentWelcomeMessage'
 					"
 					:id="key.split(':').pop()"
+					:aria-labelledby="key.split(':').pop()"
 					:initial-content="JSON.parse(JSON.stringify(getBrandingValue(key)))"
 					@content-update="updateHtmlText(key, $event)"
 				/>
@@ -177,17 +179,41 @@
 					:disabled="JSON.stringify(branding) === JSON.stringify(brandingOriginal)"
 					label="Reset"
 					severity="secondary"
-					@click="cancelBrandingChanges"
+					@click="resetBrandingDialog = true"
 				/>
 				<Button
 					label="Set Default"
 					aria-label="Reset branding values to their default settings"
-					@click="setDefaultBranding"
+					@click="setBrandingDefaultDialog = true"
 				/>
 				<Button label="Save" severity="primary" @click="saveBranding" />
 			</div>
+			<Dialog
+				:visible="resetBrandingDialog"
+				modal
+				header="Reset Branding"
+				:closable="false"
+			>
+				<p>Are you sure you want to reset all branding values to their previous values?</p>
+				<template #footer>
+					<Button label="Cancel" text @click="resetBrandingDialog = false" />
+					<Button label="Reset" severity="danger" autofocus @click="cancelBrandingChanges" />
+				</template>
+			</Dialog>
+			<Dialog
+				:visible="setBrandingDefaultDialog"
+				modal
+				header="Set Default Branding"
+				:closable="false"
+			>
+				<p>Are you sure you want to reset all branding values to their default settings?</p>
+				<template #footer>
+					<Button label="Cancel" text @click="setBrandingDefaultDialog = false" />
+					<Button label="Set Default" severity="danger" autofocus @click="setDefaultBranding" />
+				</template>
+			</Dialog>
 		</div>
-	</div>
+	</main>
 </template>
 
 <script lang="ts">
@@ -412,6 +438,8 @@ export default {
 			showQuillrawHTMLDialog: false,
 			loading: true,
 			loadingStatusText: 'Retrieving data...' as string,
+			resetBrandingDialog: false,
+			setBrandingDefaultDialog: false,
 		};
 	},
 
@@ -570,10 +598,12 @@ export default {
 					brand.resource.value = defaultBrand.value;
 				}
 			});
+			this.setBrandingDefaultDialog = false;
 		},
 
 		cancelBrandingChanges() {
 			this.branding = JSON.parse(JSON.stringify(this.brandingOriginal));
+			this.resetBrandingDialog = false;
 		},
 
 		saveBranding() {

@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<main>
 		<h2 class="page-header">My Agents</h2>
 		<div class="page-subheader">View your agents.</div>
 
@@ -80,7 +80,7 @@
 					}"
 				>
 					<template #body="{ data }">
-						<NuxtLink :to="'/agents/edit/' + data.resource.name" class="table__button">
+						<NuxtLink :to="'/agents/edit/' + data.resource.name" class="table__button" tabindex="-1">
 							<Button
 								link
 								:disabled="!data.actions.includes('FoundationaLLM.Agent/agents/write')"
@@ -119,14 +119,14 @@
 		</div>
 
 		<!-- Delete agent dialog -->
-		<Dialog :visible="agentToDelete !== null" modal header="Delete Agent" :closable="false">
+		<Dialog :visible="agentToDelete !== null" modal v-focustrap header="Delete Agent" :closable="false">
 			<p>Do you want to delete the agent "{{ agentToDelete.name }}" ?</p>
 			<template #footer>
 				<Button label="Cancel" text @click="agentToDelete = null" />
-				<Button label="Delete" severity="danger" @click="handleDeleteAgent" />
+				<Button label="Delete" severity="danger" autofocus @click="handleDeleteAgent" />
 			</template>
 		</Dialog>
-	</div>
+	</main>
 </template>
 
 <script lang="ts">
