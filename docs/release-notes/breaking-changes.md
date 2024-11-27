@@ -16,6 +16,8 @@ Name | Default value
 `FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer` | `-`
 `FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules` | `-`
 
+When defining tools for an agent, each tool now requires a `package_name` property. This property is used to identify the package that contains the tool's implementation. If the tool is internal, the `package_name` should be set to `FoundationaLLM`, if the tool is external, the `package_name` should be set to the name of the external package.
+
 ## Starting with 0.8.4
 
 ### Configuration changes
