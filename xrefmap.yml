@@ -4274,15 +4274,15 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Authentication.DefaultAuthentication.AzureCredential
   nameWithType: DefaultAuthentication.AzureCredential
-- uid: FoundationaLLM.Common.Authentication.DefaultAuthentication.Initialize(System.Boolean,System.String)
-  name: Initialize(bool, string)
-  href: api/dotnet/FoundationaLLM.Common.Authentication.DefaultAuthentication.html#FoundationaLLM_Common_Authentication_DefaultAuthentication_Initialize_System_Boolean_System_String_
-  commentId: M:FoundationaLLM.Common.Authentication.DefaultAuthentication.Initialize(System.Boolean,System.String)
-  name.vb: Initialize(Boolean, String)
-  fullName: FoundationaLLM.Common.Authentication.DefaultAuthentication.Initialize(bool, string)
-  fullName.vb: FoundationaLLM.Common.Authentication.DefaultAuthentication.Initialize(Boolean, String)
-  nameWithType: DefaultAuthentication.Initialize(bool, string)
-  nameWithType.vb: DefaultAuthentication.Initialize(Boolean, String)
+- uid: FoundationaLLM.Common.Authentication.DefaultAuthentication.Initialize(System.Boolean,System.String,System.String)
+  name: Initialize(bool, string, string)
+  href: api/dotnet/FoundationaLLM.Common.Authentication.DefaultAuthentication.html#FoundationaLLM_Common_Authentication_DefaultAuthentication_Initialize_System_Boolean_System_String_System_String_
+  commentId: M:FoundationaLLM.Common.Authentication.DefaultAuthentication.Initialize(System.Boolean,System.String,System.String)
+  name.vb: Initialize(Boolean, String, String)
+  fullName: FoundationaLLM.Common.Authentication.DefaultAuthentication.Initialize(bool, string, string)
+  fullName.vb: FoundationaLLM.Common.Authentication.DefaultAuthentication.Initialize(Boolean, String, String)
+  nameWithType: DefaultAuthentication.Initialize(bool, string, string)
+  nameWithType.vb: DefaultAuthentication.Initialize(Boolean, String, String)
 - uid: FoundationaLLM.Common.Authentication.DefaultAuthentication.Initialize*
   name: Initialize
   href: api/dotnet/FoundationaLLM.Common.Authentication.DefaultAuthentication.html#FoundationaLLM_Common_Authentication_DefaultAuthentication_Initialize_
@@ -6233,6 +6233,12 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB_MonitoredContainers
   fullName: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB_MonitoredContainers
   nameWithType: AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB_MonitoredContainers
+- uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_AllowACLAuthorization
+  name: FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_AllowACLAuthorization
+  href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.html#FoundationaLLM_Common_Constants_Configuration_AppConfigurationKeys_FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_AllowACLAuthorization
+  commentId: F:FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_AllowACLAuthorization
+  fullName: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_AllowACLAuthorization
+  nameWithType: AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_AllowACLAuthorization
 - uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_CallbackPath
   name: FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_CallbackPath
   href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.html#FoundationaLLM_Common_Constants_Configuration_AppConfigurationKeys_FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_CallbackPath
@@ -6251,6 +6257,12 @@ references:
   commentId: F:FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_Instance
   fullName: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_Instance
   nameWithType: AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_Instance
+- uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_RequireScopes
+  name: FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_RequireScopes
+  href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.html#FoundationaLLM_Common_Constants_Configuration_AppConfigurationKeys_FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_RequireScopes
+  commentId: F:FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_RequireScopes
+  fullName: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_RequireScopes
+  nameWithType: AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_RequireScopes
 - uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_Scopes
   name: FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_Scopes
   href: api/dotnet/FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys.html#FoundationaLLM_Common_Constants_Configuration_AppConfigurationKeys_FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_Scopes
