@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<template v-if="loading">
-			<div class="grid__loading-overlay">
+			<div class="grid__loading-overlay" role="status" aria-live="polite">
 				<LoadingGrid />
 				<div>{{ loadingStatusText }}</div>
 			</div>
@@ -11,7 +11,7 @@
 			<p>Customize the look and feel of your UI.</p>
 			<div style="display: flex; flex-direction: row; align-items: center; gap: 0.5rem">
 				<p>Show contrast information</p>
-				<InputSwitch v-model="showContrastInfo" />
+				<InputSwitch v-model="showContrastInfo" aria-label="Toggle to show or hide contrast information" />
 			</div>
 		</div>
 		<div class="steps">
@@ -50,7 +50,11 @@
 					:style="{ backgroundColor: getBrandingValue('FoundationaLLM:Branding:PrimaryColor') }"
 					class="logo-preview"
 				>
-					<img :src="$filters.publicDirectory(getBrandingValue(key))" class="logo-image" />
+					<img 
+						:src="$filters.publicDirectory(getBrandingValue(key))"
+						alt="Logo Preview"
+						class="logo-image" 
+					/>
 				</div>
 			</div>
 			<div class="divider" />
@@ -175,7 +179,11 @@
 					severity="secondary"
 					@click="cancelBrandingChanges"
 				/>
-				<Button label="Set Default" @click="setDefaultBranding" />
+				<Button
+					label="Set Default"
+					aria-label="Reset branding values to their default settings"
+					@click="setDefaultBranding"
+				/>
 				<Button label="Save" severity="primary" @click="saveBranding" />
 			</div>
 		</div>

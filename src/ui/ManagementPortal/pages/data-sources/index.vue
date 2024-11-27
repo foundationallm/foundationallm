@@ -19,7 +19,7 @@
 		<div :class="{ 'grid--loading': loading }">
 			<!-- Loading overlay -->
 			<template v-if="loading">
-				<div class="grid__loading-overlay">
+				<div class="grid__loading-overlay" role="status" aria-live="polite">
 					<LoadingGrid />
 					<div>{{ loadingStatusText }}</div>
 				</div>
@@ -33,7 +33,11 @@
 				table-style="max-width: 100%"
 				size="small"
 			>
-				<template #empty> No data sources found. </template>
+				<template #empty>
+					<div role="alert" aria-live="polite">
+						No data sources found.
+					</div>
+				</template>
 
 				<template #loading>Loading data sources. Please wait.</template>
 
@@ -80,7 +84,7 @@
 					<template #body="{ data }">
 						<NuxtLink :to="'/data-sources/edit/' + data.resource.name" class="table__button">
 							<Button link :aria-label="`Edit ${data.resource.name}`">
-								<i class="pi pi-cog" style="font-size: 1.2rem"></i>
+								<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
 							</Button>
 						</NuxtLink>
 					</template>
@@ -104,7 +108,7 @@
 							:aria-label="`Delete ${data.resource.name}`"
 							@click="dataSourceToDelete = data.resource"
 						>
-							<i class="pi pi-trash" style="font-size: 1.2rem"></i>
+							<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
 						</Button>
 					</template>
 				</Column>

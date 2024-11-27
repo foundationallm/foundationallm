@@ -16,7 +16,7 @@
 		<div class="steps" :class="{ 'steps--loading': loading }">
 			<!-- Loading overlay -->
 			<template v-if="loading">
-				<div class="steps__loading-overlay">
+				<div class="steps__loading-overlay" role="status" aria-live="polite">
 					<LoadingGrid />
 					<div>{{ loadingStatusText }}</div>
 				</div>
@@ -106,7 +106,12 @@
 						class="w-50"
 						aria-labelledby="aria-principal-id"
 					/>
-					<Button label="Browse" severity="primary" @click="selectPrincipalDialogOpen = true" />
+					<Button 
+						label="Browse"
+						aria-label="Browse for principals"
+						severity="primary"
+						@click="selectPrincipalDialogOpen = true"
+					/>
 				</div>
 
 				<!-- Browse principals dialog -->

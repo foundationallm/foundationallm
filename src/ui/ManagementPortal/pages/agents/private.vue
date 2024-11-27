@@ -6,7 +6,7 @@
 		<div :class="{ 'grid--loading': loading }">
 			<!-- Loading overlay -->
 			<template v-if="loading">
-				<div class="grid__loading-overlay">
+				<div class="grid__loading-overlay" role="status" aria-live="polite">
 					<LoadingGrid />
 					<div>{{ loadingStatusText }}</div>
 				</div>
@@ -15,8 +15,10 @@
 			<!-- Table -->
 			<DataTable :value="agents" striped-rows scrollable table-style="max-width: 100%" size="small">
 				<template #empty>
-					No agents found. Please use the menu on the left to create a new agent.</template
-				>
+					<div role="alert" aria-live="polite">
+						No agents found. Please use the menu on the left to create a new agent.
+					</div>
+				</template>
 				<template #loading>Loading agent data. Please wait.</template>
 
 				<!-- Name -->
@@ -84,7 +86,7 @@
 								:disabled="!data.actions.includes('FoundationaLLM.Agent/agents/write')"
 								:aria-label="`Edit ${data.resource.name}`"
 							>
-								<i class="pi pi-cog" style="font-size: 1.2rem"></i>
+								<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
 							</Button>
 						</NuxtLink>
 					</template>
@@ -109,7 +111,7 @@
 							:aria-label="`Delete ${data.resource.name}`"
 							@click="agentToDelete = data.resource"
 						>
-							<i class="pi pi-trash" style="font-size: 1.2rem"></i>
+							<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
 						</Button>
 					</template>
 				</Column>

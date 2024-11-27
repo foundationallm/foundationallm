@@ -2,7 +2,7 @@
 	<div>
 		<!-- Loading overlay -->
 		<template v-if="loading">
-			<div class="grid__loading-overlay">
+			<div class="grid__loading-overlay" role="status" aria-live="polite">
 				<LoadingGrid />
 				<div>{{ loadingStatusText }}</div>
 			</div>
