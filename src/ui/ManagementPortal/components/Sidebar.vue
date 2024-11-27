@@ -1,5 +1,6 @@
 <template>
-	<div class="sidebar">
+	<div class="sidebar" role="navigation">
+		<h2 id="sidebar-title" class="visually-hidden">Main Navigation</h2>
 		<!-- Sidebar section header -->
 		<div class="sidebar__header">
 			<template v-if="$appConfigStore.logoUrl">
@@ -7,7 +8,7 @@
 					<img
 						:src="$filters.publicDirectory($appConfigStore.logoUrl)"
 						aria-label="Logo as link to home"
-						alt="Logo"
+						:alt="$appConfigStore.logoText"
 					/>
 				</NuxtLink>
 			</template>
@@ -209,5 +210,16 @@ a {
 
 .sidebar__sign-out-button {
 	width: 100%;
+}
+
+.visually-hidden {
+	position: absolute;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	width: 1px;
+	margin: -1px;
+	padding: 0;
+	border: 0;
 }
 </style>
