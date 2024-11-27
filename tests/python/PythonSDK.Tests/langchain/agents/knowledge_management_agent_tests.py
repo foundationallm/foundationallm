@@ -142,8 +142,8 @@ class KnowledgeManagementAgentTests:
         print(completion_response.completion)
         assert "february" in completion_response.completion.lower() or "2023" in completion_response.completion
     
-    def test_azure_ai_search_gets_citations(self, test_llm, test_config, test_azure_ai_search_service_completion_request_zoo):
+    def test_azure_ai_search_gets_content_artifacts(self, test_llm, test_config, test_azure_ai_search_service_completion_request_zoo):
         agent = KnowledgeManagementAgent(completion_request=test_azure_ai_search_service_completion_request_zoo, llm=test_llm, config=test_config)
         completion_response = agent.run(prompt=test_azure_ai_search_service_completion_request_zoo.user_prompt)
-        print(completion_response.citations)
-        assert completion_response.citations is not None and len(completion_response.citations) > 0
+        print(completion_response.content_artifacts)
+        assert completion_response.content_artifacts is not None and len(completion_response.content_artifacts) > 0

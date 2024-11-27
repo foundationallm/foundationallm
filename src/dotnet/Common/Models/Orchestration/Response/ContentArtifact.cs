@@ -5,7 +5,7 @@ namespace FoundationaLLM.Common.Models.Orchestration.Response;
 /// <summary>
 /// Encapsulates data about the sources used in building a completion response.
 /// </summary>
-public class Citation
+public class ContentArtifact
 {
     /// <summary>
     /// The index identifier of the document containing the source information.

@@ -860,7 +860,7 @@ public partial class CoreService(
                 {
                     { "/tokens", completionResponse.CompletionTokens },
                     { "/text", completionResponse.Completion },
-                    { "/citations", completionResponse.Citations },
+                    { "/contentArtifacts", completionResponse.ContentArtifacts },
                     { "/content", newContent },
                     { "/analysisResults", completionResponse.AnalysisResults },
                     { "/status", operationStatus }

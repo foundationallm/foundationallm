@@ -16,6 +16,14 @@ Name | Default value
 `FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer` | `-`
 `FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules` | `-`
 
+#### Renamed classes
+
+The following classes have been renamed:
+
+ Original Class | New Class
+--- | ---
+ `FoundationaLLM.Common.Models.Orchestration.Response.Citation` | `FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact`
+
 ## Starting with 0.8.4
 
 ### Configuration changes
