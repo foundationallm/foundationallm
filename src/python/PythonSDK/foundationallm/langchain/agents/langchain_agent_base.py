@@ -4,6 +4,7 @@ from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 
 from langchain_core.language_models import BaseLanguageModel
 from langchain_aws import ChatBedrockConverse
+from langchain_core.messages import BaseMessage, AIMessage, HumanMessage
 from langchain_openai import AzureChatOpenAI, ChatOpenAI, OpenAI
 from openai import AsyncAzureOpenAI as async_aoi
 from foundationallm.config import Configuration, UserIdentity
@@ -172,6 +173,31 @@ class LangChainAgentBase():
             chat_history += msg.sender + ": " + msg.text + "\n"
         chat_history += "\n\n"
         return chat_history
+
+    def _build_conversation_history_message_list(self, messages:List[MessageHistoryItem]=None, message_count:int=None) -> List[BaseMessage]:
+        """
+        Builds a LangChain Message chat history list from a list of MessageHistoryItem objects to
+        be added to the prompt template for the completion request.
+
+        Parameters
+        ----------
+        messages : List[MessageHistoryItem]
+            The list of messages from which to build the chat history.
+        message_count : int
+            The number of messages to include in the chat history.
+        """
+        if messages is None or len(messages)==0:
+            return []
+        if message_count is not None:
+            messages = messages[-message_count:]
+        history = []                   
+        for msg in messages:
+            # sender can be User (maps to HumanMessage) or Agent (maps to AIMessage)
+            if msg.sender == "User":
+                history.append(HumanMessage(content=msg.text))
+            else:
+                history.append(AIMessage(content=msg.text))        
+        return history
 
     def _record_full_prompt(self, prompt: str) -> str:
         """

@@ -1,13 +1,14 @@
 ﻿import uuid
 from langchain_community.callbacks import get_openai_callback
-from langchain_community.callbacks.manager import get_bedrock_anthropic_callback
+from langchain_core.messages import HumanMessage
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from langchain_core.output_parsers import StrOutputParser
+from langgraph.prebuilt import create_react_agent
 from foundationallm.langchain.agents import LangChainAgentBase
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.retrievers import RetrieverFactory, CitationRetrievalBase
-from foundationallm.models.agents.agent_workflows.azure_openai_assistants_agent_workflow import AzureOpenAIAssistantsAgentWorkflow
+from foundationallm.models.agents import AzureOpenAIAssistantsAgentWorkflow, LangGraphReactAgentWorkflow
 from foundationallm.models.constants import AgentCapabilityCategories
 from foundationallm.models.operations import OperationTypes
 from foundationallm.models.orchestration import (
@@ -15,7 +16,6 @@ from foundationallm.models.orchestration import (
     CompletionResponse,
     OpenAITextMessageContentItem
 )
-from foundationallm.models.resource_providers.ai_models import CompletionAIModel
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 from foundationallm.models.agents import (
     AgentConversationHistorySettings,
@@ -44,7 +44,10 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
     """
     The LangChain Knowledge Management agent.
     """
-
+    
+    MAIN_MODEL_KEY = "main_model"
+    MAIN_PROMPT_KEY = "main_prompt"
+    
     def _get_document_retriever(
         self,
         request: KnowledgeManagementCompletionRequest,
@@ -174,12 +177,12 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             raise LangChainException("The objects property on the completion request cannot be null.", 400)
 
         if request.agent.workflow is not None:
-            if request.agent.workflow.agent_workflow_ai_models["main_model"] is None:
+            if request.agent.workflow.agent_workflow_ai_models[self.MAIN_MODEL_KEY] is None:
                 raise LangChainException("The agent's workflow AI models requires a main_model.", 400)
-            if request.agent.workflow.prompt_object_ids["main_prompt"] is None:
+            if request.agent.workflow.prompt_object_ids[self.MAIN_PROMPT_KEY] is None:
                 raise LangChainException("The agent's workflow prompt object dictionary requires a main_prompt.", 400)
-            self.ai_model = self._get_ai_model_from_object_id(request.agent.workflow.agent_workflow_ai_models["main_model"].ai_model_object_id, request.objects)
-            self.prompt = self._get_prompt_from_object_id(request.agent.workflow.prompt_object_ids["main_prompt"], request.objects)
+            self.ai_model = self._get_ai_model_from_object_id(request.agent.workflow.agent_workflow_ai_models[self.MAIN_MODEL_KEY].ai_model_object_id, request.objects)
+            self.prompt = self._get_prompt_from_object_id(request.agent.workflow.prompt_object_ids[self.MAIN_PROMPT_KEY], request.objects)
         else:
             # Legacy code
             self.ai_model = self._get_ai_model_from_object_id(request.agent.ai_model_object_id, request.objects)
@@ -275,6 +278,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             generated full prompt with context and token utilization and execution cost details.
         """
         self._validate_request(request)
+        llm = self._get_language_model()
 
         agent = request.agent
         image_analysis_token_usage = CompletionUsage(prompt_tokens=0, completion_tokens=0, total_tokens=0)
@@ -373,7 +377,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             image_service = None
             if "dalle-image-generation" in request.agent.tools:
                 dalle_tool = request.agent.tools["dalle-image-generation"]
-                model_object_id = dalle_tool["ai_model_object_ids"]["main_model"]
+                model_object_id = dalle_tool["ai_model_object_ids"][self.MAIN_MODEL_KEY]
                 image_generation_deployment_model = request.objects[model_object_id]["deployment_name"]
                 api_endpoint_object_id = request.objects[model_object_id]["endpoint_object_id"]
                 image_generation_client = self._get_image_gen_language_model(api_endpoint_object_id=api_endpoint_object_id, objects=request.objects)
@@ -414,6 +418,48 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             )
         # End Assistants API implementation
 
+        # Start LangGraph ReAct Agent workflow implementation
+        if (agent.workflow is not None and isinstance(agent.workflow, LangGraphReactAgentWorkflow)):            
+            # Temporary placeholder
+            from typing import Literal
+            from langchain_core.tools import tool
+            @tool
+            def get_weather(city: Literal["nyc", "sf"]):
+                """Use this to get weather information."""
+                if city == "nyc":
+                    return "It might be cloudy in nyc"
+                elif city == "sf":
+                    return "It's always sunny in sf"
+                else:
+                    raise AssertionError("Unknown city")
+            tools = [get_weather]
+            # End temporary placeholder
+
+            # Define the graph          
+            graph = create_react_agent(llm, tools=tools, state_modifier=self.prompt.prefix)
+            messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
+            messages.append(HumanMessage(content=request.user_prompt))
+            response = await graph.ainvoke({'messages': messages})
+            # TODO: process tool messages with analysis results AIMessage with content='' but has addition_kwargs={'tool_calls';[...]}
+            # print(response)
+            final_message = response["messages"][-1]
+            response_content = OpenAITextMessageContentItem(
+                value = final_message.content,
+                agent_capability_category = AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
+            )
+            return CompletionResponse(
+                        operation_id = request.operation_id,
+                        content = [response_content],
+                        citations = [],
+                        user_prompt = request.user_prompt,
+                        full_prompt = self.prompt.prefix,
+                        completion_tokens = final_message.usage_metadata["output_tokens"] or 0,
+                        prompt_tokens = final_message.usage_metadata["input_tokens"] or 0,
+                        total_tokens = final_message.usage_metadata["total_tokens"] or 0,
+                        total_cost = 0
+                    )
+        # End LangGraph ReAct Agent workflow implementation            
+        
         # Start LangChain Expression Language (LCEL) implementation
        
         # Get the vector document retriever, if it exists.
@@ -452,7 +498,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             chain_context
             | prompt_template
             | RunnableLambda(self._record_full_prompt)
-            | self._get_language_model()
+            | llm
         )
 
         retvalue = None

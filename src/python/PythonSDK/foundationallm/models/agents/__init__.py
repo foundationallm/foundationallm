@@ -1,6 +1,7 @@
 from .agent_conversation_history_settings import AgentConversationHistorySettings
 from .agent_gatekeeper_settings import AgentGatekeeperSettings
 from .agent_orchestration_settings import AgentOrchestrationSettings
+from .agent_tool import AgentTool
 from .agent_vectorization_settings import AgentVectorizationSettings
 from .agent_workflows.agent_workflow_ai_model import AgentWorkflowAIModel
 from .agent_workflows.agent_workflow_base import AgentWorkflowBase

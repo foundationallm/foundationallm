@@ -7,8 +7,7 @@ class LangGraphReactAgentWorkflow(AgentWorkflowBase):
     """
     The configuration for a LangGraph ReAct agent workflow.
     """
-    type: Literal["langgraph-react-agent-workflow"] = "langgraph-react-agent-workflow"
-    
+    type: Literal["langgraph-react-agent-workflow"] = "langgraph-react-agent-workflow"    
    
     @staticmethod
     def from_object(obj: Any) -> Self:
