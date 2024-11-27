@@ -15728,19 +15728,19 @@ references:
   commentId: T:FoundationaLLM.Common.Models.Conversation.CompletionPrompt
   fullName: FoundationaLLM.Common.Models.Conversation.CompletionPrompt
   nameWithType: CompletionPrompt
-- uid: FoundationaLLM.Common.Models.Conversation.CompletionPrompt.Citations
-  name: Citations
-  href: api/dotnet/FoundationaLLM.Common.Models.Conversation.CompletionPrompt.html#FoundationaLLM_Common_Models_Conversation_CompletionPrompt_Citations
-  commentId: P:FoundationaLLM.Common.Models.Conversation.CompletionPrompt.Citations
-  fullName: FoundationaLLM.Common.Models.Conversation.CompletionPrompt.Citations
-  nameWithType: CompletionPrompt.Citations
-- uid: FoundationaLLM.Common.Models.Conversation.CompletionPrompt.Citations*
-  name: Citations
-  href: api/dotnet/FoundationaLLM.Common.Models.Conversation.CompletionPrompt.html#FoundationaLLM_Common_Models_Conversation_CompletionPrompt_Citations_
-  commentId: Overload:FoundationaLLM.Common.Models.Conversation.CompletionPrompt.Citations
+- uid: FoundationaLLM.Common.Models.Conversation.CompletionPrompt.ContentArtifacts
+  name: ContentArtifacts
+  href: api/dotnet/FoundationaLLM.Common.Models.Conversation.CompletionPrompt.html#FoundationaLLM_Common_Models_Conversation_CompletionPrompt_ContentArtifacts
+  commentId: P:FoundationaLLM.Common.Models.Conversation.CompletionPrompt.ContentArtifacts
+  fullName: FoundationaLLM.Common.Models.Conversation.CompletionPrompt.ContentArtifacts
+  nameWithType: CompletionPrompt.ContentArtifacts
+- uid: FoundationaLLM.Common.Models.Conversation.CompletionPrompt.ContentArtifacts*
+  name: ContentArtifacts
+  href: api/dotnet/FoundationaLLM.Common.Models.Conversation.CompletionPrompt.html#FoundationaLLM_Common_Models_Conversation_CompletionPrompt_ContentArtifacts_
+  commentId: Overload:FoundationaLLM.Common.Models.Conversation.CompletionPrompt.ContentArtifacts
   isSpec: "True"
-  fullName: FoundationaLLM.Common.Models.Conversation.CompletionPrompt.Citations
-  nameWithType: CompletionPrompt.Citations
+  fullName: FoundationaLLM.Common.Models.Conversation.CompletionPrompt.ContentArtifacts
+  nameWithType: CompletionPrompt.ContentArtifacts
 - uid: FoundationaLLM.Common.Models.Conversation.CompletionPrompt.Deleted
   name: Deleted
   href: api/dotnet/FoundationaLLM.Common.Models.Conversation.CompletionPrompt.html#FoundationaLLM_Common_Models_Conversation_CompletionPrompt_Deleted
@@ -16064,19 +16064,6 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.Conversation.Message.Attachments
   nameWithType: Message.Attachments
-- uid: FoundationaLLM.Common.Models.Conversation.Message.Citations
-  name: Citations
-  href: api/dotnet/FoundationaLLM.Common.Models.Conversation.Message.html#FoundationaLLM_Common_Models_Conversation_Message_Citations
-  commentId: P:FoundationaLLM.Common.Models.Conversation.Message.Citations
-  fullName: FoundationaLLM.Common.Models.Conversation.Message.Citations
-  nameWithType: Message.Citations
-- uid: FoundationaLLM.Common.Models.Conversation.Message.Citations*
-  name: Citations
-  href: api/dotnet/FoundationaLLM.Common.Models.Conversation.Message.html#FoundationaLLM_Common_Models_Conversation_Message_Citations_
-  commentId: Overload:FoundationaLLM.Common.Models.Conversation.Message.Citations
-  isSpec: "True"
-  fullName: FoundationaLLM.Common.Models.Conversation.Message.Citations
-  nameWithType: Message.Citations
 - uid: FoundationaLLM.Common.Models.Conversation.Message.CompletionPromptId
   name: CompletionPromptId
   href: api/dotnet/FoundationaLLM.Common.Models.Conversation.Message.html#FoundationaLLM_Common_Models_Conversation_Message_CompletionPromptId
@@ -16103,6 +16090,19 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.Conversation.Message.Content
   nameWithType: Message.Content
+- uid: FoundationaLLM.Common.Models.Conversation.Message.ContentArtifacts
+  name: ContentArtifacts
+  href: api/dotnet/FoundationaLLM.Common.Models.Conversation.Message.html#FoundationaLLM_Common_Models_Conversation_Message_ContentArtifacts
+  commentId: P:FoundationaLLM.Common.Models.Conversation.Message.ContentArtifacts
+  fullName: FoundationaLLM.Common.Models.Conversation.Message.ContentArtifacts
+  nameWithType: Message.ContentArtifacts
+- uid: FoundationaLLM.Common.Models.Conversation.Message.ContentArtifacts*
+  name: ContentArtifacts
+  href: api/dotnet/FoundationaLLM.Common.Models.Conversation.Message.html#FoundationaLLM_Common_Models_Conversation_Message_ContentArtifacts_
+  commentId: Overload:FoundationaLLM.Common.Models.Conversation.Message.ContentArtifacts
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.Conversation.Message.ContentArtifacts
+  nameWithType: Message.ContentArtifacts
 - uid: FoundationaLLM.Common.Models.Conversation.Message.Deleted
   name: Deleted
   href: api/dotnet/FoundationaLLM.Common.Models.Conversation.Message.html#FoundationaLLM_Common_Models_Conversation_Message_Deleted
@@ -19154,51 +19154,6 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.Orchestration.Response.AnalysisResult.ToolOutput
   nameWithType: AnalysisResult.ToolOutput
-- uid: FoundationaLLM.Common.Models.Orchestration.Response.Citation
-  name: Citation
-  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.Citation.html
-  commentId: T:FoundationaLLM.Common.Models.Orchestration.Response.Citation
-  fullName: FoundationaLLM.Common.Models.Orchestration.Response.Citation
-  nameWithType: Citation
-- uid: FoundationaLLM.Common.Models.Orchestration.Response.Citation.Filepath
-  name: Filepath
-  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.Citation.html#FoundationaLLM_Common_Models_Orchestration_Response_Citation_Filepath
-  commentId: P:FoundationaLLM.Common.Models.Orchestration.Response.Citation.Filepath
-  fullName: FoundationaLLM.Common.Models.Orchestration.Response.Citation.Filepath
-  nameWithType: Citation.Filepath
-- uid: FoundationaLLM.Common.Models.Orchestration.Response.Citation.Filepath*
-  name: Filepath
-  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.Citation.html#FoundationaLLM_Common_Models_Orchestration_Response_Citation_Filepath_
-  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.Response.Citation.Filepath
-  isSpec: "True"
-  fullName: FoundationaLLM.Common.Models.Orchestration.Response.Citation.Filepath
-  nameWithType: Citation.Filepath
-- uid: FoundationaLLM.Common.Models.Orchestration.Response.Citation.Id
-  name: Id
-  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.Citation.html#FoundationaLLM_Common_Models_Orchestration_Response_Citation_Id
-  commentId: P:FoundationaLLM.Common.Models.Orchestration.Response.Citation.Id
-  fullName: FoundationaLLM.Common.Models.Orchestration.Response.Citation.Id
-  nameWithType: Citation.Id
-- uid: FoundationaLLM.Common.Models.Orchestration.Response.Citation.Id*
-  name: Id
-  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.Citation.html#FoundationaLLM_Common_Models_Orchestration_Response_Citation_Id_
-  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.Response.Citation.Id
-  isSpec: "True"
-  fullName: FoundationaLLM.Common.Models.Orchestration.Response.Citation.Id
-  nameWithType: Citation.Id
-- uid: FoundationaLLM.Common.Models.Orchestration.Response.Citation.Title
-  name: Title
-  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.Citation.html#FoundationaLLM_Common_Models_Orchestration_Response_Citation_Title
-  commentId: P:FoundationaLLM.Common.Models.Orchestration.Response.Citation.Title
-  fullName: FoundationaLLM.Common.Models.Orchestration.Response.Citation.Title
-  nameWithType: Citation.Title
-- uid: FoundationaLLM.Common.Models.Orchestration.Response.Citation.Title*
-  name: Title
-  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.Citation.html#FoundationaLLM_Common_Models_Orchestration_Response_Citation_Title_
-  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.Response.Citation.Title
-  isSpec: "True"
-  fullName: FoundationaLLM.Common.Models.Orchestration.Response.Citation.Title
-  nameWithType: Citation.Title
 - uid: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponse
   name: CompletionResponse
   href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponse.html
@@ -19291,19 +19246,6 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.AnalysisResults
   nameWithType: CompletionResponseBase.AnalysisResults
-- uid: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.Citations
-  name: Citations
-  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.html#FoundationaLLM_Common_Models_Orchestration_Response_CompletionResponseBase_Citations
-  commentId: P:FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.Citations
-  fullName: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.Citations
-  nameWithType: CompletionResponseBase.Citations
-- uid: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.Citations*
-  name: Citations
-  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.html#FoundationaLLM_Common_Models_Orchestration_Response_CompletionResponseBase_Citations_
-  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.Citations
-  isSpec: "True"
-  fullName: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.Citations
-  nameWithType: CompletionResponseBase.Citations
 - uid: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.Completion
   name: Completion
   href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.html#FoundationaLLM_Common_Models_Orchestration_Response_CompletionResponseBase_Completion
@@ -19343,6 +19285,19 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.Content
   nameWithType: CompletionResponseBase.Content
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.ContentArtifacts
+  name: ContentArtifacts
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.html#FoundationaLLM_Common_Models_Orchestration_Response_CompletionResponseBase_ContentArtifacts
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.ContentArtifacts
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.ContentArtifacts
+  nameWithType: CompletionResponseBase.ContentArtifacts
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.ContentArtifacts*
+  name: ContentArtifacts
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.html#FoundationaLLM_Common_Models_Orchestration_Response_CompletionResponseBase_ContentArtifacts_
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.ContentArtifacts
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.ContentArtifacts
+  nameWithType: CompletionResponseBase.ContentArtifacts
 - uid: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.Deleted
   name: Deleted
   href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.html#FoundationaLLM_Common_Models_Orchestration_Response_CompletionResponseBase_Deleted
@@ -19460,6 +19415,103 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.UserPrompt
   nameWithType: CompletionResponseBase.UserPrompt
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact
+  name: ContentArtifact
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.html
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact
+  nameWithType: ContentArtifact
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Content
+  name: Content
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.html#FoundationaLLM_Common_Models_Orchestration_Response_ContentArtifact_Content
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Content
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Content
+  nameWithType: ContentArtifact.Content
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Content*
+  name: Content
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.html#FoundationaLLM_Common_Models_Orchestration_Response_ContentArtifact_Content_
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Content
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Content
+  nameWithType: ContentArtifact.Content
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Filepath
+  name: Filepath
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.html#FoundationaLLM_Common_Models_Orchestration_Response_ContentArtifact_Filepath
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Filepath
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Filepath
+  nameWithType: ContentArtifact.Filepath
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Filepath*
+  name: Filepath
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.html#FoundationaLLM_Common_Models_Orchestration_Response_ContentArtifact_Filepath_
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Filepath
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Filepath
+  nameWithType: ContentArtifact.Filepath
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Id
+  name: Id
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.html#FoundationaLLM_Common_Models_Orchestration_Response_ContentArtifact_Id
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Id
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Id
+  nameWithType: ContentArtifact.Id
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Id*
+  name: Id
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.html#FoundationaLLM_Common_Models_Orchestration_Response_ContentArtifact_Id_
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Id
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Id
+  nameWithType: ContentArtifact.Id
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Metadata
+  name: Metadata
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.html#FoundationaLLM_Common_Models_Orchestration_Response_ContentArtifact_Metadata
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Metadata
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Metadata
+  nameWithType: ContentArtifact.Metadata
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Metadata*
+  name: Metadata
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.html#FoundationaLLM_Common_Models_Orchestration_Response_ContentArtifact_Metadata_
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Metadata
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Metadata
+  nameWithType: ContentArtifact.Metadata
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Source
+  name: Source
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.html#FoundationaLLM_Common_Models_Orchestration_Response_ContentArtifact_Source
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Source
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Source
+  nameWithType: ContentArtifact.Source
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Source*
+  name: Source
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.html#FoundationaLLM_Common_Models_Orchestration_Response_ContentArtifact_Source_
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Source
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Source
+  nameWithType: ContentArtifact.Source
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Title
+  name: Title
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.html#FoundationaLLM_Common_Models_Orchestration_Response_ContentArtifact_Title
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Title
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Title
+  nameWithType: ContentArtifact.Title
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Title*
+  name: Title
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.html#FoundationaLLM_Common_Models_Orchestration_Response_ContentArtifact_Title_
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Title
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Title
+  nameWithType: ContentArtifact.Title
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Type
+  name: Type
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.html#FoundationaLLM_Common_Models_Orchestration_Response_ContentArtifact_Type
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Type
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Type
+  nameWithType: ContentArtifact.Type
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Type*
+  name: Type
+  href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.html#FoundationaLLM_Common_Models_Orchestration_Response_ContentArtifact_Type_
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Type
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.Type
+  nameWithType: ContentArtifact.Type
 - uid: FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse
   name: LLMCompletionResponse
   href: api/dotnet/FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse.html
