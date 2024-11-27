@@ -11,6 +11,8 @@ The following new App Configuration settings are required:
 
 |Name | Default value |
 |--- | --- |
+|`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:RequireScopes` | `true` |
+|`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:AllowACLAuthorization` | `false` |
 |`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AccountName` | `-` |
 |`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AuthenticationType` | `-` |
 |`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer` | `-` |

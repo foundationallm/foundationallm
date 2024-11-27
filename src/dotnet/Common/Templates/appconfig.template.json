@@ -253,6 +253,20 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:RequireScopes",
+            "value": "true",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:AllowACLAuthorization",
+            "value": "false",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CosmosDB:Endpoint",
             "value": "${env:AZURE_COSMOS_DB_ENDPOINT}",
             "label": null,
