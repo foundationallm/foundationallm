@@ -15,10 +15,10 @@ from azure.search.documents import SearchClient
 from azure.search.documents.models import VectorizedQuery
 from azure.core.credentials import AzureKeyCredential
 from azure.identity import DefaultAzureCredential
-from foundationallm.models.orchestration import Citation
-from .citation_retrieval_base import CitationRetrievalBase
+from foundationallm.models.orchestration import ContentArtifact
+from .content_artifact_retrieval_base import ContentArtifactRetrievalBase
 
-class MultiIndexRetriever(BaseRetriever, CitationRetrievalBase):
+class MultiIndexRetriever(BaseRetriever, ContentArtifactRetrievalBase):
     """
     LangChain multi retriever.
     Properties:
@@ -53,9 +53,9 @@ class MultiIndexRetriever(BaseRetriever, CitationRetrievalBase):
         """
         self.retrievers.append(retriever)
 
-    def get_document_citations(self):
+    def get_document_content_artifacts(self):
 
-        citations = []
+        content_artifacts = []
         added_ids = set()  # Avoid duplicates
         for result in self.search_results:  # Unpack the tuple
             result_id = result.id
@@ -64,10 +64,10 @@ class MultiIndexRetriever(BaseRetriever, CitationRetrievalBase):
                 if result_id not in added_ids:
                     title = (metadata['multipart_id'][-1]).split('/')[-1]
                     filepath = '/'.join(metadata['multipart_id'])
-                    citations.append(Citation(id=result_id, title=title, filepath=filepath))
+                    content_artifacts.append(ContentArtifact(id=result_id, title=title, filepath=filepath))
                     added_ids.add(result_id)
 
-        return citations
+        return content_artifacts
 
     def _get_relevant_documents(
         self, query: str, *, run_manager: CallbackManagerForRetrieverRun

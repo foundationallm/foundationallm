@@ -535,6 +535,38 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AccountName setting.
+        /// <para>Value description:<br/>The Azure Storage account for external modules.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_LangChainAPI_Configuration_ExternalModules_Storage_AccountName =
+            "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AccountName";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AuthenticationType setting.
+        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Storage account. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_LangChainAPI_Configuration_ExternalModules_Storage_AuthenticationType =
+            "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AuthenticationType";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer setting.
+        /// <para>Value description:<br/>The name of the root container in the Azure Storage account.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_LangChainAPI_Configuration_ExternalModules_RootStorageContainer =
+            "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules setting.
+        /// <para>Value description:<br/>Modules configured for external use in the LangChainAPI. The content should have the following pattern: module_name|module_tool_manager,module_name|module_tool_manager...</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_LangChainAPI_Configuration_ExternalModules_Modules =
+            "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules";
+
+        #endregion
+
         #region FoundationaLLM:APIEndpoints:SemanticKernelAPI:Essentials
         
         /// <summary>

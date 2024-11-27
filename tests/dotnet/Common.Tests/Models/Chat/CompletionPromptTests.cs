@@ -54,14 +54,14 @@ namespace FoundationaLLM.Common.Tests.Models.Chat
             Assert.Equal(expectedPrompt, completionPrompt.Prompt);
         }
 
-        public CompletionPrompt CreateCompletionPrompt(string sessionId, string messageId, string prompt, Citation[]? citations = null)
+        public CompletionPrompt CreateCompletionPrompt(string sessionId, string messageId, string prompt, ContentArtifact[]? contentArtifacts = null)
         {
             return new CompletionPrompt
             {
                 SessionId = sessionId,
                 MessageId = messageId,
                 Prompt = prompt,
-                Citations = citations
+                ContentArtifacts = contentArtifacts
             };
         }
     }

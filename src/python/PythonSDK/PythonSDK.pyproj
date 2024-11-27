@@ -64,7 +64,7 @@
     <Compile Include="foundationallm\langchain\exceptions\langchain_exception.py" />
     <Compile Include="foundationallm\langchain\exceptions\__init__.py" />
     <Compile Include="foundationallm\langchain\retrievers\agent_parameter_retriever_keys.py" />
-    <Compile Include="foundationallm\langchain\retrievers\citation_retrieval_base.py" />
+    <Compile Include="foundationallm\langchain\retrievers\content_artifact_retrieval_base.py" />
     <Compile Include="foundationallm\langchain\retrievers\retriever_factory.py" />
     <Compile Include="foundationallm\langchain\retrievers\search_service_filter_retriever.py" />
     <Compile Include="foundationallm\langchain\retrievers\azure_ai_search_service_retriever.py" />
@@ -111,7 +111,7 @@
     <Compile Include="foundationallm\models\agents\agent_base.py" />
     <Compile Include="foundationallm\models\agents\knowledge_management_agent.py" />
     <Compile Include="foundationallm\models\agents\knowledge_management_completion_request.py" />
-    <Compile Include="foundationallm\models\orchestration\citation.py" />
+    <Compile Include="foundationallm\models\orchestration\content_artifact.py" />
     <Compile Include="foundationallm\models\orchestration\completion_request_base.py" />
     <Compile Include="foundationallm\models\orchestration\completion_response.py" />
     <Compile Include="foundationallm\models\messages\message_history_item.py" />

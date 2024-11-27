@@ -407,6 +407,34 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AccountName",
+            "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AuthenticationType",
+            "value": "AzureIdentity",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer",
+            "value": "",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules",
+            "value": "",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:SemanticKernelAPI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-semantickernelapi-apikey\"}",
             "label": null,

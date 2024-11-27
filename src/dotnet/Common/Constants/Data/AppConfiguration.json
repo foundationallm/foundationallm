@@ -727,6 +727,47 @@
 		"configuration_keys": []
 	},
 	{
+		"namespace": "APIEndpoints:LangChainAPI:Configuration:ExternalModules",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the main LangChain API settings for external modules."
+		},
+		"configuration_keys": [
+			{
+				"name": "Storage:AccountName",
+				"description": "The Azure Storage account for external modules.",
+				"secret": "",
+				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+				"content_type": "",
+				"first_version": "0.9.0"
+			},
+			{
+				"name": "Storage:AuthenticationType",
+				"description": "The type of authentication used to connect to the Azure Storage account. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
+				"secret": "",
+				"value": "AzureIdentity",
+				"content_type": "",
+				"first_version": "0.9.0"
+			},
+			{
+				"name": "RootStorageContainer",
+				"description": "The name of the root container in the Azure Storage account.",
+				"secret": "",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.9.0"
+			},
+			{
+				"name": "Modules",
+				"description": "Modules configured for external use in the LangChainAPI. The content should have the following pattern: module_name|module_tool_manager,module_name|module_tool_manager...",
+				"secret": "",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.9.0"
+			}
+		]
+	},
+	{
 		"namespace": "APIEndpoints:SemanticKernelAPI:Essentials",
 		"dependency_injection_key": null,
 		"configuration_section": {

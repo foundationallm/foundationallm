@@ -94,17 +94,17 @@
 
 				<!-- Assistant message footer -->
 				<div v-if="message.sender !== 'User'" class="message__footer">
-					<!-- Citations -->
-					<div v-if="message.citations?.length" class="citations">
-						<span><b>Citations: </b></span>
+					<!-- Content Artifacts -->
+					<div v-if="message.contentArtifacts?.length" class="content-artifacts">
+						<span><b>Content Artifacts: </b></span>
 						<span
-							v-for="citation in message.citations"
-							:key="citation.id"
-							v-tooltip.top="{ content: citation.filepath, showDelay: 500, hideDelay: 300 }"
-							class="citation"
+							v-for="artifact in message.contentArtifacts"
+							:key="artifact.id"
+							v-tooltip.top="{ content: artifact.filepath, showDelay: 500, hideDelay: 300 }"
+							class="content-artifact"
 						>
 							<i class="pi pi-file"></i>
-							{{ citation.title.split('/').pop() }}
+							{{ artifact.title.split('/').pop() }}
 						</span>
 					</div>
 
@@ -808,7 +808,7 @@ $textColor: #131833;
 	background-color: var(--primary-color);
 }
 
-.citations {
+.content-artifacts {
 	flex-basis: 100%;
 	padding: 8px 12px;
 	display: flex;
@@ -816,7 +816,7 @@ $textColor: #131833;
 	align-items: center;
 }
 
-.citation {
+.content-artifact {
 	background-color: var(--primary-color);
 	color: var(--primary-text);
 	margin: 4px;

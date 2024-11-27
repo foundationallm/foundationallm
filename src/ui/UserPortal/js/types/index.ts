@@ -15,7 +15,7 @@ export type ResourceProviderGetResult<T> = {
 	roles: string[];
 };
 
-export interface Citation {
+export interface ContentArtifact {
 	id: string;
 	title: string;
 	filepath: string;
@@ -60,7 +60,7 @@ export interface Message {
 	rating: boolean | null;
 	vector: Array<Number>;
 	completionPromptId: string | null;
-	citations: Array<Citation>;
+	contentArtifacts: Array<ContentArtifact>;
 	content: Array<MessageContent>;
 	attachments: Array<string>;
 	attachmentDetails: Array<AttachmentDetail>;

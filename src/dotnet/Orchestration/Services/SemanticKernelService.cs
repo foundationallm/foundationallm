@@ -73,7 +73,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
                 {
                     OperationId = request.OperationId!,
                     Completion = completionResponse!.Completion,
-                    Citations = completionResponse.Citations,
+                    ContentArtifacts = completionResponse.ContentArtifacts,
                     UserPrompt = completionResponse.UserPrompt,
                     FullPrompt = completionResponse.FullPrompt,
                     PromptTemplate = string.Empty,

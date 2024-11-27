@@ -20,6 +20,14 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public required string Description { get; set; }
 
         /// <summary>
+        /// Gets or sets the package name of the tool.
+        /// For internal tools, this value will be FoundationaLLM
+        /// For external tools, this value will be the name of the package.
+        /// </summary>
+        [JsonPropertyName("package_name")]
+        public required string PackageName { get; set; }
+
+        /// <summary>
         /// Gets or sets a dictionary of AI model object identifiers.
         /// </summary>
         /// <remarks>
