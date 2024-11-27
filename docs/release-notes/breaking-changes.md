@@ -3,6 +3,19 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting with 0.9.0
+
+### Configuration changes
+
+The following new App Configuration settings are required:
+
+Name | Default value
+--- | ---
+`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AccountName` | `-`
+`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AuthenticationType` | `-`
+`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer` | `-`
+`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules` | `-`
+
 ## Starting with 0.8.4
 
 ### Configuration changes
