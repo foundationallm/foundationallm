@@ -77,7 +77,7 @@ jobs:
 
     - name: Publish Authorization to NuGet
       working-directory: ./src/dotnet/Authorization
-      run: dotnet nuget push ./nupkg/*.Configuration.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push ./nupkg/*.Authorization.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
 
     - name: Publish Configuration to NuGet
       working-directory: ./src/dotnet/Configuration
