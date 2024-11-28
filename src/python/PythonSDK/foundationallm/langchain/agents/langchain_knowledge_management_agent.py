@@ -41,7 +41,7 @@ from foundationallm.services import (
 from foundationallm.services.gateway_text_embedding import GatewayTextEmbeddingService
 from openai.types import CompletionUsage
 
-from foundationallm.tools.tool_factory import ToolFactory
+from foundationallm.langchain.tools import ToolFactory
 
 class LangChainKnowledgeManagementAgent(LangChainAgentBase):
     """

@@ -5,7 +5,7 @@ Description: Factory class for creating tools based on the AgentTool configurati
 from foundationallm.config import Configuration
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.models.agents import AgentTool
-from foundationallm.tools import FLLMToolBase, DALLEImageGenerationTool
+from foundationallm.langchain.tools import FLLMToolBase, DALLEImageGenerationTool
 
 class ToolFactory:
     """

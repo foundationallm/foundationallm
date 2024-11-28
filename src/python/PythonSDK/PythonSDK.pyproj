@@ -141,10 +141,9 @@
     <Compile Include="foundationallm\models\resource_providers\vectorization\profile_base.py" />
     <Compile Include="foundationallm\models\resource_providers\vectorization\__init__.py" />
     <Compile Include="foundationallm\models\resource_providers\__init__.py" />
-    <Compile Include="foundationallm\tools\dalle_image_generation_tool.py" />
-    <Compile Include="foundationallm\tools\fllm_tool.py" />
-    <Compile Include="foundationallm\tools\tool_factory.py" />
-    <Compile Include="foundationallm\tools\__init__.py" />
+    <Compile Include="foundationallm\langchain\tools\dalle_image_generation_tool.py" />
+    <Compile Include="foundationallm\langchain\tools\fllm_tool.py" />
+    <Compile Include="foundationallm\langchain\tools\tool_factory.py" />
     <Compile Include="foundationallm\utils\object_utils.py" />
     <Compile Include="foundationallm\utils\openai_assistants_helpers.py" />
     <Compile Include="foundationallm\utils\__init__.py" />
@@ -185,7 +184,6 @@
     <Folder Include="foundationallm\models\constants\" />
     <Folder Include="foundationallm\event_handlers\" />
     <Folder Include="foundationallm\models\messages\" />
-    <Folder Include="foundationallm\tools\" />
     <Folder Include="foundationallm\services\" />
     <Folder Include="foundationallm\langchain\retrievers\" />
     <Folder Include="foundationallm\langchain\orchestration\" />
