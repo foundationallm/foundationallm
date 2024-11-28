@@ -136,7 +136,7 @@ jobs:
           result-encoding: string
           script: |
             var registries = new Map();
-            registries['e2e'] = 'crfllme2eops'
+            registries['e2e'] = 'crfllme2eeus2'
             registries['sandbox'] = 'cropseastus2svinternal'
             return registries['${{ inputs.target }}']
 
@@ -365,6 +365,8 @@ jobs:
 
           azd env set FOUNDATIONALLM_INSTANCE_ID 6fa496ce-d5c0-4e02-9223-06a98c9c0176
           azd env set AZURE_PRINCIPAL_TYPE ServicePrincipal
+          azd env set FOUNDATIONALLM_OWNER E2EFLLM
+          azd env set ONEDRIVE_BASE_URL https://foundationallm-my.sharepoint.com/
           Pop-Location
         shell: pwsh
 
