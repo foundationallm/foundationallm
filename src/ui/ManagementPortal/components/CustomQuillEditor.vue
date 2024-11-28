@@ -15,15 +15,15 @@
 						<option value="large"></option>
 						<option value="huge"></option>
 					</select>
-					<button class="ql-bold" aria-label="Bold"></button>
-					<button class="ql-italic" aria-label="Italic"></button>
-					<button class="ql-underline" aria-label="Underline"></button>
-					<button class="ql-strike" aria-label="Strike"></button>
-					<button class="ql-link" aria-label="Link"></button>
-					<button class="ql-image" aria-label="Image"></button>
-					<button class="ql-list" value="ordered" aria-label="Ordered List"></button>
-					<button class="ql-list" value="bullet" aria-label="Unordered List"></button>
-					<button class="ql-clean" aria-label="Remove Styles"></button>
+					<button class="ql-bold" aria-label="Bold" title="Bold"></button>
+					<button class="ql-italic" aria-label="Italic" title="Italic"></button>
+					<button class="ql-underline" aria-label="Underline" title="Underline"></button>
+					<button class="ql-strike" aria-label="Strike" title="Strike"></button>
+					<button class="ql-link" aria-label="Link" title="Link"></button>
+					<button class="ql-image" aria-label="Image" title="Image"></button>
+					<button class="ql-list" value="ordered" aria-label="Ordered List" title="Ordered List"></button>
+					<button class="ql-list" value="bullet" aria-label="Unordered List" title="Unordered List"></button>
+					<button class="ql-clean" aria-label="Remove Styles" title="Remove Styles"></button>
 					<button
 						class="quill-view-html"
 						aria-label="Edit HTML"
