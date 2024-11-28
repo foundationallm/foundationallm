@@ -21,7 +21,8 @@ from foundationallm.models.agents import (
     AgentConversationHistorySettings,
     KnowledgeManagementAgent,
     KnowledgeManagementCompletionRequest,
-    KnowledgeManagementIndexConfiguration
+    KnowledgeManagementIndexConfiguration,
+    AgentTool
 )
 from foundationallm.models.attachments import AttachmentProviders
 from foundationallm.models.authentication import AuthenticationTypes
@@ -39,6 +40,8 @@ from foundationallm.services import (
 )
 from foundationallm.services.gateway_text_embedding import GatewayTextEmbeddingService
 from openai.types import CompletionUsage
+
+from foundationallm.tools.tool_factory import ToolFactory
 
 class LangChainKnowledgeManagementAgent(LangChainAgentBase):
     """
@@ -419,22 +422,15 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         # End Assistants API implementation
 
         # Start LangGraph ReAct Agent workflow implementation
-        if (agent.workflow is not None and isinstance(agent.workflow, LangGraphReactAgentWorkflow)):            
-            # Temporary placeholder
-            from typing import Literal
-            from langchain_core.tools import tool
-            @tool
-            def get_weather(city: Literal["nyc", "sf"]):
-                """Use this to get weather information."""
-                if city == "nyc":
-                    return "It might be cloudy in nyc"
-                elif city == "sf":
-                    return "It's always sunny in sf"
-                else:
-                    raise AssertionError("Unknown city")
-            tools = [get_weather]
-            # End temporary placeholder
-
+        if (agent.workflow is not None and isinstance(agent.workflow, LangGraphReactAgentWorkflow)):
+            tool_factory = ToolFactory()
+            tools = []           
+            
+            # Populate tools list from agent configuration
+            for tool in agent.tools.values():
+                agent_tool = AgentTool(**tool)
+                tools.append(tool_factory.get_tool(agent_tool, request.objects, self.config))
+            
             # Define the graph          
             graph = create_react_agent(llm, tools=tools, state_modifier=self.prompt.prefix)
             messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
