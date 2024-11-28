@@ -12,7 +12,7 @@ class ToolFactory:
     Factory class for creating tools based on the AgentTool configuration.
     """
     FLLM_PACKAGE_NAME = "FoundationaLLM"
-    DALLE_TOOL_NAME = "dalle-image-generation"
+    DALLE_TOOL_NAME = "DALLEImageGeneration"
 
     def get_tool(
         self,
