@@ -35,6 +35,10 @@ jobs:
       working-directory: ./src/dotnet/Common
       run: dotnet build --configuration Release -p:GITHUB_ACTIONS=true
 
+    - name: Build Authorization
+      working-directory: ./src/dotnet/Authorization
+      run: dotnet build --configuration Release -p:GITHUB_ACTIONS=true
+
     - name: Build Configuration
       working-directory: ./src/dotnet/Configuration
       run: dotnet build --configuration Release -p:GITHUB_ACTIONS=true
@@ -49,6 +53,10 @@ jobs:
 
     - name: Pack Common
       working-directory: ./src/dotnet/Common
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+
+    - name: Pack Authorization
+      working-directory: ./src/dotnet/Authorization
       run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     - name: Pack Configuration
@@ -66,6 +74,10 @@ jobs:
     - name: Publish Common to NuGet
       working-directory: ./src/dotnet/Common
       run: dotnet nuget push ./nupkg/*.Common.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+
+    - name: Publish Authorization to NuGet
+      working-directory: ./src/dotnet/Authorization
+      run: dotnet nuget push ./nupkg/*.Configuration.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
 
     - name: Publish Configuration to NuGet
       working-directory: ./src/dotnet/Configuration
