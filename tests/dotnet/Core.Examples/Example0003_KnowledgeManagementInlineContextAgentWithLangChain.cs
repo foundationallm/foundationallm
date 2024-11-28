@@ -49,9 +49,11 @@ namespace FoundationaLLM.Core.Examples
                 var invalidAgentResponsesFound = 0;
                 foreach (var message in response!)
                 {
-                    WriteLine($"- {message.Sender}: {message.Text}");
-                    if (string.Equals(message.Sender, Common.Constants.Agents.InputMessageRoles.Assistant, StringComparison.CurrentCultureIgnoreCase) &&
-                        message.Text == TestResponseMessages.FailedCompletionResponse)
+                    var text = message.Text ?? message.Content?.First().Value;
+                    WriteLine($"- {message.Sender}: {text}");
+                    if (string.Equals(message.Sender, Common.Constants.Agents.InputMessageRoles.Agent, StringComparison.CurrentCultureIgnoreCase) &&
+                        (string.IsNullOrEmpty(text) ||
+                        string.Equals(text, TestResponseMessages.FailedCompletionResponse)))
                     {
                         invalidAgentResponsesFound++;
                     }

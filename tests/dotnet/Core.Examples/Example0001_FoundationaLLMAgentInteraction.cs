@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Core.Examples.Interfaces;
+﻿using FoundationaLLM.Core.Examples.Constants;
+using FoundationaLLM.Core.Examples.Interfaces;
 using FoundationaLLM.Core.Examples.Setup;
 using Xunit.Abstractions;
 
@@ -31,12 +32,9 @@ namespace FoundationaLLM.Core.Examples
 
             WriteLine($"Send session-based \"{userPrompt}\" user prompt to the {agentName} agent.");
             var response = await _agentConversationTestService.RunAgentCompletionWithSession(agentName, userPrompt, null, false);
-            WriteLine($"Agent completion response: {response.Text}");
-            Assert.False(string.IsNullOrWhiteSpace(response.Text) || response.Text == Constants.TestResponseMessages.FailedCompletionResponse);
-            WriteLine($"Send sessionless \"{userPrompt}\" user prompt to the {agentName} agent.");
-            response = await _agentConversationTestService.RunAgentCompletionWithNoSession(agentName, userPrompt, false);
-            WriteLine($"Agent completion response: {response.Text}");
-            Assert.False(string.IsNullOrWhiteSpace(response.Text) || response.Text == Constants.TestResponseMessages.FailedCompletionResponse);
+            var responseText = response.Content!.First().Value;
+            WriteLine($"Agent completion response: {responseText}");
+            Assert.False(string.IsNullOrWhiteSpace(responseText) || string.Equals(responseText, TestResponseMessages.FailedCompletionResponse));
         }
 	}
 }

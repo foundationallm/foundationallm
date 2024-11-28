@@ -21,5 +21,9 @@
         /// Tool role.
         /// </summary>
         public const string Tool = "tool";
+        /// <summary>
+        /// Agent role.
+        /// </summary>
+        public const string Agent = "agent";
     }
 }
