@@ -20,13 +20,16 @@
 			class="color-picker"
 			@change="onColorChange"
 		/>
-		<Button
-			:disabled="value === originalValue"
-			class="color-undo-button"
-			icon="pi pi-undo"
-			aria-label="Reset to default color"
-			@click="$emit('reset', originalValue)"
-		/>
+		<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+			<Button
+				:disabled="value === originalValue"
+				class="color-undo-button"
+				icon="pi pi-undo"
+				aria-label="Reset to initial color"
+				@click="$emit('reset', originalValue)"
+			/>
+			<template #popper><div role="tooltip">Reset to initial color</div></template>
+		</VTooltip>
 	</div>
 </template>
 

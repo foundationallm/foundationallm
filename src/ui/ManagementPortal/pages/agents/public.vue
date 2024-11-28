@@ -81,13 +81,16 @@
 				>
 					<template #body="{ data }">
 						<NuxtLink :to="'/agents/edit/' + data.resource.name" class="table__button" tabindex="-1">
-							<Button
-								link
-								:disabled="!data.actions.includes('FoundationaLLM.Agent/agents/write')"
-								:aria-label="`Edit ${data.resource.name}`"
-							>
-								<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
-							</Button>
+							<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+								<Button
+									link
+									:disabled="!data.actions.includes('FoundationaLLM.Agent/agents/write')"
+									:aria-label="`Edit ${data.resource.name}`"
+								>
+									<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
+								</Button>
+								<template #popper><div role="tooltip">Edit {{data.resource.name}}</div></template>
+							</VTooltip>
 						</NuxtLink>
 					</template>
 				</Column>
@@ -105,14 +108,17 @@
 					}"
 				>
 					<template #body="{ data }">
-						<Button
-							link
-							:disabled="!data.actions.includes('FoundationaLLM.Agent/agents/delete')"
-							:aria-label="`Delete ${data.resource.name}`"
-							@click="agentToDelete = data.resource"
-						>
-							<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
-						</Button>
+						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+							<Button
+								link
+								:disabled="!data.actions.includes('FoundationaLLM.Agent/agents/delete')"
+								:aria-label="`Delete ${data.resource.name}`"
+								@click="agentToDelete = data.resource"
+							>
+								<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
+							</Button>
+							<template #popper><div role="tooltip">Delete {{data.resource.name}}</div></template>
+						</VTooltip>
 					</template>
 				</Column>
 			</DataTable>
