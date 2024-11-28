@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Models.Authorization;
+using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Security
 {
@@ -14,7 +15,8 @@ namespace FoundationaLLM.Common.Models.Security
         /// The salt is a random value that is used to protect against dictionary attacks.
         /// It is generated once and stored with the secret key in a Base58 encoded format.
         /// </remarks>
-        public required string Salt { get; set; }
+        [JsonIgnore]
+        public string? Salt { get; set; }
 
         /// <summary>
         /// Gets or sets the hash of the secret key.
@@ -22,6 +24,21 @@ namespace FoundationaLLM.Common.Models.Security
         /// <remarks>
         /// The hash is computed by applying the hashing algorithm to the secret key and the salt.
         /// </remarks>
-        public required string Hash { get; set; }
+        [JsonIgnore]
+        public string? Hash { get; set; }
+
+        /// <summary>
+        /// Gets the name of the key vault secret that stores the salt.
+        /// </summary>
+        [JsonIgnore]
+        public string SaltKeyVaultSecretName =>
+            $"foundationallm-secretkey-salt-{InstanceId.ToLower()}-{Id.ToLower()}";
+
+        /// <summary>
+        /// Gets the name of the key vault secret that stores the hash.
+        /// </summary>
+        [JsonIgnore]
+        public string HashKeyVaultSecretName =>
+            $"foundationallm-secretkey-hash-{InstanceId.ToLower()}-{Id.ToLower()}";
     }
 }

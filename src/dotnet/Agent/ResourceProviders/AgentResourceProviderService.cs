@@ -362,6 +362,10 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 }
             }
 
+            // Ensure the agent has a valid virtual security group identifier.
+            if (string.IsNullOrWhiteSpace(agent.VirtualSecurityGroupId))
+                agent.VirtualSecurityGroupId = Guid.NewGuid().ToString().ToLower();
+
             UpdateBaseProperties(agent, userIdentity, isNew: existingAgentReference == null);
             if (existingAgentReference == null)
                 await CreateResource<AgentBase>(agentReference, agent);

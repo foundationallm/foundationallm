@@ -30,13 +30,15 @@ namespace FoundationaLLM.AuthorizationEngine.Services
         private readonly AuthorizationCoreSettings _settings;
         private readonly ConcurrentDictionary<string, RoleAssignmentStore> _roleAssignmentStores = [];
         private readonly ConcurrentDictionary<string, PolicyAssignmentStore> _policyAssignmentStores = [];
+        private readonly ConcurrentDictionary<string, SecretKeyStore> _secretKeyStores = [];
         private readonly ConcurrentDictionary<string, RoleAssignmentCache> _roleAssignmentCaches = [];
         private readonly ConcurrentDictionary<string, PolicyAssignmentCache> _policyAssignmentCaches = [];
+        private readonly ConcurrentDictionary<string, SecretKeyCache> _secretKeyCaches = [];
         private readonly IValidator<ActionAuthorizationRequest> _actionAuthorizationRequestValidator;
 
         private const string ROLE_ASSIGNMENTS_CONTAINER_NAME = "role-assignments";
         private const string POLICY_ASSIGNMENTS_CONTAINER_NAME = "policy-assignments";
-        private const string SECURE_KEYS_CONTAINER_NAME = "secure-keys";
+        private const string SECRET_KEYS_CONTAINER_NAME = "secret-keys";
 
         private bool _initialized = false;
         private readonly SemaphoreSlim _syncRoot = new(1, 1);
@@ -77,9 +79,10 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                 {
                     var roleAssignmentStoreFile = $"/{instanceId.ToLower()}.json";
                     var policyAssignmentStoreFile = $"/{instanceId.ToLower()}-policy.json";
-                    var secureKeysStoreFile = $"/{instanceId.ToLower()}-secure-keys.json";
+                    var secretKeysStoreFile = $"/{instanceId.ToLower()}-secret-keys.json";
                     RoleAssignmentStore? roleAssignmentStore;
                     PolicyAssignmentStore? policyAssignmentStore;
+                    SecretKeyStore? secretKeyStore;
 
                     #region Load role assignments
 
@@ -157,15 +160,40 @@ namespace FoundationaLLM.AuthorizationEngine.Services
 
                     #endregion
 
-                    #region Load secure keys
+                    #region Load secret keys
 
-                    if (await _storageService.FileExistsAsync(SECURE_KEYS_CONTAINER_NAME, secureKeysStoreFile, default))
+                    if (await _storageService.FileExistsAsync(SECRET_KEYS_CONTAINER_NAME, secretKeysStoreFile, default))
                     {
-
+                        var fileContent = await _storageService.ReadFileAsync(SECRET_KEYS_CONTAINER_NAME, secretKeysStoreFile, default);
+                        secretKeyStore = JsonSerializer.Deserialize<SecretKeyStore>(
+                            Encoding.UTF8.GetString(fileContent.ToArray()));
+                        if (secretKeyStore == null
+                            || string.Compare(secretKeyStore.InstanceId, instanceId) != 0)
+                        {
+                            _logger.LogError("The secret key store file for instance {InstanceId} is invalid.", instanceId);
+                        }
+                        else
+                        {
+                            _secretKeyStores.AddOrUpdate(instanceId, secretKeyStore, (k, v) => secretKeyStore);
+                            _logger.LogInformation("The secret key store for instance {InstanceId} has been loaded.", instanceId);
+                        }
                     }
                     else
                     {
+                        secretKeyStore = new SecretKeyStore
+                        {
+                            InstanceId = instanceId,
+                            SecretKeys = []
+                        };
 
+                        _secretKeyStores.AddOrUpdate(instanceId, secretKeyStore, (k, v) => secretKeyStore);
+                        await _storageService.WriteFileAsync(
+                            SECRET_KEYS_CONTAINER_NAME,
+                            secretKeysStoreFile,
+                            JsonSerializer.Serialize(secretKeyStore),
+                            default,
+                            default);
+                        _logger.LogInformation("The secret key store for instance {InstanceId} has been created.", instanceId);
                     }
 
                     #endregion
@@ -180,6 +208,14 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                     {
                         policyAssignmentStore.EnrichPolicyAssignments();
                         _policyAssignmentCaches.AddOrUpdate(instanceId, new PolicyAssignmentCache(policyAssignmentStore), (k, v) => v);
+                    }
+
+                    if (secretKeyStore != null)
+                    {
+                        _secretKeyCaches.AddOrUpdate(
+                            instanceId,
+                            new SecretKeyCache(secretKeyStore, _configuration, _logger),
+                            (k, v) => v);
                     }
                 }
 
