@@ -44,7 +44,7 @@ class DALLEImageGenerationTool(FLLMToolBase):
     Supports only Azure Identity authentication.
     """
     args_schema: Type[BaseModel] = DALLEImageGenerationToolInput
-    
+        
     def __init__(self, tool_config: AgentTool, objects: dict, config: Configuration):
         """ Initializes the DALLEImageGenerationTool class with the tool configuration,
             exploded objects collection, and platform configuration. """
