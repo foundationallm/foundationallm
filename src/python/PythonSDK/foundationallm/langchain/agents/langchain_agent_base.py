@@ -1,3 +1,4 @@
+import boto3
 from abc import abstractmethod
 from typing import List
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
@@ -327,30 +328,75 @@ class LangChainAgentBase():
                     else OpenAI(base_url=self.api_endpoint.url, api_key=api_key)
                 )
             case LanguageModelProvider.BEDROCK:
-                try:
-                    access_key = self.config.get_value(self.api_endpoint.authentication_parameters.get('access_key'))
-                except Exception as e:
-                    raise LangChainException(f"Failed to retrieve access key: {str(e)}", 500)
+                if self.api_endpoint.authentication_type == AuthenticationTypes.AZURE_IDENTITY:
+                    # Get Azure scope for federated authentication as well as the AWS role ARN (Amazon Resource Name).
+                    try:
+                        scope = self.config.get_value(self.api_endpoint.authentication_parameters.get('scope'))
+                    except Exception as e:
+                        raise LangChainException(f"Failed to retrieve scope: {str(e)}", 500)
 
-                if access_key is None:
-                    raise LangChainException("Access key is missing from the configuration settings.", 400)
+                    if scope is None:
+                        raise LangChainException("Scope is missing from the configuration settings.", 400)
 
-                try:
-                    secret_key = self.config.get_value(self.api_endpoint.authentication_parameters.get('secret_key'))
-                except Exception as e:
-                    raise LangChainException(f"Failed to retrieve secret key: {str(e)}", 500)
+                    try:
+                        role_arn = self.config.get_value(self.api_endpoint.authentication_parameters.get('role_arn'))
+                    except Exception as e:
+                        raise LangChainException(f"Failed to retrieve Role ARN: {str(e)}", 500)
 
-                if secret_key is None:
-                    raise LangChainException("Secret key is missing from the configuration settings.", 400)
+                    if role_arn is None:
+                        raise LangChainException("Role ARN is missing from the configuration settings.", 400)
+                    
+                    print("SCOPE: ", scope)
+                    print("ROLE_ARN: ", role_arn)
+                    # Get Azure token for designated scope.
+                    az_creds = DefaultAzureCredential(exclude_environment_credential=True)
+                    azure_token = az_creds.get_token(scope)
+                    
+                    sts_client = boto3.client('sts')
+                    sts_response = sts_client.assume_role_with_web_identity(
+                        RoleArn=role_arn,                        
+                        RoleSessionName='assume-role',
+                        WebIdentityToken=azure_token.token
+                    )
+                    print(sts_response)
+                    print("*********CREDENTIALS************")
+                    creds = sts_response['Credentials']
+                    print(creds)
+                    print("*********************************")
+
+                    # parse region from the URL, ex: https://bedrock-runtime.us-east-1.amazonaws.com/
+                    region = self.api_endpoint.url.split('.')[1]
+                    language_model = ChatBedrockConverse(
+                        model= self.ai_model.deployment_name,
+                        region_name = region,
+                        aws_access_key_id = creds["AccessKeyId"],
+                        aws_secret_access_key = creds["SecretAccessKey"]
+                    )                                        
+                else: # Key-based authentication
+                    try:
+                        access_key = self.config.get_value(self.api_endpoint.authentication_parameters.get('access_key'))
+                    except Exception as e:
+                        raise LangChainException(f"Failed to retrieve access key: {str(e)}", 500)
+
+                    if access_key is None:
+                        raise LangChainException("Access key is missing from the configuration settings.", 400)
+
+                    try:
+                        secret_key = self.config.get_value(self.api_endpoint.authentication_parameters.get('secret_key'))
+                    except Exception as e:
+                        raise LangChainException(f"Failed to retrieve secret key: {str(e)}", 500)
+
+                    if secret_key is None:
+                        raise LangChainException("Secret key is missing from the configuration settings.", 400)
                 
-                # parse region from the URL, ex: https://bedrock-runtime.us-east-1.amazonaws.com/
-                region = self.api_endpoint.url.split('.')[1]
-                language_model = ChatBedrockConverse(
-                    model= self.ai_model.deployment_name,
-                    region_name = region,
-                    aws_access_key_id = access_key,
-                    aws_secret_access_key = secret_key
-                )
+                    # parse region from the URL, ex: https://bedrock-runtime.us-east-1.amazonaws.com/
+                    region = self.api_endpoint.url.split('.')[1]
+                    language_model = ChatBedrockConverse(
+                        model= self.ai_model.deployment_name,
+                        region_name = region,
+                        aws_access_key_id = access_key,
+                        aws_secret_access_key = secret_key
+                    )
 
         # Set model parameters.
         for key, value in self.ai_model.model_parameters.items():
