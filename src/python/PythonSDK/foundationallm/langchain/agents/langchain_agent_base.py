@@ -353,7 +353,7 @@ class LangChainAgentBase():
                     azure_token = az_creds.get_token(scope)
 
                     print("*********AZURE TOKEN************")
-                    print(azure_token)
+                    print(azure_token.token)
                     print("*********************************")
                     
                     sts_client = boto3.client('sts')
