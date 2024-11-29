@@ -53,7 +53,7 @@ export type Agent = ResourceBase & {
 	};
 
 	capabilities: string[];
-	tools: { [key: string]: AgentTool };
+	tools: AgentTool[];
 
 	sessions_enabled: boolean;
 	orchestration_settings: {
@@ -331,7 +331,7 @@ export type CreateAgentRequest = ResourceBase & {
 	};
 
 	capabilities: string[];
-	tools: { [key: string]: AgentTool };
+	tools: AgentTool[];
 
 	vectorization: {
 		dedicated_pipeline: boolean;

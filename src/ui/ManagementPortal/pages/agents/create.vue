@@ -839,7 +839,7 @@ export default {
 			textEmbeddingProfileSources: [] as TextEmbeddingProfile[],
 			externalOrchestratorOptions: [] as ExternalOrchestrationService[],
 			aiModelOptions: [] as AIModel[],
-			tools: {} as { [key: string]: AgentTool },
+			tools: [] as AgentTool[],
 
 			orchestratorOptions: [
 				{

@@ -321,12 +321,12 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             List<string> toolNames = [];
 
-            foreach (var toolName in agentBase.Tools.Keys)
+            foreach (var tool in agentBase.Tools)
             {
-                toolNames.Add(toolName);
-                explodedObjects[toolName] = agentBase.Tools[toolName];
+                toolNames.Add(tool.Name);
+                explodedObjects[tool.Name] = tool;
 
-                foreach (var aiModelObjectId in agentBase.Tools[toolName].AIModelObjectIds.Values)
+                foreach (var aiModelObjectId in tool.AIModelObjectIds.Values)
                 {
                     var toolAIModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
                         aiModelObjectId,
@@ -341,7 +341,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     explodedObjects[toolAIModel.EndpointObjectId!] = toolAPIEndpointConfiguration;
                 }
 
-                foreach (var apiEndpointConfigurationObjectId in agentBase.Tools[toolName].APIEndpointConfigurationObjectIds.Values)
+                foreach (var apiEndpointConfigurationObjectId in tool.APIEndpointConfigurationObjectIds.Values)
                 {
                     var toolAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
                         apiEndpointConfigurationObjectId,
