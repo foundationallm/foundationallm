@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Models.Security;
 using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace FoundationaLLM.AuthorizationEngine.Services
@@ -81,6 +82,28 @@ namespace FoundationaLLM.AuthorizationEngine.Services
             return false;
         }
 
+        /// <summary>
+        /// Gets the secret key associated with the specified context and key identifier.
+        /// </summary>
+        /// <param name="contextId">The context to which the secret keys belong.</param>
+        /// <returns></returns>
+        public List<PersistedSecretKey> GetKeys(string contextId)
+        {
+            if (_secretKeys.TryGetValue(contextId, out var persistedKeys))
+            {
+                return [.. persistedKeys.Values];
+            }
+            else
+            {
+                _logger.LogError(
+                    "An invalid context was specified when looking for secret keys in context {ContextId} and instance {InstanceId}.",
+                    contextId,
+                    _instanceId);
+            }
+
+            return [];
+        }
+
 
         /// <summary>
         /// Adds or updates a secret key in the cache.
@@ -101,6 +124,21 @@ namespace FoundationaLLM.AuthorizationEngine.Services
             else
             {
                 secretKeys[persistedSecretKey.Id] = persistedSecretKey;
+            }
+        }
+
+        /// <summary>
+        /// Adds or updates a secret key in the cache.
+        /// </summary>
+        /// <param name="persistedSecretKey">The <see cref="PersistedSecretKey"/> to add or update in the cache.</param>
+        public void RemovePersistedSecretKey(PersistedSecretKey persistedSecretKey)
+        {
+            if (_secretKeys.TryGetValue(persistedSecretKey.ContextId, out var secretKeys))
+            {
+                if (secretKeys.TryGetValue(persistedSecretKey.Id, out var secretKey))
+                {
+                    secretKeys.Remove(secretKey.Id);
+                }
             }
         }
 

@@ -30,9 +30,9 @@ namespace FoundationaLLM.Authorization.API.Controllers
                 await _authorizationCore.UpsertSecretKey(instanceId, secretKey));
 
         [HttpDelete("{*contextId}")]
-        public IActionResult DeleteSecretKey(string instanceId, string contextId, string secretKeyId)
+        public async Task<IActionResult> DeleteSecretKey(string instanceId, string contextId, string secretKeyId)
         {
-            _authorizationCore.DeleteSecretKey(instanceId, contextId, secretKeyId);
+            await _authorizationCore.DeleteSecretKey(instanceId, contextId, secretKeyId);
 
             return new OkResult();
         }

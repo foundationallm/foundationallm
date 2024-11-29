@@ -579,7 +579,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
 
                 return new RoleAssignmentOperationResult() { Success = true };
             }
-            
+
             return new RoleAssignmentOperationResult() { Success = false };
         }
 
@@ -605,8 +605,22 @@ namespace FoundationaLLM.AuthorizationEngine.Services
         /// <inheritdoc/>
         public List<SecretKey> GetSecretKeys(string instanceId, string contextId)
         {
-            var result = new List<SecretKey>();
-            return result;
+            if (_secretKeyCaches.TryGetValue(instanceId, out var secretKeyCache))
+            {
+                var persistedSecretKeys = secretKeyCache.GetKeys(contextId);
+
+                return persistedSecretKeys.Select(x => new SecretKey()
+                {
+                    Id = x.Id,
+                    ContextId = contextId,
+                    InstanceId = x.InstanceId,
+                    Description = x.Description,
+                    Active = x.Active,
+                    ExpirationDate = x.ExpirationDate,
+                }).ToList();
+            }
+
+            return [];
         }
 
         /// <inheritdoc/>
@@ -650,7 +664,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                 Hash = hash
             };
 
-            await PersistedSecretKey(persistedSecretKey);
+            await PersistSecretKey(persistedSecretKey);
 
             // Save this API key salt and hash the key vault
             await _azureKeyVaultService.SetSecretValueAsync(persistedSecretKey.SaltKeyVaultSecretName, salt);
@@ -661,8 +675,43 @@ namespace FoundationaLLM.AuthorizationEngine.Services
         }
 
         /// <inheritdoc/>
-        public void DeleteSecretKey(string instanceId, string contextId, string secretKeyId)
+        public async Task DeleteSecretKey(string instanceId, string contextId, string secretKeyId)
         {
+            var secretKeysStoreFile = $"/{instanceId.ToLower()}-secret-keys.json";
+
+            try
+            {
+                await _syncRoot.WaitAsync();
+
+                if (_secretKeyStores.TryGetValue(instanceId, out var secretKeyStore))
+                {
+                    if (secretKeyStore.SecretKeys.TryGetValue(contextId, out var persistedSecretKeys))
+                    {
+                        var existingKey = persistedSecretKeys.Where(x => x.Id == secretKeyId).SingleOrDefault();
+                        if (existingKey != null)
+                        {
+                            persistedSecretKeys.Remove(existingKey);
+
+                            //await _azureKeyVaultService.RemoveSecretValueAsync(existingKey.SaltKeyVaultSecretName);
+                            //await _azureKeyVaultService.RemoveSecretValueAsync(existingKey.HashKeyVaultSecretName);
+
+                            _secretKeyStores.AddOrUpdate(instanceId, secretKeyStore, (k, v) => secretKeyStore);
+                            _secretKeyCaches[instanceId].RemovePersistedSecretKey(existingKey);
+
+                            await _storageService.WriteFileAsync(
+                                    SECRET_KEYS_CONTAINER_NAME,
+                                    secretKeysStoreFile,
+                                    JsonSerializer.Serialize(secretKeyStore),
+                                    default,
+                                    default);
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                _syncRoot.Release();
+            }
         }
 
         /// <inheritdoc/>
@@ -674,49 +723,47 @@ namespace FoundationaLLM.AuthorizationEngine.Services
 
         #endregion
 
-        private async Task PersistedSecretKey(PersistedSecretKey persistedSecretKey)
+        private async Task PersistSecretKey(PersistedSecretKey persistedSecretKey)
         {
             var secretKeysStoreFile = $"/{persistedSecretKey.InstanceId.ToLower()}-secret-keys.json";
-            if (await _storageService.FileExistsAsync(SECRET_KEYS_CONTAINER_NAME, secretKeysStoreFile, default))
+
+            try
             {
-                try
-                {
-                    await _syncRoot.WaitAsync();
+                await _syncRoot.WaitAsync();
 
-                    var fileContent = await _storageService.ReadFileAsync(SECRET_KEYS_CONTAINER_NAME, secretKeysStoreFile, default);
-                    var secretKeyStore = JsonSerializer.Deserialize<SecretKeyStore>(
-                        Encoding.UTF8.GetString(fileContent.ToArray()));
-                    if (secretKeyStore != null)
+                var fileContent = await _storageService.ReadFileAsync(SECRET_KEYS_CONTAINER_NAME, secretKeysStoreFile, default);
+                var secretKeyStore = JsonSerializer.Deserialize<SecretKeyStore>(
+                    Encoding.UTF8.GetString(fileContent.ToArray()));
+                if (secretKeyStore != null)
+                {
+                    var contextIdExists = secretKeyStore.SecretKeys.Any(x => x.Key == persistedSecretKey.ContextId);
+
+                    if (!contextIdExists)
+                        secretKeyStore.SecretKeys.Add(persistedSecretKey.ContextId, [persistedSecretKey]);
+                    else
                     {
-                        var contextIdExists = secretKeyStore.SecretKeys.Any(x => x.Key == persistedSecretKey.ContextId);
+                        var exists = secretKeyStore.SecretKeys[persistedSecretKey.ContextId].Where(x => x.Id == persistedSecretKey.Id).SingleOrDefault();
 
-                        if (!contextIdExists)
-                            secretKeyStore.SecretKeys.Add(persistedSecretKey.ContextId, [persistedSecretKey]);
-                        else
-                        {
-                            var exists = secretKeyStore.SecretKeys[persistedSecretKey.ContextId].Where(x => x.Id == persistedSecretKey.Id).SingleOrDefault();
+                        if (exists != null)
+                            secretKeyStore.SecretKeys[persistedSecretKey.ContextId].Remove(exists);
 
-                            if (exists != null)
-                                secretKeyStore.SecretKeys[persistedSecretKey.ContextId].Remove(exists);
-
-                            secretKeyStore.SecretKeys[persistedSecretKey.ContextId].Add(persistedSecretKey);
-                        }
-
-                        _secretKeyStores.AddOrUpdate(persistedSecretKey.InstanceId, secretKeyStore, (k, v) => secretKeyStore);
-                        _secretKeyCaches[persistedSecretKey.InstanceId].AddOrUpdatePersistedSecretKey(persistedSecretKey);
-
-                        await _storageService.WriteFileAsync(
-                                SECRET_KEYS_CONTAINER_NAME,
-                                secretKeysStoreFile,
-                                JsonSerializer.Serialize(secretKeyStore),
-                                default,
-                                default);
+                        secretKeyStore.SecretKeys[persistedSecretKey.ContextId].Add(persistedSecretKey);
                     }
+
+                    _secretKeyStores.AddOrUpdate(persistedSecretKey.InstanceId, secretKeyStore, (k, v) => secretKeyStore);
+                    _secretKeyCaches[persistedSecretKey.InstanceId].AddOrUpdatePersistedSecretKey(persistedSecretKey);
+
+                    await _storageService.WriteFileAsync(
+                            SECRET_KEYS_CONTAINER_NAME,
+                            secretKeysStoreFile,
+                            JsonSerializer.Serialize(secretKeyStore),
+                            default,
+                            default);
                 }
-                finally
-                {
-                    _syncRoot.Release();
-                }
+            }
+            finally
+            {
+                _syncRoot.Release();
             }
         }
     }

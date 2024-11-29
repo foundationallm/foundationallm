@@ -75,7 +75,7 @@ namespace FoundationaLLM.AuthorizationEngine.Interfaces
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="contextId">The identifier of the context containing the secret key to delete.</param>
         /// <param name="secretKeyId">The unique identifier of the secret key being deleted.</param>
-        void DeleteSecretKey(string instanceId, string contextId, string secretKeyId);
+        Task DeleteSecretKey(string instanceId, string contextId, string secretKeyId);
 
         /// <summary>
         /// Validates a secret key value.
