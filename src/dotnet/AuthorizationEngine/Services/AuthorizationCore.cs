@@ -594,23 +594,30 @@ namespace FoundationaLLM.AuthorizationEngine.Services
 
         #region Manage secret keys
 
+        /// <inheritdoc/>
         public List<SecretKey> GetSecretKeys(string instanceId, string contextId)
         {
-
+            var result = new List<SecretKey>();
+            return result;
         }
 
+        /// <inheritdoc/>
         public string? UpsertSecretKey(string instanceId, SecretKey secretKey)
         {
-
+            var result = string.Empty;
+            return result;
         }
 
+        /// <inheritdoc/>
         public void DeleteSecretKey(string instanceId, string contextId, string secretKeyId)
         {
         }
 
+        /// <inheritdoc/>
         public SecretKeyValidationResult ValidateSecretKey(string instanceId, string contextId, string secretKeyValue)
         {
-
+            var result = new SecretKeyValidationResult() { Valid = false };
+            return result;
         }
 
         #endregion

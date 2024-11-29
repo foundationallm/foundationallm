@@ -185,6 +185,106 @@ namespace FoundationaLLM.Common.Clients
             }
         }
 
+        #region Manage secret keys
+
+        /// <inheritdoc/>
+        public async Task<List<SecretKey>> GetSecretKeys(string instanceId, string contextId)
+        {
+            try
+            {
+                var httpClient = await CreateHttpClient();
+                var response = await httpClient.GetAsync(
+                    $"/instances/{instanceId}/secretkeys/{contextId}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    return JsonSerializer.Deserialize<List<SecretKey>>(responseContent)!;
+                }
+
+                _logger.LogError("The call to the Authorization API returned an error: {StatusCode} - {ReasonPhrase}.", response.StatusCode, response.ReasonPhrase);
+                return [];
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "There was an error calling the Authorization API");
+                return [];
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<string?> UpsertSecretKey(string instanceId, SecretKey secretKey)
+        {
+            try
+            {
+                var httpClient = await CreateHttpClient();
+                var response = await httpClient.PostAsync(
+                    $"/instances/{instanceId}/secretkeys",
+                    JsonContent.Create(secretKey));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    return responseContent;
+                }
+
+                _logger.LogError("The call to the Authorization API returned an error: {StatusCode} - {ReasonPhrase}.", response.StatusCode, response.ReasonPhrase);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "There was an error calling the Authorization API");
+                return null;
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task DeleteSecretKey(string instanceId, string contextId, string secretKeyId)
+        {
+            try
+            {
+                var httpClient = await CreateHttpClient();
+                var response = await httpClient.DeleteAsync(
+                    $"/instances/{instanceId}/secretkeys/{contextId}?secretKeyId={secretKeyId}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    _logger.LogError("The call to the Authorization API returned an error: {StatusCode} - {ReasonPhrase}.", response.StatusCode, response.ReasonPhrase);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "There was an error calling the Authorization API");
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<SecretKeyValidationResult> ValidateSecretKey(string instanceId, string contextId, string secretKeyValue)
+        {
+            try
+            {
+                var httpClient = await CreateHttpClient();
+                var response = await httpClient.PostAsync(
+                    $"/instances/{instanceId}/secretkeys/{contextId}?secretKeyValue={secretKeyValue}", null);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    return JsonSerializer.Deserialize<SecretKeyValidationResult>(responseContent)!;
+                }
+
+                _logger.LogError("The call to the Authorization API returned an error: {StatusCode} - {ReasonPhrase}.", response.StatusCode, response.ReasonPhrase);
+                return new SecretKeyValidationResult() { Valid = false };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "There was an error calling the Authorization API");
+                return new SecretKeyValidationResult() { Valid = false };
+            }
+        }
+
+        #endregion
+
         /// <summary>
         /// Exception to the unified HTTP client factory when consuming the Authorization API.
         /// </summary>

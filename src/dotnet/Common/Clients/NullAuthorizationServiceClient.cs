@@ -53,6 +53,7 @@ namespace FoundationaLLM.Common.Clients
             return [];
         }
 
+        /// <inheritdoc/>
         public async Task<RoleAssignmentOperationResult> DeleteRoleAssignment(
             string instanceId,
             string roleAssignment,
@@ -61,5 +62,30 @@ namespace FoundationaLLM.Common.Clients
             await Task.CompletedTask;
             return new RoleAssignmentOperationResult { Success = true };
         }
+
+        /// <inheritdoc/>
+        public async Task<List<SecretKey>> GetSecretKeys(string instanceId, string contextId)
+        {
+            await Task.CompletedTask;
+            return [];
+        }
+
+        /// <inheritdoc/>
+        public async Task<string?> UpsertSecretKey(string instanceId, SecretKey secretKey)
+        {
+            await Task.CompletedTask;
+            return string.Empty;
+        }
+
+        /// <inheritdoc/>
+        public async Task DeleteSecretKey(string instanceId, string contextId, string secretKeyId) => await Task.CompletedTask;
+
+        /// <inheritdoc/>
+        public async Task<SecretKeyValidationResult> ValidateSecretKey(string instanceId, string contextId, string secretKeyValue)
+        {
+            await Task.CompletedTask;
+            return new SecretKeyValidationResult() { Valid = true };
+        }
+
     }
 }

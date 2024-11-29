@@ -15,6 +15,6 @@ namespace FoundationaLLM.Common.Models.Authorization
         /// <summary>
         /// Gets or sets the <see cref="UnifiedUserIdentity"/> virtual identity associated with the secret key.
         /// </summary>
-        public required UnifiedUserIdentity VirtualIdentity { get; set; }
+        public UnifiedUserIdentity? VirtualIdentity { get; set; }
     }
 }

@@ -56,6 +56,21 @@
 				"name": "FoundationaLLM.Agent/workflows/delete",
 				"description": "Delete workflows.",
 				"field_name": "FoundationaLLM_Agent_Workflows_Delete"
+			},
+			{
+				"name": "FoundationaLLM.Agent/agentAccessTokens/read",
+				"description": "Read agent access tokens.",
+				"field_name": "FoundationaLLM_Agent_AgentAccessTokens_Read"
+			},
+			{
+				"name": "FoundationaLLM.Agent/agentAccessTokens/write",
+				"description": "Create or update agent access tokens.",
+				"field_name": "FoundationaLLM_Agent_AgentAccessTokens_Write"
+			},
+			{
+				"name": "FoundationaLLM.Agent/agentAccessTokens/delete",
+				"description": "Delete agent access tokens.",
+				"field_name": "FoundationaLLM_Agent_AgentAccessTokens_Delete"
 			}
 		]
 	},
