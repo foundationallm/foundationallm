@@ -351,6 +351,10 @@ class LangChainAgentBase():
                     # Get Azure token for designated scope.
                     az_creds = DefaultAzureCredential(exclude_environment_credential=True)
                     azure_token = az_creds.get_token(scope)
+
+                    print("*********AZURE TOKEN************")
+                    print(azure_token)
+                    print("*********************************")
                     
                     sts_client = boto3.client('sts')
                     sts_response = sts_client.assume_role_with_web_identity(
