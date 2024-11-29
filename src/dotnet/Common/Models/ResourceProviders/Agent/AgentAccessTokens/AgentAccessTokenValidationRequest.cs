@@ -1,4 +1,6 @@
-﻿namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens
+﻿using System.Text.Json.Serialization;
+
+namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens
 {
     /// <summary>
     /// Agent access token validation request object.
@@ -8,6 +10,7 @@
         /// <summary>
         /// The access token to validate.
         /// </summary>
+        [JsonPropertyName("access_token")]
         public required string AccessToken { get; set; }
     }
 }

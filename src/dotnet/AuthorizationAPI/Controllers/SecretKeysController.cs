@@ -25,9 +25,9 @@ namespace FoundationaLLM.Authorization.API.Controllers
                 _authorizationCore.GetSecretKeys(instanceId, contextId));
 
         [HttpPost]
-        public IActionResult UpsertSecretKey(string instanceId, [FromBody] SecretKey secretKey) =>
+        public async Task<IActionResult> UpsertSecretKey(string instanceId, [FromBody] SecretKey secretKey) =>
             new OkObjectResult(
-                _authorizationCore.UpsertSecretKey(instanceId, secretKey));
+                await _authorizationCore.UpsertSecretKey(instanceId, secretKey));
 
         [HttpDelete("{*contextId}")]
         public IActionResult DeleteSecretKey(string instanceId, string contextId, string secretKeyId)

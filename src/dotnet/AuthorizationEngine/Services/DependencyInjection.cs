@@ -8,6 +8,7 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Storage;
+using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -53,6 +54,7 @@ namespace FoundationaLLM
                     }),
                     sp.GetRequiredService<IEnumerable<IStorageService>>()
                         .Single(s => s.InstanceName == AuthorizationDependencyInjectionKeys.FoundationaLLM_ResourceProviders_Authorization),
+                    sp.GetRequiredService<IAzureKeyVaultService>(),
                     builder.Configuration,
                     sp.GetRequiredService<IResourceValidatorFactory>(),
                     sp.GetRequiredService<ILogger<AuthorizationCore>>()));

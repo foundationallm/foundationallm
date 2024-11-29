@@ -8,11 +8,15 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
+using FoundationaLLM.Common.Models.Security;
+using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Utils;
+using Konscious.Security.Cryptography;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Collections.Concurrent;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 
@@ -23,6 +27,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
     /// </summary>
     public class AuthorizationCore : IAuthorizationCore
     {
+        private readonly IAzureKeyVaultService _azureKeyVaultService;
         private readonly IStorageService _storageService;
         private readonly IConfiguration _configuration;
         private readonly IResourceValidatorFactory _resourceValidatorFactory;
@@ -48,18 +53,21 @@ namespace FoundationaLLM.AuthorizationEngine.Services
         /// </summary>
         /// <param name="options">The options used to configure the authorization core.</param>
         /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
+        /// <param name="azureKeyVaultService">The <see cref="IAzureKeyVaultService"/> providing key vault services.</param>
         /// <param name="configuration">The application configuration values.</param>
         /// <param name="resourceValidatorFactory"> The resource validator factory used to create resource validators.</param>
         /// <param name="logger">The logger used for logging.</param>
         public AuthorizationCore(
             IOptions<AuthorizationCoreSettings> options,
             IStorageService storageService,
+            IAzureKeyVaultService azureKeyVaultService,
             IConfiguration configuration,
             IResourceValidatorFactory resourceValidatorFactory,
             ILogger<AuthorizationCore> logger)
         {
             _settings = options.Value;
             _storageService = storageService;
+            _azureKeyVaultService = azureKeyVaultService;
             _configuration = configuration;
             _resourceValidatorFactory = resourceValidatorFactory;
             _logger = logger;
@@ -602,10 +610,54 @@ namespace FoundationaLLM.AuthorizationEngine.Services
         }
 
         /// <inheritdoc/>
-        public string? UpsertSecretKey(string instanceId, SecretKey secretKey)
+        public async Task<string?> UpsertSecretKey(string instanceId, SecretKey secretKey)
         {
-            var result = string.Empty;
-            return result;
+            var keyId = new Guid(secretKey.Id);
+            var rand = RandomNumberGenerator.Create();
+
+            var secretBytes = new byte[128];
+            rand.GetBytes(secretBytes);
+            var secret = Base58.Encode(secretBytes);
+
+            var saltBytes = new byte[16];
+            rand.GetBytes(saltBytes);
+            var salt = Base58.Encode(saltBytes);
+
+            var argon2 = new Argon2id(secretBytes)
+            {
+                DegreeOfParallelism = 16,
+                MemorySize = 8192,
+                Iterations = 40,
+                Salt = saltBytes
+            };
+
+            var hashBytes = argon2.GetBytes(128);
+            var hash = Base58.Encode(hashBytes);
+
+            // Construct client key
+            var clientKey = new ClientSecretKey() { ApiKeyId = keyId, ClientSecret = secret };
+
+            // Fill information into persisted key
+            var persistedSecretKey = new PersistedSecretKey()
+            {
+                Id = secretKey.Id,
+                InstanceId = instanceId,
+                ContextId = secretKey.ContextId,
+                Description = secretKey.Description,
+                ExpirationDate = secretKey.ExpirationDate,
+                Active = secretKey.Active,
+                Salt = salt,
+                Hash = hash
+            };
+
+            await PersistedSecretKey(persistedSecretKey);
+
+            // Save this API key salt and hash the key vault
+            await _azureKeyVaultService.SetSecretValueAsync(persistedSecretKey.SaltKeyVaultSecretName, salt);
+            await _azureKeyVaultService.SetSecretValueAsync(persistedSecretKey.HashKeyVaultSecretName, hash);
+
+            // Return the client's key to them
+            return clientKey.ToApiKeyString();
         }
 
         /// <inheritdoc/>
@@ -621,5 +673,51 @@ namespace FoundationaLLM.AuthorizationEngine.Services
         }
 
         #endregion
+
+        private async Task PersistedSecretKey(PersistedSecretKey persistedSecretKey)
+        {
+            var secretKeysStoreFile = $"/{persistedSecretKey.InstanceId.ToLower()}-secret-keys.json";
+            if (await _storageService.FileExistsAsync(SECRET_KEYS_CONTAINER_NAME, secretKeysStoreFile, default))
+            {
+                try
+                {
+                    await _syncRoot.WaitAsync();
+
+                    var fileContent = await _storageService.ReadFileAsync(SECRET_KEYS_CONTAINER_NAME, secretKeysStoreFile, default);
+                    var secretKeyStore = JsonSerializer.Deserialize<SecretKeyStore>(
+                        Encoding.UTF8.GetString(fileContent.ToArray()));
+                    if (secretKeyStore != null)
+                    {
+                        var contextIdExists = secretKeyStore.SecretKeys.Any(x => x.Key == persistedSecretKey.ContextId);
+
+                        if (!contextIdExists)
+                            secretKeyStore.SecretKeys.Add(persistedSecretKey.ContextId, [persistedSecretKey]);
+                        else
+                        {
+                            var exists = secretKeyStore.SecretKeys[persistedSecretKey.ContextId].Where(x => x.Id == persistedSecretKey.Id).SingleOrDefault();
+
+                            if (exists != null)
+                                secretKeyStore.SecretKeys[persistedSecretKey.ContextId].Remove(exists);
+
+                            secretKeyStore.SecretKeys[persistedSecretKey.ContextId].Add(persistedSecretKey);
+                        }
+
+                        _secretKeyStores.AddOrUpdate(persistedSecretKey.InstanceId, secretKeyStore, (k, v) => secretKeyStore);
+                        _secretKeyCaches[persistedSecretKey.InstanceId].AddOrUpdatePersistedSecretKey(persistedSecretKey);
+
+                        await _storageService.WriteFileAsync(
+                                SECRET_KEYS_CONTAINER_NAME,
+                                secretKeysStoreFile,
+                                JsonSerializer.Serialize(secretKeyStore),
+                                default,
+                                default);
+                    }
+                }
+                finally
+                {
+                    _syncRoot.Release();
+                }
+            }
+        }
     }
 }

@@ -66,8 +66,8 @@ namespace FoundationaLLM.AuthorizationEngine.Interfaces
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="secretKey">The <see cref="SecretKey"/> item containing the properties of the secret key being created or updated.</param>
-        /// <returns>If the secret bey is being created, it returns the secret value of the key. Otherwise, returns <c>null</c>.</returns>
-        string? UpsertSecretKey(string instanceId, SecretKey secretKey);
+        /// <returns>If the secret key is being created, it returns the secret value of the key. Otherwise, returns <c>null</c>.</returns>
+        Task<string?> UpsertSecretKey(string instanceId, SecretKey secretKey);
 
         /// <summary>
         /// Deletes a specified secret key.

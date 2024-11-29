@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.AuthorizationEngine.Models;
 using FoundationaLLM.Common.Models.Security;
+using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics.CodeAnalysis;
@@ -78,6 +79,29 @@ namespace FoundationaLLM.AuthorizationEngine.Services
 
             key = null;
             return false;
+        }
+
+
+        /// <summary>
+        /// Adds or updates a secret key in the cache.
+        /// </summary>
+        /// <param name="persistedSecretKey">The <see cref="PersistedSecretKey"/> to add or update in the cache.</param>
+        public void AddOrUpdatePersistedSecretKey(PersistedSecretKey persistedSecretKey)
+        {
+            if (!_secretKeys.TryGetValue(persistedSecretKey.ContextId, out var secretKeys))
+            {
+                secretKeys = [];
+                _secretKeys[persistedSecretKey.ContextId] = secretKeys;
+            }
+
+            if (!secretKeys.TryGetValue(persistedSecretKey.Id, out var secretKey))
+            {
+                secretKeys.Add(persistedSecretKey.Id, persistedSecretKey);
+            }
+            else
+            {
+                secretKeys[persistedSecretKey.Id] = persistedSecretKey;
+            }
         }
 
         private bool EnsureSaltAndHash(PersistedSecretKey key)
