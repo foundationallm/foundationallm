@@ -11,3 +11,5 @@ FoundationaLLM role-based access control (FoundationaLLM RBAC) is a system that 
 [Understand scope for FoundationaLLM RBAC](scope.md)
 
 [Manage role assignments](role-management.md)
+
+[Automate the management of role assignments for agents](agent-role-assignments.md)

@@ -14,7 +14,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [],
 		attachments: null,
 		attachmentDetails: null,
@@ -43,7 +43,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [],
 		attachments: null,
 		attachmentDetails: null,
@@ -72,7 +72,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [],
 		attachments: null,
 		attachmentDetails: null,
@@ -101,7 +101,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [],
 		attachments: null,
 		attachmentDetails: null,
@@ -130,7 +130,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [],
 		attachments: null,
 		attachmentDetails: null,
@@ -159,7 +159,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [],
 		attachments: null,
 		attachmentDetails: null,
@@ -188,7 +188,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [],
 		attachments: null,
 		attachmentDetails: null,
@@ -217,7 +217,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [],
 		attachments: null,
 		attachmentDetails: null,
@@ -246,7 +246,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [],
 		attachments: null,
 		attachmentDetails: null,
@@ -275,7 +275,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [],
 		attachments: null,
 		attachmentDetails: null,
@@ -304,7 +304,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [],
 		attachments: null,
 		attachmentDetails: null,
@@ -333,7 +333,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [],
 		attachments: null,
 		attachmentDetails: null,
@@ -362,7 +362,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [],
 		attachments: null,
 		attachmentDetails: null,
@@ -391,7 +391,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [],
 		attachments: null,
 		attachmentDetails: null,
@@ -420,7 +420,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -456,7 +456,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -493,7 +493,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -530,7 +530,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -567,7 +567,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -604,7 +604,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -641,7 +641,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -678,7 +678,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -715,7 +715,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -752,7 +752,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -789,7 +789,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -826,7 +826,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -863,7 +863,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -900,7 +900,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -937,7 +937,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -974,7 +974,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1011,7 +1011,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1048,7 +1048,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1085,7 +1085,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1122,7 +1122,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1159,7 +1159,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1196,7 +1196,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1233,7 +1233,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1270,7 +1270,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1307,7 +1307,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1344,7 +1344,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1381,7 +1381,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1418,7 +1418,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1455,7 +1455,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1492,7 +1492,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1529,7 +1529,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1566,7 +1566,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1603,7 +1603,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1640,7 +1640,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1677,7 +1677,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1714,7 +1714,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1751,7 +1751,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1788,7 +1788,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1825,7 +1825,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1862,7 +1862,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1899,7 +1899,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1936,7 +1936,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -1973,7 +1973,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2010,7 +2010,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2047,7 +2047,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2084,7 +2084,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2121,7 +2121,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2158,7 +2158,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2195,7 +2195,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2232,7 +2232,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2269,7 +2269,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2306,7 +2306,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2343,7 +2343,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2380,7 +2380,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2417,7 +2417,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2454,7 +2454,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2491,7 +2491,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2528,7 +2528,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2565,7 +2565,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2602,7 +2602,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2639,7 +2639,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2676,7 +2676,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2713,7 +2713,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2750,7 +2750,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2788,7 +2788,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2836,7 +2836,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2884,7 +2884,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2932,7 +2932,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -2981,7 +2981,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -3030,7 +3030,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -3079,7 +3079,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -3128,7 +3128,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -3177,7 +3177,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -3226,7 +3226,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -3275,7 +3275,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -3324,7 +3324,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -3373,7 +3373,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -3422,7 +3422,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -3471,7 +3471,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -3520,7 +3520,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -3569,7 +3569,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -3618,7 +3618,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -3667,7 +3667,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -3716,7 +3716,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -3765,7 +3765,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -3814,7 +3814,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -3863,7 +3863,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -3912,7 +3912,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -3961,7 +3961,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4010,7 +4010,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4059,7 +4059,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4108,7 +4108,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4157,7 +4157,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4206,7 +4206,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4255,7 +4255,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4304,7 +4304,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4353,7 +4353,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4402,7 +4402,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4451,7 +4451,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4500,7 +4500,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4549,7 +4549,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4598,7 +4598,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4647,7 +4647,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4696,7 +4696,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4745,7 +4745,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4794,7 +4794,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4843,7 +4843,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4892,7 +4892,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4941,7 +4941,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -4990,7 +4990,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -5039,7 +5039,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -5088,7 +5088,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -5137,7 +5137,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -5186,7 +5186,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -5235,7 +5235,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -5284,7 +5284,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -5333,7 +5333,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -5382,7 +5382,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',
@@ -5431,7 +5431,7 @@ export default [
 		vector: null,
 		completionPromptId: null,
 		expectedCompletion: null,
-		citations: [],
+		contentArtifacts: [],
 		analysisResults: [
 			{
 				tool_name: 'code_interpreter',

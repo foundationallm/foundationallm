@@ -1,12 +1,14 @@
 ﻿import uuid
 from langchain_community.callbacks import get_openai_callback
+from langchain_core.messages import HumanMessage
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from langchain_core.output_parsers import StrOutputParser
+from langgraph.prebuilt import create_react_agent
 from foundationallm.langchain.agents import LangChainAgentBase
 from foundationallm.langchain.exceptions import LangChainException
-from foundationallm.langchain.retrievers import RetrieverFactory, CitationRetrievalBase
-from foundationallm.models.agents.agent_workflows.azure_openai_assistants_agent_workflow import AzureOpenAIAssistantsAgentWorkflow
+from foundationallm.langchain.retrievers import RetrieverFactory, ContentArtifactRetrievalBase
+from foundationallm.models.agents import AzureOpenAIAssistantsAgentWorkflow, LangGraphReactAgentWorkflow
 from foundationallm.models.constants import AgentCapabilityCategories
 from foundationallm.models.operations import OperationTypes
 from foundationallm.models.orchestration import (
@@ -42,7 +44,10 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
     """
     The LangChain Knowledge Management agent.
     """
-
+    
+    MAIN_MODEL_KEY = "main_model"
+    MAIN_PROMPT_KEY = "main_prompt"
+    
     def _get_document_retriever(
         self,
         request: KnowledgeManagementCompletionRequest,
@@ -172,12 +177,12 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             raise LangChainException("The objects property on the completion request cannot be null.", 400)
 
         if request.agent.workflow is not None:
-            if request.agent.workflow.agent_workflow_ai_models["main_model"] is None:
+            if request.agent.workflow.agent_workflow_ai_models[self.MAIN_MODEL_KEY] is None:
                 raise LangChainException("The agent's workflow AI models requires a main_model.", 400)
-            if request.agent.workflow.prompt_object_ids["main_prompt"] is None:
+            if request.agent.workflow.prompt_object_ids[self.MAIN_PROMPT_KEY] is None:
                 raise LangChainException("The agent's workflow prompt object dictionary requires a main_prompt.", 400)
-            self.ai_model = self._get_ai_model_from_object_id(request.agent.workflow.agent_workflow_ai_models["main_model"].ai_model_object_id, request.objects)
-            self.prompt = self._get_prompt_from_object_id(request.agent.workflow.prompt_object_ids["main_prompt"], request.objects)
+            self.ai_model = self._get_ai_model_from_object_id(request.agent.workflow.agent_workflow_ai_models[self.MAIN_MODEL_KEY].ai_model_object_id, request.objects)
+            self.prompt = self._get_prompt_from_object_id(request.agent.workflow.prompt_object_ids[self.MAIN_PROMPT_KEY], request.objects)
         else:
             # Legacy code
             self.ai_model = self._get_ai_model_from_object_id(request.agent.ai_model_object_id, request.objects)
@@ -273,6 +278,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             generated full prompt with context and token utilization and execution cost details.
         """
         self._validate_request(request)
+        llm = self._get_language_model()
 
         agent = request.agent
         image_analysis_token_usage = CompletionUsage(prompt_tokens=0, completion_tokens=0, total_tokens=0)
@@ -371,7 +377,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             image_service = None
             if "dalle-image-generation" in request.agent.tools:
                 dalle_tool = request.agent.tools["dalle-image-generation"]
-                model_object_id = dalle_tool["ai_model_object_ids"]["main_model"]
+                model_object_id = dalle_tool["ai_model_object_ids"][self.MAIN_MODEL_KEY]
                 image_generation_deployment_model = request.objects[model_object_id]["deployment_name"]
                 api_endpoint_object_id = request.objects[model_object_id]["endpoint_object_id"]
                 image_generation_client = self._get_image_gen_language_model(api_endpoint_object_id=api_endpoint_object_id, objects=request.objects)
@@ -412,76 +418,140 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             )
         # End Assistants API implementation
 
+        # Start LangGraph ReAct Agent workflow implementation
+        if (agent.workflow is not None and isinstance(agent.workflow, LangGraphReactAgentWorkflow)):            
+            # Temporary placeholder
+            from typing import Literal
+            from langchain_core.tools import tool
+            @tool
+            def get_weather(city: Literal["nyc", "sf"]):
+                """Use this to get weather information."""
+                if city == "nyc":
+                    return "It might be cloudy in nyc"
+                elif city == "sf":
+                    return "It's always sunny in sf"
+                else:
+                    raise AssertionError("Unknown city")
+            tools = [get_weather]
+            # End temporary placeholder
+
+            # Define the graph          
+            graph = create_react_agent(llm, tools=tools, state_modifier=self.prompt.prefix)
+            messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
+            messages.append(HumanMessage(content=request.user_prompt))
+            response = await graph.ainvoke({'messages': messages})
+            # TODO: process tool messages with analysis results AIMessage with content='' but has addition_kwargs={'tool_calls';[...]}
+            # print(response)
+            final_message = response["messages"][-1]
+            response_content = OpenAITextMessageContentItem(
+                value = final_message.content,
+                agent_capability_category = AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
+            )
+            return CompletionResponse(
+                        operation_id = request.operation_id,
+                        content = [response_content],
+                        content_artifacts = [],
+                        user_prompt = request.user_prompt,
+                        full_prompt = self.prompt.prefix,
+                        completion_tokens = final_message.usage_metadata["output_tokens"] or 0,
+                        prompt_tokens = final_message.usage_metadata["input_tokens"] or 0,
+                        total_tokens = final_message.usage_metadata["total_tokens"] or 0,
+                        total_cost = 0
+                    )
+        # End LangGraph ReAct Agent workflow implementation            
+        
         # Start LangChain Expression Language (LCEL) implementation
-        with get_openai_callback() as cb:
-            try:
-                # Get the vector document retriever, if it exists.
-                retriever = self._get_document_retriever(request, agent)
-                if retriever is not None:
-                    self.has_retriever = True
+       
+        # Get the vector document retriever, if it exists.
+        retriever = self._get_document_retriever(request, agent)
+        if retriever is not None:
+            self.has_retriever = True
 
-                # Get the prompt template.
-                prompt_template = self._get_prompt_template(
-                    request,
-                    agent.conversation_history_settings
-                )
+        # Get the prompt template.
+        prompt_template = self._get_prompt_template(
+            request,
+            agent.conversation_history_settings
+        )
 
-                if retriever is not None:
-                    chain_context = { "context": retriever | retriever.format_docs, "question": RunnablePassthrough() }
-                elif image_analysis_results is not None or audio_analysis_results is not None:
-                    external_analysis_context = ''
-                    if image_analysis_results is not None:
-                        external_analysis_context += image_svc.format_results(image_analysis_results)
-                    if audio_analysis_results is not None:
-                        for key, value in audio_analysis_results.items():
-                            filename = key
-                            external_analysis_context += f'File: {filename}\n'
-                            external_analysis_context += 'Predictions:\n'
-                            for prediction in value['predictions']:
-                                label = prediction['label']
-                                external_analysis_context += f'- {label}' + '\n'
-                            external_analysis_context += '\n'
+        if retriever is not None:
+            chain_context = { "context": retriever | retriever.format_docs, "question": RunnablePassthrough() }
+        elif image_analysis_results is not None or audio_analysis_results is not None:
+            external_analysis_context = ''
+            if image_analysis_results is not None:
+                external_analysis_context += image_svc.format_results(image_analysis_results)
+            if audio_analysis_results is not None:
+                for key, value in audio_analysis_results.items():
+                    filename = key
+                    external_analysis_context += f'File: {filename}\n'
+                    external_analysis_context += 'Predictions:\n'
+                    for prediction in value['predictions']:
+                        label = prediction['label']
+                        external_analysis_context += f'- {label}' + '\n'
+                    external_analysis_context += '\n'
 
-                    chain_context = { "context": lambda x: external_analysis_context, "question": RunnablePassthrough() }
-                else:
-                    chain_context = { "context": RunnablePassthrough() }
+            chain_context = { "context": lambda x: external_analysis_context, "question": RunnablePassthrough() }
+        else:
+            chain_context = { "context": RunnablePassthrough() }
 
-                # Compose LCEL chain
-                chain = (
-                    chain_context
-                    | prompt_template
-                    | RunnableLambda(self._record_full_prompt)
-                    | self._get_language_model()
-                    | StrOutputParser()
-                )
+        # Compose LCEL chain
+        chain = (
+            chain_context
+            | prompt_template
+            | RunnableLambda(self._record_full_prompt)
+            | llm
+        )
 
-                # LangChain's ainvoke does not work if search is involved in the completion request, do use the sync method.
-                if self.has_retriever:
-                    completion = chain.invoke(request.user_prompt)
-                else:
-                    completion = await chain.ainvoke(request.user_prompt)
+        retvalue = None
 
-                # Assign the completion to the response content.
-                response_content = OpenAITextMessageContentItem(
-                    value = completion,
-                    agent_capability_category = AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
-                )
+        if self.api_endpoint.provider == LanguageModelProvider.BEDROCK:
+            if self.has_retriever:
+                completion = chain.invoke(request.user_prompt)
+            else:
+                completion = await chain.ainvoke(request.user_prompt)
+            response_content = OpenAITextMessageContentItem(
+                value = completion.content,
+                agent_capability_category = AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
+            )
+            retvalue = CompletionResponse(
+                operation_id = request.operation_id,
+                content = [response_content],                        
+                user_prompt = request.user_prompt,
+                full_prompt = self.full_prompt.text,
+                completion_tokens = completion.usage_metadata["output_tokens"] + image_analysis_token_usage.completion_tokens,
+                prompt_tokens = completion.usage_metadata["input_tokens"] + image_analysis_token_usage.prompt_tokens,
+                total_tokens = completion.usage_metadata["total_tokens"] + image_analysis_token_usage.total_tokens,
+                total_cost = 0
+            )
+        else:
+            # OpenAI compatible models
+            with get_openai_callback() as cb:
+                # add output parser to openai callback
+                chain = chain | StrOutputParser()
+                try:
+                    if self.has_retriever:
+                        completion = chain.invoke(request.user_prompt)
+                    else:
+                        completion = await chain.ainvoke(request.user_prompt)
+                                
+                    response_content = OpenAITextMessageContentItem(
+                        value = completion,
+                        agent_capability_category = AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
+                    )                  
+                    retvalue =  CompletionResponse(
+                        operation_id = request.operation_id,
+                        content = [response_content],                        
+                        user_prompt = request.user_prompt,
+                        full_prompt = self.full_prompt.text,
+                        completion_tokens = cb.completion_tokens + image_analysis_token_usage.completion_tokens,
+                        prompt_tokens = cb.prompt_tokens + image_analysis_token_usage.prompt_tokens,
+                        total_tokens = cb.total_tokens + image_analysis_token_usage.total_tokens,
+                        total_cost = cb.total_cost
+                    )
+                except Exception as e:
+                    raise LangChainException(f"An unexpected exception occurred when executing the completion request: {str(e)}", 500)
 
-                citations = []
-                if isinstance(retriever, CitationRetrievalBase):
-                    citations = retriever.get_document_citations()
+        if isinstance(retriever, ContentArtifactRetrievalBase):
+            retvalue.content_artifacts = retriever.get_document_content_artifacts() or []
 
-                return CompletionResponse(
-                    operation_id = request.operation_id,
-                    content = [response_content],
-                    citations = citations,
-                    user_prompt = request.user_prompt,
-                    full_prompt = self.full_prompt.text,
-                    completion_tokens = cb.completion_tokens + image_analysis_token_usage.completion_tokens,
-                    prompt_tokens = cb.prompt_tokens + image_analysis_token_usage.prompt_tokens,
-                    total_tokens = cb.total_tokens + image_analysis_token_usage.total_tokens,
-                    total_cost = cb.total_cost
-                )
-            except Exception as e:
-                raise LangChainException(f"An unexpected exception occurred when executing the completion request: {str(e)}", 500)
+        return retvalue
         # End LangChain Expression Language (LCEL) implementation

@@ -267,6 +267,7 @@
 
 <script lang="ts">
 import { hideAllPoppers, VTooltip } from 'floating-vue';
+import eventBus from '@/js/eventBus';
 import type { Session } from '@/js/types';
 declare const process: any;
 
@@ -304,6 +305,9 @@ export default {
 		if (process.client) {
 			await this.$appStore.init(this.$nuxt._route.query.chat);
 		}
+
+		// Listen for the agent change event.
+        eventBus.on('agentChanged', this.handleAddSession);
 	},
 
 	methods: {

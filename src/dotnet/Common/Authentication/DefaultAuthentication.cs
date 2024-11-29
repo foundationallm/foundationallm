@@ -18,7 +18,8 @@ namespace FoundationaLLM.Common.Authentication
         /// </summary>
         /// <param name="production">Indicates whether the environment is production or not.</param>
         /// <param name="serviceName">The service name.</param>
-        public static void Initialize(bool production, string serviceName)
+        /// <param name="scope">The scope used to retrieve the access token.</param>
+        public static void Initialize(bool production, string serviceName, string scope = ScopeURIs.FoundationaLLM_Authorization)
         {
             Production = production;
 
@@ -27,7 +28,7 @@ namespace FoundationaLLM.Common.Authentication
                 : new AzureCliCredential();
 
             var tokenResult = AzureCredential.GetToken(
-                new([$"{ScopeURIs.FoundationaLLM_Authorization}/.default"]),
+                new([$"{scope}/.default"]),
                 default);
 
             var handler = new JwtSecurityTokenHandler();

@@ -92,7 +92,7 @@ public record Message
     /// <summary>
     /// The sources associated with the completion prompt.
     /// </summary>
-    public Citation[]? Citations { get; set; }
+    public ContentArtifact[]? ContentArtifacts { get; set; }
 
     /// <summary>
     /// A list of results from the analysis.

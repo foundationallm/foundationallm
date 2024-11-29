@@ -5,7 +5,7 @@ namespace FoundationaLLM.Common.Models.Orchestration.Response;
 /// <summary>
 /// Encapsulates data about the sources used in building a completion response.
 /// </summary>
-public class Citation
+public class ContentArtifact
 {
     /// <summary>
     /// The index identifier of the document containing the source information.
@@ -24,4 +24,28 @@ public class Citation
     /// </summary>
     [JsonPropertyName("filepath")]
     public string? Filepath { get; set; }
+
+    /// <summary>
+    /// The source of the content.
+    /// </summary>
+    [JsonPropertyName("source")]
+    public string? Source { get; set; }
+
+    /// <summary>
+    /// Textual content.
+    /// </summary>
+    [JsonPropertyName("content")]
+    public string? Content { get; set; }
+
+    /// <summary>
+    /// The type of the content.
+    /// </summary>
+    [JsonPropertyName("type")]
+    public string? Type { get; set; }
+
+    /// <summary>
+    /// The metadata associated with the content.
+    /// </summary>
+    [JsonPropertyName("metadata")]
+    public Dictionary<string, object>? Metadata { get; set; }
 }

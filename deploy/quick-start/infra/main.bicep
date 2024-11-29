@@ -9,6 +9,8 @@ param isE2ETest bool = false
 
 param createDate string = utcNow('u')
 
+param deploymentOwner string
+
 @maxLength(32)
 @description('Name of the environment that can be used as part of naming resource convention')
 param environmentName string
@@ -90,6 +92,7 @@ var tags = {
   'azd-env-name': environmentName
   'compute-type': 'container-app'
   'create-date': createDate
+  'owner': deploymentOwner
 }
 
 var abbrs = loadJsonContent('./abbreviations.json')
@@ -99,13 +102,11 @@ var resourceToken = toLower(uniqueString(subscription().id, environmentName, loc
 resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: 'rg-${environmentName}'
   location: location
-  tags: tags
 }
 
 resource authRg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: 'rg-auth-${environmentName}'
   location: location
-  tags: tags
 }
 
 resource customerOpenAiResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' existing =
@@ -528,6 +529,24 @@ module appsEnv './shared/apps-env.bicep' = {
   scope: rg
 }
 
+module deploymentNameTag './shared/tags.bicep' = {
+  name: 'deployment-tag-${timestamp}'
+  params: {
+    deploymentName: split(split(appsEnv.outputs.domain, '.')[0], '-')[0]
+    tags: tags
+  }
+  scope: rg
+}
+
+module deploymentNameTagAuthRg './shared/tags.bicep' = {
+  name: 'deployment-tag-authrg-${timestamp}'
+  params: {
+    deploymentName: split(split(appsEnv.outputs.domain, '.')[0], '-')[0]
+    tags: tags
+  }
+  scope: authRg
+}
+
 module authAcaService './app/authAcaService.bicep' = {
   name: '${authService.name}-${timestamp}'
   params: {
@@ -618,6 +637,7 @@ var cosmosRoleTargets = [
   'core-job'
   'state-api'
   'gateway-api'
+  'gatekeeper-api'
   'orchestration-api'
   'management-api'
 ]
