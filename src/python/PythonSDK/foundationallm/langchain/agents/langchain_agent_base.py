@@ -351,10 +351,6 @@ class LangChainAgentBase():
                     # Get Azure token for designated scope.
                     az_creds = DefaultAzureCredential(exclude_environment_credential=True)
                     azure_token = az_creds.get_token(scope)
-
-                    print("*********AZURE TOKEN************")
-                    print(azure_token.token)
-                    print("*********************************")
                     
                     sts_client = boto3.client('sts')
                     sts_response = sts_client.assume_role_with_web_identity(
@@ -362,7 +358,7 @@ class LangChainAgentBase():
                         RoleSessionName='assume-role',
                         WebIdentityToken=azure_token.token
                     )
-                    print(sts_response)
+                    
                     print("*********CREDENTIALS************")
                     creds = sts_response['Credentials']
                     print(creds)
@@ -370,13 +366,15 @@ class LangChainAgentBase():
 
                     # parse region from the URL, ex: https://bedrock-runtime.us-east-1.amazonaws.com/
                     region = self.api_endpoint.url.split('.')[1]
+                    print(region)
                     language_model = ChatBedrockConverse(
                         model= self.ai_model.deployment_name,
                         region_name = region,
                         aws_access_key_id = creds["AccessKeyId"],
                         aws_secret_access_key = creds["SecretAccessKey"],
                         aws_session_token= creds["SessionToken"]
-                    )                                        
+                    )
+                    print("Language Model: ", language_model)
                 else: # Key-based authentication
                     try:
                         access_key = self.config.get_value(self.api_endpoint.authentication_parameters.get('access_key'))
@@ -404,8 +402,9 @@ class LangChainAgentBase():
                     )
 
         # Set model parameters.
+        print("model_parameters: ", self.ai_model.model_parameters)           
         for key, value in self.ai_model.model_parameters.items():
             if hasattr(language_model, key):
                 setattr(language_model, key, value)
-
+        print("returns")
         return language_model

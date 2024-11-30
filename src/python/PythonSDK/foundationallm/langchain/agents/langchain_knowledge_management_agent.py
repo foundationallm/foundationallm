@@ -423,25 +423,32 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
         # Start LangGraph ReAct Agent workflow implementation
         if (agent.workflow is not None and isinstance(agent.workflow, LangGraphReactAgentWorkflow)):
+            print("agent 1")
             tool_factory = ToolFactory()
             tools = []           
             
             # Populate tools list from agent configuration
             for tool in agent.tools:                
                 tools.append(tool_factory.get_tool(tool, request.objects, self.config))
-            
+            print("agent 2")
             # Define the graph          
             graph = create_react_agent(llm, tools=tools, state_modifier=self.prompt.prefix)
+            print("agent 3")
             messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
+            print("agent 4")
             messages.append(HumanMessage(content=request.user_prompt))
+            print("agent 5")
             response = await graph.ainvoke({'messages': messages})
+            print("agent 6")
             # TODO: process tool messages with analysis results AIMessage with content='' but has addition_kwargs={'tool_calls';[...]}
             # print(response)
             final_message = response["messages"][-1]
+            print("agent 7")
             response_content = OpenAITextMessageContentItem(
                 value = final_message.content,
                 agent_capability_category = AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
             )
+            print("agent 8")
             return CompletionResponse(
                         operation_id = request.operation_id,
                         content = [response_content],
