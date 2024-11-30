@@ -22,11 +22,14 @@ class ToolFactory:
     ) -> FLLMToolBase:
         """
         Creates an instance of a tool based on the tool configuration.
-        """        
-        if tool_config.package_name == self.FLLM_PACKAGE_NAME:            
+        """
+        print("tool 1")
+        if tool_config.package_name == self.FLLM_PACKAGE_NAME:
+            print("tool 2")
             # internal tools
             match tool_config.name:
                 case DALLE_IMAGE_GENERATION_TOOL_NAME:
+                    print("tool 3")
                     return DALLEImageGenerationTool(tool_config, objects, config)
         # else: external tools
                

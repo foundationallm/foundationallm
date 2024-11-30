@@ -48,10 +48,15 @@ class DALLEImageGenerationTool(FLLMToolBase):
     def __init__(self, tool_config: AgentTool, objects: dict, config: Configuration):
         """ Initializes the DALLEImageGenerationTool class with the tool configuration,
             exploded objects collection, and platform configuration. """
+        print("DALLE 1")
         super().__init__(tool_config, objects, config)
+        print("DALLE 2")
         self.ai_model = ObjectUtils.get_object_by_id(self.tool_config.ai_model_object_ids["main_model"], self.objects, AIModelBase)
+        print("DALLE 3")
         self.api_endpoint = ObjectUtils.get_object_by_id(self.ai_model.endpoint_object_id, self.objects, APIEndpointConfiguration)
-        self.client = self._get_client()            
+        print("DALLE 4")
+        self.client = self._get_client()
+        print("DALLE 5")
 
     def _run(self,                 
             prompt: str,
@@ -105,13 +110,16 @@ class DALLEImageGenerationTool(FLLMToolBase):
     def _get_client(self):
         """
         Returns the an AsyncOpenAI client for DALL-E image generation.
-        """       
+        """
+        print("DALLE Token 1")
         scope = self.api_endpoint.authentication_parameters.get('scope', 'https://cognitiveservices.azure.com/.default')
         # Set up a Azure AD token provider.
+        print("DALLE Token 2")
         token_provider = get_bearer_token_provider(
             DefaultAzureCredential(exclude_environment_credential=True),
             scope
         )
+        print("DALLE Token 3")
         return AsyncAzureOpenAI(
             azure_endpoint = self.api_endpoint.url,
             api_version = self.api_endpoint.api_version,

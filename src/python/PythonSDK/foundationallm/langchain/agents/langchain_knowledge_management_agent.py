@@ -428,7 +428,8 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             tools = []           
             
             # Populate tools list from agent configuration
-            for tool in agent.tools:                
+            for tool in agent.tools:
+                print("agent 1.5")
                 tools.append(tool_factory.get_tool(tool, request.objects, self.config))
             print("agent 2")
             # Define the graph          
