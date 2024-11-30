@@ -2,11 +2,8 @@ from typing import List
 from azure.identity import DefaultAzureCredential
 from langchain_core.retrievers import BaseRetriever
 from foundationallm.config import Configuration
-from foundationallm.langchain.language_models.openai import OpenAIModel
-from foundationallm.models.language_models import EmbeddingModel, LanguageModelType, LanguageModelProvider
 from foundationallm.services.gateway_text_embedding import GatewayTextEmbeddingService
 from .azure_ai_search_service_retriever import AzureAISearchServiceRetriever
-from foundationallm.models.resource_providers.vectorization import AzureAISearchIndexingProfile
 from foundationallm.models.agents import KnowledgeManagementIndexConfiguration
 
 class RetrieverFactory:

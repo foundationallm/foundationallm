@@ -7,7 +7,7 @@ from openai import AsyncAzureOpenAI
 from pydantic import BaseModel, Field
 from typing import Optional, Type
 
-from .fllm_tool import FLLMToolBase
+from .fllm_tool_base import FLLMToolBase
 from foundationallm.config import Configuration
 from foundationallm.models.agents import AgentTool
 from foundationallm.models.resource_providers.ai_models import AIModelBase
