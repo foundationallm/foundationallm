@@ -344,26 +344,21 @@ class LangChainAgentBase():
                         raise LangChainException(f"Failed to retrieve Role ARN: {str(e)}", 500)
 
                     if role_arn is None:
-                        raise LangChainException("Role ARN is missing from the configuration settings.", 400)
+                        raise LangChainException("Role ARN is missing from the configuration settings.", 400)                    
                     
-                    print("SCOPE: ", scope)
-                    print("ROLE_ARN: ", role_arn)
                     # Get Azure token for designated scope.
                     az_creds = DefaultAzureCredential(exclude_environment_credential=True)
                     azure_token = az_creds.get_token(scope)
-                    
+
+                    # Get AWS STS credentials using Azure token.
                     sts_client = boto3.client('sts')
                     sts_response = sts_client.assume_role_with_web_identity(
                         RoleArn=role_arn,                        
                         RoleSessionName='assume-role',
                         WebIdentityToken=azure_token.token
-                    )
-                    print(sts_response)
-                    print("*********CREDENTIALS************")
+                    )                   
                     creds = sts_response['Credentials']
-                    print(creds)
-                    print("*********************************")
-
+                   
                     # parse region from the URL, ex: https://bedrock-runtime.us-east-1.amazonaws.com/
                     region = self.api_endpoint.url.split('.')[1]
                     language_model = ChatBedrockConverse(
