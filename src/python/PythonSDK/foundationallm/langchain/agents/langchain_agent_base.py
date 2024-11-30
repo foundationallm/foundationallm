@@ -374,7 +374,8 @@ class LangChainAgentBase():
                         model= self.ai_model.deployment_name,
                         region_name = region,
                         aws_access_key_id = creds["AccessKeyId"],
-                        aws_secret_access_key = creds["SecretAccessKey"]
+                        aws_secret_access_key = creds["SecretAccessKey"],
+                        aws_session_token= creds["SessionToken"]
                     )                                        
                 else: # Key-based authentication
                     try:
