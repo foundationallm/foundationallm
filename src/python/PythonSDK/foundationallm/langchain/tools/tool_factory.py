@@ -5,14 +5,19 @@ Description: Factory class for creating tools based on the AgentTool configurati
 from foundationallm.config import Configuration
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.models.agents import AgentTool
-from foundationallm.langchain.tools import FLLMToolBase, DALLEImageGenerationTool
+from foundationallm.langchain.tools import (
+    FLLMToolBase,
+    DALLEImageGenerationTool,
+    FoundationaLLMFileSearchTool
+)
 
 class ToolFactory:
     """
     Factory class for creating tools based on the AgentTool configuration.
     """
     FLLM_PACKAGE_NAME = "FoundationaLLM"
-    DALLE_IMAGE_GENERATION_TOOL_NAME = "DALLEImageGenerationTool"
+    DALLE_IMAGE_GENERATION_TOOL_NAME = "DALLEImageGeneration"
+    FOUNDATIONALLM_FILE_SEARCH_TOOL_NAME = "FoundationaLLMFileSearch"
 
     def get_tool(
         self,
@@ -26,8 +31,10 @@ class ToolFactory:
         if tool_config.package_name == self.FLLM_PACKAGE_NAME:            
             # internal tools
             match tool_config.name:
-                case DALLE_IMAGE_GENERATION_TOOL_NAME:
+                case self.DALLE_IMAGE_GENERATION_TOOL_NAME:
                     return DALLEImageGenerationTool(tool_config, objects, config)
+                case self.FOUNDATIONALLM_FILE_SEARCH_TOOL_NAME:
+                    return FoundationaLLMFileSearchTool(tool_config, objects, config)
         # else: external tools
                
         raise LangChainException(f"Tool {tool_config.name} not found in package {tool_config.package_name}")   

@@ -9,7 +9,6 @@ Description:
 from typing import Any, Self
 from foundationallm.models.resource_providers.vectorization import IndexingProfileBase
 from .azure_ai_search_settings import AzureAISearchSettings
-from .azure_ai_search_configuration_references import AzureAISearchConfigurationReferences
 from foundationallm.utils import ObjectUtils
 from foundationallm.langchain.exceptions import LangChainException
 
@@ -18,8 +17,7 @@ class AzureAISearchIndexingProfile(IndexingProfileBase):
     An Azure AI Search indexing profile.
     """
     settings: AzureAISearchSettings
-    configuration_references: AzureAISearchConfigurationReferences
-    
+        
     @staticmethod
     def from_object(obj: Any) -> Self:
 

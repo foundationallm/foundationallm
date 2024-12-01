@@ -134,7 +134,6 @@
     <Compile Include="foundationallm\models\resource_providers\resource_name.py" />
     <Compile Include="foundationallm\models\resource_providers\vectorization\embedding_profiles\azure_openai\azure_openai_embedding_profile.py" />
     <Compile Include="foundationallm\models\resource_providers\vectorization\embedding_profiles\embedding_profile_base.py" />
-    <Compile Include="foundationallm\models\resource_providers\vectorization\indexing_profiles\azure_ai_search\azure_ai_search_configuration_references.py" />
     <Compile Include="foundationallm\models\resource_providers\vectorization\indexing_profiles\azure_ai_search\azure_ai_search_indexing_profile.py" />
     <Compile Include="foundationallm\models\resource_providers\vectorization\indexing_profiles\azure_ai_search\azure_ai_search_settings.py" />
     <Compile Include="foundationallm\models\resource_providers\vectorization\indexing_profiles\indexing_profile_base.py" />

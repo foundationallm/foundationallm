@@ -167,7 +167,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             return kmOrchestration;
         }
 
-        private static async Task<(AgentBase? Agent, AIModelBase? AIModel, APIEndpointConfiguration? APIEndpointConfiguration,  Dictionary<string, object>? ExplodedObjects, bool DataSourceAccessDenied)> LoadAgent(
+        private static async Task<(AgentBase? Agent, AIModelBase? AIModel, APIEndpointConfiguration? APIEndpointConfiguration, Dictionary<string, object>? ExplodedObjects, bool DataSourceAccessDenied)> LoadAgent(
             string instanceId,
             string agentName,
             string? sessionId,
@@ -201,7 +201,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             var agentWorkflow = agentBase.Workflow;
             AIModelBase? mainAIModel = null;
             APIEndpointConfiguration? mainAIModelAPIEndpointConfiguration = null;
-                      
+
             if (agentWorkflow is not null)
             {
                 foreach (var prompt in agentWorkflow.PromptObjectIds)
@@ -212,7 +212,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     explodedObjects.Add(retrievedPrompt.ObjectId!, retrievedPrompt);
                 }
 
-                foreach(var agentAIModel in agentWorkflow.AgentWorkflowAIModels)
+                foreach (var agentAIModel in agentWorkflow.AgentWorkflowAIModels)
                 {
                     var retrievedAIModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
                                             agentAIModel.Value.AIModelObjectId,
@@ -247,8 +247,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             }
                         }
                     }
-                  
-                    explodedObjects.Add(retrievedAIModel.ObjectId!, retrievedAIModel);                    
+
+                    explodedObjects.Add(retrievedAIModel.ObjectId!, retrievedAIModel);
                     explodedObjects.Add(retrievedAIModel.EndpointObjectId!, retrievedAPIEndpointConfiguration);
                 }
 
@@ -304,7 +304,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 currentUserIdentity);
 
             explodedObjects[CompletionRequestObjectsKeys.GatewayAPIEndpointConfiguration] = gatewayAPIEndpointConfiguration;
-            
+
 
             var allAgents = await agentResourceProvider.GetResourcesAsync<AgentBase>(instanceId, currentUserIdentity);
             var allAgentsDescriptions = allAgents
@@ -349,6 +349,30 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                     explodedObjects[apiEndpointConfigurationObjectId] = toolAPIEndpointConfiguration;
                 }
+
+                // Check properties for *object_id or *object_ids and load those resources.
+                foreach (var property in tool.Properties)
+                {
+                    if (property.Value == null)
+                    {
+                        continue;
+                    }
+                    if (property.Key.EndsWith("_object_id"))
+                    {                       
+                        //get resource and add to exploded objects                       
+                        explodedObjects[property.Key] = await LoadResource(property.Value.ToString()!, resourceProviderServices, currentUserIdentity);
+                    }
+                    else if (property.Key.EndsWith("_object_ids"))
+                    {
+                        //array of object ids
+                        foreach (var objectId in (property.Value as List<string>) ?? new List<string>())
+                        {
+                            //get resource and add to exploded objects
+                            explodedObjects[objectId] = await LoadResource(objectId, resourceProviderServices, currentUserIdentity);
+                        }
+                    }
+                }
+
             }
 
             explodedObjects[CompletionRequestObjectsKeys.ToolNames] = toolNames;
@@ -392,17 +416,17 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         var indexingProfile = await vectorizationResourceProvider.GetResourceAsync<IndexingProfile>(
                             indexingProfileName,
                             currentUserIdentity);
-                       
+
                         if (indexingProfile == null)
                             throw new OrchestrationException($"The indexing profile {indexingProfileName} is not a valid indexing profile.");
 
                         explodedObjects[indexingProfileName] = indexingProfile;
-                                               
+
                         // Provide the indexing profile API endpoint configuration.
                         if (indexingProfile.Settings == null)
                             throw new OrchestrationException($"The settings for the indexing profile {indexingProfileName} were not found. Must include \"{VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId}\" setting.");
 
-                        if(indexingProfile.Settings.TryGetValue(VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, out var apiEndpointConfigurationObjectId) == false)
+                        if (indexingProfile.Settings.TryGetValue(VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, out var apiEndpointConfigurationObjectId) == false)
                             throw new OrchestrationException($"The API endpoint configuration object ID was not found in the settings of the indexing profile.");
 
                         var indexingProfileAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
@@ -416,8 +440,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     {
                         var textEmbeddingProfile = await vectorizationResourceProvider.GetResourceAsync<TextEmbeddingProfile>(
                             kmAgent.Vectorization.TextEmbeddingProfileObjectId,
-                            currentUserIdentity);                                               
-                                           
+                            currentUserIdentity);
+
                         if (textEmbeddingProfile == null)
                             throw new OrchestrationException($"The text embedding profile {kmAgent.Vectorization.TextEmbeddingProfileObjectId} is not a valid text embedding profile.");
 
@@ -431,23 +455,78 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             return (agentBase, mainAIModel, mainAIModelAPIEndpointConfiguration, explodedObjects, false);
         }
 
-        private static async Task<string?> EnsureAgentCapabilities(
-            string instanceId,
-            AgentBase agent,
-            string conversationId,
-            Dictionary<string, object> explodedObjects,
+        /// <summary>
+        /// Load a resource by its object id.
+        /// </summary>
+        /// <param name="objectId">The fully qualified resource object id string.</param>
+        /// <param name="resourceProviderServices">All registered resource providers.</param>
+        /// <param name="currentUserIdentity">Identity of the calling entity.</param>
+        /// <returns>The instance of the resource represented by the object id.</returns>
+        /// <exception cref="OrchestrationException"></exception>
+
+        private static async Task<ResourceBase> LoadResource(
+            string objectId,
             Dictionary<string, IResourceProviderService> resourceProviderServices,
-            UnifiedUserIdentity currentUserIdentity,
-            ILogger<OrchestrationBuilder> logger)
+            UnifiedUserIdentity currentUserIdentity
+            )
         {
-            if ( agent.Workflow is not null)
+            if (string.IsNullOrWhiteSpace(objectId))
+                throw new OrchestrationException("The object id provided in the completion request is invalid.");
+
+            if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Agent, out var agentResourceProvider))
+                throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_Agent} was not loaded.");
+            if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Prompt, out var promptResourceProvider))
+                throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_Prompt} was not loaded.");
+            if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Vectorization, out var vectorizationResourceProvider))
+                throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_Vectorization} was not loaded.");
+            if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_DataSource, out var dataSourceResourceProvider))
+                throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_DataSource} was not loaded.");
+            if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_AIModel, out var aiModelResourceProvider))
+                throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_AIModel} was not loaded.");
+            if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_Configuration, out var configurationResourceProvider))
+                throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_Configuration} was not loaded.");
+
+            //parse the object id
+            // /instances/{instanceId}/providers/{provider}/{type}/(optional){subtype}/{resourceName}
+            var objectIdParts = objectId.Split('/');
+            //get the provider
+            var provider = objectIdParts[4];
+            switch (provider)
+            {
+                case ResourceProviderNames.FoundationaLLM_Agent:
+                    return await agentResourceProvider.GetResourceAsync<ResourceBase>(objectId, currentUserIdentity);
+                case ResourceProviderNames.FoundationaLLM_Prompt:
+                    return await promptResourceProvider.GetResourceAsync<ResourceBase>(objectId, currentUserIdentity);
+                case ResourceProviderNames.FoundationaLLM_Vectorization:
+                    return await vectorizationResourceProvider.GetResourceAsync<ResourceBase>(objectId, currentUserIdentity);
+                case ResourceProviderNames.FoundationaLLM_DataSource:
+                    return await dataSourceResourceProvider.GetResourceAsync<ResourceBase>(objectId, currentUserIdentity);
+                case ResourceProviderNames.FoundationaLLM_AIModel:
+                    return await aiModelResourceProvider.GetResourceAsync<ResourceBase>(objectId, currentUserIdentity);
+                case ResourceProviderNames.FoundationaLLM_Configuration:
+                    return await configurationResourceProvider.GetResourceAsync<ResourceBase>(objectId, currentUserIdentity);
+                default:
+                    throw new OrchestrationException($"The resource provider {provider} was not loaded.");
+            }
+        }
+
+        private static async Task<string?> EnsureAgentCapabilities(
+                string instanceId,
+                AgentBase agent,
+                string conversationId,
+                Dictionary<string, object> explodedObjects,
+                Dictionary<string, IResourceProviderService> resourceProviderServices,
+                UnifiedUserIdentity currentUserIdentity,
+                ILogger<OrchestrationBuilder> logger)
+        {
+            if (agent.Workflow is not null)
             {
                 if (agent.Workflow is AzureOpenAIAssistantsAgentWorkflow)
                 {
                     if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_AzureOpenAI, out var azureOpenAIResourceProvider))
                         throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_AzureOpenAI} was not loaded.");
 
-                    var mainAIModelObjectId = agent.Workflow.AgentWorkflowAIModels["main_model"].AIModelObjectId;                    
+                    var mainAIModelObjectId = agent.Workflow.AgentWorkflowAIModels["main_model"].AIModelObjectId;
                     var aiModel = explodedObjects[mainAIModelObjectId] as AIModelBase;
                     var apiEndpointConfiguration = explodedObjects[aiModel!.EndpointObjectId!] as APIEndpointConfiguration;
                     var openAIAssistantsAssistantId = explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantsAssistantId] as string;
@@ -455,12 +534,12 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     var resourceProviderUpsertOptions = new ResourceProviderUpsertOptions
                     {
                         Parameters = new()
-                        {
-                            { AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId, agent.ObjectId! },
-                            { AzureOpenAIResourceProviderUpsertParameterNames.ConversationId, conversationId },
-                            { AzureOpenAIResourceProviderUpsertParameterNames.OpenAIAssistantId, openAIAssistantsAssistantId! },
-                            { AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIAssistantThread, false }
-                        }
+                            {
+                                { AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId, agent.ObjectId! },
+                                { AzureOpenAIResourceProviderUpsertParameterNames.ConversationId, conversationId },
+                                { AzureOpenAIResourceProviderUpsertParameterNames.OpenAIAssistantId, openAIAssistantsAssistantId! },
+                                { AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIAssistantThread, false }
+                            }
                     };
 
                     var existsResult =
@@ -535,12 +614,12 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     var resourceProviderUpsertOptions = new ResourceProviderUpsertOptions
                     {
                         Parameters = new()
-                    {
-                        { AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId, agent.ObjectId! },
-                        { AzureOpenAIResourceProviderUpsertParameterNames.ConversationId, conversationId },
-                        { AzureOpenAIResourceProviderUpsertParameterNames.OpenAIAssistantId, openAIAssistantsAssistantId! },
-                        { AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIAssistantThread, false }
-                    }
+                        {
+                            { AzureOpenAIResourceProviderUpsertParameterNames.AgentObjectId, agent.ObjectId! },
+                            { AzureOpenAIResourceProviderUpsertParameterNames.ConversationId, conversationId },
+                            { AzureOpenAIResourceProviderUpsertParameterNames.OpenAIAssistantId, openAIAssistantsAssistantId! },
+                            { AzureOpenAIResourceProviderUpsertParameterNames.MustCreateOpenAIAssistantThread, false }
+                        }
                     };
 
                     var existsResult =
@@ -601,8 +680,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 }
                 //**** END LEGACY CODE ****
             }
-            
-
             return null;
         }
     }

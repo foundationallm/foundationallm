@@ -1,7 +1,7 @@
 import json
 from enum import Enum
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
-from langchain_core.callbacks import AsyncCallbackManagerForToolRun
+from langchain_core.callbacks import CallbackManagerForToolRun, AsyncCallbackManagerForToolRun
 from langchain_core.tools import ToolException
 from openai import AsyncAzureOpenAI
 from pydantic import BaseModel, Field
@@ -59,7 +59,7 @@ class DALLEImageGenerationTool(FLLMToolBase):
             quality: DALLEImageGenerationToolQualityEnum,
             style: DALLEImageGenerationToolStyleEnum,
             size: DALLEImageGenerationToolSizeEnum,
-            run_manager: Optional[AsyncCallbackManagerForToolRun] = None
+            run_manager: Optional[CallbackManagerForToolRun] = None
             ) -> str:
         raise ToolException("This tool does not support synchronous execution. Please use the async version of the tool.")
     

@@ -1,3 +1,4 @@
 from .fllm_tool_base import FLLMToolBase
 from .dalle_image_generation_tool import DALLEImageGenerationTool
+from .foundationallm_file_search import FoundationaLLMFileSearchTool
 from .tool_factory import ToolFactory
