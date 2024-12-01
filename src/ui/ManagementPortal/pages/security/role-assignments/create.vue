@@ -1,5 +1,5 @@
 <template>
-	<main>
+	<main id="main-content">
 		<!-- Header -->
 		<template v-if="!headless">
 			<h2 class="page-header">{{ editId ? 'Edit Role Assignment' : 'Create Role Assignment' }}</h2>

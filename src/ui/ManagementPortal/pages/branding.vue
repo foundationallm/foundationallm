@@ -1,5 +1,5 @@
 <template>
-	<main>
+	<main id="main-content">
 		<template v-if="loading">
 			<div class="grid__loading-overlay" role="status" aria-live="polite">
 				<LoadingGrid />

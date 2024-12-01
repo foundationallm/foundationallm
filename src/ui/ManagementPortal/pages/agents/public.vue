@@ -1,5 +1,5 @@
 <template>
-	<main>
+	<main id="main-content">
 		<h2 class="page-header">All Agents</h2>
 		<div class="page-subheader">View your publicly accessible agents.</div>
 

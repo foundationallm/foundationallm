@@ -1,5 +1,5 @@
 <template>
-	<main>
+	<main id="main-content">
 		<div style="display: flex">
 			<!-- Title -->
 			<div style="flex: 1">
