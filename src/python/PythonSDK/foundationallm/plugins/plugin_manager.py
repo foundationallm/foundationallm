@@ -51,7 +51,7 @@ class PluginManager():
             valid_configuration = True
         except:
             self.logger.exception('The plugin manager configuration is not set up correctly. No plugins will be loaded.')
-            
+
         if valid_configuration:
 
             self.logger.info((
@@ -86,10 +86,10 @@ class PluginManager():
                             module_name=module_name,
                             tool_plugin_manager_class_name=class_name
                         )
-                
+
                 self.initialized = True
                 self.logger.info('The plugin manager initialized successfully.')
-                
+
             except:
                 self.logger.exception('An error occurred while initializing the plugin manager storage manager. No plugins will be loaded.')
 
@@ -100,9 +100,9 @@ class PluginManager():
         if not self.initialized:
             self.logger.error('The plugin manager is not initialized. No plugins will be loaded.')
             return
-        
+
         for module_name in self.module_configurations.keys():
-            
+
             module_file_name = f'{module_name}.zip'
             local_module_file_name = f'{self.modules_local_path}/{module_file_name}'
             self.logger.info(f'Loading module from {module_file_name}')
@@ -126,4 +126,3 @@ class PluginManager():
             except Exception as e:
                 self.logger.exception(f'An error occurred while loading module: {module_name}')
 
-        
