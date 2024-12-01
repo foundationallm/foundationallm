@@ -150,7 +150,7 @@
 
 					<!-- Data source -->
 					<div v-if="dedicated_pipeline">
-						<CreateAgentStepItem v-model="editDataSource">
+						<CreateAgentStepItem v-model="editDataSource" focusQuery=".step-container__edit__option">
 							<template v-if="selectedDataSource">
 								<div class="step-container__header">{{ selectedDataSource.type }}</div>
 								<div>
@@ -187,7 +187,9 @@
 											'step-container__edit__option--selected':
 												dataSource.name === selectedDataSource?.name,
 										}"
+										tabindex="0"
 										@click.stop="handleDataSourceSelected(dataSource)"
+										@keydown.enter="handleDataSourceSelected(dataSource)"
 									>
 										<div>
 											<div v-if="dataSource.object_id !== ''">
@@ -213,7 +215,7 @@
 					</div>
 
 					<!-- Index source -->
-					<CreateAgentStepItem v-model="editIndexSource">
+					<CreateAgentStepItem v-model="editIndexSource" focusQuery=".step-container__edit__option">
 						<template v-if="selectedIndexSource">
 							<div v-if="selectedIndexSource.object_id !== ''">
 								<div class="step-container__header">{{ selectedIndexSource.name }}</div>
@@ -243,7 +245,9 @@
 									'step-container__edit__option--selected':
 										indexSource.name === selectedIndexSource?.name,
 								}"
+								tabindex="0"
 								@click.stop="handleIndexSourceSelected(indexSource)"
+								@keydown.enter="handleIndexSourceSelected(indexSource)"
 							>
 								<div v-if="indexSource.object_id !== ''">
 									<div class="step-container__header">{{ indexSource.name }}</div>
@@ -270,7 +274,7 @@
 					</template>
 
 					<!-- Text embedding profiles -->
-					<CreateAgentStepItem v-model="editTextEmbeddingProfile">
+					<CreateAgentStepItem v-model="editTextEmbeddingProfile" focusQuery=".step-container__edit__option">
 						<template v-if="selectedTextEmbeddingProfile">
 							<div v-if="selectedTextEmbeddingProfile.object_id !== ''">
 								<div class="step-container__header">{{ selectedTextEmbeddingProfile.name }}</div>
@@ -307,7 +311,9 @@
 									'step-container__edit__option--selected':
 										textEmbeddingProfile.name === selectedTextEmbeddingProfile?.name,
 								}"
+								tabindex="0"
 								@click.stop="handleTextEmbeddingProfileSelected(textEmbeddingProfile)"
+								@keydown.enter="handleTextEmbeddingProfileSelected(textEmbeddingProfile)"
 							>
 								<div v-if="textEmbeddingProfile.object_id !== ''">
 									<div class="step-container__header">{{ textEmbeddingProfile.name }}</div>
@@ -340,7 +346,7 @@
 
 						<!-- Process indexing -->
 
-						<CreateAgentStepItem>
+						<CreateAgentStepItem focusQuery=".chunk-size-input">
 							<div class="step-container__header">Splitting & Chunking</div>
 
 							<div>
@@ -361,7 +367,7 @@
 									<InputText
 										v-model="chunkSize"
 										type="number"
-										class="mt-2"
+										class="mt-2 chunk-size-input"
 										aria-label="aria-chunk-size"
 									/>
 								</div>
@@ -379,7 +385,7 @@
 						</CreateAgentStepItem>
 
 						<!-- Trigger -->
-						<CreateAgentStepItem>
+						<CreateAgentStepItem focusQuery=".frequency-dropdown span">
 							<div class="step-container__header">Trigger</div>
 							<div>Runs every time a new item is added to the data source.</div>
 
@@ -401,7 +407,7 @@
 									<span id="aria-frequency" class="step-option__header">Frequency:</span>
 									<Dropdown
 										v-model="triggerFrequency"
-										class="dropdown--agent"
+										class="dropdown--agent frequency-dropdown"
 										:options="triggerFrequencyOptions"
 										placeholder="--Select--"
 										aria-label="aria-frequency"
@@ -440,7 +446,7 @@
 				<div class="step-header">How should user-agent interactions be gated?</div>
 
 				<!-- Conversation history -->
-				<CreateAgentStepItem>
+				<CreateAgentStepItem focusQuery=".conversation-history-toggle input">
 					<div class="step-container__header">Conversation History</div>
 
 					<div>
@@ -480,6 +486,7 @@
 									off-label="No"
 									off-icon="pi pi-times-circle"
 									aria-labelledby="aria-conversation-history aria-conversation-history-enabled"
+									class="conversation-history-toggle"
 								/>
 							</span>
 						</div>
@@ -497,7 +504,7 @@
 				</CreateAgentStepItem>
 
 				<!-- Gatekeeper -->
-				<CreateAgentStepItem>
+				<CreateAgentStepItem focusQuery=".gatekeeper-toggle input">
 					<div class="step-container__header">Gatekeeper</div>
 
 					<div>
@@ -549,6 +556,7 @@
 									off-label="No"
 									off-icon="pi pi-times-circle"
 									aria-labelledby="aria-gatekeeper aria-gatekeeper-enabled"
+									class="gatekeeper-toggle"
 								/>
 							</span>
 						</div>
@@ -604,7 +612,7 @@
 				<div class="step-header">Which capabilities should the agent have?</div>
 
 				<!-- AI model -->
-				<CreateAgentStepItem v-model="editAIModel">
+				<CreateAgentStepItem v-model="editAIModel" focusQuery=".step-container__edit__option">
 					<template v-if="selectedAIModel">
 						<div v-if="selectedAIModel.object_id !== ''">
 							<div class="step-container__header">{{ selectedAIModel.name }}</div>
@@ -625,7 +633,9 @@
 							:class="{
 								'step-container__edit__option--selected': aiModel.name === selectedAIModel?.name,
 							}"
+							tabindex="0"
 							@click.stop="handleAIModelSelected(aiModel)"
+							@keydown.enter="handleAIModelSelected(aiModel)"
 						>
 							<div v-if="aiModel.object_id !== ''">
 								<div class="step-container__header">{{ aiModel.name }}</div>
@@ -639,7 +649,7 @@
 				</CreateAgentStepItem>
 
 				<!-- Agent capabilities -->
-				<CreateAgentStepItem>
+				<CreateAgentStepItem focusQuery=".agent-capabilities-dropdown input">
 					<div>
 						<span class="step-option__header">Agent Capabilities:</span>
 						<span>{{
@@ -654,7 +664,7 @@
 							<span class="step-option__header">Agent Capabilities:</span>
 							<MultiSelect
 								v-model="selectedAgentCapabilities"
-								class="dropdown--agent"
+								class="dropdown--agent agent-capabilities-dropdown"
 								:options="agentCapabilitiesOptions"
 								option-label="name"
 								display="chip"

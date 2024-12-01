@@ -1,10 +1,11 @@
 <template>
-	<div class="quill-container">
+	<div class="quill-container" ref="quillContainer">
 		<QuillEditor
 			ref="quillEditor"
 			:content="content"
 			:toolbar="`#${toolbarId}`"
 			content-type="html"
+			@keydown.enter="handleEnterFromQuill"
 			@update:content="handleContentUpdate"
 		>
 			<template #toolbar>
@@ -25,10 +26,11 @@
 					<button class="ql-list" value="bullet" aria-label="Unordered List" title="Unordered List"></button>
 					<button class="ql-clean" aria-label="Remove Styles" title="Remove Styles"></button>
 					<button
-						class="quill-view-html"
+						:class="`quill-view-html view-html-${randomNumber}`"
 						aria-label="Edit HTML"
 						style="width: 100px"
 						@click="toggleHtmlDialog"
+						@keydown.enter="toggleHtmlDialog"
 					>
 						Edit HTML
 					</button>
@@ -46,6 +48,7 @@
 		>
 			<CodeEditor
 				ref="codeEditor"
+				autofocus
 				v-model="rawHtml"
 				:languages="[['html', 'HTML']]"
 				:wrap="true"
@@ -97,6 +100,14 @@ import 'highlight.js';
 import CodeEditor from 'simple-code-editor';
 import { v4 as uuidv4 } from 'uuid';
 
+function getFocusableElements(container) {
+    return Array.from(
+        container.querySelectorAll(
+            'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
+        )
+    ).filter((el) => !el.hasAttribute('disabled') && el.offsetParent !== null);
+}
+
 export default {
 	components: {
 		QuillEditor,
@@ -117,11 +128,13 @@ export default {
 	data() {
 		return {
 			content: this.initialContent,
+			oldContent: this.initialContent,
 			rawHtml: '',
 			processedContent: '',
 			showHtmlDialog: false,
 			showHtmlCorrectionDialog: false,
 			toolbarId: `toolbar-${uuidv4()}`,
+			randomNumber: Math.random(),
 		};
 	},
 
@@ -132,6 +145,10 @@ export default {
 			}
 		},
 	},
+
+	// mounted() {
+	// 	this.initializeQuill();
+	// },
 
 	methods: {
 		toggleHtmlDialog() {
@@ -144,6 +161,7 @@ export default {
 		},
 
 		handleContentUpdate(newContent) {
+			this.oldContent = this.content;
 			if (newContent !== this.content) {
 				this.$emit('content-update', newContent);
 			}
@@ -177,6 +195,61 @@ export default {
 			this.handleCodeEditorChange();
 			this.showHtmlCorrectionDialog = false;
 		},
+
+		handleEnterFromQuill(event) {
+			// console.log(event);
+			if (event.key === 'Enter' && !event.shiftKey) {
+				// event.preventDefault(); // Prevent Quill's default Tab handling
+				const focusableElements = getFocusableElements(document);
+				// console.log(focusableElements);
+				const currentIndex = focusableElements.indexOf(focusableElements.find((el) => el.classList.contains(`view-html-${this.randomNumber}`)));
+				// console.log(currentIndex);
+				const nextIndex = event.shiftKey ? currentIndex - 1 : currentIndex + 1;
+				// console.log(nextIndex);
+				this.$emit('content-update', this.oldContent);
+				// focusableElements[nextIndex]?.focus();
+				
+				// this.$nextTick(() => {
+				// 	this.content = this.oldContent;
+				setTimeout(() => {
+					// this.$emit('content-update', this.oldContent);
+					focusableElements[nextIndex]?.focus();
+				}, 50);
+				// });
+
+				// focusableElements[nextIndex]?.focus();
+				// console.log(focusableElements[nextIndex]);
+				// console.log(focusableElements[nextIndex].focus());
+				// const nextElement = this.$refs.quillContainer;
+				// console.log(nextElement);
+				// nextElement?.focus(); // Focus the next element in the DOM
+			}
+		},
+
+		// initializeQuill() {
+		// 	console.log(this.$refs.quillEditor.getQuill());
+		// 	const quill = this.$refs.quillEditor.getQuill();
+
+		// 	quill.keyboard.addBinding(
+		// 		{
+		// 			key: 'Enter',
+		// 		},
+		// 		() => {
+		// 			console.log('Enter key pressed');
+		// 			const focusableElements = getFocusableElements(document);
+
+		// 			const currentFocusedElement = document.activeElement;
+
+		// 			const currentIndex = focusableElements.indexOf(currentFocusedElement);
+
+		// 			const nextIndex = context.shiftKey ? currentIndex - 1 : currentIndex + 1;
+
+		// 			if (focusableElements[nextIndex]) {
+        //                 focusableElements[nextIndex].focus();
+        //             }
+		// 		}
+		// 	);
+		// },
 	},
 };
 </script>

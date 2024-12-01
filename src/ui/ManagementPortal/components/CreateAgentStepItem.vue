@@ -63,6 +63,11 @@ export default {
 			required: false,
 			default: false,
 		},
+		focusQuery: {
+			type: String,
+			required: false,
+			default: '',
+		},
 	},
 
 	emits: ['update:modelValue'],
@@ -96,8 +101,8 @@ export default {
 			this.$appStore.createAgentOpenItemId = this.id;
 
 			this.$nextTick(() => {
-				const doneButton = this.$el.querySelector('.step-container__edit__inner .mt-2');
-				doneButton?.focus();
+				const focusElement = this.$el.querySelector(this.focusQuery);
+				focusElement?.focus();
 			});
 		},
 
