@@ -9,12 +9,16 @@ from app.routers import (
     completions,
     status
 )
+from foundationallm.plugins import PluginManager
 from foundationallm.telemetry import Telemetry
 
 # Open a connection to the app configuration
 config = get_config()
 # Start collecting telemetry
 Telemetry.configure_monitoring(config, f'FoundationaLLM:APIEndpoints:{API_NAME}:Essentials:AppInsightsConnectionString')
+
+plugin_manager = PluginManager(config, Telemetry.get_logger(__name__))
+plugin_manager.load_external_modules()
 
 app = FastAPI(
     title=f'FoundationaLLM {API_NAME}',
