@@ -422,7 +422,7 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer",
-            "value": "",
+            "value": "external-modules-python",
             "label": null,
             "content_type": "",
             "tags": {}

@@ -422,6 +422,9 @@ module storage './shared/storage.bicep' = {
       {
         name: 'vectorization-state'
       }
+      {
+        name: 'external-modules-python'
+      }
     ]
     files: []
     queues: [
