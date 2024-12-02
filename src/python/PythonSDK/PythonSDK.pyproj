@@ -29,6 +29,8 @@
     <Compile Include="foundationallm\exceptions\foundationallm_exception.py" />
     <Compile Include="foundationallm\exceptions\__init__.py" />
     <Compile Include="foundationallm\langchain\agents\langchain_knowledge_management_agent.py" />
+    <Compile Include="foundationallm\langchain\common\foundationallm_tool_base.py" />
+    <Compile Include="foundationallm\langchain\common\__init__.py" />
     <Compile Include="foundationallm\models\agents\agent_tool.py" />
     <Compile Include="foundationallm\models\agents\agent_workflows\agent_workflow_ai_model.py" />
     <Compile Include="foundationallm\models\agents\agent_workflows\agent_workflow_base.py" />
@@ -52,6 +54,10 @@
     <Compile Include="foundationallm\models\resource_providers\vectorization\embedding_profiles\embedding_profile_settings_keys.py" />
     <Compile Include="foundationallm\models\services\gateway_text_embedding_response.py" />
     <Compile Include="foundationallm\models\services\openai_assistants_response.py" />
+    <Compile Include="foundationallm\plugins\external_module.py" />
+    <Compile Include="foundationallm\plugins\plugin_manager.py" />
+    <Compile Include="foundationallm\plugins\tools\tool_plugin_manager_base.py" />
+    <Compile Include="foundationallm\plugins\__init__.py" />
     <Compile Include="foundationallm\services\audio_analysis_service.py" />
     <Compile Include="foundationallm\services\gateway_text_embedding\text_chunk.py" />
     <Compile Include="foundationallm\services\gateway_text_embedding\text_embedding_request.py" />
@@ -176,6 +182,7 @@
     <Folder Include="foundationallm\exceptions\" />
     <Folder Include="foundationallm\langchain\" />
     <Folder Include="foundationallm\langchain\agents\" />
+    <Folder Include="foundationallm\langchain\common\" />
     <Folder Include="foundationallm\langchain\language_models\" />
     <Folder Include="foundationallm\langchain\language_models\openai\" />
     <Folder Include="foundationallm\langchain\exceptions\" />
@@ -184,6 +191,8 @@
     <Folder Include="foundationallm\models\constants\" />
     <Folder Include="foundationallm\event_handlers\" />
     <Folder Include="foundationallm\models\messages\" />
+    <Folder Include="foundationallm\plugins\" />
+    <Folder Include="foundationallm\plugins\tools\" />
     <Folder Include="foundationallm\services\" />
     <Folder Include="foundationallm\langchain\retrievers\" />
     <Folder Include="foundationallm\langchain\orchestration\" />
