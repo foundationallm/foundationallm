@@ -144,7 +144,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 {
                     ResourceProviderActions.Validate => await ValidateAgentAccessToken(
                         resourcePath.MainResourceId!,
-                        JsonSerializer.Deserialize<AgentAccessTokenValidationRequest>(serializedAction)!),
+                        JsonSerializer.Deserialize<AgentAccessTokenValidationRequest>(serializedAction)!,
+                        userIdentity),
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
@@ -498,17 +499,24 @@ namespace FoundationaLLM.Agent.ResourceProviders
             await _authorizationServiceClient.DeleteSecretKey(_instanceSettings.Id, contextId, secretKeyId: resourcePath.ResourceId!);
         }
 
-        private async Task<AgentAccessTokenValidationResult> ValidateAgentAccessToken(string agentName, AgentAccessTokenValidationRequest agentAccessTokenValidationRequest)
+        private async Task<AgentAccessTokenValidationResult> ValidateAgentAccessToken(string agentName,
+            AgentAccessTokenValidationRequest agentAccessTokenValidationRequest, UnifiedUserIdentity userIDentity)
         {
             var contextId = $"/instances/{_instanceSettings.Id}/providers/{_name}/{AgentResourceTypeNames.Agents}/{agentName}";
 
             var result = await _authorizationServiceClient.ValidateSecretKey(_instanceSettings.Id, contextId,  agentAccessTokenValidationRequest.AccessToken);
 
+            if (result.Valid)
+            {
+                var agent = await GetResourceAsync<AgentBase>(contextId, userIDentity);
+                result.VirtualIdentity!.GroupIds = [agent.VirtualSecurityGroupId];
+            }
+
             return new AgentAccessTokenValidationResult()
             {
                  Valid = result.Valid,
                  Message = result.Message,
-                 VirtualIdentity = result.VirtualIdentity,
+                 VirtualIdentity = result.VirtualIdentity
             };
         }
 
