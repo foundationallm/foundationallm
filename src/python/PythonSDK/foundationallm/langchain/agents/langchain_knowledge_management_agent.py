@@ -434,7 +434,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             graph = create_react_agent(llm, tools=tools, state_modifier=self.prompt.prefix)
             messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
             messages.append(HumanMessage(content=request.user_prompt))
-            response = await graph.ainvoke({'messages': messages})
+            response = await graph.ainvoke({'messages': messages}, config={"configurable": {"original_user_prompt": request.user_prompt}})
             # TODO: process tool messages with analysis results AIMessage with content='' but has addition_kwargs={'tool_calls';[...]}
             # print(response)
             final_message = response["messages"][-1]
