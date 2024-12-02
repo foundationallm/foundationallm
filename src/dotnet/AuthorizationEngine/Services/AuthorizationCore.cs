@@ -5,6 +5,7 @@ using FoundationaLLM.AuthorizationEngine.Models.Configuration;
 using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
@@ -17,6 +18,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Collections.Concurrent;
 using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
 
@@ -715,10 +717,32 @@ namespace FoundationaLLM.AuthorizationEngine.Services
         }
 
         /// <inheritdoc/>
-        public SecretKeyValidationResult ValidateSecretKey(string instanceId, string contextId, string secretKeyValue)
+        public async Task<SecretKeyValidationResult> ValidateSecretKey(string instanceId, string contextId, string secretKeyValue)
         {
-            var result = new SecretKeyValidationResult() { Valid = false };
-            return result;
+            if (string.IsNullOrWhiteSpace(secretKeyValue))
+                return new SecretKeyValidationResult() { Valid = false, Message = "Secret key is null or empty." };
+
+            if (!TryParseKey(secretKeyValue, "keya", "ayek", "_", out var clientApiKey, out var message))
+                return new SecretKeyValidationResult() { Valid = false, Message = message };
+
+            // Fetch the matching persisted key
+            var persistedApiKey = await GetPersistedSecretKey(instanceId, contextId, clientApiKey!.ApiKeyId);
+            if (persistedApiKey == null)
+                return new SecretKeyValidationResult() { Valid = false, Message = "Repository does not contain a key matching this ID." };
+
+            if (TestKeys(clientApiKey, persistedApiKey))
+            {
+                return new SecretKeyValidationResult() {
+                    Valid = true,
+                    VirtualIdentity = new UnifiedUserIdentity()
+                    {
+                        UserId = Guid.NewGuid().ToString(),
+                        GroupIds = [],
+                    }
+                };
+            }
+
+            return new SecretKeyValidationResult() { Valid = false, Message = "Invalid API key hash." };
         }
 
         #endregion
@@ -765,6 +789,113 @@ namespace FoundationaLLM.AuthorizationEngine.Services
             {
                 _syncRoot.Release();
             }
+        }
+
+        private static bool TryParseKey(string key, string prefix, string suffix, string separator, out ClientSecretKey? value, out string? message)
+        {
+            value = null;
+
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                message = "Key is null or empty.";
+                return false;
+            }
+
+            if (!key.StartsWith(prefix))
+            {
+                message = $"This does not look like an API key (missing prefix {prefix}).";
+                return false;
+            }
+
+            if (!key.EndsWith(suffix))
+            {
+                message = "This key was truncated and is missing some data.";
+                return false;
+            }
+
+            var pos = key.IndexOf(separator);
+            if (pos <= 0)
+            {
+                message = "Key and client secret are not properly delimited.";
+                return false;
+            }
+
+            // Extract the key ID and client secret
+            var keyId = key[prefix.Length..pos];
+            if (!TryDecode(keyId, 16, out var keyBytes))
+            {
+                message = "Key ID is not properly formatted.";
+                return false;
+            }
+            var keyGuid = new Guid(keyBytes);
+            var clientSecret = key.Substring(pos + 1, key.Length - suffix.Length - 1 - pos);
+
+            // Construct a new valid key
+            value = new ClientSecretKey() { ApiKeyId = keyGuid, ClientSecret = clientSecret };
+
+            message = null;
+            return true;
+        }
+
+        private static bool TryDecode(string text, int expectedLength, out byte[] bytes)
+        {
+            bytes = Array.Empty<byte>();
+
+            // You would think that a function called "TryDecode" would not throw an exception.
+            // However, you would be wrong.
+            try
+            {
+                bytes = new byte[expectedLength];
+                var success = Base58.TryDecode(text, bytes, out var numBytesWritten);
+                return success && numBytesWritten == expectedLength;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static bool TestKeys(ClientSecretKey clientSecretKey, PersistedSecretKey persistedSecretKey)
+        {
+            if (!TryDecode(clientSecretKey.ClientSecret, 128, out var secretBytes))
+                return false;
+
+            if (!TryDecode(persistedSecretKey.Salt!, 16, out var saltBytes))
+                return false;
+
+            var argon2 = new Argon2id(secretBytes)
+            {
+                DegreeOfParallelism = 16,
+                MemorySize = 8192,
+                Iterations = 40,
+                Salt = saltBytes
+            };
+
+            var hashBytes = argon2.GetBytes(128);
+            var computedHash = Base58.Encode(hashBytes);
+
+            return string.Equals(computedHash, persistedSecretKey.Hash);
+        }
+
+        private async Task<PersistedSecretKey?> GetPersistedSecretKey(string instanceId, string contextId, Guid secretKeyId)
+        {
+            if (_secretKeyStores.TryGetValue(instanceId, out var secretKeyStore))
+            {
+                if (secretKeyStore.SecretKeys.TryGetValue(contextId, out var persistedSecretKeys))
+                {
+                    var existingKey = persistedSecretKeys.Where(x => x.Id.ToLower() == secretKeyId.ToString().ToLower()).SingleOrDefault();
+
+                    if (existingKey != null)
+                    {
+                        existingKey.Salt = await _azureKeyVaultService.GetSecretValueAsync(existingKey.SaltKeyVaultSecretName);
+                        existingKey.Hash = await _azureKeyVaultService.GetSecretValueAsync(existingKey.HashKeyVaultSecretName);
+
+                        return existingKey;
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

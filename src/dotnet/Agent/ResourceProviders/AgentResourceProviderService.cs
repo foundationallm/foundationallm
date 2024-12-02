@@ -507,6 +507,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             return new AgentAccessTokenValidationResult()
             {
                  Valid = result.Valid,
+                 Message = result.Message,
                  VirtualIdentity = result.VirtualIdentity,
             };
         }

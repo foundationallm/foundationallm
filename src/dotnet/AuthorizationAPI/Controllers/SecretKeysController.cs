@@ -38,8 +38,8 @@ namespace FoundationaLLM.Authorization.API.Controllers
         }
 
         [HttpPost("{*contextId}")]
-        public IActionResult ValidateSecretKey(string instanceId, string contextId, string secretKeyValue) =>
+        public async Task<IActionResult> ValidateSecretKey(string instanceId, string contextId, string secretKeyValue) =>
             new OkObjectResult(
-                _authorizationCore.ValidateSecretKey(instanceId, contextId, secretKeyValue));
+                await _authorizationCore.ValidateSecretKey(instanceId, contextId, secretKeyValue));
     }
 }

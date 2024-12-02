@@ -88,6 +88,6 @@ namespace FoundationaLLM.AuthorizationEngine.Interfaces
         /// Each valid secret key has an associated virtual identity that is returned in the <see cref="SecretKeyValidationResult.VirtualIdentity"/> property.
         /// It is the responsibility of the caller to use the virtual identity to authorize the request.
         /// </remarks>
-        SecretKeyValidationResult ValidateSecretKey(string instanceId, string contextId, string secretKeyValue);
+        Task<SecretKeyValidationResult> ValidateSecretKey(string instanceId, string contextId, string secretKeyValue);
     }
 }
