@@ -665,11 +665,11 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                 Hash = hash
             };
 
-            await PersistSecretKey(persistedSecretKey);
-
             // Save this API key salt and hash the key vault
             await _azureKeyVaultService.SetSecretValueAsync(persistedSecretKey.SaltKeyVaultSecretName, salt);
             await _azureKeyVaultService.SetSecretValueAsync(persistedSecretKey.HashKeyVaultSecretName, hash);
+
+            await PersistSecretKey(persistedSecretKey);
 
             // Return the client's key to them
             return clientKey.ToApiKeyString();
