@@ -27,6 +27,7 @@ from foundationallm.models.orchestration import (
 )
 from foundationallm.models.agents import KnowledgeManagementCompletionRequest
 from foundationallm.operations import OperationsManager
+from foundationallm.plugins import PluginManager
 from foundationallm.langchain.orchestration import OrchestrationManager
 from foundationallm.telemetry import Telemetry
 from app.dependencies import handle_exception, validate_api_key_header
@@ -102,6 +103,7 @@ async def submit_completion_request(
                 instance_id,
                 completion_request,
                 raw_request.app.extra['config'],
+                raw_request.app.extra['plugin_manager'],
                 operations_manager,
                 x_user_identity
             )
@@ -117,6 +119,7 @@ async def create_completion_response(
     instance_id: str,
     completion_request: KnowledgeManagementCompletionRequest,
     configuration: Configuration,
+    plugin_manager: PluginManager,
     operations_manager: OperationsManager,
     x_user_identity: Optional[str] = Header(None)
 ):
@@ -138,14 +141,15 @@ async def create_completion_response(
                 user_identity = x_user_identity
             )
 
-            # Create the user identity object from the x_user_identity header.            
+            # Create the user identity object from the x_user_identity header.
             user_identity_dict = json.loads(x_user_identity)
             user_identity = UserIdentity(**user_identity_dict)
-          
+
             # Create an orchestration manager to process the completion request.
             orchestration_manager = OrchestrationManager(
                 completion_request = completion_request,
                 configuration = configuration,
+                plugin_manager = plugin_manager,
                 operations_manager = operations_manager,
                 instance_id = instance_id,
                 user_identity = user_identity
@@ -154,7 +158,7 @@ async def create_completion_response(
             completion_response = await orchestration_manager.invoke_async(completion_request)
             completion_status = OperationStatus.COMPLETED if completion_response.errors == [] else OperationStatus.FAILED
             completion_status_message = "Operation completed successfully." if completion_response.errors == [] else "Operation failed."
-            
+
             # Send the completion response to the State API and mark the operation as completed.
             await asyncio.gather(
                 operations_manager.set_operation_result_async(

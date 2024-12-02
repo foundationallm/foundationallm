@@ -9,12 +9,16 @@ from app.routers import (
     completions,
     status
 )
+from foundationallm.plugins import PluginManager
 from foundationallm.telemetry import Telemetry
 
 # Open a connection to the app configuration
 config = get_config()
 # Start collecting telemetry
 Telemetry.configure_monitoring(config, f'FoundationaLLM:APIEndpoints:{API_NAME}:Essentials:AppInsightsConnectionString')
+
+plugin_manager = PluginManager(config, Telemetry.get_logger(__name__))
+plugin_manager.load_external_modules()
 
 app = FastAPI(
     title=f'FoundationaLLM {API_NAME}',
@@ -25,7 +29,7 @@ app = FastAPI(
     contact={
         'name':'Solliance, Inc.',
         'email':'contact@solliance.net',
-        'url':'https://solliance.net/' 
+        'url':'https://solliance.net/'
     },
     openapi_url='/swagger/v1/swagger.json',
     docs_url='/swagger',
@@ -34,7 +38,8 @@ app = FastAPI(
         'name': 'FoundationaLLM Software License',
         'url': 'https://www.foundationallm.ai/license',
     },
-    config=config
+    config=config,
+    plugin_manager=plugin_manager
 )
 
 app.include_router(manage.router)
@@ -45,7 +50,7 @@ app.include_router(status.router)
 async def root():
     """
     Root path of the API.
-    
+
     Returns
     -------
     str
