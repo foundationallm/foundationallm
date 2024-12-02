@@ -692,8 +692,8 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                         {
                             persistedSecretKeys.Remove(existingKey);
 
-                            //await _azureKeyVaultService.RemoveSecretValueAsync(existingKey.SaltKeyVaultSecretName);
-                            //await _azureKeyVaultService.RemoveSecretValueAsync(existingKey.HashKeyVaultSecretName);
+                            await _azureKeyVaultService.RemoveSecretAsync(existingKey.SaltKeyVaultSecretName);
+                            await _azureKeyVaultService.RemoveSecretAsync(existingKey.HashKeyVaultSecretName);
 
                             _secretKeyStores.AddOrUpdate(instanceId, secretKeyStore, (k, v) => secretKeyStore);
                             _secretKeyCaches[instanceId].RemovePersistedSecretKey(existingKey);
