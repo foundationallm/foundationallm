@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Description>FoundationaLLM.Common is a .NET library that the FoundationaLLM.Client.Core and FoundationaLLM.Client.Management client libraries share as a common dependency. Do not directly import and use this library.</Description>
+    <Description>FoundationaLLM.Common is a .NET library that the FoundationaLLM.Client.Core and FoundationaLLM.Client.Management client libraries share as a common dependency.</Description>
     <PackageTags>FoundationaLLM;LLM;GPT;AI;SDK;Common</PackageTags>
     <RepositoryUrl>https://github.com/solliancenet/foundationallm</RepositoryUrl>
     <PackageId>FoundationaLLM.Common</PackageId>
