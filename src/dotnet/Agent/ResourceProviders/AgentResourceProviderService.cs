@@ -500,7 +500,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
         }
 
         private async Task<AgentAccessTokenValidationResult> ValidateAgentAccessToken(string agentName,
-            AgentAccessTokenValidationRequest agentAccessTokenValidationRequest, UnifiedUserIdentity userIDentity)
+            AgentAccessTokenValidationRequest agentAccessTokenValidationRequest, UnifiedUserIdentity userIdentity)
         {
             var contextId = $"/instances/{_instanceSettings.Id}/providers/{_name}/{AgentResourceTypeNames.Agents}/{agentName}";
 
@@ -508,7 +508,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
             if (result.Valid)
             {
-                var agent = await GetResourceAsync<AgentBase>(contextId, userIDentity);
+                var agent = await GetResourceAsync<AgentBase>(contextId, userIdentity);
                 result.VirtualIdentity!.GroupIds = [agent.VirtualSecurityGroupId];
             }
 
