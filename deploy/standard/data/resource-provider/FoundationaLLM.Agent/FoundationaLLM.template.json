@@ -25,6 +25,7 @@
     "welcome_message": "",
     "Azure.OpenAI.Assistant.Id": "{{oaiAssistantId}}"
   },
+  "tools": [],
   "ai_model_object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.AIModel/aiModels/DefaultCompletionAIModel",
   "prompt_object_id": "/instances/{{instanceId}}/providers/FoundationaLLM.Prompt/prompts/FoundationaLLM"
 }
