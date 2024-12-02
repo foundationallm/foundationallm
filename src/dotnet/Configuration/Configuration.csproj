@@ -16,7 +16,7 @@
     </Description>
     <PackageTags>FoundationaLLM;LLM;GPT;AI;SDK;Configuration</PackageTags>
     <RepositoryUrl>https://github.com/solliancenet/foundationallm</RepositoryUrl>
-    <PackageId>FoundationaLLM.Common</PackageId>
+    <PackageId>FoundationaLLM.Configuration</PackageId>
     <Version>0.0.0</Version>
     <!-- Placeholder version -->
     <AssemblyVersion>0.0.0</AssemblyVersion>
@@ -25,7 +25,7 @@
     <!-- Placeholder version -->
     <PackageIcon>fllm-icon-128.png</PackageIcon>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <Title>FoundationaLLM Common</Title>
+    <Title>FoundationaLLM Configuration</Title>
     <Authors>Solliance</Authors>
     <RepositoryType>git</RepositoryType>
     <IncludeSymbols>true</IncludeSymbols>
