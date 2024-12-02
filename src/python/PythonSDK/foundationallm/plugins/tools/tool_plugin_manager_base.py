@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Optional
 
 from foundationallm.config import Configuration
-from foundationallm.langchain.tools import FoundationaLLMToolBase
+from foundationallm.langchain.common import FoundationaLLMToolBase
 from foundationallm.models.agents import AgentTool
 
 class ToolPluginManagerBase(ABC):

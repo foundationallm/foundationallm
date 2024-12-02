@@ -4,9 +4,7 @@ Description: FoundationaLLM base class for tools that uses the AgentTool model f
 """
 from langchain_core.tools import BaseTool
 from foundationallm.config import Configuration
-from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.models.agents import AgentTool
-from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 
 class FoundationaLLMToolBase(BaseTool):
     """
