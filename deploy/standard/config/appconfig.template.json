@@ -204,17 +204,17 @@
             "tags": {}
         },
         {
-            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds",
-            "value": "{ \"value\": 5, \"value_exceptions\": [] }",
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage",
+            "value": "{ \"value\": 10, \"value_exceptions\": []}",
             "label": null,
-            "content_type": "",
+            "content_type": "application/json",
             "tags": {}
         },
         {
-            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage",
-            "value": "{ \"value\": 10, \"value_exceptions\": [] }",
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds",
+            "value": "{ \"value\": 10, \"value_exceptions\": []}",
             "label": null,
-            "content_type": "",
+            "content_type": "application/json",
             "tags": {}
         },
         {
@@ -248,6 +248,20 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:ClientId",
             "value": "{{coreEntraClientId}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:RequireScopes",
+            "value": "true",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:AllowACLAuthorization",
+            "value": "false",
             "label": null,
             "content_type": "",
             "tags": {}
@@ -393,6 +407,34 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AccountName",
+            "value": "{{storageAccountAdlsName}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AuthenticationType",
+            "value": "AzureIdentity",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer",
+            "value": "",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules",
+            "value": "",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:SemanticKernelAPI:Essentials:APIKey",
             "value": "{\"uri\":\"{{keyvaultUri}}secrets/foundationallm-apiendpoints-semantickernelapi-apikey\"}",
             "label": null,
@@ -428,13 +470,6 @@
             "tags": {}
         },
         {
-            "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions",
-            "value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
-            "label": null,
-            "content_type": "",
-            "tags": {}
-        },
-        {
             "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:Instance",
             "value": "https://login.microsoftonline.com/",
             "label": null,
@@ -465,6 +500,13 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:ClientId",
             "value": "{{managementApiEntraClientId}}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions",
+            "value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
             "label": null,
             "content_type": "",
             "tags": {}
@@ -666,13 +708,6 @@
             "tags": {}
         },
         {
-            "key": "FoundationaLLM:Branding:DefaultAgentWelcomeMessage",
-            "value": "Start the conversation using the text box below.",
-            "label": null,
-            "content_type": "",
-            "tags": {}
-        },
-        {
             "key": "FoundationaLLM:Branding:FavIconUrl",
             "value": "favicon.ico",
             "label": null,
@@ -703,13 +738,6 @@
         {
             "key": "FoundationaLLM:Branding:LogoUrl",
             "value": "foundationallm-logo-white.svg",
-            "label": null,
-            "content_type": "",
-            "tags": {}
-        },
-        {
-            "key": "FoundationaLLM:Branding:NoAgentsMessage",
-            "value": "No agents available. Please check with your system administrator for assistance.",
             "label": null,
             "content_type": "",
             "tags": {}
@@ -780,6 +808,20 @@
         {
             "key": "FoundationaLLM:Branding:FooterText",
             "value": "FoundationaLLM © 2024",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:NoAgentsMessage",
+            "value": "No agents available. Please check with your system administrator for assistance.",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Branding:DefaultAgentWelcomeMessage",
+            "value": "Start the conversation using the text box below.",
             "label": null,
             "content_type": "",
             "tags": {}
