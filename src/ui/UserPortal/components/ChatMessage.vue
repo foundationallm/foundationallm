@@ -102,6 +102,7 @@
 							:key="artifact.id"
 							v-tooltip.top="{ content: artifact.filepath, showDelay: 500, hideDelay: 300 }"
 							class="content-artifact"
+							@click="selectedContentArtifact = artifact"
 						>
 							<i class="pi pi-file"></i>
 							{{ artifact.title.split('/').pop() }}
@@ -205,6 +206,30 @@
 			:analysis-results="message.analysisResults ?? []"
 			@update:visible="isAnalysisModalVisible = $event"
 		/>
+
+		<!-- Content Artifact Modal -->
+		<Dialog
+			:visible="selectedContentArtifact !== null"
+			:header="selectedContentArtifact?.title"
+			modal
+		>
+			<p tabindex="0">
+				{{ selectedContentArtifact.content }}
+			</p>
+
+			<template #footer>
+				<Button
+					:style="{
+						backgroundColor: $appConfigStore.primaryButtonBg,
+						borderColor: $appConfigStore.primaryButtonBg,
+						color: $appConfigStore.primaryButtonText,
+					}"
+					class="prompt-dialog__button"
+					label="Close"
+					@click="selectedContentArtifact = null"
+				/>
+			</template>
+		</Dialog>
 	</div>
 </template>
 
@@ -299,6 +324,7 @@ export default {
 			viewPrompt: false,
 			currentWordIndex: 0,
 			isAnalysisModalVisible: false,
+			selectedContentArtifact: null,
 			isMobile: window.screen.width < 950,
 			markedRenderer: null,
 			pollingInterval: null,
