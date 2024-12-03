@@ -432,6 +432,8 @@ export default {
 	},
 
 	methods: {
+		hideAllPoppers,
+
 		processContentBlock(contentToProcess) {
 			let htmlContent = processLatex(contentToProcess ?? '');
 			htmlContent = marked(htmlContent, { renderer: this.markedRenderer });
@@ -673,10 +675,6 @@ export default {
 			const prompt = await api.getPrompt(this.message.sessionId, this.message.completionPromptId);
 			this.prompt = prompt;
 			this.viewPrompt = true;
-		},
-
-		hideAllPoppers() {
-			hideAllPoppers();
 		},
 
 		handleFileLinkInText(event: MouseEvent) {
