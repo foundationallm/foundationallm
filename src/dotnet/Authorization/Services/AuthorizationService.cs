@@ -100,7 +100,7 @@ namespace FoundationaLLM.Authorization.Services
                         var responseContentString = await response.Content.ReadAsStringAsync();
                         var responseContent = JsonSerializer.Deserialize<ActionAuthorizationResult>(responseContentString)!;
 
-                        // Cache the response
+                        // Add the authorization response to the cache.
                         _authorizationCache.Set(cacheKey, responseContent, _cacheEntryOptions);
                         return responseContent;
                     }
