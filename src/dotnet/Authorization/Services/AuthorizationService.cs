@@ -66,7 +66,6 @@ namespace FoundationaLLM.Authorization.Services
                     userIdentity
                 );
 
-                // Lock access to the cache
                 await _cacheLock.WaitAsync();
                 try
                 {
