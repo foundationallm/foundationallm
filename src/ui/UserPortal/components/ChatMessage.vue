@@ -214,7 +214,7 @@
 			modal
 		>
 			<p tabindex="0">
-				{{ selectedContentArtifact.content }}
+				<pre>{{ JSON.stringify(selectedContentArtifact, null, 2) }}</pre>
 			</p>
 
 			<template #footer>
