@@ -100,8 +100,9 @@
 						<span
 							v-for="artifact in message.contentArtifacts"
 							:key="artifact.id"
-							v-tooltip.top="{ content: artifact.filepath, showDelay: 500, hideDelay: 300 }"
+							v-tooltip.top="{ content: 'Click to view content', showDelay: 500, hideDelay: 300 }"
 							class="content-artifact"
+							@click="selectedContentArtifact = artifact"
 						>
 							<i class="pi pi-file"></i>
 							{{ artifact.title.split('/').pop() }}
@@ -205,6 +206,30 @@
 			:analysis-results="message.analysisResults ?? []"
 			@update:visible="isAnalysisModalVisible = $event"
 		/>
+
+		<!-- Content Artifact Modal -->
+		<Dialog
+			:visible="selectedContentArtifact !== null"
+			:header="selectedContentArtifact?.title"
+			modal
+		>
+			<p tabindex="0">
+				<pre>{{ JSON.stringify(selectedContentArtifact, null, 2) }}</pre>
+			</p>
+
+			<template #footer>
+				<Button
+					:style="{
+						backgroundColor: $appConfigStore.primaryButtonBg,
+						borderColor: $appConfigStore.primaryButtonBg,
+						color: $appConfigStore.primaryButtonText,
+					}"
+					class="prompt-dialog__button"
+					label="Close"
+					@click="selectedContentArtifact = null"
+				/>
+			</template>
+		</Dialog>
 	</div>
 </template>
 
@@ -299,6 +324,7 @@ export default {
 			viewPrompt: false,
 			currentWordIndex: 0,
 			isAnalysisModalVisible: false,
+			selectedContentArtifact: null,
 			isMobile: window.screen.width < 950,
 			markedRenderer: null,
 			pollingInterval: null,
@@ -406,6 +432,8 @@ export default {
 	},
 
 	methods: {
+		hideAllPoppers,
+
 		processContentBlock(contentToProcess) {
 			let htmlContent = processLatex(contentToProcess ?? '');
 			htmlContent = marked(htmlContent, { renderer: this.markedRenderer });
@@ -647,10 +675,6 @@ export default {
 			const prompt = await api.getPrompt(this.message.sessionId, this.message.completionPromptId);
 			this.prompt = prompt;
 			this.viewPrompt = true;
-		},
-
-		hideAllPoppers() {
-			hideAllPoppers();
 		},
 
 		handleFileLinkInText(event: MouseEvent) {
