@@ -289,7 +289,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             var upsertResult = await UpsertResourceAsync(ParsedResourcePath, serializedResource, formFile, userIdentity);
 
-            await UpsertResourcePostProcess(ParsedResourcePath.InstanceId!, (upsertResult as ResourceProviderUpsertResult)!, authorizationResult, userIdentity);
+            await UpsertResourcePostProcess(ParsedResourcePath, (upsertResult as ResourceProviderUpsertResult)!, authorizationResult, userIdentity);
 
             return upsertResult;
         }
@@ -458,7 +458,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             var upsertResult = await UpsertResourceAsyncInternal<T, TResult>(ParsedResourcePath, authorizationResult, resource, userIdentity, options);
 
-            await UpsertResourcePostProcess(ParsedResourcePath.InstanceId!, upsertResult, authorizationResult, userIdentity);
+            await UpsertResourcePostProcess(ParsedResourcePath, upsertResult, authorizationResult, userIdentity);
 
             return upsertResult;
         }
@@ -1562,45 +1562,56 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 allowAction: allowAction);
 
         private async Task UpsertResourcePostProcess(
-            string instanceId,
+            ResourcePath resourcePath,
             ResourceProviderUpsertResult upsertResult,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity)
         {
-            ArgumentException.ThrowIfNullOrWhiteSpace(instanceId, nameof(instanceId));
+            ArgumentNullException.ThrowIfNull(resourcePath, nameof(resourcePath));
             ArgumentNullException.ThrowIfNull(upsertResult, nameof(upsertResult));
             ArgumentNullException.ThrowIfNull(authorizationResult, nameof(authorizationResult));
             ArgumentException.ThrowIfNullOrWhiteSpace(userIdentity.UserId, nameof(userIdentity.UserId));
             ArgumentException.ThrowIfNullOrWhiteSpace(userIdentity.Name, nameof(userIdentity.Name));
+            ArgumentException.ThrowIfNullOrWhiteSpace(resourcePath.InstanceId, nameof(resourcePath.InstanceId));
 
             if (!authorizationResult.Authorized)
                 throw new ResourceProviderException(
                     $"Upsert result post-processing can only be executed on authorized resources.");
 
-            if (!authorizationResult.MustSetOwnerRoleAssignment)
+            // Owner role assignment is already set on previously created resources.
+            if (upsertResult.ResourceExists)
                 return;
 
-            if (!upsertResult.ResourceExists && Name != ResourceProviderNames.FoundationaLLM_Authorization)
-            {
-                var roleAssignmentName = Guid.NewGuid().ToString();
-                var roleAssignmentDescription = $"Owner role for {userIdentity.Name}";
-                var roleAssignmentResult = await _authorizationServiceClient.CreateRoleAssignment(
-                    _instanceSettings.Id,
-                    new RoleAssignmentRequest()
-                    {
-                        Name = roleAssignmentName,
-                        Description = roleAssignmentDescription,
-                        ObjectId = $"/instances/{instanceId}/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleAssignments}/{roleAssignmentName}",
-                        PrincipalId = userIdentity.UserId,
-                        PrincipalType = PrincipalTypes.User,
-                        RoleDefinitionId = $"/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleDefinitions}/{RoleDefinitionNames.Owner}",
-                        Scope = upsertResult.ObjectId
-                    },
-                    userIdentity);
+            // Owner role assignment is not required when at least one policy is assigned to the resource path.
+            if (authorizationResult.PolicyDefinitionIds.Count > 0)
+                return;
 
-                if (!roleAssignmentResult.Success)
-                    _logger.LogError("The [{RoleAssignment}] could not be assigned to {ObjectId}.", roleAssignmentDescription, upsertResult.ObjectId);
-            }
+            // Owner role assignment is not required on Authorization resources.
+            if (Name == ResourceProviderNames.FoundationaLLM_Authorization)
+                return;
+
+            // Owner role assignment is not required on resources that are a subtype of the main resource type.
+            if (resourcePath.MainResourceType != null && resourcePath.ResourceType != null)
+                return;
+
+            var roleAssignmentName = Guid.NewGuid().ToString();
+            var roleAssignmentDescription = $"Owner role for {userIdentity.Name}";
+            var roleAssignmentResult = await _authorizationServiceClient.CreateRoleAssignment(
+                _instanceSettings.Id,
+                new RoleAssignmentRequest()
+                {
+                    Name = roleAssignmentName,
+                    Description = roleAssignmentDescription,
+                    ObjectId = $"/instances/{resourcePath.InstanceId}/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleAssignments}/{roleAssignmentName}",
+                    PrincipalId = userIdentity.UserId,
+                    PrincipalType = PrincipalTypes.User,
+                    RoleDefinitionId = $"/providers/{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleDefinitions}/{RoleDefinitionNames.Owner}",
+                    Scope = upsertResult.ObjectId
+                },
+                userIdentity);
+
+            if (!roleAssignmentResult.Success)
+                _logger.LogError("The [{RoleAssignment}] could not be assigned to {ObjectId}.", roleAssignmentDescription, upsertResult.ObjectId);
         }
 
         public PolicyDefinition EnsureAndValidatePolicyDefinitions(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult)
