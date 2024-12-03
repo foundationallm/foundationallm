@@ -349,6 +349,15 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                     explodedObjects[apiEndpointConfigurationObjectId] = toolAPIEndpointConfiguration;
                 }
+
+                foreach (var indexingProfileObjectId in tool.IndexingProfileObjectIds.Values)
+                {
+                    var indexingProfile = await vectorizationResourceProvider.GetResourceAsync<IndexingProfile>(
+                                               indexingProfileObjectId,
+                                               currentUserIdentity);
+
+                    explodedObjects[indexingProfileObjectId] = indexingProfile;                    
+                }
             }
 
             explodedObjects[CompletionRequestObjectsKeys.ToolNames] = toolNames;

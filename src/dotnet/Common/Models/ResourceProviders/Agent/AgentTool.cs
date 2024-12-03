@@ -46,6 +46,18 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public Dictionary<string, string> APIEndpointConfigurationObjectIds { get; set; } = [];
 
         /// <summary>
+        /// Gets or sets a dictionary of indexing profile object identifiers.
+        /// </summary>
+        [JsonPropertyName("indexing_profile_object_ids")]
+        public Dictionary<string, string> IndexingProfileObjectIds { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets a dictionary of text embedding model names.
+        /// </summary>
+        [JsonPropertyName("text_embedding_model_names")]
+        public Dictionary<string, string> TextEmbeddingModelNames { get; set; } = [];
+
+        /// <summary>
         /// Gets or sets a dictionary of properties that are specific to the tool.
         /// </summary>
         [JsonPropertyName("properties")]
