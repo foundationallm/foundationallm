@@ -1,6 +1,6 @@
 ﻿import uuid
 from langchain_community.callbacks import get_openai_callback
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import HumanMessage, ToolMessage
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from langchain_core.output_parsers import StrOutputParser
@@ -14,15 +14,15 @@ from foundationallm.models.operations import OperationTypes
 from foundationallm.models.orchestration import (
     CompletionRequestObjectKeys,
     CompletionResponse,
-    OpenAITextMessageContentItem
+    OpenAITextMessageContentItem,
+    ContentArtifact
 )
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 from foundationallm.models.agents import (
     AgentConversationHistorySettings,
     KnowledgeManagementAgent,
     KnowledgeManagementCompletionRequest,
-    KnowledgeManagementIndexConfiguration,
-    AgentTool
+    KnowledgeManagementIndexConfiguration
 )
 from foundationallm.models.attachments import AttachmentProviders
 from foundationallm.models.authentication import AuthenticationTypes
@@ -436,7 +436,18 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             messages.append(HumanMessage(content=request.user_prompt))
             response = await graph.ainvoke({'messages': messages}, config={"configurable": {"original_user_prompt": request.user_prompt}})
             # TODO: process tool messages with analysis results AIMessage with content='' but has addition_kwargs={'tool_calls';[...]}
-            # print(response)
+            
+            # Get ContentArtifact items from ToolMessages
+            content_artifacts = []
+            tool_messages = [message for message in response["messages"] if isinstance(message, ToolMessage)]
+            for tool_message in tool_messages:
+                if tool_message.artifact is not None:
+                    # if the tool message artifact is a list, check if it contains a ContentArtifact item
+                    if isinstance(tool_message.artifact, list):
+                        for item in tool_message.artifact:
+                            if isinstance(item, ContentArtifact):
+                                content_artifacts.append(item)                       
+
             final_message = response["messages"][-1]
             response_content = OpenAITextMessageContentItem(
                 value = final_message.content,
@@ -445,7 +456,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             return CompletionResponse(
                         operation_id = request.operation_id,
                         content = [response_content],
-                        content_artifacts = [],
+                        content_artifacts = content_artifacts,
                         user_prompt = request.user_prompt,
                         full_prompt = self.prompt.prefix,
                         completion_tokens = final_message.usage_metadata["output_tokens"] or 0,
