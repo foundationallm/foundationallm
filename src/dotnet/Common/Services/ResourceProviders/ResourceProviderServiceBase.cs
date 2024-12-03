@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MimeDetective.Storage;
+using OpenTelemetry.Resources;
 using System.Collections.Immutable;
 using System.Text;
 using System.Text.Json;
@@ -1032,6 +1034,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                             ?? throw new ResourceProviderException($"Failed to load the resource {resourceReference.Name}. Its content file might be corrupt.",
                                 StatusCodes.Status500InternalServerError);
 
+                    _resourceCache?.Set(resourceReference.Name, resourceObject, _cacheEntryOptions);
+
                     return resourceObject;
                 }
                 catch (Exception ex)
@@ -1075,6 +1079,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                         _serializerSettings)
                             ?? throw new ResourceProviderException($"Failed to load the resource {resourceReference.Name}. Its content file might be corrupt.",
                                 StatusCodes.Status400BadRequest);
+
+                    _resourceCache?.Set(resourceReference.Name, resourceObject, _cacheEntryOptions);
 
                     return resourceObject;
                 }
