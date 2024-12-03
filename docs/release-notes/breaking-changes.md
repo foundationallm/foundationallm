@@ -11,6 +11,8 @@ The following new App Configuration settings are required:
 
 |Name | Default value |
 |--- | --- |
+|`FoundationaLLM:PythonSDK:Logging:LogLevel:Default` | `Information` |
+|`FoundationaLLM:PythonSDK:Logging:EnableConsoleLogging` | `false` |
 |`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:RequireScopes` | `true` |
 |`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:AllowACLAuthorization` | `false` |
 |`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AccountName` | `-` |
