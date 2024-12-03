@@ -1,19 +1,37 @@
 import logging
+import platform
+import foundationallm
+
 from azure.monitor.opentelemetry import configure_azure_monitor
 from opentelemetry import trace
+from opentelemetry.sdk.resources import SERVICE_NAME, Resource, SERVICE_INSTANCE_ID, SERVICE_VERSION, SERVICE_NAMESPACE
 from opentelemetry.trace import Span, Status, StatusCode, Tracer
 from foundationallm.config import Configuration
+
+from langchain.globals import set_debug, set_verbose
+
+# Custom filter to exclude trace logs
+class ExcludeTraceLogsFilter(logging.Filter):
+    def filter(self, record):
+        filter_out = 'applicationinsights' not in record.getMessage().lower()
+        filter_out = filter_out and 'response status' not in record.getMessage().lower()
+        filter_out = filter_out and 'transmission succeeded' not in record.getMessage().lower()
+        return filter_out
 
 class Telemetry:
     """
     Manages logging and the recording of application telemetry.
     """
 
+    log_level : int = logging.WARNING
+    langchain_log_level : int = logging.NOTSET
+    api_name : str = None
+    telemetry_connection_string : str = None
+
     @staticmethod
-    def configure_monitoring(config: Configuration, telemetry_connection_string: str):
+    def configure_monitoring(config: Configuration, telemetry_connection_string: str, api_name : str):
         """
         Configures monitoring and sends logs, metrics, and events to Azure Monitor.
-
         Parameters
         ----------
         config : Configuration
@@ -22,10 +40,29 @@ class Telemetry:
         telemetry_connection_string : str
             The connection string used to connect to Azure Application Insights.
         """
+
+        Telemetry.telemetry_connection_string = config.get_value(telemetry_connection_string)
+        Telemetry.api_name = api_name
+        resource = Resource.create(
+            {
+                SERVICE_NAME: f"{Telemetry.api_name}",
+                SERVICE_NAMESPACE : f"FoundationaLLM",
+                SERVICE_VERSION: f"{foundationallm.__version__}",
+                SERVICE_INSTANCE_ID: f"{platform.node()}"
+            })
+
+        # Configure Azure Monitor defaults
         configure_azure_monitor(
-            connection_string=config.get_value(telemetry_connection_string),
-            disable_offline_storage=True
+            connection_string=Telemetry.telemetry_connection_string,
+            disable_offline_storage=True,
+            disable_metrics=True,
+            disable_tracing=False,
+            disable_logging=False,
+            resource=resource
         )
+
+        #Configure telemetry logging
+        Telemetry.configure_logging(config)
 
     @staticmethod
     def get_logger(name: str, level: int = logging.INFO) -> logging.Logger:
@@ -79,3 +116,109 @@ class Telemetry:
         """
         span.set_status(Status(StatusCode.ERROR))
         span.record_exception(ex)
+
+    @staticmethod
+    def configure_logging(config: Configuration):
+        #Get dotnet log level
+        str_log_level = config.get_value("FoundationaLLM:PythonSDK:Logging:LogLevel:Default")
+
+        enable_console_logging = config.get_value("FoundationaLLM:PythonSDK:Logging:EnableConsoleLogging")
+
+        #Log output handlers
+        handlers = []
+
+        #map log level to python log level - console is only added for Information or higher
+        if str_log_level == "Debug":
+            Telemetry.log_level = logging.DEBUG
+            set_debug(True)
+            handlers.append(logging.StreamHandler())
+        elif str_log_level == "Trace":
+            Telemetry.log_level = logging.DEBUG
+            handlers.append(logging.StreamHandler())
+            set_verbose(True)
+        elif str_log_level == "Information":
+            Telemetry.log_level = logging.INFO
+            handlers.append(logging.StreamHandler())
+            set_debug(False)
+        elif str_log_level == "Warning":
+            set_debug(False)
+            Telemetry.log_level = logging.WARNING
+        elif str_log_level == "Error":
+            set_debug(False)
+            Telemetry.log_level = logging.ERROR
+        elif str_log_level == "Critical":
+            set_debug(False)
+            Telemetry.log_level = logging.CRITICAL
+        else:
+            set_debug(False)
+            Telemetry.log_level = logging.NOTSET
+
+        #Logging configuration
+        LOGGING = {
+            'version': 1,
+            'disable_existing_loggers': False,
+            'formatters': {
+                'default': {
+                    'format': '[%(asctime)s] [%(levelname)s] %(name)s: %(message)s'
+                },
+                'standard': {
+                    'format': '[%(asctime)s] [%(levelname)s] %(name)s: %(message)s'
+                },
+                'azure': {
+                    'format': '%(name)s: %(message)s'
+                },
+                'error': {
+                    'format': '[%(asctime)s] [%(levelname)s] %(name)s %(process)d::%(module)s|%(lineno)s:: %(message)s'
+                }
+            },
+            'handlers': {
+                'default': {
+                    'level': Telemetry.log_level,
+                    'formatter': 'standard',
+                    'class': 'logging.StreamHandler',
+                    'filters' : ['exclude_trace_logs'],
+                    'stream': 'ext://sys.stdout',
+                },
+                'console': {
+                    'level': Telemetry.log_level,
+                    'formatter': 'standard',
+                    'class': 'logging.StreamHandler',
+                    'filters' : ['exclude_trace_logs'],
+                    'stream': 'ext://sys.stdout'
+                },
+                "azure": {
+                    'formatter': 'azure',
+                    'level': Telemetry.log_level,
+                    "class": "opentelemetry.sdk._logs.LoggingHandler",
+                    'filters' : ['exclude_trace_logs'],
+                }
+            },
+            'filters': {
+                'exclude_trace_logs': {
+                    '()': 'foundationallm.telemetry.ExcludeTraceLogsFilter',
+                },
+            },
+            'loggers': {
+                'azure': {  # Adjust the logger name accordingly
+                    'level': Telemetry.log_level,  # Set to WARNING or higher
+                    "class": "opentelemetry.sdk._logs.LoggingHandler",
+                    'filters': ['exclude_trace_logs']
+                },
+                '': {
+                    'handlers': ['console'],
+                    'level': Telemetry.log_level,
+                    'filters': ['exclude_trace_logs'],
+                },
+            },
+            "root": {
+                "handlers": ["azure", "console"],
+                "level": Telemetry.log_level,
+            }
+        }
+
+        #remove console if prod env (cut down on duplicate log data)
+        if enable_console_logging != 'true':
+            LOGGING['root']['handlers'] = ["azure"]
+
+        #set the logging configuration
+        logging.config.dictConfig(LOGGING)
