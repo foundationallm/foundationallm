@@ -428,7 +428,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
             # Populate tools list from agent configuration
             for tool in agent.tools:
-                tools.append(tool_factory.get_tool(tool, request.objects, self.config))
+                tools.append(tool_factory.get_tool(tool, request.objects, self.user_identity, self.config))
 
             # Define the graph
             graph = create_react_agent(llm, tools=tools, state_modifier=self.prompt.prefix)

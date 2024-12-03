@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 from typing import Optional, Type
 
 from foundationallm.langchain.common import FoundationaLLMToolBase
-from foundationallm.config import Configuration
+from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import AgentTool
 from foundationallm.models.resource_providers.ai_models import AIModelBase
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
@@ -45,10 +45,10 @@ class DALLEImageGenerationTool(FoundationaLLMToolBase):
     """
     args_schema: Type[BaseModel] = DALLEImageGenerationToolInput
 
-    def __init__(self, tool_config: AgentTool, objects: dict, config: Configuration):
+    def __init__(self, tool_config: AgentTool, objects: dict, user_identity:UserIdentity, config: Configuration):
         """ Initializes the DALLEImageGenerationTool class with the tool configuration,
-            exploded objects collection, and platform configuration. """
-        super().__init__(tool_config, objects, config)
+            exploded objects collection, user identity, and platform configuration. """
+        super().__init__(tool_config, objects, user_identity, config)
         self.ai_model = ObjectUtils.get_object_by_id(self.tool_config.ai_model_object_ids["main_model"], self.objects, AIModelBase)
         self.api_endpoint = ObjectUtils.get_object_by_id(self.ai_model.endpoint_object_id, self.objects, APIEndpointConfiguration)
         self.client = self._get_client()

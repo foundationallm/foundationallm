@@ -2,7 +2,7 @@
 Class: ToolFactory
 Description: Factory class for creating tools based on the AgentTool configuration.
 """
-from foundationallm.config import Configuration
+from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.common import FoundationaLLMToolBase
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.tools import DALLEImageGenerationTool
@@ -31,6 +31,7 @@ class ToolFactory:
         self,
         tool_config: AgentTool,
         objects: dict,
+        user_identity: UserIdentity,
         config: Configuration
     ) -> FoundationaLLMToolBase:
         """
@@ -40,13 +41,13 @@ class ToolFactory:
             # internal tools
             match tool_config.name:
                 case self.DALLE_IMAGE_GENERATION_TOOL_NAME:
-                    return DALLEImageGenerationTool(tool_config, objects, config)
+                    return DALLEImageGenerationTool(tool_config, objects, user_identity, config)
         else:
             tool_plugin_manager = None
 
             if tool_config.package_name in self.plugin_manager.external_modules:
                 tool_plugin_manager = self.plugin_manager.external_modules[tool_config.package_name].tool_plugin_manager
-                return tool_plugin_manager.create_tool(tool_config, objects, config)
+                return tool_plugin_manager.create_tool(tool_config, objects, user_identity, config)
             else:
                 raise LangChainException(f"Package {tool_config.package_name} not found in the list of external modules loaded by the package manager.")
 
