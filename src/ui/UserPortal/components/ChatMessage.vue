@@ -100,7 +100,7 @@
 						<span
 							v-for="artifact in message.contentArtifacts"
 							:key="artifact.id"
-							v-tooltip.top="{ content: artifact.filepath, showDelay: 500, hideDelay: 300 }"
+							v-tooltip.top="{ content: 'Click to view content', showDelay: 500, hideDelay: 300 }"
 							class="content-artifact"
 							@click="selectedContentArtifact = artifact"
 						>
