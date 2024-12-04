@@ -1,10 +1,13 @@
 /** Inputs **/
+param acrUrl string = ''
+param acrUsername string = ''
 param apiKeySecretName string
 param applicationInsightsName string
 param containerAppsEnvironmentName string
 param cpu string
 param envSettings array = []
 param exists bool
+param hasAcrKey bool = false
 param hasIngress bool = false
 param identityName string
 param imageName string
@@ -103,6 +106,13 @@ resource app 'Microsoft.App/containerApps@2023-04-01-preview' = {
             transport: 'auto'
           }
         : null
+      registries: hasAcrKey ? [
+        {
+          passwordSecretRef: 'acr-token'
+          server: acrUrl
+          username: acrUsername
+        }
+      ] : null
       secrets: union(
         [],
         map(
@@ -141,7 +151,7 @@ resource app 'Microsoft.App/containerApps@2023-04-01-preview' = {
             ],
             env,
             map(
-              secrets,
+              filter(secrets, i => i.?name != null), // If no name is specified, do not create an environment variable
               secret => {
                 name: secret.name
                 secretRef: secret.secretRef

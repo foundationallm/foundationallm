@@ -1,6 +1,9 @@
 param name string
 param location string = resourceGroup().location
 param tags object = {}
+param acrUrl string = ''
+param acrUsername string = ''
+param hasAcrKey bool = false
 param authRgName string
 param authStoreName string
 param cpu string
@@ -83,6 +86,13 @@ resource app 'Microsoft.App/containerApps@2023-04-01-preview' = {
         targetPort: 80
         transport: 'auto'
       } : null
+      registries: hasAcrKey ? [
+        {
+          passwordSecretRef: 'acr-token'
+          server: acrUrl
+          username: acrUsername
+        }
+      ] : null
       secrets: union([
       ],
       map(secrets, secret => {
@@ -115,10 +125,13 @@ resource app 'Microsoft.App/containerApps@2023-04-01-preview' = {
             }
           ],
           env,
-          map(secrets, secret => {
-            name: secret.name
-            secretRef: secret.secretRef
-          }))
+          map(
+            filter(secrets, i => i.?name != null), // If no name is specified, do not create an environment variable
+            secret => {
+              name: secret.name
+              secretRef: secret.secretRef
+            }
+          ))
           resources: {
             cpu: json(cpu)
             memory: memory

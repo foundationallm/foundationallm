@@ -1,5 +1,9 @@
 targetScope = 'subscription'
 
+param acrKey string = ''
+param acrUrl string = ''
+param acrUsername string = ''
+
 param adminGroupObjectId string
 
 param authAppRegistration object
@@ -68,6 +72,10 @@ var clientSecrets = [
     name: 'foundationallm-langchain-sqldatabase-testdb-password'
     value: 'PLACEHOLDER'
   }
+  {
+    name: 'acr-password'
+    value: acrKey
+  }
 ]
 
 var deployOpenAi = empty(existingOpenAiInstance.name)
@@ -97,6 +105,8 @@ var tags = {
 
 var abbrs = loadJsonContent('./abbreviations.json')
 var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
+
+var useCustomerAcr = !empty(acrKey)
 
 /********** Resources **********/
 resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
@@ -168,6 +178,10 @@ module authKeyvault './shared/keyvault.bicep' = {
       {
         name: 'foundationallm-authorizationapi-appinsights-connectionstring'
         value: monitoring.outputs.applicationInsightsConnectionString
+      }
+      {
+        name: 'acr-password'
+        value: acrKey
       }
     ]
   }
@@ -556,6 +570,9 @@ module authAcaService './app/authAcaService.bicep' = {
     name: '${abbrs.appContainerApps}authapi${resourceToken}'
     location: location
     tags: tags
+    acrUrl: acrUrl
+    acrUsername: acrUsername
+    hasAcrKey: useCustomerAcr
     authRgName: authRg.name
     authStoreName: authStore.outputs.name
     identityName: '${abbrs.managedIdentityUserAssignedIdentities}auth-api-${resourceToken}'
@@ -575,6 +592,12 @@ module authAcaService './app/authAcaService.bicep' = {
         value: authKeyvault.outputs.endpoint
       }
     ]
+    secretSettings: useCustomerAcr ? [
+      {
+        secretRef: 'acr-token'
+        value: last(authKeyvault.outputs.secretRefs)
+      }
+    ] : []
     serviceName: 'auth-api'
   }
   scope: rg
@@ -588,12 +611,15 @@ module acaServices './app/acaService.bicep' = [
     name: '${service.name}-${timestamp}'
     scope: rg
     params: {
+      acrUrl: acrUrl
+      acrUsername: acrUsername
       apiKeySecretName: service.apiKeySecretName
       appDefinition: serviceDefinition
       applicationInsightsName: monitoring.outputs.applicationInsightsName
       containerAppsEnvironmentName: appsEnv.outputs.name
       cpu: service.cpu
       exists: servicesExist['${service.name}'] == 'true'
+      hasAcrKey: useCustomerAcr
       hasIngress: service.hasIngress
       identityName: '${abbrs.managedIdentityUserAssignedIdentities}${service.name}-${resourceToken}'
       imageName: service.image
@@ -621,8 +647,14 @@ module acaServices './app/acaService.bicep' = [
             }
           ]
         : [])
-
-      secretSettings: service.useEndpoint
+      secretSettings: concat(
+        useCustomerAcr ? [
+          {
+            secretRef: 'acr-token'
+            value: last(keyVault.outputs.secretRefs)
+          }
+        ]: [],
+        service.useEndpoint
         ? []
         : [
             {
@@ -631,6 +663,7 @@ module acaServices './app/acaService.bicep' = [
               secretRef: 'appconfig-connection-string'
             }
           ]
+      )
     }
   }
 ]
