@@ -356,7 +356,20 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                                indexingProfileObjectId,
                                                currentUserIdentity);
 
-                    explodedObjects[indexingProfileObjectId] = indexingProfile;                    
+                    explodedObjects[indexingProfileObjectId] = indexingProfile;
+
+                    // Provide the indexing profile API endpoint configuration.
+                    if (indexingProfile.Settings == null)
+                        throw new OrchestrationException($"Tool: {tool.Name}: The settings for the indexing profile {indexingProfile.Name} were not found. Must include \"{VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId}\" setting.");
+
+                    if (indexingProfile.Settings.TryGetValue(VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, out var apiEndpointConfigurationObjectId) == false)
+                        throw new OrchestrationException($"Tool: {tool.Name}: The API endpoint configuration object ID was not found in the settings of the indexing profile.");
+
+                    var indexingProfileAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                        apiEndpointConfigurationObjectId,
+                        currentUserIdentity);
+
+                    explodedObjects[apiEndpointConfigurationObjectId] = indexingProfileAPIEndpointConfiguration;
                 }
             }
 
