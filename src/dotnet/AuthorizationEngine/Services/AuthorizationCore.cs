@@ -719,29 +719,34 @@ namespace FoundationaLLM.AuthorizationEngine.Services
         public async Task<SecretKeyValidationResult> ValidateSecretKey(string instanceId, string contextId, string secretKeyValue)
         {
             if (string.IsNullOrWhiteSpace(secretKeyValue))
-                return new SecretKeyValidationResult() { Valid = false, Message = "Secret key is null or empty." };
+            {
+                _logger.LogWarning("Secret key is null or empty.");
+                return new SecretKeyValidationResult() { Valid = false };
+            }
 
             if (!TryParseKey(secretKeyValue, "keya", "ayek", "_", out var clientApiKey, out var message))
-                return new SecretKeyValidationResult() { Valid = false, Message = message };
+            {
+                _logger.LogWarning(message ?? "Secret key could not be parsed.");
+                return new SecretKeyValidationResult() { Valid = false };
+            }
 
             // Fetch the matching persisted key
             var persistedApiKey = await GetPersistedSecretKey(instanceId, contextId, clientApiKey!.ApiKeyId);
             if (persistedApiKey == null)
-                return new SecretKeyValidationResult() { Valid = false, Message = "Repository does not contain a key matching this ID." };
+            {
+                _logger.LogWarning("Repository does not contain a key matching this ID.");
+                return new SecretKeyValidationResult() { Valid = false };
+            }
 
             if (TestKeys(clientApiKey, persistedApiKey))
             {
-                return new SecretKeyValidationResult() {
-                    Valid = true,
-                    VirtualIdentity = new UnifiedUserIdentity()
-                    {
-                        UserId = Guid.NewGuid().ToString(),
-                        GroupIds = [],
-                    }
-                };
+                return new SecretKeyValidationResult() { Valid = true };
             }
-
-            return new SecretKeyValidationResult() { Valid = false, Message = "Invalid API key hash." };
+            else
+            {
+                _logger.LogWarning("Invalid API key hash.");
+                return new SecretKeyValidationResult() { Valid = false };
+            }
         }
 
         #endregion

@@ -15,15 +15,9 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens
         public required bool Valid { get; set; }
 
         /// <summary>
-        /// Provides additional information when Valid is false.
-        /// </summary>
-        [JsonPropertyName("message")]
-        public string? Message { get; set; }
-
-        /// <summary>
         /// Gets or sets the <see cref="UnifiedUserIdentity"/> virtual identity associated with the agent access token.
         /// </summary>
         [JsonPropertyName("virtual_identity")]
-        public required UnifiedUserIdentity VirtualIdentity { get; set; }
+        public UnifiedUserIdentity? VirtualIdentity { get; set; }
     }
 }
