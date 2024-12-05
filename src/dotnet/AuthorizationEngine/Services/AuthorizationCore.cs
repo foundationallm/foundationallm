@@ -807,19 +807,19 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                 return false;
             }
 
-            if (!key.StartsWith(prefix))
+            if (!key.StartsWith($"{prefix}{separator}"))
             {
                 message = $"This does not look like an API key (missing prefix {prefix}).";
                 return false;
             }
 
-            if (!key.EndsWith(suffix))
+            if (!key.EndsWith($"{separator}{suffix}"))
             {
                 message = "This key was truncated and is missing some data.";
                 return false;
             }
 
-            var pos = key.IndexOf(separator);
+            var pos = key.IndexOf(separator, prefix.Length + agentName.Length + 2);
             if (pos <= 0)
             {
                 message = "Key and client secret are not properly delimited.";
@@ -827,14 +827,14 @@ namespace FoundationaLLM.AuthorizationEngine.Services
             }
 
             // Extract the key ID and client secret
-            var keyId = key[(prefix.Length + agentName.Length)..pos];
+            var keyId = key[(prefix.Length + agentName.Length + 2)..pos];
             if (!TryDecode(keyId, 16, out var keyBytes))
             {
                 message = "Key ID is not properly formatted.";
                 return false;
             }
             var keyGuid = new Guid(keyBytes);
-            var clientSecret = key.Substring(pos + 1, key.Length - suffix.Length - 1 - pos);
+            var clientSecret = key.Substring(pos + 1, key.Length - suffix.Length - pos - 2);
 
             // Construct a new valid key
             value = new ClientSecretKey() { ApiKeyId = keyGuid, ClientSecret = clientSecret };
