@@ -34,6 +34,23 @@ The following classes have been renamed:
 | --- | --- |
 | `FoundationaLLM.Common.Models.Orchestration.Response.Citation` | `FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact` |
 
+#### API endpoint changes
+
+**Core API**
+
+The `/instances/{instanceId}/sessions/{sessionId}/message/{id}/rate` endpoint has been updated to accept the rating in the message body, rather than as a query parameter. Send the following payload in the request body:
+
+```json
+{
+  "rating": true,
+  "comments": "string"
+}
+```
+
+> [!NOTE]
+> Please note that both properties are nullable. Set them to null to clear out the rating and comments.
+
+
 ## Starting with 0.8.4
 
 ### Configuration changes
