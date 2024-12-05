@@ -69,6 +69,7 @@
 
 <script lang="ts">
 import type { Message, Session } from '@/js/types';
+import { jsPDF } from 'jspdf';
 
 export default {
 	name: 'ChatThread',
@@ -200,6 +201,44 @@ export default {
 			// }
 
 			// this.isMessagePending = false;
+		},
+
+		exportToPDF() {
+			const messagesContainer = this.$refs.messageContainer;
+			if (!messagesContainer) {
+				console.error('Message container not found.');
+				return;
+			}
+
+			const doc = new jsPDF();
+			let yPosition = 10;
+
+			doc.setFontSize(16);
+			doc.text('Chat Transcript', 10, yPosition);
+			yPosition += 10;
+
+			const messageRows = messagesContainer.querySelectorAll('.message-row');
+			messageRows.forEach((messageRow) => {
+				const senderElement = messageRow.querySelector('.header__sender span');
+				const messageBody = messageRow.querySelector('.message__body');
+
+				const sender = senderElement?.textContent?.trim() || 'Unknown';
+				const messageText = messageBody?.textContent?.trim() || '';
+
+				doc.setFontSize(12);
+				doc.text(`${sender}:`, 10, yPosition);
+
+				yPosition += 6;
+				doc.text(messageText, 10, yPosition, { maxWidth: 190 });
+				yPosition += 10;
+				
+				if (yPosition > 280) {
+					doc.addPage();
+					yPosition = 10;
+				}
+			});
+
+			doc.save('chat-transcript.pdf');
 		},
 	},
 };
