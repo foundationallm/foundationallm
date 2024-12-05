@@ -504,18 +504,22 @@ namespace FoundationaLLM.Agent.ResourceProviders
         {
             var contextId = $"/instances/{_instanceSettings.Id}/providers/{_name}/{AgentResourceTypeNames.Agents}/{agentName}";
 
-            var result = await _authorizationServiceClient.ValidateSecretKey(_instanceSettings.Id, contextId,  agentAccessTokenValidationRequest.AccessToken);
+            var result = await _authorizationServiceClient.ValidateSecretKey(_instanceSettings.Id, contextId, agentAccessTokenValidationRequest.AccessToken);
 
             if (result.Valid)
             {
+                // Set virtual identity
                 var agent = await GetResourceAsync<AgentBase>(contextId, userIdentity);
-                result.VirtualIdentity!.GroupIds = [agent.VirtualSecurityGroupId];
+                result.VirtualIdentity = new UnifiedUserIdentity()
+                {
+                    UserId = Guid.NewGuid().ToString(),
+                    GroupIds = [agent.VirtualSecurityGroupId],
+                };
             }
 
             return new AgentAccessTokenValidationResult()
             {
                  Valid = result.Valid,
-                 Message = result.Message,
                  VirtualIdentity = result.VirtualIdentity
             };
         }

@@ -12,13 +12,7 @@ namespace FoundationaLLM.Common.Models.Authorization
         /// Gets or sets the flag indicating whether the secret key is valid.
         /// </summary>
         [JsonPropertyName("valid")]
-        public bool Valid { get; set; }
-
-        /// <summary>
-        /// Provides additional information when Valid is false.
-        /// </summary>
-        [JsonPropertyName("message")]
-        public string? Message { get; set; }
+        public required bool Valid { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="UnifiedUserIdentity"/> virtual identity associated with the secret key.

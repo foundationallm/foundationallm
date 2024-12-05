@@ -21,13 +21,14 @@
         /// <summary>
         /// Converts this API key into a string the customer can use for authentication.
         /// </summary>
-        /// <param name="algorithm">The selected algorithm</param>
+        /// <param name="contextId">The context identifier.</param>
         /// <returns></returns>
-        public string ToApiKeyString()
+        public string ToApiKeyString(string contextId)
         {
             var idBytes = ApiKeyId.ToByteArray();
             var idString = Base58.Encode(idBytes);
-            return $"keya{idString}_{ClientSecret}ayek";
+            var agentName = contextId.Split("/").Last();
+            return $"keya.{agentName}.{idString}.{ClientSecret}.ayek";
         }
     }
 }

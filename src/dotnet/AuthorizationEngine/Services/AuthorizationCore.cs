@@ -672,7 +672,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
             await PersistSecretKey(persistedSecretKey);
 
             // Return the client's key to them
-            return clientKey.ToApiKeyString();
+            return clientKey.ToApiKeyString(secretKey.ContextId);
         }
 
         /// <inheritdoc/>
@@ -719,29 +719,34 @@ namespace FoundationaLLM.AuthorizationEngine.Services
         public async Task<SecretKeyValidationResult> ValidateSecretKey(string instanceId, string contextId, string secretKeyValue)
         {
             if (string.IsNullOrWhiteSpace(secretKeyValue))
-                return new SecretKeyValidationResult() { Valid = false, Message = "Secret key is null or empty." };
+            {
+                _logger.LogWarning("Secret key is null or empty.");
+                return new SecretKeyValidationResult() { Valid = false };
+            }
 
-            if (!TryParseKey(secretKeyValue, "keya", "ayek", "_", out var clientApiKey, out var message))
-                return new SecretKeyValidationResult() { Valid = false, Message = message };
+            if (!TryParseKey(secretKeyValue, contextId, "keya", "ayek", ".", out var clientApiKey, out var message))
+            {
+                _logger.LogWarning(message ?? "Secret key could not be parsed.");
+                return new SecretKeyValidationResult() { Valid = false };
+            }
 
             // Fetch the matching persisted key
             var persistedApiKey = await GetPersistedSecretKey(instanceId, contextId, clientApiKey!.ApiKeyId);
             if (persistedApiKey == null)
-                return new SecretKeyValidationResult() { Valid = false, Message = "Repository does not contain a key matching this ID." };
+            {
+                _logger.LogWarning("Repository does not contain a key matching this ID.");
+                return new SecretKeyValidationResult() { Valid = false };
+            }
 
             if (TestKeys(clientApiKey, persistedApiKey))
             {
-                return new SecretKeyValidationResult() {
-                    Valid = true,
-                    VirtualIdentity = new UnifiedUserIdentity()
-                    {
-                        UserId = Guid.NewGuid().ToString(),
-                        GroupIds = [],
-                    }
-                };
+                return new SecretKeyValidationResult() { Valid = true };
             }
-
-            return new SecretKeyValidationResult() { Valid = false, Message = "Invalid API key hash." };
+            else
+            {
+                _logger.LogWarning("Invalid API key hash.");
+                return new SecretKeyValidationResult() { Valid = false };
+            }
         }
 
         #endregion
@@ -790,9 +795,11 @@ namespace FoundationaLLM.AuthorizationEngine.Services
             }
         }
 
-        private static bool TryParseKey(string key, string prefix, string suffix, string separator, out ClientSecretKey? value, out string? message)
+        private static bool TryParseKey(string key, string contextId, string prefix, string suffix, string separator, out ClientSecretKey? value, out string? message)
         {
             value = null;
+
+            var agentName = contextId.Split("/").Last();
 
             if (string.IsNullOrWhiteSpace(key))
             {
@@ -800,19 +807,19 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                 return false;
             }
 
-            if (!key.StartsWith(prefix))
+            if (!key.StartsWith($"{prefix}{separator}"))
             {
                 message = $"This does not look like an API key (missing prefix {prefix}).";
                 return false;
             }
 
-            if (!key.EndsWith(suffix))
+            if (!key.EndsWith($"{separator}{suffix}"))
             {
                 message = "This key was truncated and is missing some data.";
                 return false;
             }
 
-            var pos = key.IndexOf(separator);
+            var pos = key.IndexOf(separator, prefix.Length + agentName.Length + 2);
             if (pos <= 0)
             {
                 message = "Key and client secret are not properly delimited.";
@@ -820,14 +827,14 @@ namespace FoundationaLLM.AuthorizationEngine.Services
             }
 
             // Extract the key ID and client secret
-            var keyId = key[prefix.Length..pos];
+            var keyId = key[(prefix.Length + agentName.Length + 2)..pos];
             if (!TryDecode(keyId, 16, out var keyBytes))
             {
                 message = "Key ID is not properly formatted.";
                 return false;
             }
             var keyGuid = new Guid(keyBytes);
-            var clientSecret = key.Substring(pos + 1, key.Length - suffix.Length - 1 - pos);
+            var clientSecret = key.Substring(pos + 1, key.Length - suffix.Length - pos - 2);
 
             // Construct a new valid key
             value = new ClientSecretKey() { ApiKeyId = keyGuid, ClientSecret = clientSecret };
