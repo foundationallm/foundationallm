@@ -127,17 +127,17 @@ namespace FoundationaLLM.Core.API
             var requireScopes = true;
             var allowACLAuthorization = false;
             
-            if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(AppConfigurationKeys
-                    .FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_RequireScopes)))
+            if (!string.IsNullOrWhiteSpace(builder.Configuration.GetValue<string>(
+                AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_RequireScopes)))
             {
-                bool.TryParse(Environment.GetEnvironmentVariable(AppConfigurationKeys
-                    .FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_RequireScopes), out requireScopes);
+                bool.TryParse(builder.Configuration.GetValue<string>(
+                    AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_RequireScopes), out requireScopes);
             }
-            if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(AppConfigurationKeys
-                    .FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_AllowACLAuthorization)))
+            if (!string.IsNullOrWhiteSpace(builder.Configuration.GetValue<string>(
+                AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_AllowACLAuthorization)))
             {
-                bool.TryParse(Environment.GetEnvironmentVariable(AppConfigurationKeys
-                    .FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_AllowACLAuthorization), out allowACLAuthorization);
+                bool.TryParse(builder.Configuration.GetValue<string>(
+                    AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_AllowACLAuthorization), out allowACLAuthorization);
             }
             if (isE2ETestEnvironment)
             {
