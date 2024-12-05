@@ -672,7 +672,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
             await PersistSecretKey(persistedSecretKey);
 
             // Return the client's key to them
-            return clientKey.ToApiKeyString();
+            return clientKey.ToApiKeyString(secretKey.ContextId);
         }
 
         /// <inheritdoc/>
@@ -724,7 +724,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                 return new SecretKeyValidationResult() { Valid = false };
             }
 
-            if (!TryParseKey(secretKeyValue, "keya", "ayek", "_", out var clientApiKey, out var message))
+            if (!TryParseKey(secretKeyValue, contextId, "keya", "ayek", ".", out var clientApiKey, out var message))
             {
                 _logger.LogWarning(message ?? "Secret key could not be parsed.");
                 return new SecretKeyValidationResult() { Valid = false };
@@ -795,9 +795,11 @@ namespace FoundationaLLM.AuthorizationEngine.Services
             }
         }
 
-        private static bool TryParseKey(string key, string prefix, string suffix, string separator, out ClientSecretKey? value, out string? message)
+        private static bool TryParseKey(string key, string contextId, string prefix, string suffix, string separator, out ClientSecretKey? value, out string? message)
         {
             value = null;
+
+            var agentName = contextId.Split("/").Last();
 
             if (string.IsNullOrWhiteSpace(key))
             {
@@ -825,7 +827,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
             }
 
             // Extract the key ID and client secret
-            var keyId = key[prefix.Length..pos];
+            var keyId = key[(prefix.Length + agentName.Length)..pos];
             if (!TryDecode(keyId, 16, out var keyBytes))
             {
                 message = "Key ID is not properly formatted.";
