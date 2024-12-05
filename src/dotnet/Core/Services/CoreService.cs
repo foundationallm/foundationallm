@@ -661,7 +661,7 @@ public partial class CoreService(
     }
 
     /// <inheritdoc/>
-    public async Task<Message> RateMessageAsync(string instanceId, string id, string sessionId, bool? rating)
+    public async Task<Message> RateMessageAsync(string instanceId, string id, string sessionId, MessageRatingRequest rating)
     {
         ArgumentNullException.ThrowIfNull(id);
         ArgumentNullException.ThrowIfNull(sessionId);
@@ -671,7 +671,8 @@ public partial class CoreService(
             sessionId,
             new Dictionary<string, object?>
             {
-                { "/rating", rating }
+                { "/rating", rating.Rating },
+                { "/ratingComments", rating.Comments }
             });
     }
 
