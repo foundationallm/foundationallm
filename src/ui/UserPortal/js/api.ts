@@ -1,5 +1,6 @@
 import type {
 	Message,
+	MessageRatingRequest,
 	Session,
 	LongRunningOperation,
 	UserProfile,
@@ -250,16 +251,18 @@ export default {
 	 * @returns The rated message.
 	 */
 	async rateMessage(message: Message, rating: Message['rating']) {
-		const params: {
-			rating?: Message['rating'];
-		} = {};
-		if (rating !== null) params.rating = rating;
+		// Create a new instance of the MessageRatingRequest object
+		// and set the rating and comments properties
+		const messageRatingRequest: MessageRatingRequest = {
+			rating: rating,
+			comments: null,
+		};
 
 		return (await this.fetch(
 			`/instances/${this.instanceId}/sessions/${message.sessionId}/message/${message.id}/rate`,
 			{
 				method: 'POST',
-				params,
+				body: messageRatingRequest,
 			},
 		)) as Message;
 	},
