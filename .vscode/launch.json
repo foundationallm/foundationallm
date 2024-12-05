@@ -5,6 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Skunkworks - Debug Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "python": "${workspaceFolder}/src/python/Experimental/.venv/Scripts/python.exe",
+            "cwd" : "${workspaceFolder}/src/python/Experimental/test",
+            "justMyCode": false
+        },
+        {
             "command": "npm run dev",
             "name": "User Portal UI",
             "request": "launch",
