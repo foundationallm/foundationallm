@@ -141,6 +141,18 @@
 </tr>
 </tbody>
 </table>
+<h4 id="api-endpoint-changes">API endpoint changes</h4>
+<p><strong>Core API</strong></p>
+<p>The <code>/instances/{instanceId}/sessions/{sessionId}/message/{id}/rate</code> endpoint has been updated to accept the rating in the message body, rather than as a query parameter. Send the following payload in the request body:</p>
+<pre><code class="lang-json">{
+  &quot;rating&quot;: true,
+  &quot;comments&quot;: &quot;string&quot;
+}
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Please note that both properties are nullable. Set them to null to clear out the rating and comments.</p>
+</div>
 <h2 id="starting-with-084">Starting with 0.8.4</h2>
 <h3 id="configuration-changes-1">Configuration changes</h3>
 <p>The following new App Configuration settings are required:</p>

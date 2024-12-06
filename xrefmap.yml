@@ -16180,6 +16180,19 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.Conversation.Message.Rating
   nameWithType: Message.Rating
+- uid: FoundationaLLM.Common.Models.Conversation.Message.RatingComments
+  name: RatingComments
+  href: api/dotnet/FoundationaLLM.Common.Models.Conversation.Message.html#FoundationaLLM_Common_Models_Conversation_Message_RatingComments
+  commentId: P:FoundationaLLM.Common.Models.Conversation.Message.RatingComments
+  fullName: FoundationaLLM.Common.Models.Conversation.Message.RatingComments
+  nameWithType: Message.RatingComments
+- uid: FoundationaLLM.Common.Models.Conversation.Message.RatingComments*
+  name: RatingComments
+  href: api/dotnet/FoundationaLLM.Common.Models.Conversation.Message.html#FoundationaLLM_Common_Models_Conversation_Message_RatingComments_
+  commentId: Overload:FoundationaLLM.Common.Models.Conversation.Message.RatingComments
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.Conversation.Message.RatingComments
+  nameWithType: Message.RatingComments
 - uid: FoundationaLLM.Common.Models.Conversation.Message.Sender
   name: Sender
   href: api/dotnet/FoundationaLLM.Common.Models.Conversation.Message.html#FoundationaLLM_Common_Models_Conversation_Message_Sender
@@ -16406,6 +16419,38 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Common.Models.Conversation.MessageHistoryItem.Text
   nameWithType: MessageHistoryItem.Text
+- uid: FoundationaLLM.Common.Models.Conversation.MessageRatingRequest
+  name: MessageRatingRequest
+  href: api/dotnet/FoundationaLLM.Common.Models.Conversation.MessageRatingRequest.html
+  commentId: T:FoundationaLLM.Common.Models.Conversation.MessageRatingRequest
+  fullName: FoundationaLLM.Common.Models.Conversation.MessageRatingRequest
+  nameWithType: MessageRatingRequest
+- uid: FoundationaLLM.Common.Models.Conversation.MessageRatingRequest.Comments
+  name: Comments
+  href: api/dotnet/FoundationaLLM.Common.Models.Conversation.MessageRatingRequest.html#FoundationaLLM_Common_Models_Conversation_MessageRatingRequest_Comments
+  commentId: P:FoundationaLLM.Common.Models.Conversation.MessageRatingRequest.Comments
+  fullName: FoundationaLLM.Common.Models.Conversation.MessageRatingRequest.Comments
+  nameWithType: MessageRatingRequest.Comments
+- uid: FoundationaLLM.Common.Models.Conversation.MessageRatingRequest.Comments*
+  name: Comments
+  href: api/dotnet/FoundationaLLM.Common.Models.Conversation.MessageRatingRequest.html#FoundationaLLM_Common_Models_Conversation_MessageRatingRequest_Comments_
+  commentId: Overload:FoundationaLLM.Common.Models.Conversation.MessageRatingRequest.Comments
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.Conversation.MessageRatingRequest.Comments
+  nameWithType: MessageRatingRequest.Comments
+- uid: FoundationaLLM.Common.Models.Conversation.MessageRatingRequest.Rating
+  name: Rating
+  href: api/dotnet/FoundationaLLM.Common.Models.Conversation.MessageRatingRequest.html#FoundationaLLM_Common_Models_Conversation_MessageRatingRequest_Rating
+  commentId: P:FoundationaLLM.Common.Models.Conversation.MessageRatingRequest.Rating
+  fullName: FoundationaLLM.Common.Models.Conversation.MessageRatingRequest.Rating
+  nameWithType: MessageRatingRequest.Rating
+- uid: FoundationaLLM.Common.Models.Conversation.MessageRatingRequest.Rating*
+  name: Rating
+  href: api/dotnet/FoundationaLLM.Common.Models.Conversation.MessageRatingRequest.html#FoundationaLLM_Common_Models_Conversation_MessageRatingRequest_Rating_
+  commentId: Overload:FoundationaLLM.Common.Models.Conversation.MessageRatingRequest.Rating
+  isSpec: "True"
+  fullName: FoundationaLLM.Common.Models.Conversation.MessageRatingRequest.Rating
+  nameWithType: MessageRatingRequest.Rating
 - uid: FoundationaLLM.Common.Models.Events
   name: FoundationaLLM.Common.Models.Events
   href: api/dotnet/FoundationaLLM.Common.Models.Events.html
@@ -30622,15 +30667,15 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Core.API.Controllers.SessionsController.GetCompletionPrompt
   nameWithType: SessionsController.GetCompletionPrompt
-- uid: FoundationaLLM.Core.API.Controllers.SessionsController.RateMessage(System.String,System.String,System.String,System.Nullable{System.Boolean})
-  name: RateMessage(string, string, string, bool?)
-  href: api/dotnet/FoundationaLLM.Core.API.Controllers.SessionsController.html#FoundationaLLM_Core_API_Controllers_SessionsController_RateMessage_System_String_System_String_System_String_System_Nullable_System_Boolean__
-  commentId: M:FoundationaLLM.Core.API.Controllers.SessionsController.RateMessage(System.String,System.String,System.String,System.Nullable{System.Boolean})
-  name.vb: RateMessage(String, String, String, Boolean?)
-  fullName: FoundationaLLM.Core.API.Controllers.SessionsController.RateMessage(string, string, string, bool?)
-  fullName.vb: FoundationaLLM.Core.API.Controllers.SessionsController.RateMessage(String, String, String, Boolean?)
-  nameWithType: SessionsController.RateMessage(string, string, string, bool?)
-  nameWithType.vb: SessionsController.RateMessage(String, String, String, Boolean?)
+- uid: FoundationaLLM.Core.API.Controllers.SessionsController.RateMessage(System.String,System.String,System.String,FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)
+  name: RateMessage(string, string, string, MessageRatingRequest)
+  href: api/dotnet/FoundationaLLM.Core.API.Controllers.SessionsController.html#FoundationaLLM_Core_API_Controllers_SessionsController_RateMessage_System_String_System_String_System_String_FoundationaLLM_Common_Models_Conversation_MessageRatingRequest_
+  commentId: M:FoundationaLLM.Core.API.Controllers.SessionsController.RateMessage(System.String,System.String,System.String,FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)
+  name.vb: RateMessage(String, String, String, MessageRatingRequest)
+  fullName: FoundationaLLM.Core.API.Controllers.SessionsController.RateMessage(string, string, string, FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)
+  fullName.vb: FoundationaLLM.Core.API.Controllers.SessionsController.RateMessage(String, String, String, FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)
+  nameWithType: SessionsController.RateMessage(string, string, string, MessageRatingRequest)
+  nameWithType.vb: SessionsController.RateMessage(String, String, String, MessageRatingRequest)
 - uid: FoundationaLLM.Core.API.Controllers.SessionsController.RateMessage*
   name: RateMessage
   href: api/dotnet/FoundationaLLM.Core.API.Controllers.SessionsController.html#FoundationaLLM_Core_API_Controllers_SessionsController_RateMessage_
@@ -30956,15 +31001,15 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Core.Interfaces.ICoreService.GetCoreConfiguration
   nameWithType: ICoreService.GetCoreConfiguration
-- uid: FoundationaLLM.Core.Interfaces.ICoreService.RateMessageAsync(System.String,System.String,System.String,System.Nullable{System.Boolean})
-  name: RateMessageAsync(string, string, string, bool?)
-  href: api/dotnet/FoundationaLLM.Core.Interfaces.ICoreService.html#FoundationaLLM_Core_Interfaces_ICoreService_RateMessageAsync_System_String_System_String_System_String_System_Nullable_System_Boolean__
-  commentId: M:FoundationaLLM.Core.Interfaces.ICoreService.RateMessageAsync(System.String,System.String,System.String,System.Nullable{System.Boolean})
-  name.vb: RateMessageAsync(String, String, String, Boolean?)
-  fullName: FoundationaLLM.Core.Interfaces.ICoreService.RateMessageAsync(string, string, string, bool?)
-  fullName.vb: FoundationaLLM.Core.Interfaces.ICoreService.RateMessageAsync(String, String, String, Boolean?)
-  nameWithType: ICoreService.RateMessageAsync(string, string, string, bool?)
-  nameWithType.vb: ICoreService.RateMessageAsync(String, String, String, Boolean?)
+- uid: FoundationaLLM.Core.Interfaces.ICoreService.RateMessageAsync(System.String,System.String,System.String,FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)
+  name: RateMessageAsync(string, string, string, MessageRatingRequest)
+  href: api/dotnet/FoundationaLLM.Core.Interfaces.ICoreService.html#FoundationaLLM_Core_Interfaces_ICoreService_RateMessageAsync_System_String_System_String_System_String_FoundationaLLM_Common_Models_Conversation_MessageRatingRequest_
+  commentId: M:FoundationaLLM.Core.Interfaces.ICoreService.RateMessageAsync(System.String,System.String,System.String,FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)
+  name.vb: RateMessageAsync(String, String, String, MessageRatingRequest)
+  fullName: FoundationaLLM.Core.Interfaces.ICoreService.RateMessageAsync(string, string, string, FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)
+  fullName.vb: FoundationaLLM.Core.Interfaces.ICoreService.RateMessageAsync(String, String, String, FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)
+  nameWithType: ICoreService.RateMessageAsync(string, string, string, MessageRatingRequest)
+  nameWithType.vb: ICoreService.RateMessageAsync(String, String, String, MessageRatingRequest)
 - uid: FoundationaLLM.Core.Interfaces.ICoreService.RateMessageAsync*
   name: RateMessageAsync
   href: api/dotnet/FoundationaLLM.Core.Interfaces.ICoreService.html#FoundationaLLM_Core_Interfaces_ICoreService_RateMessageAsync_
@@ -31657,15 +31702,15 @@ references:
   isSpec: "True"
   fullName: FoundationaLLM.Core.Services.CoreService.GetCoreConfiguration
   nameWithType: CoreService.GetCoreConfiguration
-- uid: FoundationaLLM.Core.Services.CoreService.RateMessageAsync(System.String,System.String,System.String,System.Nullable{System.Boolean})
-  name: RateMessageAsync(string, string, string, bool?)
-  href: api/dotnet/FoundationaLLM.Core.Services.CoreService.html#FoundationaLLM_Core_Services_CoreService_RateMessageAsync_System_String_System_String_System_String_System_Nullable_System_Boolean__
-  commentId: M:FoundationaLLM.Core.Services.CoreService.RateMessageAsync(System.String,System.String,System.String,System.Nullable{System.Boolean})
-  name.vb: RateMessageAsync(String, String, String, Boolean?)
-  fullName: FoundationaLLM.Core.Services.CoreService.RateMessageAsync(string, string, string, bool?)
-  fullName.vb: FoundationaLLM.Core.Services.CoreService.RateMessageAsync(String, String, String, Boolean?)
-  nameWithType: CoreService.RateMessageAsync(string, string, string, bool?)
-  nameWithType.vb: CoreService.RateMessageAsync(String, String, String, Boolean?)
+- uid: FoundationaLLM.Core.Services.CoreService.RateMessageAsync(System.String,System.String,System.String,FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)
+  name: RateMessageAsync(string, string, string, MessageRatingRequest)
+  href: api/dotnet/FoundationaLLM.Core.Services.CoreService.html#FoundationaLLM_Core_Services_CoreService_RateMessageAsync_System_String_System_String_System_String_FoundationaLLM_Common_Models_Conversation_MessageRatingRequest_
+  commentId: M:FoundationaLLM.Core.Services.CoreService.RateMessageAsync(System.String,System.String,System.String,FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)
+  name.vb: RateMessageAsync(String, String, String, MessageRatingRequest)
+  fullName: FoundationaLLM.Core.Services.CoreService.RateMessageAsync(string, string, string, FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)
+  fullName.vb: FoundationaLLM.Core.Services.CoreService.RateMessageAsync(String, String, String, FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)
+  nameWithType: CoreService.RateMessageAsync(string, string, string, MessageRatingRequest)
+  nameWithType.vb: CoreService.RateMessageAsync(String, String, String, MessageRatingRequest)
 - uid: FoundationaLLM.Core.Services.CoreService.RateMessageAsync*
   name: RateMessageAsync
   href: api/dotnet/FoundationaLLM.Core.Services.CoreService.html#FoundationaLLM_Core_Services_CoreService_RateMessageAsync_
