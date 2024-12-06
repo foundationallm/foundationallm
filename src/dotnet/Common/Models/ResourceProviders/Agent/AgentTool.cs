@@ -28,28 +28,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public required string PackageName { get; set; }
 
         /// <summary>
-        /// Gets or sets a dictionary of AI model objects.
+        /// Gets or sets a dictionary of resource objects.
         /// </summary>
         /// <remarks>
-        /// The key is a value that is well-known to the tool, and the value is the AI model object identifier.
+        /// The key is a value that is well-known to the tool, and the value is the object identifier.
         /// </remarks>
-        [JsonPropertyName("ai_model_objects")]
-        public Dictionary<string, ResourceObjectIdProperties> AIModelObjects { get; set; } = [];
-
-        /// <summary>
-        /// Gets of sets a dictionary of API endpoint configuration objects.
-        /// </summary>
-        /// <remarks>
-        /// The key is a value that is well-known to the tool, and the value is the API endpoint configuration object identifier.
-        /// </remarks>
-        [JsonPropertyName("api_endpoint_configuration_objects")]
-        public Dictionary<string, ResourceObjectIdProperties> APIEndpointConfigurationObjects { get; set; } = [];
-
-        /// <summary>
-        /// Gets or sets a dictionary of indexing profile objects.
-        /// </summary>
-        [JsonPropertyName("indexing_profile_objects")]
-        public Dictionary<string, ResourceObjectIdProperties> IndexingProfileObjects { get; set; } = [];
+        [JsonPropertyName("resource_object_ids")]
+        public Dictionary<string, ResourceObjectIdProperties> ResourceObjectIds { get; set; } = [];
 
         /// <summary>
         /// Gets or sets a dictionary of properties that are specific to the tool.
