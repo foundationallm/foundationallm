@@ -326,13 +326,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 toolNames.Add(tool.Name);
                 explodedObjects[tool.Name] = tool;
 
-                foreach (var aiModelObjectId in tool.AIModelObjectIds.Values)
+                foreach (var aiModelProperties in tool.AIModelObjects.Values)
                 {
                     var toolAIModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
-                        aiModelObjectId,
+                        aiModelProperties.ObjectId,
                         currentUserIdentity);
 
-                    explodedObjects[aiModelObjectId] = toolAIModel;
+                    explodedObjects[aiModelProperties.ObjectId] = toolAIModel;
 
                     var toolAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
                         toolAIModel.EndpointObjectId!,
@@ -341,22 +341,22 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     explodedObjects[toolAIModel.EndpointObjectId!] = toolAPIEndpointConfiguration;
                 }
 
-                foreach (var apiEndpointConfigurationObjectId in tool.APIEndpointConfigurationObjectIds.Values)
+                foreach (var apiEndpointConfiguration in tool.APIEndpointConfigurationObjects.Values)
                 {
                     var toolAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
-                        apiEndpointConfigurationObjectId,
+                        apiEndpointConfiguration.ObjectId,
                         currentUserIdentity);
 
-                    explodedObjects[apiEndpointConfigurationObjectId] = toolAPIEndpointConfiguration;
+                    explodedObjects[apiEndpointConfiguration.ObjectId] = toolAPIEndpointConfiguration;
                 }
 
-                foreach (var indexingProfileObjectId in tool.IndexingProfileObjectIds.Values)
+                foreach (var indexingProfileProperties in tool.IndexingProfileObjects.Values)
                 {
                     var indexingProfile = await vectorizationResourceProvider.GetResourceAsync<IndexingProfile>(
-                                               indexingProfileObjectId,
+                                               indexingProfileProperties.ObjectId,
                                                currentUserIdentity);
 
-                    explodedObjects[indexingProfileObjectId] = indexingProfile;
+                    explodedObjects[indexingProfileProperties.ObjectId] = indexingProfile;
 
                     // Provide the indexing profile API endpoint configuration.
                     if (indexingProfile.Settings == null)
