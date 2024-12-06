@@ -1582,16 +1582,16 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             if (upsertResult.ResourceExists)
                 return;
 
-            // Owner role assignment is not required when at least one policy is assigned to the resource path.
-            if (authorizationResult.PolicyDefinitionIds.Count > 0)
-                return;
-
             // Owner role assignment is not required on Authorization resources.
             if (Name == ResourceProviderNames.FoundationaLLM_Authorization)
                 return;
 
-            // Owner role assignment is not required on resources that are a subtype of the main resource type.
-            if (resourcePath.MainResourceType != null && resourcePath.ResourceType != null)
+            // Owner role assignment is not required when at least one policy is assigned to the resource path.
+            if (authorizationResult.PolicyDefinitionIds.Count > 0)
+                return;
+
+            // Owner role assignment is not required on subordinate resources.
+            if (resourcePath.HasSubordinateResourceId)
                 return;
 
             var roleAssignmentName = Guid.NewGuid().ToString();
