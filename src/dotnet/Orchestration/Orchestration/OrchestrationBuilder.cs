@@ -204,52 +204,56 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                       
             if (agentWorkflow is not null)
             {
-                foreach (var prompt in agentWorkflow.PromptObjectIds)
+                foreach (var resource in agentWorkflow.ResourceObjectIds)
                 {
-                    var retrievedPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
-                                           prompt.Value,
-                                           currentUserIdentity);
-                    explodedObjects.Add(retrievedPrompt.ObjectId!, retrievedPrompt);
-                }
-
-                foreach(var agentAIModel in agentWorkflow.ResourceObjectIds)
-                {
-                    var retrievedAIModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
-                                            agentAIModel.Value.ObjectId,
-                                            currentUserIdentity);
-                    var retrievedAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
-                                            retrievedAIModel.EndpointObjectId!,
-                                            currentUserIdentity);
-
-                    // Check if the AI model is the main model, if so check for overrides.
-                    if (agentAIModel.Key == "main_model")
+                    string resourceType = resource.Value.ObjectId.Split("/")[^2];
+                    switch (resourceType)
                     {
-                        mainAIModel = retrievedAIModel;
-                        mainAIModelAPIEndpointConfiguration = retrievedAPIEndpointConfiguration;
-                        // Agent Workflow AI Model overrides.
-                        if (agentAIModel.Value.Properties != null)
-                        {
-                            // Allowing the override only for the keys that are supported.
-                            foreach (var key in agentAIModel.Value.Properties.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
+                        case "aiModels":
+                            var retrievedAIModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
+                                            resource.Value.ObjectId,
+                                            currentUserIdentity);
+                            var retrievedAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                                                    retrievedAIModel.EndpointObjectId!,
+                                                    currentUserIdentity);
+
+                            // Check if the AI model is the main model, if so check for overrides.
+                            if (resource.Key == "main_model")
                             {
-                                retrievedAIModel.ModelParameters[key] = agentAIModel.Value.Properties[key];
-                            }
-                        }
+                                mainAIModel = retrievedAIModel;
+                                mainAIModelAPIEndpointConfiguration = retrievedAPIEndpointConfiguration;
+                                // Agent Workflow AI Model overrides.
+                                if (resource.Value.Properties != null)
+                                {
+                                    // Allowing the override only for the keys that are supported.
+                                    foreach (var key in resource.Value.Properties.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
+                                    {
+                                        retrievedAIModel.ModelParameters[key] = resource.Value.Properties[key];
+                                    }
+                                }
 
 
-                        // Request overrides for the main model.
-                        if (modelParameterOverrides != null)
-                        {
-                            // Allowing the override only for the keys that are supported.
-                            foreach (var key in modelParameterOverrides.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
-                            {
-                                retrievedAIModel.ModelParameters[key] = modelParameterOverrides[key];
+                                // Request overrides for the main model.
+                                if (modelParameterOverrides != null)
+                                {
+                                    // Allowing the override only for the keys that are supported.
+                                    foreach (var key in modelParameterOverrides.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
+                                    {
+                                        retrievedAIModel.ModelParameters[key] = modelParameterOverrides[key];
+                                    }
+                                }
                             }
-                        }
+
+                            explodedObjects.Add(retrievedAIModel.ObjectId!, retrievedAIModel);
+                            explodedObjects.Add(retrievedAIModel.EndpointObjectId!, retrievedAPIEndpointConfiguration);
+                            break;
+                        case "prompts":
+                            var retrievedPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
+                                           resource.Value.ObjectId,
+                                           currentUserIdentity);
+                            explodedObjects.Add(retrievedPrompt.ObjectId!, retrievedPrompt);
+                            break;
                     }
-                  
-                    explodedObjects.Add(retrievedAIModel.ObjectId!, retrievedAIModel);                    
-                    explodedObjects.Add(retrievedAIModel.EndpointObjectId!, retrievedAPIEndpointConfiguration);
                 }
 
                 if (agentWorkflow is AzureOpenAIAssistantsAgentWorkflow)

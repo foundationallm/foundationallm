@@ -28,12 +28,5 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
         /// </summary>
         [JsonPropertyName("resource_object_ids")]
         public Dictionary<string, ResourceObjectIdProperties> ResourceObjectIds { get; set; } = [];
-
-        /// <summary>
-        /// The collection of prompt resources available to the workflow.
-        /// The well-known key "main-prompt" is used to specify the prompt for the main workflow.
-        /// </summary>
-        [JsonPropertyName("prompt_object_ids")]
-        public Dictionary<string, string> PromptObjectIds { get; set; } = [];
     }
 }
