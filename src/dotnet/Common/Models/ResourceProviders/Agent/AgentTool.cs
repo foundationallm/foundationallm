@@ -28,28 +28,28 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public required string PackageName { get; set; }
 
         /// <summary>
-        /// Gets or sets a dictionary of AI model object identifiers.
+        /// Gets or sets a dictionary of AI model objects.
         /// </summary>
         /// <remarks>
         /// The key is a value that is well-known to the tool, and the value is the AI model object identifier.
         /// </remarks>
-        [JsonPropertyName("ai_model_object_ids")]
-        public Dictionary<string, ResourceObjectIdProperties> AIModelObjectIds { get; set; } = [];
+        [JsonPropertyName("ai_model_objects")]
+        public Dictionary<string, ResourceObjectIdProperties> AIModelObjects { get; set; } = [];
 
         /// <summary>
-        /// Gets of sets a dictionary of API endpoint configuration object identifiers.
+        /// Gets of sets a dictionary of API endpoint configuration objects.
         /// </summary>
         /// <remarks>
         /// The key is a value that is well-known to the tool, and the value is the API endpoint configuration object identifier.
         /// </remarks>
-        [JsonPropertyName("api_endpoint_configuration_object_ids")]
-        public Dictionary<string, ResourceObjectIdProperties> APIEndpointConfigurationObjectIds { get; set; } = [];
+        [JsonPropertyName("api_endpoint_configuration_objects")]
+        public Dictionary<string, ResourceObjectIdProperties> APIEndpointConfigurationObjects { get; set; } = [];
 
         /// <summary>
-        /// Gets or sets a dictionary of indexing profile object identifiers.
+        /// Gets or sets a dictionary of indexing profile objects.
         /// </summary>
-        [JsonPropertyName("indexing_profile_object_ids")]
-        public Dictionary<string, ResourceObjectIdProperties> IndexingProfileObjectIds { get; set; } = [];
+        [JsonPropertyName("indexing_profile_objects")]
+        public Dictionary<string, ResourceObjectIdProperties> IndexingProfileObjects { get; set; } = [];
 
         /// <summary>
         /// Gets or sets a dictionary of properties that are specific to the tool.
