@@ -7,7 +7,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
     /// </summary>
     public class ResourceObjectIdProperties
     {
-         /// <summary>
+        /// <summary>
         /// The unique identifier of the resource.
         /// </summary>
         [JsonPropertyName("object_id")]
