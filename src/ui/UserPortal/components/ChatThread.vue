@@ -3,7 +3,7 @@
 		<!-- Message list -->
 		<div
 			ref="messageContainer"
-			class="chat-thread__messages"
+			class="chat-thread__messages printable-section"
 			:class="messages.length === 0 && 'empty'"
 		>
 			<template v-if="isLoading">
