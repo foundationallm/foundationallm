@@ -67,6 +67,12 @@ export interface Message {
 	analysisResults: Array<AnalysisResult>;
 }
 
+export interface MessageRatingRequest
+{
+    rating: boolean | null;
+	comments: string | null;
+}
+
 export interface Session {
 	id: string;
 	type: string;
