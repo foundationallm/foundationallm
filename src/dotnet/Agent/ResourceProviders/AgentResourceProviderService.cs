@@ -444,7 +444,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
         private async Task<List<ResourceProviderGetResult<AgentAccessToken>>> LoadAgentAccessTokens(string agentName)
         {
-            var contextId = $"/instances/{_instanceSettings.Id}/providers/{_name}/{AgentResourceTypeNames.Agents}/{agentName}";
+            var contextId = GetContextIdFromAgentName(agentName);
 
             var secretKeys = await _authorizationServiceClient.GetSecretKeys(_instanceSettings.Id, contextId);
 
@@ -465,7 +465,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
         private async Task<ResourceProviderUpsertResult> UpdateAgentAccessToken(ResourcePath resourcePath, string serializedAgentAccessToken)
         {
-            var contextId = $"/instances/{_instanceSettings.Id}/providers/{_name}/{AgentResourceTypeNames.Agents}/{resourcePath.MainResourceId}";
+            var contextId = GetContextIdFromAgentName(resourcePath.MainResourceId!);
 
             var agentAccessToken = JsonSerializer.Deserialize<AgentAccessToken>(serializedAgentAccessToken)
                 ?? throw new ResourceProviderException("The object definition is invalid.",
@@ -481,20 +481,19 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 ExpirationDate = agentAccessToken.ExpirationDate!.Value
             });
 
-            var existingReference = await _resourceReferenceStore!.GetResourceReference(agentAccessToken.Name);
             agentAccessToken.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
 
             return new ResourceProviderUpsertResult
             {
                 ObjectId = agentAccessToken!.ObjectId,
-                ResourceExists = existingReference != null,
+                ResourceExists = string.IsNullOrWhiteSpace(secretKeyValue),
                 Resource = secretKeyValue
             };
         }
 
         private async Task DeleteAgentAccessToken(ResourcePath resourcePath)
         {
-            var contextId = $"/instances/{_instanceSettings.Id}/providers/{_name}/{AgentResourceTypeNames.Agents}/{resourcePath.MainResourceId}";
+            var contextId = GetContextIdFromAgentName(resourcePath.MainResourceId!);
 
             await _authorizationServiceClient.DeleteSecretKey(_instanceSettings.Id, contextId, secretKeyId: resourcePath.ResourceId!);
         }
@@ -502,7 +501,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
         private async Task<AgentAccessTokenValidationResult> ValidateAgentAccessToken(string agentName,
             AgentAccessTokenValidationRequest agentAccessTokenValidationRequest, UnifiedUserIdentity userIdentity)
         {
-            var contextId = $"/instances/{_instanceSettings.Id}/providers/{_name}/{AgentResourceTypeNames.Agents}/{agentName}";
+            var contextId = GetContextIdFromAgentName(agentName);
 
             var result = await _authorizationServiceClient.ValidateSecretKey(_instanceSettings.Id, contextId, agentAccessTokenValidationRequest.AccessToken);
 
@@ -597,6 +596,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     StatusCodes.Status404NotFound);
             }
         }
+
+        private string GetContextIdFromAgentName(string agentName) =>
+            $"_instances_{_instanceSettings.Id}_providers_{_name}_{AgentResourceTypeNames.Agents}~{agentName}";
 
         #endregion
     }

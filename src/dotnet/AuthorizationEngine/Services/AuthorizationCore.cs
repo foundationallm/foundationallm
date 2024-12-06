@@ -5,7 +5,6 @@ using FoundationaLLM.AuthorizationEngine.Models.Configuration;
 using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
@@ -799,7 +798,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
         {
             value = null;
 
-            var agentName = contextId.Split("/").Last();
+            var agentName = contextId.Split("~").Last();
 
             if (string.IsNullOrWhiteSpace(key))
             {

@@ -27,7 +27,7 @@
         {
             var idBytes = ApiKeyId.ToByteArray();
             var idString = Base58.Encode(idBytes);
-            var agentName = contextId.Split("/").Last();
+            var agentName = contextId.Split("~").Last();
             return $"keya.{agentName}.{idString}.{ClientSecret}.ayek";
         }
     }

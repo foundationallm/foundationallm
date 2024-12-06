@@ -225,7 +225,7 @@ namespace FoundationaLLM.Common.Clients
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<string>(responseContent);
+                    return JsonSerializer.Deserialize<string?>(responseContent);
                 }
 
                 _logger.LogError("The call to the Authorization API returned an error: {StatusCode} - {ReasonPhrase}.", response.StatusCode, response.ReasonPhrase);

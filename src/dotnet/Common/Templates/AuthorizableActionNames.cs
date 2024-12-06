@@ -61,21 +61,6 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// </summary>
         public const string FoundationaLLM_Agent_Workflows_Delete = "FoundationaLLM.Agent/workflows/delete";
 
-        /// <summary>
-        /// Read agent access tokens.
-        /// </summary>
-        public const string FoundationaLLM_Agent_AgentAccessTokens_Read = "FoundationaLLM.Agent/agentAccessTokens/read";
-
-        /// <summary>
-        /// Create or update agent access tokens.
-        /// </summary>
-        public const string FoundationaLLM_Agent_AgentAccessTokens_Write = "FoundationaLLM.Agent/agentAccessTokens/write";
-
-        /// <summary>
-        /// Delete agent access tokens.
-        /// </summary>
-        public const string FoundationaLLM_Agent_AgentAccessTokens_Delete = "FoundationaLLM.Agent/agentAccessTokens/delete";
-
         #endregion
 
         #region AzureOpenAI

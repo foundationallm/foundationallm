@@ -19,7 +19,7 @@ namespace FoundationaLLM.Authorization.API.Controllers
     {
         private readonly IAuthorizationCore _authorizationCore = authorizationCore;
 
-        [HttpGet("{*contextId}")]
+        [HttpGet("{contextId}")]
         public IActionResult GetSecretKeys(string instanceId, string contextId) =>
             new OkObjectResult(
                 _authorizationCore.GetSecretKeys(instanceId, contextId));
@@ -29,7 +29,7 @@ namespace FoundationaLLM.Authorization.API.Controllers
             new OkObjectResult(
                 await _authorizationCore.UpsertSecretKey(instanceId, secretKey));
 
-        [HttpDelete("{*contextId}")]
+        [HttpDelete("{contextId}")]
         public async Task<IActionResult> DeleteSecretKey(string instanceId, string contextId, string secretKeyId)
         {
             await _authorizationCore.DeleteSecretKey(instanceId, contextId, secretKeyId);
@@ -37,7 +37,7 @@ namespace FoundationaLLM.Authorization.API.Controllers
             return new OkResult();
         }
 
-        [HttpPost("{*contextId}")]
+        [HttpPost("{contextId}")]
         public async Task<IActionResult> ValidateSecretKey(string instanceId, string contextId, string secretKeyValue) =>
             new OkObjectResult(
                 await _authorizationCore.ValidateSecretKey(instanceId, contextId, secretKeyValue));

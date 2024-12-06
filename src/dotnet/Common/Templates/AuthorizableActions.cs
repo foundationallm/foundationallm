@@ -83,27 +83,6 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "Agent")
                 },
                 {
-                    AuthorizableActionNames.FoundationaLLM_Agent_AgentAccessTokens_Read,
-                    new AuthorizableAction(
-                        AuthorizableActionNames.FoundationaLLM_Agent_AgentAccessTokens_Read,
-                        "Read agent access tokens.",
-                        "Agent")
-                },
-                {
-                    AuthorizableActionNames.FoundationaLLM_Agent_AgentAccessTokens_Write,
-                    new AuthorizableAction(
-                        AuthorizableActionNames.FoundationaLLM_Agent_AgentAccessTokens_Write,
-                        "Create or update agent access tokens.",
-                        "Agent")
-                },
-                {
-                    AuthorizableActionNames.FoundationaLLM_Agent_AgentAccessTokens_Delete,
-                    new AuthorizableAction(
-                        AuthorizableActionNames.FoundationaLLM_Agent_AgentAccessTokens_Delete,
-                        "Delete agent access tokens.",
-                        "Agent")
-                },
-                {
                     AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Read,
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Read,
