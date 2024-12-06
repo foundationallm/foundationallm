@@ -30,9 +30,6 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// <summary>
         /// Gets or sets a dictionary of resource objects.
         /// </summary>
-        /// <remarks>
-        /// The key is a value that is well-known to the tool, and the value is the object identifier.
-        /// </remarks>
         [JsonPropertyName("resource_object_ids")]
         public Dictionary<string, ResourceObjectIdProperties> ResourceObjectIds { get; set; } = [];
 
