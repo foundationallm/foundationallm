@@ -18,23 +18,16 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
         public virtual string? Type { get; set; }
 
         /// <summary>
-        /// The workflow resource associated with the agent.
-        /// </summary>
-        [JsonPropertyName("workflow_object_id")]
-        public required string WorkflowObjectId { get; set; }
-
-        /// <summary>
         /// The name of the workflow resource associated with the agent.
         /// </summary>
         [JsonPropertyName("workflow_name")]
         public required string WorkflowName { get; set; }
 
         /// <summary>
-        /// The collection of AI models available to the workflow.
-        /// The well-known key "main-model" is used to specify the model for the main workflow.
+        /// Gets or sets a dictionary of resource objects.
         /// </summary>
-        [JsonPropertyName("agent_workflow_ai_models")]
-        public Dictionary<string, AgentWorkflowAIModel> AgentWorkflowAIModels { get; set; } = [];
+        [JsonPropertyName("resource_object_ids")]
+        public Dictionary<string, ResourceObjectIdProperties> ResourceObjectIds { get; set; } = [];
 
         /// <summary>
         /// The collection of prompt resources available to the workflow.
