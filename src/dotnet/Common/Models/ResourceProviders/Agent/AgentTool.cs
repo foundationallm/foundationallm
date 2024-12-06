@@ -34,7 +34,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// The key is a value that is well-known to the tool, and the value is the AI model object identifier.
         /// </remarks>
         [JsonPropertyName("ai_model_object_ids")]
-        public Dictionary<string, string> AIModelObjectIds { get; set; } = [];
+        public Dictionary<string, ResourceObjectIdProperties> AIModelObjectIds { get; set; } = [];
 
         /// <summary>
         /// Gets of sets a dictionary of API endpoint configuration object identifiers.
@@ -43,19 +43,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// The key is a value that is well-known to the tool, and the value is the API endpoint configuration object identifier.
         /// </remarks>
         [JsonPropertyName("api_endpoint_configuration_object_ids")]
-        public Dictionary<string, string> APIEndpointConfigurationObjectIds { get; set; } = [];
+        public Dictionary<string, ResourceObjectIdProperties> APIEndpointConfigurationObjectIds { get; set; } = [];
 
         /// <summary>
         /// Gets or sets a dictionary of indexing profile object identifiers.
         /// </summary>
         [JsonPropertyName("indexing_profile_object_ids")]
-        public Dictionary<string, string> IndexingProfileObjectIds { get; set; } = [];
-
-        /// <summary>
-        /// Gets or sets a dictionary of text embedding model names.
-        /// </summary>
-        [JsonPropertyName("text_embedding_model_names")]
-        public Dictionary<string, string> TextEmbeddingModelNames { get; set; } = [];
+        public Dictionary<string, ResourceObjectIdProperties> IndexingProfileObjectIds { get; set; } = [];
 
         /// <summary>
         /// Gets or sets a dictionary of properties that are specific to the tool.
