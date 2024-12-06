@@ -508,7 +508,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             if (result.Valid)
             {
                 // Set virtual identity
-                var agent = await GetResourceAsync<AgentBase>(contextId, userIdentity);
+                var agent = await GetResourceAsync<AgentBase>($"/instances/{_instanceSettings.Id}/providers/{_name}/{AgentResourceTypeNames.Agents}/{agentName}", userIdentity);
                 result.VirtualIdentity = new UnifiedUserIdentity()
                 {
                     UserId = Guid.NewGuid().ToString(),
