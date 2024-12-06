@@ -1,3 +1,4 @@
+using AngleSharp.Common;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.ResourceProviders;
@@ -210,42 +211,53 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     switch (resourceType)
                     {
                         case "aiModels":
-                            var retrievedAIModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
-                                            resource.Value.ObjectId,
-                                            currentUserIdentity);
-                            var retrievedAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
-                                                    retrievedAIModel.EndpointObjectId!,
-                                                    currentUserIdentity);
-
                             // Check if the AI model is the main model, if so check for overrides.
-                            if (resource.Key == "main_model")
+                            if (resource.Value.Properties.TryGetValue("main_model", out var mainModel))
                             {
-                                mainAIModel = retrievedAIModel;
-                                mainAIModelAPIEndpointConfiguration = retrievedAPIEndpointConfiguration;
-                                // Agent Workflow AI Model overrides.
-                                if (resource.Value.Properties != null)
+                                var aiModelObjectId = mainModel.ToDictionary().GetValueOrDefault("ai_model_object_id");
+                                if(aiModelObjectId != null)
                                 {
-                                    // Allowing the override only for the keys that are supported.
-                                    foreach (var key in resource.Value.Properties.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
-                                    {
-                                        retrievedAIModel.ModelParameters[key] = resource.Value.Properties[key];
-                                    }
-                                }
+                                    var retrievedAIModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
+                                            aiModelObjectId,
+                                            currentUserIdentity);
+                                    var retrievedAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                                                            retrievedAIModel.EndpointObjectId!,
+                                                            currentUserIdentity);
 
+                                    mainAIModel = retrievedAIModel;
+                                    mainAIModelAPIEndpointConfiguration = retrievedAPIEndpointConfiguration;
 
-                                // Request overrides for the main model.
-                                if (modelParameterOverrides != null)
-                                {
-                                    // Allowing the override only for the keys that are supported.
-                                    foreach (var key in modelParameterOverrides.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
+                                    // Agent Workflow AI Model overrides.
+                                    var modelParameters = resource.Value.Properties.GetValueOrDefault("model_parameters") as Dictionary<string, object>;
+                                    if (modelParameters != null)
                                     {
-                                        retrievedAIModel.ModelParameters[key] = modelParameterOverrides[key];
+                                        // Allowing the override only for the keys that are supported.
+                                        foreach (var key in modelParameters.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
+                                        {
+                                            retrievedAIModel.ModelParameters[key] = modelParameters[key];
+                                        }
                                     }
+                                    // Request overrides for the main model.
+                                    if (modelParameterOverrides != null)
+                                    {
+                                        // Allowing the override only for the keys that are supported.
+                                        foreach (var key in modelParameterOverrides.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
+                                        {
+                                            retrievedAIModel.ModelParameters[key] = modelParameterOverrides[key];
+                                        }
+                                    }
+
+                                    explodedObjects.Add(retrievedAIModel.ObjectId!, retrievedAIModel);
+                                    explodedObjects.Add(retrievedAIModel.EndpointObjectId!, retrievedAPIEndpointConfiguration);
                                 }
                             }
 
-                            explodedObjects.Add(retrievedAIModel.ObjectId!, retrievedAIModel);
-                            explodedObjects.Add(retrievedAIModel.EndpointObjectId!, retrievedAPIEndpointConfiguration);
+                            if (agentWorkflow is AzureOpenAIAssistantsAgentWorkflow)
+                            {
+                                explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantsAssistantId] =
+                                    ((AzureOpenAIAssistantsAgentWorkflow)agentWorkflow).AssistantId
+                                    ?? throw new OrchestrationException("The OpenAI Assistants assistant identifier was not found in the agent workflow.");
+                            }
                             break;
                         case "prompts":
                             var retrievedPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
