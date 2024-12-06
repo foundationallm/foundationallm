@@ -326,50 +326,59 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 toolNames.Add(tool.Name);
                 explodedObjects[tool.Name] = tool;
 
-                foreach (var aiModelProperties in tool.AIModelObjects.Values)
+                foreach (var resource in tool.ResourceObjectIds.Values)
                 {
-                    var toolAIModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
-                        aiModelProperties.ObjectId,
-                        currentUserIdentity);
+                    string resourceType = resource.ObjectId.Split("/")[^2];
+                    switch (resourceType)
+                    {
+                        case "aiModels":
+                            var aiModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
+                                resource.ObjectId,
+                                currentUserIdentity);
 
-                    explodedObjects[aiModelProperties.ObjectId] = toolAIModel;
+                            explodedObjects[resource.ObjectId] = aiModel;
 
-                    var toolAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
-                        toolAIModel.EndpointObjectId!,
-                        currentUserIdentity);
+                            if (!string.IsNullOrEmpty(aiModel.EndpointObjectId))
+                            {
+                                var aiModelEndpoint = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                                    aiModel.EndpointObjectId!,
+                                    currentUserIdentity);
 
-                    explodedObjects[toolAIModel.EndpointObjectId!] = toolAPIEndpointConfiguration;
-                }
+                                explodedObjects[aiModel.EndpointObjectId!] = aiModelEndpoint;
+                            }
+                            break;
 
-                foreach (var apiEndpointConfiguration in tool.APIEndpointConfigurationObjects.Values)
-                {
-                    var toolAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
-                        apiEndpointConfiguration.ObjectId,
-                        currentUserIdentity);
+                        case "apiEndpointConfigurations":
+                            var apiEndpoint = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                                resource.ObjectId,
+                                currentUserIdentity);
 
-                    explodedObjects[apiEndpointConfiguration.ObjectId] = toolAPIEndpointConfiguration;
-                }
+                            explodedObjects[resource.ObjectId] = apiEndpoint;
+                            break;
 
-                foreach (var indexingProfileProperties in tool.IndexingProfileObjects.Values)
-                {
-                    var indexingProfile = await vectorizationResourceProvider.GetResourceAsync<IndexingProfile>(
-                                               indexingProfileProperties.ObjectId,
-                                               currentUserIdentity);
+                        case "indexingProfiles":
+                            var indexingProfile = await vectorizationResourceProvider.GetResourceAsync<IndexingProfile>(
+                                resource.ObjectId,
+                                currentUserIdentity);
 
-                    explodedObjects[indexingProfileProperties.ObjectId] = indexingProfile;
+                            explodedObjects[resource.ObjectId] = indexingProfile;
 
-                    // Provide the indexing profile API endpoint configuration.
-                    if (indexingProfile.Settings == null)
-                        throw new OrchestrationException($"Tool: {tool.Name}: The settings for the indexing profile {indexingProfile.Name} were not found. Must include \"{VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId}\" setting.");
+                            if (indexingProfile.Settings == null)
+                                throw new OrchestrationException($"Tool: {tool.Name}: Settings for indexing profile {indexingProfile.Name} not found.");
 
-                    if (indexingProfile.Settings.TryGetValue(VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, out var apiEndpointConfigurationObjectId) == false)
-                        throw new OrchestrationException($"Tool: {tool.Name}: The API endpoint configuration object ID was not found in the settings of the indexing profile.");
+                            if (!indexingProfile.Settings.TryGetValue(VectorizationSettingsNames.IndexingProfileApiEndpointConfigurationObjectId, out var apiEndpointConfigurationObjectId))
+                                throw new OrchestrationException($"Tool: {tool.Name}: API endpoint configuration ID not found in indexing profile settings.");
 
-                    var indexingProfileAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
-                        apiEndpointConfigurationObjectId,
-                        currentUserIdentity);
+                            var indexingProfileApiEndpoint = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                                apiEndpointConfigurationObjectId.ToString()!,
+                                currentUserIdentity);
 
-                    explodedObjects[apiEndpointConfigurationObjectId] = indexingProfileAPIEndpointConfiguration;
+                            explodedObjects[apiEndpointConfigurationObjectId.ToString()!] = indexingProfileApiEndpoint;
+                            break;
+
+                        default:
+                            throw new OrchestrationException($"Unknown resource type '{resourceType}'.");
+                    }
                 }
             }
 
