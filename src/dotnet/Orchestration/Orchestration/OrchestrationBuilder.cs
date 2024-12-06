@@ -212,10 +212,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     explodedObjects.Add(retrievedPrompt.ObjectId!, retrievedPrompt);
                 }
 
-                foreach(var agentAIModel in agentWorkflow.AgentWorkflowAIModels)
+                foreach(var agentAIModel in agentWorkflow.ResourceObjectIds)
                 {
                     var retrievedAIModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
-                                            agentAIModel.Value.AIModelObjectId,
+                                            agentAIModel.Value.ObjectId,
                                             currentUserIdentity);
                     var retrievedAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
                                             retrievedAIModel.EndpointObjectId!,
@@ -227,12 +227,12 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         mainAIModel = retrievedAIModel;
                         mainAIModelAPIEndpointConfiguration = retrievedAPIEndpointConfiguration;
                         // Agent Workflow AI Model overrides.
-                        if (agentAIModel.Value.ModelParameters != null)
+                        if (agentAIModel.Value.Properties != null)
                         {
                             // Allowing the override only for the keys that are supported.
-                            foreach (var key in agentAIModel.Value.ModelParameters.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
+                            foreach (var key in agentAIModel.Value.Properties.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
                             {
-                                retrievedAIModel.ModelParameters[key] = agentAIModel.Value.ModelParameters[key];
+                                retrievedAIModel.ModelParameters[key] = agentAIModel.Value.Properties[key];
                             }
                         }
 
@@ -478,7 +478,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     if (!resourceProviderServices.TryGetValue(ResourceProviderNames.FoundationaLLM_AzureOpenAI, out var azureOpenAIResourceProvider))
                         throw new OrchestrationException($"The resource provider {ResourceProviderNames.FoundationaLLM_AzureOpenAI} was not loaded.");
 
-                    var mainAIModelObjectId = agent.Workflow.AgentWorkflowAIModels["main_model"].AIModelObjectId;                    
+                    var mainAIModelObjectId = agent.Workflow.ResourceObjectIds["main_model"].ObjectId;                    
                     var aiModel = explodedObjects[mainAIModelObjectId] as AIModelBase;
                     var apiEndpointConfiguration = explodedObjects[aiModel!.EndpointObjectId!] as APIEndpointConfiguration;
                     var openAIAssistantsAssistantId = explodedObjects[CompletionRequestObjectsKeys.OpenAIAssistantsAssistantId] as string;
