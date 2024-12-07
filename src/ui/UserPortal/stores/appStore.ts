@@ -81,6 +81,23 @@ export const useAppStore = defineStore('app', {
 				return;
 			}
 
+			if (!appConfigStore.showLastConversionOnStartup) {
+				this.sessions.unshift({
+					...this.getDefaultChatSessionProperties(),
+					id: 'new',
+					is_temp: true,
+					display_name: 'New Chat',
+				});
+
+				this.changeSession(this.sessions[0]);
+
+				this.sessions.push(...(await api.getSessions()));
+
+				await this.getUserProfiles();
+
+				return;
+			}
+
 			await this.getSessions();
 
 			// If there is an existing session matching the one requested in the url, select it
@@ -90,10 +107,7 @@ export const useAppStore = defineStore('app', {
 
 			if (requestedSession) {
 				this.changeSession(requestedSession);
-			} else if (useAppConfigStore().showLastConversionOnStartup && this.sessions.length > 0) {
-				this.changeSession(this.sessions[0]);
-			} else {
-				await this.addSession(this.getDefaultChatSessionProperties());
+			} else if (appConfigStore.showLastConversionOnStartup && this.sessions.length > 0) {
 				this.changeSession(this.sessions[0]);
 			}
 
@@ -241,11 +255,12 @@ export const useAppStore = defineStore('app', {
 		},
 
 		async getMessages() {
-			if (this.newSession && this.newSession.id === this.currentSession!.id) {
+			if ((this.newSession && this.newSession.id === this.currentSession!.id) || this.currentSession.is_temp) {
 				// This is a new session, no need to fetch messages.
 				this.currentMessages = [];
 				return;
 			}
+
 			const messagesResponse = await api.getMessages(this.currentSession.id);
 
 			// Temporarily filter out the duplicate streaming message instances
@@ -388,6 +403,11 @@ export const useAppStore = defineStore('app', {
 			};
 			this.currentMessages.push(tempAssistantMessage);
 
+			if (this.currentSession.is_temp) {
+				const newSession = await this.addSession(this.getDefaultChatSessionProperties());
+				this.changeSession(newSession);
+			}
+
 			const initialSession = this.currentSession.id;
 			const message = await api.sendMessage(
 				this.currentSession!.id,
@@ -510,7 +530,7 @@ export const useAppStore = defineStore('app', {
 			const nuxtApp = useNuxtApp();
 			const appConfigStore = useAppConfigStore();
 
-			if (appConfigStore.isKioskMode) {
+			if (appConfigStore.isKioskMode || newSession.is_temp) {
 				nuxtApp.$router.push({ query: {} });
 			} else {
 				const query = { chat: newSession.id };

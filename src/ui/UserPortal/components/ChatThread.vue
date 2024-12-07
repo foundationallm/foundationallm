@@ -108,7 +108,7 @@ export default {
 
 	watch: {
 		async currentSession(newSession: Session, oldSession: Session) {
-			if (newSession.id === oldSession?.id) return;
+			if (newSession.id === oldSession?.id || oldSession?.is_temp) return;
 			this.isMessagePending = false;
 			this.isLoading = true;
 			this.userSentMessage = false;
@@ -135,6 +135,14 @@ export default {
 				this.isMessagePending = false;
 			}
 		},
+	},
+
+	created() {
+		if (!this.$appConfigStore.showLastConversionOnStartup && this.currentSession?.is_temp) {
+			this.isLoading = false;
+			const sessionAgent = this.$appStore.getSessionAgent(this.currentSession);
+			this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
+		}
 	},
 
 	methods: {
