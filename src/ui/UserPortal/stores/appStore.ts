@@ -81,7 +81,8 @@ export const useAppStore = defineStore('app', {
 				return;
 			}
 
-			if (!appConfigStore.showLastConversionOnStartup) {
+			const sessionIdQuery = useNuxtApp().$router.currentRoute.value.query.chat;
+			if (!appConfigStore.showLastConversionOnStartup && !appConfigStore) {
 				this.sessions.unshift({
 					...this.getDefaultChatSessionProperties(),
 					id: 'new',
