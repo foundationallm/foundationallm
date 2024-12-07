@@ -1,16 +1,14 @@
-﻿using FoundationaLLM.Common.Constants.Instance;
+﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.Instance;
+using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Configuration.Instance;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using Asp.Versioning;
-using FoundationaLLM.Common.Constants.ResourceProviders;
-using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
-using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 
 namespace FoundationaLLM.Common.Middleware
 {
@@ -115,14 +113,17 @@ namespace FoundationaLLM.Common.Middleware
                         var agentAccessTokenValue = agentAccessToken.ToString();
                         // The agent access token is used to handle requests to authenticate FoundationaLLM agents.
 
-                        var valid = await ValidateAgentAccessToken(agentAccessTokenValue, callContext, instanceSettings, resourceProviderServices);
+                        var validationResult = await ValidateAgentAccessToken(agentAccessTokenValue, callContext, instanceSettings, resourceProviderServices);
 
-                        if (!valid)
+                        if (!validationResult.Valid)
                         {
                             context.Response.StatusCode = StatusCodes.Status403Forbidden;
                             await context.Response.WriteAsync("Access denied. Invalid agent access token.");
                             return; // Short-circuit the request pipeline.
                         }
+
+                        // Assign the virtual identity to the call context:
+                        callContext.CurrentUserIdentity = validationResult.VirtualIdentity;
                     }
                 }
             }
@@ -142,12 +143,15 @@ namespace FoundationaLLM.Common.Middleware
             await _next(context);
         }
 
-        private async Task<bool> ValidateAgentAccessToken(string agentAccessToken, ICallContext callContext,
+        private async Task<AgentAccessTokenValidationResult> ValidateAgentAccessToken(string agentAccessToken, ICallContext callContext,
             IOptions<InstanceSettings> instanceSettings,
             IEnumerable<IResourceProviderService> resourceProviderServices)
         {
-            bool valid = false;
-
+            var result = new AgentAccessTokenValidationResult
+            {
+                Valid = false,
+                VirtualIdentity = null
+            };
             var providerServices = resourceProviderServices.ToList();
             if (providerServices.Any(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Agent))
             {
@@ -166,19 +170,21 @@ namespace FoundationaLLM.Common.Middleware
                     agentName = parts[1]; // The agent name exists between the first two periods.
                 }
 
-                if (!string.IsNullOrWhiteSpace(agentName))
+                if (string.IsNullOrWhiteSpace(agentName))
                 {
-                    var serializedResult = await agentResourceProvider.HandlePostAsync(
-                        $"instances/{instanceSettings.Value.Id}/providers/{ResourceProviderNames.FoundationaLLM_Agent}/{AgentResourceTypeNames.Agents}/{agentName}/{AgentResourceTypeNames.AgentAccessTokens}/{ResourceProviderActions.Validate}",
-                        JsonSerializer.Serialize(request),
-                        null,
-                        callContext.CurrentUserIdentity);
-
-                    var result = serializedResult as AgentAccessTokenValidationResult;
+                    return result;
                 }
+
+                var serializedResult = await agentResourceProvider.HandlePostAsync(
+                    $"instances/{instanceSettings.Value.Id}/providers/{ResourceProviderNames.FoundationaLLM_Agent}/{AgentResourceTypeNames.Agents}/{agentName}/{AgentResourceTypeNames.AgentAccessTokens}/{ResourceProviderActions.Validate}",
+                    JsonSerializer.Serialize(request),
+                    null,
+                    DefaultAuthentication.ServiceIdentity);
+
+                return serializedResult as AgentAccessTokenValidationResult ?? result;
             }
 
-            return valid;
+            return result;
         }
     }
 
