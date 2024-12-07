@@ -317,6 +317,7 @@ export const useAppStore = defineStore('app', {
 			const lastAssistantMessage = this.currentMessages
 				.filter((message) => message.sender === 'Agent')
 				.pop();
+
 			if (lastAssistantMessage) {
 				const agent = this.agents.find(
 					(agent) => agent.resource.name === lastAssistantMessage.senderDisplayName,
