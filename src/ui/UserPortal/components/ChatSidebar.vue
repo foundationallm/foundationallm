@@ -307,7 +307,7 @@ export default {
 		}
 
 		// Listen for the agent change event.
-        eventBus.on('agentChanged', this.handleAddSession);
+		eventBus.on('agentChanged', this.handleAddSession);
 	},
 
 	methods: {
