@@ -628,62 +628,61 @@ namespace FoundationaLLM.AuthorizationEngine.Services
         {
             if (_secretKeyStores.TryGetValue(instanceId, out var secretKeyStore))
             {
+                // Fill information into persisted key
+                var persistedSecretKey = new PersistedSecretKey()
+                {
+                    Id = secretKey.Id,
+                    InstanceId = instanceId,
+                    ContextId = secretKey.ContextId,
+                    Description = secretKey.Description,
+                    ExpirationDate = secretKey.ExpirationDate,
+                    Active = secretKey.Active
+                };
+
                 if (secretKeyStore.SecretKeys.TryGetValue(secretKey.ContextId, out var persistedSecretKeys))
                 {
                     var existingKey = persistedSecretKeys.Where(x => x.Id == secretKey.Id).SingleOrDefault();
 
-                    // Fill information into persisted key
-                    var persistedSecretKey = new PersistedSecretKey()
-                    {
-                        Id = secretKey.Id,
-                        InstanceId = instanceId,
-                        ContextId = secretKey.ContextId,
-                        Description = secretKey.Description,
-                        ExpirationDate = secretKey.ExpirationDate,
-                        Active = secretKey.Active
-                    };
-
                     if (existingKey != null)
                     {
                         await PersistSecretKey(persistedSecretKey);
-                    }
-                    else
-                    {
-                        var keyId = new Guid(secretKey.Id);
-                        var rand = RandomNumberGenerator.Create();
-
-                        var secretBytes = new byte[128];
-                        rand.GetBytes(secretBytes);
-                        var secret = Base58.Encode(secretBytes);
-
-                        var saltBytes = new byte[16];
-                        rand.GetBytes(saltBytes);
-                        var salt = Base58.Encode(saltBytes);
-
-                        var argon2 = new Argon2id(secretBytes)
-                        {
-                            DegreeOfParallelism = 16,
-                            MemorySize = 8192,
-                            Iterations = 40,
-                            Salt = saltBytes
-                        };
-
-                        var hashBytes = argon2.GetBytes(128);
-                        var hash = Base58.Encode(hashBytes);
-
-                        // Construct client key
-                        var clientKey = new ClientSecretKey() { ApiKeyId = keyId, ClientSecret = secret };
-
-                        // Save this API key salt and hash the key vault
-                        await _azureKeyVaultService.SetSecretValueAsync(persistedSecretKey.SaltKeyVaultSecretName, salt);
-                        await _azureKeyVaultService.SetSecretValueAsync(persistedSecretKey.HashKeyVaultSecretName, hash);
-
-                        await PersistSecretKey(persistedSecretKey);
-
-                        // Return the client's key to them
-                        return clientKey.ToApiKeyString(secretKey.ContextId);
+                        return null;
                     }
                 }
+
+                var keyId = new Guid(secretKey.Id);
+                var rand = RandomNumberGenerator.Create();
+
+                var secretBytes = new byte[128];
+                rand.GetBytes(secretBytes);
+                var secret = Base58.Encode(secretBytes);
+
+                var saltBytes = new byte[16];
+                rand.GetBytes(saltBytes);
+                var salt = Base58.Encode(saltBytes);
+
+                var argon2 = new Argon2id(secretBytes)
+                {
+                    DegreeOfParallelism = 16,
+                    MemorySize = 8192,
+                    Iterations = 40,
+                    Salt = saltBytes
+                };
+
+                var hashBytes = argon2.GetBytes(128);
+                var hash = Base58.Encode(hashBytes);
+
+                // Construct client key
+                var clientKey = new ClientSecretKey() { ApiKeyId = keyId, ClientSecret = secret };
+
+                // Save this API key salt and hash the key vault
+                await _azureKeyVaultService.SetSecretValueAsync(persistedSecretKey.SaltKeyVaultSecretName, salt);
+                await _azureKeyVaultService.SetSecretValueAsync(persistedSecretKey.HashKeyVaultSecretName, hash);
+
+                await PersistSecretKey(persistedSecretKey);
+
+                // Return the client's key to them
+                return clientKey.ToApiKeyString(secretKey.ContextId);
             }
 
             return null;
