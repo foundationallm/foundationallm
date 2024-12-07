@@ -108,7 +108,8 @@ export default {
 
 	watch: {
 		async currentSession(newSession: Session, oldSession: Session) {
-			if (newSession.id === oldSession?.id || oldSession?.is_temp) return;
+			const isReplacementForTempSession = oldSession?.is_temp && this.messages.length > 0;
+			if (newSession.id === oldSession?.id || isReplacementForTempSession) return;
 			this.isMessagePending = false;
 			this.isLoading = true;
 			this.userSentMessage = false;
