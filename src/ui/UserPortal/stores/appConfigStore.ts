@@ -85,6 +85,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				agentIconUrl,
 				allowedUploadFileExtensions,
 				showMessageRating,
+				showLastConversionOnStartup,
 				authClientId,
 				authInstance,
 				authTenantId,
@@ -124,6 +125,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 					'FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions',
 				),
 				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowMessageRating', 'false'),
+				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup', 'true'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:ClientId'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:Instance'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:TenantId'),
@@ -159,6 +161,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.allowedUploadFileExtensions = allowedUploadFileExtensions;
 
 			this.showMessageRating = this.showMessageRating = JSON.parse(showMessageRating.toLowerCase());;
+			this.showLastConversionOnStartup = JSON.parse(showLastConversionOnStartup.toLowerCase());
 
 			this.auth.clientId = authClientId;
 			this.auth.instance = authInstance;
