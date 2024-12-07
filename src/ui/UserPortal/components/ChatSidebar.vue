@@ -289,7 +289,7 @@ export default {
 
 	computed: {
 		sessions() {
-			return this.$appStore.sessions;
+			return this.$appStore.sessions.filter((session) => !session.is_temp);
 		},
 
 		currentSession() {
