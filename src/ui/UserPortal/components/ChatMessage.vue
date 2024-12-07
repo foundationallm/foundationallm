@@ -109,34 +109,21 @@
 						</span>
 					</div>
 
-					<!-- Rating -->
-					<span class="ratings">
-						<!-- Like -->
-						<span>
+					<template v-if="$appConfigStore.showMessageRating">
+						<!-- Rating -->
+						<span class="ratings">
+							<!-- Rate message button -->
 							<Button
 								class="message__button"
 								:disabled="message.type === 'LoadingMessage'"
 								size="small"
 								text
-								:icon="message.rating ? 'pi pi-thumbs-up-fill' : 'pi pi-thumbs-up'"
-								:label="message.rating ? 'Message Liked!' : 'Like'"
-								@click.stop="handleRate(message, true)"
+								:icon="message.rating === true ? 'pi pi-thumbs-up-fill' : message.rating === false ? 'pi pi-thumbs-down-fill' : 'pi pi-thumbs-up'"
+								label="Rate Message"
+								@click.stop="isRatingModalVisible = true"
 							/>
 						</span>
-
-						<!-- Dislike -->
-						<span>
-							<Button
-								class="message__button"
-								:disabled="message.type === 'LoadingMessage'"
-								size="small"
-								text
-								:icon="message.rating === false ? 'pi pi-thumbs-down-fill' : 'pi pi-thumbs-down'"
-								:label="message.rating === false ? 'Message Disliked.' : 'Dislike'"
-								@click.stop="handleRate(message, false)"
-							/>
-						</span>
-					</span>
+					</template>
 
 					<!-- Avg MS Per Word: {{ averageTimePerWordMS }} -->
 					<div v-if="messageDisplayStatus" class="loading-shimmer" style="font-weight: 600">
@@ -209,7 +196,7 @@
 
 		<!-- Content Artifact Modal -->
 		<Dialog
-			:visible="selectedContentArtifact !== null"
+			v-model:visible="selectedContentArtifact"
 			:header="selectedContentArtifact?.title"
 			modal
 		>
@@ -227,6 +214,66 @@
 					class="prompt-dialog__button"
 					label="Close"
 					@click="selectedContentArtifact = null"
+				/>
+			</template>
+		</Dialog>
+
+		<!-- Message Rating Modal -->
+		<Dialog
+			v-model:visible="isRatingModalVisible"
+			header="Rate Message"
+			modal
+		>
+			<label for="rating-textarea">Comments</label>
+			<Textarea
+				id="rating-textarea"
+				v-model="message.ratingComments"
+				:style="{ width: '100%' }"
+				rows="5"
+				type="text"
+				placeholder="Add comments here..."
+				aria-label="Add comments here..."
+				autoResize
+				autofocus
+			></Textarea>
+
+			<!-- Like -->
+			<span>
+				<Button
+					class="message__button"
+					:disabled="message.type === 'LoadingMessage'"
+					size="small"
+					text
+					:icon="message.rating ? 'pi pi-thumbs-up-fill' : 'pi pi-thumbs-up'"
+					:label="message.rating ? 'Message Liked' : 'Like'"
+					@click="message.rating === true ? message.rating = null : message.rating = true"
+				/>
+			</span>
+
+			<!-- Dislike -->
+			<span>
+				<Button
+					class="message__button"
+					:disabled="message.type === 'LoadingMessage'"
+					size="small"
+					text
+					:icon="message.rating === false ? 'pi pi-thumbs-down-fill' : 'pi pi-thumbs-down'"
+					:label="message.rating === false ? 'Message Disliked' : 'Dislike'"
+					@click="message.rating === false ? message.rating = null : message.rating = false"
+				/>
+			</span>
+
+			<template #footer>
+				<Button class="message__button" label="Cancel" text @click="closeRatingModal" />
+				<Button
+					:style="{
+						backgroundColor: $appConfigStore.primaryButtonBg,
+						borderColor: $appConfigStore.primaryButtonBg,
+						color: $appConfigStore.primaryButtonText,
+					}"
+					class="prompt-dialog__button"
+					label="Submit"
+					@click="handleRatingSubmit(message)"
 				/>
 			</template>
 		</Dialog>
@@ -324,6 +371,7 @@ export default {
 			viewPrompt: false,
 			currentWordIndex: 0,
 			isAnalysisModalVisible: false,
+			isRatingModalVisible: false,
 			selectedContentArtifact: null,
 			isMobile: window.screen.width < 950,
 			markedRenderer: null,
@@ -669,6 +717,20 @@ export default {
 
 		handleRate(message: Message, isLiked: boolean) {
 			this.$emit('rate', { message, isLiked: message.rating === isLiked ? null : isLiked });
+		},
+
+		handleRatingSubmit(message: Message) {
+			this.$emit('rate', { message });
+			this.isRatingModalVisible = false;
+			this.$toast.add({
+				severity: 'success',
+				detail: 'Rating submitted!',
+				life: this.$appStore.autoHideToasts ? 5000 : null,
+			});
+		},
+
+		closeRatingModal() {
+			this.isRatingModalVisible = false;
 		},
 
 		async handleViewPrompt() {
