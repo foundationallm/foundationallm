@@ -83,12 +83,18 @@ export const useAppStore = defineStore('app', {
 
 			await this.getSessions();
 
-			if (this.sessions.length === 0) {
-				await this.addSession(this.getDefaultChatSessionProperties());
+			// If there is an existing session matching the one requested in the url, select it
+			// otherwise, if showLastConversionOnStartup is true there is a session available to show, select it
+			// otherwise, create a new session
+			const requestedSession = this.sessions.find((session: Session) => session.id === sessionId);
+
+			if (requestedSession) {
+				this.changeSession(requestedSession);
+			} else if (authStore.showLastConversionOnStartup && this.sessions.length > 0) {
 				this.changeSession(this.sessions[0]);
 			} else {
-				const existingSession = this.sessions.find((session: Session) => session.id === sessionId);
-				this.changeSession(existingSession || this.sessions[0]);
+				await this.addSession(this.getDefaultChatSessionProperties());
+				this.changeSession(this.sessions[0]);
 			}
 
 			await this.getUserProfiles();
