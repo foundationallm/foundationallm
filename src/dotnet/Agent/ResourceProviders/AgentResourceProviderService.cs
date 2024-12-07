@@ -509,9 +509,12 @@ namespace FoundationaLLM.Agent.ResourceProviders
             {
                 // Set virtual identity
                 var agent = await GetResourceAsync<AgentBase>($"/instances/{_instanceSettings.Id}/providers/{_name}/{AgentResourceTypeNames.Agents}/{agentName}", userIdentity);
+                var upn =
+                    $"aat_{agentName}_{GetTokenIdFromAgentAccessToken(agentAccessTokenValidationRequest.AccessToken)}@foundationallm.internal_";
                 result.VirtualIdentity = new UnifiedUserIdentity()
                 {
                     UserId = Guid.NewGuid().ToString(),
+                    UPN = upn,
                     GroupIds = [agent.VirtualSecurityGroupId],
                 };
             }
@@ -599,6 +602,19 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
         private string GetContextIdFromAgentName(string agentName) =>
             $"_instances_{_instanceSettings.Id}_providers_{_name}_{AgentResourceTypeNames.Agents}~{agentName}";
+
+        private string GetTokenIdFromAgentAccessToken(string agentAccessToken)
+        {
+            var tokenId = "";
+            var parts = agentAccessToken.Split('.');
+
+            if (parts.Length > 3)
+            {
+                tokenId = parts[2]; // The token ID exists between the second and third periods.
+            }
+
+            return tokenId;
+        }
 
         #endregion
     }
