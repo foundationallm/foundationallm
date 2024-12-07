@@ -58,6 +58,7 @@ export interface Message {
 	tokens: number;
 	text: string;
 	rating: boolean | null;
+	ratingComments: string | null;
 	vector: Array<Number>;
 	completionPromptId: string | null;
 	contentArtifacts: Array<ContentArtifact>;

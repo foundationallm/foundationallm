@@ -33,6 +33,8 @@ export const useAppConfigStore = defineStore('appConfig', {
 		agentIconUrl: null,
 		allowedUploadFileExtensions: null,
 
+		showMessageRating: null,
+
 		// Auth: These settings configure the MSAL authentication.
 		auth: {
 			clientId: null,
@@ -82,6 +84,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				instanceId,
 				agentIconUrl,
 				allowedUploadFileExtensions,
+				showMessageRating,
 				showLastConversionOnStartup,
 				authClientId,
 				authInstance,
@@ -121,6 +124,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				getConfigValueSafe(
 					'FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions',
 				),
+				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowMessageRating', 'false'),
 				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup', 'true'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:ClientId'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:Instance'),
@@ -155,6 +159,8 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.instanceId = instanceId;
 			this.agentIconUrl = agentIconUrl;
 			this.allowedUploadFileExtensions = allowedUploadFileExtensions;
+
+			this.showMessageRating = this.showMessageRating = JSON.parse(showMessageRating.toLowerCase());;
 			this.showLastConversionOnStartup = JSON.parse(showLastConversionOnStartup.toLowerCase());
 
 			this.auth.clientId = authClientId;

@@ -509,19 +509,22 @@ export const useAppStore = defineStore('app', {
 		// 	}
 		// },
 
-		async rateMessage(messageToRate: Message, isLiked: Message['rating']) {
+		async rateMessage(messageToRate: Message) {
 			const existingMessage = this.currentMessages.find(
 				(message) => message.id === messageToRate.id,
 			);
 
 			// Preemptively rate the message for responsiveness, and revert the rating if the request fails.
 			const previousRating = existingMessage.rating;
-			existingMessage.rating = isLiked;
+			const previousRatingComments = existingMessage.ratingComments;
+			existingMessage.rating = messageToRate.rating;
+			existingMessage.ratingComments = messageToRate.ratingComments;
 
 			try {
-				await api.rateMessage(messageToRate, isLiked);
+				await api.rateMessage(messageToRate);
 			} catch (error) {
 				existingMessage.rating = previousRating;
+				existingMessage.ratingComments = previousRatingComments;
 			}
 		},
 
