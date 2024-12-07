@@ -250,12 +250,12 @@ export default {
 	 * @param rating - The rating value for the message.
 	 * @returns The rated message.
 	 */
-	async rateMessage(message: Message, rating: Message['rating']) {
+	async rateMessage(message: Message) {
 		// Create a new instance of the MessageRatingRequest object
 		// and set the rating and comments properties
 		const messageRatingRequest: MessageRatingRequest = {
-			rating: rating,
-			comments: null,
+			rating: message.rating,
+			comments: message.ratingComments,
 		};
 
 		return (await this.fetch(
