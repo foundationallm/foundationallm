@@ -862,6 +862,20 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup",
+            "value": "false",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:UserPortal:Configuration:ShowMessageRating",
+            "value": "true",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:ManagementPortal:Authentication:Entra:Instance",
             "value": "https://login.microsoftonline.com/",
             "label": null,

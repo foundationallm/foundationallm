@@ -9,16 +9,18 @@
 
 The following new App Configuration settings are required:
 
-|Name | Default value |
+|Name | Default value | Description |
 |--- | --- |
-|`FoundationaLLM:PythonSDK:Logging:LogLevel:Default` | `Information` |
-|`FoundationaLLM:PythonSDK:Logging:EnableConsoleLogging` | `false` |
-|`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:RequireScopes` | `true` |
-|`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:AllowACLAuthorization` | `false` |
-|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AccountName` | `-` |
-|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AuthenticationType` | `-` |
-|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer` | `-` |
-|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules` | `-` |
+|`FoundationaLLM:PythonSDK:Logging:LogLevel:Default` | `Information` | |
+|`FoundationaLLM:PythonSDK:Logging:EnableConsoleLogging` | `false` | |
+|`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:RequireScopes` | `true` | Indicates whether a scope claim (scp) is required for authorization. Set to `false` to allow authentication from an external proxy API. |
+|`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:AllowACLAuthorization` | `false` | Indicates whether tokens that do not have either of the "scp" or "roles" claims are accepted (True means they are accepted). Set to `true` to allow authentication from an external proxy API. |
+|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AccountName` | `-` | |
+|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AuthenticationType` | `-` | |
+|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer` | `-` | |
+|`FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules` | `-` | |
+|`FoundationaLLM:UserPortal:Configuration:ShowMessageRating` | `true` | If `true`, rating options on agent messages will appear. |
+|`FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup` | `false` | If `true`, the last conversation will be displayed when the user logs in. Otherwise, a new conversation placeholder appears on page load. |
 
 #### Agent Tool configuration changes
 

@@ -1475,6 +1475,29 @@
 		]
 	},
 	{
+		"namespace": "UserPortal:Configuration",
+		"dependency_injection_key": null,
+		"configuration_section": null,
+		"configuration_keys": [
+			{
+				"name": "ShowLastConversationOnStartup",
+				"description": "If true, the last conversation will be displayed when the user logs in. Otherwise, a new conversation placeholder appears on page load.",
+				"secret": "",
+				"value": "false",
+				"content_type": "",
+				"first_version": "0.9.0"
+			},
+			{
+				"name": "ShowMessageRating",
+				"description": "If true, rating options on agent messages will appear.",
+				"secret": "",
+				"value": "true",
+				"content_type": "",
+				"first_version": "0.9.0"
+			}
+		]
+	},
+	{
 		"namespace": "ManagementPortal:Authentication:Entra",
 		"dependency_injection_key": null,
 		"configuration_section": null,

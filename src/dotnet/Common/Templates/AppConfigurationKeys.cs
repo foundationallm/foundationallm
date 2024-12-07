@@ -1094,6 +1094,24 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:UserPortal:Configuration
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup setting.
+        /// <para>Value description:<br/>If true, the last conversation will be displayed when the user logs in. Otherwise, a new conversation placeholder appears on page load.</para>
+        /// </summary>
+        public const string FoundationaLLM_UserPortal_Configuration_ShowLastConversationOnStartup =
+            "FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:UserPortal:Configuration:ShowMessageRating setting.
+        /// <para>Value description:<br/>If true, rating options on agent messages will appear.</para>
+        /// </summary>
+        public const string FoundationaLLM_UserPortal_Configuration_ShowMessageRating =
+            "FoundationaLLM:UserPortal:Configuration:ShowMessageRating";
+
+        #endregion
+
         #region FoundationaLLM:ManagementPortal:Authentication:Entra
         
         /// <summary>
