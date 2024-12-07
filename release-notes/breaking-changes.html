@@ -85,40 +85,59 @@
 <tr>
 <th>Name</th>
 <th>Default value</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>FoundationaLLM:PythonSDK:Logging:LogLevel:Default</code></td>
 <td><code>Information</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>FoundationaLLM:PythonSDK:Logging:EnableConsoleLogging</code></td>
 <td><code>false</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:RequireScopes</code></td>
 <td><code>true</code></td>
+<td>Indicates whether a scope claim (scp) is required for authorization. Set to <code>false</code> to allow authentication from an external proxy API.</td>
 </tr>
 <tr>
 <td><code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:AllowACLAuthorization</code></td>
 <td><code>false</code></td>
+<td>Indicates whether tokens that do not have either of the &quot;scp&quot; or &quot;roles&quot; claims are accepted (True means they are accepted). Set to <code>true</code> to allow authentication from an external proxy API.</td>
 </tr>
 <tr>
 <td><code>FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AccountName</code></td>
 <td><code>-</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AuthenticationType</code></td>
 <td><code>-</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer</code></td>
 <td><code>-</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules</code></td>
 <td><code>-</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:UserPortal:Configuration:ShowMessageRating</code></td>
+<td><code>true</code></td>
+<td>If <code>true</code>, rating options on agent messages will appear.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup</code></td>
+<td><code>false</code></td>
+<td>If <code>true</code>, the last conversation will be displayed when the user logs in. Otherwise, a new conversation placeholder appears on page load.</td>
 </tr>
 </tbody>
 </table>
