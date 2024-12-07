@@ -34,6 +34,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 		allowedUploadFileExtensions: null,
 
 		showMessageRating: null,
+		showLastConversionOnStartup: null,
 
 		// Auth: These settings configure the MSAL authentication.
 		auth: {
