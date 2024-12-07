@@ -120,6 +120,7 @@ export const useAppStore = defineStore('app', {
 				})
 				.replace(' ', 'T')
 				.replace('T', ' ');
+
 			return {
 				name: formattedNow,
 			};
