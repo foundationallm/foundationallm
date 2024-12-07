@@ -90,7 +90,7 @@ export const useAppStore = defineStore('app', {
 
 			if (requestedSession) {
 				this.changeSession(requestedSession);
-			} else if (authStore.showLastConversionOnStartup && this.sessions.length > 0) {
+			} else if (useAppConfigStore().showLastConversionOnStartup && this.sessions.length > 0) {
 				this.changeSession(this.sessions[0]);
 			} else {
 				await this.addSession(this.getDefaultChatSessionProperties());
