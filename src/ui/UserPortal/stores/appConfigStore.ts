@@ -123,7 +123,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				getConfigValueSafe(
 					'FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions',
 				),
-				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowMessageRating', false),
+				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowMessageRating', 'false'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:ClientId'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:Instance'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:TenantId'),
@@ -158,7 +158,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.agentIconUrl = agentIconUrl;
 			this.allowedUploadFileExtensions = allowedUploadFileExtensions;
 
-			this.showMessageRating = showMessageRating;
+			this.showMessageRating = this.showMessageRating = JSON.parse(showMessageRating.toLowerCase());;
 
 			this.auth.clientId = authClientId;
 			this.auth.instance = authInstance;
