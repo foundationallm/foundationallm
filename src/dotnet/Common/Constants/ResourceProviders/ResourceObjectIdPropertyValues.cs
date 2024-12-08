@@ -10,5 +10,9 @@
         /// </summary>
         public const string MainModel = "main_model";
 
+        /// <summary>
+        /// Main prompt.
+        /// </summary>
+        public const string MainPrompt = "main_prompt";
     }
 }

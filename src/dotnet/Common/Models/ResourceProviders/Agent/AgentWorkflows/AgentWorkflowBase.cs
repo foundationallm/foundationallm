@@ -18,12 +18,6 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
         public virtual string? Type { get; set; }
 
         /// <summary>
-        /// The name of the workflow resource associated with the agent.
-        /// </summary>
-        [JsonPropertyName("workflow_name")]
-        public required string WorkflowName { get; set; }
-
-        /// <summary>
         /// Gets or sets a dictionary of resource objects.
         /// </summary>
         [JsonPropertyName("resource_object_ids")]
