@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using FoundationaLLM.Common.Constants.ResourceProviders;
+using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
 {
@@ -20,7 +21,10 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
         /// <summary>
         /// The name of the workflow.
         /// </summary>
-        [JsonPropertyName("workflow_name")]
+        /// <remarks>
+        /// This value is always derived from the <see cref="ResourceObjectIds"/> property.
+        /// </remarks>
+        [JsonIgnore]
         public string? WorkflowName { get; set; }
 
         /// <summary>
@@ -34,5 +38,15 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
         /// </summary>
         [JsonPropertyName("resource_object_ids")]
         public Dictionary<string, ResourceObjectIdProperties> ResourceObjectIds { get; set; } = [];
+
+        /// <summary>
+        /// Gets the main AI model object identifier.
+        /// </summary>
+        [JsonIgnore]
+        public string? MainAIModelObjectId =>
+            ResourceObjectIds.Values
+                .FirstOrDefault(
+                    roid => roid.HasObjectRole(ResourceObjectIdPropertyValues.MainModel))
+                ?.ObjectId;
     }
 }

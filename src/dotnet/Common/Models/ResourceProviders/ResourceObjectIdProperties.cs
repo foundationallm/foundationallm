@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using FoundationaLLM.Common.Constants.ResourceProviders;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.ResourceProviders
 {
@@ -18,5 +20,14 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         /// </summary>
         [JsonPropertyName("properties")]
         public Dictionary<string, object> Properties { get; set; } = [];
+
+        /// <summary>
+        /// Indicates whether the resource has the specified object role.
+        /// </summary>
+        /// <param name="role">The object role being searched.</param>
+        /// <returns><see langword="true"/> if the object role is present, <see langword="false"/> otherwise.</returns>
+        public bool HasObjectRole(string role) =>
+            Properties.TryGetValue(ResourceObjectIdPropertyNames.ObjectRole, out var objectRole)
+            && ((JsonElement)objectRole).GetString() == role;
     }
 }
