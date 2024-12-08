@@ -19,7 +19,7 @@ config = Configuration()
 sys.path.append('../src')
 from skunkworks_foundationallm import SkunkworksToolPluginManager # type: ignore
 
-user_identity_json = {"name": "MLS Test", "user_name":"mls@foundationaLLM.ai","upn":"mls@foundationaLLM.ai"}
+user_identity_json = {"name": "Skunkworks Test", "user_name":"sw@foundationaLLM.ai","upn":"sw@foundationaLLM.ai"}
 agent_tool_json_file_name = 'skunkworks_agent_code_interpreter_tool.json'
 agent_prompt_json_file_name = 'skunkworks_agent_prompt.json'
 exploded_objects_json_file_name = 'skunkworks_agent_exploded_objects.json'
