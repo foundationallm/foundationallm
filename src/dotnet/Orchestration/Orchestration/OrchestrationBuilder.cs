@@ -227,23 +227,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 mainAIModelAPIEndpointConfiguration = retrievedAPIEndpointConfiguration;
 
                                 // Agent Workflow AI Model overrides.
-                                if (resourceObjectId.Properties.TryGetValue(ResourceObjectIdPropertyNames.ModelParameters, out var modelParameters)
-                                    && objectRole as string == ResourceObjectIdPropertyValues.MainModel)
+                                if (resourceObjectId.Properties.TryGetValue(ResourceObjectIdPropertyNames.ModelParameters, out var modelParameters))
                                 {
                                     // Allowing the override only for the keys that are supported.
                                     var modelParamsDict = modelParameters.ToDictionary();
                                     foreach (var key in modelParamsDict.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
                                     {
                                         retrievedAIModel.ModelParameters[key] = modelParamsDict[key];
-                                    }
-                                }
-                                // Request overrides for the main model.
-                                if (modelParameterOverrides != null)
-                                {
-                                    // Allowing the override only for the keys that are supported."pro
-                                    foreach (var key in modelParameterOverrides.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
-                                    {
-                                        retrievedAIModel.ModelParameters[key] = modelParameterOverrides[key];
                                     }
                                 }
 
