@@ -21,6 +21,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Net;
+using System.Text.Json;
 
 namespace FoundationaLLM.Orchestration.Core.Orchestration
 {
@@ -213,7 +214,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         case AIModelResourceTypeNames.AIModels:
                             // Check if the AI model is the main model, if so check for overrides.
                             if (resourceObjectId.Properties.TryGetValue(ResourceObjectIdPropertyNames.ObjectRole, out var objectRole)
-                                && objectRole as string == ResourceObjectIdPropertyValues.MainModel)
+                                && ((JsonElement)objectRole).GetString() == ResourceObjectIdPropertyValues.MainModel)
                             {
 
                                 var retrievedAIModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
@@ -253,6 +254,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                            resourceObjectId.ObjectId,
                                            currentUserIdentity);
                             explodedObjects.Add(retrievedPrompt.ObjectId!, retrievedPrompt);
+                            break;
+                        case AgentResourceTypeNames.Workflows:
+                            agentWorkflow.WorkflowName = resourcePath.MainResourceId;
                             break;
                     }
                 }
