@@ -18,6 +18,11 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
         public virtual string? Type { get; set; }
 
         /// <summary>
+        /// The host of the workflow environment.
+        /// </summary>
+        public string? WorkflowHost { get; set; }
+
+        /// <summary>
         /// Gets or sets a dictionary of resource objects.
         /// </summary>
         [JsonPropertyName("resource_object_ids")]
