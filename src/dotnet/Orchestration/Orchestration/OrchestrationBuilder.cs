@@ -215,43 +215,40 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             if (resourceObjectId.Properties.TryGetValue(ResourceObjectIdPropertyNames.ObjectRole, out var objectRole)
                                 && objectRole as string == ResourceObjectIdPropertyValues.MainModel)
                             {
-                                var aiModelObjectId = objectRole.ToDictionary().GetValueOrDefault("ai_model_object_id");
-                                if(aiModelObjectId != null)
+
+                                var retrievedAIModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
+                                        resourceObjectId.ObjectId,
+                                        currentUserIdentity);
+                                var retrievedAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                                                        retrievedAIModel.EndpointObjectId!,
+                                                        currentUserIdentity);
+
+                                mainAIModel = retrievedAIModel;
+                                mainAIModelAPIEndpointConfiguration = retrievedAPIEndpointConfiguration;
+
+                                // Agent Workflow AI Model overrides.
+                                if (resourceObjectId.Properties.TryGetValue(ResourceObjectIdPropertyNames.ModelParameters, out var modelParameters)
+                                    && objectRole as string == ResourceObjectIdPropertyValues.MainModel)
                                 {
-                                    var retrievedAIModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
-                                            aiModelObjectId,
-                                            currentUserIdentity);
-                                    var retrievedAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
-                                                            retrievedAIModel.EndpointObjectId!,
-                                                            currentUserIdentity);
-
-                                    mainAIModel = retrievedAIModel;
-                                    mainAIModelAPIEndpointConfiguration = retrievedAPIEndpointConfiguration;
-
-                                    // Agent Workflow AI Model overrides.
-                                    if (resourceObjectId.Properties.TryGetValue(ResourceObjectIdPropertyNames.ModelParameters, out var modelParameters)
-                                        && objectRole as string == ResourceObjectIdPropertyValues.MainModel)
+                                    // Allowing the override only for the keys that are supported.
+                                    var modelParamsDict = modelParameters.ToDictionary();
+                                    foreach (var key in modelParamsDict.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
                                     {
-                                        // Allowing the override only for the keys that are supported.
-                                        var modelParamsDict = modelParameters.ToDictionary();
-                                        foreach (var key in modelParamsDict.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
-                                        {
-                                            retrievedAIModel.ModelParameters[key] = modelParamsDict[key];
-                                        }
+                                        retrievedAIModel.ModelParameters[key] = modelParamsDict[key];
                                     }
-                                    // Request overrides for the main model.
-                                    if (modelParameterOverrides != null)
-                                    {
-                                        // Allowing the override only for the keys that are supported."pro
-                                        foreach (var key in modelParameterOverrides.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
-                                        {
-                                            retrievedAIModel.ModelParameters[key] = modelParameterOverrides[key];
-                                        }
-                                    }
-
-                                    explodedObjects.Add(retrievedAIModel.ObjectId!, retrievedAIModel);
-                                    explodedObjects.Add(retrievedAIModel.EndpointObjectId!, retrievedAPIEndpointConfiguration);
                                 }
+                                // Request overrides for the main model.
+                                if (modelParameterOverrides != null)
+                                {
+                                    // Allowing the override only for the keys that are supported."pro
+                                    foreach (var key in modelParameterOverrides.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
+                                    {
+                                        retrievedAIModel.ModelParameters[key] = modelParameterOverrides[key];
+                                    }
+                                }
+
+                                explodedObjects.Add(retrievedAIModel.ObjectId!, retrievedAIModel);
+                                explodedObjects.Add(retrievedAIModel.EndpointObjectId!, retrievedAPIEndpointConfiguration);
                             }
 
                             if (agentWorkflow is AzureOpenAIAssistantsAgentWorkflow)
