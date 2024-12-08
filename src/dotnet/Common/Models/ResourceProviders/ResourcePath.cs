@@ -394,7 +394,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         /// <returns>A <see cref="ResourcePath"/> object containing the parsed resource path.</returns>
         public static ResourcePath GetResourcePath(string resourcePath)
         {
-            ResourcePath.TryParseResourceProvider(resourcePath, out var resourceProvider);
+            TryParseResourceProvider(resourcePath, out var resourceProvider);
 
             var allowedResourceProviders = ImmutableList<string>.Empty;
             var allowedResourceTypes = new Dictionary<string, ResourceTypeDescriptor>();
@@ -405,7 +405,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
                 allowedResourceTypes = GetAllowedResourceTypes(resourceProvider);
             }
 
-            if (!ResourcePath.TryParse(
+            if (!TryParse(
                 resourcePath,
                 allowedResourceProviders,
                 allowedResourceTypes,
