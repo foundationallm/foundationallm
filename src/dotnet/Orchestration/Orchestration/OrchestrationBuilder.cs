@@ -331,17 +331,17 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 toolNames.Add(tool.Name);
                 explodedObjects[tool.Name] = tool;
 
-                foreach (var resource in tool.ResourceObjectIds.Values)
+                foreach (var resourceObjectId in tool.ResourceObjectIds.Values)
                 {
-                    var resourcePath = ResourcePath.GetResourcePath(resource.ObjectId);
+                    var resourcePath = ResourcePath.GetResourcePath(resourceObjectId.ObjectId);
                     switch (resourcePath.MainResourceTypeName)
                     {
                         case AIModelResourceTypeNames.AIModels:
                             var aiModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
-                                resource.ObjectId,
+                                resourceObjectId.ObjectId,
                                 currentUserIdentity);
 
-                            explodedObjects[resource.ObjectId] = aiModel;
+                            explodedObjects[resourceObjectId.ObjectId] = aiModel;
 
                             if (!string.IsNullOrEmpty(aiModel.EndpointObjectId))
                             {
@@ -355,18 +355,18 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                         case ConfigurationResourceTypeNames.APIEndpointConfigurations:
                             var apiEndpoint = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
-                                resource.ObjectId,
+                                resourceObjectId.ObjectId,
                                 currentUserIdentity);
 
-                            explodedObjects[resource.ObjectId] = apiEndpoint;
+                            explodedObjects[resourceObjectId.ObjectId] = apiEndpoint;
                             break;
 
                         case VectorizationResourceTypeNames.IndexingProfiles:
                             var indexingProfile = await vectorizationResourceProvider.GetResourceAsync<IndexingProfile>(
-                                resource.ObjectId,
+                                resourceObjectId.ObjectId,
                                 currentUserIdentity);
 
-                            explodedObjects[resource.ObjectId] = indexingProfile;
+                            explodedObjects[resourceObjectId.ObjectId] = indexingProfile;
 
                             if (indexingProfile.Settings == null)
                                 throw new OrchestrationException($"Tool: {tool.Name}: Settings for indexing profile {indexingProfile.Name} not found.");
