@@ -205,16 +205,17 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                       
             if (agentWorkflow is not null)
             {
-                foreach (var resource in agentWorkflow.ResourceObjectIds.Values)
+                foreach (var resourceObjectId in agentWorkflow.ResourceObjectIds.Values)
                 {
-                    var resourcePath = ResourcePath.GetResourcePath(resource.ObjectId);
+                    var resourcePath = ResourcePath.GetResourcePath(resourceObjectId.ObjectId);
                     switch (resourcePath.MainResourceTypeName)
                     {
                         case AIModelResourceTypeNames.AIModels:
                             // Check if the AI model is the main model, if so check for overrides.
-                            if (resource.Properties.TryGetValue("main_model", out var mainModel))
+                            if (resourceObjectId.Properties.TryGetValue(ResourceObjectIdPropertyNames.ObjectRole, out var objectRole)
+                                && objectRole as string == ResourceObjectIdPropertyValues.MainModel)
                             {
-                                var aiModelObjectId = mainModel.ToDictionary().GetValueOrDefault("ai_model_object_id");
+                                var aiModelObjectId = objectRole.ToDictionary().GetValueOrDefault("ai_model_object_id");
                                 if(aiModelObjectId != null)
                                 {
                                     var retrievedAIModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
@@ -228,13 +229,14 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                     mainAIModelAPIEndpointConfiguration = retrievedAPIEndpointConfiguration;
 
                                     // Agent Workflow AI Model overrides.
-                                    var modelParameters = resource.Properties.GetValueOrDefault("model_parameters") as Dictionary<string, object>;
-                                    if (modelParameters != null)
+                                    if (resourceObjectId.Properties.TryGetValue(ResourceObjectIdPropertyNames.ModelParameters, out var modelParameters)
+                                        && objectRole as string == ResourceObjectIdPropertyValues.MainModel)
                                     {
                                         // Allowing the override only for the keys that are supported.
-                                        foreach (var key in modelParameters.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
+                                        var modelParamsDict = modelParameters.ToDictionary();
+                                        foreach (var key in modelParamsDict.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
                                         {
-                                            retrievedAIModel.ModelParameters[key] = modelParameters[key];
+                                            retrievedAIModel.ModelParameters[key] = modelParamsDict[key];
                                         }
                                     }
                                     // Request overrides for the main model.
@@ -261,7 +263,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             break;
                         case PromptResourceTypeNames.Prompts:
                             var retrievedPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
-                                           resource.ObjectId,
+                                           resourceObjectId.ObjectId,
                                            currentUserIdentity);
                             explodedObjects.Add(retrievedPrompt.ObjectId!, retrievedPrompt);
                             break;
