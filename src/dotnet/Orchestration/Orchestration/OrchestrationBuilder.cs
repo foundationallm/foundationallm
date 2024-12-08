@@ -207,10 +207,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             {
                 foreach (var resource in agentWorkflow.ResourceObjectIds)
                 {
-                    string resourceType = resource.Value.ObjectId.Split("/")[^2];
-                    switch (resourceType)
+                    var resourcePath = ResourcePath.GetResourcePath(resource.Value.ObjectId);
+                    switch (resourcePath.MainResourceTypeName)
                     {
-                        case "aiModels":
+                        case AIModelResourceTypeNames.AIModels:
                             // Check if the AI model is the main model, if so check for overrides.
                             if (resource.Value.Properties.TryGetValue("main_model", out var mainModel))
                             {
@@ -240,7 +240,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                     // Request overrides for the main model.
                                     if (modelParameterOverrides != null)
                                     {
-                                        // Allowing the override only for the keys that are supported.
+                                        // Allowing the override only for the keys that are supported."pro
                                         foreach (var key in modelParameterOverrides.Keys.Where(k => ModelParametersKeys.All.Contains(k)))
                                         {
                                             retrievedAIModel.ModelParameters[key] = modelParameterOverrides[key];
@@ -259,7 +259,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                     ?? throw new OrchestrationException("The OpenAI Assistants assistant identifier was not found in the agent workflow.");
                             }
                             break;
-                        case "prompts":
+                        case PromptResourceTypeNames.Prompts:
                             var retrievedPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
                                            resource.Value.ObjectId,
                                            currentUserIdentity);
@@ -322,16 +322,16 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             explodedObjects[CompletionRequestObjectsKeys.GatewayAPIEndpointConfiguration] = gatewayAPIEndpointConfiguration;
             
 
-            var allAgents = await agentResourceProvider.GetResourcesAsync<AgentBase>(instanceId, currentUserIdentity);
-            var allAgentsDescriptions = allAgents
-                .Where(a => !string.IsNullOrWhiteSpace(a.Resource.Description) && a.Resource.Name != agentBase.Name)
-                .Select(a => new
-                {
-                    a.Resource.Name,
-                    a.Resource.Description
-                })
-                .ToDictionary(x => x.Name, x => x.Description);
-            explodedObjects[CompletionRequestObjectsKeys.AllAgents] = allAgentsDescriptions;
+            //var allAgents = await agentResourceProvider.GetResourcesAsync<AgentBase>(instanceId, currentUserIdentity);
+            //var allAgentsDescriptions = allAgents
+            //    .Where(a => !string.IsNullOrWhiteSpace(a.Resource.Description) && a.Resource.Name != agentBase.Name)
+            //    .Select(a => new
+            //    {
+            //        a.Resource.Name,
+            //        a.Resource.Description
+            //    })
+            //    .ToDictionary(x => x.Name, x => x.Description);
+            //explodedObjects[CompletionRequestObjectsKeys.AllAgents] = allAgentsDescriptions;
 
             #region Tools
 
@@ -344,10 +344,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                 foreach (var resource in tool.ResourceObjectIds.Values)
                 {
-                    string resourceType = resource.ObjectId.Split("/")[^2];
-                    switch (resourceType)
+                    var resourcePath = ResourcePath.GetResourcePath(resource.ObjectId);
+                    switch (resourcePath.MainResourceTypeName)
                     {
-                        case "aiModels":
+                        case AIModelResourceTypeNames.AIModels:
                             var aiModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
                                 resource.ObjectId,
                                 currentUserIdentity);
@@ -364,7 +364,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             }
                             break;
 
-                        case "apiEndpointConfigurations":
+                        case ConfigurationResourceTypeNames.APIEndpointConfigurations:
                             var apiEndpoint = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
                                 resource.ObjectId,
                                 currentUserIdentity);
@@ -372,7 +372,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             explodedObjects[resource.ObjectId] = apiEndpoint;
                             break;
 
-                        case "indexingProfiles":
+                        case VectorizationResourceTypeNames.IndexingProfiles:
                             var indexingProfile = await vectorizationResourceProvider.GetResourceAsync<IndexingProfile>(
                                 resource.ObjectId,
                                 currentUserIdentity);
@@ -393,7 +393,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             break;
 
                         default:
-                            throw new OrchestrationException($"Unknown resource type '{resourceType}'.");
+                            throw new OrchestrationException($"Unknown resource type '{resourcePath.MainResourceTypeName}'.");
                     }
                 }
             }
