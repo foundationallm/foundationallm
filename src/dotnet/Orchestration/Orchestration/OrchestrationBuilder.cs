@@ -343,7 +343,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                             explodedObjects[resourceObjectId.ObjectId] = aiModel;
 
-                            if (!string.IsNullOrEmpty(aiModel.EndpointObjectId))
+                            // TODO: Improve handling to allow each tool to override model parameters separately
+                            if (!string.IsNullOrEmpty(aiModel.EndpointObjectId) && !explodedObjects.ContainsKey(aiModel.EndpointObjectId))
                             {
                                 var aiModelEndpoint = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
                                     aiModel.EndpointObjectId!,
@@ -355,10 +356,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                         case ConfigurationResourceTypeNames.APIEndpointConfigurations:
                             var apiEndpoint = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
-                                resourceObjectId.ObjectId,
-                                currentUserIdentity);
+                            resourceObjectId.ObjectId,
+                            currentUserIdentity);
 
-                            explodedObjects[resourceObjectId.ObjectId] = apiEndpoint;
+                            if (!explodedObjects.ContainsKey(resourceObjectId.ObjectId))
+                            {
+                                explodedObjects[resourceObjectId.ObjectId] = apiEndpoint;
+                            }
                             break;
 
                         case VectorizationResourceTypeNames.IndexingProfiles:
@@ -366,7 +370,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 resourceObjectId.ObjectId,
                                 currentUserIdentity);
 
-                            explodedObjects[resourceObjectId.ObjectId] = indexingProfile;
+                            if (!explodedObjects.ContainsKey(resourceObjectId.ObjectId))
+                            {
+                                explodedObjects[resourceObjectId.ObjectId] = indexingProfile;
+                            }
 
                             if (indexingProfile.Settings == null)
                                 throw new OrchestrationException($"Tool: {tool.Name}: Settings for indexing profile {indexingProfile.Name} not found.");
@@ -378,7 +385,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                 apiEndpointConfigurationObjectId.ToString()!,
                                 currentUserIdentity);
 
-                            explodedObjects[apiEndpointConfigurationObjectId.ToString()!] = indexingProfileApiEndpoint;
+                            if (!explodedObjects.ContainsKey(apiEndpointConfigurationObjectId))
+                            {
+                                explodedObjects[apiEndpointConfigurationObjectId.ToString()!] = indexingProfileApiEndpoint;
+                            }
                             break;
 
                         default:
