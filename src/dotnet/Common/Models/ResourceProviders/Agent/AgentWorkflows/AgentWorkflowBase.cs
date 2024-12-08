@@ -20,6 +20,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
         /// <summary>
         /// The host of the workflow environment.
         /// </summary>
+        [JsonPropertyName("workflow_host")]
         public string? WorkflowHost { get; set; }
 
         /// <summary>
