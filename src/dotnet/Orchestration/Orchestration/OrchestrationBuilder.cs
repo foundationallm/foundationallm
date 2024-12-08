@@ -205,14 +205,14 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                       
             if (agentWorkflow is not null)
             {
-                foreach (var resource in agentWorkflow.ResourceObjectIds)
+                foreach (var resource in agentWorkflow.ResourceObjectIds.Values)
                 {
-                    var resourcePath = ResourcePath.GetResourcePath(resource.Value.ObjectId);
+                    var resourcePath = ResourcePath.GetResourcePath(resource.ObjectId);
                     switch (resourcePath.MainResourceTypeName)
                     {
                         case AIModelResourceTypeNames.AIModels:
                             // Check if the AI model is the main model, if so check for overrides.
-                            if (resource.Value.Properties.TryGetValue("main_model", out var mainModel))
+                            if (resource.Properties.TryGetValue("main_model", out var mainModel))
                             {
                                 var aiModelObjectId = mainModel.ToDictionary().GetValueOrDefault("ai_model_object_id");
                                 if(aiModelObjectId != null)
@@ -228,7 +228,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                                     mainAIModelAPIEndpointConfiguration = retrievedAPIEndpointConfiguration;
 
                                     // Agent Workflow AI Model overrides.
-                                    var modelParameters = resource.Value.Properties.GetValueOrDefault("model_parameters") as Dictionary<string, object>;
+                                    var modelParameters = resource.Properties.GetValueOrDefault("model_parameters") as Dictionary<string, object>;
                                     if (modelParameters != null)
                                     {
                                         // Allowing the override only for the keys that are supported.
@@ -261,7 +261,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             break;
                         case PromptResourceTypeNames.Prompts:
                             var retrievedPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
-                                           resource.Value.ObjectId,
+                                           resource.ObjectId,
                                            currentUserIdentity);
                             explodedObjects.Add(retrievedPrompt.ObjectId!, retrievedPrompt);
                             break;
