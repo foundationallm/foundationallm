@@ -15,5 +15,14 @@
         /// </summary>
         public const string ModelParameters = "model_parameters";
 
+        /// <summary>
+        /// Text embedding model name.
+        /// </summary>
+        public const string TextEmbeddingModelName = "text_embedding_model_name";
+
+        /// <summary>
+        /// Text embedding model parameters.
+        /// </summary>
+        public const string TextEmbeddingModelParameters = "text_embedding_model_parameters";
     }
 }

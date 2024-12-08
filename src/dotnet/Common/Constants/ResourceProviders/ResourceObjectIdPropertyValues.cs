@@ -14,5 +14,10 @@
         /// Main prompt.
         /// </summary>
         public const string MainPrompt = "main_prompt";
+
+        /// <summary>
+        /// Main indexing profile.
+        /// </summary>
+        public const string MainIndexingProfile = "main_indexing_profile";
     }
 }
