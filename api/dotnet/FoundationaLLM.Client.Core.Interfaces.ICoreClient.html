@@ -239,7 +239,7 @@ is created first.</p>
 
   <h3 id="FoundationaLLM_Client_Core_Interfaces_ICoreClient_DeleteSessionAsync_System_String_" data-uid="FoundationaLLM.Client.Core.Interfaces.ICoreClient.DeleteSessionAsync(System.String)">
   DeleteSessionAsync(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/Interfaces/ICoreClient.cs/#L110"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/Interfaces/ICoreClient.cs/#L119"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes a chat session.</p>
@@ -277,7 +277,7 @@ is created first.</p>
 
   <h3 id="FoundationaLLM_Client_Core_Interfaces_ICoreClient_GetAgentsAsync" data-uid="FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetAgentsAsync">
   GetAgentsAsync()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/Interfaces/ICoreClient.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/Interfaces/ICoreClient.cs/#L112"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves agents available to the user for orchestration and session-based requests.</p>
@@ -512,6 +512,51 @@ completion request.</p>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;</dt>
     <dd><p>A completion from the designated FoundationaLLM agent.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Client_Core_Interfaces_ICoreClient_RateMessageAsync_" data-uid="FoundationaLLM.Client.Core.Interfaces.ICoreClient.RateMessageAsync*"></a>
+
+  <h3 id="FoundationaLLM_Client_Core_Interfaces_ICoreClient_RateMessageAsync_System_String_System_String_FoundationaLLM_Common_Models_Conversation_MessageRatingRequest_" data-uid="FoundationaLLM.Client.Core.Interfaces.ICoreClient.RateMessageAsync(System.String,System.String,FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)">
+  RateMessageAsync(string, string, MessageRatingRequest)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreClient/Interfaces/ICoreClient.cs/#L106"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the rating for a message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;Message&gt; RateMessageAsync(string sessionId, string messageId, MessageRatingRequest rating)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sessionId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The chat session ID that contains the message to rate.</p>
+</dd>
+    <dt><code>messageId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The ID of the message to rate.</p>
+</dd>
+    <dt><code>rating</code> <a class="xref" href="FoundationaLLM.Common.Models.Conversation.MessageRatingRequest.html">MessageRatingRequest</a></dt>
+    <dd><p>The rating and optional comments to assign to the message.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;</dt>
+    <dd><p>Returns the Message object, including its updated rating.</p>
 </dd>
   </dl>
 
