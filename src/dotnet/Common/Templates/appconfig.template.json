@@ -876,6 +876,20 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:UserPortal:Configuration:ShowMessageTokens",
+            "value": "true",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:UserPortal:Configuration:ShowViewPrompt",
+            "value": "true",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:ManagementPortal:Authentication:Entra:Instance",
             "value": "https://login.microsoftonline.com/",
             "label": null,
