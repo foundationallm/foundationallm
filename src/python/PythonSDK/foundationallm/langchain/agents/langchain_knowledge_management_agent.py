@@ -55,9 +55,6 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
     The LangChain Knowledge Management agent.
     """
 
-    MAIN_MODEL_KEY = "main_model"
-    MAIN_PROMPT_KEY = "main_prompt"
-
     def _get_document_retriever(
         self,
         request: KnowledgeManagementCompletionRequest,
@@ -398,9 +395,16 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             image_service = None
             if any(tool.name == "DALLEImageGeneration" for tool in request.agent.tools):
                 dalle_tool = next((tool for tool in request.agent.tools if tool.name == "DALLEImageGeneration"), None)
-                model_object_id = dalle_tool.ai_model_object_ids[self.MAIN_MODEL_KEY]
-                image_generation_deployment_model = request.objects[model_object_id]["deployment_name"]
-                api_endpoint_object_id = request.objects[model_object_id]["endpoint_object_id"]
+
+                model_object_id = dalle_tool.get_resource_object_id_properties(
+                    ResourceProviderNames.FOUNDATIONALLM_AIMODEL,
+                    AIModelResourceTypeNames.AI_MODELS,
+                    ResourceObjectIdPropertyNames.OBJECT_ROLE,
+                    ResourceObjectIdPropertyValues.MAIN_MODEL
+                )
+                
+                image_generation_deployment_model = request.objects[model_object_id.object_id]["deployment_name"]
+                api_endpoint_object_id = request.objects[model_object_id.object_id]["endpoint_object_id"]
                 image_generation_client = self._get_image_gen_language_model(api_endpoint_object_id=api_endpoint_object_id, objects=request.objects)
                 image_service=ImageService(
                     config=self.config,
