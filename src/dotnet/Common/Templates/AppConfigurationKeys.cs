@@ -1109,6 +1109,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_UserPortal_Configuration_ShowMessageRating =
             "FoundationaLLM:UserPortal:Configuration:ShowMessageRating";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:UserPortal:Configuration:ShowMessageTokens setting.
+        /// <para>Value description:<br/>If true, the number of consumed tokens on agent and user messages will appear.</para>
+        /// </summary>
+        public const string FoundationaLLM_UserPortal_Configuration_ShowMessageTokens =
+            "FoundationaLLM:UserPortal:Configuration:ShowMessageTokens";
 
         #endregion
 
