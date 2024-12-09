@@ -25,7 +25,7 @@ export type ResourceProviderGetResult<T> = {
 	roles: string[];
 };
 
-export type ResourceProviderUpsertResult {
+export type ResourceProviderUpsertResult = {
     /**
      * The id of the object that was created or updated.
      */
