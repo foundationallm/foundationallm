@@ -35,6 +35,8 @@ export const useAppConfigStore = defineStore('appConfig', {
 
 		showMessageRating: null,
 		showLastConversionOnStartup: null,
+		showMessageTokens: null,
+		showViewPrompt: null,
 
 		// Auth: These settings configure the MSAL authentication.
 		auth: {
@@ -87,6 +89,8 @@ export const useAppConfigStore = defineStore('appConfig', {
 				allowedUploadFileExtensions,
 				showMessageRating,
 				showLastConversionOnStartup,
+				showMessageTokens,
+				showViewPrompt,
 				authClientId,
 				authInstance,
 				authTenantId,
@@ -127,6 +131,8 @@ export const useAppConfigStore = defineStore('appConfig', {
 				),
 				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowMessageRating', 'false'),
 				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup', 'true'),
+				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowMessageTokens', 'true'),
+				getConfigValueSafe('FoundationaLLM:UserPortal:Configuration:ShowViewPrompt', 'true'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:ClientId'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:Instance'),
 				api.getConfigValue('FoundationaLLM:UserPortal:Authentication:Entra:TenantId'),
@@ -161,8 +167,10 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.agentIconUrl = agentIconUrl;
 			this.allowedUploadFileExtensions = allowedUploadFileExtensions;
 
-			this.showMessageRating = this.showMessageRating = JSON.parse(showMessageRating.toLowerCase());;
+			this.showMessageRating = this.showMessageRating = JSON.parse(showMessageRating.toLowerCase());
 			this.showLastConversionOnStartup = JSON.parse(showLastConversionOnStartup.toLowerCase());
+			this.showMessageTokens = JSON.parse(showMessageTokens.toLowerCase());
+			this.showViewPrompt = JSON.parse(showViewPrompt.toLowerCase());
 
 			this.auth.clientId = authClientId;
 			this.auth.instance = authInstance;
