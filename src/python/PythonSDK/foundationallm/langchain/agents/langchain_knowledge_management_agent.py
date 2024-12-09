@@ -9,7 +9,14 @@ from foundationallm.langchain.agents import LangChainAgentBase
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.retrievers import RetrieverFactory, ContentArtifactRetrievalBase
 from foundationallm.models.agents import AzureOpenAIAssistantsAgentWorkflow, LangGraphReactAgentWorkflow
-from foundationallm.models.constants import AgentCapabilityCategories
+from foundationallm.models.constants import (
+    AgentCapabilityCategories,
+    ResourceObjectIdPropertyNames,
+    ResourceObjectIdPropertyValues,
+    ResourceProviderNames,
+    AIModelResourceTypeNames,
+    PromptResourceTypeNames
+)
 from foundationallm.models.operations import OperationTypes
 from foundationallm.models.orchestration import (
     CompletionRequestObjectKeys,
@@ -173,19 +180,30 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         if request.agent is None:
             raise LangChainException("The agent property on the completion request cannot be null.", 400)
 
-        if request.agent.orchestration_settings is None:
-            raise LangChainException("The Orchestration_settings property on the agent cannot be null.", 400)
-
         if request.objects is None:
             raise LangChainException("The objects property on the completion request cannot be null.", 400)
 
         if request.agent.workflow is not None:
-            if request.agent.workflow.agent_workflow_ai_models[self.MAIN_MODEL_KEY] is None:
+            
+            ai_model_object_id = request.agent.workflow.get_resource_object_id_properties(
+                ResourceProviderNames.FOUNDATIONALLM_AIMODEL,
+                AIModelResourceTypeNames.AI_MODELS,
+                ResourceObjectIdPropertyNames.OBJECT_ROLE,
+                ResourceObjectIdPropertyValues.MAIN_MODEL
+            )
+            if ai_model_object_id is None:
                 raise LangChainException("The agent's workflow AI models requires a main_model.", 400)
-            if request.agent.workflow.prompt_object_ids[self.MAIN_PROMPT_KEY] is None:
+            self.ai_model = self._get_ai_model_from_object_id(ai_model_object_id.object_id, request.objects)
+            
+            prompt_object_id = request.agent.workflow.get_resource_object_id_properties(
+                ResourceProviderNames.FOUNDATIONALLM_PROMPT,
+                PromptResourceTypeNames.PROMPTS,
+                ResourceObjectIdPropertyNames.OBJECT_ROLE,
+                ResourceObjectIdPropertyValues.MAIN_PROMPT
+            )
+            if prompt_object_id is None:
                 raise LangChainException("The agent's workflow prompt object dictionary requires a main_prompt.", 400)
-            self.ai_model = self._get_ai_model_from_object_id(request.agent.workflow.agent_workflow_ai_models[self.MAIN_MODEL_KEY].ai_model_object_id, request.objects)
-            self.prompt = self._get_prompt_from_object_id(request.agent.workflow.prompt_object_ids[self.MAIN_PROMPT_KEY], request.objects)
+            self.prompt = self._get_prompt_from_object_id(prompt_object_id.object_id, request.objects)
         else:
             # Legacy code
             self.ai_model = self._get_ai_model_from_object_id(request.agent.ai_model_object_id, request.objects)
@@ -436,7 +454,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             messages.append(HumanMessage(content=request.user_prompt))
             response = await graph.ainvoke({'messages': messages}, config={"configurable": {"original_user_prompt": request.user_prompt}})
             # TODO: process tool messages with analysis results AIMessage with content='' but has addition_kwargs={'tool_calls';[...]}
-            
+
             # Get ContentArtifact items from ToolMessages
             content_artifacts = []
             tool_messages = [message for message in response["messages"] if isinstance(message, ToolMessage)]
@@ -446,7 +464,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     if isinstance(tool_message.artifact, list):
                         for item in tool_message.artifact:
                             if isinstance(item, ContentArtifact):
-                                content_artifacts.append(item)                       
+                                content_artifacts.append(item)
 
             final_message = response["messages"][-1]
             response_content = OpenAITextMessageContentItem(
