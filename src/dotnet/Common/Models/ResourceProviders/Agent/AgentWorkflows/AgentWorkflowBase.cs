@@ -24,7 +24,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
         /// <remarks>
         /// This value is always derived from the <see cref="ResourceObjectIds"/> property.
         /// </remarks>
-        [JsonIgnore]
+        [JsonPropertyName("workflow_name")]
         public string? WorkflowName { get; set; }
 
         /// <summary>

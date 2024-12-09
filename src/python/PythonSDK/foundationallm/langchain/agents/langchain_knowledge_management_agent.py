@@ -173,9 +173,6 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         if request.agent is None:
             raise LangChainException("The agent property on the completion request cannot be null.", 400)
 
-        if request.agent.orchestration_settings is None:
-            raise LangChainException("The Orchestration_settings property on the agent cannot be null.", 400)
-
         if request.objects is None:
             raise LangChainException("The objects property on the completion request cannot be null.", 400)
 
@@ -436,7 +433,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             messages.append(HumanMessage(content=request.user_prompt))
             response = await graph.ainvoke({'messages': messages}, config={"configurable": {"original_user_prompt": request.user_prompt}})
             # TODO: process tool messages with analysis results AIMessage with content='' but has addition_kwargs={'tool_calls';[...]}
-            
+
             # Get ContentArtifact items from ToolMessages
             content_artifacts = []
             tool_messages = [message for message in response["messages"] if isinstance(message, ToolMessage)]
@@ -446,7 +443,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                     if isinstance(tool_message.artifact, list):
                         for item in tool_message.artifact:
                             if isinstance(item, ContentArtifact):
-                                content_artifacts.append(item)                       
+                                content_artifacts.append(item)
 
             final_message = response["messages"][-1]
             response_content = OpenAITextMessageContentItem(
