@@ -9,10 +9,10 @@ class ResourcePath(BaseModel):
     INSTANCE_TOKEN: ClassVar[str] = 'instances'
     RESOURCE_PROVIDER_TOKEN: ClassVar[str] = 'providers'
 
-    instance_id: str = Field(description="The FoundationaLLM instance identifier.")
-    resource_provider: str = Field(description="The FoundationaLLM resource provider.")
-    main_resource_type: str = Field(description="The main resource type of the resource path.")
-    main_resource_id: Optional[str] = Field(description="The main resource identifier of the resource path.")
+    instance_id: Optional[str] = Field(description="The FoundationaLLM instance identifier.")
+    resource_provider: Optional[str] = Field(description="The FoundationaLLM resource provider.")
+    main_resource_type: Optional[str] = Field(description="The main resource type of the resource path.")
+    main_resource_id: Optional[str] = Field(None, description="The main resource identifier of the resource path.")
 
     @staticmethod
     def parse(object_id: str) -> Self:
@@ -27,7 +27,7 @@ class ResourcePath(BaseModel):
         """
         resource_path: ResourcePath = None
 
-        parts = object_id.split("/")
+        parts = object_id.strip("/").split("/")
         if len(parts) < 5 \
             or parts[0] != ResourcePath.INSTANCE_TOKEN \
             or parts[1].strip() == "" \

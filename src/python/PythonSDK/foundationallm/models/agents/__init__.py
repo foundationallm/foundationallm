@@ -12,4 +12,4 @@ from .agent_base import AgentBase
 from .knowledge_management_agent import KnowledgeManagementAgent
 from .knowledge_management_completion_request import KnowledgeManagementCompletionRequest
 from .knowledge_management_index_configuration import KnowledgeManagementIndexConfiguration
-from .resource_object_id_properties import ResourceObjectIdProperties
+from .resource_object_ids_model_base import ResourceObjectIdsModelBase
