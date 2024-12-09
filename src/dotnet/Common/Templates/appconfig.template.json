@@ -1,12 +1,12 @@
 {
     "items": [
         {
-            "key": ".appconfig.featureflag/FoundationaLLM.Agent.PrivateStore",
-            "value": "{\"id\":\"FoundationaLLM.Agent.PrivateStore\",\"description\":\"\",\"enabled\":false,\"conditions\":{\"client_filters\":[]}}",
-            "label": null,
-            "content_type": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
-            "tags": {}
-        },
+			"key": ".appconfig.featureflag/FoundationaLLM.Agent.PrivateStore",
+			"value": "{\"id\":\"FoundationaLLM.Agent.PrivateStore\",\"description\":\"\",\"enabled\":false,\"conditions\":{\"client_filters\":[]}}",
+			"label": null,
+			"content_type": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
+			"tags": {}
+		},
         {
             "key": "FoundationaLLM:Instance:Id",
             "value": "${env:FOUNDATIONALLM_INSTANCE_ID}",
@@ -253,6 +253,20 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:RequireScopes",
+            "value": "true",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:AllowACLAuthorization",
+            "value": "false",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CosmosDB:Endpoint",
             "value": "${env:AZURE_COSMOS_DB_ENDPOINT}",
             "label": null,
@@ -393,6 +407,34 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AccountName",
+            "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AuthenticationType",
+            "value": "AzureIdentity",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer",
+            "value": "external-modules-python",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules",
+            "value": "",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:SemanticKernelAPI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-semantickernelapi-apikey\"}",
             "label": null,
@@ -425,13 +467,6 @@
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
-            "tags": {}
-        },
-        {
-            "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions",
-            "value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
-            "label": null,
-            "content_type": "",
             "tags": {}
         },
         {
@@ -673,13 +708,6 @@
             "tags": {}
         },
         {
-            "key": "FoundationaLLM:Branding:DefaultAgentWelcomeMessage",
-            "value": "Start the conversation using the text box below.",
-            "label": null,
-            "content_type": "",
-            "tags": {}
-        },
-        {
             "key": "FoundationaLLM:Branding:FavIconUrl",
             "value": "favicon.ico",
             "label": null,
@@ -710,13 +738,6 @@
         {
             "key": "FoundationaLLM:Branding:LogoUrl",
             "value": "foundationallm-logo-white.svg",
-            "label": null,
-            "content_type": "",
-            "tags": {}
-        },
-        {
-            "key": "FoundationaLLM:Branding:NoAgentsMessage",
-            "value": "No agents available. Please check with your system administrator for assistance.",
             "label": null,
             "content_type": "",
             "tags": {}
@@ -836,6 +857,20 @@
         {
             "key": "FoundationaLLM:UserPortal:Authentication:Entra:ClientId",
             "value": "${env:ENTRA_CHAT_UI_CLIENT_ID}",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup",
+            "value": "false",
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:UserPortal:Configuration:ShowMessageRating",
+            "value": "true",
             "label": null,
             "content_type": "",
             "tags": {}

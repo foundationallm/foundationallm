@@ -35,6 +35,10 @@ jobs:
       working-directory: ./src/dotnet/Common
       run: dotnet build --configuration Release -p:GITHUB_ACTIONS=true
 
+    - name: Build Configuration
+      working-directory: ./src/dotnet/Configuration
+      run: dotnet build --configuration Release -p:GITHUB_ACTIONS=true
+
     - name: Build CoreClient
       working-directory: ./src/dotnet/CoreClient
       run: dotnet build --configuration Release -p:GITHUB_ACTIONS=true
@@ -47,6 +51,10 @@ jobs:
       working-directory: ./src/dotnet/Common
       run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
+    - name: Pack Configuration
+      working-directory: ./src/dotnet/Configuration
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+
     - name: Pack CoreClient
       working-directory: ./src/dotnet/CoreClient
       run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
@@ -57,12 +65,16 @@ jobs:
 
     - name: Publish Common to NuGet
       working-directory: ./src/dotnet/Common
-      run: dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push ./nupkg/*.Common.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+
+    - name: Publish Configuration to NuGet
+      working-directory: ./src/dotnet/Configuration
+      run: dotnet nuget push ./nupkg/*.Configuration.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
 
     - name: Publish CoreClient to NuGet
       working-directory: ./src/dotnet/CoreClient
-      run: dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push ./nupkg/*.Client.Core.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
 
     - name: Publish ManagementClient to NuGet
       working-directory: ./src/dotnet/ManagementClient
-      run: dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push ./nupkg/*.Client.Management.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json

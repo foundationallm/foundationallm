@@ -49,10 +49,10 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <param name="instanceId">The id of the instance.</param>
         /// <param name="messageId">The id of the message to rate.</param>
         /// <param name="sessionId">The id of the session to which the message belongs.</param>
-        /// <param name="rating">The rating to assign to the message.</param>
+        /// <param name="ratingRequest">The rating and optional comments to assign to the message.</param>
         [HttpPost("{sessionId}/message/{messageId}/rate", Name = "RateMessage")]
-        public async Task<Message> RateMessage(string instanceId, string messageId, string sessionId, bool? rating) =>
-            await _coreService.RateMessageAsync(instanceId, messageId, sessionId, rating);
+        public async Task<Message> RateMessage(string instanceId, string messageId, string sessionId, [FromBody] MessageRatingRequest ratingRequest) =>
+            await _coreService.RateMessageAsync(instanceId, messageId, sessionId, ratingRequest);
 
         /// <summary>
         /// Returns the completion prompt for a given session and completion prompt id.

@@ -15,7 +15,7 @@ export type ResourceProviderGetResult<T> = {
 	roles: string[];
 };
 
-export interface Citation {
+export interface ContentArtifact {
 	id: string;
 	title: string;
 	filepath: string;
@@ -58,13 +58,20 @@ export interface Message {
 	tokens: number;
 	text: string;
 	rating: boolean | null;
+	ratingComments: string | null;
 	vector: Array<Number>;
 	completionPromptId: string | null;
-	citations: Array<Citation>;
+	contentArtifacts: Array<ContentArtifact>;
 	content: Array<MessageContent>;
 	attachments: Array<string>;
 	attachmentDetails: Array<AttachmentDetail>;
 	analysisResults: Array<AnalysisResult>;
+}
+
+export interface MessageRatingRequest
+{
+    rating: boolean | null;
+	comments: string | null;
 }
 
 export interface Session {

@@ -81,14 +81,35 @@ export const useAppStore = defineStore('app', {
 				return;
 			}
 
+			const sessionIdQuery = useNuxtApp().$router.currentRoute.value.query.chat;
+			if (!appConfigStore.showLastConversionOnStartup && !sessionIdQuery) {
+				this.sessions.unshift({
+					...this.getDefaultChatSessionProperties(),
+					id: 'new',
+					is_temp: true,
+					display_name: 'New Chat',
+				});
+
+				this.changeSession(this.sessions[0]);
+
+				this.sessions.push(...(await api.getSessions()));
+
+				await this.getUserProfiles();
+
+				return;
+			}
+
 			await this.getSessions();
 
-			if (this.sessions.length === 0) {
-				await this.addSession(this.getDefaultChatSessionProperties());
+			// If there is an existing session matching the one requested in the url, select it
+			// otherwise, if showLastConversionOnStartup is true there is a session available to show, select it
+			// otherwise, create a new session
+			const requestedSession = this.sessions.find((session: Session) => session.id === sessionId);
+
+			if (requestedSession) {
+				this.changeSession(requestedSession);
+			} else if (appConfigStore.showLastConversionOnStartup && this.sessions.length > 0) {
 				this.changeSession(this.sessions[0]);
-			} else {
-				const existingSession = this.sessions.find((session: Session) => session.id === sessionId);
-				this.changeSession(existingSession || this.sessions[0]);
 			}
 
 			await this.getUserProfiles();
@@ -114,6 +135,7 @@ export const useAppStore = defineStore('app', {
 				})
 				.replace(' ', 'T')
 				.replace('T', ' ');
+
 			return {
 				name: formattedNow,
 			};
@@ -234,11 +256,12 @@ export const useAppStore = defineStore('app', {
 		},
 
 		async getMessages() {
-			if (this.newSession && this.newSession.id === this.currentSession!.id) {
+			if ((this.newSession && this.newSession.id === this.currentSession!.id) || this.currentSession.is_temp) {
 				// This is a new session, no need to fetch messages.
 				this.currentMessages = [];
 				return;
 			}
+
 			const messagesResponse = await api.getMessages(this.currentSession.id);
 
 			// Temporarily filter out the duplicate streaming message instances
@@ -295,6 +318,7 @@ export const useAppStore = defineStore('app', {
 			const lastAssistantMessage = this.currentMessages
 				.filter((message) => message.sender === 'Agent')
 				.pop();
+
 			if (lastAssistantMessage) {
 				const agent = this.agents.find(
 					(agent) => agent.resource.name === lastAssistantMessage.senderDisplayName,
@@ -380,6 +404,11 @@ export const useAppStore = defineStore('app', {
 				renderId: Math.random(),
 			};
 			this.currentMessages.push(tempAssistantMessage);
+
+			if (this.currentSession.is_temp) {
+				const newSession = await this.addSession(this.getDefaultChatSessionProperties());
+				this.changeSession(newSession);
+			}
 
 			const initialSession = this.currentSession.id;
 			const message = await api.sendMessage(
@@ -481,19 +510,22 @@ export const useAppStore = defineStore('app', {
 		// 	}
 		// },
 
-		async rateMessage(messageToRate: Message, isLiked: Message['rating']) {
+		async rateMessage(messageToRate: Message) {
 			const existingMessage = this.currentMessages.find(
 				(message) => message.id === messageToRate.id,
 			);
 
 			// Preemptively rate the message for responsiveness, and revert the rating if the request fails.
 			const previousRating = existingMessage.rating;
-			existingMessage.rating = isLiked;
+			const previousRatingComments = existingMessage.ratingComments;
+			existingMessage.rating = messageToRate.rating;
+			existingMessage.ratingComments = messageToRate.ratingComments;
 
 			try {
-				await api.rateMessage(messageToRate, isLiked);
+				await api.rateMessage(messageToRate);
 			} catch (error) {
 				existingMessage.rating = previousRating;
+				existingMessage.ratingComments = previousRatingComments;
 			}
 		},
 
@@ -503,7 +535,7 @@ export const useAppStore = defineStore('app', {
 			const nuxtApp = useNuxtApp();
 			const appConfigStore = useAppConfigStore();
 
-			if (appConfigStore.isKioskMode) {
+			if (appConfigStore.isKioskMode || newSession.is_temp) {
 				nuxtApp.$router.push({ query: {} });
 			} else {
 				const query = { chat: newSession.id };

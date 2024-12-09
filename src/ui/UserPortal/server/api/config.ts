@@ -30,11 +30,13 @@ const allowedKeys = [
 	'FoundationaLLM:Branding:NoAgentsMessage',
 	'FoundationaLLM:Branding:DefaultAgentWelcomeMessage',
 	'FoundationaLLM:Instance:Id',
+	'FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup',
 	'FoundationaLLM:UserPortal:Authentication:Entra:ClientId',
 	'FoundationaLLM:UserPortal:Authentication:Entra:Instance',
 	'FoundationaLLM:UserPortal:Authentication:Entra:TenantId',
 	'FoundationaLLM:UserPortal:Authentication:Entra:Scopes',
 	'FoundationaLLM:UserPortal:Authentication:Entra:CallbackPath',
+	'FoundationaLLM:UserPortal:Configuration:ShowMessageRating',
 	'FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions',
 ];
 

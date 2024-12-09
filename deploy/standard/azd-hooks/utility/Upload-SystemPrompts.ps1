@@ -56,6 +56,25 @@ $target = "https://$storageAccount.blob.core.windows.net/resource-provider/"
 $azcopy = "../../common/tools/azcopy/azcopy" | Get-AbsolutePath
 $sourcePath = '../../common/data/resource-provider' | Get-AbsolutePath
 
+Invoke-AndRequireSuccess "Create New OpenAI Assistant" {
+    $accountInfo = $(az resource show --ids $env:AZURE_OPENAI_ID --query "{resourceGroup:resourceGroup,name:name}" | ConvertFrom-Json)
+    $oaiApiKey = $(az cognitiveservices account keys list --name $accountInfo.name --resource-group $accountInfo.resourceGroup --query "key1" --output tsv)
+    $promptPath = "../data/resource-provider/FoundationaLLM.Prompt/FoundationaLLM.template.json" | Get-AbsolutePath
+    $promptText = $((Get-Content $promptPath) | ConvertFrom-Json).prefix
+    $oaiAssistantId = $(curl "https://$($accountInfo.name).openai.azure.com/openai/assistants?api-version=2024-05-01-preview" `
+        -H "api-key: $oaiApiKey" `
+        -H "Content-Type: application/json" `
+        -d "{
+            `"instructions`": `"$promptText`",
+            `"name`": `"FoundationaLLM - FoundationaLLM`",
+            `"tools`": [{`"type`": `"code_interpreter`"}, {`"type`": `"file_search`"}],
+            `"model`": `"completions4o`"
+        }" | ConvertFrom-Json).id
+
+    $agentPath = $('../../common/data/resource-provider/FoundationaLLM.Agent/FoundationaLLM.json' | Get-AbsolutePath)
+    (Get-Content $agentPath).Replace('{{oaiAssistantId}}', $oaiAssistantId) | Set-Content $agentPath
+}
+
 Write-Host "$azcopy copy `"$($sourcePath)/*`" $target --exclude-pattern .git* --recursive=True --overwrite=True"
 & $azcopy copy "$($sourcePath)/*" $target `
     --exclude-pattern .git* --recursive=True --overwrite=True

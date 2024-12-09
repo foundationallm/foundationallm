@@ -709,7 +709,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
             ResourceProviderUpsertOptions? options = null) =>
             resource switch
             {
-                VectorizationRequest vectorizationRequest => (TResult) await UpdateVectorizationRequest(resourcePath, vectorizationRequest, userIdentity),
+                VectorizationRequest vectorizationRequest => (await UpdateVectorizationRequest(resourcePath, vectorizationRequest, userIdentity) as TResult)!,
                 _ => throw new ResourceProviderException(
                     $"The type {nameof(T)} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
@@ -717,7 +717,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
 
         #region Helpers for UpsertResourceAsync<T>
 
-        private async Task<ResourceProviderUpsertResult> UpdateVectorizationRequest(ResourcePath resourcePath, VectorizationRequest request, UnifiedUserIdentity userIdentity)
+        private async Task<ResourceProviderUpsertResult<VectorizationRequest>> UpdateVectorizationRequest(ResourcePath resourcePath, VectorizationRequest request, UnifiedUserIdentity userIdentity)
         {
             request.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
             await PopulateRequestResourceFilePath(request);
@@ -748,7 +748,7 @@ namespace FoundationaLLM.Vectorization.ResourceProviders
                 default,
                 default);
 
-            return new ResourceProviderUpsertResult
+            return new ResourceProviderUpsertResult<VectorizationRequest>
             {
                 ObjectId = request.ObjectId,
                 ResourceExists = false

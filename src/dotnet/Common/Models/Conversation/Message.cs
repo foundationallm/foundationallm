@@ -64,6 +64,11 @@ public record Message
     public bool? Rating { get; set; }
 
     /// <summary>
+    /// The comments associated with the rating.
+    /// </summary>
+    public string? RatingComments { get; set; }
+
+    /// <summary>
     /// The UPN of the user who created the chat session.
     /// </summary>
     public string UPN { get; set; }
@@ -92,7 +97,7 @@ public record Message
     /// <summary>
     /// The sources associated with the completion prompt.
     /// </summary>
-    public Citation[]? Citations { get; set; }
+    public ContentArtifact[]? ContentArtifacts { get; set; }
 
     /// <summary>
     /// A list of results from the analysis.

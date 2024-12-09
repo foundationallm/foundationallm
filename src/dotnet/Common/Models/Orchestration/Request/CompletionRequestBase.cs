@@ -30,7 +30,7 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
         /// Represent the input or user prompt.
         /// </summary>
         [JsonPropertyName("user_prompt")]
-        public required string UserPrompt { get; init; }
+        public required string UserPrompt { get; set; }
 
         /// <summary>
         /// The message history associated with the completion request.

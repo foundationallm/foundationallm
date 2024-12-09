@@ -65,13 +65,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public AgentWorkflowBase? Workflow { get; set; }
 
         /// <summary>
-        /// Gets or sets a dictionary of tools that are registered with the agent.
+        /// Gets or sets a list of tools that are registered with the agent.
         /// </summary>
         /// <remarks>
         /// The key is the name of the tool, and the value is the <see cref="AgentTool"/> object.
         /// </remarks>
         [JsonPropertyName("tools")]
-        public Dictionary<string, AgentTool> Tools { get; set; } = [];
+        public AgentTool[] Tools { get; set; } = [];
 
         /// <summary>
         /// Gets or sets the object identifier of the virtual security group associated with the agent.

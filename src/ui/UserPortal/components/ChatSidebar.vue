@@ -289,7 +289,7 @@ export default {
 
 	computed: {
 		sessions() {
-			return this.$appStore.sessions;
+			return this.$appStore.sessions.filter((session) => !session.is_temp);
 		},
 
 		currentSession() {
@@ -307,7 +307,7 @@ export default {
 		}
 
 		// Listen for the agent change event.
-        eventBus.on('agentChanged', this.handleAddSession);
+		eventBus.on('agentChanged', this.handleAddSession);
 	},
 
 	methods: {

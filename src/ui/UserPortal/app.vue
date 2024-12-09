@@ -127,4 +127,42 @@ main {
 	border-color: var(--secondary-button-bg) !important;
 	color: var(--secondary-button-text) !important;
 }
+
+@media print {
+	body, html {
+		margin: 0;
+		padding: 0;
+	}
+
+	.chat-thread__messages {
+		display: flex !important;
+		height: auto !important;
+		align-items: stretch !important;
+	}
+
+	* {
+		overflow: visible !important;
+		height: auto !important;
+		print-color-adjust: exact;
+	}
+
+	.message__copy, .message__footer {
+		display: none !important;
+	}
+
+	main, .chat-app {
+		height: auto !important;
+	}
+
+	header, aside, footer, .chat-thread__input, .drop-files-here-container, .print-button {
+		display: none !important;
+	}
+
+	.message-row, .message__body {
+		page-break-inside: avoid;
+		page-break-after: auto;
+		margin-bottom: 1rem;
+	}
+}
+
 </style>

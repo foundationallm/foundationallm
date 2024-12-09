@@ -1,5 +1,6 @@
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.operations import OperationsManager
+from foundationallm.plugins import PluginManager
 from foundationallm.langchain.agents import (
     LangChainAgentBase,
     LangChainKnowledgeManagementAgent
@@ -13,6 +14,7 @@ class AgentFactory:
         self,
         agent_type: str,
         config: Configuration,
+        plugin_manager: PluginManager,
         operations_manager: OperationsManager,
         instance_id: str,
         user_identity: UserIdentity) -> LangChainAgentBase:
@@ -40,11 +42,12 @@ class AgentFactory:
         if agent_type is None:
             raise ValueError("Agent not constructed. Cannot access an object of 'NoneType'.")
         match agent_type:
-            case 'knowledge-management':                
+            case 'knowledge-management':
                 return LangChainKnowledgeManagementAgent(
                         instance_id=instance_id,
                         user_identity=user_identity,
                         config=config,
+                        plugin_manager=plugin_manager,
                         operations_manager=operations_manager)
             case _:
                 raise ValueError(f'The agent type {agent_type} is not supported.')

@@ -35,6 +35,6 @@ namespace FoundationaLLM.Common.Models.Conversation
         /// <summary>
         /// The sources used in the creation of the completion response.
         /// </summary>
-        public Citation[]? Citations { get; set; }
+        public ContentArtifact[]? ContentArtifacts { get; set; }
     }
 }
