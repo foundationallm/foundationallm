@@ -217,6 +217,11 @@
 
 <script lang="ts">
 import api from '@/js/api';
+import type {
+	AgentAccessToken,
+	ResourceProviderGetResult,
+	ResourceProviderUpsertResult
+} from '@/js/types';
 
 export default {
 	props: {
@@ -229,40 +234,64 @@ export default {
 	data() {
 		return {
 			loadingAccessTokens: false,
-			accessTokens: [],
+			accessTokens: [] as AgentAccessToken[],
 
-			accessToken: null,
-			resourceKey: null,
+			accessToken: null as AgentAccessToken | null,
+			resourceKey: null as string | null,
 
 			loadingCreateAccessToken: false,
 			createAccessTokenDialogOpen: false,
 
 			loadingDeleteAccessToken: false,
-			accessTokenToDelete: null,
+			accessTokenToDelete: null as AgentAccessToken | null,
 		};
 	},
 
 	async created() {
 		this.resetAccessToken();
-		await this.fetchAccessTokens();
+	},
+
+	watch: {
+		agentName: {
+			immediate: true,
+			deep: true,
+			async handler(newVal) {
+				if (newVal) {
+					await this.fetchAccessTokens();
+				}
+			},
+		},
 	},
 
 	methods: {
 		resetAccessToken() {
+			var newId = this.generateGuid();
 			this.accessToken = {
-				id: null,
-				name: null,
+				id: newId,
+				object_id: '',
+				type: '',
+				name: newId,
+				display_name: '',
 				description: '',
+				cost_center: '',
 				expiration_date: new Date(new Date().setDate(new Date().getDate() + 120)),
 				active: true,
 			};
 			this.resourceKey = null;
 		},
 
+		generateGuid() {
+			return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+				const r = (Math.random() * 16) | 0,
+					v = c === 'x' ? r : (r & 0x3) | 0x8;
+				return v.toString(16);
+			});
+		},
+
 		async fetchAccessTokens() {
 			this.loadingAccessTokens = true;
-			const accessTokensResponse = await api.getAgentAccessTokens();
-			this.accessTokens = accessTokensResponse.map((result) => result.resource);
+			const accessTokensResponse = await api.getAgentAccessTokens(this.agentName);
+			this.accessTokens = (accessTokensResponse as ResourceProviderGetResult<AgentAccessToken>[]).map((result: ResourceProviderGetResult<AgentAccessToken>) => result.resource);
 			this.loadingAccessTokens = false;
 		},
 
@@ -272,19 +301,32 @@ export default {
 		},
 
 		handleCopyResourceKey() {
-			navigator.clipboard.writeText(this.resourceKey);
-			this.$toast.add({
-				severity: 'success',
-				detail: 'Access token key copied to clipboard!',
-				life: 5000,
-			});
+			if (this.resourceKey !== null) {
+				navigator.clipboard.writeText(this.resourceKey);
+				this.$toast.add({
+					severity: 'success',
+					detail: 'Access token key copied to clipboard!',
+					life: 5000,
+				});
+			}
+			else {
+				this.$toast.add({
+					severity: 'error',
+					summary: 'Error',
+					detail: 'Failed to copy access token key. Please try again.',
+					life: 5000,
+				});
+			}
 		},
 
 		handleSaveResourceKey() {
+			if (this.resourceKey === null) {
+				return;
+			}
 			const link = document.createElement('a');
 			const file = new Blob([this.resourceKey], { type: 'text/plain' });
 			link.href = URL.createObjectURL(file);
-			link.download = `${this.agentName}-${this.accessToken.description}-key.txt`.replace(/\s+/g, '-');
+			link.download = `${this.agentName}-${this.accessToken?.description}-key.txt`.replace(/\s+/g, '-');
 			link.click();
 			URL.revokeObjectURL(link.href);
 		},
@@ -292,12 +334,22 @@ export default {
 		async handleDeleteAccessToken() {
 			this.loadingDeleteAccessToken = true;
 			try {
+				if (!this.accessTokenToDelete) {
+					this.$toast.add({
+						severity: 'error',
+						summary: 'Error',
+						detail: 'Failed to delete access token. Please try again.',
+						life: 5000,
+					});
+					return;
+				}
+
 				await api.deleteAgentAccessToken(this.agentName, this.accessTokenToDelete.name);
 
 				this.$toast.add({
 					severity: 'success',
 					summary: 'Success',
-					detail: 'Successfully delete access token.',
+					detail: 'Successfully deleted access token.',
 					life: 5000,
 				});
 
@@ -318,11 +370,11 @@ export default {
 
 		async handleCreateAccessToken() {
 			const errors = [];
-			if (!this.accessToken.description) {
+			if (!this.accessToken?.description) {
 				errors.push('Please give the access token a description.');
 			}
 
-			if (!this.accessToken.expiration_date) {
+			if (!this.accessToken?.expiration_date) {
 				errors.push('Please make sure the access token has an expiration date.');
 			}
 
@@ -338,8 +390,18 @@ export default {
 
 			this.loadingCreateAccessToken = true;
 			try {
-				const { resource } = await api.createAgentAccessToken(this.agentName, this.accessToken);
-				this.resourceKey = resource;
+				if (!this.accessToken) {
+					this.$toast.add({
+						severity: 'error',
+						summary: 'Error',
+						detail: 'Failed to create access token. Please try again.',
+						life: 5000,
+					});
+					return;
+				}
+
+				const result = await api.createAgentAccessToken(this.agentName, this.accessToken) as ResourceProviderUpsertResult;
+				this.resourceKey = result.resource;
 
 				this.$toast.add({
 					severity: 'success',
@@ -351,12 +413,12 @@ export default {
 				this.loadingCreateAccessToken = false;
 				await this.fetchAccessTokens();
 			} catch (error) {
-					this.$toast.add({
-						severity: 'error',
-						summary: 'Error',
-						detail: 'Failed to create access token. Please try again.',
-						life: 5000,
-					});
+				this.$toast.add({
+					severity: 'error',
+					summary: 'Error',
+					detail: 'Failed to create access token. Please try again.',
+					life: 5000,
+				});
 			}
 			this.loadingCreateAccessToken = false;
 		},
