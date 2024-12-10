@@ -284,7 +284,7 @@ export default {
 			const link = document.createElement('a');
 			const file = new Blob([this.resourceKey], { type: 'text/plain' });
 			link.href = URL.createObjectURL(file);
-			link.download = `${this.agentName}-${this.accessToken.description}-key.txt`;
+			link.download = `${this.agentName}-${this.accessToken.description}-key.txt`.replace(/\s+/g, '-');
 			link.click();
 			URL.revokeObjectURL(link.href);
 		},
