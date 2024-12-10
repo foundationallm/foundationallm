@@ -4,11 +4,11 @@ using FoundationaLLM.AuthorizationEngine.Models;
 using FoundationaLLM.AuthorizationEngine.Models.Configuration;
 using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.ResourceProviders;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
-using FoundationaLLM.Common.Models.Security;
 using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Utils;
 using Konscious.Security.Cryptography;
@@ -626,6 +626,12 @@ namespace FoundationaLLM.AuthorizationEngine.Services
         /// <inheritdoc/>
         public async Task<string?> UpsertSecretKey(string instanceId, SecretKey secretKey)
         {
+            if (string.IsNullOrWhiteSpace(secretKey.Id)
+                || !Guid.TryParse(secretKey.Id, out var keyId)
+                || string.IsNullOrWhiteSpace(secretKey.InstanceId)
+                || string.IsNullOrWhiteSpace(secretKey.ContextId))
+                throw new AuthorizationException("The secret key is invalid.");
+
             if (_secretKeyStores.TryGetValue(instanceId, out var secretKeyStore))
             {
                 // Fill information into persisted key
@@ -645,12 +651,11 @@ namespace FoundationaLLM.AuthorizationEngine.Services
 
                     if (existingKey != null)
                     {
-                        await PersistSecretKey(persistedSecretKey);
+                        await PersistSecretKey(persistedSecretKey, false);
                         return null;
                     }
                 }
 
-                var keyId = new Guid(secretKey.Id);
                 var rand = RandomNumberGenerator.Create();
 
                 var secretBytes = new byte[128];
@@ -672,17 +677,23 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                 var hashBytes = argon2.GetBytes(128);
                 var hash = Base58.Encode(hashBytes);
 
-                // Construct client key
-                var clientKey = new ClientSecretKey() { Id = keyId, InstanceId = instanceId, ClientSecret = secret };
-
                 // Save this API key salt and hash the key vault
                 await _azureKeyVaultService.SetSecretValueAsync(persistedSecretKey.SaltKeyVaultSecretName, salt);
                 await _azureKeyVaultService.SetSecretValueAsync(persistedSecretKey.HashKeyVaultSecretName, hash);
 
-                await PersistSecretKey(persistedSecretKey);
+                await PersistSecretKey(persistedSecretKey, true);
 
-                // Return the client's key to them
-                return clientKey.ToApiKeyString(secretKey.ContextId);
+                // Construct client key
+                var clientSecretKey = new ClientSecretKey()
+                {
+                    InstanceId = persistedSecretKey.InstanceId,
+                    ContextId = persistedSecretKey.ContextId,
+                    Id = persistedSecretKey.Id,
+                    ClientSecret = secret
+                };
+
+                // Return the string representation of the client key
+                return clientSecretKey.ClientSecretString;
             }
 
             return null;
@@ -729,29 +740,17 @@ namespace FoundationaLLM.AuthorizationEngine.Services
         }
 
         /// <inheritdoc/>
-        public async Task<SecretKeyValidationResult> ValidateSecretKey(string instanceId, string contextId, string secretKeyValue)
+        public async Task<SecretKeyValidationResult> ValidateSecretKey(ClientSecretKey clientSecretKey)
         {
-            if (string.IsNullOrWhiteSpace(secretKeyValue))
-            {
-                _logger.LogWarning("Secret key is null or empty.");
-                return new SecretKeyValidationResult() { Valid = false };
-            }
-
-            if (!TryParseKey(secretKeyValue, contextId, "keya", "ayek", ".", out var clientApiKey, out var message))
-            {
-                _logger.LogWarning(message ?? "Secret key could not be parsed.");
-                return new SecretKeyValidationResult() { Valid = false };
-            }
-
             // Fetch the matching persisted key
-            var persistedApiKey = await GetPersistedSecretKey(instanceId, contextId, clientApiKey!.Id);
-            if (persistedApiKey == null)
+            var persistedSecretKey = await GetPersistedSecretKey(clientSecretKey.InstanceId, clientSecretKey.ContextId, clientSecretKey.Id);
+            if (persistedSecretKey == null)
             {
-                _logger.LogWarning("Repository does not contain a key matching this ID.");
+                _logger.LogWarning($"The key with id {clientSecretKey.Id} was not found in instance {clientSecretKey.InstanceId} and context {clientSecretKey.ContextId}.");
                 return new SecretKeyValidationResult() { Valid = false };
             }
 
-            if (TestKeys(clientApiKey, persistedApiKey))
+            if (TestKeys(clientSecretKey, persistedSecretKey))
             {
                 return new SecretKeyValidationResult() { Valid = true };
             }
@@ -764,7 +763,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
 
         #endregion
 
-        private async Task PersistSecretKey(PersistedSecretKey persistedSecretKey)
+        private async Task PersistSecretKey(PersistedSecretKey persistedSecretKey, bool newKey)
         {
             var secretKeysStoreFile = $"/{persistedSecretKey.InstanceId.ToLower()}-secret-keys.json";
 
@@ -808,54 +807,6 @@ namespace FoundationaLLM.AuthorizationEngine.Services
             }
         }
 
-        private static bool TryParseKey(string key, string contextId, string prefix, string suffix, string separator, out ClientSecretKey? value, out string? message)
-        {
-            value = null;
-
-            var agentName = contextId.Split("~").Last();
-
-            if (string.IsNullOrWhiteSpace(key))
-            {
-                message = "Key is null or empty.";
-                return false;
-            }
-
-            if (!key.StartsWith($"{prefix}{separator}"))
-            {
-                message = $"This does not look like an API key (missing prefix {prefix}).";
-                return false;
-            }
-
-            if (!key.EndsWith($"{separator}{suffix}"))
-            {
-                message = "This key was truncated and is missing some data.";
-                return false;
-            }
-
-            var pos = key.IndexOf(separator, prefix.Length + agentName.Length + 2);
-            if (pos <= 0)
-            {
-                message = "Key and client secret are not properly delimited.";
-                return false;
-            }
-
-            // Extract the key ID and client secret
-            var keyId = key[(prefix.Length + agentName.Length + 2)..pos];
-            if (!TryDecode(keyId, 16, out var keyBytes))
-            {
-                message = "Key ID is not properly formatted.";
-                return false;
-            }
-            var keyGuid = new Guid(keyBytes);
-            var clientSecret = key.Substring(pos + 1, key.Length - suffix.Length - pos - 2);
-
-            // Construct a new valid key
-            value = new ClientSecretKey() { Id = keyGuid, InstanceId = string.Empty, ClientSecret = clientSecret };
-
-            message = null;
-            return true;
-        }
-
         private static bool TryDecode(string text, int expectedLength, out byte[] bytes)
         {
             bytes = Array.Empty<byte>();
@@ -896,7 +847,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
             return string.Equals(computedHash, persistedSecretKey.Hash);
         }
 
-        private async Task<PersistedSecretKey?> GetPersistedSecretKey(string instanceId, string contextId, Guid secretKeyId)
+        private async Task<PersistedSecretKey?> GetPersistedSecretKey(string instanceId, string contextId, string secretKeyId)
         {
             if (_secretKeyStores.TryGetValue(instanceId, out var secretKeyStore))
             {

@@ -1,7 +1,6 @@
-﻿using FoundationaLLM.Common.Models.Authorization;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
-namespace FoundationaLLM.Common.Models.Security
+namespace FoundationaLLM.Common.Models.Authorization
 {
     /// <summary>
     /// Represents a persisted secret key.

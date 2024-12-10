@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens;
 using Microsoft.AspNetCore.Authentication;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -90,15 +92,12 @@ namespace FoundationaLLM.Common.Authentication
             if (_agentResourceProvider == null)
                 return result;
 
-            var parts = agentAccessToken.Split('.');
-
-            if (parts.Length < 4
-                || parts.Any(p => string.IsNullOrWhiteSpace(p)))
+            if (!ClientSecretKey.TryParse<AgentClientSecretKey>(agentAccessToken, out AgentClientSecretKey? agentClientSecretKey)
+                || agentClientSecretKey == null)
                 return result;
 
-
             var serializedResult = await _agentResourceProvider.HandlePostAsync(
-                $"instances/{string.Empty}/providers/{ResourceProviderNames.FoundationaLLM_Agent}/{AgentResourceTypeNames.Agents}/{string.Empty}/{AgentResourceTypeNames.AgentAccessTokens}/{ResourceProviderActions.Validate}",
+                $"instances/{agentClientSecretKey.InstanceId}/providers/{ResourceProviderNames.FoundationaLLM_Agent}/{AgentResourceTypeNames.Agents}/{agentClientSecretKey.AgentName}/{AgentResourceTypeNames.AgentAccessTokens}/{ResourceProviderActions.Validate}",
                 JsonSerializer.Serialize(
                     new AgentAccessTokenValidationRequest
                     {

@@ -80,14 +80,12 @@ namespace FoundationaLLM.AuthorizationEngine.Interfaces
         /// <summary>
         /// Validates a secret key value.
         /// </summary>
-        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
-        /// <param name="contextId">The identifier of the context containing the secret key to validate.</param>
-        /// <param name="secretKeyValue">The secret value of the key.</param>
+        /// <param name="clientSecretKey">The <see cref="ClientSecretKey"/> containing the secret key value to validate.</param>
         /// <returns>A <see cref="SecretKeyValidationResult"/> item with the results of the validation.</returns>
         /// <remarks>
         /// Each valid secret key has an associated virtual identity that is returned in the <see cref="SecretKeyValidationResult.VirtualIdentity"/> property.
         /// It is the responsibility of the caller to use the virtual identity to authorize the request.
         /// </remarks>
-        Task<SecretKeyValidationResult> ValidateSecretKey(string instanceId, string contextId, string secretKeyValue);
+        Task<SecretKeyValidationResult> ValidateSecretKey(ClientSecretKey clientSecretKey);
     }
 }

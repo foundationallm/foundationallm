@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Models.Security;
+﻿using FoundationaLLM.Common.Models.Authorization;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.AuthorizationEngine.Models

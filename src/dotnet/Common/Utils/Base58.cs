@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace FoundationaLLM.AuthorizationEngine.Models
+namespace FoundationaLLM.Common.Utils
 {
     public static class Base58
     {

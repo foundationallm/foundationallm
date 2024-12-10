@@ -1,5 +1,5 @@
 ﻿using FoundationaLLM.AuthorizationEngine.Models;
-using FoundationaLLM.Common.Models.Security;
+using FoundationaLLM.Common.Models.Authorization;
 using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

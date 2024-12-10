@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.AuthorizationEngine.Interfaces;
 using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Models.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,8 +40,16 @@ namespace FoundationaLLM.Authorization.API.Controllers
         }
 
         [HttpPost("{contextId}")]
-        public async Task<IActionResult> ValidateSecretKey(string instanceId, string contextId, string secretKeyValue) =>
-            new OkObjectResult(
-                await _authorizationCore.ValidateSecretKey(instanceId, contextId, secretKeyValue));
+        public async Task<IActionResult> ValidateSecretKey(string instanceId, string contextId, string secretKeyValue)
+        {
+            if (!ClientSecretKey.TryParse<ClientSecretKey>(secretKeyValue, out var clientSecretKey)
+                || clientSecretKey == null)
+            {
+                throw new AuthorizationException("The client secret key is invalid.");
+            }
+
+            return new OkObjectResult(
+                await _authorizationCore.ValidateSecretKey(clientSecretKey));
+        }
     }
 }

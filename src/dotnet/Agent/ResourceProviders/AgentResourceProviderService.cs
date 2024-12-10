@@ -97,7 +97,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         IncludeRoles = resourcePath.IsResourceTypePath,
                     }),
                 AgentResourceTypeNames.AgentAccessTokens => await LoadAgentAccessTokens(
-                    resourcePath.MainResourceId!)!,
+                    resourcePath)!,
                 AgentResourceTypeNames.Files => await LoadAgentFiles(
                     resourcePath.MainResourceId!)!,
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
@@ -143,7 +143,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 AgentResourceTypeNames.AgentAccessTokens => resourcePath.Action switch
                 {
                     ResourceProviderActions.Validate => await ValidateAgentAccessToken(
-                        resourcePath.MainResourceId!,
+                        resourcePath,
                         JsonSerializer.Deserialize<AgentAccessTokenValidationRequest>(serializedAction)!,
                         userIdentity),
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
@@ -442,11 +442,20 @@ namespace FoundationaLLM.Agent.ResourceProviders
             };
         }
 
-        private async Task<List<ResourceProviderGetResult<AgentAccessToken>>> LoadAgentAccessTokens(string agentName)
+        private async Task<List<ResourceProviderGetResult<AgentAccessToken>>> LoadAgentAccessTokens(ResourcePath resourcePath)
         {
-            var contextId = GetContextIdFromAgentName(agentName);
+            var agentClientSecretKey = new AgentClientSecretKey
+            {
+                InstanceId = resourcePath.InstanceId!,
+                ContextId = string.Empty,
+                Id = string.Empty,
+                ClientSecret = string.Empty
+            };
+            agentClientSecretKey.SetContextId(resourcePath.MainResourceId!);
 
-            var secretKeys = await _authorizationServiceClient.GetSecretKeys(_instanceSettings.Id, contextId);
+            var secretKeys = await _authorizationServiceClient.GetSecretKeys(
+                agentClientSecretKey.InstanceId,
+                agentClientSecretKey.ContextId);
 
             return secretKeys.Select(k => new ResourceProviderGetResult<AgentAccessToken>()
             {
@@ -465,23 +474,30 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
         private async Task<ResourceProviderUpsertResult> UpdateAgentAccessToken(ResourcePath resourcePath, string serializedAgentAccessToken)
         {
-            var contextId = GetContextIdFromAgentName(resourcePath.MainResourceId!);
-
             var agentAccessToken = JsonSerializer.Deserialize<AgentAccessToken>(serializedAgentAccessToken)
                 ?? throw new ResourceProviderException("The object definition is invalid.",
                     StatusCodes.Status400BadRequest);
 
+            var agentClientSecretKey = new AgentClientSecretKey
+            {
+                InstanceId = resourcePath.InstanceId!,
+                ContextId = string.Empty,
+                Id = resourcePath.ResourceId!,
+                ClientSecret = string.Empty
+            };
+            agentClientSecretKey.SetContextId(resourcePath.MainResourceId!);
+
             var secretKeyValue = await _authorizationServiceClient.UpsertSecretKey(_instanceSettings.Id, new SecretKey()
             {
-                Id = agentAccessToken.Id.ToString(),
-                InstanceId = _instanceSettings.Id,
-                ContextId = contextId,
+                Id = agentClientSecretKey.Id,
+                InstanceId = agentClientSecretKey.InstanceId,
+                ContextId = agentClientSecretKey.ContextId,
                 Description = agentAccessToken.Description!,
                 Active = agentAccessToken.Active,
                 ExpirationDate = agentAccessToken.ExpirationDate!.Value
             });
 
-            agentAccessToken.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
+            agentAccessToken.ObjectId = resourcePath.RawResourcePath;
 
             return new ResourceProviderUpsertResult
             {
@@ -493,24 +509,47 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
         private async Task DeleteAgentAccessToken(ResourcePath resourcePath)
         {
-            var contextId = GetContextIdFromAgentName(resourcePath.MainResourceId!);
+            var agentClientSecretKey = new AgentClientSecretKey
+            {
+                InstanceId = resourcePath.InstanceId!,
+                ContextId = string.Empty,
+                Id = resourcePath.ResourceId!,
+                ClientSecret = string.Empty
+            };
+            agentClientSecretKey.SetContextId(resourcePath.MainResourceId!);
 
-            await _authorizationServiceClient.DeleteSecretKey(_instanceSettings.Id, contextId, secretKeyId: resourcePath.ResourceId!);
+            await _authorizationServiceClient.DeleteSecretKey(
+                agentClientSecretKey.InstanceId,
+                agentClientSecretKey.ContextId,
+                agentClientSecretKey.Id);
         }
 
-        private async Task<AgentAccessTokenValidationResult> ValidateAgentAccessToken(string agentName,
-            AgentAccessTokenValidationRequest agentAccessTokenValidationRequest, UnifiedUserIdentity userIdentity)
+        private async Task<AgentAccessTokenValidationResult> ValidateAgentAccessToken(
+            ResourcePath resourcePath,
+            AgentAccessTokenValidationRequest agentAccessTokenValidationRequest,
+            UnifiedUserIdentity userIdentity)
         {
-            var contextId = GetContextIdFromAgentName(agentName);
+            var fallabckResult = new AgentAccessTokenValidationResult()
+            {
+                Valid = false
+            };
 
-            var result = await _authorizationServiceClient.ValidateSecretKey(_instanceSettings.Id, contextId, agentAccessTokenValidationRequest.AccessToken);
+            if (!ClientSecretKey.TryParse<AgentClientSecretKey>(agentAccessTokenValidationRequest.AccessToken, out AgentClientSecretKey? agentClientSecretKey)
+                || agentClientSecretKey == null
+                || StringComparer.OrdinalIgnoreCase.Equals(agentClientSecretKey.AgentName, resourcePath.MainResourceId))
+                return fallabckResult;
+
+            var result = await _authorizationServiceClient.ValidateSecretKey(
+                resourcePath.InstanceId!,
+                agentClientSecretKey.ContextId,
+                agentAccessTokenValidationRequest.AccessToken);
 
             if (result.Valid)
             {
                 // Set virtual identity
-                var agent = await GetResourceAsync<AgentBase>($"/instances/{_instanceSettings.Id}/providers/{_name}/{AgentResourceTypeNames.Agents}/{agentName}", userIdentity);
+                var agent = await GetResourceAsync<AgentBase>($"/instances/{_instanceSettings.Id}/providers/{_name}/{AgentResourceTypeNames.Agents}/{agentClientSecretKey.AgentName}", userIdentity);
                 var upn =
-                    $"aat_{agentName}_{GetTokenIdFromAgentAccessToken(agentAccessTokenValidationRequest.AccessToken)}@foundationallm.internal_";
+                    $"aat_{agentClientSecretKey.AgentName}_{agentClientSecretKey.Id}@foundationallm.internal_";
                 result.VirtualIdentity = new UnifiedUserIdentity()
                 {
                     UserId = Guid.NewGuid().ToString(),
@@ -598,22 +637,6 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 throw new ResourceProviderException($"The resource {resourceName} cannot be deleted because it was either already deleted or does not exist.",
                     StatusCodes.Status404NotFound);
             }
-        }
-
-        private string GetContextIdFromAgentName(string agentName) =>
-            $"_instances_{_instanceSettings.Id}_providers_{_name}_{AgentResourceTypeNames.Agents}~{agentName}";
-
-        private string GetTokenIdFromAgentAccessToken(string agentAccessToken)
-        {
-            var tokenId = "";
-            var parts = agentAccessToken.Split('.');
-
-            if (parts.Length > 3)
-            {
-                tokenId = parts[2]; // The token ID exists between the second and third periods.
-            }
-
-            return tokenId;
         }
 
         #endregion
