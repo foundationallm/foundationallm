@@ -165,5 +165,7 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
             var coreClient = await GetCoreClientAsync();
             await coreClient.DeleteAsync($"instances/{_instanceId}/sessions/{sessionId}");
         }
+
+        public Task RateMessageAsync(string sessionId, string messageId, bool rating) => throw new NotImplementedException();
     }
 }

@@ -42,8 +42,7 @@ namespace FoundationaLLM.Common.Middleware
             IUserClaimsProviderService claimsProviderService,
             IIdentityManagementService identityManagementService,
             ICallContext callContext,
-            IOptions<InstanceSettings> instanceSettings,
-            IEnumerable<IResourceProviderService> resourceProviderServices)
+            IOptions<InstanceSettings> instanceSettings)
         {
             if (context.User is { Identity.IsAuthenticated: true })
             {
@@ -105,27 +104,6 @@ namespace FoundationaLLM.Common.Middleware
                 {
                     callContext.CurrentUserIdentity = JsonSerializer.Deserialize<UnifiedUserIdentity>(serializedIdentity)!;
                 }
-
-                if (context.Request.Headers.TryGetValue(Constants.HttpHeaders.AgentAccessToken, out var agentAccessToken))
-                {
-                    if (!string.IsNullOrWhiteSpace(agentAccessToken.ToString()))
-                    {
-                        var agentAccessTokenValue = agentAccessToken.ToString();
-                        // The agent access token is used to handle requests to authenticate FoundationaLLM agents.
-
-                        var validationResult = await ValidateAgentAccessToken(agentAccessTokenValue, callContext, instanceSettings, resourceProviderServices);
-
-                        if (!validationResult.Valid)
-                        {
-                            context.Response.StatusCode = StatusCodes.Status403Forbidden;
-                            await context.Response.WriteAsync("Access denied. Invalid agent access token.");
-                            return; // Short-circuit the request pipeline.
-                        }
-
-                        // Assign the virtual identity to the call context:
-                        callContext.CurrentUserIdentity = validationResult.VirtualIdentity;
-                    }
-                }
             }
 
             callContext.InstanceId = context.Request.RouteValues["instanceId"] as string;
@@ -141,50 +119,6 @@ namespace FoundationaLLM.Common.Middleware
 
             // Call the next delegate/middleware in the pipeline:
             await _next(context);
-        }
-
-        private async Task<AgentAccessTokenValidationResult> ValidateAgentAccessToken(string agentAccessToken, ICallContext callContext,
-            IOptions<InstanceSettings> instanceSettings,
-            IEnumerable<IResourceProviderService> resourceProviderServices)
-        {
-            var result = new AgentAccessTokenValidationResult
-            {
-                Valid = false,
-                VirtualIdentity = null
-            };
-            var providerServices = resourceProviderServices.ToList();
-            if (providerServices.Any(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Agent))
-            {
-                var agentResourceProvider =
-                    providerServices.Single(rps =>
-                        rps.Name == ResourceProviderNames.FoundationaLLM_Agent);
-                var request = new AgentAccessTokenValidationRequest
-                {
-                    AccessToken = agentAccessToken
-                };
-                var agentName = "";
-                var parts = agentAccessToken.Split('.');
-
-                if (parts.Length > 2)
-                {
-                    agentName = parts[1]; // The agent name exists between the first two periods.
-                }
-
-                if (string.IsNullOrWhiteSpace(agentName))
-                {
-                    return result;
-                }
-
-                var serializedResult = await agentResourceProvider.HandlePostAsync(
-                    $"instances/{instanceSettings.Value.Id}/providers/{ResourceProviderNames.FoundationaLLM_Agent}/{AgentResourceTypeNames.Agents}/{agentName}/{AgentResourceTypeNames.AgentAccessTokens}/{ResourceProviderActions.Validate}",
-                    JsonSerializer.Serialize(request),
-                    null,
-                    DefaultAuthentication.ServiceIdentity);
-
-                return serializedResult as AgentAccessTokenValidationResult ?? result;
-            }
-
-            return result;
         }
     }
 

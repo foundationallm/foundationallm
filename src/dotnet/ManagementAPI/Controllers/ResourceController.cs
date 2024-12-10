@@ -1,6 +1,8 @@
-﻿using FoundationaLLM.Common.Exceptions;
+﻿using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +14,9 @@ namespace FoundationaLLM.Management.API.Controllers
     /// <param name="callContext">The call context containing user identity details.</param>
     /// <param name="resourceProviderServices">The list of <see cref="IResourceProviderService"/> resource providers.</param>
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
-    [Authorize(Policy = "DefaultPolicy")]
+    [Authorize(
+        AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
+        Policy = AuthorizationPolicyNames.MicrosoftEntraIDStandard)]
     [ApiController]
     [Consumes("application/json","multipart/form-data")]
     [Produces("application/json")]

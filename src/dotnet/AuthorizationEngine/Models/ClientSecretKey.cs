@@ -10,7 +10,12 @@
         /// <summary>
         /// The unique identifier of this API key.
         /// </summary>
-        public Guid ApiKeyId { get; set; }
+        public Guid Id { get; set; }
+
+        /// <summary>
+        /// The FoundationaLLM instance identifier this key is associated with.
+        /// </summary>
+        public required string InstanceId { get; set; }
 
         /// <summary>
         /// The client secret portion of this key.  This is information only supposed to be held in
@@ -25,10 +30,10 @@
         /// <returns></returns>
         public string ToApiKeyString(string contextId)
         {
-            var idBytes = ApiKeyId.ToByteArray();
+            var idBytes = Id.ToByteArray();
             var idString = Base58.Encode(idBytes);
             var agentName = contextId.Split("~").Last();
-            return $"keya.{agentName}.{idString}.{ClientSecret}.ayek";
+            return $"keya.{InstanceId}.{agentName}.{idString}.{ClientSecret}.ayek";
         }
     }
 }

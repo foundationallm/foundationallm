@@ -21,6 +21,9 @@ using Microsoft.Identity.Web;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authentication;
+using FoundationaLLM.Common.Constants.Authorization;
+using Microsoft.Graph.Models;
 
 namespace FoundationaLLM
 {
@@ -77,7 +80,7 @@ namespace FoundationaLLM
         }
 
         /// <summary>
-        /// Adds authentication configuration to the dependency injection container.
+        /// Adds Microsoft EntraID authentication configuration to the dependency injection container.
         /// </summary>
         /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder managing the dependency injection container.</param>
         /// <param name="entraInstanceConfigurationKey">The configuration key for the Entra ID instance.</param>
@@ -87,15 +90,16 @@ namespace FoundationaLLM
         /// <param name="policyName">The name of the authorization policy.</param>
         /// <param name="requireScopes">Indicates whether a scope claim (scp) is required for authorization.</param>
         /// <param name="allowACLAuthorization">Indicates whether tokens that do not have either of the "scp" or "roles" claims are accepted (True means they are accepted).</param>
-        public static void AddAuthenticationConfiguration(this IHostApplicationBuilder builder,
+        public static void AddMicrosoftEntraIDAuthentication(this IHostApplicationBuilder builder,
             string entraInstanceConfigurationKey,
             string entraTenantIdConfigurationKey,
             string entraClientIdConfigurationkey,
             string? entraScopesConfigurationKey,
-            string policyName = "DefaultPolicy",
+            string policyName = AuthorizationPolicyNames.MicrosoftEntraIDStandard,
             bool requireScopes = true,
             bool allowACLAuthorization = false)
         {
+            // Entra ID authentication configuration.
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApi(jwtOptions => { },
                     identityOptions =>
@@ -111,6 +115,7 @@ namespace FoundationaLLM
             // Configure the policy used by the API controllers:
             builder.Services.AddAuthorization(options =>
             {
+                // 
                 options.AddPolicy(policyName, policyBuilder =>
                 {
                     policyBuilder.RequireAuthenticatedUser();
@@ -126,6 +131,34 @@ namespace FoundationaLLM
                             throw new InvalidOperationException("Scopes are required but no valid scopes are configured.");
                         }
                     }
+                });
+            });
+        }
+
+        /// <summary>
+        /// Adds FoundationaLLM Agent Access Token authentication configuration to the dependency injection container.
+        /// </summary>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder managing the dependency injection container.</param>
+        public static void AddFoundationaLLMAgentAccessTokenAuthentication(this IHostApplicationBuilder builder)
+        {
+            // Agent access token authentication configuration.
+            builder.Services.AddAuthentication()
+                .AddScheme<AgentAccessTokenOptions, AgentAccessTokenAuthenticationHandler>(
+                    AgentAccessTokenDefaults.AuthenticationScheme, options => { })
+                .AddPolicyScheme("MultiSchemeAuthenticaiton", "Bearer, AgentAccessToken", options =>
+                {
+                    options.ForwardDefaultSelector = context =>
+                        context.Request.Headers.ContainsKey(HttpHeaders.AgentAccessToken)
+                            ? AgentAccessTokenDefaults.AuthenticationScheme
+                            : JwtBearerDefaults.AuthenticationScheme;
+                });
+
+            // Configure the policy used by the API controllers:
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy(AuthorizationPolicyNames.FoundationaLLMAgentAccessToken, policyBuilder =>
+                {
+                    policyBuilder.RequireAuthenticatedUser();
                 });
             });
         }
