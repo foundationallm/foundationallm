@@ -714,10 +714,6 @@ export default {
 	max-width: 80ch;
 }
 
-.branding-color-input {
-	width: 30ch;
-}
-
 .logo-preview {
 	display: flex;
 	justify-content: center;
@@ -759,21 +755,6 @@ export default {
 
 .color-wcag-result-value {
 	color: #000;
-}
-
-.color-input-container {
-	display: flex;
-	align-items: center;
-}
-
-.color-picker {
-	width: 50px;
-}
-
-.color-undo-button {
-	border: 2px solid #e1e1e1;
-	border-width: 2px 2px 2px 0;
-	width: 50px;
 }
 
 .p-colorpicker-preview {
