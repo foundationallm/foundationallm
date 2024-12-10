@@ -199,11 +199,6 @@ import api from '@/js/api';
 
 export default {
 	props: {
-		visible: {
-			type: Boolean,
-			required: true,
-		},
-
 		agentName: {
 			type: String,
 			required: true,
