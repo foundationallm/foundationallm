@@ -136,8 +136,16 @@ main {
 	display: flex;
 }
 
+.flex-column {
+	flex-direction: column;
+}
+
 .align-center {
 	align-items: center;
+}
+
+.justify-content-center {
+	justify-content: center;
 }
 
 .justify-content-end {
