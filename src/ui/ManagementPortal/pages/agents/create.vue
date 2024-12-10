@@ -702,10 +702,19 @@
 					aria-labelledby="aria-persona"
 				/>
 			</div>
+
+			<!-- Virtual security group id -->
 			<template v-if="virtualSecurityGroupId">
 				<div class="step-header">Agent's Virtual Security Group ID</div>
-				<div class="span-2 virtual-security-group-id__container">
-					<p class="virtual-security-group-id">{{ virtualSecurityGroupId }}</p>
+				<div class="span-2" style="display: flex; gap: 16px">
+					<InputText
+						:value="virtualSecurityGroupId"
+						disabled
+						type="text"
+						class="w-50"
+						placeholder="Enter cost center name"
+						aria-labelledby="aria-cost-center"
+					/>
 					<Button
 						label="Copy"
 						severity="primary"
@@ -713,6 +722,8 @@
 					/>
 				</div>
 			</template>
+
+			<!-- Submit -->
 			<div class="button-container column-2 justify-self-end">
 				<!-- Create agent -->
 				<Button
@@ -991,9 +1002,10 @@ export default {
 			this.loadingStatusText = `Retrieving agent "${this.editAgent}"...`;
 			const agentGetResult = await api.getAgent(this.editAgent);
 			this.editable = agentGetResult.actions.includes('FoundationaLLM.Agent/agents/write');
+
 			const agent = agentGetResult.resource;
-			console.log(agent);
 			this.virtualSecurityGroupId = agent.virtual_security_group_id;
+
 			if (agent.vectorization && agent.vectorization.text_partitioning_profile_object_id) {
 				this.loadingStatusText = `Retrieving text partitioning profile...`;
 				const textPartitioningProfile = await api.getTextPartitioningProfile(
@@ -1584,12 +1596,6 @@ input {
 
 .invalid {
 	color: red;
-}
-
-.virtual-security-group-id__container {
-	display: flex;
-    flex-direction: row;
-    align-items: center;
 }
 
 .virtual-security-group-id {
