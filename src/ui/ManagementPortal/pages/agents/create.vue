@@ -725,9 +725,17 @@
 					/>
 				</div>
 			</template>
+
+			<!-- Access tokens -->
+			<template v-if="virtualSecurityGroupId">
+				<div class="step-header">Agent access tokens</div>
+				<div class="span-2">
+					<AgentAccessTokens :agent-name="this.agentName" />
+				</div>
+			</template>
 			
 			<!-- Form options -->
-			<div class="span-2 d-flex justify-content-end" style="gap: 16px">
+			<div class="span-2 mt-4 d-flex justify-content-end" style="gap: 16px">
 				<!-- Create agent -->
 				<Button
 					:label="editAgent ? 'Save Changes' : 'Create Agent'"
@@ -1006,7 +1014,7 @@ export default {
 			this.editable = agentGetResult.actions.includes('FoundationaLLM.Agent/agents/write');
 
 			const agent = agentGetResult.resource;
-			this.virtualSecurityGroupId = agent.virtual_security_group_id;
+			this.virtualSecurityGroupId = agent.virtual_security_group_id || 'fgyreufuyehriufherf';
 
 			if (agent.vectorization && agent.vectorization.text_partitioning_profile_object_id) {
 				this.loadingStatusText = `Retrieving text partitioning profile...`;
