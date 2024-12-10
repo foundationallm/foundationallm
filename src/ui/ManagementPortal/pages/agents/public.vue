@@ -33,10 +33,10 @@
 					}"
 				></Column>
 
-				<!-- Type -->
+				<!-- Description -->
 				<Column
-					field="resource.type"
-					header="Type"
+					field="resource.description"
+					header="Description"
 					sortable
 					style="min-width: 200px"
 					:pt="{

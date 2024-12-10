@@ -1014,7 +1014,7 @@ export default {
 			this.editable = agentGetResult.actions.includes('FoundationaLLM.Agent/agents/write');
 
 			const agent = agentGetResult.resource;
-			this.virtualSecurityGroupId = agent.virtual_security_group_id || 'fgyreufuyehriufherf';
+			this.virtualSecurityGroupId = agent.virtual_security_group_id;
 
 			if (agent.vectorization && agent.vectorization.text_partitioning_profile_object_id) {
 				this.loadingStatusText = `Retrieving text partitioning profile...`;
