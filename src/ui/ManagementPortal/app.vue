@@ -108,12 +108,20 @@ main {
 	margin-top: 8px !important;
 }
 
+.mt-4 {
+	margin-top: 16px !important;
+}
+
 .mb-1 {
 	margin-bottom: 4px !important;
 }
 
 .mb-2 {
 	margin-bottom: 8px !important;
+}
+
+.mb-4 {
+	margin-bottom: 16px !important;
 }
 
 .w-100 {
