@@ -703,9 +703,12 @@
 				/>
 			</div>
 
+			<!-- Security -->
+			<div v-if="virtualSecurityGroupId" class="step-section-header span-2">Security</div>
+
 			<!-- Virtual security group id -->
 			<template v-if="virtualSecurityGroupId">
-				<div class="step-header">Agent's Virtual Security Group ID</div>
+				<div class="step-header">Virtual security group ID</div>
 				<div class="span-2" style="display: flex; gap: 16px">
 					<InputText
 						:value="virtualSecurityGroupId"
@@ -718,13 +721,13 @@
 					<Button
 						label="Copy"
 						severity="primary"
-						@click="copyVirtualSecurityGroupId"
+						@click="handleCopySecurityGroupId"
 					/>
 				</div>
 			</template>
-
-			<!-- Submit -->
-			<div class="button-container column-2 justify-self-end">
+			
+			<!-- Form options -->
+			<div class="span-2 d-flex justify-content-end" style="gap: 16px">
 				<!-- Create agent -->
 				<Button
 					:label="editAgent ? 'Save Changes' : 'Create Agent'"
@@ -736,7 +739,6 @@
 				<!-- Cancel -->
 				<Button
 					v-if="editAgent"
-					style="margin-left: 16px"
 					label="Cancel"
 					severity="secondary"
 					@click="handleCancel"
@@ -1191,6 +1193,17 @@ export default {
 			this.editAIModel = false;
 		},
 
+		handleCopySecurityGroupId() {
+			if (this.virtualSecurityGroupId) {
+				navigator.clipboard.writeText(this.virtualSecurityGroupId);
+				this.$toast.add({
+					severity: 'success',
+					detail: 'Virtual Security Group ID copied to clipboard!',
+					life: 5000,
+				});
+			}
+		},
+
 		async handleCreateAgent() {
 			const errors = [];
 			if (!this.agentName) {
@@ -1373,17 +1386,6 @@ export default {
 				this.$router.push('/agents/public');
 			}
 		},
-
-		copyVirtualSecurityGroupId() {
-			if (this.virtualSecurityGroupId) {
-				navigator.clipboard.writeText(this.virtualSecurityGroupId);
-				this.$toast.add({
-					severity: 'success',
-					detail: 'Virtual Security Group ID copied to clipboard!',
-					life: 5000,
-				});
-			}
-		}
 	},
 };
 </script>
@@ -1586,9 +1588,9 @@ input {
 	cursor: default;
 }
 
-.p-button-icon {
-	color: var(--primary-button-text) !important;
-}
+// .p-button-icon {
+// 	color: var(--primary-button-text) !important;
+// }
 
 .valid {
 	color: green;
