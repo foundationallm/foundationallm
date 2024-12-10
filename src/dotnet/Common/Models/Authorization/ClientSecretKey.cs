@@ -51,10 +51,9 @@ namespace FoundationaLLM.Common.Models.Authorization
         /// <param name="clientSecretString">The string representation to be parsed.</param>
         /// <param name="clientSecretKey">The <see cref="ClientSecretKey"/> that was parsed.</param>
         /// <returns><see langword="true"/> if the input string was successfully parsed, <see langword="false"/> otherwise.</returns>
-        public static bool TryParse<T>(string clientSecretString, out T? clientSecretKey) where T : ClientSecretKey
+        public static bool TryParse(string clientSecretString, out ClientSecretKey? clientSecretKey)
         {
-            var baseClientSecretKey = default(ClientSecretKey);
-            clientSecretKey = default(T);
+            clientSecretKey = default;
 
             var parts = clientSecretString.Split('.');
             if (parts.Length != 6
@@ -82,15 +81,13 @@ namespace FoundationaLLM.Common.Models.Authorization
                     return false;
                 }
 
-                baseClientSecretKey = new ClientSecretKey
+                clientSecretKey = new ClientSecretKey
                 {
-                    InstanceId = Encoding.UTF8.GetString(instanceIdBytes),
-                    ContextId = Encoding.UTF8.GetString(contextIdBytes),
-                    Id = Encoding.UTF8.GetString(idBytes),
+                    InstanceId = Encoding.UTF8.GetString(instanceIdBytes[..instanceIdNumBytesWritten]),
+                    ContextId = Encoding.UTF8.GetString(contextIdBytes[..contextIdNumBytesWritten]),
+                    Id = Encoding.UTF8.GetString(idBytes[..idNumBytesWritten]),
                     ClientSecret = parts[4]
                 };
-
-                clientSecretKey = baseClientSecretKey as T;
 
                 return true;
             }

@@ -42,7 +42,7 @@ namespace FoundationaLLM.Authorization.API.Controllers
         [HttpPost("{contextId}")]
         public async Task<IActionResult> ValidateSecretKey(string instanceId, string contextId, string secretKeyValue)
         {
-            if (!ClientSecretKey.TryParse<ClientSecretKey>(secretKeyValue, out var clientSecretKey)
+            if (!ClientSecretKey.TryParse(secretKeyValue, out var clientSecretKey)
                 || clientSecretKey == null)
             {
                 throw new AuthorizationException("The client secret key is invalid.");

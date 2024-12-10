@@ -534,9 +534,13 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 Valid = false
             };
 
-            if (!ClientSecretKey.TryParse<AgentClientSecretKey>(agentAccessTokenValidationRequest.AccessToken, out AgentClientSecretKey? agentClientSecretKey)
-                || agentClientSecretKey == null
-                || StringComparer.OrdinalIgnoreCase.Equals(agentClientSecretKey.AgentName, resourcePath.MainResourceId))
+            if (!ClientSecretKey.TryParse(agentAccessTokenValidationRequest.AccessToken, out var clientSecretKey)
+                || clientSecretKey == null)
+                return fallabckResult;
+
+            var agentClientSecretKey = AgentClientSecretKey.FromClientSecretKey(clientSecretKey);
+
+            if (!StringComparer.OrdinalIgnoreCase.Equals(agentClientSecretKey.AgentName, resourcePath.MainResourceId))
                 return fallabckResult;
 
             var result = await _authorizationServiceClient.ValidateSecretKey(
@@ -552,7 +556,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     $"aat_{agentClientSecretKey.AgentName}_{agentClientSecretKey.Id}@foundationallm.internal_";
                 result.VirtualIdentity = new UnifiedUserIdentity()
                 {
-                    UserId = Guid.NewGuid().ToString(),
+                    UserId = agentClientSecretKey.Id,
+                    Name = agentClientSecretKey.Id,
+                    Username = agentClientSecretKey.Id,
                     UPN = upn,
                     GroupIds = [agent.VirtualSecurityGroupId],
                 };

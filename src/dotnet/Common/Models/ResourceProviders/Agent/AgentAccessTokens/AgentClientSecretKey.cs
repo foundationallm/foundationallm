@@ -35,5 +35,19 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens
         /// <param name="agentName"></param>
         public void SetContextId(string agentName) =>
             ContextId = $"{InstanceId}~{ResourceProviderNames.FoundationaLLM_Agent}~{AgentResourceTypeNames.Agents}~{agentName}";
+
+        /// <summary>
+        /// Creates an <see cref="AgentClientSecretKey"/> instance from the given <see cref="ClientSecretKey"/> instance.
+        /// </summary>
+        /// <param name="clientSecretKey">The <see cref="ClientSecretKey"/> instance used to create the new instance.</param>
+        /// <returns>An <see cref="AgentClientSecretKey"/> instance.</returns>
+        public static AgentClientSecretKey FromClientSecretKey(ClientSecretKey clientSecretKey) =>
+            new()
+            {
+                InstanceId = clientSecretKey.InstanceId,
+                ContextId = clientSecretKey.ContextId,
+                Id = clientSecretKey.Id,
+                ClientSecret = clientSecretKey.ClientSecret
+            };
     }
 }

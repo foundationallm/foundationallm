@@ -37,6 +37,8 @@ namespace FoundationaLLM.Common.Authentication
             resourceProviderServices
                 .SingleOrDefault(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Agent);
 #pragma warning restore CS8601 // Possible null reference assignment.
+        private readonly ILogger<AgentAccessTokenAuthenticationHandler> _logger =
+            logger.CreateLogger<AgentAccessTokenAuthenticationHandler>();
 
         /// <summary>
         /// Handles authentication for agent access tokens.
@@ -51,30 +53,38 @@ namespace FoundationaLLM.Common.Authentication
                 return AuthenticateResult.NoResult();
             }
 
-            if (!string.IsNullOrWhiteSpace(agentAccessToken.ToString()))
+            try
             {
-                var agentAccessTokenValue = agentAccessToken.ToString();
-                // The agent access token is used to handle requests to authenticate FoundationaLLM agents.
 
-                var validationResult = await ValidateAgentAccessToken(agentAccessTokenValue);
-
-                if (validationResult?.Valid ?? false)
+                if (!string.IsNullOrWhiteSpace(agentAccessToken.ToString()))
                 {
-                    var claims = new[]
+                    var agentAccessTokenValue = agentAccessToken.ToString();
+                    // The agent access token is used to handle requests to authenticate FoundationaLLM agents.
+
+                    var validationResult = await ValidateAgentAccessToken(agentAccessTokenValue);
+
+                    if (validationResult?.Valid ?? false)
                     {
+                        var claims = new[]
+                        {
                         new Claim(ClaimConstants.Name, validationResult.VirtualIdentity!.Name!),
                         new Claim(ClaimConstants.Oid, validationResult.VirtualIdentity!.UserId!),
                         new Claim(ClaimConstants.ObjectId, validationResult.VirtualIdentity!.UserId!),
                         new Claim(ClaimConstants.PreferredUserName, validationResult.VirtualIdentity!.UPN!)
                         // TODO: Add group claims here.
                     };
-                    var identity = new ClaimsIdentity(claims, Scheme.Name);
-                    var identities = new List<ClaimsIdentity> { identity };
-                    var principal = new ClaimsPrincipal(identities);
-                    var ticket = new AuthenticationTicket(principal, Scheme.Name);
+                        var identity = new ClaimsIdentity(claims, Scheme.Name);
+                        var identities = new List<ClaimsIdentity> { identity };
+                        var principal = new ClaimsPrincipal(identities);
+                        var ticket = new AuthenticationTicket(principal, Scheme.Name);
 
-                    return AuthenticateResult.Success(ticket);
+                        return AuthenticateResult.Success(ticket);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Agent access token authentication failed.");
             }
 
             return AuthenticateResult.Fail("The agent access token is invalid.");
@@ -89,24 +99,34 @@ namespace FoundationaLLM.Common.Authentication
                 VirtualIdentity = null
             };
 
-            if (_agentResourceProvider == null)
+            try
+            {
+                if (_agentResourceProvider == null)
+                    return result;
+
+                if (!ClientSecretKey.TryParse(agentAccessToken, out var clientSecretKey)
+                    || clientSecretKey == null)
+                    return result;
+
+                var agentClientSecretKey = AgentClientSecretKey.FromClientSecretKey(clientSecretKey);
+
+                var serializedResult = await _agentResourceProvider.HandlePostAsync(
+                    $"instances/{agentClientSecretKey.InstanceId}/providers/{ResourceProviderNames.FoundationaLLM_Agent}/{AgentResourceTypeNames.Agents}/{agentClientSecretKey.AgentName}/{AgentResourceTypeNames.AgentAccessTokens}/{ResourceProviderActions.Validate}",
+                    JsonSerializer.Serialize(
+                        new AgentAccessTokenValidationRequest
+                        {
+                            AccessToken = agentAccessToken
+                        }),
+                    null,
+                    DefaultAuthentication.ServiceIdentity!);
+
+                return serializedResult as AgentAccessTokenValidationResult ?? result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Agent access token validation failed.");
                 return result;
-
-            if (!ClientSecretKey.TryParse<AgentClientSecretKey>(agentAccessToken, out AgentClientSecretKey? agentClientSecretKey)
-                || agentClientSecretKey == null)
-                return result;
-
-            var serializedResult = await _agentResourceProvider.HandlePostAsync(
-                $"instances/{agentClientSecretKey.InstanceId}/providers/{ResourceProviderNames.FoundationaLLM_Agent}/{AgentResourceTypeNames.Agents}/{agentClientSecretKey.AgentName}/{AgentResourceTypeNames.AgentAccessTokens}/{ResourceProviderActions.Validate}",
-                JsonSerializer.Serialize(
-                    new AgentAccessTokenValidationRequest
-                    {
-                        AccessToken = agentAccessToken
-                    }),
-                null,
-                DefaultAuthentication.ServiceIdentity!);
-
-            return serializedResult as AgentAccessTokenValidationResult ?? result;
+            }
         }
     }
 }
