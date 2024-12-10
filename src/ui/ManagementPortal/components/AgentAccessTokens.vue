@@ -128,18 +128,28 @@
 					<div id="aria-description" class="mb-2">Token expiration date:</div>
 					<div class="input-wrapper">
 						<Calendar
-								v-model="accessToken.expiration_date"
-								show-icon
-								show-button-bar
-								placeholder="Enter expiration date"
-								type="text"
-							/>
-						</div>
+							v-model="accessToken.expiration_date"
+							show-icon
+							show-button-bar
+							placeholder="Enter expiration date"
+							type="text"
+						/>
+					</div>
 				</div>
 			</template>
 		
 			<template #footer>
 				<template v-if="resourceKey">
+					<!-- Close -->
+					<Button
+						class="sidebar-dialog__button"
+						label="Close"
+						text
+						:disabled="loadingCreateAccessToken"
+						@click="handleCloseAccessTokenDialog"
+					/>
+
+					<!-- Copy -->
 					<Button
 						label="Copy"
 						severity="primary"
@@ -147,6 +157,7 @@
 						@click="handleCopyResourceKey"
 					/>
 
+					<!-- Save -->
 					<Button
 						label="Save"
 						severity="primary"
@@ -156,6 +167,16 @@
 				</template>
 
 				<template v-else>
+					<!-- Cancel -->
+					<Button
+						class="sidebar-dialog__button"
+						label="Cancel"
+						text
+						:disabled="loadingDeleteAccessToken"
+						@click="handleCloseAccessTokenDialog"
+					/>
+
+					<!-- Create -->
 					<Button @click="handleCreateAccessToken">
 						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
 						Create access token
@@ -171,11 +192,11 @@
 			modal
 			header="Delete Access Token"
 			:style="{ minWidth: '50%' }"
-			@hide="accessTokenToDelete = null"
+			:closable="false"
 		>
 			<div>Are you sure you want to delete the access token "{{ accessTokenToDelete.description }}"?</div>
 			<template #footer>
-				<!-- Create -->
+				<!-- Cancel -->
 				<Button
 					class="sidebar-dialog__button"
 					label="Cancel"
@@ -246,6 +267,7 @@ export default {
 		},
 
 		handleCloseAccessTokenDialog() {
+			this.createAccessTokenDialogOpen = false;
 			this.resetAccessToken();
 		},
 
