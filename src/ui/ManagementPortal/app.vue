@@ -172,11 +172,19 @@ main {
 	background-color: var(--primary-button-bg) !important;
 	border-color: var(--primary-button-bg) !important;
 	color: var(--primary-button-text) !important;
+
+	& > * {
+		color: var(--primary-button-text) !important;
+	}
 }
 
 .p-button-secondary:not(.p-button-text) {
 	background-color: var(--secondary-button-bg) !important;
 	border-color: var(--secondary-button-bg) !important;
 	color: var(--secondary-button-text) !important;
+
+	& > * {
+		color: var(--secondary-button-text) !important;
+	}
 }
 </style>
