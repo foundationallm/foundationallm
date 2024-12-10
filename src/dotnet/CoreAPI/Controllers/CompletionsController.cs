@@ -1,14 +1,14 @@
+using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
-using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
-using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Core.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +20,12 @@ namespace FoundationaLLM.Core.API.Controllers
     /// <remarks>
     /// Constructor for the Completions Controller.
     /// </remarks>
-    [Authorize(Policy = "DefaultPolicy")]
+    [Authorize(
+        AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
+        Policy = AuthorizationPolicyNames.MicrosoftEntraIDStandard)]
+    [Authorize(
+        AuthenticationSchemes = AgentAccessTokenDefaults.AuthenticationScheme,
+        Policy = AuthorizationPolicyNames.FoundationaLLMAgentAccessToken)]
     [ApiController]
     [Route("instances/{instanceId}")]
     public class CompletionsController : ControllerBase

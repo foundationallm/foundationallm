@@ -673,7 +673,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                 var hash = Base58.Encode(hashBytes);
 
                 // Construct client key
-                var clientKey = new ClientSecretKey() { ApiKeyId = keyId, ClientSecret = secret };
+                var clientKey = new ClientSecretKey() { Id = keyId, InstanceId = instanceId, ClientSecret = secret };
 
                 // Save this API key salt and hash the key vault
                 await _azureKeyVaultService.SetSecretValueAsync(persistedSecretKey.SaltKeyVaultSecretName, salt);
@@ -744,7 +744,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
             }
 
             // Fetch the matching persisted key
-            var persistedApiKey = await GetPersistedSecretKey(instanceId, contextId, clientApiKey!.ApiKeyId);
+            var persistedApiKey = await GetPersistedSecretKey(instanceId, contextId, clientApiKey!.Id);
             if (persistedApiKey == null)
             {
                 _logger.LogWarning("Repository does not contain a key matching this ID.");
@@ -850,7 +850,7 @@ namespace FoundationaLLM.AuthorizationEngine.Services
             var clientSecret = key.Substring(pos + 1, key.Length - suffix.Length - pos - 2);
 
             // Construct a new valid key
-            value = new ClientSecretKey() { ApiKeyId = keyGuid, ClientSecret = clientSecret };
+            value = new ClientSecretKey() { Id = keyGuid, InstanceId = string.Empty, ClientSecret = clientSecret };
 
             message = null;
             return true;

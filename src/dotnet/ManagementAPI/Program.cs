@@ -112,7 +112,7 @@ namespace FoundationaLLM.Management.API
             // Add authentication configuration.
             var e2ETestEnvironmentValue = Environment.GetEnvironmentVariable(EnvironmentVariables.FoundationaLLM_Environment) ?? string.Empty;
             var isE2ETestEnvironment = e2ETestEnvironmentValue.Equals(EnvironmentTypes.E2ETest, StringComparison.CurrentCultureIgnoreCase);
-            builder.AddAuthenticationConfiguration(
+            builder.AddMicrosoftEntraIDAuthentication(
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_Entra_Instance,
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_Entra_TenantId,
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_Entra_ClientId,

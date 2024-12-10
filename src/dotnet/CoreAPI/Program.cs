@@ -141,7 +141,7 @@ namespace FoundationaLLM.Core.API
                 allowACLAuthorization = true;
             }
 
-            builder.AddAuthenticationConfiguration(
+            builder.AddMicrosoftEntraIDAuthentication(
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_Instance,
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_TenantId,
                 AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra_ClientId,
@@ -149,6 +149,8 @@ namespace FoundationaLLM.Core.API
                 requireScopes: requireScopes,
                 allowACLAuthorization: allowACLAuthorization
             );
+
+            builder.AddFoundationaLLMAgentAccessTokenAuthentication();
 
             // Add OpenTelemetry.
             builder.AddOpenTelemetry(

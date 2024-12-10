@@ -1,4 +1,6 @@
-﻿using FoundationaLLM.Core.Interfaces;
+﻿using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Core.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +13,9 @@ namespace FoundationaLLM.Core.API.Controllers
     /// Constructor for the UserProfiles Controller.
     /// </remarks>
     /// <param name="userProfileService">Service that provides methods for managing the user profile.</param>
-    [Authorize(Policy = "DefaultPolicy")]
+    [Authorize(
+        AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
+        Policy = AuthorizationPolicyNames.MicrosoftEntraIDStandard)]
     [ApiController]
     [Route("instances/{instanceId}/[controller]")]
     public class UserProfilesController(

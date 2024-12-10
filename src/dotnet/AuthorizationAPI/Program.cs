@@ -2,6 +2,7 @@ using FoundationaLLM;
 using FoundationaLLM.AuthorizationEngine.Middleware;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Validation;
@@ -35,12 +36,12 @@ builder.AddAuthorizationCore();
 builder.AddCorsPolicies();
 
 // Add authentication configuration.
-builder.AddAuthenticationConfiguration(
+builder.AddMicrosoftEntraIDAuthentication(
     AuthorizationKeyVaultSecretNames.FoundationaLLM_APIEndpoints_AuthorizationAPI_Configuration_Entra_Instance,
     AuthorizationKeyVaultSecretNames.FoundationaLLM_APIEndpoints_AuthorizationAPI_Configuration_Entra_TenantId,
     AuthorizationKeyVaultSecretNames.FoundationaLLM_APIEndpoints_AuthorizationAPI_Configuration_Entra_ClientId,
     null,
-    policyName: "RequiredClaims",
+    policyName: AuthorizationPolicyNames.MicrosoftEntraIDNoScopes,
     requireScopes: false,
     allowACLAuthorization: true);
 
