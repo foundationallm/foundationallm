@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<main id="main-content">
 		<div style="display: flex">
 			<div style="flex: 1">
 				<h2 class="page-header">Data Sources</h2>
@@ -7,7 +7,7 @@
 			</div>
 
 			<div style="display: flex; align-items: center">
-				<NuxtLink to="/data-sources/create">
+				<NuxtLink to="/data-sources/create" tabindex="-1">
 					<Button aria-label="Create data source">
 						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
 						Create Data Source
@@ -19,7 +19,7 @@
 		<div :class="{ 'grid--loading': loading }">
 			<!-- Loading overlay -->
 			<template v-if="loading">
-				<div class="grid__loading-overlay">
+				<div class="grid__loading-overlay" role="status" aria-live="polite">
 					<LoadingGrid />
 					<div>{{ loadingStatusText }}</div>
 				</div>
@@ -33,7 +33,11 @@
 				table-style="max-width: 100%"
 				size="small"
 			>
-				<template #empty> No data sources found. </template>
+				<template #empty>
+					<div role="alert" aria-live="polite">
+						No data sources found.
+					</div>
+				</template>
 
 				<template #loading>Loading data sources. Please wait.</template>
 
@@ -78,10 +82,13 @@
 					}"
 				>
 					<template #body="{ data }">
-						<NuxtLink :to="'/data-sources/edit/' + data.resource.name" class="table__button">
-							<Button link :aria-label="`Edit ${data.resource.name}`">
-								<i class="pi pi-cog" style="font-size: 1.2rem"></i>
-							</Button>
+						<NuxtLink :to="'/data-sources/edit/' + data.resource.name" class="table__button" tabindex="-1">
+							<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+								<Button link :aria-label="`Edit ${data.resource.name}`">
+									<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
+								</Button>
+								<template #popper><div role="tooltip">Edit {{data.resource.name}}</div></template>
+							</VTooltip>
 						</NuxtLink>
 					</template>
 				</Column>
@@ -99,13 +106,16 @@
 					}"
 				>
 					<template #body="{ data }">
-						<Button
-							link
-							:aria-label="`Delete ${data.resource.name}`"
-							@click="dataSourceToDelete = data.resource"
-						>
-							<i class="pi pi-trash" style="font-size: 1.2rem"></i>
-						</Button>
+						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+							<Button
+								link
+								:aria-label="`Delete ${data.resource.name}`"
+								@click="dataSourceToDelete = data.resource"
+							>
+								<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
+							</Button>
+							<template #popper><div role="tooltip">Delete {{data.resource.name}}</div></template>
+						</VTooltip>
 					</template>
 				</Column>
 			</DataTable>
@@ -115,16 +125,17 @@
 		<Dialog
 			:visible="dataSourceToDelete !== null"
 			modal
+			v-focustrap
 			header="Delete Data Source"
 			:closable="false"
 		>
 			<p>Do you want to delete the data source "{{ dataSourceToDelete.name }}" ?</p>
 			<template #footer>
 				<Button label="Cancel" text @click="dataSourceToDelete = null" />
-				<Button label="Delete" severity="danger" @click="handleDeleteDataSource" />
+				<Button label="Delete" severity="danger" autofocus @click="handleDeleteDataSource" />
 			</template>
 		</Dialog>
-	</div>
+	</main>
 </template>
 
 <script lang="ts">
