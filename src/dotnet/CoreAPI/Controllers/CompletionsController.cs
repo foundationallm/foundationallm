@@ -7,6 +7,7 @@ using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using FoundationaLLM.Common.Telemetry;
 using FoundationaLLM.Core.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -82,6 +83,9 @@ namespace FoundationaLLM.Core.API.Controllers
         [HttpPost("async-completions")]
         public async Task<ActionResult<LongRunningOperation>> StartCompletionOperation(string instanceId, CompletionRequest completionRequest)
         {
+            using var telemetryActivity = TelemetryActivitySources.CoreAPIActivitySource.StartActivity(
+                )
+
             var state = await _coreService.StartCompletionOperation(instanceId, completionRequest);
             return Accepted(state);
         }

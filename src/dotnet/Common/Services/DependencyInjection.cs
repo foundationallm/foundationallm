@@ -1,6 +1,8 @@
 ﻿using Azure.Monitor.OpenTelemetry.AspNetCore;
+using Azure.Monitor.OpenTelemetry.Exporter;
 using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
@@ -9,10 +11,10 @@ using FoundationaLLM.Common.Services.API;
 using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Common.Services.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Azure.Cosmos;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Azure;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -20,10 +22,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Authentication;
-using FoundationaLLM.Common.Constants.Authorization;
-using Microsoft.Graph.Models;
+using System.Diagnostics;
 
 namespace FoundationaLLM
 {
@@ -60,23 +59,41 @@ namespace FoundationaLLM
             string connectionStringConfigurationKey,
             string serviceName)
         {
+            var resourceBuilder = ResourceBuilder
+                .CreateDefault()
+                .AddAttributes(new Dictionary<string, object>
+                    {
+                        { "service.name", serviceName },
+                        { "service.namespace", "FoundationaLLM" },
+                        { "service.version", builder.Configuration[EnvironmentVariables.FoundationaLLM_Version]! },
+                        { "service.instance.id", ValidatedEnvironment.MachineName }
+                    });
+
             // Add the OpenTelemetry telemetry service and send telemetry data to Azure Monitor.
-            builder.Services.AddOpenTelemetry().UseAzureMonitor(options =>
-            {
-                options.ConnectionString = builder.Configuration[connectionStringConfigurationKey];
-            });
-
-            // Create a dictionary of resource attributes.
-            var resourceAttributes = new Dictionary<string, object> {
-                { "service.name", serviceName },
-                { "service.namespace", "FoundationaLLM" },
-                { "service.instance.id", ValidatedEnvironment.MachineName }
-            };
-
-            // Configure the OpenTelemetry tracer provider to add the resource attributes to all traces.
-            builder.Services.ConfigureOpenTelemetryTracerProvider((sp, builder) =>
-                builder.ConfigureResource(resourceBuilder =>
-                    resourceBuilder.AddAttributes(resourceAttributes)));
+            builder.Services.AddOpenTelemetry()
+                .WithTracing(traceProviderBuilder => traceProviderBuilder
+                    .SetResourceBuilder(resourceBuilder)
+                    .AddSource("Azure.*")
+                    .AddSource(serviceName)
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation(httpOptions => httpOptions.FilterHttpRequestMessage = (_) =>
+                        {
+                            // Azure SDKs create their own client span before calling the service using HttpClient
+                            // In this case, we would see two spans corresponding to the same operation
+                            // 1) created by Azure SDK 2) created by HttpClient
+                            // To prevent this duplication we are filtering the span from HttpClient
+                            // as span from Azure SDK contains all relevant information needed.
+                            var parentActivity = Activity.Current?.Parent;
+                            if (parentActivity != null && parentActivity.Source.Name.Equals("Azure.Core.Http"))
+                            {
+                                return false;
+                            }
+                            return true;
+                        })
+                    .AddAzureMonitorTraceExporter(azureMonitorOptions =>
+                        {
+                            azureMonitorOptions.ConnectionString = builder.Configuration[connectionStringConfigurationKey];
+                        }));
         }
 
         /// <summary>
