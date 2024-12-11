@@ -69,6 +69,19 @@ namespace FoundationaLLM
                         { "service.instance.id", ValidatedEnvironment.MachineName }
                     });
 
+
+            // Add the OpenTelemetry logging provider and send logs to Azure Monitor.
+            builder.Logging.AddOpenTelemetry(openTelemetryLoggerOptions =>
+            {
+                openTelemetryLoggerOptions.SetResourceBuilder(resourceBuilder);
+                openTelemetryLoggerOptions.IncludeFormattedMessage = true;
+                openTelemetryLoggerOptions.IncludeScopes = true;
+                openTelemetryLoggerOptions.AddAzureMonitorLogExporter(azureMonitorOptions =>
+                {
+                    azureMonitorOptions.ConnectionString = builder.Configuration[connectionStringConfigurationKey];
+                });
+            });
+
             // Add the OpenTelemetry telemetry service and send telemetry data to Azure Monitor.
             builder.Services.AddOpenTelemetry()
                 .WithTracing(traceProviderBuilder => traceProviderBuilder
