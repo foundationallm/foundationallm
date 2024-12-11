@@ -1,5 +1,5 @@
 <template>
-	<div class="wrapper">
+	<div :class="$appStore.sidebarCollapsed ? 'wrapper collapsed-sidebar' : 'wrapper'">
 		<Button
 			class="skip-to-main-content-button"
 			role="link"
@@ -59,8 +59,13 @@ export default {
 .page {
 	display: flex;
 	flex-direction: column;
-	min-height: 100vh;
+	height: auto;
 	overflow-x: auto;
+	flex: 1;
+}
+
+.collapsed-sidebar {
+	flex-direction: column !important;
 }
 
 .page-content {
