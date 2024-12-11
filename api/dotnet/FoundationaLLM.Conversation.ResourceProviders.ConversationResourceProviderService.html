@@ -136,7 +136,7 @@ Class ConversationResourceProviderService  <a class="header-action link-secondar
       <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__serviceProvider">ResourceProviderServiceBase&lt;ResourceReference&gt;._serviceProvider</a>
     </div>
     <div>
-      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__authorizationService">ResourceProviderServiceBase&lt;ResourceReference&gt;._authorizationService</a>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__authorizationServiceClient">ResourceProviderServiceBase&lt;ResourceReference&gt;._authorizationServiceClient</a>
     </div>
     <div>
       <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1__storageService">ResourceProviderServiceBase&lt;ResourceReference&gt;._storageService</a>
@@ -320,8 +320,8 @@ Class ConversationResourceProviderService  <a class="header-action link-secondar
 
   <a id="FoundationaLLM_Conversation_ResourceProviders_ConversationResourceProviderService__ctor_" data-uid="FoundationaLLM.Conversation.ResourceProviders.ConversationResourceProviderService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Conversation_ResourceProviders_ConversationResourceProviderService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Instance_InstanceSettings__FoundationaLLM_Common_Interfaces_IAuthorizationService_FoundationaLLM_Common_Interfaces_IEventService_FoundationaLLM_Common_Interfaces_IResourceValidatorFactory_FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_System_IServiceProvider_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Conversation_ResourceProviders_ConversationResourceProviderService__" data-uid="FoundationaLLM.Conversation.ResourceProviders.ConversationResourceProviderService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},FoundationaLLM.Common.Interfaces.IAuthorizationService,FoundationaLLM.Common.Interfaces.IEventService,FoundationaLLM.Common.Interfaces.IResourceValidatorFactory,FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,System.IServiceProvider,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Conversation.ResourceProviders.ConversationResourceProviderService})">
-  ConversationResourceProviderService(IOptions&lt;InstanceSettings&gt;, IAuthorizationService, IEventService, IResourceValidatorFactory, IAzureCosmosDBService, IServiceProvider, ILogger&lt;ConversationResourceProviderService&gt;)
+  <h3 id="FoundationaLLM_Conversation_ResourceProviders_ConversationResourceProviderService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Instance_InstanceSettings__FoundationaLLM_Common_Interfaces_IAuthorizationServiceClient_FoundationaLLM_Common_Interfaces_IEventService_FoundationaLLM_Common_Interfaces_IResourceValidatorFactory_FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_System_IServiceProvider_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Conversation_ResourceProviders_ConversationResourceProviderService__" data-uid="FoundationaLLM.Conversation.ResourceProviders.ConversationResourceProviderService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient,FoundationaLLM.Common.Interfaces.IEventService,FoundationaLLM.Common.Interfaces.IResourceValidatorFactory,FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,System.IServiceProvider,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Conversation.ResourceProviders.ConversationResourceProviderService})">
+  ConversationResourceProviderService(IOptions&lt;InstanceSettings&gt;, IAuthorizationServiceClient, IEventService, IResourceValidatorFactory, IAzureCosmosDBService, IServiceProvider, ILogger&lt;ConversationResourceProviderService&gt;)
   <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Conversation/ResourceProviders/ConversationResourceProviderService.cs/#L28"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -330,7 +330,7 @@ Class ConversationResourceProviderService  <a class="header-action link-secondar
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ConversationResourceProviderService(IOptions&lt;InstanceSettings&gt; instanceOptions, IAuthorizationService authorizationService, IEventService eventService, IResourceValidatorFactory resourceValidatorFactory, IAzureCosmosDBService cosmosDBService, IServiceProvider serviceProvider, ILogger&lt;ConversationResourceProviderService&gt; logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public ConversationResourceProviderService(IOptions&lt;InstanceSettings&gt; instanceOptions, IAuthorizationServiceClient authorizationService, IEventService eventService, IResourceValidatorFactory resourceValidatorFactory, IAzureCosmosDBService cosmosDBService, IServiceProvider serviceProvider, ILogger&lt;ConversationResourceProviderService&gt; logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -338,8 +338,8 @@ Class ConversationResourceProviderService  <a class="header-action link-secondar
     <dt><code>instanceOptions</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1">IOptions</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings.html">InstanceSettings</a>&gt;</dt>
     <dd><p>The options providing the <a class="xref" href="FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings.html">InstanceSettings</a> with instance settings.</p>
 </dd>
-    <dt><code>authorizationService</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IAuthorizationService.html">IAuthorizationService</a></dt>
-    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Interfaces.IAuthorizationService.html">IAuthorizationService</a> providing authorization services.</p>
+    <dt><code>authorizationService</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.html">IAuthorizationServiceClient</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.html">IAuthorizationServiceClient</a> providing authorization services.</p>
 </dd>
     <dt><code>eventService</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IEventService.html">IEventService</a></dt>
     <dd><p>The <a class="xref" href="FoundationaLLM.Common.Interfaces.IEventService.html">IEventService</a> providing event services.</p>

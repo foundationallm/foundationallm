@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Authorization_API_Controllers_StatusController" data-uid="FoundationaLLM.Authorization.API.Controllers.StatusController" class="text-break">
-Class StatusController  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AuthorizationAPI/Controllers/StatusController.cs/#L12"><i class="bi bi-code-slash"></i></a>
+Class StatusController  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AuthorizationAPI/Controllers/StatusController.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -102,7 +102,7 @@ Class StatusController  <a class="header-action link-secondary" title="View sour
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Authorize(Policy = &quot;RequiredClaims&quot;)]
+    <pre><code class="lang-csharp hljs">[Authorize(Policy = &quot;MicrosoftEntraIDNoScopes&quot;)]
 [ApiController]
 [Route(&quot;&quot;)]
 [Consumes(&quot;application/json&quot;, new string[] { })]
@@ -689,7 +689,7 @@ public class StatusController : ControllerBase</code></pre>
 
   <h3 id="FoundationaLLM_Authorization_API_Controllers_StatusController_GetAuthStatus" data-uid="FoundationaLLM.Authorization.API.Controllers.StatusController.GetAuthStatus">
   GetAuthStatus()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AuthorizationAPI/Controllers/StatusController.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AuthorizationAPI/Controllers/StatusController.cs/#L39"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns OK if the requester is authenticated and allowed to execute
@@ -724,7 +724,7 @@ public IActionResult GetAuthStatus()</code></pre>
 
   <h3 id="FoundationaLLM_Authorization_API_Controllers_StatusController_GetServiceStatus" data-uid="FoundationaLLM.Authorization.API.Controllers.StatusController.GetServiceStatus">
   GetServiceStatus()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AuthorizationAPI/Controllers/StatusController.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AuthorizationAPI/Controllers/StatusController.cs/#L23"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns the status of the Core API service.</p>
@@ -759,7 +759,7 @@ public IActionResult GetServiceStatus()</code></pre>
 
   <h3 id="FoundationaLLM_Authorization_API_Controllers_StatusController_Options" data-uid="FoundationaLLM.Authorization.API.Controllers.StatusController.Options">
   Options()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AuthorizationAPI/Controllers/StatusController.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AuthorizationAPI/Controllers/StatusController.cs/#L47"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns the allowed HTTP methods for the Core API service.</p>
@@ -793,7 +793,7 @@ public IActionResult Options()</code></pre>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AuthorizationAPI/Controllers/StatusController.cs/#L12" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/AuthorizationAPI/Controllers/StatusController.cs/#L13" class="edit-link">Edit this page</a>
         </div>
 
 

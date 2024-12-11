@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Core_API_Controllers_SessionsController" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController" class="text-break">
-Class SessionsController  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L19"><i class="bi bi-code-slash"></i></a>
+Class SessionsController  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L22"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -102,7 +102,8 @@ Class SessionsController  <a class="header-action link-secondary" title="View so
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Authorize(Policy = &quot;DefaultPolicy&quot;)]
+    <pre><code class="lang-csharp hljs">[Authorize(AuthenticationSchemes = &quot;Bearer&quot;, Policy = &quot;MicrosoftEntraIDStandard&quot;)]
+[Authorize(AuthenticationSchemes = &quot;AgentAccessToken&quot;, Policy = &quot;FoundationaLLMAgentAccessToken&quot;)]
 [ApiController]
 [Route(&quot;instances/{instanceId}/[controller]&quot;)]
 public class SessionsController : ControllerBase</code></pre>
@@ -690,7 +691,7 @@ public class SessionsController : ControllerBase</code></pre>
 
   <h3 id="FoundationaLLM_Core_API_Controllers_SessionsController__ctor_FoundationaLLM_Core_Interfaces_ICoreService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Core_API_Controllers_SessionsController__" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.#ctor(FoundationaLLM.Core.Interfaces.ICoreService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Core.API.Controllers.SessionsController})">
   SessionsController(ICoreService, ILogger&lt;SessionsController&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L22"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Provides methods for retrieving and managing sessions.</p>
@@ -735,7 +736,7 @@ sessions and messages, and for getting completions from the orchestrator.</p>
 
   <h3 id="FoundationaLLM_Core_API_Controllers_SessionsController_CreateNewChatSession_System_String_FoundationaLLM_Common_Models_Conversation_ChatSessionProperties_" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.CreateNewChatSession(System.String,FoundationaLLM.Common.Models.Conversation.ChatSessionProperties)">
   CreateNewChatSession(string, ChatSessionProperties)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L81"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new chat session.</p>
@@ -777,7 +778,7 @@ public Task&lt;Conversation&gt; CreateNewChatSession(string instanceId, ChatSess
 
   <h3 id="FoundationaLLM_Core_API_Controllers_SessionsController_DeleteChatSession_System_String_System_String_" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.DeleteChatSession(System.String,System.String)">
   DeleteChatSession(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L92"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L100"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Delete a chat session and related messages.</p>
@@ -819,7 +820,7 @@ public Task DeleteChatSession(string instanceId, string sessionId)</code></pre>
 
   <h3 id="FoundationaLLM_Core_API_Controllers_SessionsController_GetAllChatSessions_System_String_" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.GetAllChatSessions(System.String)">
   GetAllChatSessions(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L40"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns list of chat session ids and names.</p>
@@ -858,7 +859,7 @@ public Task&lt;IEnumerable&lt;Conversation&gt;&gt; GetAllChatSessions(string ins
 
   <h3 id="FoundationaLLM_Core_API_Controllers_SessionsController_GetChatSessionMessages_System_String_System_String_" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.GetChatSessionMessages(System.String,System.String)">
   GetChatSessionMessages(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L41"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L49"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns the chat messages related to an existing session.</p>
@@ -900,7 +901,7 @@ public Task&lt;IEnumerable&lt;Message&gt;&gt; GetChatSessionMessages(string inst
 
   <h3 id="FoundationaLLM_Core_API_Controllers_SessionsController_GetCompletionPrompt_System_String_System_String_System_String_" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.GetCompletionPrompt(System.String,System.String,System.String)">
   GetCompletionPrompt(string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L72"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns the completion prompt for a given session and completion prompt id.</p>
@@ -945,7 +946,7 @@ public Task&lt;CompletionPrompt&gt; GetCompletionPrompt(string instanceId, strin
 
   <h3 id="FoundationaLLM_Core_API_Controllers_SessionsController_RateMessage_System_String_System_String_System_String_FoundationaLLM_Common_Models_Conversation_MessageRatingRequest_" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.RateMessage(System.String,System.String,System.String,FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)">
   RateMessage(string, string, string, MessageRatingRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L61"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Rate an assistant message. This can be used to discover useful AI responses for training,
@@ -994,7 +995,7 @@ public Task&lt;Message&gt; RateMessage(string instanceId, string messageId, stri
 
   <h3 id="FoundationaLLM_Core_API_Controllers_SessionsController_RenameChatSession_System_String_System_String_FoundationaLLM_Common_Models_Conversation_ChatSessionProperties_" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.RenameChatSession(System.String,System.String,FoundationaLLM.Common.Models.Conversation.ChatSessionProperties)">
   RenameChatSession(string, string, ChatSessionProperties)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L91"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Rename the chat session.</p>
@@ -1039,7 +1040,7 @@ public Task&lt;Conversation&gt; RenameChatSession(string instanceId, string sess
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L19" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L22" class="edit-link">Edit this page</a>
         </div>
 
 

@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Core_API_Controllers_FilesController" data-uid="FoundationaLLM.Core.API.Controllers.FilesController" class="text-break">
-Class FilesController  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/FilesController.cs/#L16"><i class="bi bi-code-slash"></i></a>
+Class FilesController  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/FilesController.cs/#L19"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -102,7 +102,8 @@ Class FilesController  <a class="header-action link-secondary" title="View sourc
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Authorize(Policy = &quot;DefaultPolicy&quot;)]
+    <pre><code class="lang-csharp hljs">[Authorize(AuthenticationSchemes = &quot;Bearer&quot;, Policy = &quot;MicrosoftEntraIDStandard&quot;)]
+[Authorize(AuthenticationSchemes = &quot;AgentAccessToken&quot;, Policy = &quot;FoundationaLLMAgentAccessToken&quot;)]
 [ApiController]
 [Route(&quot;instances/{instanceId}/[controller]&quot;)]
 public class FilesController : ControllerBase</code></pre>
@@ -687,7 +688,7 @@ public class FilesController : ControllerBase</code></pre>
 
   <h3 id="FoundationaLLM_Core_API_Controllers_FilesController__ctor_FoundationaLLM_Common_Interfaces_ICallContext_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Instance_InstanceSettings__FoundationaLLM_Core_Interfaces_ICoreService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Core_API_Controllers_FilesController__" data-uid="FoundationaLLM.Core.API.Controllers.FilesController.#ctor(FoundationaLLM.Common.Interfaces.ICallContext,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},FoundationaLLM.Core.Interfaces.ICoreService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Core.API.Controllers.FilesController})">
   FilesController(ICallContext, IOptions&lt;InstanceSettings&gt;, ICoreService, ILogger&lt;FilesController&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/FilesController.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/FilesController.cs/#L42"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The controller for managing files.</p>
@@ -737,7 +738,7 @@ public class FilesController : ControllerBase</code></pre>
 
   <h3 id="FoundationaLLM_Core_API_Controllers_FilesController_Delete_System_String_System_Collections_Generic_List_System_String__" data-uid="FoundationaLLM.Core.API.Controllers.FilesController.Delete(System.String,System.Collections.Generic.List{System.String})">
   Delete(string, List&lt;string&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/FilesController.cs/#L115"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/FilesController.cs/#L123"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes the specified file(s).</p>
@@ -779,7 +780,7 @@ public Task&lt;IActionResult&gt; Delete(string instanceId, List&lt;string&gt; re
 
   <h3 id="FoundationaLLM_Core_API_Controllers_FilesController_Download_System_String_System_String_System_String_" data-uid="FoundationaLLM.Core.API.Controllers.FilesController.Download(System.String,System.String,System.String)">
   Download(string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/FilesController.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/FilesController.cs/#L107"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Downloads a file.</p>
@@ -829,7 +830,7 @@ public Task&lt;IActionResult&gt; Download(string instanceId, string fileProvider
 
   <h3 id="FoundationaLLM_Core_API_Controllers_FilesController_Upload_System_String_System_String_System_String_Microsoft_AspNetCore_Http_IFormFile_" data-uid="FoundationaLLM.Core.API.Controllers.FilesController.Upload(System.String,System.String,System.String,Microsoft.AspNetCore.Http.IFormFile)">
   Upload(string, string, string, IFormFile)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/FilesController.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/FilesController.cs/#L62"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Uploads an attachment.</p>
@@ -877,7 +878,7 @@ public Task&lt;IActionResult&gt; Upload(string instanceId, string sessionId, str
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/FilesController.cs/#L16" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/FilesController.cs/#L19" class="edit-link">Edit this page</a>
         </div>
 
 

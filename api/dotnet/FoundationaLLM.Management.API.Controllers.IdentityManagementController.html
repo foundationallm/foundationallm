@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Management_API_Controllers_IdentityManagementController" data-uid="FoundationaLLM.Management.API.Controllers.IdentityManagementController" class="text-break">
-Class IdentityManagementController  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/IdentityManagementController.cs/#L14"><i class="bi bi-code-slash"></i></a>
+Class IdentityManagementController  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/IdentityManagementController.cs/#L16"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -102,7 +102,7 @@ Class IdentityManagementController  <a class="header-action link-secondary" titl
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Authorize(Policy = &quot;DefaultPolicy&quot;)]
+    <pre><code class="lang-csharp hljs">[Authorize(AuthenticationSchemes = &quot;Bearer&quot;, Policy = &quot;MicrosoftEntraIDStandard&quot;)]
 [ApiController]
 [Consumes(&quot;application/json&quot;, new string[] { })]
 [Produces(&quot;application/json&quot;, new string[] { })]
@@ -765,7 +765,7 @@ public class IdentityManagementController : Controller, IActionFilter, IAsyncAct
 
   <h3 id="FoundationaLLM_Management_API_Controllers_IdentityManagementController__ctor_FoundationaLLM_Common_Interfaces_ICallContext_FoundationaLLM_Common_Interfaces_IIdentityManagementService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Management_API_Controllers_IdentityManagementController__" data-uid="FoundationaLLM.Management.API.Controllers.IdentityManagementController.#ctor(FoundationaLLM.Common.Interfaces.ICallContext,FoundationaLLM.Common.Interfaces.IIdentityManagementService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Management.API.Controllers.IdentityManagementController})">
   IdentityManagementController(ICallContext, IIdentityManagementService, ILogger&lt;IdentityManagementController&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/IdentityManagementController.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/IdentityManagementController.cs/#L16"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Provides account retrieval methods.</p>
@@ -808,7 +808,7 @@ public class IdentityManagementController : Controller, IActionFilter, IAsyncAct
 
   <h3 id="FoundationaLLM_Management_API_Controllers_IdentityManagementController_GetGroup_System_String_" data-uid="FoundationaLLM.Management.API.Controllers.IdentityManagementController.GetGroup(System.String)">
   GetGroup(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/IdentityManagementController.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/IdentityManagementController.cs/#L48"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a specific group account by its identifier.</p>
@@ -846,7 +846,7 @@ public Task&lt;IActionResult&gt; GetGroup(string groupId)</code></pre>
 
   <h3 id="FoundationaLLM_Management_API_Controllers_IdentityManagementController_GetUser_System_String_" data-uid="FoundationaLLM.Management.API.Controllers.IdentityManagementController.GetUser(System.String)">
   GetUser(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/IdentityManagementController.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/IdentityManagementController.cs/#L72"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a specific user account by its identifier.</p>
@@ -884,7 +884,7 @@ public Task&lt;IActionResult&gt; GetUser(string userId)</code></pre>
 
   <h3 id="FoundationaLLM_Management_API_Controllers_IdentityManagementController_RetrieveGroups_FoundationaLLM_Common_Models_Authentication_ObjectQueryParameters_" data-uid="FoundationaLLM.Management.API.Controllers.IdentityManagementController.RetrieveGroups(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)">
   RetrieveGroups(ObjectQueryParameters)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/IdentityManagementController.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/IdentityManagementController.cs/#L36"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a list of group accounts with filtering and paging options.</p>
@@ -922,7 +922,7 @@ public Task&lt;IActionResult&gt; RetrieveGroups(ObjectQueryParameters parameters
 
   <h3 id="FoundationaLLM_Management_API_Controllers_IdentityManagementController_RetrieveObjectsByIds_FoundationaLLM_Common_Models_Authentication_ObjectQueryParameters_" data-uid="FoundationaLLM.Management.API.Controllers.IdentityManagementController.RetrieveObjectsByIds(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)">
   RetrieveObjectsByIds(ObjectQueryParameters)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/IdentityManagementController.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/IdentityManagementController.cs/#L84"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves user and group objects by the passed in list of IDs.</p>
@@ -960,7 +960,7 @@ public Task&lt;IActionResult&gt; RetrieveObjectsByIds(ObjectQueryParameters para
 
   <h3 id="FoundationaLLM_Management_API_Controllers_IdentityManagementController_RetrieveUsers_FoundationaLLM_Common_Models_Authentication_ObjectQueryParameters_" data-uid="FoundationaLLM.Management.API.Controllers.IdentityManagementController.RetrieveUsers(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)">
   RetrieveUsers(ObjectQueryParameters)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/IdentityManagementController.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/IdentityManagementController.cs/#L60"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a list of user accounts with filtering and paging options.</p>
@@ -998,7 +998,7 @@ public Task&lt;IActionResult&gt; RetrieveUsers(ObjectQueryParameters parameters)
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/IdentityManagementController.cs/#L14" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/ManagementAPI/Controllers/IdentityManagementController.cs/#L16" class="edit-link">Edit this page</a>
         </div>
 
 

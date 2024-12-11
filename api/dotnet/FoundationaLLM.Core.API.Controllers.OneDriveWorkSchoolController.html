@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Core_API_Controllers_OneDriveWorkSchoolController" data-uid="FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController" class="text-break">
-Class OneDriveWorkSchoolController  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/OneDriveWorkSchoolController.cs/#L13"><i class="bi bi-code-slash"></i></a>
+Class OneDriveWorkSchoolController  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/OneDriveWorkSchoolController.cs/#L15"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -102,7 +102,7 @@ Class OneDriveWorkSchoolController  <a class="header-action link-secondary" titl
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Authorize(Policy = &quot;DefaultPolicy&quot;)]
+    <pre><code class="lang-csharp hljs">[Authorize(AuthenticationSchemes = &quot;Bearer&quot;, Policy = &quot;MicrosoftEntraIDStandard&quot;)]
 [ApiController]
 [Route(&quot;instances/{instanceId}/[controller]&quot;)]
 public class OneDriveWorkSchoolController : ControllerBase</code></pre>
@@ -687,7 +687,7 @@ public class OneDriveWorkSchoolController : ControllerBase</code></pre>
 
   <h3 id="FoundationaLLM_Core_API_Controllers_OneDriveWorkSchoolController__ctor_FoundationaLLM_Common_Interfaces_ICallContext_FoundationaLLM_Core_Interfaces_IOneDriveWorkSchoolService_" data-uid="FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.#ctor(FoundationaLLM.Common.Interfaces.ICallContext,FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService)">
   OneDriveWorkSchoolController(ICallContext, IOneDriveWorkSchoolService)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/OneDriveWorkSchoolController.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/OneDriveWorkSchoolController.cs/#L31"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The controller for OneDrive integration.</p>
@@ -731,7 +731,7 @@ public class OneDriveWorkSchoolController : ControllerBase</code></pre>
 
   <h3 id="FoundationaLLM_Core_API_Controllers_OneDriveWorkSchoolController_Connect_System_String_" data-uid="FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Connect(System.String)">
   Connect(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/OneDriveWorkSchoolController.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/OneDriveWorkSchoolController.cs/#L44"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Connects to user's OneDrive work or school account.</p>
@@ -770,7 +770,7 @@ public Task&lt;IActionResult&gt; Connect(string instanceId)</code></pre>
 
   <h3 id="FoundationaLLM_Core_API_Controllers_OneDriveWorkSchoolController_Disconnect_System_String_" data-uid="FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Disconnect(System.String)">
   Disconnect(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/OneDriveWorkSchoolController.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/OneDriveWorkSchoolController.cs/#L57"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Disconnect from user's OneDrive work or school account.</p>
@@ -809,7 +809,7 @@ public Task&lt;IActionResult&gt; Disconnect(string instanceId)</code></pre>
 
   <h3 id="FoundationaLLM_Core_API_Controllers_OneDriveWorkSchoolController_Download_System_String_System_String_System_String_FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_" data-uid="FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController.Download(System.String,System.String,System.String,FoundationaLLM.Core.Models.OneDriveWorkSchoolItem)">
   Download(string, string, string, OneDriveWorkSchoolItem)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/OneDriveWorkSchoolController.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/OneDriveWorkSchoolController.cs/#L73"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Downloads a file from the user's connected OneDrive work or school account.</p>
@@ -857,7 +857,7 @@ public Task&lt;IActionResult&gt; Download(string instanceId, string sessionId, s
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/OneDriveWorkSchoolController.cs/#L13" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/OneDriveWorkSchoolController.cs/#L15" class="edit-link">Edit this page</a>
         </div>
 
 

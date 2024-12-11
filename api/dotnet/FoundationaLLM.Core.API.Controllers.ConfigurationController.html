@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Core_API_Controllers_ConfigurationController" data-uid="FoundationaLLM.Core.API.Controllers.ConfigurationController" class="text-break">
-Class ConfigurationController  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/ConfigurationController.cs/#L14"><i class="bi bi-code-slash"></i></a>
+Class ConfigurationController  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/ConfigurationController.cs/#L16"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -102,7 +102,7 @@ Class ConfigurationController  <a class="header-action link-secondary" title="Vi
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Authorize(Policy = &quot;DefaultPolicy&quot;)]
+    <pre><code class="lang-csharp hljs">[Authorize(AuthenticationSchemes = &quot;Bearer&quot;, Policy = &quot;MicrosoftEntraIDStandard&quot;)]
 [ApiController]
 [Route(&quot;instances/{instanceId}/[controller]&quot;)]
 public class ConfigurationController : ControllerBase</code></pre>
@@ -687,7 +687,7 @@ public class ConfigurationController : ControllerBase</code></pre>
 
   <h3 id="FoundationaLLM_Core_API_Controllers_ConfigurationController__ctor_FoundationaLLM_Common_Interfaces_ICallContext_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Instance_InstanceSettings__FoundationaLLM_Core_Interfaces_ICoreService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Core_API_Controllers_FilesController__" data-uid="FoundationaLLM.Core.API.Controllers.ConfigurationController.#ctor(FoundationaLLM.Common.Interfaces.ICallContext,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},FoundationaLLM.Core.Interfaces.ICoreService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Core.API.Controllers.FilesController})">
   ConfigurationController(ICallContext, IOptions&lt;InstanceSettings&gt;, ICoreService, ILogger&lt;FilesController&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/ConfigurationController.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/ConfigurationController.cs/#L36"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The controller for managing files.</p>
@@ -737,7 +737,7 @@ public class ConfigurationController : ControllerBase</code></pre>
 
   <h3 id="FoundationaLLM_Core_API_Controllers_ConfigurationController_GetCoreConfiguration_System_String_" data-uid="FoundationaLLM.Core.API.Controllers.ConfigurationController.GetCoreConfiguration(System.String)">
   GetCoreConfiguration(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/ConfigurationController.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/ConfigurationController.cs/#L53"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns the core configuration.</p>
@@ -776,7 +776,7 @@ public Task&lt;IActionResult&gt; GetCoreConfiguration(string instanceId)</code><
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/ConfigurationController.cs/#L14" class="edit-link">Edit this page</a>
+          <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/ConfigurationController.cs/#L16" class="edit-link">Edit this page</a>
         </div>
 
 
