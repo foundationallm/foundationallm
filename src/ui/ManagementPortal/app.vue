@@ -99,6 +99,10 @@ body,
 	margin-left: 4px !important;
 }
 
+.ml-2 {
+	margin-left: 8px !important;
+}
+
 .mr-1 {
 	margin-right: 4px !important;
 }
@@ -125,6 +129,14 @@ body,
 
 .mb-4 {
 	margin-bottom: 16px !important;
+}
+
+.mb-5 {
+	margin-bottom: 20px !important;
+}
+
+.mb-6 {
+	margin-bottom: 24px !important;
 }
 
 .w-100 {
