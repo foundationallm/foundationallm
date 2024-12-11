@@ -753,7 +753,7 @@
 			</template>
 			
 			
-			<div class="button-container column-2 justify-self-end">
+			<div class="span-2 d-flex justify-content-end" style="gap: 16px">
 				<!-- Create agent -->
 				<Button
 					:label="editAgent ? 'Save Changes' : 'Create Agent'"
