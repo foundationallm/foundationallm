@@ -1,6 +1,8 @@
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Models.Infrastructure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +11,9 @@ namespace FoundationaLLM.Core.API.Controllers
     /// <summary>
     /// Provides methods for checking the status of the service.
     /// </summary>
-    [Authorize(Policy = "DefaultPolicy")]
+    [Authorize(
+        AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
+        Policy = AuthorizationPolicyNames.MicrosoftEntraIDStandard)]
     [ApiController]
     [Route("instances/{instanceId}/[controller]")]
     public class StatusController : ControllerBase

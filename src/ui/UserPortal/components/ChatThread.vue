@@ -3,7 +3,7 @@
 		<!-- Message list -->
 		<div
 			ref="messageContainer"
-			class="chat-thread__messages"
+			class="chat-thread__messages printable-section"
 			:class="messages.length === 0 && 'empty'"
 		>
 			<template v-if="isLoading">
@@ -30,7 +30,7 @@
 						:aria-flowto="
 							index === 0 ? null : `message-${getMessageOrderFromReversedIndex(index) + 1}`
 						"
-						@rate="handleRateMessage($event.message, $event.isLiked)"
+						@rate="handleRateMessage($event.message)"
 					/>
 				</template>
 
@@ -108,7 +108,8 @@ export default {
 
 	watch: {
 		async currentSession(newSession: Session, oldSession: Session) {
-			if (newSession.id === oldSession?.id) return;
+			const isReplacementForTempSession = oldSession?.is_temp && this.messages.length > 0;
+			if (newSession.id === oldSession?.id || isReplacementForTempSession) return;
 			this.isMessagePending = false;
 			this.isLoading = true;
 			this.userSentMessage = false;
@@ -137,6 +138,14 @@ export default {
 		},
 	},
 
+	created() {
+		if (!this.$appConfigStore.showLastConversionOnStartup && this.currentSession?.is_temp) {
+			this.isLoading = false;
+			const sessionAgent = this.$appStore.getSessionAgent(this.currentSession);
+			this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
+		}
+	},
+
 	methods: {
 		getWelcomeMessage(agent) {
 			const welcomeMessage = agent?.resource?.properties?.welcome_message;
@@ -150,8 +159,8 @@ export default {
 			return this.messages.length - 1 - index;
 		},
 
-		async handleRateMessage(message: Message, isLiked: Message['rating']) {
-			await this.$appStore.rateMessage(message, isLiked);
+		async handleRateMessage(message: Message) {
+			await this.$appStore.rateMessage(message);
 		},
 
 		handleParentDrop(event) {

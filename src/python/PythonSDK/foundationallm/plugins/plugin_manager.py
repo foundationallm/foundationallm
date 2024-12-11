@@ -72,24 +72,25 @@ class PluginManager():
                     container_name=storage_container_name,
                     authentication_type=storage_authentication_type
                 )
+                
+                if modules_list is not None and modules_list.strip() != '':
+                    for module_configuration in [x.split('|') for x in modules_list.split(',')]:
+                        module_file = module_configuration[0]
+                        module_name = module_configuration[1]
+                        plugin_manager_type = module_configuration[2]
+                        plugin_manager_class_name = module_configuration[3]
 
-                for module_configuration in [x.split('|') for x in modules_list.split(',')]:
-                    module_file = module_configuration[0]
-                    module_name = module_configuration[1]
-                    plugin_manager_type = module_configuration[2]
-                    plugin_manager_class_name = module_configuration[3]
+                        if (plugin_manager_type != TOOLS_PLUGIN_MANAGER_TYPE):
+                            raise ValueError(f'The plugin manager type {plugin_manager_type} is not recognized.')
 
-                    if (plugin_manager_type != TOOLS_PLUGIN_MANAGER_TYPE):
-                        raise ValueError(f'The plugin manager type {plugin_manager_type} is not recognized.')
-
-                    if module_name in self.external_modules:
-                        self.external_modules[module_name].tool_plugin_manager_class_name = plugin_manager_class_name
-                    else:
-                        self.external_modules[module_name] = ExternalModule(
-                            module_file=module_file,
-                            module_name=module_name,
-                            tool_plugin_manager_class_name=plugin_manager_class_name
-                        )
+                        if module_name in self.external_modules:
+                            self.external_modules[module_name].tool_plugin_manager_class_name = plugin_manager_class_name
+                        else:
+                            self.external_modules[module_name] = ExternalModule(
+                                module_file=module_file,
+                                module_name=module_name,
+                                tool_plugin_manager_class_name=plugin_manager_class_name
+                            )                    
 
                 self.initialized = True
                 self.logger.info('The plugin manager initialized successfully.')

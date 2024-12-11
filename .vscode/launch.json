@@ -5,6 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Skunkworks - Debug Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "python": "${workspaceFolder}/src/python/Experimental/.venv/Scripts/python.exe",
+            "cwd" : "${workspaceFolder}/src/python/Experimental/test",
+            "justMyCode": false
+        },
+        {
             "command": "npm run dev",
             "name": "User Portal UI",
             "request": "launch",
@@ -58,7 +68,8 @@
             "module": "uvicorn",
             "cwd" : "${workspaceFolder}/src/python/LangChainAPI/app",
             "env": {
-                "PYTHONPATH": "d:/repos/solliance-foundationallm/src/python/LangChainAPI;d:/repos/solliance-foundationallm/src/python/PythonSDK;d:/repos/fllm/foundationallm/src/python/PythonSDK;"
+                "PYTHONPATH": "${workspaceFolder}/src/python/LangChainAPI;${workspaceFolder}/src/python/PythonSDK;d:/repos/fllm/foundationallm/src/python/PythonSDK;",
+                "FOUNDATIONALLM_CONTEXT": "DEBUG"
             },
             "args": ["main:app","--reload", "--port", "8765"],
             "python": "${workspaceFolder}/src/python/LangChainAPI/env/Scripts/python.exe"

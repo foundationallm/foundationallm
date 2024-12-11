@@ -1,5 +1,5 @@
 <template>
-	<main>
+	<div class="main-content">
 		<Head>
 			<Title>{{ pageTitle }}</Title>
 			<Meta name="description" :content="pageTitle" />
@@ -11,7 +11,7 @@
 		</NuxtLayout>
 
 		<Toast position="top-center" />
-	</main>
+	</div>
 </template>
 
 <script lang="ts">
@@ -59,7 +59,7 @@ html,
 body,
 #__nuxt,
 #__layout,
-main {
+.main-content {
 	height: 100%;
 	margin: 0;
 	font-family: 'Poppins', sans-serif;
@@ -108,12 +108,20 @@ main {
 	margin-top: 8px !important;
 }
 
+.mt-4 {
+	margin-top: 16px !important;
+}
+
 .mb-1 {
 	margin-bottom: 4px !important;
 }
 
 .mb-2 {
 	margin-bottom: 8px !important;
+}
+
+.mb-4 {
+	margin-bottom: 16px !important;
 }
 
 .w-100 {
@@ -128,8 +136,16 @@ main {
 	display: flex;
 }
 
+.flex-column {
+	flex-direction: column;
+}
+
 .align-center {
 	align-items: center;
+}
+
+.justify-content-center {
+	justify-content: center;
 }
 
 .justify-content-end {
@@ -152,15 +168,33 @@ main {
 	color: var(--primary-button-bg) !important;
 }
 
-.p-button:not(.p-button-text):not(.color-undo-button) {
-	background-color: var(--primary-button-bg) !important;
-	border-color: var(--primary-button-bg) !important;
-	color: var(--primary-button-text) !important;
+.p-button:not(.p-button-text):not(.p-togglebutton) {
+	background-color: var(--primary-button-bg);
+	border-color: var(--primary-button-bg);
+	color: var(--primary-button-text);
+
+	& > * {
+		color: var(--primary-button-text);
+	}
 }
 
-.p-button-secondary:not(.p-button-text) {
-	background-color: var(--secondary-button-bg) !important;
-	border-color: var(--secondary-button-bg) !important;
-	color: var(--secondary-button-text) !important;
+.p-button-secondary:not(.p-button-text):not(.p-togglebutton) {
+	background-color: var(--secondary-button-bg);
+	border-color: var(--secondary-button-bg);
+	color: var(--secondary-button-text);
+
+	& > * {
+		color: var(--secondary-button-text);
+	}
+}
+
+.p-togglebutton:not(.p-button-text) {
+	background-color: var(--primary-button-bg);
+	border-color: var(--primary-button-bg);
+	color: var(--primary-button-text);
+
+	& > * {
+		color: var(--primary-button-text);
+	}
 }
 </style>

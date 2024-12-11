@@ -18,9 +18,9 @@ namespace FoundationaLLM.Client.Core.Interfaces
         /// </summary>
         /// <param name="sessionId">The chat session ID that contains the message to rate.</param>
         /// <param name="messageId">The ID of the message to rate.</param>
-        /// <param name="rating">Set to true for a positive rating and false for a negative rating.</param>
-        /// <returns></returns>
-        Task RateMessageAsync(string sessionId, string messageId, bool rating);
+        /// <param name="rating">The rating and optional comments to assign to the message.</param>
+        /// <returns>Returns the Message object, including its updated rating.</returns>
+        Task<Message> RateMessageAsync(string sessionId, string messageId, MessageRatingRequest rating);
 
         /// <summary>
         /// Creates a new session with the specified name.

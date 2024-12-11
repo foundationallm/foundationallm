@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Authorization.Interfaces;
+﻿using FoundationaLLM.AuthorizationEngine.Interfaces;
+using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Models.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ namespace FoundationaLLM.Authorization.API.Controllers
     /// Provides methods for processing authorization requests.
     /// </summary>
     /// <param name="authorizationCore">The <see cref="IAuthorizationCore"/> service used to process authorization requests.</param>
-    [Authorize(Policy = "RequiredClaims")]
+    [Authorize(Policy = AuthorizationPolicyNames.MicrosoftEntraIDNoScopes)]
     [ApiController]
     [Route($"instances/{{instanceId}}/authorize")]
     [Consumes("application/json")]

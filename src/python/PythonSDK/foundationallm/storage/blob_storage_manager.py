@@ -1,5 +1,6 @@
 from io import BytesIO
 import fnmatch
+import os
 from azure.storage.blob import BlobServiceClient
 from foundationallm.storage import StorageManagerBase
 from azure.identity import DefaultAzureCredential
@@ -23,7 +24,20 @@ class BlobStorageManager(StorageManagerBase):
         if authentication_type == 'AzureIdentity':
             if account_name is None or account_name == '':
                 raise ValueError('The account_name parameter must be set to a valid account name.')
-            credential = DefaultAzureCredential(exclude_environment_credential=True)
+
+            credential = \
+                DefaultAzureCredential(
+                    exclude_workload_identity_credentials=True,
+                    exclude_developer_cli_credential=False,
+                    exclude_cli_credential=False,
+                    exclude_environment_credential=True,
+                    exclude_managed_identity_credential=True,
+                    exclude_powershell_credential=True,
+                    exclude_visual_studio_code_credential=True,
+                    exclude_shared_token_cache_credentials=True,
+                    exclude_interactive_browser_credential=True) if os.getenv('FOUNDATIONALLM_CONTEXT', 'NONE') == 'DEBUG' \
+                else DefaultAzureCredential(exclude_environment_credential=True)
+            
             blob_service_client = BlobServiceClient(account_url=f"https://{account_name}.blob.core.windows.net", credential=credential)
         else:
             if blob_connection_string is None or blob_connection_string == '':

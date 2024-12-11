@@ -1,6 +1,6 @@
 ﻿import uuid
 from langchain_community.callbacks import get_openai_callback
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import HumanMessage, ToolMessage
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from langchain_core.output_parsers import StrOutputParser
@@ -9,20 +9,27 @@ from foundationallm.langchain.agents import LangChainAgentBase
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.retrievers import RetrieverFactory, ContentArtifactRetrievalBase
 from foundationallm.models.agents import AzureOpenAIAssistantsAgentWorkflow, LangGraphReactAgentWorkflow
-from foundationallm.models.constants import AgentCapabilityCategories
+from foundationallm.models.constants import (
+    AgentCapabilityCategories,
+    ResourceObjectIdPropertyNames,
+    ResourceObjectIdPropertyValues,
+    ResourceProviderNames,
+    AIModelResourceTypeNames,
+    PromptResourceTypeNames
+)
 from foundationallm.models.operations import OperationTypes
 from foundationallm.models.orchestration import (
     CompletionRequestObjectKeys,
     CompletionResponse,
-    OpenAITextMessageContentItem
+    OpenAITextMessageContentItem,
+    ContentArtifact
 )
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 from foundationallm.models.agents import (
     AgentConversationHistorySettings,
     KnowledgeManagementAgent,
     KnowledgeManagementCompletionRequest,
-    KnowledgeManagementIndexConfiguration,
-    AgentTool
+    KnowledgeManagementIndexConfiguration
 )
 from foundationallm.models.attachments import AttachmentProviders
 from foundationallm.models.authentication import AuthenticationTypes
@@ -47,9 +54,6 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
     """
     The LangChain Knowledge Management agent.
     """
-
-    MAIN_MODEL_KEY = "main_model"
-    MAIN_PROMPT_KEY = "main_prompt"
 
     def _get_document_retriever(
         self,
@@ -173,19 +177,30 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
         if request.agent is None:
             raise LangChainException("The agent property on the completion request cannot be null.", 400)
 
-        if request.agent.orchestration_settings is None:
-            raise LangChainException("The Orchestration_settings property on the agent cannot be null.", 400)
-
         if request.objects is None:
             raise LangChainException("The objects property on the completion request cannot be null.", 400)
 
         if request.agent.workflow is not None:
-            if request.agent.workflow.agent_workflow_ai_models[self.MAIN_MODEL_KEY] is None:
+            
+            ai_model_object_id = request.agent.workflow.get_resource_object_id_properties(
+                ResourceProviderNames.FOUNDATIONALLM_AIMODEL,
+                AIModelResourceTypeNames.AI_MODELS,
+                ResourceObjectIdPropertyNames.OBJECT_ROLE,
+                ResourceObjectIdPropertyValues.MAIN_MODEL
+            )
+            if ai_model_object_id is None:
                 raise LangChainException("The agent's workflow AI models requires a main_model.", 400)
-            if request.agent.workflow.prompt_object_ids[self.MAIN_PROMPT_KEY] is None:
+            self.ai_model = self._get_ai_model_from_object_id(ai_model_object_id.object_id, request.objects)
+            
+            prompt_object_id = request.agent.workflow.get_resource_object_id_properties(
+                ResourceProviderNames.FOUNDATIONALLM_PROMPT,
+                PromptResourceTypeNames.PROMPTS,
+                ResourceObjectIdPropertyNames.OBJECT_ROLE,
+                ResourceObjectIdPropertyValues.MAIN_PROMPT
+            )
+            if prompt_object_id is None:
                 raise LangChainException("The agent's workflow prompt object dictionary requires a main_prompt.", 400)
-            self.ai_model = self._get_ai_model_from_object_id(request.agent.workflow.agent_workflow_ai_models[self.MAIN_MODEL_KEY].ai_model_object_id, request.objects)
-            self.prompt = self._get_prompt_from_object_id(request.agent.workflow.prompt_object_ids[self.MAIN_PROMPT_KEY], request.objects)
+            self.prompt = self._get_prompt_from_object_id(prompt_object_id.object_id, request.objects)
         else:
             # Legacy code
             self.ai_model = self._get_ai_model_from_object_id(request.agent.ai_model_object_id, request.objects)
@@ -380,9 +395,16 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             image_service = None
             if any(tool.name == "DALLEImageGeneration" for tool in request.agent.tools):
                 dalle_tool = next((tool for tool in request.agent.tools if tool.name == "DALLEImageGeneration"), None)
-                model_object_id = dalle_tool.ai_model_object_ids[self.MAIN_MODEL_KEY]
-                image_generation_deployment_model = request.objects[model_object_id]["deployment_name"]
-                api_endpoint_object_id = request.objects[model_object_id]["endpoint_object_id"]
+
+                model_object_id = dalle_tool.get_resource_object_id_properties(
+                    ResourceProviderNames.FOUNDATIONALLM_AIMODEL,
+                    AIModelResourceTypeNames.AI_MODELS,
+                    ResourceObjectIdPropertyNames.OBJECT_ROLE,
+                    ResourceObjectIdPropertyValues.MAIN_MODEL
+                )
+                
+                image_generation_deployment_model = request.objects[model_object_id.object_id]["deployment_name"]
+                api_endpoint_object_id = request.objects[model_object_id.object_id]["endpoint_object_id"]
                 image_generation_client = self._get_image_gen_language_model(api_endpoint_object_id=api_endpoint_object_id, objects=request.objects)
                 image_service=ImageService(
                     config=self.config,
@@ -428,15 +450,26 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
             # Populate tools list from agent configuration
             for tool in agent.tools:
-                tools.append(tool_factory.get_tool(tool, request.objects, self.config))
+                tools.append(tool_factory.get_tool(tool, request.objects, self.user_identity, self.config))
 
             # Define the graph
             graph = create_react_agent(llm, tools=tools, state_modifier=self.prompt.prefix)
             messages = self._build_conversation_history_message_list(request.message_history, agent.conversation_history_settings.max_history)
             messages.append(HumanMessage(content=request.user_prompt))
-            response = await graph.ainvoke({'messages': messages})
+            response = await graph.ainvoke({'messages': messages}, config={"configurable": {"original_user_prompt": request.user_prompt}})
             # TODO: process tool messages with analysis results AIMessage with content='' but has addition_kwargs={'tool_calls';[...]}
-            # print(response)
+
+            # Get ContentArtifact items from ToolMessages
+            content_artifacts = []
+            tool_messages = [message for message in response["messages"] if isinstance(message, ToolMessage)]
+            for tool_message in tool_messages:
+                if tool_message.artifact is not None:
+                    # if the tool message artifact is a list, check if it contains a ContentArtifact item
+                    if isinstance(tool_message.artifact, list):
+                        for item in tool_message.artifact:
+                            if isinstance(item, ContentArtifact):
+                                content_artifacts.append(item)
+
             final_message = response["messages"][-1]
             response_content = OpenAITextMessageContentItem(
                 value = final_message.content,
@@ -445,7 +478,7 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
             return CompletionResponse(
                         operation_id = request.operation_id,
                         content = [response_content],
-                        content_artifacts = [],
+                        content_artifacts = content_artifacts,
                         user_prompt = request.user_prompt,
                         full_prompt = self.prompt.prefix,
                         completion_tokens = final_message.usage_metadata["output_tokens"] or 0,

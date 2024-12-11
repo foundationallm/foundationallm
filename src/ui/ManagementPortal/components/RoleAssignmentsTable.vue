@@ -2,7 +2,7 @@
 	<div :class="{ 'grid--loading': loading }">
 		<!-- Loading overlay -->
 		<template v-if="loading">
-			<div class="grid__loading-overlay">
+			<div class="grid__loading-overlay" role="status" aria-live="polite">
 				<LoadingGrid />
 				<div>{{ loadingStatusText }}</div>
 			</div>
@@ -57,7 +57,7 @@
 						<i v-else class="pi pi-verified"></i>
 
 						<span>
-							<div>{{ data.principal.display_name }}</div>
+							<div>{{ data.principal?.display_name }}</div>
 							<div v-if="data.principal?.email">({{ data.principal?.email }})</div>
 						</span>
 					</div>
@@ -136,8 +136,12 @@
 				}"
 			>
 				<template #body="{ data }">
-					<Button link @click="roleAssignmentToDelete = data">
-						<i class="pi pi-trash" style="font-size: 1.2rem"></i>
+					<Button
+						link
+						:aria-label="`Delete role assignment ${data.principal?.display_name? 'for ' + data.principal?.display_name : ''}`"
+						@click="roleAssignmentToDelete = data"
+					>
+						<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
 					</Button>
 				</template>
 			</Column>

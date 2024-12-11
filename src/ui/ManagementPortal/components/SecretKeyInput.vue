@@ -3,7 +3,7 @@
 		<Textarea
 			v-if="textarea"
 			:value="displayValue"
-			:readonly="isHidden"
+			:readonly="isHidden || readonly"
 			class="w-100"
 			auto-resize
 			rows="5"
@@ -16,7 +16,7 @@
 		<InputText
 			v-else
 			:value="displayValue"
-			:readonly="isHidden"
+			:readonly="isHidden || readonly"
 			class="w-100"
 			type="text"
 			:placeholder="placeholder"
@@ -57,6 +57,12 @@ export default {
 			type: String,
 			required: false,
 			default: '',
+		},
+
+		readonly: {
+			type: Boolean,
+			required: false,
+			default: false,
 		},
 	},
 

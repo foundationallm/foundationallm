@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<main id="main-content">
 		<template v-if="loading">
-			<div class="grid__loading-overlay">
+			<div class="grid__loading-overlay" role="status" aria-live="polite">
 				<LoadingGrid />
 				<div>{{ loadingStatusText }}</div>
 			</div>
@@ -11,7 +11,7 @@
 			<p>Customize the look and feel of your UI.</p>
 			<div style="display: flex; flex-direction: row; align-items: center; gap: 0.5rem">
 				<p>Show contrast information</p>
-				<InputSwitch v-model="showContrastInfo" />
+				<InputSwitch v-model="showContrastInfo" aria-label="Toggle to show or hide contrast information" />
 			</div>
 		</div>
 		<div class="steps">
@@ -21,6 +21,7 @@
 				<InputSwitch
 					v-if="key === 'FoundationaLLM:Branding:KioskMode'"
 					v-model:modelValue="kioskMode"
+					:aria-labelledby="key.split(':').pop()"
 					@change="updateBrandingValue(key, JSON.stringify(kioskMode))"
 				/>
 				<CustomQuillEditor
@@ -30,6 +31,7 @@
 						key === 'FoundationaLLM:Branding:DefaultAgentWelcomeMessage'
 					"
 					:id="key.split(':').pop()"
+					:aria-labelledby="key.split(':').pop()"
 					:initial-content="JSON.parse(JSON.stringify(getBrandingValue(key)))"
 					@content-update="updateHtmlText(key, $event)"
 				/>
@@ -50,7 +52,11 @@
 					:style="{ backgroundColor: getBrandingValue('FoundationaLLM:Branding:PrimaryColor') }"
 					class="logo-preview"
 				>
-					<img :src="$filters.publicDirectory(getBrandingValue(key))" class="logo-image" />
+					<img 
+						:src="$filters.publicDirectory(getBrandingValue(key))"
+						alt="Logo Preview"
+						class="logo-image" 
+					/>
 				</div>
 			</div>
 			<div class="divider" />
@@ -173,13 +179,41 @@
 					:disabled="JSON.stringify(branding) === JSON.stringify(brandingOriginal)"
 					label="Reset"
 					severity="secondary"
-					@click="cancelBrandingChanges"
+					@click="resetBrandingDialog = true"
 				/>
-				<Button label="Set Default" @click="setDefaultBranding" />
+				<Button
+					label="Set Default"
+					aria-label="Reset branding values to their default settings"
+					@click="setBrandingDefaultDialog = true"
+				/>
 				<Button label="Save" severity="primary" @click="saveBranding" />
 			</div>
+			<Dialog
+				:visible="resetBrandingDialog"
+				modal
+				header="Reset Branding"
+				:closable="false"
+			>
+				<p>Are you sure you want to reset all branding values to their previous values?</p>
+				<template #footer>
+					<Button label="Cancel" text @click="resetBrandingDialog = false" />
+					<Button label="Reset" severity="danger" autofocus @click="cancelBrandingChanges" />
+				</template>
+			</Dialog>
+			<Dialog
+				:visible="setBrandingDefaultDialog"
+				modal
+				header="Set Default Branding"
+				:closable="false"
+			>
+				<p>Are you sure you want to reset all branding values to their default settings?</p>
+				<template #footer>
+					<Button label="Cancel" text @click="setBrandingDefaultDialog = false" />
+					<Button label="Set Default" severity="danger" autofocus @click="setDefaultBranding" />
+				</template>
+			</Dialog>
 		</div>
-	</div>
+	</main>
 </template>
 
 <script lang="ts">
@@ -404,6 +438,8 @@ export default {
 			showQuillrawHTMLDialog: false,
 			loading: true,
 			loadingStatusText: 'Retrieving data...' as string,
+			resetBrandingDialog: false,
+			setBrandingDefaultDialog: false,
 		};
 	},
 
@@ -562,10 +598,12 @@ export default {
 					brand.resource.value = defaultBrand.value;
 				}
 			});
+			this.setBrandingDefaultDialog = false;
 		},
 
 		cancelBrandingChanges() {
 			this.branding = JSON.parse(JSON.stringify(this.brandingOriginal));
+			this.resetBrandingDialog = false;
 		},
 
 		saveBranding() {
@@ -649,7 +687,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .steps {
 	display: grid;
 	grid-template-columns: minmax(auto, 50%) minmax(auto, 50%);
@@ -714,10 +752,6 @@ export default {
 	max-width: 80ch;
 }
 
-.branding-color-input {
-	width: 30ch;
-}
-
 .logo-preview {
 	display: flex;
 	justify-content: center;
@@ -759,21 +793,6 @@ export default {
 
 .color-wcag-result-value {
 	color: #000;
-}
-
-.color-input-container {
-	display: flex;
-	align-items: center;
-}
-
-.color-picker {
-	width: 50px;
-}
-
-.color-undo-button {
-	border: 2px solid #e1e1e1;
-	border-width: 2px 2px 2px 0;
-	width: 50px;
 }
 
 .p-colorpicker-preview {
