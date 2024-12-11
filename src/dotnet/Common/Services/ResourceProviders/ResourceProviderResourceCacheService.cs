@@ -29,7 +29,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         {
             try
             {
-                _cache.Set<T>(resourceReference, resourceValue, _cacheEntryOptions);
+                _cache.Set<T>(GetCacheKey(resourceReference), resourceValue, _cacheEntryOptions);
                 _logger.LogInformation("The resource {ResourceName} of type {ResourceType} has been set in the cache.",
                     resourceReference.Name,
                     resourceReference.Type);
@@ -49,7 +49,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             try
             {
-                if (_cache.TryGetValue<T>(resourceReference, out T? cachedValue)
+                if (_cache.TryGetValue<T>(GetCacheKey(resourceReference), out T? cachedValue)
                     && cachedValue != null)
                 {
                     resourceValue = cachedValue;
@@ -68,5 +68,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             return false;
         }
+
+        private string GetCacheKey(ResourceReference resourceReference) =>
+            $"{resourceReference.Type}|{resourceReference.Name}";
     }
 }
